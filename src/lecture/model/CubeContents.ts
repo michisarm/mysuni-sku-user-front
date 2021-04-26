@@ -14,7 +14,19 @@ export interface CubeContents {
   difficultyLevel: DifficultyLevel;
   fileBoxId: string;
   id: string;
-  instructors: Instructor[];
+  instructors: {
+    instructorId: string;
+    representative: true;
+    round: number;
+    name?: string;
+    memberSummary?: {
+      employeeId: string;
+      department: string;
+      email: string;
+      name: string;
+      photoId: string;
+    };
+  }[];
   operator: { keyString: string };
   organizerId: string;
   otherOrganizerName: string;
