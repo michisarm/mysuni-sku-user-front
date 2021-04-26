@@ -100,19 +100,28 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                         )}
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell className="location">
+                        <Table.Cell
+                          className="location_info"
+                          style={{ paddingLeft: 25 }}
+                        >
                           <strong>장소</strong>
                           <br />
                           {location}
                         </Table.Cell>
-                        <Table.Cell className="center">
+                        <Table.Cell
+                          className="center_info"
+                          style={{ paddingLeft: 25 }}
+                        >
                           <strong>수강신청기간</strong>
                           <br />
                           {`${formatDate(applyingStartDate)} ~ ${formatDate(
                             applyingEndDate
                           )}`}
                         </Table.Cell>
-                        <Table.Cell className="center">
+                        <Table.Cell
+                          className="center_info"
+                          style={{ paddingLeft: 25 }}
+                        >
                           <strong>교육기간</strong>
                           <br />
                           {`${formatDate(learningStartDate)} ~ ${formatDate(
