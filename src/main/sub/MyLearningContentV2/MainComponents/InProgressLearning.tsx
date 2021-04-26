@@ -29,8 +29,8 @@ function InProgressLearning({ profileMemberName, history }: Props) {
 
   const fetchLearningCardLsit = async () => {
     const learningCardList = await findMyLatestLearningCards(8);
-
     setCardList(learningCardList);
+    setIsLoading(false);
   };
 
   const onViewAll = () => {
