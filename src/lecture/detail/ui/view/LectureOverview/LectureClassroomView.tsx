@@ -105,7 +105,6 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                           style={{ paddingLeft: 25 }}
                         >
                           <strong>장소</strong>
-                          <br />
                           {location}
                         </Table.Cell>
                         <Table.Cell
@@ -113,7 +112,6 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                           style={{ paddingLeft: 25 }}
                         >
                           <strong>수강신청기간</strong>
-                          <br />
                           {`${formatDate(applyingStartDate)} ~ ${formatDate(
                             applyingEndDate
                           )}`}
@@ -123,7 +121,6 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                           style={{ paddingLeft: 25 }}
                         >
                           <strong>교육기간</strong>
-                          <br />
                           {`${formatDate(learningStartDate)} ~ ${formatDate(
                             learningEndDate
                           )}`}
