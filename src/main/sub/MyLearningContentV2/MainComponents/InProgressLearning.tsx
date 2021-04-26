@@ -23,7 +23,8 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchLearningCardLsit().then(() => setIsLoading(true));
+    setIsLoading(true);
+    fetchLearningCardLsit();
   }, []);
 
   const fetchLearningCardLsit = async () => {

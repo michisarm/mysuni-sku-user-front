@@ -78,11 +78,15 @@ export default function LectureDiscussionContainer() {
         setCount(count);
       }
     }
-    getFileIds();  
+    getFileIds();
     asyncFun();
 
-  const checkContentValue = (lectureFeedbackContent?.content === '<p><br></p>' || lectureFeedbackContent?.content === "") ? true : false;
-  setContentCheck(checkContentValue);
+    const checkContentValue =
+      lectureFeedbackContent?.content === '<p><br></p>' ||
+      lectureFeedbackContent?.content === ''
+        ? true
+        : false;
+    setContentCheck(checkContentValue);
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
@@ -225,7 +229,7 @@ export default function LectureDiscussionContainer() {
               </span>
             </div>
             <div className="discuss-box2">
-              <div 
+              <div
                 className="discuss-text-wrap"
                 style={contentCheck ? { display: 'none' } : {}}
               >
