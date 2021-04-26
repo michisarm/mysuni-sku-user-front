@@ -18,5 +18,7 @@ export function getEmptyCommunityDiscussion() {
     privateComment: false,
     relatedUrlList: [{ title: '', url: '' }],
     fileBoxId: '',
+    groupId: '',
+    accessType: '',
   };
 }
