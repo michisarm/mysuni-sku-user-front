@@ -64,7 +64,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
             <>
               <div className="ui segment full test-complete">
                 {/* Header */}
-                <div 
+                <div
                   className="course-info-header"
                   data-area={Area.CUBE_HEADER}
                 >

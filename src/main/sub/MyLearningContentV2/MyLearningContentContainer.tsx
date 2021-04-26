@@ -10,7 +10,7 @@ import MainBanner from './MainComponents/MainBanner';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
 import EnrollingLearning from './MainComponents/EnrollingLearning';
-
+import RQDLearning from './MainComponents/RQDLearning';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import LRSLearning from './MainComponents/LRSLearning';
@@ -55,6 +55,7 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       <ChallengingBadge profileMemberName={member.name} />
 
       <MainBanner />
+      <RQDLearning />
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}

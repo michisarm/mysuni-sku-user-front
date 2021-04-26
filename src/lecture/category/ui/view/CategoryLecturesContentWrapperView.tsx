@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
 import { Area } from 'tracker/model';
 
 interface Props {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 class CategoryLecturesContentWrapperView extends Component<Props> {

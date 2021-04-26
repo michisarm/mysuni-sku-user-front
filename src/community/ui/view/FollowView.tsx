@@ -8,7 +8,6 @@ import { Segment, Icon, Button } from 'semantic-ui-react';
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
-
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
 

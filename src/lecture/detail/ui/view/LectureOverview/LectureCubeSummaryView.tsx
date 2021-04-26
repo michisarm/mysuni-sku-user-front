@@ -343,7 +343,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   <>
                     <Label className="bold onlytext">
                       <span className="header-span-first">참여</span>
-                      <span>{lectureSummary.studentCount}</span>
+                      <span>
+                        {numberWithCommas(lectureSummary.studentCount)}
+                      </span>
                       <span>명</span>
                     </Label>
                   </>
@@ -406,6 +408,17 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         </div>
         <div className="right-area">
           <div className="header-right-link">
+            {/* {lectureCourseSummary?.hasCommunity && (
+              <Link
+                to={`/community/${lectureCourseSummary.communityId}`}
+                target="_blank"
+              >
+                <span className="communityText">
+                  <Icon className="communityLink" />
+                  커뮤니티로 이동
+                </span>
+              </Link>
+            )} */}
             <a onClick={toggleCubeBookmark}>
               <span>
                 <Icon

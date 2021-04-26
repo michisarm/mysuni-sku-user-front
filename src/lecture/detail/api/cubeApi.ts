@@ -18,6 +18,9 @@ import { getCookie } from '@nara.platform/accent';
 import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
 import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi';
+import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml';
+import ContentsProvider from '../../model/ContentsProvider';
+import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
 
 const BASE_URL = '/api/cube';
 
@@ -37,6 +40,22 @@ function decode(input: string) {
   } catch (_a) {
     throw new TypeError('The input to be decoded is not correctly encoded.');
   }
+}
+
+function parseToken(): any | undefined {
+  try {
+    const token = localStorage.getItem('nara.token')?.split('.')[1];
+    if (token === null || token === undefined) {
+      return undefined;
+    }
+    const textDecoder = new TextDecoder();
+    const payload = JSON.parse(textDecoder.decode(decode(token)));
+    return payload;
+  } catch {
+    //
+  }
+
+  return undefined;
 }
 
 function concatDirectConnection(url: string, directConnection: string) {
@@ -59,7 +78,12 @@ async function AppendSamlQueryToCubeMaterial(
   if (cubeMaterial === undefined || cubeMaterial === null) {
     return cubeMaterial;
   }
-  const contentsProviderSamls = await findContentsProviderSamlCache();
+  let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+  try {
+    contentsProviderSamls = await findContentsProviderSamlCache();
+  } catch (error) {
+    return cubeMaterial;
+  }
   if (
     !Array.isArray(contentsProviderSamls) ||
     contentsProviderSamls.length === 0
@@ -85,12 +109,7 @@ async function AppendSamlQueryToCubeMaterial(
     return cubeMaterial;
   }
 
-  const token = localStorage.getItem('nara.token')?.split('.')[1];
-  if (token === null || token === undefined) {
-    return cubeMaterial;
-  }
-  const textDecoder = new TextDecoder();
-  const payload = JSON.parse(textDecoder.decode(decode(token)));
+  const payload = parseToken();
   const gdiUser: boolean = payload?.gdiUser;
   if (gdiUser === undefined) {
     return cubeMaterial;
@@ -159,12 +178,7 @@ function findCubesByIds(ids: string[]) {
   }
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/byIds`;
-  return axios
-    .get<Cube[]>(url, {
-      params: { ids },
-      paramsSerializer,
-    })
-    .then(AxiosReturn);
+  return axios.post<Cube[]>(url, ids).then(AxiosReturn);
 }
 
 const [findCubesByIdsCache, clearFindCubesByIdsCache] = createCacheApi(
@@ -287,3 +301,11 @@ export function findMyDiscussionCounts(studentId: string) {
   const url = `${BASE_URL}/cubes/myDiscussionCounts/${studentId}`;
   return axios.get<CubeMyDiscussionCounts>(url).then(AxiosReturn);
 }
+
+function findContentProvider(contentsProviderId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/contentsProviders/${contentsProviderId}`;
+  return axios.get<ContentsProviderInfo>(url).then(AxiosReturn);
+}
+
+export const [findContentProviderCache] = createCacheApi(findContentProvider);

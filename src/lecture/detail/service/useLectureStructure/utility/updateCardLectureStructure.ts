@@ -1,8 +1,9 @@
 import Student from '../../../../model/Student';
+import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
 import {
-  clearFindMyCardRelatedStudentsCache,
-  findMyCardRelatedStudentsCache,
-} from '../../../api/cardApi';
+  findCubeDetailCache,
+  findMyDiscussionCounts,
+} from '../../../api/cubeApi';
 import {
   getLectureStructure,
   setLectureStructure,
@@ -239,9 +240,11 @@ function updateDurationableCubeItem(
   };
   if (cube.test !== undefined) {
     cube.test = updateCubeTestItem(cube.test, cubeStudent);
+    cube.test.can = cube.test.can && cube.duration === 100;
   }
   if (cube.report !== undefined) {
     cube.report = updateCubeReportItem(cube.report, cubeStudent);
+    cube.report.can = cube.report.can && cube.duration === 100;
   }
   if (cube.survey !== undefined) {
     cube.survey = updateCubeSurveyItem(cube.survey, cubeStudent);
@@ -249,10 +252,57 @@ function updateDurationableCubeItem(
   return cube;
 }
 
-function updateCubeItem(
+async function updateDiscussionCubeItem(
   item: LectureStructureCubeItem,
   cubeStudent?: Student
-): LectureStructureCubeItem {
+): Promise<LectureStructureCubeItem> {
+  if (item.test === undefined && item.report === undefined) {
+    return item;
+  }
+  const cubeDetail = await findCubeDetailCache(item.cubeId);
+  if (cubeDetail !== undefined) {
+    const {
+      cubeMaterial: { cubeDiscussion },
+    } = cubeDetail;
+    if (
+      cubeDiscussion?.automaticCompletion === true &&
+      cubeStudent !== undefined &&
+      cubeStudent !== null
+    ) {
+      const {
+        completionCondition: { commentCount, subCommentCount },
+      } = cubeDiscussion;
+      const myDiscussionCounts = await findMyDiscussionCounts(cubeStudent.id);
+      if (myDiscussionCounts === undefined) {
+        if (item.test !== undefined) {
+          item.test.can = false;
+        }
+        if (item.report !== undefined) {
+          item.report.can = false;
+        }
+      } else {
+        if (item.test !== undefined) {
+          item.test.can =
+            item.test.can &&
+            myDiscussionCounts.commentCount >= commentCount &&
+            myDiscussionCounts.subCommentCount >= subCommentCount;
+        }
+        if (item.report !== undefined) {
+          item.report.can =
+            item.report.can &&
+            myDiscussionCounts.commentCount >= commentCount &&
+            myDiscussionCounts.subCommentCount >= subCommentCount;
+        }
+      }
+    }
+  }
+  return item;
+}
+
+async function updateCubeItem(
+  item: LectureStructureCubeItem,
+  cubeStudent?: Student
+) {
   if (JSON.stringify(item.student) === JSON.stringify(cubeStudent)) {
     return item;
   }
@@ -273,6 +323,13 @@ function updateCubeItem(
   }
   if (cube.survey !== undefined) {
     cube.survey = updateCubeSurveyItem(cube.survey, cubeStudent);
+  }
+  if (cube.cubeType === 'Discussion') {
+    const discussionCubeItem = await updateDiscussionCubeItem(
+      cube,
+      cubeStudent
+    );
+    return discussionCubeItem;
   }
   return cube;
 }
@@ -313,10 +370,12 @@ export async function updateCardLectureStructure(cardId: string) {
   }
   const { cardStudent, cubeStudents } = myCardRelatedStudentsRom;
   lectureStructure.card = updateCardItem(lectureStructure.card, cardStudent);
-  lectureStructure.cubes = lectureStructure.cubes.map(item => {
-    const cubeStudent = findCubeStudent(item.cubeId, cubeStudents);
-    return updateCubeItem(item, cubeStudent);
-  });
+  lectureStructure.cubes = await Promise.all(
+    lectureStructure.cubes.map(item => {
+      const cubeStudent = findCubeStudent(item.cubeId, cubeStudents);
+      return updateCubeItem(item, cubeStudent);
+    })
+  );
   lectureStructure.discussions = lectureStructure.discussions.map(item => {
     return updateDiscussionItem(lectureStructure.card, item, cardStudent);
   });

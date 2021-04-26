@@ -22,7 +22,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
   // 실시간 스크롤 감시
   useEffect(() => {
     const onScroll = () => setNowScroll(window.pageYOffset);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -45,7 +45,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
           : ''
       }`}
       id="lms-content"
-      style={nowScroll > scrollValue ? {margin: '70px 0'} : {}}
+      style={nowScroll > scrollValue ? { margin: '70px 0' } : {}}
     >
       <div
         className="course-info-list"

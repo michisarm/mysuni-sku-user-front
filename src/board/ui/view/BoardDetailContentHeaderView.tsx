@@ -39,7 +39,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
             {subField}
             <span className="date">
               {time &&
-                moment(time, 'YYYY.MM.DD HH:mm').format('YYYY.MM.DD HH:mm')}
+                moment(time).format('YYYY.MM.DD HH:mm')}
             </span>
           </div>
           <div className="actions">

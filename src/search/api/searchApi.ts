@@ -1,7 +1,10 @@
 import { axiosApi } from '@nara.platform/accent';
-import { AxiosResponse } from 'axios';
 import moment from 'moment';
 import { SkProfileService } from '../../profile/stores';
+import { Workspace } from '../../shared/api/Axios';
+import { AxiosReturn } from '../../shared/api/AxiosReturn';
+import { CardCategory } from '../../shared/model/CardCategory';
+import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege';
 import {
   getCollegeOptions,
   getCubeTypeOptions,
@@ -9,26 +12,19 @@ import {
   getOrganizerOptions,
 } from '../Components/SearchFilter';
 import CheckboxOptions from '../model/CheckBoxOption';
+import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 
+const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
-
-function AxiosReturn<T>(response: AxiosResponse<T>) {
-  if (
-    response === null ||
-    response === undefined ||
-    response.data === null ||
-    response.data === null ||
-    (response.data as unknown) === ''
-  ) {
-    return undefined;
-  }
-  return response.data;
-}
+const workspaces: { cineroomWorkspaces?: Workspace[] } =
+  JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
 interface SearchResult<T> {
   result: {
     total_count: number;
-    rows: [T];
+    rows: {
+      fields: T;
+    }[];
   };
   message: string;
   status: string;
@@ -92,13 +88,143 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 export function findCard(text_idx: string) {
-  const queryOptions = parseFilterCondition();
-  const companyCode = SkProfileService.instance.profileMemberCompanyCode;
-  const query = makeQuery(text_idx, companyCode, queryOptions);
+  const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=*&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}`
   );
-  return axiosApi.get<any>(url).then(AxiosReturn);
+  return axiosApi.get<SearchResult<SearchCard>>(url).then(AxiosReturn);
+}
+
+export function filterCard(cards?: SearchCard[]): SearchCard[] {
+  let displayCards: SearchCard[] = cards || [];
+  const filterCondition = getFilterCondition();
+  if (filterCondition !== undefined) {
+    if (filterCondition.all_college_name_query.length > 0) {
+      displayCards = displayCards.filter(c => {
+        const mainCategory = (JSON.parse(c.categories) as SearchCardCategory[])
+          .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
+            channelId,
+            collegeId,
+            mainCategory: mainCategory === 1,
+          }))
+          .find(c => c.mainCategory === true);
+        if (mainCategory !== undefined) {
+          return filterCondition.all_college_name_query.includes(
+            getCollgeName(mainCategory.collegeId)
+          );
+        }
+        return false;
+      });
+    }
+    if (filterCondition.applying === true) {
+      displayCards = displayCards.filter(c => {
+        return (
+          new Date(c.applying_start_date).getTime() <= Date.now() &&
+          Date.now() < new Date(c.applying_end_date).getTime() + ONE_DAY
+        );
+      });
+    }
+    if (filterCondition.badge === true) {
+      displayCards = displayCards.filter(c => c.used_in_badge === '1');
+    }
+    if (filterCondition.cube_type_query.length > 0) {
+      displayCards = displayCards.filter(c => {
+        return (JSON.parse(c.cube_types) as string[]).some(cube =>
+          filterCondition.cube_type_query.includes(cube)
+        );
+      });
+    }
+    if (filterCondition.difficulty_level_json_query.length > 0) {
+      displayCards = displayCards.filter(c =>
+        filterCondition.difficulty_level_json_query.includes(c.difficulty_level)
+      );
+    }
+    if (filterCondition.hasRequired === true) {
+      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+        displayCards = displayCards.filter(c =>
+          workspaces.cineroomWorkspaces!.some(d =>
+            c.required_cinerooms.includes(d.id)
+          )
+        );
+      } else {
+        return [];
+      }
+    }
+    if (filterCondition.learning_start_date_str !== null) {
+      displayCards = displayCards.filter(
+        c =>
+          new Date(c.learning_start_date) >=
+          filterCondition.learning_start_date_str!
+      );
+    }
+    if (filterCondition.learning_end_date_str !== null) {
+      displayCards = displayCards.filter(
+        c =>
+          new Date(c.learning_start_date) <=
+          filterCondition.learning_end_date_str!
+      );
+    }
+    if (filterCondition.learning_time_query.length > 0) {
+      displayCards = displayCards.filter(c => {
+        const learningTime = parseInt(c.learning_time);
+        if (filterCondition.learning_time_query.includes('type1')) {
+          const r = learningTime < 30;
+          if (r) {
+            return r;
+          }
+        }
+        if (filterCondition.learning_time_query.includes('type2')) {
+          const r = learningTime >= 30 && learningTime < 60;
+          if (r) {
+            return r;
+          }
+        }
+        if (filterCondition.learning_time_query.includes('type3')) {
+          const r = learningTime >= 60 && learningTime < 4 * 60;
+          if (r) {
+            return r;
+          }
+        }
+        if (filterCondition.learning_time_query.includes('type4')) {
+          const r = learningTime >= 4 * 60 && learningTime < 12 * 60;
+          if (r) {
+            return r;
+          }
+        }
+        if (filterCondition.learning_time_query.includes('type5')) {
+          const r = learningTime > 12 * 60;
+          if (r) {
+            return r;
+          }
+        }
+        return false;
+      });
+    }
+    if (filterCondition.notRequired === true) {
+      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+        displayCards = displayCards.filter(
+          c =>
+            !workspaces.cineroomWorkspaces!.some(d =>
+              c.required_cinerooms.includes(d.id)
+            )
+        );
+      } else {
+        return [];
+      }
+    }
+    if (filterCondition.organizer_query.length > 0) {
+      displayCards = displayCards.filter(c =>
+        filterCondition.organizer_query.some(d =>
+          c.cube_organizer_names.includes(d)
+        )
+      );
+    }
+    if (filterCondition.stamp === true) {
+      displayCards = displayCards.filter(c => parseInt(c.stamp_count) > 0);
+    }
+  }
+  console.log('filterCondition', filterCondition);
+  return displayCards;
 }
 
 export function findExpert(text_idx: string) {
@@ -134,6 +260,14 @@ export function getEmptyQueryOptions(): QueryOptions {
     organizer_query: [],
     cube_type_query: [],
   };
+}
+
+function makePermitedCineroomsQuery() {
+  if (Array.isArray(workspaces?.cineroomWorkspaces)) {
+    return `(${workspaces.cineroomWorkspaces
+      .map(({ id }) => `(permitted_cinerooms+IN+{${id}})`)
+      .join('+or+')})`;
+  }
 }
 
 function makeSubQuery(column: string, keywords: string[]) {

@@ -71,10 +71,10 @@ const CommunityFollowListContainer: React.FC = () => {
 
   // 검색 엔터 이벤트
   const serchEnterEvent = (e: React.KeyboardEvent) => {
-    if(e.key === "Enter") {
+    if (e.key === 'Enter') {
       requestFollowSearchList(0, 5, encodeURIComponent(text));
     }
-  }
+  };
 
   return (
     <>

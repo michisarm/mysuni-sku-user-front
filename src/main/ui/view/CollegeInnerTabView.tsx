@@ -14,12 +14,11 @@ const emptyAlert = (e: any) => {
 };
 
 const CollegeInnerTabView = () => {
-
   const history = useHistory();
 
   const pageMove = (path: string) => {
     history.push(path);
-  }
+  };
 
   const panes = [
     {
@@ -41,7 +40,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="belt">
             <div className="belt_wrapper">
               <div className="belt sub">
@@ -67,22 +66,22 @@ const CollegeInnerTabView = () => {
               </div> */}
             </div>
           </div>
-  
+
           <div className="belt college-mana-text">
             <p>
-              <strong>개인의 직무와 수준, 관심사를 고려</strong>하여 스스로 필요한
-              Online Contents의 자기주도적 학습, On-Off 통합 또는 Offline W/S을
-              통해 <br />
+              <strong>개인의 직무와 수준, 관심사를 고려</strong>하여 스스로
+              필요한 Online Contents의 자기주도적 학습, On-Off 통합 또는 Offline
+              W/S을 통해 <br />
               Discussion, 내/외부 Case Study, Practice 공유 등{' '}
               <strong>실행 지향적 학습방식</strong>을 적용합니다. <br />
-              특히, 외부의 Top Expert 뿐 아니라 SK 리더/전문가의 Insight와 경험을
-              공유하는 SK Exclusive Contents를 제공할 계획입니다.
+              특히, 외부의 Top Expert 뿐 아니라 SK 리더/전문가의 Insight와
+              경험을 공유하는 SK Exclusive Contents를 제공할 계획입니다.
             </p>
             <p className="p_link">
               각 Badge를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
-  
+
           <div className="college-cont-map sub wrap01">
             <div className="belt">
               <Image src={`${PUBLIC_URL}/images/all/main_01.jpg`} alt="" />
@@ -94,7 +93,7 @@ const CollegeInnerTabView = () => {
                 Management College Badge 체계
                 <span>(21년 2월 기준으로 추후 지속 확대 예정)</span>
               </div>
-  
+
               <div className="manage-main-wrap">
                 <div className="manage-main-table con01">
                   <div className="manage-main-tit tit02">
@@ -107,13 +106,13 @@ const CollegeInnerTabView = () => {
                       해당 영역 관련 역량 강화를 위한 주춧돌(Foundation)
                       과정으로서,
                       <br />
-                      직무 수행 시 리더/구성원 모두 반드시 알아야 하는 기본적 지식
-                      습득을 목적으로 합니다.
+                      직무 수행 시 리더/구성원 모두 반드시 알아야 하는 기본적
+                      지식 습득을 목적으로 합니다.
                     </p>
                   </div>
                 </div>
               </div>
-  
+
               <div className="manage-main-wrap">
                 <div className="manage-main-table con01">
                   <div className="manage-main-tit tit02">
@@ -140,13 +139,16 @@ const CollegeInnerTabView = () => {
                   </div>
                 </div>
               </div>
-  
+
               <div className="chart_belt">
                 <div className="chart-left">
-                  <Image src={`${PUBLIC_URL}/images/all/icon-chart.png`} alt="" />
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/icon-chart.png`}
+                    alt=""
+                  />
                 </div>
                 <div className="chart-right">
-                  <table style={{borderCollapse: 'separate'}}>
+                  <table style={{ borderCollapse: 'separate' }}>
                     <tbody>
                       <tr>
                         <td colSpan={2}>ㅤ</td>
@@ -170,7 +172,9 @@ const CollegeInnerTabView = () => {
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="" onClick={emptyAlert}>회사법</Link>
+                          <Link to="" onClick={emptyAlert}>
+                            회사법
+                          </Link>
                           <br />
                           /<br />
                           <Link to="/certification/badge/badge-detail/BADGE-4d">
@@ -256,6 +260,10 @@ const CollegeInnerTabView = () => {
                     </tbody>
                   </table>
                 </div>
+
+                <div className="combined-topic">
+                  <Image src={`${PUBLIC_URL}/images/all/ing-16.png`} alt="" />
+                </div>
               </div>
             </div>
           </div>
@@ -281,14 +289,14 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>기업 경영/전략</strong>
             <div>
               <ul>
                 <li>
-                  직무별 Essential/심화 Contents는 물론, 최근의 Deep Change 화두를
-                  반영한 시의적절한 교육 과정을 제공합니다.
+                  직무별 Essential/심화 Contents는 물론, 최근의 Deep Change
+                  화두를 반영한 시의적절한 교육 과정을 제공합니다.
                 </li>
                 <li>
                   이를 통해 해당 직무 구성원들의 지식 체계화는 물론, 전략적
@@ -300,7 +308,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -308,7 +316,7 @@ const CollegeInnerTabView = () => {
                 alt=""
                 className="manage_cate"
               />
-  
+
               {/* 컬리지 콘텐츠 전체 틀 */}
               <div className="legal-wrap">
                 <div className="fundamental-topic">
@@ -324,7 +332,7 @@ const CollegeInnerTabView = () => {
                   </div>
                   <Image src={`${PUBLIC_URL}/images/all/ing-12.png`} alt="" />
                 </div>
-  
+
                 <div className="combined-topic">
                   <div className="con_wrap sub03 ing_con01">
                     {/* 콘텐츠 리스트 */}
@@ -346,7 +354,7 @@ const CollegeInnerTabView = () => {
                   <div className="con_wrap sub02 ing_con02">
                     <Image src={`${PUBLIC_URL}/images/all/ing-14.png`} alt="" />
                   </div>
-  
+
                   <div className="con_wrap sub03 ing_con01">
                     {/* 콘텐츠 리스트 */}
                     <h3>ESG &#38; Strategy</h3>
@@ -369,7 +377,7 @@ const CollegeInnerTabView = () => {
                   </div>
                 </div>
               </div>
-  
+
               {/* 컬리지 콘텐츠 전체 틀 */}
               <div className="legal-wrap">
                 <div className="fundamental-topic">
@@ -426,7 +434,7 @@ const CollegeInnerTabView = () => {
                     </div>
                   </div>
                 </div>
-  
+
                 <div className="combined-topic">
                   <Image src={`${PUBLIC_URL}/images/all/ing-16.png`} alt="" />
                 </div>
@@ -455,7 +463,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>재무/회계</strong>
             <div>
@@ -477,7 +485,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -491,11 +499,11 @@ const CollegeInnerTabView = () => {
                   <h2>회계</h2>
                   <h2>세무</h2>
                 </div>
-  
+
                 <div className="combined-topic">
                   <h2>Finance/회계/세무+a</h2>
                 </div>
-  
+
                 <div className="ing_contents">
                   <div className="level_icon">
                     <Image
@@ -509,11 +517,14 @@ const CollegeInnerTabView = () => {
                   </div>
                   <Image src={`${PUBLIC_URL}/images/all/ing-05.png`} alt="" />
                 </div>
-  
+
                 <div className="fundamental-topic float-left">
                   <div className="con_wrap sub02">
                     <div className="level_icon">
-                      <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/lv-01.png`}
+                        alt=""
+                      />
                       <p>개념 이해</p>
                     </div>
                     <h3>
@@ -570,6 +581,23 @@ const CollegeInnerTabView = () => {
                         </ul>
                       </div>
                     </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rx/Course/C-LECTURE-nn">
+                          조직 설계 길라잡이
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-8ut/lecture-card/LECTURE-CARD-6uk">
+                          조직 설계 Tip : Smart Design
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-952/lecture-card/LECTURE-CARD-6uj">
+                          조직 설계 효과성 측정
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -597,14 +625,14 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>마케팅/브랜드</strong>
             <div>
               <ul>
                 <li>
-                  기업이 상품 또는 서비스를 고객에게 유통시키는 과정에서 창출되는
-                  다양한 Value 와 관련된 ‘마케팅’,
+                  기업이 상품 또는 서비스를 고객에게 유통시키는 과정에서
+                  창출되는 다양한 Value 와 관련된 ‘마케팅’,
                   <br />
                   경쟁 기업/상품과 구별되는 무형자산으로서 해당 기업의 가치를
                   상징하는 ‘브랜드’에 대해 다룸으로써,
@@ -619,7 +647,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -675,7 +703,7 @@ const CollegeInnerTabView = () => {
                             </Link>
                           </li>
                         </ul>
-  
+
                         <ul>
                           <li>디지털마케팅 사례</li>
                           <li>
@@ -694,7 +722,7 @@ const CollegeInnerTabView = () => {
                             </Link>
                           </li>
                         </ul>
-  
+
                         <Link to="#" onClick={emptyAlert}>
                           <ul>
                             <li>AI 마케팅</li>
@@ -709,7 +737,7 @@ const CollegeInnerTabView = () => {
                   </div>
                 </div>
               </div>
-  
+
               <div className="legal-wrap flex">
                 <div className="combined-topic">
                   <div className="level_icon">
@@ -756,7 +784,7 @@ const CollegeInnerTabView = () => {
                             <li>- 마케팅의 3W</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-9ou/view">
                           <ul>
                             <li>사례로 배우는 B2B 마케팅 101</li>
@@ -765,7 +793,7 @@ const CollegeInnerTabView = () => {
                             <li>- B2B 시장의 디지털마케팅 커뮤니케이션</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-9op/view">
                           <ul>
                             <li>사례로 배우는 상품기획 101</li>
@@ -778,7 +806,7 @@ const CollegeInnerTabView = () => {
                     </div>
                   </div>
                 </div>
-  
+
                 <div className="fundamental-topic">
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
@@ -797,7 +825,7 @@ const CollegeInnerTabView = () => {
                             <li>- 브랜드의 정의와 브랜드 Elements</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a08/view">
                           <ul>
                             <li>Source of Brand Equity</li>
@@ -878,7 +906,7 @@ const CollegeInnerTabView = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link 
+              <Link
                 to="/lecture/college/CLG00008/channel/CHN00013"
                 className="item-button"
               >
@@ -891,7 +919,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>HR/조직 설계</strong>
             <div>
@@ -906,8 +934,8 @@ const CollegeInnerTabView = () => {
                 <li>
                   조직 설계 Function에서는 (1) 조직 설계의 핵심 개념/원칙들과
                   Practical 한 방법론을 익히고, <br />
-                  (2) Silo 해소/ 구성원 행복/ 신사업 추진 등 조직 설계상의 현실적
-                  고민들을 해결할 수 있는 장을 제공합니다.
+                  (2) Silo 해소/ 구성원 행복/ 신사업 추진 등 조직 설계상의
+                  현실적 고민들을 해결할 수 있는 장을 제공합니다.
                 </li>
               </ul>
               <p className="p_link">
@@ -915,7 +943,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -923,7 +951,7 @@ const CollegeInnerTabView = () => {
                 alt=""
                 className="manage_cate"
               />
-  
+
               <div className="legal-wrap">
                 <div className="fundamental-topic">
                   <h3>HR</h3>
@@ -940,10 +968,13 @@ const CollegeInnerTabView = () => {
                           적용학습
                         </p>
                       </div>
-                      <Image src={`${PUBLIC_URL}/images/all/ing-09.png`} alt="" />
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/ing-09.png`}
+                        alt=""
+                      />
                     </div>
                   </div>
-  
+
                   <div className="depth">
                     <div className="con_wrap sub01 depth">
                       <h3>
@@ -1010,13 +1041,17 @@ const CollegeInnerTabView = () => {
                     </ul>
                     <Image src={`${PUBLIC_URL}/images/all/ing-10.png`} alt="" />
                   </div>
+                  <Image src={`${PUBLIC_URL}/images/all/ing-07.png`} alt="" />
                 </div>
-  
+                <div className="combined-topic">
+                  <Image src={`${PUBLIC_URL}/images/all/ing-08.png`} alt="" />
+                </div>
+
                 <div className="combined-topic">
                   <Image src={`${PUBLIC_URL}/images/all/ing-31.png`} alt="" />
                 </div>
               </div>
-  
+
               <div className="legal-wrap">
                 <div className="fundamental-topic float-left">
                   <div className="level_icon">
@@ -1060,7 +1095,7 @@ const CollegeInnerTabView = () => {
                               <li>2. 성과 관리 프로세스 핵심 요약!</li>
                             </ul>
                           </Link>
-  
+
                           <Link to="/lecture/card/CARD-a73/view">
                             <ul>
                               <li>Global HR</li>
@@ -1079,7 +1114,7 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="depth">
                     <div className="con_wrap sub02 depth">
                       <h3>
@@ -1144,7 +1179,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>SCM/Operation</strong>
             <div>
@@ -1161,7 +1196,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -1169,7 +1204,7 @@ const CollegeInnerTabView = () => {
                 alt=""
                 className="manage_cate"
               />
-  
+
               {/* 컬리지 콘텐츠 전체 틀 */}
               <div className="legal-wrap">
                 <div className="fundamental-topic">
@@ -1179,7 +1214,7 @@ const CollegeInnerTabView = () => {
                         src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
                         alt=""
                       />
-  
+
                       <p>
                         방법론/ <br />
                         적용학습
@@ -1218,7 +1253,8 @@ const CollegeInnerTabView = () => {
                             <li>성공적인 구매 협상</li>
                             <li>- 협상이란 무엇인가?</li>
                             <li>
-                              - 의견이 첨예하게 대립하는 현상, 어떻게 풀어야 하나?
+                              - 의견이 첨예하게 대립하는 현상, 어떻게 풀어야
+                              하나?
                             </li>
                             <li>- 교착에 빠진 협상, 어떻게 타결해야 하나?</li>
                             <li>- 파이를 키우는 협상, 어떻게 해야 가능할까?</li>
@@ -1242,12 +1278,15 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <Image src={`${PUBLIC_URL}/images/all/ing-04.png`} alt="" />
-  
+
                   <div className="con_wrap sub02">
                     <div className="level_icon">
-                      <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/lv-01.png`}
+                        alt=""
+                      />
                       <p>개념 이해</p>
                     </div>
                     <h3>
@@ -1275,13 +1314,16 @@ const CollegeInnerTabView = () => {
                             <li>- 구매 계약의 이해</li>
                             <li>- 하도급법과 상생협력법</li>
                             <li>- 하도급 대금, 이것만은 알아두자</li>
-                            <li>- 기술자료제공 요구 금지, 무엇을 조심해야할까</li>
+                            <li>
+                              - 기술자료제공 요구 금지, 무엇을 조심해야할까
+                            </li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-9qr/view">
                           <ul>
                             <li>
-                              나는 무엇을 구매하고 있나, 구매 품목의 이해 및 관리
+                              나는 무엇을 구매하고 있나, 구매 품목의 이해 및
+                              관리
                             </li>
                             <li>- 구매 품목의 분류 및 관리</li>
                             <li>- 품목 분류에 따른 자재관리 전략</li>
@@ -1379,7 +1421,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>법무/IP</strong>
             <div>
@@ -1387,9 +1429,9 @@ const CollegeInnerTabView = () => {
                 <li>
                   법무/IP Function 에서는 기업활동에서 발생하는 Legal Risk를
                   미연에 방지하고 해결하는 ‘법무’, 새로운 사업추진이나 기존
-                  사업에서 특허경쟁력을 제고하는 ‘IP’에 대해 다룸으로써, 해당 직무
-                  관련 SK 구성원들의 Deep Change 실행력 제고를 위한 체계적인
-                  컨텐츠를 제공합니다.
+                  사업에서 특허경쟁력을 제고하는 ‘IP’에 대해 다룸으로써, 해당
+                  직무 관련 SK 구성원들의 Deep Change 실행력 제고를 위한
+                  체계적인 컨텐츠를 제공합니다.
                 </li>
               </ul>
               <p className="p_link">
@@ -1397,7 +1439,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image
@@ -1405,7 +1447,7 @@ const CollegeInnerTabView = () => {
                 alt=""
                 className="manage_cate"
               />
-  
+
               <div className="legal-wrap">
                 <div className="fundamental-topic">
                   <div className="con_wrap sub01">
@@ -1433,7 +1475,7 @@ const CollegeInnerTabView = () => {
                             <li>- 공정거래법 이해 및 정책 방향</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5x/view">
                           <ul>
                             <li>부당지원, 사익편취</li>
@@ -1442,7 +1484,7 @@ const CollegeInnerTabView = () => {
                             <li>- 공정위 최근 규제 동향 및 심결례 연구</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5w/view">
                           <ul>
                             <li>불공정 거래와 부당표시 광고</li>
@@ -1450,7 +1492,7 @@ const CollegeInnerTabView = () => {
                             <li>- 불공정 거래행위 중요 법리/사례 연구</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5v/view">
                           <ul>
                             <li>경제력 집중 억제</li>
@@ -1476,7 +1518,7 @@ const CollegeInnerTabView = () => {
                             <li>- 동의의결 사례 연구</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5s/view">
                           <ul>
                             <li>부당한 공동행위</li>
@@ -1484,7 +1526,7 @@ const CollegeInnerTabView = () => {
                             <li>- 부당한 공동행위 사례 연구</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5r/view">
                           <ul>
                             <li>하도급법</li>
@@ -1496,7 +1538,7 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="con_wrap sub01">
                     <h3>특허관리</h3>
                     <div className="con_box">
@@ -1542,7 +1584,7 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="con_wrap sub01">
                     <h3>특허 분쟁</h3>
                     <div className="con_box">
@@ -1578,12 +1620,15 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <Image src={`${PUBLIC_URL}/images/all/ing-01.png`} alt="" />
-  
+
                   <div className="con_wrap sub02">
                     <div className="level_icon">
-                      <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/lv-01.png`}
+                        alt=""
+                      />
                       <p>개념이해</p>
                     </div>
                     <h3>
@@ -1601,7 +1646,7 @@ const CollegeInnerTabView = () => {
                             <li>- 상표제도 AtoZ</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5n/view">
                           <ul>
                             <li>AI 특허</li>
@@ -1620,7 +1665,7 @@ const CollegeInnerTabView = () => {
                             <li>- 발명신고서 작성 가이드</li>
                           </ul>
                         </Link>
-  
+
                         <Link to="/lecture/card/CARD-a5m/view">
                           <ul>
                             <li>특허 분쟁 개론</li>
@@ -1650,7 +1695,7 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="con_wrap sub02">
                     <h3>오픈소스 Essentials</h3>
                     <div className="con_box">
@@ -1668,7 +1713,7 @@ const CollegeInnerTabView = () => {
                             <li>오픈소스 라이선스</li>
                             <li>- 오픈소스의 정의 및 양면성</li>
                             <li>- GPI, BSD계열 라이선스 특징 및 의무사항</li>
-                            <li>- 소프트웨어 공개범위</li> 
+                            <li>- 소프트웨어 공개범위</li>
                           </ul>
                         </Link>
                       </div>
@@ -1684,7 +1729,7 @@ const CollegeInnerTabView = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <Image src={`${PUBLIC_URL}/images/all/ing-02.png`} alt="" />
                 </div>
                 <div className="combined-topic">
@@ -1715,7 +1760,7 @@ const CollegeInnerTabView = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className="college-sub-txt">
             <strong>
               Competency <br />
@@ -1727,11 +1772,12 @@ const CollegeInnerTabView = () => {
                   직무 영역과 상관없이 모든 구성원이 갖추어야 하는 공통역량
                   컨텐츠를 제공합니다.
                   <br />
-                  Communication Skill, Problem Solving, Measurement, Negotiation,
-                  Decision Making &#38; Risk Management까지 Role Level별로
-                  성공적인 업무수행을 위해 갖추어야 할 학습과정을 통해 좀더 나은
-                  성과, Smart Working을 위한 일/잘/법을 배우고, Deep Change 실행력
-                  제고를 위한 기초 체력을 단단히 만들어가시기 바랍니다.
+                  Communication Skill, Problem Solving, Measurement,
+                  Negotiation, Decision Making &#38; Risk Management까지 Role
+                  Level별로 성공적인 업무수행을 위해 갖추어야 할 학습과정을 통해
+                  좀더 나은 성과, Smart Working을 위한 일/잘/법을 배우고, Deep
+                  Change 실행력 제고를 위한 기초 체력을 단단히 만들어가시기
+                  바랍니다.
                 </li>
               </ul>
               <p className="p_link">
@@ -1739,7 +1785,7 @@ const CollegeInnerTabView = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <Image src={`${PUBLIC_URL}/images/all/ing_30.png`} alt="" />
@@ -1849,7 +1895,7 @@ const CollegeInnerTabView = () => {
                   </div>
                 </div>
               </div>
-  
+
               <div className="legal-wrap flex sub">
                 <div className="fundamental-topic width50">
                   <div className="con_wrap sub02">
@@ -1919,5 +1965,5 @@ const CollegeInnerTabView = () => {
       className="sub-tab-menu"
     />
   );
-}
+};
 export default CollegeInnerTabView;

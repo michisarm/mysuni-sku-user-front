@@ -57,7 +57,7 @@ class BoxCardView extends Component<Props, States> {
     onHover: () => {},
     onAction: () => {},
     onViewDetail: () => {},
-    contentType: ""
+    contentType: '',
   };
 
   renderBottom() {
@@ -104,7 +104,7 @@ class BoxCardView extends Component<Props, States> {
       onHoverOut,
       onAction,
       onViewDetail,
-      contentType
+      contentType,
     } = this.props;
 
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(
@@ -122,11 +122,10 @@ class BoxCardView extends Component<Props, States> {
       >
         {/* Todo: stampReady */}
         {contentType != 'Enrolling' ? (
-          <Ribbon required={model!.required}/>
-        ) : ( 
-          <EnrollingRibbon model={model}/> 
+          <Ribbon required={model!.required} />
+        ) : (
+          <EnrollingRibbon model={model} />
         )}
-
 
         <div className="card-inner">
           <Thumbnail image={thumbnailImage} />

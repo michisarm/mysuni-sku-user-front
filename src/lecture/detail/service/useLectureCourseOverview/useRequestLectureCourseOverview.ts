@@ -46,7 +46,6 @@ export function useRequestLectureCardOverview() {
     }
 
     return () => {
-      clearFindCardCache();
       setLectureComment();
       setLectureDescription();
       setLectureFile();

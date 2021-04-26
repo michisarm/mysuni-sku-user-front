@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
@@ -12,9 +11,9 @@ import RecommendItem from './sub/RecommendItem';
 import { Action, Area } from 'tracker/model';
 
 interface Props {
-  className?: string,
-  bottom?: React.ReactNode,
-  children: React.ReactNode,
+  className?: string;
+  bottom?: React.ReactNode;
+  children: React.ReactNode;
   dataArea?: Area;
   dataAction?: Action;
 }
@@ -42,7 +41,8 @@ class ContentHeaderRecommand extends Component<Props> {
 
     return (
       <div className={classNames('main-info-area', className)}>
-        <div className="progress-info-wrap personal-channel"
+        <div
+          className="progress-info-wrap personal-channel"
           data-area={dataArea}
           data-action={dataAction}
         >

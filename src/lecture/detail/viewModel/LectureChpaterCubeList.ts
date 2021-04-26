@@ -5,4 +5,5 @@ export interface LectureChpaterCubeList {
   description: string | null;
   type: CubeType;
   learningTime: number;
+  isCube: boolean;
 }

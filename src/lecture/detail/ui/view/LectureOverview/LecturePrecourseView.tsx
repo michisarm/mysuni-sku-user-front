@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
+import { Area } from 'tracker/model';
 
 interface CourseViewProps {
   required: boolean;
@@ -57,7 +58,10 @@ const LecturePrecourseView: React.FC<LecturePrecourseViewProps> = function Lectu
   lecturePrecourse,
 }) {
   return (
-    <div className="ov-paragraph course-area">
+    <div
+      className="ov-paragraph course-area"
+      data-area={Area.CARD_PRECOURSE}
+    >
       <div className="section-head">
         <div className="title-style">
           <Label className="onlytext bold size24">

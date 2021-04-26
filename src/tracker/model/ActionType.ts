@@ -17,6 +17,7 @@ export enum ActionType {
 export enum Area {
   LOGIN = 'LOGIN',
   HEADER_LOGO = 'HEADER-LOGO',
+  HEADER_BREADCRUMBS = 'HEADER-BREADCRUMBS',
   HEADER_NOTICE = 'HEADER-NOTICE',
   HEADER_GNB = 'HEADER-GNB',
   HEADER_SEARCH = 'HEADER-SEARCH',
@@ -90,6 +91,7 @@ export enum Area {
   CARD_MENU = 'CARD-MENU',
   CARD_TAB = 'CARD-TAB',
   CARD_LIST = 'CARD-LIST',
+  CARD_PRECOURSE = 'CARD-PRECOURSE',
   CARD_OVERVIEW = 'CARD-OVERVIEW',
   CARD_TAG = 'CARD-TAG',
   CARD_EXPERT = 'CARD-EXPERT',
@@ -118,8 +120,11 @@ export enum Area {
   MYPAGE_STAMP = 'MYPAGE-STAMP',
   BOARD_MENU = 'BOARD-MENU',
   BOARD_NOTICE = 'BOARD-NOTICE',
+  BOARD_NOTICE_CONTENT = 'BOARD-NOTICE-CONTENT',
   BOARD_FAQ = 'BOARD-FAQ',
+  BOARD_FAQ_CONTENT = 'BOARD-FAQ-CONTENT',
   BOARD_QNA = 'BOARD-QNA',
+  BOARD_QNA_CONTENT = 'BOARD-QNA-CONTENT',
 }
 
 export enum FieldType {
@@ -131,4 +136,6 @@ export enum FieldType {
   Community = 'community',
   Badge = 'badge',
   CardBundle = 'cardBundle',
+  Chapter = 'chapter',
+  Discussion = 'discussion',
 }

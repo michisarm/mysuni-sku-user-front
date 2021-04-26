@@ -12,6 +12,8 @@ import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
 import { CommentList } from '@nara.drama/feedback';
+import { reactAlert } from '@nara.platform/accent';
+import { countByFeedbackId } from '../../../../lecture/detail/api/feedbackApi';
 
 interface Props {
   postDetail: any;
@@ -20,7 +22,6 @@ interface Props {
   subField?: React.ReactNode;
   deletable?: boolean;
   readCount?: number;
-  replyCount?: number;
   likeCount?: number;
   onClickList?: (e: any) => void;
 }
@@ -38,7 +39,6 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   subField,
   deletable,
   readCount,
-  replyCount,
   likeCount,
   onClickList,
 }) => {
@@ -46,21 +46,44 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 
   // content가 undefined 일때 hidden 처리
   const contentRef = useRef<HTMLDivElement>(null);
-  const [textUndefined, setTextUndefined] = useState<boolean>(false);
+  const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
   const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  const [count, setCount] = useState<number>(0);
   const originArr: string[] = [];
   let origin: string = '';
+
+  const commentCountEventHandler = useCallback(async () => {
+    async function asyncFun() {
+      if (document.body.getAttribute('feedbackid') !== undefined) {
+        const { count } = await countByFeedbackId(
+          document.body.getAttribute('feedbackid')!
+        );
+        setCount(count);
+      }
+    }
+    asyncFun();
+  }, [postDetail]);
 
   useEffect(() => {
     getFileIds();
     emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
-    contentRef.current?.textContent === 'undefined' && setTextUndefined(true);
+    const checkContentValue =
+      (postDetail?.content === '<p><br></p>' || postDetail?.content === "") ? true : false;
+    setContentCheck(checkContentValue);
+    setCount(postDetail.replyCount)
   }, [postDetail]);
+
+  useEffect(() => {
+    window.addEventListener('commentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('commentCount', commentCountEventHandler);
+    };
+  }, []);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = postDetail && postDetail.fileBoxId;
@@ -82,26 +105,33 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   };
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if (originArr && originArr.length > 0) {
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    } else {
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 
@@ -146,7 +176,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               />
               <h2>{postDetail.title}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{postDetail.replyCount}</strong>
+                전체 의견 <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">
@@ -157,14 +187,14 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
             <div className="discuss-box2">
               <div
                 className="discuss-text-wrap"
-                style={textUndefined ? { display: 'none' } : {}}
+                style={contentCheck ? { display: 'none' } : {}}
               >
                 {postDetail && more && (
                   <div className="ql-snow">
                     <div
                       ref={contentRef}
-                      className="discuss-text-belt"
-                      style={{width: 'auto'}}
+                      className="ql-editor"
+                      style={{ width: 'auto', padding: 0, lineHeight: 1.8 }}
                       dangerouslySetInnerHTML={{
                         __html: `${postDetail?.content}`,
                       }}
@@ -175,7 +205,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                   <div
                     ref={contentRef}
                     className="discuss-text-belt"
-                    style={{width: 'auto'}}
+                    style={{ width: 'auto' }}
                     dangerouslySetInnerHTML={{
                       __html: `${postDetail?.content}`,
                     }}
@@ -227,8 +257,8 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                 </div>
               ) : null}
               {/* eslint-enable */}
-                            {/* 관련 자료 */}
-                            {filesMap.get('reference') && (
+              {/* 관련 자료 */}
+              {filesMap.get('reference') && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -282,9 +312,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     </div>
                   </div>
                 </div>
-              )
-              }
-
+              )}
             </div>
           </div>
 

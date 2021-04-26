@@ -31,6 +31,8 @@ import { reactAlert } from '@nara.platform/accent';
 import { retMultiVideoOverlap } from '../../service/useLectureMedia/useLectureWatchLog';
 import { useLectureParams } from '../../store/LectureParamsStore';
 
+let preliveLectureId = '';
+
 function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
@@ -90,12 +92,13 @@ function LectureVideoContainer() {
       )
     );
     return () => {
+      setNextContentsView(false);
       removeCallRegisterWatchLog();
       removeCallVideoNearEnded();
       removeCheckStudent();
       removeDebounceActionTrack();
     };
-  }, []);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     if (panoptoEmbedPlayerState?.playerState === undefined) {
@@ -184,16 +187,15 @@ function LectureVideoContainer() {
     // lectureId = 시청중인 ID
     retMultiVideoOverlap(viewState, usid).then((res: any) => {
       setLiveLectureCardId(res);
-      // jz - 오류 수정 후 기능 복원
-      // if (viewState !== 'end') {
-      //   if (!res || res === 'false') {
-      //     reactAlert({
-      //       title: '알림',
-      //       message:
-      //         '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-      //     });
-      //   }
-      // }
+      if (viewState !== 'end') {
+        if (!res || (res === 'false' && res !== preliveLectureId)) {
+          reactAlert({
+            title: '알림',
+            message:
+              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+          });
+        }
+      }
     });
   }, []);
 
@@ -221,6 +223,7 @@ function LectureVideoContainer() {
         'liveLectureCardId',
         JSON.stringify(params.cubeId)
       );
+      preliveLectureId = params.cubeId;
     } else {
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId);
@@ -232,7 +235,7 @@ function LectureVideoContainer() {
     return () => {
       endMultiVideo();
     };
-  }, [lectureMedia]);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     if (

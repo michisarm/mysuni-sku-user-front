@@ -1,12 +1,11 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Button } from 'semantic-ui-react';
 import { Action, Area } from 'tracker/model';
 
 interface Props {
-  topButtons: React.ReactNode,
-  bottomButtons:  React.ReactNode,
+  topButtons: React.ReactNode;
+  bottomButtons: React.ReactNode;
 }
 
 @reactAutobind
@@ -14,9 +13,7 @@ export class MenuWrapperView extends Component<Props> {
   //
   render() {
     //
-    const {
-      topButtons, bottomButtons,
-    } = this.props;
+    const { topButtons, bottomButtons } = this.props;
 
     return (
       <div className="quick-menu" data-area={Area.FOOTER_HAMBURGER}>
@@ -32,48 +29,41 @@ export class MenuWrapperView extends Component<Props> {
   }
 }
 
-
 interface TopMenuItemViewProps {
-  iconName: string,
-  text: string,
-  onClick: () => void,
-  notieActive: boolean,
+  iconName: string;
+  text: string;
+  onClick: () => void;
+  notieActive: boolean;
 }
 
 export class TopMenuItemView extends Component<TopMenuItemViewProps> {
   //
   render() {
     //
-    const {
-      iconName, text, onClick, notieActive,
-    } = this.props;
+    const { iconName, text, onClick, notieActive } = this.props;
 
     return (
       <Button icon onClick={onClick}>
         <Icon className={iconName} />
-        {
-          (notieActive) && <Icon className="new16" />
-        }
-        <span className="blind">new</span>{text}
+        {notieActive && <Icon className="new16" />}
+        <span className="blind">new</span>
+        {text}
       </Button>
     );
   }
 }
 
-
 interface BottomMenuItemViewProps {
-  iconName: string,
-  text: string,
-  onClick?: () => void,
+  iconName: string;
+  text: string;
+  onClick?: () => void;
 }
 
 export class BottomMenuItemView extends Component<BottomMenuItemViewProps> {
   //
   render() {
     //
-    const {
-      iconName, text, onClick,
-    } = this.props;
+    const { iconName, text, onClick } = this.props;
 
     const dataSet: any = {};
     if (text === '관심채널') {

@@ -61,25 +61,23 @@ function EnrollingLearning({ history }: RouteComponentProps) {
         <Lecture.Group type={Lecture.GroupType.Line}>
           {cardList.map((item, i) => {
             const { card, cardRelatedCount, upcomingClassroomInfo } = item;
-            const isRequired = card.permittedCinerooms
-              ? isIncludeCineroomId(card.permittedCinerooms)
-              : false;
 
             return (
               <li key={i}>
                 <CardGroup type={GroupType.Box}>
                   <CardView
                     cardId={item.card.id}
-                    isRequired={isRequired}
+                    permittedCinerooms={card.permittedCinerooms}
                     learningTime={card.learningTime}
+                    additionalLearningTime={card.additionalLearningTime}
                     thumbImagePath={card.thumbImagePath}
                     mainCategory={card.mainCategory}
                     name={card.name}
                     stampCount={card.stampCount}
                     simpleDescription={card.simpleDescription}
                     type={card.type}
-                    passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
                     studentCount={upcomingClassroomInfo.studentCount}
                     remainingDayCount={upcomingClassroomInfo.remainingDayCount}
                     capacity={upcomingClassroomInfo.capacity}

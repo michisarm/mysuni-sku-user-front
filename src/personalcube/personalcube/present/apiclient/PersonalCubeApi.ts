@@ -9,6 +9,13 @@ import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
+const BASE_URL = '/api/personalCube/personalcubes';
+
+export function findPersonalCube(personalCubeId: string): Promise<PersonalCubeModel | undefined> {
+  const url = `${BASE_URL}/${personalCubeId}`;
+  return axios.get<PersonalCubeModel>(url).then(response => (response && response.data) || null);
+}
+
 export default class PersonalCubeApi {
   //
   static instance: PersonalCubeApi;

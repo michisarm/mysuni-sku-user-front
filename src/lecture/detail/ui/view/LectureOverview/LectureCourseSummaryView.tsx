@@ -164,6 +164,16 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
   }, [inMyLectureMap, params?.cardId]);
 
+  useEffect(() => {
+    const postService = PostService.instance;
+
+    postService.post.alarmInfo.url =
+      'https://int.mysuni.sk.com/login?contentUrl=/suni-main/lecture/cineroom/ne1-m2-c2/college/' +
+      window.location.href.split('college/')[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
+
   return (
     <div className="course-info-header" data-area={Area.CARD_HEADER}>
       <div className="contents-header">
@@ -182,6 +192,12 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 <Icon className={difficultyLevelIcon} />
                 <span>{lectureSummary.difficultyLevel}</span>
               </Label>
+              {lectureSummary.validLearningDate !== '' && (
+                <Label className="bold onlytext">
+                  <span className="header-span-first">유효학습 종료일</span>
+                  <span>{lectureSummary.validLearningDate}</span>
+                </Label>
+              )}
               <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
@@ -216,12 +232,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   </i>
                 </span>
               </Label>
-              {lectureSummary.validLearningDate !== '' && (
-                <Label className="bold onlytext">
-                  <span className="header-span-first">유효학습기간</span>
-                  <span>{lectureSummary.validLearningDate}</span>
-                </Label>
-              )}
               <Link to={qnaUrl} className="ui icon button left post-s">
                 <Icon className="ask" />
                 문의하기

@@ -12,13 +12,17 @@ import {
   clearFindCubeDetailCache,
   clearFindCubesByIdsCache,
 } from './api/cubeApi';
-import { clearFindMyCardRelatedStudentsCache } from './api/cardApi';
+import {
+  clearFindCardCache,
+  clearFindMyCardRelatedStudentsCache,
+} from './api/cardApi';
 
 export default function LectureDetailRoutes() {
   const params = useParams<LectureParams>();
   const { cardId } = params;
   useEffect(() => {
     return () => {
+      clearFindCardCache();
       clearFindCubesByIdsCache();
       clearFindCubeDetailCache();
       clearFindMyCardRelatedStudentsCache();

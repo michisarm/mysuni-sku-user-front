@@ -6,25 +6,24 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CheckBoxOptions from '../model/CheckBoxOption';
 import {
+  filterCard,
   findCard,
-  findColleageGroup,
-  findCPGroup,
-  findCubeTypeGroup,
   findExpert,
   getEmptyQueryOptions,
   QueryOptions,
 } from '../api/searchApi';
 import { createStore } from '../../community/store/Store';
 import moment from 'moment';
-import { SkProfileService } from '../../profile/stores';
 import { reactAlert } from '@nara.platform/accent';
+import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege';
+import { SearchCard, SearchCardCategory } from '../model/SearchCard';
+import { CardCategory } from '../../shared/model/CardCategory';
 
 interface Props {
   isOnFilter: boolean;
   searchValue: string;
+  closeOnFilter?: () => void;
 }
-
-const ESCAPE_CHAR = ["'", '&', '%'];
 
 const SELECT_ALL = 'Select All';
 const InitialConditions: FilterCondition = {
@@ -72,6 +71,7 @@ interface Options {
   key: string;
   text: string;
   value: string;
+  count?: number;
 }
 
 interface Tag {
@@ -112,7 +112,13 @@ export const [
   useCubeTypeOptions,
 ] = createStore<Options[]>([]);
 
-export const [setCard, onCard, getCard, useCard] = createStore<any[]>();
+export const [setCard, onCard, getCard, useCard] = createStore<SearchCard[]>();
+export const [
+  setDisplayCard,
+  onDisplayCard,
+  getDisplayCard,
+  useDisplayCard,
+] = createStore<SearchCard[]>();
 
 export const [setExpert, onExpert, getExpert, useExpert] = createStore<any[]>();
 
@@ -667,7 +673,7 @@ function toggle_cube_type_query(value: string) {
   }
 }
 
-async function search(searchValue: string) {
+async function search(searchValue: string, closeOnFilter?: () => void) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -682,13 +688,8 @@ async function search(searchValue: string) {
     });
     return;
   }
-  await findCard(decodedSearchValue).then(response => {
-    if (response && response.result && response.result.rows) {
-      setCard(response.result.rows);
-    } else {
-      setCard();
-    }
-  });
+  setDisplayCard(filterCard(getCard()));
+  closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setExpert(response.result.rows);
@@ -698,7 +699,11 @@ async function search(searchValue: string) {
   });
 }
 
-const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
+const SearchFilter: React.FC<Props> = ({
+  isOnFilter,
+  searchValue,
+  closeOnFilter,
+}) => {
   useEffect(() => {
     const decodedSearchValue = searchValue
       .replace(/'/g, ' ')
@@ -718,57 +723,113 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     if (companyCode === null) {
       return;
     }
-    findColleageGroup(decodedSearchValue, companyCode)
-      .then(searchResult => {
-        if (searchResult === undefined) {
-          setCollegeOptions([]);
-        } else {
-          setCollegeOptions(
-            searchResult.result.rows.map(({ fields }) => ({
-              key: fields['all_college_name'],
-              value: fields['all_college_name'],
-              text: `${fields['all_college_name']}(${fields['count(*)']})`,
-            }))
-          );
+    findCard(decodedSearchValue).then(searchResult => {
+      if (searchResult === undefined) {
+        setCollegeOptions([]);
+        setOrganizerOptions([]);
+        setCubeTypeOptions([]);
+        return;
+      }
+      setCard(searchResult.result.rows.map(c => c.fields));
+      setDisplayCard(searchResult.result.rows.map(c => c.fields));
+      const collegeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { categories },
+          } = c;
+          const category = (JSON.parse(
+            categories
+          ) as SearchCardCategory[]).find(d => d.mainCategory === 1);
+          if (category !== undefined) {
+            const a = r.find(d => d.key === category.collegeId);
+            if (a !== undefined) {
+              a.count = (a.count || 0) + 1;
+              a.text = `${a.value}(${a.count})`;
+            } else {
+              r.push({
+                key: category.collegeId,
+                value: getCollgeName(category.collegeId),
+                text: `${getCollgeName(category.collegeId)}(1)`,
+                count: 1,
+              });
+            }
+          }
+        } catch {
+          //
         }
-      })
-      .then(() => {
-        return findCPGroup(decodedSearchValue, companyCode).then(
-          searchResult => {
-            if (searchResult === undefined) {
-              setOrganizerOptions([]);
+
+        return r;
+      }, []);
+      setCollegeOptions(collegeOptions);
+
+      const organizerOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_organizer_names },
+          } = c;
+          (JSON.parse(cube_organizer_names) as string[]).forEach(organizer => {
+            const a = r.find(d => d.key === organizer);
+            if (a !== undefined) {
+              a.count = (a.count || 0) + 1;
+              a.text = `${a.value}(${a.count})`;
             } else {
-              setOrganizerOptions(
-                searchResult.result.rows.map(({ fields }) => ({
-                  key: fields['organizer'],
-                  value: fields['organizer'],
-                  text: `${fields['organizer']}(${fields['count(*)']})`,
-                }))
-              );
+              r.push({
+                key: organizer,
+                value: organizer,
+                text: `${organizer}(1)`,
+                count: 1,
+              });
             }
-          }
-        );
-      })
-      .then(() => {
-        return findCubeTypeGroup(decodedSearchValue, companyCode).then(
-          searchResult => {
-            if (searchResult === undefined) {
-              setCubeTypeOptions([]);
-            } else {
-              setCubeTypeOptions(
-                searchResult.result.rows.map(({ fields }) => ({
-                  key: fields['cube_type'],
-                  value: fields['cube_type'],
-                  text: `${fields['cube_type']}(${fields['count(*)']})`,
-                }))
-              );
-            }
-          }
-        );
-      })
-      .then(() => {
-        search(decodedSearchValue);
-      });
+          });
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setOrganizerOptions(organizerOptions);
+
+      const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_types },
+          } = c;
+          (JSON.parse(cube_types) as string[])
+            .reduce<string[]>((r, c) => {
+              if (!r.includes(c)) {
+                r.push(c);
+              }
+              return r;
+            }, [])
+            .forEach(cube => {
+              const a = r.find(d => d.key === cube);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: cube,
+                  value: cube,
+                  text: `${cube}(1)`,
+                  count: 1,
+                });
+              }
+            });
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCubeTypeOptions(cubeTypeOptions);
+      search(decodedSearchValue);
+    });
 
     return () => {
       setFilterCondition({ ...InitialConditions });
@@ -837,7 +898,12 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         Filter
         <a className="result-button">
           {/* <img src={ResultBtn} alt="btn" className="result-btn-img" /> */}
-          <span className="result-text">결과보기</span>
+          <span
+            className="result-text"
+            onClick={() => search(searchValue, closeOnFilter)}
+          >
+            결과보기
+          </span>
         </a>
       </div>
       <table>
@@ -1575,7 +1641,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         <a
           className="more-text"
           onClick={() => {
-            search(searchValue);
+            search(searchValue, closeOnFilter);
           }}
         >
           결과보기

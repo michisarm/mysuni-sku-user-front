@@ -76,7 +76,7 @@ function CommunityMenuContainer() {
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
       if (type !== 'delete') {
-        handleCleanDiscussRow();
+        setDiscussRow(getEmptyCommunityDiscussion());
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
@@ -136,10 +136,6 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
-
-  const handleCleanDiscussRow = () => {
-    setDiscussRow(getEmptyCommunityDiscussion());
-  };
 
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
@@ -308,6 +304,7 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
+
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {
@@ -334,6 +331,45 @@ function CommunityMenuContainer() {
         await deleteCommunityMenu(communityId, deleteValues);
         successFlag = true;
       }
+
+      // discussion Check
+      if (discussRow && discussRow.relatedUrlList) {
+        const urlValue = discussRow.relatedUrlList.map((row, index) => {
+          // if (row.title === '') {
+          //   reactAlert({
+          //     title: '',
+          //     message: `관련 URL의 ${index + 1}번째 타이틀 지정해주세요.`,
+          //   });
+          //   return false;
+          // }
+
+          // if (row.url === '') {
+          //   reactAlert({
+          //     title: '',
+          //     message: `관련 URL의 ${index + 1}번째 URL를 지정해주세요.`,
+          //   });
+          //   return false;
+          // }
+
+          if (
+            row.url !== '' &&
+            !row.url.includes('http://') &&
+            !row.url.includes('https://')
+          ) {
+            reactAlert({
+              title: '',
+              message: `관련 URL의 링크는 http:// 또는 https:// 으로 시작되어야 합니다.`,
+            });
+            return false;
+          }
+          return row;
+        });
+
+        if (urlValue.includes(false)) {
+          return;
+        }
+      }
+
       if (result.length !== 0) {
         const editValidateCheck = result.map((item, index) => {
           return item.nameValues.map((item2, index2) => {
@@ -465,6 +501,7 @@ function CommunityMenuContainer() {
           } else {
             addCommunityMenu(communityId, obj).then(() => {
               //오더정리
+
               requestCommunityMenu(communityId).then(() => {
                 requestCommunityMenuOrder(communityId);
                 reactAlert({
@@ -1244,7 +1281,6 @@ function CommunityMenuContainer() {
                       onAddUrlsList={onAddUrlsList}
                       onDeleteUrlsList={onDeleteUrlsList}
                       onAddFileBoxId={onAddFileBoxId}
-                      handleCleanDiscussRow={handleCleanDiscussRow}
                     />
                     <div className="admin_bottom_button line">
                       <button
@@ -1270,7 +1306,6 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
-                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button
@@ -1298,7 +1333,6 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
-                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button

@@ -6,10 +6,10 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { ActionLogService, PageService } from 'shared/stores';
 import {
+  ENRLectureService,
   LRSLectureService,
   NEWLectureService,
   POPLectureService,
-  ENRLectureService,
 } from 'lecture/stores';
 import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
@@ -70,8 +70,8 @@ const NewLearningListView: React.FC<Props> = Props => {
     newLectureService,
     popLectureService,
     lrsLectureService,
-    enrLectureService,
     actionLogService,
+    enrLectureService,
     setNewOrder,
     showTotalCount,
     setPageTitle,

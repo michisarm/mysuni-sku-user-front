@@ -1,4 +1,3 @@
-
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import { IdName, NameValueList, DatePeriod } from 'shared/model';
@@ -9,7 +8,6 @@ import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
-
 
 class PostModel implements DomainEntity {
   //
@@ -40,14 +38,32 @@ class PostModel implements DomainEntity {
 
   constructor(post?: PostModel) {
     if (post) {
-      const writer = post.writer && new WriterModel(post.writer) || this.writer;
-      const category = post.category && new IdName(post.category) || this.category;
-      const contents = post.contents && new PostContentsModel(post.contents) || this.contents;
-      const config = post.config && new PostConfigModel(post.config) || this.config;
-      const answer = post.answer && new IdName(post.answer) || this.answer;
-      const period = post.period && new DatePeriod(post.period) || this.period;
+      const writer =
+        (post.writer && new WriterModel(post.writer)) || this.writer;
+      const category =
+        (post.category && new IdName(post.category)) || this.category;
+      const contents =
+        (post.contents && new PostContentsModel(post.contents)) ||
+        this.contents;
+      const config =
+        (post.config && new PostConfigModel(post.config)) || this.config;
+      const answer = (post.answer && new IdName(post.answer)) || this.answer;
+      const period =
+        (post.period && new DatePeriod(post.period)) || this.period;
+      const alarmInfo =
+        (post.alarmInfo && new AlarmInfoModel(post.alarmInfo)) ||
+        this.alarmInfo;
 
-      Object.assign(this, { ...post, writer, category, contents, config, answer, period });
+      Object.assign(this, {
+        ...post,
+        writer,
+        category,
+        contents,
+        config,
+        answer,
+        period,
+        alarmInfo,
+      });
 
       this.openState = post.openState || post.openState;
     }
@@ -134,7 +150,7 @@ decorate(PostModel, {
   answer: observable,
   period: observable,
   commentFeedbackId: observable,
-  alarmInfo: observable
+  alarmInfo: observable,
 });
 
 export default PostModel;

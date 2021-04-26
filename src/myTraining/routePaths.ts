@@ -46,7 +46,6 @@ const routePaths = {
   learningEnrLecture: () => routePaths.newLearningTab('Enrolling'),
 
 
-
   createPersonalCubeDetail: (personalCubeId: string, cubeType: string) => `/personalcube/create/cubes/cube/${personalCubeId}/${cubeType}`,
   createSharedDetail: (personalCubeId: string, cubeType: string, cubeState: string) => `/personalcube/create/cubes/shared/${personalCubeId}/${cubeType}/${cubeState}`,
   approvalCubesDetail: (studentId: string) => `/my-training/my-page/ApprovalList/detail/${studentId}`,

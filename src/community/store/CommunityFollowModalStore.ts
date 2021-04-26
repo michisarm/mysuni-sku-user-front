@@ -12,7 +12,6 @@ const [
   followers: [],
 });
 
-
 // modal - following
 const [
   setFollowingsModal,
@@ -28,7 +27,6 @@ export {
   onFollowersModal,
   getFollowersModal,
   useFollowersModal,
-
   setFollowingsModal,
   onFollowMingsodal,
   getFollowingsModal,

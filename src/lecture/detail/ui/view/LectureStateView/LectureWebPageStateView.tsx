@@ -41,6 +41,7 @@ function CanceledView(props: CanceledViewProps) {
     <>
       <button
         className={`ui button free ${actionClassName} p18`}
+        id="ACTION"
         onClick={action}
       >
         {APPROVE}
@@ -52,10 +53,11 @@ function CanceledView(props: CanceledViewProps) {
 interface ApprovedViewProps {
   student: Student;
   cube: Cube;
+  urlType: string | undefined;
 }
 
 function ApprovedView(props: ApprovedViewProps) {
-  const { student, cube } = props;
+  const { student, cube, urlType } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -75,15 +77,17 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {student.learningState !== 'Passed' && hasNoTestAndNoReport(cube) && (
-        <button
-          className={`ui button free ${actionClassName} p18`}
-          onClick={completeLearning}
-          id="ACTION"
-        >
-          {COMPLETE}
-        </button>
-      )}
+      {(urlType === undefined || urlType !== 'embedded') &&
+        student.learningState !== 'Passed' &&
+        hasNoTestAndNoReport(cube) && (
+          <button
+            className={`ui button free ${actionClassName} p18`}
+            onClick={completeLearning}
+            id="ACTION"
+          >
+            {COMPLETE}
+          </button>
+        )}
       <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
@@ -107,11 +111,11 @@ const LectureWebPageStateView: React.FC<LectureWebPageStateViewProps> = function
 
   return (
     <>
-      {((urlType === undefined || urlType !== "embedded") && student === undefined || student?.proposalState === 'Canceled') && (
+      {(student === undefined || student?.proposalState === 'Canceled') && (
         <CanceledView cubeType={cubeType} />
       )}
-      {(urlType === undefined || urlType !== "embedded") && student?.proposalState === 'Approved' && (
-        <ApprovedView student={student} cube={cube} />
+      {student?.proposalState === 'Approved' && (
+        <ApprovedView student={student} cube={cube} urlType={urlType} />
       )}
     </>
   );

@@ -24,9 +24,10 @@ export async function getClassroomFromCube(cubeId: string) {
   const proimseArray = instructors.map(c => {
     return findInstructorCache(c.instructorId)
       .then(r => {
-        if (r !== undefined) {
+        if (r !== undefined && c.memberSummary !== undefined) {
           c.name = r.memberSummary.name;
           c.memberSummary = {
+            employeeId: r.memberSummary.employeeId,
             department: r.memberSummary.department,
             email: r.memberSummary.email,
             name: r.memberSummary.name,

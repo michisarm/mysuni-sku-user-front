@@ -744,7 +744,7 @@ body.msie
   border: 0;
 }
 
-.ui.segment.full
+/* .ui.segment.full
   .contents.overview
   .ov-paragraph-v2
   .series-wrap
@@ -761,4 +761,8 @@ body.msie
   top: 0.4375rem;
   left: 0;
   vertical-align: middle;
+} */
+
+.content.lms .icon.listDelete {
+  margin-left: 15px;
 }

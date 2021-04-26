@@ -11,12 +11,10 @@ function parseLectureSubcategory(card: Card): LectureSubcategory {
 
   return {
     categories:
-      categories
-        ?.filter(({ mainCategory }) => !mainCategory)
-        .map(({ channelId, collegeId }) => ({
-          channelId,
-          collegeId,
-        })) || [],
+      categories?.map(({ channelId, collegeId }) => ({
+        channelId,
+        collegeId,
+      })) || [],
   };
 }
 

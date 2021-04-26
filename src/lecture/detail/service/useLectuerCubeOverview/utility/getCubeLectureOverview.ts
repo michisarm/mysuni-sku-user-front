@@ -3,7 +3,10 @@ import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CubeDetail } from '../../../../model/CubeDetail';
 import { findCardCache } from '../../../api/cardApi';
-import { findCubeDetailCache } from '../../../api/cubeApi';
+import {
+  findContentProviderCache,
+  findCubeDetailCache,
+} from '../../../api/cubeApi';
 import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
 import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
@@ -22,6 +25,7 @@ import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -68,14 +72,23 @@ async function getLectureSummary(
   };
 }
 
-function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
+async function getLectureDescription(
+  cubeDetail: CubeDetail
+): Promise<LectureDescription> {
   const {
     description: { description, applicants, completionTerms, goal, guide },
+    organizerId,
+    otherOrganizerName,
   } = cubeDetail.cubeContents;
   const operator = cubeDetail.operators.find(
     ({ id }) => id === cubeDetail?.cubeContents?.operator?.keyString
   );
-  const organizer = operator?.companyNames?.langStringMap.ko || '';
+  let organizer = '';
+  if (otherOrganizerName?.length > 0) {
+    organizer = otherOrganizerName;
+  } else if (organizerId?.length > 0) {
+    organizer = (await findContentProviderCache(organizerId))?.name || '';
+  }
   return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
@@ -84,7 +97,7 @@ function getLectureSubcategory(cubeDetail: CubeDetail): LectureSubcategory {
     cube: { categories },
   } = cubeDetail;
   return {
-    categories: categories.filter(c => !c.mainCategory),
+    categories,
   };
 }
 
@@ -102,7 +115,9 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   };
 }
 
-async function getLectureInstructor(cubeDetail: CubeDetail) {
+async function getLectureInstructor(
+  cubeDetail: CubeDetail
+): Promise<LectureInstructor> {
   const {
     cubeContents: { instructors },
   } = cubeDetail;
@@ -110,7 +125,9 @@ async function getLectureInstructor(cubeDetail: CubeDetail) {
     return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
+          c.name = r.memberSummary.name;
           c.memberSummary = {
+            employeeId: r.memberSummary.employeeId,
             department: r.memberSummary.department,
             email: r.memberSummary.email,
             name: r.memberSummary.name,
@@ -192,7 +209,7 @@ export async function getCubeLectureOverview(cardId: string, cubeId: string) {
   }
   const lectureSummary = await getLectureSummary(cubeDetail);
   setLectureCubeSummary(lectureSummary);
-  const lectureDescription = getLectureDescription(cubeDetail);
+  const lectureDescription = await getLectureDescription(cubeDetail);
   setLectureDescription(lectureDescription);
   const lectureSubcategory = getLectureSubcategory(cubeDetail);
   setLectureSubcategory(lectureSubcategory);

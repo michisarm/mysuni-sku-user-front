@@ -1,4 +1,5 @@
 import { DifficultyLevel } from './DifficultyLevel';
+import { Instructor } from './Instructor';
 
 export interface CubeContents {
   commentFeedbackId: string;
@@ -19,6 +20,7 @@ export interface CubeContents {
     round: number;
     name?: string;
     memberSummary?: {
+      employeeId: string;
       department: string;
       email: string;
       name: string;

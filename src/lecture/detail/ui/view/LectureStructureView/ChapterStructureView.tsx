@@ -39,7 +39,7 @@ export function ChapterStructureView(props: Props) {
             'open'}`}
           onClick={onToggleClick}
         >
-          총<strong>{`${cubeCount}개`}</strong> 강의 구성
+          총<strong>{`${cubeCount}개`}</strong> 구성
         </a>
       </div>
     </Link>

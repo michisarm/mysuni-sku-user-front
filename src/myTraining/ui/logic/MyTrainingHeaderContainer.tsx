@@ -15,7 +15,7 @@ import badgePaths from '../../../certification/routePaths';
 import myTrainingPaths from '../../routePaths';
 import lecturePaths from '../../../lecture/routePaths';
 import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
-
+import { Area } from 'tracker/model';
 
 interface MyTrainingHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -64,7 +64,7 @@ function MyTrainingHeaderContainer({
   }, []);
 
   return (
-    <ContentHeader type="Learning">
+    <ContentHeader type="Learning" dataArea={Area.LEARNING_INFO}>
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={true}

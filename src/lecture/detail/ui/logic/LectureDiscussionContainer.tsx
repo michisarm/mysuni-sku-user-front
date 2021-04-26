@@ -1,6 +1,12 @@
 import { CommentList, CommentService } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
@@ -14,6 +20,8 @@ import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
+import { patronInfo } from '@nara.platform/dock';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -22,6 +30,8 @@ const fileDownload = (pdf: string, fileId: string) => {
 };
 
 export default function LectureDiscussionContainer() {
+  const prevFeedbackId = useRef();
+
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
   const params = useParams<LectureParams>();
@@ -29,6 +39,7 @@ export default function LectureDiscussionContainer() {
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>();
   const [count, setCount] = useState<number>(0);
+  const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -69,6 +80,13 @@ export default function LectureDiscussionContainer() {
     }
     getFileIds();
     asyncFun();
+
+    const checkContentValue =
+      lectureFeedbackContent?.content === '<p><br></p>' ||
+      lectureFeedbackContent?.content === ''
+        ? true
+        : false;
+    setContentCheck(checkContentValue);
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
@@ -128,26 +146,33 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if (originArr && originArr.length > 0) {
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    } else {
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 
@@ -178,11 +203,13 @@ export default function LectureDiscussionContainer() {
         setUrlNull(true);
       }
     });
+
+    // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
 
   return (
     <>
-      {lectureDiscussion && (
+      {lectureDiscussion && lectureFeedbackContent !== undefined && (
         <>
           <div className="discuss-wrap">
             <div className="discuss-box">
@@ -202,7 +229,10 @@ export default function LectureDiscussionContainer() {
               </span>
             </div>
             <div className="discuss-box2">
-              <div className="discuss-text-wrap">
+              <div
+                className="discuss-text-wrap"
+                style={contentCheck ? { display: 'none' } : {}}
+              >
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
@@ -262,7 +292,7 @@ export default function LectureDiscussionContainer() {
                         (item: any) => (
                           <>
                             <a href={`https://${item.url}`} target="blank">
-                              {!item.title ? item.url : item.title}
+                              {item.title}
                             </a>
                           </>
                         )
@@ -329,20 +359,19 @@ export default function LectureDiscussionContainer() {
               )}
             </div>
           </div>
-          <CommentList
-            feedbackId={
-              lectureFeedbackContent?.commentFeedbackId
-                ? lectureFeedbackContent?.commentFeedbackId
-                : ''
-            }
-            hideCamera
-            name={name}
-            email={email}
-            companyName={company}
-            departmentName={department}
-            // cardId={params?.cardId}
-            menuType="discussion"
-          />
+
+          {lectureFeedbackContent?.commentFeedbackId && (
+            <CommentList
+              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+              hideCamera
+              name={name}
+              email={email}
+              companyName={company}
+              departmentName={department}
+              // cardId={params?.cardId}
+              menuType="discussion"
+            />
+          )}
         </>
       )}
     </>

@@ -8,7 +8,6 @@ import { getMainCategoryId } from '../../model/Badge';
 import { useRequestBadgeDetail } from '../../service/useRequestBadgeDetail';
 import BadgeSummaryContainer from '../logic/BadgeSummaryContainer';
 import BadgeContentContainer from '../logic/BadgeContentContainer';
-import { useRequestCineroom } from '../../../shared/service/useCineroom/useRequestCineroom';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
 interface BadgeDetailPageProps {
@@ -18,9 +17,7 @@ interface BadgeDetailPageProps {
 function BadgeDetailPage({ badgeService }: BadgeDetailPageProps) {
   const { badge } = badgeService!;
   const mainCategoryId = getMainCategoryId(badge);
-
   useRequestBadgeDetail();
-  useRequestCineroom();
 
   return (
     <ContentLayout

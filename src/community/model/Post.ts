@@ -4,7 +4,7 @@ import PostType from './PostType';
 type RelatedUrlList = {
   title: string;
   url: string;
-}
+};
 
 export default interface Post {
   id?: string;

@@ -95,10 +95,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
         {myCommunityIntro !== undefined &&
           myCommunityIntro.communities.length === 0 &&
           myCommunityIntro.requested === true && (
-            <div
-              className="no-cont-wrap"
-              data-area={Area.COMMUNITY_NOCONTENT}
-            >
+            <div className="no-cont-wrap" data-area={Area.COMMUNITY_NOCONTENT}>
               <i aria-hidden="true" className="icon no-contents80" />
               <span className="blind">콘텐츠 없음</span>
               <div className="text lms-color-type1">

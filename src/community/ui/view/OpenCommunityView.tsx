@@ -5,17 +5,16 @@ import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import { Link, useHistory } from 'react-router-dom';
 import OpenCommunityIntroFieldListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroFieldListContainer';
 import OpenCommunityIntroCommunityListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroCommunityListContainer';
-
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
 
-interface OpenCommunityViewProps { }
+interface OpenCommunityViewProps {}
 
 const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommunityView() {
   const contextRef = useRef(null);
   const history = useHistory();
   const gaOnClick = (name: string) => {
-    // react-ga 
+    // react-ga
     ReactGA.event({
       category: 'Community',
       action: 'Click',
@@ -25,9 +24,11 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
     sessionStorage.removeItem('communityOffset');
     sessionStorage.removeItem('openCommunityOffset');
     if (name === 'MyCommunity') history.replace('/community/main');
-    if (name === 'CommunityList') history.replace('/community/main/open-communities');
+    if (name === 'CommunityList') {
+      history.replace('/community/main/open-communities');
+    }
     if (name === 'Follow') history.replace('/community/main/follow');
-  }
+  };
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
@@ -41,7 +42,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
-                <span className="count" />
+              <span className="count" />
             </Menu.Item>
             <Menu.Item
               name="MyCreatedCommunity"

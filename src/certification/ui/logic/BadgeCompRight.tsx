@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
-import { Icon, Image } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router';
 import { dateTimeHelper } from 'shared';
+import Image from 'shared/components/Image';
 import { ChallengeBadgeTitle } from '../view/ChallengeBoxElementsView';
-import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { CardWithLearningContentCountRom } from '../../../lecture/model/CardWithLearningContentCountRom';
 import LectureParams, {
@@ -74,7 +74,7 @@ export default function BadgeCompRight({
                     }}
                   >
                     <span className="class-icon">
-                      <Image src={card.thumbImagePath} />
+                      <Image src={card.thumbImagePath} clasName="ui image" />
                     </span>
                     <span className="title">{card.name}</span>
                     <span className="time">
