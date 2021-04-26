@@ -20,6 +20,7 @@ import {
 } from '../../../service/PanoptoEmbedPlayer';
 import LectureState from '../../../viewModel/LectureState';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -47,13 +48,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   duration,
   playerState,
 }) {
+  const params = useParams<LectureParams>();
   const lectureMedia = useLectureMedia();
   useEffect(() => {
-    if (lectureMedia === undefined) {
-      return;
-    }
-    if (lectureMedia.mediaContents.internalMedias[0] === undefined) {
-      return;
+    if (params.cubeId !== undefined) {
+      findCubeDetailCache(params.cubeId).then(cubeDetail => {
+        if (cubeDetail !== undefined) {
+          const {
+            cubeMaterial: { media },
+          } = cubeDetail;
+          if (
+            media !== null &&
+            media.mediaContents.internalMedias[0] !== undefined
+          ) {
+            const panoptoSessionId =
+              media.mediaContents.internalMedias[0].panoptoSessionId;
+            initializePanoptoEmbedPlayer(panoptoSessionId);
+          }
+        }
+      });
     }
 
     let serverName: string | undefined;
@@ -82,14 +95,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       serverName
     );
     return clearPanoptoEmbedPlayer;
-  }, [lectureMedia]);
+  }, [params.cubeId]);
 
   const history = useHistory();
   const nextContents = useCallback((path: string) => {
     history.push(path);
   }, []);
-
-  const params = useParams<LectureParams>();
 
   const [cubeName, setCubeName] = useState<any>('');
 

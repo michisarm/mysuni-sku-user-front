@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { observer, inject } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
 import { NoSuchContentPanel } from 'shared';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
-import { firndCardFromCardBundle } from '../../../../lecture/detail/api/cardApi';
+import { findCardFromCardBundle } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
 import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
@@ -27,15 +25,14 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 }) {
   const [dataArea, setDataArea] = useState<Area>();
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const isRecommend = cardBundle.type === 'Recommended';
 
   const fetchCardList = async () => {
     if (cardBundle.cardIds) {
-      const isRecommend = cardBundle.type === 'Recommended';
-
-      const cardList = await firndCardFromCardBundle(
+      const cardList = await findCardFromCardBundle(
         cardBundle.cardIds,
         8,
-        isRecommend
+        false
       );
 
       if (cardList !== undefined) {
@@ -80,6 +77,10 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         break;
     }
   }, [cardBundle]);
+
+  if (cardList.length === 0 && isRecommend) {
+    return null;
+  }
 
   return (
     <ContentWrapper dataArea={dataArea}>
@@ -133,11 +134,4 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   );
 };
 
-export default inject(
-  mobxHelper.injectFrom(
-    // 'shared.actionLogService',
-    'shared.reviewService',
-    'newLecture.newLectureService',
-    'myTraining.inMyLectureService'
-  )
-)(withRouter(observer(LearningContainer)));
+export default withRouter(LearningContainer);

@@ -151,7 +151,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                 />
                 <Comment.Content>
                   <Comment.Author>
-                    <Link to={`/community/${communityId}`}>
+                    <Link to={`/community/${communityId}/post/${postId}`}>
                       {communityName}
                     </Link>
                   </Comment.Author>
@@ -278,22 +278,22 @@ function CommunityFollowPostListContainer() {
       <div className="more-comments">
         {communityFollowPostList.postsTotalCount >
           communityFollowPostList.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            onClick={() => addList(communityFollowPostList.postsOffset)}
-          >
-            <Icon className="moreview" /> list more
-          </Button>
-        )}
+            <Button
+              icon
+              className="left moreview"
+              onClick={() => addList(communityFollowPostList.postsOffset)}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          )}
         {communityFollowPostList.postsTotalCount <=
           communityFollowPostList.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            style={{ cursor: 'default' }}
-          />
-        )}
+            <Button
+              icon
+              className="left moreview"
+              style={{ cursor: 'default' }}
+            />
+          )}
       </div>
     </div>
   );

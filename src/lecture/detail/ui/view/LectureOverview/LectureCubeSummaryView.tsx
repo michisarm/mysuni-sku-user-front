@@ -343,7 +343,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   <>
                     <Label className="bold onlytext">
                       <span className="header-span-first">참여</span>
-                      <span>{lectureSummary.studentCount}</span>
+                      <span>
+                        {numberWithCommas(lectureSummary.studentCount)}
+                      </span>
                       <span>명</span>
                     </Label>
                   </>

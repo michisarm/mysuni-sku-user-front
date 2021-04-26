@@ -205,9 +205,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       page!.nextOffset,
       sorting
     );
+    this.setState({ loading: false });
 
-    if (!lectureOffsetList.empty && typeof scrollOnceMove === 'function') {
-      this.setState({ loading: false }); // Loading Progress 종료
+    if (typeof scrollOnceMove === 'function') {
       scrollOnceMove();
     }
 

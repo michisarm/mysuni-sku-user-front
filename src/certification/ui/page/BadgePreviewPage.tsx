@@ -26,26 +26,14 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
     <div className="badge-list-type">
       {badge && (
         <ul>
-          <li>
+          <li style={{ marginLeft: '14rem' }}>
             <BadgeView
               id={badge.id}
               name={badge.name}
               level={badge.level}
               iconUrl={badge.iconUrl}
               categoryId={mainCategoryId}
-              badgeStyle={BadgeStyle.Detail}
-              badgeSize={BadgeSize.Small}
-            />
-            <div className="badge-name">{badge.name}</div>
-          </li>
-          <li>
-            <BadgeView
-              id={badge.id}
-              name={badge.name}
-              level={badge.level}
-              iconUrl={badge.iconUrl}
-              categoryId={mainCategoryId}
-              badgeStyle={BadgeStyle.Detail}
+              badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
             />
             <div className="badge-name">{badge.name}</div>

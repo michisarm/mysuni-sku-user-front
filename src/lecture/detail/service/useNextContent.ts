@@ -21,13 +21,13 @@ export function useNextContent(): Value {
       setValue(undefined);
       return;
     }
-    const next =
+    let next =
       lectureStructure.cubes.find(({ order }) => order === current.order + 1) ||
       lectureStructure.discussions.find(
         ({ order }) => order === current.order + 1
       );
     if (next?.type === 'DISCUSSION') {
-      next.name = `${next.name}`;
+      next = { ...next, name: `${next.name}` };
     }
     setValue(next);
   }, [lectureStructure]);
