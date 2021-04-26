@@ -105,7 +105,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
           <div className="survey-header-left test_ing width50">
             {surveyTitle}
           </div>
-          <div className="survey-header-right">
+          <div className="survey-header-right" style={{pointerEvents: 'none'}}>
             {lectureSurveyState !== undefined &&
               lectureSurveyState.state === 'Completed' && (
                 <button className="ui button free proceeding">참여완료</button>
