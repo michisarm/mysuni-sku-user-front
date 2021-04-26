@@ -136,7 +136,6 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
-
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
     setSelectedRow({
@@ -304,7 +303,6 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
-
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {
@@ -609,6 +607,14 @@ function CommunityMenuContainer() {
         if (type === 'privateComment') {
           setDiscussRow({ ...discussRow, privateComment: value });
         }
+
+        if (type === 'accessType') {
+          setDiscussRow({ ...discussRow, accessType: value });
+        }
+
+        if (type === 'group') {
+          setDiscussRow({ ...discussRow, groupId: value });
+        }
       }
     },
     [discussRow]
@@ -649,18 +655,24 @@ function CommunityMenuContainer() {
     [discussRow]
   );
 
-  const onChangeAddValue = useCallback((data, name, type?) => {
-    addRow[name] = data[name];
-    if (data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
-      addRow.groupId = 0;
-      addRow.accessType = 'COMMUNITY_GROUP';
-    }
-    if (data[name] === 'COMMUNITY_ALL_MEMBER' && name === 'accessType') {
-      addRow.groupId = null;
-      addRow.accessType = 'COMMUNITY_ALL_MEMBER';
-    }
-    setAddRow({ ...data, [name]: data[name] });
-  }, []);
+  const onChangeAddValue = useCallback(
+    (data, name, type?) => {
+      addRow[name] = data[name];
+      if (data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
+        addRow.groupId = data.groupId;
+        addRow.accessType = 'COMMUNITY_GROUP';
+      }
+      if (data[name] === 'COMMUNITY_ALL_MEMBER' && name === 'accessType') {
+        addRow.groupId = null;
+        addRow.accessType = 'COMMUNITY_ALL_MEMBER';
+      }
+      setAddRow({ ...data, [name]: data[name] });
+      if (discussRow) {
+        setDiscussRow({ ...discussRow, groupId: data.groupId });
+      }
+    },
+    [addRow]
+  );
 
   const onChangeValue = useCallback(
     (value: any, nameValue: string) => {
