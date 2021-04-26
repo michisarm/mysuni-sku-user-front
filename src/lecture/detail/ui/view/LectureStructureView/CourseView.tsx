@@ -17,6 +17,7 @@ import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
 import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
+import ProgramDiscussionView from './ProgramDiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -67,7 +68,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
         >
-          총<strong>{(items || cubes || []).length}개</strong> 강의 구성
+          총<strong>{(items || cubes || []).length}개</strong> 구성
         </button>
         <span
           className={`label-state-learning ${
@@ -145,7 +146,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             if (item.type === 'DISCUSSION') {
               const discussion = item as LectureStructureDiscussionItem;
               return (
-                <DiscussionView
+                <ProgramDiscussionView
                   key={discussion.id}
                   name={discussion.name}
                   state={discussion.state}

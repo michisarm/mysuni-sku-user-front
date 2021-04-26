@@ -13,6 +13,7 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
 import { CommentList } from '@nara.drama/feedback';
 import { reactAlert } from '@nara.platform/accent';
+import { countByFeedbackId } from '../../../../lecture/detail/api/feedbackApi';
 
 interface Props {
   postDetail: any;
@@ -21,7 +22,6 @@ interface Props {
   subField?: React.ReactNode;
   deletable?: boolean;
   readCount?: number;
-  replyCount?: number;
   likeCount?: number;
   onClickList?: (e: any) => void;
 }
@@ -39,7 +39,6 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   subField,
   deletable,
   readCount,
-  replyCount,
   likeCount,
   onClickList,
 }) => {
@@ -54,8 +53,21 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  const [count, setCount] = useState<number>(0);
   const originArr: string[] = [];
   let origin: string = '';
+
+  const commentCountEventHandler = useCallback(async () => {
+    async function asyncFun() {
+      if (document.body.getAttribute('feedbackid') !== undefined) {
+        const { count } = await countByFeedbackId(
+          document.body.getAttribute('feedbackid')!
+        );
+        setCount(count);
+      }
+    }
+    asyncFun();
+  }, [postDetail]);
 
   useEffect(() => {
     getFileIds();
@@ -66,7 +78,15 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
         ? true
         : false;
     setContentCheck(checkContentValue);
+    setCount(postDetail.replyCount);
   }, [postDetail]);
+
+  useEffect(() => {
+    window.addEventListener('commentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('commentCount', commentCountEventHandler);
+    };
+  }, []);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = postDetail && postDetail.fileBoxId;
@@ -163,7 +183,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               />
               <h2>{postDetail.title}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{postDetail.replyCount}</strong>
+                전체 의견 <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">

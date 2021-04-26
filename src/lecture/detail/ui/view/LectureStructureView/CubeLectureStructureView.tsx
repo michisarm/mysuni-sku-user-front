@@ -14,6 +14,7 @@ import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
 import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
+import ProgramDiscussionView from './ProgramDiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -94,7 +95,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           if (item.type === 'DISCUSSION') {
             const discussion = item as LectureStructureDiscussionItem;
             return (
-              <DiscussionView
+              <ProgramDiscussionView
                 key={discussion.id}
                 name={discussion.name}
                 state={discussion.state}
