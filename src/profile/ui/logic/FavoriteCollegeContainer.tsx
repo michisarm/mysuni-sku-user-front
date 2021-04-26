@@ -196,7 +196,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                           onChange={() => this.onSelectCollege(college)}
                         />
                         <label htmlFor={`radio_${index}`}>
-                          {college.name}({college.channelCounts.length})
+                          {college.name}
+                          {college?.channelCounts?.length !== undefined
+                            ? `(${college?.channelCounts?.length})`
+                            : ''}
                         </label>
                       </div>
                     ))}
