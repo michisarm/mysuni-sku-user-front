@@ -509,6 +509,8 @@ function CommunityMenuContainer() {
               });
             });
           }
+          //입력 항목 초기화
+          handleAddMenu()
         } else {
           reactAlert({
             title: '',
@@ -557,6 +559,8 @@ function CommunityMenuContainer() {
               });
             });
           }
+          //입력 항목 초기화
+          handleAddChildMenu()
         } else {
           reactAlert({
             title: '',
