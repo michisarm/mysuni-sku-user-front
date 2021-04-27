@@ -35,30 +35,10 @@ function findCard(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/${cardId}`;
 
-  const moveMain = () => {
-    const PublicUrl = window.location.origin;
-    console.log(PublicUrl);
-    window.location.href = PublicUrl;
-  };
-
-  axios.interceptors.response.use(
-    response => {
-      return response;
-    },
-    error => {
-      if (error.response.status === 400) {
-        return reactAlert({
-          title: '',
-          message:
-            '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
-          onClose: moveMain,
-        });
-      }
-      return Promise.reject(error);
-    }
-  );
-
-  return axios.get<CardWithContentsAndRelatedCountRom>(url).then(AxiosReturn);
+  return axios
+    .get<CardWithContentsAndRelatedCountRom>(url)
+    .then(AxiosReturn)
+    .catch(err => undefined);
 }
 
 export const [findCardCache, clearFindCardCache] = createCacheApi(findCard);
@@ -124,7 +104,8 @@ async function findMyCardRelatedStudents(cardId: string) {
   const url = `${BASE_URL}/students/myCardRelatedStudents/${cardId}`;
   const result = await axios
     .get<MyCardRelatedStudentsRom>(url)
-    .then(AxiosReturn);
+    .then(AxiosReturn)
+    .catch(() => undefined);
   if (result !== undefined) {
     if (
       result.cardStudent === null &&
