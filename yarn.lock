@@ -1625,10 +1625,10 @@
     "react-router-dom" "^5.0.1"
     "typescript" "^3.7.3"
 
-"@nara.drama/feedback@0.4.180":
-  "integrity" "sha512-1+wOW3iP6ZDPP4afwqPdr9vg5q64/OXQHNQhqDX22Kn2S8570ydLqRU6S+HMvKK5vB6BPPPG7+DQCDV/8b6WBA=="
-  "resolved" "https://sk-university-dev-nexus.cloudzcp.io/repository/npm-private/@nara.drama/feedback/-/feedback-0.4.180.tgz"
-  "version" "0.4.180"
+"@nara.drama/feedback@0.4.212":
+  "integrity" "sha512-SNqdHPMsxd6NaRapFwftcMRLNVNf4bemA+7bU3b4nR2Qek9Gnv/5mEnxslXiAXK1zs8uzulM5vrx8dYsDxqo9w=="
+  "resolved" "https://sk-university-dev-nexus.cloudzcp.io/repository/npm-private/@nara.drama/feedback/-/feedback-0.4.212.tgz"
+  "version" "0.4.212"
   dependencies:
     "@webscopeio/react-textarea-autocomplete" "^4.6.3"
     "autobind-decorator" "^2.4.0"

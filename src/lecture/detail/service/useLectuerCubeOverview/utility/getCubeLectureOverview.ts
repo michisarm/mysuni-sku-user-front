@@ -125,6 +125,7 @@ async function getLectureInstructor(
     return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
+          c.name = r.memberSummary.name;
           c.memberSummary = {
             employeeId: r.memberSummary.employeeId,
             department: r.memberSummary.department,

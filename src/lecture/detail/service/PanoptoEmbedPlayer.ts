@@ -149,13 +149,18 @@ function createPanoptoEmbedPlayer() {
     );
   }
 
-  function initializePanoptoEmbedPlayer(panoptoSessionId: string) {
+  function initializePanoptoEmbedPlayer(
+    panoptoSessionId: string,
+    directConnectionName?: string,
+    targetSamlInstanceName?: string,
+    serverName?: string
+  ) {
     clearInterval(intervalId);
     const container = getContainer();
     if (container === null) {
       return;
     }
-    embedApi = new window.EmbedApi('panopto-embed-player', {
+    const options: any = {
       width: '100%',
       height: '700',
       //This is the URL of your Panopto site
@@ -179,7 +184,17 @@ function createPanoptoEmbedPlayer() {
         onStateChange,
         onPlaybackRateChange,
       },
-    });
+    };
+    if (
+      directConnectionName !== undefined &&
+      targetSamlInstanceName !== undefined
+    ) {
+      options.videoParams[directConnectionName] = targetSamlInstanceName;
+      if (serverName !== undefined) {
+        options.serverName = serverName;
+      }
+    }
+    embedApi = new window.EmbedApi('panopto-embed-player', options);
     onProgress();
     intervalId = setInterval(onProgress, 500);
   }

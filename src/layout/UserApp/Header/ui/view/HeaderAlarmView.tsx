@@ -50,6 +50,7 @@ class HeaderAlarmView extends Component<Props, State> {
     }
   }
 
+
   render() {
     //
     const {

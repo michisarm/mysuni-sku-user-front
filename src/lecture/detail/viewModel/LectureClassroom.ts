@@ -12,7 +12,18 @@ export interface Classroom {
   cancellableStartDate: string;
   cancellableEndDate: string;
   location: string;
-  instructor: string;
+  instructor: {
+    instructorId: string;
+    representative: true;
+    round: number;
+    name?: string;
+    memberSummary?: {
+      department: string;
+      email: string;
+      name: string;
+      photoId: string;
+    };
+  }[];
   siteUrl: string;
   capacity: number;
   freeOfCharge: {

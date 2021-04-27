@@ -25,7 +25,14 @@ export async function getClassroomFromCube(cubeId: string) {
     return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined && c.memberSummary !== undefined) {
-          c.memberSummary.name = r.memberSummary.name;
+          c.name = r.memberSummary.name;
+          c.memberSummary = {
+            employeeId: r.memberSummary.employeeId,
+            department: r.memberSummary.department,
+            email: r.memberSummary.email,
+            name: r.memberSummary.name,
+            photoId: r.memberSummary.photoId,
+          };
         }
       })
       .catch(() => {});
@@ -66,8 +73,7 @@ export async function getClassroomFromCube(cubeId: string) {
           cancellableEndDate: cancellablePeriod.endDate,
           location,
           siteUrl,
-          instructor:
-            instructors.find(c => c.round === round)?.memberSummary?.name || '',
+          instructor: instructors.filter(c => c.round === round),
           capacity,
           freeOfCharge: {
             approvalProcess: freeOfCharge.approvalProcess,
