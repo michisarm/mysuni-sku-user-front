@@ -22,7 +22,7 @@
     "@babel/polyfill": "7.0.0",
     "@nara.drama/approval": "0.4.1",
     "@nara.drama/depot": "1.4.1",
-    "@nara.drama/feedback": "0.4.217",
+    "@nara.drama/feedback": "0.4.225",
     "@nara.platform/accent": "0.2.0",
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
@@ -63,7 +63,11 @@
     "xlsx": "latest",
     "yaml": "^1.10.2"
   },
+<<<<<<< HEAD
   "proxy": "https://mysuni.sk.com",
+=======
+  "proxy": "https://ma.university.sk.com",
+>>>>>>> c36e4a448 (LMS 이전댓글 표시 수정)
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/addon-docs": "^5.2.8",
