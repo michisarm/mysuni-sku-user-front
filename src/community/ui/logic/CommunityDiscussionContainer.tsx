@@ -14,6 +14,7 @@ import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/Dis
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
+import { CommunityPostDetail } from '../../viewModel/CommunityPostDetail';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -33,6 +34,8 @@ function CommunityDiscussionContainer() {
     new Map<string, any>()
   );
   const [creatorId, setCreatorId] = useState<string>('');
+  const [feedbackId, setFeedbackId] = useState<string>('');
+
   const history = useHistory();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
@@ -42,6 +45,11 @@ function CommunityDiscussionContainer() {
     const denizenId = patronInfo.getDenizenId();
     getFileIds();
     setCreatorId(denizenId!);
+
+    if (postDetail && postDetail?.menuId === '') {
+      setFeedbackId(postDetail.commentFeedbackId);
+    }
+
   }, [postDetail]);
 
   const OnClickList = useCallback(() => {
@@ -121,7 +129,7 @@ function CommunityDiscussionContainer() {
     if (communityHome?.community?.memberType === 'ADMIN') {
       setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
-  },[communityHome?.community?.managerId, communityHome?.community?.memberType]);
+  }, [communityHome?.community?.managerId, communityHome?.community?.memberType]);
 
   // console.log('관리자여부', state);
   // console.log('!@@@@', communityAdminAuth, adminAuth);
@@ -137,17 +145,19 @@ function CommunityDiscussionContainer() {
             deletable={true}
             onClickList={OnClickList}
           />
-          <CommunityCommentList
-            feedbackId={postDetail.commentFeedbackId}
-            menuType={discussionType}
-            hideCamera
-            name=""
-            email=""
-            companyName=""
-            departmentName=""
-            adminAuth={adminAuth}
-            communityAdminAuth={communityAdminAuth}
-          />
+          {feedbackId && (
+            <CommunityCommentList
+              feedbackId={feedbackId}
+              menuType={discussionType}
+              hideCamera
+              name=""
+              email=""
+              companyName=""
+              departmentName=""
+              adminAuth={adminAuth}
+              communityAdminAuth={communityAdminAuth}
+            />
+          )}
         </>
       )}
     </>
