@@ -43,16 +43,18 @@ function decode(input: string) {
 }
 
 function parseToken(): any | undefined {
-  try {
-    const token = localStorage.getItem('nara.token')?.split('.')[1];
-    if (token === null || token === undefined) {
-      return undefined;
+  if (window.TextDecoder !== undefined) {
+    try {
+      const token = localStorage.getItem('nara.token')?.split('.')[1];
+      if (token === null || token === undefined) {
+        return undefined;
+      }
+      const textDecoder = new TextDecoder();
+      const payload = JSON.parse(textDecoder.decode(decode(token)));
+      return payload;
+    } catch {
+      //
     }
-    const textDecoder = new TextDecoder();
-    const payload = JSON.parse(textDecoder.decode(decode(token)));
-    return payload;
-  } catch {
-    //
   }
 
   return undefined;
