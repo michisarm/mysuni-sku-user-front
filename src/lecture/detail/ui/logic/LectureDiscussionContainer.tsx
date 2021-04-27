@@ -30,8 +30,6 @@ const fileDownload = (pdf: string, fileId: string) => {
 };
 
 export default function LectureDiscussionContainer() {
-  const prevFeedbackId = useRef();
-
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
   const params = useParams<LectureParams>();
@@ -46,6 +44,7 @@ export default function LectureDiscussionContainer() {
   );
   const originArr: string[] = [];
   let origin: string = '';
+  const [feedbackId, setFeedbackId] = useState<string | undefined>('');
 
   const commentCountEventHandler = useCallback(async () => {
     async function asyncFun() {
@@ -58,6 +57,38 @@ export default function LectureDiscussionContainer() {
     }
     asyncFun();
   }, [lectureFeedbackContent]);
+
+  useEffect(() => {
+    async function asuncFun() {
+      if (lectureDiscussion?.id === undefined) {
+        return;
+      }
+
+      // 관련 url 빈값 체크 함수
+      emptyCheckUrl();
+
+      //comment count
+      if (
+        lectureFeedbackContent !== undefined &&
+        lectureFeedbackContent.commentFeedbackId !== undefined
+      ) {
+        const comment = await countByFeedbackId(
+          lectureFeedbackContent?.commentFeedbackId
+        );
+        setCount(comment.count);
+      }
+
+      findFeedbackMenu(lectureDiscussion.id).then(res => {
+        setLectureFeedbackContent({
+          ...res,
+        });
+        setFeedbackId(res.commentFeedbackId);
+      });
+    }
+    asuncFun();
+
+    return () => setFeedbackId(''); 
+  }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
@@ -107,34 +138,37 @@ export default function LectureDiscussionContainer() {
     });
   }, []);
 
-  useEffect(() => {
-    async function asuncFun() {
-      if (lectureDiscussion?.id === undefined) {
-        return;
-      }
+  // useEffect(() => {
+  //   async function asuncFun() {
+  //     if (lectureDiscussion?.id === undefined) {
+  //       return;
+  //     }
 
-      // 관련 url 빈값 체크 함수
-      emptyCheckUrl();
+  //     // 관련 url 빈값 체크 함수
+  //     emptyCheckUrl();
 
-      //comment count
-      if (
-        lectureFeedbackContent !== undefined &&
-        lectureFeedbackContent.commentFeedbackId !== undefined
-      ) {
-        const comment = await countByFeedbackId(
-          lectureFeedbackContent?.commentFeedbackId
-        );
-        setCount(comment.count);
-      }
+  //     //comment count
+  //     if (
+  //       lectureFeedbackContent !== undefined &&
+  //       lectureFeedbackContent.commentFeedbackId !== undefined
+  //     ) {
+  //       const comment = await countByFeedbackId(
+  //         lectureFeedbackContent?.commentFeedbackId
+  //       );
+  //       setCount(comment.count);
+  //     }
 
-      findFeedbackMenu(lectureDiscussion.id).then(res => {
-        setLectureFeedbackContent({
-          ...res,
-        });
-      });
-    }
-    asuncFun();
-  }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
+  //     findFeedbackMenu(lectureDiscussion.id).then(res => {
+  //       setLectureFeedbackContent({
+  //         ...res,
+  //       });
+  //       setFeedbackId(res.commentFeedbackId);
+  //     });
+  //   }
+  //   asuncFun();
+
+  //   return () => setFeedbackId(''); 
+  // }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -206,6 +240,9 @@ export default function LectureDiscussionContainer() {
 
     // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
+
+
+  console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
 
   return (
     <>
@@ -360,9 +397,11 @@ export default function LectureDiscussionContainer() {
             </div>
           </div>
 
-          {lectureFeedbackContent?.commentFeedbackId && (
+          {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
+          {(feedbackId !== undefined && feedbackId !== '') && (
             <CommentList
-              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+              // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+              feedbackId={feedbackId}
               hideCamera
               name={name}
               email={email}
