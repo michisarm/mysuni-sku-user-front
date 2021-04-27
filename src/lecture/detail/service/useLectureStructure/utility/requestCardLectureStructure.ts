@@ -35,6 +35,7 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
+import { reactAlert } from '@nara.platform/accent';
 
 function parseCubeTestItem(
   card: Card,
@@ -661,7 +662,14 @@ export async function requestCardLectureStructure(cardId: string) {
     myCardRelatedStudentsRom === undefined
   ) {
     setIsLoadingState({ isLoading: false });
-    return;
+    return reactAlert({
+      title: '',
+      message:
+        '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
+      onClose: () => {
+        window.location.href = window.location.origin;
+      },
+    });
   }
 
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;

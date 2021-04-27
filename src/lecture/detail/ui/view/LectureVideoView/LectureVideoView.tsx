@@ -61,13 +61,35 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             media !== null &&
             media.mediaContents.internalMedias[0] !== undefined
           ) {
+            let serverName: string | undefined;
+            let search = window.location.search;
+            if (search.includes('serverName')) {
+              search = search.substring(1);
+              search.split('&').forEach(keyValue => {
+                const [key, value] = keyValue.split('=');
+                if (key === 'serverName') {
+                  serverName = value;
+                }
+              });
+            }
+
             const panoptoSessionId =
               media.mediaContents.internalMedias[0].panoptoSessionId;
-            initializePanoptoEmbedPlayer(panoptoSessionId);
+            const directConnectionName =
+              media.mediaContents.internalMedias[0].directConnectionName;
+            const targetSamlInstanceName =
+              media.mediaContents.internalMedias[0].targetSamlInstanceName;
+            initializePanoptoEmbedPlayer(
+              panoptoSessionId,
+              directConnectionName,
+              targetSamlInstanceName,
+              serverName
+            );
           }
         }
       });
     }
+
     return clearPanoptoEmbedPlayer;
   }, [params.cubeId]);
 
