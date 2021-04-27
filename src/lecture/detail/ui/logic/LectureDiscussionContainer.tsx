@@ -215,12 +215,8 @@ export default function LectureDiscussionContainer() {
     // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
 
-  console.log(
-    'OUT feedbackID@@@@@',
-    lectureFeedbackContent?.commentFeedbackId,
-    '|||',
-    feedbackId
-  );
+
+  // console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
 
   return (
     <>
