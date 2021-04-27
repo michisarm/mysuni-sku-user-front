@@ -216,7 +216,7 @@ export default function LectureDiscussionContainer() {
   }, [lectureFeedbackContent?.relatedUrlList]);
 
 
-  console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
+  // console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
 
   return (
     <>
