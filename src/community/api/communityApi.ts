@@ -518,6 +518,7 @@ export function addCommunityAdminDiscussion(
   addRow: any
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
+
   const params = {
     ...addRow,
     groupId: addRow.groupId === null ? '' : addRow.groupId,
