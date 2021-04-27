@@ -63,11 +63,7 @@
     "xlsx": "latest",
     "yaml": "^1.10.2"
   },
-<<<<<<< HEAD
   "proxy": "https://mysuni.sk.com",
-=======
-  "proxy": "https://ma.university.sk.com",
->>>>>>> c36e4a448 (LMS 이전댓글 표시 수정)
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/addon-docs": "^5.2.8",
