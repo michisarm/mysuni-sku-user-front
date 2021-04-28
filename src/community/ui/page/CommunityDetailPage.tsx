@@ -229,7 +229,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   <div className="profile home-detail-profile">
                     <div className="pic">
                       <img
-                        style={{ borderRadius: '36px', width: '56px' }}
+                        style={{ borderRadius: '36px', width: '56px', height: '56px' }}
                         src={
                           managProfileImg
                             ? `/files/community/${managProfileImg}`
@@ -242,11 +242,11 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                     </span>
                   </div>
 
-                  {memberData?.results.filter(f => f.memberType === 'ADMIN').map(r => (
-                    <div className="profile home-detail-profile">
+                  {memberData?.results.filter(f => f.memberId !== managerId && f.memberType === 'ADMIN').map((r, index) => (
+                    <div className={index === 0 ? 'profile home-detail-profile' : 'profile home-detail-profile pro-mt30'}>
                       <div className="pic">
                         <img
-                          style={{ borderRadius: '36px', width: '56px' }}
+                          style={{ borderRadius: '36px', width: '56px', height: '56px' }}
                           src={
                             r.profileImg
                               ? `/files/community/${r.profileImg}`
