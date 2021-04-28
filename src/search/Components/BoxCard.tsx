@@ -79,7 +79,6 @@ const BoxCard: React.FC = () => {
             name,
             categories,
             required_cinerooms,
-            difficulty_level,
             thumb_image_path,
             learning_time,
             stamp_count,
@@ -89,7 +88,6 @@ const BoxCard: React.FC = () => {
             passed_student_count,
             student_count,
             star_count,
-            used_in_badge,
           } = item;
           const isRequired: boolean = required_cinerooms
             .split('|')
@@ -113,6 +111,7 @@ const BoxCard: React.FC = () => {
             <CardView
               key={id}
               cardId={id}
+              htmlName={name}
               name={name}
               starCount={parseInt(star_count)}
               stampCount={parseInt(stamp_count)}
