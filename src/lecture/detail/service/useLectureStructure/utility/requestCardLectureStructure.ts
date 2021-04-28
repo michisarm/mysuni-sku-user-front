@@ -667,7 +667,7 @@ export async function requestCardLectureStructure(cardId: string) {
       message:
         '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
       onClose: () => {
-        window.location.href = window.location.origin;
+        window.location.href = '/';
       },
     });
   }
