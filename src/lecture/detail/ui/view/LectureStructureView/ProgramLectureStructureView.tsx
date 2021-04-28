@@ -142,7 +142,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
             return null;
           }
           return (
-            <DiscussionView
+            <ProgramDiscussionView
               key={discussion.id}
               name={discussion.name}
               state={discussion.state}

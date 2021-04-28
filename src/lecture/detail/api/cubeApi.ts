@@ -19,6 +19,8 @@ import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
 import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi';
 import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml';
+import ContentsProvider from '../../model/ContentsProvider';
+import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
 
 const BASE_URL = '/api/cube';
 
@@ -41,17 +43,19 @@ function decode(input: string) {
 }
 
 function parseToken(): any | undefined {
-  try {
-    const token = localStorage.getItem('nara.token')?.split('.')[1];
-    if (token === null || token === undefined) {
-      return undefined;
-    }
-    const textDecoder = new TextDecoder();
-    const payload = JSON.parse(textDecoder.decode(decode(token)));
-    return payload;
-  } catch {
-    //
-  }
+  // if (window.TextDecoder !== undefined) {
+  //   try {
+  //     const token = localStorage.getItem('nara.token')?.split('.')[1];
+  //     if (token === null || token === undefined) {
+  //       return undefined;
+  //     }
+  //     const textDecoder = new TextDecoder();
+  //     const payload = JSON.parse(textDecoder.decode(decode(token)));
+  //     return payload;
+  //   } catch {
+  //     //
+  //   }
+  // }
 
   return undefined;
 }
@@ -93,7 +97,7 @@ async function AppendSamlQueryToCubeMaterial(
   );
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-    undefined &&
+      undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     contentsProviderSaml = contentsProviderSamls.find(
@@ -122,7 +126,7 @@ async function AppendSamlQueryToCubeMaterial(
 
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-    undefined &&
+      undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
@@ -160,6 +164,62 @@ async function AppendSamlQueryToCubeMaterial(
   return cubeMaterial;
 }
 
+async function AppendPanoptoSamlQueryToCubeMaterial(
+  cubeContents: CubeContents,
+  cubeMaterial: CubeMaterial
+) {
+  if (cubeContents === undefined || cubeContents === null) {
+    return cubeMaterial;
+  }
+  if (cubeMaterial === undefined || cubeMaterial === null) {
+    return cubeMaterial;
+  }
+  let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+  try {
+    contentsProviderSamls = await findContentsProviderSamlCache();
+  } catch (error) {
+    return cubeMaterial;
+  }
+  if (
+    !Array.isArray(contentsProviderSamls) ||
+    contentsProviderSamls.length === 0
+  ) {
+    return cubeMaterial;
+  }
+  if (
+    Array.isArray(cubeMaterial.media?.mediaContents.internalMedias) &&
+    cubeMaterial.media?.mediaContents.internalMedias[0] !== undefined
+  ) {
+    const panoptoContentsProviderSaml = contentsProviderSamls.find(
+      c => c.contentsProviderId === 'PANOPTO'
+    );
+    if (panoptoContentsProviderSaml !== undefined) {
+      const payload = parseToken();
+      const gdiUser: boolean = payload?.gdiUser;
+      if (gdiUser === undefined) {
+        return cubeMaterial;
+      }
+      const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
+      const contentsProviderDirectConnection = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
+        c => c.loginUserSourceType === loginUserSourceType
+      );
+      if (contentsProviderDirectConnection === undefined) {
+        return cubeMaterial;
+      }
+
+      Array.from(cubeMaterial.media?.mediaContents.internalMedias).forEach(
+        internalMediaConnection => {
+          internalMediaConnection.directConnectionName =
+            contentsProviderDirectConnection.directConnectionName;
+          internalMediaConnection.targetSamlInstanceName =
+            contentsProviderDirectConnection.targetSamlInstanceName;
+        }
+      );
+    }
+  }
+  return cubeMaterial;
+}
+
 function paramsSerializer(paramObj: Record<string, any>) {
   const params = new URLSearchParams();
   for (const key in paramObj) {
@@ -176,9 +236,7 @@ function findCubesByIds(ids: string[]) {
   }
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/byIds`;
-  return axios
-    .post<Cube[]>(url, ids)
-    .then(AxiosReturn);
+  return axios.post<Cube[]>(url, ids).then(AxiosReturn);
 }
 
 const [findCubesByIdsCache, clearFindCubesByIdsCache] = createCacheApi(
@@ -201,6 +259,17 @@ function findCubeDetail(cubeId: string) {
           return { ...r, cubeMaterial } as CubeDetail;
         }
       );
+    })
+    .then(r => {
+      if (r === undefined) {
+        return undefined;
+      }
+      return AppendPanoptoSamlQueryToCubeMaterial(
+        r.cubeContents,
+        r.cubeMaterial
+      ).then(cubeMaterial => {
+        return { ...r, cubeMaterial } as CubeDetail;
+      });
     });
 }
 
@@ -301,3 +370,11 @@ export function findMyDiscussionCounts(studentId: string) {
   const url = `${BASE_URL}/cubes/myDiscussionCounts/${studentId}`;
   return axios.get<CubeMyDiscussionCounts>(url).then(AxiosReturn);
 }
+
+function findContentProvider(contentsProviderId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/contentsProviders/${contentsProviderId}`;
+  return axios.get<ContentsProviderInfo>(url).then(AxiosReturn);
+}
+
+export const [findContentProviderCache] = createCacheApi(findContentProvider);

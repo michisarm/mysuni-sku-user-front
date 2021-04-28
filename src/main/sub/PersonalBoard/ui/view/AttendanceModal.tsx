@@ -152,10 +152,7 @@ const AttendanceModal: React.FC<Props> = ({
           </div>
         </Modal.Header>
         <Modal.Content className="admin_popup_add">
-          <div
-            data-area={Area.MAIN_POPBANNER}
-            className="contentbox"
-          >
+          <div data-area={Area.MAIN_POPBANNER} className="contentbox">
             <div className={notiSentence(attendFlag)}>
               <strong className="notitxt" />
               <dl>

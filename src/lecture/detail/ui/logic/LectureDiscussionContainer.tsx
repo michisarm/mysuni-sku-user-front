@@ -30,8 +30,6 @@ const fileDownload = (pdf: string, fileId: string) => {
 };
 
 export default function LectureDiscussionContainer() {
-  const prevFeedbackId = useRef();
-
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
   const params = useParams<LectureParams>();
@@ -46,6 +44,7 @@ export default function LectureDiscussionContainer() {
   );
   const originArr: string[] = [];
   let origin: string = '';
+  const [feedbackId, setFeedbackId] = useState<string | undefined>('');
 
   const commentCountEventHandler = useCallback(async () => {
     async function asyncFun() {
@@ -58,50 +57,6 @@ export default function LectureDiscussionContainer() {
     }
     asyncFun();
   }, [lectureFeedbackContent]);
-
-  useEffect(() => {
-    window.addEventListener('discCommentCount', commentCountEventHandler);
-    return () => {
-      window.removeEventListener('discCommentCount', commentCountEventHandler);
-    };
-  }, []);
-
-  useEffect(() => {
-    async function asyncFun() {
-      if (
-        lectureFeedbackContent !== undefined &&
-        lectureFeedbackContent.commentFeedbackId !== undefined
-      ) {
-        const { count } = await countByFeedbackId(
-          lectureFeedbackContent?.commentFeedbackId
-        );
-        setCount(count);
-      }
-    }
-    getFileIds();  
-    asyncFun();
-
-  const checkContentValue = (lectureFeedbackContent?.content === '<p><br></p>' || lectureFeedbackContent?.content === "") ? true : false;
-  setContentCheck(checkContentValue);
-  }, [lectureFeedbackContent]);
-
-  const getFileIds = useCallback(() => {
-    const referenceFileBoxId =
-      lectureFeedbackContent && lectureFeedbackContent.depotId;
-
-    Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
-      else setFilesMap(new Map<string, any>());
-    });
-  }, [lectureFeedbackContent]);
-
-  const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
-      filesMap.set(type, files);
-      const newMap = new Map(filesMap.set(type, files));
-      setFilesMap(newMap);
-    });
-  }, []);
 
   useEffect(() => {
     async function asuncFun() {
@@ -127,10 +82,61 @@ export default function LectureDiscussionContainer() {
         setLectureFeedbackContent({
           ...res,
         });
+        setFeedbackId(res.commentFeedbackId);
       });
     }
     asuncFun();
+
+    return () => setFeedbackId(''); 
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
+
+  useEffect(() => {
+    window.addEventListener('discCommentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('discCommentCount', commentCountEventHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function asyncFun() {
+      if (
+        lectureFeedbackContent !== undefined &&
+        lectureFeedbackContent.commentFeedbackId !== undefined
+      ) {
+        const { count } = await countByFeedbackId(
+          lectureFeedbackContent?.commentFeedbackId
+        );
+        setCount(count);
+      }
+    }
+    getFileIds();
+    asyncFun();
+
+    const checkContentValue =
+      lectureFeedbackContent?.content === '<p><br></p>' ||
+      lectureFeedbackContent?.content === ''
+        ? true
+        : false;
+    setContentCheck(checkContentValue);
+  }, [lectureFeedbackContent]);
+
+  const getFileIds = useCallback(() => {
+    const referenceFileBoxId =
+      lectureFeedbackContent && lectureFeedbackContent.depotId;
+
+    Promise.resolve().then(() => {
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+      else setFilesMap(new Map<string, any>());
+    });
+  }, [lectureFeedbackContent]);
+
+  const findFiles = useCallback((type: string, fileBoxId: string) => {
+    depot.getDepotFiles(fileBoxId).then(files => {
+      filesMap.set(type, files);
+      const newMap = new Map(filesMap.set(type, files));
+      setFilesMap(newMap);
+    });
+  }, []);
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -203,6 +209,9 @@ export default function LectureDiscussionContainer() {
     // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
 
+
+  console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
+
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -225,7 +234,7 @@ export default function LectureDiscussionContainer() {
               </span>
             </div>
             <div className="discuss-box2">
-              <div 
+              <div
                 className="discuss-text-wrap"
                 style={contentCheck ? { display: 'none' } : {}}
               >
@@ -356,9 +365,11 @@ export default function LectureDiscussionContainer() {
             </div>
           </div>
 
-          {lectureFeedbackContent?.commentFeedbackId && (
+          {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
+          {(feedbackId !== undefined && feedbackId !== '') && (
             <CommentList
-              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+              // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+              feedbackId={feedbackId}
               hideCamera
               name={name}
               email={email}

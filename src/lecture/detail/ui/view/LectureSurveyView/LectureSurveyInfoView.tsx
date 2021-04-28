@@ -74,7 +74,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           </div>
           {lectureSurveyState !== undefined &&
             lectureSurveyState.state === 'Finish' && (
-              <div className="survey-header-right">
+              <div className="survey-header-right" style={{pointerEvents: 'none'}}>
                 <button className="ui button free proceeding">참여완료</button>
               </div>
             )}

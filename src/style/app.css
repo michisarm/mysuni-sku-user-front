@@ -744,6 +744,25 @@ body.msie
   border: 0;
 }
 
+/* .ui.segment.full
+  .contents.overview
+  .ov-paragraph-v2
+  .series-wrap
+  .table
+  th
+  span::before {
+  content: '';
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 100%;
+  opacity: 1;
+  background: #717988;
+  position: absolute;
+  top: 0.4375rem;
+  left: 0;
+  vertical-align: middle;
+} */
+
 .content.lms .icon.listDelete {
   margin-left: 15px;
 }

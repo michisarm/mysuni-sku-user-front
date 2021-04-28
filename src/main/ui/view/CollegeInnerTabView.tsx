@@ -583,17 +583,17 @@ const CollegeInnerTabView = () => {
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rx/Course/C-LECTURE-nn">
+                        <Link to="/lecture/card/CARD-6qg/view">
                           조직 설계 길라잡이
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-8ut/lecture-card/LECTURE-CARD-6uk">
+                        <Link to="/lecture/card/CARD-6b6/cube/CUBE-8ut/view/Video">
                           조직 설계 Tip : Smart Design
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-952/lecture-card/LECTURE-CARD-6uj">
+                        <Link to="/lecture/card/CARD-6m0/cube/CUBE-952/view/Video">
                           조직 설계 효과성 측정
                         </Link>
                       </li>
