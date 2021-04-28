@@ -95,7 +95,11 @@ class SkProfileModel implements DramaEntity {
     }
     //mySUNI 사이트(depot)에서 등록한 사용자 증명사진 보이기
     else if (this.photoType === '1') {
-      photoImageFilePath = this.photoImage; //base64Photo
+      if (this.photoImage.startsWith('data:image')) {
+        photoImageFilePath = this.photoImage;
+      } else {
+        photoImageFilePath = 'https://image.mysuni.sk.com/suni-asset/profile' + this.photoImage;
+      }
     }
 
     return photoImageFilePath;
