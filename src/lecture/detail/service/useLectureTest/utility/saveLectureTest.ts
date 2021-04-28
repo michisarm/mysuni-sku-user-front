@@ -11,6 +11,8 @@ import {
   getLectureTestItem,
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
+import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
+import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import {
@@ -78,14 +80,22 @@ export async function saveCubeTestAnswerSheet(
   pFinished: boolean,
   pSubmitted: boolean
 ): Promise<void> {
+  const relatedStudents = await findMyCardRelatedStudentsCache(params.cardId);
+
   const testItem = getLectureTestItem();
   const answerItem = getLectureTestAnswerItem();
   const testStudentItem = getLectureTestStudentItem();
   if (
     testItem === undefined ||
     answerItem === undefined ||
-    testStudentItem == undefined
+    testStudentItem === undefined ||
+    relatedStudents === undefined ||
+    params.cubeId === undefined
   ) {
+    return;
+  }
+  const student = findCubeStudent(params.cubeId, relatedStudents.cubeStudents);
+  if (student === undefined) {
     return;
   }
   const answerSheetBody: LectureTestAnswerSheetViewBody = {
@@ -103,10 +113,7 @@ export async function saveCubeTestAnswerSheet(
   if (answerSheetId !== '') {
     await modifyAnswerSheet(answerSheetBody, answerSheetId);
     if (pFinished) {
-      await modifyStudentForExam(
-        testStudentItem.studentId,
-        answerSheetBody.examId
-      );
+      await modifyStudentForExam(student.id, answerSheetBody.examId);
     }
     //await getTestStudentItemMapFromCube(params); // student 재호출
     //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
@@ -115,10 +122,7 @@ export async function saveCubeTestAnswerSheet(
       answerSheetBody.id = newAnswerSheetId;
       await modifyAnswerSheet(answerSheetBody, newAnswerSheetId);
       if (pFinished) {
-        await modifyStudentForExam(
-          testStudentItem.studentId,
-          answerSheetBody.examId
-        );
+        await modifyStudentForExam(student.id, answerSheetBody.examId);
       }
       //await getTestStudentItemMapFromCube(params); // student 재호출
       //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
