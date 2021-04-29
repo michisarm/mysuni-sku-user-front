@@ -2,7 +2,6 @@ import React, { Fragment, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import {
-  LectureStructureChapterItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
@@ -15,7 +14,6 @@ import CourseReportView from './CourseReportView';
 import CourseSurveyView from './CourseSurveyView';
 import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
-import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ReportView from './ReportView';

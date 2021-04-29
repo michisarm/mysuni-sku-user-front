@@ -323,7 +323,11 @@ function parseCardItem(
   if (reportFileBox?.report === true) {
     item.report = parseCardReportItem(card, cardContents, cardStudent);
   }
-  if (surveyCaseId !== null && surveyCaseId !== '') {
+  if (
+    surveyCaseId !== undefined &&
+    surveyCaseId !== null &&
+    surveyCaseId !== ''
+  ) {
     item.survey = parseCardSurveyItem(card, cardContents, cardStudent);
   }
   return item;
@@ -565,10 +569,14 @@ async function parseCubeItem(
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
   }
-  if (reportName !== null && reportName !== '') {
+  if (reportName !== undefined && reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
-  if (surveyCaseId !== null && surveyCaseId !== '') {
+  if (
+    surveyCaseId !== undefined &&
+    surveyCaseId !== null &&
+    surveyCaseId !== ''
+  ) {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
   }
   return item;

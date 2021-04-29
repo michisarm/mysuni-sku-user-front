@@ -70,31 +70,61 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                               style={{ marginLeft: 10 }}
                               className="scrolling course-profile"
                             >
-                              {instructor.map(item => (
-                                <Link
-                                  className="ui profile tool-tip"
-                                  to={`/expert/instructor/${item.instructorId}/Introduce`}
-                                >
-                                  {item.representative && <Represent />}
-                                  <div className="pic s80">
-                                    {item.memberSummary?.photoId && (
-                                      <img
-                                        alt="프로필사진"
-                                        className="ui image"
-                                        src={item.memberSummary?.photoId}
-                                      />
-                                    )}
-                                  </div>
-                                  <i>
-                                    <a className="tip-name">
-                                      {item.memberSummary?.name}
-                                    </a>
-                                    <a className="tip-id">
-                                      {item.memberSummary?.department}
-                                    </a>
-                                  </i>
-                                </Link>
-                              ))}
+                              {instructor.map(
+                                item =>
+                                  item.representative && (
+                                    <Link
+                                      className="ui profile tool-tip"
+                                      to={`/expert/instructor/${item.instructorId}/Introduce`}
+                                    >
+                                      <Represent />
+                                      <div className="pic s80">
+                                        {item.memberSummary?.photoId && (
+                                          <img
+                                            alt="프로필사진"
+                                            className="ui image"
+                                            src={item.memberSummary?.photoId}
+                                          />
+                                        )}
+                                      </div>
+                                      <i>
+                                        <a className="tip-name">
+                                          {item.memberSummary?.name}
+                                        </a>
+                                        <a className="tip-id">
+                                          {item.memberSummary?.department}
+                                        </a>
+                                      </i>
+                                    </Link>
+                                  )
+                              )}
+                              {instructor.map(
+                                item =>
+                                  !item.representative && (
+                                    <Link
+                                      className="ui profile tool-tip"
+                                      to={`/expert/instructor/${item.instructorId}/Introduce`}
+                                    >
+                                      <div className="pic s80">
+                                        {item.memberSummary?.photoId && (
+                                          <img
+                                            alt="프로필사진"
+                                            className="ui image"
+                                            src={item.memberSummary?.photoId}
+                                          />
+                                        )}
+                                      </div>
+                                      <i>
+                                        <a className="tip-name">
+                                          {item.memberSummary?.name}
+                                        </a>
+                                        <a className="tip-id">
+                                          {item.memberSummary?.department}
+                                        </a>
+                                      </i>
+                                    </Link>
+                                  )
+                              )}
                             </div>
                           </Table.Cell>
                         )}
