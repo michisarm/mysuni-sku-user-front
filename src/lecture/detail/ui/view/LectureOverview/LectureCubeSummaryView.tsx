@@ -248,7 +248,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   }, [inMyLectureMap, params?.cardId]);
 
   return (
-    <div className="course-info-header" data-area={Area.CUBE_HEADER}>
+    <div
+      // className="course-info-header"
+      className={`course-info-header ${lectureSummary.cubeType === 'Task' || lectureSummary.cubeType === 'Discussion' ? 'task' : ''}`}
+      data-area={Area.CUBE_HEADER}
+    >
       <div className="contents-header">
         <div className="title-area">
           <div

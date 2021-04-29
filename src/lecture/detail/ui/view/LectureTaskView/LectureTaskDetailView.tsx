@@ -7,6 +7,7 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { Button, Icon } from 'semantic-ui-react';
 import { useLectureTaskViewType } from '../../../service/useLectureTask/useLectureTaskViewType';
 import { useHistory } from 'react-router-dom';
+// import { submitRegisterStudent } from '../../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
 
 interface LectureTaskDetailViewProps {
   taskId: string;
@@ -71,6 +72,13 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     handleOnClickReplies(taskId);
   }, []);
 
+  // 코멘드 등록 시 학습처리 CommentList -> Props
+  // const registerStudent = useCallback(async () => {
+  //   if(lectureState && lectureState.student === undefined){
+  //     await submitRegisterStudent()
+  //   }
+  // }, []);
+
   return (
     <Fragment>
       {taskDetail && (
@@ -123,6 +131,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             email={taskDetail.writer.email}
             companyName={taskDetail.writer.companyName}
             departmentName={taskDetail.writer.companyCode}
+            // cubeCommentStartFunction={registerStudent}
           />
           <div className="task-read-bottom">
             <Button

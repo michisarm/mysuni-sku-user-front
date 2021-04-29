@@ -63,6 +63,7 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
           readCount: 0,
           commentFeedbackId: '',
           notice: false,
+          pinned: false,
         });
       }
     }, subscriberId);

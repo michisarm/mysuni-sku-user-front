@@ -18,6 +18,8 @@ export interface boardSdo {
   name?: string;
   config?: BoardConfig;
   learningPeriod?: DatePeriod;
+  automaticCompletion?: boolean;
+  completionCondition?: BoardCompletionCondition;
 }
 
 export interface BoardConfig {
@@ -26,6 +28,12 @@ export interface BoardConfig {
   anonymousCommentAllowed: string;
   enClosed: string;
   unLimited: string;
+}
+
+export interface BoardCompletionCondition {
+  postCount: number;
+  commentCount: number;
+  subCommentCount: number;
 }
 
 export interface officeWebSdo {

@@ -18,6 +18,13 @@ const [
 ] = createStore<number>(0);
 
 const [
+  setLectureTaskOrder,
+  onLectureTaskOrder,
+  getLectureTaskOrder,
+  useLectureTaskOrder,
+] = createStore<string>('New');
+
+const [
   setLectureTaskViewType,
   onLectureTaskViewType,
   getLectureTaskViewType,
@@ -50,4 +57,8 @@ export {
   onLectureTaskTab,
   getLectureTaskTab,
   useLectureTaskTab,
+  setLectureTaskOrder,
+  onLectureTaskOrder,
+  getLectureTaskOrder,
+  useLectureTaskOrder,
 };

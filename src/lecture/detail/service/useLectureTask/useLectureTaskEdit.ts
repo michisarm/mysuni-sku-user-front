@@ -54,6 +54,7 @@ export function useLectureTaskEdit(
         readCount: 0,
         commentFeedbackId: '',
         notice: false,
+        pinned: false,
       })
       }
     }, subscriberId);

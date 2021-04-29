@@ -33,6 +33,7 @@ async function getTaskItem(postParam: any) {
     readCount: 0,
     commentFeedbackId: '',
     notice: false,
+    pinned: false,
   };
   //
   if (postParam.id !== '' && postParam.type === 'parent') {

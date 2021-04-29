@@ -1,14 +1,17 @@
 import {
   getLectureTaskOffset,
   getLectureTaskTab,
+  getLectureTaskOrder,
   onLectureTaskItem,
   onLectureTaskOffset,
   onLectureTaskTab,
   onLectureTaskViewType,
+  onLectureTaskOrder,
   setLectureTaskDetail,
   setLectureTaskItem,
   setLectureTaskOffset,
   setLectureTaskTab,
+  setLectureTaskOrder,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { useEffect, useState } from 'react';
@@ -38,6 +41,8 @@ export function useLectureTask(): [TaskValue] {
     });
     setLectureTaskTab('Overview');
     setLectureTaskOffset(0);
+    // add
+    setLectureTaskOrder('New');
   }, [params?.cubeId]);
 
   useEffect(() => {
@@ -66,7 +71,9 @@ export function useLectureTask(): [TaskValue] {
         params?.cubeId,
         getLectureTaskOffset() || 0,
         limit,
-        getLectureTaskTab() || 'post'
+        getLectureTaskOrder() === "My" ? 'My' : 'Posts',
+        getLectureTaskOrder() || 'New'
+
       );
     }, subscriberId);
   }, [subscriberId, params?.cubeId]);
@@ -86,6 +93,10 @@ export function useLectureTask(): [TaskValue] {
       if (next === 'list') {
         setLectureTaskItem();
         setLectureTaskOffset(0);
+        // add
+        setLectureTaskItem();
+        setLectureTaskDetail();
+        // setLectureTaskOrder('New');
       }
     }, subscriberId);
   }, [subscriberId]);
@@ -101,6 +112,8 @@ export function useLectureTask(): [TaskValue] {
 
       setLectureTaskItem();
       setLectureTaskOffset(0);
+      // addd
+      setLectureTaskOrder('New');
     }, subscriberId);
   }, [subscriberId]);
 

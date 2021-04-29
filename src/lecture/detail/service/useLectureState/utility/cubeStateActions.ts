@@ -56,12 +56,14 @@ export async function submit(
     //approvalProcess,
     approverDenizenId: approvalEmail,
   };
+  console.log("22222222")
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
   refreshCompleted();
+  console.log("33333333")
 }
 
 export async function submitFromCubeId(

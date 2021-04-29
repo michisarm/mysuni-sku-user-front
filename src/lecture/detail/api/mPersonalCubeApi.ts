@@ -56,11 +56,13 @@ export function findTask(
   boardId: string,
   offset: number,
   limit: number,
-  tabType: string
+  tabType: string,
+  sort?: string
 ): Promise<Task> {
   let url = '';
   if (tabType === 'Posts') {
-    url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+    // url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+    url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}&sort=${sort}`;
   } else {
     url = `${BASE_URL}/posts/myByBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   }

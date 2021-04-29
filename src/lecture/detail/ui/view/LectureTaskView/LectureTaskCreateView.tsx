@@ -122,7 +122,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
 
   const handlePinnedChange = useCallback((e: any, data: any) => {
     const value = data.checked;
-    changeProps(value, 'notice', viewType!);
+    changeProps(value, 'pinned', viewType!);
   }, []);
 
   const title = isReply ? 'Reply' : 'Post';
@@ -146,15 +146,15 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               <Form.Field>
                 <div className="board-write-checkbox">
                   <div className="ui checkbox base">
-                    {/* {canNotice && (
+                    {canNotice && (
                       <Checkbox
                         className="base"
                         label="공지 등록"
                         name="communityPostCreatePinned"
-                        checked={taskDetail.notice}
+                        checked={taskDetail.pinned}
                         onChange={handlePinnedChange}
                       />
-                    )} */}
+                    )}
                   </div>
                 </div>
                 <div

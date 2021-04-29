@@ -60,11 +60,11 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {cubeType === 'Task' && student.learningState !== 'Passed' && (
+      {/* {cubeType === 'Task' && student.learningState !== 'Passed' && (
         <button className="ui button free bg p18" onClick={action}>
           {JOIN}
         </button>
-      )}
+      )} */}
       <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
@@ -97,9 +97,13 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
 
   return (
     <>
-      {(cubeType === 'Task' && (student === undefined || student?.proposalState === 'Canceled')) && (
+      {/* 
+        Discussion - 댓글, 대댓글 작성 시 자동으로 학습 시작
+        Task - Post 작성 버튼, 댓글, 대댓글 작성 시 자동으로 학습 시작
+       */}
+      {/* {(cubeType === 'Task' && (student === undefined || student?.proposalState === 'Canceled')) && (
         <CanceledView />
-      )}
+      )} */}
       {student?.proposalState === 'Approved' && (
         <ApprovedView student={student} cubeType={cubeType} />
       )}

@@ -1,5 +1,5 @@
 import { useLectureTask } from 'lecture/detail/service/useLectureTask/useLectureTask';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
@@ -7,6 +7,7 @@ import {
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
+  setLectureTaskOrder,
 } from '../../store/LectureTaskStore';
 import { ContentLayout } from 'shared';
 import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView';
@@ -32,16 +33,21 @@ import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskD
 import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
 import { getLectureParams } from '../../store/LectureParamsStore';
+import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
+import { OverviewField } from '../../../../personalcube';
+import { Image } from 'semantic-ui-react';
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
   const history = useHistory();
 
-  useEffect(() => {
-    return () => {
-      setLectureTaskTab('Overview');
-    };
-  }, [pathname]);
+  // useEffect(() => {
+  //   return () => {
+  //     setLectureTaskTab('Overview');
+  //   };
+  // }, [pathname]);
 
   useEffect(() => {
     if (hash === '#create') {
@@ -70,6 +76,37 @@ function LectureTaskContainer() {
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
   const [isReply, setIsReply] = useState<boolean>(false);
+  const [activePage, setActivePage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  // 이수정보 관련
+  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
+  const [cubePostCount, setCubePostCount] = useState<number>(0);
+  const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
+  const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
+
+  useEffect(() => {
+    console.log("lectureDescription=============================",lectureDescription)
+    if(taskItem){
+      let totalpage = Math.ceil(taskItem!.totalCount / 2);
+      if (taskItem!.totalCount % 2 < 0) {
+        totalpage++;
+      }
+      setTotalPage(totalpage);
+    }
+  }, [taskItem]);
+
+  const pageChage = (data: any) => {
+    const nextOffset = (data.activePage - 1) * 2;
+    setLectureTaskOffset(nextOffset);
+    setActivePage(data.activePage);
+  };
+
+  const sortChage = (data: any) => {
+    setLectureTaskOrder(data);
+    setActivePage(1);
+    setLectureTaskOffset(0);
+  };
+
 
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
@@ -86,7 +123,16 @@ function LectureTaskContainer() {
   }, []);
 
   const onClickList = useCallback(() => {
-    history.goBack();
+    // history.goBack();
+    // 리스트로 돌아가기
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    history.push({
+      pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
+    });
+    setActivePage(1);
   }, []);
 
   // const onHandleSave = useCallback(() => {
@@ -136,6 +182,7 @@ function LectureTaskContainer() {
   }, []);
 
   const handelClickCreateTask = useCallback(() => {
+    console.log("ENNNNNNNNNNNNNNNNNND")
     setCreate(true);
   }, []);
 
@@ -161,11 +208,20 @@ function LectureTaskContainer() {
           return;
         }
         const nextTaskEditItem = { ...taskEditItem, [name]: value };
+        console.log("eeeeeeeee", nextTaskEditItem)
         setLectureTaskDetail(nextTaskEditItem);
       }
     },
     []
   );
+
+  const replaceEnterWithBr = (target?: string) => {
+    let setHtml = '';
+    if(target){
+      setHtml = target.split('\n').join('<br />');
+    }
+    return setHtml;
+  };
 
   const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
     reactConfirm({
@@ -191,6 +247,7 @@ function LectureTaskContainer() {
               readCount: 0,
               commentFeedbackId: '',
               notice: false,
+              pinned: false,
             });
             history.goBack();
 
@@ -237,6 +294,63 @@ function LectureTaskContainer() {
       {viewType === 'list' && (
         <div className="contents">
           <LectureCubeSummaryContainer />
+
+{/* View Add */}
+          <div className="discuss-wrap">
+            <div className="task-condition">
+              <strong className="task-condition">이수조건</strong>
+              {cubeAutomaticCompletion ? (
+                  <span>본 Task는 <strong>Post {cubePostCount}건 / Comment {cubeCommentCount}건 / Comment Reply {cubeSubCommentCount}건</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
+                ) : (
+                  <span>본 Task는 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                )
+              }
+                {(lectureDescription && lectureDescription.completionTerms) && (
+                  <Fragment>
+                    {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
+                    <p
+                      dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }}
+                    />
+                    {/* <LectureDescriptionView
+                      htmlContent={lectureDescription.description}
+                    /> */}
+                  </Fragment>
+                )}
+            </div>
+            {/* <div className="discuss-box2"> */}
+            {/* {lectureFeedbackContent &&
+                lectureFeedbackContent.relatedUrlList &&
+                lectureFeedbackContent.relatedUrlList.length > 0 &&
+                (lectureFeedbackContent.relatedUrlList[0].title !== '' ||
+                  lectureFeedbackContent.relatedUrlList[0].url !== '') && (
+                  <div className="community-board-down discuss2">
+                    <div className="board-down-title href">
+                      <p>
+                        {' '}
+                        <Image
+                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                          alt=""
+                          style={{ display: 'inline-block' }}
+                        />
+                        관련 URL
+                      </p>
+                      {lectureFeedbackContent &&
+                        lectureFeedbackContent.relatedUrlList?.map(
+                          (item: any) => (
+                            <a href={item.url} target="blank">
+                              {item.title}
+                            </a>
+                          )
+                        )}
+                    </div>
+                  </div>
+                )
+          } */}
+            {/* </div> */}
+          </div>
+
+{/* View Add */}
+
           <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}
@@ -245,10 +359,14 @@ function LectureTaskContainer() {
               handleClickTaskRow={moveToDetail}
               listHashLink={listHashLink}
               overviewHashLink={overviewHashLink}
-              lectureDescription={lectureDescription}
-              lectureSubcategory={lectureSubcategory}
-              lectureTags={lectureTags}
-              lectureFile={lectureFile}
+              // lectureDescription={lectureDescription}
+              // lectureSubcategory={lectureSubcategory}
+              // lectureTags={lectureTags}
+              // lectureFile={lectureFile}
+              sortChage={sortChage}
+              pageChage={pageChage}
+              activePage={activePage}
+              totalPage={totalPage}
             />
           </ContentLayout>
         </div>

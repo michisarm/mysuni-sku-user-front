@@ -12,6 +12,7 @@ export default interface TaskDetailPost {
   id: string;
   contents: string;
   fileBoxId: string;
+  pinned: boolean;
 }
 
 export default interface TaskDetail {

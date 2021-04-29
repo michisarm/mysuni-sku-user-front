@@ -5,7 +5,7 @@ import {
 import React, { Fragment, useCallback, useState } from 'react';
 
 import moment from 'moment';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Pagination } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
 
@@ -14,6 +14,11 @@ interface LectureTaskPostViewProps {
   moreView: (offset: number) => void;
   handleClickTaskRow: (param: object) => void;
   handelClickCreateTask: () => void;
+  sortChage: (data: any) => void;
+  pageChage: (data: any) => void;
+  activePage: number;
+  totalPage: number;
+
 }
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
@@ -93,6 +98,10 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
   moreView,
   handleClickTaskRow,
   handelClickCreateTask,
+  sortChage,
+  pageChage,
+  activePage,
+  totalPage
 }) {
   const onHandleClickTaskRow = useCallback(
     param => {
@@ -110,6 +119,7 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
       <LectureTaskTopLineView
         totalCount={taskItem.totalCount}
         handelClickCreateTask={handelClickCreateTask}
+        sortChage={sortChage}
       />
       <>
         <div className="community-list">
@@ -117,14 +127,24 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
             return renderPostRow(task, onHandleClickTaskRow);
           })}
         </div>
-        {taskItem.items.length < taskItem.totalCount && (
+        {/* {taskItem.items.length < taskItem.totalCount && (
           <div className="more-comments" onClick={onHandleClickMoreView}>
             <Button icon className="left moreview">
               <Icon className="moreview" />
               list more
             </Button>
           </div>
-        )}
+        )} */}
+        {taskItem && taskItem.totalCount ? (
+
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={activePage}
+              totalPages={totalPage}
+              onPageChange={(e, data) => pageChage(data)}
+            />
+          </div>
+        ) : (null)}
       </>
     </Fragment>
   );

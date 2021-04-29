@@ -307,8 +307,9 @@ export function findPostBody(postId: string) {
 
 export function modifyPost(
   postId: string,
-  nameValueList: { nameValues: { name: string; value: string }[] }
+  nameValueList: { nameValues: { name: string; value: any }[] }
 ) {
+  console.log("modifyPost")
   const axios = getAxios();
   const url = `${BASE_URL}/posts/${postId}`;
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
