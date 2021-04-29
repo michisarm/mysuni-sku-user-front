@@ -1,4 +1,3 @@
-import { CommunityDiscussionDetail } from '../viewModel/CommunityDiscussionDetail';
 import { CommunityDiscussion } from '../model/CommunityDiscussion';
 import { axiosApi, OffsetElementList, NameValue } from '@nara.platform/accent';
 import Axios, { AxiosResponse } from 'axios';
@@ -518,6 +517,7 @@ export function addCommunityAdminDiscussion(
   addRow: any
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
+
   const params = {
     ...addRow,
     groupId: addRow.groupId === null ? '' : addRow.groupId,
