@@ -1,18 +1,15 @@
 import React, { Fragment } from 'react';
 import { useLocation } from 'react-router';
-import LectureParams from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
-  LectureStructureItemType,
 } from '../../../viewModel/LectureStructure';
 import CourseReportView from './CourseReportView';
 import CourseSurveyView from './CourseSurveyView';
 import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
-import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ReportView from './ReportView';
