@@ -33,7 +33,11 @@ function paramsSerializer(paramObj: Record<string, any>) {
 function findCard(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/${cardId}`;
-  return axios.get<CardWithContentsAndRelatedCountRom>(url).then(AxiosReturn);
+
+  return axios
+    .get<CardWithContentsAndRelatedCountRom>(url)
+    .then(AxiosReturn)
+    .catch(err => undefined);
 }
 
 export const [findCardCache, clearFindCardCache] = createCacheApi(findCard);
@@ -99,7 +103,8 @@ async function findMyCardRelatedStudents(cardId: string) {
   const url = `${BASE_URL}/students/myCardRelatedStudents/${cardId}`;
   const result = await axios
     .get<MyCardRelatedStudentsRom>(url)
-    .then(AxiosReturn);
+    .then(AxiosReturn)
+    .catch(() => undefined);
   if (result !== undefined) {
     if (
       result.cardStudent === null &&
