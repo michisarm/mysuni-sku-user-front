@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Card } from 'semantic-ui-react';
-import ExportListDummy from '../model/ExportListDummy';
+import { Icon, Card, Image } from 'semantic-ui-react';
 import { useExpert } from './SearchFilter';
 
 const ExpertCards: React.FC = () => {
@@ -15,27 +14,48 @@ const ExpertCards: React.FC = () => {
             <Card key={index}>
               <div className="card-inner">
                 <Link
-                  to={`/expert/instructor/${item.fields.pk}/Introduce`}
+                  to={`/expert/instructor/${item.id}/Introduce`}
                   className="history"
                 >
                   {/* .ui.profile */}
                   <div className="ui profile">
-                    <div className={`pic ${item.fields.name}`}>
-                      {/*프로필 사진 자리
-                      <Image src='/images/all/profile-80-px.png' alt='프로필사진 임시이미지' />
-                      */}
+                    <div className="pic">
+                      {item.photo_id !== null && item.photo_id !== '' && (
+                        <Image
+                          src={
+                            item.photo_id.startsWith('http')
+                              ? item.photo_id
+                              : `https://mysuni.sk.com${item.photo_id}`
+                          }
+                          alt="프로필사진 임시이미지"
+                        />
+                      )}
                     </div>
                   </div>
                   {/* // .ui.profile */}
-                  <span className="name">{item.fields.name}</span>
-                  <span className="co">{item.fields.department}</span>
-                  <span className="instructor">{item.fields.position}</span>
+                  <span
+                    className="name"
+                    dangerouslySetInnerHTML={{ __html: item.name }}
+                  />
+                  <span
+                    className="co"
+                    dangerouslySetInnerHTML={{ __html: item.department }}
+                  />
+                  <span
+                    className="instructor"
+                    dangerouslySetInnerHTML={{ __html: item.position }}
+                  />
                 </Link>
                 {/* .channel */}
                 <div className="channel">
                   <Icon className="completed16" />
-                  <span className="blind">{item.fields.name}</span>
-                  <span>{item.fields.channel_name}</span>
+                  <span
+                    className="blind"
+                    dangerouslySetInnerHTML={{ __html: item.name }}
+                  />
+                  <span
+                    dangerouslySetInnerHTML={{ __html: item.channel_name }}
+                  />
                 </div>
                 {/* // .channel */}
               </div>
