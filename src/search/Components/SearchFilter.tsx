@@ -18,6 +18,7 @@ import { reactAlert } from '@nara.platform/accent';
 import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { CardCategory } from '../../shared/model/CardCategory';
+import { SearchExpert } from '../model/SearchExpert';
 
 interface Props {
   isOnFilter: boolean;
@@ -120,7 +121,9 @@ export const [
   useDisplayCard,
 ] = createStore<SearchCard[]>();
 
-export const [setExpert, onExpert, getExpert, useExpert] = createStore<any[]>();
+export const [setExpert, onExpert, getExpert, useExpert] = createStore<
+  SearchExpert[]
+>();
 
 function toggle_all_all_college_name_query() {
   const filterCondition = getFilterCondition();
@@ -692,7 +695,7 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
   closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then(response => {
     if (response && response.result && response.result.rows) {
-      setExpert(response.result.rows);
+      setExpert(response.result.rows.map(c => c.fields));
     } else {
       setExpert();
     }

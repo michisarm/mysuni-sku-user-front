@@ -85,6 +85,7 @@ export interface LectureStructureDiscussionItem extends LectureStructureItem {
   time: number;
   creator: string;
   creatorAudienceId: string;
+  last?: boolean;
 }
 
 export interface LectureStructureCardItem extends LectureStructureItem {
