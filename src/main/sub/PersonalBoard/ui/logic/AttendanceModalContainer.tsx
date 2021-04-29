@@ -100,3 +100,4 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
 export default inject(mobxHelper.injectFrom())(
   withRouter(observer(AttendanceModalContainer))
 );
+

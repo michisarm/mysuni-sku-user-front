@@ -13,6 +13,7 @@ import {
 } from '../Components/SearchFilter';
 import CheckboxOptions from '../model/CheckBoxOption';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
+import { SearchExpert } from '../model/SearchExpert';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -87,10 +88,13 @@ export function findCPGroup(text_idx: string, companyCode: string) {
   return axiosApi.get<SearchResult<CPGroup>>(url).then(AxiosReturn);
 }
 
+const FIND_CARD_COLUMNS =
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names';
+
 export function findCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}`
   );
   return axiosApi.get<SearchResult<SearchCard>>(url).then(AxiosReturn);
 }
@@ -160,7 +164,7 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
     if (filterCondition.learning_end_date_str !== null) {
       displayCards = displayCards.filter(
         c =>
-          new Date(c.learning_start_date) <=
+          new Date(c.learning_end_date) <=
           filterCondition.learning_end_date_str!
       );
     }
@@ -223,7 +227,6 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
       displayCards = displayCards.filter(c => parseInt(c.stamp_count) > 0);
     }
   }
-  console.log('filterCondition', filterCondition);
   return displayCards;
 }
 
@@ -232,9 +235,9 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
-  return axiosApi.get<any>(url).then(AxiosReturn);
+  return axiosApi.get<SearchResult<SearchExpert>>(url).then(AxiosReturn);
 }
 
 export interface QueryOptions {

@@ -91,6 +91,26 @@ export async function submitFromCubeId(
   refreshCompleted();
 }
 
+export async function cancleFromCubeId(cubeId: string, cubeType: CubeType) {
+  const params = getLectureParams();
+  if (params?.cardId === undefined) {
+    return;
+  }
+  const { cardId } = params;
+  const myCardRelatedStudents = await findMyCardRelatedStudentsCache(cardId);
+  const cubeStudents = myCardRelatedStudents?.cubeStudents;
+  const student = findCubeStudent(cubeId, cubeStudents);
+  if (student === undefined) {
+    return;
+  }
+  await cancelStudents(student.id);
+  clearFindMyCardRelatedStudentsCache();
+  updateCardLectureStructure(cardId);
+  requestLectureState(cardId, cubeId, cubeType);
+  refreshInprogess();
+  refreshCompleted();
+}
+
 export async function cancel() {
   const params = getLectureParams();
   if (params?.cubeId === undefined || params?.cubeType === undefined) {

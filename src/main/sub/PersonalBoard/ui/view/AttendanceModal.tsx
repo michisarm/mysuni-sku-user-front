@@ -249,3 +249,4 @@ const AttendanceModal: React.FC<Props> = ({
 };
 
 export default AttendanceModal;
+

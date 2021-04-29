@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Segment, Radio, Button } from 'semantic-ui-react';
-import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
 import SearchFilter from '../Components/SearchFilter';
 import { useParams } from 'react-router-dom';
