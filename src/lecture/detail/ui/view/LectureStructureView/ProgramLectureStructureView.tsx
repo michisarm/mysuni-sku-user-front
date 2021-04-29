@@ -8,11 +8,7 @@ import {
   LectureStructureDurationableCubeItem,
 } from '../../../viewModel/LectureStructure';
 import { ChapterStructureView } from './ChapterStructureView';
-import CourseReportView from './CourseReportView';
-import CourseSurveyView from './CourseSurveyView';
-import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
-import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
