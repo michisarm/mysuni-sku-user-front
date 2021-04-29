@@ -10,6 +10,7 @@ import {
   cancel,
   submit,
   submitFromCubeId,
+  cancleFromCubeId,
 } from '../../../service/useLectureState/utility/cubeStateActions';
 import LectureClassroom, {
   Classroom,
@@ -123,12 +124,18 @@ function CanceledView(props: CanceledViewProps) {
   );
 }
 
-function SubmittedView() {
+function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
+  const { cubeId, cubeType } = props;
+
+  const onCancled = () => {
+    cancleFromCubeId(cubeId, cubeType);
+  };
+
   return (
     <>
       <button
         className={`ui button free ${actionClassName} p18`}
-        onClick={cancel}
+        onClick={onCancled}
       >
         {CANCEL}
       </button>
@@ -142,12 +149,18 @@ function SubmittedView() {
   );
 }
 
-function RejectedView() {
+function RejectedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
+  const { cubeId, cubeType } = props;
+
+  const onCancled = () => {
+    cancleFromCubeId(cubeId, cubeType);
+  };
+
   return (
     <>
       <button
         className={`ui button free ${actionClassName} p18`}
-        onClick={cancel}
+        onClick={onCancled}
       >
         {CANCEL}
       </button>
@@ -266,10 +279,10 @@ const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> = func
     );
   }
   if (student.proposalState === 'Submitted') {
-    return <SubmittedView />;
+    return <SubmittedView cubeId={id} cubeType={type} />;
   }
   if (student.proposalState === 'Rejected') {
-    return <RejectedView />;
+    return <RejectedView cubeId={id} cubeType={type} />;
   }
   if (student.proposalState === 'Approved') {
     if (lectureState.cubeType === 'ELearning') {

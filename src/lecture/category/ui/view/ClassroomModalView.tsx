@@ -191,10 +191,16 @@ class ClassroomModalView extends Component<Props, States> {
                               <Table.Cell verticalAlign="middle"></Table.Cell>
                               {classroom.round}
                             </Table.Cell>
-                            {/* <Table.Cell>
+                            <Table.Cell>
                               <Table.Cell verticalAlign="middle"></Table.Cell>
-                              {classroom.instructor}
-                            </Table.Cell> */}
+                              {classroom.instructor.length > 0 &&
+                                classroom.instructor.map(item => {
+                                  <>
+                                    {item.name}
+                                    <p />
+                                  </>;
+                                })}
+                            </Table.Cell>
                             <Table.Cell className="el">
                               <Table.Cell verticalAlign="middle"></Table.Cell>
                               <span>{classroom.location}</span>
