@@ -18,7 +18,7 @@ const ProgramDiscussionView: React.FC<ProgramDiscussionViewProps> = function Pro
   return (
     <Link
       to={path}
-      className={`btn-single-cube ${activated ? 'act-on' : ''}`}
+      className={`btn-state-course ${activated ? 'act-on' : ''}`}
       onClick={() => window.scrollTo({ top: 0 })}
     >
       <span className="label-state-cube n-discuss">
