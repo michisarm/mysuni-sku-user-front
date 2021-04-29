@@ -127,9 +127,9 @@ function CanceledView(props: CanceledViewProps) {
 function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
   const { cubeId, cubeType } = props;
 
-  const onCancled = () => {
+  const onCancled = useCallback(() => {
     cancleFromCubeId(cubeId, cubeType);
-  };
+  }, [cubeId, cubeType]);
 
   return (
     <>
@@ -152,9 +152,9 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
 function RejectedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
   const { cubeId, cubeType } = props;
 
-  const onCancled = () => {
+  const onCancled = useCallback(() => {
     cancleFromCubeId(cubeId, cubeType);
-  };
+  }, [cubeId, cubeType]);
 
   return (
     <>
