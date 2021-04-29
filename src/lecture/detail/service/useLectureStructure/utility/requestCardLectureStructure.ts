@@ -623,12 +623,9 @@ function parseItems(
       if (chapter !== undefined) {
         items.push(chapter);
       }
-      children.forEach(c => {
+      children.forEach((c, i) => {
         const cube = lectureStructure.cubes.find(d => d.cubeId === c.contentId);
         if (cube !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           cube.parentId = contentId;
           if (i === children.length - 1) {
             cube.last = true;
@@ -639,10 +636,10 @@ function parseItems(
           d => d.id === c.contentId
         );
         if (discussion !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           discussion.parentId = contentId;
+          if (i === children.length - 1) {
+            discussion.last = true;
+          }
           items.push(discussion);
         }
       });
