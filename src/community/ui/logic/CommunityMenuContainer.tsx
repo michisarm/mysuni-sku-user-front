@@ -510,7 +510,7 @@ function CommunityMenuContainer() {
             });
           }
           //입력 항목 초기화
-          handleAddMenu()
+          handleAddMenu();
         } else {
           reactAlert({
             title: '',
@@ -560,7 +560,7 @@ function CommunityMenuContainer() {
             });
           }
           //입력 항목 초기화
-          handleAddChildMenu()
+          handleAddChildMenu();
         } else {
           reactAlert({
             title: '',
@@ -617,7 +617,10 @@ function CommunityMenuContainer() {
         }
 
         if (type === 'group') {
-          setDiscussRow({ ...discussRow, groupId: value });
+          setDiscussRow({
+            ...discussRow,
+            groupId: value === null ? '' : value,
+          });
         }
       }
     },
