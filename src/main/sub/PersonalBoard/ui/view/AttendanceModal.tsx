@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal } from 'semantic-ui-react';
+import { Modal, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Area } from 'tracker/model';
@@ -11,6 +11,7 @@ interface Props {
   AttendCountItem: any;
   AttendEventItem: any;
   EncryptEmail: string;
+  afterFlag: boolean;
   setOpen: (state: boolean) => void;
   handleInputChange: (name: string, value: any) => void;
   handleSave: () => void;
@@ -22,6 +23,7 @@ const AttendanceModal: React.FC<Props> = ({
   AttendCountItem,
   AttendEventItem,
   EncryptEmail,
+  afterFlag,
   setOpen,
   attendClick,
 }) => {
@@ -75,7 +77,7 @@ const AttendanceModal: React.FC<Props> = ({
   const handleAttend = useCallback(
     (className: string) => {
       // console.log('AttendCountItem', AttendCountItem)
-      if (className.indexOf('today') !== -1) {
+      if (className.indexOf('today') !== -1 && !afterFlag) {
         attendClick();
       }
     },
@@ -121,8 +123,6 @@ const AttendanceModal: React.FC<Props> = ({
     window.open(
       'about:blank',
       'luckydraw'
-      //사이즈 무시하고 새창으로 열어달라고 요청옴
-      // 'width=300, height=300'
     );
 
     frm.submit();
@@ -226,9 +226,27 @@ const AttendanceModal: React.FC<Props> = ({
             )}
           </div>
         </Modal.Content>
+        { afterFlag && (
+          <div className="enddim">
+            <div className="dim_inner">
+              <span className="imgbox">
+                <img src={`${PUBLIC_URL}/images/all/icon-end-wht.svg`} alt="박수치는남자이미지"/>
+              </span>
+              <p>
+                <em>4월 30일자로 출석이벤트가 <br/>종료되었습니다.</em>
+                <span>이벤트로 획득한 복권은<strong>5월 7일까지</strong><br />아래 <Image src={`${PUBLIC_URL}/images/all/btn-strach-small.svg`} alt="복권긁기버튼이미지"/> 버튼을 눌러 확인 하세요!</span>
+              </p>
+              <p>
+                출석 횟수가 5회 미만인 경우, 
+                <br />‘복권 긁기’ 버튼이 노출되지 않습니다.
+              </p>
+            </div>
+          </div>
+        )}
       </Modal>
     </>
   );
 };
 
 export default AttendanceModal;
+
