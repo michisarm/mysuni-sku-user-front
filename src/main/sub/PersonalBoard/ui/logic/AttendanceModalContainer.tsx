@@ -32,7 +32,7 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
     if (open) {
       const today = moment().format('YYYY-MM-DD')
       const afterFlag = moment(today).isAfter(
-        moment().format('2021-04-28'),
+        moment().format('2021-04-30'),
         'day'
       );
       setAfterFlag(afterFlag)
