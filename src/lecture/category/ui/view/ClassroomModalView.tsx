@@ -195,10 +195,12 @@ class ClassroomModalView extends Component<Props, States> {
                               <Table.Cell verticalAlign="middle"></Table.Cell>
                               {classroom.instructor.length > 0 &&
                                 classroom.instructor.map(item => {
-                                  <>
-                                    {item.name}
-                                    <p />
-                                  </>;
+                                  return (
+                                    <>
+                                      {item.name}
+                                      <p />
+                                    </>
+                                  );
                                 })}
                             </Table.Cell>
                             <Table.Cell className="el">
