@@ -136,7 +136,7 @@ function CommunityDiscussionContainer() {
   return (
     <>
       {postDetail && (
-        <>
+        <div style={{width: '850px'}}>
           <DiscussionViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -158,7 +158,7 @@ function CommunityDiscussionContainer() {
               communityAdminAuth={communityAdminAuth}
             />
           )}
-        </>
+        </div>
       )}
     </>
   );
