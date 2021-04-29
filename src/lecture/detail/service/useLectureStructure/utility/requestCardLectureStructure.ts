@@ -35,6 +35,7 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
+import { reactAlert } from '@nara.platform/accent';
 
 function parseCubeTestItem(
   card: Card,
@@ -623,12 +624,9 @@ function parseItems(
       if (chapter !== undefined) {
         items.push(chapter);
       }
-      children.forEach(c => {
+      children.forEach((c, i) => {
         const cube = lectureStructure.cubes.find(d => d.cubeId === c.contentId);
         if (cube !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           cube.parentId = contentId;
           if (i === children.length - 1) {
             cube.last = true;
@@ -639,10 +637,10 @@ function parseItems(
           d => d.id === c.contentId
         );
         if (discussion !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           discussion.parentId = contentId;
+          if (i === children.length - 1) {
+            discussion.last = true;
+          }
           items.push(discussion);
         }
       });
@@ -669,7 +667,14 @@ export async function requestCardLectureStructure(cardId: string) {
     myCardRelatedStudentsRom === undefined
   ) {
     setIsLoadingState({ isLoading: false });
-    return;
+    return reactAlert({
+      title: '',
+      message:
+        '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
+      onClose: () => {
+        window.location.href = window.location.origin;
+      },
+    });
   }
 
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;

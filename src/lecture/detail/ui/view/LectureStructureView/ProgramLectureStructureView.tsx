@@ -8,11 +8,7 @@ import {
   LectureStructureDurationableCubeItem,
 } from '../../../viewModel/LectureStructure';
 import { ChapterStructureView } from './ChapterStructureView';
-import CourseReportView from './CourseReportView';
-import CourseSurveyView from './CourseSurveyView';
-import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
-import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
@@ -68,67 +64,70 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
         }
         if (item.type === 'CUBE') {
           const cube = item as LectureStructureCubeItem;
-          if (
-            cube.parentId !== undefined &&
-            collapsedIds.includes(cube.parentId)
-          ) {
-            return null;
-          }
           return (
             <Fragment key={cube.cubeId}>
-              {cube.isDurationable !== true && (
-                <CubeView
-                  key={cube.cubeId}
-                  name={cube.name}
-                  state={cube.state}
-                  learningTime={cube.learningTime}
-                  cubeType={cube.cubeType}
-                  path={cube.path}
-                  can={cube.can}
-                  activated={cube.path === pathname}
-                />
+              {(cube.parentId === undefined ||
+                !collapsedIds.includes(cube.parentId)) && (
+                <>
+                  {cube.isDurationable !== true && (
+                    <CubeView
+                      key={cube.cubeId}
+                      name={cube.name}
+                      state={cube.state}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                      activated={cube.path === pathname}
+                    />
+                  )}
+                  {cube.isDurationable === true && (
+                    <DurationableCubeView
+                      key={cube.cubeId}
+                      name={cube.name}
+                      state={cube.state}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                      duration={
+                        (cube as LectureStructureDurationableCubeItem).duration
+                      }
+                      activated={cube.path === pathname}
+                    />
+                  )}
+                  {cube?.test !== undefined && (
+                    <TestView
+                      name={cube.test.name}
+                      state={cube.test.state}
+                      path={cube.test.path}
+                      can={cube.test.can}
+                      activated={cube.test.path === pathname}
+                    />
+                  )}
+                  {cube?.survey !== undefined && (
+                    <SurveyView
+                      name={cube.survey.name}
+                      state={cube.survey.state}
+                      path={cube.survey.path}
+                      can={cube.survey.can}
+                      activated={cube.survey.path === pathname}
+                    />
+                  )}
+                  {cube?.report !== undefined && (
+                    <ReportView
+                      name={cube.report.name}
+                      state={cube.report.state}
+                      path={cube.report.path}
+                      can={cube.report.can}
+                      activated={cube.report.path === pathname}
+                    />
+                  )}{' '}
+                </>
               )}
-              {cube.isDurationable === true && (
-                <DurationableCubeView
-                  key={cube.cubeId}
-                  name={cube.name}
-                  state={cube.state}
-                  learningTime={cube.learningTime}
-                  cubeType={cube.cubeType}
-                  path={cube.path}
-                  can={cube.can}
-                  duration={
-                    (cube as LectureStructureDurationableCubeItem).duration
-                  }
-                  activated={cube.path === pathname}
-                />
-              )}
-              {cube?.test !== undefined && (
-                <TestView
-                  name={cube.test.name}
-                  state={cube.test.state}
-                  path={cube.test.path}
-                  can={cube.test.can}
-                  activated={cube.test.path === pathname}
-                />
-              )}
-              {cube?.survey !== undefined && (
-                <SurveyView
-                  name={cube.survey.name}
-                  state={cube.survey.state}
-                  path={cube.survey.path}
-                  can={cube.survey.can}
-                  activated={cube.survey.path === pathname}
-                />
-              )}
-              {cube?.report !== undefined && (
-                <ReportView
-                  name={cube.report.name}
-                  state={cube.report.state}
-                  path={cube.report.path}
-                  can={cube.report.can}
-                  activated={cube.report.path === pathname}
-                />
+
+              {cube.last === true && (
+                <div style={{ height: 8, backgroundColor: '#f8f8f8' }} />
               )}
             </Fragment>
           );
@@ -142,13 +141,21 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
             return null;
           }
           return (
-            <ProgramDiscussionView
-              key={discussion.id}
-              name={discussion.name}
-              state={discussion.state}
-              path={discussion.path}
-              activated={discussion.path === pathname}
-            />
+            <Fragment>
+              {(discussion.parentId === undefined ||
+                !collapsedIds.includes(discussion.parentId)) && (
+                <ProgramDiscussionView
+                  key={discussion.id}
+                  name={discussion.name}
+                  state={discussion.state}
+                  path={discussion.path}
+                  activated={discussion.path === pathname}
+                />
+              )}
+              {discussion.last === true && (
+                <div style={{ height: 8, backgroundColor: '#f8f8f8' }} />
+              )}
+            </Fragment>
           );
         }
         if (item.type === 'DISCUSSION' && item.parentId === undefined) {
