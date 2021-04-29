@@ -13,6 +13,7 @@ import {
 } from '../Components/SearchFilter';
 import CheckboxOptions from '../model/CheckBoxOption';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
+import { SearchExpert } from '../model/SearchExpert';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -234,9 +235,9 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
-  return axiosApi.get<any>(url).then(AxiosReturn);
+  return axiosApi.get<SearchResult<SearchExpert>>(url).then(AxiosReturn);
 }
 
 export interface QueryOptions {
