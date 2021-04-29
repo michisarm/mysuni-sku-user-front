@@ -134,12 +134,6 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
         }
         if (item.type === 'DISCUSSION' && item.parentId !== undefined) {
           const discussion = item as LectureStructureDiscussionItem;
-          if (
-            discussion.parentId !== undefined &&
-            collapsedIds.includes(discussion.parentId)
-          ) {
-            return null;
-          }
           return (
             <Fragment>
               {(discussion.parentId === undefined ||
