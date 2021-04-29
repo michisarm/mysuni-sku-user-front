@@ -179,7 +179,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         'day'
       );
       const beforeFlag = moment(today).isBefore(
-        moment().format('2021-05-01'),
+        moment().format('2021-05-08'),
         'day'
       );
 
@@ -321,3 +321,4 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 }
 
 export default withRouter(MyLearningSummaryContainer);
+
