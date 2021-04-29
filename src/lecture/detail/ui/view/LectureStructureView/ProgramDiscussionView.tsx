@@ -21,14 +21,14 @@ const ProgramDiscussionView: React.FC<ProgramDiscussionViewProps> = function Pro
       className={`btn-single-cube ${activated ? 'act-on' : ''}`}
       onClick={() => window.scrollTo({ top: 0 })}
     >
-      <span className="label-type n-discuss">토론하기</span>
-      <span className="copy">{name}</span>
-      <span
-        className={`label-state-learning ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
-      >
-        <span>진행상태</span>
+      <span className="label-state-cube n-discuss">
+        <span>토론하기</span>
+      </span>
+      <span className="copy-holder">
+        <span className="copy-title">{name}</span>
+        <ul className="type-info">
+          <li>Talk</li>
+        </ul>
       </span>
     </Link>
   );

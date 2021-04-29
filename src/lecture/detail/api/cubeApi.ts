@@ -43,17 +43,19 @@ function decode(input: string) {
 }
 
 function parseToken(): any | undefined {
-  try {
-    const token = localStorage.getItem('nara.token')?.split('.')[1];
-    if (token === null || token === undefined) {
-      return undefined;
-    }
-    const textDecoder = new TextDecoder();
-    const payload = JSON.parse(textDecoder.decode(decode(token)));
-    return payload;
-  } catch {
-    //
-  }
+  // if (window.TextDecoder !== undefined) {
+  //   try {
+  //     const token = localStorage.getItem('nara.token')?.split('.')[1];
+  //     if (token === null || token === undefined) {
+  //       return undefined;
+  //     }
+  //     const textDecoder = new TextDecoder();
+  //     const payload = JSON.parse(textDecoder.decode(decode(token)));
+  //     return payload;
+  //   } catch {
+  //     //
+  //   }
+  // }
 
   return undefined;
 }
@@ -192,12 +194,7 @@ async function AppendPanoptoSamlQueryToCubeMaterial(
       c => c.contentsProviderId === 'PANOPTO'
     );
     if (panoptoContentsProviderSaml !== undefined) {
-      const token = localStorage.getItem('nara.token')?.split('.')[1];
-      if (token === null || token === undefined) {
-        return cubeMaterial;
-      }
-      const textDecoder = new TextDecoder();
-      const payload = JSON.parse(textDecoder.decode(decode(token)));
+      const payload = parseToken();
       const gdiUser: boolean = payload?.gdiUser;
       if (gdiUser === undefined) {
         return cubeMaterial;

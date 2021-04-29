@@ -35,6 +35,7 @@ interface Props {
   thumbImagePath: string;
   mainCategory: CardCategory;
   name: string;
+  htmlName?: string;
   stampCount: number;
   passedStudentCount: number;
   starCount: number;
@@ -50,6 +51,7 @@ interface Props {
 export default function CardView({
   cardId,
   name,
+  htmlName,
   starCount,
   stampCount,
   mainCategory,
@@ -229,7 +231,13 @@ export default function CardView({
               {getCollgeName(collegeId)}
             </Label>
           }
-          <div className="header">{name}</div>
+          {htmlName !== undefined && (
+            <div
+              className="header"
+              dangerouslySetInnerHTML={{ __html: htmlName }}
+            />
+          )}
+          {htmlName === undefined && <div className="header">{name}</div>}
         </div>
 
         <Fields>

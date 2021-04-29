@@ -380,7 +380,7 @@ export default function LectureDiscussionContainer() {
           </div>
 
           {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
-          {feedbackId !== undefined && feedbackId !== '' && (
+          {(feedbackId !== undefined && feedbackId !== '') && (
             <CommentList
               // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
               feedbackId={feedbackId}

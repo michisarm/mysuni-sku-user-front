@@ -1,4 +1,3 @@
-import { CommunityDiscussionDetail } from '../viewModel/CommunityDiscussionDetail';
 import { CommunityDiscussion } from '../model/CommunityDiscussion';
 import { axiosApi, OffsetElementList, NameValue } from '@nara.platform/accent';
 import Axios, { AxiosResponse } from 'axios';

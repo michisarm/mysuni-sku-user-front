@@ -17,7 +17,6 @@ import { ExtraTaskType } from '../../model/ExtraTaskType';
 import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
-import { reactAlert } from '@nara.platform/accent';
 
 const BASE_URL = '/api/lecture';
 
