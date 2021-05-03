@@ -270,7 +270,9 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 />
                 <span>
                   {lectureReview !== undefined
-                    ? `${Math.floor(lectureReview.average * 10) / 10}`
+                    ? `${Math.floor(lectureReview.average * 10) / 10}(${
+                        lectureReview.reviewerCount
+                      })`
                     : ''}
                 </span>
               </div>
