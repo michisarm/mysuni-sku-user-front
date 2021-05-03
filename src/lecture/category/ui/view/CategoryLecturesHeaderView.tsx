@@ -60,7 +60,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
         return CategoryLecturesHeaderView.thumbnailIcon.SemicondDesign;
       case 'SK아카데미':
         return CategoryLecturesHeaderView.thumbnailIcon.Skacademy;
-      case '에너지솔루션':
+      case 'Environment':
         return CategoryLecturesHeaderView.thumbnailIcon.EnergySolution;
       case 'SK경영':
         return CategoryLecturesHeaderView.thumbnailIcon.SkOperation;
@@ -91,7 +91,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
         return true;
       case '미래반도체':
         return true;
-      case '에너지솔루션':
+      case 'Environment':
         return true;
       case 'BM Design & Storytelling':
         return true;

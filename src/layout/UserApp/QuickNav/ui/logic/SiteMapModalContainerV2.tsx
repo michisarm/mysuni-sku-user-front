@@ -81,7 +81,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       },
       {
         collegeId: 'CLG0001c',
-        name: '에너지솔루션',
+        name: 'Environment',
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
       {
