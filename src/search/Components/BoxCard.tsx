@@ -96,17 +96,26 @@ const BoxCard: React.FC = () => {
                 Array.isArray(workspaces?.cineroomWorkspaces) &&
                 workspaces.cineroomWorkspaces.some(d => d.id === c)
             );
-          const mainCategory = (JSON.parse(categories) as SearchCardCategory[])
-            .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
-              channelId,
-              collegeId,
-              mainCategory: mainCategory === 1,
-            }))
-            .find(c => c.mainCategory === true) || {
+          let mainCategory: CardCategory = {
             channelId: '',
             collegeId: '',
             mainCategory: true,
           };
+          try {
+            mainCategory = (JSON.parse(categories) as SearchCardCategory[])
+              .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
+                channelId,
+                collegeId,
+                mainCategory: mainCategory === 1,
+              }))
+              .find(c => c.mainCategory === true) || {
+              channelId: '',
+              collegeId: '',
+              mainCategory: true,
+            };
+          } catch {
+            // console.log('Search Data Error:', item);
+          }
           return (
             <CardView
               key={id}
