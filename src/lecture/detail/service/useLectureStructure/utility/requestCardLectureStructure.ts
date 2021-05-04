@@ -86,7 +86,7 @@ function parseCubeReportItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureReportItem {
-  const { id, name } = cube;
+  const { id, reportName } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -112,7 +112,7 @@ function parseCubeReportItem(
 
   return {
     id: `report-${id}`,
-    name,
+    name: reportName || '',
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -237,7 +237,7 @@ function parseCardReportItem(
 
   return {
     id: `report-${id}`,
-    name: reportName,
+    name: reportName || '',
     type: 'REPORT',
     params,
     path: params.pathname,

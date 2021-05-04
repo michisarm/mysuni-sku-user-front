@@ -188,10 +188,13 @@ async function getLectureReview(
       return {
         average: isNaN(reviewSummary.average) ? 0 : reviewSummary.average,
         id: reviewSummary.id,
+        reviewerCount: isNaN(reviewSummary.reviewerCount)
+          ? 0
+          : reviewSummary.reviewerCount,
       };
     }
   }
-  return { id: '', average: 0 };
+  return { id: '', average: 0, reviewerCount: 0 };
 }
 
 export async function getCubeLectureOverview(cardId: string, cubeId: string) {

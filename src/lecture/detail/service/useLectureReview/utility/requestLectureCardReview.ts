@@ -8,11 +8,12 @@ async function parseLectureReview(
   cardContents: CardContents
 ): Promise<LectureReview> {
   const { reviewFeedbackId } = cardContents;
-  const { average } = await findReviewSummary(reviewFeedbackId);
+  const { average, reviewerCount } = await findReviewSummary(reviewFeedbackId);
 
   return {
     id: reviewFeedbackId,
     average: isNaN(average) ? 0 : average,
+    reviewerCount: isNaN(reviewerCount) ? 0 : reviewerCount,
   };
 }
 
