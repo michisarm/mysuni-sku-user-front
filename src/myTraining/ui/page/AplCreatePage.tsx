@@ -4,8 +4,14 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
 import { patronInfo } from '@nara.platform/dock';
-import { Breadcrumb, Button, Container, Form, Header, Segment } from 'semantic-ui-react';
-import 'react-datepicker/dist/react-datepicker.css';
+import {
+  Breadcrumb,
+  Button,
+  Container,
+  Form,
+  Header,
+  Segment,
+} from 'semantic-ui-react';
 import moment from 'moment';
 import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
@@ -18,12 +24,11 @@ import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
 import routePaths from '../../routePaths';
 
-interface Props
-  extends RouteComponentProps<{ cineroomId: string; }> {
+interface Props extends RouteComponentProps<{ cineroomId: string }> {
   aplService: AplService;
   apl?: AplModel;
   sharedService?: SharedService;
-  handleOk?: (member: MemberViewModel) => void
+  handleOk?: (member: MemberViewModel) => void;
 }
 
 interface States {
@@ -48,8 +53,7 @@ interface States {
   focusYn: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'myTraining.aplService', 'shared.sharedService'))
+@inject(mobxHelper.injectFrom('myTraining.aplService', 'shared.sharedService'))
 @observer
 @reactAutobind
 class AplCreatePage extends React.Component<Props, States> {
@@ -260,7 +264,6 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if (aplObject === 'success') {
-
       this.setState({
         objStr: '',
         focusYn: 'N',
@@ -287,14 +290,8 @@ class AplCreatePage extends React.Component<Props, States> {
   handleCancel(mode?: string) {
     const aplMessageList = (
       <>
-        <p className="center">
-          {' '}
-          개인학습 정보 등록을 취소하시겠습니까?
-        </p>
-        <p className="center">
-          {' '}
-          취소 시 입력했던 정보는 저장되지 않습니다.
-        </p>
+        <p className="center"> 개인학습 정보 등록을 취소하시겠습니까?</p>
+        <p className="center"> 취소 시 입력했던 정보는 저장되지 않습니다.</p>
       </>
     );
     this.confirmList(aplMessageList);
@@ -334,13 +331,13 @@ class AplCreatePage extends React.Component<Props, States> {
     const invalidHour = Number(value) >= 100 || Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
     const invalidContent = value.length > 1000;
-    if(name === 'title' || name ==='typeName' || name === 'institute'){
+    if (name === 'title' || name === 'typeName' || name === 'institute') {
       if (invalid) {
         return;
       }
     }
 
-    if(name === 'content'){
+    if (name === 'content') {
       if (invalidContent) {
         return;
       }
@@ -349,7 +346,7 @@ class AplCreatePage extends React.Component<Props, States> {
     if (aplService) aplService.changeAplProps(name, value);
   }
 
-  onChangeAplTimePropsValid(name: string, value: string | number ) {
+  onChangeAplTimePropsValid(name: string, value: string | number) {
     //
     const { aplService } = this.props;
     //if (value === '') value = 0;
@@ -365,13 +362,13 @@ class AplCreatePage extends React.Component<Props, States> {
     const invalidHour = Number(value) >= 100 || Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
 
-    if(name === 'requestHour'){
+    if (name === 'requestHour') {
       if (invalidHour) {
         return;
       }
     }
 
-    if(name === 'requestMinute'){
+    if (name === 'requestMinute') {
       if (invalidMin) {
         return;
       }
@@ -414,7 +411,9 @@ class AplCreatePage extends React.Component<Props, States> {
       Promise.resolve()
         .then(() => this.clearAll())
         .then(() => {
-          this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
+          this.props.history.push(
+            routePaths.myPageLearningTab('PersonalCompleted')
+          );
         });
     }
   }
@@ -437,7 +436,7 @@ class AplCreatePage extends React.Component<Props, States> {
     } = this.state;
 
     return (
-      <ContentLayout breadcrumb={[{ text: '개인학습' },{ text: 'Create' }]}>
+      <ContentLayout breadcrumb={[{ text: '개인학습' }, { text: 'Create' }]}>
         <div className="add-personal-learning">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">개인학습</div>

@@ -3,7 +3,6 @@ import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import { Image } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
