@@ -21,7 +21,7 @@ const LectureWebpageView: React.FC<LectureWebpage &
 }) {
   return (
     <>
-      {urlType === 'embedded' && <iframe className="iframe-area" src={url} />}
+      {urlType === 'embedded' && <iframe className="iframe-area" src={url} style={{width:"990px",height:"630px"}}/>}
       {urlType !== 'embedded' && (
         <div className="lms-open-graph">
           <img src={image ? image : DefaultImg} className="lms-open-image" />
