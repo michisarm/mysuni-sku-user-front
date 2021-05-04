@@ -9,7 +9,10 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { getCommunityHome, useCommunityHome } from 'community/store/CommunityHomeStore';
+import {
+  getCommunityHome,
+  useCommunityHome,
+} from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { checkMember } from 'community/service/useMember/useMember';
 import { getNoticePostGroupManager } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
@@ -58,7 +61,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     }
     totalPages();
 
-
     const menuData = findMenu(communityId, menuId);
     const denizenId = patronInfo.getDenizenId();
 
@@ -87,14 +89,12 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
     }
 
-    if (
-      communityHome?.community?.memberType === 'ADMIN'
-    ) {
+    if (communityHome?.community?.memberType === 'ADMIN') {
       setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
   }, [postItems, communityId]);
 
-  const handelClickCreatePost = () => { };
+  const handelClickCreatePost = () => {};
   const handleClickRow = async (param: any, menuType: string) => {
     //멤버 가입 체크
     if (!(await checkMember(communityId))) {
@@ -202,7 +202,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             handelClickCreateTask={handelClickCreatePost}
           />
           <div className="mycommunity-list-wrap">
-            <div className="su-list notice">
+            <div className={`su-list notice ${menuType}`}>
               <CommunityPostListView
                 menuType={menuType}
                 postItems={postItems}
