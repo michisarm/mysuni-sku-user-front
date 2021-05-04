@@ -3,7 +3,6 @@ import React, { useState, useEffect, Fragment, useCallback } from 'react';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import CheckBoxOptions from '../model/CheckBoxOption';
 import {
   filterCard,
