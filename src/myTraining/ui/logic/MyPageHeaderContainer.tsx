@@ -33,16 +33,28 @@ function MyPageHeaderContainer({
   const { skProfile } = skProfileService!;
   const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
   const { myStampCount } = myTrainingService!;
-  const { allBadgeCount: { issuedCount } } = badgeService!;
+  const {
+    allBadgeCount: { issuedCount },
+  } = badgeService!;
 
   const history = useHistory();
   const currentYear = moment().year();
 
-  const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0;
-  const totalLectureTime = lectureTimeSummary && lectureTimeSummary.totalLectureTime || 0;
+  const sumOfCurrentYearLectureTime =
+    (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
+  const totalLectureTime =
+    (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
-  const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime;
-  const totalAccrueLearningTime = myLearningSummary.totalSuniLearningTime + myLearningSummary.totalMyCompanyLearningTime + myLearningSummary.totalAplAllowTime + totalLectureTime;
+  const totalLearningTime =
+    myLearningSummary.suniLearningTime +
+    myLearningSummary.myCompanyLearningTime +
+    myLearningSummary.aplAllowTime +
+    sumOfCurrentYearLectureTime;
+  const totalAccrueLearningTime =
+    myLearningSummary.totalSuniLearningTime +
+    myLearningSummary.totalMyCompanyLearningTime +
+    myLearningSummary.totalAplAllowTime +
+    totalLectureTime;
 
   useEffect(() => {
     badgeService!.findAllBadgeCount();
@@ -52,7 +64,7 @@ function MyPageHeaderContainer({
   useRequestLearningSummary();
 
   const onClickMyBadge = useCallback(() => {
-    history.push(badgePaths.badgeEarnedBadgeList());
+    history.push(myTrainingPaths.myPageEarnedBadgeList());
   }, []);
 
   const onClickMyStamp = useCallback(() => {
@@ -77,15 +89,15 @@ function MyPageHeaderContainer({
       type="Learning"
     >
       <ContentHeader.Cell inner className="personal-inner">
-          <ContentHeader.ProfileItem
-            myPageActive={false}
-            imageEditable={true}
-            image={skProfile.photoFilePath || profileImg}
-            name={skProfile.member.name}
-            company={skProfile.member.company}
-            department={skProfile.member.department}
-            type="Learning"
-          />
+        <ContentHeader.ProfileItem
+          myPageActive={false}
+          imageEditable={true}
+          image={skProfile.photoFilePath || profileImg}
+          name={skProfile.member.name}
+          company={skProfile.member.company}
+          department={skProfile.member.department}
+          type="Learning"
+        />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
@@ -100,28 +112,28 @@ function MyPageHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {totalLearningTime !== 0 &&
-          (
-            <ContentHeader.LearningTimeItem
-              minute={totalLearningTime}
-              year={currentYear}
-              accrueMinute={totalAccrueLearningTime}
-            />
-          ) ||
-          (
-            <ContentHeader.WaitingItem
-              year={currentYear}
-              onClickRecommend={onClickRecommend}
-            />
-          )}
+        {(totalLearningTime !== 0 && (
+          <ContentHeader.LearningTimeItem
+            minute={totalLearningTime}
+            year={currentYear}
+            accrueMinute={totalAccrueLearningTime}
+          />
+        )) || (
+          <ContentHeader.WaitingItem
+            year={currentYear}
+            onClickRecommend={onClickRecommend}
+          />
+        )}
       </ContentHeader.Cell>
     </ContentHeader>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
+export default inject(
+  mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myLearningSummaryService',
     'myTraining.myTrainingService',
     'badge.badgeService'
-))(observer(MyPageHeaderContainer));
+  )
+)(observer(MyPageHeaderContainer));
