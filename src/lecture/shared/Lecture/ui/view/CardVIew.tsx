@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from 'react';
 import classNames from 'classnames';
 import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import {
@@ -27,6 +33,8 @@ import CubeIconType from '../../model/CubeIconType';
 import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
 import { PermittedCineroom } from '../../../../model/PermittedCineroom';
 import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { Area, FieldType } from 'tracker/model';
 
 interface Props {
   cardId: string;
@@ -46,6 +54,7 @@ interface Props {
   remainingDayCount?: number;
   capacity?: number;
   permittedCinerooms?: PermittedCineroom[];
+  dataArea?: Area;
 }
 
 export default function CardView({
@@ -68,6 +77,7 @@ export default function CardView({
   isRequired = permittedCinerooms
     ? isIncludeCineroomId(permittedCinerooms)
     : false,
+  dataArea,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
@@ -75,6 +85,7 @@ export default function CardView({
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
+  const hoverTimer = useRef(0);
 
   useEffect(() => {
     return autorun(() => {
@@ -96,12 +107,25 @@ export default function CardView({
 
   const collegeId = useMemo(() => mainCategory.collegeId, [mainCategory]);
 
-  const onHoverIn = useCallback(() => {
+  const onHoverIn = () => {
     setHovered(true);
-  }, []);
+    hoverTimer.current = window.setTimeout(() => {
+      hoverTrack({
+        area: dataArea,
+        actionName: '카드 Hover',
+        field: {
+          id: cardId,
+          type: FieldType.Card,
+        },
+      });
+    }, 1800);
+  };
 
   const onHoverOut = useCallback(() => {
     setHovered(false);
+    if (hoverTimer.current) {
+      window.clearTimeout(hoverTimer.current);
+    }
   }, []);
 
   const handleAlert = (inMyLectureModel?: InMyLectureModel) => {
