@@ -115,6 +115,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     type={card.type}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
+                    dataArea={dataArea}
                   />
                 </CardGroup>
               </li>

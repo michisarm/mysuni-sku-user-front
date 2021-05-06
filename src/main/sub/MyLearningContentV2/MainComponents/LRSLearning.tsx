@@ -6,7 +6,7 @@ import { Lecture } from 'lecture';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
-import { Action, Area } from 'tracker/model';
+import { Area } from 'tracker/model';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCards } from '../../../../lecture/recommend/api/recommendApi';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
@@ -94,6 +94,7 @@ const LRSLearning: React.FC<Props> = Props => {
                   cardId={card.id}
                   {...card}
                   {...cardRelatedCount}
+                  dataArea={Area.MAIN_RECOMMEND}
                 />
               </div>
             </li>
