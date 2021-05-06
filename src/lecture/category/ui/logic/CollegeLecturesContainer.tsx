@@ -44,6 +44,7 @@ import {
   onCollegeModelStore,
   useCollegeModelStore,
 } from '../../../../shared/store/CollegeStore';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService;
@@ -495,6 +496,7 @@ class CollegeLecturesContainerInner extends Component<
                     cardId={card.id}
                     {...card}
                     {...cardRelatedCount}
+                    dataArea={Area.COLLEGE_CARD}
                   />
                 );
               })}

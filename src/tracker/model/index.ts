@@ -3,9 +3,10 @@ export {
   ActionTrackParam,
   ActionTrackViewParam,
   ScrollTrackParam,
+  HoverTrackParam,
   ActionContextModel,
   ViewContextModel,
   ActionTrackModel,
   ActionTrackViewModel,
-  Field
+  Field,
 } from './ActionTrackModel';
