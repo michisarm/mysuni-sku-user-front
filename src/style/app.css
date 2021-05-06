@@ -766,3 +766,7 @@ body.msie
 .content.lms .icon.listDelete {
   margin-left: 15px;
 }
+
+.community .mycommunity-list-wrap .su-list.ANONYMOUS .row .cell.title {
+  width: 36.65rem;
+}

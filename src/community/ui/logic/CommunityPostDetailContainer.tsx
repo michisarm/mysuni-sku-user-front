@@ -386,7 +386,7 @@ function CommunityPostDetailContainer() {
   }, [communityProfileBookmark]);
 
   return (
-    <Fragment>
+    <div style={{width: '850px'}}>
       {postDetail && (
         <>
           <PostDetailViewContentHeaderView
@@ -608,7 +608,7 @@ function CommunityPostDetailContainer() {
         nickName={profileInfo && profileInfo.nickName}
         name={profileInfo && profileInfo.creatorName}
       />
-    </Fragment>
+    </div>
   );
 }
 

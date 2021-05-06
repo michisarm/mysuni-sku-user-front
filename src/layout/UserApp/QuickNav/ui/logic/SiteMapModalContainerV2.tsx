@@ -81,7 +81,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       },
       {
         collegeId: 'CLG0001c',
-        name: '에너지솔루션',
+        name: 'Environment',
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
       {
@@ -223,13 +223,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       items: baseCategoryItems.items.map(item => {
         //
         const college = colleges.find(
-          (college: any) => college.collegeId === item.collegeId
+          (college: any) => college.id === item.collegeId
         );
 
         return {
           ...item,
-          path: college && lectureRoutePaths.collegeLectures(college.collegeId),
-          count: (college && college.collegeCount) || 0,
+          path: college && lectureRoutePaths.collegeLectures(college.id),
+          count: (college && college.channels && college.channels.length) || 0,
         };
       }),
     };
