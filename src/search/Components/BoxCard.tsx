@@ -79,7 +79,6 @@ const BoxCard: React.FC = () => {
             name,
             categories,
             required_cinerooms,
-            difficulty_level,
             thumb_image_path,
             learning_time,
             stamp_count,
@@ -89,7 +88,6 @@ const BoxCard: React.FC = () => {
             passed_student_count,
             student_count,
             star_count,
-            used_in_badge,
           } = item;
           const isRequired: boolean = required_cinerooms
             .split('|')
@@ -98,21 +96,31 @@ const BoxCard: React.FC = () => {
                 Array.isArray(workspaces?.cineroomWorkspaces) &&
                 workspaces.cineroomWorkspaces.some(d => d.id === c)
             );
-          const mainCategory = (JSON.parse(categories) as SearchCardCategory[])
-            .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
-              channelId,
-              collegeId,
-              mainCategory: mainCategory === 1,
-            }))
-            .find(c => c.mainCategory === true) || {
+          let mainCategory: CardCategory = {
             channelId: '',
             collegeId: '',
             mainCategory: true,
           };
+          try {
+            mainCategory = (JSON.parse(categories) as SearchCardCategory[])
+              .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
+                channelId,
+                collegeId,
+                mainCategory: mainCategory === 1,
+              }))
+              .find(c => c.mainCategory === true) || {
+              channelId: '',
+              collegeId: '',
+              mainCategory: true,
+            };
+          } catch {
+            // console.log('Search Data Error:', item);
+          }
           return (
             <CardView
               key={id}
               cardId={id}
+              htmlName={name}
               name={name}
               starCount={parseInt(star_count)}
               stampCount={parseInt(stamp_count)}

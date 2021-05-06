@@ -69,7 +69,7 @@ export default function MySuniCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b13">에너지솔루션</span>
+        <span className="name b13">Environment</span>
         <span className="time">
           {timeToHourMinutePaddingFormat(myLearningSummary.energySolutionCollegeTime)}
         </span>
