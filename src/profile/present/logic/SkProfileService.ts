@@ -6,6 +6,7 @@ import SkProfileApi from '../apiclient/SkProfileApi';
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import { findAllCollegeCache } from '../../../college/present/apiclient/CollegeApi';
 
 @autobind
 class SkProfileService {
@@ -108,10 +109,34 @@ class SkProfileService {
     //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
-      studySummary =>
+      async (studySummary: StudySummaryModel) => {
+        const collegeData = await findAllCollegeCache();
+        if (collegeData !== undefined && studySummary !== undefined) {
+          studySummary.favoriteChannels.idNames.forEach(idName => {
+            const channelId = idName.id;
+            const college = collegeData.find(c =>
+              c.channels.some(d => d.id === channelId)
+            );
+            if (college !== undefined) {
+              const channel = college.channels.find(c => c.id === channelId);
+              if (channel !== undefined) {
+                idName.name = channel.name;
+              }
+            }
+          });
+          studySummary.favoriteColleges.idNames.forEach(idName => {
+            const collegeId = idName.id;
+            const college = collegeData.find(c => c.id === collegeId);
+            if (college !== undefined) {
+              idName.name = college.name;
+            }
+          });
+        }
+
         runInAction(
           () => (this.studySummary = new StudySummaryModel(studySummary))
-        )
+        );
+      }
     );
 
     return fetched
