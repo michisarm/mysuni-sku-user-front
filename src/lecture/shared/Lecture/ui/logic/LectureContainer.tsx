@@ -76,7 +76,7 @@ class LectureContainer extends Component<Props, States> {
     toggle: false,
     onAction: () => {},
     onViewDetail: () => {},
-    contentType: ""
+    contentType: '',
   };
 
   static defaultActions: ActionWith[] = [
@@ -152,7 +152,6 @@ class LectureContainer extends Component<Props, States> {
     });
 
     onViewDetail!(e, data);
-
   }
 
   /* render functions */

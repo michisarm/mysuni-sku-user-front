@@ -81,6 +81,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
                     studentCount={upcomingClassroomInfo.studentCount}
                     remainingDayCount={upcomingClassroomInfo.remainingDayCount}
                     capacity={upcomingClassroomInfo.capacity}
+                    dataArea={Area.MAIN_ENROLLING}
                   />
                 </CardGroup>
               </li>

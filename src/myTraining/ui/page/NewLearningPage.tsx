@@ -60,17 +60,17 @@ function NewLearningPage() {
         area = Area.NEWLEARNING_ENROLLING;
         break;
       default:
-        switch(cardType){
-          case "Normal":
+        switch (cardType) {
+          case 'Normal':
             area = Area.NEWLEARNING_NORMAL;
             break;
-          case "Popular":
+          case 'Popular':
             area = Area.NEWLEARNING_POPULAR;
             break;
-          case "New":
+          case 'New':
             area = Area.NEWLEARNING_NEW;
             break;
-          case "Recommended":
+          case 'Recommended':
             area = Area.NEWLEARNING_RECOMMEND;
             break;
         }
