@@ -137,27 +137,29 @@ function CommunityDiscussionContainer() {
     <>
       {postDetail && (
         <>
-          <DiscussionViewContentHeaderView
-            postDetail={postDetail}
-            title={postDetail.title}
-            time={postDetail.createdTime}
-            readCount={count}
-            deletable={true}
-            onClickList={OnClickList}
-          />
-          {feedbackId && (
-            <CommunityCommentList
-              feedbackId={feedbackId}
-              menuType={discussionType}
-              hideCamera
-              name=""
-              email=""
-              companyName=""
-              departmentName=""
-              adminAuth={adminAuth}
-              communityAdminAuth={communityAdminAuth}
+          <div style={{width: '850px'}}>
+            <DiscussionViewContentHeaderView
+              postDetail={postDetail}
+              title={postDetail.title}
+              time={postDetail.createdTime}
+              readCount={count}
+              deletable={true}
+              onClickList={OnClickList}
             />
-          )}
+            {feedbackId && (
+              <CommunityCommentList
+                feedbackId={feedbackId}
+                menuType={discussionType}
+                hideCamera
+                name=""
+                email=""
+                companyName=""
+                departmentName=""
+                adminAuth={adminAuth}
+                communityAdminAuth={communityAdminAuth}
+              />
+            )}
+          </div>
         </>
       )}
     </>
