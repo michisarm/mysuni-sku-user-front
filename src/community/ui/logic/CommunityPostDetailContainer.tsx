@@ -388,7 +388,7 @@ function CommunityPostDetailContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <>
+        <div style={{width: '850px'}}>
           <PostDetailViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -591,7 +591,7 @@ function CommunityPostDetailContainer() {
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
       <CommunityPdfModal
         open={pdfOpen}
