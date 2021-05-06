@@ -421,41 +421,7 @@ const VideoQuizContentContainer = ({
       )}
 
       {/* 퀴즈참여 완료 */}
-      {quizStatus.status && quizStatus.type === 'finish' && questionData && (
-        <div className="video-quiz-wrap sty2">
-          <div className="video-quiz-header">
-            <h1>Video QUIZ</h1>
-          </div>
-          <div className="quiz-content-wrap quiz-center-box">
-            <div className="imgbox">
-              <img
-                style={{ maxWidth: '100%' }}
-                src={
-                  resultAlertMessage?.img
-                    ? `/${resultAlertMessage?.img}`
-                    : FinishIcon
-                }
-              />
-            </div>
-            <div
-              className="wro"
-              dangerouslySetInnerHTML={{
-                __html:
-                  `${resultAlertMessage?.message}` ||
-                  '퀴즈 참여가 완료됐습니다!',
-              }}
-            />
-          </div>
-          <div className="video-quiz-footer">
-            <button
-              onClick={onCompleteCurrentQuiz}
-              className="ui button fix bg"
-            >
-              확인
-            </button>
-          </div>
-        </div>
-      )}
+      {quizStatus.status && quizStatus.type === 'finish' && questionData && onCompleteCurrentQuiz()}
 
       {/* 결과보기 객관식 */}
       {quizStatus.status &&
@@ -521,7 +487,7 @@ const VideoQuizContentContainer = ({
                               style={{ maxWidth: '100%' }}
                               src={
                                 myAnswer?.includes((index + 1).toString()) ===
-                                true
+                                  true
                                   ? RadioIcon
                                   : EmptyIcon
                               }
@@ -543,54 +509,54 @@ const VideoQuizContentContainer = ({
                                   style={{
                                     width: `${
                                       resultData &&
-                                      quizStatus.type === 'result' &&
-                                      summaryCount &&
-                                      summaryCount[index] &&
-                                      questionData[currentIndex]?.type ===
+                                        quizStatus.type === 'result' &&
+                                        summaryCount &&
+                                        summaryCount[index] &&
+                                        questionData[currentIndex]?.type ===
                                         'SingleChoice'
                                         ? Math.round(
-                                            (summaryCount[index] /
-                                              resultData.totalCount) *
-                                              100
-                                          )
+                                          (summaryCount[index] /
+                                            resultData.totalCount) *
+                                          100
+                                        )
                                         : summaryCount &&
                                           summaryCount[index] &&
                                           questionData[currentIndex]?.type ===
-                                            'MultipleChoice' &&
+                                          'MultipleChoice' &&
                                           multipleTotal
-                                        ? Math.round(
+                                          ? Math.round(
                                             (summaryCount[index] /
                                               multipleTotal) *
-                                              100
+                                            100
                                           )
-                                        : 0
-                                    }%`,
+                                          : 0
+                                      }%`,
                                   }}
                                   className="percent"
                                 />
                               </div>
                               <span style={{ marginLeft: '1rem' }}>
                                 {resultData &&
-                                quizStatus.type === 'result' &&
-                                summaryCount &&
-                                summaryCount[index] &&
-                                questionData[currentIndex]?.type ===
+                                  quizStatus.type === 'result' &&
+                                  summaryCount &&
+                                  summaryCount[index] &&
+                                  questionData[currentIndex]?.type ===
                                   'SingleChoice'
                                   ? Math.round(
-                                      (summaryCount[index] /
-                                        resultData.totalCount) *
-                                        100
-                                    )
+                                    (summaryCount[index] /
+                                      resultData.totalCount) *
+                                    100
+                                  )
                                   : summaryCount &&
                                     summaryCount[index] &&
                                     questionData[currentIndex]?.type ===
-                                      'MultipleChoice' &&
+                                    'MultipleChoice' &&
                                     multipleTotal
-                                  ? Math.round(
+                                    ? Math.round(
                                       (summaryCount[index] / multipleTotal) *
-                                        100
+                                      100
                                     )
-                                  : 0}
+                                    : 0}
                                 <em>%</em>
                               </span>
                             </div>
@@ -670,18 +636,18 @@ const VideoQuizContentContainer = ({
               <div className="quiz-descriptive">
                 {resultData && resultData.results.length > 0
                   ? resultData?.results.map((userList: any, index: number) => (
-                      <div className="descriptive-box" key={index}>
-                        <span>
-                          {userList.email
-                            ?.split('@')[0]
-                            .substr(
-                              0,
-                              userList.email?.split('@')[0].length - 3
-                            ) + '***'}
-                        </span>
-                        <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
-                      </div>
-                    ))
+                    <div className="descriptive-box" key={index}>
+                      <span>
+                        {userList.email
+                          ?.split('@')[0]
+                          .substr(
+                            0,
+                            userList.email?.split('@')[0].length - 3
+                          ) + '***'}
+                      </span>
+                      <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
+                    </div>
+                  ))
                   : null}
                 {resultData && resultData.results.length > 10 && (
                   <div className="more-comments">
