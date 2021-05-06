@@ -2286,21 +2286,6 @@ const panes = [
             </div>
           </div>
           <div className="college-cont-map energe">
-            <div className="belt fu">
-              <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG0001c/channels/pages/1"
-                  className="item-button"
-                >
-                  <Image
-                    style={{ display: 'inline' }}
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
-                    alt=""
-                  />
-                  과정 바로가기
-                </Link>
-              </div>
-            </div>
              <div className="belt">
                  <div className="map">
                  <Image
