@@ -56,21 +56,13 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
             href="#detail"
             onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
           >
-            {task.count !== 0 && (
-              <span className="title">
-                {task.title}[{task.count}]
+            {/* pinned 조건 추가 예정 */}
+            <span className={`title ${task.pinned ? "important" : ''}`}>
+              <span className={`ellipsis ${!task.pinned ? "pincet-icon" : ''}`}>{task.title}</span>
+              <span className="rep-num">
+                {task.count !== 0 && ( `[${task.count}]` )}
               </span>
-            )}
-            {task.count === 0 && task.pinned && (
-              <span className="title important">
-                <span className="ellipsis">{task.title}</span>
-              </span>
-            )}
-            {task.count === 0 && !task.pinned && (
-              <span className="title">
-                <span>{task.title}</span>
-              </span>
-            )}
+            </span>
             <span className="writer">{task.writer}</span>
             <span className="view">{task.readCount} 읽음</span>
             <span className="date">

@@ -33,7 +33,7 @@ async function getTaskItem(postParam: any) {
     readCount: 0,
     commentFeedbackId: '',
     notice: false,
-    pinned: false,
+    pinned: false, // postpinned -> number = 0
   };
   //
   if (postParam.id !== '' && postParam.type === 'parent') {
@@ -46,6 +46,7 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.time = post.time;
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
+      lectureTaskDetail.pinned = post.pinned;
     }
     if (result !== undefined && result.postBody !== undefined) {
       lectureTaskDetail.contents = result.postBody.contents;
@@ -87,7 +88,7 @@ export async function getTaskLearningCardId(lectureId: string) {
   return taskItem;
 }
 
-export async function deleteLectureTaskPost(id: string, type: string) {
-  const deleteItem = await deleteTaskPost(id, type);
+export async function deleteLectureTaskPost(boardId: string, taskId: string, type: string) {
+  const deleteItem = await deleteTaskPost(boardId, taskId, type);
   return deleteItem;
 }

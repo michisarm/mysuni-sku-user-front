@@ -19,7 +19,7 @@ export interface boardSdo {
   config?: BoardConfig;
   learningPeriod?: DatePeriod;
   automaticCompletion?: boolean;
-  completionCondition?: BoardCompletionCondition;
+  completionCondition?: TaskCubeCompletionCondition;
 }
 
 export interface BoardConfig {
@@ -30,7 +30,7 @@ export interface BoardConfig {
   unLimited: string;
 }
 
-export interface BoardCompletionCondition {
+export interface TaskCubeCompletionCondition {
   postCount: number;
   commentCount: number;
   subCommentCount: number;

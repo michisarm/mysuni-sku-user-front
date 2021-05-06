@@ -112,9 +112,9 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   });
 }
 
-export function deleteTaskPost(postId: string, postType: string): Promise<any> {
-  const url = `${BASE_URL}/posts/${postId}`;
-  const replyUrl = `${BASE_URL}/replies/${postId}`;
+export function deleteTaskPost(boardId: string, postId: string, postType: string): Promise<any> {
+  const url = `${BASE_URL}/posts/${postId}/${boardId}`;
+  const replyUrl = `${BASE_URL}/replies/${postId}/${boardId}`;
   if (postType === 'parent') {
     return axiosApi.delete(url);
   } else {

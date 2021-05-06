@@ -14,6 +14,7 @@ import TaskDetailPost from '../model/TaskDetail';
 
 import { IntPair } from '../../../shared/model/IntPair';
 import { CubeMyDiscussionCounts } from '../../model/CubeMyDiscussionCounts';
+import { CubeMyTaskConditionCounts } from '../../model/CubeMyTaskConditionCounts';
 import { getCookie } from '@nara.platform/accent';
 import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
@@ -330,6 +331,16 @@ export function findMyLectureTimeSummary() {
   return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }
 
+export function setPinByPostId(
+  postId: string,
+  pinned: boolean,
+) {
+  console.log("setPinByPostId", postId, pinned)
+  const axios = getAxios();
+  const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
+  return axios.post<string>(url).then(AxiosReturn);
+}
+
 // reply api-----------------------------------------------------------------
 
 export function getReply(replyId: string) {
@@ -382,3 +393,9 @@ function findContentProvider(contentsProviderId: string) {
 }
 
 export const [findContentProviderCache] = createCacheApi(findContentProvider);
+
+export function findMyTaskConditionCounts(studentId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myTaskConditionCounts/${studentId}`;
+  return axios.get<CubeMyTaskConditionCounts>(url).then(AxiosReturn);
+}

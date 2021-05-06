@@ -154,12 +154,12 @@ function LectureTaskContainer() {
     setIsReply(true);
   }, []);
 
-  const onClickDelete = useCallback((id: string, type: string) => {
+  const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
     reactConfirm({
       title: '알림',
       message: '글을 삭제하시겠습니까?',
       onOk: () => {
-        deletePost(id, type);
+        deletePost(boardId, taskId, type);
         history.goBack();
       },
     });
@@ -247,7 +247,7 @@ function LectureTaskContainer() {
               readCount: 0,
               commentFeedbackId: '',
               notice: false,
-              pinned: false,
+              pinned: false, // postpinned -> number = 0
             });
             history.goBack();
 
@@ -279,8 +279,8 @@ function LectureTaskContainer() {
     }
   }, [create]);
 
-  async function deletePost(id: string, type: string) {
-    await deleteCubeLectureTaskPost(id, type).then(() => {
+  async function deletePost(boardId: string, taskId: string, type: string) {
+    await deleteCubeLectureTaskPost(boardId, taskId, type).then(() => {
       reactAlert({
         title: '안내',
         message: '글이 삭제되었습니다.',
@@ -374,6 +374,7 @@ function LectureTaskContainer() {
       {viewType === 'detail' && (
         <>
           <LectureTaskDetailView
+            boardId={boardId}
             taskId={detailTaskId}
             taskDetail={taskDetail!}
             detailType={detailType}

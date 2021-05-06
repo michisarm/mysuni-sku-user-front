@@ -3,7 +3,7 @@ import { CubeDiscussion } from '../detail/model/CubeDiscussion';
 import { Classroom } from './Classroom';
 import { CubeCommunity } from './CubeCommunity';
 import Media from './Media';
-import { BoardConfig, BoardCompletionCondition } from '../../personalcube/create/model/CubeMaterialSdo';
+import { BoardConfig, TaskCubeCompletionCondition } from '../../personalcube/create/model/CubeMaterialSdo';
 import { DatePeriod } from '../../shared/model/DatePeriod';
 
 export interface CubeMaterial { }
@@ -13,7 +13,7 @@ interface Board {
   config: BoardConfig;
   learningPeriod: DatePeriod;
   automaticCompletion: boolean;
-  completionCondition: BoardCompletionCondition;
+  completionCondition: TaskCubeCompletionCondition;
 }
 
 
