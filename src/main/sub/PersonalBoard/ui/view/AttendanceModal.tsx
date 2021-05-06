@@ -120,17 +120,18 @@ const AttendanceModal: React.FC<Props> = ({
     frm.setAttribute('method', 'post');
     frm.setAttribute('target', 'luckydraw');
 
-    window.open(
-      'about:blank',
-      'luckydraw'
-    );
+    window.open('about:blank', 'luckydraw');
 
     frm.submit();
   }, [EncryptEmail, AttendCountItem]);
 
   return (
     <>
-      <Modal open={open} className="base w640 attend">
+      <Modal
+        open={open}
+        className="base w640 attend"
+        style={{ position: 'absolute' }}
+      >
         <Modal.Header>
           <div className="imgbox">
             <span>
@@ -226,19 +227,35 @@ const AttendanceModal: React.FC<Props> = ({
             )}
           </div>
         </Modal.Content>
-        { afterFlag && (
+        {afterFlag && (
           <div className="enddim">
             <div className="dim_inner">
               <span className="imgbox">
-                <img src={`${PUBLIC_URL}/images/all/icon-end-wht.svg`} alt="박수치는남자이미지"/>
+                <img
+                  src={`${PUBLIC_URL}/images/all/icon-end-wht.svg`}
+                  alt="박수치는남자이미지"
+                />
               </span>
               <p>
-                <em>4월 30일자로 출석이벤트가 <br/>종료되었습니다.</em>
-                <span>이벤트로 획득한 복권은<strong>5월 7일까지</strong><br />아래 <Image src={`${PUBLIC_URL}/images/all/btn-strach-small.svg`} alt="복권긁기버튼이미지"/> 버튼을 눌러 확인 하세요!</span>
+                <em>
+                  4월 30일자로 출석이벤트가 <br />
+                  종료되었습니다.
+                </em>
+                <span>
+                  이벤트로 획득한 복권은<strong>5월 7일까지</strong>
+                  <br />
+                  아래{' '}
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/btn-strach-small.svg`}
+                    alt="복권긁기버튼이미지"
+                  />{' '}
+                  버튼을 눌러 확인 하세요!
+                </span>
               </p>
               <p>
-                출석 횟수가 5회 미만인 경우, 
-                <br />‘복권 긁기’ 버튼이 노출되지 않습니다.
+                출석 횟수가 5회 미만인 경우,
+                <br />
+                ‘복권 긁기’ 버튼이 노출되지 않습니다.
               </p>
             </div>
           </div>

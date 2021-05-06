@@ -86,7 +86,7 @@ function parseCubeReportItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureReportItem {
-  const { id, name } = cube;
+  const { id, reportName } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -112,7 +112,7 @@ function parseCubeReportItem(
 
   return {
     id: `report-${id}`,
-    name,
+    name: reportName || '',
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -237,7 +237,7 @@ function parseCardReportItem(
 
   return {
     id: `report-${id}`,
-    name: reportName,
+    name: reportName || '',
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -323,7 +323,11 @@ function parseCardItem(
   if (reportFileBox?.report === true) {
     item.report = parseCardReportItem(card, cardContents, cardStudent);
   }
-  if (surveyCaseId !== null && surveyCaseId !== '') {
+  if (
+    surveyCaseId !== undefined &&
+    surveyCaseId !== null &&
+    surveyCaseId !== ''
+  ) {
     item.survey = parseCardSurveyItem(card, cardContents, cardStudent);
   }
   return item;
@@ -565,10 +569,14 @@ async function parseCubeItem(
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
   }
-  if (reportName !== null && reportName !== '') {
+  if (reportName !== undefined && reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
-  if (surveyCaseId !== null && surveyCaseId !== '') {
+  if (
+    surveyCaseId !== undefined &&
+    surveyCaseId !== null &&
+    surveyCaseId !== ''
+  ) {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
   }
   return item;
@@ -616,12 +624,9 @@ function parseItems(
       if (chapter !== undefined) {
         items.push(chapter);
       }
-      children.forEach(c => {
+      children.forEach((c, i) => {
         const cube = lectureStructure.cubes.find(d => d.cubeId === c.contentId);
         if (cube !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           cube.parentId = contentId;
           if (i === children.length - 1) {
             cube.last = true;
@@ -632,10 +637,10 @@ function parseItems(
           d => d.id === c.contentId
         );
         if (discussion !== undefined) {
-          const i = lectureStructure.cubes.findIndex(
-            d => d.cubeId === c.contentId
-          );
           discussion.parentId = contentId;
+          if (i === children.length - 1) {
+            discussion.last = true;
+          }
           items.push(discussion);
         }
       });

@@ -1,5 +1,8 @@
-import { findReviewSummary } from "../../../api/feedbackApi";
-import { getLectureReview, setLectureReview } from "../../../store/LectureOverviewStore";
+import { findReviewSummary } from '../../../api/feedbackApi';
+import {
+  getLectureReview,
+  setLectureReview,
+} from '../../../store/LectureOverviewStore';
 
 export async function updateLectureReview() {
   const lectureReview = getLectureReview();
@@ -12,6 +15,10 @@ export async function updateLectureReview() {
     reviewSummary !== undefined &&
     reviewSummary.average !== undefined
   ) {
-    setLectureReview({ average: reviewSummary.average, id: reviewSummary.id });
+    setLectureReview({
+      average: reviewSummary.average,
+      id: reviewSummary.id,
+      reviewerCount: reviewSummary.reviewerCount,
+    });
   }
 }

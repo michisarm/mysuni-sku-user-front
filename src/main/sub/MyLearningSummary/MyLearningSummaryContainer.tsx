@@ -321,3 +321,4 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 }
 
 export default withRouter(MyLearningSummaryContainer);
+
