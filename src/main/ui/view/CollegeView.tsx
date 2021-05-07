@@ -2264,15 +2264,20 @@ const panes = [
         >
           <div className="college-cont-title energy">
             <div className="belt sub">
-
               <div className="label">Environment College</div>
               <div className="strong">
                 에너지솔루션 College에서 진화한 “Environment College”
               </div>
               <div className="normal">
-                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을 제고하고,<br />
-                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을 학습하여,<br />
-                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고 있습니다.<br />
+                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
+                제고하고,
+                <br />
+                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을
+                학습하여,
+                <br />
+                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고
+                있습니다.
+                <br />
                 환경 사업의 성공을 위한 우리의 도전, Green Start!
               </div>
 
@@ -2286,16 +2291,16 @@ const panes = [
             </div>
           </div>
           <div className="college-cont-map energe">
-             <div className="belt">
-                 <div className="map">
-                 <Image
+            <div className="belt">
+              <div className="map">
+                <Image
                   src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
-                 </div>
-             </div>
-           </div>
+              </div>
+            </div>
+          </div>
           <div className="college-cont-map energe">
             <div className="belt">
               <div className="label energy">Environment College Curriculum</div>

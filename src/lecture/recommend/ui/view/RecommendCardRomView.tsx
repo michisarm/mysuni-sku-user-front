@@ -6,6 +6,7 @@ import { getCheckableChannelsStore } from '../../../../shared/store/CheckableCha
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { find } from 'lodash';
 import { NoSuchContentPanel } from 'shared';
+import { Area } from 'tracker/model';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   const {
@@ -64,6 +65,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
+                      dataArea={Area.RECOMMEND_LIST}
                     />
                   </div>
                 </li>

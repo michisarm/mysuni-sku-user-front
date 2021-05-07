@@ -7,12 +7,13 @@ import {
   getPathKey,
   getPathName,
   setResultName,
-  mobileCheck
+  mobileCheck,
 } from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
   ActionTrackViewParam,
   ScrollTrackParam,
+  HoverTrackParam,
   ActionTrackModel,
   ActionContextModel,
   ViewContextModel,
@@ -21,10 +22,12 @@ import {
   Field,
   ActionType,
   Action,
-  Area
+  Area,
 } from 'tracker/model';
 import { debounce, getElementsByClassName } from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
+import { action } from '@storybook/addon-actions';
+import { encryptEmail } from '../../../main/sub/PersonalBoard/api/personalBoardApi';
 
 export async function actionTrack({
   email,
@@ -39,9 +42,14 @@ export async function actionTrack({
   actionName,
   target,
 }: ActionTrackParam) {
+  try {
+    email = window.btoa(email);
+  } catch (e) {
+    console.log(e);
+  }
   // search setting
   search = search ? decodeURI(search) : '';
-  
+
   // pathname setting
   pathName = path && !pathName ? await getPathName(path, search) : pathName;
 
@@ -52,10 +60,10 @@ export async function actionTrack({
   // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
   const cardField = getPathValue(path, 'card', FieldType.Card);
-  if(cardField && cardField.id){
+  if (cardField && cardField.id) {
     fields.push(cardField);
     const relFields = await getCardRelId(cardField.id);
-    if(relFields.length>0){
+    if (relFields.length > 0) {
       fields = [...fields, ...relFields];
     }
   }
@@ -103,7 +111,7 @@ export async function actionTrack({
         cardName: result.find(r => r.type === FieldType.Card)?.name,
         cubeId: result.find(r => r.type === FieldType.Cube)?.id,
         cubeName: result.find(r => r.type === FieldType.Cube)?.name,
-        cubeType: getCubeType(path)
+        cubeType: getCubeType(path),
         // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
         // clectureId: getPathKey(path, 'C-LECTURE'),
       };
@@ -116,15 +124,27 @@ export async function actionTrack({
     });
 }
 
-export const debounceActionTrack = debounce(({email, path, search, area, actionType, action, actionName}: ActionTrackParam) => actionTrack({
-  email,
-  path,
-  search,
-  area,
-  actionType,
-  action,
-  actionName
-} as ActionTrackParam),1000);
+export const debounceActionTrack = debounce(
+  ({
+    email,
+    path,
+    search,
+    area,
+    actionType,
+    action,
+    actionName,
+  }: ActionTrackParam) =>
+    actionTrack({
+      email,
+      path,
+      search,
+      area,
+      actionType,
+      action,
+      actionName,
+    } as ActionTrackParam),
+  1000
+);
 
 export async function actionTrackView({
   email,
@@ -139,6 +159,11 @@ export async function actionTrackView({
   areaId,
   target,
 }: ActionTrackViewParam) {
+  try {
+    email = window.btoa(email);
+  } catch (e) {
+    console.log(e);
+  }
   // search setting
   search = search ? decodeURI(search) : '';
   refererSearch = refererSearch ? decodeURI(refererSearch) : '';
@@ -157,10 +182,10 @@ export async function actionTrackView({
   // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
   const cardField = getPathValue(path, 'card', FieldType.Card);
-  if(cardField && cardField.id){
+  if (cardField && cardField.id) {
     fields.push(cardField);
     const relFields = await getCardRelId(cardField.id);
-    if(relFields.length>0){
+    if (relFields.length > 0) {
       fields = [...fields, ...relFields];
     }
   }
@@ -209,7 +234,7 @@ export async function actionTrackView({
         cardName: result.find(r => r.type === FieldType.Card)?.name,
         cubeId: result.find(r => r.type === FieldType.Cube)?.id,
         cubeName: result.find(r => r.type === FieldType.Cube)?.name,
-        cubeType: getCubeType(path)
+        cubeType: getCubeType(path),
         // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
         // clectureId: getPathKey(path, 'C-LECTURE'),
       };
@@ -222,30 +247,83 @@ export async function actionTrackView({
     });
 }
 
-export function scrollTrack({e, area, scrollClassName, actionName}: ScrollTrackParam){
+export function scrollTrack({
+  e,
+  area,
+  scrollClassName,
+  actionName,
+}: ScrollTrackParam) {
   e.preventDefault();
-  if(!area){
+  if (!area) {
     return;
+  }
+  let email =
+    getCookie('tryingLoginId') ||
+    (window.sessionStorage.getItem('email') as string) ||
+    (window.localStorage.getItem('nara.email') as string);
+  try {
+    email = window.btoa(email);
+  } catch (e) {
+    console.log(e);
   }
   let scrollTarget;
   if (typeof document.getElementsByClassName != 'function') {
     scrollTarget = e.currentTarget.getElementsByClassName(scrollClassName)[0];
-  }else{
+  } else {
     scrollTarget = getElementsByClassName(e.currentTarget, scrollClassName)[0];
   }
-  if(scrollTarget && scrollTarget instanceof HTMLElement){
-    if(scrollTarget.scrollLeft > 0 && scrollTarget.scrollLeft > scrollTarget.scrollWidth - scrollTarget.clientWidth - 10){
+  console.log('scrollTarget', scrollTarget);
+  if (scrollTarget && scrollTarget instanceof HTMLElement) {
+    if (
+      scrollTarget.scrollLeft > 0 &&
+      scrollTarget.scrollLeft >
+        scrollTarget.scrollWidth - scrollTarget.clientWidth - 10
+    ) {
       debounceActionTrack({
-        email: getCookie('tryingLoginId') ||
-          (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string),
+        email,
         path: window.location.pathname,
         search: window.location.search,
         area,
         actionType: ActionType.GENERAL,
         action: Action.SCROLL,
-        actionName
+        actionName,
       } as ActionTrackParam);
     }
-  } 
+  }
+}
+
+export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
+  if (!area || !actionName) {
+    return;
+  }
+  let email =
+    getCookie('tryingLoginId') ||
+    (window.sessionStorage.getItem('email') as string) ||
+    (window.localStorage.getItem('nara.email') as string);
+  try {
+    email = window.btoa(email);
+  } catch (e) {
+    console.log(e);
+  }
+  if (field && field.id && field.type) {
+    await setResultName({
+      type: field.type,
+      id: field.id,
+    }).then(result => {
+      actionName = actionName + '::' + result.name;
+    });
+  }
+
+  debounceActionTrack({
+    email:
+      getCookie('tryingLoginId') ||
+      (window.sessionStorage.getItem('email') as string) ||
+      (window.localStorage.getItem('nara.email') as string),
+    path: window.location.pathname,
+    search: window.location.search,
+    area,
+    actionType: ActionType.GENERAL,
+    action: Action.HOVER,
+    actionName,
+  } as ActionTrackParam);
 }

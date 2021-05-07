@@ -28,6 +28,7 @@ import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
+import { Area } from 'tracker/model';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -402,6 +403,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
+                      dataArea={
+                        window.location.pathname.includes('/recommend')
+                          ? Area.RECOMMEND_CARD
+                          : Area.COLLEGE_CARD
+                      }
                     />
                   );
                 })}

@@ -5,6 +5,7 @@ export enum Source {
 export enum Action {
   CLICK = 'CLICK',
   SCROLL = 'SCROLL',
+  HOVER = 'HOVER',
   SEARCH = 'SEARCH',
   VIEW = 'VIEW',
 }
