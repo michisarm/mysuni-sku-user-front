@@ -108,6 +108,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
+                      dataArea={Area.CARD_RELATION}
                     />
                   </div>
                 </li>

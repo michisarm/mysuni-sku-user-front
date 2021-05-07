@@ -9,6 +9,7 @@ import { NoSuchContentPanel } from 'shared';
 import { Lecture, SeeMoreButton } from 'lecture';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
+import { Area } from 'tracker/model';
 
 interface RequestMore {
   (): void;
@@ -34,6 +35,7 @@ export function InstructorLecturesView(props: Props) {
                 cardId={card.id}
                 {...card}
                 {...cardRelatedCount}
+                dataArea={Area.EXPERT_LECTURE}
               />
             ))}
           </Lecture.Group>

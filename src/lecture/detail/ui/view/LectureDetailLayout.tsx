@@ -27,6 +27,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    console.log(nowScroll);
+  }, [nowScroll]);
+
   // 리스트 헤더위치 추출
   const tabScrollRef = useCallback(node => {
     // console.log('asdf', lecturePrecourse, lectureDescription);

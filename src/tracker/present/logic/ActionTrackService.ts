@@ -253,6 +253,7 @@ export function scrollTrack({
   scrollClassName,
   actionName,
 }: ScrollTrackParam) {
+  console.log('scrollTrack', e);
   e.preventDefault();
   if (!area) {
     return;
