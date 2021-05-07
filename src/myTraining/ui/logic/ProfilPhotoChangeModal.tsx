@@ -4,6 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { Button, Modal, Form, Radio } from 'semantic-ui-react';
 import { fileUtil, ValidationType } from '@nara.drama/depot';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
+import Image from '../../../shared/components/Image';
+import { uploadFileProfile } from '../../../shared/api/imageApi';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -18,6 +20,7 @@ interface States {
   open: boolean;
   photoTypeTemp: string;
   photoImageTemp: string;
+  imageFile?: File;
 }
 /* eslint-disable */
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
@@ -26,7 +29,7 @@ interface States {
 class ProfilPhotoChangeModal extends Component<Props, States> {
   VALID_ICON_EXTENSION: string = 'jpg|jpeg|png';
 
-  state = {
+  state: States = {
     open: false,
     photoTypeTemp: '1',
     photoImageTemp: '',
@@ -43,17 +46,20 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     this.setState({ open: false });
   }
 
-  onConfirm() {
+  async onConfirm() {
     //
-    const { photoTypeTemp, photoImageTemp } = this.state;
+    const { photoTypeTemp, imageFile } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
-    if (photoTypeTemp)
-      skProfileService!.setProfileProp('photoType', photoTypeTemp);
+    if (imageFile !== undefined) {
+      const imagePath = await uploadFileProfile(imageFile);
+      skProfileService!.setProfileProp('photoImage', imagePath || '');
+    }
 
-    if (photoImageTemp)
-      skProfileService!.setProfileProp('photoImage', photoImageTemp);
+    if (photoTypeTemp) {
+      skProfileService!.setProfileProp('photoType', photoTypeTemp);
+    }
 
     skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
@@ -90,6 +96,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     if (!file || (file instanceof File && !this.validatedAll(file))) {
       return;
     }
+
+    this.setState({
+      ...this.state,
+      imageFile: file,
+    });
 
     const fileReader = new FileReader();
 
@@ -157,7 +168,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
               <div className="left">
                 <div className="ui profile">
                   <div className="pic s110">
-                    <img
+                    <Image
                       src={photoFilePath}
                       alt={photoFilePath ? 'userImg' : ''}
                       id="blah"
