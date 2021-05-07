@@ -49,7 +49,6 @@ function CommunityDiscussionContainer() {
     if (postDetail && postDetail?.menuId === '') {
       setFeedbackId(postDetail.commentFeedbackId);
     }
-
   }, [postDetail]);
 
   const OnClickList = useCallback(() => {
@@ -129,36 +128,41 @@ function CommunityDiscussionContainer() {
     if (communityHome?.community?.memberType === 'ADMIN') {
       setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
-  }, [communityHome?.community?.managerId, communityHome?.community?.memberType]);
+  }, [
+    communityHome?.community?.managerId,
+    communityHome?.community?.memberType,
+  ]);
 
   // console.log('관리자여부', state);
   // console.log('!@@@@', communityAdminAuth, adminAuth);
   return (
     <>
       {postDetail && (
-        <div style={{width: '850px'}}>
-          <DiscussionViewContentHeaderView
-            postDetail={postDetail}
-            title={postDetail.title}
-            time={postDetail.createdTime}
-            readCount={count}
-            deletable={true}
-            onClickList={OnClickList}
-          />
-          {feedbackId && (
-            <CommunityCommentList
-              feedbackId={feedbackId}
-              menuType={discussionType}
-              hideCamera
-              name=""
-              email=""
-              companyName=""
-              departmentName=""
-              adminAuth={adminAuth}
-              communityAdminAuth={communityAdminAuth}
+        <>
+          <div style={{ width: '850px' }}>
+            <DiscussionViewContentHeaderView
+              postDetail={postDetail}
+              title={postDetail.title}
+              time={postDetail.createdTime}
+              readCount={count}
+              deletable={true}
+              onClickList={OnClickList}
             />
-          )}
-        </div>
+            {feedbackId && (
+              <CommunityCommentList
+                feedbackId={feedbackId}
+                menuType={discussionType}
+                hideCamera
+                name=""
+                email=""
+                companyName=""
+                departmentName=""
+                adminAuth={adminAuth}
+                communityAdminAuth={communityAdminAuth}
+              />
+            )}
+          </div>
+        </>
       )}
     </>
   );
