@@ -116,10 +116,12 @@ const BoxCard: React.FC = () => {
           } catch {
             // console.log('Search Data Error:', item);
           }
+          const cardId = id.replace('<b>', '').replace('</b>', '');
+
           return (
             <CardView
-              key={id}
-              cardId={id}
+              key={cardId}
+              cardId={cardId}
               htmlName={name}
               name={name}
               starCount={parseInt(star_count)}
