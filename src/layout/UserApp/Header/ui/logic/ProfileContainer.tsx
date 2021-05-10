@@ -8,10 +8,10 @@ import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { SkProfileService } from 'profile/stores';
 import { NotieService } from 'notie/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
 import { Area } from 'tracker/model';
+import Image from '../../../../../shared/components/Image';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
