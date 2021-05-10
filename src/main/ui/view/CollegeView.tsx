@@ -2298,7 +2298,7 @@ const panes = [
            </div>
           <div className="college-cont-map energe">
             <div className="belt">
-              <div className="label energy">Environments College Curriculum</div>
+              <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
                   src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
