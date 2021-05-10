@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -13,28 +12,25 @@ import CertificationView from '../view/CertificationView';
 import certificationRoutePaths from '../../../certification/routePaths';
 import PromotionTab from '../view/PromotionTab';
 
-
-interface Props extends RouteComponentProps<RouteParams> {
-}
+interface Props extends RouteComponentProps<RouteParams> {}
 
 interface RouteParams {
-  tab: ContentType
+  tab: ContentType;
 }
 
 enum ContentType {
   MySuni = 'MySuni',
   College = 'College',
   Certification = 'Certification',
-  PromotionTab = 'PromotionTab'
+  PromotionTab = 'PromotionTab',
 }
 
 enum ContentTypeName {
   MySuni = 'mySUNI 소개',
   College = 'College 소개',
   Certification = '인증제도 소개',
-  PromotionTab = '홍보자료'
+  PromotionTab = '홍보자료',
 }
-
 
 @reactAutobind
 @observer
@@ -62,7 +58,7 @@ class UserMainPage extends Component<Props> {
         name: ContentType.PromotionTab,
         item: ContentTypeName.PromotionTab,
         render: () => <PromotionTab />,
-      }
+      },
     ] as TabItemModel[];
   }
 
@@ -73,7 +69,7 @@ class UserMainPage extends Component<Props> {
     return routePaths.introductionTab(tab.name);
   }
 
-  renderTabContent(props : any) {
+  renderTabContent(props: any) {
     //
     return (
       <div className={classNames('ui tab', { active: props.active })}>
@@ -86,6 +82,11 @@ class UserMainPage extends Component<Props> {
     //
     const { params } = this.props.match;
 
+    let paramsTab = params.tab as string;
+    if (paramsTab.indexOf('?') > -1) {
+      paramsTab = paramsTab.substr(0, paramsTab.indexOf('?'));
+    }
+
     return (
       <ContentLayout
         className="bg-white introduction"
@@ -97,11 +98,11 @@ class UserMainPage extends Component<Props> {
         <Tab
           large
           className="tab-menu2 offset0"
-          defaultActiveName={params.tab}
+          defaultActiveName={paramsTab}
           tabs={this.getTabs()}
           onChangeTab={this.onChangeTab}
           renderContent={this.renderTabContent}
-          renderStaticMenu={()=>(
+          renderStaticMenu={() => (
             <NavLink to={certificationRoutePaths.badge()}>
               <div className="item-button">Certification 바로가기</div>
             </NavLink>
