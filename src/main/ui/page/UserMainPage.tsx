@@ -13,7 +13,7 @@ function UserMainPage() {
       <div className="main-wrap personal-wrap">
         <MyLearningSummaryContainer />
         <MyLearningContentContainer />
-        {/* <MainModals /> */}
+        <MainModals />
       </div>
     </ContentLayout>
   );
