@@ -49,7 +49,6 @@ function CommunityDiscussionContainer() {
     if (postDetail && postDetail?.menuId === '') {
       setFeedbackId(postDetail.commentFeedbackId);
     }
-
   }, [postDetail]);
 
   const OnClickList = useCallback(() => {
@@ -129,7 +128,10 @@ function CommunityDiscussionContainer() {
     if (communityHome?.community?.memberType === 'ADMIN') {
       setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
-  }, [communityHome?.community?.managerId, communityHome?.community?.memberType]);
+  }, [
+    communityHome?.community?.managerId,
+    communityHome?.community?.memberType,
+  ]);
 
   // console.log('관리자여부', state);
   // console.log('!@@@@', communityAdminAuth, adminAuth);
@@ -137,7 +139,7 @@ function CommunityDiscussionContainer() {
     <>
       {postDetail && (
         <>
-          <div style={{width: '850px'}}>
+          <div style={{ width: '850px' }}>
             <DiscussionViewContentHeaderView
               postDetail={postDetail}
               title={postDetail.title}
