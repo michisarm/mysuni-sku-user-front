@@ -304,7 +304,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
           videoParams: {
             // Optional parameters
             //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
-            interactivity: 'none',
+            interactivity: 'search',
             showtitle: 'false',
             showBrand: 'false',
             offerviewer: 'false',
