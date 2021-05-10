@@ -47,11 +47,12 @@ const AiDtModalView = () => {
         </div>
       </Modal.Header>
       <Modal.Content>
-        <div className="imgbox" data-area={Area.MAIN_POPBANNER}>
-          <Image
+        <div className="" data-area={Area.MAIN_POPBANNER}>
+          <Link to="/introduction/College?subTab=Environment" >
+            <Image
             src={`${getPublicUrl()}/images/all/210510_EnvironmentCollege.jpeg`}
-          />
-          <Link to="/introduction/College?subTab=Environment">과정</Link>
+            />
+          </Link>
         </div>
       </Modal.Content>
     </Modal>
