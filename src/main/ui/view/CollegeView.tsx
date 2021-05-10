@@ -2801,7 +2801,7 @@ class CollegeView extends Component<Props, State> {
 
   setActiveTab() {
     //
-    const queryParams = queryString.parse(this.props.location.search);
+    const queryParams = queryString.parse(window.location.search);
     const subTab = queryParams.subTab as string;
 
     if (subTab) {
