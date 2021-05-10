@@ -172,7 +172,7 @@ function createPanoptoEmbedPlayer() {
         // Optional parameters
         //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
         // "interactivity": "Caption Language",
-        interactivity: 'none',
+        interactivity: 'search',
         showtitle: 'false',
         showBrand: 'false',
         offerviewer: 'false',
