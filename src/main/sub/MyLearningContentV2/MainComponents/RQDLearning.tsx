@@ -85,6 +85,7 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
                   type={card.type}
                   passedStudentCount={cardRelatedCount.passedStudentCount}
                   starCount={cardRelatedCount.starCount}
+                  dataArea={Area.MAIN_REQUIRED}
                 />
               </CardGroup>
             </li>
