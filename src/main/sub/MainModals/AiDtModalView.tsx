@@ -49,21 +49,9 @@ const AiDtModalView = () => {
       <Modal.Content>
         <div className="imgbox" data-area={Area.MAIN_POPBANNER}>
           <Image
-            src={`${getPublicUrl()}/images/all/img-aidt-college-warm.png`}
-            alt="사회는 거리두기, 우리 조직 DT는 ai/dt college로 거리 좁히기"
+            src={`${getPublicUrl()}/images/all/210510_EnvironmentCollege.jpeg`}
           />
-          <Link
-            to="/certification/badge/badge-detail/BADGE-2t"
-            className="literacy"
-          >
-            구성원과정
-          </Link>
-          <Link
-            to="/certification/badge/badge-detail/BADGE-4w"
-            className="executive"
-          >
-            리더과정
-          </Link>
+          <Link to="/introduction/College?subTab=Environment">과정</Link>
         </div>
       </Modal.Content>
     </Modal>
