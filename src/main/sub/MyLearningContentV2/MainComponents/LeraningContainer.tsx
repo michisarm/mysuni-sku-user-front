@@ -95,7 +95,10 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         </div>
       </div>
       {cardList.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture.Group
+          type={Lecture.GroupType.Line}
+          dataActionName={cardBundle?.displayText}
+        >
           {cardList.map((item, i) => {
             const { card, cardRelatedCount } = item;
 

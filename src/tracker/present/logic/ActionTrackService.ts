@@ -26,8 +26,6 @@ import {
 } from 'tracker/model';
 import { debounce, getElementsByClassName } from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
-import { action } from '@storybook/addon-actions';
-import { encryptEmail } from '../../../main/sub/PersonalBoard/api/personalBoardApi';
 
 export async function actionTrack({
   email,
@@ -42,11 +40,6 @@ export async function actionTrack({
   actionName,
   target,
 }: ActionTrackParam) {
-  try {
-    email = window.btoa(email);
-  } catch (e) {
-    console.log(e);
-  }
   // search setting
   search = search ? decodeURI(search) : '';
 
@@ -159,11 +152,6 @@ export async function actionTrackView({
   areaId,
   target,
 }: ActionTrackViewParam) {
-  try {
-    email = window.btoa(email);
-  } catch (e) {
-    console.log(e);
-  }
   // search setting
   search = search ? decodeURI(search) : '';
   refererSearch = refererSearch ? decodeURI(refererSearch) : '';
@@ -253,19 +241,9 @@ export function scrollTrack({
   scrollClassName,
   actionName,
 }: ScrollTrackParam) {
-  console.log('scrollTrack', e);
   e.preventDefault();
   if (!area) {
     return;
-  }
-  let email =
-    getCookie('tryingLoginId') ||
-    (window.sessionStorage.getItem('email') as string) ||
-    (window.localStorage.getItem('nara.email') as string);
-  try {
-    email = window.btoa(email);
-  } catch (e) {
-    console.log(e);
   }
   let scrollTarget;
   if (typeof document.getElementsByClassName != 'function') {
@@ -273,15 +251,20 @@ export function scrollTrack({
   } else {
     scrollTarget = getElementsByClassName(e.currentTarget, scrollClassName)[0];
   }
-  console.log('scrollTarget', scrollTarget);
   if (scrollTarget && scrollTarget instanceof HTMLElement) {
     if (
       scrollTarget.scrollLeft > 0 &&
       scrollTarget.scrollLeft >
         scrollTarget.scrollWidth - scrollTarget.clientWidth - 10
     ) {
+      if (scrollTarget.dataset.actionName) {
+        actionName += '::' + scrollTarget.dataset.actionName;
+      }
       debounceActionTrack({
-        email,
+        email:
+          getCookie('tryingLoginId') ||
+          (window.sessionStorage.getItem('email') as string) ||
+          (window.localStorage.getItem('nara.email') as string),
         path: window.location.pathname,
         search: window.location.search,
         area,
@@ -296,15 +279,6 @@ export function scrollTrack({
 export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
   if (!area || !actionName) {
     return;
-  }
-  let email =
-    getCookie('tryingLoginId') ||
-    (window.sessionStorage.getItem('email') as string) ||
-    (window.localStorage.getItem('nara.email') as string);
-  try {
-    email = window.btoa(email);
-  } catch (e) {
-    console.log(e);
   }
   if (field && field.id && field.type) {
     await setResultName({

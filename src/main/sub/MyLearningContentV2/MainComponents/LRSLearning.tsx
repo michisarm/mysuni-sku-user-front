@@ -85,7 +85,7 @@ const LRSLearning: React.FC<Props> = Props => {
       </div>
 
       {cards.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
           {cards.map(({ card, cardRelatedCount }) => (
             <li>
               <div className="ui cards box-cards">
