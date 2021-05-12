@@ -117,9 +117,9 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       // study action track
       debounceActionTrack({
         email:
-          getCookie('tryingLoginId') ||
           (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string),
+          (window.localStorage.getItem('nara.email') as string) ||
+          getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
         area: Area.CUBE_PLAY,

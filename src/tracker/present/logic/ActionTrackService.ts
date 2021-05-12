@@ -262,9 +262,9 @@ export function scrollHorizontalTrack({
       }
       debounceActionTrack({
         email:
-          getCookie('tryingLoginId') ||
           (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string),
+          (window.localStorage.getItem('nara.email') as string) ||
+          getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
         area,
@@ -291,9 +291,9 @@ export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
 
   debounceActionTrack({
     email:
-      getCookie('tryingLoginId') ||
       (window.sessionStorage.getItem('email') as string) ||
-      (window.localStorage.getItem('nara.email') as string),
+      (window.localStorage.getItem('nara.email') as string) ||
+      getCookie('tryingLoginId'),
     path: window.location.pathname,
     search: window.location.search,
     area,

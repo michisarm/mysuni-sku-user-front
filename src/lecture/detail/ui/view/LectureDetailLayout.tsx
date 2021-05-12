@@ -41,9 +41,9 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       // vertical scroll
       debounceActionTrack({
         email:
-          getCookie('tryingLoginId') ||
           (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string),
+          (window.localStorage.getItem('nara.email') as string) ||
+          getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
         area: window.location.pathname.includes('/cube')

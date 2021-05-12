@@ -33,9 +33,9 @@ const ExtraRoutes = lazy(() => import('./extra/ExtraRoutes'));
 class Routes extends PureComponent {
   state = {
     email:
-      getCookie('tryingLoginId') ||
       (window.sessionStorage.getItem('email') as string) ||
-      (window.localStorage.getItem('nara.email') as string),
+      (window.localStorage.getItem('nara.email') as string) ||
+      getCookie('tryingLoginId'),
   };
 
   render() {
