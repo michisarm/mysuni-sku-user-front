@@ -34,6 +34,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  
   useEffect(() => {
     getFileIds();
   }, [taskDetail]);
@@ -117,13 +118,15 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                   ))}
             </div>
           </div>
-          <CommentList
-            feedbackId={taskDetail.commentFeedbackId}
-            name={taskDetail.writer.name}
-            email={taskDetail.writer.email}
-            companyName={taskDetail.writer.companyName}
-            departmentName={taskDetail.writer.companyCode}
-          />
+          {taskId === taskDetail.id && (
+            <CommentList
+              feedbackId={taskDetail.commentFeedbackId}
+              name={taskDetail.writer.name}
+              email={taskDetail.writer.email}
+              companyName={taskDetail.writer.companyName}
+              departmentName={taskDetail.writer.companyCode}
+            />
+          )}
           <div className="task-read-bottom">
             <Button
               className="ui icon button left post edit"
