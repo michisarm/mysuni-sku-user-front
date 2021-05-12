@@ -152,6 +152,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     if (areaElement instanceof HTMLElement) {
       const action = areaElement.dataset.action;
       const actionName = areaElement.dataset.actionName;
+      const actionType = areaElement.dataset.actionType;
       if (!(action && actionName)) {
         return;
       }
@@ -162,7 +163,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           path: data.referer,
           search: data.refererSearch,
           area: data.area,
-          actionType: ActionType.GENERAL,
+          actionType: actionType ? actionType : ActionType.GENERAL,
           action,
           actionName,
           target: data.target,

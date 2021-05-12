@@ -12,6 +12,7 @@ import {
 } from '../../../service/useLectureState/utility/cubeStateActions';
 import { hasNoTestAndNoReport } from '../../../utility/cubeTester';
 import LectureState from '../../../viewModel/LectureState';
+import { Action, ActionType, Area } from 'tracker/model';
 
 const APPROVE = '학습하기';
 const PROGRESS = '학습중';
@@ -43,6 +44,14 @@ function CanceledView(props: CanceledViewProps) {
         className={`ui button free ${actionClassName} p18`}
         id="ACTION"
         onClick={action}
+        data-area={
+          window.location.pathname.includes('/cube')
+            ? Area.CUBE_HEADER
+            : Area.CARD_HEADER
+        }
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${APPROVE} 클릭`}
       >
         {APPROVE}
       </button>
@@ -84,6 +93,14 @@ function ApprovedView(props: ApprovedViewProps) {
             className={`ui button free ${actionClassName} p18`}
             onClick={completeLearning}
             id="ACTION"
+            data-area={
+              window.location.pathname.includes('/cube')
+                ? Area.CUBE_HEADER
+                : Area.CARD_HEADER
+            }
+            data-action={Action.CLICK}
+            data-action-type={ActionType.STUDY}
+            data-action-name={`${COMPLETE} 클릭`}
           >
             {COMPLETE}
           </button>
