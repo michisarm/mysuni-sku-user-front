@@ -5,6 +5,7 @@ import CubeType from '../../../../model/CubeType';
 import { submit } from '../../../service/useLectureState/utility/cubeStateActions';
 import LectureState from '../../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
+import { Action, ActionType, Area } from 'tracker/model';
 
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
@@ -23,6 +24,10 @@ function CanceledView() {
       <button
         className={`ui button free ${actionClassName} p18`}
         onClick={action}
+        data-area={Area.CUBE_HEADER}
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${JOIN} 클릭`}
       >
         {JOIN}
       </button>
@@ -84,10 +89,13 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
 }) {
   const { student, cubeType } = lectureState;
   useEffect(() => {
-    if (cubeType === 'Discussion' && 
-        (!student || (student.learningState === 'Progress' &&
+    if (
+      cubeType === 'Discussion' &&
+      (!student ||
+        (student.learningState === 'Progress' &&
           student.commentCount === 0 &&
-          student.subCommentCount === 0))) {
+          student.subCommentCount === 0))
+    ) {
       reactAlert({
         title: '안내',
         message: `이수조건을 확인 후 학습을 진행해주세요`,
@@ -97,9 +105,10 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
 
   return (
     <>
-      {(cubeType === 'Task' && (student === undefined || student?.proposalState === 'Canceled')) && (
-        <CanceledView />
-      )}
+      {cubeType === 'Task' &&
+        (student === undefined || student?.proposalState === 'Canceled') && (
+          <CanceledView />
+        )}
       {student?.proposalState === 'Approved' && (
         <ApprovedView student={student} cubeType={cubeType} />
       )}

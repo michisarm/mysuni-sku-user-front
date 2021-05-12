@@ -1,9 +1,7 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Card } from 'semantic-ui-react';
-
 
 export enum GroupType {
   Box = 'Box',
@@ -17,8 +15,9 @@ export enum GroupType {
 }
 
 interface Props {
-  type: GroupType
-  totalCourseCount?: number
+  type: GroupType;
+  totalCourseCount?: number;
+  dataActionName?: string;
 }
 
 export const LearningCardContext = React.createContext({
@@ -39,61 +38,43 @@ class CardGroup2 extends Component<Props> {
 
   render() {
     //
-    const { type, children, totalCourseCount } = this.props;
+    const { type, children, totalCourseCount, dataActionName } = this.props;
     let elements = null;
 
     if (type === GroupType.Box) {
+      elements = <Card.Group className="box-cards">{children}</Card.Group>;
+    } else if (type === GroupType.List) {
+      elements = <Card.Group className="list-cards">{children}</Card.Group>;
+    } else if (type === GroupType.ListStamp) {
+      elements = <Card.Group className="list-cards">{children}</Card.Group>;
+    } else if (type === GroupType.Line) {
       elements = (
-        <Card.Group className="box-cards">
-          {children}
-        </Card.Group>
-      );
-    }
-    else if (type === GroupType.List) {
-      elements = (
-        <Card.Group className="list-cards">
-          {children}
-        </Card.Group>
-      );
-    }
-    else if (type === GroupType.ListStamp) {
-      elements = (
-        <Card.Group className="list-cards">
-          {children}
-        </Card.Group>
-      );
-    }
-    else if (type === GroupType.Line) {
-      elements = (
-        <div className="scrolling">
-          <ul className="belt">
-            {children}
-          </ul>
+        <div className="scrolling" data-action-name={dataActionName}>
+          <ul className="belt">{children}</ul>
         </div>
       );
-    }
-    /*else if (type === GroupType.Course) {
+    } else if (type === GroupType.Course) {
+      /*else if (type === GroupType.Course) {
       elements = (
         <div className="contents course-list non-height">
           {children}
         </div>
       );
     }*/
-    else if (type === GroupType.Course) {
       elements = (
         <>
           <div className="title-style">
             <div className="ui label onlytext bold size24">
-              <i aria-hidden="true" className="course24 icon"/>
+              <i aria-hidden="true" className="course24 icon" />
               <span>Course 콘텐츠</span>
             </div>
-            {
-              totalCourseCount && (
-                <div className="title-right">
-                  <span>총 <strong>{totalCourseCount} 개</strong> 강의 구성</span>
-                </div>
-              )
-            }
+            {totalCourseCount && (
+              <div className="title-right">
+                <span>
+                  총 <strong>{totalCourseCount} 개</strong> 강의 구성
+                </span>
+              </div>
+            )}
           </div>
           {children}
           {/*<div className="course-cont">*/}
@@ -101,31 +82,21 @@ class CardGroup2 extends Component<Props> {
           {/*</div>*/}
         </>
       );
-    }
-    else if (type === GroupType.PreCourse) {
+    } else if (type === GroupType.PreCourse) {
       elements = (
         <>
           <div className="title-style">
             <div className="ui label onlytext bold size24">
-              <i aria-hidden="true" className="course24 icon"/>
+              <i aria-hidden="true" className="course24 icon" />
               <span>선수 과정 안내</span>
             </div>
           </div>
-          <div className="course-cont pre-course">
-            {children}
-          </div>
+          <div className="course-cont pre-course">{children}</div>
         </>
       );
+    } else if (type === GroupType.Community) {
+      elements = <div className="community-accordion">{children}</div>;
     }
-    else if (type === GroupType.Community) {
-      elements = (
-        <div className="community-accordion">
-          {children}
-        </div>
-      );
-    }
-
-
 
     return (
       <LearningCardContext.Provider value={this.getContextValue()}>
