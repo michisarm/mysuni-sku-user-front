@@ -8,31 +8,18 @@ import {
 } from 'lecture/detail/store/LectureTaskStore';
 import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
-// import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
-// import LectureSubcategory from 'lecture/detail/viewModel/LectureOverview/LectureSubcategory';
-// import LectureTags from 'lecture/detail/viewModel/LectureOverview/LectureTags';
-// import LectureFile from 'lecture/detail/viewModel/LectureOverview/LectureFile';
-// import LectureDescriptionView from '../LectureOverview/LectureDescriptionView';
-// import LectureFileView from '../LectureOverview/LectureFileView';
-// import LectureCubeInfoView from '../LectureOverview/LectureCubeInfoView';
-// import LectureTagsView from '../LectureOverview/LectureTagsView';
-// import LectureSubcategoryView from '../LectureOverview/LectureCubeSubcategoryView';
 import { useLectureTask } from '../../../service/useLectureTask/useLectureTask';
 import { useLocation, useHistory } from 'react-router-dom';
 
 interface LectureTaskViewProps {
   taskItem?: LectureTask;
-  // lectureDescription?: LectureDescription;
-  // lectureSubcategory?: LectureSubcategory;
-  // lectureTags?: LectureTags;
-  // lectureFile?: LectureFile;
   moreView?: (offset: number) => void;
   handleClickTaskRow?: (param: object) => void;
   listHashLink?: (hash: string) => void;
   overviewHashLink?: (hash: string) => void;
   handelClickCreateTask?: () => void;
-  sortChage: (data: any) => void;
-  pageChage: (data: any) => void;
+  sortChange: (data: any) => void;
+  pageChange: (data: any) => void;
   activePage: number;
   totalPage: number;
   cubePostCount: number;
@@ -45,17 +32,13 @@ interface LectureTaskViewProps {
 
 const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView({
   taskItem,
-  // lectureDescription,
-  // lectureSubcategory,
-  // lectureTags,
-  // lectureFile,
   moreView,
   handleClickTaskRow,
   listHashLink,
   overviewHashLink,
   handelClickCreateTask,
-  sortChage,
-  pageChage,
+  sortChange,
+  pageChange,
   activePage,
   totalPage,
   cubePostCount,
@@ -97,29 +80,6 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   return (
     <Fragment>
       <Segment className="full">
-        {/* <div className="lms-sticky-menu">
-          <div className="lms-fixed-inner">
-            <a
-              onClick={postsHashClick}
-              className={tabType === 'Posts' ? 'lms-act' : ''}
-            >
-              Posts
-            </a>
-            <a
-              onClick={myPostsHashClick}
-              className={tabType === 'MyPosts' ? 'lms-act' : ''}
-            >
-              My Posts
-            </a>
-            <a
-              onClick={overViewHashClick}
-              className={tabType === 'Overview' ? 'lms-act' : ''}
-            >
-              Overview
-            </a>
-          </div>
-        </div> */}
-        
         <div className="scrolling-area area2 ">
             <div className="ui segment full">
               <List as="ul" className="my-task-bar">
@@ -136,44 +96,12 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
             moreView={moreView!}
             handleClickTaskRow={param => onHandleClickTaskRow(param)}
             handelClickCreateTask={handelClickCreateTask!}
-            sortChage={sortChage}
-            pageChage={pageChage}
+            sortChange={sortChange}
+            pageChange={pageChange}
             activePage={activePage}
             totalPage={totalPage}
           />
         )}
-        {/* {tabType === 'MyPosts' && taskItem && (
-          <>
-            <LectureTaskMyPostView
-              key={`LectureTaskPostView-${tabType}`}
-              taskItem={taskItem}
-              moreView={moreView!}
-              handleClickTaskRow={onHandleClickTaskRow}
-              handelClickCreateTask={handelClickCreateTask!}
-            />
-          </>
-        )} */}
-        {/* {tabType === 'Overview' && (
-          <>
-            {lectureDescription && (
-              <LectureDescriptionView
-                htmlContent={lectureDescription.description}
-              />
-            )}
-            <div className="badge-detail border-none">
-              {lectureSubcategory && (
-                <LectureSubcategoryView
-                  lectureSubcategory={lectureSubcategory}
-                />
-              )}
-              {lectureFile && <LectureFileView lectureFile={lectureFile} />}
-              {lectureDescription && (
-                <LectureCubeInfoView lectureDescription={lectureDescription} />
-              )}
-              {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-            </div>
-          </>
-        )} */}
       </Segment>
     </Fragment>
   );

@@ -2,20 +2,21 @@ import {
   LectureTask,
   LectureTaskItem,
 } from 'lecture/detail/viewModel/LectureTask';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback } from 'react';
 
 import moment from 'moment';
-import { Button, Icon, Pagination } from 'semantic-ui-react';
+import { Icon, Pagination } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
+import { NoSuchContentPanel } from 'shared';
 
 interface LectureTaskPostViewProps {
   taskItem: LectureTask;
   moreView: (offset: number) => void;
   handleClickTaskRow: (param: object) => void;
   handelClickCreateTask: () => void;
-  sortChage: (data: any) => void;
-  pageChage: (data: any) => void;
+  sortChange: (data: any) => void;
+  pageChange: (data: any) => void;
   activePage: number;
   totalPage: number;
 
@@ -90,8 +91,8 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
   moreView,
   handleClickTaskRow,
   handelClickCreateTask,
-  sortChage,
-  pageChage,
+  sortChange,
+  pageChange,
   activePage,
   totalPage
 }) {
@@ -102,41 +103,35 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
     [taskItem]
   );
 
-  const onHandleClickMoreView = useCallback(() => {
-    moreView(getLectureTaskOffset()!);
-  }, []);
-
   return (
     <>
       <LectureTaskTopLineView
         totalCount={taskItem.totalCount}
         handelClickCreateTask={handelClickCreateTask}
-        sortChage={sortChage}
+        sortChange={sortChange}
       />
       <div className="community-list">
-        {taskItem.items.map((task, index) => (
-          <Fragment key={`post-${task.id}`}>
-            {renderPostRow(task, onHandleClickTaskRow)}
-          </Fragment>
-        ))}
+        { taskItem &&
+            taskItem.items &&
+              taskItem.items.length > 0 ? (
+                taskItem.items.map((task, index) => (
+                  <Fragment key={`post-${task.id}`}>
+                    {renderPostRow(task, onHandleClickTaskRow)}
+                  </Fragment>
+                ))
+        ) : (
+          <NoSuchContentPanel message="등록된 게시글이 없습니다." />
+        )}
       </div>
       <div className="lms-paging-holder">
         {taskItem && taskItem.totalCount ? (
           <Pagination
             activePage={activePage}
             totalPages={totalPage}
-            onPageChange={(e, data) => pageChage(data)}
+            onPageChange={(e, data) => pageChange(data)}
           />
         ) : (null)}
       </div>
-      {/* {taskItem.items.length < taskItem.totalCount && (
-          <div className="more-comments" onClick={onHandleClickMoreView}>
-            <Button icon className="left moreview">
-              <Icon className="moreview" />
-              list more
-            </Button>
-          </div>
-        )} */}
     </>
   );
 };

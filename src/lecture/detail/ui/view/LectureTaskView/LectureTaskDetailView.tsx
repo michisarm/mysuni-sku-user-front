@@ -15,7 +15,6 @@ import { SkProfileService } from '../../../../../profile/stores';
 import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import { setPinByPostId } from '../../../../../lecture/detail/api/cubeApi';
 import { reactAlert } from '@nara.platform/accent';
-// import { submitRegisterStudent } from '../../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
@@ -26,6 +25,7 @@ interface LectureTaskDetailViewProps {
   handleOnClickModify: (id: string, type: string) => void;
   handleOnClickReplies: (id: string) => void;
   handleOnClickDelete: (boardId: string, taskId: string, type: string) => void;
+  onRegisterStudent: () => void;
 }
 
 const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTaskDetailView({
@@ -37,6 +37,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   handleOnClickModify,
   handleOnClickReplies,
   handleOnClickDelete,
+  onRegisterStudent,
 }) {
   const [viewType] = useLectureTaskViewType();
   const history = useHistory();
@@ -83,13 +84,6 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     history.push('#reply');
     handleOnClickReplies(taskId);
   }, []);
-
-  // 코멘드 등록 시 학습처리 CommentList -> Props
-  // const registerStudent = useCallback(async () => {
-  //   if(lectureState && lectureState.student === undefined){
-  //     await submitRegisterStudent()
-  //   }
-  // }, []);
 
   const params = useLectureParams();
   const [canNotice, setCanNotice] = useState<boolean>(false);
@@ -236,14 +230,16 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               list
             </Button>
           </div>
-          <CommentList
-            feedbackId={taskDetail.commentFeedbackId}
-            name={taskDetail.writer.name}
-            email={taskDetail.writer.email}
-            companyName={taskDetail.writer.companyName}
-            departmentName={taskDetail.writer.companyCode}
-            // cubeCommentStartFunction={registerStudent}
-          />
+          {taskId === taskDetail.id  && (
+            <CommentList
+              feedbackId={taskDetail.commentFeedbackId}
+              name={taskDetail.writer.name}
+              email={taskDetail.writer.email}
+              companyName={taskDetail.writer.companyName}
+              departmentName={taskDetail.writer.companyCode}
+              cubeCommentStartFunction={onRegisterStudent}
+            />
+          )}
         </>
       )}
     </Fragment>

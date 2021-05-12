@@ -310,7 +310,6 @@ export function modifyPost(
   postId: string,
   nameValueList: { nameValues: { name: string; value: any }[] }
 ) {
-  console.log("modifyPost")
   const axios = getAxios();
   const url = `${BASE_URL}/posts/${postId}`;
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
@@ -335,7 +334,6 @@ export function setPinByPostId(
   postId: string,
   pinned: number,
 ) {
-  console.log("setPinByPostId", postId, pinned)
   const axios = getAxios();
   const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
   return axios.put<string>(url).then(AxiosReturn);

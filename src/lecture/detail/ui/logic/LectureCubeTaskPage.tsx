@@ -20,7 +20,6 @@ function LectureCubeTaskPage() {
       setLectureTaskOffset(0);
       setLectureTaskViewType('list');
       setLectureTaskDetail();
-      // setLectureTaskTab('Overview');
       setLectureTaskTab('Posts');
     };
   }, [params?.cubeId]);

@@ -38,6 +38,7 @@ import { OverviewField } from '../../../../personalcube';
 import { Image } from 'semantic-ui-react';
 import { useLectureState } from '../../store/LectureStateStore';
 import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
+import { submitRegisterStudent } from '../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -92,8 +93,8 @@ function LectureTaskContainer() {
 
   useEffect(() => {
     if(taskItem){
-      let totalpage = Math.ceil(taskItem!.totalCount / 2);
-      if (taskItem!.totalCount % 2 < 0) {
+      let totalpage = Math.ceil(taskItem!.totalCount / 10);
+      if (taskItem!.totalCount % 10 < 0) {
         totalpage++;
       }
       setTotalPage(totalpage);
@@ -122,13 +123,13 @@ function LectureTaskContainer() {
     }
   }, [lectureState]);
 
-  const pageChage = (data: any) => {
-    const nextOffset = (data.activePage - 1) * 2;
+  const pageChange = (data: any) => {
+    const nextOffset = (data.activePage - 1) * 10;
     setLectureTaskOffset(nextOffset);
     setActivePage(data.activePage);
   };
 
-  const sortChage = (data: any) => {
+  const sortChange = (data: any) => {
     setLectureTaskOrder(data);
     setActivePage(1);
     setLectureTaskOffset(0);
@@ -318,6 +319,13 @@ function LectureTaskContainer() {
     });
   }
 
+  // 코멘드 등록 시 학습처리 CommentList -> Props
+  const onRegisterStudent = useCallback(async () => {
+    if(lectureState && lectureState.student === undefined){
+      await submitRegisterStudent()
+    }
+  }, [lectureState]);
+
   return (
     <>
       <div id="Posts" />
@@ -325,7 +333,6 @@ function LectureTaskContainer() {
         <div className="contents">
           <LectureCubeSummaryContainer />
 
-{/* View Add */}
           <div className="discuss-wrap">
             <div className="task-condition">
               <strong className="task-condition">이수조건</strong>
@@ -337,50 +344,12 @@ function LectureTaskContainer() {
               }
                 {(lectureDescription && lectureDescription.completionTerms) && (
                   <Fragment>
-                    {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
-                    <p
-                      dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }}
-                    />
-                    {/* <LectureDescriptionView
-                      htmlContent={lectureDescription.description}
-                    /> */}
+                    <p dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }} />
                   </Fragment>
                 )}
             </div>
-            {/* <div className="discuss-box2"> */}
-            {/* {lectureFeedbackContent &&
-                lectureFeedbackContent.relatedUrlList &&
-                lectureFeedbackContent.relatedUrlList.length > 0 &&
-                (lectureFeedbackContent.relatedUrlList[0].title !== '' ||
-                  lectureFeedbackContent.relatedUrlList[0].url !== '') && (
-                  <div className="community-board-down discuss2">
-                    <div className="board-down-title href">
-                      <p>
-                        {' '}
-                        <Image
-                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
-                          alt=""
-                          style={{ display: 'inline-block' }}
-                        />
-                        관련 URL
-                      </p>
-                      {lectureFeedbackContent &&
-                        lectureFeedbackContent.relatedUrlList?.map(
-                          (item: any) => (
-                            <a href={item.url} target="blank">
-                              {item.title}
-                            </a>
-                          )
-                        )}
-                    </div>
-                  </div>
-                )
-          } */}
-            {/* </div> */}
           </div>
-
-{/* View Add */}
-
+          
           <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}
@@ -393,8 +362,8 @@ function LectureTaskContainer() {
               // lectureSubcategory={lectureSubcategory}
               // lectureTags={lectureTags}
               // lectureFile={lectureFile}
-              sortChage={sortChage}
-              pageChage={pageChage}
+              sortChange={sortChange}
+              pageChange={pageChange}
               activePage={activePage}
               totalPage={totalPage}
               cubePostCount={cubePostCount}
@@ -418,6 +387,7 @@ function LectureTaskContainer() {
             handleOnClickModify={onClickModify}
             handleOnClickReplies={onClickReplies}
             handleOnClickDelete={onClickDelete}
+            onRegisterStudent={onRegisterStudent}
           />
         </>
       )}
@@ -454,14 +424,6 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {/* {viewType === 'reply' && (
-        <LectureTaskReplyView
-          postId={detailTaskId}
-          boardId={boardId}
-          handleOnClickList={onHandleReply}
-          handleCloseClick={onClickList}
-        />
-      )} */}
     </>
   );
 }
