@@ -22,6 +22,7 @@ interface Props extends RouteComponentProps {
 
 const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const [title] = useState('Deep Change를 위한 권장과정');
 
   const fetchCardList = async () => {
     const cardIds = await findRequiredLearning();
@@ -59,14 +60,14 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   return (
     <ContentWrapper dataArea={Area.MAIN_REQUIRED}>
       <div className="section-head">
-        <strong>Deep Change를 위한 권장과정</strong>
+        <strong>{title}</strong>
         <div className="right">
           <Button icon className="right btn-blue" onClick={onViewAll}>
             View all <Icon className="morelink" />
           </Button>
         </div>
       </div>
-      <Lecture.Group type={Lecture.GroupType.Line}>
+      <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
         {cardList.map((item, i) => {
           const { card, cardRelatedCount } = item;
           return (

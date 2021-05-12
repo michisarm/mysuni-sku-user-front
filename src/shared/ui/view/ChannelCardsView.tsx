@@ -7,7 +7,6 @@ import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
 import { SkProfileService } from '../../../profile/stores';
 import { getChannelName } from '../../service/useCollege/useRequestCollege';
 import { ChannelCards } from '../../viewmodel/ChannelCards';
-import { Area } from 'tracker/model';
 
 interface Props extends ChannelCards {
   isLoading: boolean;
@@ -78,7 +77,6 @@ export function ChannelCardsView(props: Props) {
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
-                      dataArea={Area.MYPAGE_STAMP}
                     />
                   </div>
                 </li>
