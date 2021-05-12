@@ -41,7 +41,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   const [viewType] = useLectureTaskViewType();
   const history = useHistory();
   const textContainerRef = useRef<HTMLDivElement>(null);
-  const [pinned, setPinned] = useState<boolean>(false);
+  const [pinned, setPinned] = useState<number>(0);
 
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -72,7 +72,6 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   }, []);
 
   const OnClickDelete = useCallback(() => {
-    console.log("OnClickDelete", taskDetail)
     handleOnClickDelete(boardId, taskId, detailType);
   }, []);
 
@@ -133,27 +132,18 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     return () => setCanNotice(false);
   }, [params?.cubeId]);
 
-  const OnClickPostsPinned = useCallback( async(postId: string, pinned: boolean) => {
-    // if (canNotice) {
-      const message = pinned ? '고정되었습니다.' : '해제되었습니다.';
+  const OnClickPostsPinned = useCallback( async(postId: string, pinned: number) => {
+    if (canNotice) {
+      const message = pinned === 1 ? '고정되었습니다.' : '해제되었습니다.';
       await setPinByPostId(postId, pinned)
-            .catch(error => {
+            .then(() => {
                 setPinned(pinned)
                 reactAlert({
                 title: '안내',
                 message: `게시글이 Pin ${message}`,
               });
             })
-      // setPinByPostId(postId, memberId).then(result => {
-      //   if (like === true) {
-      //     setLike(false);
-      //     setLikeCount(likeCount - 1);
-      //   } else {
-      //     setLike(true);
-      //     setLikeCount(likeCount + 1);
-      //   }
-      // });
-    // }
+    }
   }, []);
 
   return (
@@ -206,13 +196,13 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             </div>
           </div>
           <div className="task-read-bottom">
-            {canNotice && (
+            {canNotice && detailType === 'parent' && pinned !== 2 && (
               <Button
                 className="ui button post pin2"
-                onClick={() => OnClickPostsPinned(taskDetail.id, !pinned)}
+                onClick={() => OnClickPostsPinned(taskDetail.id, pinned === 1 ? 0 : 1)}
               >
                 <i area-hidden = "true" className="icon pin24" />
-                {!pinned ? <span>Pin 고정</span> : <span>Pin 해제</span>}
+                {pinned === 0 ? <span>Pin 고정</span> : <span>Pin 해제</span>}
               </Button>
             )}
             <Button

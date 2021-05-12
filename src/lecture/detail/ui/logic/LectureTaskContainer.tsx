@@ -36,6 +36,8 @@ import { getLectureParams } from '../../store/LectureParamsStore';
 import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
 import { OverviewField } from '../../../../personalcube';
 import { Image } from 'semantic-ui-react';
+import { useLectureState } from '../../store/LectureStateStore';
+import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -64,6 +66,7 @@ function LectureTaskContainer() {
     setLectureTaskViewType('list');
   }, [hash]);
 
+  const lectureState = useLectureState();
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
   const [lectureDescription] = useLectureDescription();
@@ -83,9 +86,11 @@ function LectureTaskContainer() {
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
+  const [postCount, setPostCount] = useState<number>(0);
+  const [commentCount, setCommentCount] = useState<number>(0);
+  const [subCommentCount, setSubCommentCount] = useState<number>(0);
 
   useEffect(() => {
-    console.log("lectureDescription=============================",lectureDescription)
     if(taskItem){
       let totalpage = Math.ceil(taskItem!.totalCount / 2);
       if (taskItem!.totalCount % 2 < 0) {
@@ -94,6 +99,28 @@ function LectureTaskContainer() {
       setTotalPage(totalpage);
     }
   }, [taskItem]);
+
+  useEffect(() => {
+    if(lectureState){
+      // 댓글, 대댓글 Count Data
+      if(lectureState.student){
+        setPostCount(lectureState?.student.postCount)
+        setCommentCount(lectureState?.student.commentCount)
+        setSubCommentCount(lectureState?.student.subCommentCount)
+      }
+
+      if(lectureState.cubeDetail){
+        // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
+        if(lectureState.cubeDetail.cubeMaterial
+            && lectureState.cubeDetail.cubeMaterial.board){
+              setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.postCount)
+              setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.commentCount)
+              setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.subCommentCount)
+              setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board.automaticCompletion)
+        }
+      }
+    }
+  }, [lectureState]);
 
   const pageChage = (data: any) => {
     const nextOffset = (data.activePage - 1) * 2;
@@ -114,12 +141,12 @@ function LectureTaskContainer() {
   }, []);
 
   const moveToDetail = useCallback((param: any) => {
+    //게시글 부모인지 자식인지
     setIsReply(param.type === 'child');
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
-
-    //게시글 부모인지 자식인지
+    setBoardId(param.boardId)
   }, []);
 
   const onClickList = useCallback(() => {
@@ -129,10 +156,12 @@ function LectureTaskContainer() {
     if (params === undefined) {
       return;
     }
-    history.push({
-      pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
-    });
-    setActivePage(1);
+    refresh(1).then(() => {
+      history.push({
+        pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
+      });
+      setActivePage(1);
+    })
   }, []);
 
   // const onHandleSave = useCallback(() => {
@@ -159,8 +188,11 @@ function LectureTaskContainer() {
       title: '알림',
       message: '글을 삭제하시겠습니까?',
       onOk: () => {
-        deletePost(boardId, taskId, type);
-        history.goBack();
+        deletePost(boardId, taskId, type).then(() => {
+          refresh(1).then(() => {
+            history.goBack();
+          });
+        });
       },
     });
   }, []);
@@ -182,13 +214,11 @@ function LectureTaskContainer() {
   }, []);
 
   const handelClickCreateTask = useCallback(() => {
-    console.log("ENNNNNNNNNNNNNNNNNND")
     setCreate(true);
   }, []);
 
   const onHandleChange = useCallback(
     (value: string, name: string, viewType: string) => {
-      console.log(value, name, viewType);
       if (viewType === 'create') {
         if (getLectureTaskCreateItem() === undefined) {
           return;
@@ -208,7 +238,6 @@ function LectureTaskContainer() {
           return;
         }
         const nextTaskEditItem = { ...taskEditItem, [name]: value };
-        console.log("eeeeeeeee", nextTaskEditItem)
         setLectureTaskDetail(nextTaskEditItem);
       }
     },
@@ -247,13 +276,14 @@ function LectureTaskContainer() {
               readCount: 0,
               commentFeedbackId: '',
               notice: false,
-              pinned: false, // postpinned -> number = 0
+              pinned: 0, // postpinned -> number = 0
             });
-            history.goBack();
-
-            reactAlert({
-              title: '안내',
-              message: '글이 등록되었습니다.',
+            refresh(1).then(() => {
+              history.goBack();
+              reactAlert({
+                title: '안내',
+                message: '글이 등록되었습니다.',
+              });
             });
           });
         } else {
@@ -367,6 +397,12 @@ function LectureTaskContainer() {
               pageChage={pageChage}
               activePage={activePage}
               totalPage={totalPage}
+              cubePostCount={cubePostCount}
+              cubeCommentCount={cubeCommentCount}
+              cubeSubCommentCount={cubeSubCommentCount}
+              postCount={postCount}
+              commentCount={commentCount}
+              subCommentCount={subCommentCount}
             />
           </ContentLayout>
         </div>

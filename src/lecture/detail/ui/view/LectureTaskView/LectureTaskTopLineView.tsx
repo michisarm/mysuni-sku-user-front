@@ -52,53 +52,67 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
       <div className="task-number">
         <span>총 <strong>{totalCount || 0} 건</strong>의 게시글이 있습니다.</span>
       </div>
-      <div className="course-radio task">
-        <Radio
-          className="base"
-          label="Newest"
-          name="radioGroup"
-          value="New"
-          checked={lectureTaskOrder === "New"}
-          onChange={(e: any, data: any) => {
-            if(sortChage){
-              sortChage(data.value)
-            }
-          }}
-        />
-        <Radio
-          className="base"
-          label="Oldest"
-          name="radioGroup"
-          value="Old"
-          checked={lectureTaskOrder === "Old"}
-          // onClick={(e: any, data: any) => {
-          //   console.log('LectureTaskTopLineView', data.value)
-          //   setLectureTaskOrder(data.value)
-          // }}
-          onChange={(e: any, data: any) => {
-            if(sortChage){
-              sortChage(data.value)
-            }
-          }}
-        />
-        <Radio
-          className="base radi"
-          label="My Posts"
-          name="radioGroup"
-          value="My"
-          checked={lectureTaskOrder === "My"}
-          // onClick={(e: any, data: any) => {
-          //   console.log('LectureTaskTopLineView', data.value)
-          //   setLectureTaskOrder(data.value)
-          // }}
-          onChange={(e: any, data: any) => {
-            if(sortChage){
-              sortChage(data.value)
-            }
-          }}
-        />
-        {/* {lectureState?.student !== undefined && ( */}
-          {/* <div className="right-wrap"> */}
+      {totalCount > 0 ? (
+        <div className="course-radio task">
+          <Radio
+            className="base"
+            label="Newest"
+            name="radioGroup"
+            value="new"
+            checked={lectureTaskOrder === "new"}
+            onChange={(e: any, data: any) => {
+              if(sortChage){
+                sortChage(data.value)
+              }
+            }}
+          />
+          <Radio
+            className="base"
+            label="Oldest"
+            name="radioGroup"
+            value="old"
+            checked={lectureTaskOrder === "old"}
+            // onClick={(e: any, data: any) => {
+            //   console.log('LectureTaskTopLineView', data.value)
+            //   setLectureTaskOrder(data.value)
+            // }}
+            onChange={(e: any, data: any) => {
+              if(sortChage){
+                sortChage(data.value)
+              }
+            }}
+          />
+          
+          <Radio
+            className="base radi"
+            label="My Posts"
+            name="radioGroup"
+            value="My"
+            checked={lectureTaskOrder === "My"}
+            // onClick={(e: any, data: any) => {
+            //   console.log('LectureTaskTopLineView', data.value)
+            //   setLectureTaskOrder(data.value)
+            // }}
+            onChange={(e: any, data: any) => {
+              if(sortChage){
+                sortChage(data.value)
+              }
+            }}
+          />
+          
+          {/* {lectureState?.student !== undefined && ( */}
+            {/* <div className="right-wrap"> */}
+              <a
+                className="ui icon task-post-btn"
+                onClick={onClickCreateTask}
+                href="#create"
+              >
+                Post
+              </a>
+            {/* </div> */}
+          {/* )} */}
+        </div>) : (
+          <div className="course-radio task">
             <a
               className="ui icon task-post-btn"
               onClick={onClickCreateTask}
@@ -106,9 +120,8 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
             >
               Post
             </a>
-          {/* </div> */}
-        {/* )} */}
-      </div>
+          </div>
+        )}
     </div>
     
   );

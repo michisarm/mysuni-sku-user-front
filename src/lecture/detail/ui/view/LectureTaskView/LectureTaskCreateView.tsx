@@ -151,7 +151,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                         className="base"
                         label="공지 등록"
                         name="communityPostCreatePinned"
-                        checked={taskDetail.pinned}
+                        checked={taskDetail.pinned === 2}
                         onChange={handlePinnedChange}
                       />
                     )}

@@ -5,7 +5,7 @@ export interface PostCdo {
   writer: string;
   commentFeedbackId: string;
   boardId: string;
-  pinned: boolean; // postpinned -> number = 0
+  pinned: boolean | number; // postpinned -> number = 0
   contents: string;
   fileBoxId: string;
 }

@@ -35,6 +35,12 @@ interface LectureTaskViewProps {
   pageChage: (data: any) => void;
   activePage: number;
   totalPage: number;
+  cubePostCount: number;
+  cubeCommentCount: number;
+  cubeSubCommentCount: number;
+  postCount: number;
+  commentCount: number;
+  subCommentCount: number;
 }
 
 const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView({
@@ -52,6 +58,12 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   pageChage,
   activePage,
   totalPage,
+  cubePostCount,
+  cubeCommentCount,
+  cubeSubCommentCount,
+  postCount,
+  commentCount,
+  subCommentCount,
 }) {
   const tabType = useLectureTaskTab();
   const { hash, pathname } = useLocation();
@@ -107,17 +119,19 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
             </a>
           </div>
         </div> */}
+        
         <div className="scrolling-area area2 ">
             <div className="ui segment full">
               <List as="ul" className="my-task-bar">
-                <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>3건</strong>/5건</em></List.Item>
-                <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>12건</strong>/10건</em></List.Item>
-                <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>1건</strong>/5건</em></List.Item>
+                <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>{postCount}건</strong>/{cubePostCount}건</em></List.Item>
+                <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
+                <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
               </List>
             </div>
         </div>
         {tabType === 'Posts' && taskItem && (
           <LectureTaskPostView
+            key={`LectureTaskPostView-${tabType}`}
             taskItem={taskItem}
             moreView={moreView!}
             handleClickTaskRow={param => onHandleClickTaskRow(param)}
@@ -128,16 +142,17 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
             totalPage={totalPage}
           />
         )}
-        {tabType === 'MyPosts' && taskItem && (
+        {/* {tabType === 'MyPosts' && taskItem && (
           <>
             <LectureTaskMyPostView
+              key={`LectureTaskPostView-${tabType}`}
               taskItem={taskItem}
               moreView={moreView!}
               handleClickTaskRow={onHandleClickTaskRow}
               handelClickCreateTask={handelClickCreateTask!}
             />
           </>
-        )}
+        )} */}
         {/* {tabType === 'Overview' && (
           <>
             {lectureDescription && (

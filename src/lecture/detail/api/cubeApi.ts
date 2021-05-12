@@ -333,12 +333,12 @@ export function findMyLectureTimeSummary() {
 
 export function setPinByPostId(
   postId: string,
-  pinned: boolean,
+  pinned: number,
 ) {
   console.log("setPinByPostId", postId, pinned)
   const axios = getAxios();
   const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
-  return axios.post<string>(url).then(AxiosReturn);
+  return axios.put<string>(url).then(AxiosReturn);
 }
 
 // reply api-----------------------------------------------------------------

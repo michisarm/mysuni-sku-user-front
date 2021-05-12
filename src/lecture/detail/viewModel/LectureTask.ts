@@ -27,7 +27,7 @@ export interface LectureTaskItem {
   childItems: LectureTaskChildItem[];
   commentFeedbackId?: string;
   delete: boolean;
-  pinned: boolean; // postpinned -> number = 0
+  pinned: number; // postpinned -> number = 0
 }
 
 export interface LectureTaskChildItem {

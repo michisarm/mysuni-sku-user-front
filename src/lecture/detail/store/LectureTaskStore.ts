@@ -22,7 +22,7 @@ const [
   onLectureTaskOrder,
   getLectureTaskOrder,
   useLectureTaskOrder,
-] = createStore<string>('New');
+] = createStore<string>('new');
 
 const [
   setLectureTaskViewType,

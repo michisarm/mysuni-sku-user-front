@@ -12,7 +12,7 @@ export default interface TaskDetailPost {
   id: string;
   contents: string;
   fileBoxId: string;
-  pinned: boolean; // postpinned -> number = 0
+  pinned: number; // postpinned -> number = 0
 }
 
 export default interface TaskDetail {

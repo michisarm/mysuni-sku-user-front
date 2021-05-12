@@ -14,15 +14,9 @@ import { useLectureState } from '../../store/LectureStateStore';
 function LectureCubeTaskPage() {
   const params = useLectureParams();
 
-  // cubeMaterial.board.postCount, commentCount, subCommentCount
-  const lectureState = useLectureState();
-
-  console.log("LectureCubeTaskPage111111111111111",lectureState)
-
-
   useEffect(() => {
     return () => {
-      setLectureTaskOrder('New');
+      setLectureTaskOrder('new');
       setLectureTaskOffset(0);
       setLectureTaskViewType('list');
       setLectureTaskDetail();
