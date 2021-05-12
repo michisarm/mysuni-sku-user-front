@@ -57,7 +57,10 @@ function InProgressLearning({ profileMemberName, history }: Props) {
         </div>
       </div>
       {cardList && cardList.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture.Group
+          type={Lecture.GroupType.Line}
+          dataActionName="학습중인 과정"
+        >
           {cardList.map((item, i) => {
             const { card, cardRelatedCount } = item;
 

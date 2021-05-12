@@ -4,7 +4,14 @@ import $ from 'jquery';
 import { debounce, useStateRef } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
-import { Source, Action, ActionType, Area, ActionTrackParam, ActionTrackViewParam } from 'tracker/model';
+import {
+  Source,
+  Action,
+  ActionType,
+  Area,
+  ActionTrackParam,
+  ActionTrackViewParam,
+} from 'tracker/model';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -89,7 +96,9 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       // source 모두 허용 - 필요시 white list 방식 처리
       // const sourceList: string[] | null = Object.values(Source);
       // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
-      areaType = queryParams.get('_source');
+      areaId = queryParams.get('_source');
+      const type = areaId?.split('::')[0];
+      areaType = type ? type : areaId;
       queryParams.delete('_source');
       isReplace = true;
       // }
@@ -102,11 +111,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       queryParams.delete('_area');
       isReplace = true;
       // }
-    }
-    if (queryParams.has('_areaId')) {
-      areaId = queryParams.get('_areaId');
-      queryParams.delete('_areaId');
-      isReplace = true;
     }
 
     // parameter 제거
@@ -148,6 +152,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     if (areaElement instanceof HTMLElement) {
       const action = areaElement.dataset.action;
       const actionName = areaElement.dataset.actionName;
+      const actionType = areaElement.dataset.actionType;
       if (!(action && actionName)) {
         return;
       }
@@ -158,7 +163,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           path: data.referer,
           search: data.refererSearch,
           area: data.area,
-          actionType: ActionType.GENERAL,
+          actionType: actionType ? actionType : ActionType.GENERAL,
           action,
           actionName,
           target: data.target,

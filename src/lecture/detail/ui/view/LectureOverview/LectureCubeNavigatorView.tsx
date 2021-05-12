@@ -6,7 +6,7 @@ import {
   LectureStructure,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
-import { Area } from 'tracker/model';
+import { Action, ActionType, Area } from 'tracker/model';
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
@@ -51,7 +51,15 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
               alignItems: 'center',
             }}
           >
-            <Link to={progressingCube.path}>학습이어하기</Link>
+            <Link
+              to={progressingCube.path}
+              data-area={Area.CARD_MENU}
+              data-action={Action.CLICK}
+              data-action-type={ActionType.STUDY}
+              data-action-name="학습이어하기 클릭"
+            >
+              학습이어하기
+            </Link>
           </span>
           <a onClick={close}>
             <i aria-hidden="true" className="icon banner-close" />
