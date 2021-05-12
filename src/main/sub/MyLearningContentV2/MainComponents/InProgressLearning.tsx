@@ -21,7 +21,6 @@ interface Props extends RouteComponentProps {
 function InProgressLearning({ profileMemberName, history }: Props) {
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>();
   const [isLoading, setIsLoading] = useState(false);
-  const [title] = useState(`${profileMemberName}님이 학습중인 과정`);
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,7 +47,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   return (
     <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
-        <strong>{title}</strong>
+        <strong>{`${profileMemberName}님이 학습중인 과정`}</strong>
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
@@ -58,7 +57,10 @@ function InProgressLearning({ profileMemberName, history }: Props) {
         </div>
       </div>
       {cardList && cardList.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
+        <Lecture.Group
+          type={Lecture.GroupType.Line}
+          dataActionName="학습중인 과정"
+        >
           {cardList.map((item, i) => {
             const { card, cardRelatedCount } = item;
 

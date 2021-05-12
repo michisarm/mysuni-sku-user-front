@@ -112,10 +112,7 @@ const ChallengingBadge: React.FC<Props> = Props => {
       </div>
 
       {challengeBadges.length > 0 && challengeBadges[0] ? (
-        <div
-          className="scrolling"
-          data-area-name={`${profileMemberName}님이 도전중인 Badge`}
-        >
+        <div className="scrolling" data-area-name="도전중인 Badge">
           <div className="badge-list-type">
             <ul className="belt">
               {challengeBadges.map((badge: MyBadge, index: number) => {
