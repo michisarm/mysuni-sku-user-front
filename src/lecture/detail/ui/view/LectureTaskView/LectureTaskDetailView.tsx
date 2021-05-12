@@ -117,6 +117,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                   ))}
             </div>
           </div>
+          {taskId === taskDetail.id && (
           <CommentList
             feedbackId={taskDetail.commentFeedbackId}
             name={taskDetail.writer.name}
@@ -124,6 +125,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             companyName={taskDetail.writer.companyName}
             departmentName={taskDetail.writer.companyCode}
           />
+          )}
           <div className="task-read-bottom">
             <Button
               className="ui icon button left post edit"
