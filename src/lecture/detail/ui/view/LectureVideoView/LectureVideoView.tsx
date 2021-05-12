@@ -150,9 +150,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [quizPop, setQuizPop] = useState<boolean>(false);
   const [quizShowTime, setQuizShowTime] = useState<number[]>();
   const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
+  const [quizCurrentTime, setQuizquizCurrentTime] = useState<number>(0);
 
   useEffect(() => {
     const matchesQuizTime: number = Math.floor(currentTime);
+
+    if (matchesQuizTime !== quizCurrentTime) {
+      setQuizquizCurrentTime(matchesQuizTime);
+    }
+
     const learningState = lectureState.student?.learningState;
     const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
 
@@ -162,12 +168,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       }, 1000);
     }
     if (
-      learningState !== 'Passed' && // 학습이수 체크
+      // learningState !== 'Passed' && // 학습이수 체크
       matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
       quizShowTime && // 퀴즈 등장 시간
-      matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
-      lectureMedia?.mediaContents.internalMedias[0].quizIds && // quizIds 체크
-      pathnameChangeCheck !== 'true'
+      // matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
+      quizShowTime.filter(f => f === matchesQuizTime).length > 0 && // 퀴즈 등장 시간
+      quizCurrentTime !== matchesQuizTime &&
+      lectureMedia?.mediaContents.internalMedias[0].quizIds // quizIds 체크
+      // pathnameChangeCheck !== 'true'
     ) {
       if (
         scroll > videoPosition &&
@@ -186,6 +194,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         closeFullScreen();
         setQuizPop(true);
         pauseVideo();
+
       }
     }
   }, [currentTime, scroll, quizShowTime]);
@@ -219,7 +228,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setQuizPop(false);
       playVideo();
     }
-    setQuizCurrentIndex(quizCurrentIndex + 1);
+    // setQuizCurrentIndex(quizCurrentIndex + 1);
   }, [quizPop, quizCurrentIndex]);
 
   const onScrollTop = () => {
@@ -243,8 +252,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     <div
       className={
         scroll > videoPosition &&
-        !enabled &&
-        lectureMedia?.mediaType === 'InternalMedia'
+          !enabled &&
+          lectureMedia?.mediaType === 'InternalMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
