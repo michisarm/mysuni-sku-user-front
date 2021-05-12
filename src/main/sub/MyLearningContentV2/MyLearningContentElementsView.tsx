@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Segment } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
-import { scrollTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface ContentWrapperProps {
   className?: string;
@@ -24,7 +24,7 @@ export const ContentWrapper: FunctionComponent<ContentWrapperProps> = ({
     <Segment
       className="full"
       onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollTrack({
+        scrollHorizontalTrack({
           e,
           area: dataArea,
           scrollClassName: 'scrolling',

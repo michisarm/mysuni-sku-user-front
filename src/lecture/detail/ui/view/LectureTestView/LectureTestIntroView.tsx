@@ -1,6 +1,6 @@
 import React from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
-import { Area } from 'tracker/model';
+import { Action, ActionType, Area } from 'tracker/model';
 
 interface LectureTestIntroViewProps {
   testItem: LectureTestItem;
@@ -49,6 +49,10 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
             <button
               className="ui button fix bg"
               onClick={() => openView('test')}
+              data-area={Area.CUBE_CONTENT}
+              data-action={Action.CLICK}
+              data-action-type={ActionType.STUDY}
+              data-action-name="응시하기 클릭"
             >
               응시하기
             </button>

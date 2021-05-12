@@ -5,8 +5,12 @@ import { Workspace } from '../../shared/api/Axios';
 import { CardCategory } from '../../shared/model/CardCategory';
 import CategoryColorType from '../../shared/model/CategoryColorType';
 import { SearchCardCategory } from '../model/SearchCard';
-
 import { useDisplayCard } from './SearchFilter';
+import { Area } from 'tracker/model';
+
+interface Props {
+  dataArea?: Area;
+}
 
 const workspaces: { cineroomWorkspaces?: Workspace[] } =
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
@@ -67,7 +71,7 @@ function getColor(college_id: string) {
   return color;
 }
 
-const BoxCard: React.FC = () => {
+const BoxCard: React.FC<Props> = ({ dataArea }) => {
   const card = useDisplayCard();
 
   return (
@@ -136,6 +140,7 @@ const BoxCard: React.FC = () => {
               capacity={parseInt(student_count)}
               studentCount={parseInt(student_count)}
               additionalLearningTime={parseInt(additional_learning_time)}
+              dataArea={dataArea}
             />
           );
         })}
