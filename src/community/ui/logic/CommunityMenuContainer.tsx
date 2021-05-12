@@ -69,6 +69,11 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
+  useEffect(() => {
+    // action on update of movies
+    console.log('nameValues', nameValues)
+  }, [nameValues]);
+
   const onHandleClickTaskRow = useCallback(
     async (e, param, type) => {
       setAddMenuFlag(false);
@@ -302,6 +307,7 @@ function CommunityMenuContainer() {
 
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
+      console.log('nameValues', nameValues)
       let successFlag = false;
       const result = _.chain(nameValues)
         .groupBy('id')
@@ -454,11 +460,19 @@ function CommunityMenuContainer() {
             message: text,
           });
         } else {
+          console.log('saveCommunityMenu')
+          console.log('result', result)
           saveCommunityMenu(communityId, result, selectedRow, discussRow);
+          const test:any[] = []
+          setNameValues([...test])
+          console.log('NameValues', nameValues)
           successFlag = true;
         }
       }
-      setNameValues([...nameValues, []]);
+      // setNameValues([...nameValues, []]);
+      const test:any[] = []
+      setNameValues([...test])
+      console.log('NameValues', nameValues)
       if (type === 'add') {
         if (communityAdminMenu!.menu.length === 0) {
           obj.order = 1;

@@ -81,8 +81,10 @@ export async function saveCommunityMenu(
 ) {
   for await (const param of params) {
     if (discussRow) {
+      console.log('discussRow',discussRow)
       saveCommunityAdminMenu(communityId, param, selectedRow, discussRow);
     } else {
+      console.log('discussRow',discussRow)
       saveCommunityAdminMenu(communityId, param, selectedRow);
     }
   }
