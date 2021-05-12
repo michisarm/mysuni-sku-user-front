@@ -4,7 +4,8 @@ export enum Source {
 
 export enum Action {
   CLICK = 'CLICK',
-  SCROLL = 'SCROLL',
+  SCROLL_H = 'SCROLL-H',
+  SCROLL_V = 'SCROLL-V',
   HOVER = 'HOVER',
   SEARCH = 'SEARCH',
   VIEW = 'VIEW',

@@ -50,7 +50,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
           ? Area.CUBE_CONTENT
           : Area.CARD_CONTENT,
         actionType: ActionType.GENERAL,
-        action: Action.SCROLL,
+        action: Action.SCROLL_V,
         actionName: window.location.pathname.includes('/cube')
           ? '큐브상세 스크롤'
           : '카드상세 스크롤',

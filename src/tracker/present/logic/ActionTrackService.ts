@@ -235,7 +235,7 @@ export async function actionTrackView({
     });
 }
 
-export function scrollTrack({
+export function scrollHorizontalTrack({
   e,
   area,
   scrollClassName,
@@ -269,7 +269,7 @@ export function scrollTrack({
         search: window.location.search,
         area,
         actionType: ActionType.GENERAL,
-        action: Action.SCROLL,
+        action: Action.SCROLL_H,
         actionName,
       } as ActionTrackParam);
     }

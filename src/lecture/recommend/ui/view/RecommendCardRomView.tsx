@@ -7,7 +7,7 @@ import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { find } from 'lodash';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from 'tracker/model';
-import { scrollTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   const {
@@ -40,7 +40,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   return (
     <div
       onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollTrack({
+        scrollHorizontalTrack({
           e,
           area: Area.RECOMMEND_LIST,
           scrollClassName: 'scrolling',
