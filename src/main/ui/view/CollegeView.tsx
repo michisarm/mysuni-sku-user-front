@@ -2255,7 +2255,7 @@ const panes = [
     ),
   },
   {
-    menuItem: '에너지솔루션',
+    menuItem: 'Environment',
     render: () => (
       <Tab.Pane>
         <div
@@ -2263,44 +2263,47 @@ const panes = [
           data-tab="colleges11"
         >
           <div className="college-cont-title energy">
-            <div className="belt">
-              <div className="panopto">
-                <iframe
-                  title="video type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=260511f9-c00b-436c-87db-abe5004db668"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
-              </div>
+            <div className="belt sub">
 
-              <div className="label">에너지솔루션 College</div>
+              <div className="label">Environment College</div>
               <div className="strong">
-                “에너지와 AI/DT가 만나 Deep Change가 시작되는 곳”
+                에너지솔루션 College에서 진화한 “Environment College”
               </div>
               <div className="normal">
-                에너지 역량과 AI/DT 역량의 융합을 통해 새로운 에너지솔루션
-                비즈니스를 준비합니다.
-                <br />
-                융합을 위한 공감대 형성부터 고객 가치 창출 및 플랫폼
-                비즈니스로의 확장을
-                <br />
-                위한 과정들을 통해 Deep Change를 위한 Human Capital Pool을
-                확보하는
-                <br />
-                것을 목표로 두고 있습니다.
+                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을 제고하고,<br />
+                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을 학습하여,<br />
+                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고 있습니다.<br />
+                환경 사업의 성공을 위한 우리의 도전, Green Start!
+              </div>
+
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/envir-player.png`}
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
               </div>
             </div>
           </div>
-          <div className="college-cont-map energy">
+          <div className="college-cont-map energe">
+             <div className="belt">
+                 <div className="map">
+                 <Image
+                  src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+                 </div>
+             </div>
+           </div>
+          <div className="college-cont-map energe">
             <div className="belt">
+              <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/in-02-01-c-11.svg`}
+                  src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
                   alt=""
+                  style={{ display: 'inline-block' }}
                 />
               </div>
             </div>
@@ -2821,7 +2824,7 @@ class CollegeView extends Component<Props, State> {
         <style
           dangerouslySetInnerHTML={{
             __html:
-              'body.msie #root section.content .tab-menu-inner .ui.menu .item{flex:none;width:auto;flex-grow:1}',
+              'body.msie #root section.content .tab-menu-inner .ui.menu .item{flex:none;width:auto;flex-grow:1;}',
           }}
         />
         <Tab

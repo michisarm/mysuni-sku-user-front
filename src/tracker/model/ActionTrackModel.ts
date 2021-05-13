@@ -35,6 +35,12 @@ export interface ScrollTrackParam {
   actionName: string;
 }
 
+export interface HoverTrackParam {
+  area: Area | undefined;
+  actionName: string;
+  field: Field;
+}
+
 export interface ActionContextModel {
   email: string;
   path: string;

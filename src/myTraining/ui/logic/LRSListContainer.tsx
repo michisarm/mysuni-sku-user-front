@@ -12,7 +12,6 @@ import { SkProfileService } from 'profile/stores';
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCards } from '../../../lecture/recommend/api/recommendApi';
 
-const PAGE_SIZE = 8;
 const CONTENT_TYPE_NAME = '추천과정';
 
 function getTitle(viewModel?: RecommendationViewModel) {
@@ -33,7 +32,7 @@ function LearningContainer() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    findRecommendationCards(PAGE_SIZE).then(next => {
+    findRecommendationCards().then(next => {
       if (next !== undefined) {
         setViewModel(next);
       }
