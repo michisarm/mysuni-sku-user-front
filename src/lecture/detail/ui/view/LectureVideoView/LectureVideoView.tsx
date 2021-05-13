@@ -181,6 +181,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         scroll > videoPosition &&
         quizShowTime.indexOf(matchesQuizTime) !== -1
       ) {
+        setQuizquizCurrentTime(0);
         setPauseVideoSticky(true);
         setQuizPop(false);
         pauseVideo();
