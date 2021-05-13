@@ -18,6 +18,7 @@ import { Area } from 'tracker/model';
 function EnrollingLearning({ history }: RouteComponentProps) {
   const [cardList, setCardList] = useState<EnrollingCardList[]>();
   const [isLoading, setIsLoading] = useState(false);
+  const [title] = useState('수강 신청 과정 모아보기');
 
   useEffect(() => {
     fetchLearningCardLsit().then(() => setIsLoading(true));
@@ -37,7 +38,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
 
     // react-ga event
     ReactGA.event({
-      category: '수강 신청 과정 모아보기',
+      category: title,
       action: 'Click',
       label: '수강 신청 과정 전체보기',
     });
@@ -46,9 +47,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
   return (
     <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
       <div className="section-head">
-        {cardList && cardList.length > 0 && (
-          <strong>수강 신청 과정 모아보기</strong>
-        )}
+        {cardList && cardList.length > 0 && <strong>{title}</strong>}
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
@@ -58,7 +57,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
         </div>
       </div>
       {cardList && cardList.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
           {cardList.map((item, i) => {
             const { card, cardRelatedCount, upcomingClassroomInfo } = item;
 

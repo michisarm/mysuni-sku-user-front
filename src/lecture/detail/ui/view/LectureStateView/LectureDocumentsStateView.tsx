@@ -18,6 +18,7 @@ import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHel
 import LectureState from '../../../viewModel/LectureState';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
+import { Action, ActionType, Area } from 'tracker/model';
 
 const DOWNLOAD = '다운로드';
 const PROGRESS = '학습중';
@@ -56,6 +57,14 @@ function CanceledView(props: CanceledViewProps) {
         className={`ui button free ${actionClassName} p18`}
         onClick={action}
         id="ACTION"
+        data-area={
+          window.location.pathname.includes('/cube')
+            ? Area.CUBE_HEADER
+            : Area.CARD_HEADER
+        }
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${DOWNLOAD} 클릭`}
       >
         {DOWNLOAD}
       </button>
@@ -128,6 +137,14 @@ function ApprovedView(props: ApprovedViewProps) {
           className={`ui button free bg2 p18`}
           onClick={action}
           id="ACTION"
+          data-area={
+            window.location.pathname.includes('/cube')
+              ? Area.CUBE_HEADER
+              : Area.CARD_HEADER
+          }
+          data-action={Action.CLICK}
+          data-action-type={ActionType.STUDY}
+          data-action-name={`${actionText} 클릭`}
         >
           {actionText}
         </button>

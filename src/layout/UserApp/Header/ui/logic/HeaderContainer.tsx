@@ -57,27 +57,22 @@ class HeaderContainer extends Component<Props, State> {
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
     if (searchValue) {
-      actionLogService?.registerClickActionLog({
-        subAction: 'search',
-        subContext: searchValue,
-        isEmpty: true,
-      });
-
       const { history } = this.props;
       history.push(`/search?query=${searchValue}`);
       // window.location.href = encodeURI(`/search?query=${searchValue}`);
 
       // search track
       debounceActionTrack({
-        email: getCookie('tryingLoginId') ||
+        email:
           (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string),
+          (window.localStorage.getItem('nara.email') as string) ||
+          getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
         area: Area.HEADER_SEARCH,
         actionType: ActionType.GENERAL,
         action: Action.SEARCH,
-        actionName: '헤더검색::'+searchValue
+        actionName: '헤더검색::' + searchValue,
       } as ActionTrackParam);
 
       // react-GA logic
@@ -120,9 +115,6 @@ class HeaderContainer extends Component<Props, State> {
   }
 
   onClickMenu(menuName: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: menuName });
-
     // react-GA logic
     if (menuName === 'mySUNI') {
       setTimeout(() => {

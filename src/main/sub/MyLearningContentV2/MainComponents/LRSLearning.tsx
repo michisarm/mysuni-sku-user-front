@@ -85,7 +85,14 @@ const LRSLearning: React.FC<Props> = Props => {
       </div>
 
       {cards.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture.Group
+          type={Lecture.GroupType.Line}
+          dataActionName={
+            title.includes('학습 콘텐츠 기반 추천 과정')
+              ? '학습 콘텐츠 기반 추천 과정'
+              : 'mySUNI의 추천 과정'
+          }
+        >
           {cards.map(({ card, cardRelatedCount }) => (
             <li>
               <div className="ui cards box-cards">

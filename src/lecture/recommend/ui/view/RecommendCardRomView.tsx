@@ -7,6 +7,7 @@ import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { find } from 'lodash';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from 'tracker/model';
+import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   const {
@@ -37,7 +38,16 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   };
 
   return (
-    <>
+    <div
+      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
+        scrollHorizontalTrack({
+          e,
+          area: Area.RECOMMEND_LIST,
+          scrollClassName: 'scrolling',
+          actionName: '추천카드 스크롤',
+        })
+      }
+    >
       <div className="section-head">
         <span className="channel">{getChannelName()}</span>
         {`채널에서 ${SkProfileService.instance.profileMemberName}님께 추천하는 과정입니다.`}
@@ -53,7 +63,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
           </div>
         )}
       </div>
-      <div className="scrolling">
+      <div className="scrolling" data-action-name={getChannelName()}>
         <ul className="belt">
           {isCardWithRelatedCountRoms ? (
             cardWithRelatedCountRoms.map(({ card, cardRelatedCount }) => {
@@ -78,6 +88,6 @@ export function RecommendCardRomView(props: RecommendCardRom) {
           )}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
