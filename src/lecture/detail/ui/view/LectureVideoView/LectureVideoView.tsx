@@ -173,7 +173,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       quizShowTime && // 퀴즈 등장 시간
       // matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
       quizShowTime.filter(f => f === matchesQuizTime).length > 0 && // 퀴즈 등장 시간
-      quizCurrentTime !== matchesQuizTime &&
       lectureMedia?.mediaContents.internalMedias[0].quizIds // quizIds 체크
       // pathnameChangeCheck !== 'true'
     ) {
@@ -190,7 +189,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
           onClose: () => onScrollTop(),
         });
-      } else {
+      } else if (quizCurrentTime !== matchesQuizTime) {
         setPauseVideoSticky(false);
         closeFullScreen();
         setQuizPop(true);
@@ -234,6 +233,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const onScrollTop = () => {
     window.scrollTo(0, 124);
+    setPauseVideoSticky(false);
   };
 
   const closeFullScreen = () => {
