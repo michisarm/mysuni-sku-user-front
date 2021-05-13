@@ -18,6 +18,7 @@ import { findEnrollingCardList } from '../../../lecture/detail/api/cardApi';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
+import { Area } from 'tracker/model';
 
 interface MatchPrams {
   type: string;
@@ -32,6 +33,8 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
     []
   );
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
+  const [cardType, setCardType] = useState<String>();
+  const [dataArea, setDataArea] = useState<Area>();
 
   const onChangeViewType = (e: any, data: any, func?: any) => {
     setViewType(data.value);
@@ -70,6 +73,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
 
       if (filteredCardBundle) {
         setTitle(filteredCardBundle.displayText);
+        setCardType(filteredCardBundle.type);
 
         const joinedIds = filteredCardBundle.cardIds.join();
         const cardList = await findCardList(joinedIds);
@@ -85,6 +89,37 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
     window.scrollTo(0, 0);
     fetchCardList();
   }, [viewType]);
+
+  useEffect(() => {
+    let area = null;
+    switch (contentType) {
+      case ContentType.Recommend:
+        area = Area.NEWLEARNING_RECOMMEND;
+        break;
+      case ContentType.Enrolling:
+        area = Area.NEWLEARNING_ENROLLING;
+        break;
+      default:
+        switch (cardType) {
+          case 'Normal':
+            area = Area.NEWLEARNING_NORMAL;
+            break;
+          case 'Popular':
+            area = Area.NEWLEARNING_POPULAR;
+            break;
+          case 'New':
+            area = Area.NEWLEARNING_NEW;
+            break;
+          case 'Recommended':
+            area = Area.NEWLEARNING_RECOMMEND;
+            break;
+        }
+        break;
+    }
+    if (area) {
+      setDataArea(area);
+    }
+  }, [contentType, cardType]);
 
   return (
     <>
@@ -139,6 +174,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                     capacity={upcomingClassroomInfo?.capacity}
                     studentCount={upcomingClassroomInfo?.studentCount}
                     remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
+                    dataArea={dataArea}
                   />
                 );
               })}

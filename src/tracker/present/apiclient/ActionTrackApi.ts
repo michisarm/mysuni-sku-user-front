@@ -1,5 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
+import { utf8_to_b64 } from 'tracker-react/utils';
 import {
   ActionTrackModel,
   ActionTrackViewModel,
@@ -22,11 +23,13 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
 }
 
 export function trackAction(actionTrackModel: ActionTrackModel) {
+  actionTrackModel.context.email = utf8_to_b64(actionTrackModel.context.email);
   const url = `${BASE_URL}/track/action`;
   return axiosApi.post<string>(url, actionTrackModel).then(AxiosReturn);
 }
 
 export function trackView(actionTrackModel: ActionTrackViewModel) {
+  actionTrackModel.context.email = utf8_to_b64(actionTrackModel.context.email);
   const url = `${BASE_URL}/track/view`;
   return axiosApi.post<string>(url, actionTrackModel).then(AxiosReturn);
 }

@@ -10,7 +10,9 @@ import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
 import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
+import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 import { Area } from 'tracker/model';
+import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -81,11 +83,20 @@ const LectureView: React.FC<LectureViewProps> = function LectureView({
 const LectureRelationsView: React.FC<LectureRelationsViewProps> = function LectureRelationsView({
   lectureRelations,
 }) {
+  const lectureSummary = useLectureCardSummary();
   return (
     <div
       className="badge-detail border-none"
       id="lms-related-process"
       data-area={Area.CARD_RELATION}
+      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
+        scrollHorizontalTrack({
+          e,
+          area: Area.CARD_RELATION,
+          scrollClassName: 'scrolling',
+          actionName: '카드상세 관련과정 스크롤',
+        })
+      }
     >
       <div className="ov-paragraph">
         <div className="section-head">
@@ -98,7 +109,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
             </h3>
           </div>
         </div>
-        <div className="scrolling">
+        <div className="scrolling" data-action-name={lectureSummary?.name}>
           <ul className="belt">
             {lectureRelations.cards.map(({ card, cardRelatedCount }) => {
               return (
@@ -108,6 +119,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
+                      dataArea={Area.CARD_RELATION}
                     />
                   </div>
                 </li>

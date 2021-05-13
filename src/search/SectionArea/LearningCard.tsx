@@ -2,12 +2,13 @@ import React from 'react';
 import BoxCard from '../Components/BoxCard';
 import { Icon, Segment } from 'semantic-ui-react';
 import { useDisplayCard } from '../Components/SearchFilter';
+import { Area } from 'tracker/model';
 
 const LearningCard: React.FC = () => {
   const card = useDisplayCard();
   return (
     <Segment className="full">
-      <div className="sort-reult">
+      <div className="sort-reult" data-area={Area.SEARCH}>
         {/* <CommentsSort /> */}
         <div className="section">
           <div className="text01">학습카드({card ? card.length : 0})</div>
@@ -19,7 +20,7 @@ const LearningCard: React.FC = () => {
                 </Button>
               </div> */}
               {/* API Render */}
-              <BoxCard />
+              <BoxCard dataArea={Area.SEARCH} />
             </>
           ) : (
             <div className="no-cont-wrap">

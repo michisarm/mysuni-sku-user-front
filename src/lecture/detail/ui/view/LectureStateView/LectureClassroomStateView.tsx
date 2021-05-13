@@ -16,6 +16,7 @@ import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
 import LectureState from '../../../viewModel/LectureState';
+import { ActionType, Action, Area } from 'tracker/model';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -117,6 +118,14 @@ function CanceledView(props: CanceledViewProps) {
       <button
         className={`ui button free ${actionClassName} p18`}
         onClick={action}
+        data-area={
+          window.location.pathname.includes('/cube')
+            ? Area.CUBE_HEADER
+            : Area.CARD_HEADER
+        }
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${SUBMIT} 클릭`}
       >
         {SUBMIT}
       </button>
@@ -136,6 +145,14 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
       <button
         className={`ui button free ${actionClassName} p18`}
         onClick={onCancled}
+        data-area={
+          window.location.pathname.includes('/cube')
+            ? Area.CUBE_HEADER
+            : Area.CARD_HEADER
+        }
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${CANCEL} 클릭`}
       >
         {CANCEL}
       </button>
@@ -161,6 +178,14 @@ function RejectedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
       <button
         className={`ui button free ${actionClassName} p18`}
         onClick={onCancled}
+        data-area={
+          window.location.pathname.includes('/cube')
+            ? Area.CUBE_HEADER
+            : Area.CARD_HEADER
+        }
+        data-action={Action.CLICK}
+        data-action-type={ActionType.STUDY}
+        data-action-name={`${CANCEL} 클릭`}
       >
         {CANCEL}
       </button>
@@ -230,7 +255,18 @@ function ApprovedELearningView(props: ApprovedViewProps) {
   return (
     <>
       {student.learningState !== null && (
-        <button className="ui button free bg p18" onClick={action}>
+        <button
+          className="ui button free bg p18"
+          onClick={action}
+          data-area={
+            window.location.pathname.includes('/cube')
+              ? Area.CUBE_HEADER
+              : Area.CARD_HEADER
+          }
+          data-action={Action.CLICK}
+          data-action-type={ActionType.STUDY}
+          data-action-name={`${APPROVE} 클릭`}
+        >
           {APPROVE}
         </button>
       )}
