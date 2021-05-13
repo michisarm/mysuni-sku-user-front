@@ -92,23 +92,34 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     //외부 유입시 파라미터[ _source, _area, _areaId ]로 정보를 얻고 replace 처리
     const queryParams = new URLSearchParams(window.location.search);
     let isReplace = false;
-    if (queryParams.has('_source')) {
-      // source 모두 허용 - 필요시 white list 방식 처리
-      // const sourceList: string[] | null = Object.values(Source);
-      // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
-      areaId = queryParams.get('_source');
-      const type = areaId?.split('::')[0];
-      areaType = type ? type : areaId;
-      queryParams.delete('_source');
-      isReplace = true;
-      // }
-    }
     if (queryParams.has('_area')) {
       // area 모두 허용 - 필요시 white list 방식 처리
       // const areaList: string[] | null = Object.values(Area);
       // if (areaList.includes(queryParams.get('_area')?.toUpperCase() || '')) {
       area = queryParams.get('_area');
       queryParams.delete('_area');
+      isReplace = true;
+      // }
+    }
+    // _source=대분류::중분류::소분류::생성일,_area::영역
+    if (queryParams.has('_source')) {
+      // source 모두 허용 - 필요시 white list 방식 처리
+      // const sourceList: string[] | null = Object.values(Source);
+      // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
+      const source = queryParams.get('_source');
+      const sources = source?.split(',');
+      if (sources) {
+        areaId = sources[0];
+        const type = areaId?.split('::')[0];
+        areaType = type ? type : areaId;
+        // source에 _area 있을시 적용
+        if (sources?.length > 1) {
+          if (/\_area\:\:(.*)/.test(sources[1])) {
+            area = RegExp.$1;
+          }
+        }
+      }
+      queryParams.delete('_source');
       isReplace = true;
       // }
     }
