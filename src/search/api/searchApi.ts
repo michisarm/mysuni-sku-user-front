@@ -96,7 +96,28 @@ export function findCard(text_idx: string) {
   const url = encodeURI(
     `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
   );
-  return axiosApi.get<SearchResult<SearchCard>>(url).then(AxiosReturn);
+  return axiosApi
+    .get<SearchResult<SearchCard>>(url)
+    .then(AxiosReturn)
+    .then(c => {
+      if (c === undefined) {
+        return undefined;
+      }
+      if (c.status !== undefined) {
+        return c;
+      }
+      if (((c as unknown) as string).replace !== undefined) {
+        let s = JSON.stringify(c);
+        s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
+        s = s.replace(/\\\"/gi, '"');
+        s = s.replace(/\\\\\"/gi, '\\"');
+        try {
+          return JSON.parse(s) as SearchResult<SearchCard>;
+        } catch (error) {
+          return undefined;
+        }
+      }
+    });
 }
 
 export function filterCard(cards?: SearchCard[]): SearchCard[] {
