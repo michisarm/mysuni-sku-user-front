@@ -400,7 +400,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                       {lectureReview !== undefined
                         ? `${Math.floor(lectureReview.average * 10) / 10}(${
                             lectureReview.reviewerCount
-                          })`
+                          }명)`
                         : ''}
                     </span>
                   </div>
