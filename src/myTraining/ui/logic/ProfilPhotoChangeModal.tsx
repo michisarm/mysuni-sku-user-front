@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { Button, Modal, Form, Radio } from 'semantic-ui-react';
+import { Button, Modal, Form } from 'semantic-ui-react';
 import { fileUtil, ValidationType } from '@nara.drama/depot';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
+import Image from '../../../shared/components/Image';
+import { uploadFileProfile } from '../../../shared/api/imageApi';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -18,6 +20,7 @@ interface States {
   open: boolean;
   photoTypeTemp: string;
   photoImageTemp: string;
+  imageFile?: File;
 }
 /* eslint-disable */
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
@@ -26,7 +29,7 @@ interface States {
 class ProfilPhotoChangeModal extends Component<Props, States> {
   VALID_ICON_EXTENSION: string = 'jpg|jpeg|png';
 
-  state = {
+  state: States = {
     open: false,
     photoTypeTemp: '1',
     photoImageTemp: '',
@@ -43,17 +46,20 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     this.setState({ open: false });
   }
 
-  onConfirm() {
+  async onConfirm() {
     //
-    const { photoTypeTemp, photoImageTemp } = this.state;
+    const { photoTypeTemp, imageFile } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
-    if (photoTypeTemp)
-      skProfileService!.setProfileProp('photoType', photoTypeTemp);
+    if (imageFile !== undefined) {
+      const imagePath = await uploadFileProfile(imageFile);
+      skProfileService!.setProfileProp('photoImage', imagePath || '');
+    }
 
-    if (photoImageTemp)
-      skProfileService!.setProfileProp('photoImage', photoImageTemp);
+    if (photoTypeTemp) {
+      skProfileService!.setProfileProp('photoType', photoTypeTemp);
+    }
 
     skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
@@ -91,6 +97,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       return;
     }
 
+    this.setState({
+      ...this.state,
+      imageFile: file,
+    });
+
     const fileReader = new FileReader();
 
     fileReader.onload = (e: any) => {
@@ -117,29 +128,30 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileService,
     } = this.props;
     const { skProfile } = skProfileService!;
-    const { member } = skProfile;
 
     /**
      * photoTypeTemp, photoImageTemp 는 사용자가 confirm 버튼을 누르기 전까지 변경한 photoType, photoImage 변경상태을 저장하고 있다가
      * 사용자가 confirm 버튼을 누르면 시스템에 실제로 저장함.
      */
-    const { open, photoTypeTemp, photoImageTemp } = this.state;
+    const { open, photoImageTemp } = this.state;
 
-    //첫 로딩시 사용자 profile 정보(skProfile!.photoType)에 값이 없는 경우(기본적으로 0 - IM 으로 선택함).
-    const protoType = photoTypeTemp || skProfile!.photoType || '0';
-    let photoFilePath: string = '';
+    const photoFilePath = photoImageTemp || skProfile.photoFilePath;
 
-    //IM 시스템으로부터 인터페이스받은 사용자 증명사진 보여줌.
-    if (protoType === '0') {
-      photoFilePath =
-        member &&
-        member.photoFilename &&
-        `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${member.photoFilename}`;
-    } else if (protoType === '1') {
-      //depot 서비스의 파일 업로드 API이용해서 업로드 호출후 반환된 이미지 base64 문자열을 그대로 보여줌.(profile 재조회 안함.)
+    // //첫 로딩시 사용자 profile 정보(skProfile!.photoType)에 값이 없는 경우(기본적으로 0 - IM 으로 선택함).
+    // const protoType = photoTypeTemp || skProfile!.photoType || '0';
+    // let photoFilePath: string = '';
 
-      photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
-    }
+    // //IM 시스템으로부터 인터페이스받은 사용자 증명사진 보여줌.
+    // if (protoType === '0') {
+    //   photoFilePath =
+    //     member &&
+    //     member.photoFilename &&
+    //     `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${member.photoFilename}`;
+    // } else if (protoType === '1') {
+    //   //depot 서비스의 파일 업로드 API이용해서 업로드 호출후 반환된 이미지 base64 문자열을 그대로 보여줌.(profile 재조회 안함.)
+
+    //   photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
+    // }
 
     return (
       <>
@@ -157,7 +169,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
               <div className="left">
                 <div className="ui profile">
                   <div className="pic s110">
-                    <img
+                    <Image
                       src={photoFilePath}
                       alt={photoFilePath ? 'userImg' : ''}
                       id="blah"
@@ -170,39 +182,18 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                 <div className="text02">{company}</div>
                 <div className="text02">{department}</div>
                 <div className="upload">
-                  <Form.Field>
-                    {/* <Radio
-                      className="base mr15px"
-                      label="IM"
-                      name="radioGroup"
-                      value="0"
-                      onChange={(e: any, data: any) => this.setState({ photoTypeTemp: data.value })}
-                      checked={protoType === '0'}
-                    />
-                    <Radio
-                      className="base"
-                      label="mySUNI"
-                      name="radioGroup"
-                      value="1"
-                      onChange={(e: any, data: any) => this.setState({ photoTypeTemp: data.value })}
-                      checked={protoType === '1'}
-                    /> */}
-                  </Form.Field>
-                  {protoType === '1' && (
-                    <>
-                      <input
-                        type="file"
-                        id="profileImage"
-                        onChange={this.onChangeFile}
-                      />
-                      <label
-                        htmlFor="profileImage"
-                        className="ui orange-arrow3 button"
-                      >
-                        Image upload
-                      </label>
-                    </>
-                  )}
+                  <Form.Field></Form.Field>
+                  <input
+                    type="file"
+                    id="profileImage"
+                    onChange={this.onChangeFile}
+                  />
+                  <label
+                    htmlFor="profileImage"
+                    className="ui orange-arrow3 button"
+                  >
+                    Image upload
+                  </label>
                 </div>
               </div>
             </div>
