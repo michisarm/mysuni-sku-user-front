@@ -176,6 +176,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       lectureMedia?.mediaContents.internalMedias[0].quizIds // quizIds 체크
       // pathnameChangeCheck !== 'true'
     ) {
+      setQuizCurrentIndex(quizShowTime.findIndex(f => f === matchesQuizTime));
       if (
         scroll > videoPosition &&
         quizShowTime.indexOf(matchesQuizTime) !== -1
@@ -194,7 +195,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         closeFullScreen();
         setQuizPop(true);
         pauseVideo();
-
       }
     }
   }, [currentTime, scroll, quizShowTime]);
