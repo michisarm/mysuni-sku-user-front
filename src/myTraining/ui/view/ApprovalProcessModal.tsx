@@ -90,7 +90,8 @@ class ApprovalProcessModal extends Component<Props> {
     // this.clearAll();
     // window.location.href =
     //   '/suni-main/my-training/my-page/ApprovalList/pages/1';
-    window.location.href = routePaths.approvalPaidCourse();
+
+    window.location.href = process.env.PUBLIC_URL + routePaths.approvalPaidCourse();
   }
 
   render() {
