@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Select, Button, Image, Icon, Radio } from 'semantic-ui-react';
 import HtmlEditor from './HtmlEditor';
 import PlusIcon from '../../../../style/media/btn-plus-admin.svg';
@@ -22,6 +22,7 @@ interface Props {
   onAddUrlsList: () => void;
   onDeleteUrlsList: (currentIndex: number) => void;
   onAddFileBoxId: (fileBoxId: string) => void;
+  onChangeValue: (data: any, name: string) => void;
 }
 
 const AdminDiscussionCreateView: React.FC<Props> = ({
@@ -32,7 +33,37 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
   onAddUrlsList,
   onDeleteUrlsList,
   onAddFileBoxId,
+  onChangeValue
 }) => {
+
+  const onTest = useCallback((value, type) => {
+
+    // if (selectedRow && targetName === 'content') {
+    //   // Editor Value
+    //   selectedRow.content = e;
+    //   onChangeValue(selectedRow, targetName);
+    //   return;
+    // }
+
+    if (selectedRow) {
+      if (type === 'content') {
+        selectedRow.content = value;
+      } else if (type === 'discussionTopic') {
+        selectedRow.discussionTopic = value;
+      } else if (type === 'surveyInformation') {
+        selectedRow.surveyInformation = value;
+      } else if (type === 'url') {
+        selectedRow.url = value;
+      } else if (type === 'html') {
+        selectedRow.html = value;
+      }
+      onChangeValue(selectedRow, type);
+    }
+
+    
+    // onChangeDiscussValue(value, type)
+  }, [selectedRow])
+
   return (
     <>
       <tr>
@@ -66,8 +97,8 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
         <td>
           <div className="ui editor-wrap">
             <AdminDiscussionCreateEditor
-              contents={(discussRow && discussRow.content) || ''}
-              onChange={(e: any) => onChangeDiscussValue(e, 'content')}
+              contents={(selectedRow && selectedRow.content) || ''}
+              onChange={(e: any) => onTest(e, 'content')}
             />
           </div>
         </td>
@@ -76,8 +107,8 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
       <tr className="related-url-belt">
         <th>관련 URL</th>
         <td>
-          {discussRow &&
-            discussRow.relatedUrlList?.map(({ title, url }, index) => (
+          {selectedRow &&
+            selectedRow.relatedUrlList?.map(({ title, url }, index) => (
               <div className="related-url-bar" key={index}>
                 <div
                   className="ui right-top-count input admin"
@@ -118,9 +149,9 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                     }
                   </div>
                   {index ===
-                  (discussRow &&
-                    discussRow.relatedUrlList &&
-                    discussRow.relatedUrlList.length - 1) ? (
+                  (selectedRow &&
+                    selectedRow.relatedUrlList &&
+                    selectedRow.relatedUrlList.length - 1) ? (
                     <Button className="plus" onClick={onAddUrlsList}>
                       <Icon>
                         <img src={PlusIcon} />
@@ -149,7 +180,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
             <div className="attach-inner">
               <div>
                 <FileBox
-                  id={(discussRow && discussRow.fileBoxId) || ''}
+                  id={(selectedRow && selectedRow.fileBoxId) || ''}
                   vaultKey={{
                     keyString: 'sku-depot',
                     patronType: PatronType.Pavilion,
@@ -187,7 +218,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                 label="공개"
                 name="optionGroup"
                 value="option01"
-                checked={discussRow && !discussRow.privateComment}
+                checked={selectedRow && !selectedRow.privateComment}
                 onChange={() => onChangeDiscussValue(false, 'privateComment')}
               />
               <Radio
@@ -195,7 +226,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                 label="비공개"
                 name="optionGroup"
                 value="option02"
-                checked={discussRow && discussRow.privateComment}
+                checked={selectedRow && selectedRow.privateComment}
                 onChange={() => onChangeDiscussValue(true, 'privateComment')}
               />
             </div>

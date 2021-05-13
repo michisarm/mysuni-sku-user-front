@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
-import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
@@ -69,11 +69,6 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
-  useEffect(() => {
-    // action on update of movies
-    console.log('nameValues', nameValues)
-  }, [nameValues]);
-
   const onHandleClickTaskRow = useCallback(
     async (e, param, type) => {
       setAddMenuFlag(false);
@@ -87,6 +82,21 @@ function CommunityMenuContainer() {
             param.menuId
           ).then(res => res);
           if (discussionParams) {
+
+            //메뉴데이터
+            const menuData = getCommunityAdminMenu()
+            if(menuData) {
+              menuData.menu.map((item, index) => {
+                if(item.id === param.id) {
+                  menuData.menu[index].type = discussionParams.type
+                  menuData.menu[index].content = discussionParams.content
+                  menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
+                  menuData.menu[index].fileBoxId = discussionParams.fileBoxId
+                  menuData.menu[index].privateComment = discussionParams.privateComment
+                }
+              })
+            }
+            setCommunityAdminMenu({ menu: menuData!.menu })
             findMenuDiscussionFeedBack(discussionParams.commentFeedbackId).then(
               findPrivateState => {
                 if (findPrivateState !== null) {
@@ -105,8 +115,6 @@ function CommunityMenuContainer() {
               }
             );
             setSelectedRow(param);
-
-            //
           }
         } else {
           setSelectedRow(param);
@@ -307,7 +315,6 @@ function CommunityMenuContainer() {
 
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
-      console.log('nameValues', nameValues)
       let successFlag = false;
       const result = _.chain(nameValues)
         .groupBy('id')
@@ -460,19 +467,11 @@ function CommunityMenuContainer() {
             message: text,
           });
         } else {
-          console.log('saveCommunityMenu')
-          console.log('result', result)
           saveCommunityMenu(communityId, result, selectedRow, discussRow);
-          const test:any[] = []
-          setNameValues([...test])
-          console.log('NameValues', nameValues)
           successFlag = true;
         }
+        setNameValues([])
       }
-      // setNameValues([...nameValues, []]);
-      const test:any[] = []
-      setNameValues([...test])
-      console.log('NameValues', nameValues)
       if (type === 'add') {
         if (communityAdminMenu!.menu.length === 0) {
           obj.order = 1;
@@ -604,6 +603,7 @@ function CommunityMenuContainer() {
         if (type === 'content') {
           // editor state
           setDiscussRow({ ...discussRow, [type]: value });
+          onChangeValue(selectedRow, 'content')
         }
 
         if (type === 'urlValue') {
@@ -612,6 +612,7 @@ function CommunityMenuContainer() {
             ...discussRow,
             relatedUrlList: [...discussRow.relatedUrlList],
           });
+          onChangeValue(selectedRow, 'urlValue')
         }
 
         if (type === 'urlTitle') {
@@ -638,7 +639,7 @@ function CommunityMenuContainer() {
         }
       }
     },
-    [discussRow]
+    [discussRow, selectedRow]
   );
 
   const onAddUrlsList = useCallback(() => {
