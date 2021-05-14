@@ -22,6 +22,7 @@ interface LectureTaskViewProps {
   pageChange: (data: any) => void;
   activePage: number;
   totalPage: number;
+  cubeAutomaticCompletion: boolean;
   cubePostCount: number;
   cubeCommentCount: number;
   cubeSubCommentCount: number;
@@ -41,6 +42,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   pageChange,
   activePage,
   totalPage,
+  cubeAutomaticCompletion,
   cubePostCount,
   cubeCommentCount,
   cubeSubCommentCount,
@@ -80,15 +82,23 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   return (
     <Fragment>
       <Segment className="full">
-        <div className="scrolling-area area2 ">
-            <div className="ui segment full">
-              <List as="ul" className="my-task-bar">
-                <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>{postCount}건</strong>/{cubePostCount}건</em></List.Item>
-                <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
-                <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
-              </List>
-            </div>
-        </div>
+        {cubeAutomaticCompletion && (
+          <div className="scrolling-area area2 ">
+              <div className="ui segment full">
+                  <List as="ul" className="my-task-bar">
+                    {cubePostCount > 0 && (
+                      <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>{postCount}건</strong>/{cubePostCount}건</em></List.Item>
+                    )}
+                    {cubeCommentCount > 0 && (
+                      <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
+                    )}               
+                    {cubeSubCommentCount > 0 && (
+                      <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
+                    )}
+                  </List>
+              </div>
+          </div>
+        )}
         {tabType === 'Posts' && taskItem && (
           <LectureTaskPostView
             key={`LectureTaskPostView-${tabType}`}

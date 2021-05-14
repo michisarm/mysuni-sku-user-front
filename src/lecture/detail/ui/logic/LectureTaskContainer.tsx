@@ -105,19 +105,19 @@ function LectureTaskContainer() {
     if(lectureState){
       // 댓글, 대댓글 Count Data
       if(lectureState.student){
-        setPostCount(lectureState?.student.postCount)
-        setCommentCount(lectureState?.student.commentCount)
-        setSubCommentCount(lectureState?.student.subCommentCount)
+        setPostCount(lectureState.student.postCount)
+        setCommentCount(lectureState.student.commentCount)
+        setSubCommentCount(lectureState.student.subCommentCount)
       }
 
       if(lectureState.cubeDetail){
         // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
         if(lectureState.cubeDetail.cubeMaterial
             && lectureState.cubeDetail.cubeMaterial.board){
-              setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.postCount)
-              setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.commentCount)
-              setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition.subCommentCount)
-              setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board.automaticCompletion)
+              setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.postCount || 0)
+              setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.commentCount || 0)
+              setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.subCommentCount || 0)
+              setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion || false)
         }
       }
     }
@@ -333,15 +333,15 @@ function LectureTaskContainer() {
         <div className="contents">
           <LectureCubeSummaryContainer />
 
-          <div className="discuss-wrap">
+          <div className="discuss-wrap"> 
             <div className="task-condition">
               <strong className="task-condition">이수조건</strong>
-              {cubeAutomaticCompletion ? (
-                  <span>본 Task는 <strong>Post {cubePostCount}건 / Comment {cubeCommentCount}건 / Comment Reply {cubeSubCommentCount}건</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
-                ) : (
-                  <span>본 Task는 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
-                )
-              }
+                {cubeAutomaticCompletion && (
+                    <span>본 학습은 <strong>Post {cubePostCount}건 / Comment {cubeCommentCount}건 / Comment Reply {cubeSubCommentCount}건</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
+                )}
+                {!cubeAutomaticCompletion && (
+                    <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                )}
                 {(lectureDescription && lectureDescription.completionTerms) && (
                   <Fragment>
                     <p dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }} />
@@ -366,6 +366,7 @@ function LectureTaskContainer() {
               pageChange={pageChange}
               activePage={activePage}
               totalPage={totalPage}
+              cubeAutomaticCompletion={cubeAutomaticCompletion}
               cubePostCount={cubePostCount}
               cubeCommentCount={cubeCommentCount}
               cubeSubCommentCount={cubeSubCommentCount}
