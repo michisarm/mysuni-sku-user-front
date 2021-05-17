@@ -24,7 +24,7 @@ function Image({ src, alt, className }: Props) {
     }
 
     if (window.location.host === 'mysuni.sk.com') {
-      next = `http://image.mysuni.sk.com/${next}`;
+      next = `https://image.mysuni.sk.com/${next}`;
     } else {
       next = `/${next}`;
     }
