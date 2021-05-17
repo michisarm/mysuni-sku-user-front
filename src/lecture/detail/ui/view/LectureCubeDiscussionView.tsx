@@ -186,7 +186,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
                   <span>타 학습자의 작성 내용 중 관심이 가는 의견에 대해 <strong>댓글을 {cubeSubCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.</span>
               )}
               {!cubeAutomaticCompletion && (
-                  <span>본 Task는 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                  <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
               )}
               {(lectureDescription && lectureDescription.completionTerms) && (
                 <Fragment>
