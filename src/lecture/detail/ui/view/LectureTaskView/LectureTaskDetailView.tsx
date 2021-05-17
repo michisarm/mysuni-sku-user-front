@@ -15,9 +15,11 @@ import { SkProfileService } from '../../../../../profile/stores';
 import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import { setPinByPostId } from '../../../../../lecture/detail/api/cubeApi';
 import { reactAlert } from '@nara.platform/accent';
+import LectureState from '../../../viewModel/LectureState';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
+  lectureState: LectureState;
   taskId: string;
   taskDetail: LectureTaskDetail;
   detailType: string;
@@ -29,6 +31,7 @@ interface LectureTaskDetailViewProps {
 }
 
 const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTaskDetailView({
+  lectureState,
   taskDetail,
   detailType,
   boardId,
@@ -99,32 +102,12 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
       return;
     }
 
-    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
-    /* eslint-disable prefer-const */
-    let [pre, last] = audienceKey.split('@');
-
-    if (pre === undefined || last === undefined) {
-      return;
-    }
-
-    [pre] = pre.split('-');
-    if (pre === undefined) {
-      return;
-    }
-
-    const [last1, last2] = last.split('-');
-    if (last1 === undefined || last2 === undefined) {
-      return;
-    }
-
-    const denizenKey = `${pre}@${last1}-${last2}`;
-
-    if (SkProfileService.instance.skProfile.id === denizenKey) {
+    if (SkProfileService.instance.skProfile.id === lectureState.cubeDetail.cubeContents?.operator.keyString) {
       setCanNotice(true);
+    }else{
+      setCanNotice(false);
     }
-
-    return () => setCanNotice(false);
-  }, [params?.cubeId]);
+  }, [lectureState, params?.cubeId]);
 
   const OnClickPostsPinned = useCallback( async(postId: string, pinned: number) => {
     if (canNotice) {
@@ -138,7 +121,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               });
             })
     }
-  }, []);
+  }, [canNotice]);
 
   return (
     <Fragment>

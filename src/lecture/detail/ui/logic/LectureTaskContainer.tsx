@@ -394,10 +394,12 @@ function LectureTaskContainer() {
           </ContentLayout>
         </div>
       )}
-      {viewType === 'detail' && (
+      {lectureState &&
+        viewType === 'detail' && (
         <>
           <LectureTaskDetailView
             boardId={boardId}
+            lectureState={lectureState}
             taskId={detailTaskId}
             taskDetail={taskDetail!}
             detailType={detailType}
@@ -409,12 +411,14 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {viewType === 'create' && (
+      {lectureState &&
+        viewType === 'create' && (
         <>
           <LectureTaskCreateView
             isReply={isReply}
             viewType="create"
             boardId={boardId}
+            lectureState={lectureState}
             taskEdit={taskDetail!}
             handleSubmitClick={viewType =>
               handleSubmitClick(viewType, detailTaskId, isReply)
@@ -425,13 +429,15 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {viewType === 'edit' && (
+      {lectureState &&
+        viewType === 'edit' && (
         <>
           <LectureTaskCreateView
             isReply={isReply}
             viewType="edit"
             detailTaskId={detailTaskId}
             boardId={boardId}
+            lectureState={lectureState}
             handleSubmitClick={viewType =>
               handleSubmitClick(viewType, detailTaskId, isReply)
             }

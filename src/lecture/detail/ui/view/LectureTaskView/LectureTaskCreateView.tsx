@@ -18,10 +18,12 @@ import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHel
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 import { Area } from 'tracker/model';
+import LectureState from '../../../viewModel/LectureState';
 
 interface LectureTaskCreateViewProps {
   isReply: boolean;
   boardId: string;
+  lectureState: LectureState;
   taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
@@ -35,6 +37,7 @@ interface LectureTaskCreateViewProps {
 }
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTaskCreateView({
+  lectureState,
   isReply,
   boardId,
   // taskDetail,
@@ -60,27 +63,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
       return;
     }
 
-    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
-    /* eslint-disable prefer-const */
-    let [pre, last] = audienceKey.split('@');
-
-    if (pre === undefined || last === undefined) {
-      return;
-    }
-
-    [pre] = pre.split('-');
-    if (pre === undefined) {
-      return;
-    }
-
-    const [last1, last2] = last.split('-');
-    if (last1 === undefined || last2 === undefined) {
-      return;
-    }
-
-    const denizenKey = `${pre}@${last1}-${last2}`;
-
-    if (SkProfileService.instance.skProfile.id === denizenKey) {
+    if (SkProfileService.instance.skProfile.id === lectureState.cubeDetail.cubeContents?.operator.keyString) {
       setCanNotice(true);
     }
 
