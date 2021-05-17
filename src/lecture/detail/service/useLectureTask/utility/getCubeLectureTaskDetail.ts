@@ -14,8 +14,8 @@ export function getCubeLectureTaskLearningCardId(lectureId: string) {
   return cardId;
 }
 
-export function deleteCubeLectureTaskPost(id: string, type: string) {
-  const test = deleteLectureTaskPost(id, type);
+export function deleteCubeLectureTaskPost(boardId: string, taskId: string, type: string) {
+  const test = deleteLectureTaskPost(boardId, taskId, type);
 
   return test;
 }

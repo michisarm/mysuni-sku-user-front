@@ -18,10 +18,12 @@ import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHel
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 import { Area } from 'tracker/model';
+import LectureState from '../../../viewModel/LectureState';
 
 interface LectureTaskCreateViewProps {
   isReply: boolean;
   boardId: string;
+  lectureState?: LectureState;
   taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
@@ -35,6 +37,7 @@ interface LectureTaskCreateViewProps {
 }
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTaskCreateView({
+  lectureState,
   isReply,
   boardId,
   // taskDetail,
@@ -59,7 +62,6 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     if (lectureStructureCubeItem === undefined) {
       return;
     }
-
     const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
     /* eslint-disable prefer-const */
     let [pre, last] = audienceKey.split('@');
@@ -80,12 +82,16 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
 
     const denizenKey = `${pre}@${last1}-${last2}`;
 
-    if (SkProfileService.instance.skProfile.id === denizenKey) {
+    if (SkProfileService.instance.skProfile.id === denizenKey || 
+        (lectureState &&
+          lectureState.cubeDetail &&
+          lectureState.cubeDetail.cubeContents?.operator.keyString === SkProfileService.instance.skProfile.id)) {
       setCanNotice(true);
+    }else{
+      setCanNotice(false);
     }
 
-    return () => setCanNotice(false);
-  }, [params?.cubeId]);
+  }, [lectureState, params?.cubeId]);
 
   //edit인경우
   if (taskEdit !== undefined) {
@@ -121,8 +127,8 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   }, []);
 
   const handlePinnedChange = useCallback((e: any, data: any) => {
-    const value = data.checked;
-    changeProps(value, 'notice', viewType!);
+    const value = data.checked ? 2 : 0;
+    changeProps(value, 'pinned', viewType!);
   }, []);
 
   const title = isReply ? 'Reply' : 'Post';
@@ -146,15 +152,15 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               <Form.Field>
                 <div className="board-write-checkbox">
                   <div className="ui checkbox base">
-                    {/* {canNotice && (
+                    {canNotice && !isReply && (
                       <Checkbox
                         className="base"
                         label="공지 등록"
                         name="communityPostCreatePinned"
-                        checked={taskDetail.notice}
+                        checked={taskDetail.pinned === 2}
                         onChange={handlePinnedChange}
                       />
-                    )} */}
+                    )}
                   </div>
                 </div>
                 <div

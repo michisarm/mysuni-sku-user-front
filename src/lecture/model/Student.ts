@@ -37,6 +37,7 @@ export default interface Student {
   homeworkOperatorFileBoxId: string | null;
   hideYn: boolean;
   extraWork: ExtraTask;
+  postCount: number;
   commentCount: number;
   subCommentCount: number;
 }

@@ -14,6 +14,7 @@ import TaskDetailPost from '../model/TaskDetail';
 
 import { IntPair } from '../../../shared/model/IntPair';
 import { CubeMyDiscussionCounts } from '../../model/CubeMyDiscussionCounts';
+import { CubeMyTaskConditionCounts } from '../../model/CubeMyTaskConditionCounts';
 import { getCookie } from '@nara.platform/accent';
 import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
@@ -304,7 +305,7 @@ export function findPostBody(postId: string) {
 
 export function modifyPost(
   postId: string,
-  nameValueList: { nameValues: { name: string; value: string }[] }
+  nameValueList: { nameValues: { name: string; value: any }[] }
 ) {
   const axios = getAxios();
   const url = `${BASE_URL}/posts/${postId}`;
@@ -324,6 +325,15 @@ export function findMyLectureTimeSummary() {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/myLectureTimeSummary`;
   return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
+}
+
+export function setPinByPostId(
+  postId: string,
+  pinned: number,
+) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
+  return axios.put<string>(url).then(AxiosReturn);
 }
 
 // reply api-----------------------------------------------------------------
@@ -378,3 +388,9 @@ function findContentProvider(contentsProviderId: string) {
 }
 
 export const [findContentProviderCache] = createCacheApi(findContentProvider);
+
+export function findMyTaskConditionCounts(studentId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myTaskConditionCounts/${studentId}`;
+  return axios.get<CubeMyTaskConditionCounts>(url).then(AxiosReturn);
+}
