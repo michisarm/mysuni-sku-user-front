@@ -4,7 +4,7 @@ import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureState } from '../../../store/LectureStateStore';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureState from '../../../viewModel/LectureState';
-import { findMyDiscussionCounts } from '../../../api/cubeApi';
+import { findMyDiscussionCounts, findMyTaskConditionCounts } from '../../../api/cubeApi';
 
 export async function requestLectureState(
   cardId: string,
@@ -20,6 +20,13 @@ export async function requestLectureState(
     const myDiscussionCounts = await findMyDiscussionCounts(cubeStudent.id);
     cubeStudent.commentCount = myDiscussionCounts?.commentCount || 0;
     cubeStudent.subCommentCount = myDiscussionCounts?.subCommentCount || 0;
+  }
+
+  if(cubeType === 'Task' && cubeStudent){
+    const myTaskCounts = await findMyTaskConditionCounts(cubeStudent.id);
+    cubeStudent.postCount = myTaskCounts?.postCount || 0;
+    cubeStudent.commentCount = myTaskCounts?.commentCount || 0;
+    cubeStudent.subCommentCount = myTaskCounts?.subCommentCount || 0;
   }
 
   if (cubeDetail !== undefined) {
