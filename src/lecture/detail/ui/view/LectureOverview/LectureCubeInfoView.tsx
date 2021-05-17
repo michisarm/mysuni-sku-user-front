@@ -87,7 +87,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
             {!isEmpty(lectureDescription.completionTerms) && (
               <List.Item>
                 <div className="title">{/*Requirements*/}이수조건</div>
-                <div className="detail">
+                <div className="detail completion-terms">
                   {lectureDescription.completionTerms}
                 </div>
               </List.Item>

@@ -78,6 +78,7 @@ const VideoQuizContentContainer = ({
           return createAnswerField;
         }
       });
+
       setUserAnswer({
         email: currentUser?.email,
         memberId: currentMemberId,
@@ -86,7 +87,7 @@ const VideoQuizContentContainer = ({
       });
       setCheckQuizState(quizStatus.type === 'result' ? true : false);
     }
-  }, [currentIndex, quizStatus]);
+  }, [currentIndex, quizStatus, questionData]);
 
   const onChangeNextQuestion = useCallback(() => {
     if (questionData) {

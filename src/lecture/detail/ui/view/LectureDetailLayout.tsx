@@ -1,7 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { getCookie } from '@nara.platform/accent';
 import LectureStructureContainer from '../logic/LectureStructureContainer';
-import { Area } from 'tracker/model';
+import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
 
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
   children,
@@ -26,6 +28,35 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Action Scroll
+  useEffect(() => {
+    // max bottom
+    if (
+      nowScroll > 100 &&
+      nowScroll ===
+        document.documentElement.scrollHeight -
+          document.documentElement.clientHeight
+    ) {
+      // vertical scroll
+      debounceActionTrack({
+        email:
+          (window.sessionStorage.getItem('email') as string) ||
+          (window.localStorage.getItem('nara.email') as string) ||
+          getCookie('tryingLoginId'),
+        path: window.location.pathname,
+        search: window.location.search,
+        area: window.location.pathname.includes('/cube')
+          ? Area.CUBE_CONTENT
+          : Area.CARD_CONTENT,
+        actionType: ActionType.GENERAL,
+        action: Action.SCROLL_V,
+        actionName: window.location.pathname.includes('/cube')
+          ? '큐브상세 스크롤'
+          : '카드상세 스크롤',
+      } as ActionTrackParam);
+    }
+  }, [nowScroll]);
 
   // 리스트 헤더위치 추출
   const tabScrollRef = useCallback(node => {

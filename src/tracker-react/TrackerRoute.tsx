@@ -4,7 +4,14 @@ import $ from 'jquery';
 import { debounce, useStateRef } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
-import { Source, Action, ActionType, Area, ActionTrackParam, ActionTrackViewParam } from 'tracker/model';
+import {
+  Source,
+  Action,
+  ActionType,
+  Area,
+  ActionTrackParam,
+  ActionTrackViewParam,
+} from 'tracker/model';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -85,15 +92,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     //외부 유입시 파라미터[ _source, _area, _areaId ]로 정보를 얻고 replace 처리
     const queryParams = new URLSearchParams(window.location.search);
     let isReplace = false;
-    if (queryParams.has('_source')) {
-      // source 모두 허용 - 필요시 white list 방식 처리
-      // const sourceList: string[] | null = Object.values(Source);
-      // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
-      areaType = queryParams.get('_source');
-      queryParams.delete('_source');
-      isReplace = true;
-      // }
-    }
     if (queryParams.has('_area')) {
       // area 모두 허용 - 필요시 white list 방식 처리
       // const areaList: string[] | null = Object.values(Area);
@@ -103,10 +101,27 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       isReplace = true;
       // }
     }
-    if (queryParams.has('_areaId')) {
-      areaId = queryParams.get('_areaId');
-      queryParams.delete('_areaId');
+    // _source=대분류::중분류::소분류::생성일,_area::영역
+    if (queryParams.has('_source')) {
+      // source 모두 허용 - 필요시 white list 방식 처리
+      // const sourceList: string[] | null = Object.values(Source);
+      // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
+      const source = queryParams.get('_source');
+      const sources = source?.split(',');
+      if (sources) {
+        areaId = sources[0];
+        const type = areaId?.split('::')[0];
+        areaType = type ? type : areaId;
+        // source에 _area 있을시 적용
+        if (sources?.length > 1) {
+          if (/\_area\:\:(.*)/.test(sources[1])) {
+            area = RegExp.$1;
+          }
+        }
+      }
+      queryParams.delete('_source');
       isReplace = true;
+      // }
     }
 
     // parameter 제거
@@ -148,6 +163,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     if (areaElement instanceof HTMLElement) {
       const action = areaElement.dataset.action;
       const actionName = areaElement.dataset.actionName;
+      const actionType = areaElement.dataset.actionType;
       if (!(action && actionName)) {
         return;
       }
@@ -158,7 +174,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           path: data.referer,
           search: data.refererSearch,
           area: data.area,
-          actionType: ActionType.GENERAL,
+          actionType: actionType ? actionType : ActionType.GENERAL,
           action,
           actionName,
           target: data.target,
