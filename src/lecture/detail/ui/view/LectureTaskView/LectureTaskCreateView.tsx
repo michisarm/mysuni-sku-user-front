@@ -23,7 +23,7 @@ import LectureState from '../../../viewModel/LectureState';
 interface LectureTaskCreateViewProps {
   isReply: boolean;
   boardId: string;
-  lectureState: LectureState;
+  lectureState?: LectureState;
   taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
@@ -62,13 +62,36 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     if (lectureStructureCubeItem === undefined) {
       return;
     }
+    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
+    /* eslint-disable prefer-const */
+    let [pre, last] = audienceKey.split('@');
 
-    if (SkProfileService.instance.skProfile.id === lectureState.cubeDetail.cubeContents?.operator.keyString) {
-      setCanNotice(true);
+    if (pre === undefined || last === undefined) {
+      return;
     }
 
-    return () => setCanNotice(false);
-  }, [params?.cubeId]);
+    [pre] = pre.split('-');
+    if (pre === undefined) {
+      return;
+    }
+
+    const [last1, last2] = last.split('-');
+    if (last1 === undefined || last2 === undefined) {
+      return;
+    }
+
+    const denizenKey = `${pre}@${last1}-${last2}`;
+
+    if (SkProfileService.instance.skProfile.id === denizenKey || 
+        (lectureState &&
+          lectureState.cubeDetail &&
+          lectureState.cubeDetail.cubeContents?.operator.keyString === SkProfileService.instance.skProfile.id)) {
+      setCanNotice(true);
+    }else{
+      setCanNotice(false);
+    }
+
+  }, [lectureState, params?.cubeId]);
 
   //edit인경우
   if (taskEdit !== undefined) {

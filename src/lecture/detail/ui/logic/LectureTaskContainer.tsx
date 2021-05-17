@@ -394,8 +394,7 @@ function LectureTaskContainer() {
           </ContentLayout>
         </div>
       )}
-      {lectureState &&
-        viewType === 'detail' && (
+      {viewType === 'detail' && (
         <>
           <LectureTaskDetailView
             boardId={boardId}
@@ -411,8 +410,7 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {lectureState &&
-        viewType === 'create' && (
+      {viewType === 'create' && (
         <>
           <LectureTaskCreateView
             isReply={isReply}
@@ -429,8 +427,7 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {lectureState &&
-        viewType === 'edit' && (
+      {viewType === 'edit' && (
         <>
           <LectureTaskCreateView
             isReply={isReply}

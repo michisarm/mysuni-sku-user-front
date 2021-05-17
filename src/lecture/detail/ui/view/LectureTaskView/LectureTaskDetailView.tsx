@@ -19,7 +19,7 @@ import LectureState from '../../../viewModel/LectureState';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
-  lectureState: LectureState;
+  lectureState?: LectureState;
   taskId: string;
   taskDetail: LectureTaskDetail;
   detailType: string;
@@ -102,7 +102,30 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
       return;
     }
 
-    if (SkProfileService.instance.skProfile.id === lectureState.cubeDetail.cubeContents?.operator.keyString) {
+    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
+    /* eslint-disable prefer-const */
+    let [pre, last] = audienceKey.split('@');
+
+    if (pre === undefined || last === undefined) {
+      return;
+    }
+
+    [pre] = pre.split('-');
+    if (pre === undefined) {
+      return;
+    }
+
+    const [last1, last2] = last.split('-');
+    if (last1 === undefined || last2 === undefined) {
+      return;
+    }
+
+    const denizenKey = `${pre}@${last1}-${last2}`;
+
+    if (SkProfileService.instance.skProfile.id === denizenKey ||
+        (lectureState && 
+          lectureState.cubeDetail &&
+          lectureState.cubeDetail.cubeContents?.operator.keyString === SkProfileService.instance.skProfile.id)) {
       setCanNotice(true);
     }else{
       setCanNotice(false);
