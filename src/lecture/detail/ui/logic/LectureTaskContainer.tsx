@@ -326,6 +326,12 @@ function LectureTaskContainer() {
     }
   }, [lectureState]);
 
+  const onRefresh = () => {
+    setTimeout(() => {
+      refresh(1)
+    }, 1000);
+  };
+
   return (
     <>
       <div id="Posts" />
@@ -410,6 +416,7 @@ function LectureTaskContainer() {
             handleOnClickReplies={onClickReplies}
             handleOnClickDelete={onClickDelete}
             onRegisterStudent={onRegisterStudent}
+            onRefresh={onRefresh}
           />
         </>
       )}

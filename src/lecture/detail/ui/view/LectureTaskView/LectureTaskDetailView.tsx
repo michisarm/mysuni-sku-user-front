@@ -28,6 +28,7 @@ interface LectureTaskDetailViewProps {
   handleOnClickReplies: (id: string) => void;
   handleOnClickDelete: (boardId: string, taskId: string, type: string) => void;
   onRegisterStudent: () => void;
+  onRefresh: () => void;
 }
 
 const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTaskDetailView({
@@ -41,6 +42,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   handleOnClickReplies,
   handleOnClickDelete,
   onRegisterStudent,
+  onRefresh,
 }) {
   const [viewType] = useLectureTaskViewType();
   const history = useHistory();
@@ -244,6 +246,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               companyName={taskDetail.writer.companyName}
               departmentName={taskDetail.writer.companyCode}
               cubeCommentStartFunction={onRegisterStudent}
+              cubeCommentEndFunction={onRefresh}
             />
           )}
         </>
