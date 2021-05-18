@@ -326,6 +326,13 @@ function LectureTaskContainer() {
     }
   }, [lectureState]);
 
+  // 코멘드 등록 시 화면 새로고침 CommentList -> Props
+  const onRefresh = () => {
+    setTimeout(() => {
+      refresh(1)
+    }, 1000);
+  };
+
   const cubeAutomaticCompletionMessage = useCallback(() => {
     const message = [];
     if(cubePostCount > 0){
@@ -427,6 +434,7 @@ function LectureTaskContainer() {
             handleOnClickReplies={onClickReplies}
             handleOnClickDelete={onClickDelete}
             onRegisterStudent={onRegisterStudent}
+            onRefresh={onRefresh}
           />
         </>
       )}
