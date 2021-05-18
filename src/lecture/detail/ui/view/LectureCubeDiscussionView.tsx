@@ -174,7 +174,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
               <strong className="task-condition">이수조건</strong>
               {cubeAutomaticCompletion && !privateComment && cubeCommentCount > 0 && cubeSubCommentCount > 0 && (
                   <span>
-                    다음의 토론 주제에 대한 <strong>나의 생각을 {cubeCommentCount}건</strong> 작성해주시고, <br/>
+                    다음의 토론 주제에 대한 <strong>나의 생각을 {cubeCommentCount}건</strong> 작성해주시고, 
                     타 학습자의 작성 내용 중 관심이 가는 의견에 대해 <strong>댓글을 {cubeSubCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
                   </span>
               )}
