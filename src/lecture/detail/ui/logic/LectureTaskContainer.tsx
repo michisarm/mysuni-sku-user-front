@@ -326,23 +326,6 @@ function LectureTaskContainer() {
     }
   }, [lectureState]);
 
-  const cubeAutomaticCompletionMessage = useCallback(() => {
-    const message = [];
-    if(cubePostCount > 0){
-      message.push(`Post ${cubePostCount}건`)
-    }
-
-    if(cubeCommentCount > 0){
-      message.push(`Comment ${cubeCommentCount}건`)
-    }
-
-    if(cubeSubCommentCount > 0){
-      message.push(`Comment Reply ${cubeSubCommentCount}건`)
-    }
-
-    return message.join(" / ")
-  }, [cubePostCount, cubeCommentCount, cubeSubCommentCount]);
-
   return (
     <>
       <div id="Posts" />
@@ -353,8 +336,28 @@ function LectureTaskContainer() {
           <div className="discuss-wrap"> 
             <div className="task-condition">
               <strong className="task-condition">이수조건</strong>
-                {cubeAutomaticCompletion && (
-                    <span>본 학습은 <strong>{cubeAutomaticCompletionMessage()}</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
+                {cubeAutomaticCompletion &&
+                  cubePostCount > 0 &&
+                  cubeCommentCount > 0 && (
+                    <span>
+                      다음의 <strong>과제를 수행하여 게시판에 {cubePostCount > 0 && cubePostCount + "건"} 등록</strong>해 주시고,
+                      <br/>
+                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                )}
+                {cubeAutomaticCompletion &&
+                  cubePostCount > 0 &&
+                  cubeCommentCount === 0 && (
+                    <span>
+                      다음의 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                )}
+                {cubeAutomaticCompletion &&
+                  cubePostCount === 0 &&
+                  cubeCommentCount > 0 &&(
+                    <span>
+                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
                 )}
                 {!cubeAutomaticCompletion && (
                     <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
