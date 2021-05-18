@@ -316,6 +316,7 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
+      console.log("handleSave=========", nameValues)
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {

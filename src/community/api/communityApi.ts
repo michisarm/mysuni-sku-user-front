@@ -438,58 +438,48 @@ export function saveCommunityAdminMenu(
   selectedRow: any,
   discussRow?: CommunityDiscussion
 ): Promise<any> {
-  console.log('params', params)
-  console.log('selectedRow.type', selectedRow.type)
-  console.log('1111')
-  // if (
-  //   selectedRow.type === 'DISCUSSION' ||
-  //   selectedRow.type === 'ANODISCUSSION'
-  // ) {
-  //   let value = '';
-  //   let name = '';
-  //   params.nameValues.map((item: any) => {
-  //     if (item.name === 'discussionTopic') {
-  //       value = item.value;
-  //     } else if (item.name === 'name') {
-  //       name = item.value;
-  //     }
-  //   });
-  //   const discussMenuParams = {
-  //     ...discussRow,
-  //     discussionTopic: selectedRow.discussionTopic,
-  //     id: selectedRow.id,
-  //     name: selectedRow.name,
-  //     title: selectedRow.title,
-  //     type: selectedRow.type,
-  //     groupId: selectedRow.groupId === null ? '' : selectedRow.groupId,
-  //     accessType: selectedRow.accessType,
-  //   };
+  // console.log('params', params)
+  // console.log('selectedRow.type', selectedRow)
+  if (
+    (selectedRow.type === 'DISCUSSION' ||
+      selectedRow.type === 'ANODISCUSSION') &&
+    params.type === 'DISCUSSION'
+  ) {
+    let value = '';
+    let name = '';
+    params.nameValues.map((item: any) => {
+      if (item.name === 'discussionTopic') {
+        value = item.value;
+      } else if (item.name === 'name') {
+        name = item.value;
+      }
+    });
 
-  //   const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
-  //   axiosApi.put(url, discussMenuParams).then(response => {
-  //     const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
-  //     const checkNameValues =
-  //       params.nameValues.map((row: any) => row.value === 'undefined').length >
-  //       0
-  //         ? []
-  //         : params.nameValues;
+    console.log("saveCommunityAdminMenu dissc", "params:", params, "selectedRow", selectedRow)
+    const discussMenuParams = {
+      ...discussRow,
+      discussionTopic: selectedRow.discussionTopic,
+      id: selectedRow.id,
+      name: selectedRow.name,
+      title: selectedRow.title,
+      content: selectedRow.content,
+      type: selectedRow.type,
+      groupId: selectedRow.groupId === null ? '' : selectedRow.groupId,
+      accessType: selectedRow.accessType,
+      order: selectedRow.order,
+    };
 
-  //     if (checkNameValues.length > 0) {
-  //       return axiosApi
-  //         .put(url, { nameValues: checkNameValues })
-  //         .then(response => {
-  //           return response && response.data;
-  //         });
-  //     } else {
-  //       return response && response.data;
-  //     }
-  //   });
-  // }
-  console.log('22222')
-  const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-  return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
-    return response && response.data;
-  });
+    const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
+    return axiosApi.put(url, discussMenuParams).then(response => {
+      return response && response.data;
+    });
+  }else{
+    console.log("saveCommunityAdminMenu nomal", "params:", params, "selectedRow", selectedRow)
+    const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+    return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
+      return response && response.data;
+    });
+  }
 }
 
 export function deleteCommunityAdminMenu(
