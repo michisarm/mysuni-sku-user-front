@@ -438,12 +438,11 @@ export function saveCommunityAdminMenu(
   selectedRow: any,
   discussRow?: CommunityDiscussion
 ): Promise<any> {
-  // console.log('params', params)
-  // console.log('selectedRow.type', selectedRow)
   if (
     (selectedRow.type === 'DISCUSSION' ||
       selectedRow.type === 'ANODISCUSSION') &&
-    params.type === 'DISCUSSION'
+    params.type === 'DISCUSSION' &&
+    params.id === selectedRow.id
   ) {
     let value = '';
     let name = '';
@@ -455,7 +454,6 @@ export function saveCommunityAdminMenu(
       }
     });
 
-    console.log("saveCommunityAdminMenu dissc", "params:", params, "selectedRow", selectedRow)
     const discussMenuParams = {
       ...discussRow,
       discussionTopic: selectedRow.discussionTopic,
@@ -474,7 +472,6 @@ export function saveCommunityAdminMenu(
       return response && response.data;
     });
   }else{
-    console.log("saveCommunityAdminMenu nomal", "params:", params, "selectedRow", selectedRow)
     const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
     return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
       return response && response.data;

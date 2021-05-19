@@ -38,8 +38,8 @@ interface RouteParams {
   communityId: string;
 }
 
-const nameValuesArr: any[] = [];
-const deleteValuesArr: any[] = [];
+let nameValuesArr: any[] = [];
+let deleteValuesArr: any[] = [];
 
 function CommunityMenuContainer() {
   const { communityId } = useParams<RouteParams>();
@@ -211,6 +211,11 @@ function CommunityMenuContainer() {
       relatedUrlList: [{ title: '', url: '' }],
       fileBoxId: '',
     });
+    setNameValues([]);
+    nameValuesArr = [];
+
+    setDeleteValues([]);
+    deleteValuesArr = [];
   }, [communityAdminMenu]);
 
   const handleAddChildMenu = useCallback(() => {
@@ -269,6 +274,11 @@ function CommunityMenuContainer() {
     if (!selectedRow!.child) {
       selectedRow!.child = [];
     }
+    setNameValues([]);
+    nameValuesArr = [];
+
+    setDeleteValues([]);
+    deleteValuesArr = [];
   }, [communityAdminMenu, selectedRow]);
 
   const confirmBlank = useCallback(obj => {
@@ -316,7 +326,6 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
-      console.log("handleSave=========", nameValues)
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {
@@ -471,7 +480,8 @@ function CommunityMenuContainer() {
           saveCommunityMenu(communityId, result, selectedRow, discussRow);
           successFlag = true;
         }
-        setNameValues([])
+        // setNameValues([])
+        // nameValuesArr = []
       }
       if (type === 'add') {
         if (communityAdminMenu!.menu.length === 0) {
@@ -590,6 +600,11 @@ function CommunityMenuContainer() {
                 message: '저장되었습니다.',
                 onClose: () => findAllMenus(communityId),
               });
+              setNameValues([]);
+              nameValuesArr = [];
+
+              setDeleteValues([]);
+              deleteValuesArr = [];
             });
           }, 500);
         }
@@ -622,10 +637,23 @@ function CommunityMenuContainer() {
             ...discussRow,
             relatedUrlList: [...discussRow.relatedUrlList],
           });
+          onChangeValue(selectedRow, 'urlTitle')
+        }
+
+        if (type === 'urlDelete') {
+          setDiscussRow({
+            ...discussRow,
+            relatedUrlList: value,
+          });
+          if(selectedRow){
+            selectedRow.relatedUrlList = value
+          }
+          onChangeValue(selectedRow, 'urlDelete')
         }
 
         if (type === 'privateComment') {
           setDiscussRow({ ...discussRow, privateComment: value });
+          onChangeValue(selectedRow, 'privateComment')
         }
 
         if (type === 'accessType') {
@@ -663,7 +691,7 @@ function CommunityMenuContainer() {
         const filteredUrlsList = discussRow.relatedUrlList.filter(
           (url, index) => index !== currentIndex
         );
-        setDiscussRow({ ...discussRow, relatedUrlList: filteredUrlsList });
+        onChangeDiscussValue(filteredUrlsList, 'urlDelete')
       }
     },
     [discussRow]

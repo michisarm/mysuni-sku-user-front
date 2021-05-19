@@ -107,8 +107,8 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
       <tr className="related-url-belt">
         <th>관련 URL</th>
         <td>
-          {selectedRow &&
-            selectedRow.relatedUrlList?.map(({ title, url }, index) => (
+          {discussRow &&
+            discussRow.relatedUrlList?.map(({ title, url }, index) => (
               <div className="related-url-bar" key={index}>
                 <div
                   className="ui right-top-count input admin"
@@ -149,9 +149,9 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                     }
                   </div>
                   {index ===
-                  (selectedRow &&
-                    selectedRow.relatedUrlList &&
-                    selectedRow.relatedUrlList.length - 1) ? (
+                  (discussRow &&
+                    discussRow.relatedUrlList &&
+                    discussRow.relatedUrlList.length - 1) ? (
                     <Button className="plus" onClick={onAddUrlsList}>
                       <Icon>
                         <img src={PlusIcon} />
@@ -218,15 +218,16 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                 label="공개"
                 name="optionGroup"
                 value="option01"
-                checked={selectedRow && !selectedRow.privateComment}
+                checked={discussRow && !discussRow.privateComment}
                 onChange={() => onChangeDiscussValue(false, 'privateComment')}
+                
               />
               <Radio
                 className="base"
                 label="비공개"
                 name="optionGroup"
                 value="option02"
-                checked={selectedRow && selectedRow.privateComment}
+                checked={discussRow && discussRow.privateComment}
                 onChange={() => onChangeDiscussValue(true, 'privateComment')}
               />
             </div>
