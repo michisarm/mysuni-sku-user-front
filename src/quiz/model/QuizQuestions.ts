@@ -1,8 +1,9 @@
 import QuizItem, { getEmptyQuizItem } from "./QuizItem";
 import QuizMessage from "./QuizMessage";
+import AlertMessage from "./AlertMessage";
 
 export default interface QuizQuestions {
-  alertMessage: QuizMessage;
+  alertMessage: AlertMessage;
   answer: boolean;
   id: string;
   img: string;
@@ -18,8 +19,10 @@ export default interface QuizQuestions {
 export function getEmptyQuizQuestions(): QuizQuestions {
   return {
     alertMessage: {
-      img: '',
-      message: '',
+      failMessage: '',
+      passMessage: '',
+      failImg: '',
+      passImg: ''
     },
     answer: false,
     id: '',
