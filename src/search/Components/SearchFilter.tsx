@@ -708,6 +708,8 @@ const SearchFilter: React.FC<Props> = ({
   closeOnFilter,
 }) => {
   useEffect(() => {
+    setCard([]);
+    setDisplayCard([]);
     const decodedSearchValue = searchValue
       .replace(/'/g, ' ')
       .replace(/&/g, ' ')
