@@ -221,7 +221,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               <i area-hidden = "true" className="icon del24" />
               delete
             </Button>
-            {detailType === 'parent' && (
+            {/* {detailType === 'parent' && (
               <Button
                 className="ui button post reply"
                 onClick={onClickReplies}
@@ -229,7 +229,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                 <i area-hidden = "true" className="icon reply24" />
                 reply
               </Button>
-            )}
+            )} */}
             <Button
               className="ui button post list2"
               onClick={OnClicList}
