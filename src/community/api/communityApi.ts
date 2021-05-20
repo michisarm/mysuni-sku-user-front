@@ -439,55 +439,33 @@ export function saveCommunityAdminMenu(
   discussRow?: CommunityDiscussion
 ): Promise<any> {
   if (
-    selectedRow.type === 'DISCUSSION' ||
-    selectedRow.type === 'ANODISCUSSION'
+    params.id === selectedRow.id &&
+    (selectedRow.type === 'DISCUSSION' || selectedRow.type === 'ANODISCUSSION') &&
+    (params.type === 'DISCUSSION' || params.type === 'ANODISCUSSION')
   ) {
-    let value = '';
-    let name = '';
-    params.nameValues.map((item: any) => {
-      if (item.name === 'discussionTopic') {
-        value = item.value;
-      } else if (item.name === 'name') {
-        name = item.value;
-      }
-    });
-
     const discussMenuParams = {
       ...discussRow,
       discussionTopic: selectedRow.discussionTopic,
       id: selectedRow.id,
       name: selectedRow.name,
       title: selectedRow.title,
+      content: selectedRow.content,
       type: selectedRow.type,
       groupId: selectedRow.groupId === null ? '' : selectedRow.groupId,
       accessType: selectedRow.accessType,
+      order: selectedRow.order,
     };
 
     const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
     return axiosApi.put(url, discussMenuParams).then(response => {
-      const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
-      const checkNameValues =
-        params.nameValues.map((row: any) => row.value === 'undefined').length >
-        0
-          ? []
-          : params.nameValues;
-
-      if (checkNameValues.length > 0) {
-        return axiosApi
-          .put(url, { nameValues: checkNameValues })
-          .then(response => {
-            return response && response.data;
-          });
-      } else {
-        return response && response.data;
-      }
+      return response && response.data;
+    });
+  }else{
+    const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+    return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
+      return response && response.data;
     });
   }
-
-  const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
-  return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
-    return response && response.data;
-  });
 }
 
 export function deleteCommunityAdminMenu(

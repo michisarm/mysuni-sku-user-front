@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
-import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
@@ -38,8 +38,8 @@ interface RouteParams {
   communityId: string;
 }
 
-const nameValuesArr: any[] = [];
-const deleteValuesArr: any[] = [];
+let nameValuesArr: any[] = [];
+let deleteValuesArr: any[] = [];
 
 function CommunityMenuContainer() {
   const { communityId } = useParams<RouteParams>();
@@ -82,6 +82,21 @@ function CommunityMenuContainer() {
             param.menuId
           ).then(res => res);
           if (discussionParams) {
+
+            //메뉴데이터 토론하기 메뉴 데이터 세팅으로 추가됨
+            const menuData = getCommunityAdminMenu()
+            if(menuData) {
+              menuData.menu.map((item, index) => {
+                if(item.id === param.id) {
+                  // menuData.menu[index].type = discussionParams.type
+                  menuData.menu[index].content = discussionParams.content
+                  menuData.menu[index].privateComment = discussionParams.privateComment
+                  menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
+                  menuData.menu[index].fileBoxId = discussionParams.fileBoxId
+                }
+              })
+            }
+            setCommunityAdminMenu({ menu: menuData!.menu })
             findMenuDiscussionFeedBack(discussionParams.commentFeedbackId).then(
               findPrivateState => {
                 if (findPrivateState !== null) {
@@ -100,8 +115,6 @@ function CommunityMenuContainer() {
               }
             );
             setSelectedRow(param);
-
-            //
           }
         } else {
           setSelectedRow(param);
@@ -198,6 +211,11 @@ function CommunityMenuContainer() {
       relatedUrlList: [{ title: '', url: '' }],
       fileBoxId: '',
     });
+    setNameValues([]);
+    nameValuesArr = [];
+
+    setDeleteValues([]);
+    deleteValuesArr = [];
   }, [communityAdminMenu]);
 
   const handleAddChildMenu = useCallback(() => {
@@ -256,6 +274,11 @@ function CommunityMenuContainer() {
     if (!selectedRow!.child) {
       selectedRow!.child = [];
     }
+    setNameValues([]);
+    nameValuesArr = [];
+
+    setDeleteValues([]);
+    deleteValuesArr = [];
   }, [communityAdminMenu, selectedRow]);
 
   const confirmBlank = useCallback(obj => {
@@ -457,8 +480,9 @@ function CommunityMenuContainer() {
           saveCommunityMenu(communityId, result, selectedRow, discussRow);
           successFlag = true;
         }
+        // setNameValues([])
+        // nameValuesArr = []
       }
-      setNameValues([...nameValues, []]);
       if (type === 'add') {
         if (communityAdminMenu!.menu.length === 0) {
           obj.order = 1;
@@ -576,6 +600,11 @@ function CommunityMenuContainer() {
                 message: '저장되었습니다.',
                 onClose: () => findAllMenus(communityId),
               });
+              setNameValues([]);
+              nameValuesArr = [];
+
+              setDeleteValues([]);
+              deleteValuesArr = [];
             });
           }, 500);
         }
@@ -590,6 +619,7 @@ function CommunityMenuContainer() {
         if (type === 'content') {
           // editor state
           setDiscussRow({ ...discussRow, [type]: value });
+          onChangeValue(selectedRow, 'content')
         }
 
         if (type === 'urlValue') {
@@ -598,6 +628,7 @@ function CommunityMenuContainer() {
             ...discussRow,
             relatedUrlList: [...discussRow.relatedUrlList],
           });
+          onChangeValue(selectedRow, 'urlValue')
         }
 
         if (type === 'urlTitle') {
@@ -606,10 +637,23 @@ function CommunityMenuContainer() {
             ...discussRow,
             relatedUrlList: [...discussRow.relatedUrlList],
           });
+          onChangeValue(selectedRow, 'urlTitle')
+        }
+
+        if (type === 'urlDelete') {
+          setDiscussRow({
+            ...discussRow,
+            relatedUrlList: value,
+          });
+          if(selectedRow){
+            selectedRow.relatedUrlList = value
+          }
+          onChangeValue(selectedRow, 'urlDelete')
         }
 
         if (type === 'privateComment') {
           setDiscussRow({ ...discussRow, privateComment: value });
+          onChangeValue(selectedRow, 'privateComment')
         }
 
         if (type === 'accessType') {
@@ -624,7 +668,7 @@ function CommunityMenuContainer() {
         }
       }
     },
-    [discussRow]
+    [discussRow, selectedRow]
   );
 
   const onAddUrlsList = useCallback(() => {
@@ -647,7 +691,7 @@ function CommunityMenuContainer() {
         const filteredUrlsList = discussRow.relatedUrlList.filter(
           (url, index) => index !== currentIndex
         );
-        setDiscussRow({ ...discussRow, relatedUrlList: filteredUrlsList });
+        onChangeDiscussValue(filteredUrlsList, 'urlDelete')
       }
     },
     [discussRow]
