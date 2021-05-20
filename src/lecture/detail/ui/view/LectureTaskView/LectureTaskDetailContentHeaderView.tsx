@@ -118,7 +118,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                       Delete
                     </Button>
                   )}
-                  {reply && (
+                  {/* {reply && (
                     <Button
                       icon
                       className="ui button icon postset delete"
@@ -127,7 +127,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                       <i area-hidden = "true" className="icon reply2" />
                       Reply
                     </Button>
-                  )}
+                  )} */}
                   <Button
                     icon
                     className="ui button icon postset list2"

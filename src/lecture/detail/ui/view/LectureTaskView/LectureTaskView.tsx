@@ -90,7 +90,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
                       <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>{postCount}건</strong>/{cubePostCount}건</em></List.Item>
                     )}
                     {cubeCommentCount > 0 && (
-                      <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
+                      <List.Item as="li"><Icon className="my-comment"/> My reply<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
                     )}               
                     {/* {cubeSubCommentCount > 0 && (
                       <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>

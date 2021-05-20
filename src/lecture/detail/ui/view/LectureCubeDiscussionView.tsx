@@ -171,7 +171,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
           <div className="discuss-wrap">
             {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
             <div className="task-condition">
-              <strong className="task-condition">이수조건</strong>
+              <strong className="task-condition">이수 조건</strong>
               {cubeAutomaticCompletion && !privateComment && cubeCommentCount > 0 && cubeSubCommentCount > 0 && (
                   <span>
                     다음의 토론 주제에 대한 <strong>나의 생각을 {cubeCommentCount}건</strong> 작성해주시고, 
@@ -185,7 +185,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
                   <span>타 학습자의 작성 내용 중 관심이 가는 의견에 대해 <strong>댓글을 {cubeSubCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.</span>
               )}
               {!cubeAutomaticCompletion && (
-                  <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                  <span>본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다.</span>
               )}
               {(lectureDescription && lectureDescription.completionTerms) && (
                 <Fragment>
@@ -305,7 +305,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
                       <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
                     )}
                     {!privateComment && cubeSubCommentCount > 0 && (
-                      <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
+                      <List.Item as="li"><Icon className="my-comment-reply"/>My reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
                     )}
                   </List>
                 </div>
