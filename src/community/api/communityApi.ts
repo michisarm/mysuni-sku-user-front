@@ -439,10 +439,9 @@ export function saveCommunityAdminMenu(
   discussRow?: CommunityDiscussion
 ): Promise<any> {
   if (
-    (selectedRow.type === 'DISCUSSION' ||
-      selectedRow.type === 'ANODISCUSSION') &&
-    params.type === 'DISCUSSION' &&
-    params.id === selectedRow.id
+    params.id === selectedRow.id &&
+    (selectedRow.type === 'DISCUSSION' || selectedRow.type === 'ANODISCUSSION') &&
+    (params.type === 'DISCUSSION' || params.type === 'ANODISCUSSION')
   ) {
     const discussMenuParams = {
       ...discussRow,

@@ -83,16 +83,16 @@ function CommunityMenuContainer() {
           ).then(res => res);
           if (discussionParams) {
 
-            //메뉴데이터
+            //메뉴데이터 토론하기 메뉴 데이터 세팅으로 추가됨
             const menuData = getCommunityAdminMenu()
             if(menuData) {
               menuData.menu.map((item, index) => {
                 if(item.id === param.id) {
-                  menuData.menu[index].type = discussionParams.type
+                  // menuData.menu[index].type = discussionParams.type
                   menuData.menu[index].content = discussionParams.content
+                  menuData.menu[index].privateComment = discussionParams.privateComment
                   menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
                   menuData.menu[index].fileBoxId = discussionParams.fileBoxId
-                  menuData.menu[index].privateComment = discussionParams.privateComment
                 }
               })
             }
