@@ -81,7 +81,21 @@ export async function saveCommunityMenu(
 ) {
   for await (const param of params) {
     if (discussRow) {
-      saveCommunityAdminMenu(communityId, param, selectedRow, discussRow);
+      let paramNameValues = param.nameValues;
+      // 추후 정리 필요 DISCUSSION 이 여러개 수정된 경우 문제 발생으로 임시 조치
+      if(param.id !== selectedRow.id && param.type === 'DISCUSSION'){
+        if(param.type === 'DISCUSSION'){
+          if(paramNameValues){
+            paramNameValues = param.nameValues.filter(
+              (data: any, index: any) => data.name === "order"
+            );
+            param.nameValues = paramNameValues;
+          }
+        }
+      }
+      if(paramNameValues){
+        saveCommunityAdminMenu(communityId, param, selectedRow, discussRow);
+      }
     } else {
       saveCommunityAdminMenu(communityId, param, selectedRow);
     }

@@ -444,16 +444,6 @@ export function saveCommunityAdminMenu(
     params.type === 'DISCUSSION' &&
     params.id === selectedRow.id
   ) {
-    let value = '';
-    let name = '';
-    params.nameValues.map((item: any) => {
-      if (item.name === 'discussionTopic') {
-        value = item.value;
-      } else if (item.name === 'name') {
-        name = item.value;
-      }
-    });
-
     const discussMenuParams = {
       ...discussRow,
       discussionTopic: selectedRow.discussionTopic,
