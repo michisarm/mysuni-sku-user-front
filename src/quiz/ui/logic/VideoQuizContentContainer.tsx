@@ -425,7 +425,7 @@ const VideoQuizContentContainer = ({
         )}
 
       {/* 답안제출 완료 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData && questionData[currentIndex].alertMessage.passMessage === '' && (
+      {quizStatus.status && quizStatus.type === 'success' && questionData && (!questionData[currentIndex].answer || questionData[currentIndex].alertMessage.passMessage === '') && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>Video QUIZ</h1>
