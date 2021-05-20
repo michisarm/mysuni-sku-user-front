@@ -56,11 +56,13 @@ export function findTask(
   boardId: string,
   offset: number,
   limit: number,
-  tabType: string
+  tabType: string,
+  sort?: string
 ): Promise<Task> {
   let url = '';
   if (tabType === 'Posts') {
-    url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+    // url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+    url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}&sort=${sort}`;
   } else {
     url = `${BASE_URL}/posts/myByBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   }
@@ -110,9 +112,9 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   });
 }
 
-export function deleteTaskPost(postId: string, postType: string): Promise<any> {
-  const url = `${BASE_URL}/posts/${postId}`;
-  const replyUrl = `${BASE_URL}/replies/${postId}`;
+export function deleteTaskPost(boardId: string, postId: string, postType: string): Promise<any> {
+  const url = `${BASE_URL}/posts/${postId}/${boardId}`;
+  const replyUrl = `${BASE_URL}/replies/${postId}/${boardId}`;
   if (postType === 'parent') {
     return axiosApi.delete(url);
   } else {

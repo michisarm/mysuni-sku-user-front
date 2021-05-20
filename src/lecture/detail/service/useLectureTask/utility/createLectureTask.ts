@@ -22,7 +22,7 @@ export async function createLectureTask(
         writer: name,
         commentFeedbackId: taskCreateItem.commentFeedbackId,
         boardId: taskCreateItem.id,
-        pinned: taskCreateItem.notice,
+        pinned: taskCreateItem.pinned,
         contents: taskCreateItem.contents,
         fileBoxId: taskCreateItem.fileBoxId,
       };
@@ -37,6 +37,7 @@ export async function createLectureTask(
         postId: detailTaskId,
         contents: taskCreateItem.contents,
         fileBoxId: taskCreateItem.fileBoxId,
+        boardId: taskCreateItem.id,
       };
 
       await postReply(postCdo);

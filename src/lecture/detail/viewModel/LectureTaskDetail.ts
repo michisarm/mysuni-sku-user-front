@@ -30,6 +30,7 @@ export interface LectureTaskDetail {
   readCount: number;
   commentFeedbackId: string;
   notice: boolean;
+  pinned: number; // postpinned -> number = 0
 }
 
 export interface CommentInfo {
