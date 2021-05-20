@@ -3,6 +3,7 @@ import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
 import {
   findCubeDetailCache,
   findMyDiscussionCounts,
+  findMyTaskConditionCounts,
 } from '../../../api/cubeApi';
 import {
   getLectureStructure,
@@ -299,6 +300,55 @@ async function updateDiscussionCubeItem(
   return item;
 }
 
+async function updateTaskCubeItem(
+  item: LectureStructureCubeItem,
+  cubeStudent?: Student
+): Promise<LectureStructureCubeItem> {
+  if (item.test === undefined && item.report === undefined) {
+    return item;
+  }
+  const cubeDetail = await findCubeDetailCache(item.cubeId);
+  if (cubeDetail !== undefined) {
+    const {
+      cubeMaterial: { board },
+    } = cubeDetail;
+    if (
+      board?.automaticCompletion === true &&
+      cubeStudent !== undefined &&
+      cubeStudent !== null
+    ) {
+      const {
+        completionCondition: { postCount, commentCount, subCommentCount },
+      } = board;
+      const myTaskCounts = await findMyTaskConditionCounts(cubeStudent.id);
+      if (myTaskCounts === undefined) {
+        if (item.test !== undefined) {
+          item.test.can = false;
+        }
+        if (item.report !== undefined) {
+          item.report.can = false;
+        }
+      } else {
+        if (item.test !== undefined) {
+          item.test.can =
+            item.test.can &&
+            myTaskCounts.postCount >= postCount &&
+            myTaskCounts.commentCount >= commentCount &&
+            myTaskCounts.subCommentCount >= subCommentCount;
+        }
+        if (item.report !== undefined) {
+          item.report.can =
+            item.report.can &&
+            myTaskCounts.postCount >= postCount &&
+            myTaskCounts.commentCount >= commentCount &&
+            myTaskCounts.subCommentCount >= subCommentCount;
+        }
+      }
+    }
+  }
+  return item;
+}
+
 async function updateCubeItem(
   item: LectureStructureCubeItem,
   cubeStudent?: Student
@@ -330,6 +380,13 @@ async function updateCubeItem(
       cubeStudent
     );
     return discussionCubeItem;
+  }
+  if (cube.cubeType === 'Task') {
+    const taskCubeItem = await updateTaskCubeItem(
+      cube,
+      cubeStudent
+    );
+    return taskCubeItem;
   }
   return cube;
 }

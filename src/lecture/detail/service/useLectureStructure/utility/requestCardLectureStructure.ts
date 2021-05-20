@@ -12,6 +12,7 @@ import {
   findCubeDetailCache,
   findCubesByIdsCache,
   findMyDiscussionCounts,
+  findMyTaskConditionCounts,
 } from '../../../api/cubeApi';
 import {
   setIsLoadingState,
@@ -35,6 +36,7 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
+import { reactAlert } from '@nara.platform/accent';
 
 function parseCubeTestItem(
   card: Card,
@@ -507,6 +509,94 @@ async function parseDiscussionCubeItem(
   return item;
 }
 
+async function parseTaskCubeItem(
+  card: Card,
+  cube: Cube,
+  order: number,
+  cubeStudent?: Student
+): Promise<LectureStructureCubeItem> {
+  const {
+    id,
+    name,
+    type,
+    learningTime,
+    surveyCaseId,
+    hasTest,
+    reportName,
+  } = cube;
+  const params: LectureParams = {
+    cardId: card.id,
+    cubeId: id,
+    viewType: 'view',
+    cubeType: cube.type,
+    pathname: '',
+  };
+  params.pathname = toPath(params);
+  const item: LectureStructureCubeItem = {
+    cardId: card.id,
+    name,
+    cubeId: id,
+    cubeType: type,
+    learningState: cubeStudent?.learningState,
+    learningTime,
+    student: cubeStudent === null ? undefined : cubeStudent,
+    order,
+    params,
+    path: params.pathname,
+    type: 'CUBE',
+    can: true,
+    state: convertLearningStateToState(cubeStudent?.learningState),
+    cube,
+  };
+  if (hasTest) {
+    item.test = parseCubeTestItem(card, cube, order, cubeStudent);
+  }
+  if (reportName !== null && reportName !== '') {
+    item.report = parseCubeReportItem(card, cube, order, cubeStudent);
+  }
+  if (surveyCaseId !== null && surveyCaseId !== '') {
+    item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
+  }
+  const cubeDetail = await findCubeDetailCache(id);
+  if (cubeDetail !== undefined) {
+    const {
+      cubeMaterial: { board },
+    } = cubeDetail;
+    if (
+      board?.automaticCompletion === true &&
+      cubeStudent !== undefined &&
+      cubeStudent !== null
+    ) {
+      const {
+        completionCondition: { commentCount, subCommentCount },
+      } = board;
+      const myTaskCounts = await findMyTaskConditionCounts(cubeStudent.id);
+      if (myTaskCounts === undefined) {
+        if (item.test !== undefined) {
+          item.test.can = false;
+        }
+        if (item.report !== undefined) {
+          item.report.can = false;
+        }
+      } else {
+        if (item.test !== undefined) {
+          item.test.can =
+            item.test.can &&
+            myTaskCounts.commentCount >= commentCount &&
+            myTaskCounts.subCommentCount >= subCommentCount;
+        }
+        if (item.report !== undefined) {
+          item.report.can =
+            item.report.can &&
+            myTaskCounts.commentCount >= commentCount &&
+            myTaskCounts.subCommentCount >= subCommentCount;
+        }
+      }
+    }
+  }
+  return item;
+}
+
 async function parseCubeItem(
   card: Card,
   cube: Cube,
@@ -541,6 +631,16 @@ async function parseCubeItem(
     );
     return discussionCubeItem;
   }
+  if (type === 'Task') {
+    const taskCubeItem = await parseTaskCubeItem(
+      card,
+      cube,
+      order,
+      cubeStudent
+    );
+    return taskCubeItem;
+  }
+  
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -666,7 +766,14 @@ export async function requestCardLectureStructure(cardId: string) {
     myCardRelatedStudentsRom === undefined
   ) {
     setIsLoadingState({ isLoading: false });
-    return;
+    return reactAlert({
+      title: '',
+      message:
+        '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
+      onClose: () => {
+        window.location.href = window.location.origin;
+      },
+    });
   }
 
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;

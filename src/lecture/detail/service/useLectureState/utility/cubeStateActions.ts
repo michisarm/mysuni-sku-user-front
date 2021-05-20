@@ -181,13 +181,6 @@ export async function refresh(
     return;
   }
   const { cardId, cubeId, cubeType } = params;
-  const studentCdo: StudentCdo = {
-    cardId,
-    cubeId,
-    round,
-    //approvalProcess,
-    approverDenizenId: approvalEmail,
-  };
   // await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
   updateCardLectureStructure(cardId);

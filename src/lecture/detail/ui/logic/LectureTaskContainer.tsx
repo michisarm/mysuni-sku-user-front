@@ -1,5 +1,5 @@
 import { useLectureTask } from 'lecture/detail/service/useLectureTask/useLectureTask';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
@@ -7,6 +7,7 @@ import {
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
+  setLectureTaskOrder,
 } from '../../store/LectureTaskStore';
 import { ContentLayout } from 'shared';
 import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView';
@@ -32,16 +33,24 @@ import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskD
 import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
 import { getLectureParams } from '../../store/LectureParamsStore';
+import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
+import { OverviewField } from '../../../../personalcube';
+import { Image } from 'semantic-ui-react';
+import { useLectureState } from '../../store/LectureStateStore';
+import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
+import { submitRegisterStudent } from '../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
   const history = useHistory();
 
-  useEffect(() => {
-    return () => {
-      setLectureTaskTab('Overview');
-    };
-  }, [pathname]);
+  // useEffect(() => {
+  //   return () => {
+  //     setLectureTaskTab('Overview');
+  //   };
+  // }, [pathname]);
 
   useEffect(() => {
     if (hash === '#create') {
@@ -58,6 +67,7 @@ function LectureTaskContainer() {
     setLectureTaskViewType('list');
   }, [hash]);
 
+  const lectureState = useLectureState();
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
   const [lectureDescription] = useLectureDescription();
@@ -70,6 +80,61 @@ function LectureTaskContainer() {
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
   const [isReply, setIsReply] = useState<boolean>(false);
+  const [activePage, setActivePage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  // 이수정보 관련
+  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
+  const [cubePostCount, setCubePostCount] = useState<number>(0);
+  const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
+  const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
+  const [postCount, setPostCount] = useState<number>(0);
+  const [commentCount, setCommentCount] = useState<number>(0);
+  const [subCommentCount, setSubCommentCount] = useState<number>(0);
+
+  useEffect(() => {
+    if(taskItem){
+      let totalpage = Math.ceil(taskItem!.totalCount / 10);
+      if (taskItem!.totalCount % 10 < 0) {
+        totalpage++;
+      }
+      setTotalPage(totalpage);
+    }
+  }, [taskItem]);
+
+  useEffect(() => {
+    if(lectureState){
+      // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
+      if(lectureState.cubeDetail
+          && lectureState.cubeDetail.cubeMaterial
+          && lectureState.cubeDetail.cubeMaterial.board
+          && lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion){
+            setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.postCount || 0)
+            setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.commentCount || 0)
+            setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.subCommentCount || 0)
+            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board.automaticCompletion)
+
+            // 댓글, 대댓글 Count Data
+            if(lectureState.student){
+              setPostCount(lectureState.student.postCount || 0)
+              setCommentCount(lectureState.student.commentCount || 0)
+              setSubCommentCount(lectureState.student.subCommentCount || 0)
+            }
+      }
+    }
+  }, [lectureState]);
+
+  const pageChange = (data: any) => {
+    const nextOffset = (data.activePage - 1) * 10;
+    setLectureTaskOffset(nextOffset);
+    setActivePage(data.activePage);
+  };
+
+  const sortChange = (data: any) => {
+    setLectureTaskOrder(data);
+    setActivePage(1);
+    setLectureTaskOffset(0);
+  };
+
 
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
@@ -77,16 +142,27 @@ function LectureTaskContainer() {
   }, []);
 
   const moveToDetail = useCallback((param: any) => {
+    //게시글 부모인지 자식인지
     setIsReply(param.type === 'child');
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
-
-    //게시글 부모인지 자식인지
+    setBoardId(param.boardId)
   }, []);
 
   const onClickList = useCallback(() => {
-    history.goBack();
+    // history.goBack();
+    // 리스트로 돌아가기
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    refresh(1).then(() => {
+      history.push({
+        pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
+      });
+      setActivePage(1);
+    })
   }, []);
 
   // const onHandleSave = useCallback(() => {
@@ -108,13 +184,16 @@ function LectureTaskContainer() {
     setIsReply(true);
   }, []);
 
-  const onClickDelete = useCallback((id: string, type: string) => {
+  const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
     reactConfirm({
       title: '알림',
       message: '글을 삭제하시겠습니까?',
       onOk: () => {
-        deletePost(id, type);
-        history.goBack();
+        deletePost(boardId, taskId, type).then(() => {
+          refresh(1).then(() => {
+            history.goBack();
+          });
+        });
       },
     });
   }, []);
@@ -141,7 +220,6 @@ function LectureTaskContainer() {
 
   const onHandleChange = useCallback(
     (value: string, name: string, viewType: string) => {
-      console.log(value, name, viewType);
       if (viewType === 'create') {
         if (getLectureTaskCreateItem() === undefined) {
           return;
@@ -167,6 +245,14 @@ function LectureTaskContainer() {
     []
   );
 
+  const replaceEnterWithBr = (target?: string) => {
+    let setHtml = '';
+    if(target){
+      setHtml = target.split('\n').join('<br />');
+    }
+    return setHtml;
+  };
+
   const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
     reactConfirm({
       title: '알림',
@@ -191,12 +277,14 @@ function LectureTaskContainer() {
               readCount: 0,
               commentFeedbackId: '',
               notice: false,
+              pinned: 0, // postpinned -> number = 0
             });
-            history.goBack();
-
-            reactAlert({
-              title: '안내',
-              message: '글이 등록되었습니다.',
+            refresh(1).then(() => {
+              history.goBack();
+              reactAlert({
+                title: '안내',
+                message: '글이 등록되었습니다.',
+              });
             });
           });
         } else {
@@ -222,8 +310,8 @@ function LectureTaskContainer() {
     }
   }, [create]);
 
-  async function deletePost(id: string, type: string) {
-    await deleteCubeLectureTaskPost(id, type).then(() => {
+  async function deletePost(boardId: string, taskId: string, type: string) {
+    await deleteCubeLectureTaskPost(boardId, taskId, type).then(() => {
       reactAlert({
         title: '안내',
         message: '글이 삭제되었습니다.',
@@ -231,12 +319,80 @@ function LectureTaskContainer() {
     });
   }
 
+  // 코멘드 등록 시 학습처리 CommentList -> Props
+  const onRegisterStudent = useCallback(async () => {
+    if(lectureState && lectureState.student === undefined){
+      await submitRegisterStudent()
+    }
+  }, [lectureState]);
+
+  // 코멘드 등록 시 화면 새로고침 CommentList -> Props
+  const onRefresh = () => {
+    setTimeout(() => {
+      refresh(1)
+    }, 1000);
+  };
+
+  const cubeAutomaticCompletionMessage = useCallback(() => {
+    const message = [];
+    if(cubePostCount > 0){
+      message.push(`Post ${cubePostCount}건`)
+    }
+
+    if(cubeCommentCount > 0){
+      message.push(`Comment ${cubeCommentCount}건`)
+    }
+
+    if(cubeSubCommentCount > 0){
+      message.push(`Comment Reply ${cubeSubCommentCount}건`)
+    }
+
+    return message.join(" / ")
+  }, [cubePostCount, cubeCommentCount, cubeSubCommentCount]);
+
   return (
     <>
       <div id="Posts" />
       {viewType === 'list' && (
         <div className="contents">
           <LectureCubeSummaryContainer />
+
+          <div className="discuss-wrap"> 
+            <div className="task-condition">
+              <strong className="task-condition">이수조건</strong>
+                {cubeAutomaticCompletion &&
+                  cubePostCount > 0 &&
+                  cubeCommentCount > 0 && (
+                    <span>
+                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 
+                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                )}
+                {cubeAutomaticCompletion &&
+                  cubePostCount > 0 &&
+                  cubeCommentCount === 0 && (
+                    <span>
+                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                )}
+                {cubeAutomaticCompletion &&
+                  cubePostCount === 0 &&
+                  cubeCommentCount > 0 &&(
+                    <span>
+                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                )}
+                {!cubeAutomaticCompletion && (
+                    <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                )}
+                {(lectureDescription && lectureDescription.completionTerms) && (
+                  <Fragment>
+                    <p dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }} />
+                  </Fragment>
+                )}
+            </div>
+          </div>
+          
           <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}
@@ -245,10 +401,21 @@ function LectureTaskContainer() {
               handleClickTaskRow={moveToDetail}
               listHashLink={listHashLink}
               overviewHashLink={overviewHashLink}
-              lectureDescription={lectureDescription}
-              lectureSubcategory={lectureSubcategory}
-              lectureTags={lectureTags}
-              lectureFile={lectureFile}
+              // lectureDescription={lectureDescription}
+              // lectureSubcategory={lectureSubcategory}
+              // lectureTags={lectureTags}
+              // lectureFile={lectureFile}
+              sortChange={sortChange}
+              pageChange={pageChange}
+              activePage={activePage}
+              totalPage={totalPage}
+              cubeAutomaticCompletion={cubeAutomaticCompletion}
+              cubePostCount={cubePostCount}
+              cubeCommentCount={cubeCommentCount}
+              cubeSubCommentCount={cubeSubCommentCount}
+              postCount={postCount}
+              commentCount={commentCount}
+              subCommentCount={subCommentCount}
             />
           </ContentLayout>
         </div>
@@ -256,6 +423,8 @@ function LectureTaskContainer() {
       {viewType === 'detail' && (
         <>
           <LectureTaskDetailView
+            boardId={boardId}
+            lectureState={lectureState}
             taskId={detailTaskId}
             taskDetail={taskDetail!}
             detailType={detailType}
@@ -263,6 +432,8 @@ function LectureTaskContainer() {
             handleOnClickModify={onClickModify}
             handleOnClickReplies={onClickReplies}
             handleOnClickDelete={onClickDelete}
+            onRegisterStudent={onRegisterStudent}
+            onRefresh={onRefresh}
           />
         </>
       )}
@@ -272,6 +443,7 @@ function LectureTaskContainer() {
             isReply={isReply}
             viewType="create"
             boardId={boardId}
+            lectureState={lectureState}
             taskEdit={taskDetail!}
             handleSubmitClick={viewType =>
               handleSubmitClick(viewType, detailTaskId, isReply)
@@ -289,6 +461,7 @@ function LectureTaskContainer() {
             viewType="edit"
             detailTaskId={detailTaskId}
             boardId={boardId}
+            lectureState={lectureState}
             handleSubmitClick={viewType =>
               handleSubmitClick(viewType, detailTaskId, isReply)
             }
@@ -299,14 +472,6 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {/* {viewType === 'reply' && (
-        <LectureTaskReplyView
-          postId={detailTaskId}
-          boardId={boardId}
-          handleOnClickList={onHandleReply}
-          handleCloseClick={onClickList}
-        />
-      )} */}
     </>
   );
 }

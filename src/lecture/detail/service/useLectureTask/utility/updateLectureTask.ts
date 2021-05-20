@@ -13,6 +13,7 @@ export async function updateLectureTask(
           { name: 'title', value: taskDetailItem.title },
           { name: 'contents', value: taskDetailItem.contents },
           { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+          { name: 'pinned', value: taskDetailItem.pinned },
         ],
       };
 

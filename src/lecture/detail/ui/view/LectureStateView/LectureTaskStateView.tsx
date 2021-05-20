@@ -65,11 +65,11 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {cubeType === 'Task' && student.learningState !== 'Passed' && (
+      {/* {cubeType === 'Task' && student.learningState !== 'Passed' && (
         <button className="ui button free bg p18" onClick={action}>
           {JOIN}
         </button>
-      )}
+      )} */}
       <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
@@ -88,27 +88,30 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
   lectureState,
 }) {
   const { student, cubeType } = lectureState;
-  useEffect(() => {
-    if (
-      cubeType === 'Discussion' &&
-      (!student ||
-        (student.learningState === 'Progress' &&
-          student.commentCount === 0 &&
-          student.subCommentCount === 0))
-    ) {
-      reactAlert({
-        title: '안내',
-        message: `이수조건을 확인 후 학습을 진행해주세요`,
-      });
-    }
-  }, [student]);
+  // useEffect(() => {
+  //   if (
+  //     cubeType === 'Discussion' &&
+  //     (!student ||
+  //       (student.learningState === 'Progress' &&
+  //         student.commentCount === 0 &&
+  //         student.subCommentCount === 0))
+  //   ) {
+  //     reactAlert({
+  //       title: '안내',
+  //       message: `이수조건을 확인 후 학습을 진행해주세요`,
+  //     });
+  //   }
+  // }, [student]);
 
   return (
     <>
-      {cubeType === 'Task' &&
-        (student === undefined || student?.proposalState === 'Canceled') && (
-          <CanceledView />
-        )}
+      {/* 
+        Discussion - 댓글, 대댓글 작성 시 자동으로 학습 시작
+        Task - Post 작성 버튼, 댓글, 대댓글 작성 시 자동으로 학습 시작
+       */}
+      {/* {(cubeType === 'Task' && (student === undefined || student?.proposalState === 'Canceled')) && (
+        <CanceledView />
+      )} */}
       {student?.proposalState === 'Approved' && (
         <ApprovedView student={student} cubeType={cubeType} />
       )}

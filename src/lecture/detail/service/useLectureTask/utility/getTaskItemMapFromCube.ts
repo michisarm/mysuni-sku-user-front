@@ -17,7 +17,8 @@ async function getTaskItem(
   offset: number,
   limit: number,
   addflag?: boolean,
-  tabType?: string
+  tabType?: string,
+  sort?: string
 ) {
   const lectureTask: LectureTask = {
     items: [],
@@ -29,51 +30,69 @@ async function getTaskItem(
   //TODO api 수정되면 바꿀 예정
   if (boardId !== '') {
     {
-      const findTaskData = await findTask(boardId, offset, limit, tabType!);
+      const findTaskData = await findTask(boardId, offset, limit, tabType!, sort);
       if (findTaskData) {
         lectureTask.totalCount = findTaskData.totalCount;
         lectureTask.offset = offset;
         const old = getLectureTaskItem();
         if (findTaskData.results.length !== 0) {
-          if (addflag && old) {
-            findTaskData.results.forEach(task => {
-              old.items.push({
-                id: task.id,
-                boardId: task.boardId,
-                readCount: task.readCount,
-                title: task.title,
-                writer: task.writer,
-                time: task.time,
-                child: false,
-                count: 0,
-                commentFeedbackId: task.commentFeedbackId,
-                childItems: [],
-                delete: task.deleted,
-                pinned: task.pinned,
-              });
-            });
+          // if (addflag && old) {
+          //   findTaskData.results.forEach(task => {
+          //     old.items.push({
+          //       id: task.id,
+          //       boardId: task.boardId,
+          //       readCount: task.readCount,
+          //       title: task.title,
+          //       writer: task.writer,
+          //       time: task.time,
+          //       child: false,
+          //       count: 0,
+          //       commentFeedbackId: task.commentFeedbackId,
+          //       childItems: [],
+          //       delete: task.deleted,
+          //       pinned: task.pinned,
+          //     });
+          //   });
 
-            lectureTask.items = [...old.items];
-            setLectureTaskItem(old);
-          } else {
-            findTaskData.results.forEach(task => {
-              lectureTask.items.push({
-                id: task.id,
-                boardId: task.boardId,
-                readCount: task.readCount,
-                title: task.title,
-                writer: task.writer,
-                time: task.time,
-                child: false,
-                count: 0,
-                commentFeedbackId: task.commentFeedbackId,
-                childItems: [],
-                delete: task.deleted,
-                pinned: task.pinned,
-              });
+          //   lectureTask.items = [...old.items];
+          //   setLectureTaskItem(old);
+          // } else {
+          //   findTaskData.results.forEach(task => {
+          //     lectureTask.items.push({
+          //       id: task.id,
+          //       boardId: task.boardId,
+          //       readCount: task.readCount,
+          //       title: task.title,
+          //       writer: task.writer,
+          //       time: task.time,
+          //       child: false,
+          //       count: 0,
+          //       commentFeedbackId: task.commentFeedbackId,
+          //       childItems: [],
+          //       delete: task.deleted,
+          //       pinned: task.pinned,
+          //     });
+          //   });
+          //   setLectureTaskItem(lectureTask);
+          // }
+
+          findTaskData.results.forEach(task => {
+            lectureTask.items.push({
+              id: task.id,
+              boardId: task.boardId,
+              readCount: task.readCount,
+              title: task.title,
+              writer: task.writer,
+              time: task.time,
+              child: false,
+              count: 0,
+              commentFeedbackId: task.commentFeedbackId,
+              childItems: [],
+              delete: task.deleted,
+              pinned: task.pinned,
             });
-            setLectureTaskItem(lectureTask);
-          }
+          });
+          setLectureTaskItem(lectureTask);
 
           const idArr: string[] = [];
           lectureTask.items.map(item => {
@@ -152,7 +171,8 @@ export async function getTaskItemMapFromCube(
   cubeId: string,
   offset: number,
   limit: number,
-  tabType: string
+  tabType: string,
+  sort?: string
 ): Promise<void> {
   const cubeDetail = await findCubeDetailCache(cubeId);
   if (cubeDetail !== undefined && cubeDetail.cubeMaterial.board !== null) {
@@ -163,7 +183,8 @@ export async function getTaskItemMapFromCube(
         offset,
         limit,
         addflag,
-        tabType
+        tabType,
+        sort
       );
       if (taskItem !== undefined) {
         setLectureTaskItem({ ...taskItem });
