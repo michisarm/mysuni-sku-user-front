@@ -5,4 +5,5 @@ export interface TaskChildCdo {
   postId: string;
   title: string;
   writer: string;
+  boardId: string;
 }
