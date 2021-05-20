@@ -364,8 +364,7 @@ function LectureTaskContainer() {
                   cubePostCount > 0 &&
                   cubeCommentCount > 0 && (
                     <span>
-                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고,
-                      <br/>
+                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 
                       타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
                     </span>
                 )}
