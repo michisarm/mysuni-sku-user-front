@@ -206,6 +206,8 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
               onAddUrlsList={onAddUrlsList}
               onDeleteUrlsList={onDeleteUrlsList}
               onAddFileBoxId={onAddFileBoxId}
+              // 확인 필요
+              onChangeValue={onChangeAddValue}
             />
           )}
           {selectedRow!.type === 'SURVEY' && (

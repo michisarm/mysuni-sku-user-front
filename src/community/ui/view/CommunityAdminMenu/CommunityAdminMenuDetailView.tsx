@@ -154,7 +154,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     selectedRow!.surveyId = data.id;
     onChangeValue(selectedRow, 'surveyId');
   }
-
   return (
     <div className="menu_right_contents">
       <table>
@@ -205,6 +204,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               onAddUrlsList={onAddUrlsList}
               onDeleteUrlsList={onDeleteUrlsList}
               onAddFileBoxId={onAddFileBoxId}
+              onChangeValue={onChangeValue}
             />
           )}
           {selectedRow!.type === 'SURVEY' && (
