@@ -359,7 +359,7 @@ function LectureTaskContainer() {
 
           <div className="discuss-wrap"> 
             <div className="task-condition">
-              <strong className="task-condition">이수조건</strong>
+              <strong className="task-condition">이수 조건</strong>
                 {cubeAutomaticCompletion &&
                   cubePostCount > 0 &&
                   cubeCommentCount > 0 && (
@@ -383,7 +383,7 @@ function LectureTaskContainer() {
                     </span>
                 )}
                 {!cubeAutomaticCompletion && (
-                    <span>본 학습은 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                    <span>본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다.</span>
                 )}
                 {(lectureDescription && lectureDescription.completionTerms) && (
                   <Fragment>
