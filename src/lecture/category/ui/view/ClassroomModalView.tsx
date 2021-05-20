@@ -146,7 +146,7 @@ class ClassroomModalView extends Component<Props, States> {
                       }
 
                       if (
-                        getStartDate > today.getTime() &&
+                        getStartDate > today.getTime() ||
                         getEndDate < today.getTime()
                       ) {
                         return true;
