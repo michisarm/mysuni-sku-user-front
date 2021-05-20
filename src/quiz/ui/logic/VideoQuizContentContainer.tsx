@@ -316,9 +316,9 @@ const VideoQuizContentContainer = ({
       (questionData[currentIndex].type === 'SingleChoice' ||
         questionData[currentIndex].type === 'MultipleChoice')
     ) {
-      return '답안 제출이 완료됐습니다.';
+      return '응답이 완료 되었습니다.';
     } else {
-      return '답안 제출이 완료됐습니다.';
+      return '응답이 완료 되었습니다.';
     }
   };
 
@@ -361,8 +361,8 @@ const VideoQuizContentContainer = ({
               <img
                 style={{ maxWidth: '100%' }}
                 src={
-                  questionData[currentIndex].alertMessage.img
-                    ? `/${questionData[currentIndex].alertMessage.img}`
+                  questionData[currentIndex].alertMessage.failImg
+                    ? `/${questionData[currentIndex].alertMessage.failImg}`
                     : FailIcon
                 }
               />
@@ -372,8 +372,8 @@ const VideoQuizContentContainer = ({
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
-                  questionData[currentIndex].alertMessage.message !== ''
-                    ? `${questionData[currentIndex].alertMessage.message}`
+                  questionData[currentIndex].alertMessage.failMessage !== ''
+                    ? `${questionData[currentIndex].alertMessage.failMessage}`
                     : '다시 확인하고 제출하세요.',
               }}
             />
@@ -386,8 +386,46 @@ const VideoQuizContentContainer = ({
         </div>
       )}
 
+      {/* 정답 패널 */}
+      {quizStatus.status && quizStatus.type === 'success' && questionData &&
+        //  !questionData[currentIndex].resultView &&
+        questionData[currentIndex].answer && questionData[currentIndex].alertMessage.passMessage !== '' && (
+          <div className="video-quiz-wrap sty2">
+            <div className="video-quiz-header">
+              <h1>Video QUIZ</h1>
+            </div>
+            <div className="quiz-content-wrap quiz-center-box">
+              <div className="imgbox">
+                <img
+                  style={{ maxWidth: '100%' }}
+                  src={
+                    questionData[currentIndex].alertMessage.passImg
+                      ? `/${questionData[currentIndex].alertMessage.passImg}`
+                      : CompleteIcon
+                  }
+                />
+              </div>
+              <span className="wro">정답 입니다.</span>
+              <div
+                className="wro2"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    questionData[currentIndex].alertMessage.passMessage !== ''
+                      ? `${questionData[currentIndex].alertMessage.passMessage}`
+                      : '딩동댕! 정답입니다. ',
+                }}
+              />
+            </div>
+            <div className="video-quiz-footer">
+              <button onClick={onChangeNextQuestion} className="ui button fix bg">
+                확인
+              </button>
+            </div>
+          </div>
+        )}
+
       {/* 답안제출 완료 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData && (
+      {quizStatus.status && quizStatus.type === 'success' && questionData && (!questionData[currentIndex].answer || questionData[currentIndex].alertMessage.passMessage === '') && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>Video QUIZ</h1>
@@ -397,8 +435,8 @@ const VideoQuizContentContainer = ({
               <img
                 style={{ maxWidth: '100%' }}
                 src={
-                  questionData[currentIndex].alertMessage.img
-                    ? `/${questionData[currentIndex].alertMessage.img}`
+                  questionData[currentIndex].alertMessage.passImg
+                    ? `/${questionData[currentIndex].alertMessage.passImg}`
                     : CompleteIcon
                 }
               />
