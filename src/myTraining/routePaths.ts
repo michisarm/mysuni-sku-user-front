@@ -19,8 +19,11 @@ const routePaths = {
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
   myPageEarnedBadgeList: () => routePaths.myPageTab('EarnedBadgeList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
+
   //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 
+  myPageNoteTab: (tab: string = 'EarnedBadgeList', subTab: string = 'all') => `/my-training/my-page/${tab}/${subTab}`,
+  myPageEarnedNoteList: () => routePaths.myPageNoteTab('EarnedNoteList'),
 
   approval: () => '/approval',
   approvalTab: (tab: string = 'PaidCourse') => `/approval/${tab}/pages/1`,

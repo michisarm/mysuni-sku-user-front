@@ -14,7 +14,8 @@ import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import { MyPageContentType, MyPageContentTypeName } from '../model/MyPageContentType';
 import MyStampListContainer from '../logic/MyStampListContainer';
 import { CollegeService } from '../../../college/stores';
-
+import NotePage from 'note/ui/page/NotePage';
+import FolderPage from 'note/ui/page/FolderPage';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -36,7 +37,7 @@ function MyPagePage({
   const { colleges } = collegeService!;
 
   useEffect(() => {
-    if(
+    if (
       colleges &&
       colleges.length > 0
     ) {
@@ -57,7 +58,13 @@ function MyPagePage({
         name: MyPageContentType.EarnedStampList,
         item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
         render: () => <MyStampListContainer />
+      },
+      {
+        name: MyPageContentType.EarnedNoteList,
+        item: getTabItem(MyPageContentType.EarnedNoteList, myStampCount),
+        render: () => (params.pageNo === '1' ? <NotePage /> : <FolderPage />)
       }
+
     ] as TabItemModel[];
   };
 
@@ -71,6 +78,7 @@ function MyPagePage({
   };
 
   const onChangeTab = useCallback((tab: TabItemModel): string => {
+
     history.push(myTrainingRoutePaths.myPageTab(tab.name));
     return myTrainingRoutePaths.myPageTab(tab.name);
   }, []);
