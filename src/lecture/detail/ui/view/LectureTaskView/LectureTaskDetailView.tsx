@@ -127,7 +127,8 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     if (SkProfileService.instance.skProfile.id === denizenKey ||
         (lectureState && 
           lectureState.cubeDetail &&
-          lectureState.cubeDetail.cubeContents?.operator.keyString === SkProfileService.instance.skProfile.id)) {
+          lectureState.cubeDetail.cubeContents &&
+          lectureState.cubeDetail.cubeContents.operator?.keyString === SkProfileService.instance.skProfile.id)) {
       setCanNotice(true);
     }else{
       setCanNotice(false);
