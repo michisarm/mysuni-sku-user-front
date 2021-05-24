@@ -8,21 +8,22 @@ import { useSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
 import { requestFolder } from '../../service/useFolder/requestFolder';
 import CollegeApi from '../../../college/present/apiclient/CollegeApi';
+import FolderHeaderView from '../view/FolderHeaderView';
 import { useNoteCount } from '../../store/NoteCountStore';
 
 // interface Params {
 //   communityId: string;
 // }
 
-const NoteContainer = () => {
+const FolderContainer = () => {
   // const { communityId } = useParams<Params>();
   // const communityHome = useCommunityHomeCreateItem()||getEmptyCommunityHomeCreateItem(communityId);
   const noteList = useNoteList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = requestColleges();
-  // const [noteCount, setNoteCount] = useState<number>(0);
   const noteCount = useNoteCount() || 0;
+
   useEffect(() => {
     requestCubeList();
     requestFolder();
@@ -35,9 +36,9 @@ const NoteContainer = () => {
       {/* {communityHome !== undefined && (
         <NoteView />
       )} */}
-      {colleges !== undefined && (
-        <NoteHeaderView searchBox={searchBox} colleges={colleges} noteCount={noteCount} folder={folder} />
-      )}
+
+      <FolderHeaderView folder={folder} noteCount={noteCount} />
+
       {noteList !== undefined && (
         <NoteListView noteList={noteList} searchBox={searchBox} folder={folder} colleges={colleges} />
       )}
@@ -45,4 +46,4 @@ const NoteContainer = () => {
   );
 };
 
-export default NoteContainer;
+export default FolderContainer;

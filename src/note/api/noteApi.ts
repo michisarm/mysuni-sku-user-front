@@ -45,15 +45,21 @@ export function findNoteById(
     .then(AxiosReturn);
 }
 
+// 노트 전체 카운트 조회
+export function findNoteCount(): Promise<number | undefined> {
 
-// ma.mysuni.sk.com/api/mytraining/note/list/card/cube?limit=10
+  const url = `${BASE_URL}/allNoteCnt`;
+  return axiosApi
+    .get<number>(url)
+    .then(AxiosReturn);
+}
 
 // 노트 큐브 리스트 조회
 export function findCubeList(
   searchBox: SearchBox
 ): Promise<OffsetElementList<Note> | undefined> {
 
-  const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&title=${searchBox.title}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
   return axiosApi
     .get<OffsetElementList<Note>>(url)
     .then(AxiosReturn);
@@ -79,7 +85,18 @@ export function findNoteListByFolderId(
   searchBox: SearchBox
 ): Promise<OffsetElementList<Note> | undefined> {
 
-  const url = `${BASE_URL}/list/${searchBox.folderId}`;
+  // const url = `${BASE_URL}/list/${searchBox.folderId}?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  const url = `${BASE_URL}/list/card/cube/${searchBox.folderId}?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  return axiosApi
+    .get<OffsetElementList<Note>>(url)
+    .then(AxiosReturn);
+}
+
+
+// GET http://ma.mysuni.sk.com/api/mytraining/note/excelDownload
+// 노트 엑셀 리스트 조회
+export function findNoteExcelList(): Promise<OffsetElementList<Note> | undefined> {
+  const url = `${BASE_URL}/excelDownload`;
   return axiosApi
     .get<OffsetElementList<Note>>(url)
     .then(AxiosReturn);
@@ -118,11 +135,9 @@ export function deleteNote(
 // 폴더 
 // 폴더 생성
 export function registerFolder(folder: Folder): Promise<string> {
-  const url = `BASE_URL/folder`;
+  const url = `${BASE_URL}/folder`;
   return axiosApi
-    .post<string>(url, {
-      folder
-    })
+    .post<string>(url, folder)
     .then(response => response && response.data);
 }
 
@@ -141,6 +156,16 @@ export function modifyFolder(folder: Folder): Promise<string> {
     .put<string>(url, folder)
     .then(response => response && response.data);
 }
+
+
+// 폴더 수정
+export function modifyOrder(folder: Folder): Promise<string> {
+  const url = `${BASE_URL}/order`;
+  return axiosApi
+    .put<string>(url, folder)
+    .then(response => response && response.data);
+}
+
 
 // 폴더 삭제
 export function deleteFolder(): Promise<void> {

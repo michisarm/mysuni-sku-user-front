@@ -1,5 +1,5 @@
 import { getNote } from "../../store/NoteStore";
-import { registerNote, modifyNote } from "../../api/noteApi";
+import { registerNote, modifyNote, modifyFolderId } from "../../api/noteApi";
 import NoteCdo from "../../model/NoteCdo";
 import NoteUdo from "../../model/NoteUdo";
 
@@ -18,6 +18,11 @@ export async function saveNote(
   }
 }
 
+export async function saveFolder(
+  cardId: String, cubeId: String, folderId: String
+): Promise<any> {
+  return modifyFolderId(cardId, cubeId, folderId);
+}
 
 
 // export async function saveCommunityHome(

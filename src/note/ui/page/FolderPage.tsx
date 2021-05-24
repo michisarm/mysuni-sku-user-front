@@ -1,11 +1,11 @@
 import React from 'react';
-import FolderView from '../view/FolderView';
+import FolderContainer from '../logic/FolderContainer';
 
 function FolderPage() {
   return (
     <>
       <div>
-        <FolderView />
+        <FolderContainer />
       </div>
     </>
   );

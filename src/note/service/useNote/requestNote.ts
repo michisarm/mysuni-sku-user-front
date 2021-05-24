@@ -2,13 +2,18 @@ import {
   findNoteList,
   findNoteById,
   findCubeList,
-  findAllCollege
+  findAllCollege,
+  findNoteCount,
+  findNoteExcelList
 } from '../../api/noteApi';
 import { setNote } from '../../store/NoteStore';
-import { SearchBox } from '../../model/SearchBox';
+import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { setNoteList } from '../../store/NoteListStore';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
+import { setNoteCount } from '../../store/NoteCountStore';
+import { getSearchBox } from '../../store/SearchBoxStore';
+import moment from 'moment';
 
 export function requestNote(noteId: string) {
   findNoteById(noteId).then(async result => {
@@ -32,7 +37,26 @@ export function requestNoteList(
   });
 }
 
-export function requestCubeList(searchBox: SearchBox) {
+export function requestCubeList() {
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  console.log('searchBox : ', searchBox);
+
+  if (!searchBox.createStartDate) {
+    searchBox.createStartDate = moment()
+      .startOf('day')
+      .subtract(6, 'd')
+      .toDate()
+      .getTime();
+  }
+
+  if (!searchBox.createEndDate) {
+    searchBox.createEndDate = moment()
+      .endOf('day')
+      .toDate()
+      .getTime();
+  }
+
   findCubeList(searchBox).then(async result => {
     if (result) {
       // note or cube 명칭 정리
@@ -40,6 +64,16 @@ export function requestCubeList(searchBox: SearchBox) {
     }
   });
 }
+
+export function requestNoteExcelList() {
+  return findNoteExcelList().then(async result => {
+    if (result) {
+      return result;
+    }
+  });
+}
+
+
 
 export function requestColleges() {
   return findAllCollege().then(async result => {
@@ -49,6 +83,18 @@ export function requestColleges() {
     }
   });
 }
+
+export function requestNoteCount() {
+  return findNoteCount().then(async result => {
+    if (result) {
+      // setNoteList(result);
+      setNoteCount(result);
+      return result;
+    }
+  });
+}
+
+
 
 
 

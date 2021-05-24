@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea } from 'semantic-ui-react';
+import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps } from 'semantic-ui-react';
 import Calendar from './Calendar';
 import { Link } from 'react-router-dom';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
-import { requestNoteList, requestColleges } from '../../service/useNote/requestNote';
+import { requestNoteList, requestColleges, requestNoteCount } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
@@ -12,12 +12,13 @@ import moment from 'moment';
 import Folder from '../../model/Folder';
 import NoteCdoItem, { getNoteCdoItem } from '../../viewModel/NoteCdoItem';
 import NoteCdo, { convertNoteToNoteCdo } from '../../model/NoteCdo';
-import { saveNote } from '../../service/useNote/saveNote';
+import { saveNote, saveFolder } from '../../service/useNote/saveNote';
 import NoteUdoItem, { getNoteUdoItem } from '../../viewModel/NoteUdoItem';
 import NoteUdo from '../../model/NoteUdo';
 import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
+import { requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
 
 interface NoteViewProps {
   noteList: OffsetElementList<Note>;
@@ -35,8 +36,12 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
+  const [collegeList, setCollegeList] = useState<CollegeModel[]>();
+
   const [collegeOptions, setCollegeOptions] = useState<{ key: string, value: string, text: string }[]>([{ key: '', value: '', text: '전체' }]);
-  const [channelOptions, setChannelOptions] = useState<{ key: string, value: string, text: string }[]>();
+  const [channelOptions, setChannelOptions] = useState<{ key: string, value: string, text: string }[]>([{ key: '', value: '', text: '전체' }]);
+  const [college, setCollege] = useState<string>('');
+  const [channel, setChannel] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('');
 
@@ -54,7 +59,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const selectFolder = useCallback((folder: Folder) => {
     const folderSelect: any = [];
     if (folder) {
-      folderSelect.push({ key: 'All', text: '전체', value: '전체' });
+      folderSelect.push({ key: '0000', text: '폴더미지정', value: '0000' });
       folder.folders.idNames.map((field, index) => {
         folderSelect.push({
           key: index + 1,
@@ -88,6 +93,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   useEffect(() => {
     colleges.then(async result => {
       result && setCollegeOptions(selectCollege(result));
+      setCollegeList(result);
     })
   }, [colleges]);
 
@@ -114,6 +120,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
 
     setNoteCdoItem(undefined);
+    await requestNoteCount();
   }, [])
 
   const update = useCallback(async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
@@ -130,9 +137,38 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const deleteNote = useCallback(async (id: string, index: number, note: Note) => {
     await deleteNoteById(id);
     await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+    await requestNoteCount();
   }, [])
 
 
+  const changeColleges = useCallback(async (data: DropdownProps) => {
+    if (collegeList) {
+      collegeList.map(f => { if (f.collegeId === data.value) { return f.channels } })
+
+      const channelSelect: any = [];
+      if (colleges) {
+        channelSelect.push({ key: 'All', text: '전체', value: '전체' });
+        collegeList.map((field, index) => {
+          if (field.id === data.value) {
+            field.channels.map((channel, i) => {
+              channelSelect.push({
+                key: i + 1,
+                text: channel.name,
+                value: channel.id,
+              });
+            });
+          }
+        });
+      }
+      setChannelOptions(channelSelect);
+      setChannel('');
+    }
+  }, [collegeList])
+
+
+  const changeChannel = useCallback(async (data: DropdownProps) => {
+    setChannel(data.value as string);
+  }, [channelOptions])
 
   const CategoryOptions = [
     { key: '전체', value: '전체', text: '전체' },
@@ -143,8 +179,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     { key: '카테1', value: '카테1', text: '카테1' },
   ]
   const SearchOptions = [
-    { key: '전체', value: '전체', text: '전체' },
-    { key: '카테1', value: '카테1', text: '카테1' },
+    { key: 'all', value: 'all', text: '전체' },
+    { key: 'name', value: 'name', text: '과정명' },
+    { key: 'content', value: 'content', text: '내용' },
   ]
 
   // const FolderOptions = [
@@ -166,88 +203,22 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     [searchBox]
   );
 
+  const changeFolder = useCallback(
+    async (cardId: string, cubeId: string, folderId: string) => {
+      // getMembers(communityId);
+      // setActivePage(1);
+      // console.log('folderId :', folderId);
+      await saveFolder(cardId, cubeId, folderId);
+
+      setSearchBox({ offset: 0, limit: 10, folderId });
+      await requestCubeListByFolderId();
+    },
+    [folder]
+  );
+
   return (
     <div>
-      <div className="cont-inner">
-        <Menu className="note-tab">
-          <Menu.Item
-            name="NoteAll"
-            active={true}
-            // onClick={this.handleItemClick}
-            as={Link}
-            to="/my-training/my-page/EarnedNoteList/pages/1"
-          >
-            모아보기
-          </Menu.Item>
-          <Menu.Item
-            name="NoteFolder"
-            active={false}
-            // onClick={this.handleItemClick}
-            as={Link}
-            to="/my-training/my-page/EarnedNoteList/pages/2"
-          >
-            폴더보기
-          </Menu.Item>
-
-        </Menu>
-      </div>
-
       <Segment className="full">
-        {/* 노트 검색 */}
-        <div className="search_box">
-          <Table>
-
-            <Table.Body>
-              <Table.Row>
-                <Table.HeaderCell>가입일자</Table.HeaderCell>
-                <Table.Cell>
-                  <Calendar searchBox={searchBox} />
-                </Table.Cell>
-              </Table.Row>
-
-              <Table.Row>
-                <Table.HeaderCell>Category</Table.HeaderCell>
-                <Table.Cell>
-                  <div className="option_box">
-                    <Select placeholder="전체" options={collegeOptions} />
-                  </div>
-                  <div className="option_box">
-                    <Select className="option_detail" placeholder="AI Trend Watch" options={CategoryOptionsDetail} />
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-
-              <Table.Row>
-                <Table.HeaderCell>검색어</Table.HeaderCell>
-                <Table.Cell>
-                  <div className="option_box">
-                    <Select placeholder="전체" options={SearchOptions} />
-                  </div>
-                  <div
-                    className={classNames("ui input note_input", {
-                    })}
-                  >
-                    <input
-                      type="text"
-                      placeholder="검색어를 입력해주세요."
-                      value={searchText}
-                      onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
-                      onChange={(e: any) => setSearchText(e.target.value)}
-                    />
-                    <Button className="note_btn" onClick={() => handleSubmitClick()}>검색</Button>
-                  </div>
-
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </div>
-
-        <div className="total_box">
-          <span>총 <strong>13개의 Note</strong></span>
-          <Button className="btn_download"><Image src={`${PUBLIC_URL}/images/all/icon-excel-24-px.svg`} alt="엑셀아이콘" />전체 Note 다운로드</Button>
-        </div>
-
         {noteList && noteList.results.map((item, index) => (
 
           < div className="note_area" key={index}>
@@ -260,7 +231,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
               </div>
 
               <div className="option_box">
-                <Select placeholder="폴더 미지정" options={folderOptions} />
+                <Select placeholder="폴더 미지정" options={folderOptions} value={item.folderId} onChange={(e, data) => changeFolder(item.cardId, item.cubeId, data.value as string)} />
               </div>
             </div>
             {/* 노트 펼치기/숨기기 */}
@@ -300,8 +271,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                       <div className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
                         <div className="note_info">
                           <Link className="time" to="">
-                            <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
-                            {subItem.playTime}
+                            {subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>}
+                            {!subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                            {subItem.playTime || `note ${subIndex + 1}`}
                             <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
                           </Link>
                           <span className="date">{
@@ -338,9 +310,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     <div className="mynote mynote_write">
                       <div className="note_info">
                         <Link className="time" to="">
-                          <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
-15:04
-<Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
+                          {/* <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon> */}
+                          <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>
+                          {/* 15:04 */}
+                          <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
                         </Link>
                         <span className="date">{moment().format('YYYY년 MM월 DD일 작성')}</span>
                       </div>
@@ -359,9 +332,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     </div>
 
                   )
-
                   }
-
 
                 </div>
 
@@ -371,6 +342,18 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
         ))
         }
+
+        {/* 차후 API count 변경 후 확인 필요함 */}
+
+        {noteList &&
+          noteList.results.length < noteList.totalCount && (
+            <div className="more-comments">
+              <Button className="icon left moreview">
+                <Icon aria-hidden="true" className="moreview" />
+                list more
+              </Button>
+            </div>
+          )}
       </Segment >
     </div >
   )

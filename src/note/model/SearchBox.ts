@@ -1,21 +1,38 @@
+import moment from "moment";
 
 export interface SearchBox {
-
+  content?: string;
+  title?: string;
   cubeId?: string;
   cardId?: string;
   folderId?: string;
+  collegeId?: string;
+  channelId?: string;
   offset?: number;
   limit?: number;
-
+  createStartDate?: number;
+  createEndDate?: number;
 }
 
 export function getEmptySearchBox(): SearchBox {
   return {
     limit: 10,
     offset: 0,
+    content: '',
+    title: '',
+    collegeId: '',
+    channelId: '',
+    createStartDate: moment()
+      .startOf('day')
+      .subtract(6, 'd')
+      .toDate()
+      .getTime(),
+    createEndDate: moment()
+      .endOf('day')
+      .toDate()
+      .getTime(),
   };
 }
-
 
 // export function getEmptySearchBox(
 //   approveMember?: CommunityMemberApprovedType,

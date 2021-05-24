@@ -2,8 +2,9 @@ import React, { Component, createRef, useCallback, useEffect, useState } from 'r
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import { setSearchBox, getSearchBox, useSearchBox } from 'community/store/SearchBoxStore';
-import { SearchBox } from 'community/model/SearchBox';
+import { setSearchBox } from '../../store/SearchBoxStore';
+import { SearchBox } from '../../model/SearchBox';
+
 
 
 interface CalendarProps {
@@ -30,8 +31,8 @@ const Calendar: React.FC<CalendarProps> = function Calendar({ searchBox, default
   useEffect(() => {
     setSearchBox({
       ...searchBox,
-      startDate: startDate && startDate.toDate().getTime(),
-      endDate: endDate && endDate.toDate().getTime()
+      createStartDate: startDate && startDate.toDate().getTime(),
+      createEndDate: endDate && endDate.toDate().getTime()
     });
   }, [startDate, endDate]);
 
