@@ -131,7 +131,11 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       }
 
       const lectureStructureCourseItem = getActiveCourseStructureItem();
-      if (lectureStructureCourseItem?.canSubmit !== true) {
+      if (
+        lectureStructureItem !== undefined &&
+        lectureStructureItem === lectureStructureCourseItem?.test &&
+        lectureStructureCourseItem?.canSubmit !== true
+      ) {
         reactAlert({
           title: '알림',
           message: '학습 완료 후 Test 제출이 가능합니다.',
