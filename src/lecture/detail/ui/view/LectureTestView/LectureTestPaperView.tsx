@@ -12,7 +12,10 @@ import {
   saveCubeTestAnswerSheet,
 } from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 
-import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import {
+  getActiveCourseStructureItem,
+  getActiveStructureItem,
+} from '../../../utility/lectureStructureHelper';
 import { useHistory, useParams } from 'react-router-dom';
 import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
@@ -120,6 +123,15 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       }
       const lectureStructureItem = getActiveStructureItem(params.pathname);
       if (lectureStructureItem?.can !== true) {
+        reactAlert({
+          title: '알림',
+          message: '학습 완료 후 Test 제출이 가능합니다.',
+        });
+        return;
+      }
+
+      const lectureStructureCourseItem = getActiveCourseStructureItem();
+      if (lectureStructureCourseItem?.canSubmit !== true) {
         reactAlert({
           title: '알림',
           message: '학습 완료 후 Test 제출이 가능합니다.',

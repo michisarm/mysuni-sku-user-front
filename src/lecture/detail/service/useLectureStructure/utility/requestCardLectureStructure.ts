@@ -316,6 +316,7 @@ function parseCardItem(
     state: convertLearningStateToState(cardStudent?.learningState),
     learningTime,
     additionalLearningTime,
+    canSubmit: false,
   };
   if (tests !== null && tests.length > 0) {
     item.test = parseCardTestItem(card, cardStudent);
@@ -639,7 +640,7 @@ async function parseCubeItem(
     );
     return taskCubeItem;
   }
-  
+
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -862,6 +863,7 @@ export async function requestCardLectureStructure(cardId: string) {
       chapterItems.push(parseChapterItem(card, learningContent, order));
     });
 
+  cardItem.canSubmit = cubeItems.every(c => c.state === 'Completed');
   const lectureStructure: LectureStructure = {
     card: cardItem,
     cubes: cubeItems,
