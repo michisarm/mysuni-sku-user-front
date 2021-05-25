@@ -29,6 +29,8 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   const [editFolderOriginName, setEditFolderOriginName] = useState<string>('폴더미지정');
   const [editFolderIndex, setEditFolderIndex] = useState<number>();
   const [editFolder, setEditFolder] = useState<boolean>(false);
+  const [originFolder, setOriginFolder] = useState<Folder | undefined>();
+
 
 
   const [activeFolderId, setActiveFolderId] = useState<string>('');
@@ -159,8 +161,8 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                         folder.folders.idNames.map((m, index) => {
                           return (
                             <li key={index} className={m.id === activeFolderId ? 'moveActive' : m.id === editFolderId ? 'setActive' : ''} >
-                              <Button className="folder" onClick={(e, data) => { setEditFolderId(m.id); setEditFolderName(m.name); setEditFolderIndex(index); }}>{m.name}</Button>
-                              {m.id === editFolderId && <Button className="setting" onClick={(e, data) => { m.id === editFolderId && setActiveFolderId(m.id) }}><Icon /></Button>}
+                              <Button className="folder" onClick={(e, data) => { setEditFolderId(m.id); setEditFolderName(m.name); setEditFolderOriginName(m.name); setEditFolderIndex(index); }}>{m.name}</Button>
+                              {m.id === editFolderId && <Button className="setting" onClick={(e, data) => { m.id === editFolderId && setActiveFolderId(m.id); setOriginFolder(folder); }}><Icon /></Button>}
                               <Button className="left" onClick={(e, data) => changeArrayOrder(folder, folder.folders.idNames.findIndex(f => f.id === m.id), -1)}><Icon /></Button>
                               <Button className="right" onClick={(e, data) => changeArrayOrder(folder, folder.folders.idNames.findIndex(f => f.id === m.id), 1)}><Icon /></Button>
                             </li>
@@ -174,7 +176,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
               {activeFolderId !== '' &&
                 (
                   <div className="folder_btn">
-                    <Button className="cancel" onClick={(e, data) => { setActiveFolderId(''); }}>취소</Button>
+                    <Button className="cancel" onClick={(e, data) => { setActiveFolderId(''); setFolder(originFolder); }}>취소</Button>
                     <Button className="save" onClick={(e, data) => { save(); setActiveFolderId(''); }}>저장</Button>
                   </div>
                 )
@@ -210,8 +212,8 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                 <span>총 <strong>{noteCount}개의 Note</strong></span>
 
                 <div className="folder_btn">
-                  <button className="ui button cancel" onClick={(e) => setEditFolder(false)}>취소</button>
-                  <button className="ui button save" onClick={(e) => { save(); setActiveFolderId(''); setEditFolder(false); setEditFolderName('폴더미지정'); }} >저장</button>
+                  <button className="ui button cancel" onClick={(e) => { setEditFolder(false); setEditFolderName(editFolderOriginName) }}>취소</button>
+                  <button className="ui button save" onClick={(e) => { save(); setActiveFolderId(''); setEditFolder(false); }} >저장</button>
                 </div>
               </div>
             )
