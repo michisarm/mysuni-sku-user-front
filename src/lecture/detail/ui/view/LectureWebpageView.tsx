@@ -1,14 +1,24 @@
 import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
+import { startLearning } from '../../service/useLectureState/utility/cubeStateActions';
+import {
+  experimetial,
+  webPageLinked,
+} from '../../service/useActionLog/cubeStudyEvent';
+import { getLectureParams } from '../../store/LectureParamsStore';
 
 interface Props {}
 
 function action() {
-  const action = document.getElementById('ACTION');
-  if (action !== null) {
-    action.click();
+  const lectureParams = getLectureParams();
+  if (lectureParams?.cubeType === 'WebPage') {
+    webPageLinked();
   }
+  if (lectureParams?.cubeType === 'Experiential') {
+    experimetial();
+  }
+  startLearning();
 }
 
 const LectureWebpageView: React.FC<LectureWebpage &
@@ -21,7 +31,13 @@ const LectureWebpageView: React.FC<LectureWebpage &
 }) {
   return (
     <>
-      {urlType === 'embedded' && <iframe className="iframe-area" src={url} style={{width:"990px",height:"630px"}}/>}
+      {urlType === 'embedded' && (
+        <iframe
+          className="iframe-area"
+          src={url}
+          style={{ width: '990px', height: '630px' }}
+        />
+      )}
       {urlType !== 'embedded' && (
         <div className="lms-open-graph">
           <img src={image ? image : DefaultImg} className="lms-open-image" />

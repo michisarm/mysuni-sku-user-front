@@ -28,12 +28,11 @@ function CanceledView(props: CanceledViewProps) {
   const { cubeType } = props;
   const action = useCallback(() => {
     if (document.getElementById('webpage-link') !== null) {
-      document.getElementById('webpage-link')?.click();
-      if (cubeType === 'WebPage') {
-        webPageLinked();
-      }
-      if (cubeType === 'Experiential') {
-        experimetial();
+      const href = document
+        .getElementById('webpage-link')
+        ?.getAttribute('href');
+      if (href !== undefined && href !== null) {
+        window.open(href, '_blank');
       }
     }
     startLearning();
