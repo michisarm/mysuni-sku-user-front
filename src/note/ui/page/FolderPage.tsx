@@ -1,11 +1,17 @@
 import React from 'react';
 import FolderContainer from '../logic/FolderContainer';
 
-function FolderPage() {
+
+interface FolderPageProps {
+  noteCount: number;
+}
+
+const FolderPage: React.FC<FolderPageProps> = function FolderPage({ noteCount }) {
+
   return (
     <>
       <div>
-        <FolderContainer />
+        <FolderContainer noteCount={noteCount} />
       </div>
     </>
   );

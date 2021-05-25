@@ -16,6 +16,7 @@ import MyStampListContainer from '../logic/MyStampListContainer';
 import { CollegeService } from '../../../college/stores';
 import NotePage from 'note/ui/page/NotePage';
 import FolderPage from 'note/ui/page/FolderPage';
+import { useNoteCount } from '../../../note/store/NoteCountStore';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -30,6 +31,7 @@ function MyPagePage({
   collegeService,
 }: MyPagePageProps) {
   const history = useHistory();
+  const noteCount = useNoteCount() || 0;
   const params = useParams<MyPageRouteParams>();
 
   const { myStampCount } = myTrainingService!;
@@ -61,8 +63,8 @@ function MyPagePage({
       },
       {
         name: MyPageContentType.EarnedNoteList,
-        item: getTabItem(MyPageContentType.EarnedNoteList, myStampCount),
-        render: () => (params.pageNo === '1' ? <NotePage /> : <FolderPage />)
+        item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
+        render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
       }
 
     ] as TabItemModel[];

@@ -133,13 +133,13 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
       requestNoteExcelList().then(async result => {
         if (result) {
           const noteXlsxModel: NoteXlsxModel[] = result.results.map((m, index) => {
-            return convertNoteToNoteXlsxModel(m, index, folder);
+            return convertNoteToNoteXlsxModel(m, index, folder, collegeList);
           })
           writeExcelFile(noteXlsxModel, '노트 엑셀');
         }
       });
     },
-    [folder]
+    [folder, collegeList]
   );
 
   const writeExcelFile = (xlsxList: NoteXlsxModel[], filename: string) => {

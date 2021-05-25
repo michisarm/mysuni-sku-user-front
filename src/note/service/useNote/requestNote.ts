@@ -29,7 +29,14 @@ export function requestNoteList(
   cubeId: string,
   limit: string,
   offset: string,) {
-  return findNoteList(cardId, cubeId, limit, offset).then(async result => {
+
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  console.log('searchBox : ', searchBox);
+
+  // return findNoteList(cardId, cubeId, limit, offset).then(async result => {
+  return findNoteList(searchBox).then(async result => {
+
     if (result) {
       // setNoteList(result);
       return result;

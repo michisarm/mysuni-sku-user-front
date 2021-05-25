@@ -1,6 +1,7 @@
 import Note from "../model/Note";
 import moment from "moment";
 import Folder from "../model/Folder";
+import { CollegeModel } from "../../college/model";
 
 export class NoteXlsxModel {
   //
@@ -17,14 +18,14 @@ export class NoteXlsxModel {
 }
 
 
-export function convertNoteToNoteXlsxModel(note: Note, index: number, folder?: Folder): NoteXlsxModel {
+export function convertNoteToNoteXlsxModel(note: Note, index: number, folder?: Folder, collegesName?: CollegeModel[]): NoteXlsxModel {
 
   const idNames = folder?.folders.idNames.filter(f => { if (f.id === note.folderId) { return f.name } })
-
+  const collegeName = collegesName?.filter(f => { if (f.id === note.collegeId) { return f } });
   return {
     No: index + 1,
     폴더: idNames && idNames?.length > 0 && idNames[0].id !== '0000' && idNames[0].name || '',
-    Category: note.collegeId,
+    Category: collegeName && collegeName.length > 0 && collegeName[0].name || '',
     Card명: note.cardName,
     Cube명: note.cubeName,
     Playtime: note.playTime,

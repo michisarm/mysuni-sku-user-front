@@ -91,8 +91,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   }, [folder, popupText, editFolderId, editFolderName])
 
 
-
-
   const confirmPopup = useCallback(async () => {
     if (popupText.length === 0) {
       reactAlert({
@@ -191,7 +189,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
               <div className="total_box">
                 <strong className="tit_folder">
                   {editFolderName}
-                  <Button className="btn_setting" onClick={(e, data) => { setEditFolder(true) }}><Icon /></Button>
+                  {editFolderId !== '' && <Button className="btn_setting" onClick={(e, data) => { setEditFolder(true) }}><Icon /></Button>}
                 </strong>
             총 <strong>{noteCount}개의 Note</strong>
               </div>

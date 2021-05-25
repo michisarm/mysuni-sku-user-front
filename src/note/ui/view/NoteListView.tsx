@@ -191,7 +191,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   const handleNote = (e: any, titleProps: any) => {
     const { index } = titleProps;
-    const newIndex = activeIndex === index ? activeIndex - 1 : index;
+    const newIndex = activeIndex === index ? -1 : index;
     setActiveIndex(newIndex);
   };
 
@@ -225,7 +225,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
             {/* 노트 타이틀 */}
             < div className="note_title" >
               <div className="tit">
-                <Label color="purple">{item.collegeId}</Label>
+                <Label color="purple">{collegeList && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } })[0].name}</Label>
                 <strong className="header">{item.cardName}</strong>
                 <p>{item.cubeName}</p>
               </div>
@@ -266,9 +266,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                   </div>
 
                   {subNoteList && subNoteList.map((subItem, subIndex) => (
-                    subItem.index === subIndex &&
+                    subItem.index === index &&
                     subItem.noteList.results.map((subItem, subIndex) => (
-                      <div className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
+                      <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
                         <div className="note_info">
                           <Link className="time" to="">
                             {subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>}

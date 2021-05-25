@@ -10,11 +10,10 @@ import { requestFolder } from '../../service/useFolder/requestFolder';
 import CollegeApi from '../../../college/present/apiclient/CollegeApi';
 import { useNoteCount } from '../../store/NoteCountStore';
 
-// interface Params {
-//   communityId: string;
-// }
-
-const NoteContainer = () => {
+interface NoteContainerProps {
+  noteCount: number;
+}
+const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ noteCount }) {
   // const { communityId } = useParams<Params>();
   // const communityHome = useCommunityHomeCreateItem()||getEmptyCommunityHomeCreateItem(communityId);
   const noteList = useNoteList();
@@ -22,7 +21,6 @@ const NoteContainer = () => {
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = requestColleges();
   // const [noteCount, setNoteCount] = useState<number>(0);
-  const noteCount = useNoteCount() || 0;
   useEffect(() => {
     requestCubeList();
     requestFolder();

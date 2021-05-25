@@ -6,26 +6,24 @@ import { getEmptySearchBox } from '../../model/SearchBox';
 import { useNoteList } from '../../store/NoteListStore';
 import { useSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
-import { requestFolder } from '../../service/useFolder/requestFolder';
+import { requestFolder, requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
 import CollegeApi from '../../../college/present/apiclient/CollegeApi';
 import FolderHeaderView from '../view/FolderHeaderView';
 import { useNoteCount } from '../../store/NoteCountStore';
 
-// interface Params {
-//   communityId: string;
-// }
-
-const FolderContainer = () => {
+interface FolderContainerProps {
+  noteCount: number;
+}
+const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer({ noteCount }) {
   // const { communityId } = useParams<Params>();
   // const communityHome = useCommunityHomeCreateItem()||getEmptyCommunityHomeCreateItem(communityId);
   const noteList = useNoteList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = requestColleges();
-  const noteCount = useNoteCount() || 0;
 
   useEffect(() => {
-    requestCubeList();
+    requestCubeListByFolderId();
     requestFolder();
     requestNoteCount();
     // findAllColleges()

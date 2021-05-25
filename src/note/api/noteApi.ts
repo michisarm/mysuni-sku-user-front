@@ -67,14 +67,14 @@ export function findCubeList(
 
 // 노트 리스트 조회
 export function findNoteList(
-  // searchBox: SearchBox
-  cardId: string,
-  cubeId: string,
-  limit: string,
-  offset: string,
+  searchBox: SearchBox
+  // cardId: string,
+  // cubeId: string,
+  // limit: string,
+  // offset: string,
 ): Promise<OffsetElementList<Note> | undefined> {
 
-  const url = `${BASE_URL}/list/${cardId}/${cubeId}/?limit=${limit}&offset=${offset}`;
+  const url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
   return axiosApi
     .get<OffsetElementList<Note>>(url)
     .then(AxiosReturn);
