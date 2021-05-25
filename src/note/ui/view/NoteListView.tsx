@@ -32,7 +32,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
-  const [activeIndex, setActiveIndex] = useState(9999);
+  const [activeIndexList, setActiveIndexList] = useState<number[]>([-1]);
   const [subNoteList, setSubNoteList] = useState<NoteListItem[]>();
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
@@ -46,6 +46,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   }, [folder]);
 
+
+  useEffect(() => {
+    //조회시 하위 목록 조회 초기화
+    setSubNoteList([]);
+    setActiveIndexList([-1]);
+
+  }, [noteList]);
 
   const selectFolder = useCallback((folder: Folder) => {
     const folderSelect: any = [];
@@ -78,7 +85,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     });
 
     const noteList = await requestNoteList();
-    noteList && setSubNoteList([getNoteListItem(index, noteList)]);
+    noteList && setSubNoteList(subNoteList?.filter(f => { if (f.index !== index) { return f } }).concat([getNoteListItem(index, noteList)]));
     setNoteUdoItem(undefined);
     setNoteCdoItem(undefined);
   }, [subNoteList, searchBox])
@@ -144,11 +151,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     await requestNoteCount();
   }, [])
 
-  const handleNote = (e: any, titleProps: any) => {
+  const handleNote = useCallback((e: any, titleProps: any) => {
     const { index } = titleProps;
-    const newIndex = activeIndex === index ? -1 : index;
-    setActiveIndex(newIndex);
-  };
+
+    if (activeIndexList?.find(f => f === index) !== undefined) {
+      setActiveIndexList(activeIndexList?.filter(f => { if (f !== index) { return f } }));
+    } else {
+      activeIndexList && setActiveIndexList(activeIndexList.concat(index));
+    }
+
+  }, [activeIndexList])
 
   const appendNoteList = useCallback(
     async () => {
@@ -187,11 +199,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
             {/* 노트 펼치기/숨기기 */}
             <Accordion>
               <Accordion.Title
-                active={activeIndex === index}
+                active={activeIndexList?.find(f => f === index) !== undefined}
+
                 index={index}
-                // onClick={handleNote}
                 onClick={(e, title) => {
-                  if (activeIndex !== index) {
+                  if (activeIndexList?.find(f => f === index) === undefined) {
                     searchNoteByCubeId(index, item.cubeId, item.cardId);
                   }
                   handleNote(e, title);
@@ -199,10 +211,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                 }
 
               >
-                <Image src={activeIndex !== index ? `${PUBLIC_URL}/images/all/icon-pboard-close.svg` : `${PUBLIC_URL}/images/all/icon-pboard-open.svg`} alt="더보기" />
+                <Image src={activeIndexList?.find(f => f === index) === undefined ? `${PUBLIC_URL}/images/all/icon-pboard-close.svg` : `${PUBLIC_URL}/images/all/icon-pboard-open.svg`} alt="더보기" />
               </Accordion.Title>
 
-              <Accordion.Content active={activeIndex === index}>
+              <Accordion.Content active={activeIndexList?.find(f => f === index) !== undefined}>
 
                 {/* 노트 보기 및 작성 */}
                 {/* <NoteContent1 /> */}

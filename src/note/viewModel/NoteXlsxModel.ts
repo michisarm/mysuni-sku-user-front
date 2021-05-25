@@ -24,7 +24,7 @@ export function convertNoteToNoteXlsxModel(note: Note, index: number, folder?: F
   const collegeName = collegesName?.filter(f => { if (f.id === note.collegeId) { return f } });
   return {
     No: index + 1,
-    폴더: idNames && idNames?.length > 0 && idNames[0].id !== '0000' && idNames[0].name || '',
+    폴더: idNames && idNames?.length > 0 && idNames[0].id !== '0000' && idNames[0].name || '미지정',
     Category: collegeName && collegeName.length > 0 && collegeName[0].name || '',
     Card명: note.cardName,
     Cube명: note.cubeName,

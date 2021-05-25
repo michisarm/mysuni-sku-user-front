@@ -27,7 +27,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   const [editFolderId, setEditFolderId] = useState<string>('');
   const [editFolderName, setEditFolderName] = useState<string>('폴더미지정');
   const [editFolderOriginName, setEditFolderOriginName] = useState<string>('폴더미지정');
-  const [editFolderIndex, setEditFolderIndex] = useState<number>();
   const [editFolder, setEditFolder] = useState<boolean>(false);
   const [originFolder, setOriginFolder] = useState<Folder | undefined>();
 
@@ -150,6 +149,14 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
     await requestCubeListByFolderId();
   }, [])
 
+  const toggleFolder = useCallback(async (idName: IdName) => {
+    if (editFolderId !== '') {
+      setEditFolderId(''); setEditFolderName('폴더미지정'); setEditFolderOriginName('');
+    } else {
+      setEditFolderId(idName.id); setEditFolderName(idName.name); setEditFolderOriginName(idName.name);
+    }
+  }, [editFolderId])
+
   useEffect(() => {
     setSearchBox({ offset: 0, limit: 10, folderId: editFolderId })
     findCubeListByFolderId();
@@ -200,7 +207,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                         folder.folders.idNames.map((m, index) => {
                           return (
                             <li key={index} className={m.id === activeFolderId ? 'moveActive' : m.id === editFolderId ? 'setActive' : ''} >
-                              <Button className="folder" onClick={(e, data) => { setEditFolderId(m.id); setEditFolderName(m.name); setEditFolderOriginName(m.name); setEditFolderIndex(index); }}>{m.name}</Button>
+                              <Button className="folder" onClick={(e, data) => { toggleFolder(m); }}>{m.name}</Button>
                               {m.id === editFolderId && <Button className="setting" onClick={(e, data) => { m.id === editFolderId && setActiveFolderId(m.id); setOriginFolder(folder); }}><Icon /></Button>}
                               <Button className="left" onClick={(e, data) => changeArrayOrder(folder, folder.folders.idNames.findIndex(f => f.id === m.id), -1)}><Icon /></Button>
                               <Button className="right" onClick={(e, data) => changeArrayOrder(folder, folder.folders.idNames.findIndex(f => f.id === m.id), 1)}><Icon /></Button>
