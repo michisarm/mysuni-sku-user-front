@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps } from 'semantic-ui-react';
 import Calendar from './Calendar';
 import { Link } from 'react-router-dom';
-import { OffsetElementList } from '@nara.platform/accent';
+import { OffsetElementList, reactAlert } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
@@ -39,18 +39,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
   const [collegeList, setCollegeList] = useState<CollegeModel[]>();
 
-  const [collegeOptions, setCollegeOptions] = useState<{ key: string, value: string, text: string }[]>([{ key: '', value: '', text: '전체' }]);
-  const [channelOptions, setChannelOptions] = useState<{ key: string, value: string, text: string }[]>([{ key: '', value: '', text: '전체' }]);
-  const [college, setCollege] = useState<string>('');
-  const [channel, setChannel] = useState<string>('');
-  const [searchText, setSearchText] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('');
 
   useEffect(() => {
-    // folderOptions.length === 1 && folder?.folders.idNames.map((m, i) => {
-    //   setFolderOptions([...folderOptions, { key: i, value: m.id, text: m.name }])
-    // });
-
 
     folder && setFolderOptions(selectFolder(folder));
 
@@ -73,27 +63,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     return folderSelect;
   }, []);
 
-  const selectCollege = useCallback((colleges: CollegeModel[]) => {
-    const collegesSelect: any = [];
-    if (colleges) {
-      collegesSelect.push({ key: 'All', text: '전체', value: '전체' });
-      colleges.map((field, index) => {
-        if (field.collegeType === 'University') {
-          collegesSelect.push({
-            key: index + 1,
-            text: field.name,
-            value: field.id,
-          });
-        }
-      });
-    }
-
-    return collegesSelect;
-  }, [colleges]);
-
   useEffect(() => {
     colleges.then(async result => {
-      result && setCollegeOptions(selectCollege(result));
       setCollegeList(result);
     })
   }, [colleges]);
@@ -110,13 +81,32 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     const noteList = await requestNoteList();
     noteList && setSubNoteList([getNoteListItem(index, noteList)]);
     setNoteUdoItem(undefined);
+    setNoteCdoItem(undefined);
   }, [subNoteList])
 
   const writeNote = useCallback(async (index: number, note: Note) => {
+
+    if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
+      reactAlert({
+        title: '알림',
+        message: '편집 중인 Note 내용을 저장해주세요.',
+      });
+      return;
+    }
+
     setNoteCdoItem(getNoteCdoItem(index, convertNoteToNoteCdo(note)));
-  }, [])
+  }, [noteCdoItem, noteUdoItem])
 
   const save = useCallback(async (noteCdo: NoteCdo, id: string, index: number) => {
+
+    if (noteCdo.content === null || noteCdo.content === '') {
+      reactAlert({
+        title: '알림',
+        message: '노트 내용을 작성해주세요.',
+      });
+      return;
+    }
+
     await saveNote(noteCdo, id);
     await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
 
@@ -125,6 +115,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   }, [])
 
   const update = useCallback(async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
+    if (noteUdo.content === null || noteUdo.content === '') {
+      reactAlert({
+        title: '알림',
+        message: '노트 내용을 작성해주세요.',
+      });
+      return;
+    }
     await saveNote(undefined, id, noteUdo);
     await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
@@ -132,8 +129,15 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   }, [])
 
   const updateForm = useCallback(async (index: number, note: Note) => {
+    if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
+      reactAlert({
+        title: '알림',
+        message: '편집 중인 Note 내용을 저장해주세요.',
+      });
+      return;
+    }
     setNoteUdoItem(getNoteUdoItem(index, { content: note.content }));
-  }, [])
+  }, [noteCdoItem, noteUdoItem])
 
   const deleteNote = useCallback(async (id: string, index: number, note: Note) => {
     await deleteNoteById(id);
@@ -141,70 +145,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     await requestNoteCount();
   }, [])
 
-
-  const changeColleges = useCallback(async (data: DropdownProps) => {
-    if (collegeList) {
-      collegeList.map(f => { if (f.collegeId === data.value) { return f.channels } })
-
-      const channelSelect: any = [];
-      if (colleges) {
-        channelSelect.push({ key: 'All', text: '전체', value: '전체' });
-        collegeList.map((field, index) => {
-          if (field.id === data.value) {
-            field.channels.map((channel, i) => {
-              channelSelect.push({
-                key: i + 1,
-                text: channel.name,
-                value: channel.id,
-              });
-            });
-          }
-        });
-      }
-      setChannelOptions(channelSelect);
-      setChannel('');
-    }
-  }, [collegeList])
-
-
-  const changeChannel = useCallback(async (data: DropdownProps) => {
-    setChannel(data.value as string);
-  }, [channelOptions])
-
-  const CategoryOptions = [
-    { key: '전체', value: '전체', text: '전체' },
-    { key: '카테1', value: '카테1', text: '카테1' },
-  ]
-  const CategoryOptionsDetail = [
-    { key: 'AI Trend Watch', value: 'AI Trend Watch', text: 'AI Trend Watch' },
-    { key: '카테1', value: '카테1', text: '카테1' },
-  ]
-  const SearchOptions = [
-    { key: 'all', value: 'all', text: '전체' },
-    { key: 'name', value: 'name', text: '과정명' },
-    { key: 'content', value: 'content', text: '내용' },
-  ]
-
-  // const FolderOptions = [
-  //   { key: '폴더 미지정', value: '폴더 미지정', text: '폴더 미지정' },
-  //   { key: '폴더 1', value: '폴더 1', text: '폴더 1' },
-  // ]
-
   const handleNote = (e: any, titleProps: any) => {
     const { index } = titleProps;
     const newIndex = activeIndex === index ? -1 : index;
     setActiveIndex(newIndex);
   };
-
-  const handleSubmitClick = useCallback(
-    async (limit?: number) => {
-      // getMembers(communityId);
-      // setActivePage(1);
-    },
-    [searchBox]
-  );
-
-
 
   const appendNoteList = useCallback(
     async () => {
@@ -216,13 +161,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   const changeFolder = useCallback(
     async (cardId: string, cubeId: string, folderId: string) => {
-      // getMembers(communityId);
-      // setActivePage(1);
-      // console.log('folderId :', folderId);
       await saveFolder(cardId, cubeId, folderId);
-
-      // setSearchBox({ offset: 0, limit: 10, folderId });
-      // await requestCubeListByFolderId();
       await search();
     },
     [folder]

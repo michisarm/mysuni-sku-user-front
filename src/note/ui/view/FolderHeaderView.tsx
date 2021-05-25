@@ -6,7 +6,7 @@ import { setFolder } from '../../store/FolderStore';
 import { saveFolder } from '../../service/useFolder/saveFolder';
 import { IdName } from '../../../shared/model';
 import { requestFolder, requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { requestNoteCount } from '../../service/useNote/requestNote';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import { deleteFolder } from '../../api/noteApi';
@@ -61,13 +61,25 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   }, []
   );
 
-
-
   const removeFolder = useCallback(async () => {
-    folder && setFolder({ ...folder, folders: { idNames: folder.folders.idNames.filter(f => f.id !== editFolderId) } });
+    reactConfirm({
+      title: '알림',
+      message: '폴더를 삭제하시겠습니까?<div className="">\n</div>해당 폴더의 노트는 미지정 상태로 변경됩니다.',
+      onCancel: () => { return true },
+      onOk: async () => {
+        folder && setFolder({ ...folder, folders: { idNames: folder.folders.idNames.filter(f => f.id !== editFolderId) } });
+        folder && await saveFolder({ folders: { idNames: folder.folders.idNames.filter(f => f.id !== editFolderId) }, id: '' }, 'order');
+        // await requestFolder();
+        setEditFolderOriginName('');
+        setEditFolderName('폴더미지정');
+        setEditFolderId('0000');
+        setEditFolder(false)
+        // await save();
+      }
+    });
   }, [folder, editFolderId])
 
-  const save = useCallback(async () => {
+  const save = useCallback(async (flag?: string) => {
     if (!folder) {
       await saveFolder(getFolderItem(popupText), 'register');
       setFolder(getFolderItem(popupText));
@@ -79,14 +91,41 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
         folder.folders.idNames.unshift(idname);
         setFolder({ ...folder, folders: { idNames: folder.folders.idNames } });
         await saveFolder(folder, 'modify');
-      } else if (editFolderName !== '') {
-        setFolder({ ...folder, folders: { idNames: folder.folders.idNames.filter(f => { if (f.id === editFolderId) { f.name = editFolderName } return f; }) } });
+      } else if (flag && flag === 'updateName') {
 
-        await saveFolder(folder, 'order');
+        if (editFolderName.length === 0) {
+          reactAlert({
+            title: '알림',
+            message:
+              '폴더명을 한 글자 이상 입력해주세요.',
+          });
+          return;
+        }
+
+        await reactConfirm({
+          title: '알림',
+          message: '폴더명을 저장하시겠습니까?',
+          onCancel: () => { return true },
+          onOk: async () => {
+            setFolder({ ...folder, folders: { idNames: folder.folders.idNames.filter(f => { if (f.id === editFolderId) { f.name = editFolderName } return f; }) } });
+            await saveFolder(folder, 'order');
+            setActiveFolderId('');
+            setEditFolder(false);
+          }
+        });
       } else {
-        await saveFolder(folder, 'order');
+        await reactConfirm({
+          title: '알림',
+          message: '폴더순서를 저장하시겠습니까?',
+          onCancel: () => { return true },
+          onOk: async () => {
+            await saveFolder(folder, 'order');
+            setActiveFolderId('');
+            await requestFolder();
+            return true;
+          }
+        });
       }
-
     }
     await requestFolder();
     setPopupText('');
@@ -177,7 +216,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                 (
                   <div className="folder_btn">
                     <Button className="cancel" onClick={(e, data) => { setActiveFolderId(''); setFolder(originFolder); }}>취소</Button>
-                    <Button className="save" onClick={(e, data) => { save(); setActiveFolderId(''); }}>저장</Button>
+                    <Button className="save" onClick={(e, data) => { save(); }}>저장</Button>
                   </div>
                 )
               }
@@ -213,7 +252,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
 
                 <div className="folder_btn">
                   <button className="ui button cancel" onClick={(e) => { setEditFolder(false); setEditFolderName(editFolderOriginName) }}>취소</button>
-                  <button className="ui button save" onClick={(e) => { save(); setActiveFolderId(''); setEditFolder(false); }} >저장</button>
+                  <button className="ui button save" onClick={(e) => { save('updateName'); }} >저장</button>
                 </div>
               </div>
             )

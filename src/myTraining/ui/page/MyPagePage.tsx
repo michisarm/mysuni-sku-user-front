@@ -17,6 +17,7 @@ import { CollegeService } from '../../../college/stores';
 import NotePage from 'note/ui/page/NotePage';
 import FolderPage from 'note/ui/page/FolderPage';
 import { useNoteCount } from '../../../note/store/NoteCountStore';
+import { requestNoteCount } from '../../../note/service/useNote/requestNote';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -39,6 +40,7 @@ function MyPagePage({
   const { colleges } = collegeService!;
 
   useEffect(() => {
+    requestNoteCount();
     if (
       colleges &&
       colleges.length > 0

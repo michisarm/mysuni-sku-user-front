@@ -182,7 +182,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
             <Table.Body>
               <Table.Row>
-                <Table.HeaderCell>가입일자</Table.HeaderCell>
+                <Table.HeaderCell>Note 작성일자</Table.HeaderCell>
                 <Table.Cell>
                   <Calendar searchBox={searchBox} />
                 </Table.Cell>
