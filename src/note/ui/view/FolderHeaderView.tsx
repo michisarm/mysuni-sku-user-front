@@ -26,6 +26,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   const [folderMultiLine, setFolderMultiLine] = useState<boolean>(false);
   const [editFolderId, setEditFolderId] = useState<string>('');
   const [editFolderName, setEditFolderName] = useState<string>('폴더미지정');
+  const [editFolderOriginName, setEditFolderOriginName] = useState<string>('폴더미지정');
   const [editFolderIndex, setEditFolderIndex] = useState<number>();
   const [editFolder, setEditFolder] = useState<boolean>(false);
 
@@ -157,7 +158,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                       <ul> {
                         folder.folders.idNames.map((m, index) => {
                           return (
-                            <li className={m.id === activeFolderId ? 'moveActive' : m.id === editFolderId ? 'setActive' : ''} >
+                            <li key={index} className={m.id === activeFolderId ? 'moveActive' : m.id === editFolderId ? 'setActive' : ''} >
                               <Button className="folder" onClick={(e, data) => { setEditFolderId(m.id); setEditFolderName(m.name); setEditFolderIndex(index); }}>{m.name}</Button>
                               {m.id === editFolderId && <Button className="setting" onClick={(e, data) => { m.id === editFolderId && setActiveFolderId(m.id) }}><Icon /></Button>}
                               <Button className="left" onClick={(e, data) => changeArrayOrder(folder, folder.folders.idNames.findIndex(f => f.id === m.id), -1)}><Icon /></Button>

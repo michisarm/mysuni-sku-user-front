@@ -59,7 +59,7 @@ export function findCubeList(
   searchBox: SearchBox
 ): Promise<OffsetElementList<Note> | undefined> {
 
-  const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&title=${searchBox.title}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
+  const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
   return axiosApi
     .get<OffsetElementList<Note>>(url)
     .then(AxiosReturn);
@@ -74,7 +74,12 @@ export function findNoteList(
   // offset: string,
 ): Promise<OffsetElementList<Note> | undefined> {
 
-  const url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
+  if (!searchBox.createStartDate) {
+    url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  }
+
+
   return axiosApi
     .get<OffsetElementList<Note>>(url)
     .then(AxiosReturn);

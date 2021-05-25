@@ -104,7 +104,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
   const SearchOptions = [
     { key: 'all', value: 'all', text: '전체' },
-    { key: 'title', value: 'title', text: '과정명' },
+    { key: 'name', value: 'name', text: '과정명' },
     { key: 'content', value: 'content', text: '내용' },
   ]
 
@@ -113,12 +113,12 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
       // getMembers(communityId);
       // setActivePage(1);
 
-      if (searchType === 'title') {
-        setSearchBox({ ...searchBox, title: searchText, content: '' })
+      if (searchType === 'name') {
+        setSearchBox({ ...searchBox, name: searchText, content: '' })
       } else if (searchType === 'content') {
-        setSearchBox({ ...searchBox, title: '', content: searchText })
+        setSearchBox({ ...searchBox, name: '', content: searchText })
       } else if (searchType === 'content') {
-        setSearchBox({ ...searchBox, title: '', content: '' })
+        setSearchBox({ ...searchBox, name: '', content: '' })
       }
 
       setSearchBox({ ...searchBox, collegeId: college, channelId: channel });

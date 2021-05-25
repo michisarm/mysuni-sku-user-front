@@ -4,7 +4,7 @@ import Calendar from './Calendar';
 import { Link } from 'react-router-dom';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
-import { requestNoteList, requestColleges, requestNoteCount } from '../../service/useNote/requestNote';
+import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
@@ -25,9 +25,10 @@ interface NoteViewProps {
   searchBox: SearchBox;
   folder: Folder | undefined;
   colleges: Promise<CollegeModel[] | undefined>;
+  search: () => void;
 }
 
-const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBox, folder, colleges }) {
+const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBox, folder, colleges, search }) {
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -106,7 +107,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       limit: 9999,
       offset: 0
     });
-    const noteList = await requestNoteList(cardId || '', cubeId, '9999', '0');
+    const noteList = await requestNoteList();
     noteList && setSubNoteList([getNoteListItem(index, noteList)]);
     setNoteUdoItem(undefined);
   }, [subNoteList])
@@ -203,6 +204,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     [searchBox]
   );
 
+
+
+  const appendNoteList = useCallback(
+    async () => {
+      searchBox && setSearchBox({ ...searchBox, offset: (searchBox.offset || 0) + (searchBox.limit || 10) });
+      await requestAppendCubeList();
+    },
+    [searchBox]
+  );
+
   const changeFolder = useCallback(
     async (cardId: string, cubeId: string, folderId: string) => {
       // getMembers(communityId);
@@ -210,8 +221,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       // console.log('folderId :', folderId);
       await saveFolder(cardId, cubeId, folderId);
 
-      setSearchBox({ offset: 0, limit: 10, folderId });
-      await requestCubeListByFolderId();
+      // setSearchBox({ offset: 0, limit: 10, folderId });
+      // await requestCubeListByFolderId();
+      await search();
     },
     [folder]
   );
@@ -346,9 +358,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
         {/* 차후 API count 변경 후 확인 필요함 */}
 
         {noteList &&
-          noteList.results.length < noteList.totalCount && (
+          searchBox &&
+          (searchBox.offset || 0) + (searchBox.limit || 10) < noteList.totalCount && (
             <div className="more-comments">
-              <Button className="icon left moreview">
+              <Button className="icon left moreview" onClick={(e, data) => { appendNoteList() }}>
                 <Icon aria-hidden="true" className="moreview" />
                 list more
               </Button>

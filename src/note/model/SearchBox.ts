@@ -2,7 +2,7 @@ import moment from "moment";
 
 export interface SearchBox {
   content?: string;
-  title?: string;
+  name?: string;
   cubeId?: string;
   cardId?: string;
   folderId?: string;
@@ -19,7 +19,7 @@ export function getEmptySearchBox(): SearchBox {
     limit: 10,
     offset: 0,
     content: '',
-    title: '',
+    name: '',
     collegeId: '',
     channelId: '',
     createStartDate: moment()

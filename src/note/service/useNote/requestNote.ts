@@ -8,7 +8,7 @@ import {
 } from '../../api/noteApi';
 import { setNote } from '../../store/NoteStore';
 import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
-import { setNoteList } from '../../store/NoteListStore';
+import { setNoteList, getNoteList } from '../../store/NoteListStore';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import { setNoteCount } from '../../store/NoteCountStore';
@@ -25,14 +25,9 @@ export function requestNote(noteId: string) {
 
 // export function requestNoteList(searchBox: SearchBox) {
 export function requestNoteList(
-  cardId: string,
-  cubeId: string,
-  limit: string,
-  offset: string,) {
+) {
 
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
-
-  console.log('searchBox : ', searchBox);
 
   // return findNoteList(cardId, cubeId, limit, offset).then(async result => {
   return findNoteList(searchBox).then(async result => {
@@ -46,8 +41,6 @@ export function requestNoteList(
 
 export function requestCubeList() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
-
-  console.log('searchBox : ', searchBox);
 
   if (!searchBox.createStartDate) {
     searchBox.createStartDate = moment()
@@ -72,6 +65,18 @@ export function requestCubeList() {
   });
 }
 
+export function requestAppendCubeList() {
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  findCubeList(searchBox).then(async result => {
+    if (result) {
+      // note or cube 명칭 정리
+      const noteList = getNoteList();
+      noteList && setNoteList({ ...noteList, results: noteList?.results.concat(result.results) });
+    }
+  });
+}
+
 export function requestNoteExcelList() {
   return findNoteExcelList().then(async result => {
     if (result) {
@@ -79,8 +84,6 @@ export function requestNoteExcelList() {
     }
   });
 }
-
-
 
 export function requestColleges() {
   return findAllCollege().then(async result => {

@@ -37,7 +37,7 @@ const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ not
         <NoteHeaderView searchBox={searchBox} colleges={colleges} noteCount={noteCount} folder={folder} />
       )}
       {noteList !== undefined && (
-        <NoteListView noteList={noteList} searchBox={searchBox} folder={folder} colleges={colleges} />
+        <NoteListView noteList={noteList} searchBox={searchBox} folder={folder} colleges={colleges} search={requestCubeList} />
       )}
     </>
   );
