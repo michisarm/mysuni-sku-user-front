@@ -6,7 +6,7 @@ import { OffsetElementList, reactAlert } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
-import { setSearchBox } from '../../store/SearchBoxStore';
+import { setSearchBox, getSearchBox } from '../../store/SearchBoxStore';
 import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
 import moment from 'moment';
 import Folder from '../../model/Folder';
@@ -24,7 +24,7 @@ interface NoteViewProps {
   noteList: OffsetElementList<Note>;
   searchBox: SearchBox;
   folder: Folder | undefined;
-  colleges: Promise<CollegeModel[] | undefined>;
+  colleges: CollegeModel[];
   search: () => void;
 }
 
@@ -64,9 +64,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   }, []);
 
   useEffect(() => {
-    colleges.then(async result => {
-      setCollegeList(result);
-    })
+    setCollegeList(colleges);
   }, [colleges]);
 
 
@@ -78,11 +76,12 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       limit: 9999,
       offset: 0
     });
+
     const noteList = await requestNoteList();
     noteList && setSubNoteList([getNoteListItem(index, noteList)]);
     setNoteUdoItem(undefined);
     setNoteCdoItem(undefined);
-  }, [subNoteList])
+  }, [subNoteList, searchBox])
 
   const writeNote = useCallback(async (index: number, note: Note) => {
 

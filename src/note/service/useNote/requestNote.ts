@@ -14,6 +14,7 @@ import Note from '../../model/Note';
 import { setNoteCount } from '../../store/NoteCountStore';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import moment from 'moment';
+import { setColleges } from '../../store/CollegesStore';
 
 export function requestNote(noteId: string) {
   findNoteById(noteId).then(async result => {
@@ -24,8 +25,7 @@ export function requestNote(noteId: string) {
 }
 
 // export function requestNoteList(searchBox: SearchBox) {
-export function requestNoteList(
-) {
+export function requestNoteList() {
 
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
@@ -40,21 +40,10 @@ export function requestNoteList(
 }
 
 export function requestCubeList() {
-  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+  let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
-  if (!searchBox.createStartDate) {
-    searchBox.createStartDate = moment()
-      .startOf('day')
-      .subtract(6, 'd')
-      .toDate()
-      .getTime();
-  }
-
-  if (!searchBox.createEndDate) {
-    searchBox.createEndDate = moment()
-      .endOf('day')
-      .toDate()
-      .getTime();
+  if (searchBox.content === undefined) {
+    searchBox = getEmptySearchBox();
   }
 
   findCubeList(searchBox).then(async result => {
@@ -89,7 +78,8 @@ export function requestColleges() {
   return findAllCollege().then(async result => {
     if (result) {
       // note or cube 명칭 정리
-      return result;
+      // return result;
+      setColleges(result);
     }
   });
 }

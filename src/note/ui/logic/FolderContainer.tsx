@@ -10,6 +10,7 @@ import { requestFolder, requestCubeListByFolderId } from '../../service/useFolde
 import CollegeApi from '../../../college/present/apiclient/CollegeApi';
 import FolderHeaderView from '../view/FolderHeaderView';
 import { useNoteCount } from '../../store/NoteCountStore';
+import { useColleges } from '../../store/CollegesStore';
 
 interface FolderContainerProps {
   noteCount: number;
@@ -20,12 +21,13 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
   const noteList = useNoteList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
-  const colleges = requestColleges();
+  const colleges = useColleges();
 
   useEffect(() => {
     requestCubeListByFolderId();
     requestFolder();
     requestNoteCount();
+    requestColleges();
     // findAllColleges()
   }, []);
 
@@ -37,7 +39,7 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
 
       <FolderHeaderView folder={folder} noteCount={noteCount} />
 
-      {noteList !== undefined && (
+      {noteList !== undefined && colleges !== undefined && (
         <NoteListView noteList={noteList} searchBox={searchBox} folder={folder} colleges={colleges} search={requestCubeListByFolderId} />
       )}
     </>

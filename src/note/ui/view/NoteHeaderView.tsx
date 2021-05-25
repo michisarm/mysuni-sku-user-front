@@ -23,7 +23,7 @@ import { convertNoteToNoteXlsxModel, NoteXlsxModel } from '../../viewModel/NoteX
 
 interface NoteHeaderViewProps {
   searchBox: SearchBox;
-  colleges: Promise<CollegeModel[] | undefined>;
+  colleges: CollegeModel[];
   noteCount: number;
   folder: Folder | undefined;
 }
@@ -32,11 +32,6 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
-  const [activeIndex, setActiveIndex] = useState(9999);
-  const [subNoteList, setSubNoteList] = useState<NoteListItem[]>();
-  const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
-  const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
-  const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
   const [collegeList, setCollegeList] = useState<CollegeModel[]>();
 
   const [collegeOptions, setCollegeOptions] = useState<{ key: string, value: string, text: string }[]>([{ key: '', value: '', text: '전체' }]);
@@ -44,7 +39,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
   const [college, setCollege] = useState<string>('');
   const [channel, setChannel] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('all');
 
 
   const selectCollege = useCallback((colleges: CollegeModel[]) => {
@@ -66,10 +61,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
   }, [colleges]);
 
   useEffect(() => {
-    colleges.then(async result => {
-      result && setCollegeOptions(selectCollege(result));
-      setCollegeList(result);
-    })
+
+    colleges && setCollegeOptions(selectCollege(colleges));
+    setCollegeList(colleges);
+
   }, [colleges]);
 
   const changeColleges = useCallback(async (data: DropdownProps) => {
@@ -110,23 +105,22 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
   const handleSubmitClick = useCallback(
     async () => {
-      // getMembers(communityId);
-      // setActivePage(1);
-
-      if (searchType === 'name') {
-        setSearchBox({ ...searchBox, name: searchText, content: '' })
-      } else if (searchType === 'content') {
-        setSearchBox({ ...searchBox, name: '', content: searchText })
-      } else if (searchType === 'content') {
-        setSearchBox({ ...searchBox, name: '', content: '' })
-      }
-
-      setSearchBox({ ...searchBox, collegeId: college, channelId: channel });
-
       await requestCubeList();
     },
-    [searchBox, searchText, searchType, college, channel]
+    []
   );
+
+  useEffect(() => {
+    if (searchType === 'name') {
+      setSearchBox({ ...searchBox, name: searchText, content: '', collegeId: college, channelId: channel })
+    } else if (searchType === 'content') {
+      setSearchBox({ ...searchBox, name: '', content: searchText, collegeId: college, channelId: channel })
+    } else if (searchType === 'all') {
+      setSearchBox({ ...searchBox, name: '', content: '', collegeId: college, channelId: channel })
+      setSearchText('');
+    }
+  }, [searchText, searchType, college, channel]);
+
 
   const excelDownload = useCallback(
     async () => {
@@ -212,6 +206,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
                   >
                     <input
                       type="text"
+                      disabled={searchType === 'all' ? true : false}
                       placeholder="검색어를 입력해주세요."
                       value={searchText}
                       onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
