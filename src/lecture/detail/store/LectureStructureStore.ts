@@ -21,6 +21,7 @@ const initialStore: LectureStructure = {
     type: 'CARD',
     learningTime: 0,
     additionalLearningTime: 0,
+    canSubmit: false,
   },
   chapters: [],
   cubes: [],
