@@ -221,7 +221,9 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
             <div className={testClassName}>
               <div className="course-info-header" data-area={Area.CUBE_HEADER}>
                 <div className="survey-header">
-                  <div className="survey-header-left">{testItem.name}</div>
+                  <div className="survey-header-left">
+                    {lectureStructureItem?.name}
+                  </div>
                   <div className="survey-header-right">
                     {lectureStructureItem &&
                       lectureStructureItem.student?.extraWork.testStatus ===

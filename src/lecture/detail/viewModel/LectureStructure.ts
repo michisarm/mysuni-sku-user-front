@@ -26,6 +26,7 @@ export interface LectureStructureItem {
   report?: LectureStructureReportItem;
   student?: Student | null;
   parentId?: string;
+  name: string;
 }
 
 export interface ItemMap {

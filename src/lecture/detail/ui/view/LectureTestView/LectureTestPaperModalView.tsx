@@ -7,6 +7,7 @@ import {
 import { Modal } from 'semantic-ui-react';
 import LectureTestPaperView from './LectureTestPaperView';
 import LectureParams from '../../../viewModel/LectureParams';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface LectureTestPaperModalViewProps {
   trigger: React.ReactNode;
@@ -38,6 +39,8 @@ const LectureTestPaperModalView: React.FC<LectureTestPaperModalViewProps> = func
     onClose();
   }, []);
 
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
+
   return (
     <>
       {/*<section className="content mylearning">*/}
@@ -49,7 +52,7 @@ const LectureTestPaperModalView: React.FC<LectureTestPaperModalViewProps> = func
         className="base w1010 inner-scroll"
       >
         <Modal.Header className="res pop">
-          {testItem.name}
+          {lectureStructureItem?.name}
           <button className="admin_popup_close test_pop" onClick={onClose}>
             <img
               src={`${process.env.PUBLIC_URL}/images/all/icon-close-player-28-px.png`}
