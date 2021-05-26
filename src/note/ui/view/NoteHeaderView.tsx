@@ -4,7 +4,7 @@ import Calendar from './Calendar';
 import { Link } from 'react-router-dom';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
-import { requestNoteList, requestColleges, requestNoteExcelList, requestCubeList } from '../../service/useNote/requestNote';
+import { requestNoteList, requestColleges, requestNoteExcelList, requestCubeList, requestNoteCount } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
@@ -22,13 +22,14 @@ import XLSX from 'xlsx';
 import { convertNoteToNoteXlsxModel, NoteXlsxModel } from '../../viewModel/NoteXlsxModel';
 
 interface NoteHeaderViewProps {
+  noteList: OffsetElementList<Note>;
   searchBox: SearchBox;
   colleges: CollegeModel[];
   noteCount: number;
   folder: Folder | undefined;
 }
 
-const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ searchBox, colleges, noteCount, folder }) {
+const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ noteList, searchBox, colleges, noteCount, folder }) {
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -40,20 +41,18 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
   const [channel, setChannel] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('all');
-
+  const [subNoteCount, setSubNoteCount] = useState<number>(0);
 
   const selectCollege = useCallback((colleges: CollegeModel[]) => {
     const collegesSelect: any = [];
     if (colleges) {
       collegesSelect.push({ key: '', text: '전체', value: '' });
       colleges.map((field, index) => {
-        if (field.collegeType === 'University') {
-          collegesSelect.push({
-            key: index + 1,
-            text: field.name,
-            value: field.id,
-          });
-        }
+        collegesSelect.push({
+          key: index + 1,
+          text: field.name,
+          value: field.id,
+        });
       });
     }
 
@@ -66,6 +65,16 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
     setCollegeList(colleges);
 
   }, [colleges]);
+
+  useEffect(() => {
+    noteList && requestNoteCount('searchBox').then(async result => {
+      if (result) {
+        setSubNoteCount(result || 0);
+      } else {
+        setSubNoteCount(0);
+      }
+    });
+  }, [noteList]);
 
   const changeColleges = useCallback(async (data: DropdownProps) => {
     if (collegeList) {
@@ -222,9 +231,24 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
         </div>
 
         <div className="total_box">
-          <span>총 <strong>{noteCount}개의 Note</strong></span>
+          <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
+          <span className="tit_cnt">총 <strong>{subNoteCount}개의 Note</strong></span>
           <Button className="btn_download" onClick={(e, data) => excelDownload()}><Image src={`${PUBLIC_URL}/images/all/icon-excel-24-px.svg`} alt="엑셀아이콘" />전체 Note 다운로드</Button>
         </div>
+
+        {noteList && noteList.results.length === 0 &&
+          (
+            <div className="note_nodata">
+              <Icon><Image src={`${PUBLIC_URL}/images/all/no-contents-80-px.svg`} /></Icon>
+              <p className="txt">
+                작성된 Note가 없습니다.
+                <span>
+                  원하는 결과의 학습 과정명과  Note 내용을 검색해보세요!
+                </span>
+              </p>
+            </div>
+          )
+        }
 
       </Segment >
     </div >

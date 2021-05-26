@@ -84,8 +84,14 @@ export function requestColleges() {
   });
 }
 
-export function requestNoteCount() {
-  return findNoteCount().then(async result => {
+export function requestNoteCount(flag?: string) {
+  let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  if (searchBox.createStartDate === undefined) {
+    searchBox = getEmptySearchBox();
+  }
+
+  return findNoteCount(flag && flag === 'searchBox' ? searchBox : undefined).then(async result => {
     if (result) {
       // setNoteList(result);
       setNoteCount(result);
@@ -93,9 +99,6 @@ export function requestNoteCount() {
     }
   });
 }
-
-
-
 
 
 // export function requestNote(noteId: string) {

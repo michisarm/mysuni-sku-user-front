@@ -36,8 +36,9 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
       {/* {communityHome !== undefined && (
         <NoteView />
       )} */}
-
-      <FolderHeaderView folder={folder} noteCount={noteCount} />
+      {noteList !== undefined && colleges !== undefined && (
+        <FolderHeaderView noteList={noteList} folder={folder} noteCount={noteCount} />
+      )}
 
       {noteList !== undefined && colleges !== undefined && (
         <NoteListView noteList={noteList} searchBox={searchBox} folder={folder} colleges={colleges} search={requestCubeListByFolderId} />

@@ -2,9 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps } from 'semantic-ui-react';
 import Calendar from './Calendar';
 import { Link } from 'react-router-dom';
-import { OffsetElementList, reactAlert } from '@nara.platform/accent';
+import { OffsetElementList, reactAlert, reactConfirm } from '@nara.platform/accent';
 import Note from '../../model/Note';
-import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList } from '../../service/useNote/requestNote';
+import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList, requestCubeList } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox, getSearchBox } from '../../store/SearchBoxStore';
 import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
@@ -33,7 +33,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
   const [activeIndexList, setActiveIndexList] = useState<number[]>([-1]);
-  const [subNoteList, setSubNoteList] = useState<NoteListItem[]>();
+  const [subNoteList, setSubNoteList] = useState<NoteListItem[]>([]);
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
@@ -52,6 +52,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     setSubNoteList([]);
     setActiveIndexList([-1]);
 
+    // noteList && noteList.results.map((m, index) => searchNoteByCubeId(index, m.cubeId, m.cardId))
+
   }, [noteList]);
 
   const selectFolder = useCallback((folder: Folder) => {
@@ -69,6 +71,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
     return folderSelect;
   }, []);
+
+
 
   useEffect(() => {
     setCollegeList(colleges);
@@ -114,7 +118,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     }
 
     await saveNote(noteCdo, id);
-    await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
+    await requestCubeList();
+    // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
 
     setNoteCdoItem(undefined);
     await requestNoteCount();
@@ -129,7 +134,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
     await saveNote(undefined, id, noteUdo);
-    await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+    await requestCubeList();
+    // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
     setNoteUdoItem(undefined);
   }, [])
@@ -146,9 +152,17 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   }, [noteCdoItem, noteUdoItem])
 
   const deleteNote = useCallback(async (id: string, index: number, note: Note) => {
-    await deleteNoteById(id);
-    await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
-    await requestNoteCount();
+    reactConfirm({
+      title: '알림',
+      message: '노트를 삭제하시겠습니까?',
+      onCancel: () => { return true },
+      onOk: async () => {
+        await deleteNoteById(id);
+        await requestCubeList();
+        // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+        await requestNoteCount();
+      }
+    });
   }, [])
 
   const handleNote = useCallback((e: any, titleProps: any) => {
@@ -232,12 +246,17 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     subItem.noteList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
                         <div className="note_info">
-                          <Link className="time" to="">
-                            {subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>}
-                            {!subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                            {subItem.playTime || `note ${subIndex + 1}`}
-                            <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
-                          </Link>
+                          {subItem.playTime &&
+                            (
+                              <Link className="time" to="">
+                                <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
+                                {subItem.playTime}
+                                <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
+                              </Link>
+                            )
+                          }
+                          {!subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {!subItem.playTime && `Note ${subIndex + 1}`}
                           <span className="date">{
                             subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')

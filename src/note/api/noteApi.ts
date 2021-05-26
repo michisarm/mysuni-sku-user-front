@@ -46,13 +46,26 @@ export function findNoteById(
 }
 
 // 노트 전체 카운트 조회
-export function findNoteCount(): Promise<number | undefined> {
+export function findNoteCount(searchBox?: SearchBox): Promise<number | undefined> {
 
-  const url = `${BASE_URL}/allNoteCnt`;
+  let url = `${BASE_URL}/allNoteCnt`;
+  if (searchBox) {
+    url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
+  }
   return axiosApi
     .get<number>(url)
     .then(AxiosReturn);
 }
+
+// 폴더별 노트 전체 카운트 조회
+export function findNoteCountByFolderId(folderId: string): Promise<number | undefined> {
+
+  const url = `${BASE_URL}/allFolderNoteCnt/${folderId}`;
+  return axiosApi
+    .get<number>(url)
+    .then(AxiosReturn);
+}
+
 
 // 노트 큐브 리스트 조회
 export function findCubeList(
@@ -182,6 +195,6 @@ export function deleteFolder(): Promise<void> {
 //TODO : API 위치 조정 확인
 export function findAllCollege() {
   return axiosApi
-    .get<CollegeModel[]>('/api/college/colleges')
+    .get<CollegeModel[]>('/api/college/colleges/available')
     .then(response => response.data);
 }

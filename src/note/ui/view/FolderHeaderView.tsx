@@ -5,18 +5,20 @@ import Folder, { getFolderItem } from '../../model/Folder';
 import { setFolder } from '../../store/FolderStore';
 import { saveFolder } from '../../service/useFolder/saveFolder';
 import { IdName } from '../../../shared/model';
-import { requestFolder, requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { requestFolder, requestCubeListByFolderId, requestNoteCountByFolderId } from '../../service/useFolder/requestFolder';
+import { reactAlert, reactConfirm, OffsetElementList } from '@nara.platform/accent';
 import { requestNoteCount } from '../../service/useNote/requestNote';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import { deleteFolder } from '../../api/noteApi';
+import Note from '../../model/Note';
 
 interface FolderHeaderViewProps {
+  noteList: OffsetElementList<Note>;
   folder: Folder | undefined;
   noteCount: number;
 }
 
-const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderView({ folder, noteCount }) {
+const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderView({ noteList, folder, noteCount }) {
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -29,7 +31,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   const [editFolderOriginName, setEditFolderOriginName] = useState<string>('폴더미지정');
   const [editFolder, setEditFolder] = useState<boolean>(false);
   const [originFolder, setOriginFolder] = useState<Folder | undefined>();
-
+  const [folerNoteCount, setFolerNoteCount] = useState<number>(0);
 
 
   const [activeFolderId, setActiveFolderId] = useState<string>('');
@@ -150,17 +152,32 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   }, [])
 
   const toggleFolder = useCallback(async (idName: IdName) => {
+
+    if (activeFolderId !== '') {
+      return;
+    }
+
     if (editFolderId !== '') {
       setEditFolderId(''); setEditFolderName('폴더미지정'); setEditFolderOriginName('');
     } else {
       setEditFolderId(idName.id); setEditFolderName(idName.name); setEditFolderOriginName(idName.name);
     }
-  }, [editFolderId])
+  }, [editFolderId, activeFolderId])
 
   useEffect(() => {
     setSearchBox({ offset: 0, limit: 10, folderId: editFolderId })
     findCubeListByFolderId();
+
+    requestNoteCountByFolderId(editFolderId).then(async result => {
+      if (result) {
+        setFolerNoteCount(result);
+      } else {
+        setFolerNoteCount(0);
+      }
+    });
+
   }, [editFolderId]);
+
 
   return (
     <>
@@ -240,7 +257,8 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                   {editFolderName}
                   {editFolderId !== '' && <Button className="btn_setting" onClick={(e, data) => { setEditFolder(true) }}><Icon /></Button>}
                 </strong>
-            총 <strong>{noteCount}개의 Note</strong>
+                <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
+                <span className="tit_cnt">총 <strong>{folerNoteCount}개의 Note</strong></span>
               </div>
             )
           }
@@ -255,7 +273,8 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     <span>20</span>
                 </span>
 
-                <span>총 <strong>{noteCount}개의 Note</strong></span>
+                <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
+                <span className="tit_cnt">총 <strong>{folerNoteCount}개의 Note</strong></span>
 
                 <div className="folder_btn">
                   <button className="ui button cancel" onClick={(e) => { setEditFolder(false); setEditFolderName(editFolderOriginName) }}>취소</button>
@@ -264,7 +283,19 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
               </div>
             )
           }
-
+          {noteList && noteList.results.length === 0 &&
+            (
+              <div className="note_nodata">
+                <Icon><Image src={`${PUBLIC_URL}/images/all/no-contents-80-px.svg`} /></Icon>
+                <p className="txt">
+                  작성된 Note가 없습니다.
+                <span>
+                    Note는 각 학습 과정에서 작성할 수 있습니다.
+                </span>
+                </p>
+              </div>
+            )
+          }
           {/* 설정버튼 누르기 후 */}
           {/* <FolderSetting/> */}
 
