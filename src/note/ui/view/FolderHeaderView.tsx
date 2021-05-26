@@ -22,8 +22,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [activeItem, setActiveItem] = useState('NoteAll');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [folderMultiLine, setFolderMultiLine] = useState<boolean>(false);
   const [editFolderId, setEditFolderId] = useState<string>('');
@@ -153,16 +151,21 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
 
   const toggleFolder = useCallback(async (idName: IdName) => {
 
-    if (activeFolderId !== '') {
-      return;
-    }
-
-    if (editFolderId === idName.id) {
-      setEditFolderId(''); setEditFolderName('폴더미지정'); setEditFolderOriginName('');
+    if (editFolder) {
+      await save('updateName');
+      // return;
     } else {
-      setEditFolderId(idName.id); setEditFolderName(idName.name); setEditFolderOriginName(idName.name);
+      if (activeFolderId !== '') {
+        return;
+      }
+
+      if (editFolderId === idName.id) {
+        setEditFolderId(''); setEditFolderName('폴더미지정'); setEditFolderOriginName('');
+      } else {
+        setEditFolderId(idName.id); setEditFolderName(idName.name); setEditFolderOriginName(idName.name);
+      }
     }
-  }, [editFolderId, activeFolderId])
+  }, [editFolderId, activeFolderId, editFolder, editFolderName])
 
   useEffect(() => {
     setSearchBox({ offset: 0, limit: 10, folderId: editFolderId })

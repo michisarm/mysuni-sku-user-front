@@ -196,7 +196,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     [folder]
   );
 
-
   const submit = useCallback(
     async (playTime: string) => {
 
@@ -209,13 +208,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
         const time: number = (+playTimeArray[0]) * 60 + (+playTimeArray[1]);
         sessionStorage.setItem('playTime', String(time));
       }
-
     },
     []
   );
-
-
-
 
   return (
     <div>
@@ -265,7 +260,28 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     {/* 노트 작성 시작하게되면 폰트 색상 및 아이콘 변경이 있습니다.  active 클래스 추가될 경우 폰트 색상(회색--> 청록색 ) 변경됩니다 */}
                     <Button className="btn_write" onClick={() => writeNote(index, item)}><Icon /><span>Note</span></Button>
                   </div>
+                  {noteCdoItem && noteCdoItem?.index === index && (
+                    <div className="mynote mynote_write">
+                      <div className="note_info">
+                        <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>
+                        <span className="date">{moment().format('YYYY년 MM월 DD일 작성')}</span>
+                      </div>
+                      <Form>
+                        <TextArea placeholder="내용을 입력하시오" value={noteCdoItem.noteCdo?.content} onChange={(e, data) => setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } })} />
+                        <span className="txt_cnt">
+                          <span className="txt_now">{noteCdoItem.noteCdo?.content?.length || '0'}</span>
+/<span>1000</span>
+                        </span>
+                      </Form>
+                      <div className="note_btn">
+                        {/* <Button className="delete"><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button> */}
+                        <Button className="cancel" onClick={(e, data) => setNoteCdoItem(undefined)}>취소</Button>
+                        <Button className="save" onClick={(e, data) => noteCdoItem.noteCdo && save(noteCdoItem.noteCdo, item.id, index)}>저장</Button>
+                      </div>
+                    </div>
 
+                  )
+                  }
                   {subNoteList && subNoteList.map((subNoteItem, subIndex) => (
                     subNoteItem.index === index &&
                     subNoteItem.noteList.results.map((subItem, subIndex) => (
@@ -311,35 +327,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                       </div>
                     ))
                   ))}
-
-                  {noteCdoItem && noteCdoItem?.index === index && (
-                    <div className="mynote mynote_write">
-                      <div className="note_info">
-                        <Link className="time" to="">
-                          {/* <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon> */}
-                          <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>
-                          {/* 15:04 */}
-                          <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
-                        </Link>
-                        <span className="date">{moment().format('YYYY년 MM월 DD일 작성')}</span>
-                      </div>
-                      <Form>
-                        <TextArea placeholder="내용을 입력하시오" value={noteCdoItem.noteCdo?.content} onChange={(e, data) => setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } })} />
-                        <span className="txt_cnt">
-                          <span className="txt_now">{noteCdoItem.noteCdo?.content?.length || '0'}</span>
-/<span>1000</span>
-                        </span>
-                      </Form>
-                      <div className="note_btn">
-                        {/* <Button className="delete"><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button> */}
-                        <Button className="cancel" onClick={(e, data) => setNoteCdoItem(undefined)}>취소</Button>
-                        <Button className="save" onClick={(e, data) => noteCdoItem.noteCdo && save(noteCdoItem.noteCdo, item.id, index)}>저장</Button>
-                      </div>
-                    </div>
-
-                  )
-                  }
-
                 </div>
 
               </Accordion.Content>

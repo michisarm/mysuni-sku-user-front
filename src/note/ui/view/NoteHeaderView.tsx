@@ -121,9 +121,9 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
   useEffect(() => {
     if (searchType === 'name') {
-      setSearchBox({ ...searchBox, name: searchText, content: '', collegeId: college, channelId: channel })
+      setSearchBox({ ...searchBox, name: encodeURIComponent(searchText), content: '', collegeId: college, channelId: channel })
     } else if (searchType === 'content') {
-      setSearchBox({ ...searchBox, name: '', content: searchText, collegeId: college, channelId: channel })
+      setSearchBox({ ...searchBox, name: '', content: encodeURIComponent(searchText), collegeId: college, channelId: channel })
     } else if (searchType === 'all') {
       setSearchBox({ ...searchBox, name: '', content: '', collegeId: college, channelId: channel })
       setSearchText('');
