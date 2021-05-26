@@ -7,6 +7,7 @@ export default interface NoteCdo {
   cardName?: string;
   cubeId?: string;
   cubeName?: string;
+  cubeType?: string;
   content?: string;
   folderId?: string;
   playTime?: string;
@@ -24,6 +25,7 @@ export function convertNoteToNoteCdo(note: Note): NoteCdo {
     cardName: note.cardName,
     cubeId: note.cubeId,
     cubeName: note.cubeName,
+    cubeType: note.cubeType,
     content: note.content,
     folderId: note.folderId,
     playTime: note.playTime,

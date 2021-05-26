@@ -28,6 +28,7 @@ export function convertNoteToNoteXlsxModel(note: Note, index: number, folder?: F
     Category: collegeName && collegeName.length > 0 && collegeName[0].name || '',
     Card명: note.cardName,
     Cube명: note.cubeName,
+    학습유형: note.cubeType,
     Playtime: note.playTime,
     작성일자: moment(note.createDate).format('YYYY-MM-DD'),
     상태: note.updateDate !== 0 ? '편집' : '작성',

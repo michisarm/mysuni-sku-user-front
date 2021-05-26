@@ -196,6 +196,27 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     [folder]
   );
 
+
+  const submit = useCallback(
+    async (playTime: string) => {
+
+      const playTimeArray = playTime.split(':');
+
+      if (playTimeArray.length === 3) {
+        const time: number = (+playTimeArray[0]) * 3600 + (+playTimeArray[1]) * 60 + (+playTimeArray[2]);
+        sessionStorage.setItem('playTime', String(time));
+      } else if (playTimeArray.length === 2) {
+        const time: number = (+playTimeArray[0]) * 60 + (+playTimeArray[1]);
+        sessionStorage.setItem('playTime', String(time));
+      }
+
+    },
+    []
+  );
+
+
+
+
   return (
     <div>
       <Segment className="full">
@@ -245,14 +266,14 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     <Button className="btn_write" onClick={() => writeNote(index, item)}><Icon /><span>Note</span></Button>
                   </div>
 
-                  {subNoteList && subNoteList.map((subItem, subIndex) => (
-                    subItem.index === index &&
-                    subItem.noteList.results.map((subItem, subIndex) => (
+                  {subNoteList && subNoteList.map((subNoteItem, subIndex) => (
+                    subNoteItem.index === index &&
+                    subNoteItem.noteList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
                         <div className="note_info">
                           {subItem.playTime &&
                             (
-                              <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`}>
+                              <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`} onClick={(e) => submit(subItem.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
                                 {subItem.playTime}
                                 <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
@@ -260,7 +281,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                             )
                           }
                           {!subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {!subItem.playTime && `Note ${subIndex + 1}`}
+                          {!subItem.playTime && `Note ${subNoteItem.noteList.results.length - subIndex}`}
                           <span className="date">{
                             subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')
