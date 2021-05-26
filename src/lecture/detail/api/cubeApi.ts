@@ -22,44 +22,9 @@ import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi
 import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml';
 import ContentsProvider from '../../model/ContentsProvider';
 import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
+import { findSsoTypeCache } from './checkpointApi';
 
 const BASE_URL = '/api/cube';
-
-function decode(input: string) {
-  let encoded = input;
-  encoded = encoded
-    .replace(/-/g, '+')
-    .replace(/_/g, '/')
-    .replace(/\s/g, '');
-  try {
-    return new Uint8Array(
-      window
-        .atob(encoded)
-        .split('')
-        .map(c => c.charCodeAt(0))
-    );
-  } catch (_a) {
-    throw new TypeError('The input to be decoded is not correctly encoded.');
-  }
-}
-
-function parseToken(): any | undefined {
-  // if (window.TextDecoder !== undefined) {
-  //   try {
-  //     const token = localStorage.getItem('nara.token')?.split('.')[1];
-  //     if (token === null || token === undefined) {
-  //       return undefined;
-  //     }
-  //     const textDecoder = new TextDecoder();
-  //     const payload = JSON.parse(textDecoder.decode(decode(token)));
-  //     return payload;
-  //   } catch {
-  //     //
-  //   }
-  // }
-
-  return undefined;
-}
 
 function concatDirectConnection(url: string, directConnection: string) {
   if (url === null || url === '') {
@@ -112,12 +77,10 @@ async function AppendSamlQueryToCubeMaterial(
     return cubeMaterial;
   }
 
-  const payload = parseToken();
-  const gdiUser: boolean = payload?.gdiUser;
-  if (gdiUser === undefined) {
+  const loginUserSourceType = await findSsoTypeCache();
+  if (loginUserSourceType === undefined) {
     return cubeMaterial;
   }
-  const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
   const directConnection = contentsProviderSaml.contentsProviderDirectConnections.find(
     c => c.loginUserSourceType === loginUserSourceType
   )?.directConnection;
@@ -195,12 +158,10 @@ async function AppendPanoptoSamlQueryToCubeMaterial(
       c => c.contentsProviderId === 'PANOPTO'
     );
     if (panoptoContentsProviderSaml !== undefined) {
-      const payload = parseToken();
-      const gdiUser: boolean = payload?.gdiUser;
-      if (gdiUser === undefined) {
+      const loginUserSourceType = await findSsoTypeCache();
+      if (loginUserSourceType === undefined) {
         return cubeMaterial;
       }
-      const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
       const contentsProviderDirectConnection = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
         c => c.loginUserSourceType === loginUserSourceType
       );
@@ -327,10 +288,7 @@ export function findMyLectureTimeSummary() {
   return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }
 
-export function setPinByPostId(
-  postId: string,
-  pinned: number,
-) {
+export function setPinByPostId(postId: string, pinned: number) {
   const axios = getAxios();
   const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
   return axios.put<string>(url).then(AxiosReturn);
