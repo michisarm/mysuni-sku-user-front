@@ -87,7 +87,7 @@ export default function LectureDiscussionContainer() {
     }
     asuncFun();
 
-    return () => setFeedbackId(''); 
+    return () => setFeedbackId('');
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   useEffect(() => {
@@ -209,8 +209,7 @@ export default function LectureDiscussionContainer() {
     // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
 
-
-  console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
+  // console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId);
 
   return (
     <>
@@ -366,7 +365,7 @@ export default function LectureDiscussionContainer() {
           </div>
 
           {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
-          {(feedbackId !== undefined && feedbackId !== '') && (
+          {feedbackId !== undefined && feedbackId !== '' && (
             <CommentList
               // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
               feedbackId={feedbackId}

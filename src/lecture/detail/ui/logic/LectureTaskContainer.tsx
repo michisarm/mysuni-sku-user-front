@@ -83,7 +83,9 @@ function LectureTaskContainer() {
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   // 이수정보 관련
-  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
+  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<
+    boolean
+  >(false);
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
@@ -92,7 +94,7 @@ function LectureTaskContainer() {
   const [subCommentCount, setSubCommentCount] = useState<number>(0);
 
   useEffect(() => {
-    if(taskItem){
+    if (taskItem) {
       let totalpage = Math.ceil(taskItem!.totalCount / 10);
       if (taskItem!.totalCount % 10 < 0) {
         totalpage++;
@@ -102,23 +104,36 @@ function LectureTaskContainer() {
   }, [taskItem]);
 
   useEffect(() => {
-    if(lectureState){
+    if (lectureState) {
       // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
-      if(lectureState.cubeDetail
-          && lectureState.cubeDetail.cubeMaterial
-          && lectureState.cubeDetail.cubeMaterial.board
-          && lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion){
-            setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.postCount || 0)
-            setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.commentCount || 0)
-            setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.subCommentCount || 0)
-            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board.automaticCompletion)
+      if (
+        lectureState.cubeDetail &&
+        lectureState.cubeDetail.cubeMaterial &&
+        lectureState.cubeDetail.cubeMaterial.board &&
+        lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion
+      ) {
+        setCubePostCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.postCount || 0
+        );
+        setCubeCommentCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.commentCount || 0
+        );
+        setCubeSubCommentCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.subCommentCount || 0
+        );
+        setCubeAutomaticCompletion(
+          lectureState.cubeDetail.cubeMaterial.board.automaticCompletion
+        );
 
-            // 댓글, 대댓글 Count Data
-            if(lectureState.student){
-              setPostCount(lectureState.student.postCount || 0)
-              setCommentCount(lectureState.student.commentCount || 0)
-              setSubCommentCount(lectureState.student.subCommentCount || 0)
-            }
+        // 댓글, 대댓글 Count Data
+        if (lectureState.student) {
+          setPostCount(lectureState.student.postCount || 0);
+          setCommentCount(lectureState.student.commentCount || 0);
+          setSubCommentCount(lectureState.student.subCommentCount || 0);
+        }
       }
     }
   }, [lectureState]);
@@ -135,7 +150,6 @@ function LectureTaskContainer() {
     setLectureTaskOffset(0);
   };
 
-
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
     setLectureTaskOffset(nextOffset);
@@ -147,7 +161,7 @@ function LectureTaskContainer() {
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
-    setBoardId(param.boardId)
+    setBoardId(param.boardId);
   }, []);
 
   const onClickList = useCallback(() => {
@@ -162,7 +176,7 @@ function LectureTaskContainer() {
         pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
       });
       setActivePage(1);
-    })
+    });
   }, []);
 
   // const onHandleSave = useCallback(() => {
@@ -184,19 +198,22 @@ function LectureTaskContainer() {
     setIsReply(true);
   }, []);
 
-  const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
-    reactConfirm({
-      title: '알림',
-      message: '글을 삭제하시겠습니까?',
-      onOk: () => {
-        deletePost(boardId, taskId, type).then(() => {
-          refresh(1).then(() => {
-            history.goBack();
+  const onClickDelete = useCallback(
+    (boardId: string, taskId: string, type: string) => {
+      reactConfirm({
+        title: '알림',
+        message: '글을 삭제하시겠습니까?',
+        onOk: () => {
+          deletePost(boardId, taskId, type).then(() => {
+            refresh(1).then(() => {
+              history.goBack();
+            });
           });
-        });
-      },
-    });
-  }, []);
+        },
+      });
+    },
+    []
+  );
 
   const listHashLink = useCallback((hash: string) => {
     setLectureTaskTab(hash);
@@ -247,7 +264,7 @@ function LectureTaskContainer() {
 
   const replaceEnterWithBr = (target?: string) => {
     let setHtml = '';
-    if(target){
+    if (target) {
       setHtml = target.split('\n').join('<br />');
     }
     return setHtml;
@@ -321,16 +338,34 @@ function LectureTaskContainer() {
 
   // 코멘드 등록 시 학습처리 CommentList -> Props
   const onRegisterStudent = useCallback(async () => {
-    if(lectureState && lectureState.student === undefined){
-      await submitRegisterStudent()
+    if (lectureState && lectureState.student === undefined) {
+      await submitRegisterStudent();
     }
   }, [lectureState]);
 
+  // 코멘드 등록 시 화면 새로고침 CommentList -> Props
   const onRefresh = () => {
     setTimeout(() => {
-      refresh(1)
+      refresh(1);
     }, 1000);
   };
+
+  const cubeAutomaticCompletionMessage = useCallback(() => {
+    const message = [];
+    if (cubePostCount > 0) {
+      message.push(`Post ${cubePostCount}건`);
+    }
+
+    if (cubeCommentCount > 0) {
+      message.push(`Comment ${cubeCommentCount}건`);
+    }
+
+    if (cubeSubCommentCount > 0) {
+      message.push(`Comment Reply ${cubeSubCommentCount}건`);
+    }
+
+    return message.join(' / ');
+  }, [cubePostCount, cubeCommentCount, cubeSubCommentCount]);
 
   return (
     <>
@@ -339,42 +374,64 @@ function LectureTaskContainer() {
         <div className="contents">
           <LectureCubeSummaryContainer />
 
-          <div className="discuss-wrap"> 
+          <div className="discuss-wrap">
             <div className="task-condition">
               <strong className="task-condition">이수 조건</strong>
-                {cubeAutomaticCompletion &&
-                  cubePostCount > 0 &&
-                  cubeCommentCount > 0 && (
-                    <span>
-                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 
-                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+              {cubeAutomaticCompletion &&
+                cubePostCount > 0 &&
+                cubeCommentCount > 0 && (
+                  <span>
+                    아래 공지된{' '}
+                    <strong>
+                      과제를 수행하여 게시판에{' '}
+                      {cubePostCount > 1 && cubePostCount + '건'} 등록
+                    </strong>
+                    해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에
+                    대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면
+                    자동으로 이수 처리가 됩니다.
+                  </span>
                 )}
-                {cubeAutomaticCompletion &&
-                  cubePostCount > 0 &&
-                  cubeCommentCount === 0 && (
-                    <span>
-                      다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+              {cubeAutomaticCompletion &&
+                cubePostCount > 0 &&
+                cubeCommentCount === 0 && (
+                  <span>
+                    아래 공지된{' '}
+                    <strong>
+                      과제를 수행하여 게시판에{' '}
+                      {cubePostCount > 1 && cubePostCount + '건'} 등록
+                    </strong>
+                    해주시면 자동으로 이수 처리가 됩니다.
+                  </span>
                 )}
-                {cubeAutomaticCompletion &&
-                  cubePostCount === 0 &&
-                  cubeCommentCount > 0 &&(
-                    <span>
-                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+              {cubeAutomaticCompletion &&
+                cubePostCount === 0 &&
+                cubeCommentCount > 0 && (
+                  <span>
+                    타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해{' '}
+                    <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면
+                    자동으로 이수 처리가 됩니다.
+                  </span>
                 )}
-                {!cubeAutomaticCompletion && (
-                    <span>본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다.</span>
-                )}
-                {(lectureDescription && lectureDescription.completionTerms) && (
-                  <Fragment>
-                    <p dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }} />
-                  </Fragment>
-                )}
+              {!cubeAutomaticCompletion && (
+                <span>
+                  본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해
+                  드립니다.
+                </span>
+              )}
+              {lectureDescription && lectureDescription.completionTerms && (
+                <Fragment>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: replaceEnterWithBr(
+                        lectureDescription.completionTerms
+                      ),
+                    }}
+                  />
+                </Fragment>
+              )}
             </div>
           </div>
-          
+
           <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}

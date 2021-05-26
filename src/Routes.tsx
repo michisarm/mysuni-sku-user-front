@@ -13,6 +13,8 @@ import {
   actionTrackView,
 } from 'tracker/present/logic/ActionTrackService';
 
+import NotFoundPage from 'layout/NotFoundPage';
+
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
 const PersonalCubeRoutes = lazy(() => import('./personalcube/Routes'));
@@ -75,6 +77,7 @@ class Routes extends PureComponent {
                       <Route path="/extra" component={ExtraRoutes} />
 
                       <Route path="/" component={MainRoutes} />
+                      <Route path="/404" component={NotFoundPage} />
                     </Switch>
                   </AppLayout>
                 )}

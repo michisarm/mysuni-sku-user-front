@@ -1,16 +1,22 @@
 import React from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { Action, ActionType, Area } from 'tracker/model';
+import LectureParams from '../../../viewModel/LectureParams';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface LectureTestIntroViewProps {
   testItem: LectureTestItem;
   openView: (view: string) => void;
+  params: LectureParams;
 }
 
 const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function LectureTestIntroView({
   testItem,
   openView,
+  params,
 }) {
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
+
   return (
     <>
       {testItem && (
@@ -27,7 +33,7 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
               </div>
             </div>
             <div className="course-info-ing">
-              <h1>{testItem.name}</h1>
+              <h1>{lectureStructureItem?.name}</h1>
               <h2>{testItem.description}</h2>
               <h3>문항개수</h3>
               <p>

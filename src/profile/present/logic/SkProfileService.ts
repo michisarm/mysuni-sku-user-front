@@ -1,5 +1,10 @@
 import { observable, action, runInAction, computed } from 'mobx';
-import { autobind, NameValueList, CachingFetch } from '@nara.platform/accent';
+import {
+  autobind,
+  NameValueList,
+  CachingFetch,
+  IdName,
+} from '@nara.platform/accent';
 
 import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
@@ -111,31 +116,41 @@ class SkProfileService {
       () => this.skProfileApi.findStudySummary(),
       async (studySummary: StudySummaryModel) => {
         const collegeData = await findAllCollegeCache();
-        if (collegeData !== undefined && studySummary !== undefined) {
-          studySummary.favoriteChannels.idNames.forEach(idName => {
-            const channelId = idName.id;
-            const college = collegeData.find(c =>
-              c.channels.some(d => d.id === channelId)
-            );
-            if (college !== undefined) {
-              const channel = college.channels.find(c => c.id === channelId);
-              if (channel !== undefined) {
-                idName.name = channel.name;
-              }
-            }
-          });
-          studySummary.favoriteColleges.idNames.forEach(idName => {
-            const collegeId = idName.id;
-            const college = collegeData.find(c => c.id === collegeId);
-            if (college !== undefined) {
-              idName.name = college.name;
-            }
-          });
-        }
 
-        runInAction(
-          () => (this.studySummary = new StudySummaryModel(studySummary))
-        );
+        if (collegeData !== undefined && studySummary !== undefined) {
+          const channels = studySummary.favoriteChannels.idNames
+            .map(idName => {
+              const channelId = idName.id;
+              const college = collegeData.find(c =>
+                c.channels.some(d => d.id === channelId)
+              );
+              if (college !== undefined) {
+                const channel = college.channels.find(c => c.id === channelId);
+                if (channel !== undefined) {
+                  idName.name = channel.name;
+                  return idName;
+                }
+              }
+            })
+            .filter(c => c !== undefined) as IdName[];
+
+          const colleges = studySummary.favoriteColleges.idNames
+            .map(idName => {
+              const collegeId = idName.id;
+              const college = collegeData.find(c => c.id === collegeId);
+              if (college !== undefined) {
+                idName.name = college.name;
+                return idName;
+              }
+            })
+            .filter(c => c !== undefined) as IdName[];
+
+          studySummary.favoriteChannels.idNames = channels;
+          studySummary.favoriteColleges.idNames = colleges;
+          runInAction(
+            () => (this.studySummary = new StudySummaryModel(studySummary))
+          );
+        }
       }
     );
 

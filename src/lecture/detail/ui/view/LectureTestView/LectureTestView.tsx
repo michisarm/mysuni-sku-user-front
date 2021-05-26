@@ -85,7 +85,11 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   return (
     <>
       {useTestIntroView && testItem && (
-        <LectureTestIntroView testItem={testItem} openView={openView} />
+        <LectureTestIntroView
+          params={params}
+          testItem={testItem}
+          openView={openView}
+        />
       )}
       {useTestResultView && testItem && testStudentItem && (
         <LectureTestResultView
