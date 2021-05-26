@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps } from 'semantic-ui-react';
 import Calendar from './Calendar';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { OffsetElementList, reactAlert, reactConfirm } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList, requestCubeList } from '../../service/useNote/requestNote';
@@ -19,6 +19,7 @@ import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import { requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
+import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
 
 interface NoteViewProps {
   noteList: OffsetElementList<Note>;
@@ -38,14 +39,12 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
   const [collegeList, setCollegeList] = useState<CollegeModel[]>();
-
+  const history = useHistory();
+  const params = useParams<MyPageRouteParams>();
 
   useEffect(() => {
-
     folder && setFolderOptions(selectFolder(folder));
-
   }, [folder]);
-
 
   useEffect(() => {
     //조회시 하위 목록 조회 초기화
@@ -67,12 +66,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
           value: field.id,
         });
       });
+      params.pageNo === '1' && folderSelect.push({ key: 'addFolder', text: '+폴더 만들기', value: 'addFolder' });
     }
-
     return folderSelect;
   }, []);
-
-
 
   useEffect(() => {
     setCollegeList(colleges);
@@ -186,6 +183,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   const changeFolder = useCallback(
     async (cardId: string, cubeId: string, folderId: string) => {
+      if (folderId === 'addFolder') {
+        history.push({
+          pathname: `/my-training/my-page/EarnedNoteList/pages/2`,
+        });
+        return;
+      }
+
       await saveFolder(cardId, cubeId, folderId);
       await search();
     },
@@ -248,7 +252,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         <div className="note_info">
                           {subItem.playTime &&
                             (
-                              <Link className="time" to="">
+                              <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
                                 {subItem.playTime}
                                 <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>

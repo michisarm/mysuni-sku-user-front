@@ -8,6 +8,7 @@ export default interface Note {
   cardId: string;
   cardName: string;
   cubeId: string;
+  cubeType: string;
   cubeName: string;
   content: string;
   folderId: string;

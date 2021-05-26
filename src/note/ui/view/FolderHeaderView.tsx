@@ -157,7 +157,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
       return;
     }
 
-    if (editFolderId !== '') {
+    if (editFolderId === idName.id) {
       setEditFolderId(''); setEditFolderName('폴더미지정'); setEditFolderOriginName('');
     } else {
       setEditFolderId(idName.id); setEditFolderName(idName.name); setEditFolderOriginName(idName.name);
