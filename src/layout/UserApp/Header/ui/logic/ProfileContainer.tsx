@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, deleteCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { getAxios } from 'shared/api/Axios';
@@ -90,6 +90,7 @@ class ProfileContainer extends Component<Props, State> {
     // localStorage.removeItem('nara.email');
 
     sessionStorage.clear();
+    deleteCookie('nara.isLogin');
     window.location.href = '/api/checkpoint/sso/logout';
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }

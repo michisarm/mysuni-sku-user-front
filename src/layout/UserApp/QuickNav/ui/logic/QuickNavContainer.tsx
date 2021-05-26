@@ -211,7 +211,13 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickAdminSite(name: string) {
     // localAdmin by gon
-    if (window.location.hostname === 'localhost') {
+    if (window.location.hostname === 'mysuni.sk.com') {
+      window.open('http://star.mysuni.sk.com/star-login');
+    } else if (window.location.hostname === 'ma.mysuni.sk.com') {
+      window.open('http://ma-star.mysuni.sk.com/star-login');
+    } else if (window.location.hostname === 'stg.mysuni.sk.com') {
+      window.open('http://stg-star.mysuni.sk.com/star-login');
+    } else if (window.location.hostname === 'localhost') {
       window.open('http://localhost:8090');
     } else {
       const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
