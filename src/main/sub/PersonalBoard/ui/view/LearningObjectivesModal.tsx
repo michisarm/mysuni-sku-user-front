@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import {
-  Checkbox,
-  Form,
-  Image,
-  Modal,
-  Select,
-} from 'semantic-ui-react';
+import { Checkbox, Form, Image, Modal, Select } from 'semantic-ui-react';
 import { useParams, useHistory } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 import Avartar from '../../../style/media/img-profile-80-px.png';

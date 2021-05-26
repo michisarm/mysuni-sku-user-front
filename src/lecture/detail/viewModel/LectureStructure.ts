@@ -101,6 +101,7 @@ export interface LectureStructureCardItem extends LectureStructureItem {
   student?: Student;
   learningTime: number;
   additionalLearningTime: number;
+  canSubmit: boolean;
 }
 
 export interface LectureStructure {

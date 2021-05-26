@@ -36,7 +36,6 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
-import { reactAlert } from '@nara.platform/accent';
 
 function parseCubeTestItem(
   card: Card,
@@ -317,6 +316,7 @@ function parseCardItem(
     state: convertLearningStateToState(cardStudent?.learningState),
     learningTime,
     additionalLearningTime,
+    canSubmit: false,
   };
   if (tests !== null && tests.length > 0) {
     item.test = parseCardTestItem(card, cardStudent);
@@ -640,7 +640,7 @@ async function parseCubeItem(
     );
     return taskCubeItem;
   }
-  
+
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -766,14 +766,7 @@ export async function requestCardLectureStructure(cardId: string) {
     myCardRelatedStudentsRom === undefined
   ) {
     setIsLoadingState({ isLoading: false });
-    return reactAlert({
-      title: '',
-      message:
-        '본 콘텐츠에 접근할 수 없습니다. 보다 상세한 문의는 Help Desk(02-6323-9002)를 이용해주세요.',
-      onClose: () => {
-        window.location.href = window.location.origin;
-      },
-    });
+    return;
   }
 
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;
@@ -870,6 +863,7 @@ export async function requestCardLectureStructure(cardId: string) {
       chapterItems.push(parseChapterItem(card, learningContent, order));
     });
 
+  cardItem.canSubmit = cubeItems.every(c => c.state === 'Completed');
   const lectureStructure: LectureStructure = {
     card: cardItem,
     cubes: cubeItems,

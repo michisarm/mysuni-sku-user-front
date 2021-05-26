@@ -382,10 +382,7 @@ async function updateCubeItem(
     return discussionCubeItem;
   }
   if (cube.cubeType === 'Task') {
-    const taskCubeItem = await updateTaskCubeItem(
-      cube,
-      cubeStudent
-    );
+    const taskCubeItem = await updateTaskCubeItem(cube, cubeStudent);
     return taskCubeItem;
   }
   return cube;
@@ -426,7 +423,6 @@ export async function updateCardLectureStructure(cardId: string) {
     return;
   }
   const { cardStudent, cubeStudents } = myCardRelatedStudentsRom;
-  lectureStructure.card = updateCardItem(lectureStructure.card, cardStudent);
   lectureStructure.cubes = await Promise.all(
     lectureStructure.cubes.map(item => {
       const cubeStudent = findCubeStudent(item.cubeId, cubeStudents);
@@ -438,6 +434,12 @@ export async function updateCardLectureStructure(cardId: string) {
   });
 
   lectureStructure.items = updateItems(lectureStructure);
+
+  lectureStructure.card = updateCardItem(lectureStructure.card, cardStudent);
+
+  lectureStructure.card.canSubmit = lectureStructure.cubes.every(
+    c => c.state === 'Completed'
+  );
 
   setLectureStructure({ ...lectureStructure });
 }
