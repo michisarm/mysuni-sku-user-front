@@ -220,7 +220,7 @@ class QuickNavContainer extends Component<Props, State> {
     } else if (window.location.hostname === 'localhost') {
       window.open('http://localhost:8090');
     } else if (window.location.hostname === 'university.sk.com') {
-      window.open('https://university.sk.com/star-login');
+      window.open('https://university.sk.com/login');
     } else {
       const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
       if (adminSiteUrl) {
