@@ -114,9 +114,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
 
   const handleSubmitClick = useCallback(
     async () => {
+      setSearchBox({ ...searchBox, offset: 0 })
       await requestCubeList();
     },
-    []
+    [searchBox]
   );
 
   useEffect(() => {
