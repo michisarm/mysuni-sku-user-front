@@ -12,6 +12,10 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
 import { Area } from 'tracker/model';
 import Image from '../../../../../shared/components/Image';
+import {
+  isExternalInstructor,
+  isInternalInstructor,
+} from '../../../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -126,6 +130,9 @@ class ProfileContainer extends Component<Props, State> {
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
+    const isExternal = isExternalInstructor();
+    const isInstructor = isExternalInstructor() || isInternalInstructor();
+
     return (
       <div className="g-info">
         <button
@@ -145,23 +152,36 @@ class ProfileContainer extends Component<Props, State> {
           data-area={Area.HEADER_PROFILE}
         >
           <ul>
-            {menuAuth.some(
-              (menuAuth: PageElement) =>
-                menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
-            ) && (
+            {isInstructor && (
               <li>
                 <a
-                  href="#"
-                  onClick={e => {
-                    this.props.history.push(myTrainingRoutePaths.myPage());
-                    e.preventDefault();
-                  }}
+                  href={`${window.location.origin}/suni-instructor`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i aria-hidden="true" className="balloon mypage icon" />
-                  <span>My Page</span>
+                  <span>강사 서비스</span>
                 </a>
               </li>
             )}
+            {menuAuth.some(
+              (menuAuth: PageElement) =>
+                menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
+            ) &&
+              !isExternal && (
+                <li>
+                  <a
+                    href="#"
+                    onClick={e => {
+                      this.props.history.push(myTrainingRoutePaths.myPage());
+                      e.preventDefault();
+                    }}
+                  >
+                    <i aria-hidden="true" className="balloon mypage icon" />
+                    <span>My Page</span>
+                  </a>
+                </li>
+              )}
             {/* <li>
               <a
                 href="#"
@@ -183,13 +203,14 @@ class ProfileContainer extends Component<Props, State> {
             </li>
           </ul>
         </div>
-
-        <HeaderAlarmView
-          myNotieMentions={myNotieMentions}
-          myNotieNoReadMentionCount={myNotieNoReadMentionCount}
-          routeToAlarmBackLink={this.routeToAlarmBackLink}
-          handleClickAlarm={this.handleClickAlarm}
-        />
+        {!isExternal && (
+          <HeaderAlarmView
+            myNotieMentions={myNotieMentions}
+            myNotieNoReadMentionCount={myNotieNoReadMentionCount}
+            routeToAlarmBackLink={this.routeToAlarmBackLink}
+            handleClickAlarm={this.handleClickAlarm}
+          />
+        )}
       </div>
     );
   }
