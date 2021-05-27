@@ -8,13 +8,21 @@ import { find } from 'lodash';
 function getUniqueList(instructors: Instructor[]) {
   const uniqueInstructorList: Instructor[] = [];
 
-  instructors.map(instructor => {
-    if (
-      !find(uniqueInstructorList, { instructorId: instructor.instructorId })
-    ) {
-      uniqueInstructorList.push(instructor);
-    }
-  });
+  instructors
+    .filter(c => c.representative === true)
+    .forEach(c => {
+      if (!uniqueInstructorList.some(d => d.instructorId === c.instructorId)) {
+        uniqueInstructorList.push(c);
+      }
+    });
+
+  instructors
+    .filter(c => c.representative === false)
+    .forEach(c => {
+      if (!uniqueInstructorList.some(d => d.instructorId === c.instructorId)) {
+        uniqueInstructorList.push(c);
+      }
+    });
 
   return uniqueInstructorList;
 }
