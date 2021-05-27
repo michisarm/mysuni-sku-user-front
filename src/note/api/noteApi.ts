@@ -127,9 +127,7 @@ export function modifyNote(
 ): Promise<void> {
   const url = `${BASE_URL}/${id}`;
   return axiosApi
-    .put<void>(url, {
-      content: noteUdo.content
-    })
+    .put<void>(url, noteUdo)
     .then(response => response && response.data);
 }
 

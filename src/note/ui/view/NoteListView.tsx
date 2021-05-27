@@ -138,6 +138,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       });
       return;
     }
+
+    noteUdo.playTime = note.playTime;
+
     await saveNote(undefined, id, noteUdo);
     params.pageNo === '2' && await requestCubeListByFolderId();
     params.pageNo === '1' && await requestCubeList();
@@ -329,7 +332,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                   {subNoteList && subNoteList.map((subNoteItem, subIndex) => (
                     subNoteItem.index === index &&
                     subNoteItem.noteList.results.map((subItem, subIndex) => (
-                      <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
+                      <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} >
                         <div className="note_info">
                           {subItem.playTime && subItem.playTime !== '00:00' &&
                             (
@@ -351,6 +354,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         {noteUdoItem?.index !== subIndex &&
                           (
                             <p className="note"
+                              onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}
                               dangerouslySetInnerHTML={{
                                 __html: `${subItem.content.replace('\n', "<br />")}`
                               }}
@@ -366,7 +370,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                             <div className="note_btn">
                               <Button className="delete" onClick={(e, data) => deleteNote(subItem.id, index, item)}><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button>
                               <Button className="cancel" onClick={(e, data) => setNoteUdoItem(undefined)}>취소</Button>
-                              <Button className="save" onClick={(e, data) => noteUdoItem.noteUdo && update(noteUdoItem.noteUdo, subItem.id, index, item)}>저장</Button>
+                              <Button className="save" onClick={(e, data) => noteUdoItem.noteUdo && update(noteUdoItem.noteUdo, subItem.id, index, subItem)}>저장</Button>
                               <span className="txt_cnt">
                                 <span className="txt_now">{noteUdoItem.noteUdo?.content?.length || '0'}</span>
                         /<span>1000</span>
