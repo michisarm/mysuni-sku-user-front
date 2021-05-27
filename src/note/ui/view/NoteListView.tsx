@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps } from 'semantic-ui-react';
+import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Form, TextArea, DropdownDivider, DropdownProps, SemanticCOLORS } from 'semantic-ui-react';
 import Calendar from './Calendar';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { OffsetElementList, reactAlert, reactConfirm } from '@nara.platform/accent';
@@ -20,6 +20,7 @@ import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import { requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
+import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
 
 interface NoteViewProps {
   noteList: OffsetElementList<Note>;
@@ -212,6 +213,37 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     []
   );
 
+  const getColor = useCallback((categoryId: string): SemanticCOLORS => {
+    switch (categoryId) {
+      case 'CLG00001':
+        return NoteCategoryColorType.AI;
+      case 'CLG00002':
+        return NoteCategoryColorType.DT;
+      case 'CLG00006':
+        return NoteCategoryColorType.Global;
+      case 'CLG00007':
+        return NoteCategoryColorType.Leadership;
+      case 'CLG00008':
+        return NoteCategoryColorType.Management;
+      case 'CLG00004':
+        return NoteCategoryColorType.SV;
+      case 'CLG00003':
+        return NoteCategoryColorType.Happiness;
+      case 'CLG00019':
+        return NoteCategoryColorType.SemicondDesign;
+      case 'CLG00005':
+        return NoteCategoryColorType.InnovationDesign;
+      case 'CLG00020':
+        return NoteCategoryColorType.BMDesign;
+      case 'CLG0001c':
+        return NoteCategoryColorType.EnergySolution;
+      default:
+        return NoteCategoryColorType.Default;
+    }
+  },
+    []
+  );
+
   return (
     <div>
       <Segment className="full">
@@ -221,9 +253,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
             {/* 노트 타이틀 */}
             < div className="note_title" >
               <div className="tit">
-                <Label color="purple">{collegeList && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } })[0].name}</Label>
+                <Label color={getColor(item.collegeId)}>{collegeList && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } })[0].name}</Label>
                 <strong className="header">{item.cardName}</strong>
-                <p>{item.cubeName}</p>
+                <Link className="time" to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}>
+                  <p>
+                    {item.cubeName}
+                  </p>
+                </Link>
               </div>
 
               <div className="option_box">
@@ -263,20 +299,19 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                   {noteCdoItem && noteCdoItem?.index === index && (
                     <div className="mynote mynote_write">
                       <div className="note_info">
-                        <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>
                         <span className="date">{moment().format('YYYY년 MM월 DD일 작성')}</span>
                       </div>
                       <Form>
-                        <TextArea placeholder="내용을 입력하시오" value={noteCdoItem.noteCdo?.content} onChange={(e, data) => setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } })} />
-                        <span className="txt_cnt">
-                          <span className="txt_now">{noteCdoItem.noteCdo?.content?.length || '0'}</span>
-/<span>1000</span>
-                        </span>
+                        <TextArea placeholder="Note 내용을 입력해주세요." value={noteCdoItem.noteCdo?.content} onChange={(e, data) => { data.value && (data.value as string).length < 1001 && setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } }) }} />
                       </Form>
                       <div className="note_btn">
                         {/* <Button className="delete"><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button> */}
                         <Button className="cancel" onClick={(e, data) => setNoteCdoItem(undefined)}>취소</Button>
                         <Button className="save" onClick={(e, data) => noteCdoItem.noteCdo && save(noteCdoItem.noteCdo, item.id, index)}>저장</Button>
+                        <span className="txt_cnt">
+                          <span className="txt_now">{noteCdoItem.noteCdo?.content?.length || '0'}</span>
+                        /<span>1000</span>
+                        </span>
                       </div>
                     </div>
 
@@ -311,16 +346,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         {noteUdoItem && noteUdoItem?.index === subIndex && (
                           <>
                             <Form>
-                              <TextArea placeholder="내용을 입력하시오" value={noteUdoItem.noteUdo?.content} onChange={(e, data) => setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
-                              <span className="txt_cnt">
-                                <span className="txt_now">{noteUdoItem.noteUdo?.content?.length || '0'}</span>
-/<span>1000</span>
-                              </span>
+                              <TextArea placeholder="Note 내용을 입력해주세요." value={noteUdoItem.noteUdo?.content} onChange={(e, data) => data.value && (data.value as string).length < 1001 && setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
                             </Form>
                             <div className="note_btn">
                               <Button className="delete" onClick={(e, data) => deleteNote(subItem.id, index, item)}><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button>
                               <Button className="cancel" onClick={(e, data) => setNoteUdoItem(undefined)}>취소</Button>
                               <Button className="save" onClick={(e, data) => noteUdoItem.noteUdo && update(noteUdoItem.noteUdo, subItem.id, index, item)}>저장</Button>
+                              <span className="txt_cnt">
+                                <span className="txt_now">{noteUdoItem.noteUdo?.content?.length || '0'}</span>
+                        /<span>1000</span>
+                              </span>
                             </div>
                           </>
                         )}

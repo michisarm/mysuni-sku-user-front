@@ -276,9 +276,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     <span>20</span>
                 </span>
 
-                <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
-                <span className="tit_cnt">총 <strong>{folerNoteCount}개의 Note</strong></span>
-
                 <div className="folder_btn">
                   <button className="ui button cancel" onClick={(e) => { setEditFolder(false); setEditFolderName(editFolderOriginName) }}>취소</button>
                   <button className="ui button save" onClick={(e) => { save('updateName'); }} >저장</button>
