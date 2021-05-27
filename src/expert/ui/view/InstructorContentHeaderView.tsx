@@ -1,15 +1,13 @@
-
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Icon, Image, Label } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
-
+import Image from '../../../shared/components/Image';
 
 interface Props {
-  instructor: InstructorModel
+  instructor: InstructorModel;
 }
 
 @observer
@@ -28,13 +26,14 @@ class InstructorContentHeaderView extends React.Component<Props> {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <Image src={memberSummary.photoId||profileImg} alt="기본 프로필사진" />
+                  <Image
+                    src={memberSummary.photoId || profileImg}
+                    alt="기본 프로필사진"
+                  />
                 </div>
               </div>
               <div className="text-info">
-                <div className="name">
-                  {memberSummary.name}
-                </div>
+                <div className="name">{memberSummary.name}</div>
                 <div className="part">
                   <span>{memberSummary.department} </span>
                   <span>{instructor.internal ? '사내강사' : '사외강사'}</span>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Label, Icon } from 'semantic-ui-react';
+import Image from '../../../../../shared/components/Image';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 
 interface LectureClassroomInstructorViewProps {
@@ -38,7 +39,7 @@ export function LectureClassroomInstructorView(
                 {representative === true && <Represent />}
                 <div className="pic s80">
                   {memberSummary?.photoId && (
-                    <img
+                    <Image
                       alt="프로필사진"
                       className="ui image"
                       src={memberSummary?.photoId}
