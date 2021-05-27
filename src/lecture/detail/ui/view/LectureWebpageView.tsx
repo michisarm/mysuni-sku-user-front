@@ -1,6 +1,7 @@
 import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
+import { ActionType, Action, Area } from 'tracker/model';
 
 interface Props {}
 
@@ -21,7 +22,13 @@ const LectureWebpageView: React.FC<LectureWebpage &
 }) {
   return (
     <>
-      {urlType === 'embedded' && <iframe className="iframe-area" src={url} style={{width:"990px",height:"630px"}}/>}
+      {urlType === 'embedded' && (
+        <iframe
+          className="iframe-area"
+          src={url}
+          style={{ width: '990px', height: '630px' }}
+        />
+      )}
       {urlType !== 'embedded' && (
         <div className="lms-open-graph">
           <img src={image ? image : DefaultImg} className="lms-open-image" />
@@ -34,6 +41,11 @@ const LectureWebpageView: React.FC<LectureWebpage &
               target="_blank"
               id="webpage-link"
               onClick={action}
+              data-area={Area.CUBE_CONTENT}
+              data-action={Action.CLICK}
+              data-action-type={ActionType.STUDY}
+              data-action-external-link={url}
+              data-action-name="학습하기 클릭"
             >
               {url}
             </a>

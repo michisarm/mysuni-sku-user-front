@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import $ from 'jquery';
-import { debounce, useStateRef } from './utils';
+import { debounce, useStateRef, useBrowserString } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
 import {
@@ -19,6 +19,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
    * const TrackerContext = createContext<any>(null);
    */
   const history = useHistory();
+  const browserString = useBrowserString();
   const [locationKeys, setLocationKeys] = useState<(string | undefined)[]>([]);
 
   const { valueRef } = useStateRef<TrackerParams>({});
@@ -135,6 +136,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       email: userId,
       path: window.location.pathname,
       search: window.location.search,
+      browser: browserString,
       areaType,
       area,
       areaId,
@@ -164,6 +166,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       const action = areaElement.dataset.action;
       const actionName = areaElement.dataset.actionName;
       const actionType = areaElement.dataset.actionType;
+      const externalLink = areaElement.dataset.actionExternalLink;
       if (!(action && actionName)) {
         return;
       }
@@ -171,10 +174,12 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         // track click, click으로 정의된 이벤트만 수집
         trackAction({
           email: userId,
+          browser: browserString,
           path: data.referer,
           search: data.refererSearch,
           area: data.area,
           actionType: actionType ? actionType : ActionType.GENERAL,
+          externalLink,
           action,
           actionName,
           target: data.target,
@@ -193,6 +198,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           search: data.refererSearch,
           referer: data.referer,
           refererSearch: data.refererSearch,
+          browser: browserString,
           area: data.area,
           target: data.target,
         } as ActionTrackViewParam);
@@ -217,6 +223,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           search: path.search,
           referer,
           refererSearch: path.data?.refererSearch,
+          browser: browserString,
           area,
           target: path.data?.target,
         } as ActionTrackViewParam);

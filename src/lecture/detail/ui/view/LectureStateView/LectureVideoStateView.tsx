@@ -26,6 +26,7 @@ interface CPAndLinkCanceledViewProps {
 
 function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
   const { media } = props;
+  const [externalLink, setExternalLink] = useState<string>();
   const action = useCallback(() => {
     const { mediaType, mediaContents } = media;
     if (mediaType === MediaType.ContentsProviderMedia) {
@@ -52,12 +53,22 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
     }
     if (mediaType === MediaType.LinkMedia) {
       const { linkMediaUrl } = mediaContents;
+      setExternalLink(linkMediaUrl);
       const link = document.createElement('a');
       link.setAttribute('href', linkMediaUrl);
       link.setAttribute('target', '_blank');
       link.click();
     }
     submit(1);
+  }, [media]);
+
+  useEffect(() => {
+    const { mediaType, mediaContents } = media;
+    if (mediaType === MediaType.ContentsProviderMedia) {
+      setExternalLink(mediaContents.contentsProvider.url);
+    } else if (mediaType === MediaType.LinkMedia) {
+      setExternalLink(mediaContents.linkMediaUrl);
+    }
   }, [media]);
   return (
     <>
@@ -71,6 +82,7 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
+        data-action-external-link={externalLink}
         data-action-name={`${APPROVE} 클릭`}
       >
         {APPROVE}
@@ -156,6 +168,7 @@ function CPApprovedView(props: CPApprovedViewProps) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
+        data-action-external-link={media.mediaContents.contentsProvider.url}
         data-action-name={`${APPROVE} 클릭`}
       >
         {APPROVE}
@@ -233,6 +246,7 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
+        data-action-external-link={media.mediaContents.linkMediaUrl}
         data-action-name={`${actionText} 클릭`}
       >
         {actionText}

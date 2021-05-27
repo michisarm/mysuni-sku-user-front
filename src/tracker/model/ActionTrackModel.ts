@@ -9,6 +9,7 @@ export interface ActionTrackParam {
   area?: Area | null;
   areaId?: string | null;
   actionType: ActionType;
+  externalLink?: string | null;
   action: Action;
   actionName: string;
   target?: HTMLElement;
@@ -22,6 +23,7 @@ export interface ActionTrackViewParam {
   referer?: string;
   refererName?: string | null;
   refererSearch?: string | null;
+  browser: string;
   areaType?: string | null;
   area?: Area | null;
   areaId?: string | null;
@@ -46,6 +48,7 @@ export interface ActionContextModel {
   path: string;
   pathName?: string | null;
   poc: string;
+  browser: string;
   areaType?: string | null;
   area?: Area | null;
   areaId?: string | null;
@@ -58,9 +61,10 @@ export interface ViewContextModel {
   email: string;
   path: string;
   pathName?: string | null;
-  poc: string;
   referer?: string | null;
   refererName?: string | null;
+  poc: string;
+  browser: string;
   areaType?: string | null;
   area?: Area | null;
   areaId?: string | null;
@@ -80,6 +84,7 @@ export interface ActionTrackModel {
   cubeId?: string | null;
   cubeName?: string | null;
   cubeType?: string | null;
+  externalLink?: string | null;
   // lectureCardId?: string | null;
   // clectureId?: string | null;
 }

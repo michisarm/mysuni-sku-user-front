@@ -21,6 +21,71 @@ export function useStateRef<T>(initialValue: T): useStateRefType<T> {
   return { valueRef };
 }
 
+export const getBrowser = () => {
+  let ua;
+  let result;
+  // Chromium 기반 최신 브라우져 UA 프리징 대비
+  if (window.navigator.userAgentData) {
+    ua = window.navigator.userAgentData.brands.filter((a: { brand: string }) =>
+      /Google Chrome|Microsoft Edge|Whale/.test(a.brand)
+    )[0];
+    if (ua) {
+      let brand;
+      if (ua.brand === 'Google Chrome') {
+        brand = 'Chrome';
+      } else if (ua.brand === 'Microsoft Edge') {
+        brand = 'Edge';
+      } else {
+        brand = ua.brand;
+      }
+      result = { brand, version: ua.version };
+    } else {
+      result = { brand: 'N/A', version: 'N/A' };
+    }
+  } else {
+    ua = navigator.userAgent;
+    let tem;
+    let M =
+      ua.match(
+        /(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+      ) || [];
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+      result = {
+        brand: 'MSIE',
+        version: tem[1] || '',
+      };
+    }
+    if (M[1] === 'Chrome') {
+      tem = ua.match(/\bOPR|Edge\/(\d+)/);
+      if (tem != null) {
+        result = {
+          brand: 'Opera',
+          version: tem[1],
+        };
+      }
+    }
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) {
+      M.splice(1, 1, tem[1]);
+    }
+    result = {
+      brand: M[0],
+      version: M[1],
+    };
+  }
+  return result;
+};
+
+export const getBrowserString = () => {
+  const browser = getBrowser();
+  return Object.values(browser).join('::');
+};
+
+export const useBrowserString = () => {
+  return getBrowserString();
+};
+
 export function lsTest() {
   const test = 'test';
   try {
