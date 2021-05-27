@@ -15,7 +15,6 @@ class FooterView extends Component<Props> {
   render() {
     //
     const { nav, buttons } = this.props;
-
     return (
       <section className="footer" data-area={Area.FOOTER_NAVI}>
         <div className="cont-inner">

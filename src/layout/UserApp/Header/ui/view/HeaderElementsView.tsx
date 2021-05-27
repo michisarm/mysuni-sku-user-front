@@ -14,27 +14,39 @@ import communityPaths from 'community/routePaths';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
 }
 
-export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => (
-  <div className="g-logo" data-area={Area.HEADER_LOGO}>
-    <Link to="/" onClick={() => onClickMenu('mySUNI')}>
-      <i className="sk-university icon">
-        <span className="blind">mySUNI</span>
-      </i>
-    </Link>
-  </div>
-);
+export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => {
+  const isExternal = isExternalInstructor();
 
+  return (
+    <div className="g-logo" data-area={Area.HEADER_LOGO}>
+      {isExternal ? (
+        <i className="sk-university icon">
+          <span className="blind">mySUNI</span>
+        </i>
+      ) : (
+        <Link to="/" onClick={() => onClickMenu('mySUNI')}>
+          <i className="sk-university icon">
+            <span className="blind">mySUNI</span>
+          </i>
+        </Link>
+      )}
+    </div>
+  );
+};
 interface MenuViewProps {
   onClickMenu: (menuName: string) => void;
 }
 
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
   const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
+  const isExternal = isExternalInstructor();
+
   useEffect(() => {
     //const axios = getAxios();
     const fetchMenu = async () => {
@@ -57,54 +69,58 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Learning'
-          ) && (
-            <NavLink
-              to={myTrainingPaths.learning()}
-              className="item"
-              onClick={() => onClickMenu('Learning')}
-            >
-              Learning
-            </NavLink>
-          )}
+          ) &&
+            !isExternal && (
+              <NavLink
+                to={myTrainingPaths.learning()}
+                className="item"
+                onClick={() => onClickMenu('Learning')}
+              >
+                Learning
+              </NavLink>
+            )}
           {menuAuth.some(
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Recommend'
-          ) && (
-            <NavLink
-              to={lecturePaths.recommend()}
-              className="item"
-              onClick={() => onClickMenu('Recommend')}
-            >
-              Recommend
-            </NavLink>
-          )}
+          ) &&
+            !isExternal && (
+              <NavLink
+                to={lecturePaths.recommend()}
+                className="item"
+                onClick={() => onClickMenu('Recommend')}
+              >
+                Recommend
+              </NavLink>
+            )}
           {menuAuth.some(
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Create'
-          ) && (
-            <NavLink
-              to={personalCubePaths.create()}
-              className="item"
-              onClick={() => onClickMenu('Create')}
-            >
-              Create
-            </NavLink>
-          )}
+          ) &&
+            !isExternal && (
+              <NavLink
+                to={personalCubePaths.create()}
+                className="item"
+                onClick={() => onClickMenu('Create')}
+              >
+                Create
+              </NavLink>
+            )}
           {menuAuth.some(
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Certification'
-          ) && (
-            <NavLink
-              to={certificationPaths.badge()}
-              className="item"
-              onClick={() => onClickMenu('Certification')}
-            >
-              Certification
-            </NavLink>
-          )}
+          ) &&
+            !isExternal && (
+              <NavLink
+                to={certificationPaths.badge()}
+                className="item"
+                onClick={() => onClickMenu('Certification')}
+              >
+                Certification
+              </NavLink>
+            )}
           {menuAuth.some(
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
