@@ -88,7 +88,7 @@ class Routes extends PureComponent {
                       <Route path="/extra" component={ExtraRoutes} />
 
                       <Route path="/" component={MainRoutes} />
-                      <Route path="/404" component={NotFoundPage} />
+                      <Route path="/nonexist" component={NotFoundPage} />
                     </Switch>
                   </AppLayout>
                 )}
