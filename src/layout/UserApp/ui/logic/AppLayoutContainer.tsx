@@ -8,6 +8,7 @@ import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
 import SkProfileApi from '../../../../profile/present/apiclient/SkProfileApi';
+import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
 
 interface Props {
   children: React.ReactNode;
@@ -73,6 +74,7 @@ class AppLayoutContainer extends Component<Props> {
   render() {
     //
     const { children } = this.props;
+    const isExternal = isExternalInstructor();
 
     return (
       <>
@@ -80,7 +82,7 @@ class AppLayoutContainer extends Component<Props> {
 
         {children}
 
-        <QuickNav />
+        {!isExternal && <QuickNav />}
         <Footer />
       </>
     );
