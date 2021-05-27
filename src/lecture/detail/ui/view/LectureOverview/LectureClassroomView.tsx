@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-closing-tag-location */
 import moment from 'moment';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Label, Table } from 'semantic-ui-react';
 import TableModal from '../../../../../personalcube/shared/OverviewField/sub/TableModal';
@@ -39,7 +39,14 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
               </Button>
             }
           />
-          <Table>
+          <Table className="ui table th-info">
+            <colgroup>
+              <col width="120px" />
+              <col />
+              <col />
+              <col />
+              <col />
+            </colgroup>
             <Table.Body>
               {lectureClassroom.classrooms.map(
                 ({
@@ -51,46 +58,35 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                   learningStartDate,
                   learningEndDate,
                 }) => (
-                  <>
-                    <Table className="th-info">
-                      <colgroup>
-                        <col width="120px" />
-                        <col />
-                        <col />
-                        <col />
-                        <col />
-                      </colgroup>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.HeaderCell rowSpan="2">
-                            <span>{round}차수</span>
-                          </Table.HeaderCell>
-                          <Table.HeaderCell>강사정보</Table.HeaderCell>
-                          <Table.HeaderCell>장소</Table.HeaderCell>
-                          <Table.HeaderCell>수강신청기간</Table.HeaderCell>
-                          <Table.HeaderCell>교육기간</Table.HeaderCell>
-                        </Table.Row>
-                        <Table.Row>
-                          <Table.Cell>
-                            {instructor.map(item => (
-                              <span>{item.name}</span>
-                            ))}
-                          </Table.Cell>
-                          <Table.Cell>{location}</Table.Cell>
-                          <Table.Cell>
-                            {`${formatDate(applyingStartDate)} ~ ${formatDate(
-                              applyingEndDate
-                            )}`}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {`${formatDate(learningStartDate)} ~ ${formatDate(
-                              learningEndDate
-                            )}`}
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </>
+                  <Fragment key={round}>
+                    <Table.Row>
+                      <Table.HeaderCell rowSpan="2">
+                        <span>{round}차수</span>
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>강사정보</Table.HeaderCell>
+                      <Table.HeaderCell>장소</Table.HeaderCell>
+                      <Table.HeaderCell>수강신청기간</Table.HeaderCell>
+                      <Table.HeaderCell>교육기간</Table.HeaderCell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        {instructor.map(item => (
+                          <span key={item.instructorId}>{item.name}</span>
+                        ))}
+                      </Table.Cell>
+                      <Table.Cell>{location}</Table.Cell>
+                      <Table.Cell>
+                        {`${formatDate(applyingStartDate)} ~ ${formatDate(
+                          applyingEndDate
+                        )}`}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {`${formatDate(learningStartDate)} ~ ${formatDate(
+                          learningEndDate
+                        )}`}
+                      </Table.Cell>
+                    </Table.Row>
+                  </Fragment>
                 )
               )}
             </Table.Body>
