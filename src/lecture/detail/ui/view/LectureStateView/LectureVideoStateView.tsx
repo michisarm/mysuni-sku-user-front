@@ -190,26 +190,6 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
     }
     return APPROVE;
   }, [student]);
-  const actionClassName = useMemo<string>(() => {
-    const noTestAndNoReport = hasNoTestAndNoReport(cube);
-    if (student.learningState === 'Passed' || noTestAndNoReport) {
-      return 'bg2';
-    }
-    return 'line';
-  }, [student, cube]);
-  const action = useCallback(async () => {
-    const noTestAndNoReport = hasNoTestAndNoReport(cube);
-    const {
-      mediaContents: { linkMediaUrl },
-    } = media;
-    const link = document.createElement('a');
-    link.setAttribute('href', linkMediaUrl);
-    link.setAttribute('target', '_blank');
-    link.click();
-    if (student.learningState !== 'Passed' && noTestAndNoReport) {
-      completeLearning();
-    }
-  }, [student, cube]);
   const stateClassName = useMemo(() => {
     const { learningState } = student;
     switch (learningState) {
@@ -223,20 +203,23 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
 
   return (
     <>
-      <button
-        className={`ui button free ${actionClassName} p18`}
-        onClick={action}
-        data-area={
-          window.location.pathname.includes('/cube')
-            ? Area.CUBE_HEADER
-            : Area.CARD_HEADER
-        }
-        data-action={Action.CLICK}
-        data-action-type={ActionType.STUDY}
-        data-action-name={`${actionText} 클릭`}
-      >
-        {actionText}
-      </button>
+      {student.learningState !== 'Passed' && hasNoTestAndNoReport(cube) && (
+        <button
+          className={`ui button free ${actionClassName} p18`}
+          onClick={completeLearning}
+          id="ACTION"
+          data-area={
+            window.location.pathname.includes('/cube')
+              ? Area.CUBE_HEADER
+              : Area.CARD_HEADER
+          }
+          data-action={Action.CLICK}
+          data-action-type={ActionType.STUDY}
+          data-action-name={`${COMPLETE} 클릭`}
+        >
+          {COMPLETE}
+        </button>
+      )}
       <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
