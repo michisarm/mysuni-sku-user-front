@@ -18,6 +18,7 @@ import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 import { CollegeService } from 'college/stores';
 
 import ReactGA from 'react-ga';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -206,43 +207,46 @@ class CategoryMenuContainer extends Component<Props, State> {
       studySummaryFavoriteChannels.map(
         channel => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
-    // console.log('@@#@#@',collage)
+    const isExternal = isExternalInstructor();
+
     return (
       <>
         <div className="g-menu-detail">
-          <Popup
-            trigger={
-              <Button
-                className="detail-open"
-                onClick={() => this.onClickActionLog('Category')}
-              >
-                Category
-              </Button>
-            }
-            on="click"
-            className="g-menu-detail"
-            basic
-            open={categoryOpen}
-            onOpen={this.onOpen}
-            onClose={this.onClose}
-          >
-            {activeCollege && (
-              <>
-                <CategoryMenuPanelView
-                  colleges={collegeLectureCountService!.collegeLectureCounts}
-                  activeCollege={activeCollege}
-                  channels={collegeLectureCountService!.channelCounts}
-                  favorites={channels}
-                  studySummaryFavoriteChannels={studySummaryFavoriteChannels}
-                  actions={this.renderMenuActions()}
-                  onActiveCollege={this.onActiveCollege}
-                  onRouteChannel={this.onClickChannel}
-                  handleCategoryOpen={this.handleCategoryOpen}
-                  banner={banner}
-                />
-              </>
-            )}
-          </Popup>
+          {!isExternal && (
+            <Popup
+              trigger={
+                <Button
+                  className="detail-open"
+                  onClick={() => this.onClickActionLog('Category')}
+                >
+                  Category
+                </Button>
+              }
+              on="click"
+              className="g-menu-detail"
+              basic
+              open={categoryOpen}
+              onOpen={this.onOpen}
+              onClose={this.onClose}
+            >
+              {activeCollege && (
+                <>
+                  <CategoryMenuPanelView
+                    colleges={collegeLectureCountService!.collegeLectureCounts}
+                    activeCollege={activeCollege}
+                    channels={collegeLectureCountService!.channelCounts}
+                    favorites={channels}
+                    studySummaryFavoriteChannels={studySummaryFavoriteChannels}
+                    actions={this.renderMenuActions()}
+                    onActiveCollege={this.onActiveCollege}
+                    onRouteChannel={this.onClickChannel}
+                    handleCategoryOpen={this.handleCategoryOpen}
+                    banner={banner}
+                  />
+                </>
+              )}
+            </Popup>
+          )}
         </div>
 
         <FavoriteChannelChangeModal

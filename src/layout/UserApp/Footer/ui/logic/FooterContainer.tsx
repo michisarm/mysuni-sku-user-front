@@ -7,6 +7,7 @@ import PrivacyPolicyModalContainer from './PrivacyPolicyModalContainer';
 import FooterView from '../view/FooterView';
 
 import ReactGA from 'react-ga';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 @reactAutobind
 class FooterContainer extends Component {
@@ -18,36 +19,42 @@ class FooterContainer extends Component {
         ReactGA.pageview(window.location.pathname, [], `${name}`);
       }, 1000);
     }
+    const isExternal = isExternalInstructor();
+
     return (
       <>
-        <NavLink
-          to="/introduction"
-          className="item"
-          onClick={() => onClick('Introduction')}
-        >
-          Introduction
-        </NavLink>
-        <NavLink
-          to={boardRoutePaths.supportNotice()}
-          className="item"
-          onClick={() => onClick('Notice')}
-        >
-          Notice
-        </NavLink>
-        <NavLink
-          to={boardRoutePaths.supportFAQ()}
-          className="item"
-          onClick={() => onClick('FAQ')}
-        >
-          FAQ
-        </NavLink>
-        <NavLink
-          to={boardRoutePaths.supportQnA()}
-          className="item"
-          onClick={() => onClick('Q&A')}
-        >
-          Q&A
-        </NavLink>
+        {!isExternal && (
+          <>
+            <NavLink
+              to="/introduction"
+              className="item"
+              onClick={() => onClick('Introduction')}
+            >
+              Introduction
+            </NavLink>
+            <NavLink
+              to={boardRoutePaths.supportNotice()}
+              className="item"
+              onClick={() => onClick('Notice')}
+            >
+              Notice
+            </NavLink>
+            <NavLink
+              to={boardRoutePaths.supportFAQ()}
+              className="item"
+              onClick={() => onClick('FAQ')}
+            >
+              FAQ
+            </NavLink>
+            <NavLink
+              to={boardRoutePaths.supportQnA()}
+              className="item"
+              onClick={() => onClick('Q&A')}
+            >
+              Q&A
+            </NavLink>
+          </>
+        )}
         <PrivacyPolicyModalContainer
           trigger={
             <a className="item" style={{ color: 'red' }}>

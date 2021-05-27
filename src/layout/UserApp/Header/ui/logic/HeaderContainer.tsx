@@ -15,6 +15,7 @@ import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -140,6 +141,7 @@ class HeaderContainer extends Component<Props, State> {
     //
     const { breadcrumb } = this.context;
     const { searchValue, focused } = this.state;
+    const isExternal = isExternalInstructor();
 
     return (
       <HeaderWrapperView
@@ -156,16 +158,17 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
           {/* <CategoryMenuContainer /> */}
-
-          <SearchBarView
-            value={searchValue}
-            focused={focused}
-            onSearch={this.onSearch}
-            onBlur={this.onBlurSearchInput}
-            onClick={this.onClickSearchInput}
-            onChange={this.onChangeSearchInput}
-            onClear={this.onClickClearSearch}
-          />
+          {!isExternal && (
+            <SearchBarView
+              value={searchValue}
+              focused={focused}
+              onSearch={this.onSearch}
+              onBlur={this.onBlurSearchInput}
+              onClick={this.onClickSearchInput}
+              onChange={this.onChangeSearchInput}
+              onClear={this.onClickClearSearch}
+            />
+          )}
 
           <ProfileContainer />
         </>
