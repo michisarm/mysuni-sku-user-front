@@ -340,7 +340,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                           </span>
                         </div>
                         {noteUdoItem?.index !== subIndex &&
-                          <p className="note">{subItem.content}</p>
+                          (
+                            <p className="note"
+                              dangerouslySetInnerHTML={{
+                                __html: `${subItem.content.replace('\n', "<br />")}`
+                              }}
+                            />
+                          )
                         }
 
                         {noteUdoItem && noteUdoItem?.index === subIndex && (
