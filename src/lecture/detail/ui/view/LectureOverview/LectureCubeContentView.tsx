@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -17,8 +18,14 @@ import './LectureCubeContentView.css';
 import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
 import TranscriptCountModel from '../../../model/TranscriptCountModel';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
+import { requestLectureCardInstructor } from '../../../service/useLectureInstructor/utility/requestLectureCardInstructor';
 import { Action, Area } from 'tracker/model';
+import { useLectureInstructor } from '../../../store/LectureOverviewStore';
+import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
 
+interface Params {
+  cardId: string;
+}
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
   lectureSubcategory?: LectureSubcategory;
@@ -47,7 +54,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureTranscriptCount,
   lectureSummary,
 }) {
+  const params = useParams<Params>();
   const [fixed, setFixed] = useState<boolean>(false);
+  const lectureInstructor = useLectureInstructor();
+
+  useEffect(() => {
+    requestLectureCardInstructor(params.cardId);
+  }, [params.cardId]);
+
   // useEffect(() => {
   //   const options = {};
   //   const observer = new IntersectionObserver(intersectionCallback, options);
@@ -189,6 +203,11 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
             {lectureClassroom && (
               <LectureClassroomInfoView lectureClassroom={lectureClassroom} />
+            )}
+            {lectureInstructor && (
+              <LectureClassroomInstructorView
+                lectureInstructor={lectureInstructor}
+              />
             )}
           </div>
           {lectureClassroom && (

@@ -1,11 +1,29 @@
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CardContents } from '../../../../model/CardContents';
+import { Instructor } from '../../../../model/Instructor';
 import { findCardCache } from '../../../api/cardApi';
 import { setLectureInstructor } from '../../../store/LectureOverviewStore';
+import { find } from 'lodash';
+
+function getUniqueList(instructors: Instructor[]) {
+  const uniqueInstructorList: Instructor[] = [];
+
+  instructors.map(instructor => {
+    if (
+      !find(uniqueInstructorList, { instructorId: instructor.instructorId })
+    ) {
+      uniqueInstructorList.push(instructor);
+    }
+  });
+
+  return uniqueInstructorList;
+}
 
 async function parseLectureInstructor(cardContents: CardContents) {
   const { instructors } = cardContents;
-  const proimseArray = instructors.map(c => {
+  const instructorList = getUniqueList(instructors);
+
+  const proimseArray = instructorList.map(c => {
     return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
@@ -22,7 +40,7 @@ async function parseLectureInstructor(cardContents: CardContents) {
   });
   await Promise.all(proimseArray);
   return {
-    instructors,
+    instructors: instructorList,
   };
 }
 
@@ -33,5 +51,6 @@ export async function requestLectureCardInstructor(cardId: string) {
   }
   const { cardContents } = cardWithContentsAndRelatedCountRom;
   const lectureCardInstructor = await parseLectureInstructor(cardContents);
+
   setLectureInstructor(lectureCardInstructor);
 }

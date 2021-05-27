@@ -50,6 +50,7 @@ const [
   setLectureInstructor,
   onLectureInstructor,
   getLectureInstructor,
+  useLectureInstructor,
 ] = createStore<LectureInstructor>();
 
 const [
@@ -102,6 +103,7 @@ export {
   onLectureTags,
   getLectureTags,
   setLectureInstructor,
+  useLectureInstructor,
   onLectureInstructor,
   getLectureInstructor,
   setLecturePrecourse,

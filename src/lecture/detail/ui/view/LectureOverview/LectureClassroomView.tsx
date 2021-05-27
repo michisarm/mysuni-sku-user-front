@@ -22,217 +22,82 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
   lectureClassroom,
 }) {
   return (
-    <>
-      <div className="contents overview width100" id="lms-classroom">
-        <div className="ov-paragraph ov-paragraph-v2">
-          {/* 차수 */}
-          <div className="series-wrap">
-            <h3 className="title-style">
-              <Label className="onlytext bold size24">
-                <Icon className="series" />
-                <span>{/* Class Series */}차수정보</span>
-              </Label>
-            </h3>
-            <TableModal
-              classrooms={lectureClassroom.classrooms}
-              trigger={
-                <Button icon className="right btn-blue">
-                  more <Icon className="morelink" />
-                </Button>
-              }
-            />
-
-            <Table>
-              <Table.Body>
-                {lectureClassroom.classrooms.map(
-                  ({
-                    round,
-                    instructor,
-                    location,
-                    applyingStartDate,
-                    applyingEndDate,
-                    learningStartDate,
-                    learningEndDate,
-                  }) => (
-                    <>
-                      <Table.Row>
-                        <Table.HeaderCell className="num" rowSpan="2">
-                          <span>{round}차수</span>
-                        </Table.HeaderCell>
-                        {instructor && instructor.length > 0 && (
-                          <Table.Cell
-                            className="teacher_info"
-                            colSpan="3"
-                            style={{ paddingBottom: 0 }}
-                          >
-                            <strong style={{ marginLeft: 25 }}>강사정보</strong>
-                            <div
-                              style={{ marginLeft: 10 }}
-                              className="scrolling course-profile"
-                            >
-                              {instructor.map(
-                                item =>
-                                  item.representative && (
-                                    <Link
-                                      className="ui profile tool-tip"
-                                      to={`/expert/instructor/${item.instructorId}/Introduce`}
-                                    >
-                                      <Represent />
-                                      <div className="pic s80">
-                                        {item.memberSummary?.photoId && (
-                                          <img
-                                            alt="프로필사진"
-                                            className="ui image"
-                                            src={item.memberSummary?.photoId}
-                                          />
-                                        )}
-                                      </div>
-                                      <i>
-                                        <a className="tip-name">
-                                          {item.memberSummary?.name}
-                                        </a>
-                                        <a className="tip-id">
-                                          {item.memberSummary?.department}
-                                        </a>
-                                      </i>
-                                    </Link>
-                                  )
-                              )}
-                              {instructor.map(
-                                item =>
-                                  !item.representative && (
-                                    <Link
-                                      className="ui profile tool-tip"
-                                      to={`/expert/instructor/${item.instructorId}/Introduce`}
-                                    >
-                                      <div className="pic s80">
-                                        {item.memberSummary?.photoId && (
-                                          <img
-                                            alt="프로필사진"
-                                            className="ui image"
-                                            src={item.memberSummary?.photoId}
-                                          />
-                                        )}
-                                      </div>
-                                      <i>
-                                        <a className="tip-name">
-                                          {item.memberSummary?.name}
-                                        </a>
-                                        <a className="tip-id">
-                                          {item.memberSummary?.department}
-                                        </a>
-                                      </i>
-                                    </Link>
-                                  )
-                              )}
-                            </div>
+    <div className="contents overview width100" id="lms-classroom">
+      <div className="ov-paragraph ov-paragraph-v2">
+        <div className="series-wrap">
+          <h3 className="title-style">
+            <Label className="onlytext bold size24">
+              <Icon className="series" />
+              <span>차수정보</span>
+            </Label>
+          </h3>
+          <TableModal
+            classrooms={lectureClassroom.classrooms}
+            trigger={
+              <Button icon className="right btn-blue">
+                more <Icon className="morelink" />
+              </Button>
+            }
+          />
+          <Table>
+            <Table.Body>
+              {lectureClassroom.classrooms.map(
+                ({
+                  round,
+                  instructor,
+                  location,
+                  applyingStartDate,
+                  applyingEndDate,
+                  learningStartDate,
+                  learningEndDate,
+                }) => (
+                  <>
+                    <Table className="th-info">
+                      <colgroup>
+                        <col width="120px" />
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                      </colgroup>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.HeaderCell rowSpan="2">
+                            <span>{round}차수</span>
+                          </Table.HeaderCell>
+                          <Table.HeaderCell>강사정보</Table.HeaderCell>
+                          <Table.HeaderCell>장소</Table.HeaderCell>
+                          <Table.HeaderCell>수강신청기간</Table.HeaderCell>
+                          <Table.HeaderCell>교육기간</Table.HeaderCell>
+                        </Table.Row>
+                        <Table.Row>
+                          <Table.Cell>
+                            {instructor.map(item => (
+                              <span>{item.name}</span>
+                            ))}
                           </Table.Cell>
-                        )}
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell
-                          className="location_info"
-                          style={{ paddingLeft: 25 }}
-                        >
-                          <strong>장소</strong>
-                          {location}
-                        </Table.Cell>
-                        <Table.Cell
-                          className="center_info"
-                          style={{ paddingLeft: 25 }}
-                        >
-                          <strong>수강신청기간</strong>
-                          {`${formatDate(applyingStartDate)} ~ ${formatDate(
-                            applyingEndDate
-                          )}`}
-                        </Table.Cell>
-                        <Table.Cell
-                          className="center_info"
-                          style={{ paddingLeft: 25 }}
-                        >
-                          <strong>교육기간</strong>
-                          {`${formatDate(learningStartDate)} ~ ${formatDate(
-                            learningEndDate
-                          )}`}
-                        </Table.Cell>
-                      </Table.Row>
-                    </>
-                  )
-                )}
-              </Table.Body>
-            </Table>
-          </div>
+                          <Table.Cell>{location}</Table.Cell>
+                          <Table.Cell>
+                            {`${formatDate(applyingStartDate)} ~ ${formatDate(
+                              applyingEndDate
+                            )}`}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {`${formatDate(learningStartDate)} ~ ${formatDate(
+                              learningEndDate
+                            )}`}
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </>
+                )
+              )}
+            </Table.Body>
+          </Table>
         </div>
       </div>
-
-      {/* <div className="contents overview width100" id="lms-classroom">
-        <div className="ov-paragraph">          
-          <div className="series-wrap">
-            <h3 className="title-style">
-              <Label className="onlytext bold size24">
-                <Icon className="series" />
-                <span>차수정보</span>
-              </Label>
-            </h3>
-            <TableModal
-              classrooms={lectureClassroom.classrooms}
-              trigger={
-                <Button icon className="right btn-blue">
-                  more <Icon className="morelink" />
-                </Button>
-              }
-            />
-
-            <Table celled>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>차수</Table.HeaderCell>
-                  <Table.HeaderCell>강사</Table.HeaderCell>
-                  <Table.HeaderCell>장소</Table.HeaderCell>
-                  <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
-                  <Table.HeaderCell>시작일 및 종료일</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                {lectureClassroom.classrooms.map(
-                  ({
-                    round,
-                    instructor,
-                    location,
-                    applyingStartDate,
-                    applyingEndDate,
-                    learningStartDate,
-                    learningEndDate,
-                  }) => (
-                    <Table.Row>
-                      <Table.Cell className="num">{round}</Table.Cell>
-                      <Table.Cell className="teacher">
-                        {instructor &&
-                          instructor.map(item => <span>{item.name}</span>)}
-                      </Table.Cell>
-                      <Table.Cell className="location">
-                        <span>{location}</span>
-                      </Table.Cell>
-                      <Table.Cell className="center">
-                        {`${formatDate(applyingStartDate)} ~ ${formatDate(
-                          applyingEndDate
-                        )}`}
-                      </Table.Cell>
-                      <Table.Cell className="center">
-                        {`${formatDate(learningStartDate)} ~ ${formatDate(
-                          learningEndDate
-                        )}`}
-                      </Table.Cell>
-                    </Table.Row>
-                  )
-                )}
-              </Table.Body>
-            </Table>
-          </div>
-        </div>
-      </div> */}
-    </>
+    </div>
   );
 };
 
