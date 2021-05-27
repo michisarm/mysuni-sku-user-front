@@ -24,7 +24,11 @@ import {
   Action,
   Area,
 } from 'tracker/model';
-import { debounce, getElementsByClassName } from 'tracker-react/utils';
+import {
+  debounce,
+  getElementsByClassName,
+  getBrowserString,
+} from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
 
 export async function actionTrack({
@@ -36,15 +40,17 @@ export async function actionTrack({
   area,
   areaId,
   actionType,
+  externalLink,
   action,
   actionName,
   target,
 }: ActionTrackParam) {
   // search setting
   search = search ? decodeURI(search) : '';
-
   // pathname setting
   pathName = path && !pathName ? await getPathName(path, search) : pathName;
+  // browser setting
+  const browser = await getBrowserString();
 
   // field name setting
   let fields = [];
@@ -81,6 +87,7 @@ export async function actionTrack({
     .then(result => {
       const context: ActionContextModel = {
         email,
+        browser,
         path: window.location.origin + path + search,
         pathName: pathName || null,
         areaType: areaType || null,
@@ -105,6 +112,7 @@ export async function actionTrack({
         cubeId: result.find(r => r.type === FieldType.Cube)?.id,
         cubeName: result.find(r => r.type === FieldType.Cube)?.name,
         cubeType: getCubeType(path),
+        externalLink: externalLink || null,
         // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
         // clectureId: getPathKey(path, 'C-LECTURE'),
       };
@@ -141,6 +149,7 @@ export const debounceActionTrack = debounce(
 
 export async function actionTrackView({
   email,
+  browser,
   path,
   pathName,
   search,
@@ -198,6 +207,7 @@ export async function actionTrackView({
     .then(result => {
       const context: ViewContextModel = {
         email,
+        browser,
         path: window.location.origin + path + search,
         pathName: pathName || null,
         referer: referer
@@ -260,6 +270,7 @@ export function scrollHorizontalTrack({
       if (scrollTarget.dataset.actionName) {
         actionName += '::' + scrollTarget.dataset.actionName;
       }
+
       debounceActionTrack({
         email:
           (window.sessionStorage.getItem('email') as string) ||

@@ -7,6 +7,7 @@ import {
   webPageLinked,
 } from '../../service/useActionLog/cubeStudyEvent';
 import { getLectureParams } from '../../store/LectureParamsStore';
+import { ActionType, Action, Area } from 'tracker/model';
 
 interface Props {}
 
@@ -50,6 +51,11 @@ const LectureWebpageView: React.FC<LectureWebpage &
               target="_blank"
               id="webpage-link"
               onClick={action}
+              data-area={Area.CUBE_CONTENT}
+              data-action={Action.CLICK}
+              data-action-type={ActionType.STUDY}
+              data-action-external-link={url}
+              data-action-name="학습하기 클릭"
             >
               {url}
             </a>

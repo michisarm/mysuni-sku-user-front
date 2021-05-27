@@ -265,6 +265,9 @@ function ApprovedELearningView(props: ApprovedViewProps) {
           }
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
+          data-action-external-link={(document.getElementById(
+            'webpage-link'
+          ) as HTMLAnchorElement)?.href?.toString()}
           data-action-name={`${APPROVE} 클릭`}
         >
           {APPROVE}

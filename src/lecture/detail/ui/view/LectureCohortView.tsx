@@ -1,7 +1,7 @@
 import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
-
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
+import { Action, ActionType, Area } from 'tracker/model';
 
 interface Props {
   action?: () => void;
@@ -29,6 +29,11 @@ const LectureCohortView: React.FC<LectureWebpage &
           target="_blank"
           id="webpage-link"
           onClick={action}
+          data-area={Area.CUBE_CONTENT}
+          data-action={Action.CLICK}
+          data-action-type={ActionType.STUDY}
+          data-action-external-link={`${PUBLIC_URL}` + url}
+          data-action-name="학습하기 클릭"
         >
           커뮤니티로 이동
         </a>
