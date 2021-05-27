@@ -21,6 +21,7 @@ spec:
     - 'ma.mysuni.sk.com'
     - 'mysuni.sk.com'
     - 'university.sk.com'
+    - 'int.mysuni.sk.com'
   gateways:
     - skuniv-gateway
   http:
