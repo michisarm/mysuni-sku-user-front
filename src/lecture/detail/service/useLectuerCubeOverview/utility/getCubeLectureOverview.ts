@@ -122,13 +122,24 @@ async function getLectureInstructor(
     cubeContents: { instructors },
   } = cubeDetail;
   const nextInstructors = instructors.slice(0, 0);
-  instructors.forEach(instructor => {
-    if (
-      !nextInstructors.some(c => c.instructorId === instructor.instructorId)
-    ) {
-      nextInstructors.push(instructor);
-    }
-  });
+  instructors
+    .filter(c => c.representative === true)
+    .forEach(instructor => {
+      if (
+        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+      ) {
+        nextInstructors.push(instructor);
+      }
+    });
+  instructors
+    .filter(c => c.representative === false)
+    .forEach(instructor => {
+      if (
+        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+      ) {
+        nextInstructors.push(instructor);
+      }
+    });
   const proimseArray = nextInstructors.map(c => {
     return findInstructorCache(c.instructorId)
       .then(r => {

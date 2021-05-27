@@ -14,7 +14,7 @@ export interface Classroom {
   location: string;
   instructor: {
     instructorId: string;
-    representative: true;
+    representative: boolean;
     round: number;
     name?: string;
     memberSummary?: {

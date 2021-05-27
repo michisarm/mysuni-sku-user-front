@@ -16,7 +16,7 @@ export interface CubeContents {
   id: string;
   instructors: {
     instructorId: string;
-    representative: true;
+    representative: boolean;
     round: number;
     name?: string;
     memberSummary?: {
