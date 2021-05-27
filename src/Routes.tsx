@@ -13,6 +13,7 @@ import {
   actionTrackView,
 } from 'tracker/present/logic/ActionTrackService';
 import NotFoundPage from 'layout/NotFoundPage';
+import { isExternalInstructor } from './shared/helper/findUserRole';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -38,6 +39,17 @@ class Routes extends PureComponent {
       (window.localStorage.getItem('nara.email') as string) ||
       getCookie('tryingLoginId'),
   };
+
+  componentDidMount() {
+    const isExternal = isExternalInstructor();
+
+    if (
+      isExternal &&
+      window.location.pathname !== '/suni-main/community/main'
+    ) {
+      window.location.href = '/suni-main/community/main';
+    }
+  }
 
   render() {
     const { email } = this.state;
