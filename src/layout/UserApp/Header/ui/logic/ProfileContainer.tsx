@@ -155,7 +155,7 @@ class ProfileContainer extends Component<Props, State> {
             {isInstructor && (
               <li>
                 <a
-                  href={`${window.location.origin}/suni-instructor`}
+                  href={`${window.location.origin}/suni-instructor/`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
