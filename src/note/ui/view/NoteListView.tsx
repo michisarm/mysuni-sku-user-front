@@ -18,7 +18,7 @@ import NoteUdo from '../../model/NoteUdo';
 import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
-import { requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
+import { requestCubeListByFolderId, requestNoteCountByFolderId } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
 import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
 
@@ -115,13 +115,20 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
 
+    if (noteCdo.cubeType !== null && (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')) {
+      noteCdo.playTime = '00:00'
+    }
+
     await saveNote(noteCdo, id);
-    await requestCubeList();
+
+    params.pageNo === '2' && await requestCubeListByFolderId();
+    params.pageNo === '1' && await requestCubeList();
+
     // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
 
     setNoteCdoItem(undefined);
     await requestNoteCount();
-  }, [])
+  }, [params.pageNo])
 
   const update = useCallback(async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
     if (noteUdo.content === null || noteUdo.content === '') {
@@ -132,11 +139,12 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
     await saveNote(undefined, id, noteUdo);
-    await requestCubeList();
+    params.pageNo === '2' && await requestCubeListByFolderId();
+    params.pageNo === '1' && await requestCubeList();
     // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
     setNoteUdoItem(undefined);
-  }, [])
+  }, [params.pageNo])
 
   const updateForm = useCallback(async (index: number, note: Note) => {
     if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
@@ -156,12 +164,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       onCancel: () => { return true },
       onOk: async () => {
         await deleteNoteById(id);
-        await requestCubeList();
+        params.pageNo === '2' && await requestCubeListByFolderId();
+        params.pageNo === '1' && await requestCubeList();
         // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
         await requestNoteCount();
       }
     });
-  }, [])
+  }, [params.pageNo])
 
   const handleNote = useCallback((e: any, titleProps: any) => {
     const { index } = titleProps;
@@ -302,7 +311,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         <span className="date">{moment().format('YYYY년 MM월 DD일 작성')}</span>
                       </div>
                       <Form>
-                        <TextArea placeholder="Note 내용을 입력해주세요." value={noteCdoItem.noteCdo?.content} onChange={(e, data) => { data.value && (data.value as string).length < 1001 && setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } }) }} />
+                        <TextArea placeholder="Note 내용을 입력해주세요." value={noteCdoItem.noteCdo?.content} onChange={(e, data) => { (data.value as string).length < 1001 && setNoteCdoItem({ ...noteCdoItem, noteCdo: { ...noteCdoItem.noteCdo, content: data.value as string || '' } }) }} />
                       </Form>
                       <div className="note_btn">
                         {/* <Button className="delete"><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button> */}
@@ -322,7 +331,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     subNoteItem.noteList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}>
                         <div className="note_info">
-                          {subItem.playTime &&
+                          {subItem.playTime && subItem.playTime !== '00:00' &&
                             (
                               <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`} onClick={(e) => submit(subItem.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
@@ -331,8 +340,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                               </Link>
                             )
                           }
-                          {!subItem.playTime && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {!subItem.playTime && `Note ${subNoteItem.noteList.results.length - subIndex}`}
+                          {(!subItem.playTime || subItem.playTime === '00:00') && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {(!subItem.playTime || subItem.playTime === '00:00') && `Note ${subNoteItem.noteList.results.length - subIndex}`}
                           <span className="date">{
                             subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')
@@ -352,7 +361,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         {noteUdoItem && noteUdoItem?.index === subIndex && (
                           <>
                             <Form>
-                              <TextArea placeholder="Note 내용을 입력해주세요." value={noteUdoItem.noteUdo?.content} onChange={(e, data) => data.value && (data.value as string).length < 1001 && setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
+                              <TextArea placeholder="Note 내용을 입력해주세요." value={noteUdoItem.noteUdo?.content} onChange={(e, data) => (data.value as string).length < 1001 && setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
                             </Form>
                             <div className="note_btn">
                               <Button className="delete" onClick={(e, data) => deleteNote(subItem.id, index, item)}><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button>
