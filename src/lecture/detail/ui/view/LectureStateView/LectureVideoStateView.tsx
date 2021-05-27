@@ -228,7 +228,7 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
           }
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
-		  data-action-external-link={media.mediaContents.linkMediaUrl}
+          data-action-external-link={media.mediaContents.linkMediaUrl}
           data-action-name={`${COMPLETE} 클릭`}
         >
           {COMPLETE}
