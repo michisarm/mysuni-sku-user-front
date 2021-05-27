@@ -121,7 +121,15 @@ async function getLectureInstructor(
   const {
     cubeContents: { instructors },
   } = cubeDetail;
-  const proimseArray = instructors.map(c => {
+  const nextInstructors = instructors.slice(0, 0);
+  instructors.forEach(instructor => {
+    if (
+      !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+    ) {
+      nextInstructors.push(instructor);
+    }
+  });
+  const proimseArray = nextInstructors.map(c => {
     return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
@@ -139,7 +147,7 @@ async function getLectureInstructor(
   });
   await Promise.all(proimseArray);
   return {
-    instructors,
+    instructors: nextInstructors,
   };
 }
 
