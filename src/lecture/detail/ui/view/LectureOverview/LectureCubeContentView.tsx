@@ -204,7 +204,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             {lectureClassroom && (
               <LectureClassroomInfoView lectureClassroom={lectureClassroom} />
             )}
-            {lectureInstructor && (
+            {lectureInstructor?.instructors && (
               <LectureClassroomInstructorView
                 lectureInstructor={lectureInstructor}
               />
