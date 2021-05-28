@@ -38,7 +38,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const [subNoteList, setSubNoteList] = useState<NoteListItem[]>([]);
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
-  const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '폴더 미지정', text: '폴더 미지정' }]);
+  const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '0000', text: '폴더미지정' }]);
   const [collegeList, setCollegeList] = useState<CollegeModel[]>();
   const history = useHistory();
   const params = useParams<MyPageRouteParams>();
@@ -58,8 +58,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
   const selectFolder = useCallback((folder: Folder) => {
     const folderSelect: any = [];
+    folderSelect.push({ key: '0000', text: '폴더미지정', value: '0000' });
     if (folder) {
-      folderSelect.push({ key: '0000', text: '폴더미지정', value: '0000' });
       folder.folders.idNames.map((field, index) => {
         folderSelect.push({
           key: index + 1,
@@ -67,8 +67,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
           value: field.id,
         });
       });
-      params.pageNo === '1' && folderSelect.push({ key: 'addFolder', text: '+폴더 만들기', value: 'addFolder' });
     }
+    params.pageNo === '1' && folderSelect.push({ key: 'addFolder', text: '+폴더 만들기', value: 'addFolder' });
     return folderSelect;
   }, []);
 
@@ -149,7 +149,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     setNoteUdoItem(undefined);
   }, [params.pageNo])
 
-  const updateForm = useCallback(async (index: number, note: Note) => {
+  const updateForm = useCallback(async (index: number, note: Note, cubeId?: string) => {
     if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
       reactAlert({
         title: '알림',
@@ -157,7 +157,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       });
       return;
     }
-    setNoteUdoItem(getNoteUdoItem(index, { content: note.content }));
+    setNoteUdoItem(getNoteUdoItem(index, cubeId, { content: note.content }));
   }, [noteCdoItem, noteUdoItem])
 
   const deleteNote = useCallback(async (id: string, index: number, note: Note) => {
@@ -326,7 +326,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                         </span>
                       </div>
                     </div>
-
                   )
                   }
                   {subNoteList && subNoteList.map((subNoteItem, subIndex) => (
@@ -334,7 +333,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     subNoteItem.noteList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} >
                         <div className="note_info">
-                          {subItem.playTime && subItem.playTime !== '00:00' &&
+                          {subItem.playTime &&
                             (
                               <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`} onClick={(e) => submit(subItem.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
@@ -343,26 +342,25 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                               </Link>
                             )
                           }
-                          {(!subItem.playTime || subItem.playTime === '00:00') && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {(!subItem.playTime || subItem.playTime === '00:00') && `Note ${subNoteItem.noteList.results.length - subIndex}`}
+                          {(!subItem.playTime) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {(!subItem.playTime) && `Note ${subNoteItem.noteList.results.length - subIndex}`}
                           <span className="date">{
                             subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')
                           }
                           </span>
                         </div>
-                        {noteUdoItem?.index !== subIndex &&
-                          (
-                            <p className="note"
-                              onClick={(e) => noteUdoItem?.index !== subIndex && updateForm(subIndex, subItem)}
-                              dangerouslySetInnerHTML={{
-                                __html: `${subItem.content.replace('\n', "<br />")}`
-                              }}
-                            />
-                          )
+                        {(noteUdoItem?.index !== subIndex || noteUdoItem?.cubeId !== item.cubeId) && (
+                          <p className="note"
+                            onClick={(e) => updateForm(subIndex, subItem, item.cubeId)}
+                            dangerouslySetInnerHTML={{
+                              __html: `${subItem.content.replace('\n', "<br />")}`
+                            }}
+                          />
+                        )
                         }
 
-                        {noteUdoItem && noteUdoItem?.index === subIndex && (
+                        {noteUdoItem && noteUdoItem?.index === subIndex && noteUdoItem?.cubeId === item.cubeId && (
                           <>
                             <Form>
                               <TextArea placeholder="Note 내용을 입력해주세요." value={noteUdoItem.noteUdo?.content} onChange={(e, data) => (data.value as string).length < 1001 && setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
