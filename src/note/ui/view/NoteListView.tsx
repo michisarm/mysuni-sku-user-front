@@ -334,7 +334,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     subNoteItem.noteList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} >
                         <div className="note_info">
-                          {subItem.playTime &&
+                          {subItem.playTime && (subItem.cubeType === 'Video' || subItem.cubeType === 'Audio') &&
                             (
                               <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`} onClick={(e) => submit(subItem.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
@@ -343,8 +343,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                               </Link>
                             )
                           }
-                          {(!subItem.playTime) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {(!subItem.playTime) && `Note ${subNoteItem.noteList.results.length - subIndex}`}
+                          {(!subItem.playTime || (subItem.cubeType !== 'Video' && subItem.cubeType !== 'Audio')) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {(!subItem.playTime || (subItem.cubeType !== 'Video' && subItem.cubeType !== 'Audio')) && `Note ${subNoteItem.noteList.results.length - subIndex}`}
                           <span className="date">{
                             subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')
