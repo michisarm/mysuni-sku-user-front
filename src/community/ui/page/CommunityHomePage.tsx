@@ -93,9 +93,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
           </h3>
-          {
-            text && ( <p>{text}</p> )
-          }
+          {text && <p>{text}</p>}
         </div>
         <div className="home-card-bottom">
           <span>{createdDate}</span>
@@ -227,18 +225,10 @@ function CommunityHomePage() {
   const communityHome = useCommunityHome();
 
   useEffect(() => {
-    const match = matchPath<Params>(pathname, {
-      path: '/community/:communityId',
-      exact: true,
-    });
-    if (match === null) {
-      return;
-    }
-    const { communityId } = match.params;
-
     requestNotice(communityId);
     requestRecent(communityId);
-  }, [pathname]);
+  }, [communityId]);
+
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   } else {
@@ -251,10 +241,7 @@ function CommunityHomePage() {
 
   return (
     <>
-      <div
-        className="community-home-contants"
-        data-area={Area.COMMUNITY_HOME}
-      >
+      <div className="community-home-contants" data-area={Area.COMMUNITY_HOME}>
         {/* 배너 */}
         <div className="community-banner-type1">
           {communityHome.community.homeType === 'BASIC' && (
