@@ -4,7 +4,7 @@ import {
 import { setFolder } from '../../store/FolderStore';
 import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { getSearchBox } from '../../store/SearchBoxStore';
-import { setNoteList } from '../../store/NoteListStore';
+import { setNoteList, getNoteList } from '../../store/NoteListStore';
 
 
 export function requestFolder() {
@@ -31,8 +31,6 @@ export function requestCubeListByFolderId() {
   });
 }
 
-
-
 export function requestNoteCountByFolderId(folderId: string) {
   if (folderId === '') {
     folderId = '0000'
@@ -40,6 +38,20 @@ export function requestNoteCountByFolderId(folderId: string) {
   return findNoteCountByFolderId(folderId).then(async result => {
     if (result) {
       return result;
+    }
+  });
+}
+
+export function requestAppendCubeListByFolderId() {
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+  if (searchBox.folderId === '') {
+    searchBox.folderId = '0000'
+  }
+  findNoteListByFolderId(searchBox).then(async result => {
+    if (result) {
+      // note or cube 명칭 정리
+      const noteList = getNoteList();
+      noteList && setNoteList({ ...noteList, results: noteList?.results.concat(result.results) });
     }
   });
 }

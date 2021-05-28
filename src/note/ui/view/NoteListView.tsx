@@ -18,7 +18,7 @@ import NoteUdo from '../../model/NoteUdo';
 import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
-import { requestCubeListByFolderId, requestNoteCountByFolderId } from '../../service/useFolder/requestFolder';
+import { requestCubeListByFolderId, requestNoteCountByFolderId, requestAppendCubeListByFolderId } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
 import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
 
@@ -189,7 +189,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const appendNoteList = useCallback(
     async () => {
       searchBox && setSearchBox({ ...searchBox, offset: (searchBox.offset || 0) + (searchBox.limit || 10) });
-      await requestAppendCubeList();
+      params.pageNo === '1' && await requestAppendCubeList();
+      params.pageNo === '2' && await requestAppendCubeListByFolderId();
     },
     [searchBox]
   );

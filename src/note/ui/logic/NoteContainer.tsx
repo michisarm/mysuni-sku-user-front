@@ -4,7 +4,7 @@ import NoteListView from '../view/NoteListView';
 import { requestCubeList, requestColleges, requestNoteCount } from '../../service/useNote/requestNote';
 import { getEmptySearchBox } from '../../model/SearchBox';
 import { useNoteList } from '../../store/NoteListStore';
-import { useSearchBox } from '../../store/SearchBoxStore';
+import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
 import { requestFolder } from '../../service/useFolder/requestFolder';
 import CollegeApi from '../../../college/present/apiclient/CollegeApi';
@@ -23,6 +23,7 @@ const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ not
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = useColleges();
   useEffect(() => {
+    setSearchBox({ ...searchBox, offset: 0 })
     requestCubeList();
     requestFolder();
     requestNoteCount();
@@ -32,9 +33,6 @@ const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ not
 
   return (
     <>
-      {/* {communityHome !== undefined && (
-        <NoteView />
-      )} */}
       {noteList !== undefined && colleges !== undefined && colleges !== undefined && (
         <NoteHeaderView noteList={noteList} searchBox={searchBox} colleges={colleges} noteCount={noteCount} folder={folder} />
       )}
