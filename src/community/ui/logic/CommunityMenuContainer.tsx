@@ -93,6 +93,16 @@ function CommunityMenuContainer() {
                   menuData.menu[index].privateComment = discussionParams.privateComment
                   menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
                   menuData.menu[index].fileBoxId = discussionParams.fileBoxId
+                }else if(item.child && item.child.length > 0){
+                  // 하위메뉴 Disscusion 정보 add
+                  item.child.map((childItem: any, childIdex: number) => {
+                    if(childItem?.id === param.id){
+                      menuData.menu[index].child[childIdex].content = discussionParams.content
+                      menuData.menu[index].child[childIdex].privateComment = discussionParams.privateComment
+                      menuData.menu[index].child[childIdex].relatedUrlList = discussionParams.relatedUrlList
+                      menuData.menu[index].child[childIdex].fileBoxId = discussionParams.fileBoxId
+                    }
+                  })
                 }
               })
             }
@@ -666,6 +676,12 @@ function CommunityMenuContainer() {
             groupId: value === null ? '' : value,
           });
         }
+        // fileboxid add
+        if (type === 'fileBoxId') {
+          // editor state
+          setDiscussRow({ ...discussRow, fileBoxId: value });
+          onChangeValue(selectedRow, 'fileBoxId')
+        }
       }
     },
     [discussRow, selectedRow]
@@ -700,7 +716,8 @@ function CommunityMenuContainer() {
   const onAddFileBoxId = useCallback(
     (depotId: string) => {
       if (discussRow) {
-        setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        // setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        onChangeDiscussValue(depotId, 'fileBoxId')
       }
     },
     [discussRow]
