@@ -11,6 +11,7 @@ import CollegeApi from '../../../college/present/apiclient/CollegeApi';
 import FolderHeaderView from '../view/FolderHeaderView';
 import { useNoteCount } from '../../store/NoteCountStore';
 import { useColleges } from '../../store/CollegesStore';
+import { useFolderNoteCount } from '../../store/FolderNoteCountStore';
 
 interface FolderContainerProps {
   noteCount: number;
@@ -21,6 +22,7 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = useColleges();
+  const folderNoteCount = useFolderNoteCount();
 
   useEffect(() => {
     setSearchBox({ ...searchBox, offset: 0 })
@@ -37,7 +39,7 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
         <NoteView />
       )} */}
       {noteList !== undefined && colleges !== undefined && (
-        <FolderHeaderView noteList={noteList} folder={folder} noteCount={noteCount} />
+        <FolderHeaderView noteList={noteList} folder={folder} noteCount={noteCount} folderNoteCount={folderNoteCount} />
       )}
 
       {noteList !== undefined && colleges !== undefined && (

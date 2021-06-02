@@ -5,6 +5,7 @@ import { setFolder } from '../../store/FolderStore';
 import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
+import { setFolderNoteCount } from '../../store/FolderNoteCountStore';
 
 
 export function requestFolder() {
@@ -31,12 +32,16 @@ export function requestCubeListByFolderId() {
   });
 }
 
-export function requestNoteCountByFolderId(folderId: string) {
-  if (folderId === '') {
-    folderId = '0000'
+export function requestNoteCountByFolderId() {
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  if (searchBox.folderId === '') {
+    searchBox.folderId = '0000'
   }
-  return findNoteCountByFolderId(folderId).then(async result => {
+
+  return findNoteCountByFolderId(searchBox.folderId || '0000').then(async result => {
     if (result) {
+      setFolderNoteCount(result);
       return result;
     }
   });

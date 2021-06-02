@@ -97,7 +97,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
       reactAlert({
         title: '알림',
-        message: '편집 중인 Note 내용을 저장해주세요.',
+        message: '작성 중인 노트를 저장해주세요',
       });
       return;
     }
@@ -116,7 +116,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     }
 
     if (noteCdo.cubeType !== null && (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')) {
-      noteCdo.playTime = '00:00'
+      noteCdo.playTime = '00:00:00'
     }
 
     await saveNote(noteCdo, id);
@@ -127,6 +127,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
 
     setNoteCdoItem(undefined);
+    params.pageNo === '2' && await requestNoteCountByFolderId();
     await requestNoteCount();
   }, [params.pageNo])
 
@@ -153,7 +154,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
       reactAlert({
         title: '알림',
-        message: '편집 중인 Note 내용을 저장해주세요.',
+        message: '작성 중인 노트를 저장해주세요',
       });
       return;
     }
@@ -170,6 +171,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
         params.pageNo === '2' && await requestCubeListByFolderId();
         params.pageNo === '1' && await requestCubeList();
         // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+        params.pageNo === '2' && await requestNoteCountByFolderId();
         await requestNoteCount();
       }
     });

@@ -16,9 +16,10 @@ interface FolderHeaderViewProps {
   noteList: OffsetElementList<Note>;
   folder: Folder | undefined;
   noteCount: number;
+  folderNoteCount: number | undefined;
 }
 
-const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderView({ noteList, folder, noteCount }) {
+const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderView({ noteList, folder, folderNoteCount }) {
 
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -29,7 +30,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   const [editFolderOriginName, setEditFolderOriginName] = useState<string>('폴더미지정');
   const [editFolder, setEditFolder] = useState<boolean>(false);
   const [originFolder, setOriginFolder] = useState<Folder | undefined>();
-  const [folerNoteCount, setFolerNoteCount] = useState<number>(0);
+  // const [folerNoteCount, setFolerNoteCount] = useState<number>(0);
 
 
   const [activeFolderId, setActiveFolderId] = useState<string>('');
@@ -171,13 +172,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
     setSearchBox({ offset: 0, limit: 10, folderId: editFolderId })
     findCubeListByFolderId();
 
-    requestNoteCountByFolderId(editFolderId).then(async result => {
-      if (result) {
-        setFolerNoteCount(result);
-      } else {
-        setFolerNoteCount(0);
-      }
-    });
+    requestNoteCountByFolderId();
 
   }, [editFolderId]);
 
@@ -261,7 +256,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                   {editFolderId !== '' && <Button className="btn_setting" onClick={(e, data) => { setEditFolder(true) }}><Icon /></Button>}
                 </strong>
                 <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
-                <span className="tit_cnt">총 <strong>{folerNoteCount}개의 Note</strong></span>
+                <span className="tit_cnt">총 <strong>{folderNoteCount}개의 Note</strong></span>
               </div>
             )
           }

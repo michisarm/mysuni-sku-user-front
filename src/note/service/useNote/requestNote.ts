@@ -94,7 +94,7 @@ export function requestNoteCount(flag?: string) {
   return findNoteCount(flag && flag === 'searchBox' ? searchBox : undefined).then(async result => {
     if (result) {
       // setNoteList(result);
-      setNoteCount(result);
+      !flag && setNoteCount(result);
       return result;
     }
   });
