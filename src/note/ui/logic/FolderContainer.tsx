@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import NoteHeaderView from '../view/NoteHeaderView';
+import React, { useEffect } from 'react';
 import NoteListView from '../view/NoteListView';
-import { requestCubeList, requestColleges, requestNoteCount } from '../../service/useNote/requestNote';
+import { requestColleges } from '../../service/useNote/requestNote';
 import { getEmptySearchBox } from '../../model/SearchBox';
-import { useNoteList } from '../../store/NoteListStore';
 import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
-import { requestFolder, requestCubeListByFolderId } from '../../service/useFolder/requestFolder';
-import CollegeApi from '../../../college/present/apiclient/CollegeApi';
+import { requestFolder, requestCubeListByFolderId, requestNoteCountByFolderId } from '../../service/useFolder/requestFolder';
 import FolderHeaderView from '../view/FolderHeaderView';
-import { useNoteCount } from '../../store/NoteCountStore';
 import { useColleges } from '../../store/CollegesStore';
 import { useFolderNoteCount } from '../../store/FolderNoteCountStore';
+import { useNoteWithLectureList } from '../../store/NoteWithLectureListStore';
 
 interface FolderContainerProps {
   noteCount: number;
 }
 const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer({ noteCount }) {
 
-  const noteList = useNoteList();
+  const noteList = useNoteWithLectureList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = useColleges();
@@ -28,16 +25,12 @@ const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer
     setSearchBox({ ...searchBox, offset: 0 })
     requestCubeListByFolderId();
     requestFolder();
-    requestNoteCount();
+    requestNoteCountByFolderId();
     requestColleges();
-    // findAllColleges()
   }, []);
 
   return (
     <>
-      {/* {communityHome !== undefined && (
-        <NoteView />
-      )} */}
       {noteList !== undefined && colleges !== undefined && (
         <FolderHeaderView noteList={noteList} folder={folder} noteCount={noteCount} folderNoteCount={folderNoteCount} />
       )}

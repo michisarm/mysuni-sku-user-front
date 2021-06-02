@@ -21,9 +21,12 @@ import { CollegeModel } from '../../../college/model/CollegeModel';
 import { requestCubeListByFolderId, requestNoteCountByFolderId, requestAppendCubeListByFolderId } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
 import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
+import NoteWithLectureListItem, { getNoteWithLectureListItem } from '../../viewModel/NoteWithLectureListItem';
+import NoteWithLecture from '../../model/NoteWithLecture';
+import { setNoteCount, getNoteCount } from '../../store/NoteCountStore';
 
 interface NoteViewProps {
-  noteList: OffsetElementList<Note>;
+  noteList: OffsetElementList<NoteWithLecture>;
   searchBox: SearchBox;
   folder: Folder | undefined;
   colleges: CollegeModel[];
@@ -35,7 +38,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
   const [activeIndexList, setActiveIndexList] = useState<number[]>([-1]);
-  const [subNoteList, setSubNoteList] = useState<NoteListItem[]>([]);
+  const [subNoteList, setSubNoteList] = useState<NoteWithLectureListItem[]>([]);
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<{ key: number, value: string, text: string }[]>([{ key: 0, value: '0000', text: '폴더미지정' }]);
@@ -87,12 +90,12 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     });
 
     const noteList = await requestNoteList();
-    noteList && setSubNoteList(subNoteList?.filter(f => { if (f.index !== index) { return f } }).concat([getNoteListItem(index, noteList)]));
+    noteList && setSubNoteList(subNoteList?.filter(f => { if (f.index !== index) { return f } }).concat([getNoteWithLectureListItem(index, noteList)]));
     setNoteUdoItem(undefined);
     setNoteCdoItem(undefined);
   }, [subNoteList, searchBox])
 
-  const writeNote = useCallback(async (index: number, note: Note) => {
+  const writeNote = useCallback(async (index: number, noteWithLecture: NoteWithLecture) => {
 
     if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
       reactAlert({
@@ -102,7 +105,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
 
-    setNoteCdoItem(getNoteCdoItem(index, convertNoteToNoteCdo(note)));
+    setNoteCdoItem(getNoteCdoItem(index, convertNoteToNoteCdo(noteWithLecture.note)));
   }, [noteCdoItem, noteUdoItem])
 
   const save = useCallback(async (noteCdo: NoteCdo, id: string, index: number) => {
@@ -128,7 +131,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
 
     setNoteCdoItem(undefined);
     params.pageNo === '2' && await requestNoteCountByFolderId();
-    await requestNoteCount();
+    // await requestNoteCount();
+    const noteCount = getNoteCount() || 0;
+    setNoteCount(noteCount + 1);
   }, [params.pageNo])
 
   const update = useCallback(async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
@@ -172,7 +177,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
         params.pageNo === '1' && await requestCubeList();
         // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
         params.pageNo === '2' && await requestNoteCountByFolderId();
-        await requestNoteCount();
+
+        // await requestNoteCount();
+        const noteCount = getNoteCount() || 0;
+        noteCount > 0 && setNoteCount(noteCount - 1);
+
       }
     });
   }, [params.pageNo])
@@ -268,17 +277,17 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
             {/* 노트 타이틀 */}
             < div className="note_title" >
               <div className="tit">
-                <Label color={getColor(item.collegeId)}>{collegeList && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.collegeId) { return f } })[0].name}</Label>
-                <strong className="header">{item.cardName}</strong>
-                <Link className="time" to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}>
+                <Label color={getColor(item.lectureRom.collegeId)}>{collegeList && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } })[0].name}</Label>
+                <strong className="header">{item.lectureRom.cardName}</strong>
+                <Link className="time" to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}>
                   <p>
-                    {item.cubeName}
+                    {item.lectureRom.cubeName}
                   </p>
                 </Link>
               </div>
 
               <div className="option_box">
-                <Select placeholder="폴더 미지정" options={folderOptions} value={item.folderId} onChange={(e, data) => changeFolder(item.cardId, item.cubeId, data.value as string)} />
+                <Select placeholder="폴더 미지정" options={folderOptions} value={item.note.folderId} onChange={(e, data) => changeFolder(item.note.cardId, item.note.cubeId, data.value as string)} />
               </div>
             </div>
             {/* 노트 펼치기/숨기기 */}
@@ -289,7 +298,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                 index={index}
                 onClick={(e, title) => {
                   if (activeIndexList?.find(f => f === index) === undefined) {
-                    searchNoteByCubeId(index, item.cubeId, item.cardId);
+                    searchNoteByCubeId(index, item.note.cubeId, item.note.cardId);
                   }
                   handleNote(e, title);
                 }
@@ -306,7 +315,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                 <div className="note_content">
                   <div className="note_content_total">
                     <strong className="txt">작성한 노트</strong>
-                    <span className="cnt">{subNoteList?.map(f => f.index === index && f.noteList.results.length)}개</span>
+                    <span className="cnt">{subNoteList?.map(f => f.index === index && f.noteWithLectureList.results.length)}개</span>
 
                     {/* 노트 작성 시작하게되면 폰트 색상 및 아이콘 변경이 있습니다.  active 클래스 추가될 경우 폰트 색상(회색--> 청록색 ) 변경됩니다 */}
                     <Button className="btn_write" onClick={() => writeNote(index, item)}><Icon /><span>Note</span></Button>
@@ -322,7 +331,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                       <div className="note_btn">
                         {/* <Button className="delete"><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button> */}
                         <Button className="cancel" onClick={(e, data) => setNoteCdoItem(undefined)}>취소</Button>
-                        <Button className="save" onClick={(e, data) => noteCdoItem.noteCdo && save(noteCdoItem.noteCdo, item.id, index)}>저장</Button>
+                        <Button className="save" onClick={(e, data) => noteCdoItem.noteCdo && save(noteCdoItem.noteCdo, item.note.id, index)}>저장</Button>
                         <span className="txt_cnt">
                           <span className="txt_now">{noteCdoItem.noteCdo?.content?.length || '0'}</span>
                         /<span>1000</span>
@@ -333,45 +342,45 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                   }
                   {subNoteList && subNoteList.map((subNoteItem, subIndex) => (
                     subNoteItem.index === index &&
-                    subNoteItem.noteList.results.map((subItem, subIndex) => (
+                    subNoteItem.noteWithLectureList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} >
                         <div className="note_info">
-                          {subItem.playTime && (subItem.cubeType === 'Video' || subItem.cubeType === 'Audio') &&
+                          {subItem.note.playTime && (subItem.note.cubeType === 'Video' || subItem.note.cubeType === 'Audio') &&
                             (
-                              <Link className="time" to={`/lecture/card/${subItem.cardId}/cube/${subItem.cubeId}/view/${subItem.cubeType}`} onClick={(e) => submit(subItem.playTime)}>
+                              <Link className="time" to={`/lecture/card/${subItem.note.cardId}/cube/${subItem.note.cubeId}/view/${subItem.note.cubeType}`} onClick={(e) => submit(subItem.note.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
-                                {subItem.playTime}
+                                {subItem.note.playTime}
                                 <Icon className="icongo"><Image src={`${PUBLIC_URL}/images/all/icon-go-a.svg`} /></Icon>
                               </Link>
                             )
                           }
-                          {(!subItem.playTime || (subItem.cubeType !== 'Video' && subItem.cubeType !== 'Audio')) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {(!subItem.playTime || (subItem.cubeType !== 'Video' && subItem.cubeType !== 'Audio')) && `Note ${subNoteItem.noteList.results.length - subIndex}`}
+                          {(!subItem.note.playTime || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {(!subItem.note.playTime || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && `Note ${subNoteItem.noteWithLectureList.results.length - subIndex}`}
                           <span className="date">{
-                            subItem.updateDate !== 0 ? moment(subItem.updateDate).format('YYYY년 MM월 DD일 편집') :
-                              subItem.createDate && moment(subItem.createDate).format('YYYY년 MM월 DD일 작성')
+                            subItem.note.updateDate !== 0 ? moment(subItem.note.updateDate).format('YYYY년 MM월 DD일 편집') :
+                              subItem.note.createDate && moment(subItem.note.createDate).format('YYYY년 MM월 DD일 작성')
                           }
                           </span>
                         </div>
-                        {(noteUdoItem?.index !== subIndex || noteUdoItem?.cubeId !== item.cubeId) && (
+                        {(noteUdoItem?.index !== subIndex || noteUdoItem?.cubeId !== item.note.cubeId) && (
                           <p className="note"
-                            onClick={(e) => updateForm(subIndex, subItem, item.cubeId)}
+                            onClick={(e) => updateForm(subIndex, subItem.note, item.note.cubeId)}
                             dangerouslySetInnerHTML={{
-                              __html: `${subItem.content.replace('\n', "<br />")}`
+                              __html: `${subItem.note.content.replace('\n', "<br />")}`
                             }}
                           />
                         )
                         }
 
-                        {noteUdoItem && noteUdoItem?.index === subIndex && noteUdoItem?.cubeId === item.cubeId && (
+                        {noteUdoItem && noteUdoItem?.index === subIndex && noteUdoItem?.cubeId === item.note.cubeId && (
                           <>
                             <Form>
                               <TextArea placeholder="Note 내용을 입력해주세요." value={noteUdoItem.noteUdo?.content} onChange={(e, data) => (data.value as string).length < 1001 && setNoteUdoItem({ ...noteUdoItem, noteUdo: { ...noteUdoItem.noteUdo, content: data.value as string || '' } })} />
                             </Form>
                             <div className="note_btn">
-                              <Button className="delete" onClick={(e, data) => deleteNote(subItem.id, index, item)}><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button>
+                              <Button className="delete" onClick={(e, data) => deleteNote(subItem.note.id, index, item.note)}><Image src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`} /></Button>
                               <Button className="cancel" onClick={(e, data) => setNoteUdoItem(undefined)}>취소</Button>
-                              <Button className="save" onClick={(e, data) => noteUdoItem.noteUdo && update(noteUdoItem.noteUdo, subItem.id, index, subItem)}>저장</Button>
+                              <Button className="save" onClick={(e, data) => noteUdoItem.noteUdo && update(noteUdoItem.noteUdo, subItem.note.id, index, subItem.note)}>저장</Button>
                               <span className="txt_cnt">
                                 <span className="txt_now">{noteUdoItem.noteUdo?.content?.length || '0'}</span>
                         /<span>1000</span>

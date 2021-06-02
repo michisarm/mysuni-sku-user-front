@@ -20,9 +20,10 @@ import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import XLSX from 'xlsx';
 import { convertNoteToNoteXlsxModel, NoteXlsxModel } from '../../viewModel/NoteXlsxModel';
+import NoteWithLecture from '../../model/NoteWithLecture';
 
 interface NoteHeaderViewProps {
-  noteList: OffsetElementList<Note>;
+  noteList: OffsetElementList<NoteWithLecture>;
   searchBox: SearchBox;
   colleges: CollegeModel[];
   noteCount: number;

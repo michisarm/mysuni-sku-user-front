@@ -11,9 +11,10 @@ import { requestNoteCount } from '../../service/useNote/requestNote';
 import { setSearchBox } from '../../store/SearchBoxStore';
 import { deleteFolder } from '../../api/noteApi';
 import Note from '../../model/Note';
+import NoteWithLecture from '../../model/NoteWithLecture';
 
 interface FolderHeaderViewProps {
-  noteList: OffsetElementList<Note>;
+  noteList: OffsetElementList<NoteWithLecture>;
   folder: Folder | undefined;
   noteCount: number;
   folderNoteCount: number | undefined;
@@ -256,7 +257,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                   {editFolderId !== '' && <Button className="btn_setting" onClick={(e, data) => { setEditFolder(true) }}><Icon /></Button>}
                 </strong>
                 <span className="tit_cnt">총 <strong>{noteList.results.length}개의 학습과정</strong></span>
-                <span className="tit_cnt">총 <strong>{folderNoteCount}개의 Note</strong></span>
+                <span className="tit_cnt">총 <strong>{folderNoteCount || 0}개의 Note</strong></span>
               </div>
             )
           }

@@ -15,11 +15,13 @@ import { setNoteCount } from '../../store/NoteCountStore';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import moment from 'moment';
 import { setColleges } from '../../store/CollegesStore';
+import { setNoteWithLecture } from '../../store/NoteWithLectureStore';
+import { setNoteWithLectureList, getNoteWithLectureList } from '../../store/NoteWithLectureListStore';
 
 export function requestNote(noteId: string) {
   findNoteById(noteId).then(async result => {
     if (result) {
-      setNote(result);
+      setNoteWithLecture(result);
     }
   });
 }
@@ -48,8 +50,7 @@ export function requestCubeList() {
 
   findCubeList(searchBox).then(async result => {
     if (result) {
-      // note or cube 명칭 정리
-      setNoteList(result);
+      setNoteWithLectureList(result);
     }
   });
 }
@@ -60,8 +61,8 @@ export function requestAppendCubeList() {
   findCubeList(searchBox).then(async result => {
     if (result) {
       // note or cube 명칭 정리
-      const noteList = getNoteList();
-      noteList && setNoteList({ ...noteList, results: noteList?.results.concat(result.results) });
+      const noteWithLectureList = getNoteWithLectureList();
+      noteWithLectureList && setNoteWithLectureList({ ...noteWithLectureList, results: noteWithLectureList?.results.concat(result.results) });
     }
   });
 }
@@ -99,35 +100,3 @@ export function requestNoteCount(flag?: string) {
     }
   });
 }
-
-
-// export function requestNote(noteId: string) {
-//   findNoteById(noteId).then(async result => {
-//     if (result) {
-//       setNote(result);
-//     }
-//   });
-// }
-
-
-// export function requestCommunity(communityId: string) {
-//   findCommunityView(communityId).then(async community => {
-//     await findNoticePostViews(communityId,'createdTime',0,1,true).then((recentNotice) => { // 공지사항메뉴에 New 표시를 위해 최근 공지 게시글 조회
-//       if (community !== undefined && recentNotice !== undefined && recentNotice.results.length > 0) {
-//         community.lastNoticePostTime = recentNotice?.results[0].createdTime;
-//       }
-//     });
-//     const communityHome = getCommunityHome() || getEmptyCommunityHome();
-//     setCommunityHome({ ...communityHome, community });
-//   });
-// }
-
-// export function requestCommunityMenus(communityId: string) {
-//   findMyMenus(communityId).then(menus => {
-//     const communityHome = getCommunityHome() || getEmptyCommunityHome();
-//     setCommunityHome({
-//       ...communityHome,
-//       menus: menus === undefined ? [] : menus,
-//     });
-//   });
-// }

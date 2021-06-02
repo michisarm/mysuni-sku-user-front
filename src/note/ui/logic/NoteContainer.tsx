@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import NoteHeaderView from '../view/NoteHeaderView';
 import NoteListView from '../view/NoteListView';
 import { requestCubeList, requestColleges, requestNoteCount } from '../../service/useNote/requestNote';
 import { getEmptySearchBox } from '../../model/SearchBox';
-import { useNoteList } from '../../store/NoteListStore';
 import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
 import { requestFolder } from '../../service/useFolder/requestFolder';
-import CollegeApi from '../../../college/present/apiclient/CollegeApi';
-import { useNoteCount } from '../../store/NoteCountStore';
 import { useColleges } from '../../store/CollegesStore';
-import { CollegeModel } from '../../../college/model';
+import { useNoteWithLectureList } from '../../store/NoteWithLectureListStore';
 
 interface NoteContainerProps {
   noteCount: number;
 }
 const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ noteCount }) {
-  // const { communityId } = useParams<Params>();
-  // const communityHome = useCommunityHomeCreateItem()||getEmptyCommunityHomeCreateItem(communityId);
-  const noteList = useNoteList();
+
+  const noteList = useNoteWithLectureList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = useColleges();
@@ -28,7 +24,6 @@ const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({ not
     requestFolder();
     requestNoteCount();
     requestColleges();
-    // findAllColleges()
   }, []);
 
   return (

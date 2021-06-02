@@ -6,6 +6,7 @@ import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
 import { setFolderNoteCount } from '../../store/FolderNoteCountStore';
+import { setNoteWithLectureList, getNoteWithLectureList } from '../../store/NoteWithLectureListStore';
 
 
 export function requestFolder() {
@@ -27,7 +28,7 @@ export function requestCubeListByFolderId() {
   findNoteListByFolderId(searchBox).then(async result => {
     if (result) {
       // note or cube 명칭 정리
-      setNoteList(result);
+      setNoteWithLectureList(result);
     }
   });
 }
@@ -40,10 +41,7 @@ export function requestNoteCountByFolderId() {
   }
 
   return findNoteCountByFolderId(searchBox.folderId || '0000').then(async result => {
-    if (result) {
-      setFolderNoteCount(result);
-      return result;
-    }
+    await setFolderNoteCount(result);
   });
 }
 
@@ -55,8 +53,8 @@ export function requestAppendCubeListByFolderId() {
   findNoteListByFolderId(searchBox).then(async result => {
     if (result) {
       // note or cube 명칭 정리
-      const noteList = getNoteList();
-      noteList && setNoteList({ ...noteList, results: noteList?.results.concat(result.results) });
+      const noteList = getNoteWithLectureList();
+      noteList && setNoteWithLectureList({ ...noteList, results: noteList?.results.concat(result.results) });
     }
   });
 }
