@@ -9,7 +9,7 @@ import {
 import { getLectureParams } from '../../store/LectureParamsStore';
 import { ActionType, Action, Area } from 'tracker/model';
 
-interface Props {}
+interface Props { }
 
 function action() {
   const lectureParams = getLectureParams();
@@ -24,46 +24,46 @@ function action() {
 
 const LectureWebpageView: React.FC<LectureWebpage &
   Props> = function LectureWebpageView({
-  title,
-  description,
-  image,
-  url,
-  urlType,
-}) {
-  return (
-    <>
-      {urlType === 'embedded' && (
-        <iframe
-          className="iframe-area"
-          src={url}
-          style={{ width: '990px', height: '630px' }}
-        />
-      )}
-      {urlType !== 'embedded' && (
-        <div className="lms-open-graph">
-          <img src={image ? image : DefaultImg} className="lms-open-image" />
-          <div className="lms-open-con">
-            <div className="lms-open-title">{title}</div>
-            <div className="lms-open-copy">{description}</div>
-            <a
-              href={url}
-              className="lms-open-link"
-              target="_blank"
-              id="webpage-link"
-              onClick={action}
-              data-area={Area.CUBE_CONTENT}
-              data-action={Action.CLICK}
-              data-action-type={ActionType.STUDY}
-              data-action-external-link={url}
-              data-action-name="학습하기 클릭"
-            >
-              {url}
-            </a>
+    title,
+    description,
+    image,
+    url,
+    urlType,
+  }) {
+    return (
+      <>
+        {urlType === 'embedded' && (
+          <div className="iframe-area">
+            <iframe
+              src={url}
+            />
           </div>
-        </div>
-      )}
-    </>
-  );
-};
+        )}
+        {urlType !== 'embedded' && (
+          <div className="lms-open-graph">
+            <img src={image ? image : DefaultImg} className="lms-open-image" />
+            <div className="lms-open-con">
+              <div className="lms-open-title">{title}</div>
+              <div className="lms-open-copy">{description}</div>
+              <a
+                href={url}
+                className="lms-open-link"
+                target="_blank"
+                id="webpage-link"
+                onClick={action}
+                data-area={Area.CUBE_CONTENT}
+                data-action={Action.CLICK}
+                data-action-type={ActionType.STUDY}
+                data-action-external-link={url}
+                data-action-name="학습하기 클릭"
+              >
+                {url}
+              </a>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  };
 
 export default LectureWebpageView;
