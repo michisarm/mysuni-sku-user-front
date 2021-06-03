@@ -85,14 +85,24 @@ function CommunityMenuContainer() {
 
             //메뉴데이터 토론하기 메뉴 데이터 세팅으로 추가됨
             const menuData = getCommunityAdminMenu()
-            if(menuData) {
+            if (menuData) {
               menuData.menu.map((item, index) => {
-                if(item.id === param.id) {
+                if (item.id === param.id) {
                   // menuData.menu[index].type = discussionParams.type
                   menuData.menu[index].content = discussionParams.content
                   menuData.menu[index].privateComment = discussionParams.privateComment
                   menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
                   menuData.menu[index].fileBoxId = discussionParams.fileBoxId
+                }else if(item.child && item.child.length > 0){
+                  // 하위메뉴 Disscusion 정보 add
+                  item.child.map((childItem: any, childIdex: number) => {
+                    if(childItem?.id === param.id){
+                      menuData.menu[index].child[childIdex].content = discussionParams.content
+                      menuData.menu[index].child[childIdex].privateComment = discussionParams.privateComment
+                      menuData.menu[index].child[childIdex].relatedUrlList = discussionParams.relatedUrlList
+                      menuData.menu[index].child[childIdex].fileBoxId = discussionParams.fileBoxId
+                    }
+                  })
                 }
               })
             }
@@ -185,12 +195,12 @@ function CommunityMenuContainer() {
         ? communityAdminMenu?.menu.length === 0
           ? 1
           : communityAdminMenu.menu
-              .map(m => {
-                return m.child ? m.child.length : 0;
-              })
-              .reduce((r, c) => r + c) +
-            communityAdminMenu!.menu.length +
-            1
+            .map(m => {
+              return m.child ? m.child.length : 0;
+            })
+            .reduce((r, c) => r + c) +
+          communityAdminMenu!.menu.length +
+          1
         : 1,
       parentId: null,
       patronKey: '',
@@ -243,8 +253,8 @@ function CommunityMenuContainer() {
               return m.child ? m.child.length : 0;
             })
             .reduce((r, c) => r + c) +
-            communityAdminMenu!.menu.length +
-            1,
+          communityAdminMenu!.menu.length +
+          1,
         parentId: null,
         patronKey: '',
         type: 'BASIC',
@@ -407,14 +417,14 @@ function CommunityMenuContainer() {
                 };
               }
             }
-            if (item2.name === 'groupId') {
-              if (!item2.value) {
-                return {
-                  state: false,
-                  text: item.order + 3 + '번째 메뉴의 그룹을 지정해주세요.',
-                };
-              }
-            }
+            // if (item2.name === 'groupId') {
+            //   if (item2.value !== '') {
+            //     return {
+            //       state: false,
+            //       text: item.order + 3 + '번째 메뉴의 그룹을 지정해주세요.',
+            //     };
+            //   }
+            // }
             if (item2.name === 'url') {
               if (!item2.value) {
                 return item.order + 3 + '번째 메뉴의 URL를 지정해주세요.';
@@ -494,20 +504,22 @@ function CommunityMenuContainer() {
                 return m.child ? m.child.length : 0;
               })
               .reduce((r, c) => r + c) +
-              communityAdminMenu!.menu.length +
-              1;
+            communityAdminMenu!.menu.length +
+            1;
         }
         const validateCheck = confirmBlank(obj);
         if (validateCheck === 'success') {
           if (obj.type === 'DISCUSSION' || obj.type === 'ANODISCUSSION') {
             const discusstionParams = {
+              ...discussRow,
               accessType: obj.accessType,
               order: obj.order,
               discussionTopic: obj.discussionTopic,
               type: obj.type,
               name: obj.name,
-              ...discussRow,
+              content: obj.content,
             };
+            
             addCommunityDiscussion(communityId, discusstionParams).then(
               result => {
                 //오더정리
@@ -555,8 +567,8 @@ function CommunityMenuContainer() {
                     return m.child ? m.child.length : 0;
                   })
                   .reduce((r, c) => r + c) +
-                  communityAdminMenu!.menu.length +
-                  1;
+                communityAdminMenu!.menu.length +
+                1;
             }
           }
         });
@@ -645,7 +657,7 @@ function CommunityMenuContainer() {
             ...discussRow,
             relatedUrlList: value,
           });
-          if(selectedRow){
+          if (selectedRow) {
             selectedRow.relatedUrlList = value
           }
           onChangeValue(selectedRow, 'urlDelete')
@@ -665,6 +677,12 @@ function CommunityMenuContainer() {
             ...discussRow,
             groupId: value === null ? '' : value,
           });
+        }
+        // fileboxid add
+        if (type === 'fileBoxId') {
+          // editor state
+          setDiscussRow({ ...discussRow, fileBoxId: value });
+          onChangeValue(selectedRow, 'fileBoxId')
         }
       }
     },
@@ -700,7 +718,8 @@ function CommunityMenuContainer() {
   const onAddFileBoxId = useCallback(
     (depotId: string) => {
       if (discussRow) {
-        setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        // setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        onChangeDiscussValue(depotId, 'fileBoxId')
       }
     },
     [discussRow]
@@ -742,11 +761,32 @@ function CommunityMenuContainer() {
         type: value.type,
       };
 
+      // if (value[nameValue] === 'COMMUNITY_GROUP' && nameValue === 'accessType') {
+      //   const groupValuesArr = {
+      //     id: value.id,
+      //     name: 'groupId',
+      //     value: value.groupId,
+      //     order: value.order,
+      //     type: value.type,
+      //   };
+      //   nameValuesArr.push(groupValuesArr);
+      // }else if (value[nameValue] === 'COMMUNITY_ALL_MEMBER' && nameValue === 'accessType') {
+      //   const groupValuesArr = {
+      //     id: value.id,
+      //     name: 'groupId',
+      //     value: null,
+      //     order: value.order,
+      //     type: value.type,
+      //   };
+      //   nameValuesArr.push(groupValuesArr);
+      // }
+
       nameValues.map((item: any, index: any) => {
         if (item.id === value.id && item.name === nameValue) {
           nameValues.splice(index, 1);
         }
       });
+      
       nameValuesArr.push(ValuesArr);
       setNameValues(nameValuesArr);
 
@@ -797,16 +837,16 @@ function CommunityMenuContainer() {
     const originOrder = selectedRow.order;
     const list = selectedRow?.parentId
       ? communityAdminMenu?.menu
-          .filter(m => {
-            if (m.id === selectedRow?.parentId) {
-              return m.child;
-            }
-          })[0]
-          .child.filter((c: any) => c.order > selectedRow.order)
-          .sort((a: any, b: any) => a.order - b.order)
+        .filter(m => {
+          if (m.id === selectedRow?.parentId) {
+            return m.child;
+          }
+        })[0]
+        .child.filter((c: any) => c.order > selectedRow.order)
+        .sort((a: any, b: any) => a.order - b.order)
       : communityAdminMenu?.menu
-          .filter(c => c.parentId === null && c.order > selectedRow.order)
-          .sort((a, b) => a.order - b.order);
+        .filter(c => c.parentId === null && c.order > selectedRow.order)
+        .sort((a, b) => a.order - b.order);
 
     let currentIdx: number = 0;
     if (list && list.length === 0) {
@@ -854,10 +894,16 @@ function CommunityMenuContainer() {
 
                   const orderFlag: boolean[] = [];
                   const parentFlag: boolean[] = [];
+                  // const groupFlag: boolean[] = [];
+
                   nameValuesArr.map((item, index) => {
                     if (item.id === item2.id && item.name === 'order') {
                       item.value = add;
                       orderFlag.push(true);
+
+                      // if (item2.groupId) {
+                      //   groupFlag.push(true);
+                      // }
                     }
 
                     if (item.id === item2.id && item.name === 'parentId') {
@@ -881,6 +927,14 @@ function CommunityMenuContainer() {
                       value: item2.parentId,
                     });
                   }
+                  
+                  // if (groupFlag.indexOf(true)) {
+                  //   nameValuesArr.push({
+                  //     id: selectedRow.id,
+                  //     name: 'groupId',
+                  //     value: item2.groupId,
+                  //   });
+                  // }
                   communityAdminMenu.menu[index].child[index2].order = add;
                 }
               });
@@ -909,23 +963,12 @@ function CommunityMenuContainer() {
       list &&
       (selectedRow?.parentId
         ? communityAdminMenu?.menu
-            .filter(m => {
-              if (m.id === selectedRow?.parentId) {
-                return m.child;
-              }
-            })[0]
-            .child.map((m: any) => {
-              if (m.id === list[0].id) {
-                m.order = originOrder;
-              }
-
-              if (m.id === selectedRow.id) {
-                m.order = nextOrder;
-              }
-
-              return m;
-            })
-        : communityAdminMenu?.menu.map(m => {
+          .filter(m => {
+            if (m.id === selectedRow?.parentId) {
+              return m.child;
+            }
+          })[0]
+          .child.map((m: any) => {
             if (m.id === list[0].id) {
               m.order = originOrder;
             }
@@ -935,7 +978,18 @@ function CommunityMenuContainer() {
             }
 
             return m;
-          }));
+          })
+        : communityAdminMenu?.menu.map(m => {
+          if (m.id === list[0].id) {
+            m.order = originOrder;
+          }
+
+          if (m.id === selectedRow.id) {
+            m.order = nextOrder;
+          }
+
+          return m;
+        }));
     menuValue && setCommunityAdminMenu({ menu: menuValue });
 
     nameValuesArr.map((item, index) => {
@@ -967,16 +1021,16 @@ function CommunityMenuContainer() {
 
     const list = selectedRow?.parentId
       ? communityAdminMenu?.menu
-          .filter(m => {
-            if (m.id === selectedRow?.parentId) {
-              return m.child;
-            }
-          })[0]
-          .child.filter((c: any) => c.order < selectedRow.order)
-          .sort((a: any, b: any) => a.order - b.order)
+        .filter(m => {
+          if (m.id === selectedRow?.parentId) {
+            return m.child;
+          }
+        })[0]
+        .child.filter((c: any) => c.order < selectedRow.order)
+        .sort((a: any, b: any) => a.order - b.order)
       : communityAdminMenu?.menu
-          .filter(c => c.parentId === null && c.order < selectedRow.order)
-          .sort((a, b) => a.order - b.order);
+        .filter(c => c.parentId === null && c.order < selectedRow.order)
+        .sort((a, b) => a.order - b.order);
 
     let currentIdx: number = 0;
 
@@ -1024,16 +1078,23 @@ function CommunityMenuContainer() {
 
                   const orderFlag: boolean[] = [];
                   const parentFlag: boolean[] = [];
+                  // const groupFlag: boolean[] = [];
+
                   nameValuesArr.map((item, index) => {
                     if (item.id === item2.id && item.name === 'order') {
                       item.value = add;
                       orderFlag.push(true);
+
+                      // if (item2.groupId) {
+                      //   groupFlag.push(true);
+                      // }
                     }
 
                     if (item.id === item2.id && item.name === 'parentId') {
                       item.value = item2.parentId;
                       parentFlag.push(true);
                     }
+                    
                   });
 
                   if (orderFlag.indexOf(true) === -1) {
@@ -1051,6 +1112,14 @@ function CommunityMenuContainer() {
                       value: item2.parentId,
                     });
                   }
+
+                  // if (groupFlag.indexOf(true)) {
+                  //   nameValuesArr.push({
+                  //     id: selectedRow.id,
+                  //     name: 'groupId',
+                  //     value: item2.groupId,
+                  //   });
+                  // }
                   communityAdminMenu.menu[index].child[index2].order = add;
                 }
               });
@@ -1079,23 +1148,12 @@ function CommunityMenuContainer() {
       list &&
       (selectedRow?.parentId
         ? communityAdminMenu?.menu
-            .filter(m => {
-              if (m.id === selectedRow?.parentId) {
-                return m.child;
-              }
-            })[0]
-            .child.map((m: any) => {
-              if (m.id === list[list.length - 1].id) {
-                m.order = originOrder;
-              }
-
-              if (m.id === selectedRow.id) {
-                m.order = nextOrder;
-              }
-
-              return m;
-            })
-        : communityAdminMenu?.menu.map(m => {
+          .filter(m => {
+            if (m.id === selectedRow?.parentId) {
+              return m.child;
+            }
+          })[0]
+          .child.map((m: any) => {
             if (m.id === list[list.length - 1].id) {
               m.order = originOrder;
             }
@@ -1105,7 +1163,18 @@ function CommunityMenuContainer() {
             }
 
             return m;
-          }));
+          })
+        : communityAdminMenu?.menu.map(m => {
+          if (m.id === list[list.length - 1].id) {
+            m.order = originOrder;
+          }
+
+          if (m.id === selectedRow.id) {
+            m.order = nextOrder;
+          }
+
+          return m;
+        }));
 
     menuValue && setCommunityAdminMenu({ menu: menuValue });
 

@@ -41,12 +41,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   const groupArr:
     | DropdownItemProps[]
     | { key: any; value: any; text: any }[] = [
-    // {
-    //   key: 0,
-    //   value: 0,
-    //   text: '선택',
-    // },
-  ];
+      // {
+      //   key: 0,
+      //   value: 0,
+      //   text: '선택',
+      // },
+    ];
 
   communityAdminGroups!.results.map((data: any, index: number) => {
     groupArr.push({
@@ -122,7 +122,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     }
   }
 
-  function changeAuth(e: any, value: any) {
+  const changeAuth = useCallback((e: any, value: any) => {
     if (selectedRow) {
       if (value === 'community') {
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER';
@@ -134,8 +134,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       onChangeDiscussValue(selectedRow.groupId, 'group');
       onChangeDiscussValue(selectedRow.accessType, 'accessType');
       onChangeValue(selectedRow, 'accessType');
+      onChangeValue(selectedRow, 'groupId');
     }
-  }
+  }, [groupArr, selectedRow]);
+
+
   function handleChangeGroup(e: any, data: any) {
     if (selectedRow) {
       selectedRow.groupId = data.value;
@@ -154,6 +157,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     selectedRow!.surveyId = data.id;
     onChangeValue(selectedRow, 'surveyId');
   }
+
+  console.log("11111111111111", selectedRow?.groupId === null ||
+  selectedRow?.groupId === '' ||
+  selectedRow?.accessType === 'COMMUNITY_GROUP')
   return (
     <div className="menu_right_contents">
       <table>
@@ -196,17 +203,17 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
           </tr>
           {(selectedRow!.type === 'DISCUSSION' ||
             selectedRow!.type === 'ANODISCUSSION') && (
-            <AdminDiscussionCreateView
-              changeValue={changeValue}
-              selectedRow={selectedRow}
-              discussRow={discussRow}
-              onChangeDiscussValue={onChangeDiscussValue}
-              onAddUrlsList={onAddUrlsList}
-              onDeleteUrlsList={onDeleteUrlsList}
-              onAddFileBoxId={onAddFileBoxId}
-              onChangeValue={onChangeValue}
-            />
-          )}
+              <AdminDiscussionCreateView
+                changeValue={changeValue}
+                selectedRow={selectedRow}
+                discussRow={discussRow}
+                onChangeDiscussValue={onChangeDiscussValue}
+                onAddUrlsList={onAddUrlsList}
+                onDeleteUrlsList={onDeleteUrlsList}
+                onAddFileBoxId={onAddFileBoxId}
+                onChangeValue={onChangeValue}
+              />
+            )}
           {selectedRow!.type === 'SURVEY' && (
             <tr>
               <th>설문 안내글</th>
@@ -254,14 +261,14 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                         <td>
                           {
                             selectedSurvey.titles.langStringMap[
-                              selectedSurvey.titles.defaultLanguage
+                            selectedSurvey.titles.defaultLanguage
                             ]
                           }
                         </td>
                         <td>
                           {
                             selectedSurvey.formDesigner.names.langStringMap[
-                              selectedSurvey.formDesigner.names.defaultLanguage
+                            selectedSurvey.formDesigner.names.defaultLanguage
                             ]
                           }
                         </td>
@@ -312,10 +319,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={
+                  checked={(
                     selectedRow?.groupId === null ||
-                    selectedRow?.accessType === 'COMMUNITY_GROUP'
-                  }
+                    selectedRow?.groupId === '' ||
+                    selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                  )}
                   onClick={(e: any, data: any) => {
                     changeAuth(e, data.value);
                   }}
@@ -326,7 +334,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="그룹지정"
                   name="radioGroup"
                   value="group"
-                  checked={selectedRow?.groupId !== null}
+                  checked={(
+                      selectedRow?.groupId !== null &&
+                      selectedRow?.groupId !== ''
+                  )}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
@@ -337,7 +348,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 // defaultValue={groupArr[0].value}
                 options={groupArr}
                 onChange={handleChangeGroup}
-                disabled={selectedRow?.groupId === null}
+                disabled={(
+                    selectedRow?.groupId === null ||
+                    selectedRow?.groupId === '' ||
+                    selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                )}
               />
             </td>
           </tr>
