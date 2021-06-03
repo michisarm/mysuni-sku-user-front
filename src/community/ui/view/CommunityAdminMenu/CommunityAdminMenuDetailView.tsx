@@ -157,6 +157,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     selectedRow!.surveyId = data.id;
     onChangeValue(selectedRow, 'surveyId');
   }
+
+  console.log("11111111111111", selectedRow?.groupId === null ||
+  selectedRow?.groupId === '' ||
+  selectedRow?.accessType === 'COMMUNITY_GROUP')
   return (
     <div className="menu_right_contents">
       <table>
@@ -315,10 +319,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={
+                  checked={(
                     selectedRow?.groupId === null ||
-                    selectedRow?.accessType === 'COMMUNITY_GROUP'
-                  }
+                    selectedRow?.groupId === '' ||
+                    selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                  )}
                   onClick={(e: any, data: any) => {
                     changeAuth(e, data.value);
                   }}
@@ -329,7 +334,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="그룹지정"
                   name="radioGroup"
                   value="group"
-                  checked={selectedRow?.groupId !== null}
+                  checked={(
+                      selectedRow?.groupId !== null &&
+                      selectedRow?.groupId !== ''
+                  )}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
@@ -340,7 +348,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 // defaultValue={groupArr[0].value}
                 options={groupArr}
                 onChange={handleChangeGroup}
-                disabled={selectedRow?.groupId === null}
+                disabled={(
+                    selectedRow?.groupId === null ||
+                    selectedRow?.groupId === '' ||
+                    selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                )}
               />
             </td>
           </tr>
