@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import Swiper from 'react-id-swiper';
-// import { Image } from 'semantic-ui-react';
 import { MainBannerWrapper } from '../MyLearningContentElementsView';
 import { BannerService } from '../../../../shared/stores';
 import MainBannerModal from './MainBannerModal';
@@ -18,6 +17,69 @@ enum AnchorTargetType {
   popup = 'popup',
   video = 'video',
 }
+interface BannerProps {
+  index: number;
+  targetUrl: string;
+  target: string;
+  name: string;
+  imageAlt: StaticRange;
+  imageUrl: string;
+  onClickBanner: (
+    targetUrl: string,
+    target: string,
+    name: string,
+    index: number
+  ) => void;
+}
+
+function RenderBanner(props: BannerProps) {
+  const {
+    index,
+    imageAlt,
+    imageUrl,
+    name,
+    target,
+    targetUrl,
+    onClickBanner,
+  } = props;
+
+  const getTargetUrl = originSelfPath(targetUrl);
+
+  return (
+    <div className="swiper-slide" key={`main-banner-${index}`}>
+      {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
+        <Link
+          className="ui image"
+          title={name}
+          target={target}
+          to={{ pathname: getTargetUrl }}
+          onClick={() => onClickBanner(targetUrl, target, name, index)}
+        >
+          <Image alt={imageAlt} src={imageUrl} />
+        </Link>
+      ) : (
+        <>
+          {target === AnchorTargetType.blank ||
+          target === AnchorTargetType.self ? (
+            <a
+              className="ui image"
+              title={name}
+              target={target}
+              href={targetUrl}
+              onClick={() => onClickBanner(targetUrl, target, name, index)}
+            >
+              <Image alt={imageAlt} src={imageUrl} />
+            </a>
+          ) : (
+            <div className="ui image">
+              <Image alt={imageAlt} src={imageUrl} />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -25,22 +87,18 @@ interface Props {
 }
 
 const MainBanner: React.FC<Props> = Props => {
-  //
-  const { bannerService, skProfileService } = Props;
+  const { bannerService } = Props;
   const { banners, intervalTime } = bannerService!;
 
   const DEFAULT_BANNER_INTERVAL = 7000;
 
-  // myTrainingService 변경  실행
   useEffect(() => {
-    getShowingBanners();
-  }, [setInterval]);
-
-  const getShowingBanners = async () => {
-    //
-    bannerService!.clear();
     bannerService!.findLatestBannerBundles();
-  };
+
+    return () => {
+      bannerService!.clear();
+    };
+  }, [bannerService]);
 
   const params = {
     loop: true,
@@ -111,57 +169,13 @@ const MainBanner: React.FC<Props> = Props => {
     <MainBannerWrapper>
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
       <Swiper {...params}>
-        {
-          banners.map((banner, index) => {
-          const targetUrl = originSelfPath(banner.targetUrl);
-          return (
-            <div className="swiper-slide" key={`main-banner-${index}`}>
-            {
-              (!/^(http|https)/.test(targetUrl) && banner.target === AnchorTargetType.self)
-              ? (
-                <Link
-                  className="ui image"
-                  title={banner.name}
-                  target={banner.target}
-                  to={{ pathname : targetUrl}}
-                  onClick={() =>
-                    onClickBanner(
-                      banner.targetUrl,
-                      banner.target,
-                      banner.name,
-                      index
-                    )
-                  }
-                >
-                  <Image alt={banner.imageAlt} src={banner.imageUrl} />
-                </Link>
-              ) : (
-                <a
-                  className="ui image"
-                  title={banner.name}
-                  target={banner.target}
-                  href={
-                    banner.target === AnchorTargetType.blank ||
-                    banner.target === AnchorTargetType.self
-                      ? banner.targetUrl
-                      : undefined
-                  }
-                  onClick={() =>
-                    onClickBanner(
-                      banner.targetUrl,
-                      banner.target,
-                      banner.name,
-                      index
-                    )
-                  }
-                >
-                  <Image alt={banner.imageAlt} src={banner.imageUrl} />
-                </a>
-              )
-            }
-            </div>
-          )
-        })}
+        {banners.map((banner, index) => (
+          <RenderBanner
+            index={index}
+            onClickBanner={onClickBanner}
+            {...banner}
+          />
+        ))}
       </Swiper>
 
       <div className="navi">
