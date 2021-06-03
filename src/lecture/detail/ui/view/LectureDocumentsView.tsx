@@ -60,7 +60,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           } else {
             reactAlert({
               title: '',
-              message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.`,
+              message: `Document 컨텐츠는 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다. 학습 창에서 글씨가 깨져보이거나 누락되는 경우 다운로드 시 정상적으로 확인 가능합니다.`,
             });
           }
         }
