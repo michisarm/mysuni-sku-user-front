@@ -34,7 +34,6 @@
     "date-fns": "2.17.0",
     "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
-    "json-server": "^0.15.0",
     "lodash": "^4.17.21",
     "mobx": "^4.15.0",
     "mobx-react": "^6.1.4",
@@ -59,20 +58,10 @@
     "swiper": "^5.2.1",
     "typescript": "3.7.3",
     "wavesurfer.js": "^4.6.0",
-    "webpack-bundle-analyzer": "^3.6.0",
-    "xlsx": "latest",
-    "yaml": "^1.10.2"
+    "xlsx": "latest"
   },
   "proxy": "http://ma.university.sk.com",
   "devDependencies": {
-    "@storybook/addon-actions": "^5.2.8",
-    "@storybook/addon-docs": "^5.2.8",
-    "@storybook/addon-knobs": "^5.2.8",
-    "@storybook/addon-links": "^5.2.8",
-    "@storybook/addon-storysource": "^5.2.8",
-    "@storybook/addons": "^5.2.8",
-    "@storybook/preset-typescript": "^1.1.0",
-    "@storybook/react": "^5.2.8",
     "@types/classnames": "^2.2.9",
     "@types/file-saver": "^2.0.1",
     "@types/hls.js": "^0.13.3",
@@ -87,9 +76,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/sockjs-client": "^1.5.0",
     "@types/video.js": "^7.3.15",
-    "@types/wavesurfer.js": "^3.3.2",
-    "react-docgen-typescript-loader": "^3.6.0",
-    "ts-loader": "^6.2.1"
+    "@types/wavesurfer.js": "^3.3.2"
   },
   "eslintConfig": {
     "extends": [
