@@ -22,6 +22,7 @@ import NoticePostsPage from './NoticePostsPage';
 import PostsPage from './PostsPage';
 import SurveyPostPage from './SurveyPostPage';
 import { Area } from 'tracker/model';
+import { setCommunityHome } from '../../store/CommunityHomeStore';
 
 interface Params {
   communityId: string;
@@ -32,6 +33,8 @@ function CommunityRoutes() {
   useEffect(() => {
     requestCommunity(communityId);
     requestCommunityMenus(communityId);
+
+    return setCommunityHome;
   }, [communityId]);
   return (
     <section className="content community">
