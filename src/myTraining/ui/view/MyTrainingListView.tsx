@@ -11,7 +11,7 @@ import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
-import {
+import dateTimeHelper, {
   timeToHourMinutePaddingFormat,
   convertTimeToDate,
 } from '../../../shared/helper/dateTimeHelper';
@@ -42,7 +42,10 @@ function MyTrainingListView({
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
 
-    const cardId = myTraining.serviceType === 'Card' ? myTraining.serviceId : myTraining.cardId;
+    const cardId =
+      myTraining.serviceType === 'Card'
+        ? myTraining.serviceId
+        : myTraining.cardId;
 
     const params: LectureParams = {
       cardId,
@@ -52,13 +55,13 @@ function MyTrainingListView({
 
     history.push(toPath(params));
 
-    if(contentType === MyLearningContentType.InProgress) {
+    if (contentType === MyLearningContentType.InProgress) {
       ReactGA.event({
         category: '학습중인 과정',
         action: 'Click',
-        label: `${
-          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
-        } - ${myTraining.name}`,
+        label: `${myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'} - ${
+          myTraining.name
+        }`,
       });
     }
     scrollSave();
@@ -80,35 +83,103 @@ function MyTrainingListView({
     myTraining: MyTrainingTableViewModel,
     index: number
   ) => {
-
+    if (contentType === MyLearningContentType.Enrolled) {
+      return null;
+    }
     const collegeName = () => {
-      if(
-        myTraining.category && 
-        myTraining.category.college
-      ) {
-        return colleges?.find(college => college.id === myTraining.category.college.id)?.name;
+      if (myTraining.category && myTraining.category.college) {
+        return colleges?.find(
+          college => college.id === myTraining.category.college.id
+        )?.name;
       }
 
       return '';
-    }
+    };
+    const collegeName2 = () => {
+      if (myTraining.category && myTraining.category.college) {
+        return colleges?.find(college => college.id === myTraining.collegeId)
+          ?.name;
+      }
 
+      return '';
+    };
     return (
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
         <Table.Cell>{collegeName()}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={e => onViewDetail(e, myTraining)}>
-            <span className="ellipsis">{myTraining.name}</span>
+            <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
+              {myTraining.name}
+            </span>
+            {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
         </Table.Cell>
       </>
     );
   };
 
+  const renderEnrolled = (
+    myTraining: MyTrainingTableViewModel,
+    contentType: MyLearningContentType,
+    index: number
+  ) => {
+    if (contentType !== MyLearningContentType.Enrolled) {
+      return null;
+    }
+    const learningType = LearningTypeName[myTraining.type];
+    const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(
+      myTraining.learningTime
+    );
+    const collegeName = () => {
+      if (myTraining.category && myTraining.category.college) {
+        return colleges?.find(college => college.id === myTraining.collegeId)
+          ?.name;
+      }
+
+      return '';
+    };
+
+    switch (contentType) {
+      case MyLearningContentType.Enrolled: {
+        return (
+          <>
+            <Table.Cell>{totalCount - index}</Table.Cell>
+            <Table.Cell>{collegeName()}</Table.Cell>
+            <Table.Cell className="title">
+              <a href="#" onClick={e => onViewDetail(e, myTraining)}>
+                <span
+                  className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}
+                >
+                  {myTraining.cubeName}
+                </span>
+                {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
+              </a>
+            </Table.Cell>
+            <Table.Cell>{learningType || '-'} </Table.Cell>
+            <Table.Cell>
+              {myTraining.difficultyLevel || '-'}
+              {/* Level */}
+            </Table.Cell>
+            <Table.Cell>{formattedLearningTime}</Table.Cell>
+            <Table.Cell>
+              {(myTraining.stampCount !== 0 && myTraining.stampCount) || '-'}
+            </Table.Cell>
+            <Table.Cell>{myTraining.learningStartDate}</Table.Cell>
+          </>
+        );
+      }
+    }
+  };
+
   const renderByContentType = (
     myTraining: MyTrainingTableViewModel,
     contentType: MyLearningContentType
   ) => {
+    if (contentType === MyLearningContentType.Enrolled) {
+      return null;
+    }
+
     const learningType = LearningTypeName[myTraining.cubeType];
 
     switch (contentType) {
@@ -120,7 +191,7 @@ function MyTrainingListView({
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{myTraining.learningStartDate}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
@@ -128,23 +199,6 @@ function MyTrainingListView({
         );
       }
 
-      case MyLearningContentType.Enrolled: {
-        return (
-          <>
-            <Table.Cell>{learningType || '-'} </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'} {/* Level */}
-            </Table.Cell>
-            <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
-            </Table.Cell>
-            <Table.Cell>
-              {(myTraining.stampCount !== 0 && myTraining.stampCount) || '-'}
-            </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.startDate)}</Table.Cell>
-          </>
-        );
-      }
       case MyLearningContentType.Completed: {
         return (
           <>
@@ -190,6 +244,7 @@ function MyTrainingListView({
             )}
             {renderBaseContent(myTraining, index)}
             {renderByContentType(myTraining, contentType)}
+            {renderEnrolled(myTraining, contentType, index)}
           </Table.Row>
         ))}
     </Table.Body>

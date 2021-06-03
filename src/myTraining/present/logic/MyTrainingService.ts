@@ -327,6 +327,9 @@ class MyTrainingService {
   @observable
   _myTrainingTableViewCount: number = 0;
 
+  @observable
+  _myTrainingTableViewCount2: number = 0;
+
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
@@ -353,14 +356,30 @@ class MyTrainingService {
     return this._myTrainingTableViewCount;
   }
 
+  @computed get myTrainingTableCount2() {
+    return this._myTrainingTableViewCount2;
+  }
+
   @action
   async findAllTabCount() {
     const myTrainingTabModel = await this.myTrainingApi.findAllTabCount();
+    const offsetTableViews: OffsetElementList<
+      MyTrainingTableViewModel
+    > | null = await this.myTrainingApi.findEnrollTableViews(
+      this._myTrainingFilterRdo
+    );
+
     if (myTrainingTabModel) {
       runInAction(() => {
+        if (
+          offsetTableViews &&
+          offsetTableViews.results &&
+          offsetTableViews.results.length > 0
+        ) {
+          this._myTrainingTableViewCount2 = offsetTableViews.totalCount;
+        }
         this.inprogressCount = myTrainingTabModel.inprogressCount;
         this.completedCount = myTrainingTabModel.completedCount;
-        this.enrolledCount = myTrainingTabModel.enrolledCount;
         this.retryCount = myTrainingTabModel.retryCount;
       });
     }
@@ -381,6 +400,7 @@ class MyTrainingService {
   clearAllTableViews() {
     this._myTrainingTableViews = [];
     this._myTrainingTableViewCount = 0;
+    // this._myTrainingTableViewCount2 = 0;
   }
 
   initFilterRdo(contentType: MyContentType) {
@@ -444,6 +464,30 @@ class MyTrainingService {
           result => new MyTrainingTableViewModel(result)
         );
         this._myTrainingTableViewCount = offsetTableViews.totalCount;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  @action
+  async findEnrollTableViews() {
+    const offsetTableViews: OffsetElementList<
+      MyTrainingTableViewModel
+    > | null = await this.myTrainingApi.findEnrollTableViews(
+      this._myTrainingFilterRdo
+    );
+
+    if (
+      offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length > 0
+    ) {
+      runInAction(() => {
+        this._myTrainingTableViews = offsetTableViews.results.map(
+          result => new MyTrainingTableViewModel(result)
+        );
+        this._myTrainingTableViewCount2 = offsetTableViews.totalCount;
       });
       return false;
     }

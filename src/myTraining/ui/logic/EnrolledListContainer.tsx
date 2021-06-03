@@ -25,19 +25,19 @@ import { useScrollMove } from '../../useScrollMove';
 import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
 import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
 
-interface MyTrainingListContainerProps {
+interface EnrolledListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
   studentService?: StudentService;
   filterBoxService?: FilterBoxService;
 }
 
-function MyTrainingListContainer({
+function EnrolledListContainer({
   skProfileService,
   myTrainingService,
   studentService,
   filterBoxService,
-}: MyTrainingListContainerProps) {
+}: EnrolledListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
@@ -52,11 +52,7 @@ function MyTrainingListContainer({
 
   const { scrollOnceMove } = useScrollMove();
 
-  const {
-    myTrainingTableViews,
-    myTrainingTableCount,
-    myTrainingTableCount2,
-  } = myTrainingService!;
+  const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
@@ -91,11 +87,6 @@ function MyTrainingListContainer({
       const isEmpty = await myTrainingService!.findEnrollTableViews();
       setResultEmpty(isEmpty);
 
-      setIsLoading(false);
-    } else {
-      const isEmpty = await myTrainingService!.findAllTableViews();
-      setResultEmpty(isEmpty);
-      checkShowSeeMore();
       setIsLoading(false);
     }
   };
@@ -227,15 +218,14 @@ function MyTrainingListContainer({
     <>
       {((!resultEmpty || filterCount > 0) && (
         <>
-          {contentType !== MyLearningContentType.Enrolled && (
+          {contentType === MyLearningContentType.Enrolled && (
             <LineHeaderContainerV2
               contentType={contentType}
               resultEmpty={resultEmpty}
-              totalCount={myTrainingTableCount}
+              totalCount={myTrainingTableCount2}
               onClickDelete={onClickDelete}
             />
           )}
-
           <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
@@ -248,10 +238,11 @@ function MyTrainingListContainer({
                   contentType={contentType}
                   onClickSort={onClickSort}
                 />
-                {contentType !== MyLearningContentType.Enrolled && (
+
+                {contentType === MyLearningContentType.Enrolled && (
                   <MyTrainingListView
                     myTrainings={myTrainingTableViews}
-                    totalCount={myTrainingTableCount}
+                    totalCount={myTrainingTableCount2}
                   />
                 )}
               </MyLearningListTemplate>
@@ -324,6 +315,6 @@ export default inject(
     'lecture.studentService',
     'shared.filterBoxService'
   )
-)(observer(MyTrainingListContainer));
+)(observer(EnrolledListContainer));
 
 const PAGE_SIZE = 20;

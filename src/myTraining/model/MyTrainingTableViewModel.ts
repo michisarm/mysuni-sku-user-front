@@ -1,5 +1,8 @@
 import { observable, decorate } from 'mobx';
-import { timeToHourMinutePaddingFormat, convertTimeToDate } from 'shared/helper/dateTimeHelper';
+import {
+  timeToHourMinutePaddingFormat,
+  convertTimeToDate,
+} from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
 import { DifficultyLevel } from './DifficultyLevel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
@@ -19,20 +22,25 @@ class MyTrainingTableViewModel {
   name: string = '';
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
+  learningStartDate: number = 0; // 학습시작일
   endDate: number = 0; // 학습완료일
   createDate: number = 0; // 등록일
   time: number = 0; // 최근학습일 || 취소 미이수일
   stampCount: number = 0;
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
-
+  type: LearningType = LearningType.None;
+  collegeId: string = '';
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
     if (myTrainingTableView) {
       Object.assign(this, myTrainingTableView);
     }
   }
 
-  toXlsxForInProgress(index: number, collegeName?: string): InProgressXlsxModel {
+  toXlsxForInProgress(
+    index: number,
+    collegeName?: string
+  ): InProgressXlsxModel {
     const learningType = LearningTypeName[this.cubeType];
 
     return {
@@ -85,4 +93,7 @@ decorate(MyTrainingTableViewModel, {
   endDate: observable,
   createDate: observable,
   stampCount: observable,
+  learningStartDate: observable,
+  type: observable,
+  collegeId: observable,
 });
