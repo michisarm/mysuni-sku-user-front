@@ -93,6 +93,16 @@ function CommunityMenuContainer() {
                   menuData.menu[index].privateComment = discussionParams.privateComment
                   menuData.menu[index].relatedUrlList = discussionParams.relatedUrlList
                   menuData.menu[index].fileBoxId = discussionParams.fileBoxId
+                }else if(item.child && item.child.length > 0){
+                  // 하위메뉴 Disscusion 정보 add
+                  item.child.map((childItem: any, childIdex: number) => {
+                    if(childItem?.id === param.id){
+                      menuData.menu[index].child[childIdex].content = discussionParams.content
+                      menuData.menu[index].child[childIdex].privateComment = discussionParams.privateComment
+                      menuData.menu[index].child[childIdex].relatedUrlList = discussionParams.relatedUrlList
+                      menuData.menu[index].child[childIdex].fileBoxId = discussionParams.fileBoxId
+                    }
+                  })
                 }
               })
             }
@@ -501,13 +511,15 @@ function CommunityMenuContainer() {
         if (validateCheck === 'success') {
           if (obj.type === 'DISCUSSION' || obj.type === 'ANODISCUSSION') {
             const discusstionParams = {
+              ...discussRow,
               accessType: obj.accessType,
               order: obj.order,
               discussionTopic: obj.discussionTopic,
               type: obj.type,
               name: obj.name,
-              ...discussRow,
+              content: obj.content,
             };
+            
             addCommunityDiscussion(communityId, discusstionParams).then(
               result => {
                 //오더정리
@@ -666,6 +678,12 @@ function CommunityMenuContainer() {
             groupId: value === null ? '' : value,
           });
         }
+        // fileboxid add
+        if (type === 'fileBoxId') {
+          // editor state
+          setDiscussRow({ ...discussRow, fileBoxId: value });
+          onChangeValue(selectedRow, 'fileBoxId')
+        }
       }
     },
     [discussRow, selectedRow]
@@ -700,7 +718,8 @@ function CommunityMenuContainer() {
   const onAddFileBoxId = useCallback(
     (depotId: string) => {
       if (discussRow) {
-        setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        // setDiscussRow({ ...discussRow, fileBoxId: depotId });
+        onChangeDiscussValue(depotId, 'fileBoxId')
       }
     },
     [discussRow]
@@ -742,11 +761,32 @@ function CommunityMenuContainer() {
         type: value.type,
       };
 
+      // if (value[nameValue] === 'COMMUNITY_GROUP' && nameValue === 'accessType') {
+      //   const groupValuesArr = {
+      //     id: value.id,
+      //     name: 'groupId',
+      //     value: value.groupId,
+      //     order: value.order,
+      //     type: value.type,
+      //   };
+      //   nameValuesArr.push(groupValuesArr);
+      // }else if (value[nameValue] === 'COMMUNITY_ALL_MEMBER' && nameValue === 'accessType') {
+      //   const groupValuesArr = {
+      //     id: value.id,
+      //     name: 'groupId',
+      //     value: null,
+      //     order: value.order,
+      //     type: value.type,
+      //   };
+      //   nameValuesArr.push(groupValuesArr);
+      // }
+
       nameValues.map((item: any, index: any) => {
         if (item.id === value.id && item.name === nameValue) {
           nameValues.splice(index, 1);
         }
       });
+      
       nameValuesArr.push(ValuesArr);
       setNameValues(nameValuesArr);
 
@@ -854,10 +894,16 @@ function CommunityMenuContainer() {
 
                   const orderFlag: boolean[] = [];
                   const parentFlag: boolean[] = [];
+                  // const groupFlag: boolean[] = [];
+
                   nameValuesArr.map((item, index) => {
                     if (item.id === item2.id && item.name === 'order') {
                       item.value = add;
                       orderFlag.push(true);
+
+                      // if (item2.groupId) {
+                      //   groupFlag.push(true);
+                      // }
                     }
 
                     if (item.id === item2.id && item.name === 'parentId') {
@@ -881,6 +927,14 @@ function CommunityMenuContainer() {
                       value: item2.parentId,
                     });
                   }
+                  
+                  // if (groupFlag.indexOf(true)) {
+                  //   nameValuesArr.push({
+                  //     id: selectedRow.id,
+                  //     name: 'groupId',
+                  //     value: item2.groupId,
+                  //   });
+                  // }
                   communityAdminMenu.menu[index].child[index2].order = add;
                 }
               });
@@ -1024,16 +1078,23 @@ function CommunityMenuContainer() {
 
                   const orderFlag: boolean[] = [];
                   const parentFlag: boolean[] = [];
+                  // const groupFlag: boolean[] = [];
+
                   nameValuesArr.map((item, index) => {
                     if (item.id === item2.id && item.name === 'order') {
                       item.value = add;
                       orderFlag.push(true);
+
+                      // if (item2.groupId) {
+                      //   groupFlag.push(true);
+                      // }
                     }
 
                     if (item.id === item2.id && item.name === 'parentId') {
                       item.value = item2.parentId;
                       parentFlag.push(true);
                     }
+                    
                   });
 
                   if (orderFlag.indexOf(true) === -1) {
@@ -1051,6 +1112,14 @@ function CommunityMenuContainer() {
                       value: item2.parentId,
                     });
                   }
+
+                  // if (groupFlag.indexOf(true)) {
+                  //   nameValuesArr.push({
+                  //     id: selectedRow.id,
+                  //     name: 'groupId',
+                  //     value: item2.groupId,
+                  //   });
+                  // }
                   communityAdminMenu.menu[index].child[index2].order = add;
                 }
               });
