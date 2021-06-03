@@ -315,10 +315,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={
-                    selectedRow?.groupId === null ||
-                    selectedRow?.accessType === 'COMMUNITY_GROUP'
-                  }
+                  checked={(
+                      selectedRow?.groupId === null ||
+                      selectedRow?.groupId === '' ||
+                      selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                  )}
                   onClick={(e: any, data: any) => {
                     changeAuth(e, data.value);
                   }}
@@ -329,7 +330,10 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   label="그룹지정"
                   name="radioGroup"
                   value="group"
-                  checked={selectedRow?.groupId !== null}
+                  checked={(
+                    selectedRow?.groupId !== null &&
+                      selectedRow?.groupId !== ''
+                  )}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
@@ -340,7 +344,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                 defaultValue={groupArr[0]?.value}
                 options={groupArr}
                 onChange={onChangeGroup}
-                disabled={selectedRow?.groupId === null}
+                disabled={(
+                    selectedRow?.groupId === null ||
+                    selectedRow?.groupId === '' ||
+                    selectedRow?.accessType !== 'COMMUNITY_GROUP'
+                )}
               />
             </td>
           </tr>
