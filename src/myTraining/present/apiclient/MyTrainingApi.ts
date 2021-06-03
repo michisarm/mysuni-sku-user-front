@@ -13,9 +13,9 @@ class MyTrainingApi {
 
   baseUrl =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
-      process.env.REACT_APP_ENVIRONMENT === 'server' ||
-      process.env.REACT_APP_MY_TRAINING_API === undefined ||
-      process.env.REACT_APP_MY_TRAINING_API === ''
+    process.env.REACT_APP_ENVIRONMENT === 'server' ||
+    process.env.REACT_APP_MY_TRAINING_API === undefined ||
+    process.env.REACT_APP_MY_TRAINING_API === ''
       ? '/api/mytraining/mytraining/mytrainings'
       : process.env.REACT_APP_MY_TRAINING_API;
 
@@ -86,9 +86,21 @@ class MyTrainingApi {
       .catch(error => error && null);
   }
 
+  findEnrollTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi
+      .get<OffsetElementList<MyTrainingTableViewModel>>(
+        '/api/cube/studentApprovals/enrolling'
+      )
+      .then(response => (response && response.data) || null)
+      .catch(error => error && null);
+  }
+
   findAllStampTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
     return axiosApi
-      .post<OffsetElementList<MyTrainingTableViewModel>>(`${this.baseUrl}/stamp/table/views`, myTrainingFilterRdo)
+      .post<OffsetElementList<MyTrainingTableViewModel>>(
+        `${this.baseUrl}/stamp/table/views`,
+        myTrainingFilterRdo
+      )
       .then(response => (response && response.data) || null)
       .catch(error => error && null);
   }

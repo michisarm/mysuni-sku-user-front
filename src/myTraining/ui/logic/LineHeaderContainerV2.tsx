@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -146,14 +146,16 @@ function LineHeaderContainerV2({
           contentType={contentType}
           activeFilter={isFilterActive()}
         >
-          <ListRightTopPanel
-            contentType={contentType}
-            resultEmpty={resultEmpty}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            activeFilter={isFilterActive()}
-            onClickFilter={onClickFilter}
-          />
+          {contentType !== MyLearningContentType.Enrolled && (
+            <ListRightTopPanel
+              contentType={contentType}
+              resultEmpty={resultEmpty}
+              filterCount={filterCount}
+              openFilter={openFilter}
+              activeFilter={isFilterActive()}
+              onClickFilter={onClickFilter}
+            />
+          )}
         </ListTopPanelTemplate>
       </div>
     </>

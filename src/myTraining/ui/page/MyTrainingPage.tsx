@@ -30,6 +30,8 @@ import RequiredCardListContainer from '../logic/RequiredCardListContainer';
 import { CollegeService } from '../../../college/stores';
 import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import EnrollingApi from '../../../lecture/shared/present/apiclient/EnrollingApi';
+import EnrolledListContainer from '../logic/EnrolledListContainer';
 
 interface MyTrainingPageProps {
   notieService?: NotieService;
@@ -54,7 +56,7 @@ function MyTrainingPage({
 }: MyTrainingPageProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
-
+  const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
   const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
   const {
@@ -118,8 +120,11 @@ function MyTrainingPage({
         },
         {
           name: MyLearningContentType.Enrolled,
-          item: getTabItem(MyLearningContentType.Enrolled, enrolledCount),
-          render: () => <MyTrainingListContainer />,
+          item: getTabItem(
+            MyLearningContentType.Enrolled,
+            myTrainingTableCount2
+          ),
+          render: () => <EnrolledListContainer />,
         },
         {
           name: MyLearningContentType.Completed,
@@ -161,8 +166,8 @@ function MyTrainingPage({
       },
       {
         name: MyLearningContentType.Enrolled,
-        item: getTabItem(MyLearningContentType.Enrolled, enrolledCount),
-        render: () => <MyTrainingListContainer />,
+        item: getTabItem(MyLearningContentType.Enrolled, myTrainingTableCount2),
+        render: () => <EnrolledListContainer />,
       },
       {
         name: MyLearningContentType.Completed,
