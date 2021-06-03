@@ -106,12 +106,11 @@ function LectureTaskContainer() {
       // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
       if(lectureState.cubeDetail
           && lectureState.cubeDetail.cubeMaterial
-          && lectureState.cubeDetail.cubeMaterial.board
-          && lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion){
+          && lectureState.cubeDetail.cubeMaterial.board){
             setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.postCount || 0)
             setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.commentCount || 0)
             setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.subCommentCount || 0)
-            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board.automaticCompletion)
+            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion || false)
 
             // 댓글, 대댓글 Count Data
             if(lectureState.student){
