@@ -33,7 +33,7 @@ const LectureWebpageView: React.FC<LectureWebpage &
     return (
       <>
         {urlType === 'embedded' && (
-          <div className="iframe-area">
+          <div className="iframe-area s990">
             <iframe
               src={url}
             />
