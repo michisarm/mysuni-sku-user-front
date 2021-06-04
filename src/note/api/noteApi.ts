@@ -185,8 +185,8 @@ export function modifyOrder(folder: Folder): Promise<string> {
 
 
 // 폴더 삭제
-export function deleteFolder(): Promise<void> {
-  const url = `${BASE_URL}/folder`;
+export function deleteFolder(folderId: string): Promise<void> {
+  const url = `${BASE_URL}/folder/${folderId}`;
   return axiosApi.delete(url).then(response => response && response.data);
 }
 

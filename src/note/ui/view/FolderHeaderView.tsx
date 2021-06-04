@@ -12,6 +12,7 @@ import { setSearchBox } from '../../store/SearchBoxStore';
 import { deleteFolder } from '../../api/noteApi';
 import Note from '../../model/Note';
 import NoteWithLecture from '../../model/NoteWithLecture';
+import { deleteFolderById } from '../../service/useFolder/deleteFolder';
 
 interface FolderHeaderViewProps {
   noteList: OffsetElementList<NoteWithLecture>;
@@ -71,6 +72,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
         folder && setFolder({ ...folder, folders: { idNames: folder.folders.idNames.filter(f => f.id !== editFolderId) } });
         folder && await saveFolder({ folders: { idNames: folder.folders.idNames.filter(f => f.id !== editFolderId) }, id: '' }, 'order');
         // await requestFolder();
+        await deleteFolderById(editFolderId);
         setEditFolderOriginName('');
         setEditFolderName('폴더미지정');
         setEditFolderId('0000');
