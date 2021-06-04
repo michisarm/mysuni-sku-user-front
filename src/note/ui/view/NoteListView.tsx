@@ -345,7 +345,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                     subNoteItem.noteWithLectureList.results.map((subItem, subIndex) => (
                       <div key={subIndex} className={`mynote ${noteUdoItem?.index === subIndex && 'mynote_write'}`} >
                         <div className="note_info">
-                          {subItem.note.playTime && (subItem.note.cubeType === 'Video' || subItem.note.cubeType === 'Audio') &&
+                          {(subItem.note.playTime && subItem.note.playTime !== '00:00:00') && (subItem.note.cubeType === 'Video' || subItem.note.cubeType === 'Audio') &&
                             (
                               <Link className="time" to={`/lecture/card/${subItem.note.cardId}/cube/${subItem.note.cubeId}/view/${subItem.note.cubeType}`} onClick={(e) => submit(subItem.note.playTime)}>
                                 <Icon><Image src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`} /></Icon>
@@ -354,8 +354,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                               </Link>
                             )
                           }
-                          {(!subItem.note.playTime || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
-                          {(!subItem.note.playTime || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && `Note ${subNoteItem.noteWithLectureList.results.length - subIndex}`}
+                          {((!subItem.note.playTime || subItem.note.playTime === '00:00:00') || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && <Icon><Image src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`} alt="노트이미지" /></Icon>}
+                          {((!subItem.note.playTime || subItem.note.playTime === '00:00:00') || (subItem.note.cubeType !== 'Video' && subItem.note.cubeType !== 'Audio')) && `Note ${subNoteItem.noteWithLectureList.results.length - subIndex}`}
                           <span className="date">{
                             subItem.note.updateDate !== 0 ? moment(subItem.note.updateDate).format('YYYY년 MM월 DD일 편집') :
                               subItem.note.createDate && moment(subItem.note.createDate).format('YYYY년 MM월 DD일 작성')
