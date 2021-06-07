@@ -877,6 +877,13 @@ export async function requestCardLectureStructure(cardId: string) {
     cardContents.learningContents
   );
 
+  let cubeOrder = -1;
+  lectureStructure.items.forEach(c => {
+    if (c.type === 'CUBE') {
+      c.order = ++cubeOrder;
+    }
+  });
+
   setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }
