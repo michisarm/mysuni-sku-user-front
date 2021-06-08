@@ -52,7 +52,7 @@ export async function getAllPostItem(
             commentFeedbackId: post.commentFeedbackId,
             menuId: post.menuId,
             menuType: post.menuType,
-            nickName: post.nickName || '',
+            nickName: post.menuType === 'ANONYMOUS' && post.nickName === null ? '익명' : post.nickName || '',
             pinned: post.pinned,
             fileBoxId: post.fileBoxId,
             newBadge: addNewBadge(post.createdTime),
