@@ -1,13 +1,13 @@
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import ExamQuestion from '../../../model/ExamQuestion';
 import React, { useCallback } from 'react';
 import { Checkbox } from 'semantic-ui-react';
 
 interface TestMultiChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
-  setAnswer: (questionNo: string, value: string) => void;
+  setAnswer: (questionNo: number, value: string) => void;
   readOnly: boolean;
-  setSubmitOk: (submitOk:boolean) => void;
+  setSubmitOk: (submitOk: boolean) => void;
 }
 
 const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMultiChoiceView({
@@ -34,7 +34,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
           if (newAnswer) newAnswer += `,${ans}`;
           else newAnswer = ans;
         });
-      setAnswer(question.questionNo, newAnswer);
+      setAnswer(question.sequence, newAnswer);
     },
     [answer] // answer 변경시 useCallback 내부의 answer 데이터도 변경
   );
@@ -44,10 +44,10 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
       {question.items.map(item => (
         <>
           <Checkbox
-            key={question.questionNo + '_' + item.itemNo}
+            key={question.sequence + '_' + item.itemNo}
             className="base"
             label={item.itemText}
-            name={`test_${question.questionNo}`}
+            name={`test_${question.sequence}`}
             value={item.itemNo}
             checked={answer?.includes(item.itemNo)}
             onChange={setAnswerFromCheckbox}

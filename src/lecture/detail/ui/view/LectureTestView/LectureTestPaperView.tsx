@@ -10,6 +10,8 @@ import {
 import {
   saveCourseTestAnswerSheet,
   saveCubeTestAnswerSheet,
+  saveLectureTestAnswerSheet,
+  submitLectureTestAnswerSheet,
 } from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 
 import {
@@ -69,7 +71,9 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       answerItemId = answerItem.id;
     }
 
-    if (params.cubeId !== undefined) {
+    await saveLectureTestAnswerSheet(params);
+
+    /*if (params.cubeId !== undefined) {
       saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
@@ -79,7 +83,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         ? testStudentItem.studentId
         : lectureStructureItem?.student?.id,
       'Test'
-    );
+    );*/
     clearFindMyCardRelatedStudentsCache();
     await updateCardLectureStructure(cardId);
 
@@ -88,7 +92,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     } else {
       await getTestStudentItemMapFromCourse(params); // student 재호출
     }
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions, params); // answer 재호출
   }, [answerItem, params, testStudentItem.studentId]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
@@ -148,23 +152,30 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         message: 'Test를 최종 제출 하시겠습니까?',
         onOk: async () => {
           if (answerItem) {
-            const nextAnswerItem = {
+            /*const nextAnswerItem = {
               ...answerItem,
               submitAnswers: answerItem.answers,
             };
-            setLectureTestAnswerItem(nextAnswerItem);
-            if (params.cubeId !== undefined) {
+            setLectureTestAnswerItem(nextAnswerItem);*/
+
+            await submitLectureTestAnswerSheet(params);
+
+            /*if (params.cubeId !== undefined) {
               await saveCubeTestAnswerSheet(params, answerItemId, true, true);
             } else {
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
-            }
+            }*/
 
             //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
             clearFindMyCardRelatedStudentsCache();
             await updateCardLectureStructure(cardId);
 
             await getTestStudentItemMapFromCourse(params); // student 재호출
-            await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+            await getTestAnswerItemMapFromExam(
+              testItem.id,
+              testItem.questions,
+              params
+            ); // answer 재호출
             openView('result');
           }
           setSubmitOk(true);
@@ -201,6 +212,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
                   <span>총점</span>
                   <span>
                     <strong>{testItem.totalPoint}점</strong>
+                  </span>
+                </div>
+                <div className="test-text-box pop-sty">
+                  <span>내점수</span>
+                  <span>
+                    <strong>{answerItem?.obtainedScore || 0}점</strong>
                   </span>
                 </div>
                 {testStudentItem &&

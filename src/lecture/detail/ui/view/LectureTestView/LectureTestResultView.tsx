@@ -87,7 +87,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-fail.png`}
                   />
                   <h1 className="test_fail">
-                    {lectureStructureItem.student.studentScore.latestScore}점
+                    {answerItem?.obtainedScore || 0}점
                   </h1>
                   <h2>
                     <strong>Test 이수조건을 통과하지 못했습니다.</strong>
@@ -106,7 +106,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
               <div className="course-info-bottom ml20">
                 <button
                   className="ui button free submit d"
-                  onClick={() => openView('test')}
+                  onClick={() => openView('retry')}
                 >
                   재응시
                 </button>
@@ -148,7 +148,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-pass.png`}
                   />
                   <h1 className="test_result">
-                    {lectureStructureItem.student.studentScore.latestScore}점
+                    {answerItem?.obtainedScore || 0}점
                   </h1>
                   <h2>
                     <strong>Test 이수조건을 통과하셨습니다!</strong>

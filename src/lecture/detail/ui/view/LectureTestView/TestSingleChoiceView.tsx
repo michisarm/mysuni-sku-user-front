@@ -1,13 +1,13 @@
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import ExamQuestion from '../../../model/ExamQuestion';
 import React, { useCallback } from 'react';
 import { Radio } from 'semantic-ui-react';
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
-  setAnswer: (questionNo: string, value: string) => void;
+  setAnswer: (questionNo: number, value: string) => void;
   readOnly: boolean;
-  setSubmitOk: (submitOk:boolean) => void;
+  setSubmitOk: (submitOk: boolean) => void;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
@@ -18,18 +18,18 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   setSubmitOk,
 }) {
   const setAnswerFromRadio = useCallback((e: any, data: any) => {
-    setAnswer(question.questionNo, data.value);
+    setAnswer(question.sequence, data.value);
   }, []);
 
   return (
     <div className="course-survey-list">
-      {question.items.map(item => (
+      {question.items?.map(item => (
         <>
           <Radio
-            key={question.questionNo + '_' + item.itemNo}
+            key={question.sequence + '_' + item.itemNo}
             className="base"
             label={item.itemText}
-            name={`test_${question.questionNo}`}
+            name={`test_${question.sequence}`}
             value={item.itemNo}
             checked={item.itemNo === answer}
             onChange={setAnswerFromRadio}

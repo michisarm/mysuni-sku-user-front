@@ -1,26 +1,31 @@
 import { reactAlert } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
-import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 
 import React, { useEffect, useState } from 'react';
-import { LectureTestItem } from '../../../viewModel/LectureTest';
+import {
+  LectureTestAnswerItem,
+  LectureTestItem,
+} from '../../../viewModel/LectureTest';
 import LectureParams from '../../../viewModel/LectureParams';
 import LectureTestIntroView from './LectureTestIntroView';
 import LectureTestResultView from './LectureTestResultView';
 import LectureTestPaperView from './LectureTestPaperView';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import { checkAnswerSheetAppliesCount } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
+import { retryTestItemMap } from '../../../service/useLectureTest/utility/getTestItemMap';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
   params: LectureParams;
+  answerItem?: LectureTestAnswerItem;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
   testItem,
   params,
+  answerItem,
 }) {
   const [testStudentItem] = useLectureTestStudent();
-  const [answerItem] = useLectureTestAnswer();
 
   const [useTestIntroView, setUseTestIntroView] = useState<boolean>(true); // TEST 메인 화면
   const [useTestView, setUseTestView] = useState<boolean>(false); // TEST 화면
@@ -39,6 +44,40 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       setUseTestIntroView(false);
       setUseTestView(false);
       setUseTestResultView(true);
+    } else if (view === 'retry') {
+      const checkApply = checkAnswerSheetAppliesCount(
+        params.cubeId || params.cardId
+      );
+      if (checkApply) {
+        // 셔플시험지를 재조회하여 intro 노출
+        retryTestItemMap(params);
+
+        setUseTestIntroView(true);
+        setUseTestView(false);
+        setUseTestResultView(false);
+      } else {
+        const date = new Date();
+        date.setDate(date.getDate() + 1);
+        const week = new Array('일', '월', '화', '수', '목', '금', '토');
+        const dateFormat =
+          date.getMonth() +
+          1 +
+          '월 ' +
+          date.getDate() +
+          '일 ' +
+          week[date.getDay()] +
+          '요일';
+
+        reactAlert({
+          title: '알림',
+          message:
+            '일일 재응시 횟수가 ' +
+            testItem.applyLimit +
+            '회를 초과하여 Test 참여가 불가능합니다.<br/>' +
+            dateFormat +
+            '에 다시 도전해보세요!',
+        });
+      }
     } else {
       setUseTestIntroView(true);
       setUseTestView(false);
@@ -60,7 +99,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       openView('intro');
     }
   }, [params, testStudentItem, lectureStructureItem]);
-
+  /*
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
     if (testStatus === 'PASS') {
@@ -81,7 +120,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       }
     }
   }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
-
+*/
   return (
     <>
       {useTestIntroView && testItem && (

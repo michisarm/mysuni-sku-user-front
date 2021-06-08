@@ -47,23 +47,20 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
     testClassName += ' test-complete ';
   }
 
-  const essayScoreMap = new Map<string, EssayScore>();
-  (testItem.essayScores || []).forEach(essayScore => {
-    essayScoreMap.set(essayScore.questionNo, essayScore);
-  });
-
   return (
     <>
       {testItem && (
         <>
           {testItem.questions &&
-            testItem.questions.map(question => {
+            testItem.questions.map((question, index) => {
               let answer: string = '';
               let answerResult: boolean = false;
+              let obtainedScore: number = 0;
               if (answerItem !== undefined) {
                 answerItem.answers.forEach(result => {
-                  if (result.questionNo === question.questionNo) {
+                  if (result.sequence === question.sequence) {
                     answer = result.answer;
+                    obtainedScore = result.obtainedScore || 0;
                   }
                 });
 
@@ -77,13 +74,13 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                       'FAIL')
                 ) {
                   let submitAnswer = '';
-                  answerItem.submitAnswers.forEach(result => {
-                    if (result.questionNo === question.questionNo) {
+                  answerItem.answers.forEach(result => {
+                    if (result.sequence === question.sequence) {
                       submitAnswer = result.answer;
                     }
                   });
                   if (question.questionType === 'SingleChoice') {
-                    if (question.answer === submitAnswer) {
+                    if (question.questionAnswer.answer === submitAnswer) {
                       answerResult = true;
                     }
                   }
@@ -91,7 +88,7 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                     let answerChkArr = [];
 
                     // 문제지 정답
-                    answerChkArr = JSON.parse(question.answer);
+                    answerChkArr = JSON.parse(question.questionAnswer.answer);
                     // 사용자 정답
                     const answerMultiJson = submitAnswer.split(',');
                     let checkCnt = 0;
@@ -117,7 +114,8 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                   }
                   if (question.questionType === 'ShortAnswer') {
                     const shortAnswers =
-                      question.answer && question.answer.split(',');
+                      question.questionAnswer &&
+                      question.questionAnswer.answer.split(',');
                     if (
                       shortAnswers != null &&
                       shortAnswers.length > 0 &&
@@ -138,27 +136,25 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                 }
               }
 
-              const matchedEssayScore = essayScoreMap.get(question.questionNo);
-
               return (
                 <TestQuestionView
-                  key={'question_' + question.questionNo}
+                  key={'question_' + question.sequence}
+                  indexNo={index}
                   question={question}
-                  submitted={answerItem?.submitted}
                   answer={answer}
+                  obtainedScore={obtainedScore}
                   answerResult={answerResult}
                   readOnly={readOnly}
                   learningState={testStudentItem?.learningState}
                   submitOk={submitOk}
                   setSubmitOk={setSubmitOk}
                   dataLoadTime={answerItem?.dataLoadTime}
-                  essayScore={matchedEssayScore}
                   params={params}
                 />
               );
             })}
-          {testItem.graderComment && (
-            <GraderCommentView graderComment={testItem.graderComment} />
+          {answerItem?.graderComment && (
+            <GraderCommentView graderComment={answerItem.graderComment} />
           )}
         </>
       )}

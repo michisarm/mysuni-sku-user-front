@@ -3,7 +3,6 @@ import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
 import TestShortAnswerView from './TestShortAnswerView';
 import TestEssayView from './TestEssayView';
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import {
   getLectureTestAnswerItem,
   setLectureTestAnswerItem,
@@ -12,28 +11,29 @@ import LearningState from 'lecture/detail/model/LearningState';
 import { EssayScore } from 'lecture/detail/model/GradeSheet';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import ExamQuestion from '../../../model/ExamQuestion';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
+  indexNo: number;
   answer?: string;
   answerResult?: boolean;
-  submitted?: boolean;
   readOnly: boolean;
   learningState?: LearningState;
   submitOk: boolean;
   setSubmitOk: (submitOk: boolean) => void;
   dataLoadTime?: Number;
-  essayScore?: EssayScore;
   params: LectureParams;
+  obtainedScore: number;
 }
 
-function setAnswer(questionNo: string, value: string) {
+function setAnswer(questionNo: number, value: string) {
   const answerItem = getLectureTestAnswerItem();
   if (answerItem === undefined) {
     return;
   }
   const nextAnswers = answerItem.answers.map(answer => {
-    if (questionNo === answer.questionNo) {
+    if (questionNo === answer.sequence) {
       return { ...answer, answer: value };
     }
     return answer;
@@ -47,16 +47,16 @@ function setAnswer(questionNo: string, value: string) {
 
 const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionView({
   question,
+  indexNo,
   answer,
   answerResult,
-  submitted,
   readOnly,
   learningState,
   submitOk,
   setSubmitOk,
   dataLoadTime,
-  essayScore,
   params,
+  obtainedScore,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -72,11 +72,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   ) {
     //if (submitted) {
     const lectureStructureItem = getActiveStructureItem(params.pathname);
-    if (
-      lectureStructureItem?.student?.extraWork.testStatus === 'FAIL' ||
-      lectureStructureItem?.student?.extraWork.testStatus === 'SUBMIT' ||
-      lectureStructureItem?.student?.extraWork.testStatus === 'PASS'
-    ) {
+    if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
       // 답안을 전송했을 경우 채점
       if (answerResult) {
         questionClassName += ' correct ';
@@ -85,10 +81,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       }
     }
     //}
-    if (
-      question.questionImgSrc !== undefined &&
-      question.questionImgSrc !== ''
-    ) {
+    if (question.imagePath !== undefined && question.imagePath !== '') {
       questionClassName += ' survey-radio-img ';
     }
   }
@@ -98,22 +91,21 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       question.questionType === 'MultiChoice' ||
       question.questionType === 'ShortAnswer'
     ) {
-      if (submitOk && submitted) {
+      if (submitOk) {
         if (!answerResult) {
           const lectureStructureItem = getActiveStructureItem(params.pathname);
           if (
             lectureStructureItem?.student?.extraWork.testStatus === 'FAIL' ||
             lectureStructureItem?.student?.extraWork.testStatus === 'SUBMIT'
           ) {
-            setAnswer(question.questionNo, ''); // 미이수 로딩시 틀린답안 표시 안함
+            setAnswer(question.sequence, ''); // 미이수 로딩시 틀린답안 표시 안함
           }
         }
       }
     }
   }, [
     params.pathname,
-    question.questionNo,
-    submitted,
+    question.sequence,
     learningState,
     submitOk,
     dataLoadTime,
@@ -123,9 +115,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
 
   const showScore =
     lectureStructureItem &&
-    (lectureStructureItem.student?.extraWork.testStatus === 'PASS' ||
-      lectureStructureItem.student?.extraWork.testStatus === 'FAIL' ||
-      lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT')
+    lectureStructureItem.student?.extraWork.testStatus === 'PASS'
       ? true
       : false;
 
@@ -133,13 +123,13 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
     <>
       <div key={question.id} className={questionClassName}>
         <p>
-          <span>{question.questionNo}</span>
-          {(question.questionImgSrc && (
+          <span>{indexNo + 1}</span>
+          {(question.imagePath && (
             <p>
               <span
                 className="copy"
                 dangerouslySetInnerHTML={{
-                  __html: `${question.direction} (${question.allocatedPoint}점)`,
+                  __html: `${question.question} (${question.point}점)`,
                 }}
               />
             </p>
@@ -148,16 +138,15 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
               <span
                 className="copy"
                 dangerouslySetInnerHTML={{
-                  __html: `${question.direction} (${question.allocatedPoint}점)`,
+                  __html: `${question.question} (${question.point}점)`,
                 }}
               />
             </>
           )}
         </p>
-        {question.questionImgSrc !== undefined &&
-          question.questionImgSrc !== '' && (
-            <img src={question.questionImgSrc} />
-          )}
+        {question.imagePath !== undefined && question.imagePath !== '' && (
+          <img src={question.imagePath} />
+        )}
         {question.questionType === 'SingleChoice' && (
           <TestSingleChoiceView
             question={question}
@@ -190,9 +179,30 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
-            essayScore={essayScore}
             showScore={showScore}
+            obtainedScore={obtainedScore}
           />
+        )}
+        {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' && (
+          <div className="survey-explain">
+            <button className="ui icon button right btn-blue">
+              정답닫기
+              <i aria-hidden="true" className="icon icon morelink more2" />
+            </button>
+            <div className="survey-answer">
+              <span>정답</span>
+              <span>4번</span>
+            </div>
+            <div className="survey-answer">
+              <span>해설</span>
+              <span>
+                전두엽은 추리,계획, 운동, 감정, 문제해결에 관여하는데, 특히
+                전두엽의 앞쪽에 위치한 전전두엽 피질은 다른 영역으로부터
+                들어오는 정보를 조정하고 행동을 조절한다. 따라서 두려움을 느끼게
+                되면 오히려 활성화가 증가하게 된다.
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </>
