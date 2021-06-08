@@ -183,27 +183,40 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             obtainedScore={obtainedScore}
           />
         )}
-        {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' && (
-          <div className="survey-explain">
-            <button className="ui icon button right btn-blue">
-              정답닫기
-              <i aria-hidden="true" className="icon icon morelink more2" />
-            </button>
-            <div className="survey-answer">
-              <span>정답</span>
-              <span>4번</span>
+        {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' &&
+          indexNo === 0 && (
+            <div className="survey-explain">
+              <button className="ui icon button right btn-blue">
+                정답보기
+                <i
+                  aria-hidden="true"
+                  className="icon icon morelink more2 view-down"
+                />
+              </button>
             </div>
-            <div className="survey-answer">
-              <span>해설</span>
-              <span>
-                전두엽은 추리,계획, 운동, 감정, 문제해결에 관여하는데, 특히
-                전두엽의 앞쪽에 위치한 전전두엽 피질은 다른 영역으로부터
-                들어오는 정보를 조정하고 행동을 조절한다. 따라서 두려움을 느끼게
-                되면 오히려 활성화가 증가하게 된다.
-              </span>
+          )}
+        {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' &&
+          indexNo === 1 && (
+            <div className="survey-explain">
+              <button className="ui icon button right btn-blue">
+                정답닫기
+                <i aria-hidden="true" className="icon icon morelink more2" />
+              </button>
+              <div className="survey-answer">
+                <span>정답</span>
+                <span>4번</span>
+              </div>
+              <div className="survey-answer">
+                <span>해설</span>
+                <span>
+                  전두엽은 추리,계획, 운동, 감정, 문제해결에 관여하는데, 특히
+                  전두엽의 앞쪽에 위치한 전전두엽 피질은 다른 영역으로부터
+                  들어오는 정보를 조정하고 행동을 조절한다. 따라서 두려움을
+                  느끼게 되면 오히려 활성화가 증가하게 된다.
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </>
   );
