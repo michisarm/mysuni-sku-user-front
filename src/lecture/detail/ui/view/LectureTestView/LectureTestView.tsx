@@ -13,6 +13,7 @@ import LectureTestPaperView from './LectureTestPaperView';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { checkAnswerSheetAppliesCount } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { retryTestItemMap } from '../../../service/useLectureTest/utility/getTestItemMap';
+import { getLectureTestAnswerItem } from '../../../store/LectureTestStore';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -121,6 +122,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
 */
+  console.log('answerItem', answerItem);
+  console.log('answerItem?.trials', answerItem?.trials);
   return (
     <>
       {useTestIntroView && testItem && (
@@ -128,6 +131,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
           params={params}
           testItem={testItem}
           openView={openView}
+          trials={answerItem?.trials || 0}
         />
       )}
       {useTestResultView && testItem && testStudentItem && (

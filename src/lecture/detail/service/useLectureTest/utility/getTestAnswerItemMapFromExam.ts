@@ -26,11 +26,7 @@ import { getActiveStructureItem } from '../../../utility/lectureStructureHelper'
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-async function getTestAnswerItem(
-  pathname: string,
-  examId: string,
-  lectureId: string
-) {
+async function getTestAnswerItem(pathname: string, lectureId: string) {
   const item = await initTestAnswerItem([]);
 
   if (lectureId !== '' && lectureId !== null) {
@@ -57,32 +53,26 @@ async function getTestAnswerItem(
 }
 
 export async function getTestAnswerItemMapFromExam(
-  examId: string,
   questions: ExamQuestion[],
   params: LectureParams
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-  setLectureTestAnswerItem(undefined); // 초기화
-  if (examId) {
-    const lectureId = params.cubeId || params.cardId;
-    const answerItem = await getTestAnswerItem(
-      params.pathname,
-      examId,
-      lectureId
-    );
-    if (answerItem !== undefined) {
-      if (answerItem.answers.length < 1) {
-        questions.forEach((result, index) => {
-          answerItem.answers.push({
-            sequence: result.sequence,
-            answer: '',
-          });
+  //setLectureTestAnswerItem(undefined); // 초기화
+  //if (examId) {
+  const lectureId = params.cubeId || params.cardId;
+  const answerItem = await getTestAnswerItem(params.pathname, lectureId);
+  if (answerItem !== undefined) {
+    if (answerItem.answers.length < 1) {
+      questions.forEach((result, index) => {
+        answerItem.answers.push({
+          sequence: result.sequence,
+          answer: '',
         });
-      }
-      console.log('answerItem', answerItem);
-      setLectureTestAnswerItem(answerItem);
+      });
     }
+    setLectureTestAnswerItem(answerItem);
   }
+  //}
 }
 
 export async function checkAnswerSheetAppliesCount(
@@ -107,7 +97,7 @@ export async function initTestAnswerItem(
     answers: [],
     finished: false,
     dataLoadTime: 0,
-    obtainedScore: 0,
+    obtainedScore: oriAnswerItem?.obtainedScore || 0, // 재응시로 init 후 Test 메뉴를 다시 클릭하면 결과화면의 점수가 보이기 때문에 retry시에는 0이면 안 됨..
     graderComment: '',
     trials: oriAnswerItem?.trials || 0, // 재응시 횟수는 유지
   };
@@ -118,6 +108,5 @@ export async function initTestAnswerItem(
     });
   });
 
-  setLectureTestAnswerItem(answerItem);
   return answerItem;
 }

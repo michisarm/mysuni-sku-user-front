@@ -79,56 +79,60 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                       submitAnswer = result.answer;
                     }
                   });
-                  if (question.questionType === 'SingleChoice') {
-                    if (question.questionAnswer.answer === submitAnswer) {
-                      answerResult = true;
+                  if (question.questionAnswer !== null) {
+                    if (question.questionType === 'SingleChoice') {
+                      if (question.questionAnswer?.answer === submitAnswer) {
+                        answerResult = true;
+                      }
                     }
-                  }
-                  if (question.questionType === 'MultiChoice') {
-                    let answerChkArr = [];
+                    if (question.questionType === 'MultiChoice') {
+                      let answerChkArr = [];
 
-                    // 문제지 정답
-                    answerChkArr = JSON.parse(question.questionAnswer.answer);
-                    // 사용자 정답
-                    const answerMultiJson = submitAnswer.split(',');
-                    let checkCnt = 0;
+                      // 문제지 정답
+                      answerChkArr = JSON.parse(
+                        question.questionAnswer?.answer
+                      );
+                      // 사용자 정답
+                      const answerMultiJson = submitAnswer.split(',');
+                      let checkCnt = 0;
 
-                    // 자릿수 비교
-                    if (answerChkArr.length === answerMultiJson.length) {
-                      // 정답지
-                      for (let i = 0; i < answerChkArr.length; i++) {
-                        // 사용자문제지
-                        for (let j = 0; j < answerMultiJson.length; j++) {
-                          // 정답지 사용자 문제지 체크
-                          if (answerChkArr[i] === answerMultiJson[j]) {
-                            checkCnt++;
+                      // 자릿수 비교
+                      if (answerChkArr.length === answerMultiJson.length) {
+                        // 정답지
+                        for (let i = 0; i < answerChkArr.length; i++) {
+                          // 사용자문제지
+                          for (let j = 0; j < answerMultiJson.length; j++) {
+                            // 정답지 사용자 문제지 체크
+                            if (answerChkArr[i] === answerMultiJson[j]) {
+                              checkCnt++;
+                            }
                           }
                         }
                       }
-                    }
 
-                    // 정답지와 사용자 정답 갯수 체크
-                    if (answerChkArr.length === checkCnt) {
-                      answerResult = true;
+                      // 정답지와 사용자 정답 갯수 체크
+                      if (answerChkArr.length === checkCnt) {
+                        answerResult = true;
+                      }
                     }
-                  }
-                  if (question.questionType === 'ShortAnswer') {
-                    const shortAnswers =
-                      question.questionAnswer &&
-                      question.questionAnswer.answer.split(',');
-                    if (
-                      shortAnswers != null &&
-                      shortAnswers.length > 0 &&
-                      shortAnswers[0] !== 'undefined' &&
-                      submitAnswer
-                    ) {
-                      for (let j = 0; j < shortAnswers.length; j++) {
-                        // 정답지 사용자 문제지 체크
-                        if (
-                          submitAnswer.trim().toLowerCase() ===
-                          shortAnswers[j].trim().toLowerCase()
-                        ) {
-                          answerResult = true;
+                    if (question.questionType === 'ShortAnswer') {
+                      const shortAnswers =
+                        question.questionAnswer &&
+                        question.questionAnswer.answer.split(',');
+                      if (
+                        shortAnswers != null &&
+                        shortAnswers.length > 0 &&
+                        shortAnswers[0] !== 'undefined' &&
+                        submitAnswer
+                      ) {
+                        for (let j = 0; j < shortAnswers.length; j++) {
+                          // 정답지 사용자 문제지 체크
+                          if (
+                            submitAnswer.trim().toLowerCase() ===
+                            shortAnswers[j].trim().toLowerCase()
+                          ) {
+                            answerResult = true;
+                          }
                         }
                       }
                     }

@@ -36,7 +36,7 @@ export interface LectureStructureCubeItemParams extends Params {
   serviceId?: string;
   cubeId: string;
   lectureCardId?: string;
-  examId: string;
+  //examId: string;
 }
 
 export interface LectureTestItem {
@@ -69,7 +69,7 @@ export interface LectureTestStudentItem extends Item {
   serviceType: LectureType;
   learningState: LearningState;
   studentScore: StudentScore;
-  examId: string | null;
+  //examId: string | null;
   paperId: string | null;
 }
 

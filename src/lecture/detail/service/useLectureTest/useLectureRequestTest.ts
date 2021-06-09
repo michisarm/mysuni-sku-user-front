@@ -29,6 +29,7 @@ export function useLectureRequestTest() {
     if (params?.cardId === undefined) {
       return;
     }
+
     if (params.cubeId !== undefined) {
       getCubeTestItem();
     } else {

@@ -8,15 +8,17 @@ interface LectureTestIntroViewProps {
   testItem: LectureTestItem;
   openView: (view: string) => void;
   params: LectureParams;
+  trials?: number;
 }
 
 const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function LectureTestIntroView({
   testItem,
   openView,
   params,
+  trials,
 }) {
   const lectureStructureItem = getActiveStructureItem(params.pathname);
-
+  console.log(trials);
   return (
     <>
       {testItem && (
@@ -39,6 +41,8 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
               <p>
                 총 <strong>{testItem.questionCount}문항</strong>
               </p>
+              <h3>응시횟수</h3>
+              <p>{trials || 0}회</p>
               <h3>이수조건</h3>
               <p>
                 합격점 <strong>{testItem.successPoint}점</strong>

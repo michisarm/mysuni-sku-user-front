@@ -61,7 +61,8 @@ async function getTestItem(
     setLectureTestAnswerItem(answerItem);
   } else {
     testDetail = await findExamPaperDetail(examPaperIds);
-    initTestAnswerItem(testDetail.examQuestions);
+    const answerItem = await initTestAnswerItem(testDetail.examQuestions);
+    setLectureTestAnswerItem(answerItem);
   }
 
   const item: LectureTestItem = {
@@ -135,7 +136,7 @@ export async function retryTestItemMap(params: LectureParams): Promise<void> {
 
   const testItem: LectureTestItem = {
     applyLimit: testDetail?.examPaper.applyLimit,
-    id: serviceId + '_' + 'studentId' + '_' + testDetail?.examPaper.id || '',
+    id: testDetail?.examPaper.id || '',
     name: testDetail?.examPaper.title,
     questionCount: testDetail?.examQuestions.length || 0,
     questions: testDetail?.examQuestions || [],
@@ -148,5 +149,6 @@ export async function retryTestItemMap(params: LectureParams): Promise<void> {
 
   setLectureTestItem(testItem);
 
-  initTestAnswerItem(testItem.questions);
+  const answerItem = await initTestAnswerItem(testItem.questions);
+  setLectureTestAnswerItem(answerItem);
 }

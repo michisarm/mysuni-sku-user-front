@@ -92,7 +92,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     } else {
       await getTestStudentItemMapFromCourse(params); // student 재호출
     }
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions, params); // answer 재호출
+    await getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
   }, [answerItem, params, testStudentItem.studentId]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
@@ -171,11 +171,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
             await updateCardLectureStructure(cardId);
 
             await getTestStudentItemMapFromCourse(params); // student 재호출
-            await getTestAnswerItemMapFromExam(
-              testItem.id,
-              testItem.questions,
-              params
-            ); // answer 재호출
+            await getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
             openView('result');
           }
           setSubmitOk(true);

@@ -89,7 +89,9 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   <h1 className="test_fail">
                     {answerItem?.obtainedScore || 0}점
                   </h1>
-                  <h2>
+                  <h3>응시횟수</h3>
+                  <p>{answerItem?.trials || 0}회</p>
+                  <h2 style={{ marginTop: '2.5rem' }}>
                     <strong>Test 이수조건을 통과하지 못했습니다.</strong>
                     <br />
                     하단 <strong>재응시</strong> 버튼을 통해 다시 Test를

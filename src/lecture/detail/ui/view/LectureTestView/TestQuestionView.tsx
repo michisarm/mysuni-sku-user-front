@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
 import TestShortAnswerView from './TestShortAnswerView';
@@ -12,6 +12,7 @@ import { EssayScore } from 'lecture/detail/model/GradeSheet';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import ExamQuestion from '../../../model/ExamQuestion';
+import { Button, Icon } from 'semantic-ui-react';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
@@ -119,6 +120,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       ? true
       : false;
 
+  const [useAnswerView, setUseAnswerView] = useState<boolean>(false);
   return (
     <>
       <div key={question.id} className={questionClassName}>
@@ -183,39 +185,63 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             obtainedScore={obtainedScore}
           />
         )}
+
         {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' &&
-          indexNo === 0 && (
-            <div className="survey-explain">
-              <button className="ui icon button right btn-blue">
-                정답보기
-                <i
-                  aria-hidden="true"
-                  className="icon icon morelink more2 view-down"
-                />
-              </button>
-            </div>
-          )}
-        {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' &&
-          indexNo === 1 && (
-            <div className="survey-explain">
-              <button className="ui icon button right btn-blue">
-                정답닫기
-                <i aria-hidden="true" className="icon icon morelink more2" />
-              </button>
-              <div className="survey-answer">
-                <span>정답</span>
-                <span>4번</span>
-              </div>
-              <div className="survey-answer">
-                <span>해설</span>
-                <span>
-                  전두엽은 추리,계획, 운동, 감정, 문제해결에 관여하는데, 특히
-                  전두엽의 앞쪽에 위치한 전전두엽 피질은 다른 영역으로부터
-                  들어오는 정보를 조정하고 행동을 조절한다. 따라서 두려움을
-                  느끼게 되면 오히려 활성화가 증가하게 된다.
-                </span>
-              </div>
-            </div>
+          question.questionType !== 'Essay' && (
+            <>
+              {!useAnswerView && (
+                <div className="survey-explain">
+                  <Button
+                    className="ui icon button right btn-blue"
+                    onClick={() => setUseAnswerView(true)}
+                  >
+                    정답보기
+                    <Icon
+                      aria-hidden="true"
+                      className="morelink more2 view-down"
+                    />
+                  </Button>
+                </div>
+              )}
+              {useAnswerView && (
+                <div className="survey-explain">
+                  <Button
+                    className="ui icon button right btn-blue"
+                    onClick={() => setUseAnswerView(false)}
+                  >
+                    정답닫기
+                    <Icon aria-hidden="true" className="morelink more2" />
+                  </Button>
+                  <div className="survey-answer">
+                    <span>정답</span>
+                    <span>
+                      {question.questionType === 'SingleChoice' && (
+                        <>{question.questionAnswer.answer}번</>
+                      )}
+                      {question.questionType === 'MultiChoice' && (
+                        <>
+                          {/*JSON.parse(question.questionAnswer.answer)
+                            .split(',')
+                            .map((result: string) => {
+                              return result + '번';
+                            })*/}
+                          {question.questionAnswer.answer}
+                        </>
+                      )}
+                      {question.questionType === 'ShortAnswer' && (
+                        <>{question.questionAnswer.answer}</>
+                      )}
+                    </span>
+                  </div>
+                  {question.questionAnswer.explanation && (
+                    <div className="survey-answer">
+                      <span>해설</span>
+                      <span>{question.questionAnswer.explanation}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
       </div>
     </>
