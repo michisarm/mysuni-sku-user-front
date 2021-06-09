@@ -1,8 +1,4 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
-import { patronInfo } from '@nara.platform/dock';
 import { LectureTestAnswerItem } from '../../../viewModel/LectureTest';
 import {
   getLectureTestAnswerItem,
@@ -16,18 +12,10 @@ import {
 import ExamQuestion from '../../../model/ExamQuestion';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
-
-// exam
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-// http://localhost:3000/api/assistant/v1/answersheets?examId=CUBE-2jc&examineeId=r47a@ne1-m2
-
-// survey
-// http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
-// http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
+import AnswerSheetDetail from '../../../model/AnswersheetDetail';
 
 async function getTestAnswerItem(pathname: string, lectureId: string) {
-  const item = await initTestAnswerItem([]);
+  let item = await initTestAnswerItem([]);
 
   if (lectureId !== '' && lectureId !== null) {
     const structureItem = getActiveStructureItem(pathname);
@@ -36,34 +24,47 @@ async function getTestAnswerItem(pathname: string, lectureId: string) {
       const findAnswerSheetData = await findAnswerSheetsDetail(lectureId);
 
       if (findAnswerSheetData !== null) {
-        item.id = findAnswerSheetData.answerSheet.id;
-        item.answers = findAnswerSheetData.answerSheet.answers!;
-        //item.submitted = findAnswerSheetData.answerSheet.submitted!;
-        //item.submitAnswers = findAnswerSheetData.answerSheet.submitAnswers!;
-        //item.finished = findAnswerSheetData.answerSheet.finished!;
-        item.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
-        item.graderComment = findAnswerSheetData.answerSheet.graderComment;
-        item.obtainedScore = findAnswerSheetData.answerSheet.obtainedScore;
-        item.trials = findAnswerSheetData.answerSheet.trials;
+        item = await getTestAnswerItemFromSheetData(findAnswerSheetData, item);
       }
     }
-
-    return item;
   }
+
+  return item;
+}
+
+export async function getTestAnswerItemFromSheetData(
+  detail: AnswerSheetDetail,
+  item?: LectureTestAnswerItem
+) {
+  let newItem: LectureTestAnswerItem;
+  if (item === undefined) {
+    newItem = await initTestAnswerItem(detail.examQuestions);
+  } else {
+    newItem = item;
+  }
+
+  newItem.id = detail.answerSheet.id;
+  newItem.answers = detail.answerSheet.answers!;
+  //item.submitted = findAnswerSheetData.answerSheet.submitted!;
+  //item.submitAnswers = findAnswerSheetData.answerSheet.submitAnswers!;
+  //item.finished = findAnswerSheetData.answerSheet.finished!;
+  newItem.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
+  newItem.graderComment = detail.answerSheet.graderComment;
+  newItem.obtainedScore = detail.answerSheet.obtainedScore;
+  newItem.trials = detail.answerSheet.trials;
+
+  return newItem;
 }
 
 export async function getTestAnswerItemMapFromExam(
   questions: ExamQuestion[],
   params: LectureParams
 ): Promise<void> {
-  // void : return이 없는 경우 undefined
-  //setLectureTestAnswerItem(undefined); // 초기화
-  //if (examId) {
   const lectureId = params.cubeId || params.cardId;
   const answerItem = await getTestAnswerItem(params.pathname, lectureId);
   if (answerItem !== undefined) {
     if (answerItem.answers.length < 1) {
-      questions.forEach((result, index) => {
+      questions.forEach(result => {
         answerItem.answers.push({
           sequence: result.sequence,
           answer: '',
@@ -72,7 +73,6 @@ export async function getTestAnswerItemMapFromExam(
     }
     setLectureTestAnswerItem(answerItem);
   }
-  //}
 }
 
 export async function checkAnswerSheetAppliesCount(

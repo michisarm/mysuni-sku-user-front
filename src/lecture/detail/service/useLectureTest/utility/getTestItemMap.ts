@@ -4,10 +4,7 @@ import {
   findAnswerSheetsDetail,
   findExamPaperDetail,
 } from '../../../api/examApi';
-import {
-  LectureTestAnswerItem,
-  LectureTestItem,
-} from '../../../viewModel/LectureTest';
+import { LectureTestItem } from '../../../viewModel/LectureTest';
 import {
   setLectureTestAnswerItem,
   setLectureTestItem,
@@ -20,7 +17,10 @@ import {
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import ExamDetail from '../../../model/ExamDetail';
 import Student from '../../../../model/Student';
-import { initTestAnswerItem } from './getTestAnswerItemMapFromExam';
+import {
+  initTestAnswerItem,
+  getTestAnswerItemFromSheetData,
+} from './getTestAnswerItemMapFromExam';
 
 async function getTestItem(
   params: LectureParams,
@@ -49,25 +49,26 @@ async function getTestItem(
       examPaper: answerSheetDetail.examPaper,
       examQuestions: answerSheetDetail.examQuestions,
     };
-    const answerItem: LectureTestAnswerItem = {
-      id: answerSheetDetail.answerSheet.id,
-      answers: answerSheetDetail.answerSheet.answers,
-      finished: false,
-      dataLoadTime: new Date().getTime(),
-      obtainedScore: answerSheetDetail.answerSheet.obtainedScore,
-      graderComment: answerSheetDetail.answerSheet.graderComment,
-      trials: answerSheetDetail.answerSheet.trials,
-    };
+    const answerItem = await getTestAnswerItemFromSheetData(answerSheetDetail);
     setLectureTestAnswerItem(answerItem);
   } else {
     testDetail = await findExamPaperDetail(examPaperIds);
     const answerItem = await initTestAnswerItem(testDetail.examQuestions);
     setLectureTestAnswerItem(answerItem);
   }
+  const item = await getTestItemFromDetailData(testDetail, serviceId);
+  setLectureTestItem(item);
 
-  const item: LectureTestItem = {
+  return item;
+}
+
+async function getTestItemFromDetailData(
+  testDetail: ExamDetail,
+  serviceId: string
+): Promise<LectureTestItem> {
+  const newItem: LectureTestItem = {
     applyLimit: testDetail?.examPaper.applyLimit,
-    id: serviceId + '_' + 'studentId' + '_' + testDetail?.examPaper.id || '',
+    id: testDetail?.examPaper.id || '',
     name: testDetail?.examPaper.title,
     questionCount: testDetail?.examQuestions.length || 0,
     questions: testDetail?.examQuestions || [],
@@ -78,9 +79,7 @@ async function getTestItem(
     paperId: testDetail?.examPaper.id || '',
   };
 
-  setLectureTestItem(item);
-
-  return item;
+  return newItem;
 }
 
 export async function getTestItemMapFromCourse(
@@ -117,6 +116,7 @@ export async function getTestItemMapFromCube(
   return testItem;
 }
 
+// 재응시
 export async function retryTestItemMap(params: LectureParams): Promise<void> {
   const serviceId = params.cubeId || params.cardId;
   const examPaperIds: string[] = [];
@@ -134,19 +134,7 @@ export async function retryTestItemMap(params: LectureParams): Promise<void> {
 
   const testDetail = await findExamPaperDetail(examPaperIds);
 
-  const testItem: LectureTestItem = {
-    applyLimit: testDetail?.examPaper.applyLimit,
-    id: testDetail?.examPaper.id || '',
-    name: testDetail?.examPaper.title,
-    questionCount: testDetail?.examQuestions.length || 0,
-    questions: testDetail?.examQuestions || [],
-    successPoint: testDetail?.examPaper.successPoint,
-    totalPoint: testDetail?.examPaper.totalPoint,
-    description: testDetail?.examPaper.description || '',
-    serviceId,
-    paperId: testDetail?.examPaper.id || '',
-  };
-
+  const testItem = await getTestItemFromDetailData(testDetail, serviceId);
   setLectureTestItem(testItem);
 
   const answerItem = await initTestAnswerItem(testItem.questions);
