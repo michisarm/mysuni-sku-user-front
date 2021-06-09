@@ -77,13 +77,13 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
-    }
+    }*/
     await saveTask(
       lectureStructureItem?.student?.id === undefined
         ? testStudentItem.studentId
         : lectureStructureItem?.student?.id,
       'Test'
-    );*/
+    );
     clearFindMyCardRelatedStudentsCache();
     await updateCardLectureStructure(cardId);
 
