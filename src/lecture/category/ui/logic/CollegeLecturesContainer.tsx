@@ -11,7 +11,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { ActionLogService, NewPageService } from 'shared/stores';
+import { NewPageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel, CollegeModel } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -47,7 +47,6 @@ import {
 import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService;
   newPageService?: NewPageService;
   collegeService?: CollegeService;
   lectureService?: LectureService;
@@ -77,7 +76,6 @@ interface RouteParams {
 }
 
 const CollegeLecturesContainer: React.FC<Props> = ({
-  actionLogService,
   newPageService,
   collegeService,
   lectureService,
@@ -123,7 +121,6 @@ const CollegeLecturesContainer: React.FC<Props> = ({
 
   return (
     <CollegeLecturesContainerInner
-      actionLogService={actionLogService}
       newPageService={newPageService}
       collegeService={collegeService}
       lectureService={lectureService}
@@ -144,7 +141,6 @@ export default withRouter(CollegeLecturesContainer);
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.newPageService',
     'college.collegeService',
     'lecture.lectureService',
@@ -338,10 +334,6 @@ class CollegeLecturesContainerInner extends Component<
 
   onChangeSorting(e: any, data: any) {
     //
-    this.props.actionLogService?.registerClickActionLog({
-      subAction: data.label,
-    });
-
     this.setState(
       {
         sorting: data.value,
@@ -356,9 +348,7 @@ class CollegeLecturesContainerInner extends Component<
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { actionLogService, inMyLectureService } = this.props;
-
-    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+    const { inMyLectureService } = this.props;
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!
@@ -422,10 +412,9 @@ class CollegeLecturesContainerInner extends Component<
 
   onClickSeeMore() {
     //
-    const { actionLogService, match, history } = this.props;
+    const { match, history } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
     // this.findPagingCollegeLectures();
-    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     // this.addFindPagingCollegeLectures();
     history.replace(routePaths.collegeLecturesPage(pageNo + 1));
   }

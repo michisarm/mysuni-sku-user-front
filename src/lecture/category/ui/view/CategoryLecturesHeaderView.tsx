@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import { Button } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
-import { ActionLogService } from 'shared/stores';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 import { Area } from 'tracker/model';
 
 interface Props {
-  actionLogService?: ActionLogService;
   college: CollegeModel;
   onClickMySuni: () => void;
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
@@ -104,7 +101,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
 
   render() {
     //
-    const { actionLogService, college, onClickMySuni } = this.props;
+    const { college, onClickMySuni } = this.props;
 
     return (
       <ContentHeader dataArea={Area.COLLEGE_INFO}>
@@ -123,9 +120,6 @@ class CategoryLecturesHeaderView extends Component<Props> {
             <Button
               className="personal line"
               onClick={() => {
-                actionLogService?.registerClickActionLog({
-                  subAction: 'mySUNI 전체 커리큘럼 보기',
-                });
                 onClickMySuni();
               }}
             >

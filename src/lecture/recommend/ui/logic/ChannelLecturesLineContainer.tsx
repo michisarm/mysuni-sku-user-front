@@ -4,7 +4,6 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import { ActionLogService } from 'shared/stores';
 import { OffsetElementList } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
@@ -17,7 +16,6 @@ import LectureModel from '../../../model/LectureModel';
 import LectureServiceType from '../../../model/LectureServiceType';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   inMyLectureService?: InMyLectureService;
   lectures: OffsetElementList<LectureModel>;
@@ -27,7 +25,6 @@ interface Props extends RouteComponentProps {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'profile.skProfileService',
     'myTraining.inMyLectureService'
   )
@@ -43,9 +40,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { actionLogService, inMyLectureService } = this.props;
-
-    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+    const { inMyLectureService } = this.props;
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!
@@ -107,10 +102,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
   }
 
   onViewAll(e: any) {
-    const { actionLogService, channel, onViewAll } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
+    const { channel, onViewAll } = this.props;
     onViewAll(e, {
       channel,
     });

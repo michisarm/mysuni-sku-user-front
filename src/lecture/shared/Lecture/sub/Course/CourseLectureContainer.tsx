@@ -23,7 +23,6 @@ import { BoardService } from 'personalcube/community/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 import { CoursePlanService } from 'course/stores';
-import { ActionEventService } from 'shared/stores';
 
 import {
   LectureViewModel,
@@ -56,7 +55,6 @@ import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/Answe
 import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
 
 interface Props {
-  actionEventService?: ActionEventService;
   rollBookService?: RollBookService;
   boardService: BoardService;
   personalCubeService?: PersonalCubeService;
@@ -107,7 +105,6 @@ interface State {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionEventService',
     'lecture.rollBookService',
     'personalCube.boardService',
     'personalCube.personalCubeService',
@@ -340,7 +337,7 @@ class CourseLectureContainer extends Component<Props, State> {
   }
 
   publishStudyEvent(isCPLinked?: boolean, url?: string) {
-    const { actionEventService, coursePlanService } = this.props;
+    const { coursePlanService } = this.props;
     const {
       collegeId,
       lectureCardId,
@@ -377,19 +374,6 @@ class CourseLectureContainer extends Component<Props, State> {
 
         break;
     }
-
-    actionEventService?.registerStudyActionLog({
-      action,
-      serviceType,
-      collegeId,
-      cubeId,
-      lectureCardId,
-      coursePlanId,
-      menu,
-      path,
-      courseName,
-      cubeName,
-    });
   }
 
   onToggle() {

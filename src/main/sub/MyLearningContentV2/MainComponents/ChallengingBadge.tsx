@@ -6,19 +6,16 @@ import { NoSuchContentPanel } from 'shared';
 import { RouteComponentProps, withRouter } from 'react-router';
 import certificationRoutes from 'certification/routePaths';
 import { BadgeService } from 'certification/stores';
-import { ActionLogService } from '../../../../shared/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
-import { Badge } from '../../../../certification/model/Badge';
 import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
   badgeService?: BadgeService;
 
   profileMemberName: string;
@@ -26,7 +23,7 @@ interface Props extends RouteComponentProps {
 
 const ChallengingBadge: React.FC<Props> = Props => {
   //
-  const { actionLogService, badgeService, profileMemberName, history } = Props;
+  const { badgeService, profileMemberName, history } = Props;
 
   const CONTENT_TYPE = 'Badge';
   /*
@@ -67,8 +64,6 @@ const ChallengingBadge: React.FC<Props> = Props => {
 
   const onViewAll = () => {
     //
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(certificationRoutes.badgeChallengingBadgeList());
   };
@@ -160,5 +155,5 @@ const ChallengingBadge: React.FC<Props> = Props => {
 };
 
 export default inject(
-  mobxHelper.injectFrom('shared.actionLogService', 'badge.badgeService')
+  mobxHelper.injectFrom('badge.badgeService')
 )(withRouter(observer(ChallengingBadge)));

@@ -28,6 +28,3 @@ export { DatePeriod } from './ObservableDatePeriod';
 export { TimePeriod } from './TimePeriod';
 export { default as PageModel } from './PageModel';
 export { default as NewPageModel } from './NewPageModel';
-
-export { default as ActionLogModel } from './ActionLogModel';
-export { default as ActionEventModel } from './ActionEventModel';

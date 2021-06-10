@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, getCookie } from '@nara.platform/accent';
-import { inject } from 'mobx-react';
+import { reactAutobind, getCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ActionLogService } from 'shared/stores';
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
@@ -14,19 +12,17 @@ import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
-import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
+import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
+import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
-interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
-}
+interface Props extends RouteComponentProps {}
 
 interface State {
   searchValue: string;
   focused: boolean;
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 class HeaderContainer extends Component<Props, State> {
   //
@@ -52,7 +48,6 @@ class HeaderContainer extends Component<Props, State> {
 
   onSearch() {
     //
-    const { actionLogService } = this.props;
     const { searchValue } = this.state;
 
     // alert("점검중 입니다.")

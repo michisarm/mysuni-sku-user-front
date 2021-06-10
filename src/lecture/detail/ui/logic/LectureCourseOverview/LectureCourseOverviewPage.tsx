@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { useCourseViewEvent } from '../../../service/useActionLog/useCourseViewEvent';
 import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
@@ -10,8 +9,6 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 function LectureCourseOverviewPage() {
   useRequestLectureCardOverview();
   const lectureStructure = useLectureStructure();
-
-  useCourseViewEvent();
 
   const history = useHistory();
   useEffect(() => {

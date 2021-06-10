@@ -11,7 +11,6 @@ import {
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
-import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { RecommendLectureRdo } from 'lecture/model';
@@ -39,7 +38,6 @@ interface Props {
 }
 
 interface InnerProps {
-  actionLogService?: ActionLogService;
   collegeService?: CollegeService;
   recommendCardRoms: RecommendCardRom[];
   channels: ChannelModel[];
@@ -96,7 +94,7 @@ const LECTURES_SIZE = 8;
 
 export default RecommendChannelsContainer;
 @inject(
-  mobxHelper.injectFrom('shared.actionLogService', 'college.collegeService')
+  mobxHelper.injectFrom('college.collegeService')
 )
 @reactAutobind
 @observer
@@ -203,9 +201,7 @@ class ChannelsInnerContainer extends Component<InnerProps, InnerState> {
   onSelectChannel(channel: ChannelModel) {
     //
     const collegeService = this.props.collegeService!;
-    const { actionLogService, history } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: channel.name });
+    const { history } = this.props;
 
     const index = collegeService!._channels
       .map((channel: ChannelModel) => channel.id)
@@ -247,9 +243,7 @@ class ChannelsInnerContainer extends Component<InnerProps, InnerState> {
 
   onClickSeeMore() {
     //
-    const { actionLogService, history } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: 'list more' });
+    const { history } = this.props;
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
 
     setTimeout(() => {

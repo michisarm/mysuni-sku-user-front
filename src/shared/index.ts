@@ -6,7 +6,6 @@ export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as depotHelper } from './helper/depotHelper';
 export { default as apiHelper } from './helper/apiHelper';
 export { default as storageHelper } from './helper/storageHelper';
-export { default as actionHandler } from './present/logic/actionHandler';
 
 /** Component */
 export { default as UserApp } from '../layout/UserApp';

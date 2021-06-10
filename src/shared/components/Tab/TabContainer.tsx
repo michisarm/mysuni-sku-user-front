@@ -1,11 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
-import { ActionEventService } from 'shared/stores';
 import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
 import ReactGA from 'react-ga';
@@ -14,7 +13,6 @@ import { MyBadgeContentType } from 'certification/ui/model';
 import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionEventService?: ActionEventService;
   tabs: TabItemModel[];
   header?: ReactNode;
   className?: string;
@@ -41,7 +39,6 @@ interface State {
   activeName: string;
 }
 
-@inject(mobxHelper.injectFrom('shared.actionEventService'))
 @reactAutobind
 @observer
 class TabContainer extends Component<Props, State> {
@@ -106,12 +103,6 @@ class TabContainer extends Component<Props, State> {
       });
     });
 
-    const routePath = onChangeTab!(tab);
-    if (routePath) {
-      this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
-    } else {
-      this.publishViewEvent(menu);
-    }
     if (sessionStorage.getItem('learningOffset') !== null) {
       sessionStorage.removeItem('learningOffset');
     }
@@ -136,24 +127,6 @@ class TabContainer extends Component<Props, State> {
     if (cubeId) pageName = 'cube';
 
     return pageName;
-  }
-
-  publishViewEvent(menu: string, path?: string) {
-    const { actionEventService } = this.props;
-    const { match } = this.props;
-    const { collegeId, cubeId, lectureCardId, coursePlanId } = match.params;
-    let { serviceType } = match.params;
-
-    if (cubeId) serviceType = LectureServiceType.Card;
-    actionEventService?.registerViewActionLog({
-      menu,
-      path,
-      serviceType,
-      collegeId,
-      cubeId,
-      lectureCardId,
-      coursePlanId,
-    });
   }
 
   findArea(type?: string) {
@@ -297,6 +270,7 @@ class TabContainer extends Component<Props, State> {
       <>
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
         {topOfContents}
+
         <Segment className="full" key={`tab-content-${tab.name}`}>
           <div
             className={classNames('ui tab', {

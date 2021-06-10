@@ -5,7 +5,6 @@ import moment from 'moment';
 import XLSX from 'xlsx';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 import { ListPanelTopLine } from 'shared';
 import { ChannelModel } from 'college/model';
 import { ChannelFilterModal } from 'lecture';
@@ -16,7 +15,6 @@ import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 
 
 interface Props {
-  actionLogService?: ActionLogService,
   count: number,
   channels?: ChannelModel[],
   onFilter?: (channels: ChannelModel[]) => void,
@@ -25,11 +23,6 @@ interface Props {
 
 @reactAutobind
 class LineHeaderContainer extends Component<Props> {
-
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }
 
   async onDownLoadLearningCompletionExcel() {
     const rdo = MyTrainingRdoModel.newWithState('Completed', 100, 0, []);
@@ -70,7 +63,7 @@ class LineHeaderContainer extends Component<Props> {
           onFilter && (
             <ChannelFilterModal
               trigger={(
-                <Button icon className="left post" onClick={() => this.onClickActionLog('Filter')}>
+                <Button icon className="left post">
                   <Icon className="filter2" />Filter
                 </Button>
               )}

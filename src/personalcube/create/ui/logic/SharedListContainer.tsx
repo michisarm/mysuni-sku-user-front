@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { ActionLogService, PageService } from 'shared/stores';
+import { PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureModel, LectureServiceType } from 'lecture/model';
@@ -22,7 +22,6 @@ import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
-  actionLogService?: ActionLogService;
   pageService?: PageService;
   lectureService?: LectureService;
   inMyLectureService?: InMyLectureService;
@@ -36,7 +35,6 @@ interface States {
 }
 
 const SharedListContainer: React.FC<Props> = ({
-  actionLogService,
   pageService,
   lectureService,
   inMyLectureService,
@@ -56,7 +54,6 @@ const SharedListContainer: React.FC<Props> = ({
 
   return (
     <SharedListInnerContainer
-      actionLogService={actionLogService}
       pageService={pageService}
       lectureService={lectureService}
       inMyLectureService={inMyLectureService}
@@ -73,7 +70,6 @@ const SharedListContainer: React.FC<Props> = ({
 export default withRouter(SharedListContainer);
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.pageService',
     'shared.reviewService',
     'lecture.lectureService',
@@ -253,9 +249,7 @@ class SharedListInnerContainer extends React.Component<Props, States> {
 
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { actionLogService, inMyLectureService } = this.props;
-
-    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+    const { inMyLectureService } = this.props;
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!

@@ -6,7 +6,6 @@ import { patronInfo } from '@nara.platform/dock';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { Tab, NoSuchContentPanel } from 'shared';
@@ -26,7 +25,6 @@ import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
   notieService?: NotieService;
   reviewService?: ReviewService;
   lectureService?: LectureService;
@@ -54,7 +52,6 @@ enum ContentTypeName {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.reviewService',
     'notie.notieService',
     'lecture.lectureService',
@@ -229,15 +226,10 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
 
     const {
-      actionLogService,
       lectureService,
       inMyLectureService,
       myTrainingService,
     } = this.props;
-
-    actionLogService?.registerClickActionLog({
-      subAction: ContentTypeName[contentType],
-    });
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
@@ -252,10 +244,8 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onViewAll() {
     //
-    const { actionLogService, history } = this.props;
+    const { history } = this.props;
     const { contentType } = this.state;
-
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     history.push(myTrainingRoutes.learningTab(contentType));
   }
@@ -279,12 +269,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
-    const { actionLogService, inMyLectureService } = this.props;
-
-    actionLogService?.registerSeenActionLog({
-      lecture: training,
-      subAction: '아이콘',
-    });
+    const { inMyLectureService } = this.props;
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!

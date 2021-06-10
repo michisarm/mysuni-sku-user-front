@@ -5,7 +5,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Icon } from 'semantic-ui-react';
-// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
@@ -39,16 +38,13 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 
 interface Props extends RouteComponentProps {
-  // actionLogService?: ActionLogService,
   reviewService?: ReviewService;
   popLectureService?: POPLectureService;
   inMyLectureService?: InMyLectureService;
 
   profileMemberName: string;
 }
-/*
-  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
-*/
+
 const POPLearning: React.FC<Props> = Props => {
   //
   const {
@@ -170,8 +166,6 @@ const POPLearning: React.FC<Props> = Props => {
 
   const onViewAll = () => {
     //
-    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningPopLecture());
 
@@ -231,8 +225,6 @@ const POPLearning: React.FC<Props> = Props => {
     training: MyTrainingModel | LectureModel | InMyLectureModel
   ) => {
     //
-    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
-
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
     } else {
@@ -267,9 +259,6 @@ const POPLearning: React.FC<Props> = Props => {
     }
   };
 
-  /* const onClickActionLog = (text: string) => {
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }; */
   const routeToRecommend = () => {
     history.push(lectureRoutes.recommend());
   };
@@ -340,7 +329,6 @@ const POPLearning: React.FC<Props> = Props => {
 
 export default inject(
   mobxHelper.injectFrom(
-    // 'shared.actionLogService',
     'shared.reviewService',
     'popLecture.popLectureService',
     'myTraining.inMyLectureService'

@@ -8,12 +8,10 @@ import classNames from 'classnames';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
-import { ActionLogService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 
 interface Props {
-  actionLogService?: ActionLogService
   skProfileService?: SkProfileService
   collegeService?: CollegeService
 }
@@ -24,7 +22,6 @@ interface States {
 }
 
 @inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
   'college.collegeService',
   'profile.skProfileService'))
 @observer
@@ -83,11 +80,6 @@ class FavoriteChannelContainer extends Component<Props, States> {
     this.setState({ open: !open });
   }
 
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }
-
   render() {
     const { skProfileService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
@@ -108,7 +100,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
                   favorites={channels}
                   onConfirmCallback={this.init}
                   trigger={(
-                    <Button icon className="img-icon" onClick={() => this.onClickActionLog('관심 Channel')}>
+                    <Button icon className="img-icon">
                       <Icon className="setting17" />
                       <span className="blind">setting</span>
                     </Button>

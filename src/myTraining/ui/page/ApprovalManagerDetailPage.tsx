@@ -4,10 +4,8 @@ import {
   Segment, Form, Table, TextArea, Button
 } from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
-import {ActionLogService} from '../../../shared/stores';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService
 }
 
 interface RouteParams {

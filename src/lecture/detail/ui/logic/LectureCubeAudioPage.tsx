@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect } from 'react';
-import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
 import { setLectureMedia } from '../../store/LectureMediaStore';
 import { useLectureParams } from '../../store/LectureParamsStore';
@@ -19,8 +18,6 @@ function LectureCubeAudioPage() {
       setTranscriptCount();
     };
   }, [params?.cubeId, params?.cubeType]);
-
-  useCubeViewEvent();
 
   return (
     <Fragment>

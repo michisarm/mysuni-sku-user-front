@@ -5,7 +5,6 @@ import LectureVideoContainer from './LectureVideoContainer';
 import { onLectureMedia, setLectureMedia } from '../../store/LectureMediaStore';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
-import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { useLectureParams } from '../../store/LectureParamsStore';
 import { MediaType } from '../../../model/MediaType';
 import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
@@ -62,8 +61,6 @@ function LectureCubeVideoPage() {
       }
     }, 'LectureCubeVideoPage');
   }, []);
-
-  useCubeViewEvent();
 
   return (
     <Fragment>

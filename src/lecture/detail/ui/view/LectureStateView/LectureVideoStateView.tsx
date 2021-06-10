@@ -5,7 +5,6 @@ import { Cube } from '../../../../model/Cube';
 import Media from '../../../../model/Media';
 import { MediaType } from '../../../../model/MediaType';
 import Student from '../../../../model/Student';
-import { cPLinked } from '../../../service/useActionLog/cubeStudyEvent';
 import {
   completeLearning,
   submit,
@@ -49,7 +48,6 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
       link.setAttribute('href', url);
       link.setAttribute('target', '_blank');
       link.click();
-      cPLinked();
     }
     if (mediaType === MediaType.LinkMedia) {
       const { linkMediaUrl } = mediaContents;
@@ -142,8 +140,6 @@ function CPApprovedView(props: CPApprovedViewProps) {
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
     link.click();
-
-    cPLinked();
   }, [media]);
   const stateClassName = useMemo(() => {
     const { learningState } = student;

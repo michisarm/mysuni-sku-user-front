@@ -5,14 +5,12 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared';
-import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
 import ReactGA from 'react-ga';
 
 interface Props {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   title?: React.ReactNode;
   configurable?: boolean;
@@ -32,7 +30,7 @@ interface States {
 }
 
 @inject(
-  mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
+  mobxHelper.injectFrom('profile.skProfileService')
 )
 @observer
 @reactAutobind
@@ -84,9 +82,6 @@ class ChannelsPanelContainer extends Component<Props, States> {
   onClickChannel(e: any, index: number, channel: ChannelModel) {
     //
     const { onSelectChannel } = this.props;
-
-    this.onClickActionLog(channel.name);
-
     onSelectChannel(e, {
       index,
       channel,
@@ -98,11 +93,6 @@ class ChannelsPanelContainer extends Component<Props, States> {
       action: 'Click',
       label: `Recommend-${channel.name}`,
     });
-  }
-
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {
@@ -123,9 +113,6 @@ class ChannelsPanelContainer extends Component<Props, States> {
                       <Button
                         icon
                         className="img-icon"
-                        onClick={() =>
-                          this.onClickActionLog('관심 Channel 보기')
-                        }
                       >
                         <Icon className="setting17" style={{ position: 'relative'}} />
                         <span className="blind">setting</span>

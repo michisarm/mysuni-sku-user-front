@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
-import { ActionLogService, PageService } from 'shared/stores';
+import { PageService } from 'shared/stores';
 import {
   ENRLectureService,
   LRSLectureService,
@@ -36,7 +36,6 @@ enum ContentType {
 }
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   pageService?: PageService;
   reviewService?: ReviewService;
@@ -70,7 +69,6 @@ const NewLearningListView: React.FC<Props> = Props => {
     newLectureService,
     popLectureService,
     lrsLectureService,
-    actionLogService,
     enrLectureService,
     setNewOrder,
     showTotalCount,
@@ -583,8 +581,6 @@ const NewLearningListView: React.FC<Props> = Props => {
     lecture: LectureModel | InMyLectureModel
   ) => {
     //
-    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
-
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!
         .removeInMyLecture(lecture.id)
@@ -701,7 +697,6 @@ const NewLearningListView: React.FC<Props> = Props => {
 
 export default inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.pageService',
     'shared.reviewService',
     'profile.skProfileService',

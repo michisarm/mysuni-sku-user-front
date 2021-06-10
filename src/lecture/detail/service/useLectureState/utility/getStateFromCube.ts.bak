@@ -17,11 +17,6 @@ import { setLectureState } from '../../../store/LectureStateStore';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
 import LectureState, { State } from '../../../viewModel/LectureState';
 import { getActiveCourseStructureItem } from '../../../utility/lectureStructureHelper';
-import {
-  cPLinked,
-  experimetial,
-  webPageLinked,
-} from '../../useActionLog/cubeStudyEvent';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import Student from '../../../../model/Student';
 import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
@@ -216,7 +211,6 @@ async function videoApprove(cubeDetail: CubeDetail, student?: Student) {
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
     link.click();
-    cPLinked();
   }
   if (mediaType === MediaType.LinkMedia) {
     const { linkMediaUrl } = mediaContents;
@@ -407,8 +401,6 @@ async function cpVideoOpen(expiryDate: string, url: string) {
   link.setAttribute('href', url);
   link.setAttribute('target', '_blank');
   link.click();
-
-  cPLinked();
 }
 
 async function linkVideoOpen(url: string) {
@@ -617,10 +609,8 @@ async function getStateWhenApproved(
                 action: () => complete(params, round, hasSurvey),
                 coreAction: () => {
                   if (cubeType === 'WebPage') {
-                    webPageLinked();
                   }
                   if (cubeType === 'Experiential') {
-                    experimetial();
                   }
                 },
                 canAction: true,
@@ -635,10 +625,8 @@ async function getStateWhenApproved(
             hideAction: true,
             coreAction: () => {
               if (cubeType === 'WebPage') {
-                webPageLinked();
               }
               if (cubeType === 'Experiential') {
-                experimetial();
               }
             },
             stateText: student.learningState === null ? WAIT : stateText,
@@ -744,20 +732,16 @@ async function getStateWhenCanceled(
           if (document.getElementById('webpage-link') !== null) {
             document.getElementById('webpage-link')?.click();
             if (cubeType === 'WebPage') {
-              webPageLinked();
             }
             if (cubeType === 'Experiential') {
-              experimetial();
             }
           }
           approve(params, round, student);
         },
         coreAction: () => {
           if (cubeType === 'WebPage') {
-            webPageLinked();
           }
           if (cubeType === 'Experiential') {
-            experimetial();
           }
           approve(params, round, student);
         },

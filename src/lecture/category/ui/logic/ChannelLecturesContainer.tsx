@@ -11,7 +11,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { ActionLogService, PageService } from 'shared/stores';
+import { PageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
@@ -32,7 +32,6 @@ import { Area } from 'tracker/model';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
-  actionLogService?: ActionLogService;
   pageService?: PageService;
   collegeService?: CollegeService;
   personalCubeService?: PersonalCubeService;
@@ -53,7 +52,6 @@ interface State {
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
-  actionLogService,
   pageService,
   collegeService,
   personalCubeService,
@@ -74,7 +72,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
 
   return (
     <ChannelLecturesInnerContainer
-      actionLogService={actionLogService}
       pageService={pageService}
       collegeService={collegeService}
       personalCubeService={personalCubeService}
@@ -95,7 +92,6 @@ export default withRouter(ChannelLecturesContainer);
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.pageService',
     'lecture.lectureService',
     'lecture.lectureCardService',
@@ -248,9 +244,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
-    this.props.actionLogService?.registerClickActionLog({
-      subAction: data.label,
-    });
     // sessionStorage.setItem('channelSort', data.value);
     sessionStorage.removeItem('channelOffset');
     this.setState(
@@ -267,9 +260,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { actionLogService, inMyLectureService } = this.props;
-
-    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+    const { inMyLectureService } = this.props;
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!
@@ -341,10 +332,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.props.actionLogService?.registerClickActionLog({
-      subAction: 'list more',
-    });
-
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     if (page) {

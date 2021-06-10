@@ -4,7 +4,6 @@ import { observer, inject } from 'mobx-react';
 import { Button, Modal } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
 import { StudySummaryModel } from 'profile/model';
-import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -15,7 +14,6 @@ import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 
 interface Props {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeService?: CollegeService;
   collegeLectureCountService?: CollegeLectureCountService;
@@ -34,7 +32,6 @@ interface State {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'profile.skProfileService',
     'shared.collegeService',
     'lecture.collegeLectureCountService'
@@ -101,8 +98,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onCloseModal() {
     //
-    this.onClickActionLog('Cancel');
-
     this.setState({
       open: false,
       selectedCollegeIds: [],
@@ -119,7 +114,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       ...favoriteCompanyChannels,
     ];
 
-    this.onClickActionLog('Confirm');
     skProfileService!.setStudySummaryProp('favoriteChannels', {
       idNames: nextFavoriteChannels,
     });
@@ -169,8 +163,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //
     let { selectedCollegeIds }: State = this.state;
 
-    // this.onClickActionLog(college.name);
-
     if (selectedCollegeIds.includes(collegeId)) {
       selectedCollegeIds = selectedCollegeIds.filter(
         selectedCollegeId => selectedCollegeId !== collegeId
@@ -185,8 +177,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //
     let { favoriteChannels }: State = this.state;
 
-    this.onClickActionLog(channel.name);
-
     if (
       favoriteChannels
         .map(favoriteChannel => favoriteChannel.id)
@@ -199,11 +189,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       favoriteChannels.push(new ChannelModel(channel));
     }
     this.setState({ favoriteChannels: [...favoriteChannels] });
-  }
-
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {

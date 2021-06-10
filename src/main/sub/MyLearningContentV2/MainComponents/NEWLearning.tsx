@@ -6,7 +6,6 @@ import { patronInfo } from '@nara.platform/dock';
 import { find } from 'lodash';
 
 import { Button, Icon, ButtonProps } from 'semantic-ui-react';
-// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 
 import { NoSuchContentPanel } from 'shared';
@@ -34,11 +33,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
-/*
-  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
-*/
 interface Props extends RouteComponentProps {
-  // actionLogService?: ActionLogService,
   reviewService?: ReviewService;
   newLectureService?: NEWLectureService;
   inMyLectureService?: InMyLectureService;
@@ -150,8 +145,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
 
   const onViewAll = () => {
     //
-    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningNewLecture());
 
@@ -220,8 +213,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
     training: MyTrainingModel | LectureModel | InMyLectureModel
   ) => {
     //
-    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
-
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
     } else {
@@ -255,10 +246,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
       );
     }
   };
-
-  /* const onClickActionLog = (text: string) => {
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }; */
 
   return (
     <ContentWrapper dataArea={Area.MAIN_NEW}>
@@ -346,7 +333,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
 
 export default inject(
   mobxHelper.injectFrom(
-    // 'shared.actionLogService',
     'shared.reviewService',
     'newLecture.newLectureService',
     'myTraining.inMyLectureService'

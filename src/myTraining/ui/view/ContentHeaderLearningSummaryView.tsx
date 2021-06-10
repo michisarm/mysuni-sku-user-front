@@ -1,25 +1,20 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { timeToHourMinute, timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
-import { ActionLogService } from 'shared/stores';
 import MyLearningSummaryModal from '../logic/MyLearningSummaryModal';
 
 
 interface Props {
-  actionLogService?: ActionLogService
   year: number
   totalLearningTime: number
   mySuniLearningTime: number
   myCompanyLearningTime: number
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
 @observer
 @reactAutobind
 class ContentHeaderLearningSummaryView extends Component<Props> {
@@ -75,18 +70,13 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
   getModalTrigger() {
     //
     return (
-      <Button className="btn-total-time" onClick={this.onClickActionLog}>
+      <Button className="btn-total-time">
         <Label className="onlytext">
           <Icon className="total-time" /><span>총 학습시간</span>
         </Label>
         {this.getTotalTimeNode()}
       </Button>
     );
-  }
-
-  onClickActionLog() {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: '총 학습시간' });
   }
 
   render() {

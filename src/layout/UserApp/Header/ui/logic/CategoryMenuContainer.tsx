@@ -5,7 +5,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { IdName } from 'shared/model';
-import { ActionLogService } from 'shared/stores';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -21,7 +20,6 @@ import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
   lectureCountService?: LectureCountService;
@@ -36,7 +34,6 @@ interface State {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'profile.skProfileService',
     'lecture.collegeLectureCountService',
     'lecture.lectureCountService',
@@ -158,9 +155,6 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
-
     // react-ga event
     ReactGA.event({
       category: 'Category-Button',

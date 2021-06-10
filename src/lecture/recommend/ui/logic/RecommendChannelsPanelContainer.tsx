@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
@@ -14,7 +13,6 @@ import FavoriteChannelChangeModal from '../FavoriteChannelChangeModal';
 import { Action, Area } from 'tracker/model';
 
 interface Props {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   title?: React.ReactNode;
   configurable?: boolean;
@@ -34,7 +32,7 @@ interface States {
 }
 
 @inject(
-  mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
+  mobxHelper.injectFrom('profile.skProfileService')
 )
 @observer
 @reactAutobind
@@ -87,8 +85,6 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
     //
     const { onSelectChannel } = this.props;
 
-    this.onClickActionLog(channel.name);
-
     onSelectChannel(e, {
       index,
       channel,
@@ -100,11 +96,6 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
       action: 'Click',
       label: `Recommend-${channel.name}`,
     });
-  }
-
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {
@@ -125,9 +116,6 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
                       <Button
                         icon
                         className="img-icon"
-                        onClick={() =>
-                          this.onClickActionLog('관심 Channel 보기')
-                        }
                         data-area={Area.RECOMMEND_LIST}
                         data-action={Action.VIEW}
                         data-action-name="관심 채널 설정 PV"

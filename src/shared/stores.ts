@@ -2,8 +2,6 @@ import ModalService from './present/logic/ModalService';
 import PageService from './present/logic/PageService';
 import NewPageService from './present/logic/NewPageService';
 import SharedService from './present/logic/SharedService';
-import ActionLogService from './present/logic/ActionLogService';
-import ActionEventService from './present/logic/ActionEventService';
 import BannerService from './present/logic/BannerService';
 import FilterBoxService from './present/logic/FilterBoxService';
 import { FileService } from './present/logic/FileService';
@@ -14,8 +12,6 @@ export default {
     pageService: PageService.instance,
     newPageService: NewPageService.instance,
     sharedService: SharedService.instance,
-    actionLogService: ActionLogService.instance,
-    actionEventService: ActionEventService.instance,
     bannerService: BannerService.instance,
     filterBoxService: FilterBoxService.instance,
     fileService: FileService.instance,
@@ -27,7 +23,5 @@ export {
   PageService,
   NewPageService,
   SharedService,
-  ActionLogService,
-  ActionEventService,
   BannerService,
 };

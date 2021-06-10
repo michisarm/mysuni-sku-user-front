@@ -5,7 +5,6 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentHeader } from 'shared';
-import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 import { BadgeService } from 'certification/stores';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -22,14 +21,12 @@ import { MyBadgeRdo } from '../../../certification/model/MyBadgeRdo';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
   skProfileService?: SkProfileService,
   myLearningSummaryService?: MyLearningSummaryService,
   badgeService?: BadgeService,
 }
 
 @inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
   'profile.skProfileService',
   'myTraining.myLearningSummaryService',
   'badge.badgeService',
@@ -75,7 +72,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
 
   render() {
     //
-    const { actionLogService, skProfileService, myLearningSummaryService, badgeService, history } = this.props;
+    const { skProfileService, myLearningSummaryService, badgeService, history } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
@@ -100,7 +97,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           )}
           {myLearningSummary.totalLearningTime === 0 && (
             <ContentHeader.WaitingItem
-              onClickRecommend={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
+              onClickRecommend={() => { history.push(lectureRoutePaths.recommend()); }}
             />
           )}
         </ContentHeader.Cell>

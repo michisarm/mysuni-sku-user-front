@@ -99,7 +99,7 @@ export const getAuth = async () => {
       auth = JSON.parse(cachedAuth);
     }
   }
-  if(!auth){
+  if (!auth) {
     auth = await setAuth();
   }
   return auth;

@@ -7,10 +7,6 @@ import LectureParams from '../../viewModel/LectureParams';
 import { useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import { useHistory } from 'react-router-dom';
-import {
-  audioClose,
-  audioStart,
-} from '../../service/useActionLog/cubeStudyEvent';
 import { useNextContent } from '../../service/useNextContent';
 import {
   LectureStructureCubeItem,
@@ -19,9 +15,9 @@ import {
 import { confirmProgress } from '../../service/useLectureMedia/utility/confirmProgress';
 import { setWatchLog } from '../../service/useLectureMedia/useLectureWatchLog';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
-import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
+import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
+import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import LectureState from '../../viewModel/LectureState';
-
 interface LectureAudioViewProps {
   lectureState: LectureState;
   checkStudent: (params: LectureParams, path: string) => void;
@@ -91,7 +87,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       setIsActive(false);
       if (state == 2) {
         setNextContentsView(false);
-        audioClose();
       } else if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
@@ -100,7 +95,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
           sessionStorage.removeItem('inProgressTableViews');
           sessionStorage.removeItem('InProgressLearningList');
         }
-        audioStart();
         if (!isFirstAction) {
           setIsFirstAction(true);
         }

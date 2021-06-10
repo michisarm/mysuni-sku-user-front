@@ -16,10 +16,6 @@ import {
 import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
 import { useLectureState } from '../../store/LectureStateStore';
 import {
-  videoClose,
-  videoStart,
-} from '../../service/useActionLog/cubeStudyEvent';
-import {
   callConfirmProgress,
   callDebounceActionTrack,
   callRegisterWatchLog,
@@ -105,11 +101,6 @@ function LectureVideoContainer() {
       return;
     }
     callConfirmProgress();
-    if (panoptoEmbedPlayerState.playerState === PlayerState.Playing) {
-      videoStart();
-    } else {
-      videoClose();
-    }
   }, [panoptoEmbedPlayerState?.playerState]);
 
   useEffect(() => {

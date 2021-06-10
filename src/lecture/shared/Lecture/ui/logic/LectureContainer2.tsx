@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
-import moment from 'moment';
-import { ActionLogService } from 'shared/stores';
 import { LectureModel, LectureViewModel } from 'lecture/model';
 import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
@@ -26,7 +24,6 @@ export interface OnViewDetailData {
 }
 
 interface Props {
-  actionLogService?: ActionLogService;
   model: LectureModel | MyTrainingModel | InMyLectureModel;
   lectureView?: LectureViewModel;
   lectureViewSize?: number;
@@ -53,7 +50,6 @@ interface ActionWith extends Action {
  * 러닝카드 컴포넌트입니다.
  */
 // @inject(({ learning }) => ({ cardService: learning.cardService }))
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class LectureContainer2 extends Component<Props, States> {
@@ -111,10 +107,6 @@ class LectureContainer2 extends Component<Props, States> {
   }
 
   onHoverIn() {
-    const { actionLogService, model } = this.props;
-
-    actionLogService?.registerSeenActionLog({ lecture: model });
-
     this.setState({
       hovered: true,
     });
@@ -154,16 +146,11 @@ class LectureContainer2 extends Component<Props, States> {
 
   onViewDetail(e: any) {
     //
-    const { actionLogService, model, onViewDetail } = this.props;
+    const { model, onViewDetail } = this.props;
     const data = {
       model,
     };
-
-    actionLogService?.registerSeenActionLog({
-      lecture: model,
-      subAction: '상세보기',
-    });
-
+    
     onViewDetail!(e, data);
   }
 

@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import XLSX from 'xlsx';
 import moment from 'moment';
 import { ProposalState } from 'shared/model';
-import { ActionLogService, PageService } from 'shared/stores';
+import { PageService } from 'shared/stores';
 import { SeeMoreButton } from 'lecture/shared';
 import ApprovalCubeService from '../../present/logic/ApprovalCubeService';
 import routePaths from '../../routePaths';
@@ -16,7 +16,6 @@ import { ApprovalCubeModel } from '../../model';
 import { ApprovalCubeXlsxModel } from '../../model/ApprovalCubeXlsxModel';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
-  actionLogService?: ActionLogService;
   pageService?: PageService;
   approvalCubeService?: ApprovalCubeService;
   defaultValue?: string;
@@ -29,7 +28,6 @@ interface Stats {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'shared.pageService',
     'approvalCube.approvalCubeService'
   )
@@ -170,9 +168,7 @@ class MyApprovalListContainer extends React.Component<Props> {
 
   onClickSeeMore() {
     //
-    const { actionLogService, history } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: 'list more' });
+    const { history } = this.props;
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 

@@ -1,12 +1,8 @@
 import { getCookie } from '@nara.platform/accent';
 import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import { SkProfileService } from '../../../../../profile/stores';
-import {
-  Action,
-  ActionTrackParam,
-  ActionType,
-  Area,
-} from '../../../../../tracker/model';
+import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
+import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { debounceActionTrack } from '../../../../../tracker/present/logic/ActionTrackService';
 import { StudentCdo } from '../../../../model/StudentCdo';
 import {

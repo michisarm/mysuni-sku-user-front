@@ -3,10 +3,6 @@ import { Cube } from '../../../../model/Cube';
 import CubeType from '../../../../model/CubeType';
 import Student from '../../../../model/Student';
 import {
-  experimetial,
-  webPageLinked,
-} from '../../../service/useActionLog/cubeStudyEvent';
-import {
   completeLearning,
   startLearning,
 } from '../../../service/useLectureState/utility/cubeStateActions';

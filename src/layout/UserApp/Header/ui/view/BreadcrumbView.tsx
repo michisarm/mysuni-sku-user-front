@@ -1,20 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import {
   reactAutobind,
-  mobxHelper,
   axiosApi,
   StorageModel,
 } from '@nara.platform/accent';
-import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import { ActionLogService } from 'shared/stores';
 import { BreadcrumbValue } from '../../../index';
-import { Icon, Button } from 'semantic-ui-react';
 import { Area } from 'tracker/model';
 
 interface Props {
-  actionLogService?: ActionLogService;
   values?: BreadcrumbValue[];
   supportPath: string;
 }
@@ -24,7 +19,6 @@ interface State {
   id: string;
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 class BreadcrumbView extends Component<Props, State> {
   //
@@ -96,11 +90,6 @@ class BreadcrumbView extends Component<Props, State> {
       });
   }
 
-  onClickBreadcrumb(menuName: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: menuName });
-  }
-
   renderItem(value: BreadcrumbValue, index: number) {
     //
     const { values } = this.props;
@@ -112,7 +101,6 @@ class BreadcrumbView extends Component<Props, State> {
           <Link
             to={value.path}
             className="section active"
-            onClick={() => this.onClickBreadcrumb(value.text)}
           >
             {value.text}
           </Link>
@@ -125,7 +113,6 @@ class BreadcrumbView extends Component<Props, State> {
         <Link
           to={value.path}
           className="section"
-          onClick={() => this.onClickBreadcrumb(value.text)}
         >
           {value.text}
         </Link>
@@ -148,7 +135,6 @@ class BreadcrumbView extends Component<Props, State> {
             <Link
               to="/"
               className="section"
-              onClick={() => this.onClickBreadcrumb('Home')}
             >
               Home
             </Link>

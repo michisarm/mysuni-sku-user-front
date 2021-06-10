@@ -1,14 +1,12 @@
 
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import { Button, Icon, Modal } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 
 
 interface Props {
-  actionLogService?: ActionLogService,
   trigger: React.ReactNode,
 }
 
@@ -16,7 +14,6 @@ interface State {
   open: boolean
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class CreateMovieModalContainer extends React.Component<Props, State> {
@@ -31,16 +28,10 @@ class CreateMovieModalContainer extends React.Component<Props, State> {
   }
 
   onClose() {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: 'Cancel' });
-
     this.setState({ open: false });
   }
 
   onOpenPanopto() {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: 'Panopto 열기' });
-
     window.open('https://sku.ap.panopto.com/Panopto/Pages/Recorder/LaunchRecorder.aspx');
   }
 
@@ -48,9 +39,6 @@ class CreateMovieModalContainer extends React.Component<Props, State> {
     //
     const userAgent = window.navigator.userAgent;
     const platform = window.navigator.platform;
-
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: 'Panopto 다운로드' });
 
     if (userAgent.includes('Mac')) {
       window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/Panopto%20Recorder.pkg?arch=None&useCustomBinary=True');

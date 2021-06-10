@@ -5,7 +5,6 @@ import { observer, inject } from 'mobx-react';
 
 import { IdName } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
-import { ActionLogService } from 'shared/stores';
 
 import ReactGA from 'react-ga';
 import { ChannelModel } from 'college/model';
@@ -17,7 +16,6 @@ import { Action, Area } from 'tracker/model';
 import { originSelfPath } from 'tracker-react/utils';
 
 interface Props {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeService?: CollegeService;
   colleges: CollegeLectureCountRdo[];
@@ -34,26 +32,18 @@ interface Props {
   handleCategoryOpen: (flag: boolean) => void;
 }
 @inject(
-  mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
+  mobxHelper.injectFrom('profile.skProfileService')
 )
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
   onClickChannelActionLog(text: string) {
-    const { actionLogService, activeCollege } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
-
     // react-ga event (전체보기, 각 item)
     ReactGA.event({
       category: `${this.props.activeCollege?.name}`,
       action: 'Click',
       label: `${text}`,
     });
-  }
-
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   //초기 선택
@@ -151,7 +141,6 @@ class CategoryMenuPanelView extends Component<Props> {
                         bm: college.id === 'CLG00020',
                       })}
                       onClick={e => {
-                        this.onClickActionLog(college.name);
                         onActiveCollege(e, college);
                       }}
                       data-area={Area.HEADER_CATEGORYLIST}

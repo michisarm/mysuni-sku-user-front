@@ -7,9 +7,7 @@ import {
   setLectureTaskViewType,
   setLectureTaskOrder,
 } from '../../store/LectureTaskStore';
-import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { useLectureParams } from '../../store/LectureParamsStore';
-import { useLectureState } from '../../store/LectureStateStore';
 
 function LectureCubeTaskPage() {
   const params = useLectureParams();
@@ -23,8 +21,6 @@ function LectureCubeTaskPage() {
       setLectureTaskTab('Posts');
     };
   }, [params?.cubeId]);
-
-  useCubeViewEvent();
 
   return <LectureTaskContainer />;
 }

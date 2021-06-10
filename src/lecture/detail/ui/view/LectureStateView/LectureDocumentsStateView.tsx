@@ -7,7 +7,6 @@ import {
   registerStudent,
 } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
-import { documentDownload } from '../../../service/useActionLog/cubeStudyEvent';
 import {
   completeLearning,
   startLearning,
@@ -202,7 +201,6 @@ const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> = func
         <FileDownloadPop
           fileBoxIds={[lectureWebpage.fileBoxId]}
           onClose={closeFileDonwloadPop}
-          onDownloadStart={documentDownload}
         />
       )}
     </>

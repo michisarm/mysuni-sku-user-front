@@ -3,12 +3,9 @@ import { useLectureCohort } from '../../service/useLectureCohort/useLectureCohor
 import LectureCohortView from '../view/LectureCohortView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
-import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeCohortPage() {
   const [lectureCohort] = useLectureCohort();
-
-  useCubeViewEvent();
 
   return (
     <Fragment>

@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { RecommendLectureRdo } from 'lecture/model';
-import { ActionLogService } from 'shared/stores';
 import { LectureService, CollegeLectureCountService } from 'lecture/stores';
 import { ChannelLecturesLine } from 'lecture';
 import { ChannelModel } from 'college/model';
@@ -16,7 +15,6 @@ import SeeMoreButtonView from './SeeMoreButtonView';
 import routePaths from '../../routePaths';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
   lectureService?: LectureService;
@@ -28,7 +26,6 @@ interface RouteParams {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'profile.skProfileService',
     'lecture.collegeLectureCountService',
     'lecture.lectureService'
@@ -115,9 +112,7 @@ class RecommendChannelsContainer extends Component<Props> {
 
   onClickSeeMore() {
     //
-    const { actionLogService, history } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: 'list more' });
+    const { history } = this.props;
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 

@@ -5,7 +5,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
-import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
@@ -16,7 +15,6 @@ import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
   channels: ChannelModel[];
@@ -28,7 +26,6 @@ interface States {
 
 @inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
     'profile.skProfileService',
     'lecture.collegeLectureCountService'
   )
@@ -57,17 +54,11 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     //여기서?????? 최근학습중인 채널????
   }
 
-  onClickActionLog(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }
-
   getFavoriteChannelButton() {
     //
     return (
       <Label
         className="onlytext"
-        onClick={() => this.onClickActionLog('관심 Channel')}
       >
         <span className="personal-channel-tit">
           <a>관심채널</a>
