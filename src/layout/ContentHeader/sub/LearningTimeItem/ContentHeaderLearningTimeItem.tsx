@@ -44,7 +44,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
           <span>m</span>
         </div>
       );
-    } else if (onlyMinute! < 1) {
+    } else if (onlyMinute !== undefined && onlyMinute < 1) {
       total = (
         <div className="value2">
           <strong>{hour}</strong>
