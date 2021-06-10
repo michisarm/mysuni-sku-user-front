@@ -12,8 +12,8 @@ export function findSkProfileByAudienceId(audienceId: string): Promise<Profile |
     });
 }
 
-export function generationEncryptKey(cubeId: string): Promise<String | void> {
-  const url = `${BASE_URL}/profiles/encryptKey?cubeId=${cubeId}`;
+export function generationEncryptKey(cubeId: string, cardId: string): Promise<String | void> {
+  const url = `${BASE_URL}/profiles/encryptKey?cubeId=${cubeId}&cardId=${cardId}`;
   return axiosApi
     .get<String>(url)
     .then(response => {
