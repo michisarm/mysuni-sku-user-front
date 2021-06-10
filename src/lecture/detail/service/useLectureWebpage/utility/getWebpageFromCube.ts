@@ -5,7 +5,7 @@ import LectureWebpage from '../../../viewModel/LectureWebpage';
 import { generationEncryptKey } from '../../../api/profileApi';
 
 export async function getWebpageFromCube(params: LectureParams) {
-  const { cubeId } = params;
+  const { cubeId, cardId } = params;
   if (cubeId === undefined) {
     return;
   }
@@ -20,7 +20,7 @@ export async function getWebpageFromCube(params: LectureParams) {
   let url = officeWeb.webPageUrl;
 
   if (officeWeb.urlType && officeWeb.urlType === "embedded") {
-    const encryptKey = await generationEncryptKey(cubeId);
+    const encryptKey = await generationEncryptKey(cubeId, cardId);
     if (url.indexOf('?') > -1) {
       url = url + '&p=' + encryptKey;
     } else {
