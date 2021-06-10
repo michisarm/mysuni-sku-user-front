@@ -47,7 +47,7 @@ function renderPostRow(
               </span>
             </span>
           </span>
-          {post.menuType !== 'ANONYMOUS' && (
+          {(post.menuType !== 'ANONYMOUS' || (post.menuType === 'ANONYMOUS' && post.nickName)) && (
             <span className="cell nick">
               {post.nickName || post.creatorName}
             </span>
@@ -81,10 +81,7 @@ function renderPostRow(
               </span>
             </span>
           </span>
-          {post.menuType === 'ANONYMOUS' && (
-            <span className="cell nick">익명</span>
-          )}
-          {post.menuType !== 'ANONYMOUS' && (
+          {(post.menuType !== 'ANONYMOUS' || (post.menuType === 'ANONYMOUS' && post.nickName)) && (
             <span className="cell nick">
               {post.nickName || post.creatorName}
             </span>
