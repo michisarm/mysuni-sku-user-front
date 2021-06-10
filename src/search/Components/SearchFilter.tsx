@@ -708,6 +708,8 @@ const SearchFilter: React.FC<Props> = ({
   closeOnFilter,
 }) => {
   useEffect(() => {
+    setCard([]);
+    setDisplayCard([]);
     const decodedSearchValue = searchValue
       .replace(/'/g, ' ')
       .replace(/&/g, ' ')
@@ -733,8 +735,29 @@ const SearchFilter: React.FC<Props> = ({
         setCubeTypeOptions([]);
         return;
       }
-      setCard(searchResult.result.rows.map(c => c.fields));
-      setDisplayCard(searchResult.result.rows.map(c => c.fields));
+      const displayCard: SearchCard[] = [];
+      searchResult.result.rows
+        .map(c => c.fields)
+        .forEach(c => {
+          const queries = decodedSearchValue
+            .split(' ')
+            .filter(c => c.trim() !== '');
+          if (queries.some(query => c.name.includes(query))) {
+            displayCard.push(c);
+          }
+        });
+      searchResult.result.rows
+        .map(c => c.fields)
+        .forEach(c => {
+          const queries = decodedSearchValue
+            .split(' ')
+            .filter(c => c.trim() !== '');
+          if (queries.every(query => !c.name.includes(query))) {
+            displayCard.push(c);
+          }
+        });
+      setCard(displayCard);
+      setDisplayCard([...displayCard]);
       const collegeOptions: Options[] = searchResult.result.rows.reduce<
         Options[]
       >((r, c) => {

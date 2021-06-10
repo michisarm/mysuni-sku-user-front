@@ -258,7 +258,28 @@ export function findExpert(text_idx: string) {
   const url = encodeURI(
     `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
-  return axiosApi.get<SearchResult<SearchExpert>>(url).then(AxiosReturn);
+  return axiosApi
+    .get<SearchResult<SearchExpert>>(url)
+    .then(AxiosReturn)
+    .then(c => {
+      if (c === undefined) {
+        return undefined;
+      }
+      if (c.status !== undefined) {
+        return c;
+      }
+      if (((c as unknown) as string).replace !== undefined) {
+        let s = JSON.stringify(c);
+        s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
+        s = s.replace(/\\\"/gi, '"');
+        s = s.replace(/\\\\\"/gi, '\\"');
+        try {
+          return JSON.parse(s) as SearchResult<SearchExpert>;
+        } catch (error) {
+          return undefined;
+        }
+      }
+    });
 }
 
 export interface QueryOptions {
