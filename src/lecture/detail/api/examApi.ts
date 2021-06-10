@@ -1,6 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import { AnswerSheetSdo } from '../model/AnswerSheet';
-import AnswerSheetDetail from '../model/AnswersheetDetail';
+import AnswerSheetDetail from '../model/AnswerSheetDetail';
 import ExamDetail from '../model/ExamDetail';
 
 const BASE_URL = '/api/exam';
