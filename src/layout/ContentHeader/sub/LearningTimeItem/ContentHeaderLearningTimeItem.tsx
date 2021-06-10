@@ -71,7 +71,11 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
 
     let accrueTotal: any = null;
 
-    if (accrueHour < 1 && onlyAccureMinute! < 1) {
+    if (
+      accrueHour < 1 &&
+      onlyAccureMinute !== undefined &&
+      onlyAccureMinute < 1
+    ) {
       accrueTotal = (
         <>
           <span className="big2">00</span>
@@ -86,7 +90,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
           <span className="small2">m</span>
         </>
       );
-    } else if (onlyAccureMinute! < 1) {
+    } else if (onlyAccureMinute !== undefined && onlyAccureMinute < 1) {
       accrueTotal = (
         <>
           <span className="big2">{accrueHour}</span>
