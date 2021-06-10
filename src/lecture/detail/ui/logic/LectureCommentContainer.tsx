@@ -1,5 +1,4 @@
 import { CommentService, ReviewService } from '@nara.drama/feedback';
-import { number } from '@storybook/addon-knobs';
 import { autorun } from 'mobx';
 import React, { useEffect, useRef } from 'react';
 import { SkProfileService } from '../../../../profile/stores';

@@ -13,7 +13,6 @@ import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
-import { date } from '@storybook/addon-knobs';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {

@@ -3,8 +3,6 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
-import { getAxios } from 'shared/api/Axios';
-import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { FavoriteChannelChangeModal } from 'shared';
 import { NotieService } from 'notie/stores';
 import { ChannelModel } from 'college/model';
@@ -27,12 +25,8 @@ import SkProfileModel from '../../../../../profile/model/SkProfileModel';
 import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 
 import ReactGA from 'react-ga';
-import Axios from 'axios';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
-import { responseToModel } from '../../../../../shared/helper/apiHelper';
-import { type } from 'jquery';
-import { array } from '@storybook/addon-knobs';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;

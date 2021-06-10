@@ -1,46 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  Link,
-  matchPath,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
-import {
-  Segment,
-  Sticky,
-  Icon,
-  Menu,
-  Button,
-  Comment,
-  Popup,
-} from 'semantic-ui-react';
-
-import {
-  requestNotice,
-  requestRecent,
-} from '../../service/useCommunityHome/requestCommunityHome';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   getCommunityHome,
   useCommunityHome,
 } from '../../store/CommunityHomeStore';
-import commentIcon from '../../../style/media/icon-community-comment.png';
-import fileIcon from '../../../style/media/icon-community-file-copy-2.png';
-import profileIcon from '../../../style/media/img-profile-80-px.png';
 import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
-import { patronInfo } from '@nara.platform/dock';
-import { reactAlert, reactConfirm, axiosApi } from '@nara.platform/accent';
-import { joinCommunity, deleteMember } from 'community/api/communityApi';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { deleteMember } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
-import { Console } from 'console';
-import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
-import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
-import { boolean } from '@storybook/addon-knobs';
 import { useCommunityMember } from '../../store/CommunityMemberStore';
 import { getAllMember } from '../../service/useMemberList/useMemberList';
 
@@ -66,18 +38,13 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   const managerId = getCommunityHome()?.community?.managerId;
   const memberData = useCommunityMember();
 
-
   useEffect(() => {
     const communityHome = getCommunityHome();
-    if (
-      communityHome === undefined ||
-      communityHome.community === undefined
-    ) {
+    if (communityHome === undefined || communityHome.community === undefined) {
       return;
     }
-    getAllMember(communityHome.community.communityId, 0)
-  }, [communityHome])
-
+    getAllMember(communityHome.community.communityId, 0);
+  }, [communityHome]);
 
   //console.log(managerId == SkProfileService.instance.skProfile.id);
 
@@ -136,8 +103,6 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
     //   },
     // });
   };
-
-
 
   return (
     <>
@@ -229,7 +194,11 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   <div className="profile home-detail-profile">
                     <div className="pic">
                       <img
-                        style={{ borderRadius: '36px', width: '56px', height: '56px' }}
+                        style={{
+                          borderRadius: '36px',
+                          width: '56px',
+                          height: '56px',
+                        }}
                         src={
                           managProfileImg
                             ? `/files/community/${managProfileImg}`
@@ -242,21 +211,35 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                     </span>
                   </div>
 
-                  {memberData?.results.filter(f => f.memberId !== managerId && f.memberType === 'ADMIN').map((r, index) => (
-                    <div className={index === 0 ? 'profile home-detail-profile' : 'profile home-detail-profile pro-mt30'}>
-                      <div className="pic">
-                        <img
-                          style={{ borderRadius: '36px', width: '56px', height: '56px' }}
-                          src={
-                            r.profileImg
-                              ? `/files/community/${r.profileImg}`
-                              : `${DefaultImg}`
-                          }
-                        />
+                  {memberData?.results
+                    .filter(
+                      f => f.memberId !== managerId && f.memberType === 'ADMIN'
+                    )
+                    .map((r, index) => (
+                      <div
+                        className={
+                          index === 0
+                            ? 'profile home-detail-profile'
+                            : 'profile home-detail-profile pro-mt30'
+                        }
+                      >
+                        <div className="pic">
+                          <img
+                            style={{
+                              borderRadius: '36px',
+                              width: '56px',
+                              height: '56px',
+                            }}
+                            src={
+                              r.profileImg
+                                ? `/files/community/${r.profileImg}`
+                                : `${DefaultImg}`
+                            }
+                          />
+                        </div>
+                        <span>{r.name}</span>
                       </div>
-                      <span>{r.name}</span>
-                    </div>
-                  ))}
+                    ))}
                 </td>
               </tr>
               <tr>
