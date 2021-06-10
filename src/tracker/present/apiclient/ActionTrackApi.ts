@@ -6,7 +6,7 @@ import {
   ActionTrackViewModel,
 } from 'tracker/model/ActionTrackModel';
 
-const BASE_URL = '/api/action-log-collector';
+const BASE_URL = '/api/data-foundation/actionLog';
 // const BASE_URL = '/local';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
