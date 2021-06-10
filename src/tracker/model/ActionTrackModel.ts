@@ -2,6 +2,7 @@ import { Action, ActionType, Area, FieldType } from 'tracker/model/ActionType';
 
 export interface ActionTrackParam {
   email: string;
+  auth?: Object;
   path: string;
   pathName?: string | null;
   search?: string | null;
@@ -17,6 +18,7 @@ export interface ActionTrackParam {
 
 export interface ActionTrackViewParam {
   email: string;
+  auth?: Object;
   path: string;
   pathName?: string | null;
   search?: string | null;
@@ -72,6 +74,7 @@ export interface ViewContextModel {
 
 export interface ActionTrackModel {
   context: ActionContextModel;
+  auth?: Object | null;
   serviceType?: string | null;
   collegeId?: string | null;
   collegeName?: string | null;
@@ -91,6 +94,7 @@ export interface ActionTrackModel {
 
 export interface ActionTrackViewModel {
   context: ViewContextModel;
+  auth?: Object | null;
   serviceType?: string | null;
   collegeId?: string | null;
   collegeName?: string | null;
@@ -111,4 +115,15 @@ export interface Field {
   type: FieldType;
   id: string;
   name?: string;
+}
+export interface Group {
+  group_field: string;
+  group_name: string;
+}
+export interface Auth {
+  base: Group;
+  country: Group;
+  task: Group;
+  position: Group;
+  membership: Group;
 }

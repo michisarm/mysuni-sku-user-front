@@ -23,7 +23,7 @@ export function useStateRef<T>(initialValue: T): useStateRefType<T> {
 
 export const getBrowser = () => {
   let ua;
-  let result;
+  let result = { brand: '', version: '' };
   // Chromium 기반 최신 브라우져 UA 프리징 대비
   if (window.navigator.userAgentData) {
     ua = window.navigator.userAgentData.brands.filter((a: { brand: string }) =>
@@ -55,8 +55,7 @@ export const getBrowser = () => {
         brand: 'MSIE',
         version: tem[1] || '',
       };
-    }
-    if (M[1] === 'Chrome') {
+    } else if (M[1] === 'Chrome') {
       tem = ua.match(/\bOPR|Edge\/(\d+)/);
       if (tem != null) {
         result = {
@@ -64,15 +63,16 @@ export const getBrowser = () => {
           version: tem[1],
         };
       }
+    } else {
+      M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+      if ((tem = ua.match(/version\/(\d+)/i)) != null) {
+        M.splice(1, 1, tem[1]);
+      }
+      result = {
+        brand: M[0],
+        version: M[1],
+      };
     }
-    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
-    if ((tem = ua.match(/version\/(\d+)/i)) != null) {
-      M.splice(1, 1, tem[1]);
-    }
-    result = {
-      brand: M[0],
-      version: M[1],
-    };
   }
   return result;
 };

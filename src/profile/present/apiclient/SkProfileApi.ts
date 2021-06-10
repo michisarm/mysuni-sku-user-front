@@ -4,6 +4,12 @@ import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
 
+const BASE_URL = '/api/profile/profiles';
+
+export function findJsonUserGroup() {
+  const url = `${BASE_URL}/jsonUserGroup`;
+  return axios.get(url).then(response => (response && response.data) || null);
+}
 export default class SkProfileApi {
   //
   URL = '/api/profile/profiles';

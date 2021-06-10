@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { initAuth, setAuth } from 'tracker/present/logic/common';
 import $ from 'jquery';
 import { debounce, useStateRef, useBrowserString } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
+import { Action, ActionType } from 'tracker/model/ActionType';
 import {
-  Source,
-  Action,
-  ActionType,
-  Area,
   ActionTrackParam,
   ActionTrackViewParam,
-} from 'tracker/model';
+  Auth,
+} from 'tracker/model/ActionTrackModel';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -23,20 +22,26 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   const [locationKeys, setLocationKeys] = useState<(string | undefined)[]>([]);
 
   const { valueRef } = useStateRef<TrackerParams>({});
+  const { valueRef: authRef } = useStateRef<Auth>(initAuth());
   const { userId, trackAction, trackView } = value;
 
   useEffect(() => {
-    // view log init
-    initTrackView();
+    async function start() {
+      const auth = await setAuth();
+      authRef.current = auth;
+      // view log init
+      initTrackView();
 
-    // click event
-    window.document.addEventListener('click', handleOutboundClick, {
-      capture: true,
-    });
-    return () =>
-      window.document.removeEventListener('click', handleOutboundClick, {
+      // click event
+      window.document.addEventListener('click', handleOutboundClick, {
         capture: true,
       });
+      return () =>
+        window.document.removeEventListener('click', handleOutboundClick, {
+          capture: true,
+        });
+    }
+    start();
   }, []);
 
   /**
@@ -134,6 +139,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
 
     trackView({
       email: userId,
+      auth: authRef.current,
       path: window.location.pathname,
       search: window.location.search,
       browser: browserString,
@@ -174,6 +180,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         // track click, click으로 정의된 이벤트만 수집
         trackAction({
           email: userId,
+          auth: authRef.current,
           browser: browserString,
           path: data.referer,
           search: data.refererSearch,
@@ -193,6 +200,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         }
         trackView({
           email: userId,
+          auth: authRef.current,
           path: data.referer + page,
           pathName,
           search: data.refererSearch,
@@ -219,6 +227,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         }
         trackView({
           email: userId,
+          auth: authRef.current,
           path: path.path,
           search: path.search,
           referer,

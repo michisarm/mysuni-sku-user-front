@@ -8,6 +8,7 @@ import {
   getPathName,
   setResultName,
   mobileCheck,
+  getAuth,
 } from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
@@ -18,12 +19,9 @@ import {
   ActionContextModel,
   ViewContextModel,
   ActionTrackViewModel,
-  FieldType,
   Field,
-  ActionType,
-  Action,
-  Area,
-} from 'tracker/model';
+} from 'tracker/model/ActionTrackModel';
+import { FieldType, ActionType, Action } from 'tracker/model/ActionType';
 import {
   debounce,
   getElementsByClassName,
@@ -33,6 +31,7 @@ import { getCookie } from '@nara.platform/accent';
 
 export async function actionTrack({
   email,
+  auth,
   path,
   pathName,
   search,
@@ -100,6 +99,7 @@ export async function actionTrack({
       };
       const actionTrackModel: ActionTrackModel = {
         context,
+        auth,
         serviceType: getServiceType(path),
         collegeId: result.find(r => r.type === FieldType.College)?.id,
         collegeName: result.find(r => r.type === FieldType.College)?.name,
@@ -125,6 +125,28 @@ export async function actionTrack({
     });
 }
 
+async function beforeActionTrack({
+  email,
+  path,
+  search,
+  area,
+  actionType,
+  action,
+  actionName
+}: ActionTrackParam){
+  const auth = await getAuth();
+  actionTrack({
+    email,
+    auth,
+    path,
+    search,
+    area,
+    actionType,
+    action,
+    actionName,
+  } as ActionTrackParam);
+}
+
 export const debounceActionTrack = debounce(
   ({
     email,
@@ -135,7 +157,7 @@ export const debounceActionTrack = debounce(
     action,
     actionName,
   }: ActionTrackParam) =>
-    actionTrack({
+    beforeActionTrack({
       email,
       path,
       search,
@@ -149,6 +171,7 @@ export const debounceActionTrack = debounce(
 
 export async function actionTrackView({
   email,
+  auth,
   browser,
   path,
   pathName,
@@ -221,6 +244,7 @@ export async function actionTrackView({
       };
       const actionTrackViewModel: ActionTrackViewModel = {
         context,
+        auth,
         serviceType: getServiceType(path),
         collegeId: result.find(r => r.type === FieldType.College)?.id,
         collegeName: result.find(r => r.type === FieldType.College)?.name,

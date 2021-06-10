@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { FieldType, Field } from 'tracker/model';
+import { FieldType } from 'tracker/model/ActionType';
+import { Field } from 'tracker/model/ActionTrackModel';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
 import { LearningContent } from 'lecture/model/LearningContent';
@@ -10,18 +11,98 @@ import { findCollege } from 'college/present/apiclient/CollegeApi';
 import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
+import { findJsonUserGroup } from 'profile/present/apiclient/SkProfileApi';
 import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
 import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
 import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
 
-
 const FIELD_STORAGE_KEY = '_mysuni_field';
+const AUTH_STORAGE_KEY = '_mysuni_auth';
 
 export const mobileCheck = () => {
   let check = false;
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) check = true;
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    check = true;
+  }
   return check;
+};
+
+export const initAuth = () => {
+  const auth = {
+    base: {
+      group_field: '',
+      group_name: '',
+    },
+    country: {
+      group_field: '',
+      group_name: '',
+    },
+    task: {
+      group_field: '',
+      group_name: '',
+    },
+    position: {
+      group_field: '',
+      group_name: '',
+    },
+    membership: {
+      group_field: '',
+      group_name: '',
+    },
+  };
+  return auth;
+};
+
+export const setAuth = async () => {
+  const auth = initAuth();
+  try {
+    await findJsonUserGroup().then(data => {
+      const userGroup = JSON.parse(data.jsonUserGroup);
+      Object.keys(userGroup).forEach(key => {
+        if (key === '기본') {
+          auth.base.group_field = key;
+          auth.base.group_name = userGroup[key];
+        } else if (key === '국가') {
+          auth.country.group_field = key;
+          auth.country.group_name = userGroup[key];
+        } else if (key === '직무') {
+          auth.task.group_field = key;
+          auth.task.group_name = userGroup[key];
+        } else if (key === '직책') {
+          auth.position.group_field = key;
+          auth.position.group_name = userGroup[key];
+        } else if (key === '멤버쉽') {
+          auth.membership.group_field = key;
+          auth.membership.group_name = userGroup[key];
+        }
+      });
+    });
+    if (lsTest()) {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(auth));
+    }
+  } catch {
+    //
+  }
+  return auth;
+};
+
+export const getAuth = async () => {
+  let auth;
+  if (lsTest()) {
+    const cachedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (cachedAuth) {
+      auth = JSON.parse(cachedAuth);
+    }
+  }
+  if(!auth){
+    auth = await setAuth();
+  }
+  return auth;
 };
 
 export const getPathValue = (
@@ -78,54 +159,64 @@ export const getCardRelId = async (cardId: string) => {
       field = JSON.parse(cachedFiled);
       if (field && field[FieldType.Card]) {
         const rel = field[FieldType.Card][relation];
-        if(rel && rel[cardId]){
+        if (rel && rel[cardId]) {
           collegeId = rel[cardId].collegeId;
           channelId = rel[cardId].channelId;
         }
-        
       }
     }
   }
 
-  if(!(collegeId && channelId)){
+  if (!(collegeId && channelId)) {
     const result = await findCardCache(cardId);
-    if(result?.card?.categories){
-      result?.card?.categories.filter(o=>o.mainCategory===true).map(o=>{
-        collegeId = o.collegeId;
-        channelId = o.channelId;
-        addId = true;
-      })
+    if (result?.card?.categories) {
+      result?.card?.categories
+        .filter(o => o.mainCategory === true)
+        .map(o => {
+          collegeId = o.collegeId;
+          channelId = o.channelId;
+          addId = true;
+        });
     }
   }
 
   let tempObj;
   let tempRel;
   if (lsTest() && addId) {
-    const value = {'collegeId': collegeId, 'channelId':channelId}
+    const value = { collegeId, channelId };
     if (field) {
-      if(field[FieldType.Card]){
+      if (field[FieldType.Card]) {
         tempObj = field[FieldType.Card];
         tempRel = field[FieldType.Card][relation];
         if (tempRel) {
-          if(!tempRel[cardId]){
+          if (!tempRel[cardId]) {
             // relation add
             field[FieldType.Card][relation][cardId] = value;
-            tempObj = { ...field, ...{ [FieldType.Card]: field[FieldType.Card] } };
+            tempObj = {
+              ...field,
+              ...{ [FieldType.Card]: field[FieldType.Card] },
+            };
           } else {
             tempObj = field;
           }
         } else {
           // relation new
-          tempObj = { ...field, ...{ ...tempObj, relation: {[cardId]: value }}};
+          tempObj = {
+            ...field,
+            ...{ ...tempObj, relation: { [cardId]: value } },
+          };
         }
       } else {
         // card new
-        tempObj = { ...field, [FieldType.Card]: { relation: {[cardId]: value}}};
+        tempObj = {
+          ...field,
+          [FieldType.Card]: { relation: { [cardId]: value } },
+        };
       }
     } else {
       // field new
       tempObj = {
-        [FieldType.Card]: { relation: {[cardId]: value }},
+        [FieldType.Card]: { relation: { [cardId]: value } },
         createDate: moment().toISOString(true),
       };
     }
@@ -133,12 +224,12 @@ export const getCardRelId = async (cardId: string) => {
   }
 
   const fields = [];
-  if(collegeId) fields.push({type: FieldType.College, id: collegeId});
-  if(channelId) fields.push({type: FieldType.Channel, id: channelId});
+  if (collegeId) fields.push({ type: FieldType.College, id: collegeId });
+  if (channelId) fields.push({ type: FieldType.Channel, id: channelId });
   returnFields = fields;
 
   return returnFields;
-}
+};
 
 export const getServiceType = (path: string) => {
   let serviceType = null;
@@ -186,8 +277,8 @@ const getFieldName = async (id: string, type: string) => {
   }
   if (!name) {
     // if (type === FieldType.Course) {
-      // const coursePlan = await findCoursePlan(id);
-      // name = coursePlan?.name;
+    // const coursePlan = await findCoursePlan(id);
+    // name = coursePlan?.name;
     if (type === FieldType.Card) {
       const result = await findCardCache(id);
       name = result?.card?.name;
@@ -211,7 +302,7 @@ const getFieldName = async (id: string, type: string) => {
       const cardBundles = await findAvailableCardBundles();
       const cardBundle = find(cardBundles, { id });
       let type = cardBundle?.type || 'none';
-      switch (type){
+      switch (type) {
         case 'Normal':
           type = '일반과정';
           break;
@@ -225,10 +316,10 @@ const getFieldName = async (id: string, type: string) => {
           type = '추천과정';
           break;
       }
-      name = type+"::"+cardBundle?.displayText;
+      name = type + '::' + cardBundle?.displayText;
     } else if (type === FieldType.Chapter) {
       const ids = id.split(',');
-      if(ids && ids?.[0] && ids?.[1] ){
+      if (ids && ids?.[0] && ids?.[1]) {
         const params = {} as ChapterParams;
         params.cardId = ids?.[0];
         params.contentId = ids?.[1];
@@ -238,10 +329,10 @@ const getFieldName = async (id: string, type: string) => {
       }
     } else if (type === FieldType.Discussion) {
       const ids = id.split(',');
-      if(ids && ids?.[0] && ids?.[1] ){
+      if (ids && ids?.[0] && ids?.[1]) {
         const id = ids?.[0];
         const contentId = ids?.[1];
-        await requestLectureDiscussion(id,contentId).then(result => {
+        await requestLectureDiscussion(id, contentId).then(result => {
           name = result?.name;
         });
       }
@@ -385,7 +476,7 @@ export const getPathName = async (path: string, search: string) => {
       break;
     case /(^\/suni-main)?\/lecture\/recommend\/(.*?)\/(.*)/.test(path):
       pathName = 'Recommend';
-      if(RegExp.$2 && RegExp.$2 === 'channel' && RegExp.$3){
+      if (RegExp.$2 && RegExp.$2 === 'channel' && RegExp.$3) {
         await setResultName({
           type: FieldType.Channel,
           id: RegExp.$3,
@@ -419,7 +510,8 @@ export const getPathName = async (path: string, search: string) => {
                 type: FieldType.Channel,
                 id: RegExp.$3,
               }).then(r => {
-                pathName = 'Category::채널별보기::' + result.name + '::' + r.name;
+                pathName =
+                  'Category::채널별보기::' + result.name + '::' + r.name;
               });
               break;
           }
@@ -429,7 +521,9 @@ export const getPathName = async (path: string, search: string) => {
     case /(^\/suni-main)?\/lecture\/card\/.*/.test(path):
       pathName = '콘텐츠';
       switch (true) {
-        case /(^\/suni-main)?\/lecture\/card\/.*?\/cube\/(.*?)\/(.*?)\/(.*)/.test(path):
+        case /(^\/suni-main)?\/lecture\/card\/.*?\/cube\/(.*?)\/(.*?)\/(.*)/.test(
+          path
+        ):
           pathName += '::큐브';
           switch (RegExp.$3) {
             case 'view':
@@ -451,7 +545,7 @@ export const getPathName = async (path: string, search: string) => {
             case 'chapter':
               await setResultName({
                 type: FieldType.Chapter,
-                id: RegExp.$2 + ','+ RegExp.$4,
+                id: RegExp.$2 + ',' + RegExp.$4,
               }).then(result => {
                 pathName = '콘텐츠::카드::Chapter::' + result.name;
               });
@@ -459,7 +553,7 @@ export const getPathName = async (path: string, search: string) => {
             case 'discussion':
               await setResultName({
                 type: FieldType.Discussion,
-                id: RegExp.$2 + ','+ RegExp.$4,
+                id: RegExp.$2 + ',' + RegExp.$4,
               }).then(result => {
                 pathName = '콘텐츠::카드::토론하기::' + result.name;
               });
