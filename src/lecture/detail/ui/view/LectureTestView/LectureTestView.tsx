@@ -122,8 +122,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
 */
-  console.log('answerItem', answerItem);
-  console.log('answerItem?.trials', answerItem?.trials);
   return (
     <>
       {useTestIntroView && testItem && (

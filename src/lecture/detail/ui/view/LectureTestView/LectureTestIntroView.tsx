@@ -18,7 +18,6 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
   trials,
 }) {
   const lectureStructureItem = getActiveStructureItem(params.pathname);
-  console.log(trials);
   return (
     <>
       {testItem && (
