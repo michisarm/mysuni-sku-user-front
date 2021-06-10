@@ -18,6 +18,7 @@ import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import LectureState from '../../viewModel/LectureState';
+
 interface LectureAudioViewProps {
   lectureState: LectureState;
   checkStudent: (params: LectureParams, path: string) => void;
