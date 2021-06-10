@@ -1,15 +1,13 @@
-
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Label, Icon } from 'semantic-ui-react';
 import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
-  minute?: number,
-  year?: number,
-  accrueMinute?: number,
+  minute?: number;
+  year?: number;
+  accrueMinute?: number;
 }
-
 
 @reactAutobind
 class ContentHeaderLearningTimeItem extends PureComponent<Props> {
@@ -31,31 +29,34 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
 
     let total: any = null;
 
-    if (hour < 1 && onlyMinute! < 1) {
+    if (hour < 1 && onlyMinute !== undefined && onlyMinute < 1) {
       total = (
         <div className="value2">
-          <strong>00</strong><span>h</span> <strong>00</strong><span>m</span>
+          <strong>00</strong>
+          <span>h</span> <strong>00</strong>
+          <span>m</span>
         </div>
       );
-    }
-    else if (hour < 1) {
+    } else if (hour < 1) {
       total = (
         <div className="value2">
-          <strong>{onlyMinute}</strong><span>m</span>
+          <strong>{onlyMinute}</strong>
+          <span>m</span>
         </div>
       );
-    }
-    else if (onlyMinute! < 1) {
+    } else if (onlyMinute! < 1) {
       total = (
         <div className="value2">
-          <strong>{hour}</strong><span>h</span>
+          <strong>{hour}</strong>
+          <span>h</span>
         </div>
       );
-    }
-    else {
+    } else {
       total = (
         <div className="value2">
-          <strong>{hour}</strong><span>h</span> <strong>{onlyMinute}</strong><span>m</span>
+          <strong>{hour}</strong>
+          <span>h</span> <strong>{onlyMinute}</strong>
+          <span>m</span>
         </div>
       );
     }
@@ -107,17 +108,20 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
       <div className="ui statistic total-time">
         {
           <MyLearningSummaryModal
-            trigger={(
-              <Button className="btn-total-time" style={{paddingLeft:'100px'}}>
+            trigger={
+              <Button
+                className="btn-total-time"
+                style={{ paddingLeft: '100px' }}
+              >
                 <Label className="onlytext">
                   <span>
                     <strong>{year}년</strong>
                     학습시간
                   </span>
                 </Label>
-                  {total}
+                {total}
               </Button>
-            )}
+            }
             year={year}
           />
         }
