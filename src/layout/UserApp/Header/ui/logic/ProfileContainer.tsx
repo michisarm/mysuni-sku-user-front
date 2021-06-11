@@ -34,7 +34,7 @@ interface State {
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
-  profileButtonRef: any = React.createRef();
+  //profileButtonRef: any = React.createRef();
 
   state = {
     balloonShowClass: '',
@@ -74,17 +74,17 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   handleClickOutside(e: MouseEvent) {
-    if (
-      this.profileButtonRef &&
-      !this.profileButtonRef.current.contains(e.target)
-    ) {
-      setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
-    }
+    // if (
+    //   //this.profileButtonRef &&
+    //   //!this.profileButtonRef.current.contains(e.target)
+    // ) {
+    //   //setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
+    // }
   }
 
   onTogglePop() {
-    const { balloonShowClass } = this.state;
-    this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
+    //const { balloonShowClass } = this.state;
+    //this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
   }
 
   onLogout() {
@@ -140,13 +140,28 @@ class ProfileContainer extends Component<Props, State> {
     const { isOpen } = this.state;
 
     const setOpen = () => {
-      this.profileButtonRef.current.click();
+      //this.profileButtonRef.current.click();
       this.setState({ isOpen: !isOpen });
+      document.getElementById("btnProFile")?.click();
     }
 
     return (
       <div className="g-info">
-        <button
+        <Popup
+          className="pop_profile"
+          trigger={
+            <Button id="btnProFile" className="user image label"><Image src={skProfile.photoFilePath || profileImg} alt="profile" /></Button>
+          }
+          position="bottom right"
+          on="click"
+          //open={isOpen}
+          onOpen={setOpen}
+        >
+          <Popup.Content>
+            <ProfilePopupView setOpen={setOpen} />{ /*프로필사진 셋팅전 */}
+          </Popup.Content>
+        </Popup>
+        {/* <button
           className="ui user image label"
           onClick={this.onTogglePop}
           ref={this.profileButtonRef}
@@ -156,9 +171,9 @@ class ProfileContainer extends Component<Props, State> {
             {member.company} {member.department}
           </span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
-        </button>
+        </button> */}
 
-        <div
+        {/* <div
           className={`balloon-pop ${balloonShowClass}`}
           data-area={Area.HEADER_PROFILE}
         >
@@ -201,7 +216,7 @@ class ProfileContainer extends Component<Props, State> {
             </li>
 
           </ul>
-        </div>
+        </div> */}
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
@@ -210,20 +225,7 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
-        <Popup
-          className="pop_profile"
-          trigger={
-            <Button id="btnProFile" className="user image label"><Image src={skProfile.photoFilePath || profileImg} alt="profile" /></Button>
-          }
-          position="bottom right"
-          on="click"
-          //open={isOpen}
-          onOpen={setOpen}
-        >
-          <Popup.Content>
-            <ProfilePopupView setOpen={setOpen} />{ /*프로필사진 셋팅전 */}
-          </Popup.Content>
-        </Popup>
+
       </div>
     );
   }

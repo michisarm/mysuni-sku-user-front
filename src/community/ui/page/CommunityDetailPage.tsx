@@ -207,7 +207,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                       />
                     </div>
                     <span className="crown">
-                      {communityHome.community.managerName}
+                      {communityHome.community.managerNickName}
                     </span>
                   </div>
 
@@ -237,7 +237,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             }
                           />
                         </div>
-                        <span>{r.name}</span>
+                        <span>{r.nickname}</span>
                       </div>
                     ))}
                 </td>

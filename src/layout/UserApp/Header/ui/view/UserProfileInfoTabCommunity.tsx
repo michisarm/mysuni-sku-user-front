@@ -15,7 +15,7 @@ function UserProfileInfoTabCommunity(props: Props) {
   useEffect(() => {
     getProfileInfoCommunities(props.memberId);
     return () => {
-      setProfileInfoCommunityModel(undefined);
+      setProfileInfoCommunityModel();
     }
   }, [props.memberId]);
 
@@ -33,7 +33,7 @@ function UserProfileInfoTabCommunity(props: Props) {
           <span>가입한 커뮤니티 : <strong>{communityData?.communitiesTotalCount}</strong>개</span>
         </div>
       </div>
-      {communityData && communityData.communities.length > 0 ?
+      {communityData && communityData.communities.length > 0 && (
         <div className="table-wrapper">
           <Table>
             <colgroup>
@@ -62,14 +62,16 @@ function UserProfileInfoTabCommunity(props: Props) {
                 ))}
             </Table.Body>
           </Table>
-        </div> : (
-          <div className="community_nodata">
-            <Icon>
-              <Image src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
-            </Icon>
-            <p>가입한 커뮤니티가 없습니다.</p>
-          </div>
-        )}
+        </div>
+      )}
+      {communityData && communityData.communities.length === 0 && (
+        <div className="community_nodata">
+          <Icon>
+            <Image src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
+          </Icon>
+          <p>가입한 커뮤니티가 없습니다.</p>
+        </div>
+      )}
     </Tab.Pane>
   );
 }

@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, Image } from 'semantic-ui-react';
 import { getProfileInfo } from '../../../service/ProfilePopupService/getProfileInfo'
 import { useProfileInfoModel, setProfileInfoModel } from '../../../store/ProfileInfoStore';
+import { useProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
+import { useProfileInfoCommunityModel } from "../../../store/ProfileInfoCommunityStore";
+import { useProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
+import { getProfileInfoCommunities } from "../../../service/ProfilePopupService/getProfileInfoCommunities";
+import { getProfileInfoPost } from "../../../service/ProfilePopupService/getProfileInfoPost";
+import { getProfileInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
+import moment from "moment";
+import { getFollow } from "../../../service/ProfilePopupService/getFollow";
+import { useFollowModel } from "../../../store/FollowStore";
+import { followMember, unfollowMember, findAllFollow } from "../../../api/ProfileInfoAPI";
+import { patronInfo } from "@nara.platform/dock";
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 
 interface Props {
@@ -19,8 +30,14 @@ interface Props {
 
 function UserProfileinfoProfileCard(props: Props) {
   const profileInfo = useProfileInfoModel();
-  const [followClassName, setFollowClassName] = useState<string>('unfollowing');
-  const [isFollow, setIsFollow] = useState<string>('Unfollow');
+  const [followClassName, setFollowClassName] = useState<string>('following');
+  const [isFollow, setIsFollow] = useState<string>('Follow');
+  const badgeData = useProfileInfoBadgesModel();
+  const communityData = useProfileInfoCommunityModel();
+  const feedData = useProfileInfoPostModel();
+  const followData = useFollowModel();
+  const currentDate = new Date();
+  const denizenId = patronInfo.getDenizenId();
   const [nickname, setNickname] = useState<string>('');
   const [hobby, setHobby] = useState<string>('');
   const [profileImg, setProfileImg] = useState<string>('');
@@ -31,9 +48,23 @@ function UserProfileinfoProfileCard(props: Props) {
 
   useEffect(() => {
     getProfileInfo(props.memberId)
-    setFollowClassName(profileInfo?.isFollow ? 'following' : 'unfollowing');
-    setIsFollow(profileInfo?.isFollow ? 'Follow' : 'Unfollow');
+
+    //Badge, Community, Feed 개수 조회
+    getProfileInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
+    getProfileInfoCommunities(props.memberId);
+    getProfileInfoPost(props.memberId);
+    //Follow 목록 조회
+    getFollow();
+
+    return () => {
+      setProfileInfoModel();
+    }
+
   }, [props.memberId])
+
+  useEffect(() => {
+    getFollowYN();
+  }, [followData])
 
   useEffect(() => {
     // if (profileInfo !== undefined && props.preProfileInfo !== undefined) {
@@ -80,6 +111,23 @@ function UserProfileinfoProfileCard(props: Props) {
     return tagHtml;
   }
 
+  const getFollowYN = useCallback(() => {
+    followData && followData.ids.map(f => {
+      if (f === props.memberId) {
+        setFollowClassName('unfollowing');
+        setIsFollow('Unfollow');
+      }
+    })
+  }, [followData])
+
+  function onClickFollow() {
+    if (isFollow === "Follow") {
+      unfollowMember(props.memberId!).then(() => { getFollow() });
+    } else {
+      followMember(props.memberId!).then(() => { getFollow() });
+    }
+  }
+
   return (
     <>
       <div className="profile-wrapper">
@@ -109,20 +157,20 @@ function UserProfileinfoProfileCard(props: Props) {
               <div className="count-area">
                 <div className="cnt-box bad-cnt">
                   <span>Badge</span>
-                  <strong>{profileInfo?.badgeCount}</strong>
+                  <strong>{badgeData?.badgesTotalCount}</strong>
                 </div>
                 <div className="cnt-box com-cnt">
                   <span>커뮤니티</span>
-                  <strong>{profileInfo?.communityCount}</strong>
+                  <strong>{communityData?.communitiesTotalCount}</strong>
                 </div>
                 <div className="cnt-box feed-cnt">
                   <span>Feed</span>
-                  <strong>{profileInfo?.feedCount}</strong>
+                  <strong>{feedData?.postsTotalCount}</strong>
                 </div>
               </div>
               <div className="follow-bttn-area">
-                {/* following/unfollowing class이름에 따라 css 바뀜*/}
-                <Button className={followClassName}>{isFollow}</Button>
+                {props.memberId !== denizenId &&
+                  <Button className={followClassName} onClick={onClickFollow}>{isFollow}</Button>}
               </div>
             </div>
           </div>

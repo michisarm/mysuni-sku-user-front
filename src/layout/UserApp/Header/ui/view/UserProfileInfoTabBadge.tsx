@@ -69,7 +69,7 @@ function UserProfileInfoTabBadge(props: Props) {
           <span>획득한 Badge : <strong>{badgeData?.badgesTotalCount}</strong>개</span>
         </div>
       </div>
-      {badgeData?.badges.length && badgeData?.badges.length !== 0 ?
+      {badgeData && badgeData?.badges.length !== 0 && (
         <div className="table-wrapper">
           <Table>
             <colgroup>
@@ -85,7 +85,7 @@ function UserProfileInfoTabBadge(props: Props) {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {badgeData?.badges.map((item: any, index:any) => (
+              {badgeData?.badges.map((item: any, index: any) => (
                 <Table.Row onDoubleClick={() => onViewDetail(item.id)}>
                   <Table.Cell><span className="t-navy">{item.badgeCategory.name}</span> {item.name}</Table.Cell>
                   <Table.Cell textAlign="center">
@@ -101,14 +101,16 @@ function UserProfileInfoTabBadge(props: Props) {
               ))}
             </Table.Body>
           </Table>
-        </div> : (
-          <div className="community_nodata">
-            <Icon>
-              <Image src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
-            </Icon>
-            <p>선택한 연도에 <br />획득한 Badge가 없습니다.</p>
-          </div>
-        )}
+        </div>
+      )}
+      {badgeData && badgeData?.badges.length === 0 && (
+        <div className="community_nodata">
+          <Icon>
+            <Image src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
+          </Icon>
+          <p>선택한 연도에 <br />획득한 Badge가 없습니다.</p>
+        </div>
+      )}
     </Tab.Pane>
   );
 }

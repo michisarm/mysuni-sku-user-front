@@ -32,4 +32,5 @@ export default interface CommunityView {
   allowSelfJoin: number;
 
   memberType: CommunityMemberType;
+  managerNickName: string;
 }
