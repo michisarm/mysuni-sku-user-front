@@ -241,7 +241,7 @@ function CommunityMainHeaderContainer() {
                     onClick={() => history.push('/my-training/my-page')}
                     style={{ cursor: 'pointer', display: 'inline-block' }}
                   >
-                    {profile?.nickname || profile?.name || ''}님,
+                    {profile?.nameFlag === 'N' ? profile?.nickname : profile?.name}님,
                   </div>
                 </div>
                 <div className="part">
