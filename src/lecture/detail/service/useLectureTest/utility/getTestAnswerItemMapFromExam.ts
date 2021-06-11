@@ -89,10 +89,10 @@ export async function checkAnswerSheetAppliesCount(
   lectureId: string
 ): Promise<boolean> {
   const test = getLectureTestItem();
-  const applyLimit = test?.applyLimit || 0;
+  const applyLimit = test?.preApplyLimit || test?.applyLimit || 0;
   const appliesCount = await findAnswerSheetAppliesCount(lectureId);
 
-  if (applyLimit <= appliesCount) {
+  if (applyLimit !== 0 && applyLimit <= appliesCount) {
     return false;
   }
   return true;

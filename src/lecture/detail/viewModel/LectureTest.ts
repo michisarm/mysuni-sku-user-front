@@ -50,6 +50,9 @@ export interface LectureTestItem {
   description: string;
   serviceId: string;
   paperId: string;
+  preSuccessPoint?: number; // 재응시 클릭 후 Test 다시 클릭시 FAIL 화면에 유지해야 할 값들
+  preTotalPoint?: number; // 재응시 클릭 후 Test 다시 클릭시 FAIL 화면에 유지해야 할 값들
+  preApplyLimit?: number; // 재응시 클릭 후 Test 다시 클릭시 FAIL 화면에 유지해야 할 값들
 }
 
 export interface LectureTestAnswerItem extends Item {

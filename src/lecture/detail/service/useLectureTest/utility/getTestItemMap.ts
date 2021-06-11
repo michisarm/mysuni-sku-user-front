@@ -6,6 +6,7 @@ import {
 } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import {
+  getLectureTestItem,
   setLectureTestAnswerItem,
   setLectureTestItem,
 } from 'lecture/detail/store/LectureTestStore';
@@ -135,6 +136,15 @@ export async function retryTestItemMap(params: LectureParams): Promise<void> {
   const testDetail = await findExamPaperDetail(examPaperIds);
 
   const testItem = await getTestItemFromDetailData(testDetail, serviceId);
+
+  const preTestItem = getLectureTestItem();
+  // FAIL한 시험지 정보 계속 유지
+  testItem.preSuccessPoint =
+    preTestItem?.preSuccessPoint || preTestItem?.successPoint;
+  testItem.preTotalPoint =
+    preTestItem?.preTotalPoint || preTestItem?.totalPoint;
+  testItem.preApplyLimit =
+    preTestItem?.preApplyLimit || preTestItem?.applyLimit;
   setLectureTestItem(testItem);
 
   const answerItem = await initTestAnswerItem(testItem.questions);

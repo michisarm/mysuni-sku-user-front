@@ -99,9 +99,15 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   </h2>
                   <h3>이수조건</h3>
                   <p>
-                    합격기준 <strong>{testItem.successPoint}점</strong>
+                    합격기준{' '}
+                    <strong>
+                      {testItem.preSuccessPoint || testItem.successPoint}점
+                    </strong>
                     <span>/</span>
-                    총점 <strong>{testItem.totalPoint}점</strong>
+                    총점{' '}
+                    <strong>
+                      {testItem.preTotalPoint || testItem.totalPoint}점
+                    </strong>
                   </p>
                 </div>
               </div>

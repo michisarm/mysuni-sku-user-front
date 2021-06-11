@@ -73,7 +73,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
           title: '알림',
           message:
             '일일 재응시 횟수가 ' +
-            testItem.applyLimit +
+            (testItem.preApplyLimit || testItem.applyLimit) +
             '회를 초과하여 Test 참여가 불가능합니다.<br/>' +
             dateFormat +
             '에 다시 도전해보세요!',
