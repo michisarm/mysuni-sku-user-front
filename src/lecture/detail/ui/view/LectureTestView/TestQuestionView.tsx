@@ -121,6 +121,26 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       : false;
 
   const [useAnswerView, setUseAnswerView] = useState<boolean>(false);
+
+  let strAnswer = '';
+  if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
+    if (question.questionType === 'SingleChoice') {
+      strAnswer = question.questionAnswer.answer + '번';
+    } else if (question.questionType === 'MultiChoice') {
+      question.questionAnswer.answer
+        .split(',')
+        .map((result: string, index: number) => {
+          if (index === 0) {
+            strAnswer = '' + result + '번';
+          } else {
+            strAnswer += ', ' + result + '번';
+          }
+        });
+    } else if (question.questionType === 'ShortAnswer') {
+      strAnswer = question.questionAnswer.answer;
+    }
+  }
+
   return (
     <>
       <div key={question.id} className={questionClassName}>
@@ -214,24 +234,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
                   </Button>
                   <div className="survey-answer">
                     <span>정답</span>
-                    <span>
-                      {question.questionType === 'SingleChoice' && (
-                        <>{question.questionAnswer.answer}번</>
-                      )}
-                      {question.questionType === 'MultiChoice' && (
-                        <>
-                          {/*JSON.parse(question.questionAnswer.answer)
-                            .split(',')
-                            .map((result: string) => {
-                              return result + '번';
-                            })*/}
-                          {question.questionAnswer.answer}
-                        </>
-                      )}
-                      {question.questionType === 'ShortAnswer' && (
-                        <>{question.questionAnswer.answer}</>
-                      )}
-                    </span>
+                    <span>{strAnswer}</span>
                   </div>
                   {question.questionAnswer.explanation && (
                     <div className="survey-answer">

@@ -62,7 +62,7 @@ async function getTestItem(
   return item;
 }
 
-async function getTestItemFromDetailData(
+export async function getTestItemFromDetailData(
   testDetail: ExamDetail,
   serviceId: string
 ): Promise<LectureTestItem> {

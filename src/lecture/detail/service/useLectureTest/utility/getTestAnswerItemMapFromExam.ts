@@ -4,6 +4,7 @@ import {
   getLectureTestAnswerItem,
   getLectureTestItem,
   setLectureTestAnswerItem,
+  setLectureTestItem,
 } from 'lecture/detail/store/LectureTestStore';
 import {
   findAnswerSheetAppliesCount,
@@ -12,7 +13,8 @@ import {
 import ExamQuestion from '../../../model/ExamQuestion';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
-import AnswerSheetDetail from '../../../model/AnswersheetDetail';
+import AnswerSheetDetail from '../../../model/AnswerSheetDetail';
+import { getTestItemFromDetailData } from './getTestItemMap';
 
 async function getTestAnswerItem(pathname: string, lectureId: string) {
   let item = await initTestAnswerItem([]);
@@ -25,6 +27,14 @@ async function getTestAnswerItem(pathname: string, lectureId: string) {
 
       if (findAnswerSheetData !== null) {
         item = await getTestAnswerItemFromSheetData(findAnswerSheetData, item);
+        const testItem = await getTestItemFromDetailData(
+          {
+            examPaper: findAnswerSheetData.examPaper,
+            examQuestions: findAnswerSheetData.examQuestions,
+          },
+          lectureId
+        );
+        setLectureTestItem(testItem);
       }
     }
   }

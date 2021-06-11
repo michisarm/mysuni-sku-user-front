@@ -32,7 +32,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   const [useTestView, setUseTestView] = useState<boolean>(false); // TEST 화면
   const [useTestResultView, setUseTestResultView] = useState<boolean>(false); // TEST 결과 화면
 
-  const openView = (view: string) => {
+  const openView = async (view: string) => {
     if (view === 'intro') {
       setUseTestIntroView(true);
       setUseTestView(false);
@@ -46,7 +46,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       setUseTestView(false);
       setUseTestResultView(true);
     } else if (view === 'retry') {
-      const checkApply = checkAnswerSheetAppliesCount(
+      const checkApply = await checkAnswerSheetAppliesCount(
         params.cubeId || params.cardId
       );
       if (checkApply) {

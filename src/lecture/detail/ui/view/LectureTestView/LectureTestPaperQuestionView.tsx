@@ -89,9 +89,7 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                       let answerChkArr = [];
 
                       // 문제지 정답
-                      answerChkArr = JSON.parse(
-                        question.questionAnswer?.answer
-                      );
+                      answerChkArr = question.questionAnswer?.answer.split(',');
                       // 사용자 정답
                       const answerMultiJson = submitAnswer.split(',');
                       let checkCnt = 0;
@@ -157,9 +155,10 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                 />
               );
             })}
-          {answerItem?.graderComment && (
-            <GraderCommentView graderComment={answerItem.graderComment} />
-          )}
+          {lectureStructureItem?.student?.extraWork.testStatus === 'PASS' &&
+            answerItem?.graderComment && (
+              <GraderCommentView graderComment={answerItem.graderComment} />
+            )}
         </>
       )}
     </>
