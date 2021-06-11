@@ -114,16 +114,11 @@ export const [
 ] = createStore<Options[]>([]);
 
 export const [setCard, onCard, getCard, useCard] = createStore<SearchCard[]>();
-export const [
-  setDisplayCard,
-  onDisplayCard,
-  getDisplayCard,
-  useDisplayCard,
-] = createStore<SearchCard[]>();
+export const [setDisplayCard, onDisplayCard, getDisplayCard, useDisplayCard] =
+  createStore<SearchCard[]>();
 
-export const [setExpert, onExpert, getExpert, useExpert] = createStore<
-  SearchExpert[]
->();
+export const [setExpert, onExpert, getExpert, useExpert] =
+  createStore<SearchExpert[]>();
 
 function toggle_all_all_college_name_query() {
   const filterCondition = getFilterCondition();
@@ -148,7 +143,7 @@ function toggle_all_all_college_name_query() {
       all_college_name_query: [],
     });
     const nextTags = tags.filter(
-      tag => !collegeOptions.some(c => c.value === tag.text)
+      (tag) => !collegeOptions.some((c) => c.value === tag.text)
     );
     setTags(nextTags);
   } else {
@@ -157,24 +152,23 @@ function toggle_all_all_college_name_query() {
       all_college_name_query: collegeOptions.map(({ value }) => value),
     });
     const nextTags = [...tags];
-    collegeOptions.forEach(c => {
-      if (!tags.some(tag => c.value === tag.text)) {
+    collegeOptions.forEach((c) => {
+      if (!tags.some((tag) => c.value === tag.text)) {
         const text = c.value;
         const removeMe = () => {
           const mTags = getTags();
           if (mTags === undefined) {
             return;
           }
-          setTags(mTags.filter(d => d.text !== text));
+          setTags(mTags.filter((d) => d.text !== text));
           const mFilterCondition = getFilterCondition();
           if (mFilterCondition === undefined) {
             return;
           }
           setFilterCondition({
             ...mFilterCondition,
-            all_college_name_query: mFilterCondition.all_college_name_query.filter(
-              e => e !== text
-            ),
+            all_college_name_query:
+              mFilterCondition.all_college_name_query.filter((e) => e !== text),
           });
         };
         nextTags.push({ key: text, text, removeMe });
@@ -205,38 +199,38 @@ function toggle_all_difficulty_level_query() {
       difficulty_level_json_query: [],
     });
     const nextTags = tags.filter(
-      tag =>
+      (tag) =>
         !CheckBoxOptions.difficulty_level_json_query.some(
-          c => c.value === tag.text
+          (c) => c.value === tag.text
         )
     );
     setTags(nextTags);
   } else {
     setFilterCondition({
       ...filterCondition,
-      difficulty_level_json_query: CheckBoxOptions.difficulty_level_json_query.map(
-        ({ value }) => value
-      ),
+      difficulty_level_json_query:
+        CheckBoxOptions.difficulty_level_json_query.map(({ value }) => value),
     });
     const nextTags = [...tags];
-    CheckBoxOptions.difficulty_level_json_query.forEach(c => {
-      if (!tags.some(tag => c.value === tag.text)) {
+    CheckBoxOptions.difficulty_level_json_query.forEach((c) => {
+      if (!tags.some((tag) => c.value === tag.text)) {
         const text = c.value;
         const removeMe = () => {
           const mTags = getTags();
           if (mTags === undefined) {
             return;
           }
-          setTags(mTags.filter(d => d.text !== text));
+          setTags(mTags.filter((d) => d.text !== text));
           const mFilterCondition = getFilterCondition();
           if (mFilterCondition === undefined) {
             return;
           }
           setFilterCondition({
             ...mFilterCondition,
-            difficulty_level_json_query: mFilterCondition.difficulty_level_json_query.filter(
-              e => e !== text
-            ),
+            difficulty_level_json_query:
+              mFilterCondition.difficulty_level_json_query.filter(
+                (e) => e !== text
+              ),
           });
         };
         nextTags.push({ key: text, text, removeMe });
@@ -267,7 +261,8 @@ function toggle_all_learning_time_query() {
       learning_time_query: [],
     });
     const nextTags = tags.filter(
-      tag => !CheckBoxOptions.learning_time_query.some(c => c.text === tag.text)
+      (tag) =>
+        !CheckBoxOptions.learning_time_query.some((c) => c.text === tag.text)
     );
     setTags(nextTags);
   } else {
@@ -278,8 +273,8 @@ function toggle_all_learning_time_query() {
       ),
     });
     const nextTags = [...tags];
-    CheckBoxOptions.learning_time_query.forEach(c => {
-      if (!tags.some(tag => c.text === tag.text)) {
+    CheckBoxOptions.learning_time_query.forEach((c) => {
+      if (!tags.some((tag) => c.text === tag.text)) {
         const text = c.text;
         const value = c.value;
         const removeMe = () => {
@@ -287,7 +282,7 @@ function toggle_all_learning_time_query() {
           if (mTags === undefined) {
             return;
           }
-          setTags(mTags.filter(d => d.text !== text));
+          setTags(mTags.filter((d) => d.text !== text));
           const mFilterCondition = getFilterCondition();
           if (mFilterCondition === undefined) {
             return;
@@ -295,7 +290,7 @@ function toggle_all_learning_time_query() {
           setFilterCondition({
             ...mFilterCondition,
             learning_time_query: mFilterCondition.learning_time_query.filter(
-              e => e !== value
+              (e) => e !== value
             ),
           });
         };
@@ -328,7 +323,7 @@ function toggle_all_organizer_query() {
       organizer_query: [],
     });
     const nextTags = tags.filter(
-      tag => !organizerOptions.some(c => c.value === tag.text)
+      (tag) => !organizerOptions.some((c) => c.value === tag.text)
     );
     setTags(nextTags);
   } else {
@@ -337,15 +332,15 @@ function toggle_all_organizer_query() {
       organizer_query: organizerOptions.map(({ value }) => value),
     });
     const nextTags = [...tags];
-    organizerOptions.forEach(c => {
-      if (!tags.some(tag => c.value === tag.text)) {
+    organizerOptions.forEach((c) => {
+      if (!tags.some((tag) => c.value === tag.text)) {
         const text = c.value;
         const removeMe = () => {
           const mTags = getTags();
           if (mTags === undefined) {
             return;
           }
-          setTags(mTags.filter(d => d.text !== text));
+          setTags(mTags.filter((d) => d.text !== text));
           const mFilterCondition = getFilterCondition();
           if (mFilterCondition === undefined) {
             return;
@@ -353,7 +348,7 @@ function toggle_all_organizer_query() {
           setFilterCondition({
             ...mFilterCondition,
             organizer_query: mFilterCondition.organizer_query.filter(
-              e => e !== text
+              (e) => e !== text
             ),
           });
         };
@@ -386,7 +381,7 @@ function toggle_all_cube_type_query() {
       cube_type_query: [],
     });
     const nextTags = tags.filter(
-      tag => !cubeTypeOptions.some(c => c.value === tag.text)
+      (tag) => !cubeTypeOptions.some((c) => c.value === tag.text)
     );
     setTags(nextTags);
   } else {
@@ -395,15 +390,15 @@ function toggle_all_cube_type_query() {
       cube_type_query: cubeTypeOptions.map(({ value }) => value),
     });
     const nextTags = [...tags];
-    cubeTypeOptions.forEach(c => {
-      if (!tags.some(tag => c.value === tag.text)) {
+    cubeTypeOptions.forEach((c) => {
+      if (!tags.some((tag) => c.value === tag.text)) {
         const text = c.value;
         const removeMe = () => {
           const mTags = getTags();
           if (mTags === undefined) {
             return;
           }
-          setTags(mTags.filter(d => d.text !== text));
+          setTags(mTags.filter((d) => d.text !== text));
           const mFilterCondition = getFilterCondition();
           if (mFilterCondition === undefined) {
             return;
@@ -411,7 +406,7 @@ function toggle_all_cube_type_query() {
           setFilterCondition({
             ...mFilterCondition,
             cube_type_query: mFilterCondition.cube_type_query.filter(
-              e => e !== text
+              (e) => e !== text
             ),
           });
         };
@@ -433,16 +428,16 @@ function toggle_all_college_name_query(value: string) {
   ) {
     return;
   }
-  const exist = filterCondition.all_college_name_query.some(c => c === value);
+  const exist = filterCondition.all_college_name_query.some((c) => c === value);
 
   if (exist) {
     setFilterCondition({
       ...filterCondition,
       all_college_name_query: filterCondition.all_college_name_query.filter(
-        c => c !== value
+        (c) => c !== value
       ),
     });
-    const nextTags = tags.filter(tag => tag.text !== value);
+    const nextTags = tags.filter((tag) => tag.text !== value);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -458,7 +453,7 @@ function toggle_all_college_name_query(value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== value));
+      setTags(mTags.filter((d) => d.text !== value));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
@@ -466,7 +461,7 @@ function toggle_all_college_name_query(value: string) {
       setFilterCondition({
         ...mFilterCondition,
         all_college_name_query: mFilterCondition.all_college_name_query.filter(
-          e => e !== value
+          (e) => e !== value
         ),
       });
     };
@@ -487,17 +482,16 @@ function toggle_difficulty_level_json_query(value: string) {
     return;
   }
   const exist = filterCondition.difficulty_level_json_query.some(
-    c => c === value
+    (c) => c === value
   );
 
   if (exist) {
     setFilterCondition({
       ...filterCondition,
-      difficulty_level_json_query: filterCondition.difficulty_level_json_query.filter(
-        c => c !== value
-      ),
+      difficulty_level_json_query:
+        filterCondition.difficulty_level_json_query.filter((c) => c !== value),
     });
-    const nextTags = tags.filter(tag => tag.text !== value);
+    const nextTags = tags.filter((tag) => tag.text !== value);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -513,16 +507,17 @@ function toggle_difficulty_level_json_query(value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== value));
+      setTags(mTags.filter((d) => d.text !== value));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
       }
       setFilterCondition({
         ...mFilterCondition,
-        difficulty_level_json_query: mFilterCondition.difficulty_level_json_query.filter(
-          e => e !== value
-        ),
+        difficulty_level_json_query:
+          mFilterCondition.difficulty_level_json_query.filter(
+            (e) => e !== value
+          ),
       });
     };
     nextTags.push({ key: value, text: value, removeMe });
@@ -541,16 +536,16 @@ function toggle_learning_time_query(text: string, value: string) {
   ) {
     return;
   }
-  const exist = filterCondition.learning_time_query.some(c => c === value);
+  const exist = filterCondition.learning_time_query.some((c) => c === value);
 
   if (exist) {
     setFilterCondition({
       ...filterCondition,
       learning_time_query: filterCondition.learning_time_query.filter(
-        c => c !== value
+        (c) => c !== value
       ),
     });
-    const nextTags = tags.filter(tag => tag.text !== text);
+    const nextTags = tags.filter((tag) => tag.text !== text);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -563,7 +558,7 @@ function toggle_learning_time_query(text: string, value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== text));
+      setTags(mTags.filter((d) => d.text !== text));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
@@ -571,7 +566,7 @@ function toggle_learning_time_query(text: string, value: string) {
       setFilterCondition({
         ...mFilterCondition,
         learning_time_query: mFilterCondition.learning_time_query.filter(
-          e => e !== value
+          (e) => e !== value
         ),
       });
     };
@@ -591,14 +586,16 @@ function toggle_organizer_query(value: string) {
   ) {
     return;
   }
-  const exist = filterCondition.organizer_query.some(c => c === value);
+  const exist = filterCondition.organizer_query.some((c) => c === value);
 
   if (exist) {
     setFilterCondition({
       ...filterCondition,
-      organizer_query: filterCondition.organizer_query.filter(c => c !== value),
+      organizer_query: filterCondition.organizer_query.filter(
+        (c) => c !== value
+      ),
     });
-    const nextTags = tags.filter(tag => tag.text !== value);
+    const nextTags = tags.filter((tag) => tag.text !== value);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -611,7 +608,7 @@ function toggle_organizer_query(value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== value));
+      setTags(mTags.filter((d) => d.text !== value));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
@@ -619,7 +616,7 @@ function toggle_organizer_query(value: string) {
       setFilterCondition({
         ...mFilterCondition,
         organizer_query: mFilterCondition.organizer_query.filter(
-          e => e !== value
+          (e) => e !== value
         ),
       });
     };
@@ -639,14 +636,16 @@ function toggle_cube_type_query(value: string) {
   ) {
     return;
   }
-  const exist = filterCondition.cube_type_query.some(c => c === value);
+  const exist = filterCondition.cube_type_query.some((c) => c === value);
 
   if (exist) {
     setFilterCondition({
       ...filterCondition,
-      cube_type_query: filterCondition.cube_type_query.filter(c => c !== value),
+      cube_type_query: filterCondition.cube_type_query.filter(
+        (c) => c !== value
+      ),
     });
-    const nextTags = tags.filter(tag => tag.text !== value);
+    const nextTags = tags.filter((tag) => tag.text !== value);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -659,7 +658,7 @@ function toggle_cube_type_query(value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== value));
+      setTags(mTags.filter((d) => d.text !== value));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
@@ -667,7 +666,7 @@ function toggle_cube_type_query(value: string) {
       setFilterCondition({
         ...mFilterCondition,
         cube_type_query: mFilterCondition.cube_type_query.filter(
-          e => e !== value
+          (e) => e !== value
         ),
       });
     };
@@ -693,9 +692,9 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
   }
   setDisplayCard(filterCard(getCard()));
   closeOnFilter && closeOnFilter();
-  await findExpert(decodedSearchValue).then(response => {
+  await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {
-      setExpert(response.result.rows.map(c => c.fields));
+      setExpert(response.result.rows.map((c) => c.fields));
     } else {
       setExpert();
     }
@@ -728,7 +727,7 @@ const SearchFilter: React.FC<Props> = ({
     if (companyCode === null) {
       return;
     }
-    findCard(decodedSearchValue).then(searchResult => {
+    findCard(decodedSearchValue).then((searchResult) => {
       if (searchResult === undefined) {
         setCollegeOptions([]);
         setOrganizerOptions([]);
@@ -737,22 +736,28 @@ const SearchFilter: React.FC<Props> = ({
       }
       const displayCard: SearchCard[] = [];
       searchResult.result.rows
-        .map(c => c.fields)
-        .forEach(c => {
+        .map((c) => c.fields)
+        .forEach((c) => {
           const queries = decodedSearchValue
             .split(' ')
-            .filter(c => c.trim() !== '');
-          if (queries.some(query => c.name.includes(query))) {
-            displayCard.push(c);
+            .filter((c) => c.trim() !== '');
+          if (c.name !== undefined && c.name !== null) {
+            if (
+              queries.some(
+                (query) =>
+                  query !== undefined &&
+                  query !== null &&
+                  c.name.toLowerCase().includes(query.toLowerCase())
+              )
+            ) {
+              displayCard.push(c);
+            }
           }
         });
       searchResult.result.rows
-        .map(c => c.fields)
-        .forEach(c => {
-          const queries = decodedSearchValue
-            .split(' ')
-            .filter(c => c.trim() !== '');
-          if (queries.every(query => !c.name.includes(query))) {
+        .map((c) => c.fields)
+        .forEach((c) => {
+          if (!displayCard.some((d) => d.id === c.id)) {
             displayCard.push(c);
           }
         });
@@ -765,11 +770,11 @@ const SearchFilter: React.FC<Props> = ({
           const {
             fields: { categories },
           } = c;
-          const category = (JSON.parse(
-            categories
-          ) as SearchCardCategory[]).find(d => d.mainCategory === 1);
+          const category = (
+            JSON.parse(categories) as SearchCardCategory[]
+          ).find((d) => d.mainCategory === 1);
           if (category !== undefined) {
-            const a = r.find(d => d.key === category.collegeId);
+            const a = r.find((d) => d.key === category.collegeId);
             if (a !== undefined) {
               a.count = (a.count || 0) + 1;
               a.text = `${a.value}(${a.count})`;
@@ -797,20 +802,22 @@ const SearchFilter: React.FC<Props> = ({
           const {
             fields: { cube_organizer_names },
           } = c;
-          (JSON.parse(cube_organizer_names) as string[]).forEach(organizer => {
-            const a = r.find(d => d.key === organizer);
-            if (a !== undefined) {
-              a.count = (a.count || 0) + 1;
-              a.text = `${a.value}(${a.count})`;
-            } else {
-              r.push({
-                key: organizer,
-                value: organizer,
-                text: `${organizer}(1)`,
-                count: 1,
-              });
+          (JSON.parse(cube_organizer_names) as string[]).forEach(
+            (organizer) => {
+              const a = r.find((d) => d.key === organizer);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: organizer,
+                  value: organizer,
+                  text: `${organizer}(1)`,
+                  count: 1,
+                });
+              }
             }
-          });
+          );
         } catch {
           //
         }
@@ -833,8 +840,8 @@ const SearchFilter: React.FC<Props> = ({
               }
               return r;
             }, [])
-            .forEach(cube => {
-              const a = r.find(d => d.key === cube);
+            .forEach((cube) => {
+              const a = r.find((d) => d.key === cube);
               if (a !== undefined) {
                 a.count = (a.count || 0) + 1;
                 a.text = `${a.value}(${a.count})`;
@@ -1134,7 +1141,7 @@ const SearchFilter: React.FC<Props> = ({
                     });
                     setTags([
                       ...getTags()!.filter(
-                        c =>
+                        (c) =>
                           c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
                       ),
                       {
@@ -1142,7 +1149,7 @@ const SearchFilter: React.FC<Props> = ({
                         text: '핵인사 포함',
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter(d => d.text !== '핵인사 포함')
+                            getTags()!.filter((d) => d.text !== '핵인사 포함')
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1155,7 +1162,7 @@ const SearchFilter: React.FC<Props> = ({
                         text: '핵인사 비포함',
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter(d => d.text !== '핵인사 비포함')
+                            getTags()!.filter((d) => d.text !== '핵인사 비포함')
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1172,7 +1179,7 @@ const SearchFilter: React.FC<Props> = ({
                     });
                     setTags([
                       ...getTags()!.filter(
-                        c =>
+                        (c) =>
                           c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
                       ),
                     ]);
@@ -1194,7 +1201,7 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       hasRequired: false,
                     });
-                    setTags(getTags()!.filter(c => c.text !== '핵인사 포함'));
+                    setTags(getTags()!.filter((c) => c.text !== '핵인사 포함'));
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1207,7 +1214,7 @@ const SearchFilter: React.FC<Props> = ({
                         text: '핵인사 포함',
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter(d => d.text !== '핵인사 포함')
+                            getTags()!.filter((d) => d.text !== '핵인사 포함')
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1234,7 +1241,9 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       notRequired: false,
                     });
-                    setTags(getTags()!.filter(c => c.text !== '핵인사 비포함'));
+                    setTags(
+                      getTags()!.filter((c) => c.text !== '핵인사 비포함')
+                    );
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1247,7 +1256,7 @@ const SearchFilter: React.FC<Props> = ({
                         text: '핵인사 비포함',
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter(d => d.text !== '핵인사 비포함')
+                            getTags()!.filter((d) => d.text !== '핵인사 비포함')
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1285,13 +1294,13 @@ const SearchFilter: React.FC<Props> = ({
                     });
                     setTags([
                       ...getTags()!.filter(
-                        c => c.text !== 'Stamp' && c.text !== 'Badge'
+                        (c) => c.text !== 'Stamp' && c.text !== 'Badge'
                       ),
                       {
                         key: 'Stamp',
                         text: 'Stamp',
                         removeMe: () => {
-                          setTags(getTags()!.filter(d => d.text !== 'Stamp'));
+                          setTags(getTags()!.filter((d) => d.text !== 'Stamp'));
                           setFilterCondition({
                             ...getFilterCondition()!,
                             stamp: false,
@@ -1302,7 +1311,7 @@ const SearchFilter: React.FC<Props> = ({
                         key: 'Badge',
                         text: 'Badge',
                         removeMe: () => {
-                          setTags(getTags()!.filter(d => d.text !== 'Badge'));
+                          setTags(getTags()!.filter((d) => d.text !== 'Badge'));
                           setFilterCondition({
                             ...getFilterCondition()!,
                             badge: false,
@@ -1318,7 +1327,7 @@ const SearchFilter: React.FC<Props> = ({
                     });
                     setTags([
                       ...getTags()!.filter(
-                        c => c.text !== 'Stamp' && c.text !== 'Badge'
+                        (c) => c.text !== 'Stamp' && c.text !== 'Badge'
                       ),
                     ]);
                   }
@@ -1339,7 +1348,7 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       stamp: false,
                     });
-                    setTags(getTags()!.filter(c => c.text !== 'Stamp'));
+                    setTags(getTags()!.filter((c) => c.text !== 'Stamp'));
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1351,7 +1360,7 @@ const SearchFilter: React.FC<Props> = ({
                         key: 'Stamp',
                         text: 'Stamp',
                         removeMe: () => {
-                          setTags(getTags()!.filter(d => d.text !== 'Stamp'));
+                          setTags(getTags()!.filter((d) => d.text !== 'Stamp'));
                           setFilterCondition({
                             ...getFilterCondition()!,
                             stamp: false,
@@ -1377,7 +1386,7 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       badge: false,
                     });
-                    setTags(getTags()!.filter(c => c.text !== 'Badge'));
+                    setTags(getTags()!.filter((c) => c.text !== 'Badge'));
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1389,7 +1398,7 @@ const SearchFilter: React.FC<Props> = ({
                         key: 'Badge',
                         text: 'Badge',
                         removeMe: () => {
-                          setTags(getTags()!.filter(d => d.text !== 'Badge'));
+                          setTags(getTags()!.filter((d) => d.text !== 'Badge'));
                           setFilterCondition({
                             ...getFilterCondition()!,
                             badge: false,
@@ -1411,7 +1420,7 @@ const SearchFilter: React.FC<Props> = ({
                     <label>시작일</label>
                     <DatePicker
                       selected={filterCondition.learning_start_date_str}
-                      onChange={learning_start_date_str => {
+                      onChange={(learning_start_date_str) => {
                         const mFilterCondition = getFilterCondition();
                         const mtags = getTags();
                         if (
@@ -1426,7 +1435,7 @@ const SearchFilter: React.FC<Props> = ({
                         });
 
                         const nextTags = mtags.filter(
-                          c =>
+                          (c) =>
                             c.key !== 'learning_start_date_str' &&
                             c.key !== 'learning_end_date_str' &&
                             c.key !== 'learning_date_str'
@@ -1449,7 +1458,7 @@ const SearchFilter: React.FC<Props> = ({
 
                             setTags(
                               mmtags.filter(
-                                c =>
+                                (c) =>
                                   c.key !== 'learning_start_date_str' &&
                                   c.key !== 'learning_end_date_str' &&
                                   c.key !== 'learning_date_str'
@@ -1474,7 +1483,7 @@ const SearchFilter: React.FC<Props> = ({
                           }
                           setTags(
                             mmtags.filter(
-                              c =>
+                              (c) =>
                                 c.key !== 'learning_start_date_str' &&
                                 c.key !== 'learning_end_date_str' &&
                                 c.key !== 'learning_date_str'
@@ -1505,7 +1514,7 @@ const SearchFilter: React.FC<Props> = ({
                     <label>종료일</label>
                     <DatePicker
                       selected={filterCondition.learning_end_date_str}
-                      onChange={learning_end_date_str => {
+                      onChange={(learning_end_date_str) => {
                         const mFilterCondition = getFilterCondition();
                         const mtags = getTags();
                         if (
@@ -1520,7 +1529,7 @@ const SearchFilter: React.FC<Props> = ({
                         });
 
                         const nextTags = mtags.filter(
-                          c =>
+                          (c) =>
                             c.key !== 'learning_start_date_str' &&
                             c.key !== 'learning_end_date_str' &&
                             c.key !== 'learning_date_str'
@@ -1543,7 +1552,7 @@ const SearchFilter: React.FC<Props> = ({
 
                             setTags(
                               mmtags.filter(
-                                c =>
+                                (c) =>
                                   c.key !== 'learning_start_date_str' &&
                                   c.key !== 'learning_end_date_str' &&
                                   c.key !== 'learning_date_str'
@@ -1568,7 +1577,7 @@ const SearchFilter: React.FC<Props> = ({
                           }
                           setTags(
                             mmtags.filter(
-                              c =>
+                              (c) =>
                                 c.key !== 'learning_start_date_str' &&
                                 c.key !== 'learning_end_date_str' &&
                                 c.key !== 'learning_date_str'
@@ -1611,7 +1620,7 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       applying: false,
                     });
-                    setTags(getTags()!.filter(c => c.text !== text));
+                    setTags(getTags()!.filter((c) => c.text !== text));
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1627,7 +1636,7 @@ const SearchFilter: React.FC<Props> = ({
                             ...getFilterCondition()!,
                             applying: false,
                           });
-                          setTags(getTags()!.filter(c => c.text !== text));
+                          setTags(getTags()!.filter((c) => c.text !== text));
                         },
                       },
                     ]);
