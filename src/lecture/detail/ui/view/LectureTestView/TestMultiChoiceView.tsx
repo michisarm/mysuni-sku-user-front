@@ -1,6 +1,7 @@
 import ExamQuestion from '../../../model/ExamQuestion';
 import React, { useCallback } from 'react';
 import { Checkbox } from 'semantic-ui-react';
+import { toASCII } from 'punycode';
 
 interface TestMultiChoiceViewProps {
   question: ExamQuestion;
@@ -29,11 +30,16 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
         newAnswers = answers.concat([value]);
       }
       newAnswers
-        .sort((a, b) => parseInt(a) - parseInt(b))
+        .sort((a, b) => {
+          if (a > b) return 1;
+          else if (b > a) return -1;
+          else return 0;
+        })
         .map(ans => {
           if (newAnswer) newAnswer += `,${ans}`;
           else newAnswer = ans;
         });
+
       setAnswer(question.sequence, newAnswer);
     },
     [answer] // answer 변경시 useCallback 내부의 answer 데이터도 변경
