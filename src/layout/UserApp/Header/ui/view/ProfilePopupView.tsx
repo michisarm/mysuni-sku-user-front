@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect, Component } from 'react';
+import { useHistory } from 'react-router';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { useProfilePopupModel, getProfilePopupModel } from '../../../store/ProfilePopupStore';
 import { Button, Image } from 'semantic-ui-react';
@@ -25,6 +26,7 @@ function ProfilePopupView(props: Props) {
   const [isSettingProfile, setIsSettingProfile] = useState<boolean>(true);
   const skProfileService = SkProfileService.instance;
   const { skProfile, modifySkProfile } = skProfileService;
+  const history = useHistory();
 
   useEffect(() => {
     getProfilePopup();
@@ -137,7 +139,7 @@ function ProfilePopupView(props: Props) {
                   <div className="page-bttn-area">
                     <Button
                       className="page-bttn"
-                      onClick={() => window.location.href = myTrainingRoutePaths.myPage()}
+                      onClick={() => history.push(myTrainingRoutePaths.myPage())}
                     >
                       My Page
                     </Button>
@@ -151,7 +153,7 @@ function ProfilePopupView(props: Props) {
               // 프로필설정이 안되어있는 경우
               <Button
                 className="btn-setting"
-                onClick={() => window.location.href = myTrainingRoutePaths.myPage()}
+                onClick={() => history.push(myTrainingRoutePaths.myPage())}
               >
                 프로필 설정
                 <i><Image src={`${process.env.PUBLIC_URL}/images/all/icon-tooltip-w-20-px.svg`} /></i>
