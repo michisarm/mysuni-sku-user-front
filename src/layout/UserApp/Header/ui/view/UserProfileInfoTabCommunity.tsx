@@ -55,7 +55,7 @@ function UserProfileInfoTabCommunity(props: Props) {
                 communityData?.communities.map((item: any, index: any) => (
                   <Table.Row onDoubleClick={() => onViewDetail(item.communityId)}>
                     <Table.Cell><span className="l-green">{item.fieldName}</span>{item.name}</Table.Cell>
-                    <Table.Cell textAlign="center">{item.managerName}</Table.Cell>
+                    <Table.Cell textAlign="center">{item.managerNickName}</Table.Cell>
                     <Table.Cell textAlign="center">{item.memberCount}</Table.Cell>
                     <Table.Cell textAlign="center">{item.signInTime}</Table.Cell>
                   </Table.Row>

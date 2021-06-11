@@ -22,6 +22,7 @@ export interface CommunityModel {
   introduce: string | null;
   html: string | null;
   managerName: string | null;
+  managerNickName: string | null;
   memberCount: number;
   fieldName: string | null;
   profileImg: string;
@@ -40,6 +41,7 @@ export interface ProfileInfoCommunityItem {
   fieldName: string | null;
   name: string;
   managerName: string | null;
+  managerNickName: string | null;
   memberCount: number;
   isManager: boolean;
   signInTime: string;

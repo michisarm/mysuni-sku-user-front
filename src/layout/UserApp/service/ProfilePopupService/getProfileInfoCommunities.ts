@@ -33,6 +33,7 @@ function parseCommunityView(community: CommunityModel): ProfileInfoCommunityItem
     name,
     managerId,
     managerName,
+    managerNickName,
     memberCount,
     signModifyTime,
     signTime
@@ -43,6 +44,7 @@ function parseCommunityView(community: CommunityModel): ProfileInfoCommunityItem
     fieldName: fieldName || '',
     name,
     managerName: managerName || '',
+    managerNickName: managerNickName || '',
     memberCount,
     isManager: isManager(managerId),
     signInTime: signModifyTime === 0 ? createdTimeString(signTime!) : createdTimeString(signModifyTime!)
