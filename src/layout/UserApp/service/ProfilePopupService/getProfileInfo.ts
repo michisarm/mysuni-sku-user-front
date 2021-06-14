@@ -5,6 +5,8 @@ import {
 } from '../../store/ProfileInfoStore';
 import { profile } from 'console';
 import ProfileInfoModel from '../../model/ProfileInfoModel';
+import { BadgesModel } from '../../model/BadgeModel';
+import { findBadgesByBadgeIssueState, findAllOtherCommunities, findAllPostViewsFromProfileFeed } from '../../api/ProfileInfoAPI';
 
 export async function getProfileInfo(memberId: string | undefined): Promise<void> {
   const profileItem: ProfileInfoModel = {
@@ -46,4 +48,17 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
     }
     setProfileInfoModel(profileItem);
   }
+}
+
+export async function getProfileCount(memberId: string | undefined, startDate: string, endDate: string) {
+  const memberIdValue = memberId === undefined ? '' : memberId;
+
+  const badgeData = await findBadgesByBadgeIssueState(memberIdValue, startDate, endDate);
+  const communityView = await findAllOtherCommunities(memberIdValue, 'createdTime', 0);
+  const postView = await findAllPostViewsFromProfileFeed(memberIdValue, 0)
+
+  const result = { badgeCount: badgeData?.totalCount, communityCount: communityView?.totalCount, postCount: postView?.totalCount };
+
+  return result;
+
 }

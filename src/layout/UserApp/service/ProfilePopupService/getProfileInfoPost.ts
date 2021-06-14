@@ -46,6 +46,8 @@ function postToItem(post: PostModel): PostItem {
     profileImg,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   } = post;
   return {
     communityId,
@@ -59,6 +61,8 @@ function postToItem(post: PostModel): PostItem {
     contents: html,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   };
 }
 

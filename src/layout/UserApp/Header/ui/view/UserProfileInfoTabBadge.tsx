@@ -87,7 +87,7 @@ function UserProfileInfoTabBadge(props: Props) {
             <Table.Body>
               {badgeData?.badges.map((item: any, index: any) => (
                 <Table.Row onDoubleClick={() => onViewDetail(item.id)}>
-                  <Table.Cell><span className="t-navy">{item.badgeCategory.name}</span> {item.name}</Table.Cell>
+                  <Table.Cell><span className="t-navy" style={{ color: item.badgeCategory.themeColor, borderColor: item.badgeCategory.themeColor }}>{item.badgeCategory.name}</span><a title={item.name}>{item.name}</a></Table.Cell>
                   <Table.Cell textAlign="center">
                     <Rating
                       defaultRating={getStarStyle(item.level)}

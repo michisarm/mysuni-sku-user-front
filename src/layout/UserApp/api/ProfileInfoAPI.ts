@@ -39,7 +39,7 @@ export function findAllPostViewsFromProfileFeed(
   memberId: string,
   offset: number
 ): Promise<OffsetElementList<PostModel> | undefined> {
-  const url = `${BASE_URL}/postviews/ProfileFeed?offset=${offset}&limit=9999&memberId=${memberId}`;
+  const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=9999&memberId=${memberId}`;
   return axiosApi.get<OffsetElementList<PostModel>>(url).then(AxiosReturn);
 }
 
@@ -85,6 +85,6 @@ export function unfollowMember(
   const axios = getAxios();
   const url = `${BASE_URL_Follow}/flow/${memberId}/unfollow`;
   return axios
-    .post<FollowModel>(url)
+    .delete<FollowModel>(url)
     .then(AxiosReturn);
 }

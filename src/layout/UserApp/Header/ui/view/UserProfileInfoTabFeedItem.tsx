@@ -7,9 +7,9 @@ import { Link, useHistory } from "react-router-dom";
 import { reactAlert } from "@nara.platform/accent";
 import { registerBookmark, removeBookmark } from "../../../../../community/api/communityApi";
 import { getFollowCommunityIntro, setFollowCommunityIntro } from "../../../../../community/store/CommunityMainStore";
-import PostItem from "../../../../../community/viewModel/CommunityProfileBookmark/PostItem";
 import { getPostDetailInPreview } from "../../../../../community/service/useCommunityPostCreate/utility/getPostDetail";
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
+import { PostItem } from "../../../model/PostModel";
 
 interface Props {
   item: PostItem,
@@ -154,8 +154,8 @@ function UserProfileInfoTabFeedItem(props: Props) {
             <div className="ellipsis">
               <span className="line id">{props.item.profileId}</span>
               <span className="line id">{props.item.createdTime}</span>
-              <span className="line id">좋아요{' '}<strong>0</strong></span>
-              <span className="line id">댓글수{' '}<strong>0</strong></span>
+              <span className="line id">좋아요{' '}<strong>{props.item.likeCount}</strong></span>
+              <span className="line id">댓글수{' '}<strong>{props.item.replyCount}</strong></span>
             </div>
           </Comment.Text>
           <Comment.Actions>

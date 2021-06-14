@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Image } from 'semantic-ui-react';
-import { getProfileInfo } from '../../../service/ProfilePopupService/getProfileInfo'
+import { getProfileInfo, getProfileCount } from '../../../service/ProfilePopupService/getProfileInfo'
 import { useProfileInfoModel, setProfileInfoModel } from '../../../store/ProfileInfoStore';
-import { useProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
+import { useProfileInfoBadgesModel, getProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
 import { useProfileInfoCommunityModel } from "../../../store/ProfileInfoCommunityStore";
 import { useProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
 import { getProfileInfoCommunities } from "../../../service/ProfilePopupService/getProfileInfoCommunities";
 import { getProfileInfoPost } from "../../../service/ProfilePopupService/getProfileInfoPost";
-import { getProfileInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
+import { getProfileInfoBadge, getProfileAllInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
 import moment from "moment";
 import { getFollow } from "../../../service/ProfilePopupService/getFollow";
 import { useFollowModel } from "../../../store/FollowStore";
@@ -32,7 +32,7 @@ function UserProfileinfoProfileCard(props: Props) {
   const profileInfo = useProfileInfoModel();
   const [followClassName, setFollowClassName] = useState<string>('following');
   const [isFollow, setIsFollow] = useState<string>('Follow');
-  const badgeData = useProfileInfoBadgesModel();
+  //const badgeData = useProfileInfoBadgesModel();
   const communityData = useProfileInfoCommunityModel();
   const feedData = useProfileInfoPostModel();
   const followData = useFollowModel();
@@ -44,15 +44,33 @@ function UserProfileinfoProfileCard(props: Props) {
   const [profileBgImg, setProfileBgImg] = useState<string>('');
   const [preProfileImg, setPreProfileImg] = useState<string>('');
   const [preProfileBgImg, setPreProfileBgImg] = useState<string>('');
-  const {preProfileInfo} = props;
+  const { preProfileInfo } = props;
+
+  const [badgeCount, setBadgeCount] = useState<number>(0);
+  const [communityCount, setCommunityCount] = useState<number>(0);
+  const [feedCount, setFeedCount] = useState<number>(0);
+
+  useEffect(() => {
+    communityData && setCommunityCount(communityData.communitiesTotalCount || 0);
+  }, [communityData])
+
+  useEffect(() => {
+    feedData && setFeedCount(feedData.postsTotalCount || 0);
+  }, [feedData])
+
 
   useEffect(() => {
     getProfileInfo(props.memberId)
 
     //Badge, Community, Feed 개수 조회
-    getProfileInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
+    //result = getProfileCount(props.memberId, moment(currentDate.getFullYear() + "-01-01 00:00:01").format('x'), moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
+    //getProfileInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
+    getProfileAllInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x')).then((response) => {
+      setBadgeCount(response || 0);
+    });
     getProfileInfoCommunities(props.memberId);
     getProfileInfoPost(props.memberId);
+
     //Follow 목록 조회
     getFollow();
 
@@ -63,7 +81,20 @@ function UserProfileinfoProfileCard(props: Props) {
   }, [props.memberId])
 
   useEffect(() => {
-    getFollowYN();
+    let result = true;
+    followData && followData.ids.map(f => {
+      if (f === props.memberId) {
+        setFollowClassName('unfollowing');
+        setIsFollow('Unfollow');
+        result = false;
+      }
+    })
+
+    if (result) {
+      setFollowClassName('following');
+      setIsFollow('Follow');
+    }
+
   }, [followData])
 
   useEffect(() => {
@@ -81,17 +112,17 @@ function UserProfileinfoProfileCard(props: Props) {
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
 
-        setNickname(profileInfo.nickname)
-        setHobby(profileInfo.hobby)
-        setProfileImg(profileInfo.profileImg)
-        setProfileBgImg(profileInfo.profileBgImg)
+      setNickname(profileInfo.nickname)
+      setHobby(profileInfo.hobby)
+      setProfileImg(profileInfo.profileImg)
+      setProfileBgImg(profileInfo.profileBgImg)
 
-        if (preProfileInfo.isSetProfile) {
-          if(preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
-          if(preProfileInfo.hobby) setHobby(preProfileInfo.hobby)
-          if(preProfileInfo.profileImg) setPreProfileImg(preProfileInfo.profileImg)
-          if(preProfileInfo.profileBgImg) setPreProfileBgImg(preProfileInfo.profileBgImg)
-        }
+      if (preProfileInfo.isSetProfile) {
+        if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
+        if (preProfileInfo.hobby) setHobby(preProfileInfo.hobby)
+        if (preProfileInfo.profileImg) setPreProfileImg(preProfileInfo.profileImg)
+        if (preProfileInfo.profileBgImg) setPreProfileBgImg(preProfileInfo.profileBgImg)
+      }
     }
   }, [profileInfo, props.preProfileInfo])
 
@@ -111,20 +142,26 @@ function UserProfileinfoProfileCard(props: Props) {
     return tagHtml;
   }
 
-  const getFollowYN = useCallback(() => {
-    followData && followData.ids.map(f => {
-      if (f === props.memberId) {
-        setFollowClassName('unfollowing');
-        setIsFollow('Unfollow');
-      }
-    })
-  }, [followData])
+  // const getFollowYN = useCallback(() => {
+  //   followData && followData.ids.map(f => {
+  //     if (f === props.memberId) {
+  //       setFollowClassName('unfollowing');
+  //       setIsFollow('Unfollow');
+  //     } else {
+  //       setFollowClassName('following');
+  //       setIsFollow('Follow');
+  //     }
+  //   })
+  // }, [followData])
 
   function onClickFollow() {
-    if (isFollow === "Follow") {
-      unfollowMember(props.memberId!).then(() => { getFollow() });
+    console.log(123)
+    if (isFollow === "Unfollow") {
+      console.log(456)
+      unfollowMember(props.memberId!).then(() => getFollow());
     } else {
-      followMember(props.memberId!).then(() => { getFollow() });
+      console.log(789)
+      followMember(props.memberId!).then(() => getFollow());
     }
   }
 
@@ -132,8 +169,8 @@ function UserProfileinfoProfileCard(props: Props) {
     <>
       <div className="profile-wrapper">
         <div className="bg-wrapper">
-          <ProfileImage 
-            src={ preProfileBgImg || profileBgImg} 
+          <ProfileImage
+            src={preProfileBgImg || profileBgImg}
           />
           <div className="profile-info-wrapper">
             <div className="profile-info-area">
@@ -145,8 +182,8 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
 
               <div className="image-area">
-                <ProfileImage 
-                  src={preProfileImg || profileImg} 
+                <ProfileImage
+                  src={preProfileImg || profileImg}
                   className="ui image"
                 />
               </div>
@@ -157,15 +194,15 @@ function UserProfileinfoProfileCard(props: Props) {
               <div className="count-area">
                 <div className="cnt-box bad-cnt">
                   <span>Badge</span>
-                  <strong>{badgeData?.badgesTotalCount}</strong>
+                  <strong>{badgeCount}</strong>
                 </div>
                 <div className="cnt-box com-cnt">
                   <span>커뮤니티</span>
-                  <strong>{communityData?.communitiesTotalCount}</strong>
+                  <strong>{communityCount}</strong>
                 </div>
                 <div className="cnt-box feed-cnt">
                   <span>Feed</span>
-                  <strong>{feedData?.postsTotalCount}</strong>
+                  <strong>{feedCount}</strong>
                 </div>
               </div>
               <div className="follow-bttn-area">

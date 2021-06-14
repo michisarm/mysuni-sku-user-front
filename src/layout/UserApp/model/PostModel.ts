@@ -81,4 +81,6 @@ export interface PostItem {
   contents: string;
   menuType: CommunityMenuType;
   bookmarked: boolean;
+  likeCount: number;
+  replyCount: number;
 }
