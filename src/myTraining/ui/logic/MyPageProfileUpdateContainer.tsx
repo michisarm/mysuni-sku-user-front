@@ -214,24 +214,25 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileUdo.nickName !== '' ||
       skProfileUdo.introduce !== '' ){
         skProfileService.modifySkProfile(skProfileUdo).then(() => {
-          this.clear();
-    
-          skProfileService!.findSkProfile();
-          
           reactAlert({
             title: '알림',
             message: '프로필 정보가 수정됐습니다.',
           });
+
+          this.clear();
+    
+          skProfileService!.findSkProfile();
         });
     }else{
-      this.clear();
-
-      skProfileService!.findSkProfile();
-      
       reactAlert({
         title: '알림',
         message: '프로필 정보가 수정됐습니다.',
       });
+      
+      this.clear();
+
+      skProfileService!.findSkProfile();
+      
     }
 
 

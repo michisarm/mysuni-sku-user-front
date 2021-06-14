@@ -112,10 +112,10 @@ function UserProfileinfoProfileCard(props: Props) {
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
 
-      setNickname(profileInfo.nickname)
-      setHobby(profileInfo.hobby)
-      setProfileImg(profileInfo.profileImg)
-      setProfileBgImg(profileInfo.profileBgImg)
+        setNickname(profileInfo.nickname)
+        setHobby(profileInfo.introduce)
+        setProfileImg(profileInfo.profileImg)
+        setProfileBgImg(profileInfo.profileBgImg)
 
       if (preProfileInfo.isSetProfile) {
         if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
