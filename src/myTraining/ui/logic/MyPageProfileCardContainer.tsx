@@ -17,9 +17,9 @@ import {
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { reactAlert } from '@nara.platform/accent';
 import SkProfileUdo from '../../../profile/model/SkProfileUdo';
-import DefaultImg from 'style/../../public/images/all/img-profile-80-px.png';
+import DefaultImg from '../../../style/media/img-profile-80-px.png';
 // import DefaultBgImg from 'style/../../public/images/all/img-my-profile-card-bg.png';
-import DefaultBgImg from 'style/../../public/images/all/img-my-profile-card-bg.png';
+import DefaultBgImg from '../../../style/media/img-my-profile-card-bg.png';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 
 

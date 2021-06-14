@@ -18,6 +18,7 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -173,7 +174,8 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   profileImage === '' ||
                   type === 'ANONYMOUS'
                     ? DefaultImg
-                    : `/files/community/${profileImage}`
+                    // : `/files/community/${profileImage}`
+                    : ProfileImagePath(profileImage)
                 }
               />
               <Comment.Content>

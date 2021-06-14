@@ -31,6 +31,7 @@ import { Area } from 'tracker/model';
 import { findCommunityProfile } from '../../api/profileApi';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
 
 interface profileParams {
   id: string;
@@ -125,7 +126,7 @@ function CommunityMainHeaderContainer() {
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `${item.profileImg}`
+                    : `${ProfileImagePath(item.profileImg)}`
                 }
                 alt=""
               />
@@ -166,7 +167,7 @@ function CommunityMainHeaderContainer() {
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `${item.profileImg}`
+                    : `${ProfileImagePath(item.profileImg)}`
                 }
                 alt=""
               />
@@ -220,7 +221,7 @@ function CommunityMainHeaderContainer() {
             <div className="cell-inner personal-inner">
               <div
                 className="profile"
-                onClick={() => history.push('/community/my-profile')}
+                onClick={() => history.push('/my-training/my-page')}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="pic">
@@ -230,7 +231,7 @@ function CommunityMainHeaderContainer() {
                       profile?.profileImg === '' ||
                       profile?.profileImg === undefined
                         ? `${DefaultImg}`
-                        : `${profile?.profileImg}`
+                        : `${ProfileImagePath(profile?.profileImg)}`
                     }
                   />
                 </div>
@@ -254,7 +255,7 @@ function CommunityMainHeaderContainer() {
                       프로필 설정하기
                     </Link> */}
                 </div>
-                <div className="part">
+                {/* <div className="part">
                     <Link
                       className="ui button orange-arrow"
                       to="/my-training/my-page"
@@ -262,7 +263,7 @@ function CommunityMainHeaderContainer() {
                       <i aria-hidden="true" />
                       프로필 설정하기
                     </Link>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
