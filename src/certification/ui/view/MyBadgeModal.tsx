@@ -14,7 +14,6 @@ import { BadgeStudentService } from '../../../lecture/stores';
 import BadgeView from '../view/BadgeView';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-import { SkProfileService } from 'profile/stores';
 import moment from 'moment';
 import { toJpeg } from 'html-to-image';
 import ReactToPrint from 'react-to-print';
@@ -23,7 +22,6 @@ import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 interface Props {
   myBadge: MyBadge;
   badgeStudentService?: BadgeStudentService;
-  skProfileService?: SkProfileService;
   // test: any;
 }
 
@@ -34,7 +32,6 @@ interface States {
 @inject(
   mobxHelper.injectFrom(
     'badge.badgeStudentService',
-    'profile.skProfileService',
   )
 )
 @reactAutobind
@@ -87,8 +84,7 @@ class MyBadgeModal extends Component<Props, States> {
   }
 
   render() {
-      const { myBadge, badgeStudentService, skProfileService } = this.props;
-      const { skProfile } = skProfileService!;
+      const { myBadge, badgeStudentService } = this.props;
       const { badgeStudent } = badgeStudentService!;
       const { open } = this.state;
 
@@ -129,7 +125,7 @@ class MyBadgeModal extends Component<Props, States> {
                 </div>
                 <div className="message-wrapper">
                   <span>
-                    {skProfile.member.name}님의 <strong>{myBadge.name}</strong><br/>
+                    {badgeStudent.name}님의 <strong>{myBadge.name}</strong><br/>
                     프로그램 이수가 완료되었음을 알려드립니다.
                   </span>
                   <p className="message-area">
@@ -158,14 +154,14 @@ class MyBadgeModal extends Component<Props, States> {
                       <Image src={bg_mybadge} />
                       <div className="txt_box">
                           <strong className="name">
-                            {skProfile.member.name}
+                            {badgeStudent.name}
                             <p>
                                 귀하는 아래 프로그램의 전 과정을
                                 <br/>성공적으로 이수하였으며, Badge 획득 요건을
                                 <br/>충족하였기에 이 증서를 드립니다.
                             </p>
-                            <span className="category">{badgeStudent.name}</span>
-                            <span className="date">{moment(badgeStudent.learningCompletedTime).format('YYYY.MM.DD')}</span>   
+                            <span className="category">{myBadge.name}</span>
+                            <span className="date">{moment(badgeStudent.badgeIssueStateModifiedTime || 0).format('YYYY.MM.DD')}</span>   
                           </strong>
                       </div>
                       <div className="badge badge-list-type">

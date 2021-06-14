@@ -163,26 +163,32 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const { 
       photoImageFile,
       bgImageFile,
+      changeNickName,
       nickNameTemp,
+      changeIntroduce,
       introduceTemp
     } = this.state;
 
-    if(!nickNameTemp || 
-      nickNameTemp === ''){
-      reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
-        return;
-    }else if(introduceTemp.length > 20){
-      reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
-        return;
+    if(changeNickName){
+      if(!nickNameTemp || 
+        nickNameTemp === ''){
+        reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
+          return;
+      }else if(introduceTemp.length > 20){
+        reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
+          return;
+      }
     }
 
-    if(!introduceTemp || 
-      introduceTemp === ''){
-      reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
-        return;
-    }else if(introduceTemp.length > 45){
-      reactAlert({ title: '알림', message: '자기소개는 최대 45자까지 입력 가능합니다.' });
-        return;
+    if(changeIntroduce){
+      if(!introduceTemp || 
+        introduceTemp === ''){
+        reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
+          return;
+      }else if(introduceTemp.length > 45){
+        reactAlert({ title: '알림', message: '자기소개는 최대 45자까지 입력 가능합니다.' });
+          return;
+      }
     }
 
     if (photoImageFile !== undefined) {
@@ -204,16 +210,29 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     if(nickNameTemp) skProfileUdo.nickName = nickNameTemp;
     if(introduceTemp) skProfileUdo.introduce = introduceTemp;
 
-    skProfileService.modifySkProfile(skProfileUdo).then(() => {
+    if(skProfileUdo.bgImage !== '' ||
+      skProfileUdo.nickName !== '' ||
+      skProfileUdo.introduce !== '' ){
+        skProfileService.modifySkProfile(skProfileUdo).then(() => {
+          this.clear();
+    
+          skProfileService!.findSkProfile();
+          
+          reactAlert({
+            title: '알림',
+            message: '프로필 정보가 수정됐습니다.',
+          });
+        });
+    }else{
+      this.clear();
+
+      skProfileService!.findSkProfile();
+      
       reactAlert({
         title: '알림',
         message: '프로필 정보가 수정됐습니다.',
       });
-
-      this.clear();
-
-      skProfileService!.findSkProfile();
-    });
+    }
 
 
     // if (profileItem.introduce.length > 100) {
