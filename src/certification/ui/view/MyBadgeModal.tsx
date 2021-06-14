@@ -9,7 +9,8 @@ import { Badge } from '../../model/Badge';
 
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import BadgeService from '../../present/logic/BadgeService';
+// import BadgeService from '../../present/logic/BadgeService';
+import { BadgeStudentService } from '../../../lecture/stores';
 import BadgeView from '../view/BadgeView';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
@@ -21,7 +22,7 @@ import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 
 interface Props {
   myBadge: MyBadge;
-  badgeService?: BadgeService;
+  badgeStudentService?: BadgeStudentService;
   skProfileService?: SkProfileService;
   // test: any;
 }
@@ -32,7 +33,7 @@ interface States {
 
 @inject(
   mobxHelper.injectFrom(
-    'badge.badgeService',
+    'badge.badgeStudentService',
     'profile.skProfileService',
   )
 )
@@ -49,8 +50,9 @@ class MyBadgeModal extends Component<Props, States> {
   onOpen() {
     this.setState({ open: true });
     // const { badgeStudent, challengeState, passedCardCount } = this.props.badgeStudentService!;
-    const { badgeService, myBadge } = this.props;
-    badgeService!.findBadge(myBadge.id).then(res => console.log("test", res))
+    const { badgeStudentService, myBadge } = this.props;
+    // badgeService!.findBadge(myBadge.id)
+    badgeStudentService!.findBadgeStudent(myBadge.id);
     // const test = this.props.test(this.props.myBadge.id)
     // console.log("badgeStudent", badgeService, aaa)
   }
@@ -85,13 +87,10 @@ class MyBadgeModal extends Component<Props, States> {
   }
 
   render() {
-      const { myBadge, badgeService, skProfileService } = this.props;
+      const { myBadge, badgeStudentService, skProfileService } = this.props;
       const { skProfile } = skProfileService!;
-      const { badge } = badgeService!;
+      const { badgeStudent } = badgeStudentService!;
       const { open } = this.state;
-      
-      // const starStyle = getStarStyle(myBadge.level);
-      // const emHtml = getEmHtml(myBadge.level, myBadge.badgeCategory?.themeColor || '#ea012c');
 
     return (
       <>
@@ -111,7 +110,7 @@ class MyBadgeModal extends Component<Props, States> {
             </div>
           }
         >
-        {badge && (
+        {badgeStudent && (
           <>
           <Modal.Header>
               Badge 인증서 보기 
@@ -154,7 +153,7 @@ class MyBadgeModal extends Component<Props, States> {
                   <div className="certi_box" ref={this.printRef}>
                     <div
                       className="my_certificate mybadge" 
-                      id={`MY-BADGE-${badge.id}`}
+                      id={`MY-BADGE-${badgeStudent.id}`}
                     >
                       <Image src={bg_mybadge} />
                       <div className="txt_box">
@@ -165,8 +164,8 @@ class MyBadgeModal extends Component<Props, States> {
                                 <br/>성공적으로 이수하였으며, Badge 획득 요건을
                                 <br/>충족하였기에 이 증서를 드립니다.
                             </p>
-                            <span className="category">{badge.name}</span>
-                            <span className="date">{moment(badge.time).format('YYYY.MM.DD')}</span>   
+                            <span className="category">{badgeStudent.name}</span>
+                            <span className="date">{moment(badgeStudent.learningCompletedTime).format('YYYY.MM.DD')}</span>   
                           </strong>
                       </div>
                       <div className="badge badge-list-type">
@@ -288,7 +287,7 @@ class MyBadgeModal extends Component<Props, States> {
                       <Button 
                         className="fix bg"
                         onClick={
-                          () => this.onClickCertificateImageDownload(badge.id,badge.name,badge.time)
+                          () => this.onClickCertificateImageDownload(badgeStudent.id, badgeStudent.name, badgeStudent.learningCompletedTime)
                         }
                       >
                         인증서 다운로드

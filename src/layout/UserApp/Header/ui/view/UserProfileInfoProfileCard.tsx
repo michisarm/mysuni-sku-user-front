@@ -152,7 +152,7 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
               <div className="profile-info ">
                 <span className="prof-tit">{profileInfo?.isNickname ? nickname : profileInfo?.name}</span>
-                <div className="foll-info"><span>{profileInfo?.followerCount}</span>{' '}Follower111<span>{profileInfo?.followingCount}</span>{' '}Following</div>
+                <div className="foll-info"><span>{profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
               </div>
               <div className="count-area">
                 <div className="cnt-box bad-cnt">
