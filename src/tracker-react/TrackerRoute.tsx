@@ -26,22 +26,17 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   const { userId, trackAction, trackView } = value;
 
   useEffect(() => {
-    async function start() {
-      const auth = await setAuth();
-      authRef.current = auth;
-      // view log init
-      initTrackView();
+    // view log init
+    initTrackView();
 
-      // click event
-      window.document.addEventListener('click', handleOutboundClick, {
+    // click event
+    window.document.addEventListener('click', handleOutboundClick, {
+      capture: true,
+    });
+    return () =>
+      window.document.removeEventListener('click', handleOutboundClick, {
         capture: true,
       });
-      return () =>
-        window.document.removeEventListener('click', handleOutboundClick, {
-          capture: true,
-        });
-    }
-    start();
   }, []);
 
   /**
