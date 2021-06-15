@@ -2,7 +2,6 @@ import { Action, ActionType, Area, FieldType } from 'tracker/model/ActionType';
 
 export interface ActionTrackParam {
   email: string;
-  auth?: Object;
   path: string;
   pathName?: string | null;
   search?: string | null;
@@ -18,7 +17,6 @@ export interface ActionTrackParam {
 
 export interface ActionTrackViewParam {
   email: string;
-  auth?: Object;
   path: string;
   pathName?: string | null;
   search?: string | null;
@@ -30,6 +28,7 @@ export interface ActionTrackViewParam {
   area?: Area | null;
   areaId?: string | null;
   target?: HTMLElement;
+  init?: boolean;
 }
 
 export interface ScrollTrackParam {

@@ -8,7 +8,9 @@ import {
   getPathName,
   setResultName,
   mobileCheck,
+  initAuth,
   getAuth,
+  setAuth,
 } from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
@@ -31,7 +33,6 @@ import { getCookie } from '@nara.platform/accent';
 
 export async function actionTrack({
   email,
-  auth,
   path,
   pathName,
   search,
@@ -50,6 +51,7 @@ export async function actionTrack({
   pathName = path && !pathName ? await getPathName(path, search) : pathName;
   // browser setting
   const browser = await getBrowserString();
+  const auth = await getAuth();
 
   // field name setting
   let fields = [];
@@ -132,8 +134,8 @@ async function beforeActionTrack({
   area,
   actionType,
   action,
-  actionName
-}: ActionTrackParam){
+  actionName,
+}: ActionTrackParam) {
   const auth = await getAuth();
   actionTrack({
     email,
@@ -171,7 +173,6 @@ export const debounceActionTrack = debounce(
 
 export async function actionTrackView({
   email,
-  auth,
   browser,
   path,
   pathName,
@@ -183,6 +184,7 @@ export async function actionTrackView({
   area,
   areaId,
   target,
+  init,
 }: ActionTrackViewParam) {
   // search setting
   search = search ? decodeURI(search) : '';
@@ -194,6 +196,13 @@ export async function actionTrackView({
     referer && !refererName
       ? await getPathName(referer, refererSearch)
       : refererName;
+
+  let auth = initAuth();
+  if (init) {
+    auth = await setAuth();
+  } else {
+    auth = await getAuth();
+  }
 
   // field name setting
   let fields = [];
