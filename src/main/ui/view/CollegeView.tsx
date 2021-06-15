@@ -1227,7 +1227,7 @@ const panes = [
                         <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">헝가리</Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">헝가리</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">폴란드</Link>
                       </td>
                       <td>
                         <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1fk/Course/C-LECTURE-194">중동</Link>
