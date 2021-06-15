@@ -930,7 +930,7 @@ const panes = [
                       <div className="global-curriculum-box box-heit140">
                         <div className="curriculum-link-box">
                           <strong>Biz. Impact 분석</strong>
-                          <Link to='#'>
+                          <Link to='#' onClick={emptyAlert}>
                             <span>Geopolitical Scenario Planning</span>
                           </Link>
                         </div>
@@ -940,7 +940,7 @@ const panes = [
                         <div className="curriculum-link-box">
                           <strong>산업/통상에 미치는 영향</strong>
                           <div className="link-wrap">
-                            <Link to='#'>
+                            <Link to='#' onClick={emptyAlert}>
                               <span>Geo. & Biz.<br />Nexus</span>
                             </Link>
                             <div className="link-colum-box">
@@ -964,10 +964,10 @@ const panes = [
                           <strong>Global Financial Story</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box">
-                              <Link to='#'>
+                              <Link to='#' onClick={emptyAlert}>
                                 <span>Global Financial Story<br />케이스 스터디</span>
                               </Link>
-                              <Link to='#'>
+                              <Link to='#' onClick={emptyAlert}>
                                 <span>Global Financial Story의<br />이해</span>
                               </Link>
                             </div>
@@ -983,10 +983,10 @@ const panes = [
                           <strong>Diversity Inclusion</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box sty2">
-                              <Link to='#'>
+                              <Link to='#' onClick={emptyAlert}>
                                 <span>글로벌 멤버들과<br />함께 일하기</span>
                               </Link>
-                              <Link to='#'>
+                              <Link to='#' onClick={emptyAlert}>
                                 <span>Diversity<br />Inclusion의 이해</span>
                               </Link>
                               <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy'>
@@ -1155,10 +1155,10 @@ const panes = [
                         <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-v9/Course/C-LECTURE-r66'>베트남 Biz. 법률<br />기초</Link>
                       </td>
                       <td>
-                        <Link to='#'>헝가리 Biz. 법률<br />기초</Link>
+                        <Link to='#' onClick={emptyAlert}>헝가리 Biz. 법률<br />기초</Link>
                       </td>
                       <td>
-                        <Link to='#'>폴란드 Biz. 법률<br />기초</Link>
+                        <Link to='#' onClick={emptyAlert}>폴란드 Biz. 법률<br />기초</Link>
                       </td>
                     </tr>
                     <tr>
@@ -1186,10 +1186,10 @@ const panes = [
                         <span>경제동향</span>
                       </th>
                       <td className='bg-none'>
-                        <Link to='#'></Link>
+                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
                       </td>
                       <td className='bg-none'>
-                        <Link to='#'></Link>
+                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
                       </td>
                       <td>
                         <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr'>베트남 경제동향<br />및 진출전략</Link>
