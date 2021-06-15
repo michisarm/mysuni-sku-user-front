@@ -125,9 +125,9 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   let strAnswer = '';
   if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
     if (question.questionType === 'SingleChoice') {
-      strAnswer = question.questionAnswer.answer + '번';
+      strAnswer = question.questionAnswer?.answer + '번';
     } else if (question.questionType === 'MultiChoice') {
-      question.questionAnswer.answer
+      question.questionAnswer?.answer
         .split(',')
         .map((result: string, index: number) => {
           if (index === 0) {
@@ -137,7 +137,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           }
         });
     } else if (question.questionType === 'ShortAnswer') {
-      strAnswer = question.questionAnswer.answer;
+      strAnswer = question.questionAnswer?.answer;
     }
   }
 

@@ -51,10 +51,13 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
             </div>
           </div>
           <div className="course-info-bottom">
-            <h2 style={{ marginBottom: '2.5rem' }}>
-              Test PASS 조건에 도달하지 못하여 <br /> {testItem.applyLimit}회
-              이상 재응시 할 경우 다음날 Test 응시가 가능합니다.
-            </h2>
+            {(testItem.applyLimit && (
+              <h2 style={{ marginBottom: '2.5rem' }}>
+                Test PASS 조건에 도달하지 못하여 <br /> {testItem.applyLimit}회
+                이상 재응시 할 경우 다음날 Test 응시가 가능합니다.
+              </h2>
+            )) ||
+              ''}
             <p>
               Test 정보를 확인했으면, <strong>응시하기</strong> 버튼을 통해
               Test에 응시해보세요!

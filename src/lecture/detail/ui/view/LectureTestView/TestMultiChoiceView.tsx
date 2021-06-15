@@ -1,7 +1,6 @@
 import ExamQuestion from '../../../model/ExamQuestion';
 import React, { useCallback } from 'react';
 import { Checkbox } from 'semantic-ui-react';
-import { toASCII } from 'punycode';
 
 interface TestMultiChoiceViewProps {
   question: ExamQuestion;
