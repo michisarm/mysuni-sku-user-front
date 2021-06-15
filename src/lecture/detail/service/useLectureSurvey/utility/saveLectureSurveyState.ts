@@ -192,6 +192,7 @@ async function coreSubmitLectureSurveyState() {
     title: '알림',
     message: 'Survey 설문 참여가 완료 되었습니다.',
   });
+  return true;
 }
 
 export async function coreLectureSurveyState() {
@@ -321,10 +322,13 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   if (lectureSurveyState.answerSheetId === undefined) {
     await openLectureSurveyState();
   }
-  await coreSubmitLectureSurveyState();
-  await submitTask(student.id, 'Survey');
-  clearFindMyCardRelatedStudentsCache();
-  updateCardLectureStructure(lectureParams.cardId);
+  const result = await coreSubmitLectureSurveyState();
+
+  if (result === true) {
+    await submitTask(student.id, 'Survey');
+    clearFindMyCardRelatedStudentsCache();
+    updateCardLectureStructure(lectureParams.cardId);
+  }
 }
 
 export async function saveCommunitySurveyState() {
