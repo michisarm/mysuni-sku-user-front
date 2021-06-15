@@ -39,6 +39,8 @@ import BadgeLearningSummaryView from './BadgeLearningSummaryView';
 import LearningCompleteSummaryView from './LearningCompleteSummaryView';
 import { Action, Area } from 'tracker/model';
 import Image from '../../../shared/components/Image';
+import MainPagePopupContainer from "../MainPagePopup/ui/logic/MainPagePopupContainer";
+
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -378,6 +380,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           setOpen={(value, type?) => {
             return this.setState({ attendanceOpen: value });
           }}
+        />
+
+        <MainPagePopupContainer
+          isOpen={true}
         />
       </>
     );
