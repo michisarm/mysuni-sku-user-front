@@ -52,7 +52,9 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
           <Checkbox
             key={question.sequence + '_' + item.itemNo}
             className="base"
-            label={item.itemText}
+            label={
+              (readOnly && item.itemNo + '. ' + item.itemText) || item.itemText
+            }
             name={`test_${question.sequence}`}
             value={item.itemNo}
             checked={answer?.includes(item.itemNo)}

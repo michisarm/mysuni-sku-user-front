@@ -28,7 +28,9 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           <Radio
             key={question.sequence + '_' + item.itemNo}
             className="base"
-            label={item.itemText}
+            label={
+              (readOnly && item.itemNo + '. ' + item.itemText) || item.itemText
+            }
             name={`test_${question.sequence}`}
             value={item.itemNo}
             checked={item.itemNo === answer}
