@@ -73,9 +73,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
 
   const openProfile = useCallback(async () => {
     const id = taskDetail.writerPatronKeyString;
-    console.log('id', id)
     findCommunityProfile(id!).then(result => {
-      console.log('result', result)
       setProfileInfo({
         id: result!.id,
         profileImg: result!.profileImg,

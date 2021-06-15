@@ -61,6 +61,7 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
       lectureTaskDetail.pinned = post.pinned;
+      lectureTaskDetail.writerPatronKeyString = post.patronKey.keyString;
     }
     if (result !== undefined && result.postBody !== undefined) {
       lectureTaskDetail.contents = result.postBody.contents;
@@ -93,6 +94,7 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.readCount = post.readCount;
       lectureTaskDetail.contents = post.contents;
       lectureTaskDetail.fileBoxId = post.fileBoxId;
+      lectureTaskDetail.writerPatronKeyString = post.patronKey.keyString;
     }
   }
 
