@@ -77,7 +77,9 @@ class TabContainer extends Component<Props, State> {
       } else {
         // 20200716 탭 이동
         this.setPreviousTab(
-          tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]
+          tabs[
+            tabs.findIndex((tab) => tab.name === this.props.defaultActiveName)
+          ]
         );
       }
     }
@@ -91,6 +93,10 @@ class TabContainer extends Component<Props, State> {
     //
     const { onChangeTab } = this.props;
 
+    if (onChangeTab === undefined) {
+      return;
+    }
+    onChangeTab(tab);
     const pageName = this.findPageName();
     const menu =
       (pageName && `tab_${pageName}_${tab.name}`) || `tab_${tab.name}`;
@@ -289,14 +295,14 @@ class TabContainer extends Component<Props, State> {
     //
     const { tabs, wrapperClassName, allMounted } = this.props;
     const { activeName } = this.state;
-    const activeTab = tabs.find(tab => tab.name === activeName);
+    const activeTab = tabs.find((tab) => tab.name === activeName);
 
     const contents = (
       <div ref={this.contextRef}>
         {this.renderItems()}
 
         {allMounted
-          ? tabs.map(tab => this.renderContent(tab))
+          ? tabs.map((tab) => this.renderContent(tab))
           : activeTab && this.renderContent(activeTab)}
       </div>
     );
