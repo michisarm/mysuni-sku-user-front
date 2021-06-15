@@ -48,6 +48,11 @@ export default class SkProfileApi {
   modifyPhotoUrlByProfileId(profileId: string, nameValues: NameValueList) {
     return axios.put<void>(this.URL + `/photoUrl/${profileId}`, nameValues);
   }
+
+  findProfiles(denizenKeys: string[]) {
+    return axios.post<string[]>(this.URL + '/byDenizenKeys', denizenKeys)
+      .then((response: any) => response && response.data || []);
+  }
 }
 
 Object.defineProperty(SkProfileApi, 'instance', {

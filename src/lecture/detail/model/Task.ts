@@ -1,8 +1,10 @@
 import { IdName } from 'shared/model';
+import { PatronKey } from '@nara.platform/accent';
 
 export default interface TaskItem {
   title: string;
   writer: string;
+  patronKey: PatronKey;
   readCount: number;
   time: number;
   commentFeedbackId: string;

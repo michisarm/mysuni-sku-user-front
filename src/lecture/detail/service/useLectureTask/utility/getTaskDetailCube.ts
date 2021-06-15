@@ -13,6 +13,7 @@ import {
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { findPost, findPostBody, getReply } from '../../../api/cubeApi';
+import SkProfileApi from '../../../../../../src/profile/present/apiclient/SkProfileApi';
 
 async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
@@ -40,10 +41,22 @@ async function getTaskItem(postParam: any) {
   if (postParam.id !== '' && postParam.type === 'parent') {
     const post = await findPost(postParam.id);
     const result = await findPostBody(postParam.id);
+
     if (post !== undefined) {
+      let writerName = ''
+
+      if(post.patronKey &&
+        post.patronKey.keyString !== ''
+      ){
+        const writerProfile = await SkProfileApi.instance.findProfiles([post.patronKey.keyString]);
+        if(writerProfile && writerProfile.length > 0){
+          writerName = writerProfile[0].nickName
+        }
+      } 
+
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.title = post.title;
-      lectureTaskDetail.name = post.writer;
+      lectureTaskDetail.name = writerName || post.writer;
       lectureTaskDetail.time = post.time;
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
@@ -60,10 +73,21 @@ async function getTaskItem(postParam: any) {
     const post = await getReply(postParam.id);
 
     if (post !== undefined) {
+      let writerName = ''
+
+      if(post.patronKey &&
+        post.patronKey.keyString !== ''
+      ){
+        const writerProfile = await SkProfileApi.instance.findProfiles([post.patronKey.keyString]);
+        if(writerProfile && writerProfile.length > 0){
+          writerName = writerProfile[0].nickName
+        }
+      } 
+      
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.postId = post.postId;
       lectureTaskDetail.title = post.title;
-      lectureTaskDetail.name = post.writer;
+      lectureTaskDetail.name = writerName || post.writer;
       lectureTaskDetail.time = post.time;
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
