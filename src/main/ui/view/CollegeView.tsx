@@ -884,14 +884,13 @@ const panes = [
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
-                  style={{ padding: "0px", border: "0px" }}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                // offerviewer={false}
-                // allow="autoplay"
+                  allow="autoplay"
                 />
               </div>
             </div>
