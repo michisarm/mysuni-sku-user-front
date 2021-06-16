@@ -1089,9 +1089,9 @@ const panes = [
               <img src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`} className='global-left-img2' />
               <div className="global-belt-wrap section2">
                 <div>
-                  <Link to='about'><span>Post 주재원</span></Link>
-                  <Link to='about'><span>법인장</span></Link>
-                  <Link to='about'><span>Local Experience<br />(현채인, 주재원)</span></Link>
+                  <Link to='about' onClick={emptyAlert}><span>Post 주재원</span></Link>
+                  <Link to='about' onClick={emptyAlert}><span>법인장</span></Link>
+                  <Link to='about' onClick={emptyAlert}><span>Local Experience<br />(현채인, 주재원)</span></Link>
                 </div>
                 <table>
                   <colgroup>
