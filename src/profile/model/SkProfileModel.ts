@@ -95,16 +95,14 @@ class SkProfileModel implements DramaEntity {
     //
     let photoImageFilePath: string = '';
 
-    //IM 사용자 증명사진 보이기(타 시스템 이관 이미지 파일)
-    if (!this.photoType || this.photoType === '0') {
+    if(this.photoImage &&
+      this.photoImage !== ''){
+        photoImageFilePath = ProfileImagePath(this.photoImage);
+    }else{
       photoImageFilePath =
         this.member &&
         this.member.photoFilename &&
         `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
-    }
-    //mySUNI 사이트(depot)에서 등록한 사용자 증명사진 보이기
-    else if (this.photoType === '1') {
-      photoImageFilePath = ProfileImagePath(this.photoImage);
     }
 
     return photoImageFilePath;
