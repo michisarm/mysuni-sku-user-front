@@ -5,6 +5,7 @@ import MemberType from './MemberType';
 import MemberLocaleModel from './MemberLocaleModel';
 import EmployeeModel from './EmployeeModel';
 import PisAgreementModel from './PisAgreementModel';
+import ProfileImagePath from '../../../src/shared/components/Image/ProfileImagePath';
 
 class SkProfileModel implements DramaEntity {
   //
@@ -103,7 +104,7 @@ class SkProfileModel implements DramaEntity {
     }
     //mySUNI 사이트(depot)에서 등록한 사용자 증명사진 보이기
     else if (this.photoType === '1') {
-      photoImageFilePath = this.photoImage;
+      photoImageFilePath = ProfileImagePath(this.photoImage);
     }
 
     return photoImageFilePath;
@@ -113,9 +114,25 @@ class SkProfileModel implements DramaEntity {
   get bgFilePath() {
     //
     let bgImageFilePath: string = '';
-    bgImageFilePath = this.bgImage;
+    bgImageFilePath = ProfileImagePath(this.bgImage);
 
     return bgImageFilePath;
+  }
+
+
+  @computed
+  get profileViewName() {
+    //
+    let viewProfileName: string = '';
+
+    if(this.nameFlag === 'N' &&
+        this.nickName !== '' ){
+      viewProfileName = this.nickName
+    }else{
+      viewProfileName = this.member && this.member.name
+    }
+
+    return viewProfileName;
   }
 }
 

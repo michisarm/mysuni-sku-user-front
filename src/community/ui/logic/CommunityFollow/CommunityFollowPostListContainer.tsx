@@ -15,6 +15,7 @@ import {
 } from '../../../store/CommunityMainStore';
 import { Link } from 'react-router-dom';
 import { Area } from 'tracker/model';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -145,7 +146,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   src={
                     profileImage === '' || profileImage === null
                       ? `${DefaultImg}`
-                      : `/files/community/${profileImage}`
+                      // : `/files/community/${profileImage}`
+                      : ProfileImagePath(profileImage)
                   }
                   alt="profile"
                 />

@@ -15,6 +15,8 @@ import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import { useCommunityMember } from '../../store/CommunityMemberStore';
 import { getAllMember } from '../../service/useMemberList/useMemberList';
+import ProfileImage from '../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
 
 // interface Params {
 //   communityId: string;
@@ -193,7 +195,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <td>
                   <div className="profile home-detail-profile">
                     <div className="pic">
-                      <img
+                      <ProfileImage
                         style={{
                           borderRadius: '36px',
                           width: '56px',
@@ -201,7 +203,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                         }}
                         src={
                           managProfileImg
-                            ? `/files/community/${managProfileImg}`
+                            // ? `/files/community/${managProfileImg}`
+                            ? ProfileImagePath(managProfileImg)
                             : `${DefaultImg}`
                         }
                       />
@@ -224,7 +227,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                         }
                       >
                         <div className="pic">
-                          <img
+                          <ProfileImage
                             style={{
                               borderRadius: '36px',
                               width: '56px',
@@ -232,7 +235,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             }}
                             src={
                               r.profileImg
-                                ? `/files/community/${r.profileImg}`
+                                // ? `/files/community/${r.profileImg}`
+                                ? ProfileImagePath(r.profileImg)
                                 : `${DefaultImg}`
                             }
                           />

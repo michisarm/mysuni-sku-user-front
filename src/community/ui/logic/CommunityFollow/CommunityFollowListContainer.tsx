@@ -15,6 +15,8 @@ import { useHistory } from 'react-router-dom';
 import { Area } from 'tracker/model';
 import { findCommunityProfile } from '../../../api/profileApi';
 import CommunityProfileModal from '../../view/CommunityProfileModal';
+import ProfileImage from '../../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 interface profileParams {
   id: string;
@@ -59,11 +61,12 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
         onClick={() => clickProfile(id)}
       >
         <div className="thumbnail">
-          <img
+          <ProfileImage
             src={
               profileImg === null || profileImg === ''
                 ? `${DefaultImg}`
-                : `/files/community/${profileImg}`
+                // : `/files/community/${profileImg}`
+                : ProfileImagePath(profileImg)
             }
           />
         </div>

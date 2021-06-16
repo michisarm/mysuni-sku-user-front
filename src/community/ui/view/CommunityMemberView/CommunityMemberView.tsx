@@ -12,6 +12,7 @@ import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import { useFollowModel } from '../../../../layout/UserApp/store/FollowStore';
 import { getFollow } from '../../../../layout/UserApp/service/ProfilePopupService/getFollow';
 import { followMember, unfollowMember, findAllFollow } from '../../../../layout/UserApp/api/ProfileInfoAPI';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 function ItemBox({ memberList, activePage }: { memberList: any, activePage: number }) {
   const [follow, setFollow] = useState<boolean>(false);
@@ -45,9 +46,11 @@ function ItemBox({ memberList, activePage }: { memberList: any, activePage: numb
         <Comment>
           <Comment.Avatar src={
             memberList.profileImg === null ||
-              memberList.profileImg === undefined ||
-              memberList.profileImg === '' ?
-              `${AvartarImage}` : `/files/community/${memberList.profileImg}`
+            memberList.profileImg === undefined ||
+            memberList.profileImg === ''  ? 
+            `${AvartarImage}` : 
+            // `/files/community/${memberList.profileImg}`
+            ProfileImagePath(memberList.profileImg)
           }
           />
           <Comment.Content>

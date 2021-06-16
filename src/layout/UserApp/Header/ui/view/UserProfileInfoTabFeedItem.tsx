@@ -9,7 +9,7 @@ import { registerBookmark, removeBookmark } from "../../../../../community/api/c
 import { getFollowCommunityIntro, setFollowCommunityIntro } from "../../../../../community/store/CommunityMainStore";
 import PostItem from "../../../../../community/viewModel/CommunityProfileBookmark/PostItem";
 import { getPostDetailInPreview } from "../../../../../community/service/useCommunityPostCreate/utility/getPostDetail";
-
+import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 
 interface Props {
   item: PostItem,
@@ -141,7 +141,10 @@ function UserProfileInfoTabFeedItem(props: Props) {
         {props.item.profileImage !== undefined &&
           props.item.profileImage !== '' &&
           props.item.profileImage !== null ? (
-            <Comment.Avatar src={`/files/community/${props.item.profileImage}`} />
+            <Comment.Avatar 
+              // src={`/files/community/${props.item.profileImage}`} 
+              src={ProfileImagePath(props.item.profileImage)} 
+            />
           ) : (
             <Comment.Avatar src={`${DefaultImg}`} />
           )}
