@@ -89,7 +89,7 @@ function MyTrainingListView({
     const collegeName = () => {
       if (myTraining.category && myTraining.category.college) {
         return colleges?.find(
-          college => college.id === myTraining.category.college.id
+          (college) => college.id === myTraining.category.college.id
         )?.name;
       }
 
@@ -97,7 +97,7 @@ function MyTrainingListView({
     };
     const collegeName2 = () => {
       if (myTraining.category && myTraining.category.college) {
-        return colleges?.find(college => college.id === myTraining.collegeId)
+        return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
       }
 
@@ -108,7 +108,7 @@ function MyTrainingListView({
         <Table.Cell>{totalCount - index}</Table.Cell>
         <Table.Cell>{collegeName()}</Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={e => onViewDetail(e, myTraining)}>
+          <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
               {myTraining.name}
             </span>
@@ -133,7 +133,7 @@ function MyTrainingListView({
     );
     const collegeName = () => {
       if (myTraining.category && myTraining.category.college) {
-        return colleges?.find(college => college.id === myTraining.collegeId)
+        return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
       }
 
@@ -147,7 +147,7 @@ function MyTrainingListView({
             <Table.Cell>{totalCount - index}</Table.Cell>
             <Table.Cell>{collegeName()}</Table.Cell>
             <Table.Cell className="title">
-              <a href="#" onClick={e => onViewDetail(e, myTraining)}>
+              <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
                 <span
                   className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}
                 >
@@ -191,7 +191,7 @@ function MyTrainingListView({
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
-            <Table.Cell>{myTraining.learningStartDate}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
