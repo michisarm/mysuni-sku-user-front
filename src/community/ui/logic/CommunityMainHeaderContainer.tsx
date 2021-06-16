@@ -28,11 +28,23 @@ import {
   setCommunityProfileItem,
 } from 'community/store/CommunityProfileStore';
 import { Area } from 'tracker/model';
+import { findCommunityProfile } from '../../api/profileApi';
+import CommunityProfileModal from '../view/CommunityProfileModal';
+
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
+}
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
   const [openFollowing, setOpenFollowing] = useState<string>('following');
   const [modalHeader, setModalHeader] = useState<string>('');
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
 
   useEffect(() => {
     requestFollowersModal();
@@ -106,7 +118,7 @@ function CommunityMainHeaderContainer() {
           <li style={{ cursor: 'pointer' }}>
             <p
               className="pic"
-              onClick={() => history.push(`/community/profile/${item.id}`)}
+              onClick={() => clickProfile(item.id)}
             >
               <img
                 src={
@@ -119,7 +131,7 @@ function CommunityMainHeaderContainer() {
             </p>
             <p
               className="nickname"
-              onClick={() => history.push(`/community/profile/${item.id}`)}
+              onClick={() => clickProfile(item.id)}
             >
               {item.nickname === '' ? item.name : item.nickname}
             </p>
@@ -147,7 +159,7 @@ function CommunityMainHeaderContainer() {
           <li style={{ cursor: 'pointer' }}>
             <p
               className="pic"
-              onClick={() => history.push(`/community/profile/${item.id}`)}
+              onClick={() => clickProfile(item.id)}
             >
               <img
                 src={
@@ -160,7 +172,7 @@ function CommunityMainHeaderContainer() {
             </p>
             <p
               className="nickname"
-              onClick={() => history.push(`/community/profile/${item.id}`)}
+              onClick={() => clickProfile(item.id)}
             >
               {item.nickname === '' ? item.name : item.nickname}
             </p>
@@ -180,6 +192,19 @@ function CommunityMainHeaderContainer() {
         커뮤니티에서 만난 학습자들을 팔로우 해보세요!
       </p>
     );
+
+    const clickProfile = useCallback(async (id) => {
+      findCommunityProfile(id).then(result => {
+        setProfileInfo({
+          id: result!.id,
+          profileImg: result!.profileImg,
+          introduce: result!.introduce,
+          nickName: result!.nickname,
+          creatorName: result!.name,
+        });
+        setProfileOpen(true);
+      });
+    }, []);
 
   return (
     <>
@@ -276,6 +301,15 @@ function CommunityMainHeaderContainer() {
           </Button>
         </Modal.Actions>
       </Modal>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
       {/* eslint-enable */}
     </>
   );

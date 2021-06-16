@@ -48,6 +48,7 @@ export function useCommunityPostDetail(
       introduce: '',
       profileImg: '',
       creatorCompanyName: '',
+      nameFlag: 'N'
     });
     setSubscriberId(next);
   }, []);

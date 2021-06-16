@@ -31,6 +31,7 @@ export interface LectureTaskDetail {
   commentFeedbackId: string;
   notice: boolean;
   pinned: number; // postpinned -> number = 0
+  writerPatronKeyString: string;
 }
 
 export interface CommentInfo {

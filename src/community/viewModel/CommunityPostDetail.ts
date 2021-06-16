@@ -32,6 +32,7 @@ export interface CommunityPostDetail {
   nextPost?: Post;
   relatedUrlList?: RelatedUrlList[];
   content?: string;
+  nameFlag?: string;
 }
 
 export interface CommunityPostItem {

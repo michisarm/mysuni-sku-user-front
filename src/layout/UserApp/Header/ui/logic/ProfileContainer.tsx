@@ -16,6 +16,8 @@ import {
   isExternalInstructor,
   isInternalInstructor,
 } from '../../../../../shared/helper/findUserRole';
+import { Button, Popup } from 'semantic-ui-react';
+import ProfilePopupView from '../view/ProfilePopupView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -25,6 +27,7 @@ interface Props extends RouteComponentProps {
 interface State {
   balloonShowClass: string;
   menuAuth: PageElement[];
+  isOpen: boolean;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
@@ -36,6 +39,7 @@ class ProfileContainer extends Component<Props, State> {
   state = {
     balloonShowClass: '',
     menuAuth: [],
+    isOpen: false,
   };
 
   //
@@ -132,6 +136,13 @@ class ProfileContainer extends Component<Props, State> {
     const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
     const isInstructor = isExternalInstructor() || isInternalInstructor();
+    const baseUrl = `${window.location.protocol}//${window.location.host}/suni-instructor`;
+    const { isOpen } = this.state;
+
+    const setOpen = () => {
+      this.profileButtonRef.current.click();
+      this.setState({ isOpen: !isOpen });
+    }
 
     return (
       <div className="g-info">
@@ -182,25 +193,13 @@ class ProfileContainer extends Component<Props, State> {
                   </a>
                 </li>
               )}
-            {/* <li>
-              <a
-                href="#"
-                onClick={() => this.props.history.push('/community/my-profile')}
-              >
-                <i
-                  aria-hidden="true"
-                  className="balloon community-profile icon"
-                />
-                <span>Community Profile</span>
-              </a>
-            </li> */}
-
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
                 <span>Logout</span>
               </button>
             </li>
+
           </ul>
         </div>
         {!isExternal && (
@@ -211,6 +210,20 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
+        <Popup
+          className="pop_profile"
+          trigger={
+            <Button id="btnProFile" className="user image label"><Image src={skProfile.photoFilePath || profileImg} alt="profile" /></Button>
+          }
+          position="bottom right"
+          on="click"
+          //open={isOpen}
+          onOpen={setOpen}
+        >
+          <Popup.Content>
+            <ProfilePopupView setOpen={setOpen} />{ /*프로필사진 셋팅전 */}
+          </Popup.Content>
+        </Popup>
       </div>
     );
   }

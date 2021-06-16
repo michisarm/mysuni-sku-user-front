@@ -64,6 +64,7 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
           commentFeedbackId: '',
           notice: false,
           pinned: 0, // postpinned -> number = 0
+          writerPatronKeyString: ''
         });
       }
     }, subscriberId);

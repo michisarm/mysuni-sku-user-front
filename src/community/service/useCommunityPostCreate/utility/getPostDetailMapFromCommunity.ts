@@ -94,6 +94,7 @@ export async function getPostDetailWithReadMapFromCommunity(
     creatorCompanyName: '',
     content: '',
     relatedUrlList: [],
+    nameFlag: ''
   };
   if (postId !== undefined) {
     const post: Post = await findPostViewWithRead(postId);
@@ -121,6 +122,7 @@ export async function getPostDetailWithReadMapFromCommunity(
       postDetailItem.creatorName = post.creatorName!;
       postDetailItem.creatorCompanyName = post.creatorCompanyName!;
       postDetailItem.relatedUrlList = post.relatedUrlList;
+      postDetailItem.nameFlag = post.nameFlag;
     }
   }
   setCommunityPostDetailItem(postDetailItem);
