@@ -158,7 +158,7 @@ class ProfileContainer extends Component<Props, State> {
           onOpen={setOpen}
         >
           <Popup.Content>
-            <ProfilePopupView setOpen={setOpen} />{ /*프로필사진 셋팅전 */}
+            <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />{ /*프로필사진 셋팅전 */}
           </Popup.Content>
         </Popup>
         {/* <button

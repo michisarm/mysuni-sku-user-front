@@ -8,10 +8,12 @@ import { SkProfileService } from 'profile/stores';
 import SkProfileUdo from '../../../../../../src/profile/model/SkProfileUdo';
 import { reactAlert } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
+import { Link } from 'react-router-dom';
 
 
 interface Props {
   setOpen: () => void,
+  isInstructor: boolean,
 }
 
 interface State {
@@ -106,6 +108,10 @@ function ProfilePopupView(props: Props) {
     window.location.href = '/api/checkpoint/sso/logout';
   }
 
+  function onInstructor() {
+    window.open(`${window.location.origin}/suni-instructor/`, '_blank');
+  }
+
   return (
     <>
       {
@@ -142,9 +148,16 @@ function ProfilePopupView(props: Props) {
                       </span>
                       <div className="foll-info"><span>{skProfile?.followerCount}</span>&nbsp;Follower<span>{skProfile?.followingCount}</span>&nbsp;Following</div>
                     </div>
-                    <div className="page-bttn-area">
-                      <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
-                    </div>
+                    {props.isInstructor ? (
+                      <div className="page-bttn-area type2">
+                        <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
+                        <Link to="#" onClick={onInstructor} className="l_to">강사 서비스</Link>
+                      </div>
+                    ) : (
+                        <div className="page-bttn-area">
+                          <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>

@@ -24,11 +24,17 @@ function ItemBox({
   const [followYN, setfollowYN] = useState<boolean>(false);
 
   useEffect(() => {
+    let result = true;
     followData?.ids.filter(f => {
       if (f === groupMemberList.memberId) {
         setfollowYN(true);
+        result = false;
       }
     })
+
+    if (result) {
+      setfollowYN(false);
+    }
   }, [followData])
 
   const handleFollow = useCallback(async (communityId: string, memberId: string, followState: boolean) => {

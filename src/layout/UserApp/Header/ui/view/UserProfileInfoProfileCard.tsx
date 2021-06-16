@@ -3,8 +3,8 @@ import { Button, Image } from 'semantic-ui-react';
 import { getProfileInfo, getProfileCount } from '../../../service/ProfilePopupService/getProfileInfo'
 import { useProfileInfoModel, setProfileInfoModel } from '../../../store/ProfileInfoStore';
 import { useProfileInfoBadgesModel, getProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
-import { useProfileInfoCommunityModel } from "../../../store/ProfileInfoCommunityStore";
-import { useProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
+import { useProfileInfoCommunityModel, setProfileInfoCommunityModel } from "../../../store/ProfileInfoCommunityStore";
+import { useProfileInfoPostModel, setProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
 import { getProfileInfoCommunities } from "../../../service/ProfilePopupService/getProfileInfoCommunities";
 import { getProfileInfoPost } from "../../../service/ProfilePopupService/getProfileInfoPost";
 import { getProfileInfoBadge, getProfileAllInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
@@ -76,6 +76,9 @@ function UserProfileinfoProfileCard(props: Props) {
 
     return () => {
       setProfileInfoModel();
+      setBadgeCount(0);
+      setProfileInfoCommunityModel();
+      setProfileInfoPostModel();
     }
 
   }, [props.memberId])

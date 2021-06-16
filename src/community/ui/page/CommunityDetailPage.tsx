@@ -194,7 +194,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <th>관리자 정보</th>
                 <td>
                   <div className="profile home-detail-profile">
-                    <div className="pic">
+                    {/* <div className="pic">
                       <ProfileImage
                         style={{
                           borderRadius: '36px',
@@ -208,7 +208,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             : `${DefaultImg}`
                         }
                       />
-                    </div>
+                    </div> */}
                     <span className="crown">
                       {communityHome.community.managerNickName}
                     </span>
@@ -226,7 +226,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             : 'profile home-detail-profile pro-mt30'
                         }
                       >
-                        <div className="pic">
+                        {/* <div className="pic">
                           <ProfileImage
                             style={{
                               borderRadius: '36px',
@@ -240,7 +240,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                                 : `${DefaultImg}`
                             }
                           />
-                        </div>
+                        </div> */}
                         <span>{r.nickname}</span>
                       </div>
                     ))}
