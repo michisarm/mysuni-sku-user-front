@@ -160,6 +160,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   async handleSave() {
     //
     const skProfileService = this.props.skProfileService!;
+    const { skProfile } = skProfileService!;
+
     const { 
       photoImageFile,
       bgImageFile,
@@ -170,23 +172,33 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     } = this.state;
 
     if(changeNickName){
-      if(!nickNameTemp || 
-        nickNameTemp === ''){
+      if(!nickNameTemp || nickNameTemp === ''){
         reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
           return;
       }else if(introduceTemp.length > 20){
         reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
           return;
       }
+    }else{
+      if(SkProfileService.instance.skProfile.id &&
+          (!skProfile.nickName || skProfile.nickName === '')){
+        reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
+          return;
+      }
     }
 
     if(changeIntroduce){
-      if(!introduceTemp || 
-        introduceTemp === ''){
+      if(!introduceTemp || introduceTemp === ''){
         reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
           return;
       }else if(introduceTemp.length > 45){
         reactAlert({ title: '알림', message: '자기소개는 최대 45자까지 입력 가능합니다.' });
+          return;
+      }
+    }else{
+      if(SkProfileService.instance.skProfile.id &&
+          (!skProfile.introduce || skProfile.introduce === '')){
+        reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
           return;
       }
     }
@@ -232,7 +244,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       this.clear();
 
       skProfileService!.findSkProfile();
-      
     }
 
 

@@ -65,8 +65,8 @@ function MyPageHeaderContainer({
 
   useRequestLearningSummary();
 
-  const onClickShowName = useCallback((value: boolean) => {
-    if(!value && 
+  const onClickShowName = useCallback(async (value: boolean) => {
+    if(!skProfile || 
         (!skProfile.nickName ||
           skProfile.nickName === '')){
       reactAlert({
@@ -85,7 +85,8 @@ function MyPageHeaderContainer({
 
     skProfileUdo.nameFlag = value === true ? 'R' : 'N'
 
-    modifySkProfile(skProfileUdo);
+    await modifySkProfile(skProfileUdo);
+    skProfileService!.findSkProfile();
     setShowNameFlag(value);
 
   }, []);

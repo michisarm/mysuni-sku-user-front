@@ -8,6 +8,7 @@ import { SkProfileService } from 'profile/stores';
 import SkProfileUdo from '../../../../../../src/profile/model/SkProfileUdo';
 import { reactAlert } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
+import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import { Link } from 'react-router-dom';
 
 
@@ -29,10 +30,8 @@ function ProfilePopupView(props: Props) {
   const skProfileService = SkProfileService.instance;
   const { skProfile, modifySkProfile } = skProfileService;
   const history = useHistory();
-
-  useEffect(() => {
-    //getProfilePopup();
-  }, []);
+  const externalInstructor = localStorage.getItem('nara.externalInstructor');
+  const instructorId = localStorage.getItem('nara.instructorId');
 
   useEffect(() => {
     if ((skProfile.nickName === null || skProfile.nickName === '') && (skProfile.introduce === null || skProfile.introduce === '')) {
@@ -49,15 +48,13 @@ function ProfilePopupView(props: Props) {
       } else {
         setIsNickName(true)
       }
-
     }
   }, [skProfile]);
 
   const onClickToggle = useCallback(async (useNickName) => {
-
-    if (skProfile &&
-      skProfile.nickName &&
-      skProfile.nickName === '') {
+    if (!SkProfileService.instance.skProfile.id ||
+      (!skProfile.nickName ||
+      skProfile.nickName === '')) {
       reactAlert({
         title: '안내',
         message: '닉네임을 등록해주세요.',
@@ -81,7 +78,8 @@ function ProfilePopupView(props: Props) {
     }
 
     await modifySkProfile(skProfileUdo);
-    getProfilePopup();
+    skProfileService!.findSkProfile();
+    //getProfilePopup();
   }, [isNickName])
 
   //hobby를 ',' 기준으로 구분한다.
@@ -119,7 +117,7 @@ function ProfilePopupView(props: Props) {
           <div className="profile-contents-area">
             <div className="profile-wrapper">
               <div className="bg-wrapper">
-                {<ProfileImage src={skProfile.bgImage} />}
+                {<ProfileImage src={skProfile.bgFilePath || DefaultBgImg} />}
                 <div className="profile-info-wrapper">
                   <div className="profile-info-area">
                     <div className="header-bttn-area">
@@ -140,7 +138,7 @@ function ProfilePopupView(props: Props) {
                     </div>
 
                     <div className="image-area">
-                      <ProfileImage src={skProfile.photoImage} />
+                      <ProfileImage src={skProfile.photoFilePath} />
                     </div>
                     <div className="profile-info ">
                       <span className="prof-tit">
@@ -148,16 +146,20 @@ function ProfilePopupView(props: Props) {
                       </span>
                       <div className="foll-info"><span>{skProfile?.followerCount}</span>&nbsp;Follower<span>{skProfile?.followingCount}</span>&nbsp;Following</div>
                     </div>
-                    {props.isInstructor ? (
+                    {instructorId && instructorId !== '' && externalInstructor && externalInstructor === 'true' ? (
+                      <div className="page-bttn-area">
+                        <Link to="#" onClick={onInstructor} className="l_to">강사 서비스</Link>
+                      </div>
+                    ) : instructorId && instructorId !== '' && externalInstructor && externalInstructor === 'false' ? (
                       <div className="page-bttn-area type2">
                         <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
                         <Link to="#" onClick={onInstructor} className="l_to">강사 서비스</Link>
                       </div>
                     ) : (
-                        <div className="page-bttn-area">
-                          <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
-                        </div>
-                      )}
+                          <div className="page-bttn-area">
+                            <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
+                          </div>
+                        )}
                   </div>
                 </div>
               </div>
