@@ -940,7 +940,7 @@ const panes = [
                         <div className="curriculum-link-box">
                           <strong>산업/통상에 미치는 영향</strong>
                           <div className="link-wrap">
-                            <Link to='#' onClick={emptyAlert}>
+                            <Link to='/lecture/card/CARD-12nx/view'>
                               <span>Geo. & Biz.<br />Nexus</span>
                             </Link>
                             <div className="link-colum-box">
@@ -967,7 +967,7 @@ const panes = [
                               <Link to='#' onClick={emptyAlert}>
                                 <span>Global Financial Story<br />케이스 스터디</span>
                               </Link>
-                              <Link to='#' onClick={emptyAlert}>
+                              <Link to='/lecture/card/CARD-12ts/view'>
                                 <span>Global Financial Story의<br />이해</span>
                               </Link>
                             </div>
@@ -1091,7 +1091,7 @@ const panes = [
                 <div>
                   <Link to='about' onClick={emptyAlert}><span>Post 주재원</span></Link>
                   <Link to='about' onClick={emptyAlert}><span>법인장</span></Link>
-                  <Link to='about' onClick={emptyAlert}><span>Local Experience<br />(현채인, 주재원)</span></Link>
+                  <Link to='/lecture/card/CARD-86s/view'><span>Local Experience<br />(현채인, 주재원)</span></Link>
                 </div>
                 <table>
                   <colgroup>
@@ -1135,10 +1135,10 @@ const panes = [
                         <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks'>주재원이 알아야 할<br />베트남, 베트남인</Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15b/Course/C-LECTURE-zxx'>주재원이 알아야 할<br />헝가리, 헝가리인</Link>
+                        <Link to='/lecture/card/CARD-8kg/view'>주재원이 알아야 할<br />헝가리, 헝가리인</Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-n8/Course/C-LECTURE-jcc'>주재원이 알아야 할<br />폴란드, 폴란드인</Link>
+                        <Link to='/lecture/card/CARD-60u/view'>주재원이 알아야 할<br />폴란드, 폴란드인</Link>
                       </td>
                     </tr>
                     <tr>
@@ -1152,7 +1152,7 @@ const panes = [
                         <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100'>미국 Biz. 법률 기초</Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-v9/Course/C-LECTURE-r66'>베트남 Biz. 법률<br />기초</Link>
+                        <Link to='/lecture/card/CARD-74q/view'>베트남 Biz. 법률<br />기초</Link>
                       </td>
                       <td>
                         <Link to='#' onClick={emptyAlert}>헝가리 Biz. 법률<br />기초</Link>
@@ -1230,12 +1230,12 @@ const panes = [
                         <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">폴란드</Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1fk/Course/C-LECTURE-194">중동</Link>
+                        <Link to="/lecture/card/CARD-acm/view">중동</Link>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-nc/Course/C-LECTURE-jg">인도네시아</Link>
+                        <Link to="/lecture/card/CARD-12n5/view">인도네시아</Link>
                       </td>
                       <td>
                         <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">인도</Link>
