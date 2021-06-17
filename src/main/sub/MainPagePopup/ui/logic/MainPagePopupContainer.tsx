@@ -1,63 +1,80 @@
-import { Modal } from 'semantic-ui-react';
+import {Button, Checkbox, Modal} from 'semantic-ui-react';
 import  {requestMainPagePopupFirst} from '../../service/MainPagePopupService';
 import {useMainPagePopupItem, setMainPagePopupItem} from '../../store/MainPagePopupStore';
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ReactQuill from "react-quill";
-import CloseIcon from "../../../../../style/media/icon-close-player-28-px.png";
 import moment from "moment";
-import Editor from "../../../../../community/ui/view/CommunityPostCreateView/Editor";
+import { getCookie, setCookie } from '@nara.platform/accent';
 
-interface Props extends RouteComponentProps {
-  isOpen: boolean;
-}
+interface Props extends RouteComponentProps {}
 
 function MainPagePopupContainer(props: Props) {
-  useEffect(() => { requestMainPagePopupFirst();}, []);
-
+  const [noMoreModal, setNoMoreModal] = useState(false);
   const mainPagePopup = useMainPagePopupItem();
-  const title = mainPagePopup?.title;
   const open = mainPagePopup?.open;
+  const contents = mainPagePopup?.contents;
+
+  useEffect(() => {
+    requestMainPagePopupFirst();
+  }, []);
+
+  const ModalClose = () => {
+    setCookie('mainPopupModal', noMoreModal ? 'HIDE' : 'SHOW');
+    // @ts-ignore
+    setMainPagePopupItem({
+      id            : mainPagePopup?.id,
+      open          : false,
+      contents      : mainPagePopup?.contents,
+      modifiedTime  : mainPagePopup?.modifiedTime,
+      modifier      : mainPagePopup?.modifier,
+      period        : mainPagePopup?.period,
+      time          : mainPagePopup?.time,
+      title         : mainPagePopup?.title,
+    })
+  };
+
+  const onHandleChange = () => {
+    setNoMoreModal(!noMoreModal);
+  };
 
   useEffect(() => {
     if (open) {
       const today = moment().format('YYYY-MM-DD')
       const beforeFlag = moment(today).isBefore(moment().format(mainPagePopup?.period.startDate),'day');
       const afterFlag = moment(today).isAfter(moment().format(mainPagePopup?.period.endDate),'day');
-      console.log("====>"+today+":"+beforeFlag+":"+afterFlag)
+      console.log("====>"+open+":"+today+":"+beforeFlag+":"+afterFlag+":"+getCookie('mainPopupModal'));
       //afterFlag=false,beforeFlag=false라면 오픈. 아니라면 close
-      if(afterFlag){onClose();}
-      else if(beforeFlag){onClose();}
+      if(afterFlag){ModalClose();}
+      else if(beforeFlag){ModalClose();}
+
+      const mainModal = getCookie('mainPopupModal');
+      if (mainModal === null || mainModal === '' || mainModal === 'SHOW') {
+        setCookie('mainPopupModal','SHOW');
+      } else {
+        ModalClose();
+      }
     }
   }, [open]);
 
-  const onClose = () => {
-    // @ts-ignore
-    setMainPagePopupItem({
-      open: false,
-      title: mainPagePopup?.title,
-      time: mainPagePopup?.time,
-      period: mainPagePopup?.period,
-      modifier: mainPagePopup?.modifier,
-      modifiedTime: mainPagePopup?.modifiedTime,
-      id: mainPagePopup?.id,
-      contents: mainPagePopup?.contents,
-      }
-    );
-  };
-
   return (
       <>
-        <Modal open={open} className="base w1000 inner-scroll" style={{ position: 'absolute' , width: 1100}}>
+        <Modal open={open} className="base w1000 inner-scroll" style={{ position: 'absolute' , width: 1015}}>
           <Modal.Header>
-            <div dangerouslySetInnerHTML={{__html: `${title}`,}} style={{ display: 'inline-block' }}/>
-            <button className="admin_popup_close" onClick={onClose}>
-              <img src={CloseIcon} />
-              <span>Close</span>
-            </button>
+            <div className="right-btn">
+              <Checkbox
+                label="더 이상 보지 않기"
+                className="base"
+                onChange={onHandleChange}
+              />
+              <Button className="close" onClick={ModalClose}>
+                Close
+              </Button>
+            </div>
           </Modal.Header>
-          <Modal.Content className="admin_popup_add" style={{ width: 1100 }}>
-              <ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />
+          <Modal.Content >
+            {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
+            <div dangerouslySetInnerHTML={{__html:contents|| '' }}/>
           </Modal.Content>
         </Modal>
       </>

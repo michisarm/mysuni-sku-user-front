@@ -1,8 +1,15 @@
 import  {getMainPagePopupFirst}  from '../api/MainPagePopupApi';
 import { setMainPagePopupItem } from '../store/MainPagePopupStore';
+import { getCookie } from '@nara.platform/accent';
 
 export function requestMainPagePopupFirst() {
+  const mainModal = getCookie('mainPopupModal');
+
   getMainPagePopupFirst().then((result) => {
+    if(mainModal == 'HIDE'){
+      result.open = false;
+    }
+
     setMainPagePopupItem({
       id            : result.id,
       open          : result.open,
@@ -13,5 +20,6 @@ export function requestMainPagePopupFirst() {
       time          : result.time,
       title         : result.title,
     })
+    return null;
   })
 }
