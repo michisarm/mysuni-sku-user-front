@@ -602,6 +602,7 @@ export async function isPrecoursePassed(cardId: string) {
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
   const cardRelatedStudent = await findMyCardRelatedStudentsCache(cardId);
 
+  // api 호출이 실패 했을 경우
   if (
     cardRelatedStudent === undefined ||
     cardWithContentsAndRelatedCountRom === undefined
@@ -612,11 +613,14 @@ export async function isPrecoursePassed(cardId: string) {
   const lecturePrecourse =
     cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards;
 
-  if (
-    cardRelatedStudent.prerequisiteCardStudents === null ||
-    lecturePrecourse.length === 0
-  ) {
+  // 선수 과정이 존재하지 않는 경우
+  if (lecturePrecourse.length === 0) {
     return true;
+  }
+
+  // 선수 과정이 존재 하지만 아직 시작 하지 않은 경우
+  if (cardRelatedStudent.prerequisiteCardStudents === null) {
+    return false;
   }
 
   const filterPrecourse = lecturePrecourse.filter((course) => course.required);
