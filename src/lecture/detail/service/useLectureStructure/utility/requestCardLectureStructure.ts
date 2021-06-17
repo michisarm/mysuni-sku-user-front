@@ -36,6 +36,7 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
+import { isEmpty } from 'lodash';
 
 function parseCubeTestItem(
   card: Card,
@@ -610,28 +611,34 @@ export async function isPrecoursePassed(cardId: string) {
     return false;
   }
 
-  const lecturePrecourse =
-    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards;
-
-  // 선수 과정이 존재하지 않는 경우
-  if (lecturePrecourse.length === 0) {
+  if (
+    isEmpty(cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards)
+  ) {
     return true;
   }
 
-  // 선수 과정이 존재 하지만 아직 시작 하지 않은 경우
-  if (cardRelatedStudent.prerequisiteCardStudents === null) {
-    return false;
-  }
-
-  const filterPrecourse = lecturePrecourse.filter((course) => course.required);
+  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+    (course) => course.required
+  );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
+
+  //선수 과정이 존재하지 않거나 필수인 선수 과정이 없는 경우
+  if (isEmpty(filterPrecourse.length)) {
+    return true;
+  }
 
   for (let i = 0; i < filterPrecourse.length; i++) {
     const find = prerequisiteCardStudents.find(
       (course) => course.lectureId === filterPrecourse[i].prerequisiteCardId
     );
 
+    // 필수인 선수 과정이 존재 하지만 아직 해당 선수 과정을 시작하지 않은 경우
+    if (find === undefined && !isEmpty(filterPrecourse)) {
+      return false;
+    }
+
+    // 필수인 선수 과정을 시작 했지만 아직 Passed 하지 못한경우
     if (find !== undefined && find.learningState !== 'Passed') {
       return false;
     }
