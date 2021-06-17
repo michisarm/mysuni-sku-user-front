@@ -12,9 +12,11 @@ import { clearFindCubeDetailCache } from './api/cubeApi';
 import { getCubeLectureOverview } from './service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useRequestLectureState } from './service/useLectureState/useRequestLectureState';
 import { useCubeBreadcrumb } from './service/useCubeBreadcrumb';
+import { useRequestLectureCardOverview } from './service/useLectureCourseOverview/useRequestLectureCourseOverview';
 
 export default function LectureDetailCubeRoutes() {
   useCubeBreadcrumb();
+  useRequestLectureCardOverview();
 
   const params = useParams<LectureParams>();
   const { pathname } = useLocation();
@@ -34,7 +36,7 @@ export default function LectureDetailCubeRoutes() {
       return;
     }
     getCubeLectureOverview(cardId, cubeId);
-  }, [cubeId]);
+  }, [cardId, cubeId]);
   useRequestLectureState();
 
   return (

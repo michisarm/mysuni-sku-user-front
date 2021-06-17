@@ -1,4 +1,5 @@
 import React from 'react';
+import { reactAlert } from '@nara.platform/accent';
 import LectureCubeAudioPage from './ui/logic/LectureCubeAudioPage';
 import LectureCubeClassroomPage from './ui/logic/LectureCubeClassroomPage';
 import LectureCubeDocumentsPage from './ui/logic/LectureCubeDocumentsPage';
@@ -10,9 +11,26 @@ import { useParams } from 'react-router';
 import LectureParams from './viewModel/LectureParams';
 import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 import LectureCubeDiscussionPage from './ui/logic/LectureCubeDiscussionPage';
+import lecturePath from '../routePaths';
+import { isPrecoursePassed } from './service/useLectureStructure/utility/requestCardLectureStructure';
+import { getCurrentHistory } from '../../shared/store/HistoryStore';
+
+export async function isOpenPassedPreCourseModal(cardId: string) {
+  const isPassedResult = await isPrecoursePassed(cardId);
+  const history = getCurrentHistory();
+
+  if (!isPassedResult) {
+    reactAlert({
+      title: '안내',
+      message: '선수 학습 완료 후 진행이 가능합니다.',
+      onClose: () => history?.push(lecturePath.lectureCard(cardId)),
+    });
+  }
+}
 
 function LectureDetailCubeSubRoutes() {
-  const { cubeType } = useParams<LectureParams>();
+  const { cubeType, cardId } = useParams<LectureParams>();
+  isOpenPassedPreCourseModal(cardId);
 
   return (
     <>

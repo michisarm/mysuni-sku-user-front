@@ -597,6 +597,45 @@ async function parseTaskCubeItem(
   return item;
 }
 
+// 해당 카드의 선수 과정이 존재하는지 완료되었는지 체크하는 함수
+export async function isPrecoursePassed(cardId: string) {
+  const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  const cardRelatedStudent = await findMyCardRelatedStudentsCache(cardId);
+
+  if (
+    cardRelatedStudent === undefined ||
+    cardWithContentsAndRelatedCountRom === undefined
+  ) {
+    return false;
+  }
+
+  const lecturePrecourse =
+    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards;
+
+  if (
+    cardRelatedStudent.prerequisiteCardStudents === null ||
+    lecturePrecourse.length === 0
+  ) {
+    return true;
+  }
+
+  const filterPrecourse = lecturePrecourse.filter((course) => course.required);
+  const prerequisiteCardStudents =
+    cardRelatedStudent.prerequisiteCardStudents || [];
+
+  for (let i = 0; i < filterPrecourse.length; i++) {
+    const find = prerequisiteCardStudents.find(
+      (course) => course.lectureId === filterPrecourse[i].prerequisiteCardId
+    );
+
+    if (find !== undefined && find.learningState !== 'Passed') {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function parseCubeItem(
   card: Card,
   cube: Cube,
@@ -612,6 +651,7 @@ async function parseCubeItem(
     hasTest,
     reportName,
   } = cube;
+
   if (type === 'Audio' || type === 'Video') {
     const cubeDetail = await findCubeDetailCache(id);
     if (
@@ -661,7 +701,7 @@ async function parseCubeItem(
     params,
     path: params.pathname,
     type: 'CUBE',
-    can: true,
+    can: await isPrecoursePassed(card.id),
     state: convertLearningStateToState(cubeStudent?.learningState),
     cube,
   };
@@ -714,17 +754,19 @@ function parseItems(
   const items: LectureStructureItem[] = [];
   learningContents.forEach(({ contentId, learningContentType, children }) => {
     if (learningContentType === 'Cube') {
-      const cube = lectureStructure.cubes.find(c => c.cubeId === contentId);
+      const cube = lectureStructure.cubes.find((c) => c.cubeId === contentId);
       if (cube !== undefined) {
         items.push(cube);
       }
     } else if (learningContentType === 'Chapter') {
-      const chapter = lectureStructure.chapters.find(c => c.id === contentId);
+      const chapter = lectureStructure.chapters.find((c) => c.id === contentId);
       if (chapter !== undefined) {
         items.push(chapter);
       }
       children.forEach((c, i) => {
-        const cube = lectureStructure.cubes.find(d => d.cubeId === c.contentId);
+        const cube = lectureStructure.cubes.find(
+          (d) => d.cubeId === c.contentId
+        );
         if (cube !== undefined) {
           cube.parentId = contentId;
           if (i === children.length - 1) {
@@ -733,7 +775,7 @@ function parseItems(
           items.push(cube);
         }
         const discussion = lectureStructure.discussions.find(
-          d => d.id === c.contentId
+          (d) => d.id === c.contentId
         );
         if (discussion !== undefined) {
           discussion.parentId = contentId;
@@ -745,7 +787,7 @@ function parseItems(
       });
     } else if (learningContentType === 'Discussion') {
       const discussion = lectureStructure.discussions.find(
-        c => c.id === contentId
+        (c) => c.id === contentId
       );
 
       if (discussion !== undefined) {
@@ -786,8 +828,8 @@ export async function requestCardLectureStructure(cardId: string) {
     }
     if (learningContent.learningContentType === 'Chapter') {
       learningContent.children
-        .filter(c => c.learningContentType === 'Cube')
-        .forEach(c => cubeIds.push(c.contentId));
+        .filter((c) => c.learningContentType === 'Cube')
+        .forEach((c) => cubeIds.push(c.contentId));
     }
   }
 
@@ -798,7 +840,7 @@ export async function requestCardLectureStructure(cardId: string) {
 
   if (cubes !== undefined) {
     cubeItems = await Promise.all(
-      cubes.map(async cube => {
+      cubes.map(async (cube) => {
         const cubeStudent = findCubeStudent(cube.id, cubeStudents);
         const order = cardContents.learningContents.findIndex(
           ({ contentId }) => contentId === cube.id
@@ -811,13 +853,13 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const discussionItems: LectureStructureDiscussionItem[] = [];
 
-  cardContents.learningContents.map(content => {
+  cardContents.learningContents.map((content) => {
     if (content.chapter) {
       content.children
         .filter(
           ({ learningContentType }) => learningContentType === 'Discussion'
         )
-        .forEach(learningContent => {
+        .forEach((learningContent) => {
           const order = content.children.findIndex(
             ({ contentId }) => contentId === learningContent.contentId
           );
@@ -837,7 +879,7 @@ export async function requestCardLectureStructure(cardId: string) {
 
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Discussion')
-    .forEach(learningContent => {
+    .forEach((learningContent) => {
       const order = cardContents.learningContents.findIndex(
         ({ contentId }) => contentId === learningContent.contentId
       );
@@ -856,14 +898,15 @@ export async function requestCardLectureStructure(cardId: string) {
 
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Chapter')
-    .forEach(learningContent => {
+    .forEach((learningContent) => {
       const order = cardContents.learningContents.findIndex(
         ({ contentId }) => contentId === learningContent.contentId
       );
       chapterItems.push(parseChapterItem(card, learningContent, order));
     });
 
-  cardItem.canSubmit = cubeItems.every(c => c.state === 'Completed');
+  cardItem.canSubmit = cubeItems.every((c) => c.state === 'Completed');
+
   const lectureStructure: LectureStructure = {
     card: cardItem,
     cubes: cubeItems,
@@ -878,7 +921,7 @@ export async function requestCardLectureStructure(cardId: string) {
   );
 
   let cubeOrder = -1;
-  lectureStructure.items.forEach(c => {
+  lectureStructure.items.forEach((c) => {
     if (c.type === 'CUBE') {
       c.order = ++cubeOrder;
     }
