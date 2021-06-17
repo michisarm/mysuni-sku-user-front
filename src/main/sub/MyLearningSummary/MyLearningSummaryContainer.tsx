@@ -381,10 +381,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             return this.setState({ attendanceOpen: value });
           }}
         />
-
-        <MainPagePopupContainer
-          isOpen={true}
-        />
       </>
     );
   }
