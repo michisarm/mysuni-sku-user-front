@@ -58,26 +58,26 @@ function MainPagePopupContainer(props: Props) {
   }, [open]);
 
   return (
-      <>
-        <Modal open={open} className="base w1000 inner-scroll" style={{ position: 'absolute' , width: 1015}}>
-          <Modal.Header>
-            <div className="right-btn">
-              <Checkbox
-                label="더 이상 보지 않기"
-                className="base"
-                onChange={onHandleChange}
-              />
-              <Button className="close" onClick={ModalClose}>
-                Close
-              </Button>
-            </div>
-          </Modal.Header>
-          <Modal.Content >
-            {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
-            <div dangerouslySetInnerHTML={{__html:contents|| '' }}/>
-          </Modal.Content>
-        </Modal>
-      </>
+    <>
+      <Modal open={open} className="aidt-modal" style={{ width: 1015}}>
+        <Modal.Header>
+          <div className="right-btn">
+            <Checkbox
+              label="더 이상 보지 않기"
+              className="base"
+              onChange={onHandleChange}
+            />
+            <Button className="close" onClick={ModalClose}>
+              Close
+            </Button>
+          </div>
+        </Modal.Header>
+        <Modal.Content style={{height: 640}}>
+          {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
+          <div dangerouslySetInnerHTML={{__html:contents|| '' }}/>
+        </Modal.Content>
+      </Modal>
+    </>
   );
 }
 
