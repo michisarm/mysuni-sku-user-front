@@ -17,6 +17,11 @@ import LectureClassroom, {
 } from '../../../viewModel/LectureClassroom';
 import LectureState from '../../../viewModel/LectureState';
 import { ActionType, Action, Area } from 'tracker/model';
+import { findAgreement } from '../../../api/profileApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
+import { onOpenLectureAgreementModal } from '../../../service/LectureAgreementModal/useLectureAgreementModal';
+import { LectureAgreementModalView } from './LectureAgreementModalView';
+import { find } from 'lodash';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -67,8 +72,30 @@ function CanceledView(props: CanceledViewProps) {
       });
       return;
     }
-    return ClassroomModalViewRef.current?.show();
+
+    const cubeDetail = await findCubeDetailCache(cubeId);
+    if (cubeDetail !== undefined) {
+      const isExistAgreement = await findAgreement(
+        cubeDetail.cubeContents.organizerId
+      );
+
+      // 제출한 동의서가 없는 경우
+      if (isExistAgreement === undefined) {
+        onOpenLectureAgreementModal();
+      } else {
+        // 제출한 동의서가 있지만 동의하지 않은 경우
+        if (
+          find(isExistAgreement.optionalClauseAgreements, { accepted: false })
+        ) {
+          onOpenLectureAgreementModal();
+          return;
+        }
+
+        return ClassroomModalViewRef.current?.show();
+      }
+    }
   }, [cubeId]);
+
   /* eslint-enable */
   const onClassroomSelected = useCallback(
     (selected: Classroom) => {
@@ -114,7 +141,9 @@ function CanceledView(props: CanceledViewProps) {
         selectedClassRoom={selectedClassroom}
         handleOk={onApply}
       />
-
+      <LectureAgreementModalView
+        onShowClassroomModal={ClassroomModalViewRef.current?.show}
+      />
       <button
         className={`ui button free ${actionClassName} p18`}
         onClick={action}
@@ -251,7 +280,7 @@ function ApprovedELearningView(props: ApprovedViewProps) {
     if (document.getElementById('webpage-link') !== null) {
       document.getElementById('webpage-link')?.click();
     }
-  }, [student]);
+  }, []);
   return (
     <>
       {student.learningState !== null && (
