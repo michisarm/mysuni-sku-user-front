@@ -13,7 +13,6 @@ import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
-import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
 import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
 import TranscriptCountModel from '../../../model/TranscriptCountModel';
@@ -201,9 +200,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               <LectureCubeInfoView lectureDescription={lectureDescription} />
             )}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-            {lectureClassroom && (
-              <LectureClassroomInfoView lectureClassroom={lectureClassroom} />
-            )}
             {lectureInstructor?.instructors &&
               lectureInstructor.instructors.length > 0 && (
                 <LectureClassroomInstructorView
