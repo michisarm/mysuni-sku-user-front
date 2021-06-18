@@ -16,7 +16,6 @@ export async function requestLectureAgreementModal() {
   if (lectureState !== undefined) {
     const organizedId = lectureState.cubeDetail.cubeContents.organizerId;
     const contentProvider = await findContentProviderCache(organizedId);
-    console.log(contentProvider);
     const lectureAgreementModal =
       getLectureAgreementModal() || initLectureAgreementModal();
 
