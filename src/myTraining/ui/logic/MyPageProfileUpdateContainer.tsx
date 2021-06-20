@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Segment, Table, Input, TextArea } from 'semantic-ui-react';
 import { fileUtil, ValidationType } from '@nara.drama/depot';
-import SkProfileService from '../../../profile/present/logic/SkProfileService';
+import { SkProfileService } from 'profile/stores';
 import SkProfileUdo from '../../../profile/model/SkProfileUdo';
 import Image from '../../../shared/components/Image';
 import { uploadFileProfile } from '../../../shared/api/imageApi';
@@ -93,7 +93,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileService!.setProfileProp('photoType', photoTypeTemp);
     }
 
-    skProfileService!.modifyPhotoImageByProfileId(
+    await skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
       skProfile.photoType,
       skProfile.photoImage
@@ -351,7 +351,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const preProfileInfo = {
       isSetProfile: true,  // true
       nickName: nickNameTemp,
-      hobby: introduceTemp,
+      introduce: introduceTemp,
       profileImg: photoImageTemp,
       profileBgImg: bgImageTemp,
     }

@@ -10,6 +10,8 @@ import { reactAlert } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import { Link } from 'react-router-dom';
+import { requestFollowersModal, requestFollowingsModal } from '../../../../../community/service/useFollowModal/utility/requestFollowModalIntro';
+import { useFollowersModal, useFollowingsModal } from '../../../../../community/store/CommunityFollowModalStore';
 
 
 interface Props {
@@ -17,21 +19,23 @@ interface Props {
   isInstructor: boolean,
 }
 
-interface State {
-
-}
-
 function ProfilePopupView(props: Props) {
   //const profileInfo = useProfilePopupModel()
   const [isNickName, setIsNickName] = useState<boolean>();
-  const [btnRealName, setBtnRealName] = useState<string>('chng-active');
-  const [btnNickName, setBtnNickName] = useState<string>('');
   const [isSettingProfile, setIsSettingProfile] = useState<boolean>(true);
   const skProfileService = SkProfileService.instance;
   const { skProfile, modifySkProfile } = skProfileService;
   const history = useHistory();
   const externalInstructor = localStorage.getItem('nara.externalInstructor');
   const instructorId = localStorage.getItem('nara.instructorId');
+  const followersList = useFollowersModal();
+  const followingsList = useFollowingsModal();
+  const [saveFlag, setSaveFlag] = useState<boolean>(true);
+
+  useEffect(() => {
+    requestFollowersModal();
+    requestFollowingsModal();
+  }, []);
 
   useEffect(() => {
     if ((skProfile.nickName === null || skProfile.nickName === '') && (skProfile.introduce === null || skProfile.introduce === '')) {
@@ -42,12 +46,10 @@ function ProfilePopupView(props: Props) {
   }, [skProfile.nickName, skProfile.introduce])
 
   useEffect(() => {
-    if (skProfile) {
-      if (skProfile.nameFlag === 'R') {
-        setIsNickName(false)
-      } else {
-        setIsNickName(true)
-      }
+    if (skProfile.nameFlag === 'R') {
+      setIsNickName(false)
+    } else {
+      setIsNickName(true)
     }
   }, [skProfile]);
 
@@ -62,25 +64,33 @@ function ProfilePopupView(props: Props) {
       return;
     }
 
-    const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-      skProfile.member.currentJobGroup,
-      skProfile.member.favoriteJobGroup,
-      skProfile.pisAgreement
-    );
+    if(saveFlag){
+      setSaveFlag(false)
 
-    if (useNickName) {
-      setIsNickName(useNickName);
-      skProfileUdo.nameFlag = 'N';
-    }
-    else {
-      setIsNickName(useNickName);
-      skProfileUdo.nameFlag = 'R';
-    }
+      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
+        skProfile.member.currentJobGroup,
+        skProfile.member.favoriteJobGroup,
+        skProfile.pisAgreement
+      );
+  
+      if (useNickName) {
+        setIsNickName(useNickName);
+        skProfileUdo.nameFlag = 'N';
+      }
+      else {
+        setIsNickName(useNickName);
+        skProfileUdo.nameFlag = 'R';
+      }
+  
+      await modifySkProfile(skProfileUdo);
+      skProfileService!.findSkProfile().then(skProfile => {
+        //
+        setSaveFlag(true);
+      });
 
-    await modifySkProfile(skProfileUdo);
-    skProfileService!.findSkProfile();
+    }
     //getProfilePopup();
-  }, [isNickName])
+  }, [])
 
   //hobby를 ',' 기준으로 구분한다.
   function getTagHtml() {
@@ -125,8 +135,22 @@ function ProfilePopupView(props: Props) {
                         {/* 실명/닉네임 class 이름 chng-active*/}
                         {/* <Button className={`name-chng-bttn ${(profileInfo.nameFlag === 'R' && !isNickName) ? 'chng-active' : ''}`} onClick={() => onClickToggle(false)}>실명</Button>
                       <Button className={`name-chng-bttn ${(profileInfo.nameFlag === 'N' && isNickName) ? 'chng-active' : ''}`} onClick={() => onClickToggle(true)}>닉네임</Button> */}
-                        <Button className={`name-chng-bttn ${(isNickName !== undefined && !isNickName) ? 'chng-active' : ''}`} onClick={() => onClickToggle(false)}>실명</Button>
-                        <Button className={`name-chng-bttn ${(isNickName !== undefined && isNickName) ? 'chng-active' : ''}`} onClick={() => onClickToggle(true)}>닉네임</Button>
+                        <Button 
+                          className={`name-chng-bttn ${(isNickName !== undefined && !isNickName) ? 'chng-active' : ''}`} 
+                          onClick={() => {
+                            (saveFlag && isNickName) && onClickToggle(false)}
+                          }
+                        >
+                          실명
+                        </Button>
+                        <Button 
+                          className={`name-chng-bttn ${(isNickName !== undefined && isNickName) ? 'chng-active' : ''}`} 
+                          onClick={() => {
+                            (saveFlag && !isNickName) && onClickToggle(true)}
+                          }
+                        >
+                          닉네임
+                        </Button>
                       </div>
                       <div className="close-wrapper">
                         <button onClick={() => { props.setOpen() }}>
@@ -144,11 +168,11 @@ function ProfilePopupView(props: Props) {
                       <span className="prof-tit">
                         {isNickName ? skProfile.nickName : skProfile.member.name}
                       </span>
-                      <div className="foll-info"><span>{skProfile?.followerCount}</span>&nbsp;Follower<span>{skProfile?.followingCount}</span>&nbsp;Following</div>
+                      <div className="foll-info"><span>{followersList?.followers.length}</span>&nbsp;Follower<span>{followingsList?.followings.length}</span>&nbsp;Following</div>
                     </div>
                     {instructorId && instructorId !== '' && externalInstructor && externalInstructor === 'true' ? (
                       <div className="page-bttn-area">
-                        <Link to="#" onClick={onInstructor} className="l_to">강사 서비스</Link>
+                        <Button className="page-bttn" onClick={onInstructor}>강사 서비스</Button>
                       </div>
                     ) : instructorId && instructorId !== '' && externalInstructor && externalInstructor === 'false' ? (
                       <div className="page-bttn-area type2">
@@ -156,10 +180,10 @@ function ProfilePopupView(props: Props) {
                         <Link to="#" onClick={onInstructor} className="l_to">강사 서비스</Link>
                       </div>
                     ) : (
-                          <div className="page-bttn-area">
-                            <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
-                          </div>
-                        )}
+                      <div className="page-bttn-area">
+                        <Button className="page-bttn" onClick={() => { props.setOpen(); history.push(myTrainingRoutePaths.myPage()) }}>My Page</Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

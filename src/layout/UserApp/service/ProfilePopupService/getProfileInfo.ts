@@ -7,6 +7,7 @@ import { profile } from 'console';
 import ProfileInfoModel from '../../model/ProfileInfoModel';
 import { BadgesModel } from '../../model/BadgeModel';
 import { findBadgesByBadgeIssueState, findAllOtherCommunities, findAllPostViewsFromProfileFeed } from '../../api/ProfileInfoAPI';
+import { findUserProfile } from 'profile/present/apiclient/SkProfileApi';
 
 export async function getProfileInfo(memberId: string | undefined): Promise<void> {
   const profileItem: ProfileInfoModel = {
@@ -28,7 +29,7 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
 
   }
   if (memberId !== undefined) {
-    const profileInfo: ProfileInfoModel | undefined = await findCommunityProfile(memberId);
+    const profileInfo: ProfileInfoModel | undefined = await findUserProfile(memberId);
     if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
       profileItem.name = profileInfo.name;
       profileItem.company = profileInfo.company;

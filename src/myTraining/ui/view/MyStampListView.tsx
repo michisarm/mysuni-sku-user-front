@@ -65,11 +65,12 @@ export default function MyStampListView({
               <Table.Cell>
                 {convertTimeToDate(myStamp.endDate)} {/* 획득일자 */}
               </Table.Cell>
-              <Table.Cell>
+              {/* 스탬프 인증서 보기 */}
+              {/* <Table.Cell>
                 <MyStampCertificateModal
                   myStamp={myStamp}
                 />
-              </Table.Cell>
+              </Table.Cell> */}
             </Table.Row>
           );
         })}

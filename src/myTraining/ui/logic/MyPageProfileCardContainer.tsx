@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { SkProfileService } from '../../../profile/stores';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
-import { Image, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import {
   requestFollowingsModal,
   requestFollowersModal,
@@ -25,9 +24,6 @@ import ProfileImage from '../../../../src/shared/components/Image/Image';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
-  // myLearningSummaryService?: MyLearningSummaryService;
-  // myTrainingService?: MyTrainingService;
-  // badgeService?: BadgeService;
   clickTabHandler?: (id: string) => void;
   photoImageBase64: string;
   bgImageBase64: string;
@@ -35,21 +31,15 @@ interface MyPageHeaderContainerProps {
 
 function MyPageHeaderContainer({
   skProfileService,
-  // myLearningSummaryService,
-  // myTrainingService,
-  // badgeService,
   clickTabHandler,
   photoImageBase64,
   bgImageBase64,
 }: MyPageHeaderContainerProps) {
   
   const { skProfile, modifySkProfile } = skProfileService!;
-  // const followersList = useFollowersModal();
-  // const followingsList = useFollowingsModal();
 
-  const history = useHistory();
-
-  const [showNameFlag, setShowNameFlag] = useState<boolean>(true);
+  const [showNameFlag, setShowNameFlag] = useState<boolean>();
+  const [saveFlag, setSaveFlag] = useState<boolean>(true);
   const params = useParams<MyPageRouteParams>();
 
   useEffect(() => {
@@ -60,13 +50,17 @@ function MyPageHeaderContainer({
     // badgeService!.findAllBadgeCount();
     // myTrainingService!.countMyTrainingsWithStamp();
 
-    if(skProfile.nameFlag === 'N') setShowNameFlag(false)
+    if(skProfile.nameFlag === 'N'){
+      setShowNameFlag(false)
+    } else {
+      setShowNameFlag(true)
+    }
   }, [skProfile]);
 
   useRequestLearningSummary();
 
   const onClickShowName = useCallback(async (value: boolean) => {
-    if(!skProfile || 
+    if(!skProfile.id || 
         (!skProfile.nickName ||
           skProfile.nickName === '')){
       reactAlert({
@@ -76,18 +70,23 @@ function MyPageHeaderContainer({
       return;
     }
 
+    if(saveFlag){
 
-    const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-      skProfile.member.currentJobGroup,
-      skProfile.member.favoriteJobGroup,
-      skProfile.pisAgreement
-    );
+      setSaveFlag(false)
+    
+      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
+        skProfile.member.currentJobGroup,
+        skProfile.member.favoriteJobGroup,
+        skProfile.pisAgreement
+      );
+  
+      skProfileUdo.nameFlag = value === true ? 'R' : 'N'
 
-    skProfileUdo.nameFlag = value === true ? 'R' : 'N'
-
-    await modifySkProfile(skProfileUdo);
-    skProfileService!.findSkProfile();
-    setShowNameFlag(value);
+      await modifySkProfile(skProfileUdo);
+      skProfileService!.findSkProfile().then(skProfile => {
+        setSaveFlag(true);
+      });
+    }
 
   }, []);
 
@@ -111,26 +110,17 @@ function MyPageHeaderContainer({
                               {/* 실명/닉네임 class 이름 chng-active*/}
                                   <Button 
                                     className={`name-chng-bttn ${showNameFlag ? 'chng-active' : ''}`}
-                                    onClick={() => onClickShowName(true)}
+                                    onClick={() => (saveFlag && !showNameFlag) && onClickShowName(true)}
                                   >
                                       실명
                                   </Button>
                                   <Button 
                                     className={`name-chng-bttn ${showNameFlag ? '' : 'chng-active'}`}
-                                    onClick={() => onClickShowName(false)}
+                                    onClick={() => (saveFlag && showNameFlag) && onClickShowName(false)}
                                   >
                                       닉네임
                                   </Button>
                               </div>
-                              {/* <div className="close-wrapper">
-                                  <button>
-                                      <Image 
-                                        src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
-                                        alt="닫기버튼"
-                                      />
-                                      <span className="blind">close</span>
-                                  </button>
-                              </div> */}
                           </div>
                           
                           <div className="image-area">
@@ -172,8 +162,5 @@ function MyPageHeaderContainer({
 export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
-    'myTraining.myLearningSummaryService',
-    'myTraining.myTrainingService',
-    'badge.badgeService'
   )
 )(observer(MyPageHeaderContainer));

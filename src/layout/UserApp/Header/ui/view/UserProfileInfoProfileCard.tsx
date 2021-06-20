@@ -14,6 +14,7 @@ import { useFollowModel } from "../../../store/FollowStore";
 import { followMember, unfollowMember, findAllFollow } from "../../../api/ProfileInfoAPI";
 import { patronInfo } from "@nara.platform/dock";
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
+import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 
 interface Props {
   open: boolean,
@@ -22,7 +23,7 @@ interface Props {
   preProfileInfo: {
     isSetProfile: boolean,
     nickName: string,
-    hobby: string,
+    introduce: string,
     profileImg: string,
     profileBgImg: string,
   },
@@ -39,7 +40,7 @@ function UserProfileinfoProfileCard(props: Props) {
   const currentDate = new Date();
   const denizenId = patronInfo.getDenizenId();
   const [nickname, setNickname] = useState<string>('');
-  const [hobby, setHobby] = useState<string>('');
+  const [introduce, setIntroduce] = useState<string>('');
   const [profileImg, setProfileImg] = useState<string>('');
   const [profileBgImg, setProfileBgImg] = useState<string>('');
   const [preProfileImg, setPreProfileImg] = useState<string>('');
@@ -49,6 +50,8 @@ function UserProfileinfoProfileCard(props: Props) {
   const [badgeCount, setBadgeCount] = useState<number>(0);
   const [communityCount, setCommunityCount] = useState<number>(0);
   const [feedCount, setFeedCount] = useState<number>(0);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [isFollowFlag, setIsFollowFlag] = useState<boolean>();
 
   useEffect(() => {
     communityData && setCommunityCount(communityData.communitiesTotalCount || 0);
@@ -85,18 +88,27 @@ function UserProfileinfoProfileCard(props: Props) {
 
   useEffect(() => {
     let result = true;
-    followData && followData.ids.map(f => {
-      if (f === props.memberId) {
+    
+    if(followData){
+
+      result = !followData.ids.some(f => f === props.memberId)
+      
+      if (result) {
+        setFollowClassName('following');
+        setIsFollow('Follow');
+        if(isFollowFlag === undefined){
+          setIsFollowFlag(false)
+        }
+      }else{
         setFollowClassName('unfollowing');
         setIsFollow('Unfollow');
-        result = false;
+        if(isFollowFlag === undefined){
+          setIsFollowFlag(true)
+        }
       }
-    })
-
-    if (result) {
-      setFollowClassName('following');
-      setIsFollow('Follow');
     }
+
+    // setFollowCheck(false)
 
   }, [followData])
 
@@ -114,27 +126,26 @@ function UserProfileinfoProfileCard(props: Props) {
     //   }
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
-
         setNickname(profileInfo.nickname)
-        setHobby(profileInfo.introduce)
+        setIntroduce(profileInfo.introduce)
         setProfileImg(profileInfo.profileImg)
         setProfileBgImg(profileInfo.profileBgImg)
 
       if (preProfileInfo.isSetProfile) {
         if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
-        if (preProfileInfo.hobby) setHobby(preProfileInfo.hobby)
+        if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce)
         if (preProfileInfo.profileImg) setPreProfileImg(preProfileInfo.profileImg)
         if (preProfileInfo.profileBgImg) setPreProfileBgImg(preProfileInfo.profileBgImg)
       }
     }
   }, [profileInfo, props.preProfileInfo])
 
-  //hobby를 ',' 기준으로 구분한다.
+  //introduce를 ',' 기준으로 구분한다.
   function getTagHtml() {
     let tagList = new Array();
     let tagHtml = '';
 
-    tagList = hobby ? hobby.split(',') : [""];
+    tagList = introduce ? introduce.split(',') : [""];
     tagList.map((tag, index) => {
       if (tag !== '') {
         tagHtml +=
@@ -158,13 +169,21 @@ function UserProfileinfoProfileCard(props: Props) {
   // }, [followData])
 
   function onClickFollow() {
-    console.log(123)
+    const count = profileInfo?.followerCount || 0;
     if (isFollow === "Unfollow") {
-      console.log(456)
-      unfollowMember(props.memberId!).then(() => getFollow());
+      unfollowMember(props.memberId!).then(() => {
+        getFollow()
+        if(isFollowFlag !== undefined){
+          isFollowFlag ? setFollowerCount(count-1) : setFollowerCount(count)
+        }
+      });
     } else {
-      console.log(789)
-      followMember(props.memberId!).then(() => getFollow());
+      followMember(props.memberId!).then(() => {
+        getFollow()
+        if(isFollowFlag !== undefined){
+          isFollowFlag ? setFollowerCount(count) : setFollowerCount(count+1)
+        }
+      });
     }
   }
 
@@ -173,7 +192,7 @@ function UserProfileinfoProfileCard(props: Props) {
       <div className="profile-wrapper">
         <div className="bg-wrapper">
           <ProfileImage
-            src={preProfileBgImg || profileBgImg}
+            src={preProfileBgImg || profileBgImg || DefaultBgImg}
           />
           <div className="profile-info-wrapper">
             <div className="profile-info-area">
@@ -192,7 +211,7 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
               <div className="profile-info ">
                 <span className="prof-tit">{profileInfo?.isNickname ? nickname : profileInfo?.name}</span>
-                <div className="foll-info"><span>{profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
+                <div className="foll-info"><span>{followerCount || profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
               </div>
               <div className="count-area">
                 <div className="cnt-box bad-cnt">
@@ -209,8 +228,18 @@ function UserProfileinfoProfileCard(props: Props) {
                 </div>
               </div>
               <div className="follow-bttn-area">
-                {props.memberId !== denizenId &&
-                  <Button className={followClassName} onClick={onClickFollow}>{isFollow}</Button>}
+                {props.memberId !== denizenId && (
+                  <Button 
+                    className={followClassName} 
+                    onClick={() => {
+                      // if(followClickFlag){
+                        onClickFollow()
+                      // }
+                    }}
+                  >
+                   {isFollow}
+                  </Button>
+                )}
               </div>
             </div>
           </div>

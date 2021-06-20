@@ -29,7 +29,7 @@ const CommunityProfileModal:React.FC<Props> = (props: Props) => {
   const preProfileInfo = {
     isSetProfile: false,
     nickName: '',
-    hobby: '',
+    introduce: '',
     profileImg: '',
     profileBgImg: '',
   }

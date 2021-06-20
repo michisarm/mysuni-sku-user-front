@@ -32,6 +32,7 @@ import { findCommunityProfile } from '../../api/profileApi';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
+import { followMember, unfollowMember } from '../../../layout/UserApp/api/ProfileInfoAPI';
 
 interface profileParams {
   id: string;
@@ -99,17 +100,22 @@ function CommunityMainHeaderContainer() {
   // 팔로잉 모달 리스트 버튼
   const followersBtn = (id: string, idx: number, follow: boolean) => {
     if (follow === true) {
-      requestFollowModalDelete(id, 'follower');
+      // requestFollowModalDelete(id, 'follower');
+      unfollowMember(id).then(() => requestFollowersModal())
     } else {
-      requestFollowModalAdd(id, 'follower');
+      // requestFollowModalAdd(id, 'follower');
+      followMember(id).then(() => requestFollowersModal())
     }
   };
 
   const followingsBtn = (id: string, idx: number, follow: boolean) => {
     if (follow === true) {
-      requestFollowModalDelete(id, 'following');
+      // requestFollowModalDelete(id, 'following');
+      unfollowMember(id).then(() => requestFollowingsModal());
     } else {
-      requestFollowModalAdd(id, 'following');
+      // requestFollowModalAdd(id, 'following');
+      followMember(id).then(() => requestFollowingsModal());
+
     }
   };
 
@@ -276,12 +282,12 @@ function CommunityMainHeaderContainer() {
                     onClick={() => modalOpen('followers')}
                   >
                     <span className="text1">Followers</span>
-                    <span
-                      className="text3"
-                    >
-                      {followersList?.followers.length}
-                    </span>
-                    <span className="text5">명</span>
+                    <div className="border_line">
+                        <span className="text3">
+                          {followersList?.followers.length}
+                        </span>
+                        <span className="text5">명</span>
+                    </div>
                   </div>
                 </Label>
               </div>
@@ -296,10 +302,12 @@ function CommunityMainHeaderContainer() {
                     onClick={() => modalOpen('following')}
                   >
                     <span className="text1">Following</span>
-                    <span className="text2">
-                      {followingsList?.followings.length}
-                    </span>
-                    <span className="text6">명</span>
+                    <div className="border_line">
+                      <span className="text2">
+                        {followingsList?.followings.length}
+                      </span>
+                      <span className="text6">명</span>
+                    </div>
                   </div>
                 </Label>
               </div>

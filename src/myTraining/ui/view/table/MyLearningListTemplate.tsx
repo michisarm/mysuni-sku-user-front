@@ -65,8 +65,9 @@ function MyLearningListTemplate({
             <col width="80px"/>
             <col width="100px"/>
             <col width="420px"/>
-            <col />
-            <col width="100px"/>
+            <col width="150px"/>
+            {/* 스탬프 인증서 보기 */}
+            {/* <col width="100px"/> */}
           </colgroup>
         )}
         {children}

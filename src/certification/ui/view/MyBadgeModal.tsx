@@ -16,6 +16,7 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import moment from 'moment';
 import html2canvas from 'html2canvas'
+import { toJpeg } from 'html-to-image'
 import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 
@@ -70,25 +71,70 @@ class MyBadgeModal extends Component<Props, States> {
     // }
   }
 
+  b64toBlob(b64Data: string, contentType: string, sliceSize?: number) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+  return blob;
+}
+
+
   onClickCertificateImageDownload(id: string, name: string, time: number) {
     if(id){
       const img = document.getElementById(`MY-BADGE-${id}`) as HTMLImageElement;
-      // toJpeg(img, { quality: 1 })
-      // .then( dataUrl => {
-      //   const link = document.createElement('a');
-      //   link.download = `mySUNI-BADGE-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpeg`;
-      //   link.href = dataUrl;
-      //   link.click();
-      // });
+      toJpeg(img, { quality: 1 })
+      .then( dataUrl => {
 
-      html2canvas(img).then((canvas) => {
-        const _download= document.createElement('a');
-        _download.id ='MY-BADGE';
-        _download.href = canvas.toDataURL("image/jpeg").replace('image/jpeg','image/octet-stream');
-        _download.setAttribute('download',`mySUNI-BADGE-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpg`);
-        document.body.appendChild(_download);
-        _download.click();
+        if (typeof window.navigator.msSaveBlob !== 'undefined') {
+          const base64image = dataUrl;
+
+          // Split the base64 string in data and contentType
+          const block = base64image.split(";");
+          // Get the content type
+          const mimeType = block[0].split(":")[1];// In this case "image/png"
+          // get the real base64 content of the file
+          const realData = block[1].split(",")[1];// For example:  iVBORw0KGgouqw23....
+
+          // Convert b64 to blob and store it into a variable (with real base64 as value)
+          const canvasBlob = this.b64toBlob(realData, mimeType);
+
+          // Generate file download
+          window.navigator.msSaveBlob(canvasBlob, "yourwebsite_screenshot.png");
+          
+        }else{
+          const link = document.createElement('a');
+          link.download = `mySUNI-BADGE-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpeg`;
+          link.href = dataUrl;
+          link.click();
+
+        }
       });
+
+      // html2canvas(img).then((canvas) => {
+      //   const _download= document.createElement('a');
+      //   _download.id ='MY-BADGE';
+      //   _download.href = canvas.toDataURL("image/jpeg").replace('image/jpeg','image/octet-stream');
+      //   _download.setAttribute('download',`mySUNI-BADGE-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpg`);
+      //   document.body.appendChild(_download);
+      //   _download.click();
+      // });
     }
   }
 
@@ -213,7 +259,7 @@ class MyBadgeModal extends Component<Props, States> {
                         <Button 
                           className="fix bg"
                           onClick={
-                            () => this.onClickCertificateImageDownload(badgeStudent.id, badgeStudent.name, badgeStudent.learningCompletedTime)
+                            () => this.onClickCertificateImageDownload(badgeStudent.id, badgeStudent.name, badgeStudent.badgeIssueStateModifiedTime)
                           }
                         >
                           인증서 다운로드

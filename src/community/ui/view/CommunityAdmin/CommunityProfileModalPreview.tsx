@@ -12,7 +12,7 @@ interface Props {
   preProfileInfo: {
     isSetProfile: boolean,  // true
     nickName: string,
-    hobby: string,
+    introduce: string,
     profileImg: string,
     profileBgImg: string,
   },
