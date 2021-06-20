@@ -16,9 +16,10 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import moment from 'moment';
 import html2canvas from 'html2canvas'
-import { toJpeg } from 'html-to-image'
+import { toJpeg, toBlob } from 'html-to-image'
 import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
+import { saveAs } from 'file-saver';
 
 interface Props {
   myBadge: MyBadge;
@@ -99,34 +100,41 @@ class MyBadgeModal extends Component<Props, States> {
   onClickCertificateImageDownload(id: string, name: string, time: number) {
     if(id){
       const img = document.getElementById(`MY-BADGE-${id}`) as HTMLImageElement;
-      toJpeg(img, { quality: 1 })
-      .then( dataUrl => {
+      
 
-        if (typeof window.navigator.msSaveBlob !== 'undefined') {
-          const base64image = dataUrl;
+       
+      if (typeof window.navigator.msSaveBlob !== 'undefined') {
+        console.log("IE")
+        toBlob(img) 
+        .then( blob =>  { 
+          // window.saveAs (blob ,  'my-node.png' ) ; 
+          console.log("in", blob)
+          blob && saveAs(blob, 'my-node.png');
+        });
+          // const base64image = dataUrl;
 
-          // Split the base64 string in data and contentType
-          const block = base64image.split(";");
-          // Get the content type
-          const mimeType = block[0].split(":")[1];// In this case "image/png"
-          // get the real base64 content of the file
-          const realData = block[1].split(",")[1];// For example:  iVBORw0KGgouqw23....
+          // // Split the base64 string in data and contentType
+          // const block = base64image.split(";");
+          // // Get the content type
+          // const mimeType = block[0].split(":")[1];// In this case "image/png"
+          // // get the real base64 content of the file
+          // const realData = block[1].split(",")[1];// For example:  iVBORw0KGgouqw23....
 
-          // Convert b64 to blob and store it into a variable (with real base64 as value)
-          const canvasBlob = this.b64toBlob(realData, mimeType);
+          // // Convert b64 to blob and store it into a variable (with real base64 as value)
+          // const canvasBlob = this.b64toBlob(realData, mimeType);
 
-          // Generate file download
-          window.navigator.msSaveBlob(canvasBlob, "yourwebsite_screenshot.png");
-          
-        }else{
+          // // Generate file download
+          // window.navigator.msSaveBlob(canvasBlob, "yourwebsite_screenshot.png");
+      }else{
+        console.log("Chrome")
+        toJpeg(img, { quality: 1 })
+        .then( dataUrl => {
           const link = document.createElement('a');
           link.download = `mySUNI-BADGE-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpeg`;
           link.href = dataUrl;
           link.click();
-
-        }
-      });
-
+        });
+      }
       // html2canvas(img).then((canvas) => {
       //   const _download= document.createElement('a');
       //   _download.id ='MY-BADGE';
@@ -135,6 +143,29 @@ class MyBadgeModal extends Component<Props, States> {
       //   document.body.appendChild(_download);
       //   _download.click();
       // });
+    }
+  }
+
+  onClickIeImageDownload(id: string, name: string, time: number) {
+    if(id){
+      const img = document.getElementById(`MY-BADGE-${id}`) as HTMLImageElement;
+
+      html2canvas(img).then((canvas) => {
+        const base64image = canvas.toDataURL("image/png");
+
+        // Split the base64 string in data and contentType
+        const block = base64image.split(";");
+        // Get the content type
+        const mimeType = block[0].split(":")[1];// In this case "image/png"
+        // get the real base64 content of the file
+        const realData = block[1].split(",")[1];// For example:  iVBORw0KGgouqw23....
+
+        // Convert b64 to blob and store it into a variable (with real base64 as value)
+        const canvasBlob = this.b64toBlob(realData, mimeType);
+
+        // Generate file download
+        saveAs(canvasBlob, "ie test.png");
+      });
     }
   }
 
@@ -263,6 +294,14 @@ class MyBadgeModal extends Component<Props, States> {
                           }
                         >
                           인증서 다운로드
+                        </Button>
+                        <Button 
+                          className="fix bg"
+                          onClick={
+                            () => this.onClickIeImageDownload(badgeStudent.id, badgeStudent.name, badgeStudent.badgeIssueStateModifiedTime)
+                          }
+                        >
+                          IE 인증서 다운로드
                         </Button>
                         <span style={{ textAlign: 'left' }}>
                           ※ 이미지가 안나올 경우, 인터넷 옵션 &#8250; 도구 &#8250; 고급탭 에서 배경색 및 이미지 인쇄 부분을 체크해주세요. <br />
