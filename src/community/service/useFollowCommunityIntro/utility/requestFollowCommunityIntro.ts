@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {
-  followPostList, followList, followModalAdd, followModalDelete,followersModal
+  followPostList, followList, followModalAdd, followModalDelete, followersModal
 } from '../../../api/communityApi';
 import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
@@ -50,7 +50,7 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 2
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset:0
+      postsOffset: 0
     };
 
     if (communities === undefined) {
@@ -58,7 +58,7 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 2
         ...followCommunityIntro,
         communities: [],
         communitiesTotalCount: 0,
-        communitiesOffset:0,
+        communitiesOffset: 0,
       });
     } else {
       const next: FollowCommunityItem[] = [];
@@ -69,7 +69,7 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 2
         ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
-        communitiesOffset: next.length,   
+        communitiesOffset: next.length,
       });
     }
   });
@@ -83,7 +83,7 @@ export function requestAppendFollowCommunityList(offset: number = 0, limit: numb
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset:0
+      postsOffset: 0
     };
 
     if (communities === undefined) {
@@ -91,7 +91,7 @@ export function requestAppendFollowCommunityList(offset: number = 0, limit: numb
         ...followCommunityIntro,
         communities: [],
         communitiesTotalCount: 0,
-        communitiesOffset:0,
+        communitiesOffset: 0,
       });
     } else {
       const next: FollowCommunityItem[] = [...followCommunityIntro.communities];
@@ -102,7 +102,7 @@ export function requestAppendFollowCommunityList(offset: number = 0, limit: numb
         ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
-        communitiesOffset: next.length,   
+        communitiesOffset: next.length,
       });
     }
   });
@@ -118,7 +118,7 @@ export function requestFollowSearchList(offset: number = 0, limit: number = 5, n
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset:0
+      postsOffset: 0
     };
 
     if (communities === undefined) {
@@ -126,7 +126,7 @@ export function requestFollowSearchList(offset: number = 0, limit: number = 5, n
         ...followCommunityIntro,
         communities: [],
         communitiesTotalCount: 0,
-        communitiesOffset:0,
+        communitiesOffset: 0,
       });
     } else {
       const next: FollowCommunityItem[] = [];
@@ -137,14 +137,14 @@ export function requestFollowSearchList(offset: number = 0, limit: number = 5, n
         ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
-        communitiesOffset: next.length,   
+        communitiesOffset: next.length,
       });
     }
   });
 }
 
-function postToItem(post: Post): PostItem  {
-  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg, bookmarked,} = post;
+function postToItem(post: Post): PostItem {
+  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg, bookmarked, likeCount, replyCount } = post;
   return {
     communityId,
     menuId,
@@ -156,6 +156,8 @@ function postToItem(post: Post): PostItem  {
     name: title,
     contents: html,
     bookmarked,
+    likeCount,
+    replyCount,
   };
 }
 
@@ -167,14 +169,14 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset:0
+      postsOffset: 0
     };
     if (posts === undefined) {
       setFollowCommunityIntro({
         ...followCommunityIntro,
         posts: [],
         postsTotalCount: 0,
-        postsOffset:0
+        postsOffset: 0
       });
     } else {
       const nextList = [
@@ -185,7 +187,7 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
         ...followCommunityIntro,
         posts: nextList,
         postsTotalCount: posts.totalCount,
-        postsOffset:nextList.length,
+        postsOffset: nextList.length,
       });
 
     }

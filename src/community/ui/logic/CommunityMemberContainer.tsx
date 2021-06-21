@@ -1,6 +1,6 @@
-import React,{useState,useEffect,useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import classNames from "classnames";
-import {Icon} from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { CommunityMemberView } from '../view/CommunityMemberView/CommunityMemberView';
 import { getAllMember, getSearchMember } from 'community/service/useMemberList/useMemberList';
 import { setSearchText, useCommunityMember } from 'community/store/CommunityMemberStore';
@@ -12,29 +12,29 @@ interface Props {
   currentCommunity: string
 }
 
-const CommunityMemberListContainer: React.FC<Props> = function GroupListContainer({currentCommunity}) {
+const CommunityMemberListContainer: React.FC<Props> = function GroupListContainer({ currentCommunity }) {
   const memberData = useCommunityMember();
   const [searchValue, setSearchValue] = useState<any>();
   const [activemenu, setActiveMenu] = useState<string>("member");
   const history = useHistory();
 
   const handleActiveMenu = useCallback((active: string) => {
-    
+
     setActiveMenu(active);
     switch (active) {
       case 'member': history.push(`/community/${currentCommunity}/member`)
-        break 
+        break
       case 'group': history.push(`/community/${currentCommunity}/member/group`)
-        break 
+        break
       case 'approve': history.push(`/community/${currentCommunity}/member/approve`)
         break
       default:
     }
 
-  },[activemenu])
+  }, [activemenu])
 
-  const onSearch = (value:any) => {
-    if(value != null) {
+  const onSearch = (value: any) => {
+    if (value != null) {
       getSearchMember(currentCommunity, encodeURIComponent(searchValue))
       setSearchText(value)
     }
@@ -46,8 +46,8 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
 
   useEffect(() => {
     getAllMember(currentCommunity, 0)
-  },[])
-  
+  }, [])
+
   return (
     <>
       <CommunityMemberHeader />
@@ -63,9 +63,9 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
               placeholder="닉네임 입력"
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
-              onKeyPress={e=> e.key === 'Enter' && onSearch(searchValue)}
+              onKeyPress={e => e.key === 'Enter' && onSearch(searchValue)}
             />
-            <Icon className="search link top" onClick={onClickSearchInput}/>
+            <Icon className="search link top" onClick={onClickSearchInput} />
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { getCommunityProfileMyCommunity, setCommunityProfileMyCommunity } from "
 import { getEmtpyCommunityProfileMyCommunity, getEmtpyCommunityProfileBookmark } from "../../../viewModel/CommunityProfile";
 import CommunityView from '../../../model/CommunityView'
 import ProfileCommunityItem from "../../../viewModel/CommunityProfile/ProfileCommunityItem";
-import { getCommunityProfileBookmark, setCommunityProfileBookmark} from "community/store/CommunityProfileBookmarkStore";
+import { getCommunityProfileBookmark, setCommunityProfileBookmark } from "community/store/CommunityProfileBookmarkStore";
 import {
   findAllMyOpenCommunities,
   findAllPostViewsFromMyCommunities,
@@ -49,6 +49,8 @@ function postToItem(post: Post): PostItem {
     profileImg,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   } = post;
   return {
     communityId,
@@ -62,6 +64,8 @@ function postToItem(post: Post): PostItem {
     contents: html,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   };
 }
 
@@ -93,8 +97,8 @@ export async function requestProfileBookmarks() {
 }
 
 export function requestAppendProfileBookmarkPostList() {
-  const {  postsOffset } =
-  getCommunityProfileBookmark() || getEmtpyCommunityProfileBookmark();
+  const { postsOffset } =
+    getCommunityProfileBookmark() || getEmtpyCommunityProfileBookmark();
 
   // findAllPostViewsFromMyCommunities('', postsOffset).then(posts => {
   findAllPostViewsFromProfileBookmark(postsOffset).then(posts => {
