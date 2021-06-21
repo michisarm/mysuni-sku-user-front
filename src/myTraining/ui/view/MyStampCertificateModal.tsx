@@ -13,6 +13,7 @@ import moment from 'moment';
 import { SkProfileService } from 'profile/stores';
 // import * as htmlToImage from 'html-to-image';
 import { toJpeg } from 'html-to-image';
+import html2canvas from 'html2canvas'
 import ReactToPrint from 'react-to-print';
 import bg_mystamp from 'style/../../public/images/all/bg_mystamp.png';
 
@@ -54,12 +55,21 @@ class MyStampCertificateModal extends Component<Props, States> {
   onClickCertificateImageDownload(id: string, name: string, time: number) {
     if(id){
       const img = document.getElementById(`MY-STAMP-${id}`) as HTMLImageElement;
-      toJpeg(img, { quality: 1 })
-      .then( dataUrl => {
-        const link = document.createElement('a');
-        link.download = `mySUNI-STAMP-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpeg`;
-        link.href = dataUrl;
-        link.click();
+      // toJpeg(img, { quality: 1 })
+      // .then( dataUrl => {
+      //   const link = document.createElement('a');
+      //   link.download = `mySUNI-STAMP-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpeg`;
+      //   link.href = dataUrl;
+      //   link.click();
+      // });
+
+      html2canvas(img).then((canvas) => {
+        const _download= document.createElement('a');
+        _download.id ='MY-STAMP';
+        _download.href = canvas.toDataURL("image/jpeg").replace('image/jpeg','image/octet-stream');
+        _download.setAttribute('download',`mySUNI-STAMP-CERTIFICATE-${name}-${moment(time).format('YYYY.MM.DD')}.jpg`);
+        document.body.appendChild(_download);
+        _download.click();
       });
     }
   }
@@ -80,7 +90,7 @@ class MyStampCertificateModal extends Component<Props, States> {
           trigger={<Link to="#" className="btn-blue">보기</Link>}
         >
           <Modal.Header>
-              Badge 인증서 보기 {moment(myStamp.time).format('YYYY.MM.DD')}
+              Stamp 수료증 보기
               <Button className="close" onClick={this.onClose}>
                 Close
               </Button>
@@ -150,6 +160,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                           )
                         }}
                         content={() => this.printRef.current}
+                        pageStyle=""
                       />
                       <Button 
                         className="fix bg"
@@ -159,7 +170,10 @@ class MyStampCertificateModal extends Component<Props, States> {
                       >
                         수료증 다운로드
                       </Button>
-                      <span>※ 이미지가 안나올 경우, 인터넷 옵션 &#8250; 도구 &#8250; 고급탭 에서 배경색 및 이미지 인쇄 부분을 체크해주세요. </span>
+                      <span style={{ textAlign: 'left' }}>
+                        ※ 이미지가 안나올 경우, 인터넷 옵션 &#8250; 도구 &#8250; 고급탭 에서 배경색 및 이미지 인쇄 부분을 체크해주세요. <br />
+                        ※ 인쇄 사이즈 조정이 어려우면, 이미지 파일을 다운받아 인쇄하여 주시기 바랍니다.
+                      </span>
                   </div>
                 </div>
               </div>

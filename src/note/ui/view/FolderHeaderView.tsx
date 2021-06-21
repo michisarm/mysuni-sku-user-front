@@ -245,7 +245,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                   </div>
                 )
               }
-              {(folder && folder.folders.idNames.length > 0) && (<Button className={folderMultiLine ? "toggle_f" : "toggle_f open"} onClick={(e, data) => { setFolderMultiLine(!folderMultiLine) }}><Icon /></Button>)}
+              {(folder && folder.folders.idNames.length > 0) && (<Button className={folderMultiLine ? "toggle_f open" : "toggle_f"} onClick={(e, data) => { setFolderMultiLine(!folderMultiLine) }}><Icon /></Button>)}
             </div>
             <p className="txt1">
               <i aria-hidden="true" className="icon" />
