@@ -17,6 +17,7 @@ import FilterCountViewModel from '../../model/FilterCountViewModel';
 import { FilterCondition } from '../../model/FilterCondition';
 import { Direction } from '../../model/Direction';
 import InMyLectureCdo from '../../../lecture/detail/model/InMyLectureCdo';
+import MyTrainingApi from '../apiclient/MyTrainingApi';
 
 @autobind
 class InMyLectureService {
@@ -24,6 +25,8 @@ class InMyLectureService {
   static instance: InMyLectureService;
 
   private inMyLectureApi: InMyLectureApi;
+
+  private myTrainingApi: MyTrainingApi;
 
   @observable
   _inMyLectures: InMyLectureModel[] = [];
@@ -36,8 +39,12 @@ class InMyLectureService {
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
-  constructor(inMyLectureApi: InMyLectureApi) {
+  constructor(
+    inMyLectureApi: InMyLectureApi, 
+    myTrainingApi: MyTrainingApi
+  ) {
     this.inMyLectureApi = inMyLectureApi;
+    this.myTrainingApi = myTrainingApi;
   }
 
   @computed
@@ -270,10 +277,58 @@ class InMyLectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
+      // const cardIds = new Set<string>();
+      // const cubeIds = new Set<string>();
+
+      // offsetTableViews.results.slice(0, 20).map((result: any) => {
+      //   // map.set(result.serviceId, result.serviceType);
+      //   if(result.cubeType && result.category){
+      //     if(result.serviceType === "Card"){
+      //       if(result.serviceId) cardIds.add(result.serviceId);
+      //     }else if(result.serviceType === "Cube"){
+      //       if(result.cardId && result.serviceId){
+      //         cardIds.add(result.cardId);
+      //         cubeIds.add(result.serviceId);
+      //       }
+      //     }
+      //   }
+      // });
+
+      // let noteDatas: any = [];
+
+      // if(cardIds.size > 0 && cubeIds.size > 0){
+      //   const cubeNotes = await this.myTrainingApi.findCubeNoteList(Array.from(cardIds), Array.from(cubeIds)) || [] 
+      //   if(cubeNotes && cubeNotes.length > 0) noteDatas = noteDatas.concat(cubeNotes);
+      // }
+      
+      // if(cardIds.size > 0 && cubeIds.size === 0){
+      //   const cardNotes = await this.myTrainingApi.findCardNoteList(Array.from(cardIds)) || [];
+      //   if(cardNotes && cardNotes.length > 0) noteDatas = noteDatas.concat(cardNotes);
+      // }
+
+      // const updateNoteInMyLectureTableViews = offsetTableViews.results.map((result:any) => {
+      //   if(noteDatas.length > 0){
+      //     result.useNote = noteDatas.some(
+      //       (note: any) => {
+      //         if(result.serviceType === "Card"){
+      //           if(note?.cardId === result.serviceId){
+      //             return true;
+      //           } 
+      //         }else if(result.serviceType === "Cube"){
+      //           if(note?.cardId === result.cardId && note?.cardId === result.cardId){
+      //             return true;
+      //           } 
+      //         }
+      //         return false;
+      //       }) || false;
+      //   }
+      //   return new InMyLectureTableViewModel(result)
+      // });
+
+      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+
       runInAction(() => {
-        this._inMyLectureTableViews = offsetTableViews.results.map(
-          (result: any) => new InMyLectureTableViewModel(result)
-        );
+        this._inMyLectureTableViews = updateNoteInMyLectureTableViews;
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -292,10 +347,10 @@ class InMyLectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
+      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+
       runInAction(() => {
-        this._inMyLectureTableViews = offsetTableViews.results.map(
-          (result: any) => new InMyLectureTableViewModel(result)
-        );
+        this._inMyLectureTableViews = updateNoteInMyLectureTableViews;
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -316,13 +371,16 @@ class InMyLectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
-      const addedTableViews = offsetTableViews.results.map(
-        (result: any) => new InMyLectureTableViewModel(result)
-      );
+      // const addedTableViews = offsetTableViews.results.map(
+      //   (result: any) => new InMyLectureTableViewModel(result)
+      // );
+
+      const updateNoteInMyLectureAddTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+
       runInAction(() => {
         this._inMyLectureTableViews = [
           ...this._inMyLectureTableViews,
-          ...addedTableViews,
+          ...updateNoteInMyLectureAddTableViews,
         ];
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
@@ -358,10 +416,70 @@ class InMyLectureService {
       );
     }
   }
+
+  // Home > Learning > 관심목록 노트 작성여부 표현하기 위해 추가
+  async setTableViewsNoteInfo(tableViews: any[]) {
+      const cardIds = new Set<string>();
+      const cubeIds = new Set<string>();
+      let noteDatas: any = [];
+
+      if(tableViews &&
+          tableViews.length > 0){
+        tableViews.map((result: any) => {
+          // map.set(result.serviceId, result.serviceType);
+          if(result.cubeType && result.category){
+            if(result.serviceType === "Card"){
+              if(result.serviceId) cardIds.add(result.serviceId);
+            }else if(result.serviceType === "Cube"){
+              if(result.cardId && result.serviceId){
+                cardIds.add(result.cardId);
+                cubeIds.add(result.serviceId);
+              }
+            }
+          }
+        });
+  
+        if(cardIds.size > 0 && cubeIds.size > 0){
+          const cubeNotes = await this.myTrainingApi.findCubeNoteList(Array.from(cardIds), Array.from(cubeIds)) || [] 
+          if(cubeNotes && cubeNotes.length > 0) noteDatas = noteDatas.concat(cubeNotes);
+        }
+        
+        if(cardIds.size > 0 && cubeIds.size === 0){
+          const cardNotes = await this.myTrainingApi.findCardNoteList(Array.from(cardIds)) || [];
+          if(cardNotes && cardNotes.length > 0) noteDatas = noteDatas.concat(cardNotes);
+        }
+
+        const updateTableViews = tableViews.map((result: any) => {
+          if(noteDatas.length > 0){
+            result.useNote = noteDatas.some(
+              (note: any) => {
+                if(result.serviceType === "Card"){
+                  if(note?.cardId === result.serviceId){
+                    return true;
+                  } 
+                }else if(result.serviceType === "Cube"){
+                  if(note?.cardId === result.cardId && note?.cardId === result.cardId){
+                    return true;
+                  } 
+                }
+                return false;
+              }) || false;
+          }
+          return new InMyLectureTableViewModel(result)
+        });
+        
+        return updateTableViews;
+      }else{
+        return tableViews;
+      }
+  }
   /////////////////////////////////////// 개편 ///////////////////////////////////////
 }
 
-InMyLectureService.instance = new InMyLectureService(InMyLectureApi.instance);
+InMyLectureService.instance = new InMyLectureService(
+  InMyLectureApi.instance,
+  MyTrainingApi.instance
+);
 
 export default InMyLectureService;
 

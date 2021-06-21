@@ -67,7 +67,8 @@ export default function RequiredCardListView({
                     onViewDetail(e, requiredCard.serviceId);
                   }}
                 >
-                  <span className="ellipsis">{requiredCard.name}</span>
+                  <span className={`ellipsis ${requiredCard.useNote ?  'noteOn' : ''}`}>{requiredCard.name}</span>
+                  {/* <span className="ellipsis noteOn">{requiredCard.name}</span> */}
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>

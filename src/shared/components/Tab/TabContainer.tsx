@@ -78,7 +78,7 @@ class TabContainer extends Component<Props, State> {
         // 20200716 탭 이동
         this.setPreviousTab(
           tabs[
-          tabs.findIndex((tab) => tab.name === this.props.defaultActiveName)
+            tabs.findIndex((tab) => tab.name === this.props.defaultActiveName)
           ]
         );
       }
@@ -294,6 +294,7 @@ class TabContainer extends Component<Props, State> {
     //
     const { tabs, wrapperClassName, allMounted } = this.props;
     const { activeName } = this.state;
+
     const activeTab = tabs.find((tab) => tab.name === activeName);
 
     const contents = (
