@@ -207,7 +207,6 @@ const LectureNotePopupContainer: React.FC = ({
       setLectureNoteTab(false)
     })
   }, [noteItem, addNote, urlParams])
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@')
   return (
     <>
       {loadingState?.isLoading ? (
