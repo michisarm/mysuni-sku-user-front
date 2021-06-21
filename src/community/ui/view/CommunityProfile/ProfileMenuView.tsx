@@ -26,15 +26,6 @@ const ProfileMenuView: React.FC<ProfileMenuViewProps> = function ProfileMenuView
               Profile
             </Menu.Item>
             <Menu.Item
-              name="Feed"
-              active={menuType === 'feed'}
-              as={Link}
-              to="/community/my-profile/feed"
-              onClick={getProfileItemMapFromCommunity}
-            >
-              Feed
-            </Menu.Item>
-            <Menu.Item
               name="MyCommunity"
               active={menuType === 'communities'}
               as={Link}
@@ -42,15 +33,6 @@ const ProfileMenuView: React.FC<ProfileMenuViewProps> = function ProfileMenuView
               onClick={getProfileItemMapFromCommunity}
             >
               My Community
-            </Menu.Item>
-            <Menu.Item
-              name="bookmark"
-              active={menuType === 'bookmark'}
-              as={Link}
-              to="/community/my-profile/bookmark"
-              onClick={getProfileItemMapFromCommunity}
-            >
-              북마크
             </Menu.Item>
           </Menu>
         </div>

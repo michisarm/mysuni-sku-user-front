@@ -9,10 +9,7 @@ function ProfileFeedPage(profileId:string) {
   }, [profileId]);
   
   return (   
-  <div>
-    {/* <CommunityProfileFeedContainer profile={profile}/> */}
-    {CommunityProfileFeedContainer(profileId)}
-  </div>
+    CommunityProfileFeedContainer(profileId)
   );
 }
 export default ProfileFeedPage;

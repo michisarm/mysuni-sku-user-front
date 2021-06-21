@@ -34,6 +34,12 @@ const FollowView: React.FC = function FollowView() {
     if (name === 'Follow') {
       history.replace('/community/main/follow');
     }
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
   };
 
   return (
@@ -45,7 +51,6 @@ const FollowView: React.FC = function FollowView() {
               name="MyCommunity"
               active={false}
               as={Link}
-              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
@@ -55,19 +60,33 @@ const FollowView: React.FC = function FollowView() {
               name="MyCreatedCommunity"
               active={false}
               as={Link}
-              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
             </Menu.Item>
             <Menu.Item
               name="MyFeed"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
               active={true}
               as={Link}
-              // to="/community/main/follow"
               onClick={() => gaOnClick('Follow')}
             >
-              Follow
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
             </Menu.Item>
           </Menu>
         </div>

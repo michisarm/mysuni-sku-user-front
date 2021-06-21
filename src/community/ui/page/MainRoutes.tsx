@@ -23,6 +23,9 @@ import {
 import { getEmptyMyCommunityIntro } from '../../viewModel/MyCommunityIntro/MyCommunityIntro';
 import { getEmptyOpenCommunityIntro } from '../../viewModel/OpenCommunityIntro/OpenCommunityIntro';
 import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
+import MyProfilePage from './MyProfilePage';
+import ProfileFeedPage from './ProfileFeedPage';
+import MyProfileBookmarkPage from './MyProfileBookmarkPage';
 
 function MainRoutes() {
   useEffect(() => {
@@ -51,7 +54,8 @@ function MainRoutes() {
           component={OpenCommunityPage}
         />
         <Route exact path="/community/main/follow" component={FollowPage} />
-
+        <Route exact path="/community/main/feed" component={()=>ProfileFeedPage('')} />
+        <Route exact path="/community/main/bookmark" component={MyProfileBookmarkPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </section>

@@ -28,6 +28,12 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
       history.replace('/community/main/open-communities');
     }
     if (name === 'Follow') history.replace('/community/main/follow');
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
   };
   return (
     <div ref={contextRef}>
@@ -38,7 +44,6 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyCommunity"
               active={false}
               as={Link}
-              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
@@ -48,7 +53,6 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyCreatedCommunity"
               active={true}
               as={Link}
-              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
@@ -57,10 +61,25 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyFeed"
               active={false}
               as={Link}
-              // to="/community/main/follow"
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
+              active={false}
+              as={Link}
               onClick={() => gaOnClick('Follow')}
             >
-              Follow
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
             </Menu.Item>
           </Menu>
         </div>
