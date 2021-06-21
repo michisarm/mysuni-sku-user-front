@@ -38,7 +38,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findAllJobGroups();
-    skProfileService!.findSkProfile().then(skProfile => {
+    skProfileService!.findSkProfile().then((skProfile) => {
       //
       const favoriteJobGroup =
         skProfile.member.favoriteJobGroup.favoriteJobGroup;
@@ -135,7 +135,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     this.props.history.push(routePaths.currentJob());
   }
 
-  onNextClick() {
+  async onNextClick() {
     //
     const skProfileService = this.props.skProfileService!;
     const { skProfile } = skProfileService!;
@@ -160,7 +160,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
         skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
-      skProfileService.modifySkProfile(skProfileUdo);
+      await skProfileService.modifySkProfile(skProfileUdo);
       // this.props.history.push(routePaths.favoriteLearningType());
       this.props.history.push(routePaths.favoriteCollege());
     }
@@ -246,7 +246,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
                     favoriteJobGroup.favoriteJobDuty.name
                   }
                   onClick={() => this.setState({ focus: true })}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.selectEtcJobDuty({ value: e.target.value })
                   }
                 />
