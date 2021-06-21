@@ -248,7 +248,7 @@ function UserProfileinfoProfileCard(props: Props) {
       <div className="tag-info-area">
         <div className="info-area">
           <span className="prof-name">{profileInfo?.isNickname ? profileInfo?.name : nickname}</span>
-          <span className="comp-name">{profileInfo?.company.name}</span>
+          <span className="comp-name">{profileInfo?.company?.name}</span>
         </div>
         <div className="tag-area">
           <div className="belt" dangerouslySetInnerHTML={{ __html: getTagHtml() }}>
