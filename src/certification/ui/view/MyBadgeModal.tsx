@@ -151,7 +151,7 @@ class MyBadgeModal extends Component<Props, States> {
                   /> */}
 
                   {/* 인증서 영역 */}
-                  <div className="message-wrapper" ref={this.printRef}>
+                  <div className="certi_box" ref={this.printRef}>
                     <div
                       className="my_certificate mybadge" 
                       id={`MY-BADGE-${badge.id}`}

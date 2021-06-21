@@ -106,7 +106,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                   </p>
 
                   {/* 인증서 영역 */}
-                  <div className="message-wrapper" ref={this.printRef}>
+                  <div className="certi_box" ref={this.printRef}>
                     <div 
                       className="my_certificate mystamp" 
                       id={`MY-STAMP-${myStamp.id}`}
