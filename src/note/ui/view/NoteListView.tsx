@@ -3,7 +3,7 @@ import { Segment, Accordion, Image, Menu, Table, Select, Button, Label, Icon, Fo
 import Calendar from './Calendar';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { OffsetElementList, reactAlert, reactConfirm } from '@nara.platform/accent';
-import Note from '../../model/Note';
+import Note, { getConvertEnter } from '../../model/Note';
 import { requestNoteList, requestColleges, requestNoteCount, requestAppendCubeList, requestCubeList } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox, getSearchBox } from '../../store/SearchBoxStore';
@@ -367,7 +367,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
                           <p className="note"
                             onClick={(e) => updateForm(subIndex, subItem.note, item.note.cubeId)}
                             dangerouslySetInnerHTML={{
-                              __html: `${subItem.note.content.replace('\n', "<br />")}`
+                              __html: `${getConvertEnter(subItem.note.content)}`
                             }}
                           />
                         )
