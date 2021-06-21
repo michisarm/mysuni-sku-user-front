@@ -5,6 +5,7 @@ import { SearchBox } from 'community/model/SearchBox';
 import { MemberTempModel } from 'community/model/MemberTempModel';
 import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
 import { param } from 'jquery';
+import { getSearchText } from '../store/CommunityMemberStore';
 
 const BASE_URL = '/api/community';
 
@@ -27,8 +28,12 @@ export function findAllMemberByQuery(
   communityId: string,
   pageNum: number
 ): Promise<any> {
+  let searchText = getSearchText()
+  if(searchText === undefined) {
+    searchText = ''
+  }
   return axios.get(
-    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&nickName=${searchText}`
   );
 }
 

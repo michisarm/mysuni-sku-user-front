@@ -3,7 +3,7 @@ import classNames from "classnames";
 import {Icon} from "semantic-ui-react";
 import { CommunityMemberView } from '../view/CommunityMemberView/CommunityMemberView';
 import { getAllMember, getSearchMember } from 'community/service/useMemberList/useMemberList';
-import { useCommunityMember } from 'community/store/CommunityMemberStore';
+import { setSearchText, useCommunityMember } from 'community/store/CommunityMemberStore';
 import { useHistory } from 'react-router-dom';
 import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberTabmenu';
 import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
@@ -17,10 +17,6 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
   const [searchValue, setSearchValue] = useState<any>();
   const [activemenu, setActiveMenu] = useState<string>("member");
   const history = useHistory();
-
-  useEffect(() => {
-
-  },[currentCommunity])
 
   const handleActiveMenu = useCallback((active: string) => {
     
@@ -40,7 +36,7 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
   const onSearch = (value:any) => {
     if(value != null) {
       getSearchMember(currentCommunity, encodeURIComponent(searchValue))
-      setSearchValue('')
+      setSearchText(value)
     }
   }
 
@@ -73,7 +69,6 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
           </div>
         </div>
       </div>
-      
       <CommunityMemberView />
     </>
   );

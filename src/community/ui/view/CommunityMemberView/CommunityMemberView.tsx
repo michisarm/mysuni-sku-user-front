@@ -1,7 +1,7 @@
-import React,{useState,useCallback,useEffect} from 'react';
+import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityMember } from 'community/store/CommunityMemberStore';
+import { useCommunityMember, useSearchText } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
@@ -23,7 +23,6 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
       onUnFollow(communityId,memberId, (activePage - 1) * 8)
     }
   }, [activePage])
-
   return (
     <>
       <div className="member-card">
@@ -78,11 +77,19 @@ interface MemberList {
   communityId: any
 }
 
-export const CommunityMemberView = () => {
+export const CommunityMemberView: FunctionComponent  = () => {
   const memberData = useCommunityMember();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-  const {communityId} = useParams<MemberList>();
+  const { communityId } = useParams<MemberList>();
+  const searchText = useSearchText()
+
+  useEffect(() => {
+    if(searchText === undefined) {
+      return
+    } 
+    setActivePage(1)
+  },[searchText])
 
   const totalPages = () => {
     let totalPage = Math.ceil(memberData!.totalCount / 8)
