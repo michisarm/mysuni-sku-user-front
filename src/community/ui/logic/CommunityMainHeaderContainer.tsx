@@ -30,6 +30,7 @@ import {
 import { Area } from 'tracker/model';
 import { findCommunityProfile } from '../../api/profileApi';
 import CommunityProfileModal from '../view/CommunityProfileModal';
+import ProfileImage from '../../../../src/shared/components/Image/Image';
 
 interface profileParams {
   id: string;
@@ -120,11 +121,11 @@ function CommunityMainHeaderContainer() {
               className="pic"
               onClick={() => clickProfile(item.id)}
             >
-              <img
+              <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `/files/community/${item.profileImg}`
+                    : `${item.profileImg}`
                 }
                 alt=""
               />
@@ -161,11 +162,11 @@ function CommunityMainHeaderContainer() {
               className="pic"
               onClick={() => clickProfile(item.id)}
             >
-              <img
+              <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `/files/community/${item.profileImg}`
+                    : `${item.profileImg}`
                 }
                 alt=""
               />
@@ -211,25 +212,25 @@ function CommunityMainHeaderContainer() {
       {/* <FollowerView /> */}
       {/* eslint-disable */}
       <div
-        className="main-info-area community-main-header"
+        className="main-info-area"
         data-area={Area.COMMUNITY_INFO}
       >
-        <div className="progress-info-wrap">
+        <div className="progress-info-wrap mypage personal-detail">
           <div className="cell">
-            <div className="cell-inner">
+            <div className="cell-inner personal-inner">
               <div
                 className="profile"
                 onClick={() => history.push('/community/my-profile')}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="pic">
-                  <img
+                  <ProfileImage
                     src={
                       profile?.profileImg === null ||
                       profile?.profileImg === '' ||
                       profile?.profileImg === undefined
                         ? `${DefaultImg}`
-                        : `/files/community/${profile?.profileImg}`
+                        : `${profile?.profileImg}`
                     }
                   />
                 </div>
@@ -237,45 +238,69 @@ function CommunityMainHeaderContainer() {
               <div className="text-info">
                 <div className="name">
                   <div
-                    onClick={() => history.push('/community/my-profile')}
+                    onClick={() => history.push('/my-training/my-page')}
                     style={{ cursor: 'pointer', display: 'inline-block' }}
                   >
-                    {profile?.nickname || profile?.name || ''}
+                    {profile?.nickname || profile?.name || ''}님,
                   </div>
-                  <Link
+                </div>
+                <div className="part">
+                    <p>mySUNI 커뮤니티에 가입하고 다양한 활동을 즐겨보세요!</p>
+                    {/* <Link
                     className="ui button orange-arrow2"
-                    to="/community/my-profile"
-                  >
-                    <i aria-hidden="true" className="icon post" />
-                    프로필 상세
-                  </Link>
+                    to="/my-training/my-page"
+                    >
+                      <i aria-hidden="true" className="icon post" />
+                      프로필 설정하기
+                    </Link> */}
+                </div>
+                <div className="part">
+                    <Link
+                      className="ui button orange-arrow"
+                      to="/my-training/my-page"
+                    >
+                      <i aria-hidden="true" />
+                      프로필 설정하기
+                    </Link>
                 </div>
               </div>
             </div>
           </div>
-          <div className="cell">
-            <div className="ui statistic community-num">
-              <Label className="onlytext">
-                <span>Followers</span>
-              </Label>
-              <div
-                style={profile?.followerCount ? { cursor: 'pointer' } : {}}
-                className="value2"
-                onClick={() => modalOpen('followers')}
-              >
-                {followersList?.followers.length}
+          <div className="cell followers">
+            <div className="cell-inner">
+              <div className="stamp-wrap">
+                <Label className="stamp">
+                  <div 
+                    style={profile?.followerCount ? { cursor: 'pointer' } : {}}
+                    onClick={() => modalOpen('followers')}
+                  >
+                    <span className="text1">Followers</span>
+                    <span
+                      className="text3"
+                    >
+                      {followersList?.followers.length}
+                    </span>
+                    <span className="text5">명</span>
+                  </div>
+                </Label>
               </div>
             </div>
-            <div className="ui statistic community-num">
-              <Label className="onlytext">
-                <span>Following</span>
-              </Label>
-              <div
-                style={profile?.followingCount ? { cursor: 'pointer' } : {}}
-                className="value2"
-                onClick={() => modalOpen('following')}
-              >
-                {followingsList?.followings.length}
+          </div>
+          <div className="cell following">
+            <div className="cell-inner">
+              <div className="stamp-wrap">
+                <Label className="stamp">
+                  <div 
+                    style={profile?.followingCount ? { cursor: 'pointer' } : {}}
+                    onClick={() => modalOpen('following')}
+                  >
+                    <span className="text1">Following</span>
+                    <span className="text2">
+                      {followingsList?.followings.length}
+                    </span>
+                    <span className="text6">명</span>
+                  </div>
+                </Label>
               </div>
             </div>
           </div>

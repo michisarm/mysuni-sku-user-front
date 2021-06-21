@@ -12,6 +12,7 @@ const routePaths = {
   learningRetry: () => routePaths.learningTab('Retry'),
 
   myPage: () => '/my-training/my-page',
+  myProfile: (tab: string = 'MyProfile') => `/my-training/my-page/${tab}`,
   // 시작 EarnedStampList -> EarnedBadgeList 로 변경 20200911
   //myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}/pages/1`,
   myPageTab: (tab: string = 'EarnedBadgeList') => `/my-training/my-page/${tab}/pages/1`,
@@ -19,10 +20,11 @@ const routePaths = {
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
   myPageEarnedBadgeList: () => routePaths.myPageTab('EarnedBadgeList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
+  myPageProfile: () => routePaths.myProfile('MyProfile'),
 
   //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 
-  myPageNoteTab: (tab: string = 'EarnedBadgeList', subTab: string = 'all') => `/my-training/my-page/${tab}/${subTab}`,
+  myPageNoteTab: (tab: string = 'EarnedBadgeList', subTab: string = 'pages/1') => `/my-training/my-page/${tab}/${subTab}`,
   myPageEarnedNoteList: () => routePaths.myPageNoteTab('EarnedNoteList'),
 
   approval: () => '/approval',

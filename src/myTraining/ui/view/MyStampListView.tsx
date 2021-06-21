@@ -8,6 +8,7 @@ import LectureParams, {
 import { convertTimeToDate } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
+import MyStampCertificateModal from './MyStampCertificateModal'
 
 interface MyStampListViewProps {
   myStamps: MyTrainingTableViewModel[];
@@ -57,11 +58,17 @@ export default function MyStampListView({
                   <span className="ellipsis">{myStamp.name}</span>
                 </a>
               </Table.Cell>
-              <Table.Cell>
-                {myStamp.stampCount || '-'} {/* 스탬프 */}
-              </Table.Cell>
+              {/* 스탬프 */}
+              {/* <Table.Cell>
+                {myStamp.stampCount || '-'} 
+              </Table.Cell> */}
               <Table.Cell>
                 {convertTimeToDate(myStamp.endDate)} {/* 획득일자 */}
+              </Table.Cell>
+              <Table.Cell>
+                <MyStampCertificateModal
+                  myStamp={myStamp}
+                />
               </Table.Cell>
             </Table.Row>
           );

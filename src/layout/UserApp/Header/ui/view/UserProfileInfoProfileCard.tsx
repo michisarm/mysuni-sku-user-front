@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Image } from 'semantic-ui-react';
 import { getProfileInfo } from '../../../service/ProfilePopupService/getProfileInfo'
 import { useProfileInfoModel, setProfileInfoModel } from '../../../store/ProfileInfoStore';
+import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 
 interface Props {
   open: boolean,
@@ -20,6 +21,13 @@ function UserProfileinfoProfileCard(props: Props) {
   const profileInfo = useProfileInfoModel();
   const [followClassName, setFollowClassName] = useState<string>('unfollowing');
   const [isFollow, setIsFollow] = useState<string>('Unfollow');
+  const [nickname, setNickname] = useState<string>('');
+  const [hobby, setHobby] = useState<string>('');
+  const [profileImg, setProfileImg] = useState<string>('');
+  const [profileBgImg, setProfileBgImg] = useState<string>('');
+  const [preProfileImg, setPreProfileImg] = useState<string>('');
+  const [preProfileBgImg, setPreProfileBgImg] = useState<string>('');
+  const {preProfileInfo} = props;
 
   useEffect(() => {
     getProfileInfo(props.memberId)
@@ -28,17 +36,31 @@ function UserProfileinfoProfileCard(props: Props) {
   }, [props.memberId])
 
   useEffect(() => {
-    if (profileInfo !== undefined && props.preProfileInfo !== undefined) {
-      //프로필 설정의 미리보기에 사용
-      if (props.preProfileInfo.isSetProfile) {
-        profileInfo && setProfileInfoModel({
-          ...profileInfo,
-          nickname: props.preProfileInfo.nickName,
-          hobby: props.preProfileInfo.hobby,
-          profileImg: props.preProfileInfo.profileImg,
-          profileBgImg: props.preProfileInfo.profileBgImg,
-        });
-      }
+    // if (profileInfo !== undefined && props.preProfileInfo !== undefined) {
+    //   //프로필 설정의 미리보기에 사용
+    //   if (props.preProfileInfo.isSetProfile) {
+    //     profileInfo && setProfileInfoModel({
+    //       ...profileInfo,
+    //       nickname: props.preProfileInfo.nickName,
+    //       hobby: props.preProfileInfo.hobby,
+    //       profileImg: props.preProfileInfo.profileImg,
+    //       profileBgImg: props.preProfileInfo.profileBgImg,
+    //     });
+    //   }
+    // }
+    if (profileInfo !== undefined && preProfileInfo !== undefined) {
+
+        setNickname(profileInfo.nickname)
+        setHobby(profileInfo.hobby)
+        setProfileImg(profileInfo.profileImg)
+        setProfileBgImg(profileInfo.profileBgImg)
+
+        if (preProfileInfo.isSetProfile) {
+          if(preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
+          if(preProfileInfo.hobby) setHobby(preProfileInfo.hobby)
+          if(preProfileInfo.profileImg) setPreProfileImg(preProfileInfo.profileImg)
+          if(preProfileInfo.profileBgImg) setPreProfileBgImg(preProfileInfo.profileBgImg)
+        }
     }
   }, [profileInfo, props.preProfileInfo])
 
@@ -47,7 +69,7 @@ function UserProfileinfoProfileCard(props: Props) {
     let tagList = new Array();
     let tagHtml = '';
 
-    tagList = profileInfo ? profileInfo.hobby.split(',') : [""];
+    tagList = hobby ? hobby.split(',') : [""];
     tagList.map((tag, index) => {
       if (tag !== '') {
         tagHtml +=
@@ -62,7 +84,9 @@ function UserProfileinfoProfileCard(props: Props) {
     <>
       <div className="profile-wrapper">
         <div className="bg-wrapper">
-          <Image src={`/files/community/${profileInfo?.profileBgImg}`} />
+          <ProfileImage 
+            src={ preProfileBgImg || profileBgImg} 
+          />
           <div className="profile-info-wrapper">
             <div className="profile-info-area">
               <div className="close-wrapper">
@@ -73,11 +97,14 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
 
               <div className="image-area">
-                <Image src={`/files/community/${profileInfo?.profileImg}`} />
+                <ProfileImage 
+                  src={preProfileImg || profileImg} 
+                  className="ui image"
+                />
               </div>
               <div className="profile-info ">
-                <span className="prof-tit">{profileInfo?.isNickname ? profileInfo?.nickname : profileInfo?.name}</span>
-                <div className="foll-info"><span>{profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
+                <span className="prof-tit">{profileInfo?.isNickname ? nickname : profileInfo?.name}</span>
+                <div className="foll-info"><span>{profileInfo?.followerCount}</span>{' '}Follower111<span>{profileInfo?.followingCount}</span>{' '}Following</div>
               </div>
               <div className="count-area">
                 <div className="cnt-box bad-cnt">
@@ -103,7 +130,7 @@ function UserProfileinfoProfileCard(props: Props) {
       </div>
       <div className="tag-info-area">
         <div className="info-area">
-          <span className="prof-name">{profileInfo?.isNickname ? profileInfo?.name : profileInfo?.nickname}</span>
+          <span className="prof-name">{profileInfo?.isNickname ? profileInfo?.name : nickname}</span>
           <span className="comp-name">{profileInfo?.company.name}</span>
         </div>
         <div className="tag-area">

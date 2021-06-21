@@ -23,6 +23,14 @@ class SkProfileModel implements DramaEntity {
   photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
   photoImage: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
 
+  nickName: string = '';    // 닉네임
+  bgImage: string = '';     // 배경이미지
+  introduce: string = '';   // 자기소개
+  followerCount: number = 0;  // 팔로워 숫자
+  followingCount: number = 0; // 팔로잉 숫자
+  nameFlag: string = 'R';     // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+
+
   constructor(skProfile?: SkProfileModel) {
     //
     if (skProfile) {
@@ -100,6 +108,15 @@ class SkProfileModel implements DramaEntity {
 
     return photoImageFilePath;
   }
+
+  @computed
+  get bgFilePath() {
+    //
+    let bgImageFilePath: string = '';
+    bgImageFilePath = this.bgImage;
+
+    return bgImageFilePath;
+  }
 }
 
 decorate(SkProfileModel, {
@@ -114,6 +131,12 @@ decorate(SkProfileModel, {
   studySummaryConfigured: observable,
   photoType: observable,
   photoImage: observable,
+  nickName: observable,
+  bgImage: observable,
+  introduce: observable,
+  followerCount: observable,
+  followingCount: observable,
+  nameFlag: observable,
 });
 
 export default SkProfileModel;

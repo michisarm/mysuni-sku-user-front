@@ -10,7 +10,7 @@ interface Props {
   setOpen: (state: boolean) => void,
   memberId: string | undefined,
   preProfileInfo: {
-    isSetProfile: boolean,
+    isSetProfile: boolean,  // true
     nickName: string,
     hobby: string,
     profileImg: string,

@@ -247,6 +247,10 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
               }
               {(folder && folder.folders.idNames.length > 0) && (<Button className={folderMultiLine ? "toggle_f" : "toggle_f open"} onClick={(e, data) => { setFolderMultiLine(!folderMultiLine) }}><Icon /></Button>)}
             </div>
+            <p className="txt1">
+              <i aria-hidden="true" className="icon" />
+              학습 내용이나 목표에 따라 나의 노트를 정리해 보세요.
+            </p>
           </div>
 
 

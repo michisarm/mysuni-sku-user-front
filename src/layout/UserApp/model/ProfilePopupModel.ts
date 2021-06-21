@@ -7,6 +7,7 @@ export default interface ProfilePoupModel {
   profileBgImg: string;
   nickname: string;
   oriNickname: string;
+  nameFlag: string;
   introduce: string;
   hobby: string;
   followerCount: number;

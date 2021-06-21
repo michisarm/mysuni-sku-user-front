@@ -13,6 +13,7 @@ export async function getProfilePopup(): Promise<void> {
         profileBgImg: '',
         nickname: '',
         oriNickname: '',
+        nameFlag: 'R',
         introduce: '',
         hobby: '',
         followerCount: 0,
@@ -27,6 +28,7 @@ export async function getProfilePopup(): Promise<void> {
         profileItem.profileBgImg = myProfile.profileBgImg;
         profileItem.nickname = myProfile.nickname;
         profileItem.oriNickname = myProfile.nickname;
+        profileItem.nameFlag = myProfile.nameFlag;
         profileItem.introduce = myProfile.introduce;
         profileItem.hobby = myProfile.hobby;
         profileItem.followerCount = myProfile.followerCount;

@@ -10,8 +10,11 @@ const NotePage: React.FC<NotePageProps> = function NotePage({ noteCount }) {
 
   return (
     <>
-      <div>
-        <NoteContainer noteCount={noteCount} />
+      <div className="mypage_contents profile-badge-contents">
+        <strong className="mypage_title">Note</strong>
+        <div className="ui segment full note-tab-area">
+          <NoteContainer noteCount={noteCount} />
+        </div>
       </div>
     </>
   );

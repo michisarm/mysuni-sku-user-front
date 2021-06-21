@@ -173,6 +173,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: 'My Page',
       items: [
+        { name: 'My Profile', path: myPageRoutePaths.myPageProfile() },
         { name: 'My Badge', path: myPageRoutePaths.myPageEarnedBadgeList() },
         { name: 'My Stamp', path: myPageRoutePaths.myPageEarnedStampList() },
         { name: 'Note', path: myPageRoutePaths.myPageEarnedNoteList() },
