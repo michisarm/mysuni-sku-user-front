@@ -175,7 +175,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       if(!nickNameTemp || nickNameTemp === ''){
         reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
           return;
-      }else if(introduceTemp.length > 20){
+      }else if(nickNameTemp.length > 20){
         reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
           return;
       }
@@ -306,6 +306,14 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   };
 
   handleNickNameChange(e: any) {
+    if (e.target.value.length > 20) {
+      reactAlert({
+        title: '알림',
+        message: '닉네임은 최대 20자까지 입력 가능합니다.',
+      });
+      return;
+    }
+    
     this.setState({
       nickNameTemp: e.target.value,
       changeNickName: true
@@ -313,6 +321,14 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   };
 
   handleIntroduceChange(e: any) {
+    if (e.target.value.length > 45) {
+      reactAlert({
+        title: '알림',
+        message: '자기소개는 최대 45자까지 입력 가능합니다.',
+      });
+      return;
+    }
+    
     this.setState({
       introduceTemp: e.target.value,
       changeIntroduce: true

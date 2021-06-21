@@ -37,7 +37,7 @@ function UserProfileInfoView(props: Props) {
     <section className="content">
       <Modal open={props.open} className=" w1044 profile-modal-new">
         <Modal.Content>
-          미리보기
+          {props.preProfileInfo && props.preProfileInfo.isSetProfile ? '미리보기' : ''}
           <div className="contents-wrapper">
             <div className="profile-contents-area left-side side-wrapper">
               <UserProfileInfoProfileCard open={props.open} setOpen={props.setOpen} memberId={props.memberId} preProfileInfo={props.preProfileInfo} />
