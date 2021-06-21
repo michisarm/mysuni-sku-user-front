@@ -60,6 +60,15 @@ function MyLearningListTemplate({
             <col width="10%" />
           </colgroup>
         )}
+        {contentType === MyPageContentType.EarnedStampList && (
+          <colgroup>
+            <col width="80px"/>
+            <col width="100px"/>
+            <col width="420px"/>
+            <col />
+            <col width="100px"/>
+          </colgroup>
+        )}
         {children}
       </Table>
     </div>
@@ -73,7 +82,7 @@ const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType 
   switch (contentType) {
     /* My Stamp */
     case MyPageContentType.EarnedStampList:
-      return 'mystamp-list-wrap';
+      return 'stamp-list-wrapper';
     default:
       return 'mylearning-list-wrap';
   }

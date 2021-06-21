@@ -16,6 +16,8 @@ import {
   isExternalInstructor,
   isInternalInstructor,
 } from '../../../../../shared/helper/findUserRole';
+import { Button, Popup } from 'semantic-ui-react';
+import ProfilePopupView from '../view/ProfilePopupView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -25,17 +27,19 @@ interface Props extends RouteComponentProps {
 interface State {
   balloonShowClass: string;
   menuAuth: PageElement[];
+  isOpen: boolean;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
-  profileButtonRef: any = React.createRef();
+  //profileButtonRef: any = React.createRef();
 
   state = {
     balloonShowClass: '',
     menuAuth: [],
+    isOpen: false,
   };
 
   //
@@ -70,17 +74,17 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   handleClickOutside(e: MouseEvent) {
-    if (
-      this.profileButtonRef &&
-      !this.profileButtonRef.current.contains(e.target)
-    ) {
-      setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
-    }
+    // if (
+    //   //this.profileButtonRef &&
+    //   //!this.profileButtonRef.current.contains(e.target)
+    // ) {
+    //   //setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
+    // }
   }
 
   onTogglePop() {
-    const { balloonShowClass } = this.state;
-    this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
+    //const { balloonShowClass } = this.state;
+    //this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
   }
 
   onLogout() {
@@ -132,10 +136,32 @@ class ProfileContainer extends Component<Props, State> {
     const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
     const isInstructor = isExternalInstructor() || isInternalInstructor();
+    const baseUrl = `${window.location.protocol}//${window.location.host}/suni-instructor`;
+    const { isOpen } = this.state;
+
+    const setOpen = () => {
+      //this.profileButtonRef.current.click();
+      this.setState({ isOpen: !isOpen });
+      document.getElementById("btnProFile")?.click();
+    }
 
     return (
       <div className="g-info">
-        <button
+        <Popup
+          className="pop_profile"
+          trigger={
+            <Button id="btnProFile" className="user image label"><Image src={skProfile.photoFilePath || profileImg} alt="profile" /></Button>
+          }
+          position="bottom right"
+          on="click"
+          //open={isOpen}
+          onOpen={setOpen}
+        >
+          <Popup.Content>
+            <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />{ /*프로필사진 셋팅전 */}
+          </Popup.Content>
+        </Popup>
+        {/* <button
           className="ui user image label"
           onClick={this.onTogglePop}
           ref={this.profileButtonRef}
@@ -145,9 +171,9 @@ class ProfileContainer extends Component<Props, State> {
             {member.company} {member.department}
           </span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
-        </button>
+        </button> */}
 
-        <div
+        {/* <div
           className={`balloon-pop ${balloonShowClass}`}
           data-area={Area.HEADER_PROFILE}
         >
@@ -182,27 +208,15 @@ class ProfileContainer extends Component<Props, State> {
                   </a>
                 </li>
               )}
-            {/* <li>
-              <a
-                href="#"
-                onClick={() => this.props.history.push('/community/my-profile')}
-              >
-                <i
-                  aria-hidden="true"
-                  className="balloon community-profile icon"
-                />
-                <span>Community Profile</span>
-              </a>
-            </li> */}
-
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
                 <span>Logout</span>
               </button>
             </li>
+
           </ul>
-        </div>
+        </div> */}
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
@@ -211,6 +225,7 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
+
       </div>
     );
   }

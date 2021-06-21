@@ -9,7 +9,7 @@ import { Order } from '../../../model/Order';
 import TableHeaderColumn from '../../model/TableHeaderColumn';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyContentType } from '../../model/MyContentType';
-
+import { MyPageContentType } from '../../model/MyPageContentType';
 
 
 interface MyLearningListHeaderViewProps {
@@ -91,7 +91,7 @@ function MyLearningListHeaderView({
               (
                 <Table.HeaderCell
                   key={`learning-header-${headerColumn.key}`}
-                  className={headerColumn.text === '과정명' ? 'title' : ''}
+                  className={(contentType !== MyPageContentType.EarnedStampList && headerColumn.text) === '과정명' ? 'title' : ''}
                 >
                   {headerColumn.text}
                   {headerColumn.icon && (

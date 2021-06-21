@@ -29,6 +29,8 @@ import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { Button, Modal } from 'semantic-ui-react';
 import { getProfileItemMapFromCommunity } from 'community/service/useCommunityProfile/utility/getProfileItemMapFromCommunity';
 import { useHistory } from 'react-router-dom';
+import ProfileImage from '../../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 interface ProfileTitleViewProps {
   profileItem: CommunityProfileItem;
@@ -136,11 +138,12 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
               className="pic"
               onClick={() => history.push(`/community/profile/${item.id}`)}
             >
-              <img
+              <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `/files/community/${item.profileImg}`
+                    // : `/files/community/${item.profileImg}`
+                    : ProfileImagePath(item.profileImg)
                 }
                 alt=""
               />
@@ -177,11 +180,12 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
               className="pic"
               onClick={() => history.push(`/community/profile/${item.id}`)}
             >
-              <img
+              <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
                     ? `${DefaultImg}`
-                    : `/files/community/${item.profileImg}`
+                    // : `/files/community/${item.profileImg}`
+                    : ProfileImagePath(item.profileImg)
                 }
                 alt=""
               />
@@ -219,10 +223,11 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
         <div className="profile_pic">
           <div className="pic_area user">
             <p style={{ background: 'white' }}>
-              <img
+              <ProfileImage
                 src={
                   (profileItem.profileImg &&
-                    '/files/community/' + profileItem.profileImg) ||
+                    // '/files/community/' + profileItem.profileImg) ||
+                    ProfileImagePath(profileItem.profileImg)) ||
                   'data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCI+DQogICAgPGRlZnM+DQogICAgICAgIDxjaXJjbGUgaWQ9ImEiIGN4PSI0MCIgY3k9IjQwIiByPSI0MCIvPg0KICAgIDwvZGVmcz4NCiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPg0KICAgICAgICA8bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+DQogICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNhIi8+DQogICAgICAgIDwvbWFzaz4NCiAgICAgICAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzkuNSIgc3Ryb2tlPSIjREREIi8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNEREQiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTU5LjExIDY3Ljc4Yy04LjM5LTMuMDU3LTExLjA3NC01LjYzNy0xMS4wNzQtMTEuMTYyIDAtMy4zMTYgMi43NS01LjQ2NSAzLjY4Ny04LjMwNi45MzgtMi44NDIgMS40OC02LjIwNyAxLjkzLTguNjU0LjQ1MS0yLjQ0OC42My0zLjM5NC44NzUtNi4wMDJDNTQuODI4IDMwLjQwMiA1Mi42NSAyMiA0MSAyMmMtMTEuNjQ2IDAtMTMuODMyIDguNDAyLTEzLjUyNSAxMS42NTYuMjQ1IDIuNjA4LjQyNSAzLjU1NS44NzUgNi4wMDIuNDUgMi40NDcuOTg2IDUuODEyIDEuOTIzIDguNjU0LjkzNyAyLjg0MSAzLjY5IDQuOTkgMy42OSA4LjMwNiAwIDUuNTI1LTIuNjgyIDguMTA1LTExLjA3NCAxMS4xNjJDMTQuNDY3IDcwLjg0NCA5IDczLjg2NiA5IDc2djEwaDY0Vjc2YzAtMi4xMzEtNS40Ny01LjE1Mi0xMy44OS04LjIyeiIgbWFzaz0idXJsKCNiKSIvPg0KICAgIDwvZz4NCjwvc3ZnPg0K'
                 }
                 alt="프로필 사진"
@@ -249,10 +254,11 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
           </div>
           <div className="pic_area background">
             <p style={{ background: 'white' }}>
-              <img
+              <ProfileImage
                 src={
                   (profileItem.profileBgImg &&
-                    '/files/community/' + profileItem.profileBgImg) ||
+                    // '/files/community/' + profileItem.profileBgImg) ||
+                    ProfileImagePath(profileItem.profileBgImg)) ||
                   defaultBg
                 }
                 alt="배경이미지"

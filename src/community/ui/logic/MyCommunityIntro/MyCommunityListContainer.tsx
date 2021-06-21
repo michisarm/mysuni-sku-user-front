@@ -26,6 +26,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
   thumbnailId,
   hasNewPost,
   managerName,
+  managerNickName,
   memberCount,
 }) {
   return (
@@ -44,7 +45,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
         <div className="community-main-left-span">
           <span>
             <img src={managerIcon} />
-            {managerName}
+            {managerNickName}
           </span>
           멤버<span>{memberCount}</span>
         </div>

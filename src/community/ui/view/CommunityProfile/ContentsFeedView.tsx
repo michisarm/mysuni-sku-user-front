@@ -38,6 +38,7 @@ import { requestAppendProfileFeedPostList } from 'community/service/useCommunity
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { Area } from 'tracker/model';
 import ReactGA from 'react-ga';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -234,7 +235,10 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             {profileImage !== undefined &&
             profileImage !== '' &&
             profileImage !== null ? (
-              <Comment.Avatar src={`/files/community/${profileImage}`} />
+              <Comment.Avatar 
+                // src={`/files/community/${profileImage}`} 
+                src={ProfileImagePath(profileImage)} 
+              />
             ) : (
               <Comment.Avatar src={`${DefaultImg}`} />
             )}

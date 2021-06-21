@@ -15,6 +15,8 @@ import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import { useCommunityMember } from '../../store/CommunityMemberStore';
 import { getAllMember } from '../../service/useMemberList/useMemberList';
+import ProfileImage from '../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
 
 // interface Params {
 //   communityId: string;
@@ -192,8 +194,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <th>관리자 정보</th>
                 <td>
                   <div className="profile home-detail-profile">
-                    <div className="pic">
-                      <img
+                    {/* <div className="pic">
+                      <ProfileImage
                         style={{
                           borderRadius: '36px',
                           width: '56px',
@@ -201,13 +203,14 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                         }}
                         src={
                           managProfileImg
-                            ? `/files/community/${managProfileImg}`
+                            // ? `/files/community/${managProfileImg}`
+                            ? ProfileImagePath(managProfileImg)
                             : `${DefaultImg}`
                         }
                       />
-                    </div>
+                    </div> */}
                     <span className="crown">
-                      {communityHome.community.managerName}
+                      {communityHome.community.managerNickName}
                     </span>
                   </div>
 
@@ -223,8 +226,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             : 'profile home-detail-profile pro-mt30'
                         }
                       >
-                        <div className="pic">
-                          <img
+                        {/* <div className="pic">
+                          <ProfileImage
                             style={{
                               borderRadius: '36px',
                               width: '56px',
@@ -232,12 +235,13 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                             }}
                             src={
                               r.profileImg
-                                ? `/files/community/${r.profileImg}`
+                                // ? `/files/community/${r.profileImg}`
+                                ? ProfileImagePath(r.profileImg)
                                 : `${DefaultImg}`
                             }
                           />
-                        </div>
-                        <span>{r.name}</span>
+                        </div> */}
+                        <span>{r.nickname}</span>
                       </div>
                     ))}
                 </td>

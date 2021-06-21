@@ -45,7 +45,7 @@ class MainRoutes extends React.Component {
         <Redirect
           exact
           from="/my-training/my-page"
-          to="/my-training/my-page/EarnedBadgeList/pages/1"
+          to="/my-training/my-page/MyProfile"
         />
         <Route exact path="/my-training/my-page/:tab" component={MyPagePage} />
         <Route

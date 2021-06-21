@@ -103,11 +103,16 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                       )}
                       {postDetail.nickName === null ||
                         (postDetail.nickName === '' && (
-                          <span>
-                            {postDetail.creatorName}/
-                            {postDetail.creatorCompanyName}
-                          </span>
-                        ))}
+                        <span>
+                          {postDetail.creatorName}/
+                          {postDetail.creatorCompanyName}
+                        </span>
+                      ))}
+                      {/* {
+                        postDetail.nameFlag === 'N' && (
+
+                        )
+                      } */}
                     </div>
                   )}
                 </div>

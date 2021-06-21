@@ -290,6 +290,7 @@ function LectureTaskContainer() {
               commentFeedbackId: '',
               notice: false,
               pinned: 0, // postpinned -> number = 0
+              writerPatronKeyString: ''
             });
             refresh(1).then(() => {
               history.goBack();

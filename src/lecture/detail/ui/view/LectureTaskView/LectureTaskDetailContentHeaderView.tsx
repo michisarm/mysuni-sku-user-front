@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useCallback, useState } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -7,6 +7,8 @@ import { Button, Icon } from 'semantic-ui-react';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { useHistory } from 'react-router-dom';
 import { Area } from 'tracker/model';
+import { findCommunityProfile } from '../../../../../community/api/profileApi';
+import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
 
 interface Props {
   canNotice: boolean;
@@ -24,6 +26,14 @@ interface Props {
   onClickModify: (id: string) => void;
   onClickReplies: (id: string) => void;
   onClickPostsPinned: (id: string, pinned: number) => void;
+}
+
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
 }
 
 const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTaskDetailContentHeaderView({
@@ -58,6 +68,23 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
     onClickDelete(taskDetail.id);
   };
 
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
+
+  const openProfile = useCallback(async () => {
+    const id = taskDetail.writerPatronKeyString;
+    findCommunityProfile(id!).then(result => {
+      setProfileInfo({
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, [taskDetail]);
+
   return (
     <>
       <div
@@ -79,7 +106,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
             </div>
             <div className="survey-read-side mb0">
               <div className="title-area">
-                <div className="ui label onlytext">{name}</div>
+                <div className="ui label onlytext" onClick={openProfile} style={{ cursor: "pointer" }}>{name}</div>
                 <div className="ui label onlytext">
                   <span>{time && moment(time).format('YYYY.MM.DD HH:MM')}</span>
                 </div>
@@ -142,6 +169,15 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
           </div>
         </div>
       </div>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
       {/* <div className="class-guide-txt fn-parents ql-snow">
           <div className="text ql-editor">
             <p>1234</p>

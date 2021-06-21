@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
@@ -13,6 +13,18 @@ import {
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useHistory } from 'react-router-dom';
 import { Area } from 'tracker/model';
+import { findCommunityProfile } from '../../../api/profileApi';
+import CommunityProfileModal from '../../view/CommunityProfileModal';
+import ProfileImage from '../../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
+
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
+}
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
   id,
@@ -23,6 +35,22 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
   name,
 }) {
   const history = useHistory();
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
+
+  const clickProfile = useCallback(async (id) => {
+    findCommunityProfile(id).then(result => {
+      setProfileInfo({
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, [id]);
+
   return (
     <>
       {/* Right */}
@@ -30,14 +58,15 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
       <div
         className="community-main-left-contents"
         style={{ cursor: 'pointer' }}
-        onClick={() => history.push(`/community/profile/${id}`)}
+        onClick={() => clickProfile(id)}
       >
         <div className="thumbnail">
-          <img
+          <ProfileImage
             src={
               profileImg === null || profileImg === ''
                 ? `${DefaultImg}`
-                : `/files/community/${profileImg}`
+                // : `/files/community/${profileImg}`
+                : ProfileImagePath(profileImg)
             }
           />
         </div>
@@ -52,6 +81,15 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
           </div>
         </div>
       </div>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
     </>
   );
 };
