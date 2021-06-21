@@ -8,6 +8,9 @@ export default interface LectureParams {
   cubeType?: CubeType;
   contentId?: string;
   pathname: string;
+  cubeName?: string;
+  cardName?: string;
+  learningTime?: string;
 }
 
 export function compareLectureParams(a: LectureParams, b: LectureParams) {

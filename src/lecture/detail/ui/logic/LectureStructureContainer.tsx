@@ -7,10 +7,17 @@ import LectureStructureView from '../view/LectureStructureView/LectureStructureV
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel } from 'shared';
 
-function LectureStructureContainer() {
+interface LectureStructureContainerProps {
+  noteTab: boolean;
+  cubeType: any;
+}
+
+const LectureStructureContainer: React.FC<LectureStructureContainerProps> = ({
+  noteTab,
+  cubeType
+}) => {
   const lectureStructure = useLectureStructure();
   const loadingState = useIsLoadingState();
-
   return (
     <>
       {loadingState?.isLoading ? (
@@ -29,8 +36,8 @@ function LectureStructureContainer() {
         </Segment>
       ) : (
         <>
-          {lectureStructure && (
-            <LectureStructureView lectureStructure={lectureStructure} />
+          {lectureStructure && lectureStructure.items.length !== 0 && (
+            <LectureStructureView lectureStructure={lectureStructure} noteTab={noteTab} cubeType={cubeType}/>
           )}
         </>
       )}

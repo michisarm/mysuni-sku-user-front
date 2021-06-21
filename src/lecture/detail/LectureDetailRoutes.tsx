@@ -16,6 +16,8 @@ import {
   clearFindCardCache,
   clearFindMyCardRelatedStudentsCache,
 } from './api/cardApi';
+import LectureNoteList from './ui/view/LectureNoteView/LectureNoteList';
+import LectureNoteContainer from './ui/logic/LectureNoteContainer';
 
 export default function LectureDetailRoutes() {
   const params = useParams<LectureParams>();
@@ -45,6 +47,7 @@ export default function LectureDetailRoutes() {
         path="/lecture/card/:cardId/:viewType"
         component={LectureDetailCourseRoutes}
       />
+
       <Route component={NotFoundPage} />
     </Switch>
   );
