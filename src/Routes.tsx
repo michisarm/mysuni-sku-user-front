@@ -1,5 +1,5 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import AppInitializer from './AppInitializer';
 import { getCookie } from '@nara.platform/accent';
 import ScrollToTop from './ScrollToTop';
@@ -14,6 +14,7 @@ import {
 } from 'tracker/present/logic/ActionTrackService';
 import NotFoundPage from 'layout/NotFoundPage';
 import { isExternalInstructor } from './shared/helper/findUserRole';
+import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -53,6 +54,7 @@ class Routes extends PureComponent {
 
   render() {
     const { email } = this.state;
+
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
@@ -61,6 +63,11 @@ class Routes extends PureComponent {
             <Switch>
               <Route path="/profile" component={ProfileRoutes} />
               <Route path="/preview" component={PreviewRoutes} />
+              <Route
+                path="/lecture/card/:cardId/cube/:cubeId/cubeType/:cubeType/learningTime/:learningTime/:viewType/new"
+                exact
+                component={LectureNoteContainer}
+              />
               <Route
                 path="/"
                 render={() => (
@@ -88,7 +95,7 @@ class Routes extends PureComponent {
                       <Route path="/extra" component={ExtraRoutes} />
 
                       <Route path="/" component={MainRoutes} />
-                      <Route path="/nonexist" component={NotFoundPage} />
+                      <Route path="/404" component={NotFoundPage} />
                     </Switch>
                   </AppLayout>
                 )}

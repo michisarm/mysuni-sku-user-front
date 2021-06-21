@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>DE831588-557B-4EB8-95BC-C3D1738A188B</title>
+    <defs>
+        <polygon id="path-1" points="3.34371634e-07 0 350 0 350 1597 3.34371634e-07 1597"></polygon>
+        <filter x="-2.9%" y="-0.5%" width="105.7%" height="101.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.798461069   0 0 0 0 0.83129593   0 0 0 0 0.905174366  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <filter color-interpolation-filters="auto" id="filter-3">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.423529 0 0 0 0 0.470588 0 0 0 0 0.560784 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Note" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Note_05_Scroll(LM-VI-20)" transform="translate(-104.000000, -437.000000)">
+            <rect fill="#F4F7FD" x="0" y="0" width="1400" height="1706"></rect>
+            <g id="@-LNB" transform="translate(-0.000001, 109.000000)">
+                <g id="bg">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <g id="Course" transform="translate(0.000000, 65.000000)">
+                    <g id="note_input" transform="translate(0.000000, 77.000000)"></g>
+                    <g id="note_01" transform="translate(20.000000, 237.000000)">
+                        <rect id="input-area" fill="#F7F7F7" x="0" y="0" width="310" height="110" rx="8"></rect>
+                        <g filter="url(#filter-3)" id="icon_go_A">
+                            <g transform="translate(84.000000, 26.000000)">
+                                <rect id="Rectangle" fill="#222222" x="3.00000142" y="1" width="6" height="1.5"></rect>
+                                <rect id="Rectangle" fill="#222222" transform="translate(8.250001, 4.000000) rotate(90.000000) translate(-8.250001, -4.000000) " x="5.25000142" y="3.25" width="6" height="1.5"></rect>
+                                <rect id="Rectangle-Copy-4" fill="#222222" transform="translate(4.944545, 5.108757) rotate(-225.000000) translate(-4.944545, -5.108757) " x="0.944545064" y="4.35875721" width="8" height="1.5"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
