@@ -49,17 +49,26 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
 
   return (
     <>
-      <InProgressLearning profileMemberName={member.name} />
+      <InProgressLearning 
+        // profileMemberName={member.name} 
+        profileMemberName={skProfile.profileViewName} 
+      />
 
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
-      <ChallengingBadge profileMemberName={member.name} />
+      <ChallengingBadge 
+        // profileMemberName={member.name} 
+        profileMemberName={skProfile.profileViewName} 
+      />
 
       <MainBanner />
       <RQDLearning />
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}
-      <LRSLearning profileMemberName={member.name} />
+      <LRSLearning 
+        // profileMemberName={member.name} 
+        profileMemberName={skProfile.profileViewName} 
+      />
 
       <EnrollingLearning />
     </>

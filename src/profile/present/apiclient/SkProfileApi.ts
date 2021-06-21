@@ -1,8 +1,10 @@
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
+import { AxiosReturn } from '../../../shared/api/AxiosReturn';
 
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import ProfileInfoModel from '../../../../src/layout/UserApp/model/ProfileInfoModel';
 
 const BASE_URL = '/api/profile/profiles';
 
@@ -10,6 +12,16 @@ export function findJsonUserGroup() {
   const url = `${BASE_URL}/jsonUserGroup`;
   return axios.get(url).then(response => (response && response.data) || null);
 }
+
+export function findUserProfile(
+  profileId: string
+): Promise<ProfileInfoModel | undefined> {
+  const url = `${BASE_URL}/findProfile/${profileId}`;
+  return axios
+    .get<ProfileInfoModel>(url)
+    .then(AxiosReturn);
+}
+
 export default class SkProfileApi {
   //
   URL = '/api/profile/profiles';
@@ -47,6 +59,11 @@ export default class SkProfileApi {
   // mySUNI에서 본인 증명사진 base64 데이터 저장
   modifyPhotoUrlByProfileId(profileId: string, nameValues: NameValueList) {
     return axios.put<void>(this.URL + `/photoUrl/${profileId}`, nameValues);
+  }
+
+  findProfiles(denizenKeys: string[]) {
+    return axios.post<string[]>(this.URL + '/byDenizenKeys', denizenKeys)
+      .then((response: any) => response && response.data || []);
   }
 }
 

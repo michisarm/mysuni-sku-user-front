@@ -15,12 +15,21 @@ import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
 import { CommunityPostDetail } from '../../viewModel/CommunityPostDetail';
+import { findCommunityProfile } from '../../api/profileApi';
+import CommunityProfileModal from '../view/CommunityProfileModal';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 interface Params {
   communityId: string;
   menuId: string;
+}
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
 }
 
 function CommunityDiscussionContainer() {
@@ -40,6 +49,8 @@ function CommunityDiscussionContainer() {
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -51,6 +62,27 @@ function CommunityDiscussionContainer() {
     }
 
   }, [postDetail]);
+
+  useEffect(() => {
+    window.addEventListener('clickProfile', clickProfileEventHandler);
+    return () => {
+      window.removeEventListener('clickProfile', clickProfileEventHandler);
+    };
+  }, []);
+
+  const clickProfileEventHandler = useCallback(async () => {
+    const id = document.body.getAttribute('selectedProfileId');
+    findCommunityProfile(id!).then(result => {
+      setProfileInfo({
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, []);
 
   const OnClickList = useCallback(() => {
     history.goBack();
@@ -162,6 +194,15 @@ function CommunityDiscussionContainer() {
           </div>
         </>
       )}
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
     </>
   );
 }

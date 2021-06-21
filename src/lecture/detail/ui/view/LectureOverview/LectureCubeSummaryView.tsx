@@ -331,8 +331,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType !== 'Community' &&
-                lectureSummary.cubeType !== 'Task' && (
+              {lectureSummary.cubeType !== 'Community' && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">이수</span>
                     <span>
@@ -342,8 +341,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType === 'Community' ||
-                (lectureSummary.cubeType === 'Task' && (
+              {lectureSummary.cubeType === 'Community' && (
                   <>
                     <Label className="bold onlytext">
                       <span className="header-span-first">참여</span>
@@ -353,7 +351,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                       <span>명</span>
                     </Label>
                   </>
-                ))}
+                )}
               <Label className="bold onlytext">
                 <span className="header-span-first">담당</span>
                 <span className="tool-tip">

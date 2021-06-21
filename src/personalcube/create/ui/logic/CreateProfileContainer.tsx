@@ -43,7 +43,7 @@ class CreateProfileContainer extends React.Component<Props> {
           <ContentHeader.ProfileItem
             myPageActive
             image={skProfile.photoFilePath || defaultProfileImg}
-            name={skProfile.member.name}
+            name={skProfile.profileViewName}
             company={skProfile.member.company}
             department={skProfile.member.department}
             type="Create"

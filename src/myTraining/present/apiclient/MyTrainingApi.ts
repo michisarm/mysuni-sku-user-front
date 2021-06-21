@@ -140,6 +140,32 @@ class MyTrainingApi {
       .then(response => response.data || null)
       .catch(error => error && null);
   }
+  
+  findCardNoteList(cardIds: string[]) {
+    const splitedIds = cardIds && cardIds.join(',') || '';
+    console.log("CALL ----------------find  Card  NoteList---------------- ")
+  
+    return axiosApi.get<any[]>(`/api/mytraining/note/list/cardInfo`, {
+      params: {
+        cardId: splitedIds,
+      }
+    }).then(response => response.data || null)
+      .catch(error => error && null);
+  }
+
+  findCubeNoteList(cardIds: string[], cubeIds: string[]) {
+    const splitedCardIds = cardIds && cardIds.join(',') || '';
+    const splitedCubeIds = cubeIds && cubeIds.join(',') || '';
+    console.log("CALL ----------------find  Cube  NoteList---------------- ")
+  
+    return axiosApi.get<any[]>(`/api/mytraining/note/list/cubeInfo`, {
+      params: {
+        cardId: splitedCardIds,
+        cubeId: splitedCubeIds,
+      }
+    }).then(response => response.data || null)
+      .catch(error => error && null);
+  }
 
   /* 
     findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {

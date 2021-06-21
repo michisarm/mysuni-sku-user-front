@@ -70,7 +70,7 @@ function MyTrainingHeaderContainer({
             myPageActive={true}
             imageEditable={false}
             image={skProfile.photoFilePath || profileImg}
-            name={skProfile.member.name}
+            name={skProfile.profileViewName}
             company={skProfile.member.company}
             department={skProfile.member.department}
             type="Learning"
