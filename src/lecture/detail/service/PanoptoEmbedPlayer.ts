@@ -225,6 +225,14 @@ function createPanoptoEmbedPlayer() {
       embedApi.playVideo();
     }
   }
+
+  function loadPlayVideo() {
+    if (embedApi !== undefined) {
+      embedApi.loadVideo();
+      embedApi.playVideo();
+    }
+  }
+
   function pauseVideo() {
     if (embedApi !== undefined) {
       embedApi.pauseVideo();
@@ -246,6 +254,7 @@ function createPanoptoEmbedPlayer() {
     clearPanoptoEmbedPlayer,
     addOnProgressEventHandler,
     playVideo,
+    loadPlayVideo,
     pauseVideo,
     stopVideo,
     seekTo,
@@ -278,6 +287,7 @@ export const {
   clearPanoptoEmbedPlayer,
   addOnProgressEventHandler,
   playVideo,
+  loadPlayVideo,
   pauseVideo,
   stopVideo,
   seekTo,

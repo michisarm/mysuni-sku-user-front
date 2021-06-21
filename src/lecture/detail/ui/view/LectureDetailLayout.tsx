@@ -14,7 +14,7 @@ import {
   setLectureNoteWriteState,
   useLectureNoteTab,
 } from '../../store/LectureNoteStore';
-import { playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
+import { loadPlayVideo, playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
 import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
 
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
@@ -61,7 +61,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     setTimeout(() => {
       if (playTime) {
         if (params.cubeType === 'Video') {
-          playVideo();
+          loadPlayVideo();
           setTimeout(() => {
             seekTo(Number(playTime));
           }, 3000);
