@@ -860,19 +860,20 @@ const panes = [
           data-tab="colleges6"
         >
           <div className="college-cont-title global">
+
             <div className="belt sub">
               <div className="label">Global College</div>
               <div className="strong">Globalization을 위한 새로운 시작</div>
               <div className="normal">
                 글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이
                 바뀌어도
-                <br />
-                성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
-                합니다.
-                <br />
-                이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
-                길러내고자 합니다.
-              </div>
+                        <br />
+                        성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
+                        합니다.
+                        <br />
+                        이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
+                        길러내고자 합니다.
+                    </div>
               <ul className="tag-wrap">
                 <li># Geopolitics & Biz</li>
                 <li># Managing Global Biz</li>
@@ -894,21 +895,383 @@ const panes = [
               </div>
             </div>
           </div>
+
+          {/* <div className="college-cont-map">
+                <div className="belt">
+                    <div className="label">지역전문가 커리큘럼</div>
+                    <div className="map">
+                        <Image src={curriculumn1}></Image>
+                    </div>
+                </div>
+            </div> */}
+
           <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">
-                Geopolitics & Biz / Managing Global Biz. 커리큘럼
+
+            <div className="belt global flex mb50">
+              <div className="text-left-box">
+                <p className="p_link global">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
               </div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co-6-1.png`} alt="" />
+              <div className="text-right-box">
+                <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1" className="item-button">
+                  <img src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+                      과정 바로가기
+                    </a>
+              </div>
+            </div>
+
+            <div className="belt global">
+              <div className="label">Geopolitics & Biz / Managing Global Biz. 커리큘럼</div>
+              <img src={`${PUBLIC_URL}/images/all/global-college-top.svg`} className='global-top-img' />
+              <img src={`${PUBLIC_URL}/images/all/global-college-left.png`} className='global-left-img' />
+              <div className="global-belt-wrap">
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit140">
+                        <div className="curriculum-link-box">
+                          <strong>Biz. Impact 분석</strong>
+                          <Link to='#' onClick={emptyAlert}>
+                            <span>Geopolitical Scenario Planning</span>
+                          </Link>
+                        </div>
+                      </div>
+
+                      <div className="global-curriculum-box box-heit220">
+                        <div className="curriculum-link-box">
+                          <strong>산업/통상에 미치는 영향</strong>
+                          <div className="link-wrap">
+                            <Link to='/lecture/card/CARD-12nx/view'>
+                              <span>Geo. & Biz.<br />Nexus</span>
+                            </Link>
+                            <div className="link-colum-box">
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-197/Course/C-LECTURE-13i'>
+                                <span>미-중 Tech 경쟁 Ch.2<br />(입장 및 대응 방향)</span>
+                              </Link>
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s2/Course/C-LECTURE-nq'>
+                                <span>미-중 Tech 경쟁 Ch.1<br />(법률적/제도적 환경 변화)</span>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Global Financial Story</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box">
+                              <Link to='#' onClick={emptyAlert}>
+                                <span>Global Financial Story<br />케이스 스터디</span>
+                              </Link>
+                              <Link to='/lecture/card/CARD-12ts/view'>
+                                <span>Global Financial Story의<br />이해</span>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Diversity Inclusion</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box sty2">
+                              <Link to='#' onClick={emptyAlert}>
+                                <span>글로벌 멤버들과<br />함께 일하기</span>
+                              </Link>
+                              <Link to='#' onClick={emptyAlert}>
+                                <span>Diversity<br />Inclusion의 이해</span>
+                              </Link>
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy'>
+                                <span>Diversity<br />Awareness</span>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* //global-belt */}
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap wrap3">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>Why Geopolitics?</strong>
+                          <div className="link-wrap big-colum">
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8ba/lecture-card/LECTURE-CARD-638'>
+                              <span>How to manage<br />Geopolitical<br />Uncertainties?</span>
+                            </Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8b8/lecture-card/LECTURE-CARD-637'>
+                              <span>Why Geopolitics for<br />Business?</span>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap3 left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box">
+                        <div className="curriculum-link-box">
+                          <strong>지정학적 변화 동향</strong>
+                          <div className="link-wrap big-colum">
+                            <div className="link-colum-box">
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1dc/Course/C-LECTURE-16q'>
+                                <span>바이든 시대,<br />국제정세 변화</span>
+                              </Link>
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-me/Course/C-LECTURE-im'>
+                                <span>국제정세 현상과<br />본질 Series 3</span>
+                              </Link>
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l9/Course/C-LECTURE-i1'>
+                                <span>국제정세 현상과<br />본질 Series 2</span>
+                              </Link>
+                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl'>
+                                <span>국제정세 현상과<br />본질 Series 1</span>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>Global Communication Skill & Attitude</strong>
+                          <div className="link-wrap type2">
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-xz/Course/C-LECTURE-tq'><span>글로벌 비즈니스 매너</span></Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-18/Course/C-LECTURE-x'><span>글로벌 Biz.네트워킹</span></Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-i3/Program/P-LECTURE-r'><span>Biz.이메일</span></Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kw/Program/P-LECTURE-s'><span>Biz.미팅</span></Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l3/Program/P-LECTURE-u'><span>프리젠테이션</span></Link>
+                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l1/Program/P-LECTURE-t'><span>Biz.협상</span></Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-link-bottom">
+                    <Link to='/lecture/college/CLG00006/channel/CHN0000v'>
+                      <span>
+                        <strong>Global Leader’s Table</strong><br />
+                              (Global Guru들이 들려주는 비즈니스 통찰)
+                            </span>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* <div className="college-cont-map">
+                <div className="belt">
+                    <div className="label">지역전문가 커리큘럼</div>
+                    <div className="map">
+                        <Image src={curriculumn2}></Image>
+                    </div>
+                </div>
+            </div> */}
+
           <div className="college-cont-map">
-            <div className="belt">
+            <div className="belt global">
               <div className="label">지역전문가 커리큘럼</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co-6-2.png`} alt="" />
+              <img src={`${PUBLIC_URL}/images/all/global-college-location-top.png`} className='global-top-img2' />
+              <img src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`} className='global-left-img2' />
+              <div className="global-belt-wrap section2">
+                <div>
+                  <Link to='about' onClick={emptyAlert}><span>Post 주재원</span></Link>
+                  <Link to='about' onClick={emptyAlert}><span>법인장</span></Link>
+                  <Link to='/lecture/card/CARD-86s/view'><span>Local Experience<br />(현채인, 주재원)</span></Link>
+                </div>
+                <table>
+                  <colgroup>
+                    <col width='169px' />
+                    <col width='169px' />
+                    <col width='169px' />
+                    <col width='169px' />
+                    <col width='169px' />
+                    <col width='169px' />
+                  </colgroup>
+                  <thead>
+                    <th></th>
+                    <th>
+                      <span>중국</span>
+                    </th>
+                    <th>
+                      <span>미국</span>
+                    </th>
+                    <th>
+                      <span>베트남</span>
+                    </th>
+                    <th>
+                      <span>헝가리</span>
+                    </th>
+                    <th>
+                      <span>폴란드</span>
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>
+                        <span>Networking</span>
+                      </th>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-hj/Course/C-LECTURE-ek'>중국 GR 기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kz/Course/C-LECTURE-hs'>Networking with<br />Americans</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks'>주재원이 알아야 할<br />베트남, 베트남인</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/card/CARD-8kg/view'>주재원이 알아야 할<br />헝가리, 헝가리인</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/card/CARD-60u/view'>주재원이 알아야 할<br />폴란드, 폴란드인</Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>Biz 법률</span>
+                      </th>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iz/Course/C-LECTURE-fv'>중국 Biz. 법률 기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100'>미국 Biz. 법률 기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/card/CARD-74q/view'>베트남 Biz. 법률<br />기초</Link>
+                      </td>
+                      <td>
+                        <Link to='#' onClick={emptyAlert}>헝가리 Biz. 법률<br />기초</Link>
+                      </td>
+                      <td>
+                        <Link to='#' onClick={emptyAlert}>폴란드 Biz. 법률<br />기초</Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>세무/회계</span>
+                      </th>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j0/Course/C-LECTURE-fw'>중국 세무/회계 기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-yw/Course/C-LECTURE-uh'>미국 세무/회계 기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j9/Course/C-LECTURE-g5'>베트남 세무/회계<br />기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-r9/Course/C-LECTURE-n2'>헝가리 세무/회계<br />기초</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s3/Course/C-LECTURE-nr'>폴란드 세무/회계<br />기초</Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>경제동향</span>
+                      </th>
+                      <td className='bg-none'>
+                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
+                      </td>
+                      <td className='bg-none'>
+                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr'>베트남 경제동향<br />및 진출전략</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-199/Course/C-LECTURE-13j'>헝가리 Biz.<br />Landscape</Link>
+                      </td>
+                      <td>
+                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-mi/Course/C-LECTURE-iq'>폴란드 Biz.<br />Landscape</Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-jq/Course/C-LECTURE-gm">중국</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k6/Course/C-LECTURE-gz">미국</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kx/Course/C-LECTURE-hr">베트남</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">헝가리</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">폴란드</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/card/CARD-acm/view">중동</Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link to="/lecture/card/CARD-12n5/view">인도네시아</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">인도</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1a7/Course/C-LECTURE-14h">CIS</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-lb/Course/C-LECTURE-hx">북한</Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l7/Course/C-LECTURE-hv">일본</Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="528px" />
+                    <col width="528px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td><Link to="/lecture/college/CLG00006/channel/CHN0006q">중국 Issue &amp; Trend</Link></td>
+                      <td><Link to="/lecture/college/CLG00006/channel/CHN00056">베트남 Issue &amp; Trend</Link></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="global-link-bottom">
+                  <Link to='/lecture/college/CLG00006/channel/CHN0000u'>
+                    <span>
+                      <strong>Glopedia</strong><br />
+                          (Global 경험을 축적하고 공유하는 커뮤니티)
+                        </span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -2286,16 +2649,16 @@ const panes = [
             </div>
           </div>
           <div className="college-cont-map energe">
-             <div className="belt">
-                 <div className="map">
-                 <Image
+            <div className="belt">
+              <div className="map">
+                <Image
                   src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
-                 </div>
-             </div>
-           </div>
+              </div>
+            </div>
+          </div>
           <div className="college-cont-map energe">
             <div className="belt">
               <div className="label energy">Environment College Curriculum</div>
@@ -2762,7 +3125,7 @@ const panes = [
   },
 ];
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
 interface State {
   activeIndex: number;
@@ -2781,7 +3144,7 @@ class CollegeView extends Component<Props, State> {
     if (
       window.location.search === '?subTab=BM%20Design&Storytelling' ||
       window.location.search ===
-        '?subTab=BM%2520Design%2520%2526%2520Storytelling'
+      '?subTab=BM%2520Design%2520%2526%2520Storytelling'
     ) {
       this.setState({ activeIndex: 10 });
     }
