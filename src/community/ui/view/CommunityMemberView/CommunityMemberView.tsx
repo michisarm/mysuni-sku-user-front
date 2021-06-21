@@ -51,12 +51,14 @@ function ItemBox({ memberList, activePage }: { memberList: any, activePage: numb
         <Comment>
           <Comment.Avatar src={
             memberList.profileImg === null ||
-            memberList.profileImg === undefined ||
-            memberList.profileImg === ''  ? 
-            `${AvartarImage}` : 
-            // `/files/community/${memberList.profileImg}`
-            ProfileImagePath(memberList.profileImg)
+              memberList.profileImg === undefined ||
+              memberList.profileImg === '' ?
+              `${AvartarImage}` :
+              // `/files/community/${memberList.profileImg}`
+              ProfileImagePath(memberList.profileImg)
           }
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOpen(!open)}
           />
           <Comment.Content>
             <Comment.Author as="a">

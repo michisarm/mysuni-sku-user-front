@@ -14,7 +14,7 @@ import { useFollowModel } from '../../../../layout/UserApp/store/FollowStore';
 import { followMember, findAllFollow, unfollowMember } from '../../../../layout/UserApp/api/ProfileInfoAPI';
 import { getFollow } from '../../../../layout/UserApp/service/ProfilePopupService/getFollow';
 import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
-  
+
 function ItemBox({
   groupMemberList, memberData, setMemberData, activePage, groupId, managerName, managerNickName }
   : { groupMemberList: any, memberData: any, setMemberData: any, activePage: number, groupId: string, managerName: string, managerNickName: string }) {
@@ -65,10 +65,12 @@ function ItemBox({
             groupMemberList.profileImg === null ||
               groupMemberList.profileImg === undefined ||
               groupMemberList.profileImg === '' ?
-            `${AvartarImage}` : 
-            // `/files/community/${groupMemberList.profileImg}`
-            ProfileImagePath(groupMemberList.profileImg)
-            }
+              `${AvartarImage}` :
+              // `/files/community/${groupMemberList.profileImg}`
+              ProfileImagePath(groupMemberList.profileImg)
+          }
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOpen(!open)}
           />
           <Comment.Content>
             <Comment.Author as="a">
