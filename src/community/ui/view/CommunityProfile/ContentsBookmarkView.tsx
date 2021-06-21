@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from 'react';
 import {
   Segment,
@@ -14,7 +15,7 @@ import {
   Comment,
   Popup,
 } from 'semantic-ui-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 // import "../../style.css"
 import ContentsMoreView from './ContentsMoreView';
 import { CommunityProfileBookmark } from 'community/viewModel/CommunityProfile';
@@ -37,6 +38,7 @@ import {
 import { requestAppendProfileBookmarkPostList } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { Area } from 'tracker/model';
+import ReactGA from 'react-ga';
 
 interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
@@ -45,45 +47,127 @@ interface ContentsBookmarkViewProps {
 const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function ContentsBookmarkView({
   communityProfileBookmark,
 }) {
+  const contextRef = useRef(null);
+  const history = useHistory();
+
   // 북마크 해제시 화면에서 제거
   const result = communityProfileBookmark.posts.filter(x => {
     return x.bookmarked === true;
   });
+  const gaOnClick = (name: string) => {
+    // react-ga
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-${name}`,
+    });
+    window.scrollTo(0, 0);
+    sessionStorage.removeItem('communityOffset');
+    sessionStorage.removeItem('openCommunityOffset');
+    if (name === 'MyCommunity') {
+      history.replace('/community/main');
+    }
+    if (name === 'CommunityList') {
+      history.replace('/community/main/open-communities');
+    }
+    if (name === 'Follow') {
+      history.replace('/community/main/follow');
+    }
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
+  };
   /* eslint-disable */
   return (
-    <Segment className="full">
-      <div
-        className="course-detail-center community-containter"
-        data-area={Area.COMMUNITY_BOOKMARK}
-      >
-        <div className="community-main-contants">
-          {result !== undefined &&
-            result.map(postItem => (
-              <PostItemView key={postItem.postId} {...postItem} />
-            ))}
-        </div>
-        <div className="more-comments">
-          {communityProfileBookmark.postsTotalCount >
-            communityProfileBookmark.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              onClick={requestAppendProfileBookmarkPostList}
+    <div ref={contextRef}>
+      <Sticky context={contextRef} className="tab-menu offset0">
+        <div className="cont-inner">
+          <Menu className="sku">
+            <Menu.Item
+              name="MyCommunity"
+              active={false}
+              as={Link}
+              // to="/community/main"
+              onClick={() => gaOnClick('MyCommunity')}
             >
-              <Icon className="moreview" /> list more
-            </Button>
-          )}
-          {communityProfileBookmark.postsTotalCount <=
-            communityProfileBookmark.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              style={{ cursor: 'default' }}
-            />
-          )}
+              My Community
+              <span className="count" />
+            </Menu.Item>
+            <Menu.Item
+              name="MyCreatedCommunity"
+              active={false}
+              as={Link}
+              // to="/community/main/open-communities"
+              onClick={() => gaOnClick('CommunityList')}
+            >
+              Community List
+            </Menu.Item>
+            <Menu.Item
+              name="MyFeed"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
+              active={false}
+              as={Link}
+              // to="/community/main/follow"
+              onClick={() => gaOnClick('Follow')}
+            >
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={true}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
+            </Menu.Item>
+          </Menu>
         </div>
-      </div>
-    </Segment>
+      </Sticky>
+      <Segment className="full">
+        <div
+          className="course-detail-center community-containter"
+          style={{display:'block'}}
+          data-area={Area.COMMUNITY_BOOKMARK}
+        >
+          <div className="community-main-contants" style={{marginRight: "0px"}}>
+            {result !== undefined &&
+              result.map(postItem => (
+                <PostItemView key={postItem.postId} {...postItem} />
+              ))}
+          </div>
+          <div className="more-comments">
+            {communityProfileBookmark.postsTotalCount >
+              communityProfileBookmark.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendProfileBookmarkPostList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            )}
+            {communityProfileBookmark.postsTotalCount <=
+              communityProfileBookmark.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                style={{ cursor: 'default' }}
+              />
+            )}
+          </div>
+        </div>
+      </Segment>
+    </div>
   );
 };
 
@@ -143,7 +227,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     setMore(false);
   }, []);
   return (
-    <div className="sub-info-box">
+    <div className="sub-info-box" style={{width: '100%'}}>
       <div className="comment-area community-main-card commu-sub-card">
         {/* comments */}
         <Comment.Group className="base">

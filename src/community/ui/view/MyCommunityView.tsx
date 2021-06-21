@@ -7,7 +7,6 @@ import MyCommunityListContainer from '../logic/MyCommunityIntro/MyCommunityListC
 import MyCommunityPostListContainer from '../logic/MyCommunityIntro/MyCommunityPostListContainer';
 import { useMyCommunityIntro } from '../../store/CommunityMainStore';
 import { Area } from 'tracker/model';
-
 import ReactGA from 'react-ga';
 
 interface MyCommunityViewProps {}
@@ -35,6 +34,12 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
     if (name === 'Follow') {
       history.replace('/community/main/follow');
     }
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
   };
 
   useEffect(() => {
@@ -55,17 +60,15 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               name="MyCommunity"
               active={true}
               as={Link}
-              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
               <span className="count" />
             </Menu.Item>
             <Menu.Item
-              name="MyCreatedCommunity"
+              name="CommunityList"
               active={false}
               as={Link}
-              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
@@ -74,10 +77,25 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               name="MyFeed"
               active={false}
               as={Link}
-              // to="/community/main/follow"
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
+              active={false}
+              as={Link}
               onClick={() => gaOnClick('Follow')}
             >
-              Follow
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
             </Menu.Item>
           </Menu>
         </div>
