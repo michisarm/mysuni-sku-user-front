@@ -147,7 +147,7 @@ function MyPageHeaderContainer({
                                 {showNameFlag ? skProfile.member.name : skProfile.nickName}
                               </span>
                               <div className="foll-info">
-                                  <span>{skProfile.followerCount}</span>{' '}Follower
+                                  <span>{skProfile.followerCount}</span>{' '}Followers
                                   <span>{skProfile.followingCount}</span>{' '}Following
                               </div>
                           </div>

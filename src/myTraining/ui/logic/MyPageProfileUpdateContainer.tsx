@@ -167,6 +167,24 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       introduceTemp
     } = this.state;
 
+    if(!nickNameTemp || 
+      nickNameTemp === ''){
+      reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
+        return;
+    }else if(introduceTemp.length > 20){
+      reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
+        return;
+    }
+
+    if(!introduceTemp || 
+      introduceTemp === ''){
+      reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
+        return;
+    }else if(introduceTemp.length > 45){
+      reactAlert({ title: '알림', message: '자기소개는 최대 45자까지 입력 가능합니다.' });
+        return;
+    }
+
     if (photoImageFile !== undefined) {
       await this.onConfirm();
     }
@@ -358,7 +376,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                               <Table.Cell>자기소개</Table.Cell>
                               <Table.Cell>
                                   <TextArea 
-                                    placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (70자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
+                                    placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
                                     onChange={(e) => this.handleIntroduceChange(e)}
                                     value={changeIntroduce ? introduceTemp : skProfile.introduce}
                                   />
