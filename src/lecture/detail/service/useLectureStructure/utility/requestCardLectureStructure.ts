@@ -624,7 +624,7 @@ export async function isPrecoursePassed(cardId: string) {
     cardRelatedStudent.prerequisiteCardStudents || [];
 
   //선수 과정이 존재하지 않거나 필수인 선수 과정이 없는 경우
-  if (isEmpty(filterPrecourse.length)) {
+  if (isEmpty(filterPrecourse)) {
     return true;
   }
 
