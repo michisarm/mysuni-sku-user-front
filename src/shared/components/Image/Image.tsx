@@ -13,7 +13,8 @@ function Image({ src, alt, className }: Props) {
       src === undefined ||
       includes(src, 'base64') ||
       includes(src, 'http') ||
-      includes(src, '/files/')
+      includes(src, '/files/') ||
+      includes(src, '/static/')
     ) {
       return src;
     }

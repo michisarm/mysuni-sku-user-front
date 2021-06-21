@@ -35,7 +35,18 @@ class SkProfileService {
 
   @computed
   get profileMemberName() {
-    return this.skProfile.member.name;
+    //
+    let viewProfileName: string = '';
+
+    if(this.skProfile.nameFlag === 'N' &&
+        this.skProfile.nickName !== '' ){
+      viewProfileName = this.skProfile.nickName
+    }else{
+      viewProfileName = this.skProfile.member &&this.skProfile.member.name
+    }
+
+    return viewProfileName;
+    // return this.skProfile.member.name;
   }
 
   @computed

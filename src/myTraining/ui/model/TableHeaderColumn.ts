@@ -90,8 +90,9 @@ const TableHeaderColumn = {
     { key: 0, text: 'No' },
     { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
-    { key: 3, text: '스탬프', icon: true },
-    { key: 4, text: '획득일자', icon: true },
+    // { key: 3, text: '스탬프', icon: true },
+    { key: 3, text: '획득일자', icon: true },
+    { key: 4, text: '수료증'},
   ],
   PersonalLearning: [
     { key: 0, text: 'No' },

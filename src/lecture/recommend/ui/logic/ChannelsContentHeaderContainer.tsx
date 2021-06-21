@@ -91,7 +91,7 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}
-            name={member.name}
+            name={skProfile.profileViewName}
             company={member.company}
             department={member.department}
             imageEditable={false}

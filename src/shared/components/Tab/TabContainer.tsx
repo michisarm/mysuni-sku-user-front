@@ -45,7 +45,7 @@ class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
     className: 'tab-menu offset0',
-    onChangeTab: () => { },
+    onChangeTab: () => {},
   };
 
   state = {
@@ -276,7 +276,7 @@ class TabContainer extends Component<Props, State> {
       <>
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
         {topOfContents}
-        <Segment className={`full ${activeName === 'EarnedNoteList' ? 'note-tab-area' : ''}`} key={`tab-content-${tab.name}`}>
+        <Segment className="full" key={`tab-content-${tab.name}`}>
           <div
             className={classNames('ui tab', {
               active: tab.name === activeName,

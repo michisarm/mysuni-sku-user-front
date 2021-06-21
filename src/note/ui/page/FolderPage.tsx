@@ -10,8 +10,11 @@ const FolderPage: React.FC<FolderPageProps> = function FolderPage({ noteCount })
 
   return (
     <>
-      <div>
-        <FolderContainer noteCount={noteCount} />
+      <div className="mypage_contents profile-badge-contents">
+        <strong className="mypage_title">Note</strong>
+        <div className="ui segment full note-tab-area">
+          <FolderContainer noteCount={noteCount} />
+        </div>
       </div>
     </>
   );

@@ -110,7 +110,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({ 
   const SearchOptions = [
     { key: 'all', value: 'all', text: '전체' },
     { key: 'name', value: 'name', text: '과정명' },
-    { key: 'content', value: 'content', text: '내용' },
+    { key: 'content', value: 'content', text: 'Note 내용' },
   ]
 
   const handleSubmitClick = useCallback(

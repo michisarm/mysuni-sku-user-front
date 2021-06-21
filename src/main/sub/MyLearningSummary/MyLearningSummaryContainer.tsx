@@ -251,7 +251,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <div className="personal-header-title">
-            <h3>{skProfile.member.name}님,</h3>
+            <h3>{skProfile.profileViewName}님,</h3>
             <DashBoardSentenceContainer />
           </div>
           <div className="main-gauge-box">

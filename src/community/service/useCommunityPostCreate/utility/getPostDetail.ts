@@ -31,6 +31,7 @@ export async function getPostDetailInPreview(postId?: string): Promise<any> {
   if (postId !== undefined) {
     const post: Post = await findPostViewWithRead(postId);
     if (post !== undefined && post !== null) {
+
       postDetailItem.id = post.id!;
       postDetailItem.postId = post.postId;
       postDetailItem.menuId = post.menuId;
