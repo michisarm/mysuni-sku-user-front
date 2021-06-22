@@ -265,11 +265,15 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
                           {
                             item.note.playTime
                           }
+                        {
+                            item.note.playTime.indexOf(':') !== -1 && (
                           <Icon className="icongo">
                             <Image
                               src={`${process.env.PUBLIC_URL}/images/all/icon-go-a.svg`}
                             />
                           </Icon>
+                          )
+                        }
                         </span>
                       )
                     }
