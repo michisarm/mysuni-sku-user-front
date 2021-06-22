@@ -143,7 +143,6 @@ class MyTrainingApi {
   
   findCardNoteList(cardIds: string[]) {
     const splitedIds = cardIds && cardIds.join(',') || '';
-    console.log("CALL ----------------find  Card  NoteList---------------- ")
   
     return axiosApi.get<any[]>(`/api/mytraining/note/list/cardInfo`, {
       params: {
@@ -156,7 +155,6 @@ class MyTrainingApi {
   findCubeNoteList(cardIds: string[], cubeIds: string[]) {
     const splitedCardIds = cardIds && cardIds.join(',') || '';
     const splitedCubeIds = cubeIds && cubeIds.join(',') || '';
-    console.log("CALL ----------------find  Cube  NoteList---------------- ")
   
     return axiosApi.get<any[]>(`/api/mytraining/note/list/cubeInfo`, {
       params: {

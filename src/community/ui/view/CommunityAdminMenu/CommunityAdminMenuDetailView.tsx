@@ -158,9 +158,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     onChangeValue(selectedRow, 'surveyId');
   }
 
-  console.log("11111111111111", selectedRow?.groupId === null ||
-  selectedRow?.groupId === '' ||
-  selectedRow?.accessType === 'COMMUNITY_GROUP')
   return (
     <div className="menu_right_contents">
       <table>
