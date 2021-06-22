@@ -24,6 +24,11 @@ export default class PrivacyPolicyModalContainer extends Component<
     open: false,
     privacyPolicyOption: [
       {
+        key: '20210614',
+        value: '20210614',
+        text: '공고일자 : 2021 년 6월 14일',
+      },
+      {
         key: '20200901',
         value: '20200901',
         text: '공고일자 : 2020 년 9월 1일',
@@ -34,11 +39,11 @@ export default class PrivacyPolicyModalContainer extends Component<
         text: '공고일자 : 2020 년 1월 17일',
       },
     ],
-    policyVer: '20200901',
+    policyVer: '20210614',
   };
 
   componentWillUnmount(): void {
-    this.setState({ open: false, policyVer: '20200901' });
+    this.setState({ open: false, policyVer: '20210614' });
   }
 
   show() {
@@ -46,7 +51,7 @@ export default class PrivacyPolicyModalContainer extends Component<
   }
 
   close() {
-    this.setState({ open: false, policyVer: '20200901' });
+    this.setState({ open: false, policyVer: '20210614' });
   }
 
   async onDownloadPrivacyPolicy() {

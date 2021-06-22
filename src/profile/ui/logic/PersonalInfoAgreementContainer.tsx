@@ -85,7 +85,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     const pisAgreementSdo: PisAgreementSdo = {
       agreementFormId: '20210622-1',
       serviceId: 'SUNI',
-      optionalAgreements: [mySuniChecked, domesticChecked, international],
+      optionalAgreements: [domesticChecked],
     };
 
     registerPisAgreement(pisAgreementSdo).then((result) => {

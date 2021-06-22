@@ -13,7 +13,7 @@ export class PersonalInfoTermView extends Component {
               <p className="text1">
                 SK 이노베이션(이하 서비스명 ‘mySUNI’) 개인정보 처리방침
               </p>
-              <p>
+              <p className="text1">
                 SK이노베이션 주식회사(이하 “회사”)는 mySUNI 홈페이지 운영과
                 관련하여 「개인정보보호법」 제30조에 따라 정보주체의 개인정보를
                 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록
@@ -561,16 +561,6 @@ export class PersonalInfoTermView extends Component {
               <p className="text2">
                 <span>②</span>이 개인정보 처리방침은 2021. 06. 14부터
                 적용됩니다.
-              </p>
-              <p className="text2">
-                <span>③</span>이전의 개인정보 처리방침은 아래에서 확인하실 수
-                있습니다.
-              </p>
-              <p className="text4 mb0">
-                - 2020. 01. 17. ~ 2020. 08. 31. 적용 <Link to="#">(클릭)</Link>
-              </p>
-              <p className="text4">
-                - 2020. 09. 01. ~ 2021. 06. 13. 적용 <Link to="#">(클릭)</Link>
               </p>
             </div>
           </div>
