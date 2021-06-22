@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityMember, useSearchText } from 'community/store/CommunityMemberStore';
+import { useCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
-import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
@@ -108,14 +107,6 @@ export const CommunityMemberView: FunctionComponent  = () => {
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const { communityId } = useParams<MemberList>();
-  const searchText = useSearchText()
-
-  useEffect(() => {
-    if(searchText === undefined) {
-      return
-    } 
-    setActivePage(1)
-  },[searchText])
 
   const totalPages = () => {
     let totalPage = Math.ceil(memberData!.totalCount / 8)
@@ -144,15 +135,6 @@ export const CommunityMemberView: FunctionComponent  = () => {
     <>
       <div className="mycommunity-card-list">
         {memberData && memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} />)}
-      </div>
-      <div className="lms-paging-holder">
-        <Pagination
-          activePage={activePage}
-          totalPages={totalPage}
-          firstItem={null}
-          lastItem={null}
-          onPageChange={(e, data) => onPageChange(data)}
-        />
       </div>
     </>
   )
