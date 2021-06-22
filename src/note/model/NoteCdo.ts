@@ -7,7 +7,6 @@ export default interface NoteCdo {
   content?: string;
   folderId?: string;
   playTime?: string;
-  updateDate?: number;
 }
 
 
@@ -19,6 +18,5 @@ export function convertNoteToNoteCdo(note: Note): NoteCdo {
     content: '',
     folderId: note.folderId,
     playTime: note.playTime,
-    updateDate: note.updateDate,
   };
 }

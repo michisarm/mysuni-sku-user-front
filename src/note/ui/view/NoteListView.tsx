@@ -145,7 +145,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
 
-    noteUdo.playTime = note.playTime;
+    noteUdo.playTime = note.playTime.indexOf('Note ') === -1 ? note.playTime : '00:00:00';
 
     await saveNote(undefined, id, noteUdo);
     params.pageNo === '2' && await requestCubeListByFolderId();
