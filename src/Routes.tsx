@@ -43,11 +43,20 @@ class Routes extends PureComponent {
 
   componentDidMount() {
     const isExternal = isExternalInstructor();
-    if (
-      isExternal &&
-      window.location.pathname !== '/suni-main/community/main'
-    ) {
-      window.location.href = '/suni-main/community/main';
+    // TODO :: 현재 하드코딩 => 변경 예정
+    const agreementFormId = '20210622-1';
+    const serviceId = 'SUNI';
+
+    if (isExternal === true) {
+      findMyPisAgreement(agreementFormId, serviceId).then((result) => {
+        if (result === undefined) {
+          return;
+        }
+
+        if (window.location.pathname !== '/suni-main/community/main') {
+          window.location.href = '/suni-main/community/main';
+        }
+      });
     }
   }
 
