@@ -27,7 +27,6 @@ class FavoriteCollegePage extends React.Component {
         <section className="bg-white">
           <div className="interest-content lo-08-06 step1">
             <ContentHeaderContainer step={5} />
-
             <FavoriteCollegeContainer />
           </div>
         </section>

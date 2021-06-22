@@ -4,16 +4,16 @@ import AppInitializer from './AppInitializer';
 import { getCookie } from '@nara.platform/accent';
 import ScrollToTop from './ScrollToTop';
 
-import { UserApp, AppLayout } from './shared';
+import { UserApp } from './shared';
 import HistoryContainer from './shared/ui/logic/HistoryContainer';
 import { TrackerRoute } from 'tracker-react';
-// import { trackClick } from 'tracker/present/apiclient';
 import {
   actionTrack,
   actionTrackView,
 } from 'tracker/present/logic/ActionTrackService';
 import NotFoundPage from 'layout/NotFoundPage';
 import { isExternalInstructor } from './shared/helper/findUserRole';
+import { AppLayoutContainer } from './layout/UserApp/ui/logic/AppLayoutContainer';
 import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
@@ -25,7 +25,6 @@ const ApprovalRoutes = lazy(() => import('./approval/Routes'));
 const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
 const CommunityRoutes = lazy(() => import('./community/Routes'));
-// const MyTrainingRoutes2 = lazy(() => import('./apl/Routes'));
 
 const CertificationRoutes = lazy(() => import('./certification/Routes'));
 const PreviewRoutes = lazy(() => import('./preview/Routes'));
@@ -71,7 +70,7 @@ class Routes extends PureComponent {
               <Route
                 path="/"
                 render={() => (
-                  <AppLayout>
+                  <AppLayoutContainer>
                     <Switch>
                       <Route
                         path="/certification"
@@ -97,7 +96,7 @@ class Routes extends PureComponent {
                       <Route path="/" component={MainRoutes} />
                       <Route path="/404" component={NotFoundPage} />
                     </Switch>
-                  </AppLayout>
+                  </AppLayoutContainer>
                 )}
               />
             </Switch>

@@ -9,7 +9,6 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
-import { IdNameCount } from 'shared/model';
 import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
