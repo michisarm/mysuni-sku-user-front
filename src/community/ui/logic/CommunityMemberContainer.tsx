@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import classNames from "classnames";
-import { Icon } from "semantic-ui-react";
+import {Icon, Pagination} from "semantic-ui-react";
 import { CommunityMemberView } from '../view/CommunityMemberView/CommunityMemberView';
 import { getAllMember, getSearchMember } from 'community/service/useMemberList/useMemberList';
 import { setSearchText, useCommunityMember } from 'community/store/CommunityMemberStore';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberTabmenu';
 import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
 
@@ -13,11 +13,19 @@ interface Props {
 }
 
 const CommunityMemberListContainer: React.FC<Props> = function GroupListContainer({ currentCommunity }) {
+
+  interface MemberList {
+    communityId: any
+  }
+
   const memberData = useCommunityMember();
   const [searchValue, setSearchValue] = useState<any>();
   const [activemenu, setActiveMenu] = useState<string>("member");
   const history = useHistory();
-
+  const [activePage, setActivePage] = useState<any>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const { communityId } = useParams<MemberList>();
+  
   const handleActiveMenu = useCallback((active: string) => {
 
     setActiveMenu(active);
@@ -33,8 +41,9 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
 
   }, [activemenu])
 
-  const onSearch = (value: any) => {
-    if (value != null) {
+  const onSearch = (value:any) => {
+    if(value != null) {
+      setActivePage(1)
       getSearchMember(currentCommunity, encodeURIComponent(searchValue))
       setSearchText(value)
     }
@@ -48,6 +57,25 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
     getAllMember(currentCommunity, 0)
   }, [])
 
+  useEffect(() => {
+    if(memberData !==  undefined) {
+      totalPages()
+    }
+  },[memberData])
+
+  const onPageChange = (data: any) => {
+    getAllMember(communityId, (data.activePage - 1) * 8);
+    setActivePage(data.activePage)
+  }
+
+  const totalPages = () => {
+    let totalPage = Math.ceil(memberData!.totalCount / 8)
+    if (memberData!.totalCount % 8 < 0) {
+      totalPage++
+    }
+    setTotalPage(totalPage)
+  }
+  
   return (
     <>
       <CommunityMemberHeader />
@@ -70,6 +98,15 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
         </div>
       </div>
       <CommunityMemberView />
+      <div className="lms-paging-holder">
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={(e, data) => onPageChange(data)}
+        />
+      </div>
     </>
   );
 };
