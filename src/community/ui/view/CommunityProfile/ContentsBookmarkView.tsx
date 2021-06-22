@@ -41,6 +41,7 @@ import { Area } from 'tracker/model';
 import ReactGA from 'react-ga';
 import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 import { getPostDetailInPreview } from '../../../service/useCommunityPostCreate/utility/getPostDetail';
+import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
 
 interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
@@ -51,6 +52,7 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
 }) {
   const contextRef = useRef(null);
   const history = useHistory();
+  const isExternal = isExternalInstructor();
 
   // 북마크 해제시 화면에서 제거
   const result = communityProfileBookmark.posts.filter(x => {
@@ -98,15 +100,17 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={false}
-              as={Link}
-              // to="/community/main/open-communities"
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && 
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={false}
+                as={Link}
+                // to="/community/main/open-communities"
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            }
             <Menu.Item
               name="MyFeed"
               active={false}

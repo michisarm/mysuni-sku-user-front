@@ -40,6 +40,7 @@ import { Area } from 'tracker/model';
 import ReactGA from 'react-ga';
 import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 import { getPostDetailInPreview } from '../../../service/useCommunityPostCreate/utility/getPostDetail';
+import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -52,6 +53,7 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
 }) {
   const contextRef = useRef(null);
   const history = useHistory();
+  const isExternal = isExternalInstructor();
 
   const gaOnClick = (name: string) => {
     // react-ga
@@ -95,15 +97,17 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={false}
-              as={Link}
-              // to="/community/main/open-communities"
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={false}
+                as={Link}
+                // to="/community/main/open-communities"
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
             <Menu.Item
               name="MyFeed"
               active={true}
@@ -139,31 +143,34 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
             style={{ display: 'block' }}
             data-area={Area.COMMUNITY_FEED}
           >
-            <div className="community-main-contants" style={{ marginRight: "0px" }}>
+            <div
+              className="community-main-contants"
+              style={{ marginRight: '0px' }}
+            >
               {communityProfileFeed !== undefined &&
-                communityProfileFeed.posts.map(postItem => (
+                communityProfileFeed.posts.map((postItem) => (
                   <PostItemView key={postItem.postId} {...postItem} />
                 ))}
             </div>
             <div className="more-comments">
               {communityProfileFeed.postsTotalCount >
                 communityProfileFeed.postsOffset && (
-                  <Button
-                    icon
-                    className="left moreview"
-                    onClick={() => requestAppendProfileFeedPostList(profileId)}
-                  >
-                    <Icon className="moreview" /> list more
-                  </Button>
-                )}
+                <Button
+                  icon
+                  className="left moreview"
+                  onClick={() => requestAppendProfileFeedPostList(profileId)}
+                >
+                  <Icon className="moreview" /> list more
+                </Button>
+              )}
               {communityProfileFeed.postsTotalCount <=
                 communityProfileFeed.postsOffset && (
-                  <Button
-                    icon
-                    className="left moreview"
-                    style={{ cursor: 'default' }}
-                  />
-                )}
+                <Button
+                  icon
+                  className="left moreview"
+                  style={{ cursor: 'default' }}
+                />
+              )}
             </div>
           </div>
         </Segment>
@@ -195,7 +202,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     let nextText = div.innerText;
     nextText = nextText
       .split('\n')
-      .filter(c => c !== '')
+      .filter((c) => c !== '')
       .join('\n');
     setText(nextText);
   }, []);
@@ -229,7 +236,6 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     setMore(false);
   }, []);
 
-
   const contentsView = () => {
     return (
       <>
@@ -244,7 +250,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     useEffect(() => {
       const postDetail = getPostDetailInPreview(postId);
       if (postDetail !== undefined) {
-        postDetail.then(result => {
+        postDetail.then((result) => {
           setDetail(result.html);
         });
       }
@@ -270,15 +276,15 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
             {profileImage !== undefined &&
-              profileImage !== '' &&
-              profileImage !== null ? (
-                <Comment.Avatar
-                  // src={`/files/community/${profileImage}`} 
-                  src={ProfileImagePath(profileImage)}
-                />
-              ) : (
-                <Comment.Avatar src={`${DefaultImg}`} />
-              )}
+            profileImage !== '' &&
+            profileImage !== null ? (
+              <Comment.Avatar
+                // src={`/files/community/${profileImage}`}
+                src={ProfileImagePath(profileImage)}
+              />
+            ) : (
+              <Comment.Avatar src={`${DefaultImg}`} />
+            )}
             <Comment.Content>
               <Comment.Author as="a">
                 <Link to={`/community/${communityId}`}>{communityName}</Link>
@@ -287,8 +293,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
                   <span className="date">{createdTime}</span>
-                  <span className="like">좋아요{' '}<strong>{likeCount}</strong></span>
-                  <span className="comt">댓글수{' '}<strong>{replyCount}</strong></span>
+                  <span className="like">
+                    좋아요 <strong>{likeCount}</strong>
+                  </span>
+                  <span className="comt">
+                    댓글수 <strong>{replyCount}</strong>
+                  </span>
                 </div>
                 {/* <Button>+ View more</Button> */}
               </Comment.Text>
@@ -354,12 +364,18 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               )}
               <div className="text-right">
                 {!more && (
-                  <button className="ui icon button right more-bttn" onClick={viewMore}>
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={viewMore}
+                  >
                     <i aria-hidden="true" className="drop_down icon" />
                   </button>
                 )}
                 {more && (
-                  <button className="ui icon button right more-bttn" onClick={hideMore}>
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={hideMore}
+                  >
                     <i aria-hidden="true" className="drop_down up icon" />
                   </button>
                 )}
@@ -393,7 +409,7 @@ async function bookmark(postId: string) {
     }
     setCommunityProfileFeed({
       ...communityProfileFeed,
-      posts: communityProfileFeed.posts.map(c => {
+      posts: communityProfileFeed.posts.map((c) => {
         if (c.postId !== postId) {
           return c;
         }
@@ -411,7 +427,7 @@ async function unbookmark(postId: string) {
   }
   setCommunityProfileFeed({
     ...communityProfileFeed,
-    posts: communityProfileFeed.posts.map(c => {
+    posts: communityProfileFeed.posts.map((c) => {
       if (c.postId !== postId) {
         return c;
       }
