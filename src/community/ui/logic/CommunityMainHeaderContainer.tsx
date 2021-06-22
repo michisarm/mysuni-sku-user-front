@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
@@ -32,7 +33,11 @@ import { findCommunityProfile } from '../../api/profileApi';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
-import { followMember, unfollowMember } from '../../../layout/UserApp/api/ProfileInfoAPI';
+import {
+  followMember,
+  unfollowMember,
+} from '../../../layout/UserApp/api/ProfileInfoAPI';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface profileParams {
   id: string;
@@ -101,10 +106,10 @@ function CommunityMainHeaderContainer() {
   const followersBtn = (id: string, idx: number, follow: boolean) => {
     if (follow === true) {
       // requestFollowModalDelete(id, 'follower');
-      unfollowMember(id).then(() => requestFollowersModal())
+      unfollowMember(id).then(() => requestFollowersModal());
     } else {
       // requestFollowModalAdd(id, 'follower');
-      followMember(id).then(() => requestFollowersModal())
+      followMember(id).then(() => requestFollowersModal());
     }
   };
 
@@ -115,7 +120,6 @@ function CommunityMainHeaderContainer() {
     } else {
       // requestFollowModalAdd(id, 'following');
       followMember(id).then(() => requestFollowingsModal());
-
     }
   };
 
@@ -124,10 +128,7 @@ function CommunityMainHeaderContainer() {
       followersList?.followers.map((item, idx) => {
         return (
           <li style={{ cursor: 'pointer' }}>
-            <p
-              className="pic"
-              onClick={() => clickProfile(item.id)}
-            >
+            <p className="pic" onClick={() => clickProfile(item.id)}>
               <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
@@ -137,10 +138,7 @@ function CommunityMainHeaderContainer() {
                 alt=""
               />
             </p>
-            <p
-              className="nickname"
-              onClick={() => clickProfile(item.id)}
-            >
+            <p className="nickname" onClick={() => clickProfile(item.id)}>
               {item.nickname === '' ? item.name : item.nickname}
             </p>
             <label className="chk_follow">
@@ -165,10 +163,7 @@ function CommunityMainHeaderContainer() {
       followingsList?.followings.map((item, idx) => {
         return (
           <li style={{ cursor: 'pointer' }}>
-            <p
-              className="pic"
-              onClick={() => clickProfile(item.id)}
-            >
+            <p className="pic" onClick={() => clickProfile(item.id)}>
               <ProfileImage
                 src={
                   item.profileImg === null || item.profileImg === ''
@@ -178,10 +173,7 @@ function CommunityMainHeaderContainer() {
                 alt=""
               />
             </p>
-            <p
-              className="nickname"
-              onClick={() => clickProfile(item.id)}
-            >
+            <p className="nickname" onClick={() => clickProfile(item.id)}>
               {item.nickname === '' ? item.name : item.nickname}
             </p>
             <label className="chk_follow">
@@ -201,34 +193,35 @@ function CommunityMainHeaderContainer() {
       </p>
     );
 
-    const clickProfile = useCallback(async (id) => {
-      findCommunityProfile(id).then(result => {
-        setProfileInfo({
-          id: result!.id,
-          profileImg: result!.profileImg,
-          introduce: result!.introduce,
-          nickName: result!.nickname,
-          creatorName: result!.name,
-        });
-        setProfileOpen(true);
+  const clickProfile = useCallback(async (id) => {
+    findCommunityProfile(id).then((result) => {
+      setProfileInfo({
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
       });
-    }, []);
+      setProfileOpen(true);
+    });
+  }, []);
+
+  const isExternal = isExternalInstructor();
 
   return (
     <>
       {/* <FollowerView /> */}
       {/* eslint-disable */}
-      <div
-        className="main-info-area"
-        data-area={Area.COMMUNITY_INFO}
-      >
+      <div className="main-info-area" data-area={Area.COMMUNITY_INFO}>
         <div className="progress-info-wrap mypage personal-detail">
           <div className="cell">
             <div className="cell-inner personal-inner">
               <div
                 className="profile"
-                onClick={() => history.push('/my-training/my-page')}
-                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  !isExternal && history.push('/my-training/my-page')
+                }
+                style={{ cursor: `${isExternal ? 'default' : 'pointer'}` }}
               >
                 <div className="pic">
                   <ProfileImage
@@ -248,12 +241,15 @@ function CommunityMainHeaderContainer() {
                     onClick={() => history.push('/my-training/my-page')}
                     style={{ cursor: 'pointer', display: 'inline-block' }}
                   >
-                    {profile?.nameFlag === 'N' ? profile?.nickname : profile?.name}님,
+                    {profile?.nameFlag === 'N'
+                      ? profile?.nickname
+                      : profile?.name}
+                    님,
                   </div>
                 </div>
                 <div className="part">
-                    <p>mySUNI 커뮤니티에 가입하고 다양한 활동을 즐겨보세요!</p>
-                    {/* <Link
+                  <p>mySUNI 커뮤니티에 가입하고 다양한 활동을 즐겨보세요!</p>
+                  {/* <Link
                     className="ui button orange-arrow2"
                     to="/my-training/my-page"
                     >
@@ -277,16 +273,16 @@ function CommunityMainHeaderContainer() {
             <div className="cell-inner">
               <div className="stamp-wrap">
                 <Label className="stamp">
-                  <div 
+                  <div
                     style={profile?.followerCount ? { cursor: 'pointer' } : {}}
                     onClick={() => modalOpen('followers')}
                   >
                     <span className="text1">Followers</span>
                     <div className="border_line">
-                        <span className="text3">
-                          {followersList?.followers.length}
-                        </span>
-                        <span className="text5">명</span>
+                      <span className="text3">
+                        {followersList?.followers.length}
+                      </span>
+                      <span className="text5">명</span>
                     </div>
                   </div>
                 </Label>
@@ -297,7 +293,7 @@ function CommunityMainHeaderContainer() {
             <div className="cell-inner">
               <div className="stamp-wrap">
                 <Label className="stamp">
-                  <div 
+                  <div
                     style={profile?.followingCount ? { cursor: 'pointer' } : {}}
                     onClick={() => modalOpen('following')}
                   >

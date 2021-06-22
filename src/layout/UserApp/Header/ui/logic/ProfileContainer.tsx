@@ -34,7 +34,7 @@ interface State {
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
-  //profileButtonRef: any = React.createRef();
+  profileButtonRef: any = React.createRef();
 
   state = {
     balloonShowClass: '',
@@ -42,25 +42,25 @@ class ProfileContainer extends Component<Props, State> {
     isOpen: false,
   };
 
-  //
   componentDidMount() {
-    //
     const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
-
     this.findNoReadCount();
+
     setInterval(() => {
       this.findNoReadCount(); // 5분마다 안 읽은 알림이 있는지 조회
     }, 3000000);
 
-    document.addEventListener('mousedown', this.handleClickOutside);
+    isExternalInstructor() &&
+      document.addEventListener('mousedown', this.handleClickOutside);
 
     this.avaible();
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    isExternalInstructor() &&
+      document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
   async avaible() {
@@ -74,17 +74,17 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   handleClickOutside(e: MouseEvent) {
-    // if (
-    //   //this.profileButtonRef &&
-    //   //!this.profileButtonRef.current.contains(e.target)
-    // ) {
-    //   //setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
-    // }
+    if (
+      this.profileButtonRef &&
+      !this.profileButtonRef.current.contains(e.target)
+    ) {
+      setTimeout(() => this.setState({ balloonShowClass: '' }), 500);
+    }
   }
 
   onTogglePop() {
-    //const { balloonShowClass } = this.state;
-    //this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
+    const { balloonShowClass } = this.state;
+    this.setState({ balloonShowClass: balloonShowClass ? '' : 'show' });
   }
 
   onLogout() {
@@ -142,81 +142,73 @@ class ProfileContainer extends Component<Props, State> {
     const setOpen = () => {
       //this.profileButtonRef.current.click();
       this.setState({ isOpen: !isOpen });
-      document.getElementById("btnProFile")?.click();
-    }
+      document.getElementById('btnProFile')?.click();
+    };
 
     return (
       <div className="g-info">
-        <Popup
-          className="pop_profile"
-          trigger={
-            <Button id="btnProFile" className="user image label"><Image src={skProfile.photoFilePath || profileImg} alt="profile" /></Button>
-          }
-          position="bottom right"
-          on="click"
-          //open={isOpen}
-          onOpen={setOpen}
-        >
-          <Popup.Content>
-            <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />{ /*프로필사진 셋팅전 */}
-          </Popup.Content>
-        </Popup>
-        {/* <button
-          className="ui user image label"
-          onClick={this.onTogglePop}
-          ref={this.profileButtonRef}
-        >
-          <span className="name">{member.name}</span>
-          <span className="affiliation">
-            {member.company} {member.department}
-          </span>
-          <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
-        </button> */}
-
-        {/* <div
-          className={`balloon-pop ${balloonShowClass}`}
-          data-area={Area.HEADER_PROFILE}
-        >
-          <ul>
-            {isInstructor && (
-              <li>
-                <a
-                  href={`${window.location.origin}/suni-instructor/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i aria-hidden="true" className="balloon mypage icon" />
-                  <span>강사 서비스</span>
-                </a>
-              </li>
-            )}
-            {menuAuth.some(
-              (menuAuth: PageElement) =>
-                menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
-            ) &&
-              !isExternal && (
+        {isExternal ? (
+          <>
+            <button
+              className="ui user image label"
+              onClick={this.onTogglePop}
+              ref={this.profileButtonRef}
+            >
+              <span className="name">{member.name}</span>
+              <span className="affiliation">
+                {member.company} {member.department}
+              </span>
+              <Image
+                src={skProfile.photoFilePath || profileImg}
+                alt="profile"
+              />
+            </button>
+            <div
+              className={`balloon-pop ${balloonShowClass}`}
+              data-area={Area.HEADER_PROFILE}
+            >
+              <ul>
                 <li>
                   <a
-                    href="#"
-                    onClick={e => {
-                      this.props.history.push(myTrainingRoutePaths.myPage());
-                      e.preventDefault();
-                    }}
+                    href={`${window.location.origin}/suni-instructor/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i aria-hidden="true" className="balloon mypage icon" />
-                    <span>My Page</span>
+                    <span>강사 서비스</span>
                   </a>
                 </li>
-              )}
-            <li>
-              <button type="button" onClick={this.onLogout}>
-                <i aria-hidden="true" className="balloon logout icon" />
-                <span>Logout</span>
-              </button>
-            </li>
-
-          </ul>
-        </div> */}
+                <li>
+                  <button type="button" onClick={this.onLogout}>
+                    <i aria-hidden="true" className="balloon logout icon" />
+                    <span>Logout</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </>
+        ) : (
+          <Popup
+            className="pop_profile"
+            trigger={
+              <Button id="btnProFile" className="user image label">
+                <Image
+                  src={skProfile.photoFilePath || profileImg}
+                  alt="profile"
+                />
+              </Button>
+            }
+            position="bottom right"
+            on="click"
+            //open={isOpen}
+            onOpen={setOpen}
+          >
+            <Popup.Content>
+              <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />
+              {/*프로필사진 셋팅전 */}
+            </Popup.Content>
+          </Popup>
+        )}
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
@@ -225,7 +217,6 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
-
       </div>
     );
   }
