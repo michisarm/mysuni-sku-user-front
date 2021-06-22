@@ -35,9 +35,8 @@ export async function requestProfile() {
     currentHistory?.push(profilePaths.guideAgreement());
     return;
   }
-  const externalUser = isExternalUser();
   const externalInstructor = isExternalInstructor();
-  if (externalUser || externalInstructor) {
+  if (externalInstructor) {
     return;
   }
 
