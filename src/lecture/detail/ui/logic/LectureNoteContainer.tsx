@@ -248,7 +248,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
           content = item.note.content
           if(typeof item.note.playTime === 'number') {
             playTime = item.note.playTime === 0 ? '00:00:00' : `${Math.floor(Number(item.note.playTime) / 60 % 60) < 10 ? '0' : ''}${Math.floor(Number(item.note.playTime) / 60).toFixed()}:${Math.floor(Number(item.note.playTime) % 60) < 10 ? '0' : ''}${Math.floor(Number(item.note.playTime) % 60)}`
-          } else if (item.note.playTime.indexOf('노트 ') !== -1) {
+          } else if (item.note.playTime.indexOf('Note ') !== -1) {
             playTime = '00:00:00'
           } else {
             playTime = item.note.playTime
