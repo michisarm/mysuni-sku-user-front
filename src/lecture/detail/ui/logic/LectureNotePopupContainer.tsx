@@ -16,7 +16,7 @@ import { requestLectureNoteDelete } from '../../service/useLectureNote/useLectur
 import { requestLectureNoteAdd } from '../../service/useLectureNote/useLectureNoteAdd';
 import { requestLectureNoteModify } from '../../service/useLectureNote/useLectureNoteModify';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 
 const LectureNotePopupContainer: React.FC = ({
 }) => {
@@ -130,6 +130,15 @@ const LectureNotePopupContainer: React.FC = ({
     } else {
       playTime = '00:00:00'
     }
+
+    if(addNote.content === '') {
+      reactAlert({
+        title: '알림',
+        message: '노트 내용을 작성해주세요.',
+      }); 
+      return false
+    }
+    
     findCardCache(urlParams.cardId).then((result) => {
       if(result && result.card) {
         const param = {
@@ -182,6 +191,15 @@ const LectureNotePopupContainer: React.FC = ({
       content,
       playTime
     }
+
+    if(param.content === '') {
+      reactAlert({
+        title: '알림',
+        message: '노트 내용을 작성해주세요.',
+      }); 
+      return
+    }
+    
     requestLectureNoteModify(id, param).then(() => {
       //리스트 조회
       requestLectureNote(urlParams.cardId, urlParams.cubeId!)
