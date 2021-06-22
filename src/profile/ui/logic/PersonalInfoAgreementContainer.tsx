@@ -9,6 +9,7 @@ import SkProfileService from '../../present/logic/SkProfileService';
 import PersonalInfoTermsView from '../view/PersonalInfoTermsView';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
 import { registerPisAgreement } from '../../present/apiclient/SkProfileApi';
+import { isExternalInstructor, isExternalUser } from '../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -67,6 +68,8 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     const { history } = this.props;
     const { skProfile, reAgree } = skProfileService!;
     const { mySuniChecked, domesticChecked, international } = this.state;
+    const externalUser = isExternalUser();
+    const externalInstructor = isExternalInstructor();
 
     if (!mySuniChecked || !domesticChecked || !international) {
       reactAlert({
@@ -84,6 +87,16 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
     registerPisAgreement(pisAgreementSdo).then(result => {
       if(result === undefined) {
+        return;
+      }
+
+      if(externalUser) {
+        history.push(routePaths.favoriteCollege());
+        return;
+      }
+
+      if(externalInstructor) {
+        history.push('/suni-instructor');
         return;
       }
 

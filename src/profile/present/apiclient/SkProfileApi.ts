@@ -15,7 +15,7 @@ export function registerPisAgreement(pisAgreementSdo: PisAgreementSdo) {
 }
 
 export function findMyPisAgreement(agreementFormId: string, serviceId: string) {
-  const url = `/api/profile/pisAgreement/${agreementFormId}/${serviceId}`;
+  const url = `/api/profile/pisAgreement/myPisAgreement/${agreementFormId}/${serviceId}`;
   return axios.get<CpPisAgreementModel>(url).then(AxiosReturn);
 }
 
