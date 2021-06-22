@@ -238,8 +238,13 @@ function CommunityMainHeaderContainer() {
               <div className="text-info">
                 <div className="name">
                   <div
-                    onClick={() => history.push('/my-training/my-page')}
-                    style={{ cursor: 'pointer', display: 'inline-block' }}
+                    onClick={() =>
+                      !isExternal && history.push('/my-training/my-page')
+                    }
+                    style={{
+                      cursor: `${isExternal ? 'default' : 'pointer'}`,
+                      display: 'inline-block',
+                    }}
                   >
                     {profile?.nameFlag === 'N'
                       ? profile?.nickname
