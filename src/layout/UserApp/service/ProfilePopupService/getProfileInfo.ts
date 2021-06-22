@@ -35,7 +35,8 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
       if(!profileInfo.profileImg){
         const profilePhotos = await findProfilePhoto([memberId])
         if(profilePhotos && profilePhotos[0]){
-          photoImageFilePath = "profile/photo" + profilePhotos[0].member?.photoFilename;
+          // photoImageFilePath = "profile/photo" + profilePhotos[0].member?.photoFilename;
+          photoImageFilePath = profilePhotos[0].photoImage
         }
 
         console.log("profilePhotos", profilePhotos)
