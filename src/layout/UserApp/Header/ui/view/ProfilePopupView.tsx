@@ -9,6 +9,7 @@ import SkProfileUdo from '../../../../../../src/profile/model/SkProfileUdo';
 import { reactAlert } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
+import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
 import { requestFollowersModal, requestFollowingsModal } from '../../../../../community/service/useFollowModal/utility/requestFollowModalIntro';
 import { useFollowersModal, useFollowingsModal } from '../../../../../community/store/CommunityFollowModalStore';
@@ -162,13 +163,13 @@ function ProfilePopupView(props: Props) {
                     </div>
 
                     <div className="image-area">
-                      <ProfileImage src={skProfile.photoFilePath} />
+                      <ProfileImage src={skProfile.photoFilePath || DefaultImg} />
                     </div>
                     <div className="profile-info ">
                       <span className="prof-tit">
                         {isNickName ? skProfile.nickName : skProfile.member.name}
                       </span>
-                      <div className="foll-info"><span>{followersList?.followers.length}</span>&nbsp;Follower<span>{followingsList?.followings.length}</span>&nbsp;Following</div>
+                      <div className="foll-info"><span>{followersList?.followers.length}</span>&nbsp;Followers<span>{followingsList?.followings.length}</span>&nbsp;Following</div>
                     </div>
                     {instructorId && instructorId !== '' && externalInstructor && externalInstructor === 'true' ? (
                       <div className="page-bttn-area">
