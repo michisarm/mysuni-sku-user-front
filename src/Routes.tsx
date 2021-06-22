@@ -1,5 +1,5 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AppInitializer from './AppInitializer';
 import { getCookie } from '@nara.platform/accent';
 import ScrollToTop from './ScrollToTop';
@@ -15,6 +15,7 @@ import NotFoundPage from 'layout/NotFoundPage';
 import { isExternalInstructor } from './shared/helper/findUserRole';
 import { AppLayoutContainer } from './layout/UserApp/ui/logic/AppLayoutContainer';
 import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer';
+import { findMyPisAgreement } from './profile/present/apiclient/SkProfileApi';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -43,12 +44,39 @@ class Routes extends PureComponent {
   componentDidMount() {
     const isExternal = isExternalInstructor();
 
+    if (isExternal) {
+      this.checkPisAgreement();
+    }
+
     if (
       isExternal &&
       window.location.pathname !== '/suni-main/community/main'
     ) {
       window.location.href = '/suni-main/community/main';
     }
+  }
+
+  async checkPisAgreement() {
+    const agreementFormId = '20210622-1';
+    const serviceId = 'SUNI';
+    const CpPisAgreementModel = await findMyPisAgreement(
+      agreementFormId,
+      serviceId
+    );
+
+    if (CpPisAgreementModel === undefined) {
+      window.location.href = '/suni-main/profile/agreement';
+      return;
+    }
+
+    if (this.needToReAgree(CpPisAgreementModel.signedDate)) {
+      window.location.href = '/suni-main/profile/guide';
+    }
+  }
+
+  needToReAgree(signedDate: number) {
+    const reAgreeDate = new Date('2020-08-30').getTime();
+    return reAgreeDate > signedDate ? true : false;
   }
 
   render() {
