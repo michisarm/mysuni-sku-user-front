@@ -88,3 +88,9 @@ export function unfollowMember(
     .delete<FollowModel>(url)
     .then(AxiosReturn);
 }
+
+export function findProfilePhoto(denizenKeys: string[]) {
+  const axios = getAxios();
+  return axios.post<string[]>('/api/profile/profiles/byDenizenKeys', denizenKeys)
+    .then((response: any) => response && response.data || []);
+}

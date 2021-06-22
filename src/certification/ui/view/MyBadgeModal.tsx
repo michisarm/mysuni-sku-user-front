@@ -11,7 +11,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 // import BadgeService from '../../present/logic/BadgeService';
 import { BadgeStudentService } from '../../../lecture/stores';
-import BadgeView from '../view/BadgeView';
+import MyBadgeCertificateView from '../view/MyBadgeCertificateView';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import moment from 'moment';
@@ -231,7 +231,7 @@ class MyBadgeModal extends Component<Props, States> {
                             </strong>
                         </div>
                         <div className="badge badge-list-type">
-                          <BadgeView
+                          <MyBadgeCertificateView
                             id={myBadge.id}
                             name={myBadge.name}
                             level={myBadge.level}
