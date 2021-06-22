@@ -10,12 +10,12 @@ import ProfileInfoModel from '../../../../src/layout/UserApp/model/ProfileInfoMo
 const BASE_URL = '/api/profile/profiles';
 
 export function registerPisAgreement(pisAgreementSdo: PisAgreementSdo) {
-  const url = '/api/profile/pisAgreement';
+  const url = '/api/profile/pisAgreements';
   return axios.post(url, pisAgreementSdo).then(AxiosReturn);
 }
 
 export function findMyPisAgreement(agreementFormId: string, serviceId: string) {
-  const url = `/api/profile/pisAgreement/myPisAgreement/${agreementFormId}/${serviceId}`;
+  const url = `/api/profile/pisAgreements/myPisAgreement/${agreementFormId}/${serviceId}`;
   return axios.get<CpPisAgreementModel>(url).then(AxiosReturn);
 }
 
