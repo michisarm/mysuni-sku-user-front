@@ -74,7 +74,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     const externalUser = isExternalUser();
     const externalInstructor = isExternalInstructor();
 
-    if (!mySuniChecked || !domesticChecked || !international) {
+    if (!mySuniChecked || !international) {
       reactAlert({
         title: '알림',
         message: '개인정보 처리방침을 확인하시고 동의해주세요',
