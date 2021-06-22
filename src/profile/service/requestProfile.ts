@@ -10,9 +10,6 @@ import {
 } from '../../shared/helper/findUserRole';
 
 export async function requestProfile() {
-  const skProfileService = SkProfileService.instance;
-  const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
-
   // TODO :: 현재 하드코딩 => 변경 예정
   const agreementFormId = '20210622-1';
   const serviceId = 'SUNI';
@@ -38,12 +35,14 @@ export async function requestProfile() {
     currentHistory?.push(profilePaths.guideAgreement());
     return;
   }
-
   const externalUser = isExternalUser();
-  if (externalUser) {
+  const externalInstructor = isExternalInstructor();
+  if (externalUser || externalInstructor) {
     return;
   }
 
+  const skProfileService = SkProfileService.instance;
+  const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
   if (
     skProfileModel !== null &&
     skProfileModel.studySummaryConfigured === false
