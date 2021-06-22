@@ -16,6 +16,7 @@ import { patronInfo } from "@nara.platform/dock";
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
+import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 
 interface Props {
   open: boolean,

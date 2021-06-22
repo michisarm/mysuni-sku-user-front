@@ -6,7 +6,7 @@ import {
 import { profile } from 'console';
 import ProfileInfoModel from '../../model/ProfileInfoModel';
 import { BadgesModel } from '../../model/BadgeModel';
-import { findBadgesByBadgeIssueState, findAllOtherCommunities, findAllPostViewsFromProfileFeed } from '../../api/ProfileInfoAPI';
+import { findBadgesByBadgeIssueState, findAllOtherCommunities, findAllPostViewsFromProfileFeed, findProfilePhoto } from '../../api/ProfileInfoAPI';
 import { findUserProfile } from 'profile/present/apiclient/SkProfileApi';
 
 export async function getProfileInfo(memberId: string | undefined): Promise<void> {
@@ -31,9 +31,20 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
   if (memberId !== undefined) {
     const profileInfo: ProfileInfoModel | undefined = await findUserProfile(memberId);
     if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
+      let photoImageFilePath = profileInfo.profileImg;
+      if(!profileInfo.profileImg){
+        const profilePhotos = await findProfilePhoto([memberId])
+        if(profilePhotos && profilePhotos[0]){
+          photoImageFilePath = "profile/photo" + profilePhotos[0].member?.photoFilename;
+        }
+
+        console.log("profilePhotos", profilePhotos)
+
+      }
+      
       profileItem.name = profileInfo.name;
       profileItem.company = profileInfo.company;
-      profileItem.profileImg = profileInfo.profileImg;
+      profileItem.profileImg = photoImageFilePath;
       profileItem.profileBgImg = profileInfo.profileBgImg;
       profileItem.nickname = profileInfo.nickname;
       profileItem.oriNickname = profileInfo.nickname;
