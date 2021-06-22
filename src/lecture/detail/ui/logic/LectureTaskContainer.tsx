@@ -90,6 +90,7 @@ function LectureTaskContainer() {
   const [postCount, setPostCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [subCommentCount, setSubCommentCount] = useState<number>(0);
+  const [isStudent, setIsStudent] = useState<boolean>(false);
 
   useEffect(() => {
     if(taskItem){
@@ -127,6 +128,7 @@ function LectureTaskContainer() {
 
         // 댓글, 대댓글 Count Data
         if (lectureState.student) {
+          setIsStudent(true);
           setPostCount(lectureState.student.postCount || 0);
           setCommentCount(lectureState.student.commentCount || 0);
           setSubCommentCount(lectureState.student.subCommentCount || 0);
@@ -404,6 +406,7 @@ function LectureTaskContainer() {
               pageChange={pageChange}
               activePage={activePage}
               totalPage={totalPage}
+              isStudent={isStudent}
               cubeAutomaticCompletion={cubeAutomaticCompletion}
               cubePostCount={cubePostCount}
               cubeCommentCount={cubeCommentCount}

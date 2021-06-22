@@ -65,7 +65,7 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
         <ul className="type-info">
           <li>{parseCubeType(cubeType)}</li>
           <li>
-            {cubeType === 'Community' || cubeType === 'Task'
+            {cubeType === 'Community'
               ? ''
               : timeToHourMinuteFormat(learningTime)}
           </li>

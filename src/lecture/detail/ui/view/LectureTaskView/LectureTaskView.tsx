@@ -22,6 +22,7 @@ interface LectureTaskViewProps {
   pageChange: (data: any) => void;
   activePage: number;
   totalPage: number;
+  isStudent: boolean;
   cubeAutomaticCompletion: boolean;
   cubePostCount: number;
   cubeCommentCount: number;
@@ -42,6 +43,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   pageChange,
   activePage,
   totalPage,
+  isStudent,
   cubeAutomaticCompletion,
   cubePostCount,
   cubeCommentCount,
@@ -82,7 +84,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   return (
     <Fragment>
       <Segment className="full">
-        {cubeAutomaticCompletion && (
+        {(isStudent && cubeAutomaticCompletion) && (
           <div className="scrolling-area area2 ">
               <div className="ui segment full">
                   <List as="ul" className="my-task-bar">
