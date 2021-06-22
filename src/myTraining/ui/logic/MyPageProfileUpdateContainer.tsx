@@ -54,7 +54,9 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     //
     this.clear();
     const { skProfileService } = this.props;
-    skProfileService!.findSkProfile();
+    if (skProfileService) {
+      skProfileService.findSkProfile();
+    }
   }
 
   clear(){

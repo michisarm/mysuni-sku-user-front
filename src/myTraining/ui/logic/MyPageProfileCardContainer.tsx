@@ -43,6 +43,12 @@ function MyPageHeaderContainer({
   const params = useParams<MyPageRouteParams>();
 
   useEffect(() => {
+    if (skProfileService) {
+      skProfileService.findSkProfile();
+    }
+  }, []);
+
+  useEffect(() => {
     // Follower, Following Set
     // requestFollowersModal();
     // requestFollowingsModal();
