@@ -132,7 +132,7 @@ const LectureNoteAdd: React.FC<Props> = function LectureNoteView({
           <div className="note_input">
             <Input
               onClick={onClickTextArea}
-              placeholder="강의에 대한 Note를 작성할 수 있습니다."
+              placeholder="컨텐츠에 대한 Note를 작성해 보세요."
             />
           </div>
         ) 

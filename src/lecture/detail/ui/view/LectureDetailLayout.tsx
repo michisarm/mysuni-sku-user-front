@@ -165,9 +165,9 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
               <span>Note</span>
               <div className="bubble">
                 <p>
-                  각 학습과정을 클릭하면
+                  Note는 각 컨텐츠별로
                   <br />
-                  Note를 작성하실 수 있습니다.
+                  작성하실 수 있습니다.
                 </p>
               </div>
             </Button>
