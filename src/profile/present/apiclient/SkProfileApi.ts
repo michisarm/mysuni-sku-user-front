@@ -3,8 +3,21 @@ import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import { PisAgreementSdo } from '../../model/PisAgreementSdo';
+import { AxiosReturn } from '../../../shared/api/AxiosReturn';
+import { CpPisAgreementModel } from '../../model/CpPisAgreementModel';
 
 const BASE_URL = '/api/profile/profiles';
+
+export function registerPisAgreement(pisAgreementSdo: PisAgreementSdo) {
+  const url = '/api/profile/pisAgreement';
+  return axios.post(url, pisAgreementSdo).then(AxiosReturn);
+}
+
+export function findMyPisAgreement(agreementFormId: string, serviceId: string) {
+  const url = `/api/profile/pisAgreement/${agreementFormId}/${serviceId}`;
+  return axios.get<CpPisAgreementModel>(url).then(AxiosReturn);
+}
 
 export function findJsonUserGroup() {
   const url = `${BASE_URL}/jsonUserGroup`;

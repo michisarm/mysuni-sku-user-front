@@ -3,20 +3,19 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import moment from 'moment';
-import { Button, Checkbox, Form, Radio } from 'semantic-ui-react';
+import { Button, Checkbox,  Radio } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import SkProfileUdo from '../../model/SkProfileUdo';
-import PisAgreementModel from '../../model/PisAgreementModel';
 import PersonalInfoTermsView from '../view/PersonalInfoTermsView';
+import { PisAgreementSdo } from '../../model/PisAgreementSdo';
+import { registerPisAgreement } from '../../present/apiclient/SkProfileApi';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
 }
 
 @inject(
-  mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService')
+  mobxHelper.injectFrom('profile.skProfileService')
 )
 @observer
 @reactAutobind
@@ -62,15 +61,6 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     });
   }
 
-  onCancel() {
-    //
-    reactAlert({
-      title: '알림',
-      message:
-        '<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>',
-    });
-  }
-
   onConfirm() {
     //
     const skProfileService = this.props.skProfileService!;
@@ -86,27 +76,47 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       return;
     }
 
-    skProfile.pisAgreement.signed = true;
-    skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
+    const pisAgreementSdo: PisAgreementSdo = {
+      agreementFormId: '20210622-1',
+      serviceId: 'SUNI',
+      optionalAgreements: [mySuniChecked, domesticChecked, international],
+    }
 
-    const skProfileUdo = SkProfileUdo.fromPisAgreement(
-      new PisAgreementModel(skProfile.pisAgreement)
-    );
+    registerPisAgreement(pisAgreementSdo).then(result => {
+      if(result === undefined) {
+        return;
+      }
 
-    // 수정 api 처리될때까지 조회하면 안된다...... ㅡㅡ;
-    skProfileService.modifySkProfile(skProfileUdo).then(() =>
-      skProfileService.findSkProfile().then(skProfile => {
-        // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
-        //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
-        if (reAgree) {
-          history.push(routePaths.currentJob());
-        } else if (skProfile.studySummaryConfigured) {
-          history.push('/');
-        } else {
-          history.push(routePaths.favoriteWelcome());
-        }
-      })
-    );
+      if(reAgree) {
+        history.push(routePaths.currentJob());
+      } else if(skProfile.studySummaryConfigured) {
+        history.push('/');
+      } else {
+        history.push(routePaths.favoriteWelcome());
+      }
+    })
+
+    // skProfile.pisAgreement.signed = true;
+    // skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
+
+    // const skProfileUdo = SkProfileUdo.fromPisAgreement(
+    //   new PisAgreementModel(skProfile.pisAgreement)
+    // );
+
+    // // 수정 api 처리될때까지 조회하면 안된다...... ㅡㅡ;
+    // skProfileService.modifySkProfile(skProfileUdo).then(() =>
+    //   skProfileService.findSkProfile().then(skProfile => {
+    //     // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
+    //     //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
+    //     if (reAgree) {
+    //       history.push(routePaths.currentJob());
+    //     } else if (skProfile.studySummaryConfigured) {
+    //       history.push('/');
+    //     } else {
+    //       history.push(routePaths.favoriteWelcome());
+    //     }
+    //   })
+    // );
   }
 
   render() {
@@ -201,9 +211,6 @@ class PersonalInfoAgreementContainer extends Component<Props> {
         <PersonalInfoTermsView />
 
         <div className="button-area">
-          {/* <Button className="fix line" onClick={this.onCancel}>
-              Cancel
-            </Button> */}
           <div className="error">
             개인정보 제공 동의를 하지 않으시면 mySUNI 서비스를 이용 하실 수
             없습니다.

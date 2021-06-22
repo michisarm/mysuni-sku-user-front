@@ -9,25 +9,13 @@ import PersonalInfoAgreementContainer from '../logic/PersonalInfoAgreementContai
 @observer
 @reactAutobind
 class PersonalInfoAgreementPage extends Component {
-  //
-  state = {
-    activeStep: 'step1',
-  };
-
-  onClickNextStep(step: string) {
-    this.setState({ activeStep: step });
-  }
-
+  
   render() {
-    //
-    const { activeStep } = this.state;
-
     return (
       <ContentLayout className="bg-white">
         <section>
           <div className="interest-content lo-08-02 ">
             <ContentHeaderContainer step={2} />
-
             <PersonalInfoAgreementContainer />
           </div>
         </section>
