@@ -3,21 +3,24 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import moment from 'moment';
-import { Button, Checkbox, Form, Radio } from 'semantic-ui-react';
+import { Button, Checkbox, Radio } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import SkProfileUdo from '../../model/SkProfileUdo';
-import PisAgreementModel from '../../model/PisAgreementModel';
-import PersonalInfoTermsView from '../view/PersonalInfoTermsView';
+import { PisAgreementSdo } from '../../model/PisAgreementSdo';
+import { registerPisAgreement } from '../../present/apiclient/SkProfileApi';
+import {
+  isExternalInstructor,
+  isExternalUser,
+} from '../../../shared/helper/findUserRole';
+import { MySuniServiceTermView } from '../view/MySuniServiceTermView';
+import { ContentTermView } from '../view/ContentTermView';
+import { PersonalInfoTermView } from '../view/PersonalInfoTermView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
 }
 
-@inject(
-  mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService')
-)
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class PersonalInfoAgreementContainer extends Component<Props> {
@@ -62,21 +65,14 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     });
   }
 
-  onCancel() {
-    //
-    reactAlert({
-      title: '알림',
-      message:
-        '<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>',
-    });
-  }
-
   onConfirm() {
     //
     const skProfileService = this.props.skProfileService!;
     const { history } = this.props;
     const { skProfile, reAgree } = skProfileService!;
     const { mySuniChecked, domesticChecked, international } = this.state;
+    const externalUser = isExternalUser();
+    const externalInstructor = isExternalInstructor();
 
     if (!mySuniChecked || !domesticChecked || !international) {
       reactAlert({
@@ -86,27 +82,57 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       return;
     }
 
-    skProfile.pisAgreement.signed = true;
-    skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
+    const pisAgreementSdo: PisAgreementSdo = {
+      agreementFormId: '20210622-1',
+      serviceId: 'SUNI',
+      optionalAgreements: [mySuniChecked, domesticChecked, international],
+    };
 
-    const skProfileUdo = SkProfileUdo.fromPisAgreement(
-      new PisAgreementModel(skProfile.pisAgreement)
-    );
+    registerPisAgreement(pisAgreementSdo).then((result) => {
+      if (result === undefined) {
+        return;
+      }
 
-    // 수정 api 처리될때까지 조회하면 안된다...... ㅡㅡ;
-    skProfileService.modifySkProfile(skProfileUdo).then(() =>
-      skProfileService.findSkProfile().then(skProfile => {
-        // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
-        //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
-        if (reAgree) {
-          history.push(routePaths.currentJob());
-        } else if (skProfile.studySummaryConfigured) {
-          history.push('/');
-        } else {
-          history.push(routePaths.favoriteWelcome());
-        }
-      })
-    );
+      if (externalUser) {
+        history.push(routePaths.favoriteCollege());
+        return;
+      }
+
+      if (externalInstructor) {
+        history.push('/suni-instructor');
+        return;
+      }
+
+      if (reAgree) {
+        history.push(routePaths.currentJob());
+      } else if (skProfile.studySummaryConfigured) {
+        history.push('/');
+      } else {
+        history.push(routePaths.favoriteWelcome());
+      }
+    });
+
+    // skProfile.pisAgreement.signed = true;
+    // skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
+
+    // const skProfileUdo = SkProfileUdo.fromPisAgreement(
+    //   new PisAgreementModel(skProfile.pisAgreement)
+    // );
+
+    // // 수정 api 처리될때까지 조회하면 안된다...... ㅡㅡ;
+    // skProfileService.modifySkProfile(skProfileUdo).then(() =>
+    //   skProfileService.findSkProfile().then(skProfile => {
+    //     // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
+    //     //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
+    //     if (reAgree) {
+    //       history.push(routePaths.currentJob());
+    //     } else if (skProfile.studySummaryConfigured) {
+    //       history.push('/');
+    //     } else {
+    //       history.push(routePaths.favoriteWelcome());
+    //     }
+    //   })
+    // );
   }
 
   render() {
@@ -133,7 +159,10 @@ class PersonalInfoAgreementContainer extends Component<Props> {
             </li>
             <li>
               <span className="agree-dot" />
-              <span className="agree-cont">개인정보 처리방침 동의(필수)</span>
+              <span className="agree-cont" style={{ width: 969 }}>
+                <b style={{ color: '#db1111' }}>[필수]</b> 홈페이지 회원가입 및
+                관리 및 mySUNI 콘텐츠/서비스 제공
+              </span>
               <Radio
                 name="mySuniChecked"
                 label="동의"
@@ -151,10 +180,11 @@ class PersonalInfoAgreementContainer extends Component<Props> {
                 style={{ width: '100px' }}
               />
             </li>
-            <li>
+            <MySuniServiceTermView />
+            <li style={{ marginTop: 20 }}>
               <span className="agree-dot" />
-              <span className="agree-cont">
-                제3자 정보제공에 대한 동의(필수)
+              <span className="agree-cont" style={{ width: 969 }}>
+                [선택] 개인 맞춤형 특화 컨텐츠 제공
               </span>
               <Radio
                 name="domesticChecked"
@@ -173,10 +203,11 @@ class PersonalInfoAgreementContainer extends Component<Props> {
                 style={{ width: '100px' }}
               />
             </li>
-            <li>
+            <ContentTermView />
+            <li style={{ marginTop: 20 }}>
               <span className="agree-dot" />
-              <span className="agree-cont">
-                국외 제3자 제공에 대한 동의(필수)
+              <span className="agree-cont" style={{ width: 969 }}>
+                <b style={{ color: '#db1111' }}>[필수]</b> 개인정보 처리방침
               </span>
               <Radio
                 name="international"
@@ -195,15 +226,10 @@ class PersonalInfoAgreementContainer extends Component<Props> {
                 style={{ width: '100px' }}
               />
             </li>
+            <PersonalInfoTermView />
           </ul>
         </div>
-
-        <PersonalInfoTermsView />
-
         <div className="button-area">
-          {/* <Button className="fix line" onClick={this.onCancel}>
-              Cancel
-            </Button> */}
           <div className="error">
             개인정보 제공 동의를 하지 않으시면 mySUNI 서비스를 이용 하실 수
             없습니다.
