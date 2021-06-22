@@ -99,7 +99,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       }
 
       if (externalInstructor) {
-        history.push('/suni-instructor');
+        window.location.href = '/suni-instructor';
         return;
       }
 
