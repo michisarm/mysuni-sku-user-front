@@ -15,9 +15,13 @@ import FavoriteJobRePage from './ui/page/FavoriteJobRePage';
 import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
 
 import ProgressPage from './ui/page/ProgressPage';
+import SkProfileService from './present/logic/SkProfileService';
 
 class Routes extends React.PureComponent {
-  //
+  componentDidMount() {
+    SkProfileService.instance.findSkProfile();
+  }
+
   render() {
     //
     return (
