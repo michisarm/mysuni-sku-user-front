@@ -15,6 +15,7 @@ import { followMember, unfollowMember, findAllFollow } from "../../../api/Profil
 import { patronInfo } from "@nara.platform/dock";
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
+import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 
 interface Props {
   open: boolean,
@@ -205,13 +206,13 @@ function UserProfileinfoProfileCard(props: Props) {
 
               <div className="image-area">
                 <ProfileImage
-                  src={preProfileImg || profileImg}
+                  src={preProfileImg || profileImg || DefaultImg}
                   className="ui image"
                 />
               </div>
               <div className="profile-info ">
                 <span className="prof-tit">{profileInfo?.isNickname ? nickname : profileInfo?.name}</span>
-                <div className="foll-info"><span>{followerCount || profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
+                <div className="foll-info"><span>{followerCount || profileInfo?.followerCount}</span>{' '}Followers<span>{profileInfo?.followingCount}</span>{' '}Following</div>
               </div>
               <div className="count-area">
                 {/* <div className="cnt-box bad-cnt" >
