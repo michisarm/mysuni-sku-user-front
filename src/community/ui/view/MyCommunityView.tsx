@@ -8,6 +8,7 @@ import MyCommunityPostListContainer from '../logic/MyCommunityIntro/MyCommunityP
 import { useMyCommunityIntro } from '../../store/CommunityMainStore';
 import { Area } from 'tracker/model';
 import ReactGA from 'react-ga';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface MyCommunityViewProps {}
 
@@ -15,6 +16,8 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
   const contextRef = useRef(null);
   const myCommunityIntro = useMyCommunityIntro();
   const history = useHistory();
+  const isExternal = isExternalInstructor();
+
   const gaOnClick = (name: string) => {
     // react-ga
     ReactGA.event({
@@ -65,14 +68,16 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="CommunityList"
-              active={false}
-              as={Link}
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="CommunityList"
+                active={false}
+                as={Link}
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
             <Menu.Item
               name="MyFeed"
               active={false}

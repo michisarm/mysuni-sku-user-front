@@ -10,11 +10,14 @@ import CommunityFollowPostListContainer from '../logic/CommunityFollow/Community
 import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
   const followCommunityIntro = useFollowCommunityIntro();
   const history = useHistory();
+  const isExternal = isExternalInstructor();
+
   const gaOnClick = (name: string) => {
     // react-ga
     ReactGA.event({
@@ -56,14 +59,16 @@ const FollowView: React.FC = function FollowView() {
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={false}
-              as={Link}
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={false}
+                as={Link}
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
             <Menu.Item
               name="MyFeed"
               active={false}
