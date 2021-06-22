@@ -1,23 +1,25 @@
-import SkProfileService from "../present/logic/SkProfileService";
-import { SkProfileModel } from "../model";
-import { findMyPisAgreement } from "../present/apiclient/SkProfileApi";
-import { getCurrentHistory } from "../../shared/store/HistoryStore";
-import profilePaths from "../routePaths";
-import { setPisAgreementViewModel } from "../store/PisAgreementStore";
-import { isExternalInstructor, isExternalUser } from "../../shared/helper/findUserRole";
+import SkProfileService from '../present/logic/SkProfileService';
+import { SkProfileModel } from '../model';
+import { findMyPisAgreement } from '../present/apiclient/SkProfileApi';
+import { getCurrentHistory } from '../../shared/store/HistoryStore';
+import profilePaths from '../routePaths';
+import { setPisAgreementViewModel } from '../store/PisAgreementStore';
+import {
+  isExternalInstructor,
+  isExternalUser,
+} from '../../shared/helper/findUserRole';
 
 export async function requestProfile() {
-  const skProfileService = SkProfileService.instance;
-  const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
-  
   // TODO :: 현재 하드코딩 => 변경 예정
   const agreementFormId = '20210622-1';
   const serviceId = 'SUNI';
-  const CpPisAgreementModel = await findMyPisAgreement(agreementFormId, serviceId);
- 
+  const CpPisAgreementModel = await findMyPisAgreement(
+    agreementFormId,
+    serviceId
+  );
 
   const currentHistory = getCurrentHistory();
-  if(CpPisAgreementModel === undefined) {
+  if (CpPisAgreementModel === undefined) {
     currentHistory?.push(profilePaths.personalInfoAgreement());
     return;
   }
@@ -29,18 +31,22 @@ export async function requestProfile() {
     optionalClauseAgreements: CpPisAgreementModel.optionalClauseAgreements,
   });
 
-  if(needToReAgree(CpPisAgreementModel.signedDate)) {
+  if (needToReAgree(CpPisAgreementModel.signedDate)) {
     currentHistory?.push(profilePaths.guideAgreement());
     return;
   }
-
   const externalUser = isExternalUser();
   const externalInstructor = isExternalInstructor();
-  if(externalUser || externalInstructor) {
+  if (externalUser || externalInstructor) {
     return;
   }
 
-  if(skProfileModel !== null && skProfileModel.studySummaryConfigured === false) {
+  const skProfileService = SkProfileService.instance;
+  const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
+  if (
+    skProfileModel !== null &&
+    skProfileModel.studySummaryConfigured === false
+  ) {
     currentHistory?.push(profilePaths.favoriteWelcome());
   }
 }

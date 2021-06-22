@@ -9,18 +9,15 @@ interface AppLayoutContainerProps {
   children: React.ReactChild;
 }
 
-export function AppLayoutContainer({
-  children,
-}: AppLayoutContainerProps) {
+export function AppLayoutContainer({ children }: AppLayoutContainerProps) {
   useRequestProfile();
-
   const isExternal = isExternalInstructor();
   return (
     <>
-     <Header />
+      <Header />
       {children}
       {!isExternal && <QuickNav />}
-    <Footer />
+      <Footer />
     </>
   );
 }

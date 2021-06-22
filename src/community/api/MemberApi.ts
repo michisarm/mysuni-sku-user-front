@@ -33,7 +33,7 @@ export function findAllMemberByQuery(
     searchText = ''
   }
   return axios.get(
-    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&nickName=${searchText}`
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&nickName=${encodeURI(searchText)}`
   );
 }
 
