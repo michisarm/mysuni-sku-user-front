@@ -136,6 +136,8 @@ function postToItem(post: Post): PostItem {
     menuType,
     bookmarked,
     type,
+    likeCount,
+    replyCount,
   } = post;
   return {
     communityId,
@@ -151,6 +153,8 @@ function postToItem(post: Post): PostItem {
     menuType,
     bookmarked,
     nickName,
+    likeCount,
+    replyCount,
   };
 }
 

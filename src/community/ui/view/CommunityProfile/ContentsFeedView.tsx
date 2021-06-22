@@ -252,9 +252,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
     return (
       <>
-        <div>
-          <p
-            className="summary"
+        <div className="ql-snow">
+          <div
+            className="ql-editor"
             dangerouslySetInnerHTML={{ __html: detail }}
           />
         </div>
@@ -335,25 +335,37 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             </Comment.Content>
           </Comment>
           <div className="card-bottom">
-            <h3 className="ellipsis cmt_tit">
-              <span className={`ico_feed ${icon}`}>게시물</span>
-              <Link to={`/community/${communityId}/post/${postId}`}>
-                {name}
-              </Link>
-            </h3>
-            {more && contentsView()}
-            <div className="text-right">
+            <div className="card-header-line">
               {!more && (
-                <button className="ui icon button right more-bttn" onClick={viewMore}>
-                  <i aria-hidden="true" className="drop_down icon" />
-                </button>
+                <h3 className="ellipsis cmt_tit">
+                  <span className={`ico_feed ${icon}`}>게시물</span>
+                  <Link to={`/community/${communityId}/post/${postId}`}>
+                    {name}
+                  </Link>
+                </h3>
               )}
               {more && (
-                <button className="ui icon button right more-bttn" onClick={hideMore}>
-                  <i aria-hidden="true" className="drop_down up icon" />
-                </button>
+                <h3 className="cmt_tit">
+                  <span className={`ico_feed ${icon}`}>게시물</span>
+                  <Link to={`/community/${communityId}/post/${postId}`}>
+                    {name}
+                  </Link>
+                </h3>
               )}
+              <div className="text-right">
+                {!more && (
+                  <button className="ui icon button right more-bttn" onClick={viewMore}>
+                    <i aria-hidden="true" className="drop_down icon" />
+                  </button>
+                )}
+                {more && (
+                  <button className="ui icon button right more-bttn" onClick={hideMore}>
+                    <i aria-hidden="true" className="drop_down up icon" />
+                  </button>
+                )}
+              </div>
             </div>
+            {more && contentsView()}
           </div>
         </Comment.Group>
       </div>
