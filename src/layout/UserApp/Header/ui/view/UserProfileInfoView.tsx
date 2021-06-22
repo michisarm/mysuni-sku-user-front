@@ -27,7 +27,7 @@ interface State {
 
 function UserProfileInfoView(props: Props) {
 
-  const [selectedMenuName, setSelectMenuName] = useState<string>('Badge');
+  const [selectedMenuName, setSelectMenuName] = useState<string>('Community');
 
   const setMenu = useCallback((menuName: string) => {
     setSelectMenuName(menuName);
@@ -44,7 +44,7 @@ function UserProfileInfoView(props: Props) {
             </div>
             <div className="right-side side-wrapper">
               <UserProfileInfoTabMenu selectedMenu={selectedMenuName} setMneu={setMenu} />
-              {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />}
+              {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
               {selectedMenuName === 'Community' && <UserProfileInfoTabCommunity memberId={props.memberId} setOpen={props.setOpen} />}
               {selectedMenuName === 'Feed' && <UserProfileInfoTabFeed memberId={props.memberId} setOpen={props.setOpen} />}
             </div>

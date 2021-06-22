@@ -214,10 +214,10 @@ function UserProfileinfoProfileCard(props: Props) {
                 <div className="foll-info"><span>{followerCount || profileInfo?.followerCount}</span>{' '}Follower<span>{profileInfo?.followingCount}</span>{' '}Following</div>
               </div>
               <div className="count-area">
-                <div className="cnt-box bad-cnt">
+                {/* <div className="cnt-box bad-cnt" >
                   <span>Badge</span>
                   <strong>{badgeCount}</strong>
-                </div>
+                </div> */}
                 <div className="cnt-box com-cnt">
                   <span>커뮤니티</span>
                   <strong>{communityCount}</strong>
