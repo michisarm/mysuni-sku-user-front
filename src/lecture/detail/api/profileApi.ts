@@ -42,7 +42,7 @@ export function updateAgreement(
   optionalAgreements: boolean[]
 ): Promise<void> {
   const axios = getAxios();
-  const url = `${BASE_URL}/pisAgreement`;
+  const url = `${BASE_URL}/pisAgreements`;
 
   const params = {
     agreementFormId: '20210622-1',
