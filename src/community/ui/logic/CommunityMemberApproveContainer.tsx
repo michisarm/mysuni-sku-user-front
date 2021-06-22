@@ -16,6 +16,7 @@ import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberT
 import { useHistory } from 'react-router-dom';
 import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
 import { value } from 'numeral';
+import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
 
 interface Props {
   currentCommunity: string;
@@ -226,7 +227,8 @@ const CommunityMemberApproveContainer: React.FC<Props> = ({
                   item.profileImg === '' ||
                   item.profileImg === undefined
                     ? `${AvartarImage}`
-                    : `/files/community/${item.profileImg}`
+                    // : `/files/community/${item.profileImg}`
+                    : ProfileImagePath(item.profileImg)
                 }
               />
               <Comment.Content>

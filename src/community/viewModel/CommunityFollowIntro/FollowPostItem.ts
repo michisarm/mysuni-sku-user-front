@@ -9,4 +9,6 @@ export default interface FollowPostItem {
   name: string;
   contents: string;
   bookmarked: boolean;
+  likeCount: number;
+  replyCount: number;
 }

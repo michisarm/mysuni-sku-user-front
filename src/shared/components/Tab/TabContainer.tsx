@@ -276,7 +276,6 @@ class TabContainer extends Component<Props, State> {
       <>
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
         {topOfContents}
-
         <Segment className="full" key={`tab-content-${tab.name}`}>
           <div
             className={classNames('ui tab', {
@@ -295,6 +294,7 @@ class TabContainer extends Component<Props, State> {
     //
     const { tabs, wrapperClassName, allMounted } = this.props;
     const { activeName } = this.state;
+
     const activeTab = tabs.find((tab) => tab.name === activeName);
 
     const contents = (

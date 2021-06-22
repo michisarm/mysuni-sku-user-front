@@ -18,6 +18,7 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -103,6 +104,8 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   contents,
   menuType,
   bookmarked,
+  likeCount,
+  replyCount,
 }) {
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
@@ -169,11 +172,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar
                 src={
                   profileImage === undefined ||
-                  profileImage === null ||
-                  profileImage === '' ||
-                  type === 'ANONYMOUS'
+                    profileImage === null ||
+                    profileImage === '' ||
+                    type === 'ANONYMOUS'
                     ? DefaultImg
-                    : `/files/community/${profileImage}`
+                    // : `/files/community/${profileImage}`
+                    : ProfileImagePath(profileImage)
                 }
               />
               <Comment.Content>
@@ -188,6 +192,8 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                       {type === 'ANONYMOUS' ? '익명' : nickName || profileId}
                     </span>
                     <span className="date">{createdTime}</span>
+                    <span className="like">좋아요{' '}<strong>{likeCount}</strong></span>
+                    <span className="comt">댓글수{' '}<strong>{replyCount}</strong></span>
                   </div>
                   {/* <Button>+ View more</Button> */}
                 </Comment.Text>
@@ -234,33 +240,38 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               </Comment.Content>
             </Comment>
             <div className="card-bottom">
-              <h3>
-                <span className={`ico_feed ${icon}`}>게시물</span>
-                <Link to={`/community/${communityId}/post/${postId}`}>
-                  {name}
-                </Link>
-              </h3>
-              {more && contentsView()}
-              <div className="text-right">
+              <div className="card-header-line">
                 {!more && (
-                  <button
-                    className="ui icon button right btn-blue btn-more"
-                    onClick={viewMore}
-                  >
-                    more
-                    <i aria-hidden="true" className="icon more2" />
-                  </button>
+                  <h3 className="ellipsis cmt_tit">
+                    <span className={`ico_feed ${icon}`}>게시물</span>
+                    <Link to={`/community/${communityId}/post/${postId}`}>
+                      {name}
+                    </Link>
+                  </h3>
                 )}
                 {more && (
-                  <button
-                    className="ui icon button right btn-blue fn-more-toggle"
-                    onClick={hideMore}
-                  >
-                    hide
-                    <i aria-hidden="true" className="icon hide2" />
-                  </button>
+                  <h3 className="cmt_tit">
+                    <span className={`ico_feed ${icon}`}>게시물</span>
+                    <Link to={`/community/${communityId}/post/${postId}`}>
+                      {name}
+                    </Link>
+                  </h3>
                 )}
+                <div className="text-right">
+                  {!more && (
+                    <button className="ui icon button right more-bttn" onClick={viewMore}>
+                      <i aria-hidden="true" className="drop_down icon" />
+                    </button>
+                  )}
+                  {more && (
+                    <button className="ui icon button right more-bttn" onClick={hideMore}>
+                      <i aria-hidden="true" className="drop_down up icon" />
+                    </button>
+                  )}
+                </div>
               </div>
+              {more && contentsView()}
+
             </div>
           </Comment.Group>
         </div>
@@ -300,33 +311,33 @@ function MyCommunityPostListContainer() {
           <Loadingpanel loading={isLoading} />
         </Segment>
       ) : (
-        <>
-          {myCommunityIntro !== undefined &&
-            myCommunityIntro.posts.map(postItem => (
-              <PostItemView key={postItem.postId} {...postItem} />
-            ))}
-          <div className="more-comments community-side">
-            {myCommunityIntro.postsTotalCount >
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                onClick={requestAppendMyCommunityPostList}
-              >
-                <Icon className="moreview" /> list more
-              </Button>
-            )}
-            {myCommunityIntro.postsTotalCount <=
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                style={{ cursor: 'default' }}
-              />
-            )}
-          </div>
-        </>
-      )}
+          <>
+            {myCommunityIntro !== undefined &&
+              myCommunityIntro.posts.map(postItem => (
+                <PostItemView key={postItem.postId} {...postItem} />
+              ))}
+            <div className="more-comments community-side">
+              {myCommunityIntro.postsTotalCount >
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    onClick={requestAppendMyCommunityPostList}
+                  >
+                    <Icon className="moreview" /> list more
+                  </Button>
+                )}
+              {myCommunityIntro.postsTotalCount <=
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    style={{ cursor: 'default' }}
+                  />
+                )}
+            </div>
+          </>
+        )}
     </div>
   );
 }

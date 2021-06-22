@@ -46,6 +46,8 @@ export default {
       { programLectureId, courseLectureId }
     )}`,
 
+  lectureCard: (cardId: string) => `/lecture/card/${cardId}/view`,
+
   lectureCardOverview: (cardId: string, cubeId: string) =>
     `/lecture/detail/card/${cardId}/cube/${cubeId}/view`,
 

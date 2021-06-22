@@ -4,7 +4,7 @@ import { useLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
-import { Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { useNextContent } from '../../../service/useNextContent';
 import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
 import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
@@ -21,6 +21,11 @@ import {
 import LectureState from '../../../viewModel/LectureState';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCubeDetailCache } from '../../../api/cubeApi';
+import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { autorun } from 'mobx';
+import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
+import { isMobile } from 'react-device-detect'
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -223,6 +228,22 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
   }, [pathname]);
 
+  const [inMyLectureMap, setInMyLectureMap] = useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
+
+  useEffect(() => {
+    return autorun(() => {
+      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (params?.cardId === undefined) {
+      return;
+    }
+    setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
+  }, [inMyLectureMap, params?.cardId]);
+
   const onCompletedQuiz = useCallback(() => {
     if (quizPop) {
       setQuizPop(false);
@@ -248,6 +269,31 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       }
     }
   };
+
+  function copyUrl() {
+    const textarea = document.createElement('textarea');
+    textarea.value = window.location.href;
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, 9999);
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  }
+
+  const clickNewTab = () => {
+    const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
+
+    if (noteTab !== null) {
+      noteTab.click();
+    }
+    setTimeout(() => {
+      const noteBtn = document.getElementById('handlePopup') as HTMLElement;
+      if (noteBtn !== null) {
+        noteBtn.click();
+      }
+    }, 500);
+  }
 
   return (
     <div
@@ -319,21 +365,33 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
             {getTimeStringSeconds(duration)}
           </div>
-          <div className="contents-header-side">
-            <div className="header-right-link">
-              <a href="">
-                <span>
-                  <Icon className="listAdd" />
-                  관심목록 추가
-                </span>
-              </a>
-              <a href="">
-                <span>
-                  <Icon className="linkCopy" />
-                  링크 복사
-                </span>
-              </a>
-            </div>
+          <div className="header-right-link">
+          { !isMobile && (
+            <Button onClick={clickNewTab}>
+              <span>
+                <Icon className="noteWrite" />
+                Note
+              </span>
+            </Button>
+          ) }
+            <a onClick={toggleCardBookmark}>
+              <span>
+                <Icon
+                  className={
+                    inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
+                  }
+                />
+                {inMyLectureModel === undefined
+                  ? '관심목록 추가'
+                  : '관심목록 제거'}
+              </span>
+            </a>
+            <a onClick={copyUrl}>
+              <span>
+                <Icon className="linkCopy" />
+                링크 복사
+              </span>
+            </a>
           </div>
         </div>
       </div>

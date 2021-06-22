@@ -76,10 +76,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
     const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
     const companyChannels = colleges
-      .filter(college => college.collegeType === CollegeType.Company)
-      .map(college =>
+      .filter((college) => college.collegeType === CollegeType.Company)
+      .map((college) =>
         college.channels.map(
-          channel =>
+          (channel) =>
             new ChannelModel({ channelId: channel.id, name: channel.name })
         )
       )
@@ -90,7 +90,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     // collegeService!.findAllChannel();
 
     const channels = studySummaryFavoriteChannels.map(
-      channel =>
+      (channel) =>
         new ChannelModel({
           id: channel.id,
           channelId: channel.id,
@@ -100,9 +100,9 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     );
 
     const favoriteChannelsWithoutCompany = channels.filter(
-      channel =>
+      (channel) =>
         !companyChannels.some(
-          companyChannel => companyChannel.channelId === channel.channelId
+          (companyChannel) => companyChannel.channelId === channel.channelId
         )
     );
 
@@ -123,10 +123,12 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     let { favorites }: State = this.state;
 
     if (
-      favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)
+      favorites
+        .map((favoriteChannel) => favoriteChannel.id)
+        .includes(channel.id)
     ) {
       favorites = favorites.filter(
-        favoriteChannel => favoriteChannel.id !== channel.id
+        (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
       favorites.push(new ChannelModel(channel));
@@ -138,7 +140,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     this.setState({ favorites: [] });
   }
 
-  onNextClick() {
+  async onNextClick() {
     //
     const { collegeService, skProfileService, history } = this.props;
     const { favorites, favoriteCompanyChannels } = this.state;
@@ -156,7 +158,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         'favoriteChannels',
         collegeService!.favoriteChannelIdNames
       );
-      skProfileService!.modifyStudySummary(
+      await skProfileService!.modifyStudySummary(
         StudySummaryModel.asNameValues(skProfileService!.studySummary)
       );
 
@@ -226,7 +228,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 className="hidden"
                                 tabIndex={index}
                                 checked={favorites
-                                  .map(favoriteChannel => favoriteChannel.id)
+                                  .map((favoriteChannel) => favoriteChannel.id)
                                   .includes(channel.id)}
                                 onChange={() => this.onSelectChannel(channel)}
                               />

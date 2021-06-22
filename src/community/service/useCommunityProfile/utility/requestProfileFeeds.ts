@@ -49,6 +49,8 @@ function postToItem(post: Post): PostItem {
     profileImg,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   } = post;
   return {
     communityId,
@@ -62,16 +64,18 @@ function postToItem(post: Post): PostItem {
     contents: html,
     menuType,
     bookmarked,
+    likeCount,
+    replyCount,
   };
 }
 
 // 
 
-export async function requestProfileFeeds(profileId:string) {
+export async function requestProfileFeeds(profileId: string) {
   // const { postsSort } = getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
 
   // findAllPostViewsFromMyCommunities('', 0).then(posts => {
-  findAllPostViewsFromProfileFeed(profileId,0).then(posts => {
+  findAllPostViewsFromProfileFeed(profileId, 0).then(posts => {
     const myCommunityIntro =
       getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
     if (posts === undefined) {
@@ -92,12 +96,12 @@ export async function requestProfileFeeds(profileId:string) {
   });
 }
 
-export function requestAppendProfileFeedPostList(profileId:string) {
-  const {  postsOffset } =
-  getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
+export function requestAppendProfileFeedPostList(profileId: string) {
+  const { postsOffset } =
+    getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
 
   // findAllPostViewsFromMyCommunities('', postsOffset).then(posts => {
-  findAllPostViewsFromProfileFeed(profileId,postsOffset).then(posts => {
+  findAllPostViewsFromProfileFeed(profileId, postsOffset).then(posts => {
     const communityProfileFeed =
       getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
     if (posts === undefined) {

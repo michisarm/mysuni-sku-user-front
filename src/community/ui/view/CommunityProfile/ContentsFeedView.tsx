@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from 'react';
 import {
   Segment,
@@ -14,7 +15,7 @@ import {
   Comment,
   Popup,
 } from 'semantic-ui-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 // import "../../style.css"
 import ContentsMoreView from './ContentsMoreView';
 import { CommunityProfileFeed } from 'community/viewModel/CommunityProfile';
@@ -36,6 +37,10 @@ import {
 import { requestAppendProfileFeedPostList } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { Area } from 'tracker/model';
+import ReactGA from 'react-ga';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
+import { getPostDetailInPreview } from '../../../service/useCommunityPostCreate/utility/getPostDetail';
+import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -46,41 +51,131 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
   communityProfileFeed,
   profileId,
 }) {
+  const contextRef = useRef(null);
+  const history = useHistory();
+  const isExternal = isExternalInstructor();
+
+  const gaOnClick = (name: string) => {
+    // react-ga
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-${name}`,
+    });
+    window.scrollTo(0, 0);
+    sessionStorage.removeItem('communityOffset');
+    sessionStorage.removeItem('openCommunityOffset');
+    if (name === 'MyCommunity') {
+      history.replace('/community/main');
+    }
+    if (name === 'CommunityList') {
+      history.replace('/community/main/open-communities');
+    }
+    if (name === 'Follow') {
+      history.replace('/community/main/follow');
+    }
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
+  };
   /* eslint-disable */
   return (
-    <Segment className="full">
-      <div
-        className="course-detail-center community-containter"
-        data-area={Area.COMMUNITY_FEED}
-      >
-        <div className="community-main-contants">
-          {communityProfileFeed !== undefined &&
-            communityProfileFeed.posts.map(postItem => (
-              <PostItemView key={postItem.postId} {...postItem} />
-            ))}
-        </div>
-        <div className="more-comments">
-          {communityProfileFeed.postsTotalCount >
-            communityProfileFeed.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              onClick={() => requestAppendProfileFeedPostList(profileId)}
+    <div ref={contextRef}>
+      <Sticky context={contextRef} className="tab-menu offset0">
+        <div className="cont-inner">
+          <Menu className="sku">
+            <Menu.Item
+              name="MyCommunity"
+              active={false}
+              as={Link}
+              // to="/community/main"
+              onClick={() => gaOnClick('MyCommunity')}
             >
-              <Icon className="moreview" /> list more
-            </Button>
-          )}
-          {communityProfileFeed.postsTotalCount <=
-            communityProfileFeed.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              style={{ cursor: 'default' }}
-            />
-          )}
+              My Community
+              <span className="count" />
+            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={false}
+                as={Link}
+                // to="/community/main/open-communities"
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
+            <Menu.Item
+              name="MyFeed"
+              active={true}
+              as={Link}
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
+              active={false}
+              as={Link}
+              // to="/community/main/follow"
+              onClick={() => gaOnClick('Follow')}
+            >
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
+            </Menu.Item>
+          </Menu>
         </div>
+      </Sticky>
+      <div>
+        <Segment className="full">
+          <div
+            className="course-detail-center community-containter"
+            style={{ display: 'block' }}
+            data-area={Area.COMMUNITY_FEED}
+          >
+            <div
+              className="community-main-contants"
+              style={{ marginRight: '0px' }}
+            >
+              {communityProfileFeed !== undefined &&
+                communityProfileFeed.posts.map((postItem) => (
+                  <PostItemView key={postItem.postId} {...postItem} />
+                ))}
+            </div>
+            <div className="more-comments">
+              {communityProfileFeed.postsTotalCount >
+                communityProfileFeed.postsOffset && (
+                <Button
+                  icon
+                  className="left moreview"
+                  onClick={() => requestAppendProfileFeedPostList(profileId)}
+                >
+                  <Icon className="moreview" /> list more
+                </Button>
+              )}
+              {communityProfileFeed.postsTotalCount <=
+                communityProfileFeed.postsOffset && (
+                <Button
+                  icon
+                  className="left moreview"
+                  style={{ cursor: 'default' }}
+                />
+              )}
+            </div>
+          </div>
+        </Segment>
       </div>
-    </Segment>
+    </div>
   );
 };
 
@@ -95,6 +190,8 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   contents,
   menuType,
   bookmarked,
+  likeCount,
+  replyCount,
 }) {
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
@@ -105,7 +202,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     let nextText = div.innerText;
     nextText = nextText
       .split('\n')
-      .filter(c => c !== '')
+      .filter((c) => c !== '')
       .join('\n');
     setText(nextText);
   }, []);
@@ -138,8 +235,41 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const hideMore = useCallback(() => {
     setMore(false);
   }, []);
+
+  const contentsView = () => {
+    return (
+      <>
+        <Contents />
+      </>
+    );
+  };
+
+  const Contents: React.FC<any> = function Contents() {
+    const [detail, setDetail] = useState<string>('');
+
+    useEffect(() => {
+      const postDetail = getPostDetailInPreview(postId);
+      if (postDetail !== undefined) {
+        postDetail.then((result) => {
+          setDetail(result.html);
+        });
+      }
+    }, []);
+
+    return (
+      <>
+        <div className="ql-snow">
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{ __html: detail }}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
-    <div className="sub-info-box">
+    <div className="sub-info-box" style={{ width: '100%' }}>
       <div className="comment-area community-main-card commu-sub-card">
         {/* comments */}
         <Comment.Group className="base">
@@ -148,7 +278,10 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             {profileImage !== undefined &&
             profileImage !== '' &&
             profileImage !== null ? (
-              <Comment.Avatar src={`/files/community/${profileImage}`} />
+              <Comment.Avatar
+                // src={`/files/community/${profileImage}`}
+                src={ProfileImagePath(profileImage)}
+              />
             ) : (
               <Comment.Avatar src={`${DefaultImg}`} />
             )}
@@ -160,6 +293,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
                   <span className="date">{createdTime}</span>
+                  <span className="like">
+                    좋아요 <strong>{likeCount}</strong>
+                  </span>
+                  <span className="comt">
+                    댓글수 <strong>{replyCount}</strong>
+                  </span>
                 </div>
                 {/* <Button>+ View more</Button> */}
               </Comment.Text>
@@ -206,45 +345,43 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             </Comment.Content>
           </Comment>
           <div className="card-bottom">
-            <h3>
-              <span className={`ico_feed ${icon}`}>게시물</span>
-              <Link to={`/community/${communityId}/post/${postId}`}>
-                {name}
-              </Link>
-            </h3>
-            {more && (
-              <div className="ql-snow">
-                <div
-                  className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: contents }}
-                />
-              </div>
-            )}
-            {!more && (
-              <div>
-                <p className="summary">{text}</p>
-              </div>
-            )}
-            <div className="text-right">
+            <div className="card-header-line">
               {!more && (
-                <button
-                  className="ui icon button right btn-blue btn-more"
-                  onClick={viewMore}
-                >
-                  more
-                  <i aria-hidden="true" className="icon more2" />
-                </button>
+                <h3 className="ellipsis cmt_tit">
+                  <span className={`ico_feed ${icon}`}>게시물</span>
+                  <Link to={`/community/${communityId}/post/${postId}`}>
+                    {name}
+                  </Link>
+                </h3>
               )}
               {more && (
-                <button
-                  className="ui icon button right btn-blue fn-more-toggle"
-                  onClick={hideMore}
-                >
-                  hide
-                  <i aria-hidden="true" className="icon hide2" />
-                </button>
+                <h3 className="cmt_tit">
+                  <span className={`ico_feed ${icon}`}>게시물</span>
+                  <Link to={`/community/${communityId}/post/${postId}`}>
+                    {name}
+                  </Link>
+                </h3>
               )}
+              <div className="text-right">
+                {!more && (
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={viewMore}
+                  >
+                    <i aria-hidden="true" className="drop_down icon" />
+                  </button>
+                )}
+                {more && (
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={hideMore}
+                  >
+                    <i aria-hidden="true" className="drop_down up icon" />
+                  </button>
+                )}
+              </div>
             </div>
+            {more && contentsView()}
           </div>
         </Comment.Group>
       </div>
@@ -272,7 +409,7 @@ async function bookmark(postId: string) {
     }
     setCommunityProfileFeed({
       ...communityProfileFeed,
-      posts: communityProfileFeed.posts.map(c => {
+      posts: communityProfileFeed.posts.map((c) => {
         if (c.postId !== postId) {
           return c;
         }
@@ -290,7 +427,7 @@ async function unbookmark(postId: string) {
   }
   setCommunityProfileFeed({
     ...communityProfileFeed,
-    posts: communityProfileFeed.posts.map(c => {
+    posts: communityProfileFeed.posts.map((c) => {
       if (c.postId !== postId) {
         return c;
       }

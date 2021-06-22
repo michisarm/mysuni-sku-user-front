@@ -29,6 +29,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   name,
   description,
   managerName,
+  managerNickName,
   managerEmail,
   memberCount,
   thumbnailId,
@@ -110,7 +111,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
           <div className="title-area">
             <div className="text-list">
               <img src={managerIcon} />
-              <span>{managerName}</span>
+              <span>{managerNickName}</span>
             </div>
           </div>
         </div>
@@ -149,7 +150,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         <div className="title-area">
           <div className="text-list">
             <img src={managerIcon} />
-            <span>{managerName}</span>
+            <span>{managerNickName}</span>
           </div>
         </div>
         <div className="right-area">

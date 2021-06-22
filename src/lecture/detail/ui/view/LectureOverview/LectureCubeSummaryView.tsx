@@ -1,7 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Rating } from 'semantic-ui-react';
+import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { toggleCubeBookmark } from '../../../service/useLectureCourseOverview/useLectureCubeSummary';
@@ -23,6 +23,8 @@ import { autorun } from 'mobx';
 import { InMyLectureService } from '../../../../../myTraining/stores';
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { Area } from 'tracker/model';
+import { getLectureNotePopupState } from '../../../store/LectureNoteStore';
+import { isMobile } from 'react-device-detect'
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -247,6 +249,28 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
   }, [inMyLectureMap, params?.cardId]);
 
+  const clickNewTab = () => {
+    const popupState = getLectureNotePopupState()
+    if (popupState) {
+      reactAlert({
+        title: '알림',
+        message: '새 창에서 Note를 작성 중입니다',
+      })
+      return
+    }
+    const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
+
+    if (noteTab !== null) {
+      noteTab.click();
+    }
+    setTimeout(() => {
+      const noteBtn = document.getElementById('handlePopup') as HTMLElement;
+      if (noteBtn !== null) {
+        noteBtn.click();
+      }
+    }, 500);
+  }
+
   return (
     <div
       // className="course-info-header"
@@ -331,8 +355,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType !== 'Community' &&
-                lectureSummary.cubeType !== 'Task' && (
+              {lectureSummary.cubeType !== 'Community' && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">이수</span>
                     <span>
@@ -342,8 +365,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType === 'Community' ||
-                (lectureSummary.cubeType === 'Task' && (
+              {lectureSummary.cubeType === 'Community' && (
                   <>
                     <Label className="bold onlytext">
                       <span className="header-span-first">참여</span>
@@ -353,7 +375,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                       <span>명</span>
                     </Label>
                   </>
-                ))}
+                )}
               <Label className="bold onlytext">
                 <span className="header-span-first">담당</span>
                 <span className="tool-tip">
@@ -425,6 +447,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </span>
               </Link>
             )} */}
+            { !isMobile && (
+            <Button onClick={clickNewTab}>
+              <span><Icon className="noteWrite" />Note</span>
+            </Button>
+            ) }
             <a onClick={toggleCubeBookmark}>
               <span>
                 <Icon

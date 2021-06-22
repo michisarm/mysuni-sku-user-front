@@ -59,7 +59,8 @@ export default function InMyLectureListView({
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
                 <a href="#" onClick={e => onViewDetail(e, inMyLecture.serviceId)}>
-                  <span className="ellipsis">{inMyLecture.name}</span>
+                  <span className={`ellipsis ${inMyLecture.useNote ?  'noteOn' : ''}`}>{inMyLecture.name}</span>
+                  {/* <span className="ellipsis noteOn">{inMyLecture.name}</span> */}
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>

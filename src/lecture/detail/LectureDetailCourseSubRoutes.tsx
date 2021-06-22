@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
+import LectureDetailCubeSubRoutes, {
+  isOpenPassedPreCourseModal,
+} from './LectureDetailCubeSubRoutes';
 import { setLectureParams } from './store/LectureParamsStore';
 import LectureChapterPage from './ui/logic/LectureChapter/LectureChapterPage';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
@@ -10,8 +12,11 @@ import LectureParams from './viewModel/LectureParams';
 
 function LectureDetailCourseSubRoutes() {
   const params = useParams<LectureParams>();
-  const { viewType } = params;
+  const { viewType, cardId } = params;
   const { pathname } = useLocation();
+
+  viewType === 'discussion' && isOpenPassedPreCourseModal(cardId);
+
   useEffect(() => {
     setLectureParams({ ...params, pathname });
   }, [params, pathname]);

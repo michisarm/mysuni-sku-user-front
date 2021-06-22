@@ -1,3 +1,4 @@
+import { PatronKey } from '@nara.platform/accent';
 import TaskDetailBody from './TaskDetailBody';
 
 export default interface TaskDetailPost {
@@ -13,6 +14,7 @@ export default interface TaskDetailPost {
   contents: string;
   fileBoxId: string;
   pinned: number; // postpinned -> number = 0
+  patronKey: PatronKey
 }
 
 export default interface TaskDetail {

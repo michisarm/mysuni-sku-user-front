@@ -343,7 +343,7 @@ export function followList(
   limit: number,
   nickName: string
 ): Promise<OffsetElementList<FollowCommunityItem> | undefined> {
-  const url = `${BASE_URL}/profileviews/following?nickName=${nickName}`;
+  const url = `/api/profile/profiles/following?nickName=${nickName}`;
   return axiosApi
     .get<OffsetElementList<FollowCommunityItem>>(url)
     .then(AxiosReturn);
@@ -355,7 +355,8 @@ export function followList(
 export function followingsModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/following`;
+  // const url = `${BASE_URL}/profileviews/following`;
+  const url = `/api/profile/profiles/following`;
   return axiosApi
     .get<OffsetElementList<FollowModalItem>>(url)
     .then(AxiosReturn);
@@ -364,7 +365,8 @@ export function followingsModal(): Promise<
 export function followersModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
+  // const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
+  const url = `/api/profile/profiles/follow?limit=100&offset=0`;
   return axiosApi.get(url).then(AxiosReturn);
 }
 

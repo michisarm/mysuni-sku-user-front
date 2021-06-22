@@ -28,6 +28,8 @@ import { Console } from 'console';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
+import ProfileImage from '../../../../src/shared/components/Image/Image';
+import ProfileImagePath from '../../../../src/shared/components/Image/ProfileImagePath';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -189,7 +191,10 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
             {type !== 'ANONYMOUS' && (
               <>
                 {profileImg ? (
-                  <img src={`/files/community/${profileImg}`} />
+                  <ProfileImage 
+                    // src={`/files/community/${profileImg}`} 
+                    src={ProfileImagePath(profileImg)} 
+                  />
                 ) : (
                   <img src={`${profileIcon}`} />
                 )}

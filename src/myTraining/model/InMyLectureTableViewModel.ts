@@ -22,6 +22,7 @@ class InMyLectureTableViewModel {
   stampCount: number = 0;
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
+  useNote?: boolean = false;  // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
 
   constructor(inMyLectureTableView?: InMyLectureTableViewModel) {
     if (inMyLectureTableView) {

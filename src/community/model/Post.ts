@@ -51,4 +51,6 @@ export default interface Post {
   relatedUrlList: RelatedUrlList[];
   depotId: string;
   content: string;
+
+  nameFlag: string;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Icon, Button } from 'semantic-ui-react';
 import { useParams, useHistory } from 'react-router-dom';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { inject, observer } from 'mobx-react';
@@ -19,6 +19,7 @@ import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import FilterBoxContainer from './FilterBoxContainer';
 import { useScrollMove } from '../../useScrollMove';
+import myTrainingRoutePaths from '../../routePaths';
 
 
 interface MyStampListContainerProps {
@@ -128,6 +129,9 @@ function MyStampListContainer({
     setShowSeeMore(true);
   };
 
+  const moveToLearningList = useCallback(() => {
+    history.push(myTrainingRoutePaths.learningInProgress())
+  }, []);
 
   const noSuchMessage = (
     contentType: MyPageContentType,
@@ -141,75 +145,98 @@ function MyStampListContainer({
 
   return (
     <>
-      {((!resultEmpty || filterCount > 0) && (
-        <>
-          <LineHeaderContainerV2
-            contentType={contentType}
-            resultEmpty={resultEmpty}
-            totalCount={myStampCount}
-          />
-          <FilterBoxContainer />
-        </>
-      )) || <div style={{ marginTop: 50 }} />}
-      {
-        myStamps &&
-        myStamps.length > 0 && (
-          <>
-            {(!resultEmpty && (
+      <div className="mypage_contents my-stamp-list">
+        <strong className="mypage_title">My Stamp</strong>
+        <div className="ui segment full">
+          {((!resultEmpty || filterCount > 0) && (
+            <>
+              <LineHeaderContainerV2
+                contentType={contentType}
+                resultEmpty={resultEmpty}
+                totalCount={myStampCount}
+              />
+              <FilterBoxContainer />
+            </>
+          )) || <div style={{ marginTop: 50 }} />}
+          {
+            myStamps &&
+            myStamps.length > 0 && (
               <>
-                <MyLearningListTemplate>
-                  <MyLearningListHeaderView
-                    contentType={contentType}
-                    onClickSort={onClickSort}
-                  />
-                  <MyStampListView
-                    myStamps={myStamps}
-                    totalCount={myStampCount}
-                  />
-                </MyLearningListTemplate>
-                {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              </>
-            )) || (
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-                {!isLoading && (
-                  <NoSuchContentPanel
-                    message={noSuchMessage(contentType, true)}
-                  />
+                {(!resultEmpty && (
+                  <>
+                    <MyLearningListTemplate>
+                      <MyLearningListHeaderView
+                        contentType={contentType}
+                        onClickSort={onClickSort}
+                      />
+                      <MyStampListView
+                        myStamps={myStamps}
+                        totalCount={myStampCount}
+                      />
+                    </MyLearningListTemplate>
+                    {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+                  </>
+                )) || (
+                  <Segment
+                    style={{
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                      paddingLeft: 0,
+                      paddingRight: 0,
+                      height: 400,
+                      boxShadow: '0 0 0 0',
+                      border: 0,
+                    }}
+                  >
+                    <Loadingpanel loading={isLoading} />
+                    {!isLoading && (
+                      <NoSuchContentPanel
+                        message={noSuchMessage(contentType, true)}
+                      />
+                    )}
+                  </Segment>
                 )}
-              </Segment>
-            )}
-          </>
-      ) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={noSuchMessage(contentType)}
-            />
+              </>
+          ) || (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+              {!isLoading && (
+                // <NoSuchContentPanel
+                //   message={noSuchMessage(contentType)}
+                // />
+                <Segment className="full">
+                    <div className="table-wrapper">
+                        <div className="community_nodata">
+                            <Icon className="no-contents80" />
+                            <p>
+                                {`획득한 Stamp가 없습니다.\nStamp가 있는 학습 과정을 찾아보세요.`}
+                            </p>
+                            <Button 
+                              icon 
+                              className="right btn-blue2"
+                              onClick={moveToLearningList}
+                            >
+                                <span className="border">Learning 학습중 바로가기</span>
+                                <Icon className="morelink"/>
+                            </Button>
+                        </div>
+                    </div>
+                </Segment>
+              )}
+            </Segment>
           )}
-        </Segment>
-      )}
+        </div>
+      </div>
     </>
   );
 }

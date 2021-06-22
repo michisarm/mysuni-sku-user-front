@@ -62,8 +62,8 @@ export default function BadgeView({
         <Image src={iconUrl} alt="아이콘" />
       </span>
       <span className="title" style={{ margin: 0 }}>
-        <span className="cell">
-          <span>{name}</span>
+        <span className="cell" >
+          <span style={{ display: 'block' }}>{name}</span>
         </span>
       </span>
       <p className={`star-score ${starStyle}`}>{emHtml}</p>

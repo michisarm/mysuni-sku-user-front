@@ -27,6 +27,7 @@ import { Direction } from '../../../../myTraining/model/Direction';
 import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 import { findCardStudentsByCardIds } from '../../../../certification/api/CardStudentApi';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
+import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
 
 @autobind
 class LectureService {
@@ -38,6 +39,8 @@ class LectureService {
   private lectureFlowApi: LectureFlowApi;
 
   private studentFlowApi: StudentFlowApi;
+
+  private myTrainingApi: MyTrainingApi;
 
   @observable
   _lectures: CardWithCardRealtedCount[] = [];
@@ -86,11 +89,13 @@ class LectureService {
   constructor(
     lectureApi: LectureApi,
     lectureFlowApi: LectureFlowApi,
-    studentFlowApi: StudentFlowApi
+    studentFlowApi: StudentFlowApi,
+    myTrainingApi: MyTrainingApi
   ) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
     this.studentFlowApi = studentFlowApi;
+    this.myTrainingApi = myTrainingApi;
   }
 
   @computed
@@ -564,6 +569,7 @@ class LectureService {
     ) {
       const cardIds = offsetRequiredCard.results.map(result => result.card.id);
       const cardStudents = await findCardStudentsByCardIds(cardIds);
+      const cardNotes = await this.myTrainingApi.findCardNoteList(cardIds) || [];
 
       const lectureTableViews = offsetRequiredCard.results.map(result => {
         const card = result.card;
@@ -579,6 +585,15 @@ class LectureService {
           cardStudents &&
           cardStudents.find(student => student.lectureId === card.id);
 
+        const useNote = cardNotes &&
+          cardNotes.length > 0 &&
+          cardNotes.some((note: any) => {
+              if(note?.cardId === card.id){
+                return true;
+              } 
+              return false;
+          }) || false;
+
         if (student) {
           const lectureTableView = new LectureTableViewModel();
           lectureTableView.serviceId = card.id;
@@ -592,6 +607,7 @@ class LectureService {
           lectureTableView.updateTimeForTest = student.updateTimeForTest;
           lectureTableView.passedLearningCount = student.completePhaseCount;
           lectureTableView.totalLearningCount = student.phaseCount;
+          lectureTableView.useNote = useNote;
 
           return lectureTableView;
         }
@@ -603,6 +619,7 @@ class LectureService {
         lectureTableView.difficultyLevel = card.difficultyLevel!;
         lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
+        lectureTableView.useNote = useNote;
 
         return lectureTableView;
       });
@@ -632,6 +649,7 @@ class LectureService {
     ) {
       const cardIds = offsetRequiredCard.results.map(result => result.card.id);
       const cardStudents = await findCardStudentsByCardIds(cardIds);
+      const cardNotes = await this.myTrainingApi.findCardNoteList(cardIds) || [];
 
       const addLectureTableViews = offsetRequiredCard.results.map(result => {
         const card = result.card;
@@ -647,6 +665,15 @@ class LectureService {
           cardStudents &&
           cardStudents.find(student => student.lectureId === card.id);
 
+        const useNote = cardNotes &&
+          cardNotes.length > 0 &&
+          cardNotes.some((note: any) => {
+              if(note?.cardId === card.id){
+                return true;
+              } 
+              return false;
+          }) || false;
+
         if (student) {
           const lectureTableView = new LectureTableViewModel();
           lectureTableView.serviceId = card.id;
@@ -660,6 +687,7 @@ class LectureService {
           lectureTableView.updateTimeForTest = student.updateTimeForTest;
           lectureTableView.passedLearningCount = student.completePhaseCount;
           lectureTableView.totalLearningCount = student.phaseCount;
+          lectureTableView.useNote = useNote;
 
           return lectureTableView;
         }
@@ -671,6 +699,7 @@ class LectureService {
         lectureTableView.difficultyLevel = card.difficultyLevel!;
         lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
+        lectureTableView.useNote = useNote;
 
         return lectureTableView;
       });
@@ -713,7 +742,8 @@ class LectureService {
 LectureService.instance = new LectureService(
   LectureApi.instance,
   LectureFlowApi.instance,
-  StudentFlowApi.instance
+  StudentFlowApi.instance,
+  MyTrainingApi.instance
 );
 
 export default LectureService;

@@ -15,10 +15,12 @@ import {
 } from '../../../store/CommunityMainStore';
 import { Link } from 'react-router-dom';
 import { Area } from 'tracker/model';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { getPostDetailInPreview } from '../../../service/useCommunityPostCreate/utility/getPostDetail';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -78,6 +80,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   name,
   contents,
   bookmarked,
+  likeCount,
+  replyCount,
 }) {
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
@@ -131,6 +135,38 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     setText(nextText);
   }, []);
 
+  const contentsView = () => {
+    return (
+      <>
+        <Contents />
+      </>
+    );
+  };
+
+  const Contents: React.FC<any> = function Contents() {
+    const [detail, setDetail] = useState<string>('');
+
+    useEffect(() => {
+      const postDetail = getPostDetailInPreview(postId);
+      if (postDetail !== undefined) {
+        postDetail.then(result => {
+          setDetail(result.html);
+        });
+      }
+    }, []);
+
+    return (
+      <>
+        <div className="ql-snow">
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{ __html: detail }}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       <div className="sub-info-box">
@@ -145,7 +181,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   src={
                     profileImage === '' || profileImage === null
                       ? `${DefaultImg}`
-                      : `/files/community/${profileImage}`
+                      // : `/files/community/${profileImage}`
+                      : ProfileImagePath(profileImage)
                   }
                   alt="profile"
                 />
@@ -159,6 +196,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                     <div className="ellipsis">
                       <span className="id">{profileId}</span>
                       <span className="date">{createdTime}</span>
+                      <span className="like">좋아요{' '}<strong>{likeCount}</strong></span>
+                      <span className="comt">댓글수{' '}<strong>{replyCount}</strong></span>
                     </div>
                     {/* <Button>+ View more</Button> */}
                   </Comment.Text>
@@ -205,45 +244,37 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                 </Comment.Content>
               </Comment>
               <div className="card-bottom">
-                <h3>
-                  <span className="ico_feed board">게시물</span>
-                  <Link to={`/community/${communityId}/post/${postId}`}>
-                    {name}
-                  </Link>
-                </h3>
-                {more && (
-                  <div className="ql-snow">
-                    <div
-                      className="ql-editor"
-                      dangerouslySetInnerHTML={{ __html: contents }}
-                    />
-                  </div>
-                )}
-                {!more && (
-                  <div>
-                    <p className="summary">{text}</p>
-                  </div>
-                )}
-                <div className="text-right" style={{ float: 'none' }}>
+                <div className="card-header-line">
                   {!more && (
-                    <button
-                      className="ui icon button right btn-blue btn-more"
-                      onClick={viewMore}
-                    >
-                      more
-                      <i aria-hidden="true" className="icon more2" />
-                    </button>
+                    <h3 className="ellipsis cmt_tit">
+                      <span className="ico_feed board">게시물</span>
+                      <Link to={`/community/${communityId}/post/${postId}`}>
+                        {name}
+                      </Link>
+                    </h3>
                   )}
                   {more && (
-                    <button
-                      className="ui icon button right btn-blue fn-more-toggle"
-                      onClick={hideMore}
-                    >
-                      hide
-                      <i aria-hidden="true" className="icon hide2" />
-                    </button>
+                    <h3 className="cmt_tit">
+                      <span className="ico_feed board">게시물</span>
+                      <Link to={`/community/${communityId}/post/${postId}`}>
+                        {name}
+                      </Link>
+                    </h3>
                   )}
+                  <div className="text-right">
+                    {!more && (
+                      <button className="ui icon button right more-bttn" onClick={viewMore}>
+                        <i aria-hidden="true" className="drop_down icon" />
+                      </button>
+                    )}
+                    {more && (
+                      <button className="ui icon button right more-bttn" onClick={hideMore}>
+                        <i aria-hidden="true" className="drop_down up icon" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+                {more && contentsView()}
               </div>
             </Comment.Group>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
@@ -7,12 +8,15 @@ import OpenCommunityIntroFieldListContainer from '../logic/OpenCommunityIntro/Op
 import OpenCommunityIntroCommunityListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroCommunityListContainer';
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface OpenCommunityViewProps {}
 
 const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommunityView() {
   const contextRef = useRef(null);
   const history = useHistory();
+  const isExternal = isExternalInstructor();
+
   const gaOnClick = (name: string) => {
     // react-ga
     ReactGA.event({
@@ -28,7 +32,20 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
       history.replace('/community/main/open-communities');
     }
     if (name === 'Follow') history.replace('/community/main/follow');
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
   };
+
+  useEffect(() => {
+    if (isExternal) {
+      gaOnClick('MyCommunity');
+    }
+  }, []);
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
@@ -38,29 +55,44 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyCommunity"
               active={false}
               as={Link}
-              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={true}
-              as={Link}
-              // to="/community/main/open-communities"
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={true}
+                as={Link}
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
             <Menu.Item
               name="MyFeed"
               active={false}
               as={Link}
-              // to="/community/main/follow"
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
+              active={false}
+              as={Link}
               onClick={() => gaOnClick('Follow')}
             >
-              Follow
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
             </Menu.Item>
           </Menu>
         </div>

@@ -11,6 +11,7 @@ import {
 import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { compareAscendingByTime } from '../../../utility/lectureTaskHelper';
 import { findCubeDetailCache } from '../../../api/cubeApi';
+import SkProfileApi from '../../../../../../src/profile/present/apiclient/SkProfileApi';
 
 async function getTaskItem(
   boardId: string,
@@ -76,13 +77,41 @@ async function getTaskItem(
           //   setLectureTaskItem(lectureTask);
           // }
 
+          const patronKeys: string[] = [];
+          findTaskData.results.map(task => {
+            if(task.patronKey &&
+                task.patronKey.keyString !== ''
+            ){
+              patronKeys.push(task.patronKey.keyString);
+            } 
+          });
+
+          const writerProfile = await SkProfileApi.instance.findProfiles(patronKeys);
           findTaskData.results.forEach(task => {
+
+            // 실명 닉네임 여부에 따른 이름 설정
+            let nickName = '';
+            if(writerProfile && 
+                writerProfile.length > 0 &&
+                task.patronKey &&
+                task.patronKey.keyString !== ''
+            ){
+              writerProfile.some((m: any) => {
+                if (m.id === task.patronKey.keyString) {
+                  if(m.nickName){
+                    nickName = m.nickName
+                  } 
+                  return true
+                }
+              })
+            }
+
             lectureTask.items.push({
               id: task.id,
               boardId: task.boardId,
               readCount: task.readCount,
               title: task.title,
-              writer: task.writer,
+              writer: nickName || task.writer,
               time: task.time,
               child: false,
               count: 0,
@@ -103,10 +132,40 @@ async function getTaskItem(
           const findChildTaskData = await findTaskChild(idArr);
 
           if (findChildTaskData.results !== null) {
+
+            const childPatronKeys: string[] = [];
+            findChildTaskData.results.map(task => {
+              if(task.patronKey &&
+                  task.patronKey.keyString !== ''
+              ){
+                childPatronKeys.push(task.patronKey.keyString);
+              } 
+            });
+
+            const childWriterProfile = await SkProfileApi.instance.findProfiles(childPatronKeys);
+
             lectureTask.items.forEach(parent => {
               parent.childItems = [];
             });
             findChildTaskData.results.forEach(child => {
+
+              // 실명 닉네임 여부에 따른 이름 설정
+              let childNickName = '';
+              if(childWriterProfile && 
+                childWriterProfile.length > 0 &&
+                  child.patronKey &&
+                  child.patronKey.keyString !== ''
+              ){
+                childWriterProfile.some((m: any) => {
+                  if (m.id === child.patronKey.keyString) {
+                    if(m.nickName){
+                      childNickName = m.nickName
+                    } 
+                    return true
+                  }
+                })
+              }
+
               lectureTask.items.forEach(parent => {
                 if (parent.id === child.postId) {
                   parent.childItems.push({
@@ -114,7 +173,7 @@ async function getTaskItem(
                     postId: child.postId,
                     readCount: child.readCount,
                     title: child.title,
-                    writer: child.writer,
+                    writer: childNickName || child.writer,
                     time: child.time,
                     commentFeedbackId: child.commentFeedbackId,
                     count: 0,

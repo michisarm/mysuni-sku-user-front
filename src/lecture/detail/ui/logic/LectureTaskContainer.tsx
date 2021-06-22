@@ -90,6 +90,7 @@ function LectureTaskContainer() {
   const [postCount, setPostCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [subCommentCount, setSubCommentCount] = useState<number>(0);
+  const [isStudent, setIsStudent] = useState<boolean>(false);
 
   useEffect(() => {
     if(taskItem){
@@ -104,20 +105,34 @@ function LectureTaskContainer() {
   useEffect(() => {
     if(lectureState){
       // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
-      if(lectureState.cubeDetail
-          && lectureState.cubeDetail.cubeMaterial
-          && lectureState.cubeDetail.cubeMaterial.board){
-            setCubePostCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.postCount || 0)
-            setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.commentCount || 0)
-            setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.board.completionCondition?.subCommentCount || 0)
-            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion || false)
+      if (
+        lectureState.cubeDetail &&
+        lectureState.cubeDetail.cubeMaterial &&
+        lectureState.cubeDetail.cubeMaterial.board
+      ) {
+        setCubePostCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.postCount || 0
+        );
+        setCubeCommentCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.commentCount || 0
+        );
+        setCubeSubCommentCount(
+          lectureState.cubeDetail.cubeMaterial.board.completionCondition
+            ?.subCommentCount || 0
+        );
+        setCubeAutomaticCompletion(
+          lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion || false
+        );
 
-            // 댓글, 대댓글 Count Data
-            if(lectureState.student){
-              setPostCount(lectureState.student.postCount || 0)
-              setCommentCount(lectureState.student.commentCount || 0)
-              setSubCommentCount(lectureState.student.subCommentCount || 0)
-            }
+        // 댓글, 대댓글 Count Data
+        if (lectureState.student) {
+          setIsStudent(true);
+          setPostCount(lectureState.student.postCount || 0);
+          setCommentCount(lectureState.student.commentCount || 0);
+          setSubCommentCount(lectureState.student.subCommentCount || 0);
+        }
       }
     }
   }, [lectureState]);
@@ -277,6 +292,7 @@ function LectureTaskContainer() {
               commentFeedbackId: '',
               notice: false,
               pinned: 0, // postpinned -> number = 0
+              writerPatronKeyString: ''
             });
             refresh(1).then(() => {
               history.goBack();
@@ -390,6 +406,7 @@ function LectureTaskContainer() {
               pageChange={pageChange}
               activePage={activePage}
               totalPage={totalPage}
+              isStudent={isStudent}
               cubeAutomaticCompletion={cubeAutomaticCompletion}
               cubePostCount={cubePostCount}
               cubeCommentCount={cubeCommentCount}

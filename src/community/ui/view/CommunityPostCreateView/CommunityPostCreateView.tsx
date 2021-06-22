@@ -126,7 +126,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     }
 
     //url 입력시 자동으로 하이퍼링크 적용
-    const regURL = new RegExp('(^|[^"])(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)', 'gi');
+    const regURL = new RegExp('(^|[^"])(http|https|ftp|telnet|news|irc)://([-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]+)', 'gi');
     postItem.contents = postItem.contents.replace(regURL, '$1<a href="$2://$3" target="_blank" rel="noopener noreferrer">$2://$3</a>');
 
     reactConfirm({

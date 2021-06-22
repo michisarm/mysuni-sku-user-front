@@ -1,20 +1,35 @@
 import React from 'react';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import CourseLectureStructureView from './CourseLectureStructureView';
+import CubeLectureStructureNoteView from './CubeLectureStructureNoteView';
 import CubeLectureStructureView from './CubeLectureStructureView';
+import ProgramLectureStructureNoteView from './ProgramLectureStructureNoteView';
 import ProgramLectureStructureView from './ProgramLectureStructureView';
 
 interface LectureStructureViewProps {
   lectureStructure: LectureStructure;
+  noteTab: boolean;
+  cubeType: any;
 }
 
 const LectureStructureView: React.FC<LectureStructureViewProps> = function LectureStructureView({
   lectureStructure,
+  noteTab,
+  cubeType
 }) {
   if (lectureStructure.chapters.length > 0) {
     return (
       <div className="course-info-wrapper">
-        <ProgramLectureStructureView lectureStructure={lectureStructure} />
+        {
+          !noteTab && (
+            <ProgramLectureStructureView lectureStructure={lectureStructure} />
+          )
+        }
+        {
+          noteTab && (
+            <ProgramLectureStructureNoteView lectureStructure={lectureStructure} noteTab={noteTab} cubeType={cubeType}/>
+          )
+        }
         <div className="lms-fixed-holder" />
       </div>
     );
@@ -29,7 +44,16 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
   ) {
     return (
       <div className="course-info-wrapper">
-        <CubeLectureStructureView lectureStructure={lectureStructure} />
+        {
+          !noteTab && (
+            <CubeLectureStructureView lectureStructure={lectureStructure}/>
+          )
+        }
+        {
+          noteTab && (
+            <CubeLectureStructureNoteView lectureStructure={lectureStructure} noteTab={noteTab} cubeType={cubeType}/>
+          )
+        }
         <div className="lms-fixed-holder" />
       </div>
     );
@@ -37,8 +61,14 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
 
   return (
     <div className="course-info-wrapper">
-      <CourseLectureStructureView lectureStructure={lectureStructure} />
-      <div className="lms-fixed-holder" />
+      {
+        noteTab !== undefined && lectureStructure !== undefined && lectureStructure.cubes.length !== 0 &&(
+          <>
+            <CourseLectureStructureView lectureStructure={lectureStructure} noteTab={noteTab} cubeType={cubeType}/>
+            <div className="lms-fixed-holder" />
+          </>
+        )
+      }
     </div>
   );
 };

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>FB86759B-FBC7-46B4-A810-E956F5C56249</title>
+    <defs>
+        <filter color-interpolation-filters="auto" id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.400000 0 0 0 0 0.400000 0 0 0 0 0.400000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Note" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Note_06_Floating_02(LM-VI-20)" transform="translate(-153.000000, -494.000000)">
+            <g id="@-LNB" transform="translate(-0.000001, 109.000000)">
+                <g id="Course" transform="translate(0.000000, 65.000000)">
+                    <g id="note_input" transform="translate(0.000000, 77.000000)">
+                        <g id="btn_new_write_example" transform="translate(0.000001, 110.000000)" filter="url(#filter-1)">
+                            <g transform="translate(153.000000, 133.000000)">
+                                <g id="Icon_learningtype_Cohort_16px"></g>
+                                <polyline id="Rectangle" stroke="#666666" stroke-width="1.5" stroke-linecap="square" transform="translate(7.500000, 8.500000) scale(-1, 1) translate(-7.500000, -8.500000) " points="8.5 3.5 12.5 3.5 12.5 13.5 2.5 13.5 2.5 9.5"></polyline>
+                                <line x1="13.0686571" y1="2.82901081" x2="7.43134295" y2="9.17098919" id="Line" stroke="#666666" stroke-width="1.5" transform="translate(10.250000, 6.000000) rotate(3.366461) translate(-10.250000, -6.000000) "></line>
+                                <rect id="Rectangle" fill="#666666" x="9.25" y="2" width="5" height="1.5"></rect>
+                                <rect id="Rectangle" fill="#666666" transform="translate(13.500000, 4.500000) rotate(90.000000) translate(-13.500000, -4.500000) " x="11" y="3.75" width="5" height="1.5"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

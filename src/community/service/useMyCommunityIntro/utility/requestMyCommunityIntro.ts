@@ -41,6 +41,7 @@ function communityToItem(community: CommunityView): CommunityItem {
     thumbnailId,
     name,
     managerName,
+    managerNickName,
     managerEmail,
     memberCount,
     lastPostTime,
@@ -53,6 +54,7 @@ function communityToItem(community: CommunityView): CommunityItem {
     hasNewPost:
       Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
     managerName: managerName || '',
+    managerNickName: managerNickName || '',
     managerEmail: managerEmail || '',
     memberCount,
     type,
@@ -134,6 +136,8 @@ function postToItem(post: Post): PostItem {
     menuType,
     bookmarked,
     type,
+    likeCount,
+    replyCount,
   } = post;
   return {
     communityId,
@@ -149,6 +153,8 @@ function postToItem(post: Post): PostItem {
     menuType,
     bookmarked,
     nickName,
+    likeCount,
+    replyCount,
   };
 }
 

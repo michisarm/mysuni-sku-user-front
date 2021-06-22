@@ -10,11 +10,14 @@ import CommunityFollowPostListContainer from '../logic/CommunityFollow/Community
 import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
 import ReactGA from 'react-ga';
 import { Area } from 'tracker/model';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
   const followCommunityIntro = useFollowCommunityIntro();
   const history = useHistory();
+  const isExternal = isExternalInstructor();
+
   const gaOnClick = (name: string) => {
     // react-ga
     ReactGA.event({
@@ -34,6 +37,12 @@ const FollowView: React.FC = function FollowView() {
     if (name === 'Follow') {
       history.replace('/community/main/follow');
     }
+    if (name === 'MyFeed') {
+      history.replace('/community/main/feed');
+    }
+    if (name === 'BookMark') {
+      history.replace('/community/main/bookmark');
+    }
   };
 
   return (
@@ -45,29 +54,44 @@ const FollowView: React.FC = function FollowView() {
               name="MyCommunity"
               active={false}
               as={Link}
-              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
               <span className="count" />
             </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={false}
-              as={Link}
-              // to="/community/main/open-communities"
-              onClick={() => gaOnClick('CommunityList')}
-            >
-              Community List
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={false}
+                as={Link}
+                onClick={() => gaOnClick('CommunityList')}
+              >
+                Community List
+              </Menu.Item>
+            )}
             <Menu.Item
               name="MyFeed"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('MyFeed')}
+            >
+              My Feed
+            </Menu.Item>
+            <Menu.Item
+              name="Follow"
               active={true}
               as={Link}
-              // to="/community/main/follow"
               onClick={() => gaOnClick('Follow')}
             >
-              Follow
+              Follower Feed
+            </Menu.Item>
+            <Menu.Item
+              name="BookMark"
+              active={false}
+              as={Link}
+              onClick={() => gaOnClick('BookMark')}
+            >
+              BookMark
             </Menu.Item>
           </Menu>
         </div>

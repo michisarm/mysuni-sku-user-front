@@ -1,7 +1,7 @@
-import React,{useState,useCallback,useEffect} from 'react';
+import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityMember } from 'community/store/CommunityMemberStore';
+import { useCommunityMember, useSearchText } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
@@ -9,44 +9,69 @@ import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
+import { useFollowModel } from '../../../../layout/UserApp/store/FollowStore';
+import { getFollow } from '../../../../layout/UserApp/service/ProfilePopupService/getFollow';
+import { followMember, unfollowMember, findAllFollow } from '../../../../layout/UserApp/api/ProfileInfoAPI';
+import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 
-function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
+function ItemBox({ memberList, activePage }: { memberList: any, activePage: number }) {
   const [follow, setFollow] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const currentUser = patronInfo.getDenizenId();
+  const followData = useFollowModel();
+  const [followYN, setfollowYN] = useState<boolean>(false);
 
-  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
+  useEffect(() => {
+    let result = true;
+    followData?.ids.filter(f => {
+      if (f === memberList.memberId) {
+        setfollowYN(true);
+        result = false;
+      }
+    })
 
-    if(followState === false) {
-      onFollow(communityId,memberId, (activePage - 1) * 8)
+    if (result) {
+      setfollowYN(false);
+    }
+  }, [followData])
+
+  const handleFollow = useCallback(async (communityId: string, memberId: string, followState: boolean) => {
+
+    if (followState === false) {
+      followMember(memberId).then(() => { getFollow() });
+      //onFollow(communityId, memberId, (activePage - 1) * 8)
     } else {
-      onUnFollow(communityId,memberId, (activePage - 1) * 8)
+      unfollowMember(memberId).then(() => { getFollow() });
+      //onUnFollow(communityId, memberId, (activePage - 1) * 8)
     }
   }, [activePage])
-
   return (
     <>
       <div className="member-card">
         <Comment>
           <Comment.Avatar src={
             memberList.profileImg === null ||
-            memberList.profileImg === undefined ||
-            memberList.profileImg === ''  ? 
-            `${AvartarImage}` : `/files/community/${memberList.profileImg}`
+              memberList.profileImg === undefined ||
+              memberList.profileImg === '' ?
+              `${AvartarImage}` :
+              // `/files/community/${memberList.profileImg}`
+              ProfileImagePath(memberList.profileImg)
           }
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOpen(!open)}
           />
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
-              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} />
+              <img src={AdminIcon} style={memberList.manager ? { display: "inline" } : { display: "none" }} onClick={() => setOpen(!open)} />
               <span className="lms-nick" onClick={() => setOpen(!open)}>{memberList.nickname || memberList.name}</span>
               {
                 // 멤버보기 목록에서 본인의 프로필인 경우 Follow버튼 출력하지 않음
                 currentUser !== memberList.memberId ? (
-                  <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}>
-                    <span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span>
+                  <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, followYN)}>
+                    <span className="card-follow">{followYN ? "Unfollow" : "Follow"}</span>
                   </button>
-                ) : ( null )
+                ) : (null)
               }
             </Comment.Author>
             <Comment.Metadata>
@@ -78,11 +103,19 @@ interface MemberList {
   communityId: any
 }
 
-export const CommunityMemberView = () => {
+export const CommunityMemberView: FunctionComponent  = () => {
   const memberData = useCommunityMember();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-  const {communityId} = useParams<MemberList>();
+  const { communityId } = useParams<MemberList>();
+  const searchText = useSearchText()
+
+  useEffect(() => {
+    if(searchText === undefined) {
+      return
+    } 
+    setActivePage(1)
+  },[searchText])
 
   const totalPages = () => {
     let totalPage = Math.ceil(memberData!.totalCount / 8)
@@ -91,23 +124,26 @@ export const CommunityMemberView = () => {
     }
     setTotalPage(totalPage)
   }
-  
+
   useEffect(() => {
-    if(memberData === undefined) {
+    //Follow 목록 조회
+    getFollow()
+
+    if (memberData === undefined) {
       return
     }
     totalPages();
   }, [memberData])
-  
-  const onPageChange = (data:any) => {
-    getAllMember(communityId,(data.activePage-1)*8);
+
+  const onPageChange = (data: any) => {
+    getAllMember(communityId, (data.activePage - 1) * 8);
     setActivePage(data.activePage)
   }
 
   return (
     <>
       <div className="mycommunity-card-list">
-        {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} /> )}
+        {memberData && memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} />)}
       </div>
       <div className="lms-paging-holder">
         <Pagination

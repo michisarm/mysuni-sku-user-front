@@ -10,6 +10,13 @@ interface LectureClassroomViewProps {
   lectureClassroom: LectureClassroom;
 }
 
+function numberWithCommas(x: number) {
+  let s = x.toString();
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
+  return s;
+}
+
 function formatDate(dateString: string) {
   return `${moment(dateString).format('YYYY.MM.DD')}`;
 }
@@ -52,6 +59,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                 ({
                   round,
                   instructor,
+                  freeOfCharge,
                   location,
                   applyingStartDate,
                   applyingEndDate,
@@ -64,15 +72,19 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                         <span>{round}차수</span>
                       </Table.HeaderCell>
                       <Table.HeaderCell>강사정보</Table.HeaderCell>
+                      <Table.HeaderCell>비용</Table.HeaderCell>
                       <Table.HeaderCell>장소</Table.HeaderCell>
                       <Table.HeaderCell>수강신청기간</Table.HeaderCell>
                       <Table.HeaderCell>교육기간</Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        {instructor.map(item => (
+                        {instructor.map((item) => (
                           <span key={item.instructorId}>{item.name}</span>
                         ))}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {`${numberWithCommas(freeOfCharge.chargeAmount)} 원`}
                       </Table.Cell>
                       <Table.Cell>{location}</Table.Cell>
                       <Table.Cell>

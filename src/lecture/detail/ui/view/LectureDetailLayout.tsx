@@ -1,14 +1,34 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Icon } from 'semantic-ui-react';
-import { getCookie } from '@nara.platform/accent';
+import { Button, Icon, Image } from 'semantic-ui-react';
 import LectureStructureContainer from '../logic/LectureStructureContainer';
+import { useLocation, useParams } from 'react-router-dom';
+import LectureParams from '../../viewModel/LectureParams';
+import { getCookie } from '@nara.platform/accent';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
-import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
+import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
+import { ActionType, Action, Area } from 'tracker/model/ActionType';
+import {
+  getLectureNoteTab,
+  setLectureNoteItem,
+  setLectureNoteTab,
+  setLectureNoteWriteState,
+  useLectureNoteTab,
+} from '../../store/LectureNoteStore';
+import { loadPlayVideo, playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
+import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
 
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
   children,
 }) {
   const [structureVisible, setStructureVisible] = useState<boolean>(true);
+  const { pathname } = useLocation();
+  const [scrollValue, setScrollValue] = useState<any>();
+  const [nowScroll, setNowScroll] = useState<any>(0);
+  const [noteTabUsable, setNoteTabUsable] = useState<boolean>(false);
+  const [noteTabDetail, setNoteTabDetail] = useState<boolean>(false);
+
+  const params = useParams<LectureParams>();
+  const noteTabActivity = useLectureNoteTab();
 
   const closeStructure = useCallback(() => {
     setStructureVisible(false);
@@ -18,14 +38,37 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     setStructureVisible(true);
   }, []);
 
-  const [scrollValue, setScrollValue] = useState<any>();
-  const [nowScroll, setNowScroll] = useState<any>(0);
+  useEffect(() => {
+    if (
+      !params.cubeType ||
+      params.viewType === 'report' ||
+      params.viewType === 'test' ||
+      params.viewType === 'survey' ||
+      params.viewType === 'discussion'
+    ) {
+      setNoteTabUsable(false);
+    } else {
+      setNoteTabUsable(true);
+    }
+  }, [pathname, params]);
 
   // 실시간 스크롤 감시
   useEffect(() => {
     const onScroll = () => setNowScroll(window.pageYOffset);
     window.scrollTo(0, 0);
     window.addEventListener('scroll', onScroll);
+    const playTime = sessionStorage.getItem('playTime');
+    setTimeout(() => {
+      if (playTime) {
+        if (params.cubeType === 'Video') {
+          loadPlayVideo();
+          setTimeout(() => {
+            seekTo(Number(playTime));
+          }, 3000);
+          sessionStorage.removeItem('playTime');
+        }
+      }
+    }, 2000);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -60,11 +103,27 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
 
   // 리스트 헤더위치 추출
   const tabScrollRef = useCallback(node => {
-    // console.log('asdf', lecturePrecourse, lectureDescription);
     if (node !== null) {
       setScrollValue(window.pageYOffset + node.getBoundingClientRect().top);
     }
   }, []);
+
+  const tabFlag = useCallback(
+    (type: string) => {
+      if (type === 'note') {
+        if (getLectureNoteTab() || noteTabActivity) {
+          return false;
+        }
+        setNoteTabDetail(true);
+      } else {
+        setLectureNoteItem()
+        setNoteTabDetail(false);
+        setLectureNoteWriteState(false);
+      }
+      setLectureNoteTab(false);
+    },
+    [noteTabUsable, noteTabActivity]
+  );
 
   return (
     <section
@@ -84,15 +143,43 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         data-area={Area.CARD_LIST}
       >
         <div className="course-header-list">
-          <a className="btn-view-change">
+          <a className="btn-view-change" onClick={() => tabFlag('list')}>
             <Icon className="list24 icon" />
             <span>List</span>
           </a>
-          <a className="btn-close" onClick={closeStructure}>
-            <span>close</span>
+          {noteTabUsable && (
+            <Button
+              onClick={() => tabFlag('note')}
+              id="handleNoteTab"
+              className={
+                noteTabActivity ? 'btn_note_new ing' : 'btn_note_new on'
+              }
+            >
+              <Icon />
+              <span>Note</span>
+            </Button>
+          )}
+          {!noteTabUsable && (
+            <Button className="btn_note_new" id="handleNoteTab">
+              <Icon />
+              <span>Note</span>
+              <div className="bubble">
+                <p>
+                  각 학습과정을 클릭하면
+                  <br />
+                  Note를 작성하실 수 있습니다.
+                </p>
+              </div>
+            </Button>
+          )}
+          <a className="btn-fold" onClick={closeStructure}>
+            <Image src={`${process.env.PUBLIC_URL}/images/all/icon-fold.svg`} />
           </a>
         </div>
-        <LectureStructureContainer />
+        <LectureStructureContainer
+          noteTab={noteTabDetail}
+          cubeType={params.cubeType}
+        />
       </div>
       <div
         className="course-info-detail responsive-course"
