@@ -24,6 +24,7 @@ import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
 import NoteWithLectureListItem, { getNoteWithLectureListItem } from '../../viewModel/NoteWithLectureListItem';
 import NoteWithLecture from '../../model/NoteWithLecture';
 import { setNoteCount, getNoteCount } from '../../store/NoteCountStore';
+import CategoryColorType from '../../../shared/model/CategoryColorType';
 
 interface NoteViewProps {
   noteList: OffsetElementList<NoteWithLecture>;
@@ -237,33 +238,44 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
     []
   );
 
-  const getColor = useCallback((categoryId: string): SemanticCOLORS => {
+  const getColor = useCallback((categoryId: string): string => {
+    let color = CategoryColorType.Default;
+
     switch (categoryId) {
       case 'CLG00001':
-        return NoteCategoryColorType.AI;
+        color = CategoryColorType.AI;
+        break;
       case 'CLG00002':
-        return NoteCategoryColorType.DT;
+        color = CategoryColorType.DT;
+        break;
       case 'CLG00006':
-        return NoteCategoryColorType.Global;
+        color = CategoryColorType.Global;
+        break;
       case 'CLG00007':
-        return NoteCategoryColorType.Leadership;
+        color = CategoryColorType.Leadership;
+        break;
       case 'CLG00008':
-        return NoteCategoryColorType.Management;
+        color = CategoryColorType.Management;
+        break;
       case 'CLG00004':
-        return NoteCategoryColorType.SV;
+        color = CategoryColorType.SV;
+        break;
       case 'CLG00003':
-        return NoteCategoryColorType.Happiness;
+        color = CategoryColorType.Happiness;
+        break;
       case 'CLG00019':
-        return NoteCategoryColorType.SemicondDesign;
+        color = CategoryColorType.SemicondDesign;
+        break;
       case 'CLG00005':
-        return NoteCategoryColorType.InnovationDesign;
+        color = CategoryColorType.InnovationDesign;
+        break;
       case 'CLG00020':
-        return NoteCategoryColorType.BMDesign;
+        color = CategoryColorType.BMDesign;
+        break;
       case 'CLG0001c':
-        return NoteCategoryColorType.EnergySolution;
-      default:
-        return NoteCategoryColorType.Default;
+        color = CategoryColorType.EnergySolution;
     }
+    return color;
   },
     []
   );
@@ -277,7 +289,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
             {/* 노트 타이틀 */}
             < div className="note_title" >
               <div className="tit">
-                <Label color={getColor(item.lectureRom.collegeId)}>{collegeList && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } })[0].name}</Label>
+                <div className={`ui label ${getColor(item.lectureRom.collegeId)}`}>{collegeList && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } }).length > 0 && collegeList?.filter(f => { if (f.id === item.lectureRom.collegeId) { return f } })[0].name}</div>
                 <strong className="header">{item.lectureRom.cardName}</strong>
                 <Link className="time" to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}>
                   <p>
