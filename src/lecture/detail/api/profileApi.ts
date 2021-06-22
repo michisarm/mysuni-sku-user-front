@@ -32,7 +32,7 @@ export function findAgreement(
   // 동의서 ID는 해당 동의서가 만들어진 날짜
   // 날짜 뒤 숫자는 동의서의 버전, 동의서가 수정될 때 마다 버전을 하나씩 올려준다.
   const agreementFormId = '20210622-1';
-  const url = `${BASE_URL}/pisAgreement/myPisAgreement/${agreementFormId}/${organizedId}`;
+  const url = `${BASE_URL}/pisAgreements/myPisAgreement/${agreementFormId}/${organizedId}`;
 
   return axios.get(url).then(AxiosReturn);
 }
