@@ -11,7 +11,6 @@ interface AppLayoutContainerProps {
 
 export function AppLayoutContainer({ children }: AppLayoutContainerProps) {
   useRequestProfile();
-
   const isExternal = isExternalInstructor();
   return (
     <>
