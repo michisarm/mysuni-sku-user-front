@@ -27,7 +27,6 @@ class CurrentJobPage extends React.Component {
         <section>
           <div className="interest-content lo-08-03 step2">
             <ContentHeaderContainer step={3} />
-
             <CurrentJobContainer />
           </div>
         </section>

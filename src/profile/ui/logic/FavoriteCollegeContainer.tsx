@@ -67,14 +67,12 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
   async init() {
     //
-    const {
-      collegeService,
-      skProfileService,
-      collegeLectureCountService,
-    } = this.props;
+    const { collegeService, skProfileService, collegeLectureCountService } =
+      this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
 
-    const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges: CollegeLectureCountRdo[] =
+      await collegeLectureCountService!.findCollegeLectureCounts();
     const companyChannels = colleges
       .filter((college) => college.collegeType === CollegeType.Company)
       .map((college) =>
@@ -145,33 +143,31 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     const { collegeService, skProfileService, history } = this.props;
     const { favorites, favoriteCompanyChannels } = this.state;
 
-    if (favorites.length < 3) {
-      reactAlert({
-        title: '알림',
-        message: '관심 분야는 3개이상 선택해 주세요.',
-      });
-    } else {
-      const nextFavoriteChannels = [...favorites, ...favoriteCompanyChannels];
-      // collegeService!.favoriteChannels = [...favorites];
-      collegeService!.favoriteChannels = [...nextFavoriteChannels];
-      skProfileService!.setStudySummaryProp(
-        'favoriteChannels',
-        collegeService!.favoriteChannelIdNames
-      );
-      await skProfileService!.modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      );
+    // if (favorites.length < 3) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message: '관심 분야는 3개이상 선택해 주세요.',
+    //   });
+    // } else {
+    const nextFavoriteChannels = [...favorites, ...favoriteCompanyChannels];
+    // collegeService!.favoriteChannels = [...favorites];
+    collegeService!.favoriteChannels = [...nextFavoriteChannels];
+    skProfileService!.setStudySummaryProp(
+      'favoriteChannels',
+      collegeService!.favoriteChannelIdNames
+    );
+    await skProfileService!.modifyStudySummary(
+      StudySummaryModel.asNameValues(skProfileService!.studySummary)
+    );
 
-      history.push(routePaths.favoriteLearningType());
-    }
+    history.push(routePaths.favoriteLearningType());
+    // }
   }
 
   render() {
     const { channelMap } = this.props.collegeService!;
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = this.props.collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      this.props.collegeLectureCountService!;
     const { selectedCollege, favorites, favoriteCompanyChannels } = this.state;
 
     return (
@@ -326,7 +322,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           <span>관심 분야를 3개 이상 선택해주세요.</span>
         </div> */}
         <div className="button-area">
-          <div className="error">관심 분야를 3개 이상 선택해주세요.</div>
+          {/* <div className="error">관심 분야를 3개 이상 선택해주세요.</div> */}
           <Button className="fix bg" onClick={this.onNextClick}>
             다음
           </Button>

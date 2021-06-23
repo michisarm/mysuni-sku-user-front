@@ -142,26 +142,25 @@ class CurrentJobContainer extends React.Component<Props, State> {
 
     let skProfileUdo: SkProfileUdo;
 
-    if (
-      !currentJobGroup.currentJobGroup ||
-      !currentJobGroup.currentJobGroup!.id ||
-      !currentJobGroup.currentJobDuty ||
-      !currentJobGroup.currentJobDuty!.id
-    ) {
-      reactAlert({
-        title: '알림',
-        message: '현재 직군과 현재 직무를 선택해주세요.',
-      });
-    } else {
-      skProfileUdo = new SkProfileUdo(
-        skProfileService.skProfile.member.currentJobGroup,
-        skProfileService.skProfile.member.favoriteJobGroup,
-        skProfileService.skProfile.pisAgreement
-      );
-      await skProfileService.modifySkProfile(skProfileUdo);
-      // this.props.history.push(routePaths.favoriteLearningType());
-      this.props.history.push(routePaths.favoriteJob());
-    }
+    // if (
+    //   !currentJobGroup.currentJobGroup ||
+    //   !currentJobGroup.currentJobGroup!.id ||
+    //   !currentJobGroup.currentJobDuty ||
+    //   !currentJobGroup.currentJobDuty!.id
+    // ) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message: '현재 직군과 현재 직무를 선택해주세요.',
+    //   });
+    // } else {
+    skProfileUdo = new SkProfileUdo(
+      skProfileService.skProfile.member.currentJobGroup,
+      skProfileService.skProfile.member.favoriteJobGroup,
+      skProfileService.skProfile.pisAgreement
+    );
+    await skProfileService.modifySkProfile(skProfileUdo);
+    this.props.history.push(routePaths.favoriteJob());
+    // }
   }
 
   render() {
