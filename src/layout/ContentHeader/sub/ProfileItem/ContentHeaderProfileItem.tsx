@@ -50,12 +50,12 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
           <div className="pic">
             <Image src={image} alt="Profile" />
           </div>
-          {myPageActive && (
+          {/* {myPageActive && (
             <button onClick={this.onClickMyPage}>
               <Icon className="my20" />
               <span className="blind">my</span>
             </button>
-          )}
+          )} */}
           {imageEditable && (
             <ProfilPhotoChangeModal
               name={name}
