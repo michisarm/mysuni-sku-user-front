@@ -33,6 +33,15 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     initCheckThr: false,
   };
 
+  componentDidMount() {
+    const { skProfileService } = this.props;
+    if (skProfileService === undefined) {
+      return;
+    }
+
+    skProfileService.findSkProfile();
+  }
+
   onChangeAllCheck(e: any, checkProps: any) {
     //
     this.setState({
