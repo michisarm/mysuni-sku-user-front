@@ -144,26 +144,25 @@ class FavoriteJobContainer extends React.Component<Props, State> {
 
     let skProfileUdo: SkProfileUdo;
 
-    // if (
-    //   !favoriteJobGroup.favoriteJobGroup ||
-    //   !favoriteJobGroup.favoriteJobGroup!.id ||
-    //   !favoriteJobGroup.favoriteJobDuty ||
-    //   !favoriteJobGroup.favoriteJobDuty!.id
-    // ) {
-    //   reactAlert({
-    //     title: '알림',
-    //     message: '관심 직군과 관심 직무를 선택해주세요.',
-    //   });
-    // } else {
-    skProfileUdo = new SkProfileUdo(
-      skProfileService.skProfile.member.currentJobGroup,
-      skProfileService.skProfile.member.favoriteJobGroup,
-      skProfileService.skProfile.pisAgreement
-    );
-    await skProfileService.modifySkProfile(skProfileUdo);
-    // this.props.history.push(routePaths.favoriteLearningType());
-    this.props.history.push(routePaths.favoriteCollege());
-    // }
+    if (
+      !favoriteJobGroup.favoriteJobGroup ||
+      !favoriteJobGroup.favoriteJobGroup!.id ||
+      !favoriteJobGroup.favoriteJobDuty ||
+      !favoriteJobGroup.favoriteJobDuty!.id
+    ) {
+      reactAlert({
+        title: '알림',
+        message: '관심 직군과 관심 직무를 선택해주세요.',
+      });
+    } else {
+      skProfileUdo = new SkProfileUdo(
+        skProfileService.skProfile.member.currentJobGroup,
+        skProfileService.skProfile.member.favoriteJobGroup,
+        skProfileService.skProfile.pisAgreement
+      );
+      await skProfileService.modifySkProfile(skProfileUdo);
+      this.props.history.push(routePaths.favoriteCollege());
+    }
   }
 
   render() {

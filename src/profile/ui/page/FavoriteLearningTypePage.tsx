@@ -5,7 +5,6 @@ import { observer } from 'mobx-react';
 import { ContentLayout } from 'shared';
 import ContentHeaderContainer from '../logic/ContentHeaderContainer';
 import FavoriteLearningTypeContainer from '../logic/FavoriteLearningTypeContainer';
-import PersonalInfoStep from '../view/PersonalInfoStep';
 
 @observer
 @reactAutobind
