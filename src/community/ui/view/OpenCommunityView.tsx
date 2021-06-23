@@ -35,7 +35,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
     if (name === 'MyFeed') {
       history.replace('/community/main/feed');
     }
-    if (name === 'BookMark') {
+    if (name === 'Bookmark') {
       history.replace('/community/main/bookmark');
     }
   };
@@ -87,12 +87,12 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               Follower Feed
             </Menu.Item>
             <Menu.Item
-              name="BookMark"
+              name="Bookmark"
               active={false}
               as={Link}
-              onClick={() => gaOnClick('BookMark')}
+              onClick={() => gaOnClick('Bookmark')}
             >
-              BookMark
+              Bookmark
             </Menu.Item>
           </Menu>
         </div>
