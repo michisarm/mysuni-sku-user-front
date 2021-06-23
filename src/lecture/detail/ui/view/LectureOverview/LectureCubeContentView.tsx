@@ -69,31 +69,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const [profileOpen, setProfileOpen] = useState<boolean>(false);
   const [profileInfo, setProfileInfo] = useState<profileParams>();
 
-  const clickProfileEventHandler = useCallback(async () => {
-    const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then(result => {
-      setProfileInfo({
-        id: result!.id,
-        profileImg: result!.profileImg,
-        introduce: result!.introduce,
-        nickName: result!.nickname,
-        creatorName: result!.name,
-      });
-      setProfileOpen(true);
-    });
-  }, []);
-
   useEffect(() => {
     requestLectureCardInstructor(params.cardId);
   }, [params.cardId]);
-
-  useEffect(() => {
-    window.addEventListener('clickProfile', clickProfileEventHandler);
-    return () => {
-      console.log('clickProfileclickProfileclickProfile')
-      window.removeEventListener('clickProfile', clickProfileEventHandler);
-    };
-  }, []);
 
 
   const [activatedTab, setActivatedTab] = useState<string>('overview');
@@ -237,15 +215,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           // trascriptScrollMove={trascriptScrollMove}
         />
       )}
-      <CommunityProfileModal
-        open={profileOpen}
-        setOpen={setProfileOpen}
-        userProfile={profileInfo && profileInfo.profileImg}
-        memberId={profileInfo && profileInfo.id}
-        introduce={profileInfo && profileInfo.introduce}
-        nickName={profileInfo && profileInfo.nickName}
-        name={profileInfo && profileInfo.creatorName}
-      />
     </>
   );
 };
