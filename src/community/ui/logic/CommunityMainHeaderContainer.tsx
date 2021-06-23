@@ -70,7 +70,7 @@ function CommunityMainHeaderContainer() {
     }
     const nextProfileItem = { ...profileItem, editing: true };
     await setCommunityProfileItem(nextProfileItem);
-    history.push('/community/my-profile');
+    history.push('/my-training/my-page/MyProfile');
   }, []);
 
   useEffect(() => {
