@@ -8,15 +8,16 @@ interface LectureTestIntroViewProps {
   testItem: LectureTestItem;
   openView: (view: string) => void;
   params: LectureParams;
+  trials?: number;
 }
 
 const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function LectureTestIntroView({
   testItem,
   openView,
   params,
+  trials,
 }) {
   const lectureStructureItem = getActiveStructureItem(params.pathname);
-
   return (
     <>
       {testItem && (
@@ -39,6 +40,8 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
               <p>
                 총 <strong>{testItem.questionCount}문항</strong>
               </p>
+              <h3>응시횟수</h3>
+              <p>{trials || 0}회</p>
               <h3>이수조건</h3>
               <p>
                 합격점 <strong>{testItem.successPoint}점</strong>
@@ -48,6 +51,13 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
             </div>
           </div>
           <div className="course-info-bottom">
+            {(testItem.applyLimit && (
+              <h2 style={{ marginBottom: '2.5rem' }}>
+                Test PASS 조건에 도달하지 못하여 <br /> {testItem.applyLimit}회
+                이상 재응시 할 경우 다음날 Test 응시가 가능합니다.
+              </h2>
+            )) ||
+              ''}
             <p>
               Test 정보를 확인했으면, <strong>응시하기</strong> 버튼을 통해
               Test에 응시해보세요!

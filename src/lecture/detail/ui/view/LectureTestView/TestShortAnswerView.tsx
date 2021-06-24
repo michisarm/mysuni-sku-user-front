@@ -1,11 +1,11 @@
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import ExamQuestion from '../../../model/ExamQuestion';
 import React from 'react';
 import { Form, Icon } from 'semantic-ui-react';
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
-  setAnswer: (questionNo: string, value: string) => void;
+  setAnswer: (questionNo: number, value: string) => void;
   readOnly: boolean;
 }
 
@@ -36,7 +36,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
             value={answer}
             onChange={(e: any) => {
               if (e.target.value.length <= maxLength) {
-                setAnswer(question.questionNo, e.target.value);
+                setAnswer(question.sequence, e.target.value);
               }
             }}
             readOnly={readOnly}

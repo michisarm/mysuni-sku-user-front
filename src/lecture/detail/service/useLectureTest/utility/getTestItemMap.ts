@@ -1,101 +1,102 @@
 /* eslint-disable consistent-return */
 
-import { findExamination, findExamPaperForm } from '../../../api/examApi';
+import {
+  findAnswerSheetsDetail,
+  findExamPaperDetail,
+} from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
-import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
+import {
+  getLectureTestItem,
+  setLectureTestAnswerItem,
+  setLectureTestItem,
+} from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
-  clearFindMyCardRelatedStudentsCache,
-  findByCardId,
+  findCardCache,
   findMyCardRelatedStudentsCache,
-  getStudentExam,
 } from '../../../api/cardApi';
-import { patronInfo } from '@nara.platform/dock';
-import { findGradeSheet } from '../../../api/assistantApi';
-import { getEssayScores } from '../../../model/GradeSheet';
-import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
+import { findCubeDetailCache } from '../../../api/cubeApi';
+import ExamDetail from '../../../model/ExamDetail';
 import Student from '../../../../model/Student';
-import { LectureType } from '../../../viewModel/LectureType';
+import {
+  initTestAnswerItem,
+  getTestAnswerItemFromSheetData,
+} from './getTestAnswerItemMapFromExam';
 
 async function getTestItem(
-  examId: string,
-  testStatus: ExtraTaskStatus,
-  serviceType: LectureType,
-  serviceId: string
+  params: LectureParams,
+  serviceId: string,
+  examPaperIds: string[]
 ) {
-  if (examId !== '' && examId !== null) {
-    let examination = null;
-    {
-      const { result } = await findExamination(examId);
-      examination = result;
-    }
+  let testDetail: ExamDetail | undefined;
 
-    const { result: examPaperForm } = await findExamPaperForm(
-      examination.paperId
-    );
-    let examTotalPoint = 0;
-    examPaperForm.questions.map((result, index) => {
-      examTotalPoint += result.allocatedPoint;
-    });
-
-    const denizenId = patronInfo.getDenizenId() || '';
-    let gradeSheet;
-    if (testStatus !== null && testStatus !== 'SAVE') {
-      gradeSheet = await findGradeSheet(examId, denizenId);
-    }
-    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
-    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
-
-    const item: LectureTestItem = {
-      id: examination.id,
-      name: examination.examPaperTitle,
-      questionCount: examination.questionCount,
-      questions: examPaperForm.questions,
-      successPoint: examination.successPoint,
-      totalPoint: examTotalPoint,
-      graderComment,
-      essayScores,
-      description: examPaperForm.description,
-      serviceType,
-      serviceId,
-    };
-    return item;
+  const students = await findMyCardRelatedStudentsCache(params.cardId);
+  if (students === undefined) {
+    return;
   }
+  let student: Student | undefined;
+  students.cubeStudents?.forEach(cubeStudent => {
+    if (cubeStudent.lectureId === params.cubeId) {
+      student = cubeStudent;
+    }
+  });
+  if (student === undefined) {
+    student = students.cardStudent || undefined;
+  }
+
+  if (student !== undefined && student.extraWork.testStatus !== null) {
+    const answerSheetDetail = await findAnswerSheetsDetail(serviceId);
+    testDetail = {
+      examPaper: answerSheetDetail.examPaper,
+      examQuestions: answerSheetDetail.examQuestions,
+    };
+    const answerItem = await getTestAnswerItemFromSheetData(answerSheetDetail);
+    setLectureTestAnswerItem(answerItem);
+  } else {
+    testDetail = await findExamPaperDetail(examPaperIds);
+    const answerItem = await initTestAnswerItem(testDetail.examQuestions);
+    setLectureTestAnswerItem(answerItem);
+  }
+  const item = await getTestItemFromDetailData(testDetail, serviceId);
+  setLectureTestItem(item);
+
+  return item;
+}
+
+export async function getTestItemFromDetailData(
+  testDetail: ExamDetail,
+  serviceId: string
+): Promise<LectureTestItem> {
+  const newItem: LectureTestItem = {
+    applyLimit: testDetail?.examPaper.applyLimit,
+    id: testDetail?.examPaper.id || '',
+    name: testDetail?.examPaper.title,
+    questionCount: testDetail?.examQuestions.length || 0,
+    questions: testDetail?.examQuestions || [],
+    successPoint: testDetail?.examPaper.successPoint,
+    totalPoint: testDetail?.examPaper.totalPoint,
+    description: testDetail?.examPaper.description || '',
+    serviceId,
+    paperId: testDetail?.examPaper.id || '',
+  };
+
+  return newItem;
 }
 
 export async function getTestItemMapFromCourse(
   params: LectureParams
 ): Promise<LectureTestItem | undefined> {
-  const students = await findMyCardRelatedStudentsCache(params.cardId);
-  if (students === undefined) {
+  if (params.cardId === undefined) {
     return;
   }
 
-  const student = students.cardStudent;
-  if (student === undefined || student === null) {
-    return;
-  }
-  let examId = student.studentScore.examId || '';
-  if (examId === null || examId === '') {
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
-    }
-    examId = test.testId;
-    clearFindMyCardRelatedStudentsCache(); // examId가 담긴 studentScore 재호출
-    getTestItemMapFromCourse(params);
-    return;
-  }
+  const cardDetail = await findCardCache(params.cardId);
+  const examPaperIds: string[] = [];
+  cardDetail?.cardContents.tests.map(test => {
+    examPaperIds.push(test.paperId);
+  });
 
-  const testItem = await getTestItem(
-    examId,
-    student.extraWork.testStatus,
-    'Card',
-    params.cardId
-  );
-  if (testItem !== undefined) {
-    setLectureTestItem(testItem);
-  }
+  const testItem = await getTestItem(params, params.cardId, examPaperIds);
   return testItem;
 }
 
@@ -106,41 +107,46 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  const students = await findMyCardRelatedStudentsCache(params.cardId);
-  if (students === undefined) {
-    return;
-  }
-
-  let student: Student | undefined;
-  students.cubeStudents?.forEach(cubeStudent => {
-    if (cubeStudent.lectureId === params.cubeId) {
-      student = cubeStudent;
-    }
+  const cubeDetail = await findCubeDetailCache(params.cubeId);
+  const examPaperIds: string[] = [];
+  cubeDetail?.cubeContents.tests.map(test => {
+    examPaperIds.push(test.paperId);
   });
-  if (student === undefined) {
-    return;
-  }
 
-  let examId = student.studentScore.examId || '';
-  if (examId === null || examId === '') {
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
-    }
-    examId = test.testId;
-    clearFindMyCardRelatedStudentsCache(); // examId가 담긴 studentScore 재호출
-    getTestItemMapFromCube(params);
-    return;
-  }
-
-  const testItem = await getTestItem(
-    examId,
-    student.extraWork.testStatus,
-    'Cube',
-    params.cubeId
-  );
-  if (testItem !== undefined) {
-    setLectureTestItem(testItem);
-  }
+  const testItem = await getTestItem(params, params.cubeId, examPaperIds);
   return testItem;
+}
+
+// 재응시
+export async function retryTestItemMap(params: LectureParams): Promise<void> {
+  const serviceId = params.cubeId || params.cardId;
+  const examPaperIds: string[] = [];
+  if (params.cubeId !== undefined) {
+    const cubeDetail = await findCubeDetailCache(params.cubeId);
+    cubeDetail?.cubeContents.tests.map(test => {
+      examPaperIds.push(test.paperId);
+    });
+  } else {
+    const cardDetail = await findCardCache(params.cardId);
+    cardDetail?.cardContents.tests.map(test => {
+      examPaperIds.push(test.paperId);
+    });
+  }
+
+  const testDetail = await findExamPaperDetail(examPaperIds);
+
+  const testItem = await getTestItemFromDetailData(testDetail, serviceId);
+
+  const preTestItem = getLectureTestItem();
+  // FAIL한 시험지 정보 계속 유지
+  testItem.preSuccessPoint =
+    preTestItem?.preSuccessPoint || preTestItem?.successPoint;
+  testItem.preTotalPoint =
+    preTestItem?.preTotalPoint || preTestItem?.totalPoint;
+  testItem.preApplyLimit =
+    preTestItem?.preApplyLimit || preTestItem?.applyLimit;
+  setLectureTestItem(testItem);
+
+  const answerItem = await initTestAnswerItem(testItem.questions);
+  setLectureTestAnswerItem(answerItem);
 }

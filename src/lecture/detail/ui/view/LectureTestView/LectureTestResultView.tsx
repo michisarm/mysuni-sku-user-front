@@ -87,9 +87,11 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-fail.png`}
                   />
                   <h1 className="test_fail">
-                    {lectureStructureItem.student.studentScore.latestScore}점
+                    {answerItem?.obtainedScore || 0}점
                   </h1>
-                  <h2>
+                  <h3>응시횟수</h3>
+                  <p>{answerItem?.trials || 0}회</p>
+                  <h2 style={{ marginTop: '2.5rem' }}>
                     <strong>Test 이수조건을 통과하지 못했습니다.</strong>
                     <br />
                     하단 <strong>재응시</strong> 버튼을 통해 다시 Test를
@@ -97,16 +99,22 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   </h2>
                   <h3>이수조건</h3>
                   <p>
-                    합격기준 <strong>{testItem.successPoint}점</strong>
+                    합격기준{' '}
+                    <strong>
+                      {testItem.preSuccessPoint || testItem.successPoint}점
+                    </strong>
                     <span>/</span>
-                    총점 <strong>{testItem.totalPoint}점</strong>
+                    총점{' '}
+                    <strong>
+                      {testItem.preTotalPoint || testItem.totalPoint}점
+                    </strong>
                   </p>
                 </div>
               </div>
               <div className="course-info-bottom ml20">
                 <button
                   className="ui button free submit d"
-                  onClick={() => openView('test')}
+                  onClick={() => openView('retry')}
                 >
                   재응시
                 </button>
@@ -148,7 +156,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-pass.png`}
                   />
                   <h1 className="test_result">
-                    {lectureStructureItem.student.studentScore.latestScore}점
+                    {answerItem?.obtainedScore || 0}점
                   </h1>
                   <h2>
                     <strong>Test 이수조건을 통과하셨습니다!</strong>
