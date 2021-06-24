@@ -119,8 +119,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
 
+    // My Page에서 신규 저장 시 cubeType에 관계없이 기본 값 지정
+    noteCdo.playTime = '00:00:00'
     if (noteCdo.cubeType !== null && (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')) {
-      noteCdo.playTime = '00:00:00'
+      noteCdo.playTime = 'Note'
     }
 
     await saveNote(noteCdo, id);
@@ -146,7 +148,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({ noteList, searchBo
       return;
     }
 
-    noteUdo.playTime = note.playTime.indexOf('Note ') === -1 ? note.playTime : '00:00:00';
+    noteUdo.playTime = note.playTime.indexOf('Note ') === -1 ? note.playTime : 'Note';
 
     await saveNote(undefined, id, noteUdo);
     params.pageNo === '2' && await requestCubeListByFolderId();
