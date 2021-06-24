@@ -2,14 +2,11 @@ import {Button, Checkbox, Modal} from 'semantic-ui-react';
 import  {requestMainPagePopupFirst} from '../../service/MainPagePopupService';
 import {useMainPagePopupItem, setMainPagePopupItem} from '../../store/MainPagePopupStore';
 import React, {useEffect, useState} from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import ReactQuill from "react-quill";
+import { withRouter } from 'react-router-dom';
 import moment from "moment";
 import { getCookie, setCookie } from '@nara.platform/accent';
 
-interface Props extends RouteComponentProps {}
-
-function MainPagePopupContainer(props: Props) {
+function MainPagePopupContainer() {
   const [noMoreModal, setNoMoreModal] = useState(false);
   const mainPagePopup = useMainPagePopupItem();
   const open = mainPagePopup?.open;
@@ -40,10 +37,10 @@ function MainPagePopupContainer(props: Props) {
 
   useEffect(() => {
     if (open) {
-      const today = moment().format('YYYY-MM-DD')
-      const beforeFlag = moment(today).isBefore(moment().format(mainPagePopup?.period.startDate),'day');
-      const afterFlag = moment(today).isAfter(moment().format(mainPagePopup?.period.endDate),'day');
-      console.log("====>"+open+":"+today+":"+beforeFlag+":"+afterFlag+":"+getCookie('mainPopupModal'));
+      const today = moment().format('YYYY-MM-DD HH')
+      const beforeFlag = moment(today).isBefore(moment().format(mainPagePopup?.period.startDate),'hour');
+      const afterFlag = moment(today).isAfter(moment().format(mainPagePopup?.period.endDate),'hour');
+      //console.log("1====>"+open+":"+today+":"+beforeFlag+":"+afterFlag+":"+getCookie('mainPopupModal'));
       //afterFlag=false,beforeFlag=false라면 오픈. 아니라면 close
       if(afterFlag){ModalClose();}
       else if(beforeFlag){ModalClose();}
