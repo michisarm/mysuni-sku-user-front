@@ -13,4 +13,5 @@ export interface ContentsProviderInfo {
     keyString: string | null;
   };
   link: boolean;
+  pisAgree: boolean;
 }
