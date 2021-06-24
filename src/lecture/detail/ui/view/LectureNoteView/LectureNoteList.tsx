@@ -322,7 +322,7 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
                   <Form>
                     {/* <div ref={focusDiv}></div> */}
                     <textarea 
-                      placeholder="내용을 입력하시오"
+                      placeholder="Note 내용을 입력해주세요."
                       value={item.note.content}
                       name="content"
                       ref={noteInput}
