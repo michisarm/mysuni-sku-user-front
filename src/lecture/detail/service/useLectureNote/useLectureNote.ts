@@ -21,8 +21,8 @@ export async function requestLectureNote(cardId: string, cubeId: string) {
       let number = 1;
 
       result.results.slice(0).reverse().map((item: any) => {
-        if (item.note.playTime === '00:00:00' || item.note.playTime.indexOf('Note') !== -1) {
-          if(item.note.playTime === '00:00:00') {
+        if (item.note.playTime === 'Note' || item.note.playTime.indexOf('Note') !== -1) {
+          if(item.note.playTime === 'Note') {
             item.note.playTime = 'Note '+number
           }
           number++
