@@ -18,10 +18,14 @@ import LectureClassroom, {
 import LectureState from '../../../viewModel/LectureState';
 import { ActionType, Action, Area } from 'tracker/model';
 import { findAgreement } from '../../../api/profileApi';
-import { findCubeDetailCache } from '../../../api/cubeApi';
+import {
+  findContentProviderCache,
+  findCubeDetailCache,
+} from '../../../api/cubeApi';
 import { onOpenLectureAgreementModal } from '../../../service/LectureAgreementModal/useLectureAgreementModal';
 import { LectureAgreementModalView } from './LectureAgreementModalView';
 import { find } from 'lodash';
+import { getLectureState } from '../../../store/LectureStateStore';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -56,6 +60,8 @@ function classroomSubmit(classroom: Classroom) {
 function CanceledView(props: CanceledViewProps) {
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
+  const lectureState = getLectureState();
+  const organizedId = lectureState?.cubeDetail.cubeContents.organizerId || '';
 
   const { lectureClassroom, cubeId, cubeType } = props;
 
@@ -65,12 +71,18 @@ function CanceledView(props: CanceledViewProps) {
   /* eslint-disable */
   const action = useCallback(async () => {
     const classroom = await findApplyingClassroom(cubeId);
+    const contentProvider = await findContentProviderCache(organizedId);
+
     if (classroom === undefined) {
       reactAlert({
         title: '수강신청 기간 안내',
         message: '수강신청 기간이 아닙니다.',
       });
       return;
+    }
+
+    if (contentProvider?.pisAgree === false) {
+      return ClassroomModalViewRef.current?.show();
     }
 
     const cubeDetail = await findCubeDetailCache(cubeId);
