@@ -12,8 +12,8 @@ export function getNoteWithLectureListItem(index: number, noteWithLectureList: O
     noteWithLectureList: {
       results: noteWithLectureList.results.map((m, i) => {
         let count = 0;
-        if (m.note.playTime === '00:00:00') {
-          m.note.playTime = `Note ${noteWithLectureList.results.filter(f => f.note.playTime === '00:00:00').length - count}`;
+        if (m.note.playTime === 'Note') {
+          m.note.playTime = `Note ${noteWithLectureList.results.filter(f => f.note.playTime === 'Note').length - count}`;
           count++;
         }
         return m;
