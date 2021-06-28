@@ -15,7 +15,9 @@ import NotFoundPage from 'layout/NotFoundPage';
 import { isExternalInstructor } from './shared/helper/findUserRole';
 import { AppLayoutContainer } from './layout/UserApp/ui/logic/AppLayoutContainer';
 import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer';
-import { findMyPisAgreement } from './profile/present/apiclient/SkProfileApi';
+import { findMyPisAgreement } from './profile/present/apiclient/instructorApi';
+import { getCurrentHistory } from './shared/store/HistoryStore';
+import profilePaths from './profile/routePaths';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -50,6 +52,8 @@ class Routes extends PureComponent {
     if (isExternal === true) {
       findMyPisAgreement(agreementFormId, serviceId).then((result) => {
         if (result === undefined) {
+          const currentHistory = getCurrentHistory();
+          currentHistory?.push(profilePaths.personalInfoAgreement());
           return;
         }
 
