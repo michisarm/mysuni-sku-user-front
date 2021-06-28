@@ -74,7 +74,7 @@ const TutorialModalViewV3 = () => {
                   </div>
                   <div className="tu1-main">
                     <div className="btn-list">
-                      <Link to="#tu2" className="icon01" onClick={() => setActiveSubMenu('tu2')}><strong>Note 기능 생성</strong><p>학습을 하며 Note를 작성하고 모아보기, 폴더 지정을 통해<br /> 작성한 Note를 관리하는 기능 제공</p></Link>
+                      <Link to="#tu2" className="icon01" onClick={() => setActiveSubMenu('tu2')}><strong>Note 기능 오픈</strong><p>학습을 하며 Note를 작성하고 모아보기, 폴더 지정을 통해<br /> 작성한 Note를 관리하는 기능 제공</p></Link>
                       <Link to="#tu3" className="icon02" onClick={() => setActiveSubMenu('tu3')}><strong>LMS/Community 프로필 통합</strong><p>Community를 포함한 mySUNI 전체에서 실명과<br />닉네임을 자유롭게 선택할 수 있는 기능 제공</p></Link>
                       <Link to="#tu4" className="icon03" onClick={() => setActiveSubMenu('tu4')}><strong>My Page 개편</strong><p>프로필 설정, Badge 및 이수 과정을 확인하고<br />작성된 학습 Note를 관리하는 기능 제공</p></Link>
                     </div>
