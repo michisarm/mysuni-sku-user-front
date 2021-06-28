@@ -7,6 +7,7 @@ import { Button, Checkbox, Radio } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
+import { registerPisAgreement as registerInstructorPisAgreement } from '../../present/apiclient/instructorApi';
 import { registerPisAgreement } from '../../present/apiclient/SkProfileApi';
 import {
   isExternalInstructor,
@@ -97,29 +98,33 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       optionalAgreements: [domesticChecked],
     };
 
-    registerPisAgreement(pisAgreementSdo).then((result) => {
-      if (result === undefined) {
-        return;
-      }
-
-      if (externalUser) {
-        history.push(routePaths.favoriteCollege());
-        return;
-      }
-
-      if (externalInstructor) {
+    if (externalInstructor) {
+      registerInstructorPisAgreement(pisAgreementSdo).then((result) => {
+        if (result === undefined) {
+          return;
+        }
         window.location.href = '/suni-instructor';
-        return;
-      }
+      });
+    } else {
+      registerPisAgreement(pisAgreementSdo).then((result) => {
+        if (result === undefined) {
+          return;
+        }
 
-      if (reAgree) {
-        history.push(routePaths.currentJob());
-      } else if (skProfile.studySummaryConfigured) {
-        history.push('/');
-      } else {
-        history.push(routePaths.favoriteWelcome());
-      }
-    });
+        if (externalUser) {
+          history.push(routePaths.favoriteCollege());
+          return;
+        }
+
+        if (reAgree) {
+          history.push(routePaths.currentJob());
+        } else if (skProfile.studySummaryConfigured) {
+          history.push('/');
+        } else {
+          history.push(routePaths.favoriteWelcome());
+        }
+      });
+    }
 
     // skProfile.pisAgreement.signed = true;
     // skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
