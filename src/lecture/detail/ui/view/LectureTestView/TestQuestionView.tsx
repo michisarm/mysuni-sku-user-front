@@ -123,7 +123,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
         ? true
         : false;
 
-    const [useAnswerView, setUseAnswerView] = useState<boolean>(false);
+    const [useAnswerView, setUseAnswerView] = useState<boolean>(true);
 
     let strAnswer = '';
     if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
@@ -218,7 +218,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
                       className="ui icon button right btn-blue"
                       onClick={() => setUseAnswerView(true)}
                     >
-                      정답보기
+                      해설 보기
                       <Icon
                         aria-hidden="true"
                         className="morelink more2 view-down"
@@ -232,7 +232,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
                       className="ui icon button right btn-blue"
                       onClick={() => setUseAnswerView(false)}
                     >
-                      정답닫기
+                      해설 닫기
                       <Icon aria-hidden="true" className="morelink more2" />
                     </Button>
                     <div className="survey-answer">
