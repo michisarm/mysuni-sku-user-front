@@ -17,6 +17,11 @@ function Image({ src, alt, className }: Props) {
       includes(src, '/static/')
     ) {
       return src;
+
+    } else if (includes(src, '/profile/photo/')) {
+      // https://mysuni.sk.com, 멤버 사원 이미지
+      return `${process.env.REACT_APP_SK_IM_ROOT_URL}/${src}`;
+      
     }
 
     let next = src.startsWith('/') ? src.substring(1) : src;
