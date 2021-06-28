@@ -1,5 +1,5 @@
 export default interface AnswerSheet {
-  answerState: string; // SAVED, SUBMITTED, PASS, FAIL
+  answerState: string; // SAVE, SUBMIT, PASS, FAIL
   answers: ItemAnswer[];
   appliedDate: string;
   applyCount: number;
@@ -16,7 +16,7 @@ export default interface AnswerSheet {
 }
 
 export interface AnswerSheetSdo {
-  answerState: string; // SAVED, SUBMITTED, PASS, FAIL
+  answerState: string; // SAVE, SUBMIT, PASS, FAIL
   answers: ItemAnswer[];
   examPaperId: string;
   lectureId: string;

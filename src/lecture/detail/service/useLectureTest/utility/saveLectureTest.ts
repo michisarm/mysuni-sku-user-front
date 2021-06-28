@@ -141,7 +141,7 @@ export async function saveLectureTestAnswerSheet(params: LectureParams) {
   const answerItem = getLectureTestAnswerItem();
 
   const itemAnswers: ItemAnswer[] = [];
-  answerItem?.answers.map(answer => {
+  answerItem?.answers.map((answer) => {
     const itemAnswer: ItemAnswer = {
       answer: answer.answer,
       obtainedScore: 0,
@@ -151,7 +151,7 @@ export async function saveLectureTestAnswerSheet(params: LectureParams) {
   });
 
   const answerSheetSdo: AnswerSheetSdo = {
-    answerState: 'SAVED',
+    answerState: 'SAVE',
     answers: itemAnswers,
     examPaperId: testItem?.paperId || '',
     lectureId,
@@ -171,7 +171,7 @@ export async function submitLectureTestAnswerSheet(params: LectureParams) {
   const answerItem = getLectureTestAnswerItem();
 
   const itemAnswers: ItemAnswer[] = [];
-  answerItem?.answers.map(answer => {
+  answerItem?.answers.map((answer) => {
     const itemAnswer: ItemAnswer = {
       answer: answer.answer,
       obtainedScore: 0,
@@ -181,7 +181,7 @@ export async function submitLectureTestAnswerSheet(params: LectureParams) {
   });
 
   const answerSheetSdo: AnswerSheetSdo = {
-    answerState: 'SUBMITTED',
+    answerState: 'SUBMIT',
     answers: itemAnswers,
     examPaperId: testItem?.paperId || '',
     lectureId,
