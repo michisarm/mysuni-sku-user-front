@@ -2,13 +2,21 @@ import QuestionItem from './QuestionItem';
 import QuestionType from './QuestionType';
 
 export default interface ExamQuestion {
+  essay: boolean;
+  groupName: string;
   id: string;
-  paperId: string;
-  questionNo: string;
-  allocatedPoint: number;
-  questionType: QuestionType;
-  direction: string;
-  answer: string;
+  imagePath: string;
   items: QuestionItem[];
-  questionImgSrc: string;
+  mandatory: boolean;
+  paperId: string;
+  point: number;
+  question: string;
+  questionAnswer: QuestionAnswer;
+  questionType: QuestionType;
+  sequence: number;
+}
+
+export interface QuestionAnswer {
+  answer: string;
+  explanation: string;
 }

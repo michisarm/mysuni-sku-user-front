@@ -4,13 +4,13 @@ import {
   getCardRelId,
   getServiceType,
   getCubeType,
-  getPathKey,
   getPathName,
   setResultName,
   mobileCheck,
   initAuth,
   getAuth,
   setAuth,
+  getAbtestUserTargets,
 } from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
@@ -44,6 +44,7 @@ export async function actionTrack({
   action,
   actionName,
   target,
+  abtest,
 }: ActionTrackParam) {
   // search setting
   search = search ? decodeURI(search) : '';
@@ -52,12 +53,14 @@ export async function actionTrack({
   // browser setting
   const browser = await getBrowserString();
   const auth = await getAuth();
+  if (!abtest) {
+    abtest = await getAbtestUserTargets();
+  }
 
   // field name setting
   let fields = [];
   fields.push(getPathValue(path, 'college', FieldType.College));
   fields.push(getPathValue(path, 'channel', FieldType.Channel));
-  // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
   const cardField = getPathValue(path, 'card', FieldType.Card);
   if (cardField && cardField.id) {
@@ -70,8 +73,8 @@ export async function actionTrack({
 
   const promises: any[] = [];
   fields
-    .filter(field => field != null)
-    .forEach(field => {
+    .filter((field) => field != null)
+    .forEach((field) => {
       if (field) {
         promises.push(
           new Promise<Field>(async (resolve, reject) => {
@@ -85,7 +88,7 @@ export async function actionTrack({
       }
     });
   Promise.all(promises)
-    .then(result => {
+    .then((result) => {
       const context: ActionContextModel = {
         email,
         browser,
@@ -102,26 +105,23 @@ export async function actionTrack({
       const actionTrackModel: ActionTrackModel = {
         context,
         auth,
+        abtest,
         serviceType: getServiceType(path),
-        collegeId: result.find(r => r.type === FieldType.College)?.id,
-        collegeName: result.find(r => r.type === FieldType.College)?.name,
-        channelId: result.find(r => r.type === FieldType.Channel)?.id,
-        channelName: result.find(r => r.type === FieldType.Channel)?.name,
-        // coursePlanId: result.find(r => r.type === FieldType.Course)?.id,
-        // courseName: result.find(r => r.type === FieldType.Course)?.name,
-        cardId: result.find(r => r.type === FieldType.Card)?.id,
-        cardName: result.find(r => r.type === FieldType.Card)?.name,
-        cubeId: result.find(r => r.type === FieldType.Cube)?.id,
-        cubeName: result.find(r => r.type === FieldType.Cube)?.name,
+        collegeId: result.find((r) => r.type === FieldType.College)?.id,
+        collegeName: result.find((r) => r.type === FieldType.College)?.name,
+        channelId: result.find((r) => r.type === FieldType.Channel)?.id,
+        channelName: result.find((r) => r.type === FieldType.Channel)?.name,
+        cardId: result.find((r) => r.type === FieldType.Card)?.id,
+        cardName: result.find((r) => r.type === FieldType.Card)?.name,
+        cubeId: result.find((r) => r.type === FieldType.Cube)?.id,
+        cubeName: result.find((r) => r.type === FieldType.Cube)?.name,
         cubeType: getCubeType(path),
         externalLink: externalLink || null,
-        // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
-        // clectureId: getPathKey(path, 'C-LECTURE'),
       };
       // console.log('event trackView', actionTrackViewModel);
       trackAction(actionTrackModel);
     })
-    .catch(error => {
+    .catch((error) => {
       // console.log("error!!", error);
       throw error;
     });
@@ -137,6 +137,8 @@ async function beforeActionTrack({
   actionName,
 }: ActionTrackParam) {
   const auth = await getAuth();
+  const abtest = await getAbtestUserTargets();
+
   actionTrack({
     email,
     auth,
@@ -146,6 +148,7 @@ async function beforeActionTrack({
     actionType,
     action,
     actionName,
+    abtest,
   } as ActionTrackParam);
 }
 
@@ -203,6 +206,7 @@ export async function actionTrackView({
   } else {
     auth = await getAuth();
   }
+  const abtest = await getAbtestUserTargets();
 
   // field name setting
   let fields = [];
@@ -221,8 +225,8 @@ export async function actionTrackView({
 
   const promises: any[] = [];
   fields
-    .filter(field => field != null)
-    .forEach(field => {
+    .filter((field) => field != null)
+    .forEach((field) => {
       if (field) {
         promises.push(
           new Promise<Field>(async (resolve, reject) => {
@@ -236,7 +240,7 @@ export async function actionTrackView({
       }
     });
   Promise.all(promises)
-    .then(result => {
+    .then((result) => {
       const context: ViewContextModel = {
         email,
         browser,
@@ -254,25 +258,22 @@ export async function actionTrackView({
       const actionTrackViewModel: ActionTrackViewModel = {
         context,
         auth,
+        abtest,
         serviceType: getServiceType(path),
-        collegeId: result.find(r => r.type === FieldType.College)?.id,
-        collegeName: result.find(r => r.type === FieldType.College)?.name,
-        channelId: result.find(r => r.type === FieldType.Channel)?.id,
-        channelName: result.find(r => r.type === FieldType.Channel)?.name,
-        // coursePlanId: result.find(r => r.type === FieldType.Course)?.id,
-        // courseName: result.find(r => r.type === FieldType.Course)?.name,
-        cardId: result.find(r => r.type === FieldType.Card)?.id,
-        cardName: result.find(r => r.type === FieldType.Card)?.name,
-        cubeId: result.find(r => r.type === FieldType.Cube)?.id,
-        cubeName: result.find(r => r.type === FieldType.Cube)?.name,
+        collegeId: result.find((r) => r.type === FieldType.College)?.id,
+        collegeName: result.find((r) => r.type === FieldType.College)?.name,
+        channelId: result.find((r) => r.type === FieldType.Channel)?.id,
+        channelName: result.find((r) => r.type === FieldType.Channel)?.name,
+        cardId: result.find((r) => r.type === FieldType.Card)?.id,
+        cardName: result.find((r) => r.type === FieldType.Card)?.name,
+        cubeId: result.find((r) => r.type === FieldType.Cube)?.id,
+        cubeName: result.find((r) => r.type === FieldType.Cube)?.name,
         cubeType: getCubeType(path),
-        // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
-        // clectureId: getPathKey(path, 'C-LECTURE'),
       };
       // console.log('event trackView', actionTrackViewModel);
       trackView(actionTrackViewModel);
     })
-    .catch(error => {
+    .catch((error) => {
       // console.log("error!!", error);
       throw error;
     });
@@ -328,7 +329,7 @@ export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
     await setResultName({
       type: field.type,
       id: field.id,
-    }).then(result => {
+    }).then((result) => {
       actionName = actionName + '::' + result.name;
     });
   }

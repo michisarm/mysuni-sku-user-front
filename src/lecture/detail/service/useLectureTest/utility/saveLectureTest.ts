@@ -12,13 +12,13 @@ import {
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
 import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
+import {
+  saveExamAnswerSheet,
+  submitExamAnswerSheet,
+} from '../../../api/examApi';
+import { AnswerSheetSdo, ItemAnswer } from '../../../model/AnswerSheet';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams from '../../../viewModel/LectureParams';
-import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
-import {
-  getTestStudentItemMapFromCourse,
-  getTestStudentItemMapFromCube,
-} from './getTestStudentItemMap';
 
 export async function saveCourseTestAnswerSheet(
   params: LectureParams,
@@ -26,7 +26,7 @@ export async function saveCourseTestAnswerSheet(
   pFinished: boolean,
   pSubmitted: boolean
 ): Promise<void> {
-  const testItem = getLectureTestItem();
+  /*const testItem = getLectureTestItem();
   const answerItem = getLectureTestAnswerItem();
   const testStudentItem = getLectureTestStudentItem();
   if (
@@ -71,7 +71,7 @@ export async function saveCourseTestAnswerSheet(
       //await getTestStudentItemMapFromCourse(params); // student 재호출
       //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
     });
-  }
+  }*/
 }
 
 export async function saveCubeTestAnswerSheet(
@@ -80,7 +80,7 @@ export async function saveCubeTestAnswerSheet(
   pFinished: boolean,
   pSubmitted: boolean
 ): Promise<void> {
-  const relatedStudents = await findMyCardRelatedStudentsCache(params.cardId);
+  /*const relatedStudents = await findMyCardRelatedStudentsCache(params.cardId);
 
   const testItem = getLectureTestItem();
   const answerItem = getLectureTestAnswerItem();
@@ -98,7 +98,7 @@ export async function saveCubeTestAnswerSheet(
   if (student === undefined) {
     return;
   }
-  const answerSheetBody: LectureTestAnswerSheetViewBody = {
+   answerSheetBody: LectureTestAnswerSheetViewBody = {
     answers: answerItem.answers,
     examId: testItem.id,
     examineeEmail: '',
@@ -127,5 +127,65 @@ export async function saveCubeTestAnswerSheet(
       //await getTestStudentItemMapFromCube(params); // student 재호출
       //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
     });
+  }*/
+}
+
+export async function saveLectureTestAnswerSheet(params: LectureParams) {
+  const lectureId = params.cubeId || params.cardId;
+
+  if (lectureId === undefined) {
+    return;
   }
+
+  const testItem = getLectureTestItem();
+  const answerItem = getLectureTestAnswerItem();
+
+  const itemAnswers: ItemAnswer[] = [];
+  answerItem?.answers.map((answer) => {
+    const itemAnswer: ItemAnswer = {
+      answer: answer.answer,
+      obtainedScore: 0,
+      sequence: answer.sequence,
+    };
+    itemAnswers.push(itemAnswer);
+  });
+
+  const answerSheetSdo: AnswerSheetSdo = {
+    answerState: 'SAVE',
+    answers: itemAnswers,
+    examPaperId: testItem?.paperId || '',
+    lectureId,
+  };
+
+  await saveExamAnswerSheet(answerSheetSdo);
+}
+
+export async function submitLectureTestAnswerSheet(params: LectureParams) {
+  const lectureId = params.cubeId || params.cardId;
+
+  if (lectureId === undefined) {
+    return;
+  }
+
+  const testItem = getLectureTestItem();
+  const answerItem = getLectureTestAnswerItem();
+
+  const itemAnswers: ItemAnswer[] = [];
+  answerItem?.answers.map((answer) => {
+    const itemAnswer: ItemAnswer = {
+      answer: answer.answer,
+      obtainedScore: 0,
+      sequence: answer.sequence,
+    };
+    itemAnswers.push(itemAnswer);
+  });
+
+  const answerSheetSdo: AnswerSheetSdo = {
+    answerState: 'SUBMIT',
+    answers: itemAnswers,
+    examPaperId: testItem?.paperId || '',
+    lectureId,
+  };
+
+  await submitExamAnswerSheet(answerSheetSdo);
 }

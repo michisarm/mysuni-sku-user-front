@@ -1,71 +1,122 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
-import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../../api/assistantApi';
 import { LectureTestAnswerItem } from '../../../viewModel/LectureTest';
-import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import {
+  getLectureTestAnswerItem,
+  getLectureTestItem,
+  setLectureTestAnswerItem,
+  setLectureTestItem,
+} from 'lecture/detail/store/LectureTestStore';
+import {
+  findAnswerSheetAppliesCount,
+  findAnswerSheetsDetail,
+} from '../../../api/examApi';
+import ExamQuestion from '../../../model/ExamQuestion';
+import LectureParams from '../../../viewModel/LectureParams';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import AnswerSheetDetail from '../../../model/AnswerSheetDetail';
+import { getTestItemFromDetailData } from './getTestItemMap';
 
-// exam
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-// http://localhost:3000/api/assistant/v1/answersheets?examId=CUBE-2jc&examineeId=r47a@ne1-m2
+async function getTestAnswerItem(pathname: string, lectureId: string) {
+  let item = await initTestAnswerItem([]);
 
-// survey
-// http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
-// http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
+  if (lectureId !== '' && lectureId !== null) {
+    const structureItem = getActiveStructureItem(pathname);
 
-async function getTestAnswerItem(examId: string) {
-  const item: LectureTestAnswerItem = {
-    id: '',
-    answers: [],
-    submitted: false,
-    submitAnswers: [],
-    finished: false,
-    dataLoadTime: 0,
-    examId,
-  };
+    if (structureItem?.student?.extraWork.testStatus !== null) {
+      const findAnswerSheetData = await findAnswerSheetsDetail(lectureId);
 
-  if (examId !== '' && examId !== null) {
-    const denizenId = patronInfo.getDenizenId(); // denizenId는 파라메터로 넘기지 않고 서버단에서 해결할 것
-    if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
-
-      if (findAnswerSheetData.result !== null) {
-        item.id = findAnswerSheetData.result.id;
-        item.answers = findAnswerSheetData.result.answers!;
-        item.submitted = findAnswerSheetData.result.submitted!;
-        item.submitAnswers = findAnswerSheetData.result.submitAnswers!;
-        item.finished = findAnswerSheetData.result.finished!;
-        item.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
+      if (findAnswerSheetData !== null) {
+        item = await getTestAnswerItemFromSheetData(findAnswerSheetData, item);
+        const testItem = await getTestItemFromDetailData(
+          {
+            examPaper: findAnswerSheetData.examPaper,
+            examQuestions: findAnswerSheetData.examQuestions,
+          },
+          lectureId
+        );
+        setLectureTestItem(testItem);
       }
     }
-
-    return item;
   }
+
+  return item;
+}
+
+export async function getTestAnswerItemFromSheetData(
+  detail: AnswerSheetDetail,
+  item?: LectureTestAnswerItem
+) {
+  let newItem: LectureTestAnswerItem;
+  if (item === undefined) {
+    newItem = await initTestAnswerItem(detail.examQuestions);
+  } else {
+    newItem = item;
+  }
+
+  newItem.id = detail.answerSheet.id;
+  newItem.answers = detail.answerSheet.answers!;
+  //item.submitted = findAnswerSheetData.answerSheet.submitted!;
+  //item.submitAnswers = findAnswerSheetData.answerSheet.submitAnswers!;
+  //item.finished = findAnswerSheetData.answerSheet.finished!;
+  newItem.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
+  newItem.graderComment = detail.answerSheet.graderComment;
+  newItem.obtainedScore = detail.answerSheet.obtainedScore;
+  newItem.trials = detail.answerSheet.trials;
+
+  return newItem;
 }
 
 export async function getTestAnswerItemMapFromExam(
-  examId: string,
-  questions: ExamQuestion[]
+  questions: ExamQuestion[],
+  params: LectureParams
 ): Promise<void> {
-  // void : return이 없는 경우 undefined
-  setLectureTestAnswerItem(undefined); // 초기화
-  if (examId) {
-    const answerItem = await getTestAnswerItem(examId);
-    if (answerItem !== undefined) {
-      if (answerItem.answers.length < 1) {
-        questions.forEach((result, index) => {
-          answerItem.answers.push({
-            questionNo: result.questionNo,
-            answer: '',
-          });
+  const lectureId = params.cubeId || params.cardId;
+  const answerItem = await getTestAnswerItem(params.pathname, lectureId);
+  if (answerItem !== undefined) {
+    if (answerItem.answers.length < 1) {
+      questions.forEach(result => {
+        answerItem.answers.push({
+          sequence: result.sequence,
+          answer: '',
         });
-      }
-
-      setLectureTestAnswerItem(answerItem);
+      });
     }
+    setLectureTestAnswerItem(answerItem);
   }
+}
+
+export async function checkAnswerSheetAppliesCount(
+  lectureId: string
+): Promise<boolean> {
+  const test = getLectureTestItem();
+  const applyLimit = test?.preApplyLimit || test?.applyLimit || 0;
+  const appliesCount = await findAnswerSheetAppliesCount(lectureId);
+
+  if (applyLimit !== 0 && applyLimit <= appliesCount) {
+    return false;
+  }
+  return true;
+}
+
+export async function initTestAnswerItem(
+  questions: ExamQuestion[]
+): Promise<LectureTestAnswerItem> {
+  const oriAnswerItem = getLectureTestAnswerItem();
+  const answerItem: LectureTestAnswerItem = {
+    id: '',
+    answers: [],
+    finished: false,
+    dataLoadTime: 0,
+    obtainedScore: oriAnswerItem?.obtainedScore || 0, // 재응시로 init 후 Test 메뉴를 다시 클릭하면 결과화면의 점수가 보이기 때문에 retry시에는 0이면 안 됨..
+    graderComment: '',
+    trials: oriAnswerItem?.trials || 0, // 재응시 횟수는 유지
+  };
+  questions.forEach((result, index) => {
+    answerItem.answers.push({
+      sequence: result.sequence,
+      answer: '',
+    });
+  });
+
+  return answerItem;
 }

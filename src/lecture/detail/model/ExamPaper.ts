@@ -1,14 +1,16 @@
-import ExamQuestion from './ExamQuestion';
-
 export default interface ExamPaper {
-  id: string;
-  title: string;
-  year: string;
-  authorId: string;
+  applyLimit: number;
   authorName: string;
+  description: string;
   finalCopy: boolean;
-  finalCopyKr: string;
-  questions: ExamQuestion[];
-  questionSequence: number;
-  registDate: string;
+  id: string;
+  modifiedTime: number;
+  modifier: string;
+  //patronKey
+  //questionSelectionConfig
+  questionSelectionType: string;
+  successPoint: number;
+  time: number;
+  title: string;
+  totalPoint: number;
 }

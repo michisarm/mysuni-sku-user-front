@@ -1,35 +1,66 @@
 import { axiosApi } from '@nara.platform/accent';
-import ExamPaperForm from 'lecture/model/ExamPaperForm';
-import Examination from '../model/Examination';
+import { AnswerSheetSdo } from '../model/AnswerSheet';
+import AnswerSheetDetail from '../model/AnswerSheetDetail';
+import ExamDetail from '../model/ExamDetail';
 
-const BASE_URL = '/lp/adm/exam';
+const BASE_URL = '/api/exam';
 
-interface FindExaminationData {
-  result: Examination;
-}
-
-interface FindExamPaperFormData {
-  result: ExamPaperForm;
-}
-
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k8/findExamination
-
-export function findExamination(
-  serviceId: string
-): Promise<FindExaminationData> {
-  const url = `${BASE_URL}/examinations/${serviceId}/findExamination`;
+export function findExamPaperDetail(
+  examPaperIds: string[]
+): Promise<ExamDetail> {
+  const url = `${BASE_URL}/examPapers/detail`;
   return axiosApi
-    .get<FindExaminationData>(url)
+    .get<ExamDetail>(url, {
+      params: examPaperIds,
+      paramsSerializer: paramObj => {
+        const params = new URLSearchParams();
+        paramObj.forEach((key: string) => {
+          //params.append(key, paramObj[key]);
+          params.append('examPaperIds', key);
+        });
+
+        return params.toString();
+      },
+    })
     .then(response => response && response.data);
 }
 
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-
-export function findExamPaperForm(
-  paperId: string
-): Promise<FindExamPaperFormData> {
-  const url = `${BASE_URL}/exampaper/${paperId}/findExamPaperForm`;
+export function findAnswerSheetsDetail(
+  lectureId: string
+): Promise<AnswerSheetDetail> {
+  const url = `${BASE_URL}/answersheets/detail`;
   return axiosApi
-    .get<FindExamPaperFormData>(url)
+    .get<AnswerSheetDetail>(url, {
+      params: { lectureId },
+    })
+    .then(response => response && response.data);
+}
+
+export function saveExamAnswerSheet(
+  answerSheetSdo: AnswerSheetSdo
+): Promise<string> {
+  const url = `${BASE_URL}/answersheets/save`;
+  return axiosApi
+    .post<string>(url, answerSheetSdo)
+    .then(response => response && response.data);
+}
+
+export function submitExamAnswerSheet(
+  answerSheetSdo: AnswerSheetSdo
+): Promise<string> {
+  const url = `${BASE_URL}/answersheets/submit`;
+  return axiosApi
+    .post<string>(url, answerSheetSdo)
+    .then(response => response && response.data);
+}
+
+export function findAnswerSheetAppliesCount(
+  lectureId: string
+): Promise<number> {
+  const url = `${BASE_URL}/answersheets/applies/count`;
+  return axiosApi
+    .get<number>(url, {
+      params: { lectureId },
+    })
     .then(response => response && response.data);
 }
