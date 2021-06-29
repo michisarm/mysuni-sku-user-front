@@ -172,10 +172,10 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
-      render: () => (
-        (window.location.href = '/certification/badge/badge-detail/BADGE-2t'),
-        (<Tab.Pane attached={false}></Tab.Pane>)
-      ),
+      render: () => {
+        pageMove('/certification/badge/badge-detail/BADGE-2t');
+        return <Tab.Pane attached={false} />;
+      },
     },
     {
       menuItem: 'DT Biz. & Implementation',
@@ -1102,10 +1102,10 @@ const CollegeInnerTabDt = () => {
 
     {
       menuItem: 'CDS Track',
-      render: () => (
-        (window.location.href = '/certification/badge/badge-detail/BADGE-2v'),
-        (<Tab.Pane attached={false} />)
-      ),
+      render: () => {
+        pageMove('/certification/badge/badge-detail/BADGE-2v');
+        return <Tab.Pane attached={false} />;
+      },
     },
   ];
   return (
