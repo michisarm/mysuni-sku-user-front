@@ -63,7 +63,7 @@ function LectureVideoContainer() {
           const { duration, currentTime, playerState } = state;
           return (
             playerState === PlayerState.Playing &&
-            currentTime + 20 > duration &&
+            currentTime + 5 > duration &&
             didAction === false
           );
         }
