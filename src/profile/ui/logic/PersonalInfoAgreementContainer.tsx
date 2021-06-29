@@ -103,7 +103,9 @@ class PersonalInfoAgreementContainer extends Component<Props> {
         if (result === undefined) {
           return;
         }
-        window.location.href = '/suni-instructor';
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        window.location.href = `${protocol}//${host}/suni-instructor/main`;
       });
     } else {
       registerPisAgreement(pisAgreementSdo).then((result) => {
