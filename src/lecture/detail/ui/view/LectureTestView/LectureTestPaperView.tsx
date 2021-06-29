@@ -131,7 +131,14 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
             };
             setLectureTestAnswerItem(nextAnswerItem);*/
 
-              await submitLectureTestAnswerSheet(params);
+              await submitLectureTestAnswerSheet(params).then(() => {
+                clearFindMyCardRelatedStudentsCache();
+                updateCardLectureStructure(cardId).then(() => {
+                  getTestStudentItemMapFromCourse(params); // student 재호출
+                  getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
+                  openView('result');
+                });
+              });
 
               /*if (params.cubeId !== undefined) {
               await saveCubeTestAnswerSheet(params, answerItemId, true, true);
@@ -140,12 +147,6 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
             }*/
 
               //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
-              clearFindMyCardRelatedStudentsCache();
-              await updateCardLectureStructure(cardId);
-
-              await getTestStudentItemMapFromCourse(params); // student 재호출
-              await getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
-              openView('result');
             }
             setSubmitOk(true);
           },
