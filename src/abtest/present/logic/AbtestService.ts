@@ -15,11 +15,16 @@ export default class AbtestService {
 
   @action
   async getAbtestUserTargets() {
-    const abtests = await getUserTargets();
-    if (abtests && abtests.length > 0) {
-      runInAction(() => (this._abtests = abtests));
-      return abtests;
-    } else {
+    try {
+      const abtests = await getUserTargets();
+      if (abtests && abtests.length > 0) {
+        runInAction(() => (this._abtests = abtests));
+        return abtests;
+      } else {
+        runInAction(() => (this._abtests = [initAbtest()]));
+        return [initAbtest()];
+      }
+    } catch {
       runInAction(() => (this._abtests = [initAbtest()]));
       return [initAbtest()];
     }
