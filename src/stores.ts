@@ -1,5 +1,3 @@
-
-
 import { ReviewService, CommentService } from '@nara.drama/feedback';
 import sharedStores from 'shared/stores';
 import layoutStores from 'layout/stores';
@@ -18,7 +16,6 @@ import lectureCardStores from 'lecture/stores';
 import myTrainingStores from 'myTraining/stores';
 import approvalStores from 'approval/stores';
 import abtestStores from 'abtest/stores';
-
 
 const stores = {
   shared: {
