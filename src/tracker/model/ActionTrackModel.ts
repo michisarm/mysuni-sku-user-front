@@ -13,6 +13,7 @@ export interface ActionTrackParam {
   action: Action;
   actionName: string;
   target?: HTMLElement;
+  abtest?: string | null;
 }
 
 export interface ActionTrackViewParam {
@@ -74,6 +75,7 @@ export interface ViewContextModel {
 export interface ActionTrackModel {
   context: ActionContextModel;
   auth?: Object | null;
+  abtest?: string | null;
   serviceType?: string | null;
   collegeId?: string | null;
   collegeName?: string | null;
@@ -94,6 +96,7 @@ export interface ActionTrackModel {
 export interface ActionTrackViewModel {
   context: ViewContextModel;
   auth?: Object | null;
+  abtest?: string | null;
   serviceType?: string | null;
   collegeId?: string | null;
   collegeName?: string | null;

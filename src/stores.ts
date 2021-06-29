@@ -17,6 +17,7 @@ import courseStores from 'course/stores';
 import lectureCardStores from 'lecture/stores';
 import myTrainingStores from 'myTraining/stores';
 import approvalStores from 'approval/stores';
+import abtestStores from 'abtest/stores';
 
 
 const stores = {
@@ -39,6 +40,7 @@ const stores = {
   ...lectureCardStores,
   ...myTrainingStores,
   ...approvalStores,
+  ...abtestStores,
 };
 
 export default stores;

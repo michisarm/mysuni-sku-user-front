@@ -3,7 +3,7 @@ import { useStateRefType } from './types';
 
 export const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
-  return function(this: any, ...args: any[]) {
+  return function (this: any, ...args: any[]) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), ms);
   };
@@ -128,4 +128,20 @@ export function utf8_to_b64(str: string) {
 
 export function b64_to_utf8(str: string) {
   return decodeURIComponent(escape(window.atob(str)));
+}
+
+export function closest(el: any, selector: string) {
+  const matchesSelector =
+    el.matches ||
+    el.webkitMatchesSelector ||
+    el.mozMatchesSelector ||
+    el.msMatchesSelector;
+
+  while (el) {
+    if (matchesSelector.call(el, selector)) {
+      break;
+    }
+    el = el.parentElement;
+  }
+  return el;
 }

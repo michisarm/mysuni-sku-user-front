@@ -3,7 +3,6 @@ import { FieldType } from 'tracker/model/ActionType';
 import { Field } from 'tracker/model/ActionTrackModel';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
-import { LearningContent } from 'lecture/model/LearningContent';
 import { ChapterParams } from 'lecture/detail/model/ChapterParams';
 import { findCardCache } from 'lecture/detail/api/cardApi';
 import { findCubeDetailCache } from 'lecture/detail/api/cubeApi';
@@ -13,6 +12,7 @@ import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
 import { findJsonUserGroup } from 'profile/present/apiclient/SkProfileApi';
 import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
+import { getUserTargets } from 'abtest/api/AbtestApi';
 import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
 import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
@@ -61,9 +61,9 @@ export const initAuth = () => {
 export const setAuth = async () => {
   const auth = initAuth();
   try {
-    await findJsonUserGroup().then(data => {
+    await findJsonUserGroup().then((data) => {
       const userGroup = JSON.parse(data.jsonUserGroup);
-      Object.keys(userGroup).forEach(key => {
+      Object.keys(userGroup).forEach((key) => {
         if (key === '기본') {
           auth.base.group_field = key;
           auth.base.group_name = userGroup[key];
@@ -99,10 +99,24 @@ export const getAuth = async () => {
       auth = JSON.parse(cachedAuth);
     }
   }
-  if(!auth){
+  if (!auth) {
     auth = await setAuth();
   }
   return auth;
+};
+
+export const getAbtestUserTargets = async () => {
+  let targets = '';
+  try {
+    await getUserTargets().then((data) => {
+      if (data) {
+        targets = JSON.stringify(data);
+      }
+    });
+  } catch {
+    //
+  }
+  return targets;
 };
 
 export const getPathValue = (
@@ -171,8 +185,8 @@ export const getCardRelId = async (cardId: string) => {
     const result = await findCardCache(cardId);
     if (result?.card?.categories) {
       result?.card?.categories
-        .filter(o => o.mainCategory === true)
-        .map(o => {
+        .filter((o) => o.mainCategory === true)
+        .map((o) => {
           collegeId = o.collegeId;
           channelId = o.channelId;
           addId = true;
@@ -323,7 +337,7 @@ const getFieldName = async (id: string, type: string) => {
         const params = {} as ChapterParams;
         params.cardId = ids?.[0];
         params.contentId = ids?.[1];
-        await requestChapter(params).then(result => {
+        await requestChapter(params).then((result) => {
           name = result?.name;
         });
       }
@@ -332,7 +346,7 @@ const getFieldName = async (id: string, type: string) => {
       if (ids && ids?.[0] && ids?.[1]) {
         const id = ids?.[0];
         const contentId = ids?.[1];
-        await requestLectureDiscussion(id, contentId).then(result => {
+        await requestLectureDiscussion(id, contentId).then((result) => {
           name = result?.name;
         });
       }
@@ -441,7 +455,7 @@ export const getPathName = async (path: string, search: string) => {
                   await setResultName({
                     type: FieldType.CardBundle,
                     id: RegExp.$3,
-                  }).then(result => {
+                  }).then((result) => {
                     pathName = 'Main-Section::' + result.name;
                   });
                   break;
@@ -480,7 +494,7 @@ export const getPathName = async (path: string, search: string) => {
         await setResultName({
           type: FieldType.Channel,
           id: RegExp.$3,
-        }).then(async result => {
+        }).then(async (result) => {
           if (result.name) {
             pathName = 'Recommend::' + result.name;
           }
@@ -495,7 +509,7 @@ export const getPathName = async (path: string, search: string) => {
       await setResultName({
         type: FieldType.College,
         id: RegExp.$2,
-      }).then(async result => {
+      }).then(async (result) => {
         if (result.name) {
           switch (true) {
             case /(^\/suni-main)?\/lecture\/college\/(.*?)\/channels\/.*/.test(
@@ -509,7 +523,7 @@ export const getPathName = async (path: string, search: string) => {
               await setResultName({
                 type: FieldType.Channel,
                 id: RegExp.$3,
-              }).then(r => {
+              }).then((r) => {
                 pathName =
                   'Category::채널별보기::' + result.name + '::' + r.name;
               });
@@ -546,7 +560,7 @@ export const getPathName = async (path: string, search: string) => {
               await setResultName({
                 type: FieldType.Chapter,
                 id: RegExp.$2 + ',' + RegExp.$4,
-              }).then(result => {
+              }).then((result) => {
                 pathName = '콘텐츠::카드::Chapter::' + result.name;
               });
               break;
@@ -554,7 +568,7 @@ export const getPathName = async (path: string, search: string) => {
               await setResultName({
                 type: FieldType.Discussion,
                 id: RegExp.$2 + ',' + RegExp.$4,
-              }).then(result => {
+              }).then((result) => {
                 pathName = '콘텐츠::카드::토론하기::' + result.name;
               });
               break;
@@ -609,7 +623,7 @@ export const getPathName = async (path: string, search: string) => {
           await setResultName({
             type: FieldType.Badge,
             id: RegExp.$3,
-          }).then(result => {
+          }).then((result) => {
             pathName = 'Certification::badge상세::' + result.name;
           });
           break;
@@ -666,7 +680,7 @@ export const getPathName = async (path: string, search: string) => {
           await setResultName({
             type: FieldType.Community,
             id: tempId,
-          }).then(result => {
+          }).then((result) => {
             result.name && (pathName = 'Community::' + result.name);
           });
           break;

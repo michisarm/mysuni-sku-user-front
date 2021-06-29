@@ -14,13 +14,14 @@ import RQDLearning from './MainComponents/RQDLearning';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import LRSLearning from './MainComponents/LRSLearning';
+import { Abtest, ExperimentalGroup } from 'abtest/components';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   inMyLectureService?: InMyLectureService;
 }
 
-const MyLearningContentContainer: React.FC<Props> = Props => {
+const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>();
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
@@ -49,15 +50,19 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
 
   return (
     <>
-      <InProgressLearning 
-        // profileMemberName={member.name} 
-        profileMemberName={skProfile.profileViewName} 
-      />
+      <Abtest name="AB-0" nonExperimentalGroup="A">
+        <ExperimentalGroup name="A">
+          <InProgressLearning profileMemberName={skProfile.profileViewName} />
+        </ExperimentalGroup>
+        <ExperimentalGroup name="B">
+          <InProgressLearning profileMemberName={skProfile.profileViewName} />
+        </ExperimentalGroup>
+      </Abtest>
 
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
-      <ChallengingBadge 
-        // profileMemberName={member.name} 
-        profileMemberName={skProfile.profileViewName} 
+      <ChallengingBadge
+        // profileMemberName={member.name}
+        profileMemberName={skProfile.profileViewName}
       />
 
       <MainBanner />
@@ -65,9 +70,9 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}
-      <LRSLearning 
-        // profileMemberName={member.name} 
-        profileMemberName={skProfile.profileViewName} 
+      <LRSLearning
+        // profileMemberName={member.name}
+        profileMemberName={skProfile.profileViewName}
       />
 
       <EnrollingLearning />

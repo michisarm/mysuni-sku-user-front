@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import $ from 'jquery';
-import { debounce, useStateRef, useBrowserString } from './utils';
+import { debounce, useStateRef, useBrowserString, closest } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
 import { Action, ActionType } from 'tracker/model/ActionType';
@@ -152,7 +151,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     const areaElement =
       'closest' in document.documentElement
         ? (target as Element).closest(DATA_TYPES.AREA)
-        : $(target as Element).closest(DATA_TYPES.AREA)[0];
+        : closest(target, DATA_TYPES.AREA);
 
     if (areaElement instanceof HTMLElement) {
       data.target = areaElement;
