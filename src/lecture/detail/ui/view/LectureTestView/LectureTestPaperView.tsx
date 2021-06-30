@@ -133,11 +133,13 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
 
               await submitLectureTestAnswerSheet(params).then(() => {
                 clearFindMyCardRelatedStudentsCache();
-                updateCardLectureStructure(cardId).then(() => {
-                  getTestStudentItemMapFromCourse(params); // student 재호출
-                  getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
-                  openView('result');
-                });
+                setTimeout(() => {
+                  updateCardLectureStructure(cardId).then(() => {
+                    getTestStudentItemMapFromCourse(params); // student 재호출
+                    getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
+                    openView('result');
+                  });
+                }, 1000);
               });
 
               /*if (params.cubeId !== undefined) {
