@@ -74,6 +74,11 @@ function CommunityMainHeaderContainer() {
   }, []);
 
   useEffect(() => {
+    const isExternal = isExternalInstructor();
+    if (isExternal) {
+      return;
+    }
+
     if (profile && profile?.nickname === '') {
       reactConfirm({
         title: 'Community 방문을 환영합니다!',
