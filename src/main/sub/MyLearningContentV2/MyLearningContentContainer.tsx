@@ -50,6 +50,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
   return (
     <>
+      {cardBundles?.map((cardBundle, i) => {
+        if (cardBundle.id !== '5e1114a9-73da-4c9a-b961-332311a007eb') {
+          return null;
+        }
+        return <LeraningContainer key={i} cardBundle={cardBundle} />;
+      })}
+
       <Abtest name="AB-0" nonExperimentalGroup="A">
         <ExperimentalGroup name="A">
           <InProgressLearning profileMemberName={skProfile.profileViewName} />
@@ -67,9 +74,12 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
       <MainBanner />
       <RQDLearning />
-      {cardBundles?.map((cardBundle, i) => (
-        <LeraningContainer key={i} cardBundle={cardBundle} />
-      ))}
+      {cardBundles?.map((cardBundle, i) => {
+        if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
+          return null;
+        }
+        return <LeraningContainer key={i} cardBundle={cardBundle} />;
+      })}
       <LRSLearning
         // profileMemberName={member.name}
         profileMemberName={skProfile.profileViewName}
