@@ -77,14 +77,16 @@ const FollowView: React.FC = function FollowView() {
             >
               My Feed
             </Menu.Item>
-            <Menu.Item
-              name="Follow"
-              active={true}
-              as={Link}
-              onClick={() => gaOnClick('Follow')}
-            >
-              Follower Feed
-            </Menu.Item>
+            {!isExternal && (
+              <Menu.Item
+                name="Follow"
+                active={true}
+                as={Link}
+                onClick={() => gaOnClick('Follow')}
+              >
+                Follower Feed
+              </Menu.Item>
+            )}
             <Menu.Item
               name="Bookmark"
               active={false}

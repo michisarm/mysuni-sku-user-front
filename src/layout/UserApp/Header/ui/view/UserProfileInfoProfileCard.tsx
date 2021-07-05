@@ -1,34 +1,57 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Image } from 'semantic-ui-react';
-import { getProfileInfo, getProfileCount } from '../../../service/ProfilePopupService/getProfileInfo'
-import { useProfileInfoModel, setProfileInfoModel } from '../../../store/ProfileInfoStore';
-import { useProfileInfoBadgesModel, getProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
-import { useProfileInfoCommunityModel, setProfileInfoCommunityModel } from "../../../store/ProfileInfoCommunityStore";
-import { useProfileInfoPostModel, setProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
-import { getProfileInfoCommunities } from "../../../service/ProfilePopupService/getProfileInfoCommunities";
-import { getProfileInfoPost } from "../../../service/ProfilePopupService/getProfileInfoPost";
-import { getProfileInfoBadge, getProfileAllInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
-import moment from "moment";
-import { getFollow } from "../../../service/ProfilePopupService/getFollow";
-import { useFollowModel } from "../../../store/FollowStore";
-import { followMember, unfollowMember, findAllFollow } from "../../../api/ProfileInfoAPI";
-import { patronInfo } from "@nara.platform/dock";
+import {
+  getProfileInfo,
+  getProfileCount,
+} from '../../../service/ProfilePopupService/getProfileInfo';
+import {
+  useProfileInfoModel,
+  setProfileInfoModel,
+} from '../../../store/ProfileInfoStore';
+import {
+  useProfileInfoBadgesModel,
+  getProfileInfoBadgesModel,
+} from '../../../store/ProfileInfoBadgeStore';
+import {
+  useProfileInfoCommunityModel,
+  setProfileInfoCommunityModel,
+} from '../../../store/ProfileInfoCommunityStore';
+import {
+  useProfileInfoPostModel,
+  setProfileInfoPostModel,
+} from '../../../store/ProfileInfoPostStore';
+import { getProfileInfoCommunities } from '../../../service/ProfilePopupService/getProfileInfoCommunities';
+import { getProfileInfoPost } from '../../../service/ProfilePopupService/getProfileInfoPost';
+import {
+  getProfileInfoBadge,
+  getProfileAllInfoBadge,
+} from '../../../service/ProfilePopupService/getProfileInfoBadge';
+import moment from 'moment';
+import { getFollow } from '../../../service/ProfilePopupService/getFollow';
+import { useFollowModel } from '../../../store/FollowStore';
+import {
+  followMember,
+  unfollowMember,
+  findAllFollow,
+} from '../../../api/ProfileInfoAPI';
+import { patronInfo } from '@nara.platform/dock';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface Props {
-  open: boolean,
-  setOpen: (state: boolean) => void,
-  memberId: string | undefined,
+  open: boolean;
+  setOpen: (state: boolean) => void;
+  memberId: string | undefined;
   preProfileInfo: {
-    isSetProfile: boolean,
-    nickName: string,
-    introduce: string,
-    profileImg: string,
-    profileBgImg: string,
-  },
+    isSetProfile: boolean;
+    nickName: string;
+    introduce: string;
+    profileImg: string;
+    profileBgImg: string;
+  };
 }
 
 function UserProfileinfoProfileCard(props: Props) {
@@ -55,22 +78,28 @@ function UserProfileinfoProfileCard(props: Props) {
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [isFollowFlag, setIsFollowFlag] = useState<boolean>();
 
+  const isExternal = isExternalInstructor();
+
   useEffect(() => {
-    communityData && setCommunityCount(communityData.communitiesTotalCount || 0);
-  }, [communityData])
+    communityData &&
+      setCommunityCount(communityData.communitiesTotalCount || 0);
+  }, [communityData]);
 
   useEffect(() => {
     feedData && setFeedCount(feedData.postsTotalCount || 0);
-  }, [feedData])
-
+  }, [feedData]);
 
   useEffect(() => {
-    getProfileInfo(props.memberId)
+    getProfileInfo(props.memberId);
 
     //Badge, Community, Feed 개수 조회
     //result = getProfileCount(props.memberId, moment(currentDate.getFullYear() + "-01-01 00:00:01").format('x'), moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
     //getProfileInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
-    getProfileAllInfoBadge(props.memberId, "0", moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x')).then((response) => {
+    getProfileAllInfoBadge(
+      props.memberId,
+      '0',
+      moment(currentDate.getFullYear() + '-12-31 23:59:59').format('x')
+    ).then((response) => {
       setBadgeCount(response || 0);
     });
     getProfileInfoCommunities(props.memberId);
@@ -84,35 +113,32 @@ function UserProfileinfoProfileCard(props: Props) {
       setBadgeCount(0);
       setProfileInfoCommunityModel();
       setProfileInfoPostModel();
-    }
-
-  }, [props.memberId])
+    };
+  }, [props.memberId]);
 
   useEffect(() => {
     let result = true;
-    
-    if(followData){
 
-      result = !followData.ids.some(f => f === props.memberId)
-      
+    if (followData) {
+      result = !followData.ids.some((f) => f === props.memberId);
+
       if (result) {
         setFollowClassName('following');
         setIsFollow('Follow');
-        if(isFollowFlag === undefined){
-          setIsFollowFlag(false)
+        if (isFollowFlag === undefined) {
+          setIsFollowFlag(false);
         }
-      }else{
+      } else {
         setFollowClassName('unfollowing');
         setIsFollow('Unfollow');
-        if(isFollowFlag === undefined){
-          setIsFollowFlag(true)
+        if (isFollowFlag === undefined) {
+          setIsFollowFlag(true);
         }
       }
     }
 
     // setFollowCheck(false)
-
-  }, [followData])
+  }, [followData]);
 
   useEffect(() => {
     // if (profileInfo !== undefined && props.preProfileInfo !== undefined) {
@@ -128,30 +154,33 @@ function UserProfileinfoProfileCard(props: Props) {
     //   }
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
-        setNickname(profileInfo.nickname)
-        setIntroduce(profileInfo.introduce)
-        setProfileImg(profileInfo.profileImg)
-        setProfileBgImg(profileInfo.profileBgImg)
+      setNickname(profileInfo.nickname);
+      setIntroduce(profileInfo.introduce);
+      setProfileImg(profileInfo.profileImg);
+      setProfileBgImg(profileInfo.profileBgImg);
 
       if (preProfileInfo.isSetProfile) {
-        if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName)
-        if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce)
-        if (preProfileInfo.profileImg) setPreProfileImg(preProfileInfo.profileImg)
-        if (preProfileInfo.profileBgImg) setPreProfileBgImg(preProfileInfo.profileBgImg)
+        if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName);
+        if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce);
+        if (preProfileInfo.profileImg) {
+          setPreProfileImg(preProfileInfo.profileImg);
+        }
+        if (preProfileInfo.profileBgImg) {
+          setPreProfileBgImg(preProfileInfo.profileBgImg);
+        }
       }
     }
-  }, [profileInfo, props.preProfileInfo])
+  }, [profileInfo, props.preProfileInfo]);
 
   //introduce를 ',' 기준으로 구분한다.
   function getTagHtml() {
     let tagList = new Array();
     let tagHtml = '';
 
-    tagList = introduce ? introduce.split(',') : [""];
+    tagList = introduce ? introduce.split(',') : [''];
     tagList.map((tag, index) => {
       if (tag !== '') {
-        tagHtml +=
-          '<span>#' + tag + '</span>';
+        tagHtml += '<span>#' + tag + '</span>';
       }
     });
 
@@ -172,18 +201,18 @@ function UserProfileinfoProfileCard(props: Props) {
 
   function onClickFollow() {
     const count = profileInfo?.followerCount || 0;
-    if (isFollow === "Unfollow") {
+    if (isFollow === 'Unfollow') {
       unfollowMember(props.memberId!).then(() => {
-        getFollow()
-        if(isFollowFlag !== undefined){
-          isFollowFlag ? setFollowerCount(count-1) : setFollowerCount(count)
+        getFollow();
+        if (isFollowFlag !== undefined) {
+          isFollowFlag ? setFollowerCount(count - 1) : setFollowerCount(count);
         }
       });
     } else {
       followMember(props.memberId!).then(() => {
-        getFollow()
-        if(isFollowFlag !== undefined){
-          isFollowFlag ? setFollowerCount(count) : setFollowerCount(count+1)
+        getFollow();
+        if (isFollowFlag !== undefined) {
+          isFollowFlag ? setFollowerCount(count) : setFollowerCount(count + 1);
         }
       });
     }
@@ -193,14 +222,14 @@ function UserProfileinfoProfileCard(props: Props) {
     <>
       <div className="profile-wrapper">
         <div className="bg-wrapper">
-          <ProfileImage
-            src={preProfileBgImg || profileBgImg || DefaultBgImg}
-          />
+          <ProfileImage src={preProfileBgImg || profileBgImg || DefaultBgImg} />
           <div className="profile-info-wrapper">
             <div className="profile-info-area">
               <div className="close-wrapper">
                 <button onClick={() => props.setOpen(!props.open)}>
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`} />
+                  <Image
+                    src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
+                  />
                   <span className="blind">close</span>
                 </button>
               </div>
@@ -212,8 +241,13 @@ function UserProfileinfoProfileCard(props: Props) {
                 />
               </div>
               <div className="profile-info ">
-                <span className="prof-tit">{profileInfo?.isNickname ? nickname : profileInfo?.name}</span>
-                <div className="foll-info"><span>{followerCount || profileInfo?.followerCount}</span>{' '}Followers<span>{profileInfo?.followingCount}</span>{' '}Following</div>
+                <span className="prof-tit">
+                  {profileInfo?.isNickname ? nickname : profileInfo?.name}
+                </span>
+                <div className="foll-info">
+                  <span>{followerCount || profileInfo?.followerCount}</span>{' '}
+                  Followers<span>{profileInfo?.followingCount}</span> Following
+                </div>
               </div>
               <div className="count-area">
                 {/* <div className="cnt-box bad-cnt" >
@@ -229,31 +263,38 @@ function UserProfileinfoProfileCard(props: Props) {
                   <strong>{feedCount}</strong>
                 </div>
               </div>
-              <div className="follow-bttn-area">
-                {props.memberId !== denizenId && (
-                  <Button 
-                    className={followClassName} 
-                    onClick={() => {
-                      // if(followClickFlag){
-                        onClickFollow()
-                      // }
-                    }}
-                  >
-                   {isFollow}
-                  </Button>
-                )}
-              </div>
+              {!isExternal && (
+                <div className="follow-bttn-area">
+                  {props.memberId !== denizenId && (
+                    <Button
+                      className={followClassName}
+                      onClick={() => {
+                        // if(followClickFlag){
+                        onClickFollow();
+                        // }
+                      }}
+                    >
+                      {isFollow}
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
       <div className="tag-info-area">
         <div className="info-area">
-          <span className="prof-name">{profileInfo?.isNickname ? profileInfo?.name : nickname}</span>
+          <span className="prof-name">
+            {profileInfo?.isNickname ? profileInfo?.name : nickname}
+          </span>
           <span className="comp-name">{profileInfo?.company?.name}</span>
         </div>
         <div className="tag-area">
-          <div className="belt" dangerouslySetInnerHTML={{ __html: getTagHtml() }}>
+          <div
+            className="belt"
+            dangerouslySetInnerHTML={{ __html: getTagHtml() }}
+          >
             {/* <span># 일요일은요리사</span>
             <span># 다이어트</span>
             <span># 돈까스</span>
@@ -270,7 +311,7 @@ function UserProfileinfoProfileCard(props: Props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default UserProfileinfoProfileCard;

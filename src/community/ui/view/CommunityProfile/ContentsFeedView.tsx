@@ -47,137 +47,137 @@ interface ContentsFeedViewProps {
   profileId: string;
 }
 
-const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedView({
-  communityProfileFeed,
-  profileId,
-}) {
-  const contextRef = useRef(null);
-  const history = useHistory();
-  const isExternal = isExternalInstructor();
+const ContentsFeedView: React.FC<ContentsFeedViewProps> =
+  function ContentsFeedView({ communityProfileFeed, profileId }) {
+    const contextRef = useRef(null);
+    const history = useHistory();
+    const isExternal = isExternalInstructor();
 
-  const gaOnClick = (name: string) => {
-    // react-ga
-    ReactGA.event({
-      category: 'Community',
-      action: 'Click',
-      label: `Community-${name}`,
-    });
-    window.scrollTo(0, 0);
-    sessionStorage.removeItem('communityOffset');
-    sessionStorage.removeItem('openCommunityOffset');
-    if (name === 'MyCommunity') {
-      history.replace('/community/main');
-    }
-    if (name === 'CommunityList') {
-      history.replace('/community/main/open-communities');
-    }
-    if (name === 'Follow') {
-      history.replace('/community/main/follow');
-    }
-    if (name === 'MyFeed') {
-      history.replace('/community/main/feed');
-    }
-    if (name === 'Bookmark') {
-      history.replace('/community/main/bookmark');
-    }
-  };
-  /* eslint-disable */
-  return (
-    <div ref={contextRef}>
-      <Sticky context={contextRef} className="tab-menu offset0">
-        <div className="cont-inner">
-          <Menu className="sku">
-            <Menu.Item
-              name="MyCommunity"
-              active={false}
-              as={Link}
-              // to="/community/main"
-              onClick={() => gaOnClick('MyCommunity')}
-            >
-              My Community
-              <span className="count" />
-            </Menu.Item>
-            {!isExternal && (
+    const gaOnClick = (name: string) => {
+      // react-ga
+      ReactGA.event({
+        category: 'Community',
+        action: 'Click',
+        label: `Community-${name}`,
+      });
+      window.scrollTo(0, 0);
+      sessionStorage.removeItem('communityOffset');
+      sessionStorage.removeItem('openCommunityOffset');
+      if (name === 'MyCommunity') {
+        history.replace('/community/main');
+      }
+      if (name === 'CommunityList') {
+        history.replace('/community/main/open-communities');
+      }
+      if (name === 'Follow') {
+        history.replace('/community/main/follow');
+      }
+      if (name === 'MyFeed') {
+        history.replace('/community/main/feed');
+      }
+      if (name === 'Bookmark') {
+        history.replace('/community/main/bookmark');
+      }
+    };
+    /* eslint-disable */
+    return (
+      <div ref={contextRef}>
+        <Sticky context={contextRef} className="tab-menu offset0">
+          <div className="cont-inner">
+            <Menu className="sku">
               <Menu.Item
-                name="MyCreatedCommunity"
+                name="MyCommunity"
                 active={false}
                 as={Link}
-                // to="/community/main/open-communities"
-                onClick={() => gaOnClick('CommunityList')}
+                // to="/community/main"
+                onClick={() => gaOnClick('MyCommunity')}
               >
-                Community List
+                My Community
+                <span className="count" />
               </Menu.Item>
-            )}
-            <Menu.Item
-              name="MyFeed"
-              active={true}
-              as={Link}
-              onClick={() => gaOnClick('MyFeed')}
-            >
-              My Feed
-            </Menu.Item>
-            <Menu.Item
-              name="Follow"
-              active={false}
-              as={Link}
-              // to="/community/main/follow"
-              onClick={() => gaOnClick('Follow')}
-            >
-              Follower Feed
-            </Menu.Item>
-            <Menu.Item
-              name="Bookmark"
-              active={false}
-              as={Link}
-              onClick={() => gaOnClick('Bookmark')}
-            >
-              Bookmark
-            </Menu.Item>
-          </Menu>
-        </div>
-      </Sticky>
-      <div>
-        <Segment className="full">
-          <div
-            className="course-detail-center community-containter"
-            style={{ display: 'block' }}
-            data-area={Area.COMMUNITY_FEED}
-          >
-            <div
-              className="community-main-contants"
-              style={{ marginRight: '0px' }}
-            >
-              {communityProfileFeed !== undefined &&
-                communityProfileFeed.posts.map((postItem) => (
-                  <PostItemView key={postItem.postId} {...postItem} />
-                ))}
-            </div>
-            <div className="more-comments">
-              {communityProfileFeed.postsTotalCount >
-                communityProfileFeed.postsOffset && (
-                <Button
-                  icon
-                  className="left moreview"
-                  onClick={() => requestAppendProfileFeedPostList(profileId)}
+              {!isExternal && (
+                <Menu.Item
+                  name="MyCreatedCommunity"
+                  active={false}
+                  as={Link}
+                  // to="/community/main/open-communities"
+                  onClick={() => gaOnClick('CommunityList')}
                 >
-                  <Icon className="moreview" /> list more
-                </Button>
+                  Community List
+                </Menu.Item>
               )}
-              {communityProfileFeed.postsTotalCount <=
-                communityProfileFeed.postsOffset && (
-                <Button
-                  icon
-                  className="left moreview"
-                  style={{ cursor: 'default' }}
-                />
+              <Menu.Item
+                name="MyFeed"
+                active={true}
+                as={Link}
+                onClick={() => gaOnClick('MyFeed')}
+              >
+                My Feed
+              </Menu.Item>
+              {!isExternal && (
+                <Menu.Item
+                  name="Follow"
+                  active={false}
+                  as={Link}
+                  // to="/community/main/follow"
+                  onClick={() => gaOnClick('Follow')}
+                >
+                  Follower Feed
+                </Menu.Item>
               )}
-            </div>
+              <Menu.Item
+                name="Bookmark"
+                active={false}
+                as={Link}
+                onClick={() => gaOnClick('Bookmark')}
+              >
+                Bookmark
+              </Menu.Item>
+            </Menu>
           </div>
-        </Segment>
+        </Sticky>
+        <div>
+          <Segment className="full">
+            <div
+              className="course-detail-center community-containter"
+              style={{ display: 'block' }}
+              data-area={Area.COMMUNITY_FEED}
+            >
+              <div
+                className="community-main-contants"
+                style={{ marginRight: '0px' }}
+              >
+                {communityProfileFeed !== undefined &&
+                  communityProfileFeed.posts.map((postItem) => (
+                    <PostItemView key={postItem.postId} {...postItem} />
+                  ))}
+              </div>
+              <div className="more-comments">
+                {communityProfileFeed.postsTotalCount >
+                  communityProfileFeed.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    onClick={() => requestAppendProfileFeedPostList(profileId)}
+                  >
+                    <Icon className="moreview" /> list more
+                  </Button>
+                )}
+                {communityProfileFeed.postsTotalCount <=
+                  communityProfileFeed.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    style={{ cursor: 'default' }}
+                  />
+                )}
+              </div>
+            </div>
+          </Segment>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
