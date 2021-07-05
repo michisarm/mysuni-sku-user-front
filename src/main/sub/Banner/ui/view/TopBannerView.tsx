@@ -2,6 +2,7 @@ import React from 'react';
 import Image from '../../../../../shared/components/Image';
 
 interface TopBannerViewProps {
+  target: string;
   linkUrl: string;
   imageUrl: string;
   backgroundColor: string;
@@ -9,6 +10,7 @@ interface TopBannerViewProps {
 }
 
 export function TopBannerView({
+  target,
   linkUrl,
   imageUrl,
   backgroundColor,
@@ -17,7 +19,7 @@ export function TopBannerView({
   return (
     <section className="top_banner" style={{ background: backgroundColor }}>
       <div className="inner">
-        <a href={linkUrl}>
+        <a href={linkUrl} target={target}>
           <Image src={imageUrl} />
         </a>
         <button className="ui button b_close" onClick={onClose}>

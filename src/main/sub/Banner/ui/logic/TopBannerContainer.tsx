@@ -16,6 +16,7 @@ export function TopBannerContainer() {
     <>
       {topBanner !== undefined && displayTopBanner && (
         <TopBannerView
+          target={topBanner.target}
           linkUrl={topBanner.linkUrl}
           imageUrl={topBanner.imageUrl}
           backgroundColor={topBanner.topBgColor}
