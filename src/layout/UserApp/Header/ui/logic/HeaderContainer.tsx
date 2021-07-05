@@ -15,6 +15,7 @@ import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 
 interface Props extends RouteComponentProps {}
 
@@ -147,6 +148,7 @@ class HeaderContainer extends Component<Props, State> {
           />
         }
         // Notice
+        topBanner={<TopBannerContainer />}
         mainNotice={<MainNotice />}
       >
         <>
