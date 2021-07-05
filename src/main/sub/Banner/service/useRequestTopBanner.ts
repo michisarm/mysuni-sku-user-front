@@ -21,6 +21,7 @@ export async function requestTopBanner() {
   setTopBannerViewModel({
     top: bannerBundleWithBannerRom.top,
     topBgColor: bannerBundleWithBannerRom.topBgColor,
+    target: banner.target,
     linkUrl: banner.targetUrl,
     imageUrl: banner.imageUrl,
     imageAlt: banner.imageAlt,
