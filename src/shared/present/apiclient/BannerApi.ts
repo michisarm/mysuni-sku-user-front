@@ -13,10 +13,10 @@ class BannerApi {
       ? '/api/arrange'
       : process.env.REACT_APP_BANNER_API;
 
-  findLatestBannerBundles() {
+  findLatestBannerBundles(top: boolean = false) {
     return axiosApi
-      .get<BannerModel>(this.baseUrl + '/bannerBundles/latest')
-      .then(response => response && response.data);
+      .get<BannerModel>(`${this.baseUrl}/bannerBundles/latest?top=${top}`)
+      .then((response) => response && response.data);
   }
 }
 
