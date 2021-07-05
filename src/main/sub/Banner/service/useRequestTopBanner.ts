@@ -14,10 +14,14 @@ export async function requestTopBanner() {
     return;
   }
   const banner = bannerBundleWithBannerRom.banners[0];
+  if (banner === undefined || banner === null) {
+    return;
+  }
 
   setTopBannerViewModel({
     top: bannerBundleWithBannerRom.top,
     topBgColor: bannerBundleWithBannerRom.topBgColor,
+    linkUrl: banner.targetUrl,
     imageUrl: banner.imageUrl,
     imageAlt: banner.imageAlt,
   });
