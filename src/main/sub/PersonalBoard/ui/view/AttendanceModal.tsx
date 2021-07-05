@@ -57,10 +57,10 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
       }
 
       if (countAttendance.attendCount > idx) {
-        if (idx % 5 === 0) {
+        if (idx % 5 === 0 && idx !== 0) {
           return `${PUBLIC_URL}/images/all/stamp_sum_present_after.png`;
         } else {
-          return `${PUBLIC_URL}/images/all/stamp_sum_present_after.png`;
+          return `${PUBLIC_URL}/images/all/stamp_sum_after.png`;
         }
       }
 
@@ -115,7 +115,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
   const notiSentence = useCallback(() => {
     if (countAttendance?.todayAttendance === false) {
       return '';
-    } else if (countAttendance?.attendCount === 20) {
+    } else if (countAttendance?.attendCount === 25) {
       return 'alldone';
     } else {
       return 'today';
@@ -172,7 +172,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
                   src={`${PUBLIC_URL}/images/all/img-s-title.png`}
                   alt="다시 돌아온 마이써니 출석 이벤트"
                 />
-                <Link to="">
+                <Link to="/board/support/notice-detail/NTC-000056">
                   <Image
                     src={`${PUBLIC_URL}/images/all/btn-link-event.png`}
                     alt="이벤트 자세히 보러가기"
@@ -209,7 +209,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
               </div>
               <div className="stampbox">
                 <ol>
-                  {Array(20)
+                  {Array(25)
                     .fill('')
                     .map((v, idx) => (
                       <li className={className(idx)}>
