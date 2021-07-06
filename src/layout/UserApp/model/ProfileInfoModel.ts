@@ -1,6 +1,7 @@
 import { IdName } from '@nara.platform/accent';
 
 export default interface ProfileInfoModel {
+  id: string;
   name: string;
   company: IdName;
   profileImg: string;

@@ -279,46 +279,54 @@ function CommunityMainHeaderContainer() {
               </div>
             </div>
           </div>
-          <div className="cell followers">
-            <div className="cell-inner">
-              <div className="stamp-wrap">
-                <Label className="stamp">
-                  <div
-                    style={profile?.followerCount ? { cursor: 'pointer' } : {}}
-                    onClick={() => modalOpen('followers')}
-                  >
-                    <span className="text1">Followers</span>
-                    <div className="border_line">
-                      <span className="text3">
-                        {followersList?.followers.length}
-                      </span>
-                      <span className="text5">명</span>
-                    </div>
+          {!isExternal && (
+            <>
+              <div className="cell followers">
+                <div className="cell-inner">
+                  <div className="stamp-wrap">
+                    <Label className="stamp">
+                      <div
+                        style={
+                          profile?.followerCount ? { cursor: 'pointer' } : {}
+                        }
+                        onClick={() => modalOpen('followers')}
+                      >
+                        <span className="text1">Followers</span>
+                        <div className="border_line">
+                          <span className="text3">
+                            {followersList?.followers.length}
+                          </span>
+                          <span className="text5">명</span>
+                        </div>
+                      </div>
+                    </Label>
                   </div>
-                </Label>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="cell following">
-            <div className="cell-inner">
-              <div className="stamp-wrap">
-                <Label className="stamp">
-                  <div
-                    style={profile?.followingCount ? { cursor: 'pointer' } : {}}
-                    onClick={() => modalOpen('following')}
-                  >
-                    <span className="text1">Following</span>
-                    <div className="border_line">
-                      <span className="text2">
-                        {followingsList?.followings.length}
-                      </span>
-                      <span className="text6">명</span>
-                    </div>
+              <div className="cell following">
+                <div className="cell-inner">
+                  <div className="stamp-wrap">
+                    <Label className="stamp">
+                      <div
+                        style={
+                          profile?.followingCount ? { cursor: 'pointer' } : {}
+                        }
+                        onClick={() => modalOpen('following')}
+                      >
+                        <span className="text1">Following</span>
+                        <div className="border_line">
+                          <span className="text2">
+                            {followingsList?.followings.length}
+                          </span>
+                          <span className="text6">명</span>
+                        </div>
+                      </div>
+                    </Label>
                   </div>
-                </Label>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
 

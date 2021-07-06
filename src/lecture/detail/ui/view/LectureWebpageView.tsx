@@ -19,7 +19,10 @@ const LectureWebpageView: React.FC<
     <>
       {urlType === 'embedded' && (
         <div className="iframe-area s990">
-          <iframe src={url} />
+          <iframe
+            src={url}
+            allowFullScreen
+          />
         </div>
       )}
       {urlType !== 'embedded' && (

@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { SkProfileService } from 'profile/stores';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { BadgeService } from 'lecture/stores';
@@ -39,6 +39,8 @@ import BadgeLearningSummaryView from './BadgeLearningSummaryView';
 import LearningCompleteSummaryView from './LearningCompleteSummaryView';
 import { Action, Area } from 'tracker/model';
 import Image from '../../../shared/components/Image';
+import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
+import { requestAttendEvent } from '../PersonalBoard/service/getAttendEvent';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -81,8 +83,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   componentDidMount(): void {
     this.init();
+    requestAttendEvent();
     onLearningObjectivesItem(
-      next => this.setState({ learningObjectives: next }),
+      (next) => this.setState({ learningObjectives: next }),
       'MyLearningSummaryContainer'
     );
   }
@@ -123,7 +126,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   onConfirmFavorite() {
-    //
     const { location, history } = this.props;
     const { pathname } = location;
 
@@ -146,13 +148,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   openLearningObjectives() {
     saveLearningObjectives();
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { learningObjectivesOpen: !prevState.learningObjectivesOpen };
     });
   }
 
   handlePopup() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { attendanceOpen: !prevState.attendanceOpen };
     });
   }
@@ -187,7 +189,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
+      (channel) =>
         new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
@@ -221,23 +223,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       });
     }
 
-    const eventBannerVisible = () => {
-      const today = moment().format('YYYY-MM-DD');
-      const afterFlag = moment(today).isAfter(
-        moment().format('2021-04-04'),
-        'day'
-      );
-      const beforeFlag = moment(today).isBefore(
-        moment().format('2021-05-08'),
-        'day'
-      );
-
-      if (afterFlag && beforeFlag) {
-        return true;
-      } else {
-        return false;
-      }
-    };
+    const attendEventItem = getAttendEventItem();
 
     return (
       <>
@@ -273,9 +259,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           <LearningObjectivesContainer
             openLearningObjectives={this.openLearningObjectives}
           />
-          {eventBannerVisible() && (
-            <div className="main-event-btn">
-              <button type="button" onClick={this.handlePopup} />
+          {attendEventItem?.useYn === true && (
+            <div className="main-event-btn2">
+              <Button type="button" onClick={this.handlePopup}>
+                <img
+                  style={{ width: '100%' }}
+                  src="https://image.mysuni.sk.com/suni-asset/public/static/media/BNR_Summer_Event.gif"
+                  alt="다시 돌아온 출석이벤트"
+                />
+              </Button>
             </div>
           )}
         </HeaderWrapperView>
@@ -300,7 +292,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <div>
                 <a
                   href="#"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     this.onClickCreateApl();
                   }}
@@ -339,7 +331,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 <div>
                   <a
                     href="#"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       this.onClickCreateApl();
                     }}
@@ -372,7 +364,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             return this.setState({ learningObjectivesOpen: value });
           }}
         />
-        {/* 4/5~ 4/30 일까지 노출되도록 수정 */}
         <AttendanceModalContainer
           open={attendanceOpen}
           setOpen={(value, type?) => {
@@ -385,4 +376,3 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 }
 
 export default withRouter(MyLearningSummaryContainer);
-
