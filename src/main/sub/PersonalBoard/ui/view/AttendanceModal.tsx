@@ -57,7 +57,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
       }
 
       if (countAttendance.attendCount > idx) {
-        if (idx % 5 === 0 && idx !== 0) {
+        if (idx % 5 === 4) {
           return `${PUBLIC_URL}/images/all/stamp_sum_present_after.png`;
         } else {
           return `${PUBLIC_URL}/images/all/stamp_sum_after.png`;
@@ -69,7 +69,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
         countAttendance.todayAttendance === false &&
         attendEventItem.useYn
       ) {
-        if (idx % 5 === 0 && idx !== 0) {
+        if (idx % 5 === 4) {
           return `${PUBLIC_URL}/images/all/stamp_sum_present_clickme.png`;
         } else {
           return `${PUBLIC_URL}/images/all/stamp_sum_${idx + 1}_clickme.png`;
