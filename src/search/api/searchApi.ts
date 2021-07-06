@@ -94,7 +94,7 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 const FIND_CARD_COLUMNS =
-  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names';
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid';
 
 export function findCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
@@ -149,7 +149,7 @@ function testBlacklistAccessRuleForPaidLecture(
     return true;
   }
 
-  if (card.paid !== 1) {
+  if (card.paid !== 'true') {
     return true;
   }
 
