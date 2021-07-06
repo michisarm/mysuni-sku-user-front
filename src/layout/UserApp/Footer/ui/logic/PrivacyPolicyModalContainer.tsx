@@ -3,6 +3,7 @@ import { Modal, Button, Select } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
 import PrivacyPolicyView from '../view/PrivacyPolicyView';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   trigger: React.ReactNode;
@@ -26,7 +27,10 @@ export default class PrivacyPolicyModalContainer extends Component<
       {
         key: '20210614',
         value: '20210614',
-        text: '공고일자 : 2021 년 6월 14일',
+        text: getPolyglotText(
+          '공고일자 : 2021 년 6월 14일',
+          'home-개정얼-공고1'
+        ),
       },
       {
         key: '20200901',
