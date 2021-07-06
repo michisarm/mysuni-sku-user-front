@@ -1,4 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
+import jwt_decode from 'jwt-decode';
 import moment from 'moment';
 import { SkProfileService } from '../../profile/stores';
 import { Workspace } from '../../shared/api/Axios';
@@ -14,6 +15,10 @@ import {
 import CheckboxOptions from '../model/CheckBoxOption';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { SearchExpert } from '../model/SearchExpert';
+import { findMyUserWorkspaceCache } from '../../lecture/detail/api/approvalApi';
+import { UserWorkspace } from '../../approval/models/UserWorkspace';
+import _ from 'lodash';
+import { Token } from '../../shared/model/Token';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -99,20 +104,21 @@ export function findCard(text_idx: string) {
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
-    .then(c => {
+    .then((c) => {
       if (c === undefined) {
         return undefined;
       }
       if (c.status !== undefined) {
         return c;
       }
-      if (((c as unknown) as string).replace !== undefined) {
+      if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
         s = s.replace(/\\\\\"/gi, '\\"');
         try {
-          return JSON.parse(s) as SearchResult<SearchCard>;
+          const result = JSON.parse(s) as SearchResult<SearchCard>;
+          return result;
         } catch (error) {
           return undefined;
         }
@@ -120,19 +126,66 @@ export function findCard(text_idx: string) {
     });
 }
 
-export function filterCard(cards?: SearchCard[]): SearchCard[] {
+function parseToken() {
+  const token = localStorage.getItem('nara.token');
+  if (!_.isEmpty(token)) {
+    const decoded = jwt_decode<Token>(token!);
+    return decoded;
+  }
+}
+
+function testBlacklistAccessRuleForPaidLecture(
+  card: SearchCard,
+  userWorkspaces: UserWorkspace,
+  token: Token
+) {
+  if (
+    userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences ===
+      undefined ||
+    !Array.isArray(
+      userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences
+    )
+  ) {
+    return true;
+  }
+
+  if (card.paid !== 1) {
+    return true;
+  }
+
+  const groupSequences =
+    userWorkspaces.blacklistAccessRuleForPaidLecture.groupSequences;
+  for (let i = 0; i < groupSequences.length; i++) {
+    const index = groupSequences[i];
+    if (token.userGroup[index] !== '1') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
+  const userWorkspaces = await findMyUserWorkspaceCache();
+  const token = parseToken();
+  if (userWorkspaces === undefined || token === undefined) {
+    return [];
+  }
   let displayCards: SearchCard[] = cards || [];
+  displayCards = displayCards.filter((c) =>
+    testBlacklistAccessRuleForPaidLecture(c, userWorkspaces, token)
+  );
   const filterCondition = getFilterCondition();
   if (filterCondition !== undefined) {
     if (filterCondition.all_college_name_query.length > 0) {
-      displayCards = displayCards.filter(c => {
+      displayCards = displayCards.filter((c) => {
         const mainCategory = (JSON.parse(c.categories) as SearchCardCategory[])
           .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
             channelId,
             collegeId,
             mainCategory: mainCategory === 1,
           }))
-          .find(c => c.mainCategory === true);
+          .find((c) => c.mainCategory === true);
         if (mainCategory !== undefined) {
           return filterCondition.all_college_name_query.includes(
             getCollgeName(mainCategory.collegeId)
@@ -142,7 +195,7 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
       });
     }
     if (filterCondition.applying === true) {
-      displayCards = displayCards.filter(c => {
+      displayCards = displayCards.filter((c) => {
         return (
           new Date(c.applying_start_date).getTime() <= Date.now() &&
           Date.now() < new Date(c.applying_end_date).getTime() + ONE_DAY
@@ -150,24 +203,24 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
       });
     }
     if (filterCondition.badge === true) {
-      displayCards = displayCards.filter(c => c.used_in_badge === '1');
+      displayCards = displayCards.filter((c) => c.used_in_badge === '1');
     }
     if (filterCondition.cube_type_query.length > 0) {
-      displayCards = displayCards.filter(c => {
-        return (JSON.parse(c.cube_types) as string[]).some(cube =>
+      displayCards = displayCards.filter((c) => {
+        return (JSON.parse(c.cube_types) as string[]).some((cube) =>
           filterCondition.cube_type_query.includes(cube)
         );
       });
     }
     if (filterCondition.difficulty_level_json_query.length > 0) {
-      displayCards = displayCards.filter(c =>
+      displayCards = displayCards.filter((c) =>
         filterCondition.difficulty_level_json_query.includes(c.difficulty_level)
       );
     }
     if (filterCondition.hasRequired === true) {
       if (Array.isArray(workspaces.cineroomWorkspaces)) {
-        displayCards = displayCards.filter(c =>
-          workspaces.cineroomWorkspaces!.some(d =>
+        displayCards = displayCards.filter((c) =>
+          workspaces.cineroomWorkspaces!.some((d) =>
             c.required_cinerooms.includes(d.id)
           )
         );
@@ -177,20 +230,20 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
     }
     if (filterCondition.learning_start_date_str !== null) {
       displayCards = displayCards.filter(
-        c =>
+        (c) =>
           new Date(c.learning_start_date) >=
           filterCondition.learning_start_date_str!
       );
     }
     if (filterCondition.learning_end_date_str !== null) {
       displayCards = displayCards.filter(
-        c =>
+        (c) =>
           new Date(c.learning_end_date) <=
           filterCondition.learning_end_date_str!
       );
     }
     if (filterCondition.learning_time_query.length > 0) {
-      displayCards = displayCards.filter(c => {
+      displayCards = displayCards.filter((c) => {
         const learningTime = parseInt(c.learning_time);
         if (filterCondition.learning_time_query.includes('type1')) {
           const r = learningTime < 30;
@@ -228,8 +281,8 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
     if (filterCondition.notRequired === true) {
       if (Array.isArray(workspaces.cineroomWorkspaces)) {
         displayCards = displayCards.filter(
-          c =>
-            !workspaces.cineroomWorkspaces!.some(d =>
+          (c) =>
+            !workspaces.cineroomWorkspaces!.some((d) =>
               c.required_cinerooms.includes(d.id)
             )
         );
@@ -238,14 +291,14 @@ export function filterCard(cards?: SearchCard[]): SearchCard[] {
       }
     }
     if (filterCondition.organizer_query.length > 0) {
-      displayCards = displayCards.filter(c =>
-        filterCondition.organizer_query.some(d =>
+      displayCards = displayCards.filter((c) =>
+        filterCondition.organizer_query.some((d) =>
           c.cube_organizer_names.includes(d)
         )
       );
     }
     if (filterCondition.stamp === true) {
-      displayCards = displayCards.filter(c => parseInt(c.stamp_count) > 0);
+      displayCards = displayCards.filter((c) => parseInt(c.stamp_count) > 0);
     }
   }
   return displayCards;
@@ -261,14 +314,14 @@ export function findExpert(text_idx: string) {
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)
     .then(AxiosReturn)
-    .then(c => {
+    .then((c) => {
       if (c === undefined) {
         return undefined;
       }
       if (c.status !== undefined) {
         return c;
       }
-      if (((c as unknown) as string).replace !== undefined) {
+      if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -317,7 +370,7 @@ function makePermitedCineroomsQuery() {
 
 function makeSubQuery(column: string, keywords: string[]) {
   return `(${keywords
-    .map(keyword => `${column}+=+'${keyword}'`)
+    .map((keyword) => `${column}+=+'${keyword}'`)
     .join('+AND+')})`;
 }
 
@@ -446,7 +499,7 @@ export function parseFilterCondition(): QueryOptions {
       CheckboxOptions.learning_time_query.length
   ) {
     queryOptions.learning_time_query = filterCondition.learning_time_query.map(
-      c => parseInt(c)
+      (c) => parseInt(c)
     );
   }
   if (
