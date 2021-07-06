@@ -2,7 +2,9 @@ import { axiosApi } from '@nara.platform/accent';
 import BadgeFilterRdoModel from 'certification/ui/model/BadgeFilterRdoModel';
 import moment from 'moment';
 import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
+import { AxiosReturn } from '../../../../shared/api/AxiosReturn';
 import { CollegePercentData } from '../model/CollegePercent';
+import { CountAttendance } from '../model/CountAttendance';
 import { MyCompanyPopularCourseItem } from '../model/LectureMyCompanyPopularCourse';
 import AttendEvent from '../viewModel/AttendEvent';
 import LearningObjectives from '../viewModel/LearningObjectives';
@@ -30,7 +32,7 @@ export function getBadgeLearningCompanyAvg(companyCode: string) {
     .get<any>(
       `/api/mytraining/companyAverage/${companyCode}/${moment().year()}`
     )
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 // export function findTotalMyLearningSummary() {
@@ -42,7 +44,7 @@ export function findMyLearningSummaryYear() {
   const year = moment().format('YYYY');
   return axiosApi
     .get<any>(flowURL + `/${year}`)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 //우리회사인기코스
@@ -51,7 +53,7 @@ export function getPopularCourse(companyCode: string, date: number) {
     .get<MyCompanyPopularCourseItem[]>(
       `/api/lecture/personalBoard/companyCardStatistics/${companyCode}/${date}`
     )
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     });
 }
@@ -60,14 +62,14 @@ export function getPopularCourse(companyCode: string, date: number) {
 export function getRecentlyLearningChannel() {
   return axiosApi
     .get<any>(`/api/mytraining/mytraining/mytrainings/channel`)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 //목표설정
 export function findLearningObjectives() {
   return axiosApi
     .get<any>(`/api/profile/profiles`)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 //목표설정
@@ -83,7 +85,7 @@ export function updateLearningObjectives(item: LearningObjectives) {
         hour: item.AnnualLearningObjectives,
       },
     })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 //college별 학습 비중
@@ -92,46 +94,51 @@ export function getCollegePercent() {
     .get<CollegePercentData[]>(
       `/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`
     )
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     });
 }
 
 //이벤트 정보 조회
 export function findAttendEvent() {
-  return axiosApi.get<AttendEvent>(eventURL + `/attend`).then(response => {
-    return response && response.data;
-  });
+  return axiosApi.get<AttendEvent>(eventURL + `/attend`).then(AxiosReturn);
 }
 
 //출석횟수 조회
 export function getAttend(id: string) {
   return axiosApi
     .get<any>(eventURL + `/attend/attendance/${id}`)
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     });
+}
+
+//출석횟수, 오늘 출석 여부 조회
+export function getCountAttendance(id: string) {
+  return axiosApi
+    .get<CountAttendance>(`${eventURL}/attend/attendance/${id}/count`)
+    .then(AxiosReturn);
 }
 
 //출석
 export function updateAttend(id: string) {
   return axiosApi
     .post<any>(eventURL + `/attend/attendance/${id}`)
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('error', error);
     });
 }
 
 //이메일 암호화
-export function encryptEmail() {
+export function encryptEmail(eventId: string) {
   return axiosApi
     .get<string>(
-      eventURL + `/attend/attendance/attend_2104/encrypt/UNIVtomorrow`
+      eventURL + `/attend/attendance/${eventId}/encrypt/UNIVtomorrow`
     )
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     });
 }

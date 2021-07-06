@@ -1,49 +1,51 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
-import { ChannelModel, CollegeModel } from 'college/model';
-import { Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import { Image } from 'semantic-ui-react';
+import { includes } from 'lodash';
+import { reactAutobind } from '@nara.platform/accent';
+import mainRoutePaths from 'main/routePaths';
+import { ChannelModel, CollegeModel } from 'college/model';
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
+
+const VISIBLE_COLLEGE_IDS = [
+  'CLG00001',
+  'CLG00002',
+  'CLG00003',
+  'CLG00004',
+  'CLG00005',
+  'CLG00006',
+  'CLG00007',
+  'CLG00008',
+  'CLG00019',
+  'CLG0001c',
+  'CLG00020',
+  'CLG00018',
+];
 
 interface Props {
   channel: ChannelModel;
   college: CollegeModel;
 }
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
-
 @reactAutobind
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
-  state = {
-    linkUrl: '',
-  };
-
-  linkMove = () => {
-    if (this.props.channel.name === 'AI/DT Literacy') {
-      this.setState({ linkUrl: `/certification/badge/badge-detail/BADGE-2t` });
-    } else {
-      this.setState({
-        linkUrl: `/introduction/College?subTab=${this.props.college.name}`,
-      });
-    }
-  };
-
   render() {
-    //
     const { channel, college } = this.props;
+    const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
+    const linkUrl =
+      channel.name === 'AI/DT Literacy'
+        ? '/certification/badge/badge-detail/BADGE-2t'
+        : mainRoutePaths.introductionCollege(college.name);
     return (
       <>
         <div className="white-title">
           <div className="inner">
             <strong>{channel.name}</strong>의 학습 과정 입니다.
-            {college.collegeId === 'CLG00020' ? null : (
-              <Link
-                to={this.state.linkUrl !== '' ? this.state.linkUrl : '#'}
-                className="personal line round"
-                onClick={this.linkMove}
-              >
+            {displayCurriculum === true && (
+              <Link to={linkUrl} className="personal line round">
                 <a href="" className="personal line round">
                   <Image
                     style={{ display: 'inline' }}
