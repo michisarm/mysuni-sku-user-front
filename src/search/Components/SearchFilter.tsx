@@ -690,7 +690,7 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
     });
     return;
   }
-  setDisplayCard(filterCard(getCard()));
+  setDisplayCard(await filterCard(getCard()));
   closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {
