@@ -109,16 +109,7 @@ export function findCard(text_idx: string) {
         return undefined;
       }
       if (c.status !== undefined) {
-        return {
-          ...c,
-          result: {
-            ...c.result,
-            rows: c.result.rows.map((d) => ({
-              ...d,
-              fields: { ...d.fields, paid: 1 },
-            })),
-          },
-        };
+        return c;
       }
       if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
@@ -127,7 +118,7 @@ export function findCard(text_idx: string) {
         s = s.replace(/\\\\\"/gi, '\\"');
         try {
           const result = JSON.parse(s) as SearchResult<SearchCard>;
-          return { ...result, paid: 1 };
+          return result;
         } catch (error) {
           return undefined;
         }
