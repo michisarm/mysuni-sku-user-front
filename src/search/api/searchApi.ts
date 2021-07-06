@@ -109,7 +109,16 @@ export function findCard(text_idx: string) {
         return undefined;
       }
       if (c.status !== undefined) {
-        return c;
+        return {
+          ...c,
+          result: {
+            ...c.result,
+            rows: c.result.rows.map((d) => ({
+              ...d,
+              fields: { ...d.fields, paid: 1 },
+            })),
+          },
+        };
       }
       if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
