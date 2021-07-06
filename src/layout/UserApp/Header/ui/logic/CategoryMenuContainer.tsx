@@ -18,6 +18,7 @@ import { CollegeService } from 'college/stores';
 
 import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -72,7 +73,8 @@ class CategoryMenuContainer extends Component<Props, State> {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
     } else {
-      const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+      const collegeLectureCounts =
+        await collegeLectureCountService!.findCollegeLectureCounts();
       if (collegeLectureCounts.length > 0) {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
@@ -101,7 +103,7 @@ class CategoryMenuContainer extends Component<Props, State> {
     //
     const { collegeLectureCountService, collegeService } = this.props;
     let bannerData = {};
-    collegeService!.getBanner().then(result => {
+    collegeService!.getBanner().then((result) => {
       if (result) {
         result.map((item: any, index: number) => {
           if (item.collegeId === college.id) {
@@ -189,17 +191,14 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const {
-      skProfileService,
-      collegeLectureCountService,
-      collegeService,
-    } = this.props;
+    const { skProfileService, collegeLectureCountService, collegeService } =
+      this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
     const channels =
       studySummaryFavoriteChannels.map(
-        channel => new ChannelModel({ ...channel, channelId: channel.id })
+        (channel) => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
     const isExternal = isExternalInstructor();
 
@@ -213,7 +212,7 @@ class CategoryMenuContainer extends Component<Props, State> {
                   className="detail-open"
                   onClick={() => this.onClickActionLog('Category')}
                 >
-                  Category
+                  <PolyglotText id="home-gnb-ct" defaultString="Category" />
                 </Button>
               }
               on="click"
@@ -244,7 +243,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         </div>
 
         <FavoriteChannelChangeModal
-          ref={modal => (this.modal = modal)}
+          ref={(modal) => (this.modal = modal)}
           favorites={channels}
           onConfirmCallback={this.onConfirmFavorite}
         />
