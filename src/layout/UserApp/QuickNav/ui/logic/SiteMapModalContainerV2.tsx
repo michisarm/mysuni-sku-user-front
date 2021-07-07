@@ -13,6 +13,7 @@ import communityRoutePaths from 'community/routePaths';
 import { CollegeLectureCountService } from 'lecture/stores';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
+import { PolyglotText, getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode;
@@ -31,77 +32,77 @@ interface State {
 class SiteMapModalContainerV2 extends Component<Props, State> {
   //
   baseCategoryItems = {
-    name: 'Category',
+    name: getPolyglotText('Category', 'home-사이트맵-대카테1'),
     countable: true,
     items: [
       {
         collegeId: 'CLG00001',
-        name: 'AI',
+        name: getPolyglotText('AI', 'home-사이트맵-중카1'),
         path: lectureRoutePaths.collegeLectures('CLG00001'),
       },
       {
         collegeId: 'CLG00002',
-        name: 'DT',
+        name: getPolyglotText('DT', 'home-사이트맵-중카2'),
         path: lectureRoutePaths.collegeLectures('CLG00002'),
       },
       {
         collegeId: 'CLG00003',
-        name: '행복',
+        name: getPolyglotText('행복', 'home-사이트맵-중카3'),
         path: lectureRoutePaths.collegeLectures('CLG00003'),
       },
       {
         collegeId: 'CLG00004',
-        name: 'SV',
+        name: getPolyglotText('SV', 'home-사이트맵-중카4'),
         path: lectureRoutePaths.collegeLectures('CLG00004'),
       },
       {
         collegeId: 'CLG00005',
-        name: '혁신디자인',
+        name: getPolyglotText('혁신디자인', 'home-사이트맵-중카5'),
         path: lectureRoutePaths.collegeLectures('CLG00005'),
       },
       {
         collegeId: 'CLG00006',
-        name: 'Global',
+        name: getPolyglotText('Global', 'home-사이트맵-중카6'),
         path: lectureRoutePaths.collegeLectures('CLG00006'),
       },
       {
         collegeId: 'CLG00007',
-        name: 'Leadership',
+        name: getPolyglotText('Leadership', 'home-사이트맵-중카7'),
         path: lectureRoutePaths.collegeLectures('CLG00007'),
       },
       {
         collegeId: 'CLG00008',
-        name: 'Management',
+        name: getPolyglotText('Management', 'home-사이트맵-중카8'),
         path: lectureRoutePaths.collegeLectures('CLG00008'),
       },
       {
         collegeId: 'CLG00019',
-        name: '미래반도체',
+        name: getPolyglotText('미래반도체', 'home-사이트맵-중카9'),
         path: lectureRoutePaths.collegeLectures('CLG00019'),
       },
       {
         collegeId: 'CLG0001c',
-        name: 'Environment',
+        name: getPolyglotText('Environment', 'home-사이트맵-중카10'),
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
       {
         collegeId: 'CLG00020',
-        name: 'BM Design & Storytelling',
+        name: getPolyglotText('BM Design & Storytelling', 'home-사이트맵-중카11'),
         path: lectureRoutePaths.collegeLectures('CLG00020'),
       },
       {
         collegeId: 'CLG00018',
-        name: 'SK아카데미',
+        name: getPolyglotText('SK아카데미', 'home-사이트맵-중카12'),
         path: lectureRoutePaths.collegeLectures('CLG00018'),
       },
       {
         collegeId: 'CLG00017',
-        name: 'SK경영',
+        name: getPolyglotText('SK경영', 'home-사이트맵-중카13'),
         path: lectureRoutePaths.collegeLectures('CLG00017'),
       },
       {
         collegeId: 'CLG0001a',
-        name: 'Life Style',
+        name: getPolyglotText('Life Style', 'home-사이트맵-중카14'),
         path: lectureRoutePaths.collegeLectures('CLG0001a'),
       },
     ],
@@ -121,69 +122,69 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
 
   baseTopSiteMaps = [
     {
-      name: 'Learning',
+      name: getPolyglotText('Learning', 'home-사이트맵-대카테2'),
       items: [
-        { name: '학습중', path: myPageRoutePaths.learningInProgress() },
-        { name: '관심목록', path: myPageRoutePaths.learningInMyList() },
-        { name: '학습예정', path: myPageRoutePaths.learningEnrolled() },
-        { name: '권장과정', path: myPageRoutePaths.learningRequired() },
-        { name: '학습완료', path: myPageRoutePaths.learningCompleted() },
-        { name: '취소/미이수', path: myPageRoutePaths.learningRetry() },
+        { name: getPolyglotText('학습중', 'home-사이트맵-중카20'), path: myPageRoutePaths.learningInProgress() },
+        { name: getPolyglotText('관심목록', 'home-사이트맵-중카21'), path: myPageRoutePaths.learningInMyList() },
+        { name: getPolyglotText('학습예정', 'home-사이트맵-중카22'), path: myPageRoutePaths.learningEnrolled() },
+        { name: getPolyglotText('권장과정', 'home-사이트맵-중카23'), path: myPageRoutePaths.learningRequired() },
+        { name: getPolyglotText('학습완료', 'home-사이트맵-중카24'), path: myPageRoutePaths.learningCompleted() },
+        { name: getPolyglotText('취소/미이수', 'home-사이트맵-중카25'), path: myPageRoutePaths.learningRetry() },
       ],
     },
     {
-      name: 'Recommend',
-      items: [{ name: 'Recommend', path: lectureRoutePaths.recommend() }],
+      name: getPolyglotText('Recommend', 'home-사이트맵-대카테3'),
+      items: [{ name: getPolyglotText('Recommend', 'home-사이트맵-중카26'), path: lectureRoutePaths.recommend() }],
     },
     {
       name: (
         <span>
           <br />
           <br />
-          Community
+          <PolyglotText defaultString="Community" id="home-사이트맵-대카테4" />
         </span>
       ),
       items: [
-        { name: 'My Community', path: communityRoutePaths.myCommunity() },
-        { name: 'Community List', path: communityRoutePaths.communityList() },
-        { name: 'Follow', path: communityRoutePaths.follow() },
+        { name: getPolyglotText('My Community', 'home-사이트맵-중카27'), path: communityRoutePaths.myCommunity() },
+        { name: getPolyglotText('Community List', 'home-사이트맵-중카28'), path: communityRoutePaths.communityList() },
+        { name: getPolyglotText('Follow', 'home-사이트맵-중카29'), path: communityRoutePaths.follow() },
       ],
     },
   ];
 
   baseBottomSiteMaps = [
     {
-      name: 'Introduction',
+      name: getPolyglotText('Introduction', 'home-사이트맵-대카테5'),
       items: [
-        { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
-        { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
+        { name: getPolyglotText('mySUNI 소개', 'home-사이트맵-중카30'), path: mainRoutePaths.introductionMySuni() },
+        { name: getPolyglotText('College 소개', 'home-사이트맵-중카31'), path: mainRoutePaths.introductionCollege() },
         {
-          name: '인증제도 소개',
+          name: getPolyglotText('인증제도 소개', 'home-사이트맵-중카32'),
           path: mainRoutePaths.introductionCertification(),
         },
       ],
     },
     {
-      name: 'Create',
+      name: getPolyglotText('Create', 'home-사이트맵-대카테6'),
       items: [
-        { name: 'Create', path: createRoutePaths.createCreate() },
-        { name: 'Shared', path: createRoutePaths.createShared() },
+        { name: getPolyglotText('Create', 'home-사이트맵-중카33'), path: createRoutePaths.createCreate() },
+        { name: getPolyglotText('Shared', 'home-사이트맵-중카34'), path: createRoutePaths.createShared() },
       ],
     },
     {
-      name: 'My Page',
+      name: getPolyglotText('My Page', 'home-사이트맵-대카테7'),
       items: [
-        { name: 'My Profile', path: myPageRoutePaths.myPageProfile() },
-        { name: 'My Badge', path: myPageRoutePaths.myPageEarnedBadgeList() },
-        { name: 'My Stamp', path: myPageRoutePaths.myPageEarnedStampList() },
-        { name: 'Note', path: myPageRoutePaths.myPageEarnedNoteList() },
+        { name: getPolyglotText('My Profile', ''), path: myPageRoutePaths.myPageProfile() },
+        { name: getPolyglotText('My Badge', 'home-사이트맵-중카35'), path: myPageRoutePaths.myPageEarnedBadgeList() },
+        { name: getPolyglotText('My Stamp', 'home-사이트맵-중카36'), path: myPageRoutePaths.myPageEarnedStampList() },
+        { name: getPolyglotText('Note', ''), path: myPageRoutePaths.myPageEarnedNoteList() },
       ],
     },
     {
-      name: '승인관리',
+      name: getPolyglotText('승인관리', 'home-사이트맵-대카테8'),
       items: [
-        { name: '유료과정', path: myPageRoutePaths.approvalPaidCourse() },
-        { name: '개인학습', path: myPageRoutePaths.approvalPersonalLearning() },
+        { name: getPolyglotText('유료과정', 'home-사이트맵-중카37'), path: myPageRoutePaths.approvalPaidCourse() },
+        { name: getPolyglotText('개인학습', 'home-사이트맵-중카38'), path: myPageRoutePaths.approvalPersonalLearning() },
       ],
     },
     {
@@ -191,13 +192,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         <span>
           <br />
           <br />
-          Support
+          <PolyglotText defaultString="Support" id="home-사이트맵-대카테9" />
         </span>
       ),
       items: [
-        { name: 'Notice', path: boardRoutePaths.supportNotice() },
-        { name: 'FAQ', path: boardRoutePaths.supportFAQ() },
-        { name: 'Q&A', path: boardRoutePaths.supportQnA() },
+        { name: getPolyglotText('Notice', 'home-사이트맵-중카39'), path: boardRoutePaths.supportNotice() },
+        { name: getPolyglotText('FAQ', 'home-사이트맵-중카40'), path: boardRoutePaths.supportFAQ() },
+        { name: getPolyglotText('Q&A', 'home-사이트맵-중카41'), path: boardRoutePaths.supportQnA() },
       ],
     },
   ];
@@ -282,11 +283,11 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         onClose={this.onClose}
       >
         <Modal.Header>
-          mySUNI Site Map
+          <PolyglotText defaultString="mySUNI Site Map" id="home-사이트맵-mssm" />
           <div className="right-btn">
             <Button icon className="btn-blue2" onClick={this.onClickHome}>
               <Icon className="homelink" />
-              Home
+              <PolyglotText defaultString="Home" id="home-사이트맵-home" />
             </Button>
           </div>
         </Modal.Header>
@@ -299,7 +300,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         </Modal.Content>
         <Modal.Actions className="actions">
           <Button className="w190 pop d" onClick={this.onClose}>
-            Close
+            <PolyglotText defaultString="Close" id="home-사이트맵-닫기" />
           </Button>
         </Modal.Actions>
       </Modal>

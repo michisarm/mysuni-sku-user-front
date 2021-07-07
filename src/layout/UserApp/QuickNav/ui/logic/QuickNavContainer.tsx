@@ -11,6 +11,7 @@ import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import boardRoutePaths from 'board/routePaths';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 //import SiteMapModalContainer from './SiteMapModalContainer';
 import SiteMapModalContainer from './SiteMapModalContainerV2';
@@ -271,7 +272,7 @@ class QuickNavContainer extends Component<Props, State> {
               <TopMenuItemView
                 iconName="learning32"
                 notieActive={this.props.notieService!.notieActive}
-                text="Learning"
+                text={getPolyglotText('Learning', 'home-플버튼-lrn')}
                 onClick={() => this.onClickLearning('Learning')}
               />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
@@ -283,7 +284,7 @@ class QuickNavContainer extends Component<Props, State> {
                 <TopMenuItemView
                   iconName="support32"
                   notieActive={this.props.notieService!.notieActive}
-                  text="Support"
+                  text={getPolyglotText('Support', 'home-플버튼-sp')}
                   onClick={() => this.onClickSupport('Support')}
                 />
               )}
@@ -298,7 +299,7 @@ class QuickNavContainer extends Component<Props, State> {
               ) && (
                 <BottomMenuItemView
                   iconName="building"
-                  text="mySUNI Introduction"
+                  text={getPolyglotText('mySUNI Introduction', 'home-플버튼-msid')}
                   onClick={() =>
                     this.onClickIntroduction('mySUNI Introduction')
                   }
@@ -313,7 +314,7 @@ class QuickNavContainer extends Component<Props, State> {
                   trigger={
                     <BottomMenuItemView
                       iconName="admin"
-                      text="관심채널"
+                      text={getPolyglotText('관심채널', 'home-플버튼-관심채널')}
                       onClick={() => this.onClose('관심채널')}
                     />
                   }
@@ -330,7 +331,7 @@ class QuickNavContainer extends Component<Props, State> {
                   trigger={
                     <BottomMenuItemView
                       iconName="sitemap"
-                      text="Site Map"
+                      text={getPolyglotText('Site Map', 'home-플버튼-사이트맵')}
                       onClick={() => this.onClose('Site Map')}
                     />
                   }
@@ -344,7 +345,7 @@ class QuickNavContainer extends Component<Props, State> {
               ) && (
                 <BottomMenuItemView
                   iconName="confirm"
-                  text="승인관리"
+                  text={getPolyglotText('승인관리', 'home-플버튼-승인관리')}
                   onClick={() => this.onClickApproval('승인관리')}
                 />
               )}
@@ -355,7 +356,7 @@ class QuickNavContainer extends Component<Props, State> {
                 <>
                   <BottomMenuItemView
                     iconName="apl"
-                    text="개인학습 등록"
+                    text={getPolyglotText('개인학습 등록', 'home-플버튼-개학등록')}
                     onClick={() => this.onClickApl('개인학습 등록')}
                   />
                 </>
@@ -370,7 +371,7 @@ class QuickNavContainer extends Component<Props, State> {
               {this.hasAdminRole && (
                 <BottomMenuItemView
                   iconName="admin24"
-                  text="Admin Site"
+                  text={getPolyglotText('Admin Site', 'home-플버튼-adst')}
                   onClick={() => this.onClickAdminSite('Admin Site')}
                 />
               )}

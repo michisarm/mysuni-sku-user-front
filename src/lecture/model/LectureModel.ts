@@ -13,6 +13,7 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
+import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
 //import LectrueRibbon from './LectrueRibbon';
 
 class LectureModel extends DramaEntityObservableModel {
@@ -126,15 +127,15 @@ class LectureModel extends DramaEntityObservableModel {
         case 'Missed':
           return '취소/미이수';
         case 'Passed':
-          return '학습 완료';
+          return getPolyglotText('학습 완료', 'home-Inprogress-상태2');
         case 'Progress':
         case 'Failed':
         case 'TestPassed':
         case 'Waiting':
         case 'HomeworkWaiting':
-          return '학습중';
+          return getPolyglotText('학습중', 'home-Inprogress-상태3');
         case 'Approved':
-          return '학습예정';
+          return getPolyglotText('학습예정', '');
       }
     }
     return undefined;
@@ -146,20 +147,20 @@ class LectureModel extends DramaEntityObservableModel {
       if (this.viewState === 'NoShow' || this.viewState === 'Missed') {
         return (
           moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
-          ' 이수 실패'
+          " " + getPolyglotText('이수 실패', '')
         );
       }
       if (this.viewState === 'Passed') {
         return (
           moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
-          ' 학습 완료'
+          " " + getPolyglotText('학습 완료', 'home-Inprogress-완료후')
         );
       }
       if (this.viewState === 'Approved') {
         //TODO STARTDATE
         return (
           moment(Number(this.creationTime)).format('YYYY.MM.DD') +
-          ' 부터 학습시작'
+          " " + getPolyglotText(' 부터 학습시작', '')
         );
       }
       if (
@@ -171,13 +172,13 @@ class LectureModel extends DramaEntityObservableModel {
         this.viewState === 'HomeworkWaiting'
       ) {
         return (
-          moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 학습 시작'
+          moment(Number(this.updateTime)).format('YYYY.MM.DD') + " " + getPolyglotText('학습 시작', '')
         );
       }
       if (this.viewState === 'Rejected') {
         return (
           moment(Number(this.updateTime)).format('YYYY.MM.DD') +
-          ' 수강신청 반려'
+          " " + getPolyglotText('수강신청 반려', '')
         );
       }
     }

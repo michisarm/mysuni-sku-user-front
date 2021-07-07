@@ -3,6 +3,7 @@ import { MyLearningSummaryModal } from 'myTraining';
 import { PersonalBoardDoughnutChartView } from '@sku/chart';
 import React, { useEffect, useMemo } from 'react';
 import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   showApl: boolean
@@ -16,7 +17,7 @@ function LearningTimeDetailView(props: Props) {
   const { showApl } = props;
 
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
-  
+
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(
     () => {
       if(showApl) {
@@ -59,11 +60,11 @@ function LearningTimeDetailView(props: Props) {
         )
       }
     },
-    [badgeLearningTimeDetailItem]
+    [badgeLearningTimeDetailItem?.aplAllowTime, badgeLearningTimeDetailItem?.displayMyCompanyLearningTime, badgeLearningTimeDetailItem?.suniLearningTime, badgeLearningTimeDetailItem?.totalCollegeTime, showApl]
   );
 
   const timeDataBoolean: boolean[] = []
-  
+
   datas.map((data) => {
     if(data.value === 0) {
       timeDataBoolean.push(false)
@@ -81,9 +82,11 @@ function LearningTimeDetailView(props: Props) {
               <MyLearningSummaryModal
                 trigger={
                   <a className="card-item-link">
-                    <h3>학습 시간 상세</h3>
+                    <h3>
+                      <PolyglotText defaultString="학습 시간 상세" id="home-PersonalBoard-TimeDetail" />
+                    </h3>
                   </a>
-                  }
+                }
               />
               <span>{moment().year()}년 기준</span>
             </div>
@@ -104,78 +107,102 @@ function LearningTimeDetailView(props: Props) {
                 <div className="item-con-right detail">
                   <div className="card-gauge-bar type2">
                     <div className="gauge-number sv">
-                      <em className="col-con">mySUNI</em>
+                      <em className="col-con">
+                        <PolyglotText defaultString="mySUNI" id="home-PersonalBoard-DetailSuni" />
+                      </em>
                       <div>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.suniLearningTime /
                             60
                           )}
-                          <em>h</em>
+                          <em>
+                            <PolyglotText defaultString="h" id="home-PersonalBoard-DetailSuniH" />
+                          </em>
                         </strong>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.suniLearningTime %
                             60
                           )}
-                          <em>m</em>
+                          <em>
+                            <PolyglotText defaultString="m" id="home-PersonalBoard-DetailSuniM" />
+                          </em>
                         </strong>
                       </div>
                     </div>
                     <div className="gauge-number mana">
-                      <em className="col-con">관계사</em>
+                      <em className="col-con">
+                        <PolyglotText defaultString="관계사" id="home-PersonalBoard-Detail관계사" />
+                      </em>
                       <div>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.displayMyCompanyLearningTime /
                             60
                           )}
-                          <em>h</em>
+                          <em>
+                            <PolyglotText defaultString="h" id="home-PersonalBoard-Detail관계사H" />
+                          </em>
                         </strong>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.displayMyCompanyLearningTime %
                             60
                           )}
-                          <em>m</em>
+                          <em>
+                            <PolyglotText defaultString="m" id="home-PersonalBoard-Detail관계사M" />
+                          </em>
                         </strong>
                       </div>
                     </div>
                     <div className="gauge-number semi">
-                      <em className="col-con">강의시간</em>
+                      <em className="col-con">
+                        <PolyglotText defaultString="강의시간" id="home-PersonalBoard-Detail강의시간" />
+                      </em>
                       <div>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.totalCollegeTime /
                             60
                           )}
-                          <em>h</em>
+                          <em>
+                            <PolyglotText defaultString="h" id="home-PersonalBoard-Detail강의시간H" />
+                          </em>
                         </strong>
                         <strong>
                           {Math.floor(
                             badgeLearningTimeDetailItem.totalCollegeTime %
                             60
                           )}
-                          <em>m</em>
+                          <em>
+                            <PolyglotText defaultString="m" id="home-PersonalBoard-Detail강의시간M" />
+                          </em>
                         </strong>
                       </div>
                     </div>
                     {
                       showApl && (
                       <div className="gauge-number stu">
-                        <em className="col-con">개인학습</em>
+                        <em className="col-con">
+                          <PolyglotText defaultString="개인학습" id="home-PersonalBoard-Detail개인학습" />
+                        </em>
                         <div>
                           <strong>
                             {Math.floor(
                               badgeLearningTimeDetailItem.aplAllowTime / 60
                             )}
-                            <em>h</em>
+                            <em>
+                              <PolyglotText defaultString="h" id="home-PersonalBoard-Detail개인학습H" />
+                            </em>
                           </strong>
                           <strong>
                             {Math.floor(
                               badgeLearningTimeDetailItem.aplAllowTime % 60
                             )}
-                            <em>m</em>
+                            <em>
+                              <PolyglotText defaultString="m" id="home-PersonalBoard-Detail개인학습M" />
+                            </em>
                           </strong>
                         </div>
                       </div>

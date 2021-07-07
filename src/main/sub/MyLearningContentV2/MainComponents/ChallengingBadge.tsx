@@ -14,6 +14,7 @@ import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
@@ -21,7 +22,7 @@ interface Props extends RouteComponentProps {
   profileMemberName: string;
 }
 
-const ChallengingBadge: React.FC<Props> = Props => {
+const ChallengingBadge: React.FC<Props> = (Props) => {
   //
   const { badgeService, profileMemberName, history } = Props;
 
@@ -94,13 +95,20 @@ const ChallengingBadge: React.FC<Props> = Props => {
     <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님이 도전중인
-          Badge
+          <span className="ellipsis">{profileMemberName}</span>
+          <PolyglotText
+            defaultString="님이 도전중인 Badge"
+            id="home-ChallengeBadges-Title"
+          />
         </strong>
         <div className="right">
           {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View All <Icon className="morelink" />
+              <PolyglotText
+                defaultString="View All"
+                id="home-ChallengeBadges-ViewAll"
+              />
+              <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -133,9 +141,15 @@ const ChallengingBadge: React.FC<Props> = Props => {
           message={
             <>
               <div className="text">
-                도전중인 Badge가 없습니다.
+                <PolyglotText
+                  defaultString="도전중인 Badge가 없습니다."
+                  id="home-ChallengeBadges-도전뱃지"
+                />
                 <br />
-                등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+                <PolyglotText
+                  defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
+                  id="home-ChallengeBadges-등뱃없"
+                />
               </div>
               <Button
                 icon
@@ -143,7 +157,12 @@ const ChallengingBadge: React.FC<Props> = Props => {
                 className="right btn-blue2"
                 onClick={onClickLink}
               >
-                <span className="border">Badge List 바로가기</span>
+                <span className="border">
+                  <PolyglotText
+                    defaultString="Badge List 바로가기"
+                    id="home-ChallengeBadges-목록없음"
+                  />
+                </span>
                 <Icon className="morelink" />
               </Button>
             </>
@@ -154,6 +173,6 @@ const ChallengingBadge: React.FC<Props> = Props => {
   );
 };
 
-export default inject(
-  mobxHelper.injectFrom('badge.badgeService')
-)(withRouter(observer(ChallengingBadge)));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  withRouter(observer(ChallengingBadge))
+);

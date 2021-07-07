@@ -39,6 +39,7 @@ import BadgeLearningSummaryView from './BadgeLearningSummaryView';
 import LearningCompleteSummaryView from './LearningCompleteSummaryView';
 import { Action, Area } from 'tracker/model';
 import Image from '../../../shared/components/Image';
+import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -251,7 +252,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <div className="personal-header-title">
-            <h3>{skProfile.profileViewName}님,</h3>
+            <h3>{skProfile.profileViewName}
+              <PolyglotText defaultString="님," id="home-Summary-님" />
+            </h3>
             <DashBoardSentenceContainer />
           </div>
           <div className="main-gauge-box">
@@ -290,7 +293,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               trigger={
                 <a>
                   <Icon className="channel24" />
-                  <span>관심 채널 설정</span>
+                  <span>
+                    <PolyglotText defaultString="관심 채널 설정" id="home-PersonalBoard-관심채널" />
+                  </span>
                 </a>
               }
               favorites={favoriteChannels}
@@ -345,14 +350,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     }}
                   >
                     <Icon className="card-main24" />
-                    <span>개인학습</span>
+                    <span>
+                      <PolyglotText defaultString="개인학습" id="home-PersonalBoard-개인학습" />
+                    </span>
                   </a>
                 </div>
               )}
             </div>
             <div className="right">
               <a onClick={this.moveToSupportQnA} className="contact-us wh">
-                <span>1:1 문의하기</span>
+                <span>
+                  <PolyglotText defaultString="1:1 문의하기" id="home-PersonalBoard-1대1" />
+                </span>
                 <Icon className="arrow-w-16" />
               </a>
             </div>
@@ -366,7 +375,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             } else {
               reactAlert({
                 title: '',
-                message: `목표 설정이 완료됐습니다.`,
+                // message: `목표 설정이 완료됐습니다.`,
+                message: getPolyglotText('목표 설정이 완료됐습니다.', ''),
               });
             }
             return this.setState({ learningObjectivesOpen: value });

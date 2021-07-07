@@ -14,11 +14,12 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 function EnrollingLearning({ history }: RouteComponentProps) {
   const [cardList, setCardList] = useState<EnrollingCardList[]>();
   const [isLoading, setIsLoading] = useState(false);
-  const [title] = useState('수강 신청 과정 모아보기');
+  const [title] = useState(getPolyglotText('수강 신청 과정 모아보기', 'home-Enrolling-Title'));
 
   useEffect(() => {
     fetchLearningCardLsit().then(() => setIsLoading(true));
@@ -51,7 +52,8 @@ function EnrollingLearning({ history }: RouteComponentProps) {
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View all <Icon className="morelink" />
+              <PolyglotText defaultString="View all" id="home-Enrolling-View all" />
+              <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -92,7 +94,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
           <Loadingpanel loading={isLoading} color="#eff0f1" />
           {!isLoading && (
             <NoSuchContentPanel
-              message={<div className="text">수강 신청 과정이 없습니다.</div>}
+              message={<div className="text"><PolyglotText defaultString="수강 신청 과정이 없습니다." id="home-Enrolling-목록없음" /></div>}
             />
           )}
         </>

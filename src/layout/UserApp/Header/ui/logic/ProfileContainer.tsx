@@ -18,6 +18,7 @@ import {
 } from '../../../../../shared/helper/findUserRole';
 import { Button, Popup } from 'semantic-ui-react';
 import ProfilePopupView from '../view/ProfilePopupView';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -175,13 +176,17 @@ class ProfileContainer extends Component<Props, State> {
                     rel="noopener noreferrer"
                   >
                     <i aria-hidden="true" className="balloon mypage icon" />
-                    <span>강사 서비스</span>
+                    <span>
+                      <PolyglotText defaultString="강사 서비스" id="home-mapg-강사서비스" />
+                    </span>
                   </a>
                 </li>
                 <li>
                   <button type="button" onClick={this.onLogout}>
                     <i aria-hidden="true" className="balloon logout icon" />
-                    <span>Logout</span>
+                    <span>
+                      <PolyglotText defaultString="Logout" id="home-mapg-lgot" />
+                    </span>
                   </button>
                 </li>
               </ul>

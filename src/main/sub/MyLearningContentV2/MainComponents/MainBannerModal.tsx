@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Modal} from 'semantic-ui-react';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   includeUrl: string,
@@ -29,7 +30,9 @@ class MainBannerModal extends Component<Props> {
         <Modal.Header>
           {bannerTitle}
           <div className="right-btn">
-            <Button className="close" onClick={this.closeMainBannerModal}>Close</Button>
+            <Button className="close" onClick={this.closeMainBannerModal}>
+              <PolyglotText defaultString="Close" id="home-mb-닫기버튼" />
+            </Button>
           </div>
         </Modal.Header>
         <Modal.Content>
