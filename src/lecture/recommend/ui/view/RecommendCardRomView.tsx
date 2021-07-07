@@ -8,6 +8,7 @@ import { find } from 'lodash';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from 'tracker/model';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   const {
@@ -50,13 +51,13 @@ export function RecommendCardRomView(props: RecommendCardRom) {
     >
       <div className="section-head">
         <span className="channel">{getChannelName()}</span>
-        {`채널에서 ${SkProfileService.instance.profileMemberName}님께 추천하는 과정입니다.`}
+        {`${getPolyglotText('채널에서', 'rcmd-추천-Channel')} ${SkProfileService.instance.profileMemberName} ${getPolyglotText('님께 추천하는 과정입니다.', 'rcmd-추천-Recommand')}`}
         <span className="channel">{`(${getCardCount()})`}</span>
         {isCardWithRelatedCountRoms && (
           <div className="right">
             <Link to={`/lecture/recommend/channel/${channelId}`}>
               <button className="ui icon button right btn-blue">
-                View all
+                <PolyglotText defaultString="View all" id="rcmd-추천-ViewAll2" />
                 <i aria-hidden="true" className="icon morelink" />
               </button>
             </Link>
@@ -83,7 +84,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
             })
           ) : (
             <NoSuchContentPanel
-              message={`${getChannelName()}채널에 해당하는 추천 학습과정이 없습니다.`}
+              message={`${getChannelName()} ${getPolyglotText('채널에 해당하는 추천 학습과정이 없습니다.', 'rcmd-추천-채널없음')}`}
             />
           )}
         </ul>

@@ -14,6 +14,7 @@ import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared/Lecture';
 import LectureModel from '../../../model/LectureModel';
 import LectureServiceType from '../../../model/LectureServiceType';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -152,10 +153,10 @@ class ChannelLecturesLineContainer extends Component<Props> {
                   }
                   onAction={() => {
                     reactAlert({
-                      title: '알림',
+                      title: getPolyglotText('알림', 'rcmd-관심목록-알림'),
                       message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
+                        ? getPolyglotText('본 과정이 관심목록에서 제외되었습니다.', 'rcmd-관심목록-상세1')
+                        : getPolyglotText('본 과정이 관심목록에 추가되었습니다.', 'rcmd-관심목록-상세2'),
                     });
                     this.onActionLecture(inMyLecture || lecture);
                   }}
@@ -165,7 +166,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
             })}
           </Lecture.Group>
         ) : (
-          <NoSuchContentPanel message="선택하신 채널에 해당하는 추천 학습과정이 없습니다." />
+          <NoSuchContentPanel message={getPolyglotText('선택하신 채널에 해당하는 추천 학습과정이 없습니다.', 'rcmd-추천-목록없음')} />
         )}
       </>
     );

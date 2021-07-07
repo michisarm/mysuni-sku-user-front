@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { BreadcrumbValue } from '../../../index';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   values?: BreadcrumbValue[];
@@ -136,7 +137,7 @@ class BreadcrumbView extends Component<Props, State> {
               to="/"
               className="section"
             >
-              Home
+              <PolyglotText defaultString="Home" id="learning-brc-dth1" />
             </Link>
 
             {Array.isArray(values) &&

@@ -174,10 +174,10 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: getPolyglotText('My Page', 'home-사이트맵-대카테7'),
       items: [
-        { name: getPolyglotText('My Profile', ''), path: myPageRoutePaths.myPageProfile() },
+        { name: getPolyglotText('My Profile', 'home-사이트맵-중카42'), path: myPageRoutePaths.myPageProfile() },
         { name: getPolyglotText('My Badge', 'home-사이트맵-중카35'), path: myPageRoutePaths.myPageEarnedBadgeList() },
         { name: getPolyglotText('My Stamp', 'home-사이트맵-중카36'), path: myPageRoutePaths.myPageEarnedStampList() },
-        { name: getPolyglotText('Note', ''), path: myPageRoutePaths.myPageEarnedNoteList() },
+        { name: getPolyglotText('Note', 'home-사이트맵-중카43'), path: myPageRoutePaths.myPageEarnedNoteList() },
       ],
     },
     {

@@ -45,7 +45,7 @@ class DialogContainer extends Component<Props> {
         <Modal.Actions className="normal twin">
           { onCancel && (
             <Button secondary onClick={onCancel}>
-              <PolyglotText defaultString="취소" id="" />
+              <PolyglotText defaultString="취소" id="home-관심목록alert-취소" />
             </Button>
           )}
           { onOk && (

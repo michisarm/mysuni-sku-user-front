@@ -190,7 +190,7 @@ export default function CardView({
     const endDate = getEducationDate('completedTableViews');
 
     if (startDate || endDate) {
-      const text = startDate ? getPolyglotText('학습중', 'home-Inprogress-상태3') : endDate && getPolyglotText('학습 완료', 'home-Inprogress-상태2');
+      const text = startDate ? getPolyglotText('학습중', 'home-Inprogress-Card진행중') : endDate && getPolyglotText('학습 완료', 'home-Inprogress-Card완료');
       const date = startDate || endDate;
       return (
         <>
@@ -198,7 +198,7 @@ export default function CardView({
             <Icon className="state" />
             <span>{text}</span>
           </Label>
-          <div className="study-date">{`${date} ${getPolyglotText('학습 시작', 'home-Inprogress-완료전')}`}</div>
+          <div className="study-date">{`${date} ${getPolyglotText('학습 시작', 'home-Inprogress-Card시작')}`}</div>
         </>
       );
     }
@@ -223,18 +223,18 @@ export default function CardView({
       remainingDayCount !== undefined
     ) {
       if (studentCount >= capacity) {
-        return <Label className="done"><PolyglotText defaultString="정원 마감" id="" /></Label>;
+        return <Label className="done"><PolyglotText defaultString="정원 마감" id="home-Inprogress-정원마감" /></Label>;
       }
 
       if (remainingDayCount === 0) {
-        return <Label className="day"><PolyglotText defaultString="오늘 마감" id="" /></Label>;
+        return <Label className="day"><PolyglotText defaultString="오늘 마감" id="home-Inprogress-오늘마감" /></Label>;
       } else {
         return <Label className="day">D-{remainingDayCount}</Label>;
       }
     }
 
     if (isRequired) {
-      return <Label className="ribbon2"><PolyglotText defaultString="핵인싸과정" id="" /></Label>;
+      return <Label className="ribbon2"><PolyglotText defaultString="핵인싸과정" id="home-ribbon-핵인싸과정" /></Label>;
     }
   };
 

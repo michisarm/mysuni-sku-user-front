@@ -4,6 +4,7 @@ import cubePaths from '../../../routePaths';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import CreateCubeDetailContainer from '../logic/CreateCubeDetailContainer';
 import { useRequestContentsProviders } from '../../service/useRequestContentsProvider';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 function CreateCubeDetailPage() {
   useRequestCollege();
@@ -13,8 +14,8 @@ function CreateCubeDetailPage() {
     <ContentLayout
       className="bg-white"
       breadcrumb={[
-        { text: 'Create' },
-        { text: 'Create', path: cubePaths.createCreate() },
+        { text: getPolyglotText('Create', 'learning-BreadCreate-dth2') },
+        { text: getPolyglotText('Create', 'learning-BreadCreate-dth3'), path: cubePaths.createCreate() },
       ]}
     >
       <CreateCubeDetailContainer />

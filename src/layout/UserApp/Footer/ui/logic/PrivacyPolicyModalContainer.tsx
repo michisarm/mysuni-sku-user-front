@@ -29,7 +29,7 @@ export default class PrivacyPolicyModalContainer extends Component<
         value: '20210614',
         text: getPolyglotText(
           '공고일자 : 2021 년 6월 14일',
-          'home-개정얼-공고1'
+          'home-개정얼-공고3'
         ),
       },
       {
@@ -37,7 +37,7 @@ export default class PrivacyPolicyModalContainer extends Component<
         value: '20200901',
         text: getPolyglotText(
           '공고일자 : 2020 년 9월 1일',
-          'home-개정얼-공고2'
+          'home-개정얼-공고1'
         ),
       },
       {
@@ -45,7 +45,7 @@ export default class PrivacyPolicyModalContainer extends Component<
         value: '20200117',
         text: getPolyglotText(
           '공고일자 : 2020 년 1월 17일',
-          'home-개정얼-상세설명'
+          'home-개정얼-공고2'
         ),
       },
     ],

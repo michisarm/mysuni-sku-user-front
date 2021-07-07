@@ -125,7 +125,7 @@ class LectureModel extends DramaEntityObservableModel {
         case 'Rejected':
         case 'NoShow':
         case 'Missed':
-          return '취소/미이수';
+          return getPolyglotText('취소/미이수', 'home-Inprogress-상태5');
         case 'Passed':
           return getPolyglotText('학습 완료', 'home-Inprogress-상태2');
         case 'Progress':
@@ -135,7 +135,7 @@ class LectureModel extends DramaEntityObservableModel {
         case 'HomeworkWaiting':
           return getPolyglotText('학습중', 'home-Inprogress-상태3');
         case 'Approved':
-          return getPolyglotText('학습예정', '');
+          return getPolyglotText('학습예정', 'home-Inprogress-상태4');
       }
     }
     return undefined;
@@ -147,20 +147,20 @@ class LectureModel extends DramaEntityObservableModel {
       if (this.viewState === 'NoShow' || this.viewState === 'Missed') {
         return (
           moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
-          " " + getPolyglotText('이수 실패', '')
+          " " + getPolyglotText('이수 실패', 'home-Inprogress-Lecture실패')
         );
       }
       if (this.viewState === 'Passed') {
         return (
           moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
-          " " + getPolyglotText('학습 완료', 'home-Inprogress-완료후')
+          " " + getPolyglotText('학습 완료', 'home-Inprogress-Lecture완료')
         );
       }
       if (this.viewState === 'Approved') {
         //TODO STARTDATE
         return (
           moment(Number(this.creationTime)).format('YYYY.MM.DD') +
-          " " + getPolyglotText(' 부터 학습시작', '')
+          " " + getPolyglotText(' 부터 학습시작', 'home-Inprogress-Lecture시작')
         );
       }
       if (
@@ -172,13 +172,13 @@ class LectureModel extends DramaEntityObservableModel {
         this.viewState === 'HomeworkWaiting'
       ) {
         return (
-          moment(Number(this.updateTime)).format('YYYY.MM.DD') + " " + getPolyglotText('학습 시작', '')
+          moment(Number(this.updateTime)).format('YYYY.MM.DD') + " " + getPolyglotText('학습 시작', 'home-Inprogress-Lecture시작')
         );
       }
       if (this.viewState === 'Rejected') {
         return (
           moment(Number(this.updateTime)).format('YYYY.MM.DD') +
-          " " + getPolyglotText('수강신청 반려', '')
+          " " + getPolyglotText('수강신청 반려', 'home-Inprogress-Lecture반려')
         );
       }
     }

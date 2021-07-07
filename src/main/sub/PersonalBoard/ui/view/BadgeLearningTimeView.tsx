@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps {
   myLearningSummaryService?: MyLearningSummaryService;
 }
 
-const BadgeLearningTimeView: React.FC<Props> = Props => {
+const BadgeLearningTimeView: React.FC<Props> = (Props) => {
   const { activeIndex, history, myLearningSummaryService } = Props;
 
   const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
@@ -22,11 +22,11 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
 
   const goToBadge = useCallback(() => {
     history.push('/certification/badge/EarnedBadgeList/pages/1');
-  }, [history]);
+  }, []);
 
   const goToLearning = useCallback(() => {
     history.push('/my-training/learning/Completed/pages/1');
-  }, [history]);
+  }, []);
 
   const sumOfCurrentYearLectureTime =
     (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
@@ -46,17 +46,26 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
               <div className="card-item-tit">
                 <a className="card-item-link" onClick={goToBadge}>
                   <h3>
-                    <PolyglotText defaultString="Badges" id="home-PersonalBoard-Badges" />
+                    <PolyglotText
+                      defaultString="Badges"
+                      id="home-PersonalBoard-Badges"
+                    />
                   </h3>
                 </a>
                 <span>
-                    <PolyglotText defaultString="보유중인 전체 Badge 갯수" id="home-PersonalBoard-badgesEA" />
+                  <PolyglotText
+                    defaultString="보유중인 전체 Badge 갯수"
+                    id="home-PersonalBoard-badgesEA"
+                  />
                 </span>
               </div>
               <div className="card-item-con">
                 <div className="card-gauge-bar color-sv">
                   <div className="gauge-tit">
-                    <PolyglotText defaultString="MY Badges" id="home-PersonalBoard-mybadges" />
+                    <PolyglotText
+                      defaultString="MY Badges"
+                      id="home-PersonalBoard-mybadges"
+                    />
                   </div>
                   <div className="card-gauge-bar sty2 color-sv">
                     <div className="rangeBox">
@@ -89,12 +98,18 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                         ? badgeLearningTimeItem.badgeMyCount
                         : 0}
                     </strong>
-                    <PolyglotText defaultString="개" id="home-PersonalBoard-갯수" />
+                    <PolyglotText
+                      defaultString="개"
+                      id="home-PersonalBoard-갯수"
+                    />
                   </span>
                 </div>
                 <div className="card-gauge-bar">
                   <span className="gauge-tit">
-                    <PolyglotText defaultString="우리 회사 평균" id="home-PersonalBoard-badgesAVG" />
+                    <PolyglotText
+                      defaultString="우리 회사 평균"
+                      id="home-PersonalBoard-badgesAVG"
+                    />
                   </span>
                   <div className="card-gauge-bar sty2">
                     <div className="rangeBox">
@@ -127,7 +142,10 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                         ? badgeLearningTimeItem.companyAvgBadgeCount
                         : 0}
                     </strong>
-                    <PolyglotText defaultString="개" id="home-PersonalBoard-갯수AVG" />
+                    <PolyglotText
+                      defaultString="개"
+                      id="home-PersonalBoard-갯수AVG"
+                    />
                   </span>
                 </div>
               </div>
@@ -136,17 +154,27 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
               <div className="card-item-tit">
                 <a className="card-item-link" onClick={goToLearning}>
                   <h3>
-                    <PolyglotText defaultString="학습 시간" id="home-PersonalBoard-학습시간TITLE" />
+                    <PolyglotText
+                      defaultString="학습 시간"
+                      id="home-PersonalBoard-학습시간TITLE"
+                    />
                   </h3>
                 </a>
                 <span>
-                  {moment().year()}<PolyglotText defaultString="년 완료 학습" id="home-PersonalBoard-완료학습" />
+                  {moment().year()}
+                  <PolyglotText
+                    defaultString="년 완료 학습"
+                    id="home-PersonalBoard-완료학습"
+                  />
                 </span>
               </div>
               <div className="card-item-con">
                 <div className="card-gauge-bar color-manage">
                   <span className="gauge-tit">
-                    <PolyglotText defaultString="MY 학습시간" id="home-PersonalBoard-학습시간MY" />
+                    <PolyglotText
+                      defaultString="MY 학습시간"
+                      id="home-PersonalBoard-학습시간MY"
+                    />
                   </span>
                   <div className="card-gauge-bar sty2 color-blue">
                     <div className="rangeBox">
@@ -177,16 +205,25 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                   <span className="gauge-number">
                     <div>
                       <strong>{hour ? hour : 0}</strong>
-                      h
+                      <PolyglotText
+                        defaultString="h"
+                        id="home-PersonalBoard-학습시간myH"
+                      />
                       &nbsp;
                       <strong>{minute ? minute : 0}</strong>
-                      m
+                      <PolyglotText
+                        defaultString="m"
+                        id="home-PersonalBoard-학습시간myM"
+                      />
                     </div>
                   </span>
                 </div>
                 <div className="card-gauge-bar">
                   <span className="gauge-tit">
-                    <PolyglotText defaultString="우리 회사 평균" id="home-PersonalBoard-학습시간AVG" />
+                    <PolyglotText
+                      defaultString="우리 회사 평균"
+                      id="home-PersonalBoard-학습시간AVG"
+                    />
                   </span>
                   <div className="card-gauge-bar sty2">
                     <div className="rangeBox">
@@ -194,20 +231,20 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                         <div
                           style={
                             activeIndex === -1
-                              ? {width: 0}
+                              ? { width: 0 }
                               : {
-                                width: `${
-                                  totalLearningTime >
-                                  badgeLearningTimeItem.companyAvglearningTime
-                                    ? (badgeLearningTimeItem.companyAvglearningTime /
-                                    (totalLearningTime * 1.1)) *
-                                    100
-                                    : (badgeLearningTimeItem.companyAvglearningTime /
-                                    (badgeLearningTimeItem.companyAvglearningTime *
-                                      1.1)) *
-                                    100
-                                }%`,
-                              }
+                                  width: `${
+                                    totalLearningTime >
+                                    badgeLearningTimeItem.companyAvglearningTime
+                                      ? (badgeLearningTimeItem.companyAvglearningTime /
+                                          (totalLearningTime * 1.1)) *
+                                        100
+                                      : (badgeLearningTimeItem.companyAvglearningTime /
+                                          (badgeLearningTimeItem.companyAvglearningTime *
+                                            1.1)) *
+                                        100
+                                  }%`,
+                                }
                           }
                           className="percent"
                         />
@@ -222,13 +259,20 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                           )
                         : 0}
                     </strong>
-                    h&nbsp;
+                    <PolyglotText
+                      defaultString="h"
+                      id="home-PersonalBoard-학습시간avgH"
+                    />
+                    &nbsp;
                     <strong>
                       {badgeLearningTimeItem.companyAvglearningTime
                         ? badgeLearningTimeItem.companyAvglearningTime % 60
                         : 0}
                     </strong>
-                    m
+                    <PolyglotText
+                      defaultString="m"
+                      id="home-PersonalBoard-학습시간avgM"
+                    />
                   </span>
                 </div>
               </div>

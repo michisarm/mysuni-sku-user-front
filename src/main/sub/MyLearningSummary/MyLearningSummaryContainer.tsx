@@ -376,7 +376,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               reactAlert({
                 title: '',
                 // message: `목표 설정이 완료됐습니다.`,
-                message: getPolyglotText('목표 설정이 완료됐습니다.', ''),
+                message: getPolyglotText('목표 설정이 완료됐습니다.', 'home-PersonalBoard-complete'),
               });
             }
             return this.setState({ learningObjectivesOpen: value });
