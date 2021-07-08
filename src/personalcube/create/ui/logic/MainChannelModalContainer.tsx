@@ -8,6 +8,7 @@ import { IdName } from 'shared/model';
 import { CollegeModel, CollegeColors } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
+import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {
@@ -117,14 +118,18 @@ class MainChannelModalContainer extends Component<Props, State> {
     return (
       <Modal className="base w560" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
         <Modal.Header className="res">
-          메인채널 선택
-          <span className="sub f12">메인채널을 선택해주세요.</span>
+          <PolyglotText defaultString="메인채널 선택" id="Create-NMMainChannelModal-MainChannel" />
+          <span className="sub f12">
+            <PolyglotText defaultString="메인채널을 선택해주세요." id="Create-NMMainChannelModal-MainChannelSub" />
+          </span>
         </Modal.Header>
         <Modal.Content>
           <ChannelModalContentWrapper
             header={(
               <div className="cell v-middle">
-                <span className="text01">Channel list</span>
+                <span className="text01">
+                  <PolyglotText defaultString="Channel list" id="Create-NMMainChannelModal-Channel list" />
+                </span>
               </div>
             )}
           >
@@ -162,8 +167,8 @@ class MainChannelModalContainer extends Component<Props, State> {
           </ChannelModalContentWrapper>
         </Modal.Content>
         <Modal.Actions>
-          <Button type="button" className="w190 pop d" onClick={this.onCancel}>Cancel</Button>
-          <Button type="button" className="w190 pop p" onClick={this.onConfirm}>OK</Button>
+          <Button type="button" className="w190 pop d" onClick={this.onCancel}><PolyglotText defaultString="Cancel" id="Create-NMMainChannelModal-Cancel" /></Button>
+          <Button type="button" className="w190 pop p" onClick={this.onConfirm}><PolyglotText defaultString="OK" id="Create-NMMainChannelModal-OK" /></Button>
         </Modal.Actions>
       </Modal>
     );

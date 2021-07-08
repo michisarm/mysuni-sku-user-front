@@ -7,6 +7,7 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
 import DashBoardSentenceContainer from '../DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 import Image from '../../../../shared/components/Image';
+import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   image: string;
@@ -73,9 +74,9 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
         <div className="text-info">
           <div className="name">{name}님,</div>
           <div className="part">
-            {type === 'Recommend' && <p>나의 관심 채널을 확인해볼까요?</p>}
-            {type === 'Learning' && <p>오늘도 지식이 쑥쑥 자라나고 있어요.</p>}
-            {type === 'Create' && <p>나만의 학습 콘텐츠를 만들어 보세요.</p>}
+            {type === 'Recommend' && <p><PolyglotText defaultString="나의 관심 채널을 확인해볼까요?" id="Create-mifa-Recommand" /></p>}
+            {type === 'Learning' && <p><PolyglotText defaultString="오늘도 지식이 쑥쑥 자라나고 있어요." id="Create-mifa-Learning" /></p>}
+            {type === 'Create' && <p><PolyglotText defaultString="나만의 학습 콘텐츠를 만들어 보세요." id="Create-mifa-Create" /></p>}
             {type !== 'Recommend' &&
               type !== 'Learning' &&
               type !== 'Create' && <DashBoardSentenceContainer />}

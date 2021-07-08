@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
 import { Grid, Icon, Select } from 'semantic-ui-react';
 import { IdName } from 'shared/model';
+import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props extends RouteComponentProps {
@@ -38,11 +39,13 @@ class ContentsProviderSelectForCubeIntroView extends React.Component<Props, Stat
 
     return (
       <>
-        <label className="necessary">교육기관 / 출처</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육기관 / 출처" id="Create-NM-교육기관출처" />
+        </label>
         <Grid className="create">
           <Grid.Column>
             <Select
-              placeholder="선택해주세요"
+              placeholder={getPolyglotText('선택해주세요', 'Create-NM-선택해주세요')}
               className="w100"
               options = {contentsProviderTsx}
               onChange={(e: any, data: any) => onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)}
@@ -53,7 +56,7 @@ class ContentsProviderSelectForCubeIntroView extends React.Component<Props, Stat
             <Grid.Column>
               <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
                 <input type="text"
-                  placeholder="선택사항이 없는 경우, 교육기관/출처 를 입력해주세요."
+                  placeholder={getPolyglotText('선택사항이 없는 경우, 교육기관/출처 를 입력해주세요.', 'Create-NM-기타Sub')}
                   value={etcCp || ''}
                   onClick={() => this.setState({ focus: true })}
                   onBlur={() => this.setState({ focus: false })}

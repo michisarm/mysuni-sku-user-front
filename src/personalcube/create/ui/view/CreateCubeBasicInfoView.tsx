@@ -7,6 +7,7 @@ import { CubeTypeNameType } from '../../../personalcube/model';
 import EnumUtil, { CubeStateView } from '../../../../shared/ui/logic/EnumUtil';
 import { CubeCategory, combineCollege, renderChannelNames } from '../../../../shared/model/CubeCategory';
 import CubeType from '../../../../lecture/detail/model/CubeType';
+import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface CreateCubeBasicInfoViewProps {
@@ -38,19 +39,25 @@ export default function CreateCubeBasicInfoView({
   return (
     <>
       <div className="section-tit">
-        <span className="text1">기본정보</span>
+        <span className="text1">
+          <PolyglotText defaultString="기본정보" id="Create-DetailBasic-기본정보" />
+        </span>
       </div>
       {
         <Table className="create">
           <Table.Body>
             <Table.Row>
-              <Table.HeaderCell>강좌명</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="강좌명" id="Create-DetailBasic-강좌명" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{name}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>메인채널</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="메인채널" id="Create-DetailBasic-메인채널" />
+              </Table.HeaderCell>
               <Table.Cell>
                 {mainCollegeName}
                 <span className="dash" />
@@ -58,7 +65,9 @@ export default function CreateCubeBasicInfoView({
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>서브채널</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="서브채널" id="Create-DetailBasic-서브채널" />
+              </Table.HeaderCell>
               <Table.Cell>
               {
                 collegeIdList &&
@@ -74,13 +83,17 @@ export default function CreateCubeBasicInfoView({
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>교육형태</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육형태" id="Create-DetailBasic-교육형태" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{CubeTypeNameType[cubeType]}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>생성정보</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="생성정보" id="Create-DetailBasic-생성정보" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{moment(time).format('YYYY.MM.DD')}
                   <span className="dash" />{creatorName}
@@ -88,13 +101,15 @@ export default function CreateCubeBasicInfoView({
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>승인정보</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="승인정보" id="Create-DetailBasic-승인정보" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>
                 {EnumUtil.getEnumValue(CubeStateView, cubeState).get(cubeState)}
                 {
                   remark  && (
-                    <><br />사유<span className = "dash" />{remark}</>
+                    <><br /><PolyglotText defaultString="사유" id="Create-DetailBasic-사유" /><span className = "dash" />{remark}</>
                   )
                 }
                 </div>

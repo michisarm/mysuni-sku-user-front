@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { useScrollMove } from '../../../../myTraining/useScrollMove';
 import routePaths from '../../../routePaths';
 import { CreateCube } from '../../model/CreateCube';
+import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 interface CreateListViewProps {
   createCubes: CreateCube[];
@@ -43,11 +44,11 @@ export default function CreateListView({
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell className="no">No</Table.HeaderCell>
-            <Table.HeaderCell className="title">강좌명</Table.HeaderCell>
-            <Table.HeaderCell className="type">교육형태</Table.HeaderCell>
-            <Table.HeaderCell className="status">상태</Table.HeaderCell>
-            <Table.HeaderCell className="date">일자</Table.HeaderCell>
+            <Table.HeaderCell className="no"><PolyglotText defaultString="No" id="Create-MainList-컬럼1" /></Table.HeaderCell>
+            <Table.HeaderCell className="title"><PolyglotText defaultString="강좌명" id="Create-MainList-컬럼2" /></Table.HeaderCell>
+            <Table.HeaderCell className="type"><PolyglotText defaultString="교육형태" id="Create-MainList-컬럼3" /></Table.HeaderCell>
+            <Table.HeaderCell className="status"><PolyglotText defaultString="상태" id="Create-MainList-컬럼4" /></Table.HeaderCell>
+            <Table.HeaderCell className="date"><PolyglotText defaultString="일자" id="Create-MainList-컬럼6" /></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

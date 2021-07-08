@@ -4,6 +4,7 @@ import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import { getContentsProviderName } from '../../service/useRequestContentsProvider';
+import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface CreateCubeDetailInfoViewProps {
@@ -19,25 +20,33 @@ export default function CreateCubeDetailInfoView({
   return (
     <>
       <div className="section-tit">
-        <span className="text1">교육정보</span>
+        <span className="text1">
+          <PolyglotText defaultString="교육정보" id="Create-DetailContentsWaiting-교육정보" />
+        </span>
       </div>
       { cubeContents && (
         <Table className="create">
           <Table.Body>
             <Table.Row>
-              <Table.HeaderCell>교육목표</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육목표" id="Create-DetailContentsWaiting-교육목표" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{cubeContents.description.goal}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>교육대상</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육대상" id="Create-DetailContentsWaiting-교육대상" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{cubeContents.description.applicants}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>교육내용</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육내용" id="Create-DetailContentsWaiting-교육내용" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <ReactQuill
                   theme="bubble"
@@ -47,13 +56,17 @@ export default function CreateCubeDetailInfoView({
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>이수조건</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="이수조건" id="Create-DetailContentsWaiting-이수조건" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{cubeContents.description.completionTerms}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>기타안내</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="기타안내" id="Create-DetailContentsWaiting-기타안내" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <ReactQuill
                   theme="bubble"
@@ -63,19 +76,25 @@ export default function CreateCubeDetailInfoView({
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>교육시간</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육시간" id="Create-DetailContentsWaiting-교육시간" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{timeToHourMinuteFormat(cube.learningTime)}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>난이도</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="난이도" id="Create-DetailContentsWaiting-난이도" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>{cubeContents.difficultyLevel}</div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell>교육기관 / 출처</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText defaultString="교육기관 / 출처" id="Create-DetailContentsWaiting-교육기관출처" />
+              </Table.HeaderCell>
               <Table.Cell>
                 <div>
                   {getContentsProviderName(cubeContents.organizerId)}
