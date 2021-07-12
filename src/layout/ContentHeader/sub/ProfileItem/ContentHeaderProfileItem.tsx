@@ -7,7 +7,7 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
 import DashBoardSentenceContainer from '../DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 import Image from '../../../../shared/components/Image';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   image: string;

@@ -7,7 +7,7 @@ import SelectOptions from '../../model/SelectOptions';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import ContentsProviderContainer from '../logic/ContentsProviderContainer';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeEditView() {

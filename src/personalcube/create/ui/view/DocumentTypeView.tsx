@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface DocumentTypeViewProps {

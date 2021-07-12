@@ -9,10 +9,11 @@ import {
 import { hasNoTestAndNoReport } from '../../../utility/cubeTester';
 import LectureState from '../../../viewModel/LectureState';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const APPROVE = '학습하기';
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
+const APPROVE = getPolyglotText('학습하기', 'CollageState-WebPage-학습하기');
+const PROGRESS = getPolyglotText('학습중', 'CollageState-WebPage-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-WebPage-학습완료');
 
 const actionClassName = 'bg';
 
@@ -32,7 +33,7 @@ function CanceledView(props: CanceledViewProps) {
       }
     }
     startLearning();
-  }, [cubeType]);
+  }, []);
   return (
     <>
       <button

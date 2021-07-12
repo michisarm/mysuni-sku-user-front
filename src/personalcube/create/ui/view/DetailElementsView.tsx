@@ -1,7 +1,7 @@
 
 import React, { FunctionComponent } from 'react';
 import { Segment, Form, Step } from 'semantic-ui-react';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 export const ContentWrapperWithHeader: FunctionComponent = ({ children }) => (

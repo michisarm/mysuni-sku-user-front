@@ -18,6 +18,7 @@ import { reactAlert } from '@nara.platform/accent';
 import LectureState from '../../../viewModel/LectureState';
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
@@ -67,7 +68,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   useEffect(() => {
     setPinned(taskDetail?.pinned);
     getFileIds();
-  }, [taskDetail]);
+  }, [getFileIds, taskDetail]);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = taskDetail && taskDetail.fileBoxId;
@@ -75,7 +76,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
-  }, [taskDetail]);
+  }, [findFiles, taskDetail]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
@@ -83,31 +84,31 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
     });
-  }, []);
+  }, [filesMap]);
 
   const OnClickModify = useCallback(() => {
     handleOnClickModify(taskId, detailType);
-  }, []);
+  }, [detailType, handleOnClickModify, taskId]);
 
   const OnClickDelete = useCallback(() => {
     handleOnClickDelete(boardId, taskId, detailType);
-  }, []);
+  }, [boardId, detailType, handleOnClickDelete, taskId]);
 
   const OnClicList = useCallback(() => {
     handleOnClickList(taskId);
-  }, []);
+  }, [handleOnClickList, taskId]);
 
   const onClickReplies = useCallback(() => {
     history.push('#reply');
     handleOnClickReplies(taskId);
-  }, []);
+  }, [handleOnClickReplies, history, taskId]);
 
   useEffect(() => {
     window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
-  }, []);
+  }, [clickProfileEventHandler]);
 
   const clickProfileEventHandler = useCallback(async () => {
     const id = document.body.getAttribute('selectedProfileId');
@@ -158,7 +159,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     const denizenKey = `${pre}@${last1}-${last2}`;
 
     if (SkProfileService.instance.skProfile.id === denizenKey ||
-        (lectureState && 
+        (lectureState &&
           lectureState.cubeDetail &&
           lectureState.cubeDetail.cubeContents &&
           lectureState.cubeDetail.cubeContents.operator?.keyString === SkProfileService.instance.skProfile.id)) {
@@ -170,13 +171,13 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
 
   const OnClickPostsPinned = useCallback( async(postId: string, pinned: number) => {
     if (canNotice) {
-      const message = pinned === 1 ? '고정되었습니다.' : '해제되었습니다.';
+      const message = pinned === 1 ? getPolyglotText('고정되었습니다.', 'Collage-TaskPostViewDetail-고정안내') : getPolyglotText('해제되었습니다.', 'Collage-TaskPostViewDetail-해제안내');
       await setPinByPostId(postId, pinned)
             .then(() => {
                 setPinned(pinned)
                 reactAlert({
-                title: '안내',
-                message: `게시글이 Pin ${message}`,
+                title: getPolyglotText('안내', 'Collage-TaskPostViewDetail-안내'),
+                message: getPolyglotText(`게시글이 Pin ${message}`, 'Collage-TaskPostViewDetail-게시글안내', {message}),
               });
             })
     }
@@ -219,8 +220,9 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                   .get('reference')
                   .map((foundedFile: DepotFileViewModel, index: number) => (
                     <div className="down">
-                      <span>첨부파일 :</span>
-
+                      <span>
+                        <PolyglotText defaultString="첨부파일" id="Collage-TaskPostViewDetail-첨부파일" /> :
+                      </span>
                       <a
                         key={index}
                         onClick={() => depot.downloadDepotFile(foundedFile.id)}
@@ -238,7 +240,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                 onClick={() => OnClickPostsPinned(taskDetail.id, pinned === 1 ? 0 : 1)}
               >
                 <i area-hidden = "true" className="icon pin24" />
-                {pinned === 0 ? <span>Pin 고정</span> : <span>Pin 해제</span>}
+                {pinned === 0 ? <span><PolyglotText defaultString="Pin 고정" id="Collage-TaskPostViewDetail-Pin고정" /></span> : <span><PolyglotText defaultString="Pin 해제" id="Collage-TaskPostViewDetail-Pin해제" /></span>}
               </Button>
             )}
             <Button
@@ -246,14 +248,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               onClick={OnClickModify}
             >
               <i area-hidden = "true" className="icon edit24" />
-              Edit
+              <PolyglotText defaultString="Edit" id="Collage-TaskPostViewDetail-Edit1" />
             </Button>
             <Button
               className="ui button post delete"
               onClick={OnClickDelete}
             >
               <i area-hidden = "true" className="icon del24" />
-              delete
+              <PolyglotText defaultString="delete" id="Collage-TaskPostViewDetail-delete" />
             </Button>
             {/* {detailType === 'parent' && (
               <Button
@@ -269,7 +271,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               onClick={OnClicList}
             >
               <i area-hidden = "true" className="icon list24" />
-              list
+              <PolyglotText defaultString="list" id="Collage-TaskPostViewDetail-list" />
             </Button>
           </div>
           {taskId === taskDetail.id  && (

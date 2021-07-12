@@ -3,7 +3,7 @@ import { Form, Icon } from 'semantic-ui-react';
 import { FileBox, ValidationType } from '@nara.drama/depot';
 import { PatronType } from '@nara.platform/accent';
 import { depotHelper } from 'shared';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface ReferenceFileFormViewProps {

@@ -21,6 +21,7 @@ import { autorun } from 'mobx';
 import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
 import { Area } from 'tracker/model';
 import LectureStateContainer from '../../logic/LectureStateContainer';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -43,7 +44,7 @@ function copyUrl() {
   textarea.setSelectionRange(0, 9999);
   document.execCommand('copy');
   document.body.removeChild(textarea);
-  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  reactAlert({ title: getPolyglotText('알림', 'Course-Summary-알림'), message: getPolyglotText('URL이 복사되었습니다.', 'Course-Summary-URL') });
 }
 
 function getColor(collegeId: string) {
@@ -129,7 +130,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
         );
       }, 1000);
     }
-  }, []);
+  }, [lectureSummary.name]);
   const qnaUrl = `/board/support-qna/course/${lectureSummary.cardId}`;
 
   useEffect(() => {
@@ -194,7 +195,9 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               </Label>
               {lectureSummary.validLearningDate !== '' && (
                 <Label className="bold onlytext">
-                  <span className="header-span-first">유효학습 종료일</span>
+                  <span className="header-span-first">
+                    <PolyglotText defaultString="유효학습 종료일" id="Course-Summary-유효학습 종료일" />
+                  </span>
                   <span>{lectureSummary.validLearningDate}</span>
                 </Label>
               )}
@@ -205,18 +208,26 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               {lectureSummary.stampCount !== undefined && (
                 <Label className="bold onlytext">
                   <Icon className="stamp" />
-                  <span>{lectureSummary.stampCount}개</span>
+                  <span>
+                    {lectureSummary.stampCount}<PolyglotText defaultString="개" id="Course-Summary-갯수" />
+                  </span>
                 </Label>
               )}
               <Label className="bold onlytext">
-                <span className="header-span-first">이수</span>
+                <span className="header-span-first">
+                  <PolyglotText defaultString="이수" id="Course-Summary-이수" />
+                </span>
                 <span>
                   {numberWithCommas(lectureSummary.passedStudentCount)}
                 </span>
-                <span>명</span>
+                <span>
+                  <PolyglotText defaultString="명" id="Course-Summary-명1" />
+                </span>
               </Label>
               <Label className="bold onlytext">
-                <span className="header-span-first">담당</span>
+                <span className="header-span-first">
+                  <PolyglotText defaultString="담당" id="Course-Summary-담당" />
+                </span>
                 <span className="tool-tip">
                   {lectureSummary.operator.name}
                   <i>
@@ -234,7 +245,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               </Label>
               <Link to={qnaUrl} className="ui icon button left post-s">
                 <Icon className="ask" />
-                문의하기
+                <PolyglotText defaultString="문의하기" id="Course-Summary-문의하기" />
               </Link>
             </div>
           </div>
@@ -272,7 +283,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   {lectureReview !== undefined
                     ? `${Math.floor(lectureReview.average * 10) / 10}(${
                         lectureReview.reviewerCount
-                      }명)`
+                      }${getPolyglotText('명', 'Course-Summary-명2')}명)`
                     : ''}
                 </span>
               </div>
@@ -288,7 +299,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               >
                 <span className="communityText">
                   <Icon className="communityLink" />
-                  커뮤니티로 이동
+                  <PolyglotText defaultString="커뮤니티로 이동" id="Course-Summary-커뮤니티" />
                 </span>
               </Link>
             )}
@@ -300,14 +311,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   }
                 />
                 {inMyLectureModel === undefined
-                  ? '관심목록 추가'
-                  : '관심목록 제거'}
+                  ? getPolyglotText('관심목록 추가', 'Course-Summary-관심추가')
+                  : getPolyglotText('관심목록 제거', 'Course-Summary-관심제거')}
               </span>
             </a>
             <a onClick={copyUrl}>
               <span>
                 <Icon className="linkCopy" />
-                링크 복사
+                <PolyglotText defaultString="링크 복사" id="Course-Summary-링크복사" />
               </span>
             </a>
           </div>

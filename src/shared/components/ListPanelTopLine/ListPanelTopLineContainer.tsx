@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
-import {getPolyglotText, PolyglotText} from '../../ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../ui/logic/PolyglotText';
 
 
 interface Props {

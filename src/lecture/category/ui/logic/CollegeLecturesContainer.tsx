@@ -45,6 +45,7 @@ import {
   useCollegeModelStore,
 } from '../../../../shared/store/CollegeStore';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<RouteParams> {
   newPageService?: NewPageService;
@@ -113,7 +114,7 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, []);
+  }, [history, scrollSave]);
 
   if (collegeModelStore === undefined) {
     return null;
@@ -495,7 +496,7 @@ class CollegeLecturesContainerInner extends Component<
             )}
           </>
         ) : (
-          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
+          <NoSuchContentPanel message={getPolyglotText('등록된 학습 과정이 없습니다.', 'cicl-목록-목록없음')} />
         )}
       </CategoryLecturesWrapperView>
     );

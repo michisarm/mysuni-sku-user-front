@@ -7,7 +7,7 @@ import ContentsProviderContainer from '../logic/ContentsProviderContainer';
 import ReactQuill from 'react-quill';
 import SelectOptions from '../../model/SelectOptions';
 import { timeToHourMinute } from '../../../../shared/helper/dateTimeHelper';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeContentsFormView() {

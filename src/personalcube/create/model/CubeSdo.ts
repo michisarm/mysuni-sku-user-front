@@ -7,7 +7,7 @@ import CubeType from '../../../lecture/detail/model/CubeType';
 import { getMainCategory } from './CreateCubeDetail';
 import { reactAlert } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import {getPolyglotText} from '../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 export interface CubeSdo {
   name: string;

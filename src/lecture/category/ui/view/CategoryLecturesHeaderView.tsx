@@ -7,6 +7,7 @@ import { ContentHeader } from 'shared';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   college: CollegeModel;
@@ -123,7 +124,9 @@ class CategoryLecturesHeaderView extends Component<Props> {
                 onClickMySuni();
               }}
             >
-              <span>College 전체 커리큘럼 보기</span>
+              <span>
+                <PolyglotText defaultString="College 전체 커리큘럼 보기" id="cicl-mall-clcm" />
+              </span>
             </Button>
           )
           /*eslint-enable */

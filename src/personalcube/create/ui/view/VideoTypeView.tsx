@@ -3,7 +3,7 @@ import { Table, Form } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import Media from '../../../../lecture/model/Media';
 import { MediaType } from '../../../../lecture/model/MediaType';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface VideoTypeViewProps {

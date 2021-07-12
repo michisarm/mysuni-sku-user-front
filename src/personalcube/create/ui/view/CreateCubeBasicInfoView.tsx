@@ -7,7 +7,7 @@ import { CubeTypeNameType } from '../../../personalcube/model';
 import EnumUtil, { CubeStateView } from '../../../../shared/ui/logic/EnumUtil';
 import { CubeCategory, combineCollege, renderChannelNames } from '../../../../shared/model/CubeCategory';
 import CubeType from '../../../../lecture/detail/model/CubeType';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface CreateCubeBasicInfoViewProps {

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button, Radio } from 'semantic-ui-react';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import { Classroom } from '../../../detail/viewModel/LectureClassroom';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   classrooms: Classroom[];
@@ -82,8 +83,10 @@ class ClassroomModalView extends Component<Props, States> {
         onOpen={this.show}
       >
         <Modal.Header className="res">
-          차수세부내용
-          <span className="sub f12">차수를 선택해주세요.</span>
+          <PolyglotText defaultString="차수세부내용" id="CollageState-ClassroomModalInfo-타이틀" />
+          <span className="sub f12">
+            <PolyglotText defaultString="차수를 선택해주세요." id="CollageState-ClassroomModalInfo-차수선택" />
+          </span>
         </Modal.Header>
         <Modal.Content onScroll={this.onScroll}>
           <div className="scrolling-60vh">
@@ -91,13 +94,27 @@ class ClassroomModalView extends Component<Props, States> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell />
-                  <Table.HeaderCell>차수</Table.HeaderCell>
-                  <Table.HeaderCell>강사</Table.HeaderCell>
-                  <Table.HeaderCell>교육장소/웹사이트</Table.HeaderCell>
-                  <Table.HeaderCell>정원정보</Table.HeaderCell>
-                  <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
-                  <Table.HeaderCell>시작일 및 종료일</Table.HeaderCell>
-                  <Table.HeaderCell>취소 패널티</Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="차수" id="CollageState-ClassroomModalInfo-차수" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="강사" id="CollageState-ClassroomModalInfo-강사" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="교육장소/웹사이트" id="CollageState-ClassroomModalInfo-교육장소" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="정원정보" id="CollageState-ClassroomModalInfo-정원정보" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="수강신청 기간" id="CollageState-ClassroomModalInfo-신청기간" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="시작일 및 종료일" id="CollageState-ClassroomModalInfo-시작종료" />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <PolyglotText defaultString="취소 패널티" id="CollageState-ClassroomModalInfo-패널티" />
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
@@ -235,7 +252,9 @@ class ClassroomModalView extends Component<Props, States> {
                                   trigger={
                                     <Button icon className="img-icon custom">
                                       <Icon className="noti32" />
-                                      <span className="blind">취소 패널티</span>
+                                      <span className="blind">
+                                        <PolyglotText defaultString="취소 패널티" id="CollageState-ClassroomModalInfo-패널티" />
+                                      </span>
                                     </Button>
                                   }
                                 />
@@ -254,10 +273,10 @@ class ClassroomModalView extends Component<Props, States> {
         </Modal.Content>
         <Modal.Actions className="actions">
           <Button className="w190 pop d" onClick={this.close}>
-            Cancel
+            <PolyglotText defaultString="Cancel" id="CollageState-ClassroomModalInfo-취소버튼" />
           </Button>
           <Button className="w190 pop p" onClick={this.onOk}>
-            OK
+            <PolyglotText defaultString="OK" id="CollageState-ClassroomModalInfo-ok버튼" />
           </Button>
         </Modal.Actions>
       </Modal>

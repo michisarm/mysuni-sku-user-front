@@ -3,6 +3,7 @@ import QuizQuestions from 'quiz/model/QuizQuestions';
 import { List, Radio, Checkbox, Icon } from 'semantic-ui-react';
 import QuizItem from 'quiz/model/QuizItem';
 import { UserAnswer } from 'quiz/model/QuizAnswer';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   question: QuizQuestions;
@@ -47,17 +48,19 @@ function EssayType({
           {/*error*/}
           <span className="count">
             <span className="now">{inputRef.current?.value.length}</span>/
-            <span className="max">1,000</span>
+            <span className="max">
+              <PolyglotText defaultString="1,000" id="Collage-VideoQuiz-천자" />
+            </span>
           </span>
           <textarea
-            placeholder="1,000자 이내로 입력하세요."
+            placeholder={getPolyglotText('1,000자 이내로 입력하세요.', 'Collage-VideoQuiz-Max1000')}
             ref={inputRef}
             maxLength={999}
             minLength={1}
             onChange={() => onChange(rowIndex, inputRef!.current!.value)}
           />
           <span className="validation">
-            You can enter up to 1,000 characters.
+            <PolyglotText defaultString="You can enter up to 1,000 characters." id="Collage-VideoQuiz-Subtitle100" />
           </span>
         </div>
       </div>
@@ -88,21 +91,23 @@ function ShortAnswerType({
       setInput(value);
       onChange(rowIndex, value);
     },
-    [input]
+    [onChange, rowIndex]
   );
 
   return (
     <div className="ui right-top-count input short" style={{ width: '100%' }}>
       <input
         type="text"
-        placeholder="답변을 입력해주세요."
+        placeholder={getPolyglotText('답변을 입력해주세요.', 'Collage-VideoQuiz-답변입력')}
         value={input}
         minLength={1}
         maxLength={20}
         onChange={e => onChangeInput(e)}
       />
       <Icon className="clear link" />
-      <span className="validation">You can enter up to 100 characters.</span>
+      <span className="validation">
+        <PolyglotText defaultString="You can enter up to 100 characters." id="Collage-VideoQuiz-Subtitle100" />
+      </span>
     </div>
   );
 }
@@ -252,7 +257,7 @@ const QuizQuestionView: React.FC<Props> = ({
         onChangeUserAnswer(rowIndex, text);
       }
     },
-    [check, question, userAnswer]
+    [check, onChangeUserAnswer, question.type]
   );
 
   return (

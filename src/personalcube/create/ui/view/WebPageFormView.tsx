@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Form, Icon } from 'semantic-ui-react';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface  WebPageFormViewProps{

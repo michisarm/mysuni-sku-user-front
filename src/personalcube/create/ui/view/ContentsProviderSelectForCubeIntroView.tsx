@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
 import { Grid, Icon, Select } from 'semantic-ui-react';
 import { IdName } from 'shared/model';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props extends RouteComponentProps {

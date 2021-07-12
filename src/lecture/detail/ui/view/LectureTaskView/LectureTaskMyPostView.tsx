@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskMyPostViewProps {
   taskItem: LectureTask;
@@ -59,7 +60,9 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
             )}
             {task.count === 0 && <span className="title">{task.title}</span>}
             <span className="writer">{task.writer}</span>
-            <span className="view">{task.readCount} 읽음</span>
+            <span className="view">{task.readCount}
+              {' '}<PolyglotText defaultString="읽음" id="Collage-TaskMyPostView-ReadCount" />
+            </span>
             <span className="date">
               {task.time && moment(task.time).format('YYYY.MM.DD')}
             </span>
@@ -70,8 +73,12 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
         <div className="depth1">
           <span className="del">
             <Icon className="listdel24" />
-            <span className="blind">삭제됨</span>
-            <span>삭제된 글입니다.</span>
+            <span className="blind">
+              <PolyglotText defaultString="삭제됨" id="Collage-TaskMyPostView-삭제됨" />
+            </span>
+            <span>
+              <PolyglotText defaultString="삭제된 글입니다." id="Collage-TaskMyPostView-삭제안내" />
+            </span>
           </span>
         </div>
       )}
@@ -90,12 +97,12 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
     param => {
       handleClickTaskRow(param);
     },
-    [taskItem]
+    [handleClickTaskRow]
   );
 
   const onHandleClickMoreView = useCallback(() => {
     moreView(getLectureTaskOffset()!);
-  }, []);
+  }, [moreView]);
 
   return (
     <Fragment>
@@ -116,7 +123,7 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
           >
             <Button icon className="left moreview">
               <Icon className="moreview" />
-              list more
+              <PolyglotText defaultString="list more" id="Collage-TaskMyPostView-list more" />
             </Button>
           </div>
         )}

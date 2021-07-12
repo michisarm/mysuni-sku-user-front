@@ -4,7 +4,7 @@ import { MediaType } from '../../../media/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 import PanoptoListModal from './PanoptoListModalV2';
 import { contentUploader } from '../shared/uploadContent';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   mediaType: MediaType;

@@ -16,6 +16,7 @@ import {
 } from '../../store/LectureNoteStore';
 import { loadPlayVideo, playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
 import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
   children,
@@ -70,7 +71,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       }
     }, 2000);
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [params.cubeType]);
 
   // Action Scroll
   useEffect(() => {
@@ -122,7 +123,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       }
       setLectureNoteTab(false);
     },
-    [noteTabUsable, noteTabActivity]
+    [noteTabActivity]
   );
 
   return (
@@ -145,7 +146,9 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         <div className="course-header-list">
           <a className="btn-view-change" onClick={() => tabFlag('list')}>
             <Icon className="list24 icon" />
-            <span>List</span>
+            <span>
+              <PolyglotText defaultString="List" id="cube-DetailLayout-List" />
+            </span>
           </a>
           {noteTabUsable && (
             <Button
@@ -164,11 +167,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
               <Icon />
               <span>Note</span>
               <div className="bubble">
-                <p>
-                  Note는 각 콘텐츠별로
-                  <br />
-                  작성하실 수 있습니다.
-                </p>
+                <p dangerouslySetInnerHTML={{__html: getPolyglotText(`Note는 각 콘텐츠별로<br />작성하실 수 있습니다.`, 'cube-DetailLayout-작성')}} />
               </div>
             </Button>
           )}
@@ -191,7 +190,9 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
           }
           onClick={openStructure}
         >
-          <span>펼치기</span>
+          <span>
+            <PolyglotText defaultString="펼치기" id="cube-DetailLayout-펼치기" />
+          </span>
         </a>
         <div className="course-detail-center">
           <div className="main-wrap">

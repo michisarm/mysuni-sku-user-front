@@ -16,7 +16,7 @@ import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail'
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { useSelectedCollege, setSelectedCollege } from '../../../store/SelectedCollegeStore';
 import { setCubeType } from '../../../store/CubeTypeStore';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeBasicInfoFormView() {

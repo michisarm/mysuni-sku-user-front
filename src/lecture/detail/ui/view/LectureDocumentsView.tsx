@@ -10,6 +10,7 @@ import { useNextContent } from '../../service/useNextContent';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
 import { findCubeDetailCache } from '../../api/cubeApi';
 import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 interface LectureDocumentsViewProps {
@@ -55,18 +56,18 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           ) {
             reactAlert({
               title: '',
-              message: `Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`,
+              message: getPolyglotText(`Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`, 'Collage-Documents-응시안내'),
             });
           } else {
             reactAlert({
               title: '',
-              message: `Document 컨텐츠는 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다. 학습 창에서 글씨가 깨져보이거나 누락되는 경우 다운로드 시 정상적으로 확인 가능합니다.`,
+              message: getPolyglotText(`Document 컨텐츠는 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다. 학습 창에서 글씨가 깨져보이거나 누락되는 경우 다운로드 시 정상적으로 확인 가능합니다.`, 'Collage-Documents-다운로드'),
             });
           }
         }
       });
     }
-  }, [params?.cardId, params?.cubeId]);
+  }, [learningState, params.cardId, params.cubeId]);
 
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
 
@@ -93,7 +94,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       }
     });
-  }, [fileBoxId, pdfUrl, params?.cubeId]);
+  }, [fileBoxId]);
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
@@ -117,13 +118,13 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     updateHeaderWidth();
     window.addEventListener('resize', updateHeaderWidth);
     return () => window.removeEventListener('resize', updateHeaderWidth);
-  }, [params?.cubeId]);
+  }, [params.cubeId, updateHeaderWidth]);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
       getFiles();
     }
-  }, [fileBoxId]);
+  }, [fileBoxId, getFiles]);
 
   const onDocumentLoadSuccess = useCallback((pdf: any) => {
     setNumPages(pdf.numPages);
@@ -188,7 +189,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const nextContents = useCallback((path: string) => {
     history.push(path);
-  }, []);
+  }, [history]);
 
   return (
     <>
@@ -196,7 +197,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         <div className="pdf-header">
           <i className="list24 icon" />
           <span className="pdf-header-title">
-            <strong>{courseName.length}</strong> 개의 교육 자료가 있습니다.
+            <strong>{courseName.length}</strong>
+            <PolyglotText defaultString="개의 교육 자료가 있습니다." id="Collage-Documents-교육자료" />
           </span>
           <div
             className={
@@ -228,11 +230,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         </div>
         {!nameList[courseIdx].match(/.pdf/g) ? (
           <div className="pdf-not-supported">
-            <span className="not-supported-copy">
-              Viewer에서 지원하지 않는 문서입니다.
-              <br />
-              문서를 다운로드하셔야 학습을 이어 하실 수 있습니다.
-            </span>
+            <span className="not-supported-copy" dangerouslySetInnerHTML={{__html: getPolyglotText(`Viewer에서 지원하지 않는 문서입니다.<br />문서를 다운로드하셔야 학습을 이어 하실 수 있습니다.`, 'Collage-Documents-문서오류')}} />
             <a className="btn-not-supported" onClick={downloadFile}>
               <img
                 src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDkiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDkgMzIiPg0KICAgIDxkZWZzPg0KICAgICAgICA8ZmlsdGVyIGlkPSJibmRpd2JyeHJhIj4NCiAgICAgICAgICAgIDxmZUNvbG9yTWF0cml4IGluPSJTb3VyY2VHcmFwaGljIiB2YWx1ZXM9IjAgMCAwIDAgMC40MjM1MjkgMCAwIDAgMCAwLjQ3MDU4OCAwIDAgMCAwIDAuNTYwNzg0IDAgMCAwIDEuMDAwMDAwIDAiLz4NCiAgICAgICAgPC9maWx0ZXI+DQogICAgPC9kZWZzPg0KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+DQogICAgICAgIDxnPg0KICAgICAgICAgICAgPGc+DQogICAgICAgICAgICAgICAgPGc+DQogICAgICAgICAgICAgICAgICAgIDxnPg0KICAgICAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTgyMSAtNzEwKSB0cmFuc2xhdGUoNDAwIDE1OSkgdHJhbnNsYXRlKDAgMTY4KSB0cmFuc2xhdGUoMzIyIDMxOSkgdHJhbnNsYXRlKDk5LjUgNjQpIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCB3aWR0aD0iMTA4IiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkZGIiByeD0iNCIvPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxnIGZpbHRlcj0idXJsKCNibmRpd2JyeHJhKSI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxnPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZmlsbD0iIzIyMiIgZmlsbC1ydWxlPSJub256ZXJvIiBkPSJNNiAxNHY0aDEzdi00aDJ2Nkg0di02aDJ6bTcuNS0xMHY3LjYybDIuNTM2LTIuNTM0TDE3LjQ1IDEwLjVsLTMuOTUgMy45NDh2LjAxM2gtLjAxM2wtLjk4Ny45ODktLjk4OS0uOTg5SDExLjV2LS4wMTFMNy41NSAxMC41bDEuNDE0LTEuNDE0IDIuNTM2IDIuNTM2VjRoMnoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDQpIi8+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRleHQgZmlsbD0iIzZDNzg4RiIgZm9udC1mYW1pbHk9Ik5vdG9TYW5zQ0pLa3ItQm9sZCwgTm90byBTYW5zIENKSyBLUiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHNwYW4geD0iNDAiIHk9IjIyIj7ri6TsmrTroZzrk5w8L3RzcGFuPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGV4dD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4NCiAgICAgICAgICAgICAgICAgICAgPC9nPg0KICAgICAgICAgICAgICAgIDwvZz4NCiAgICAgICAgICAgIDwvZz4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvc3ZnPg0K"
@@ -264,7 +262,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                       fontWeight: 'bold',
                     }}
                   >
-                    PDF 파일을 읽어 올 수 없습니다.
+                    <PolyglotText defaultString="PDF 파일을 읽어 올 수 없습니다." id="Collage-Documents-PDF오류" />
                   </div>
                 </div>
               }
@@ -286,7 +284,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                     </button>
                   </div>
                   <div className="video-overlay-text">
-                    <p>다음 학습 이어하기</p>
+                    <p><PolyglotText defaultString="다음 학습 이어하기" id="Collage-Documents-이어하기" /></p>
                     <h3>{(nextContent as LectureStructureCubeItem).name}</h3>
                   </div>
                 </div>
@@ -303,14 +301,14 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         >
           <div className="pagination">
             <a className="pdf-prev" onClick={prev}>
-              이전
+              <PolyglotText defaultString="이전" id="Collage-Documents-이전" />
             </a>
             <span className="num">
               {pageNumber}/{numPages}
             </span>
 
             <a className="pdf-next" onClick={next}>
-              이후
+              <PolyglotText defaultString="이후" id="Collage-Documents-이후" />
             </a>
           </div>
           <a className="pdf-down on" onClick={downloadFile}>

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Select } from 'semantic-ui-react';
 import { ListPanelTopLine } from 'shared';
-import {getPolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {

@@ -11,7 +11,7 @@ import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.p
 import routePaths from '../../../routePaths';
 import CreateMovieModalContainer from './CreateMovieModalContainer';
 import { Area } from 'tracker/model';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;

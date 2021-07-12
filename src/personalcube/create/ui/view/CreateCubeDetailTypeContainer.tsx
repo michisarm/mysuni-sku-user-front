@@ -8,7 +8,7 @@ import DocumentTypeView from './DocumentTypeView';
 import { observer } from 'mobx-react';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { FileService } from '../../../../shared/present/logic/FileService';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 function CreateCubeDetailTypeContainer() {
   const params = useParams<CreateCubeDetailParams>();

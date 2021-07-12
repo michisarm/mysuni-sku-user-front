@@ -7,6 +7,7 @@ import { ListPanelTopLine } from 'shared';
 import { useLectureState } from '../../../store/LectureStateStore';
 import { getLectureTaskOrder, useLectureTaskOrder } from '../../../store/LectureTaskStore';
 import { submit } from '../../../service/useLectureState/utility/cubeStateActions';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   totalCount: number;
@@ -26,13 +27,14 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
       await submit(1)
     }
       handelClickCreateTask()
-  }, [lectureState]);
+  }, [handelClickCreateTask, lectureState]);
 
   return (
     <div className="task-title-wrap">
-      <div className="task-number">
-        <span>총 <strong>{totalCount || 0} 건</strong>의 게시글이 있습니다.</span>
-      </div>
+      <div
+        className="task-number"
+        dangerouslySetInnerHTML={{__html: getPolyglotText(`<span>총 <strong>{totalCount || 0} 건</strong>의 게시글이 있습니다.</span>`, 'Collage-TaskPostView-게시글갯수')}}
+      />
       {totalCount > 0 || lectureTaskOrder === "My" ? (
         <div className="course-radio task">
           <Radio
@@ -59,7 +61,7 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
               }
             }}
           />
-          
+
           <Radio
             className="base radi"
             label="My Posts"
@@ -72,7 +74,7 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
               }
             }}
           />
-          
+
           {/* {lectureState?.student !== undefined && ( */}
             {/* <div className="right-wrap"> */}
               <a
@@ -80,7 +82,7 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
                 onClick={onClickCreateTask}
                 href="#create"
               >
-                Post
+                <PolyglotText defaultString="Post" id="Collage-TaskPostView-post1" />
               </a>
             {/* </div> */}
           {/* )} */}
@@ -91,12 +93,12 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
               onClick={onClickCreateTask}
               href="#create"
             >
-              Post
+              <PolyglotText defaultString="Post" id="Collage-TaskPostView-post2" />
             </a>
           </div>
         )}
     </div>
-    
+
   );
 };
 

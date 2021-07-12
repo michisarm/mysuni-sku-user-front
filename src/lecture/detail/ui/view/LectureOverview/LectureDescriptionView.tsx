@@ -3,6 +3,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import './LectureDescriptionView.css';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;
@@ -44,7 +45,7 @@ function LectureDescriptionView({
         }
       }
     }
-  }, [descriptionOpen]);
+  }, [descriptionOpen, showMoreButton]);
   return (
     <div
       className={`${
@@ -63,7 +64,7 @@ function LectureDescriptionView({
           className={classNames('right btn-blue fn-more-toggle')}
           onClick={toggleMore}
         >
-          {descriptionOpen === true ? 'hide' : 'more'}{' '}
+          {descriptionOpen === true ? getPolyglotText('hide', 'cube-Description-hide') : getPolyglotText('more', 'cube-Description-more')}{' '}
           <Icon
             className={classNames({
               more2: descriptionOpen !== true,

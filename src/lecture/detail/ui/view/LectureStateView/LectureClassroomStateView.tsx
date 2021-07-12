@@ -26,15 +26,16 @@ import { onOpenLectureAgreementModal } from '../../../service/LectureAgreementMo
 import { LectureAgreementModalView } from './LectureAgreementModalView';
 import { find } from 'lodash';
 import { getLectureState } from '../../../store/LectureStateStore';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const APPROVE = '학습하기';
-const SUBMIT = '신청하기';
-const CANCEL = '취소하기';
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
-const SUBMITED = '승인대기';
-const REJECTED = '반려됨';
-const WAIT = '학습예정';
+const APPROVE = getPolyglotText('학습하기', 'CollageState-Classroom-학습하기');
+const SUBMIT = getPolyglotText('신청하기', 'CollageState-Classroom-신청하기');
+const CANCEL = getPolyglotText('취소하기', 'CollageState-Classroom-취소하기');
+const PROGRESS = getPolyglotText('학습중', 'CollageState-Classroom-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-Classroom-학습완료');
+const SUBMITED = getPolyglotText('승인대기', 'CollageState-Classroom-승인대기');
+const REJECTED = getPolyglotText('반려됨', 'CollageState-Classroom-반려됨');
+const WAIT = getPolyglotText('학습예정', 'CollageState-Classroom-학습예정');
 
 const actionClassName = 'bg';
 const stateClassName = 'line';
@@ -48,12 +49,12 @@ interface CanceledViewProps {
 function classroomSubmit(classroom: Classroom) {
   if (classroom.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
     const messageStr =
-      '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-    reactAlert({ title: '알림', message: messageStr });
+      getPolyglotText(`본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`, 'CollageState-Classroom-승인권자안내');
+    reactAlert({ title: getPolyglotText('알림', 'CollageState-Classroom-알림'), message: messageStr });
   } else if (!classroom.freeOfCharge.approvalProcess) {
     const messageStr =
-      '본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-    reactAlert({ title: '알림', message: messageStr });
+      getPolyglotText(`본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`, 'CollageState-Classroom-신청완료안내');
+    reactAlert({ title: getPolyglotText('알림', 'CollageState-Classroom-알림'), message: messageStr });
   }
 }
 
@@ -75,8 +76,8 @@ function CanceledView(props: CanceledViewProps) {
 
     if (classroom === undefined) {
       reactAlert({
-        title: '수강신청 기간 안내',
-        message: '수강신청 기간이 아닙니다.',
+        title: getPolyglotText('수강신청 기간 안내', 'CollageState-Classroom-수강신청기간안내'),
+        message: getPolyglotText('수강신청 기간이 아닙니다.', 'CollageState-Classroom-기간x'),
       });
       return;
     }
@@ -166,7 +167,7 @@ function CanceledView(props: CanceledViewProps) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${SUBMIT} 클릭`}
+        data-action-name={`${SUBMIT} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
       >
         {SUBMIT}
       </button>
@@ -193,7 +194,7 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} 클릭`}
+        data-action-name={`${CANCEL} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
       >
         {CANCEL}
       </button>
@@ -226,7 +227,7 @@ function RejectedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} 클릭`}
+        data-action-name={`${CANCEL} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
       >
         {CANCEL}
       </button>
@@ -309,7 +310,7 @@ function ApprovedELearningView(props: ApprovedViewProps) {
           data-action-external-link={(document.getElementById(
             'webpage-link'
           ) as HTMLAnchorElement)?.href?.toString()}
-          data-action-name={`${APPROVE} 클릭`}
+          data-action-name={`${APPROVE} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
         >
           {APPROVE}
         </button>

@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { Area } from 'tracker/model';
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   canNotice: boolean;
@@ -111,18 +112,20 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                   <span>{time && moment(time).format('YYYY.MM.DD HH:MM')}</span>
                 </div>
                 <div className="ui label onlytext">
-                  <span className="header-span-first">조회수</span>
+                  <span className="header-span-first">
+                    <PolyglotText defaultString="조회수" id="Collage-TaskPostViewDetailHeader-조회수" />
+                  </span>
                   <span>{readCount}</span>
                 </div>
               </div>
               <div className="right-area">
                 <div className="ui onlytext">
                   {canNotice && reply && pinned !== 2 && (
-                    <Button className = "ui button icon postset pin" 
+                    <Button className = "ui button icon postset pin"
                       onClick={() => onClickPostsPinned(taskDetail.id, pinned === 1 ? 0 : 1)}
                     >
                       <i area-hidden = "true" className="icon pin pin16" />
-                      {pinned === 0 ? <span>Pin 고정</span> : <span>Pin 해제</span>}
+                      {pinned === 0 ? <span><PolyglotText defaultString="Pin 고정" id="Collage-TaskPostViewDetailHeader-Pin 고정" /></span> : <span><PolyglotText defaultString="Pin 해제" id="Collage-TaskPostViewDetailHeader-Pin 해제" /></span>}
                     </Button>
                   )}
                   {onClickModify && (
@@ -132,7 +135,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                       onClick={handelClickModify}
                     >
                       <i area-hidden = "true" className="icon edit2" />
-                      Edit
+                      <PolyglotText defaultString="Edit" id="Collage-TaskPostViewDetailHeader-Edit" />
                     </Button>
                   )}
                   {deletable && (
@@ -142,7 +145,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                       onClick={handelClickDelete}
                     >
                       <i area-hidden = "true" className="icon delete" />
-                      Delete
+                      <PolyglotText defaultString="Delete" id="Collage-TaskPostViewDetailHeader-Delete" />
                     </Button>
                   )}
                   {/* {reply && (
@@ -161,7 +164,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
                     onClick={onClickList}
                   >
                     <i area-hidden = "true" className="icon list2" />
-                    List
+                    <PolyglotText defaultString="List" id="Collage-TaskPostViewDetailHeader-List" />
                   </Button>
                 </div>
               </div>

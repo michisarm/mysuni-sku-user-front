@@ -18,6 +18,7 @@ import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import LectureState from '../../viewModel/LectureState';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface LectureAudioViewProps {
   lectureState: LectureState;
@@ -80,7 +81,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const nextContents = useCallback((path: string) => {
     setPanoptoState(10);
     history.push(path);
-  }, []);
+  }, [history]);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
@@ -103,7 +104,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         setNextContentsView(true);
       }
     },
-    [params]
+    [isFirstAction, isStateUpated]
   );
 
   // study action event : 방문당 한번 적재
@@ -137,12 +138,12 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         await checkStudent(params, pathname);
       }
     },
-    [params, pathname]
+    [checkStudent, pathname]
   );
 
   const mediaCheckEvent = useCallback(async () => {
     await confirmProgress();
-  }, [params.cardId]);
+  }, []);
 
   useEffect(() => {
     if (params) {
@@ -167,7 +168,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       registCheckStudent(params);
       mediaCheckEvent();
     }
-  }, [panoptoState, params]);
+  }, [embedApi, mediaCheckEvent, panoptoState, params, registCheckStudent]);
 
   useEffect(() => {
     let interval: any = null;
@@ -216,15 +217,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(interval);
     };
-  }, [
-    isActive,
-    // lectureParams,
-    // pathname,
-    params,
-    embedApi,
-    startTime,
-    // watchlogState,
-  ]);
+  }, [isActive, params, embedApi, startTime, watchlogState]);
 
   useEffect(() => {
     // clearTimeout(progressInterval);
@@ -249,7 +242,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(checkInterval);
     };
-  }, [params, isActive]);
+  }, [params, isActive, embedApi, mediaCheckEvent]);
 
   // useEffect(() => {
   //   return () => {
@@ -318,7 +311,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       cleanUpPanoptoIframe();
     };
-  }, []);
+  }, [onPanoptoStateUpdate]);
 
   const cleanUpPanoptoIframe = () => {
     const playerEl = document.getElementById('panopto-embed-audio-player');
@@ -337,7 +330,9 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
               </button>
             </div>
             <div className="video-overlay-text">
-              <p>다음 학습 이어하기</p>
+              <p>
+                <PolyglotText defaultString="다음 학습 이어하기" id="Collage-Audio-이어하기" />
+              </p>
               <h3>
                 {
                   (nextContent as

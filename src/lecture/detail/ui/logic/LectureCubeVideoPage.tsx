@@ -9,6 +9,7 @@ import { useLectureParams } from '../../store/LectureParamsStore';
 import { MediaType } from '../../../model/MediaType';
 import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
 import { setTranscriptCount } from '../../store/TranscriptCountStore';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 function LectureCubeVideoPage() {
   const params = useLectureParams();
@@ -54,7 +55,7 @@ function LectureCubeVideoPage() {
               title: '',
               message: `${moment(
                 next.mediaContents.contentsProvider.expiryDate
-              ).format('YYYY-MM-DD')} 까지 만료되는 콘텐츠 입니다.`,
+              ).format('YYYY-MM-DD')} ${getPolyglotText('까지 만료되는 콘텐츠 입니다.', 'Collage-Video-만료')}`,
             });
           }
         }

@@ -2,6 +2,7 @@ import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
 import { Action, ActionType, Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   action?: () => void;
@@ -35,7 +36,7 @@ const LectureCohortView: React.FC<LectureWebpage &
           data-action-external-link={`${PUBLIC_URL}` + url}
           data-action-name="학습하기 클릭"
         >
-          커뮤니티로 이동
+          <PolyglotText defaultString="커뮤니티로 이동" id="Collage-Cohort-커뮤니티" />
         </a>
       </div>
     </div>

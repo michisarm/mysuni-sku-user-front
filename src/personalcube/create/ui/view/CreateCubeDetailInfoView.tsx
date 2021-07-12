@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import { getContentsProviderName } from '../../service/useRequestContentsProvider';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface CreateCubeDetailInfoViewProps {

@@ -16,6 +16,7 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { checkAnswerSheetAppliesCount } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { retryTestItemMap } from '../../../service/useLectureTest/utility/getTestItemMap';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -33,7 +34,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
 
     const lectureStructureItem = getActiveStructureItem(params.pathname);
 
-    const openView = async (view: string) => {
+    const openView = useCallback(async (view: string) => {
       if (view === 'intro') {
         setUseTestIntroView(true);
         setUseTestView(false);
@@ -41,8 +42,8 @@ const LectureTestView: React.FC<LectureTestViewProps> =
       } else if (view === 'test') {
         if (lectureStructureItem?.can !== true) {
           reactAlert({
-            title: '알림',
-            message: '학습 완료 후 Test 제출이 가능합니다.',
+            title: getPolyglotText('알림', 'cube-Description-알림'),
+            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
           });
           return;
         }
@@ -54,8 +55,8 @@ const LectureTestView: React.FC<LectureTestViewProps> =
           lectureStructureCourseItem?.canSubmit !== true
         ) {
           reactAlert({
-            title: '알림',
-            message: '학습 완료 후 Test 제출이 가능합니다.',
+            title: getPolyglotText('알림', 'cube-Description-알림'),
+            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
           });
           return;
         }
@@ -81,7 +82,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         } else {
           const date = new Date();
           date.setDate(date.getDate() + 1);
-          const week = new Array('일', '월', '화', '수', '목', '금', '토');
+          const week = ['일', '월', '화', '수', '목', '금', '토'];
           const dateFormat =
             date.getMonth() +
             1 +
@@ -106,7 +107,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         setUseTestView(false);
         setUseTestResultView(false);
       }
-    };
+    });
 
     useEffect(() => {
       const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
@@ -119,7 +120,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
       } else {
         openView('intro');
       }
-    }, [params, testStudentItem, lectureStructureItem]);
+    }, [params, testStudentItem, lectureStructureItem, openView]);
     /*
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;

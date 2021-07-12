@@ -7,7 +7,7 @@ import { CategoryModel, IdName } from 'shared/model';
 import { CollegeColors, CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {

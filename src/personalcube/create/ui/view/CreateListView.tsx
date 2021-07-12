@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { useScrollMove } from '../../../../myTraining/useScrollMove';
 import routePaths from '../../../routePaths';
 import { CreateCube } from '../../model/CreateCube';
-import {PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface CreateListViewProps {
   createCubes: CreateCube[];

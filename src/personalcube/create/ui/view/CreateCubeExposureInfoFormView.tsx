@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Form } from 'semantic-ui-react';
 import CreateInput from '../shared/CreateInput';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import {getPolyglotText, PolyglotText} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeExposureInfoFormView() {
