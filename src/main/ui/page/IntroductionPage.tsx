@@ -103,9 +103,13 @@ class UserMainPage extends Component<Props> {
           onChangeTab={this.onChangeTab}
           renderContent={this.renderTabContent}
           renderStaticMenu={() => (
-            <NavLink to={certificationRoutePaths.badge()}>
-              <div className="item-button">Certification 바로가기</div>
-            </NavLink>
+            <>
+              {paramsTab === 'Certification' && (
+                <NavLink to={certificationRoutePaths.badge()}>
+                  <div className="item-button">Certification 바로가기</div>
+                </NavLink>
+              )}
+            </>
           )}
         />
       </ContentLayout>
