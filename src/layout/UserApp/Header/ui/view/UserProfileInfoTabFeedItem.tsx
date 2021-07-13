@@ -1,31 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Table, Rating, Tab, Select, Comment, Accordion, Button } from 'semantic-ui-react';
-import { useProfileInfoPostModel } from "../../../store/ProfileInfoPostStore";
+import React, { useEffect, useState } from 'react';
+import {
+  Modal,
+  Table,
+  Rating,
+  Tab,
+  Select,
+  Comment,
+  Accordion,
+  Button,
+} from 'semantic-ui-react';
+import { useProfileInfoPostModel } from '../../../store/ProfileInfoPostStore';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
-import { getProfileInfoPost } from "../../../service/ProfilePopupService/getProfileInfoPost";
-import { Link, useHistory } from "react-router-dom";
-import { reactAlert } from "@nara.platform/accent";
-import { registerBookmark, removeBookmark } from "../../../../../community/api/communityApi";
-import { getFollowCommunityIntro, setFollowCommunityIntro } from "../../../../../community/store/CommunityMainStore";
-import { getPostDetailInPreview } from "../../../../../community/service/useCommunityPostCreate/utility/getPostDetail";
+import { getProfileInfoPost } from '../../../service/ProfilePopupService/getProfileInfoPost';
+import { Link, useHistory } from 'react-router-dom';
+import { reactAlert } from '@nara.platform/accent';
+import {
+  registerBookmark,
+  removeBookmark,
+} from '../../../../../community/api/communityApi';
+import {
+  getFollowCommunityIntro,
+  setFollowCommunityIntro,
+} from '../../../../../community/store/CommunityMainStore';
+import { getPostDetailInPreview } from '../../../../../community/service/useCommunityPostCreate/utility/getPostDetail';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
-import { PostItem } from "../../../model/PostModel";
+import { PostItem } from '../../../model/PostModel';
 
 interface Props {
-  item: PostItem,
-  index: number,
-  setOpen: (state: boolean) => void,
+  item: PostItem;
+  index: number;
+  setOpen: (state: boolean) => void;
 }
 
 function UserProfileInfoTabFeedItem(props: Props) {
   const [active, setActive] = useState<boolean>(false);
   const [bookmarked, setBookmarked] = useState<boolean>(false);
-  const [bookmarkClass, setBookmarkClass] = useState<string>("marking");
+  const [bookmarkClass, setBookmarkClass] = useState<string>('marking');
 
   useEffect(() => {
     setBookmarked(props.item.bookmarked);
     if (props.item.bookmarked) {
-      setBookmarkClass("");
+      setBookmarkClass('');
     }
   }, []);
 
@@ -33,14 +48,14 @@ function UserProfileInfoTabFeedItem(props: Props) {
     e.preventDefault();
     e.stopPropagation();
     const textarea = document.createElement('textarea');
-    textarea.value = window.location.protocol + '//' + window.location.host + `${process.env.PUBLIC_URL}/community/${communityId}/post/${postId}`;
+    textarea.value = `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`;
     document.body.appendChild(textarea);
     textarea.select();
     textarea.setSelectionRange(0, 9999);
     document.execCommand('copy');
     document.body.removeChild(textarea);
     reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
-  }
+  };
 
   function bookmark(e: any) {
     e.preventDefault();
@@ -62,7 +77,7 @@ function UserProfileInfoTabFeedItem(props: Props) {
       }
       setFollowCommunityIntro({
         ...followCommunityIntro,
-        posts: followCommunityIntro.posts.map(c => {
+        posts: followCommunityIntro.posts.map((c) => {
           if (c.postId !== postId) {
             return c;
           }
@@ -70,7 +85,7 @@ function UserProfileInfoTabFeedItem(props: Props) {
         }),
       });
       setBookmarked(true);
-      setBookmarkClass("");
+      setBookmarkClass('');
     }
   }
 
@@ -82,7 +97,7 @@ function UserProfileInfoTabFeedItem(props: Props) {
     }
     setFollowCommunityIntro({
       ...followCommunityIntro,
-      posts: followCommunityIntro.posts.map(c => {
+      posts: followCommunityIntro.posts.map((c) => {
         if (c.postId !== postId) {
           return c;
         }
@@ -91,14 +106,18 @@ function UserProfileInfoTabFeedItem(props: Props) {
     });
 
     setBookmarked(false);
-    setBookmarkClass("marking");
+    setBookmarkClass('marking');
   }
 
   const history = useHistory();
 
   const onViewDetail = (communityId: string, postId: string) => {
-    props.setOpen(false);
-    history.push(`/community/${communityId}/post/${postId}`);
+    //props.setOpen(false);
+    //history.push(`/community/${communityId}/post/${postId}`);
+    window.open(
+      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`,
+      '_blank'
+    );
   };
 
   const contentsView = () => {
@@ -115,7 +134,7 @@ function UserProfileInfoTabFeedItem(props: Props) {
     useEffect(() => {
       const postDetail = getPostDetailInPreview(postId);
       if (postDetail !== undefined) {
-        postDetail.then(result => {
+        postDetail.then((result) => {
           setDetail(result.html);
         });
       }
@@ -124,44 +143,55 @@ function UserProfileInfoTabFeedItem(props: Props) {
     return (
       <>
         <div>
-          <p
-            className="summary"
-            dangerouslySetInnerHTML={{ __html: detail }}
-          />
+          <p className="summary" dangerouslySetInnerHTML={{ __html: detail }} />
         </div>
       </>
     );
   };
 
-
   return (
     <Comment.Group className="base">
       {/*comment : 2줄이상 말줄임, 대댓글*/}
-      <Comment onClick={() => onViewDetail(props.item.communityId, props.item.postId)}>
+      <Comment
+        onClick={() => onViewDetail(props.item.communityId, props.item.postId)}
+      >
         {props.item.profileImage !== undefined &&
-          props.item.profileImage !== '' &&
-          props.item.profileImage !== null ? (
-            <Comment.Avatar 
-              // src={`/files/community/${props.item.profileImage}`} 
-              src={ProfileImagePath(props.item.profileImage)} 
-            />
-          ) : (
-            <Comment.Avatar src={`${DefaultImg}`} />
-          )}
+        props.item.profileImage !== '' &&
+        props.item.profileImage !== null ? (
+          <Comment.Avatar
+            // src={`/files/community/${props.item.profileImage}`}
+            src={ProfileImagePath(props.item.profileImage)}
+          />
+        ) : (
+          <Comment.Avatar src={`${DefaultImg}`} />
+        )}
         <Comment.Content>
           <Comment.Author as="a">{props.item.communityName}</Comment.Author>
           <Comment.Text>
             <div className="ellipsis">
               <span className="line id">{props.item.profileId}</span>
               <span className="line id">{props.item.createdTime}</span>
-              <span className="line id">좋아요{' '}<strong>{props.item.likeCount}</strong></span>
-              <span className="line id">댓글수{' '}<strong>{props.item.replyCount}</strong></span>
+              <span className="line id">
+                좋아요 <strong>{props.item.likeCount}</strong>
+              </span>
+              <span className="line id">
+                댓글수 <strong>{props.item.replyCount}</strong>
+              </span>
             </div>
           </Comment.Text>
           <Comment.Actions>
             <div className="action-area">
-              <Link to="#" onClick={(e) => copyUrl(e, props.item.communityId, props.item.postId)} ><i className="icon popupUrl" /></Link>
-              <Button icon onClick={(e) => bookmark(e)}><i className={`icon popupBook ${bookmarkClass}`} /></Button>
+              <Link
+                to="#"
+                onClick={(e) =>
+                  copyUrl(e, props.item.communityId, props.item.postId)
+                }
+              >
+                <i className="icon popupUrl" />
+              </Link>
+              <Button icon onClick={(e) => bookmark(e)}>
+                <i className={`icon popupBook ${bookmarkClass}`} />
+              </Button>
             </div>
           </Comment.Actions>
         </Comment.Content>
@@ -171,7 +201,9 @@ function UserProfileInfoTabFeedItem(props: Props) {
           <Accordion.Title
             active={active}
             index={props.index}
-            onClick={() => { active ? setActive(false) : setActive(true) }}
+            onClick={() => {
+              active ? setActive(false) : setActive(true);
+            }}
             className="more-bttn feed-tit"
           >
             <span className="ico_feed board">게시물</span>
