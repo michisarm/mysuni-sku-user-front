@@ -63,7 +63,7 @@ function LectureVideoContainer() {
           const { duration, currentTime, playerState } = state;
           return (
             playerState === PlayerState.Playing &&
-            currentTime + 5 > duration &&
+            currentTime + 10 > duration &&
             didAction === false
           );
         }
@@ -262,7 +262,7 @@ function LectureVideoContainer() {
 
   // video 영역 위치
   const getStickyPosition = useCallback(
-    node => {
+    (node) => {
       if (getLectureMedia() === undefined) {
         return;
       }
