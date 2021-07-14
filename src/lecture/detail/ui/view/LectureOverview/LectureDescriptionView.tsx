@@ -45,7 +45,7 @@ function LectureDescriptionView({
         }
       }
     }
-  }, [descriptionOpen, showMoreButton]);
+  }, [descriptionOpen]);
   return (
     <div
       className={`${

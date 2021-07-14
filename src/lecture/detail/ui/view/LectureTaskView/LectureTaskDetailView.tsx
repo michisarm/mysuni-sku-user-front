@@ -68,7 +68,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   useEffect(() => {
     setPinned(taskDetail?.pinned);
     getFileIds();
-  }, [getFileIds, taskDetail]);
+  }, [taskDetail]);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = taskDetail && taskDetail.fileBoxId;
@@ -76,7 +76,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
-  }, [findFiles, taskDetail]);
+  }, [taskDetail]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
@@ -84,31 +84,31 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
     });
-  }, [filesMap]);
+  }, []);
 
   const OnClickModify = useCallback(() => {
     handleOnClickModify(taskId, detailType);
-  }, [detailType, handleOnClickModify, taskId]);
+  }, []);
 
   const OnClickDelete = useCallback(() => {
     handleOnClickDelete(boardId, taskId, detailType);
-  }, [boardId, detailType, handleOnClickDelete, taskId]);
+  }, []);
 
   const OnClicList = useCallback(() => {
     handleOnClickList(taskId);
-  }, [handleOnClickList, taskId]);
+  }, []);
 
   const onClickReplies = useCallback(() => {
     history.push('#reply');
     handleOnClickReplies(taskId);
-  }, [handleOnClickReplies, history, taskId]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
-  }, [clickProfileEventHandler]);
+  }, []);
 
   const clickProfileEventHandler = useCallback(async () => {
     const id = document.body.getAttribute('selectedProfileId');

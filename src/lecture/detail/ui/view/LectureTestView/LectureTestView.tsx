@@ -34,7 +34,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
 
     const lectureStructureItem = getActiveStructureItem(params.pathname);
 
-    const openView = useCallback(async (view: string) => {
+    const openView = async (view: string) => {
       if (view === 'intro') {
         setUseTestIntroView(true);
         setUseTestView(false);
@@ -82,7 +82,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         } else {
           const date = new Date();
           date.setDate(date.getDate() + 1);
-          const week = ['일', '월', '화', '수', '목', '금', '토'];
+          const week = new Array('일', '월', '화', '수', '목', '금', '토');
           const dateFormat =
             date.getMonth() +
             1 +
@@ -107,7 +107,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         setUseTestView(false);
         setUseTestResultView(false);
       }
-    });
+    };
 
     useEffect(() => {
       const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
@@ -120,7 +120,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
       } else {
         openView('intro');
       }
-    }, [params, testStudentItem, lectureStructureItem, openView]);
+    }, [params, testStudentItem, lectureStructureItem]);
     /*
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;

@@ -102,7 +102,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const history = useHistory();
   const nextContents = useCallback((path: string) => {
     history.push(path);
-  }, [history]);
+  }, []);
 
   const [cubeName, setCubeName] = useState<any>('');
 
@@ -203,7 +203,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         pauseVideo();
       }
     }
-  }, [currentTime, scroll, quizShowTime, quizCurrentTime, lectureState.student.learningState, playerState, lectureMedia.mediaContents.internalMedias, videoPosition, closeFullScreen]);
+  }, [currentTime, scroll, quizShowTime]);
 
   useEffect(() => {
     setQuizPop(false);
@@ -251,7 +251,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       playVideo();
     }
     // setQuizCurrentIndex(quizCurrentIndex + 1);
-  }, [quizPop]);
+  }, [quizPop, quizCurrentIndex]);
 
   const onScrollTop = () => {
     window.scrollTo(0, 124);

@@ -178,7 +178,7 @@ function LectureTaskContainer() {
       });
       setActivePage(1);
     })
-  }, [history]);
+  }, []);
 
   // const onHandleSave = useCallback(() => {
   //   history.goBack();
@@ -192,12 +192,12 @@ function LectureTaskContainer() {
     setCreate(true);
     history.push('#edit');
     // history.goBack();
-  }, [history]);
+  }, []);
 
   const onClickReplies = useCallback(() => {
     history.push('#create');
     setIsReply(true);
-  }, [history]);
+  }, []);
 
   const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
     reactConfirm({
@@ -211,7 +211,7 @@ function LectureTaskContainer() {
         });
       },
     });
-  }, [history]);
+  }, []);
 
   const listHashLink = useCallback((hash: string) => {
     setLectureTaskTab(hash);
@@ -310,7 +310,7 @@ function LectureTaskContainer() {
         }
       },
     });
-  }, [history]);
+  }, []);
 
   useEffect(() => {
     const params = getLectureParams();

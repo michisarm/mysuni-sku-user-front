@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { List, Icon, Label } from 'semantic-ui-react';
 import depot from '@nara.drama/depot';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureFileViewProps {
   lectureFile: LectureFile;
@@ -23,12 +24,16 @@ const LectureFileView: React.FC<LectureFileViewProps> = function LectureFileView
       <h3 className="title-style">
         <Label className="onlytext bold size24">
           <Icon className="document24" />
-          <span>참고자료</span>
+          <span>
+            <PolyglotText defaultString="참고자료" id="cube-Contents-참고자료" />
+          </span>
         </Label>
       </h3>
       <List bulleted>
         <List.Item>
-          <div className="title">첨부파일</div>
+          <div className="title">
+            <PolyglotText defaultString="첨부파일" id="cube-Contents-첨부파일" />
+          </div>
           <div className="detail">
             <div className="file-down-wrap">
               {lectureFile.files.map(file => (
@@ -41,7 +46,9 @@ const LectureFileView: React.FC<LectureFileViewProps> = function LectureFileView
               <div className="all-down">
                 <a onClick={allFilesDownload}>
                   <Icon className="icon-down-type4" />
-                  <span>전체 다운로드</span>
+                  <span>
+                    <PolyglotText defaultString="전체 다운로드" id="cube-Contents-전체 다운로드" />
+                  </span>
                 </a>
               </div>
             </div>

@@ -74,7 +74,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
         }
       }
     }
-  }, [getFileIds, lectureState]);
+  }, [lectureState]);
 
   const originArr: string[] = [];
   let origin: string = '';
@@ -114,14 +114,14 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
         message: getPolyglotText(`다운로드 받으실 첨부파일을 선택해 주세요.`, 'Collage-Discussion-첨부파일1'),
       });
     }
-  }, [filesMap, origin, originArr]);
+  }, []);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = lectureState?.cubeDetail.cubeContents && lectureState?.cubeDetail.cubeContents.fileBoxId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
-  }, [findFiles, lectureState.cubeDetail.cubeContents]);
+  }, [lectureState?.cubeDetail.cubeContents]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
@@ -129,7 +129,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
     });
-  }, [filesMap]);
+  }, []);
 
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {

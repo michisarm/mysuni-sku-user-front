@@ -33,7 +33,7 @@ function CanceledView(props: CanceledViewProps) {
       }
     }
     startLearning();
-  }, []);
+  }, [cubeType]);
   return (
     <>
       <button

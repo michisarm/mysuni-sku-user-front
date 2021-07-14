@@ -104,7 +104,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     if (viewType === 'edit') {
       getCubeLectureTaskDetail(detailTaskId);
     }
-  }, [detailTaskId, viewType]);
+  }, [viewType]);
 
   const getFileBoxIdForReference = useCallback((depotId: string) => {
     const postCreateItem = getLectureTaskCreateItem();
@@ -126,12 +126,12 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
       return;
     }
     changeProps(e.target.value, 'title', viewType!);
-  }, [changeProps, viewType]);
+  }, []);
 
   const handlePinnedChange = useCallback((e: any, data: any) => {
     const value = data.checked ? 2 : 0;
     changeProps(value, 'pinned', viewType!);
-  }, [changeProps, viewType]);
+  }, []);
 
   const title = isReply ? 'Reply' : 'Post';
 

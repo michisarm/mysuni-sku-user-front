@@ -97,12 +97,12 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
     param => {
       handleClickTaskRow(param);
     },
-    [handleClickTaskRow]
+    [taskItem]
   );
 
   const onHandleClickMoreView = useCallback(() => {
     moreView(getLectureTaskOffset()!);
-  }, [moreView]);
+  }, []);
 
   return (
     <Fragment>

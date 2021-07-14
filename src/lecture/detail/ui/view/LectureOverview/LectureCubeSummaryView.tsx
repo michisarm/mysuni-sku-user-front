@@ -216,7 +216,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         );
       }, 1000);
     }
-  }, [lectureSummary.name]);
+  }, []);
 
   useEffect(() => {
     const postService = PostService.instance;

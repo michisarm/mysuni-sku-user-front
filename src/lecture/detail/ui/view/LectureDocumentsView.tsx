@@ -67,7 +67,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       });
     }
-  }, [learningState, params.cardId, params.cubeId]);
+  }, [params?.cardId, params?.cubeId]);
 
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
 
@@ -94,7 +94,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       }
     });
-  }, [fileBoxId]);
+  }, [fileBoxId, pdfUrl, params?.cubeId]);
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
@@ -118,13 +118,13 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     updateHeaderWidth();
     window.addEventListener('resize', updateHeaderWidth);
     return () => window.removeEventListener('resize', updateHeaderWidth);
-  }, [params.cubeId, updateHeaderWidth]);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
       getFiles();
     }
-  }, [fileBoxId, getFiles]);
+  }, [fileBoxId]);
 
   const onDocumentLoadSuccess = useCallback((pdf: any) => {
     setNumPages(pdf.numPages);
@@ -189,7 +189,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const nextContents = useCallback((path: string) => {
     history.push(path);
-  }, [history]);
+  }, []);
 
   return (
     <>

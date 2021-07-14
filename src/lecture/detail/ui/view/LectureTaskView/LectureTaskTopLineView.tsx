@@ -27,7 +27,7 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
       await submit(1)
     }
       handelClickCreateTask()
-  }, [handelClickCreateTask, lectureState]);
+  }, [lectureState]);
 
   return (
     <div className="task-title-wrap">

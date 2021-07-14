@@ -91,7 +91,7 @@ function ShortAnswerType({
       setInput(value);
       onChange(rowIndex, value);
     },
-    [onChange, rowIndex]
+    [input]
   );
 
   return (
@@ -257,7 +257,7 @@ const QuizQuestionView: React.FC<Props> = ({
         onChangeUserAnswer(rowIndex, text);
       }
     },
-    [check, onChangeUserAnswer, question.type]
+    [check, question, userAnswer]
   );
 
   return (

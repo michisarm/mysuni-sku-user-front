@@ -81,7 +81,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const nextContents = useCallback((path: string) => {
     setPanoptoState(10);
     history.push(path);
-  }, [history]);
+  }, []);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
@@ -104,7 +104,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         setNextContentsView(true);
       }
     },
-    [isFirstAction, isStateUpated]
+    [params]
   );
 
   // study action event : 방문당 한번 적재
@@ -138,12 +138,12 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         await checkStudent(params, pathname);
       }
     },
-    [checkStudent, pathname]
+    [params, pathname]
   );
 
   const mediaCheckEvent = useCallback(async () => {
     await confirmProgress();
-  }, []);
+  }, [params.cardId]);
 
   useEffect(() => {
     if (params) {
@@ -168,7 +168,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       registCheckStudent(params);
       mediaCheckEvent();
     }
-  }, [embedApi, mediaCheckEvent, panoptoState, params, registCheckStudent]);
+  }, [panoptoState, params]);
 
   useEffect(() => {
     let interval: any = null;
@@ -217,7 +217,15 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, params, embedApi, startTime, watchlogState]);
+  }, [
+    isActive,
+    // lectureParams,
+    // pathname,
+    params,
+    embedApi,
+    startTime,
+    // watchlogState,
+  ]);
 
   useEffect(() => {
     // clearTimeout(progressInterval);
@@ -242,7 +250,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(checkInterval);
     };
-  }, [params, isActive, embedApi, mediaCheckEvent]);
+  }, [params, isActive]);
 
   // useEffect(() => {
   //   return () => {
@@ -311,7 +319,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       cleanUpPanoptoIframe();
     };
-  }, [onPanoptoStateUpdate]);
+  }, []);
 
   const cleanUpPanoptoIframe = () => {
     const playerEl = document.getElementById('panopto-embed-audio-player');

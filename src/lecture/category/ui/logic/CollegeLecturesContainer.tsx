@@ -114,7 +114,7 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, [history, scrollSave]);
+  }, []);
 
   if (collegeModelStore === undefined) {
     return null;

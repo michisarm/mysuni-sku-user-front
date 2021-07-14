@@ -61,26 +61,26 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
     if (hash) {
       history.replace(pathname);
     }
-  }, [hash, history, pathname]);
+  }, []);
 
   const onHandleClickTaskRow = useCallback(
     param => {
       handleClickTaskRow!(param);
     },
-    [handleClickTaskRow]
+    [taskItem]
   );
 
   const postsHashClick = useCallback(() => {
     listHashLink!('Posts');
-  }, [listHashLink]);
+  }, []);
 
   const myPostsHashClick = useCallback(() => {
     listHashLink!('MyPosts');
-  }, [listHashLink]);
+  }, []);
 
   const overViewHashClick = useCallback(() => {
     overviewHashLink!('Overview');
-  }, [overviewHashLink]);
+  }, []);
 
   return (
     <Fragment>

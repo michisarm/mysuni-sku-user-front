@@ -19,7 +19,7 @@ function CanceledView() {
   const action = useCallback(async () => {
     history.push('#create');
     submit(1);
-  }, [history]);
+  }, []);
   return (
     <>
       <button
@@ -52,7 +52,7 @@ function ApprovedView(props: ApprovedViewProps) {
   }, [student]);
   const action = useCallback(async () => {
     history.push('#create');
-  }, [history]);
+  }, []);
   const stateClassName = useMemo(() => {
     const { learningState } = student;
     switch (learningState) {

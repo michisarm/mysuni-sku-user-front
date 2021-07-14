@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Label, Table } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import TableModal from '../../../../../personalcube/shared/OverviewField/sub/TableModal';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 
@@ -35,14 +36,14 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
           <h3 className="title-style">
             <Label className="onlytext bold size24">
               <Icon className="series" />
-              <span>차수정보</span>
+              <span><PolyglotText defaultString="차수정보" id="cube-Contents-차수정보" /></span>
             </Label>
           </h3>
           <TableModal
             classrooms={lectureClassroom.classrooms}
             trigger={
               <Button icon className="right btn-blue">
-                more <Icon className="morelink" />
+                <PolyglotText defaultString="more" id="cube-Contents-more" /> <Icon className="morelink" />
               </Button>
             }
           />
@@ -69,13 +70,13 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                   <Fragment key={round}>
                     <Table.Row>
                       <Table.HeaderCell rowSpan="2">
-                        <span>{round}차수</span>
+                        <span>{round}<PolyglotText defaultString="차수" id="cube-Contents-차수" /></span>
                       </Table.HeaderCell>
-                      <Table.HeaderCell>강사정보</Table.HeaderCell>
-                      <Table.HeaderCell>비용</Table.HeaderCell>
-                      <Table.HeaderCell>장소</Table.HeaderCell>
-                      <Table.HeaderCell>수강신청기간</Table.HeaderCell>
-                      <Table.HeaderCell>교육기간</Table.HeaderCell>
+                      <Table.HeaderCell><PolyglotText defaultString="강사정보" id="cube-Contents-강사정보" /></Table.HeaderCell>
+                      <Table.HeaderCell><PolyglotText defaultString="비용" id="cube-Contents-비용" /></Table.HeaderCell>
+                      <Table.HeaderCell><PolyglotText defaultString="장소" id="cube-Contents-장소" /></Table.HeaderCell>
+                      <Table.HeaderCell><PolyglotText defaultString="수강신청기간" id="cube-Contents-수강신청기간" /></Table.HeaderCell>
+                      <Table.HeaderCell><PolyglotText defaultString="교육기간" id="cube-Contents-교육기간" /></Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
@@ -84,7 +85,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                         ))}
                       </Table.Cell>
                       <Table.Cell>
-                        {`${numberWithCommas(freeOfCharge.chargeAmount)} 원`}
+                        {`${numberWithCommas(freeOfCharge.chargeAmount)} ${getPolyglotText('원', 'cube-Contents-원')}`}
                       </Table.Cell>
                       <Table.Cell>{location}</Table.Cell>
                       <Table.Cell>

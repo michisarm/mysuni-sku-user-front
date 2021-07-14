@@ -51,7 +51,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     } else {
       setNoteTabUsable(true);
     }
-  }, [pathname, params]);
+  }, []);
 
   // 실시간 스크롤 감시
   useEffect(() => {
@@ -71,7 +71,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       }
     }, 2000);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [params.cubeType]);
+  }, []);
 
   // Action Scroll
   useEffect(() => {
@@ -123,7 +123,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       }
       setLectureNoteTab(false);
     },
-    [noteTabActivity]
+    [noteTabUsable, noteTabActivity]
   );
 
   return (

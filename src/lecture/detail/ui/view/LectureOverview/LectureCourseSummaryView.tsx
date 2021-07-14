@@ -130,7 +130,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
         );
       }, 1000);
     }
-  }, [lectureSummary.name]);
+  }, []);
   const qnaUrl = `/board/support-qna/course/${lectureSummary.cardId}`;
 
   useEffect(() => {

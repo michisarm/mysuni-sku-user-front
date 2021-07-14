@@ -88,7 +88,7 @@ const VideoQuizContentContainer = ({
       });
       setCheckQuizState(quizStatus.type === 'result' ? true : false);
     }
-  }, [currentIndex, quizStatus, questionData, currentUser.email, currentMemberId, setCheckQuizState]);
+  }, [currentIndex, quizStatus, questionData]);
 
   const onChangeNextQuestion = useCallback(() => {
     if (questionData) {
@@ -101,7 +101,7 @@ const VideoQuizContentContainer = ({
         setQuizStatus({ status: true, type: 'finish' });
       }
     }
-  }, [questionData, currentIndex]);
+  }, [questionData, currentIndex, quizStatus, userAnswer]);
 
   const onSubmitUserAnswer = useCallback(async () => {
     if (questionData) {
@@ -193,7 +193,7 @@ const VideoQuizContentContainer = ({
         await registerAnswer(params);
       }
     }
-  }, [questionData, currentIndex, userAnswer.quizQuestionAnswerItems, currentUser.email]);
+  }, [questionData, currentIndex, quizStatus, userAnswer, summaryCount]);
 
   const onChangeResultAnswer = useCallback(async () => {
     setQuizStatus({ status: true, type: 'result' });
@@ -218,11 +218,11 @@ const VideoQuizContentContainer = ({
       );
       setResultData(result);
     }
-  }, [questionData, currentIndex, offset]);
+  }, [currentIndex, quizStatus, resultData, currentIndex, summaryCount]);
 
   const onCloseQuizPanel = useCallback(() => {
     setQuizStatus({ status: false, type: '' });
-  }, []);
+  }, [currentIndex, quizStatus]);
 
   const onChangeUserAnswer = useCallback(
     (rowIndex: number, userAnswerItem: boolean | string) => {
@@ -263,7 +263,7 @@ const VideoQuizContentContainer = ({
         });
       }
     },
-    [questionData, currentIndex, userAnswer]
+    [questionData, currentIndex, quizStatus, userAnswer]
   );
 
   const onImageZoomPopup = (titleValue: string, srcValue: string) => {
@@ -296,7 +296,7 @@ const VideoQuizContentContainer = ({
       });
       setOffset(nextOffset);
     }
-  }, [currentIndex, offset, questionData, resultData]);
+  }, [offset, questionData, resultData]);
 
   const onCompleteCurrentQuiz = () => {
     setQuizStatus({ status: false, type: '' });

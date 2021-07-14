@@ -33,6 +33,7 @@ import {
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
 import { Area } from 'tracker/model';
 import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -94,15 +95,15 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         homeworkContent === undefined)
     ) {
       reactAlert({
-        title: '알림',
-        message: '내용 또는 첨부파일을 업로드해주세요.',
+        title: getPolyglotText('알림', 'Report-Report-알림1'),
+        message: getPolyglotText('내용 또는 첨부파일을 업로드해주세요.', 'Report-Report-업로드'),
       });
       return;
     }
 
     reactConfirm({
-      title: '제출 안내',
-      message: '제출 하시겠습니까?',
+      title: getPolyglotText('제출 안내', 'Report-Report-제출안내'),
+      message: getPolyglotText('제출 하시겠습니까?', 'Report-Report-제출'),
       warning: true,
       onOk: async () => {
         await setCubeLectureReport();
@@ -123,16 +124,16 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           course?.survey.state !== 'Completed'
         ) {
           reactAlert({
-            title: '알림',
+            title: getPolyglotText('알림', 'Report-Report-알림2'),
             message:
-              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+              getPolyglotText('과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.', 'Report-Report-제출설문'),
             onClose: () => goToPath(course?.survey?.path),
           });
         } else {
           reactAlert({
-            title: '알림',
+            title: getPolyglotText('알림', 'Report-Report-알림3'),
             message:
-              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+              getPolyglotText('과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.', 'Report-Report-제출완료'),
           });
         }
       },
@@ -185,7 +186,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       <div className="apl-form-wrap support">
         <Form>
           <Form.Field>
-            <label>작성 가이드</label>
+            <label>
+              <PolyglotText defaultString="작성 가이드" id="Report-Report-작성안내" />
+            </label>
             <div
               className="ui editor-wrap"
               dangerouslySetInnerHTML={{
@@ -211,16 +214,19 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                       }
                     >
                       <Icon className="download2" />
-                      <span>Download File</span>
+                      <span>
+                        <PolyglotText defaultString="Download File" id="Report-Report-다운로드" />
+                      </span>
                     </Button>
                   </div>
                 </div>
                 <div className="bottom">
                   <span className="text1">
                     <Icon className="info16" />
-                    <span className="blind">information</span>
-                    과정담당자가 등록한 Report 양식을 Download 받으실 수
-                    있습니다.
+                    <span className="blind">
+                      <PolyglotText defaultString="information" id="Report-Report-information1" />
+                    </span>
+                    <PolyglotText defaultString="과정담당자가 등록한 Report 양식을 Download 받으실 수 있습니다." id="Report-Report-양식다운" />
                   </span>
                 </div>
               </>
@@ -230,7 +236,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
             </div>
           </Form.Field>
           <Form.Field>
-            <label className="necessary">첨부파일</label>
+            <label className="necessary">
+              <PolyglotText defaultString="첨부파일" id="Report-Report-첨부파일" />
+            </label>
             <div className="report-attach">
               {/* <AttachFileUpload filesMap={filesMap}/> */}
               <div className="lg-attach">
@@ -265,9 +273,10 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   <div className="bottom">
                     <span className="text1">
                       <Icon className="info16" />
-                      <span className="blind">information</span>
-                      작성된 Report를 Upload하시면 과정 담당자가 확인 후 의견을
-                      드릴 예정입니다.
+                      <span className="blind">
+                        <PolyglotText defaultString="information" id="Report-Report-information2" />
+                      </span>
+                      <PolyglotText defaultString="작성된 Report를 Upload하시면 과정 담당자가 확인 후 의견을 드릴 예정입니다." id="Report-Report-첨부안내" />
                     </span>
                   </div>
                 </div>
@@ -282,7 +291,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           <Form>
             {/* margin-none 클래스 추가 */}
             <Form.Field className="margin-none">
-              <label>담당자의견</label>
+              <label>
+                <PolyglotText defaultString="담당자의견" id="Report-Report-담당의견" />
+              </label>
               <div className="ui editor-wrap">
                 <div className="content-area">
                   <div className="content-inner ql-snow">
@@ -335,7 +346,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                               }
                             >
                               <Icon className="icon-down-type4" />
-                              <span>전체 다운로드</span>
+                              <span>
+                                <PolyglotText defaultString="전체 다운로드" id="Report-Report-전체다운" />
+                              </span>
                             </a>
                           </div>
                         </div>
@@ -352,7 +365,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         {lectureReport?.state !== 'Completed' && (
           // lectureReport?.state !== 'Progress' &&
           <button className="ui button fix bg" onClick={onSubmitClick}>
-            제출
+            <PolyglotText defaultString="제출" id="Report-Report-제출버튼" />
           </button>
         )}
       </div>

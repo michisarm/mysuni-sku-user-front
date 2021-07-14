@@ -13,6 +13,7 @@ import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 import { Area } from 'tracker/model';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -104,7 +105,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
             <h3 className="title-style">
               <Label className="onlytext bold size24">
                 <Icon className="before" />
-                <span>{/*Tag*/}관련과정</span>
+                <span>{/*Tag*/}<PolyglotText defaultString="관련과정" id="Course-Contents-관련과정" /></span>
               </Label>
             </h3>
           </div>

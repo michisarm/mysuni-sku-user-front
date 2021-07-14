@@ -12,6 +12,7 @@ import {
 } from '../../../viewModel/LectureTest';
 import LectureTestPaperModalView from './LectureTestPaperModalView';
 import { Area } from 'tracker/model';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureTestResultViewProps {
   testItem: LectureTestItem;
@@ -73,11 +74,11 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                       <i className="icon testHeader">
                         <span className="blind">ai</span>
                       </i>
-                      Test Information
+                      <PolyglotText defaultString="Test Information" id="Test-TestResult-Information1" />
                     </div>
                     <div className="survey-header-right">
                       <button className="ui button free proceeding">
-                        미이수
+                        <PolyglotText defaultString="미이수" id="Test-TestResult-미이수" />
                       </button>
                     </div>
                   </div>
@@ -87,26 +88,26 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-fail.png`}
                   />
                   <h1 className="test_fail">
-                    {answerItem?.obtainedScore || 0}점
+                    {answerItem?.obtainedScore || 0}
+                    <PolyglotText defaultString="점" id="Test-TestResult-점" />
                   </h1>
-                  <h3>응시횟수</h3>
+                  <h3>
+                    <PolyglotText defaultString="응시횟수" id="Test-TestResult-횟수" />
+                  </h3>
                   <p>{answerItem?.trials || 0}회</p>
-                  <h2 style={{ marginTop: '2.5rem' }}>
-                    <strong>Test 이수조건을 통과하지 못했습니다.</strong>
-                    <br />
-                    하단 <strong>재응시</strong> 버튼을 통해 다시 Test를
-                    풀어보세요.
-                  </h2>
-                  <h3>이수조건</h3>
+                  <h2 style={{ marginTop: '2.5rem' }} dangerouslySetInnerHTML={{__html: getPolyglotText(`<strong>Test 이수조건을 통과하지 못했습니다.</strong><br />하단 <strong>재응시</strong> 버튼을 통해 다시 Test를  풀어보세요.`, 'Test-TestResult-불합격')}} />
+                  <h3>
+                    <PolyglotText defaultString="이수조건" id="Test-TestResult-이수조건1" />
+                  </h3>
                   <p>
-                    합격기준{' '}
+                    <PolyglotText defaultString="합격기준" id="Test-TestResult-총점" />{' '}
                     <strong>
-                      {testItem.preSuccessPoint || testItem.successPoint}점
+                      {testItem.preSuccessPoint || testItem.successPoint}<PolyglotText defaultString="점" id="Test-TestResult-점" />
                     </strong>
                     <span>/</span>
-                    총점{' '}
+                    <PolyglotText defaultString="총점" id="Test-TestResult-총점" />{' '}
                     <strong>
-                      {testItem.preTotalPoint || testItem.totalPoint}점
+                      {testItem.preTotalPoint || testItem.totalPoint}<PolyglotText defaultString="점" id="Test-TestResult-점" />
                     </strong>
                   </p>
                 </div>
@@ -116,14 +117,14 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   className="ui button free submit d"
                   onClick={() => openView('retry')}
                 >
-                  재응시
+                  <PolyglotText defaultString="재응시" id="Test-TestResult-재응시" />
                 </button>
                 {surveyPath && (
                   <button
                     className="ui button free proceeding p18 ml20"
                     onClick={() => goToPath(surveyPath)}
                   >
-                    과정 Survey 참여
+                    <PolyglotText defaultString="과정 Survey 참여" id="Test-TestResult-Survey1" />
                   </button>
                 )}
               </div>
@@ -140,13 +141,15 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   <div className="survey-header">
                     <div className="survey-header-left test_ing">
                       <i className="icon testHeader">
-                        <span className="blind">ai</span>
+                        <span className="blind">
+                          <PolyglotText defaultString="ai" id="Test-TestResult-ai1" />
+                        </span>
                       </i>
-                      Test Information
+                      <PolyglotText defaultString="Test Information" id="Test-TestResult-Information2" />
                     </div>
                     <div className="survey-header-right">
                       <button className="ui button free proceeding">
-                        이수
+                        <PolyglotText defaultString="이수" id="Test-TestResult-이수" />
                       </button>
                     </div>
                   </div>
@@ -156,19 +159,26 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-pass.png`}
                   />
                   <h1 className="test_result">
-                    {answerItem?.obtainedScore || 0}점
+                    {answerItem?.obtainedScore || 0}<PolyglotText defaultString="점" id="Test-TestResult-점" />
                   </h1>
                   <h2>
-                    <strong>Test 이수조건을 통과하셨습니다!</strong>
+                    <strong>
+                      <PolyglotText defaultString="Test 이수조건을 통과하셨습니다!" id="Test-TestResult-통과" />
+                    </strong>
                     <br />
-                    하단 <strong>결과보기</strong> 버튼을 통해 나의 결과를
-                    확인해보세요!
+                    {/* <br dangerouslySetInnerHTML={{__html: getPolyglotText(``, 'Test-TestResult-합격기준2')}} /> */}
+                    하단 <strong>결과보기</strong> 버튼을 통해 나의 결과를 확인해보세요!
                   </h2>
-                  <h3>이수조건</h3>
+                  <h3>
+                    <PolyglotText defaultString="이수조건" id="Test-TestResult-이수조건2" />
+                  </h3>
                   <p>
-                    합격기준 <strong>{testItem.successPoint}점</strong>
+                    <PolyglotText defaultString="합격기준" id="Test-TestResult-합격기준2" />
+                    <strong>
+                      {testItem.successPoint}<PolyglotText defaultString="점" id="Test-TestResult-점" />
+                    </strong>
                     <span>/</span>
-                    총점 <strong>{testItem.totalPoint}점</strong>
+                    <PolyglotText defaultString="총점" id="Test-TestResult-총점" /> <strong>{testItem.totalPoint}<PolyglotText defaultString="점" id="Test-TestResult-점" /></strong>
                   </p>
                 </div>
               </div>
@@ -180,7 +190,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   testStudentItem={testStudentItem}
                   openView={openView}
                   trigger={
-                    <button className="ui button free pop d">결과보기</button>
+                    <button className="ui button free pop d"><PolyglotText defaultString="결과보기" id="Test-TestResult-결과보기" /></button>
                   }
                 />
                 {surveyPath && (
@@ -188,7 +198,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     className="ui button free proceeding p18 ml20"
                     onClick={() => goToPath(surveyPath)}
                   >
-                    과정 Survey 참여
+                    <PolyglotText defaultString="과정 Survey 참여" id="Test-TestResult-Survey2" />
                   </button>
                 )}
               </div>
@@ -205,13 +215,15 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   <div className="survey-header">
                     <div className="survey-header-left test_ing">
                       <i className="icon testHeader">
-                        <span className="blind">ai</span>
+                        <span className="blind">
+                          <PolyglotText defaultString="ai" id="Test-TestResult-ai2" />
+                        </span>
                       </i>
-                      Test Information
+                      <PolyglotText defaultString="Test Information" id="Test-TestResult-Information" />
                     </div>
                     <div className="survey-header-right">
                       <button className="ui button free proceeding">
-                        채점중
+                        <PolyglotText defaultString="채점중" id="Test-TestResult-채점중" />
                       </button>
                     </div>
                   </div>
@@ -220,11 +232,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                   <img
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-wait.png`}
                   />
-                  <h2 className="test-delay-h2">
-                    <strong>관리자가 채점 중에 있습니다.</strong>
-                    <br />
-                    채점이 완료되면 메일로 결과를 확인하실 수 있습니다.
-                  </h2>
+                  <h2 className="test-delay-h2" dangerouslySetInnerHTML={{__html: getPolyglotText(` <strong>관리자가 채점 중에 있습니다.</strong><br />채점이 완료되면 메일로 결과를 확인하실 수 있습니다.`, 'Test-TestResult-관리자채점')}} />                  
                 </div>
                 <div className="course-info-bottom">
                   {surveyPath && (
@@ -232,7 +240,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                       className="ui button free proceeding p18 ml20"
                       onClick={() => goToPath(surveyPath)}
                     >
-                      과정 Survey 참여
+                      <PolyglotText defaultString="과정 Survey 참여" id="Test-TestResult-Survey" />
                     </button>
                   )}
                 </div>
