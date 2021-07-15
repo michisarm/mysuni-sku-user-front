@@ -94,9 +94,18 @@ const CoreAbtest: React.FC<Props> = ({
         ? (target as Element).closest(DATA_TYPES.ABTEST)
         : closest(target, DATA_TYPES.ABTEST);
 
+    const areaElement =
+      'closest' in document.documentElement
+        ? (target as Element).closest(DATA_TYPES.AREA)
+        : closest(target, DATA_TYPES.AREA);
+
     if (abtestElement instanceof HTMLElement) {
       data.target = abtestElement;
       data.abtest = abtestElement.dataset.abtest;
+      data.area = areaElement.dataset.area;
+    }
+    if (areaElement && areaElement instanceof HTMLElement) {
+      data.area = areaElement.dataset.area;
     }
     valueRef.current = data;
   };
@@ -112,6 +121,7 @@ const CoreAbtest: React.FC<Props> = ({
           type,
           action: 'CLICK',
           url: location.pathname,
+          area: valueRef.current.area,
         }).then((data) => {
           if (data) {
             abtestResultRef.current = '';

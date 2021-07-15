@@ -8,6 +8,7 @@ import { setSearchBox } from 'community/store/SearchBoxStore';
 import { getEmptySearchBox } from 'community/model/SearchBox';
 
 function CommunityMenuPage(communityId: string) {
+  window.location.href = `/suni-community/admin/${communityId}/menu`;
   useEffect(() => {
     setSearchBox(getEmptySearchBox());
     requestCommunityMenu(communityId);

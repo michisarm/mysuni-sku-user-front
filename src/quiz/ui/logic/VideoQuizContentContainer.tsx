@@ -109,13 +109,13 @@ const VideoQuizContentContainer = ({
         const questionAnswers = questionData[
           currentIndex
         ].quizQuestionItems?.filter(
-          questionRow => questionRow.answerItem === true
+          (questionRow) => questionRow.answerItem === true
         );
         const userAnswers = userAnswer?.quizQuestionAnswerItems.filter(
-          userRow => userRow.answerItem === true
+          (userRow) => userRow.answerItem === true
         );
-        const checkedAnswer = questionAnswers?.filter(answer => {
-          if (userAnswers.find(f => f.number === answer.number)) {
+        const checkedAnswer = questionAnswers?.filter((answer) => {
+          if (userAnswers.find((f) => f.number === answer.number)) {
             return answer;
           }
         });
@@ -128,8 +128,8 @@ const VideoQuizContentContainer = ({
           const params = {
             email: currentUser?.email,
             quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
-              .filter(row => row.answerItem === true)
-              .map(row => row.number),
+              .filter((row) => row.answerItem === true)
+              .map((row) => row.number),
             quizQuestionId: questionData[currentIndex]?.id,
           };
           await registerAnswer(params);
@@ -145,14 +145,14 @@ const VideoQuizContentContainer = ({
       ) {
         // 답변 Null Check
         const noAnswerCheck = userAnswer?.quizQuestionAnswerItems.filter(
-          answer => answer.answerItem === true
+          (answer) => answer.answerItem === true
         ).length;
 
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
-            .filter(row => row.answerItem === true)
-            .map(row => row.number),
+            .filter((row) => row.answerItem === true)
+            .map((row) => row.number),
           quizQuestionId: questionData[currentIndex]?.id,
         };
 
@@ -387,9 +387,12 @@ const VideoQuizContentContainer = ({
       )}
 
       {/* 정답 패널 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData &&
+      {quizStatus.status &&
+        quizStatus.type === 'success' &&
+        questionData &&
         //  !questionData[currentIndex].resultView &&
-        questionData[currentIndex].answer && questionData[currentIndex].alertMessage.passMessage !== '' && (
+        questionData[currentIndex].answer &&
+        questionData[currentIndex].alertMessage.passMessage !== '' && (
           <div className="video-quiz-wrap sty2">
             <div className="video-quiz-header">
               <h1>Video QUIZ</h1>
@@ -417,7 +420,10 @@ const VideoQuizContentContainer = ({
               />
             </div>
             <div className="video-quiz-footer">
-              <button onClick={onChangeNextQuestion} className="ui button fix bg">
+              <button
+                onClick={onChangeNextQuestion}
+                className="ui button fix bg"
+              >
                 확인
               </button>
             </div>
@@ -425,42 +431,52 @@ const VideoQuizContentContainer = ({
         )}
 
       {/* 답안제출 완료 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData && (!questionData[currentIndex].answer || questionData[currentIndex].alertMessage.passMessage === '') && (
-        <div className="video-quiz-wrap sty2">
-          <div className="video-quiz-header">
-            <h1>Video QUIZ</h1>
-          </div>
-          <div className="quiz-content-wrap quiz-center-box">
-            <div className="imgbox">
-              <img
-                style={{ maxWidth: '100%' }}
-                src={
-                  questionData[currentIndex].alertMessage.passImg
-                    ? `/${questionData[currentIndex].alertMessage.passImg}`
-                    : CompleteIcon
-                }
-              />
+      {quizStatus.status &&
+        quizStatus.type === 'success' &&
+        questionData &&
+        (!questionData[currentIndex].answer ||
+          questionData[currentIndex].alertMessage.passMessage === '') && (
+          <div className="video-quiz-wrap sty2">
+            <div className="video-quiz-header">
+              <h1>Video QUIZ</h1>
             </div>
-            <span className="wro">{successComment()}</span>
-          </div>
-          <div className="video-quiz-footer">
-            {questionData[currentIndex].resultView && (
+            <div className="quiz-content-wrap quiz-center-box">
+              <div className="imgbox">
+                <img
+                  style={{ maxWidth: '100%' }}
+                  src={
+                    questionData[currentIndex].alertMessage.passImg
+                      ? `/${questionData[currentIndex].alertMessage.passImg}`
+                      : CompleteIcon
+                  }
+                />
+              </div>
+              <span className="wro">{successComment()}</span>
+            </div>
+            <div className="video-quiz-footer">
+              {questionData[currentIndex].resultView && (
+                <button
+                  onClick={onChangeResultAnswer}
+                  className="ui button fix bg grey"
+                >
+                  결과보기
+                </button>
+              )}
               <button
-                onClick={onChangeResultAnswer}
-                className="ui button fix bg grey"
+                onClick={onChangeNextQuestion}
+                className="ui button fix bg"
               >
-                결과보기
+                확인
               </button>
-            )}
-            <button onClick={onChangeNextQuestion} className="ui button fix bg">
-              확인
-            </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* 퀴즈참여 완료 */}
-      {quizStatus.status && quizStatus.type === 'finish' && questionData && onCompleteCurrentQuiz()}
+      {quizStatus.status &&
+        quizStatus.type === 'finish' &&
+        questionData &&
+        onCompleteCurrentQuiz()}
 
       {/* 결과보기 객관식 */}
       {quizStatus.status &&
@@ -506,8 +522,10 @@ const VideoQuizContentContainer = ({
                   {questionData[currentIndex].quizQuestionItems?.map(
                     (row, index) => {
                       const myAnswer = resultData?.results
-                        .filter(list => list.memberId === userAnswer?.memberId)
-                        .map(item => item.quizQuestionAnswerItems)
+                        .filter(
+                          (list) => list.memberId === userAnswer?.memberId
+                        )
+                        .map((item) => item.quizQuestionAnswerItems)
                         .flat();
                       const multipleTotal = summaryCount?.reduce(
                         (prev, crr) => prev + crr
@@ -526,7 +544,7 @@ const VideoQuizContentContainer = ({
                               style={{ maxWidth: '100%' }}
                               src={
                                 myAnswer?.includes((index + 1).toString()) ===
-                                  true
+                                true
                                   ? RadioIcon
                                   : EmptyIcon
                               }
@@ -548,54 +566,54 @@ const VideoQuizContentContainer = ({
                                   style={{
                                     width: `${
                                       resultData &&
-                                        quizStatus.type === 'result' &&
-                                        summaryCount &&
-                                        summaryCount[index] &&
-                                        questionData[currentIndex]?.type ===
+                                      quizStatus.type === 'result' &&
+                                      summaryCount &&
+                                      summaryCount[index] &&
+                                      questionData[currentIndex]?.type ===
                                         'SingleChoice'
                                         ? Math.round(
-                                          (summaryCount[index] /
-                                            resultData.totalCount) *
-                                          100
-                                        )
+                                            (summaryCount[index] /
+                                              resultData.totalCount) *
+                                              100
+                                          )
                                         : summaryCount &&
                                           summaryCount[index] &&
                                           questionData[currentIndex]?.type ===
-                                          'MultipleChoice' &&
+                                            'MultipleChoice' &&
                                           multipleTotal
-                                          ? Math.round(
+                                        ? Math.round(
                                             (summaryCount[index] /
                                               multipleTotal) *
-                                            100
+                                              100
                                           )
-                                          : 0
-                                      }%`,
+                                        : 0
+                                    }%`,
                                   }}
                                   className="percent"
                                 />
                               </div>
                               <span style={{ marginLeft: '1rem' }}>
                                 {resultData &&
-                                  quizStatus.type === 'result' &&
-                                  summaryCount &&
-                                  summaryCount[index] &&
-                                  questionData[currentIndex]?.type ===
+                                quizStatus.type === 'result' &&
+                                summaryCount &&
+                                summaryCount[index] &&
+                                questionData[currentIndex]?.type ===
                                   'SingleChoice'
                                   ? Math.round(
-                                    (summaryCount[index] /
-                                      resultData.totalCount) *
-                                    100
-                                  )
+                                      (summaryCount[index] /
+                                        resultData.totalCount) *
+                                        100
+                                    )
                                   : summaryCount &&
                                     summaryCount[index] &&
                                     questionData[currentIndex]?.type ===
-                                    'MultipleChoice' &&
+                                      'MultipleChoice' &&
                                     multipleTotal
-                                    ? Math.round(
+                                  ? Math.round(
                                       (summaryCount[index] / multipleTotal) *
-                                      100
+                                        100
                                     )
-                                    : 0}
+                                  : 0}
                                 <em>%</em>
                               </span>
                             </div>
@@ -675,27 +693,32 @@ const VideoQuizContentContainer = ({
               <div className="quiz-descriptive">
                 {resultData && resultData.results.length > 0
                   ? resultData?.results.map((userList: any, index: number) => (
-                    <div className="descriptive-box" key={index}>
-                      <span>
-                        {userList.email
-                          ?.split('@')[0]
-                          .substr(
-                            0,
-                            userList.email?.split('@')[0].length - 3
-                          ) + '***'}
-                      </span>
-                      <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
-                    </div>
-                  ))
+                      <div className="descriptive-box" key={index}>
+                        <span>
+                          {userList.email
+                            ?.split('@')[0]
+                            .substr(
+                              0,
+                              userList.email?.split('@')[0].length - 3
+                            ) + '***'}
+                        </span>
+                        <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
+                      </div>
+                    ))
                   : null}
-                {resultData && resultData.results.length > 10 && (
-                  <div className="more-comments">
-                    <Button onClick={onLoadMore} icon className="left moreview">
-                      <Icon className="moreview" />
-                      list more
-                    </Button>
-                  </div>
-                )}
+                {resultData &&
+                  resultData.totalCount > resultData.results.length && (
+                    <div className="more-comments">
+                      <Button
+                        onClick={onLoadMore}
+                        icon
+                        className="left moreview"
+                      >
+                        <Icon className="moreview" />
+                        list more
+                      </Button>
+                    </div>
+                  )}
               </div>
             </div>
             <div className="video-quiz-footer" style={{ position: 'absolute' }}>

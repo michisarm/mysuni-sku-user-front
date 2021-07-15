@@ -1,20 +1,23 @@
-import React,{ useState, useCallback,useEffect } from 'react';
-import { RouteComponentProps,withRouter } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberTabmenu';
 import CommunityMemberListContainer from '../logic/CommunityMemberContainer';
 
 interface MatchParams {
-  communityId:string
+  communityId: string;
 }
 
-const MemberPage:React.FC<RouteComponentProps<MatchParams>> = ({match}) => {
+const MemberPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
+  window.location.href = `/suni-community/community/${match.params.communityId}/member`;
 
   return (
     <>
-      <CommunityMemberListContainer currentCommunity={match.params.communityId}/>
+      <CommunityMemberListContainer
+        currentCommunity={match.params.communityId}
+      />
     </>
-  )
-}
+  );
+};
 
-export default withRouter(MemberPage)
+export default withRouter(MemberPage);
