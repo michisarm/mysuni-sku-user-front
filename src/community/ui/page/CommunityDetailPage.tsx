@@ -35,6 +35,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   profileImg,
   replyCount,
 }) {
+  window.location.href = `/suni-community/community/${communityId}/home`;
   const communityHome = useCommunityHome();
   const managProfileImg = getCommunityHome()?.community?.managerProfileImg;
   const managerId = getCommunityHome()?.community?.managerId;
@@ -216,7 +217,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
 
                   {memberData?.results
                     .filter(
-                      f => f.memberId !== managerId && f.memberType === 'ADMIN'
+                      (f) =>
+                        f.memberId !== managerId && f.memberType === 'ADMIN'
                     )
                     .map((r, index) => (
                       <div

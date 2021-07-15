@@ -13,6 +13,8 @@ function AdminMemberRegisterPage(
   community: string,
   approveMember: CommunityMemberApprovedType
 ) {
+  window.location.href = `/suni-community/admin/${community}/memberManagement/memberRegister`;
+
   useEffect(() => {
     setSearchBox(getEmptySearchBox(approveMember));
     getMembers(community);

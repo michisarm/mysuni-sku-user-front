@@ -2,10 +2,12 @@ import PostRdo from 'community/model/PostRdo';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
 import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
 import { getCommunityAllPostList } from 'community/service/useCommunityPostList/getCommunityAllPostList';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CommunityAllPostListContainer from '../logic/CommunityAllPostListContainer';
-import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
+import CommunityPostListContainer, {
+  SearchType,
+} from '../logic/CommunityPostListContainer';
 
 interface Params {
   communityId: string;
@@ -14,6 +16,7 @@ interface Params {
 
 function AllPostsPage() {
   const { communityId, menuId } = useParams<Params>();
+  window.location.href = `/suni-community/community/${communityId}/all`;
   useEffect(() => {
     const params: PostRdo = {
       title: '',
@@ -25,12 +28,17 @@ function AllPostsPage() {
       menuId: '',
       communityId,
       sort: 'createdTime',
-      pinned: false
+      pinned: false,
     };
     getCommunityAllPostList(params);
   }, [communityId, menuId]);
 
-  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
+  const onSearch = (
+    sortType: string,
+    pinned: boolean,
+    searchType: SearchType,
+    searchText: string
+  ) => {
     const param: PostRdo = {
       title: '',
       html: '',
@@ -54,11 +62,15 @@ function AllPostsPage() {
     }
 
     getAllPostListMapFromCommunity(param);
-  }
+  };
 
   return (
-    <CommunityAllPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityAllPostListContainer
+      handelOnSearch={(sortType, pinned, searchType, searchText) =>
+        onSearch(sortType, pinned, searchType, searchText)
+      }
+    />
   );
 }
 
-export default AllPostsPage
+export default AllPostsPage;
