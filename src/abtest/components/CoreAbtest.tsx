@@ -104,6 +104,9 @@ const CoreAbtest: React.FC<Props> = ({
       data.abtest = abtestElement.dataset.abtest;
       data.area = areaElement.dataset.area;
     }
+    if (areaElement && areaElement instanceof HTMLElement) {
+      data.area = areaElement.dataset.area;
+    }
     valueRef.current = data;
   };
 

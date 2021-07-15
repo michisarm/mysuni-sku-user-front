@@ -20,7 +20,7 @@ export interface AbtestParams {
   refererSearch?: string;
   abtest?: string;
   target?: HTMLElement;
-  area?: Area | null;
+  area?: Area | string;
 }
 
 export enum DATA_TYPES {
@@ -49,7 +49,7 @@ export interface AbtestResultModifyModel {
   type: string;
   action: string;
   url: string;
-  area?: Area | null;
+  area?: Area | string;
 }
 
 export const initAbtest = () => {
