@@ -1,8 +1,8 @@
-import { CollegeLectureTime } from "./CollegeLectureTime";
-import { CollegeId } from "../../../shared/model/CollegeId";
+import { CollegeLectureTime } from './CollegeLectureTime';
+import { CollegeId } from '../../../shared/model/CollegeId';
 
 export interface LectureTimeSummary {
-  collegeLectureTimes: CollegeLectureTime[];
+  currentYearCollegeLectureTimes: CollegeLectureTime[];
   sumOfCurrentYearLectureTime: number;
   totalLectureTime: number;
 }
@@ -24,7 +24,9 @@ export interface collegeTime {
   lifeStyleCollegeTime: number;
 }
 
-export function getCollegeTime(lectureTimeSummary?: LectureTimeSummary): collegeTime {
+export function getCollegeTime(
+  lectureTimeSummary?: LectureTimeSummary
+): collegeTime {
   let aiCollegeTime = 0;
   let dtCollegeTime = 0;
   let happyCollegeTime = 0;
@@ -41,7 +43,7 @@ export function getCollegeTime(lectureTimeSummary?: LectureTimeSummary): college
   let lifeStyleCollegeTime = 0;
 
   if (lectureTimeSummary !== undefined) {
-    lectureTimeSummary.collegeLectureTimes.forEach(lectureTime => {
+    lectureTimeSummary.currentYearCollegeLectureTimes.forEach((lectureTime) => {
       switch (lectureTime.collegeId) {
         case CollegeId.AI:
           aiCollegeTime = lectureTime.lectureTime;
@@ -103,6 +105,6 @@ export function getCollegeTime(lectureTimeSummary?: LectureTimeSummary): college
     bmDesignerCollegeTime,
     skAcademyCollegeTime,
     skManagementCollegeTime,
-    lifeStyleCollegeTime
+    lifeStyleCollegeTime,
   };
 }
