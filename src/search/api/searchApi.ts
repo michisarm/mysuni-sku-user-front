@@ -19,6 +19,7 @@ import { findMyUserWorkspaceCache } from '../../lecture/detail/api/approvalApi';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
+import { setSearchUI, getSearchUI } from '../model/SearchUI';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -96,7 +97,42 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 const FIND_CARD_COLUMNS =
   'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid';
 
+export function findPreCard(text_idx: string) {
+  const permitedCineroomsQuery = makePermitedCineroomsQuery();
+  const url = encodeURI(
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
+  );
+  return axiosApi
+    .get<SearchResult<SearchCard>>(url)
+    .then(AxiosReturn)
+    .then((c) => {
+      if (c === undefined) {
+        return undefined;
+      }
+      if (c.status !== undefined) {
+        return c;
+      }
+      if ((c as unknown as string).replace !== undefined) {
+        let s = JSON.stringify(c);
+        s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
+        s = s.replace(/\\\"/gi, '"');
+        s = s.replace(/\\\\\"/gi, '\\"');
+        try {
+          const result = JSON.parse(s) as SearchResult<SearchCard>;
+          return result;
+        } catch (error) {
+          return undefined;
+        }
+      }
+    });
+}
+
 export function findCard(text_idx: string) {
+  const transactionId = Date.now();
+  setSearchUI({
+    isLoading: true,
+    transactionId,
+  });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
     `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
@@ -105,6 +141,11 @@ export function findCard(text_idx: string) {
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
     .then((c) => {
+      const searchUI = getSearchUI();
+      if (searchUI?.transactionId !== transactionId) {
+        return;
+      }
+      setSearchUI();
       if (c === undefined) {
         return undefined;
       }
