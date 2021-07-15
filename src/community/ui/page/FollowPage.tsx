@@ -7,9 +7,11 @@ import {
 import FollowView from '../view/FollowView';
 
 function FollowPage() {
+  window.location.href = '/suni-community/main/follow-feed';
   useEffect(() => {
     requestFollowCommunityList();
-    getFollowCommunityIntro()?.posts.length! === 0 && requestFollowCommunityPostList();
+    getFollowCommunityIntro()?.posts.length! === 0 &&
+      requestFollowCommunityPostList();
   }, []);
   return <FollowView />;
 }
