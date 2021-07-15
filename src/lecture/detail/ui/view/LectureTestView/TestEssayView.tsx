@@ -52,7 +52,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> =
               readOnly={readOnly}
             />
             <Icon className="clear link" />
-            <span className="validation">
+            <span className="validation" >
               You can enter up to ${maxLength} characters.
               {/* <PolyglotText defaultString={`You can enter up to ${maxLength} characters.`} id="Test-TestEssay-Max" values={{maxLength}} /> */}
             </span>

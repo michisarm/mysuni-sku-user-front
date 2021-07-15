@@ -167,7 +167,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     </strong>
                     <br />
                     {/* <br dangerouslySetInnerHTML={{__html: getPolyglotText(``, 'Test-TestResult-합격기준2')}} /> */}
-                    하단 <strong>결과보기</strong> 버튼을 통해 나의 결과를 확인해보세요!
+                    <div dangerouslySetInnerHTML={{__html: getPolyglotText(`하단 <strong>결과보기</strong> 버튼을 통해 나의 결과를 확인해보세요!`, 'Test-TestResult-나의결과')}}></div>
                   </h2>
                   <h3>
                     <PolyglotText defaultString="이수조건" id="Test-TestResult-이수조건2" />
