@@ -3,10 +3,12 @@ import { requestCommunity } from 'community/service/useCommunityHome/requestComm
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
 import { getCommunityNoticePostList } from 'community/service/useCommunityPostList/getCommunityNoticePostList';
 import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CommunityNoticePostListContainer from '../logic/CommunityNoticePostListContainer';
-import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
+import CommunityPostListContainer, {
+  SearchType,
+} from '../logic/CommunityPostListContainer';
 
 interface Params {
   communityId: string;
@@ -15,8 +17,9 @@ interface Params {
 
 function NoticePostsPage() {
   const { communityId, menuId } = useParams<Params>();
+  window.location.href = `/suni-community/community/${communityId}/notice`;
   useEffect(() => {
-    requestCommunity(communityId);  // 메뉴 클릭시 재호출
+    requestCommunity(communityId); // 메뉴 클릭시 재호출
 
     const post: PostRdo = {
       title: '',
@@ -33,7 +36,12 @@ function NoticePostsPage() {
     getCommunityNoticePostList(post);
   }, [communityId, menuId]);
 
-  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
+  const onSearch = (
+    sortType: string,
+    pinned: boolean,
+    searchType: SearchType,
+    searchText: string
+  ) => {
     const param: PostRdo = {
       title: '',
       html: '',
@@ -57,11 +65,15 @@ function NoticePostsPage() {
     }
 
     getNoticePostListMapFromCommunity(param);
-  }
+  };
 
   return (
-    <CommunityNoticePostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityNoticePostListContainer
+      handelOnSearch={(sortType, pinned, searchType, searchText) =>
+        onSearch(sortType, pinned, searchType, searchText)
+      }
+    />
   );
 }
 
-export default NoticePostsPage
+export default NoticePostsPage;
