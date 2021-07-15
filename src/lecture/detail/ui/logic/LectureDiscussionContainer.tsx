@@ -273,7 +273,7 @@ export default function LectureDiscussionContainer() {
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
-                      className="discuss-text-belt"
+                      className="discuss-text-belt txtmore"
                       dangerouslySetInnerHTML={{
                         __html: `${lectureFeedbackContent?.content}`,
                       }}
