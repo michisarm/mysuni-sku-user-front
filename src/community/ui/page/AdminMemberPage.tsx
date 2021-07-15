@@ -14,6 +14,12 @@ function AdminMemberPage(
   approveMember: CommunityMemberApprovedType,
   groupId: string
 ) {
+  if (approveMember === 'APPROVED') {
+    window.location.href = `/suni-community/admin/${community}/memberManagement/member`;
+  } else if (approveMember === 'WAITING') {
+    window.location.href = `/suni-community/admin/${community}/memberManagement/memberJoin`;
+  }
+
   useEffect(() => {
     setSearchBox(getEmptySearchBox(approveMember, groupId));
     getMembers(community);
