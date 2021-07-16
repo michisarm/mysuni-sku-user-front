@@ -45,7 +45,13 @@ class ProfileContainer extends Component<Props, State> {
   componentDidMount() {
     const { skProfileService } = this.props;
 
-    skProfileService!.findSkProfile();
+    if (skProfileService) {
+      if (!isExternalInstructor()) {
+        skProfileService.findSkProfile();
+      } else {
+        skProfileService.findCommunityProfile();
+      }
+    }
     this.findNoReadCount();
 
     setInterval(() => {
