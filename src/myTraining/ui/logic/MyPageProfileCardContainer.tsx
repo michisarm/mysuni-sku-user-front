@@ -43,7 +43,11 @@ function MyPageHeaderContainer({
 
   useEffect(() => {
     if (skProfileService) {
-      skProfileService.findSkProfile();
+      if (!isExternalInstructor()) {
+        skProfileService.findSkProfile();
+      } else {
+        skProfileService.findCommunityProfile();
+      }
     }
   }, []);
 
@@ -156,12 +160,14 @@ function MyPageHeaderContainer({
                 </div>
                 <div className="profile-info ">
                   <span className="prof-tit">
-                    {showNameFlag ? skProfile.member.name : skProfile.nickName}
+                    {showNameFlag ? skProfile.name : skProfile.nickName}
                   </span>
-                  <div className="foll-info">
-                    <span>{skProfile.followerCount}</span> Followers
-                    <span>{skProfile.followingCount}</span> Following
-                  </div>
+                  {!isExternalInstructor() && (
+                    <div className="foll-info">
+                      <span>{skProfile.followerCount}</span> Followers
+                      <span>{skProfile.followingCount}</span> Following
+                    </div>
+                  )}
                 </div>
                 <div className="page-bttn-area">
                   <Button

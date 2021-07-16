@@ -1,13 +1,13 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
-import { NameValueList } from 'shared/model';
+import { IdName, NameValueList } from 'shared/model';
 import MemberType from './MemberType';
 import MemberLocaleModel from './MemberLocaleModel';
 import EmployeeModel from './EmployeeModel';
 import PisAgreementModel from './PisAgreementModel';
-import ProfileImagePath from '../../../src/shared/components/Image/ProfileImagePath';
+import ProfileImagePath from '../../shared/components/Image/ProfileImagePath';
 
-class SkProfileModel implements DramaEntity {
+class CommunityProfileModel implements DramaEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -24,17 +24,19 @@ class SkProfileModel implements DramaEntity {
   photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
   photoImage: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
 
-  nickName: string = ''; // 닉네임
+  nickname: string = ''; // 닉네임
   bgImage: string = ''; // 배경이미지
   introduce: string = ''; // 자기소개
   followerCount: number = 0; // 팔로워 숫자
   followingCount: number = 0; // 팔로잉 숫자
   nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
 
-  departmentName: string = '';
+  department: IdName = new IdName();
   name: string = '';
+  profileImg: string = '';
+  profileBgImg: string = '';
 
-  constructor(skProfile?: SkProfileModel) {
+  constructor(skProfile?: CommunityProfileModel) {
     //
     if (skProfile) {
       const patronKey = skProfile.patronKey || this.patronKey;
@@ -55,7 +57,7 @@ class SkProfileModel implements DramaEntity {
     return (this.member && this.member.departmentCode) || '';
   }
 
-  static asNameValues(skProfile: SkProfileModel): NameValueList {
+  static asNameValues(skProfile: CommunityProfileModel): NameValueList {
     const asNameValues1 = {
       nameValues: [
         {
@@ -123,8 +125,8 @@ class SkProfileModel implements DramaEntity {
     //
     let viewProfileName: string = '';
 
-    if (this.nameFlag === 'N' && this.nickName !== '') {
-      viewProfileName = this.nickName;
+    if (this.nameFlag === 'N' && this.nickname !== '') {
+      viewProfileName = this.nickname;
     } else {
       viewProfileName = this.member && this.member.name;
     }
@@ -133,7 +135,7 @@ class SkProfileModel implements DramaEntity {
   }
 }
 
-decorate(SkProfileModel, {
+decorate(CommunityProfileModel, {
   id: observable,
   entityVersion: observable,
   member: observable,
@@ -145,7 +147,7 @@ decorate(SkProfileModel, {
   studySummaryConfigured: observable,
   photoType: observable,
   photoImage: observable,
-  nickName: observable,
+  nickname: observable,
   bgImage: observable,
   introduce: observable,
   followerCount: observable,
@@ -153,4 +155,4 @@ decorate(SkProfileModel, {
   nameFlag: observable,
 });
 
-export default SkProfileModel;
+export default CommunityProfileModel;
