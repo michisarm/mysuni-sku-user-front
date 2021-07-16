@@ -85,11 +85,7 @@ class SkProfileService {
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
       (skProfile) =>
-        runInAction(() => {
-          this.skProfile = new SkProfileModel(skProfile);
-          this.skProfile.name = skProfile.member.name;
-          this.skProfile.departmentName = skProfile.member.department;
-        })
+        runInAction(() => (this.skProfile = new SkProfileModel(skProfile)))
     );
     return fetched
       ? this.skProfileCachingFetch.inProgressFetching

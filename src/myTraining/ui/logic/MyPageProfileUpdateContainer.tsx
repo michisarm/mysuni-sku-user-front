@@ -417,11 +417,15 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>이름</Table.Cell>
-                    <Table.Cell>{skProfile.name}</Table.Cell>
+                    <Table.Cell>
+                      {skProfile.member?.name || skProfile.name}
+                    </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>소속</Table.Cell>
-                    <Table.Cell>{skProfile.departmentName}</Table.Cell>
+                    <Table.Cell>
+                      {skProfile.member?.department || skProfile.departmentName}
+                    </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>닉네임</Table.Cell>

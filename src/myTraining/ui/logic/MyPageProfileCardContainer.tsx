@@ -160,7 +160,9 @@ function MyPageHeaderContainer({
                 </div>
                 <div className="profile-info ">
                   <span className="prof-tit">
-                    {showNameFlag ? skProfile.name : skProfile.nickName}
+                    {showNameFlag
+                      ? skProfile.member?.name || skProfile.name
+                      : skProfile.nickName}
                   </span>
                   {!isExternalInstructor() && (
                     <div className="foll-info">
