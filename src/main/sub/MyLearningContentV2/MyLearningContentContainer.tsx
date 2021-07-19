@@ -75,16 +75,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
               }
               return <LeraningContainer key={i} cardBundle={cardBundle} />;
             })}
-            <LRSLearning
-              // profileMemberName={member.name}
-              profileMemberName={skProfile.profileViewName}
-            />
+            <LRSLearning profileMemberName={skProfile.profileViewName} />
           </ExperimentalGroup>
           <ExperimentalGroup name="B">
-            <LRSLearning
-              // profileMemberName={member.name}
-              profileMemberName={skProfile.profileViewName}
-            />
+            <LRSLearning profileMemberName={skProfile.profileViewName} />
             {cardBundles
               ?.sort((a, b) => a.displayOrder - b.displayOrder)
               .map((cardBundle, i) => {
