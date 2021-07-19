@@ -1,4 +1,3 @@
-
 export enum ChallengeStateDescription {
   None = 'none',
   WaitForChallenge = 'Badge획득에 도전 해보세요.',

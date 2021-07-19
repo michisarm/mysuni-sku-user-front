@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -10,13 +9,12 @@ import BoardListContentHeaderContainer from '../logic/BoardListContentHeaderCont
 import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
-
-interface Props extends RouteComponentProps<RouteParams> {
-}
+interface Props extends RouteComponentProps<RouteParams> {}
 
 interface RouteParams {
-  boardId: string
+  boardId: string;
 }
 
 enum ContentType {
@@ -32,16 +30,28 @@ export class BoardListPage extends React.Component<Props> {
   getTabs() {
     //
     return [
-      { name: ContentType.Notice, item: ContentType.Notice, render: () => <NoticeTabContainer /> },
-      { name: ContentType.FAQ, item: ContentType.FAQ, render: () => <FaqTabContainer /> },
-      { name: ContentType.QnA, item: ContentType.QnA, render: () => <QnaTabContainer /> },
+      {
+        name: ContentType.Notice,
+        item: ContentType.Notice,
+        render: () => <NoticeTabContainer />,
+      },
+      {
+        name: ContentType.FAQ,
+        item: ContentType.FAQ,
+        render: () => <FaqTabContainer />,
+      },
+      {
+        name: ContentType.QnA,
+        item: ContentType.QnA,
+        render: () => <QnaTabContainer />,
+      },
     ] as TabItemModel[];
   }
 
   onChangeTab(tab: TabItemModel): string {
     //
     this.props.history.push(routePaths.supportTab(tab.name));
-    
+
     return routePaths.supportTab(tab.name);
   }
 
@@ -54,7 +64,10 @@ export class BoardListPage extends React.Component<Props> {
         className="support"
         breadcrumb={[
           { text: `Support` },
-          { text: `${params.boardId}`, path: routePaths.supportTab(params.boardId) },
+          {
+            text: `${params.boardId}`,
+            path: routePaths.supportTab(params.boardId),
+          },
         ]}
       >
         <BoardListContentHeaderContainer />

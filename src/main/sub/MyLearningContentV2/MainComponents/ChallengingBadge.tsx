@@ -14,6 +14,7 @@ import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
@@ -21,7 +22,7 @@ interface Props extends RouteComponentProps {
   profileMemberName: string;
 }
 
-const ChallengingBadge: React.FC<Props> = Props => {
+const ChallengingBadge: React.FC<Props> = (Props) => {
   //
   const { badgeService, profileMemberName, history } = Props;
 
@@ -133,9 +134,15 @@ const ChallengingBadge: React.FC<Props> = Props => {
           message={
             <>
               <div className="text">
-                도전중인 Badge가 없습니다.
+                <PolyglotText
+                  id="Certification-clls-뱃지없음"
+                  defaultString="도전중인 Badge가 없습니다."
+                />
                 <br />
-                등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+                <PolyglotText
+                  id="Certification-clls-뱃지도전"
+                  defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
+                />
               </div>
               <Button
                 icon
@@ -143,7 +150,12 @@ const ChallengingBadge: React.FC<Props> = Props => {
                 className="right btn-blue2"
                 onClick={onClickLink}
               >
-                <span className="border">Badge List 바로가기</span>
+                <span className="border">
+                  <PolyglotText
+                    id="Certification-clls-목록없음"
+                    defaultString="Badge List 바로가기"
+                  />
+                </span>
                 <Icon className="morelink" />
               </Button>
             </>
@@ -154,6 +166,6 @@ const ChallengingBadge: React.FC<Props> = Props => {
   );
 };
 
-export default inject(
-  mobxHelper.injectFrom('badge.badgeService')
-)(withRouter(observer(ChallengingBadge)));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  withRouter(observer(ChallengingBadge))
+);

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -9,15 +8,13 @@ import { Icon } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardListContentHeaderHelpView from '../view/BoardListContentHeaderHelpView';
-
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
-  postService?: PostService
+  postService?: PostService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.postService',
-))
+@inject(mobxHelper.injectFrom('board.postService'))
 @observer
 @reactAutobind
 export class BoardListContentHeaderContainer extends React.Component<Props> {
@@ -33,7 +30,6 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
     this.props.history.push(routePaths.supportFAQPost(postId));
   }
 
-
   render() {
     //
     const { faqPosts } = this.props.postService!;
@@ -43,11 +39,34 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
         <div className="support-info">
           <div className="title-area">
             <div className="line-wrap">
-              <div className="title">Support</div>
+              <div className="title">
+                <PolyglotText
+                  id="support-spif-타이틀"
+                  defaultString="Support"
+                />
+              </div>
               <div className="text">
-                mySUNI에 대한 궁금증을 풀어드립니다.<br />
-                Help Desk<span className="dash" /><Icon className="supporttel16" /><span className="blind">support tel</span>
-                02-6323-9002
+                <PolyglotText
+                  id="support-spif-상세궁금"
+                  defaultString="mySUNI에 대한 궁금증을 풀어드립니다."
+                />
+                <br />
+                <PolyglotText
+                  id="support-spif-상세설명"
+                  defaultString="Help Desk"
+                />
+                <span className="dash" />
+                <Icon className="supporttel16" />
+                <span className="blind">
+                  <PolyglotText
+                    id="support-spif-tel"
+                    defaultString="support tel"
+                  />
+                </span>
+                <PolyglotText
+                  id="support-spif-전화번호"
+                  defaultString="02-6323-9002"
+                />
               </div>
             </div>
           </div>
