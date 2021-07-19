@@ -5,6 +5,10 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { useHistory } from 'react-router';
 import { Area } from 'tracker/model';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 const CoursePromotionModalView = () => {
   //
@@ -53,12 +57,12 @@ const CoursePromotionModalView = () => {
       <Modal.Header className="header2">
         <div className="right-btn">
           <Checkbox
-            label="더 이상 보지 않기"
+            label={getPolyglotText('더 이상 보지 않기', 'home-tbnr-더안봄')}
             className="base"
             onChange={onHandleChange}
           />
           <Button className="close" onClick={ModalClose}>
-            Close
+            <PolyglotText id="home-tbnr-닫기" defaultString="Close" />
           </Button>
         </div>
       </Modal.Header>

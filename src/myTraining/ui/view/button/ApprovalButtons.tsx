@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import { AplState } from 'myTraining/model/AplState';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   approvalState: AplState;
@@ -26,32 +27,41 @@ function ApprovalButtons(props: Props) {
         if (page === 'learning') {
           return (
             <div className="buttons editor">
-              <Button className="fix line" onClick={onClickList}>List</Button>
+              <Button className="fix line" onClick={onClickList}>
+                <PolyglotText
+                  id="승인관리-개인상세-List1"
+                  defaultString="List"
+                />
+              </Button>
             </div>
           );
         }
         return (
           <div className="buttons editor">
-            <Button className="fix line" onClick={onClickList}>List</Button>
-            <Button className="fix line" onClick={onClickReject}>반려</Button>
-            <Button className="fix bg" onClick={onClickApproval}>승인</Button>
+            <Button className="fix line" onClick={onClickList}>
+              <PolyglotText id="승인관리-개인상세-List2" defaultString="List" />
+            </Button>
+            <Button className="fix line" onClick={onClickReject}>
+              <PolyglotText id="승인관리-개인상세-반려" defaultString="반려" />
+            </Button>
+            <Button className="fix bg" onClick={onClickApproval}>
+              <PolyglotText id="승인관리-개인상세-승인" defaultString="승인" />
+            </Button>
           </div>
         );
       default:
         return (
           <div className="buttons editor">
-            <Button className="fix line" onClick={onClickList}>List</Button>
+            <Button className="fix line" onClick={onClickList}>
+              <PolyglotText id="승인관리-개인상세-List3" defaultString="List" />
+            </Button>
           </div>
         );
     }
-  }
+  };
 
   /* render */
-  return (
-    <>
-      {renderByApprovalState(approvalState)}
-    </>
-  );
+  return <>{renderByApprovalState(approvalState)}</>;
 }
 
 export default memo(ApprovalButtons);

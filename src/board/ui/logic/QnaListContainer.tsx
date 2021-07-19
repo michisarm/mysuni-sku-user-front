@@ -9,6 +9,10 @@ import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
 import routePaths from '../../routePaths';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -121,7 +125,9 @@ class QnaListContainer extends React.Component<Props, State> {
           </span>
           <span className="cell category">{post.category.name}</span>
           <span className="cell status">
-            {post.answered ? '답변완료' : '답변대기'}
+            {post.answered
+              ? getPolyglotText('답변완료', 'support-qna-답변완료')
+              : getPolyglotText('답변대기', 'support-qna-답변대기')}
           </span>
           <span className="cell date">
             {post.time && moment(post.time).format('YYYY.MM.DD')}
@@ -145,12 +151,16 @@ class QnaListContainer extends React.Component<Props, State> {
           <div className="list-top">
             <Button icon className="left post ask" onClick={this.onClickNewQna}>
               <Icon className="ask24" />
-              &nbsp;&nbsp;Ask a Question
+              &nbsp;&nbsp;{' '}
+              <PolyglotText
+                id="support-qna-질문"
+                defaultString="Ask a Question"
+              />
             </Button>
             <div className="radio-wrap">
               <Radio
                 className="base"
-                label="모두 보기"
+                label={getPolyglotText('모두 보기', 'support-qna-rall')}
                 name="radioGroup"
                 value="all"
                 checked={answered === 'all'}
@@ -160,7 +170,7 @@ class QnaListContainer extends React.Component<Props, State> {
               />
               <Radio
                 className="base"
-                label="답변 완료"
+                label={getPolyglotText('답변 완료', 'support-qna-rdn')}
                 name="radioGroup"
                 value="true"
                 checked={answered === 'true'}
@@ -170,7 +180,7 @@ class QnaListContainer extends React.Component<Props, State> {
               />
               <Radio
                 className="base"
-                label="답변 대기"
+                label={getPolyglotText('답변 대기', 'support-qna-rwt')}
                 name="radioGroup"
                 value="false"
                 checked={answered === 'false'}
@@ -195,7 +205,12 @@ class QnaListContainer extends React.Component<Props, State> {
               <Loadingpanel loading={isLoading} />
             </Segment>
           ) : result.length === 0 ? (
-            <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
+            <NoSuchContentPanel
+              message={getPolyglotText(
+                '등록된 Q&A가 없습니다.',
+                'support-qna-목록없음'
+              )}
+            />
           ) : (
             <>
               <div className="su-list qna">
@@ -211,7 +226,10 @@ class QnaListContainer extends React.Component<Props, State> {
                 >
                   <Button icon className="left moreview">
                     <Icon className="moreview" />
-                    list more
+                    <PolyglotText
+                      id="support-qna-더보기"
+                      defaultString="list more"
+                    />
                   </Button>
                 </div>
               )}

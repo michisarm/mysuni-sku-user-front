@@ -15,7 +15,7 @@ import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
 import ApprovalInfoView from '../view/ApprovalInfoView';
 import ApprovalRejectModal from '../view/modal/ApprovalRejectModal';
 import { MyLearningContentType } from '../model/MyLearningContentType';
-
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   model: AplModel;
@@ -52,7 +52,6 @@ function AplDetailContainer(props: Props) {
 
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
-
   }, [model]);
 
   useEffect(() => {
@@ -62,7 +61,11 @@ function AplDetailContainer(props: Props) {
   /* functions */
   const routeToList = () => {
     if (page === 'learning') {
-      history.push(myTrainingRoutePaths.learningTab(MyLearningContentType.PersonalCompleted));
+      history.push(
+        myTrainingRoutePaths.learningTab(
+          MyLearningContentType.PersonalCompleted
+        )
+      );
     }
 
     if (page === 'approval') {
@@ -70,14 +73,13 @@ function AplDetailContainer(props: Props) {
     }
   };
 
-
   const getFileIds = async () => {
     const referenceFileBoxIds = model && model.fileIds;
 
     if (referenceFileBoxIds) {
       await findFiles('reference', referenceFileBoxIds);
     }
-  }
+  };
 
   const findFiles = async (type: string, fileBoxId: string) => {
     const files = await depot.getDepotFiles(fileBoxId);
@@ -115,7 +117,6 @@ function AplDetailContainer(props: Props) {
     if (allowMinute >= 0 && allowMinute <= 59) {
       setAllowMinute(String(allowMinute));
     }
-
   }, []);
 
   const onClearTime = useCallback((hourOrMinute: string) => {
@@ -139,7 +140,7 @@ function AplDetailContainer(props: Props) {
     }
 
     setOpenListModal(true);
-  }, [model, page])
+  }, [model, page]);
 
   const cancelRouteToList = useCallback(() => {
     setOpenListModal(false);
@@ -153,15 +154,17 @@ function AplDetailContainer(props: Props) {
     setOpenRejectModal(false);
   }, []);
 
-  const onConfirmReject = useCallback(async (remark: string) => {
-    /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
-    const aplUdo = AplUdoModel.createForReject(model, remark);
-    await aplService!.modifyAplWithApprovalState(aplUdo)
+  const onConfirmReject = useCallback(
+    async (remark: string) => {
+      /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
+      const aplUdo = AplUdoModel.createForReject(model, remark);
+      await aplService!.modifyAplWithApprovalState(aplUdo);
 
-    setOpenRejectModal(false);
-    routeToList();
-  }, [model]);
-
+      setOpenRejectModal(false);
+      routeToList();
+    },
+    [model]
+  );
 
   const onClickApproval = useCallback(() => {
     /* allowHour & allowMinute 가 공백일 때, 필수 입력 알람창을 띄워야 함. */
@@ -182,23 +185,24 @@ function AplDetailContainer(props: Props) {
     const allowHourNumber = Number.parseInt(allowHour);
     const allowMinuteNumber = Number.parseInt(allowMinute);
 
-    const aplUdo = AplUdoModel.createForApproval(model, allowHourNumber, allowMinuteNumber)
+    const aplUdo = AplUdoModel.createForApproval(
+      model,
+      allowHourNumber,
+      allowMinuteNumber
+    );
     await aplService!.modifyAplWithApprovalState(aplUdo);
 
     setOpenApprovalModal(false);
     routeToList();
-
   }, [allowHour, allowMinute, model]);
 
   /* render */
-  return model &&
-    (
+  return (
+    model && (
       <Segment className="full">
         <div className="apl-form-wrap create">
           <Form>
-            <ApprovalInfoView
-              model={model}
-            />
+            <ApprovalInfoView model={model} />
             <MyApprovalInfoTable
               model={model}
               files={filesMap}
@@ -260,19 +264,30 @@ function AplDetailContainer(props: Props) {
           />
         )}
       </Segment>
-    );
+    )
+  );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.aplService'
-))(observer(AplDetailContainer));
+export default inject(mobxHelper.injectFrom('myTraining.aplService'))(
+  observer(AplDetailContainer)
+);
 
-const listMessage = `개인학습 List 화면으로 이동하시겠습니까?
-개인학습 List로 이동 시 입력된 정보는 저장되지 않습니다.`;
+const listMessage = getPolyglotText(
+  `개인학습 List 화면으로 이동하시겠습니까? \n개인학습 List로 이동 시 입력된 정보는 저장되지 않습니다.`,
+  '승인관리-개학목록-목록이동'
+);
 
-const approvalMessage = '등록된 내용에 대해 승인 처리하시겠습니까?';
+const approvalMessage = getPolyglotText(
+  '등록된 내용에 대해 승인 처리하시겠습니까?',
+  '승인관리-개학승인-승인처리'
+);
 
-const alertTitle = '필수 정보 입력 안내';
+const alertTitle = getPolyglotText(
+  '필수 정보 입력 안내',
+  '승인관리-개인상세-필수입력'
+);
 
-const alertMessage = `교육시간은 필수 입력 항목입니다.
-해당 정보를 입력하신 후 승인 요청 해주세요.`;
+const alertMessage = getPolyglotText(
+  `교육시간은 필수 입력 항목입니다. \n해당 정보를 입력하신 후 승인 요청 해주세요.`,
+  '승인관리-개인상세-입력안내'
+);

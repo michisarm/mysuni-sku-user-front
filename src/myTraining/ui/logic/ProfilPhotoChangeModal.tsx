@@ -6,6 +6,7 @@ import { fileUtil, ValidationType } from '@nara.drama/depot';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import Image from '../../../shared/components/Image';
 import { uploadFileProfile } from '../../../shared/api/imageApi';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -77,7 +78,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       { type: ValidationType.MaxSize },
     ];
 
-    const hasNonPass = validations.some(validation => {
+    const hasNonPass = validations.some((validation) => {
       if (typeof validation.validator === 'function') {
         return !validation.validator(file);
       } else {
@@ -119,14 +120,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   render() {
-    const {
-      name,
-      company,
-      department,
-      size,
-      trigger,
-      skProfileService,
-    } = this.props;
+    const { name, company, department, size, trigger, skProfileService } =
+      this.props;
     const { skProfile } = skProfileService!;
 
     /**
@@ -163,7 +158,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           onClose={this.onClose}
           className="base w380"
         >
-          <Modal.Header className="res">프로필 사진 변경</Modal.Header>
+          <Modal.Header className="res">
+            <PolyglotText
+              id="mapg-프사팝-팝업명"
+              defaultString="프로필 사진 변경"
+            />
+          </Modal.Header>
           <Modal.Content>
             <div className="profile-change">
               <div className="left">
@@ -192,7 +192,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     htmlFor="profileImage"
                     className="ui orange-arrow3 button"
                   >
-                    Image upload
+                    <PolyglotText
+                      id="mapg-프사팝-이미지업"
+                      defaultString="Image upload"
+                    />
                   </label>
                 </div>
               </div>
@@ -200,10 +203,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           </Modal.Content>
           <Modal.Actions className="actions2">
             <Button className="pop2 d" onClick={this.onClose}>
-              Cancel
+              <PolyglotText id="mapg-프사팝-취소버튼" defaultString="Cancel" />
             </Button>
             <Button className="pop2 p" onClick={this.onConfirm}>
-              Confirm
+              <PolyglotText id="mapg-프사팝-컨펌버튼" defaultString="Confirm" />
             </Button>
           </Modal.Actions>
         </Modal>
