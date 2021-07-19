@@ -11,6 +11,7 @@ import { uploadFileProfile } from '../../../shared/api/imageApi';
 import { reactAlert } from '@nara.platform/accent';
 import myPageRoutePaths from 'myTraining/routePaths';
 import CommunityProfileModalPreview from '../../../../src/community/ui/view/CommunityAdmin/CommunityProfileModalPreview';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -400,7 +401,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     return (
       <>
         <div className="mypage_contents profile-edit-contents">
-          <strong className="mypage_title">프로필 설정</strong>
+          <strong className="mypage_title">
+            <PolyglotText
+              defaultString="프로필 설정"
+              id="mypage-프로필설정-프로필설정"
+            />
+          </strong>
 
           <Segment className="full">
             <div className="table-wrapper">
@@ -411,18 +417,36 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                 </colgroup>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell>이름</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="이름"
+                        id="mypage-프로필설정-이름"
+                      />
+                    </Table.Cell>
                     <Table.Cell>{skProfile.member.name}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>소속</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="소속"
+                        id="mypage-프로필설정-소속"
+                      />
+                    </Table.Cell>
                     <Table.Cell>{skProfile.member.department}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>닉네임</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="닉네임"
+                        id="mypage-프로필설정-닉네임"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       <Input
-                        placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
+                        placeholder={getPolyglotText(
+                          `닉네임을 입력해주세요 (20자까지 입력 가능)`,
+                          'mypage-프로필설정-닉네임입력'
+                        )}
                         onChange={(e) => this.handleNickNameChange(e)}
                         value={
                           changeNickName ? nickNameTemp : skProfile.nickName
@@ -431,10 +455,18 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>자기소개</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="자기소개"
+                        id="mypage-프로필설정-자기소개"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       <TextArea
-                        placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
+                        placeholder={getPolyglotText(
+                          `자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`,
+                          'mypage-프로필설정-자기소개설명'
+                        )}
                         onChange={(e) => this.handleIntroduceChange(e)}
                         value={
                           changeIntroduce ? introduceTemp : skProfile.introduce
@@ -443,11 +475,19 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">
-                    <Table.Cell>프로필 이미지</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="프로필 이미지"
+                        id="mypage-프로필설정-프로필이미지"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       <div className="ui w624 input">
                         <label htmlFor="fileup01" className="ui button line02">
-                          파일 첨부
+                          <PolyglotText
+                            defaultString="파일 첨부"
+                            id="mypage-프로필설정-파일첨부1"
+                          />
                         </label>
                         <input
                           type="file"
@@ -467,11 +507,19 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">
-                    <Table.Cell>배경 이미지</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="배경 이미지"
+                        id="mypage-프로필설정-배경이미지"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       <div className="ui w624 input">
                         <label htmlFor="fileup02" className="ui button line02">
-                          파일 첨부
+                          <PolyglotText
+                            defaultString="파일 첨부"
+                            id="mypage-프로필설정-파일첨부2"
+                          />
                         </label>
                         <input
                           type="file"
@@ -496,18 +544,33 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           </Segment>
           <div className="mypage-edit-bottom">
             <span>
-              <strong>미리보기</strong> 버튼으로 내 프로필이 다른 사람에게
-              어떻게 보여지는지 확인해 보세요.
+              <strong>
+                <PolyglotText
+                  defaultString="미리보기"
+                  id="mypage-프로필설정-미리보기1"
+                />
+              </strong>
+
+              <PolyglotText
+                defaultString="버튼으로 내 프로필이 다른 사람에게 어떻게 보여지는지 확인해보세요."
+                id="mypage-프로필설정-설명"
+              />
             </span>
             <div className="bttn-area">
               <Button
                 className="fix line"
                 onClick={() => this.handleModalPrivew(true)}
               >
-                미리보기
+                <PolyglotText
+                  defaultString="미리보기"
+                  id="mypage-프로필설정-미리보기2"
+                />
               </Button>
               <Button className="fix bg" onClick={this.handleSave}>
-                저장
+                <PolyglotText
+                  defaultString="저장"
+                  id="mypage-프로필설정-저장"
+                />
               </Button>
             </div>
           </div>

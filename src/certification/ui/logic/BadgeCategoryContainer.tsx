@@ -11,6 +11,7 @@ import BadgeCategoryView from '../view/BadgeCategoryView';
 import badgePaths from '../../routePaths';
 import { BadgeCategory } from '../../model/BadgeCategory';
 import { useBadgeSlide } from '../../service/useBadgeSlide';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface BadgeCategoryContainerProps {
   badgeCategoryService?: BadgeCategoryService;
@@ -19,11 +20,8 @@ interface BadgeCategoryContainerProps {
 function BadgeCategoryContainer({
   badgeCategoryService,
 }: BadgeCategoryContainerProps) {
-  const {
-    categories,
-    selectedCategoryId,
-    setSelectedCategoryId,
-  } = badgeCategoryService!;
+  const { categories, selectedCategoryId, setSelectedCategoryId } =
+    badgeCategoryService!;
 
   useEffect(() => {
     return () => {
@@ -31,13 +29,8 @@ function BadgeCategoryContainer({
     };
   }, []);
 
-  const {
-    isNext,
-    isPrev,
-    onClickNext,
-    onClickPrev,
-    sliceCategories,
-  } = useBadgeSlide(categories);
+  const { isNext, isPrev, onClickNext, onClickPrev, sliceCategories } =
+    useBadgeSlide(categories);
 
   const history = useHistory();
 
@@ -72,22 +65,35 @@ function BadgeCategoryContainer({
             className={classNames('btn-prev', isPrev)}
             onClick={onClickPrev}
           >
-            이전
+            <PolyglotText
+              defaultString="이전"
+              id="Certification-섭탭메뉴-이전"
+            />
           </Button>
           <Button
             className={classNames('btn-next', isNext)}
             onClick={onClickNext}
           >
-            다음
+            <PolyglotText
+              defaultString="다음"
+              id="Certification-섭탭메뉴-다음"
+            />
           </Button>
         </div>
         <div className={classNames('fn-parent', isAllCheck)}>
           <a className="fn-click" onClick={handleAllCheck}>
             <span className="icon">
-              <span>All</span>
+              <span>
+                <PolyglotText
+                  defaultString="All"
+                  id="Certification-섭탭메뉴-all"
+                />
+              </span>
             </span>
             <span className="title">
-              <span className="ellipsis">전체보기</span>
+              <span className="ellipsis">
+                <PolyglotText defaultString="전체보기" id="sub-tab-menu" />
+              </span>
             </span>
           </a>
         </div>

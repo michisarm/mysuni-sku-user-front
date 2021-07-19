@@ -5,7 +5,10 @@ import { AplCountModel } from 'myTraining/model/AplCountModel';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 import { MyContentType } from '../../model/MyContentType';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   contentType: MyContentType;
@@ -17,16 +20,21 @@ interface Props {
 }
 
 function ListLeftTopPanel(props: Props) {
-  const { contentType, totalCount, countModel, countMessage, onClickDelete, downloadExcel } = props;
+  const {
+    contentType,
+    totalCount,
+    countModel,
+    countMessage,
+    onClickDelete,
+    downloadExcel,
+  } = props;
 
   const renderButtons = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
         return (
           <>
-            <DeleteButton
-              onDelete={onClickDelete!}
-            />
+            <DeleteButton onDelete={onClickDelete!} />
             <DownloadExcelButton
               contentType={contentType}
               downloadExcel={downloadExcel!}
@@ -46,7 +54,6 @@ function ListLeftTopPanel(props: Props) {
     }
   };
 
-
   const renderMessage = (contentType: MyContentType) => {
     /*
       contentType이 개인학습 완료일 경우, 아래와 같이 메세지 변경.
@@ -57,52 +64,83 @@ function ListLeftTopPanel(props: Props) {
       case MyLearningContentType.PersonalCompleted:
         return (
           <div className="list-number">
-            <PolyglotText defaultString="전체" id="learning-개인보드-전체" />{' '}
-              <strong>
-                {totalCount || 0}
-                <PolyglotText defaultString="개" id="learning-개인보드-게시물수" />
-              </strong>
-            <PolyglotText defaultString="의 개인학습" id="learning-개인보드-개인학습" />
+            <PolyglotText defaultString="전체" id="learning-개인보드-전체" />
+            <strong>
+              {totalCount || 0}
+              <PolyglotText
+                defaultString="개"
+                id="learning-개인보드-게시물수"
+              />
+            </strong>
+            <PolyglotText
+              defaultString="의 개인학습"
+              id="learning-개인보드-개인학습"
+            />
           </div>
         );
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="list-number">
             <span>
-              전체{' '}
-              <b>{countModel!.all}
-                <PolyglotText defaultString="개" id="learning-개인보드-게시물수" />
+              <PolyglotText defaultString="전체" id="승인관리-개인학습-전체" />
+              <b>
+                {countModel!.all}
+                <PolyglotText
+                  defaultString="개"
+                  id="learning-개인보드-게시물수"
+                />
               </b>{' '}
               <PolyglotText defaultString="등록" id="learning-개인보드-등록" />
             </span>
             <span>
-              <b>{countModel!.opened}
-              <PolyglotText defaultString="개" id="learning-개인보드-게시물수" />
+              <b>
+                {countModel!.opened}
+                <PolyglotText
+                  defaultString="개"
+                  id="learning-개인보드-게시물수"
+                />
               </b>{' '}
               <PolyglotText defaultString="승인" id="learning-개인보드-승인" />
             </span>
             <span>
-              <b>{countModel!.openApproval}
-                <PolyglotText defaultString="개" id="learning-개인보드-게시물수" />
+              <b>
+                {countModel!.openApproval}
+                <PolyglotText
+                  defaultString="개"
+                  id="learning-개인보드-게시물수"
+                />
               </b>{' '}
-              <PolyglotText defaultString="승인 대기 중" id="learning-개인보드-승인대기" />
+              <PolyglotText
+                defaultString="승인 대기 중"
+                id="learning-개인보드-승인대기"
+              />
             </span>
             <span>
-              <b>{countModel!.rejected}
-                <PolyglotText defaultString="개" id="learning-개인보드-게시물수" />
+              <b>
+                {countModel!.rejected}
+                <PolyglotText
+                  defaultString="개"
+                  id="learning-개인보드-게시물수"
+                />
               </b>{' '}
               <PolyglotText defaultString="반려" id="learning-개인보드-반려" />
             </span>
           </div>
-        )
+        );
       default:
         return (
           <div className="list-number">
             <PolyglotText defaultString="총" id="learning-학보드-게시물총수" />{' '}
             <strong>
-              {totalCount || 0}{getPolyglotText('개', 'learning-학보드-게시물수')}
+              {totalCount || 0}
+              {getPolyglotText('개', 'learning-학보드-게시물수')}
             </strong>
-            {countMessage ? countMessage : getPolyglotText('의 리스트가 있습니다.', 'learning-학보드-게시물리스트')}
+            {countMessage
+              ? countMessage
+              : getPolyglotText(
+                  '의 리스트가 있습니다.',
+                  'learning-학보드-게시물리스트'
+                )}
             {/*총 <strong>{totalCount || 0}개</strong>*/}
             {/*{countMessage ? countMessage : '의 리스트가 있습니다.'}*/}
           </div>

@@ -22,6 +22,7 @@ import {
   useFollowersModal,
   useFollowingsModal,
 } from '../../../../../community/store/CommunityFollowModalStore';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   setOpen: () => void;
@@ -155,7 +156,10 @@ function ProfilePopupView(props: Props) {
                           saveFlag && isNickName && onClickToggle(false);
                         }}
                       >
-                        실명
+                        <PolyglotText
+                          defaultString="실명"
+                          id="mypage-popupview-실명"
+                        />
                       </Button>
                       <Button
                         className={`name-chng-bttn ${
@@ -167,7 +171,10 @@ function ProfilePopupView(props: Props) {
                           saveFlag && !isNickName && onClickToggle(true);
                         }}
                       >
-                        닉네임
+                        <PolyglotText
+                          defaultString="닉네임"
+                          id="mypage-popupview-닉네임"
+                        />
                       </Button>
                     </div>
                     <div className="close-wrapper">
@@ -179,7 +186,12 @@ function ProfilePopupView(props: Props) {
                         <Image
                           src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
                         />
-                        <span className="blind">close</span>
+                        <span className="blind">
+                          <PolyglotText
+                            defaultString="close"
+                            id="mypage-popupview-close"
+                          />
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -193,9 +205,16 @@ function ProfilePopupView(props: Props) {
                     </span>
                     <div className="foll-info">
                       <span>{followersList?.followers.length}</span>
-                      &nbsp;Followers
+                      <PolyglotText
+                        defaultString="&nbsp;Followers"
+                        id="mypage-popupview-Followers"
+                      />
                       <span>{followingsList?.followings.length}</span>
-                      &nbsp;Following
+
+                      <PolyglotText
+                        defaultString="&nbsp;Following"
+                        id="mypage-popupview-Following"
+                      />
                     </div>
                   </div>
                   {instructorId &&
@@ -204,7 +223,10 @@ function ProfilePopupView(props: Props) {
                   externalInstructor === 'true' ? (
                     <div className="page-bttn-area">
                       <Button className="page-bttn" onClick={onInstructor}>
-                        강사 서비스
+                        <PolyglotText
+                          defaultString="강사 서비스"
+                          id="mypage-popupview-강사"
+                        />
                       </Button>
                     </div>
                   ) : instructorId &&
@@ -219,10 +241,16 @@ function ProfilePopupView(props: Props) {
                           history.push(myTrainingRoutePaths.myPage());
                         }}
                       >
-                        My Page
+                        <PolyglotText
+                          defaultString="My Page"
+                          id="mypage-popupview-MyPage"
+                        />
                       </Button>
                       <Link to="#" onClick={onInstructor} className="l_to">
-                        강사 서비스
+                        <PolyglotText
+                          defaultString="강사 서비스"
+                          id="mypage-popupview-강사2"
+                        />
                       </Link>
                     </div>
                   ) : (
@@ -234,7 +262,10 @@ function ProfilePopupView(props: Props) {
                           history.push(myTrainingRoutePaths.myPage());
                         }}
                       >
-                        My Page
+                        <PolyglotText
+                          defaultString="My Page"
+                          id="mypage-popupview-MyPage2"
+                        />
                       </Button>
                     </div>
                   )}
@@ -252,16 +283,25 @@ function ProfilePopupView(props: Props) {
                   history.push(myTrainingRoutePaths.myPage());
                 }}
               >
-                프로필 설정
+                <PolyglotText
+                  defaultString="프로필 설정"
+                  id="mypage-popupview-프로필설정"
+                />
                 <i>
                   <Image
                     src={`${process.env.PUBLIC_URL}/images/all/icon-tooltip-w-20-px.svg`}
                   />
                 </i>
                 <p className="tool-tip-box">
-                  프로필을 설정해서
+                  <PolyglotText
+                    defaultString="프로필을 설정해서"
+                    id="mypage-popupview-설명1"
+                  />
                   <br />
-                  자유롭게 활동해 보세요!
+                  <PolyglotText
+                    defaultString="자유롭게 활동해 보세요!"
+                    id="mypage-popupview-설명2"
+                  />
                 </p>
               </Button>
             )}
@@ -283,7 +323,12 @@ function ProfilePopupView(props: Props) {
               </>
             )}
             <div className="logout-area">
-              <Button onClick={onLogout}>Logout</Button>
+              <Button onClick={onLogout}>
+                <PolyglotText
+                  defaultString="Logout"
+                  id="mypage-popupview-logout"
+                />
+              </Button>
             </div>
           </div>
         </div>

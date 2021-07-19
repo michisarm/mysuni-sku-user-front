@@ -2,16 +2,17 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Image, Modal } from 'semantic-ui-react';
+import { PolyglotText } from './PolyglotText';
 
 interface Props {
-  message?: string
-  target?: string
-  alertIcon?: string
-  handleClose:() => void
-  open: boolean
-  type?: string
-  title?: string
-  handleOk?: (type: string) => void
+  message?: string;
+  target?: string;
+  alertIcon?: string;
+  handleClose: () => void;
+  open: boolean;
+  type?: string;
+  title?: string;
+  handleOk?: (type: string) => void;
 }
 
 @observer
@@ -19,7 +20,8 @@ interface Props {
 class AlertWin extends React.Component<Props> {
   //
   render() {
-    const { message, handleClose, handleOk, open, type, title, target } = this.props;
+    const { message, handleClose, handleOk, open, type, title, target } =
+      this.props;
     return (
       <>
         {/*<Button onClick={this.show('tiny')}>Alert</Button>*/}
@@ -29,32 +31,55 @@ class AlertWin extends React.Component<Props> {
         <Modal className="size-mini" open={open} onClose={handleClose}>
           <div className="main">
             <Modal.Header>
-               Confirm
+              <PolyglotText
+                id="개학등록-승인요청-타이틀"
+                defaultString="Confirm"
+              />
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/alert.png`} />
-                {
-                  title ?
-                    <div className="title">{title}</div>
-                    :
-                    <div className="title">필수 정보 입력 안내</div>
-                }
-                {
-                  target ?
-                    <p className="center">&quot;{target}&quot; 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.</p>
-                    :
-                    <p className="center">{message}</p>
-                }
+                <Image
+                  wrapped
+                  className="modal-img"
+                  size="medium"
+                  src={`${process.env.PUBLIC_URL}/images/modal/alert.png`}
+                />
+                {title ? (
+                  <div className="title">{title}</div>
+                ) : (
+                  <div className="title">
+                    <PolyglotText
+                      id="개학등록-승인요청-정보입력"
+                      defaultString="필수 정보 입력 안내"
+                    />
+                  </div>
+                )}
+                {target ? (
+                  <p className="center">
+                    &quot;{target}&quot;
+                    <PolyglotText
+                      id="개학등록-승인요청-필수항목"
+                      defaultString="은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요."
+                    />
+                  </p>
+                ) : (
+                  <p className="center">{message}</p>
+                )}
               </Modal.Description>
             </Modal.Content>
           </div>
           <Modal.Actions className="normal">
-            <Button secondary onClick={handleClose}>Cancel</Button>
-            {
-              handleOk && type
-                && <Button primary onClick={() => handleOk(type)} type="button">OK</Button>
-            }
+            <Button secondary onClick={handleClose}>
+              <PolyglotText
+                id="개학등록-승인요청-취소"
+                defaultString="Cancel"
+              />
+            </Button>
+            {handleOk && type && (
+              <Button primary onClick={() => handleOk(type)} type="button">
+                <PolyglotText id="개학등록-승인요청-ok" defaultString="OK" />
+              </Button>
+            )}
           </Modal.Actions>
         </Modal>
       </>
