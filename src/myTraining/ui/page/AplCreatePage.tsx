@@ -24,7 +24,10 @@ import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
 import routePaths from '../../routePaths';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ cineroomId: string }> {
   aplService: AplService;
@@ -119,7 +122,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage2: message,
       alertWinOpen2: true,
-      alertTitle2: '필수 정보 입력 안내',
+      alertTitle2: getPolyglotText(
+        '필수 정보 입력 안내',
+        '개학등록-승인요청-필수정보'
+      ),
       alertIcon2: 'triangle',
       alertType2: '안내',
     });
@@ -134,7 +140,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage2: message,
       alertWinOpen2: true,
-      alertTitle2: '요청 정보 입력 안내',
+      alertTitle2: getPolyglotText(
+        '요청 정보 입력 안내',
+        '개학등록-승인요청-요청정보'
+      ),
       alertIcon2: 'triangle',
       alertType2: '안내',
     });
@@ -149,7 +158,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
-      alertTitle: '승인 요청 안내',
+      alertTitle: getPolyglotText(
+        '승인 요청 안내',
+        '개학등록-승인요청-주요내용'
+      ),
       alertIcon: 'circle',
       alertType: mode,
     });
@@ -160,7 +172,7 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
-      alertTitle: '안내',
+      alertTitle: getPolyglotText('안내', '개학등록-승인요청-안내'),
       alertIcon: 'circle',
       alertType: 'list',
     });
@@ -313,14 +325,12 @@ class AplCreatePage extends React.Component<Props, States> {
     const aplMessageList = (
       <>
         <p className="center">
-          {' '}
           <PolyglotText
             id="개학등록-승인요청-정보등록"
             defaultString="개인학습 정보 등록을 취소하시겠습니까?"
           />
         </p>
         <p className="center">
-          {' '}
           <PolyglotText
             id="개학등록-승인요청-취소안내"
             defaultString="취소 시 입력했던 정보는 저장되지 않습니다."
@@ -470,7 +480,12 @@ class AplCreatePage extends React.Component<Props, States> {
     } = this.state;
 
     return (
-      <ContentLayout breadcrumb={[{ text: '개인학습' }, { text: 'Create' }]}>
+      <ContentLayout
+        breadcrumb={[
+          { text: getPolyglotText('개인학습', '개학등록-승인요청-개인학습') },
+          { text: getPolyglotText('Create', '개학등록-승인요청-create') },
+        ]}
+      >
         <div className="add-personal-learning">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">
