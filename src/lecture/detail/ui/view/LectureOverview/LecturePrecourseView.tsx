@@ -4,6 +4,7 @@ import { Icon, Label } from 'semantic-ui-react';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface CourseViewProps {
   required: boolean;
@@ -33,10 +34,14 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           <div className="tit">
             <span className="ellipsis">
               {required && (
-                <span className="course-span-box red-box">필수</span>
+                <span className="course-span-box red-box">
+                  <PolyglotText defaultString="필수" id="Course-CourseView-선수필수" />
+                </span>
               )}
               {!required && (
-                <span className="course-span-box gray-box">선택</span>
+                <span className="course-span-box gray-box">
+                  <PolyglotText defaultString="선택" id="Course-CourseView-선수선택" />
+                </span>
               )}
 
               <span className="under">{name}</span>
@@ -44,7 +49,9 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           </div>
           <div className="right-area">
             <Link to={to} className="right btn-blue">
-              <span>바로가기</span>
+              <span>
+                <PolyglotText defaultString="바로가기" id="Course-CourseView-선수바로" />
+              </span>
               <Icon className="arrow-g-16" />
             </Link>
           </div>
@@ -66,7 +73,9 @@ const LecturePrecourseView: React.FC<LecturePrecourseViewProps> = function Lectu
         <div className="title-style">
           <Label className="onlytext bold size24">
             <Icon className="before" />
-            <span>선수과정</span>
+            <span>
+              <PolyglotText defaultString="선수과정" id="Course-CourseView-선수과정" />
+            </span>
           </Label>
         </div>
       </div>

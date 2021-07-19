@@ -1,6 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
@@ -14,8 +15,8 @@ interface ProgramTestViewProps {
 
 function cannotAlert() {
   reactAlert({
-    title: 'Test 안내',
-    message: '학습 진행 후 Test 참여 가능합니다.',
+    title: getPolyglotText('Test 안내', 'Test-ProgramView-Test안내'),
+    message: getPolyglotText('학습 진행 후 Test 참여 가능합니다.', 'Test-ProgramView-참여안내'),
   });
 }
 
@@ -40,7 +41,7 @@ const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView
           state === 'Progress' ? 'proceeding' : ''
         } ${state === 'Completed' ? 'complete' : ''}`}
       >
-        <span>진행상태</span>
+        <span><PolyglotText defaultString="진행상태" id="Test-ProgramView-진행상태" /></span>
       </span>
     </StructureLink>
   );

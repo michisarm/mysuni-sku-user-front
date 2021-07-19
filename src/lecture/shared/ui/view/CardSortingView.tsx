@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Radio } from 'semantic-ui-react';
 import { OrderByType } from '../../../model';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   value: string;
@@ -22,7 +23,7 @@ class CardSortingView extends Component<Props> {
               <Form.Field>
                 <Radio
                   className="base"
-                  label="편성순"
+                  label={getPolyglotText('편성순', 'cicl-목록-최신순')}
                   name="sortRadioGroup"
                   value={OrderByType.collegeOrder}
                   checked={value === OrderByType.collegeOrder}
@@ -33,7 +34,7 @@ class CardSortingView extends Component<Props> {
             <Form.Field>
               <Radio
                 className="base"
-                label="최신순"
+                label={getPolyglotText('최신순', 'cicl-목록-평성순')}
                 name="sortRadioGroup"
                 value={OrderByType.Time}
                 checked={value === OrderByType.Time}
@@ -43,7 +44,7 @@ class CardSortingView extends Component<Props> {
             <Form.Field>
               <Radio
                 className="base"
-                label="이수순"
+                label={getPolyglotText('이수순', 'cicl-목록-이수순')}
                 name="sortRadioGroup"
                 value={OrderByType.StudentCount}
                 checked={value === OrderByType.StudentCount}
@@ -53,7 +54,7 @@ class CardSortingView extends Component<Props> {
             <Form.Field>
               <Radio
                 className="base"
-                label="별점순"
+                label={getPolyglotText('별점순', 'cicl-목록-별점순')}
                 name="sortRadioGroup"
                 value={OrderByType.Star}
                 checked={value === OrderByType.Star}

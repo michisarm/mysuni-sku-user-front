@@ -7,6 +7,7 @@ import {
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
@@ -39,8 +40,7 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
   return (
     <>
       {visible && (
-        <div className="course-info-banner" data-area={Area.CARD_MENU}>
-          안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.
+        <div className="course-info-banner" data-area={Area.CARD_MENU} dangerouslySetInnerHTML={{__html: getPolyglotText(`안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.`, 'Course-Navigator-학습중')}}>
           <h3>{progressingCube.name}</h3>
           <span
             className="ui button fix bg following"
@@ -58,7 +58,7 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
               data-action-type={ActionType.STUDY}
               data-action-name="학습이어하기 클릭"
             >
-              학습이어하기
+              <PolyglotText defaultString="학습이어하기" id="Course-Navigator-이어하기" />
             </Link>
           </span>
           <a onClick={close}>

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react';
+import { PolyglotText } from '../../ui/logic/PolyglotText';
 
 
 interface Props {
@@ -75,7 +76,9 @@ class HeaderContainer extends Component<Props, State> {
     return (
       <div className="row head">
         <div className="cell v-middle">
-          <span className="text01">Channel list</span>
+          <span className="text01">
+            <PolyglotText defaultString="Channel list" id="home-ChannelChangeModal-타이틀" />
+          </span>
           <div className="right">
             <div className={classNames('ui h30 search input', { focus, write: searchKey })}>
               <input
@@ -93,7 +96,9 @@ class HeaderContainer extends Component<Props, State> {
           </div>
         </div>
         <div className="cell v-middle">
-          <span className="text01">Selected</span>
+          <span className="text01">
+            <PolyglotText defaultString="Selected" id="home-ChannelChangeModal-설명" />
+          </span>
           <span className="count">
             <span className="text01 add">{selectedChannelCount}</span>
             <span className="text02"> / {totalChannelCount}</span>
@@ -101,7 +106,9 @@ class HeaderContainer extends Component<Props, State> {
           <div className="right">
             <button className="clear" onClick={onResetSelected}>
               <i className="icon reset">
-                <span className="blind">reset</span>
+                <span className="blind">
+                  <PolyglotText defaultString="reset" id="home-ChannelChangeModal-채널목록" />
+                </span>
               </i>
             </button>
           </div>

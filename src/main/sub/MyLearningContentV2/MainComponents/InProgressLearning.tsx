@@ -51,7 +51,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
         <strong>
           <PolyglotText
             id="home-Inprogress-Title"
-            defaultString="${profileMemberName}님이 학습중인 과정"
+            defaultString={`${profileMemberName}님이 학습중인 과정`}
             values={{ profileMemberName }}
           />
           {/* {`${profileMemberName}님이 학습중인 과정`} */}
@@ -59,7 +59,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View all <Icon className="morelink" />
+              <PolyglotText defaultString="View all" id="home-Inprogress-ViewAll" /> <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -115,7 +115,9 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             <NoSuchContentPanel
               message={
                 <>
-                  <div className="text">진행중인 학습 과정이 없습니다.</div>
+                  <div className="text">
+                    <PolyglotText defaultString="진행중인 학습 과정이 없습니다." id="home-Inprogress-진행없음" />
+                  </div>
                   <Button
                     icon
                     as="a"
@@ -123,8 +125,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     onClick={onViewAll}
                   >
                     <span className="border">
-                      <span className="ellipsis">{profileMemberName}</span> 님이
-                      학습 중인 과정 보기
+                      <span className="ellipsis">{profileMemberName}</span> <PolyglotText defaultString="님이 학습 중인 과정 보기" id="" />
                     </span>
                     <Icon className="morelink" />
                   </Button>

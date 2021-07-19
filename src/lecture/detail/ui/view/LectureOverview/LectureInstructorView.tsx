@@ -4,6 +4,7 @@ import { Icon, Label } from 'semantic-ui-react';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureApi from 'layout/UserApp/present/apiclient/LectureApi';
 import Image from '../../../../../shared/components/Image';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -23,7 +24,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
           <h3 className="title-style">
             <Label className="onlytext bold size24">
               <Icon className="host" />
-              <span>{/*Tag*/}강사정보</span>
+              <span>{/*Tag*/}<PolyglotText defaultString="강사정보" id="Course-Contents-강사정보" /></span>
             </Label>
           </h3>
         </div>

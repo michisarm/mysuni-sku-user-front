@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { ChannelModel, CollegeModel } from 'college/model';
 import { Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   channel: ChannelModel;
@@ -37,7 +38,8 @@ class CategoryLecturesHeaderView extends Component<Props> {
       <>
         <div className="white-title">
           <div className="inner">
-            <strong>{channel.name}</strong>의 학습 과정 입니다.
+            <strong>{channel.name}</strong>
+            <PolyglotText defaultString="의 학습 과정 입니다." id="cicl-목록-학습과정" />
             {college.collegeId === 'CLG00020' ? null : (
               <Link
                 to={this.state.linkUrl !== '' ? this.state.linkUrl : '#'}
@@ -59,7 +61,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
                       marginLeft: '0.4rem',
                     }}
                   >
-                    커리큘럼 보기
+                    <PolyglotText defaultString="커리큘럼 보기" id="cicl-목록-커리큘럼" />
                   </span>
                 </a>
               </Link>

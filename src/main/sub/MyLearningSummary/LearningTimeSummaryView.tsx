@@ -5,6 +5,7 @@ import LearningTimeView from './LearningTimeView';
 import AccruedLearningTimeView from './AccruedLearningTimeView';
 import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import { convertProgressValue } from './convertProgressValue';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 
 interface LearningTimeSummaryViewProps {
@@ -21,7 +22,7 @@ export default function LearningTimeSummaryView({
 }: LearningTimeSummaryViewProps) {
 
   let LearningObjectivesPer = Math.floor((totalLearningTime/ (learningObjectives!.AnnualLearningObjectives*60)) * 100)
-  
+
   if( learningObjectives.AnnualLearningObjectives !== 0 && LearningObjectivesPer > 100) {
     LearningObjectivesPer = 100
   } else if (LearningObjectivesPer === Infinity) {
@@ -30,17 +31,21 @@ export default function LearningTimeSummaryView({
 
   return (
     <div className="main-gauge ">
-      <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
+      <span className="gauge-badge">
+        {CURRENT_YEAR} <PolyglotText defaultString="년 완료학습" id="home-Summary-학습시간" />
+      </span>
       <Popup
         trigger={
           <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : convertProgressValue(LearningObjectivesPer)) : 5}`}>
             <div className="gauge-content-box">
               <p>
-                <LearningTimeView 
+                <LearningTimeView
                   learningTime={totalLearningTime}
                 />
               </p>
-              <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
+              <span>
+                <PolyglotText defaultString="목표" id="home-Summary-목표" /> {learningObjectives!.AnnualLearningObjectives}h
+              </span>
             </div>
           </div>
         }
@@ -49,11 +54,11 @@ export default function LearningTimeSummaryView({
         wide
       >
         <span className="personal_pop_tit">
-        누적 학습시간
+          <PolyglotText defaultString="누적 학습시간" id="home-Summary-누적시간" />
         </span>
         <span>
           <strong>
-            <AccruedLearningTimeView 
+            <AccruedLearningTimeView
               accruedLearningTime={totalAccrueLearningTime}
             />
           </strong>

@@ -14,6 +14,7 @@ import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
 import { originSelfPath } from 'tracker-react/utils';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -125,8 +126,12 @@ class CategoryMenuPanelView extends Component<Props> {
       <div className="layer lms-category">
         <div className="table-css">
           <div className="row head">
-            <div className="cell v-middle">College</div>
-            <div className="cell v-middle">Channel</div>
+            <div className="cell v-middle">
+              <PolyglotText defaultString="College" id="home-cipp-구분cl" />
+            </div>
+            <div className="cell v-middle">
+              <PolyglotText defaultString="Channel" id="home-cipp-구분ch" />
+            </div>
           </div>
           <div className="row body">
             <div className="cell vtop">
@@ -161,15 +166,13 @@ class CategoryMenuPanelView extends Component<Props> {
                     data-area={Area.HEADER_CATEGORY}
                   >
                     <span className="category-title">
-                      {activeCollege.name} College
+                      {activeCollege.name} <PolyglotText defaultString="College" id="home-cipp-ch" />
                       {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
                     <button
                       className="btn-category-all"
                       onClick={e => {
-                        this.onClickChannelActionLog(
-                          `${activeCollege.name} 전체보기`
-                        );
+                        this.onClickChannelActionLog(`${activeCollege.name} ${getPolyglotText("전체보기", "home-cipp-전체보기")}`);
                         onRouteChannel(e);
                       }}
                     >
@@ -185,18 +188,18 @@ class CategoryMenuPanelView extends Component<Props> {
                       <div className="category-row">
                         <span className="check-type2">
                           <label htmlFor={channel.id}>
-                            <input type="checkbox" 
+                            <input type="checkbox"
                               id={channel.id}
                               name={channel.id}
                               checked={this.categoryCheck(channel.id)}
                               onChange={(e)=> {
                                 this.favoriteChannel(e, channel);
                               }}
-                              key={index} 
+                              key={index}
                             />
                             <span className="check-type2-marker"/>
                           </label>
-                          <a 
+                          <a
                             className="check-type2-text"
                             onClick={e => {
                               this.onClickChannelActionLog(channel.name);
@@ -207,18 +210,18 @@ class CategoryMenuPanelView extends Component<Props> {
                         </span>
                         <span className="check-type2">
                           <label htmlFor={channel.id}>
-                            <input type="checkbox" 
+                            <input type="checkbox"
                               id={channel.id}
                               name={channel.id}
                               checked={this.categoryCheck(channel.id)}
                               onChange={(e)=> {
                                 this.favoriteChannel(e, channel);
                               }}
-                              key={index} 
+                              key={index}
                             />
                             <span className="check-type2-marker"/>
                           </label>
-                          <a 
+                          <a
                             className="check-type2-text"
                             onClick={e => {
                               this.onClickChannelActionLog(channel.name);
@@ -228,7 +231,7 @@ class CategoryMenuPanelView extends Component<Props> {
                           </a>
                         </span>
                       </div>
-                      
+
                     </Fragment>
                   ))
                 }

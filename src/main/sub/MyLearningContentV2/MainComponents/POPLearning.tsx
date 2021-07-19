@@ -36,6 +36,7 @@ import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
@@ -306,7 +307,9 @@ const POPLearning: React.FC<Props> = Props => {
         <NoSuchContentPanel
           message={
             <>
-              <div className="text">진행중인 학습 과정이 없습니다.</div>
+              <div className="text">
+                <PolyglotText defaultString="진행중인 학습 과정이 없습니다." id="home-Recommend-Null" />
+              </div>
               <Button
                 icon
                 as="a"
@@ -315,7 +318,7 @@ const POPLearning: React.FC<Props> = Props => {
               >
                 <span className="border">
                   <span className="ellipsis">{profileMemberName}</span>
-                  님에게 추천하는 학습 과정 보기
+                  <PolyglotText defaultString="님에게 추천하는 학습 과정 보기" id="home-Recommend-Recommend" />
                 </span>
                 <Icon className="morelink" />
               </Button>

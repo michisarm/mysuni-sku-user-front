@@ -95,13 +95,20 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
     <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님이 도전중인
-          Badge
+          <span className="ellipsis">{profileMemberName}</span>
+          <PolyglotText
+            defaultString="님이 도전중인 Badge"
+            id="home-ChallengeBadges-Title"
+          />
         </strong>
         <div className="right">
           {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View All <Icon className="morelink" />
+              <PolyglotText
+                defaultString="View All"
+                id="home-ChallengeBadges-ViewAll"
+              />
+              <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -135,13 +142,13 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
             <>
               <div className="text">
                 <PolyglotText
-                  id="Certification-clls-뱃지없음"
                   defaultString="도전중인 Badge가 없습니다."
+                  id="home-ChallengeBadges-도전뱃지"
                 />
                 <br />
                 <PolyglotText
-                  id="Certification-clls-뱃지도전"
                   defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
+                  id="home-ChallengeBadges-등뱃없"
                 />
               </div>
               <Button
@@ -152,8 +159,8 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
               >
                 <span className="border">
                   <PolyglotText
-                    id="Certification-clls-목록없음"
                     defaultString="Badge List 바로가기"
+                    id="home-ChallengeBadges-목록없음"
                   />
                 </span>
                 <Icon className="morelink" />

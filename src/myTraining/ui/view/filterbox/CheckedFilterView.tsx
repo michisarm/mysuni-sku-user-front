@@ -5,6 +5,7 @@ import { CollegeModel } from 'college/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { FilterCondition } from '../../../model/FilterCondition';
 import { FilterConditionName } from '../../../model/FilterConditionName';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   colleges: CollegeModel[];
@@ -51,7 +52,7 @@ function CheckedFilterView(props: Props) {
         ))
       );
     }
-    
+
     if (conditions.learningTimes &&
       conditions.learningTimes.length) {
       buttons.push(
@@ -191,7 +192,9 @@ function CheckedFilterView(props: Props) {
               <Button icon className="clear" onClick={onClearAll}>
                 <Icon className="reset" />
               </Button>
-              <span>전체해제</span>
+              <span>
+                <PolyglotText defaultString="전체해제" id="learning-LearningFilter1-전체해제" />
+              </span>
             </th>
             <td>{renderCheckedConditions()}</td>
           </tr>

@@ -17,6 +17,7 @@ import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import StudySummaryModel from '../../model/StudySummaryModel';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
@@ -172,10 +173,14 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
     return (
       <Form>
-        <h3 className="title-filter">관심분야 선택</h3>
+        <h3 className="title-filter">
+          <PolyglotText defaultString="관심분야 선택" id="college-favorite-제목" />
+        </h3>
         <div className="filter-wrap">
           <div className="column">
-            <div className="f-tit">College</div>
+            <div className="f-tit">
+              <PolyglotText defaultString="College" id="college-favorite-college" />
+            </div>
             <div className="f-list">
               <div className="scrolling">
                 <div className="college">
@@ -205,7 +210,9 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             </div>
           </div>
           <div className="column">
-            <div className="f-tit">Channel</div>
+            <div className="f-tit">
+              <PolyglotText defaultString="Channel" id="college-favorite-Channel" />
+            </div>
             <div className="f-list">
               <div className="scrolling">
                 <div className="channel">
@@ -263,7 +270,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           </div>
           <div className="column">
             <div className="f-tit">
-              Selected{' '}
+              <PolyglotText defaultString="Selected" id="college-favorite-Seleted" />{' '}
               <span className="counter">
                 <span className="now">{favorites.length}</span> /{' '}
                 {totalChannelCount}
@@ -287,7 +294,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                   {favoriteCompanyChannels.map((channel: ChannelModel) => (
                     <Popup
                       className="custom-black"
-                      content="필수 관심채널이며, 삭제 불가능합니다."
+                      content={getPolyglotText('필수 관심채널이며, 삭제 불가능합니다.', 'college-favorite-주의')}
                       inverted
                       style={style}
                       position="top center"
@@ -308,12 +315,16 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             </div>
             <Button className="clear" onClick={this.onReset}>
               <Icon className="reset" />
-              <span className="blind">reset</span>
+              <span className="blind">
+                <PolyglotText defaultString="reset" id="college-favorite-reset" />
+              </span>
             </Button>
           </div>
           <Button className="clear" onClick={this.onReset}>
             <Icon className="reset" />
-            <span className="blind">reset</span>
+              <span className="blind">
+                <PolyglotText defaultString="reset" id="college-favorite-reset" />
+              </span>
           </Button>
         </div>
         {/* <div className="select-error">
@@ -324,7 +335,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         <div className="button-area">
           {/* <div className="error">관심 분야를 3개 이상 선택해주세요.</div> */}
           <Button className="fix bg" onClick={this.onNextClick}>
-            다음
+            <PolyglotText defaultString="다음" id="college-favorite-다음" />
           </Button>
         </div>
       </Form>

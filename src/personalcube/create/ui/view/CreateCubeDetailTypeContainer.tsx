@@ -8,6 +8,7 @@ import DocumentTypeView from './DocumentTypeView';
 import { observer } from 'mobx-react';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { FileService } from '../../../../shared/present/logic/FileService';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 function CreateCubeDetailTypeContainer() {
   const params = useParams<CreateCubeDetailParams>();
@@ -17,13 +18,13 @@ function CreateCubeDetailTypeContainer() {
   return (
     <>
       <div className="section-tit">
-        <span className="text1">부가정보</span>
+        <span className="text1"><PolyglotText defaultString="부가정보" id="Create-DetailContentsType-부가정보" /></span>
       </div>
       <Table className="create">
         <Table.Body>
           {
             (params.cubeType === 'Video' || params.cubeType === 'Audio') && (
-              <VideoTypeView 
+              <VideoTypeView
                 media={createCubeDetail?.cubeMaterial.media}
                 fileMap={fileMap}
               />
@@ -31,14 +32,14 @@ function CreateCubeDetailTypeContainer() {
           }
           {
             params.cubeType === 'Documents' && (
-              <DocumentTypeView 
+              <DocumentTypeView
                 fileMap={fileMap}
               />
             )
           }
           {
             (params.cubeType === 'WebPage' || params.cubeType === 'Cohort') && (
-              <WebPageTypeView 
+              <WebPageTypeView
                 officeWeb={createCubeDetail?.cubeMaterial.officeWeb}
                 fileMap={fileMap}
               />

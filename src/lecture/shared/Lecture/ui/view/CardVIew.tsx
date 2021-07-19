@@ -35,6 +35,7 @@ import { PermittedCineroom } from '../../../../model/PermittedCineroom';
 import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { Area, FieldType } from 'tracker/model';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   cardId: string;
@@ -130,10 +131,10 @@ export default function CardView({
 
   const handleAlert = (inMyLectureModel?: InMyLectureModel) => {
     reactAlert({
-      title: '알림',
+      title: getPolyglotText('알림', 'home-관심목록alert-주요내용'),
       message: inMyLectureModel
-        ? '본 과정이 관심목록에서 제외되었습니다.'
-        : '본 과정이 관심목록에 추가되었습니다.',
+        ? getPolyglotText('본 과정이 관심목록에서 제외되었습니다.', 'home-관심목록alert-상세2')
+        : getPolyglotText('본 과정이 관심목록에 추가되었습니다.', 'home-관심목록alert-상세1'),
     });
   };
 
@@ -189,7 +190,7 @@ export default function CardView({
     const endDate = getEducationDate('completedTableViews');
 
     if (startDate || endDate) {
-      const text = startDate ? '학습중' : endDate && '학습 완료';
+      const text = startDate ? getPolyglotText('학습중', 'home-Inprogress-Card진행중') : endDate && getPolyglotText('학습 완료', 'home-Inprogress-Card완료');
       const date = startDate || endDate;
       return (
         <>
@@ -197,7 +198,7 @@ export default function CardView({
             <Icon className="state" />
             <span>{text}</span>
           </Label>
-          <div className="study-date">{`${date} 학습 시작`}</div>
+          <div className="study-date">{`${date} ${getPolyglotText('학습 시작', 'home-Inprogress-Card시작')}`}</div>
         </>
       );
     }
@@ -222,18 +223,18 @@ export default function CardView({
       remainingDayCount !== undefined
     ) {
       if (studentCount >= capacity) {
-        return <Label className="done">정원 마감</Label>;
+        return <Label className="done"><PolyglotText defaultString="정원 마감" id="home-Inprogress-정원마감" /></Label>;
       }
 
       if (remainingDayCount === 0) {
-        return <Label className="day">오늘 마감</Label>;
+        return <Label className="day"><PolyglotText defaultString="오늘 마감" id="home-Inprogress-오늘마감" /></Label>;
       } else {
         return <Label className="day">D-{remainingDayCount}</Label>;
       }
     }
 
     if (isRequired) {
-      return <Label className="ribbon2">핵인싸과정</Label>;
+      return <Label className="ribbon2"><PolyglotText defaultString="핵인싸과정" id="home-ribbon-핵인싸과정" /></Label>;
     }
   };
 

@@ -6,6 +6,7 @@ import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
 import { IdName, IdNameCount } from 'shared/model';
 import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
@@ -64,7 +65,9 @@ class FavoriteChannelChangeView extends Component<Props> {
               {!colleges || colleges.length < 1 ? (
                 <div className="search-empty">
                   <Icon className="rocket50" />
-                  <div>검색된 Channel이 없습니다.</div>
+                  <div>
+                    <PolyglotText defaultString="검색된 Channel이 없습니다." id="home-ChannelChangeModal-null" />
+                  </div>
                 </div>
               ) : (
                 <Accordion className="channel">

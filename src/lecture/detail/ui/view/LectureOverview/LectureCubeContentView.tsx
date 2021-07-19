@@ -23,6 +23,7 @@ import { useLectureInstructor } from '../../../store/LectureOverviewStore';
 import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Params {
   cardId: string;
@@ -134,7 +135,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             data-action={Action.CLICK}
             data-action-name="CUBE TAB 클릭::Overview"
           >
-            Overview
+            <PolyglotText defaultString="Overview" id="cube-ContentsTap-Overview" />
           </a>
           {lectureClassroom && (
             <a
@@ -144,7 +145,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               data-action={Action.CLICK}
               data-action-name="CUBE TAB 클릭::차수정보"
             >
-              차수정보
+              <PolyglotText defaultString="차수정보" id="cube-ContentsTap-차수정보" />
             </a>
           )}
           {lectureTranscriptCount !== undefined &&
@@ -156,7 +157,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
                 data-action={Action.CLICK}
                 data-action-name="CUBE TAB 클릭::Transcript"
               >
-                Transcript
+                <PolyglotText defaultString="Transcript" id="cube-ContentsTap-Transcript" />
               </a>
             )}
           <a
@@ -169,7 +170,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             data-action-name="CUBE TAB 클릭::Comments"
           >
             <i className="lms-comment-icon" />
-            Comments
+            <PolyglotText defaultString="Comments" id="cube-ContentsTap-Comments" />
             <span className="count">
               {lectureComment !== undefined
                 ? `+${lectureComment.commentsCount}`

@@ -19,6 +19,7 @@ import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 import { Area } from 'tracker/model';
 import LectureState from '../../../viewModel/LectureState';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskCreateViewProps {
   isReply: boolean;
@@ -82,7 +83,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
 
     const denizenKey = `${pre}@${last1}-${last2}`;
 
-    if (SkProfileService.instance.skProfile.id === denizenKey || 
+    if (SkProfileService.instance.skProfile.id === denizenKey ||
         (lectureState &&
           lectureState.cubeDetail &&
           lectureState.cubeDetail.cubeContents &&
@@ -141,10 +142,14 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
           <div className="course-info-header" data-area={Area.CUBE_HEADER}>
             <div className="survey-header">
               {viewType === 'create' && (
-                <div className="survey-header-left">Create {title}</div>
+                <div className="survey-header-left">
+                  <PolyglotText defaultString="Create" id="Collage-TaskPostViewDetail-Create" />{' '}{title}
+                </div>
               )}
               {viewType === 'edit' && (
-                <div className="survey-header-left">Edit {title}</div>
+                <div className="survey-header-left">
+                  <PolyglotText defaultString="Edit" id="Collage-TaskPostViewDetail-Edit2" />{' '}{title}
+                </div>
               )}
             </div>
           </div>
@@ -156,7 +161,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                     {canNotice && !isReply && (
                       <Checkbox
                         className="base"
-                        label="공지 등록"
+                        label={getPolyglotText('공지 등록', 'Collage-TaskPostViewDetail-공지등록')}
                         name="communityPostCreatePinned"
                         checked={taskDetail.pinned === 2}
                         onChange={handlePinnedChange}
@@ -173,11 +178,13 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                 >
                   <span className="count">
                     <span className="now">{titleLength}</span>/
-                    <span className="max">100</span>
+                    <span className="max">
+                      <PolyglotText defaultString="100" id="Collage-TaskPostViewDetail-Max100" />
+                    </span>
                   </span>
                   <input
                     type="text"
-                    placeholder="제목을 입력해 주세요."
+                    placeholder={getPolyglotText('제목을 입력해 주세요.', 'Collage-TaskPostViewDetail-제목입력')}
                     value={taskDetail.title}
                     onChange={handleTitleChange}
                   />
@@ -186,7 +193,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               </Form.Field>
 
               <Form.Field>
-                <label>본문</label>
+                <label>
+                  <PolyglotText defaultString="본문" id="Collage-TaskPostViewDetail-본문" />
+                </label>
                 <div className="ui editor-wrap">
                   {viewType === 'create' && (
                     <LectureTaskCreateEditor contents={taskDetail.contents} />
@@ -198,7 +207,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               </Form.Field>
 
               <Form.Field>
-                <label>파일첨부</label>
+                <label>
+                  <PolyglotText defaultString="파일첨부" id="Collage-TaskPostViewDetail-파일첨부" />
+                </label>
                 <div className="report-attach">
                   <div className="lg-attach">
                     <div className="attach-inner">
@@ -223,8 +234,10 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                       <div className="bottom">
                         <span className="text1">
                           <Icon className="info16" />
-                          <span className="blind">information</span>
-                          1개 이상의 첨부파일을 등록하실 수 있습니다.
+                          <span className="blind">
+                            <PolyglotText defaultString="information" id="Collage-TaskPostViewDetail-Information" />
+                          </span>
+                          <PolyglotText defaultString="1개 이상의 첨부파일을 등록하실 수 있습니다." id="Collage-TaskPostViewDetail-첨부파일등록" />
                         </span>
                       </div>
                     </div>
@@ -240,7 +253,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                     handleSubmitClick('create', detailTaskId, isReply)
                   }
                 >
-                  등록
+                  <PolyglotText defaultString="등록" id="Collage-TaskPostViewDetail-등록" />
                 </button>
               )}
               {viewType === 'edit' && (
@@ -250,7 +263,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                     handleSubmitClick('edit', detailTaskId, isReply)
                   }
                 >
-                  저장
+                  <PolyglotText defaultString="저장" id="Collage-TaskPostViewDetail-저장" />
                 </button>
               )}
             </div>
