@@ -14,7 +14,7 @@ import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared/Lecture';
 import LectureModel from '../../../model/LectureModel';
 import LectureServiceType from '../../../model/LectureServiceType';
-import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -127,7 +127,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
           channel={channel}
           title={
             <>
-              채널에서 {profileMemberName}님께 추천하는 과정입니다.{' '}
+              <PolyglotText defaultString="채널에서" id="rcmd-추천-Channel" />{profileMemberName}<PolyglotText defaultString="님께 추천하는 과정입니다." id="rcmd-추천-Recommand" />{' '}
               <span className="channel">({totalCount})</span>
             </>
           }

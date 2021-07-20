@@ -25,6 +25,7 @@ import { CubeIconType } from '../../model';
 // 고도화
 import { CategoryModel, CubeType } from '../../../../../shared/model';
 import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -132,7 +133,7 @@ class BoxCardView extends Component<Props, States> {
           <Thumbnail image={thumbnailImage} />
 
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 
@@ -159,7 +160,7 @@ class BoxCardView extends Component<Props, States> {
         {/* hover 시 컨텐츠 */}
         <div className="hover-content">
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 

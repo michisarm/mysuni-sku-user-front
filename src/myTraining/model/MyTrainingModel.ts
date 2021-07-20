@@ -14,6 +14,7 @@ import { CourseSetModel } from 'course/model';
 import { LectureServiceType } from 'lecture/model';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class MyTrainingModel extends DramaEntityObservableModel {
   //
@@ -23,7 +24,8 @@ class MyTrainingModel extends DramaEntityObservableModel {
   servicePatronKeyString: string = '';
   student: IdName = new IdName();
   category: CategoryModel = new CategoryModel();
-  name: string = '';
+  name: PolyglotString | null = null;
+  // name: string = '';
   description: string = '';
   cubeType: CubeType = CubeType.None;
   proposalState: ProposalState = ProposalState.Submitted;

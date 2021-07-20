@@ -13,6 +13,7 @@ import { getCollgeName } from '../../../shared/service/useCollege/useRequestColl
 import { LearningStateName, LearningState } from '../../../shared/model';
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -67,7 +68,9 @@ export default function RequiredCardListView({
                     onViewDetail(e, requiredCard.serviceId);
                   }}
                 >
-                  <span className={`ellipsis ${requiredCard.useNote ?  'noteOn' : ''}`}>{requiredCard.name}</span>
+                  <span className={`ellipsis ${requiredCard.useNote ?  'noteOn' : ''}`}>
+                    {requiredCard.name && parsePolyglotString(requiredCard.name)}
+                  </span>
                   {/* <span className="ellipsis noteOn">{requiredCard.name}</span> */}
                 </a>
               </Table.Cell>

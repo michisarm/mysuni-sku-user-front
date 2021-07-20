@@ -14,6 +14,7 @@ import {
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -59,7 +60,9 @@ export default function InMyLectureListView({
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
                 <a href="#" onClick={e => onViewDetail(e, inMyLecture.serviceId)}>
-                  <span className={`ellipsis ${inMyLecture.useNote ?  'noteOn' : ''}`}>{inMyLecture.name}</span>
+                  <span className={`ellipsis ${inMyLecture.useNote ?  'noteOn' : ''}`}>
+                    {inMyLecture.name && parsePolyglotString(inMyLecture.name)}
+                  </span>
                   {/* <span className="ellipsis noteOn">{inMyLecture.name}</span> */}
                 </a>
               </Table.Cell>

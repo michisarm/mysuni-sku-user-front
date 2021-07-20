@@ -9,6 +9,7 @@ import { CompletedXlsxModel } from './CompletedXlsxModel';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
 import { LearningType, LearningTypeName } from './LearningType';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class MyTrainingTableViewModel {
   [key: string]: any;
@@ -19,7 +20,8 @@ class MyTrainingTableViewModel {
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState?: LearningState;
   cubeType: LearningType = LearningType.None;
-  name: string = '';
+  // name: string = '';
+  name: PolyglotString | null = null;
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
   learningStartDate: number = 0; // 학습시작일
@@ -32,6 +34,8 @@ class MyTrainingTableViewModel {
   type: LearningType = LearningType.None;
   collegeId: string = '';
   useNote?: boolean = false;  // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
+
+  cubeName: PolyglotString | null = null;
 
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
     if (myTrainingTableView) {

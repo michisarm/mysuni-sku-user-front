@@ -18,6 +18,7 @@ import dateTimeHelper, {
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
 import { useCollegeStore } from '../../../shared/store/CollegeStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -87,6 +88,7 @@ function MyTrainingListView({
       return null;
     }
     const collegeName = () => {
+      // 김민준
       if (myTraining.category && myTraining.category.college) {
         return colleges?.find(
           (college) => college.id === myTraining.category.college.id
@@ -96,6 +98,7 @@ function MyTrainingListView({
       return '';
     };
     const collegeName2 = () => {
+      // 김민준
       if (myTraining.category && myTraining.category.college) {
         return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
@@ -104,13 +107,14 @@ function MyTrainingListView({
       return '';
     };
     return (
+      // 김민준
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
         <Table.Cell>{collegeName()}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
-              {myTraining.name}
+              {myTraining.name && parsePolyglotString(myTraining.name)}
             </span>
             {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
@@ -133,6 +137,7 @@ function MyTrainingListView({
     );
     const collegeName = () => {
       if (myTraining.category && myTraining.category.college) {
+        // 김민준
         return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
       }
@@ -151,7 +156,7 @@ function MyTrainingListView({
                 <span
                   className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}
                 >
-                  {myTraining.cubeName}
+                  {myTraining.cubeName && parsePolyglotString(myTraining.cubeName)}
                 </span>
                 {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
               </a>

@@ -1,5 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { CategoryModel, LearningState } from 'shared/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { DifficultyLevel } from './DifficultyLevel';
 import { LearningType } from './LearningType';
 
@@ -12,7 +13,8 @@ class InMyLectureTableViewModel {
   category: CategoryModel = new CategoryModel();
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState: LearningState = LearningState.Progress;
-  name: string = '';
+  // name: string = '';
+  name: PolyglotString | null = null;
   cubeType: LearningType = LearningType.None;
   learningTime: number = 0;
   startDate: number = 0;

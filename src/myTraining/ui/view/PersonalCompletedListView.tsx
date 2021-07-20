@@ -7,6 +7,8 @@ import { AplModel } from '../../model';
 import { AplStateName } from '../../model/AplStateName';
 import { AplState } from '../../model/AplState';
 import { useScrollMove } from '../../useScrollMove';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { parse } from 'query-string';
 
 
 interface PersonalCompletedListViewProps {
@@ -40,11 +42,15 @@ export default function PersonalCompletedListView({
               </Table.Cell>
               <Table.Cell className="title">
                 <a href="#" onClick={() => onViewDetail('learning', apl.id)}>
-                  <span className="ellipsis">{apl.title}</span>
+                  <span className="ellipsis">
+                    {apl.title && parsePolyglotString(apl.title)}
+                  </span>
                 </a>{' '}
               </Table.Cell>
               <Table.Cell>
-                <span className="ellipsis">{apl.channelName}</span> 
+                <span className="ellipsis">
+                  {apl.channelName && parsePolyglotString(apl.channelName)}
+                </span> 
               </Table.Cell>
               <Table.Cell>
                 {getAllowTime(apl)}

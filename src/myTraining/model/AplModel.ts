@@ -9,17 +9,20 @@ import { NameValueList, NewQueryModel } from '../../shared/model';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { AplType } from './AplType';
 import { AplStateName } from './AplStateName';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class AplModel extends NewQueryModel {
   //
   id: string = '';
-  title: string = '';
+  // title: string = '';
+  title: PolyglotString | null = null;
   type: string = '';
   typeName: string = '';
   collegeId: string = '';
   collegeName: string = '';
   channelId: string = '';
-  channelName: string = '';
+  // channelName: string = '';
+  channelName: PolyglotString | null = null;
   startDate: number = 0;
   endDate: number = 0;
   institute: string = '';
