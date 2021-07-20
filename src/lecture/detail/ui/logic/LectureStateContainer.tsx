@@ -32,11 +32,14 @@ function LectureStateContainer() {
         ) {
           clearFindMyCardRelatedStudentsCache();
           clearFindCubeDetailCache();
-
-          requestLectureState(
-            params.cardId,
-            params.cubeId,
-            lectureState.cubeType
+          setTimeout(
+            () =>
+              requestLectureState(
+                params.cardId,
+                params.cubeId || '',
+                lectureState.cubeType
+              ),
+            500
           );
         }
       }
