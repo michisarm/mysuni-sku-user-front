@@ -5,6 +5,7 @@ import { clearFindMyCardRelatedStudentsCache } from '../../api/cardApi';
 import { clearFindCubeDetailCache } from '../../api/cubeApi';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
 import { requestLectureState } from '../../service/useLectureState/utility/requestLectureState';
+import { requestCardLectureStructure } from '../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import { useLectureState } from '../../store/LectureStateStore';
 import { useLectureStructure } from '../../store/LectureStructureStore';
@@ -32,15 +33,14 @@ function LectureStateContainer() {
         ) {
           clearFindMyCardRelatedStudentsCache();
           clearFindCubeDetailCache();
-          setTimeout(
-            () =>
-              requestLectureState(
-                params.cardId,
-                params.cubeId || '',
-                lectureState.cubeType
-              ),
-            500
-          );
+          setTimeout(() => {
+            requestCardLectureStructure(params.cardId);
+            requestLectureState(
+              params.cardId,
+              params.cubeId || '',
+              lectureState.cubeType
+            );
+          }, 500);
         }
       }
     },
