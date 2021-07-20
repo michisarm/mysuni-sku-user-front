@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { clearFindMyCardRelatedStudentsCache } from '../../api/cardApi';
+import { clearFindCubeDetailCache } from '../../api/cubeApi';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
+import { completeLearning } from '../../service/useLectureState/utility/cubeStateActions';
 import { requestLectureState } from '../../service/useLectureState/utility/requestLectureState';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import { useLectureState } from '../../store/LectureStateStore';
@@ -22,18 +25,13 @@ function LectureStateContainer() {
 
   const receiveMessage = useCallback(
     async (event: MessageEvent) => {
-      console.log(event);
-      if (event.origin === 'http://localhost:3000') {
+      if (event.origin === 'https://www.skacademy.com') {
         if (
           event.data === 'CubePassed' &&
           params.cubeId &&
           lectureState?.cubeType
         ) {
-          await requestLectureState(
-            params.cardId,
-            params.cubeId,
-            lectureState?.cubeType
-          );
+          completeLearning();
         }
       }
     },
@@ -41,7 +39,6 @@ function LectureStateContainer() {
   );
 
   useEffect(() => {
-    // console.log(lectureWebpage, lectureState);
     if (
       lectureWebpage?.urlType === 'embedded' &&
       lectureState?.cubeType === 'WebPage'
