@@ -11,6 +11,7 @@ import { uploadFileProfile } from '../../../shared/api/imageApi';
 import { reactAlert } from '@nara.platform/accent';
 import myPageRoutePaths from 'myTraining/routePaths';
 import CommunityProfileModalPreview from '../../../../src/community/ui/view/CommunityAdmin/CommunityProfileModalPreview';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -29,14 +30,12 @@ interface States {
   introduceTemp: string;
   changeIntroduce: boolean;
   profilePreview: boolean;
-
 }
 /* eslint-disable */
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ProfilPhotoChangeModal extends Component<Props, States> {
-  
   VALID_ICON_EXTENSION: string = 'jpg|jpeg|png';
 
   state: States = {
@@ -47,7 +46,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     changeNickName: false,
     introduceTemp: '',
     changeIntroduce: false,
-    profilePreview: false
+    profilePreview: false,
   };
 
   componentDidMount() {
@@ -55,29 +54,33 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     this.clear();
     const { skProfileService } = this.props;
     if (skProfileService) {
-      skProfileService.findSkProfile();
+      if (!isExternalInstructor()) {
+        skProfileService.findSkProfile();
+      } else {
+        skProfileService.findCommunityProfile();
+      }
     }
   }
 
-  clear(){
+  clear() {
     // 초기화 한다
     const { onChangeImageFile } = this.props;
-    this.setState({ 
-      photoTypeTemp: '1', 
-      photoImageTemp: '', 
+    this.setState({
+      photoTypeTemp: '1',
+      photoImageTemp: '',
       photoImageFile: undefined,
-      bgImageTemp: '', 
+      bgImageTemp: '',
       bgImageFile: undefined,
-      nickNameTemp: '', 
+      nickNameTemp: '',
       changeNickName: false,
       introduceTemp: '',
-      changeIntroduce: false
+      changeIntroduce: false,
     });
 
-    if(onChangeImageFile){
-      onChangeImageFile("photoImageFile", '')
-      onChangeImageFile("bgImageFile", '')
-    } 
+    if (onChangeImageFile) {
+      onChangeImageFile('photoImageFile', '');
+      onChangeImageFile('bgImageFile', '');
+    }
   }
 
   async onConfirm() {
@@ -109,7 +112,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       { type: ValidationType.MaxSize },
     ];
 
-    const hasNonPass = validations.some(validation => {
+    const hasNonPass = validations.some((validation) => {
       if (typeof validation.validator === 'function') {
         return !validation.validator(file);
       } else {
@@ -140,12 +143,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     fileReader.onload = (e: any) => {
       //
-      if("photoImageFile" === type){
+      if ('photoImageFile' === type) {
         this.setState({ photoImageTemp: e.target.result });
-        onChangeImageFile && onChangeImageFile(type, e.target.result)
-      }else if("bgImageFile" === type){
+        onChangeImageFile && onChangeImageFile(type, e.target.result);
+      } else if ('bgImageFile' === type) {
         this.setState({ bgImageTemp: e.target.result });
-        onChangeImageFile && onChangeImageFile(type, e.target.result)
+        onChangeImageFile && onChangeImageFile(type, e.target.result);
       }
     };
 
@@ -164,44 +167,54 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const skProfileService = this.props.skProfileService!;
     const { skProfile } = skProfileService!;
 
-    const { 
+    const {
       photoImageFile,
       bgImageFile,
       changeNickName,
       nickNameTemp,
       changeIntroduce,
-      introduceTemp
+      introduceTemp,
     } = this.state;
 
-    if(changeNickName){
-      if(!nickNameTemp || nickNameTemp === ''){
+    if (changeNickName) {
+      if (!nickNameTemp || nickNameTemp === '') {
         reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
-          return;
-      }else if(nickNameTemp.length > 20){
-        reactAlert({ title: '알림', message: '닉네임은 최대 20자까지 입력 가능합니다.' });
-          return;
+        return;
+      } else if (nickNameTemp.length > 20) {
+        reactAlert({
+          title: '알림',
+          message: '닉네임은 최대 20자까지 입력 가능합니다.',
+        });
+        return;
       }
-    }else{
-      if(SkProfileService.instance.skProfile.id &&
-          (!skProfile.nickName || skProfile.nickName === '')){
+    } else {
+      if (
+        SkProfileService.instance.skProfile.id &&
+        (!skProfile.nickName || skProfile.nickName === '')
+      ) {
         reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
-          return;
+        return;
       }
     }
 
-    if(changeIntroduce){
-      if(!introduceTemp || introduceTemp === ''){
+    if (changeIntroduce) {
+      if (!introduceTemp || introduceTemp === '') {
         reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
-          return;
-      }else if(introduceTemp.length > 45){
-        reactAlert({ title: '알림', message: '자기소개는 최대 45자까지 입력 가능합니다.' });
-          return;
+        return;
+      } else if (introduceTemp.length > 45) {
+        reactAlert({
+          title: '알림',
+          message: '자기소개는 최대 45자까지 입력 가능합니다.',
+        });
+        return;
       }
-    }else{
-      if(SkProfileService.instance.skProfile.id &&
-          (!skProfile.introduce || skProfile.introduce === '')){
+    } else {
+      if (
+        SkProfileService.instance.skProfile.id &&
+        (!skProfile.introduce || skProfile.introduce === '')
+      ) {
         reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
-          return;
+        return;
       }
     }
 
@@ -218,36 +231,37 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     if (bgImageFile !== undefined) {
       const imagePath = await uploadFileProfile(bgImageFile);
-      if(imagePath) skProfileUdo.bgImage = imagePath;
+      if (imagePath) skProfileUdo.bgImage = imagePath;
     }
 
-    if(nickNameTemp) skProfileUdo.nickName = nickNameTemp;
-    if(introduceTemp) skProfileUdo.introduce = introduceTemp;
+    if (nickNameTemp) skProfileUdo.nickName = nickNameTemp;
+    if (introduceTemp) skProfileUdo.introduce = introduceTemp;
 
-    if(skProfileUdo.bgImage !== '' ||
+    if (
+      skProfileUdo.bgImage !== '' ||
       skProfileUdo.nickName !== '' ||
-      skProfileUdo.introduce !== '' ){
-        skProfileService.modifySkProfile(skProfileUdo).then(() => {
-          reactAlert({
-            title: '알림',
-            message: '프로필 정보가 수정됐습니다.',
-          });
-
-          this.clear();
-    
-          skProfileService!.findSkProfile();
+      skProfileUdo.introduce !== ''
+    ) {
+      skProfileService.modifySkProfile(skProfileUdo).then(() => {
+        reactAlert({
+          title: '알림',
+          message: '프로필 정보가 수정됐습니다.',
         });
-    }else{
+
+        this.clear();
+
+        skProfileService!.findSkProfile();
+      });
+    } else {
       reactAlert({
         title: '알림',
         message: '프로필 정보가 수정됐습니다.',
       });
-      
+
       this.clear();
 
       skProfileService!.findSkProfile();
     }
-
 
     // if (profileItem.introduce.length > 100) {
     //   reactAlert({
@@ -305,7 +319,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     //     onOk: () => saveCommunityProfile(),
     //   });
     // }
-  };
+  }
 
   handleNickNameChange(e: any) {
     if (e.target.value.length > 20) {
@@ -315,12 +329,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       });
       return;
     }
-    
+
     this.setState({
       nickNameTemp: e.target.value,
-      changeNickName: true
+      changeNickName: true,
     });
-  };
+  }
 
   handleIntroduceChange(e: any) {
     if (e.target.value.length > 45) {
@@ -330,31 +344,29 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       });
       return;
     }
-    
+
     this.setState({
       introduceTemp: e.target.value,
-      changeIntroduce: true
+      changeIntroduce: true,
     });
-  };
+  }
 
   handleModalPrivew(e: boolean) {
     this.setState({
-      profilePreview: e
+      profilePreview: e,
     });
-  };
+  }
 
   render() {
-    const {
-      skProfileService,
-    } = this.props;
-    
+    const { skProfileService } = this.props;
+
     const { skProfile } = skProfileService!;
 
     /**
      * photoTypeTemp, photoImageTemp 는 사용자가 confirm 버튼을 누르기 전까지 변경한 photoType, photoImage 변경상태을 저장하고 있다가
      * 사용자가 confirm 버튼을 누르면 시스템에 실제로 저장함.
      */
-    const { 
+    const {
       photoImageTemp,
       photoImageFile,
       bgImageFile,
@@ -367,12 +379,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     } = this.state;
 
     const preProfileInfo = {
-      isSetProfile: true,  // true
+      isSetProfile: true, // true
       nickName: nickNameTemp,
       introduce: introduceTemp,
       profileImg: photoImageTemp,
       profileBgImg: bgImageTemp,
-    }
+    };
 
     // //첫 로딩시 사용자 profile 정보(skProfile!.photoType)에 값이 없는 경우(기본적으로 0 - IM 으로 선택함).
     // const protoType = photoTypeTemp || skProfile!.photoType || '0';
@@ -396,108 +408,150 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           <strong className="mypage_title">프로필 설정</strong>
 
           <Segment className="full">
-              <div className="table-wrapper">
-                  <Table>
-                      <colgroup>
-                          <col width='160px'/>
-                          <col />
-                      </colgroup>
-                      <Table.Body>
-                          <Table.Row>
-                              <Table.Cell>이름</Table.Cell>
-                              <Table.Cell>{skProfile.member.name}</Table.Cell>
-                          </Table.Row>
-                          <Table.Row>
-                              <Table.Cell>소속</Table.Cell>
-                              <Table.Cell>{skProfile.member.department}</Table.Cell>
-                          </Table.Row>
-                          <Table.Row>
-                              <Table.Cell>닉네임</Table.Cell>
-                              <Table.Cell>
-                                  <Input 
-                                    placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
-                                    onChange={(e) => this.handleNickNameChange(e)}
-                                    value={changeNickName ? nickNameTemp : skProfile.nickName}
-                                  />
-                              </Table.Cell>
-                          </Table.Row>
-                          <Table.Row>
-                              <Table.Cell>자기소개</Table.Cell>
-                              <Table.Cell>
-                                  <TextArea 
-                                    placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
-                                    onChange={(e) => this.handleIntroduceChange(e)}
-                                    value={changeIntroduce ? introduceTemp : skProfile.introduce}
-                                  />
-                              </Table.Cell>
-                          </Table.Row>
-                          <Table.Row className="bttn-line">
-                              <Table.Cell>프로필 이미지</Table.Cell>
-                              <Table.Cell>
-                                  <div className="ui w624 input">
-                                      <label htmlFor="fileup01" className="ui button line02">파일 첨부</label>
-                                      <input 
-                                        type="file" 
-                                        id="fileup01"
-                                        className="fileup-bttn"
-                                        onChange={(e) => { 
-                                          this.onChangeFile("photoImageFile", e)
-                                        }}
-                                      />
-                                      <input type="text" readOnly value={photoImageFile?.name || ''} className="fileupload-area"/>
-                                  </div>
-                              </Table.Cell>
-                          </Table.Row>
-                          <Table.Row className="bttn-line">
-                              <Table.Cell>배경 이미지</Table.Cell>
-                              <Table.Cell>
-                                  <div className="ui w624 input">
-                                      <label htmlFor="fileup02" className="ui button line02">파일 첨부</label>
-                                      <input 
-                                        type="file" 
-                                        id="fileup02"
-                                        className="fileup-bttn"
-                                        onChange={(e) => { 
-                                          this.onChangeFile("bgImageFile", e)
-                                        }}
-                                      />
-                                      <input type="text" readOnly value={bgImageFile?.name || ''} className="fileupload-area" />
-                                  </div>
-                              </Table.Cell>
-                          </Table.Row>
-                      </Table.Body>
-                  </Table>                        
-              </div>
+            <div className="table-wrapper">
+              <Table>
+                <colgroup>
+                  <col width="160px" />
+                  <col />
+                </colgroup>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>이름</Table.Cell>
+                    <Table.Cell>
+                      {skProfile.member?.name || skProfile.name}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>소속</Table.Cell>
+                    <Table.Cell>
+                      {skProfile.member?.department || skProfile.departmentName}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>닉네임</Table.Cell>
+                    <Table.Cell>
+                      {(!isExternalInstructor() && (
+                        <Input
+                          placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
+                          onChange={(e) => this.handleNickNameChange(e)}
+                          value={
+                            changeNickName ? nickNameTemp : skProfile.nickName
+                          }
+                        />
+                      )) ||
+                        (changeNickName ? nickNameTemp : skProfile.nickName)}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>자기소개</Table.Cell>
+                    <Table.Cell>
+                      {(!isExternalInstructor() && (
+                        <TextArea
+                          placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
+                          onChange={(e) => this.handleIntroduceChange(e)}
+                          value={
+                            changeIntroduce
+                              ? introduceTemp
+                              : skProfile.introduce
+                          }
+                        />
+                      )) ||
+                        (changeIntroduce ? introduceTemp : skProfile.introduce)}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row className="bttn-line">
+                    <Table.Cell>프로필 이미지</Table.Cell>
+                    <Table.Cell>
+                      {!isExternalInstructor() && (
+                        <div className="ui w624 input">
+                          <label
+                            htmlFor="fileup01"
+                            className="ui button line02"
+                          >
+                            파일 첨부
+                          </label>
+                          <input
+                            type="file"
+                            id="fileup01"
+                            className="fileup-bttn"
+                            onChange={(e) => {
+                              this.onChangeFile('photoImageFile', e);
+                            }}
+                          />
+                          <input
+                            type="text"
+                            readOnly
+                            value={photoImageFile?.name || ''}
+                            className="fileupload-area"
+                          />
+                        </div>
+                      )}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row className="bttn-line">
+                    <Table.Cell>배경 이미지</Table.Cell>
+                    <Table.Cell>
+                      {!isExternalInstructor() && (
+                        <div className="ui w624 input">
+                          <label
+                            htmlFor="fileup02"
+                            className="ui button line02"
+                          >
+                            파일 첨부
+                          </label>
+                          <input
+                            type="file"
+                            id="fileup02"
+                            className="fileup-bttn"
+                            onChange={(e) => {
+                              this.onChangeFile('bgImageFile', e);
+                            }}
+                          />
+                          <input
+                            type="text"
+                            readOnly
+                            value={bgImageFile?.name || ''}
+                            className="fileupload-area"
+                          />
+                        </div>
+                      )}
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </div>
           </Segment>
-          <div className="mypage-edit-bottom">
-              <span><strong>미리보기</strong> 버튼으로 내 프로필이 다른 사람에게 어떻게 보여지는지 확인해 보세요.</span>
+          {!isExternalInstructor() && (
+            <div className="mypage-edit-bottom">
+              <span>
+                <strong>미리보기</strong> 버튼으로 내 프로필이 다른 사람에게
+                어떻게 보여지는지 확인해 보세요.
+              </span>
               <div className="bttn-area">
-                  <Button 
-                    className="fix line"
-                    onClick={() => this.handleModalPrivew(true)}
-                  >
-                    미리보기
-                  </Button>
-                  <Button 
-                    className="fix bg"
-                    onClick={this.handleSave}
-                  >
-                    저장
-                  </Button>
+                <Button
+                  className="fix line"
+                  onClick={() => this.handleModalPrivew(true)}
+                >
+                  미리보기
+                </Button>
+                <Button className="fix bg" onClick={this.handleSave}>
+                  저장
+                </Button>
               </div>
-          </div>
+            </div>
+          )}
           {/* photoImageBase64 || skProfile.photoFilePath || DefaultImg */}
           <CommunityProfileModalPreview
             open={profilePreview}
-            setOpen={(e) => 
+            setOpen={(e) =>
               this.setState({
-                profilePreview: e
-              }) 
+                profilePreview: e,
+              })
             }
             memberId={skProfile.id}
             preProfileInfo={preProfileInfo}
           />
-      </div>
+        </div>
       </>
     );
   }

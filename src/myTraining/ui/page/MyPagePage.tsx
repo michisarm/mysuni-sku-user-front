@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -12,24 +11,27 @@ import MyPageBadgeListContainer from '../../../certification/ui/logic/MyPageBadg
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import MyPageProfileCardContainer from '../logic/MyPageProfileCardContainer';
-import { MyPageContentType, MyPageContentTypeName } from '../model/MyPageContentType';
+import {
+  MyPageContentType,
+  MyPageContentTypeName,
+} from '../model/MyPageContentType';
 import MyStampListContainer from '../logic/MyStampListContainer';
 import { CollegeService } from '../../../college/stores';
 import NotePage from 'note/ui/page/NotePage';
 import FolderPage from 'note/ui/page/FolderPage';
 import { useNoteCount } from '../../../note/store/NoteCountStore';
 import { requestNoteCount } from '../../../note/service/useNote/requestNote';
-import { Image, Label, Icon, Button, List, Dropdown } from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import { Image, Label, Icon, Button, List, Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import myPageRoutePaths from 'myTraining/routePaths';
 import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
   collegeService?: CollegeService;
 }
-
 
 function MyPagePage({
   myTrainingService,
@@ -45,15 +47,14 @@ function MyPagePage({
   const [bgImageBase64, setBgImageBase64] = useState('');
 
   const { myStampCount } = myTrainingService!;
-  const { allBadgeCount: { issuedCount } } = badgeService!;
+  const {
+    allBadgeCount: { issuedCount },
+  } = badgeService!;
   const { colleges } = collegeService!;
 
   useEffect(() => {
     requestNoteCount();
-    if (
-      colleges &&
-      colleges.length > 0
-    ) {
+    if (colleges && colleges.length > 0) {
       return;
     }
 
@@ -76,8 +77,7 @@ function MyPagePage({
         name: MyPageContentType.EarnedNoteList,
         item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
         // render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
-      }
-
+      },
     ] as TabItemModel[];
   };
 
@@ -85,13 +85,12 @@ function MyPagePage({
     return (
       <>
         {MyPageContentTypeName[contentType]}
-        <span className="count">+{count > 0 && count || 0}</span>
+        <span className="count">+{(count > 0 && count) || 0}</span>
       </>
     );
   };
 
   const onChangeTab = useCallback((tab: TabItemModel): string => {
-
     history.push(myTrainingRoutePaths.myPageTab(tab.name));
     return myTrainingRoutePaths.myPageTab(tab.name);
   }, []);
@@ -105,50 +104,49 @@ function MyPagePage({
 
   const clickTabHandler = useCallback((id: string) => {
     // setActiveTab(id);
-    if(id === "profile"){
+    if (id === 'profile') {
       history.push(myPageRoutePaths.myPageProfile());
-    }else{
+    } else {
       history.push(myPageRoutePaths.myPageEarnedBadgeList());
     }
   }, []);
 
   const onChangeImageFile = useCallback((type: string, base64: string) => {
     // setActiveTab(id);
-    if(type === "photoImageFile"){
-      setPhotoImageBase64(base64)
+    if (type === 'photoImageFile') {
+      setPhotoImageBase64(base64);
     }
-    if(type === "bgImageFile"){
-      setBgImageBase64(base64)
-    } 
+    if (type === 'bgImageFile') {
+      setBgImageBase64(base64);
+    }
   }, []);
 
   const obj = {
-    "profile": 
-      <MyPageProfileUpdateContainer 
-        clickTabHandler={clickTabHandler} 
-        onChangeImageFile={onChangeImageFile} 
-      />,
-    "badge": <MyPageBadgeListContainer />,
-    "stamp": <MyStampListContainer />,
-    "note": <NotePage noteCount={noteCount} />,
-    "folder": <FolderPage noteCount={noteCount} />,
+    profile: (
+      <MyPageProfileUpdateContainer
+        clickTabHandler={clickTabHandler}
+        onChangeImageFile={onChangeImageFile}
+      />
+    ),
+    badge: <MyPageBadgeListContainer />,
+    stamp: <MyStampListContainer />,
+    note: <NotePage noteCount={noteCount} />,
+    folder: <FolderPage noteCount={noteCount} />,
   };
 
   return (
     <>
       <ContentLayout
         className="mypagev2"
-        breadcrumb={
-          [
-            { text: 'My Page' },
-            { text: MyPageContentTypeName[params.tab] }
-          ]
-        }
+        breadcrumb={[
+          { text: 'My Page' },
+          { text: MyPageContentTypeName[params.tab] },
+        ]}
       >
         {/* <MyPageHeaderContainer /> */}
         <div className="mypage_lnb">
           <div className="inner">
-            <MyPageProfileCardContainer 
+            <MyPageProfileCardContainer
               clickTabHandler={clickTabHandler}
               photoImageBase64={photoImageBase64}
               bgImageBase64={bgImageBase64}
@@ -159,80 +157,91 @@ function MyPagePage({
               onChangeTab={onChangeTab}
             /> */}
             <div className="mypage_menu_list">
-              <ul>
-                  <li>
-                    <Image 
-                      src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
-                      alt="뱃지"
-                    />
-                    <Link 
-                      to={myPageRoutePaths.myPageEarnedBadgeList()}
-                      className={params.tab === 'EarnedBadgeList' ? "active" : ""}
-                    >
-                      My Badge
-                    </Link>
-                  </li>
-                  <li>
-                    <Image 
-                      src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
-                      alt="스탬프"
-                    />
-                    <Link 
-                      to={myPageRoutePaths.myPageEarnedStampList()}
-                      className={params.tab === 'EarnedStampList' ? "active" : ""}
-                    >
-                      My Stamp
-                    </Link>
-                  </li>
-                  <li>
-                    <Image 
-                      src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
-                      alt="노트"
-                    />
-                    <Link 
-                      to={myPageRoutePaths.myPageEarnedNoteList()}
-                      className={params.tab === 'EarnedNoteList' ? "active" : ""}
-                    >
-                      Note
-                    </Link>
-                  </li>
-              </ul>
-              <div className="logout-area">
+              {(!isExternalInstructor() && (
+                <>
+                  <ul>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
+                        alt="뱃지"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedBadgeList()}
+                        className={
+                          params.tab === 'EarnedBadgeList' ? 'active' : ''
+                        }
+                      >
+                        My Badge
+                      </Link>
+                    </li>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
+                        alt="스탬프"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedStampList()}
+                        className={
+                          params.tab === 'EarnedStampList' ? 'active' : ''
+                        }
+                      >
+                        My Stamp
+                      </Link>
+                    </li>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
+                        alt="노트"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedNoteList()}
+                        className={
+                          params.tab === 'EarnedNoteList' ? 'active' : ''
+                        }
+                      >
+                        Note
+                      </Link>
+                    </li>
+                  </ul>
+                  <div className="logout-area">
+                    <Button onClick={onLogout}>Logout</Button>
+                  </div>
+                </>
+              )) || (
+                <div className="logout-area" style={{ marginTop: '0px' }}>
                   <Button onClick={onLogout}>Logout</Button>
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {params.tab === 'EarnedBadgeList' && 
-          <MyPageBadgeListContainer />
-        }
-        {params.tab === 'EarnedStampList' && 
-          <MyStampListContainer />
-        }
-        {(params.tab === 'EarnedNoteList' && params.pageNo === '1') && 
+        {params.tab === 'EarnedBadgeList' && <MyPageBadgeListContainer />}
+        {params.tab === 'EarnedStampList' && <MyStampListContainer />}
+        {params.tab === 'EarnedNoteList' && params.pageNo === '1' && (
           <NotePage noteCount={noteCount} />
-        } 
+        )}
 
-        {(params.tab === 'EarnedNoteList' && params.pageNo === '2') && 
+        {params.tab === 'EarnedNoteList' && params.pageNo === '2' && (
           <FolderPage noteCount={noteCount} />
-        } 
+        )}
 
-        {params.tab === "MyProfile" && (
+        {params.tab === 'MyProfile' && (
           // obj.profile
           <MyPageProfileUpdateContainer
             clickTabHandler={clickTabHandler}
             onChangeImageFile={onChangeImageFile}
           />
         )}
-        
       </ContentLayout>
     </>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.myTrainingService',
-  'badge.badgeService',
-  'college.collegeService',
-))(observer(MyPagePage));
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.myTrainingService',
+    'badge.badgeService',
+    'college.collegeService'
+  )
+)(observer(MyPagePage));
