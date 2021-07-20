@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { clearFindMyCardRelatedStudentsCache } from '../../api/cardApi';
 import { clearFindCubeDetailCache } from '../../api/cubeApi';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
-import { completeLearning } from '../../service/useLectureState/utility/cubeStateActions';
 import { requestLectureState } from '../../service/useLectureState/utility/requestLectureState';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import { useLectureState } from '../../store/LectureStateStore';
@@ -31,7 +30,14 @@ function LectureStateContainer() {
           params.cubeId &&
           lectureState?.cubeType
         ) {
-          completeLearning();
+          clearFindMyCardRelatedStudentsCache();
+          clearFindCubeDetailCache();
+
+          requestLectureState(
+            params.cardId,
+            params.cubeId,
+            lectureState.cubeType
+          );
         }
       }
     },
