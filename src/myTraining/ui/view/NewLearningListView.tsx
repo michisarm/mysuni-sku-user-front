@@ -26,6 +26,7 @@ import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel'
 import ReactGA from 'react-ga';
 import { EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 enum ContentType {
   New = 'New',
@@ -56,7 +57,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   viewType?: EnrollingViewType;
 }
 
-const NewLearningListView: React.FC<Props> = Props => {
+const NewLearningListView: React.FC<Props> = (Props) => {
   //
   const {
     contentType,
@@ -411,7 +412,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      feedbackIds = lectureOffsetList.results.map(
+        (lecture) => lecture.reviewId
+      );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 
@@ -449,7 +452,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results && lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      feedbackIds = lectureOffsetList.results.map(
+        (lecture) => lecture.reviewId
+      );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 
@@ -613,16 +618,29 @@ const NewLearningListView: React.FC<Props> = Props => {
     if (contentType === ContentType.Required) {
       return (
         <NoSuchContentPanel
-          message="모든 권장 과정의 학습을 시작하셨습니다."
+          message={getPolyglotText(
+            '모든 권장 과정의 학습을 시작하셨습니다.',
+            '신규학습-신규목록-모두이수'
+          )}
           link={{
-            text: '전체 권장과정 List를 확인하시겠습니까?',
+            text: getPolyglotText(
+              '전체 권장과정 List를 확인하시겠습니까?',
+              '신규학습-신규목록-목록확인'
+            ),
             path: myTrainingRoutePaths.learningRequired(),
           }}
         />
       );
     }
     // default
-    return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
+    return (
+      <NoSuchContentPanel
+        message={getPolyglotText(
+          '아직 생성한 학습이 없습니다.',
+          '신규학습-신규목록-학습없음'
+        )}
+      />
+    );
   };
 
   useEffect(() => {
@@ -672,10 +690,16 @@ const NewLearningListView: React.FC<Props> = Props => {
                   }
                   onAction={() => {
                     reactAlert({
-                      title: '알림',
+                      title: getPolyglotText('알림', '신규학습-신규목록-알림'),
                       message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
+                        ? getPolyglotText(
+                            '본 과정이 관심목록에서 제외되었습니다.',
+                            '신규학습-신규목록-관심제외'
+                          )
+                        : getPolyglotText(
+                            '본 과정이 관심목록에 추가되었습니다.',
+                            '신규학습-신규목록-관심추가'
+                          ),
                     });
                     onToggleBookmarkLecture(inMyLecture || lecture);
                   }}

@@ -14,6 +14,7 @@ import ApprovalListPanelTopLineView from '../view/ApprovalListPanelTopLineView';
 import ApprovalListView from '../view/ApprovalListView';
 import { ApprovalCubeModel } from '../../model';
 import { ApprovalCubeXlsxModel } from '../../model/ApprovalCubeXlsxModel';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   pageService?: PageService;
@@ -127,15 +128,15 @@ class MyApprovalListContainer extends React.Component<Props> {
   findLectureApprovalSelect() {
     //
     const { approvalCubeService } = this.props;
-    approvalCubeService!.findLectureApprovalSelect().then(lectures => {
+    approvalCubeService!.findLectureApprovalSelect().then((lectures) => {
       const lectureOptions = [];
       lectureOptions.push({
         key: '',
-        text: '전체과정',
+        text: getPolyglotText('전체과정', '승인관리-유료과정-slbs'),
         value: '',
       });
 
-      const options = lectures.map(lecture => ({
+      const options = lectures.map((lecture) => ({
         key: lecture.id,
         text: lecture.name,
         value: lecture.id,
@@ -244,11 +245,8 @@ class MyApprovalListContainer extends React.Component<Props> {
 
   render() {
     //
-    const {
-      approvalCubeOffsetList,
-      searchState,
-      searchOrderBy,
-    } = this.props.approvalCubeService!;
+    const { approvalCubeOffsetList, searchState, searchOrderBy } =
+      this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
     const { defaultValue, targetProps } = this.props;
     const { lectureOptions } = this.state;

@@ -1,15 +1,12 @@
 import React from 'react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { OverviewField } from '../../../personalcube';
-
 
 interface BadgeTagViewProps {
   tags: string;
 }
 
-export function BadgeTagView({
-  tags,
-}: BadgeTagViewProps) {
-
+export function BadgeTagView({ tags }: BadgeTagViewProps) {
   const getTagHtml = (tags: string) => {
     let tagList = new Array();
     let tagHtml = '';
@@ -38,7 +35,7 @@ export function BadgeTagView({
     <OverviewField.List icon>
       <OverviewField.Item
         titleIcon="tag2"
-        title="태그"
+        title={getPolyglotText('태그', 'Certification-View-태그')}
         contentHtml={getTagHtml(tags)}
       />
     </OverviewField.List>
