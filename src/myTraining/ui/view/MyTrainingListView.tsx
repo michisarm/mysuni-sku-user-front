@@ -189,7 +189,7 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
             </Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
             <Table.Cell>
@@ -205,7 +205,7 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
             </Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.endDate)}</Table.Cell>
           </>
@@ -217,7 +217,7 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>

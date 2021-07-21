@@ -21,6 +21,7 @@ class MyTrainingTableViewModel {
   cubeType: LearningType = LearningType.None;
   name: string = '';
   learningTime: number = 0;
+  additionalLearningTime: number = 0; //카드추가학습시간
   startDate: number = 0; // 학습시작일
   learningStartDate: number = 0; // 학습시작일
   endDate: number = 0; // 학습완료일
