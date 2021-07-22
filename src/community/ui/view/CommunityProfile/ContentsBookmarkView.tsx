@@ -47,113 +47,117 @@ interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
 }
 
-const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function ContentsBookmarkView({
-  communityProfileBookmark,
-}) {
-  const contextRef = useRef(null);
-  const history = useHistory();
-  const isExternal = isExternalInstructor();
+const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> =
+  function ContentsBookmarkView({ communityProfileBookmark }) {
+    const contextRef = useRef(null);
+    const history = useHistory();
+    const isExternal = isExternalInstructor();
 
-  // 북마크 해제시 화면에서 제거
-  const result = communityProfileBookmark.posts.filter(x => {
-    return x.bookmarked === true;
-  });
-  const gaOnClick = (name: string) => {
-    // react-ga
-    ReactGA.event({
-      category: 'Community',
-      action: 'Click',
-      label: `Community-${name}`,
+    // 북마크 해제시 화면에서 제거
+    const result = communityProfileBookmark.posts.filter((x) => {
+      return x.bookmarked === true;
     });
-    window.scrollTo(0, 0);
-    sessionStorage.removeItem('communityOffset');
-    sessionStorage.removeItem('openCommunityOffset');
-    if (name === 'MyCommunity') {
-      history.replace('/community/main');
-    }
-    if (name === 'CommunityList') {
-      history.replace('/community/main/open-communities');
-    }
-    if (name === 'Follow') {
-      history.replace('/community/main/follow');
-    }
-    if (name === 'MyFeed') {
-      history.replace('/community/main/feed');
-    }
-    if (name === 'Bookmark') {
-      history.replace('/community/main/bookmark');
-    }
-  };
-  /* eslint-disable */
-  return (
-    <div ref={contextRef}>
-      <Sticky context={contextRef} className="tab-menu offset0">
-        <div className="cont-inner">
-          <Menu className="sku">
-            <Menu.Item
-              name="MyCommunity"
-              active={false}
-              as={Link}
-              // to="/community/main"
-              onClick={() => gaOnClick('MyCommunity')}
-            >
-              My Community
-              <span className="count" />
-            </Menu.Item>
-            {!isExternal && 
+    const gaOnClick = (name: string) => {
+      // react-ga
+      ReactGA.event({
+        category: 'Community',
+        action: 'Click',
+        label: `Community-${name}`,
+      });
+      window.scrollTo(0, 0);
+      sessionStorage.removeItem('communityOffset');
+      sessionStorage.removeItem('openCommunityOffset');
+      if (name === 'MyCommunity') {
+        history.replace('/community/main');
+      }
+      if (name === 'CommunityList') {
+        history.replace('/community/main/open-communities');
+      }
+      if (name === 'Follow') {
+        history.replace('/community/main/follow');
+      }
+      if (name === 'MyFeed') {
+        history.replace('/community/main/feed');
+      }
+      if (name === 'Bookmark') {
+        history.replace('/community/main/bookmark');
+      }
+    };
+    /* eslint-disable */
+    return (
+      <div ref={contextRef}>
+        <Sticky context={contextRef} className="tab-menu offset0">
+          <div className="cont-inner">
+            <Menu className="sku">
               <Menu.Item
-                name="MyCreatedCommunity"
+                name="MyCommunity"
                 active={false}
                 as={Link}
-                // to="/community/main/open-communities"
-                onClick={() => gaOnClick('CommunityList')}
+                // to="/community/main"
+                onClick={() => gaOnClick('MyCommunity')}
               >
-                Community List
+                My Community
+                <span className="count" />
               </Menu.Item>
-            }
-            <Menu.Item
-              name="MyFeed"
-              active={false}
-              as={Link}
-              onClick={() => gaOnClick('MyFeed')}
-            >
-              My Feed
-            </Menu.Item>
-            <Menu.Item
-              name="Follow"
-              active={false}
-              as={Link}
-              // to="/community/main/follow"
-              onClick={() => gaOnClick('Follow')}
-            >
-              Follower Feed
-            </Menu.Item>
-            <Menu.Item
-              name="Bookmark"
-              active={true}
-              as={Link}
-              onClick={() => gaOnClick('Bookmark')}
-            >
-              Bookmark
-            </Menu.Item>
-          </Menu>
-        </div>
-      </Sticky>
-      <Segment className="full">
-        <div
-          className="course-detail-center community-containter"
-          style={{ display: 'block' }}
-          data-area={Area.COMMUNITY_BOOKMARK}
-        >
-          <div className="community-main-contants" style={{ marginRight: "0px" }}>
-            {result !== undefined &&
-              result.map(postItem => (
-                <PostItemView key={postItem.postId} {...postItem} />
-              ))}
+              {!isExternal && (
+                <Menu.Item
+                  name="MyCreatedCommunity"
+                  active={false}
+                  as={Link}
+                  // to="/community/main/open-communities"
+                  onClick={() => gaOnClick('CommunityList')}
+                >
+                  Community List
+                </Menu.Item>
+              )}
+              <Menu.Item
+                name="MyFeed"
+                active={false}
+                as={Link}
+                onClick={() => gaOnClick('MyFeed')}
+              >
+                My Feed
+              </Menu.Item>
+              {!isExternal && (
+                <Menu.Item
+                  name="Follow"
+                  active={false}
+                  as={Link}
+                  // to="/community/main/follow"
+                  onClick={() => gaOnClick('Follow')}
+                >
+                  Follower Feed
+                </Menu.Item>
+              )}
+              <Menu.Item
+                name="Bookmark"
+                active={true}
+                as={Link}
+                onClick={() => gaOnClick('Bookmark')}
+              >
+                Bookmark
+              </Menu.Item>
+            </Menu>
           </div>
-          <div className="more-comments">
-            {communityProfileBookmark.postsTotalCount >
-              communityProfileBookmark.postsOffset && (
+        </Sticky>
+        <Segment className="full">
+          <div
+            className="course-detail-center community-containter"
+            style={{ display: 'block' }}
+            data-area={Area.COMMUNITY_BOOKMARK}
+          >
+            <div
+              className="community-main-contants"
+              style={{ marginRight: '0px' }}
+            >
+              {result !== undefined &&
+                result.map((postItem) => (
+                  <PostItemView key={postItem.postId} {...postItem} />
+                ))}
+            </div>
+            <div className="more-comments">
+              {communityProfileBookmark.postsTotalCount >
+                communityProfileBookmark.postsOffset && (
                 <Button
                   icon
                   className="left moreview"
@@ -162,20 +166,20 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
                   <Icon className="moreview" /> list more
                 </Button>
               )}
-            {communityProfileBookmark.postsTotalCount <=
-              communityProfileBookmark.postsOffset && (
+              {communityProfileBookmark.postsTotalCount <=
+                communityProfileBookmark.postsOffset && (
                 <Button
                   icon
                   className="left moreview"
                   style={{ cursor: 'default' }}
                 />
               )}
+            </div>
           </div>
-        </div>
-      </Segment>
-    </div>
-  );
-};
+        </Segment>
+      </div>
+    );
+  };
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
@@ -200,7 +204,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     let nextText = div.innerText;
     nextText = nextText
       .split('\n')
-      .filter(c => c !== '')
+      .filter((c) => c !== '')
       .join('\n');
     setText(nextText);
   }, []);
@@ -249,7 +253,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     useEffect(() => {
       const postDetail = getPostDetailInPreview(postId);
       if (postDetail !== undefined) {
-        postDetail.then(result => {
+        postDetail.then((result) => {
           setDetail(result.html);
         });
       }
@@ -275,15 +279,15 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
             {profileImage !== undefined &&
-              profileImage !== '' &&
-              profileImage !== null ? (
-                <Comment.Avatar
-                  // src={`/files/community/${profileImage}`} 
-                  src={ProfileImagePath(profileImage)}
-                />
-              ) : (
-                <Comment.Avatar src={`${DefaultImg}`} />
-              )}
+            profileImage !== '' &&
+            profileImage !== null ? (
+              <Comment.Avatar
+                // src={`/files/community/${profileImage}`}
+                src={ProfileImagePath(profileImage)}
+              />
+            ) : (
+              <Comment.Avatar src={`${DefaultImg}`} />
+            )}
             <Comment.Content>
               <Comment.Author as="a">
                 <Link to={`/community/${communityId}`}>{communityName}</Link>
@@ -292,8 +296,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
                   <span className="date">{createdTime}</span>
-                  <span className="like">좋아요{' '}<strong>{likeCount}</strong></span>
-                  <span className="comt">댓글수{' '}<strong>{replyCount}</strong></span>
+                  <span className="like">
+                    좋아요 <strong>{likeCount}</strong>
+                  </span>
+                  <span className="comt">
+                    댓글수 <strong>{replyCount}</strong>
+                  </span>
                 </div>
                 {/* <Button>+ View more</Button> */}
               </Comment.Text>
@@ -359,12 +367,18 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               )}
               <div className="text-right">
                 {!more && (
-                  <button className="ui icon button right more-bttn" onClick={viewMore}>
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={viewMore}
+                  >
                     <i aria-hidden="true" className="drop_down icon" />
                   </button>
                 )}
                 {more && (
-                  <button className="ui icon button right more-bttn" onClick={hideMore}>
+                  <button
+                    className="ui icon button right more-bttn"
+                    onClick={hideMore}
+                  >
                     <i aria-hidden="true" className="drop_down up icon" />
                   </button>
                 )}
@@ -398,7 +412,7 @@ async function bookmark(postId: string) {
     }
     setCommunityProfileBookmark({
       ...communityProfileBookmark,
-      posts: communityProfileBookmark.posts.map(c => {
+      posts: communityProfileBookmark.posts.map((c) => {
         if (c.postId !== postId) {
           return c;
         }
@@ -416,7 +430,7 @@ async function unbookmark(postId: string) {
   }
   setCommunityProfileBookmark({
     ...communityProfileBookmark,
-    posts: communityProfileBookmark.posts.map(c => {
+    posts: communityProfileBookmark.posts.map((c) => {
       if (c.postId !== postId) {
         return c;
       }

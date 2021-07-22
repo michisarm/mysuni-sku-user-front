@@ -1,229 +1,309 @@
-import React, { useCallback, useEffect, useState, Fragment, useMemo } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  Fragment,
+  useMemo,
+} from 'react';
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
 import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
 import { CommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
+import {
+  submitRegisterStudent,
+  refresh,
+} from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import iconUrl from '../../../../style/media/icon-url.png';
 import iconFile from '../../../../style/media/icon-community-file-copy-2.png';
 import LectureState from '../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
+import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
 }
 
-const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = function LectureCubeDiscussionView({
-  lectureState,
-}) {
-// function LectureCubeDiscussionContainer() {
-  type RelatedUrlList = {
-    title: string;
-    url: string;
-  }
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
+}
 
-  const PUBLIC_URL = process.env.PUBLIC_URL;
-  const [lectureDescription] = useLectureDescription();
-  // const lectureState = useLectureState();
+const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
+  function LectureCubeDiscussionView({ lectureState }) {
+    // function LectureCubeDiscussionContainer() {
+    type RelatedUrlList = {
+      title: string;
+      url: string;
+    };
 
-  const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
-  const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
-  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
-  const [privateComment, setPrivateComment] = useState<boolean>(false);
-  const [cubeRelatedUrlList, setCubeRelatedUrlList] = useState<RelatedUrlList[]>();
-  const [commentCount, setCommentCount] = useState<number>(0);
-  const [subCommentCount, setSubCommentCount] = useState<number>(0);
-  const [filesMap, setFilesMap] = useState<Map<string, any>>(new Map<string, any>());
+    const PUBLIC_URL = process.env.PUBLIC_URL;
+    const [lectureDescription] = useLectureDescription();
+    // const lectureState = useLectureState();
 
-  const { company, department, email, name } = useMemo(() => {
-    const {
-      skProfile: {
-        member: { company, department, email, name },
-      },
-    } = SkProfileService.instance;
-    return { company, department, email, name };
-  }, []);
+    const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
+    const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
+    const [cubeAutomaticCompletion, setCubeAutomaticCompletion] =
+      useState<boolean>(false);
+    const [privateComment, setPrivateComment] = useState<boolean>(false);
+    const [cubeRelatedUrlList, setCubeRelatedUrlList] =
+      useState<RelatedUrlList[]>();
+    const [commentCount, setCommentCount] = useState<number>(0);
+    const [subCommentCount, setSubCommentCount] = useState<number>(0);
+    const [filesMap, setFilesMap] = useState<Map<string, any>>(
+      new Map<string, any>()
+    );
+    const [profileOpen, setProfileOpen] = useState<boolean>(false);
+    const [profileInfo, setProfileInfo] = useState<profileParams>();
 
-  useEffect(() => {
-    // console.log('LectureCubeDiscussionContainer', lectureState)
+    const { company, department, email, name } = useMemo(() => {
+      const {
+        skProfile: {
+          member: { company, department, email, name },
+        },
+      } = SkProfileService.instance;
+      return { company, department, email, name };
+    }, []);
 
-    if(lectureState){
-      // 댓글, 대댓글 Count Data
-      if(lectureState.student){
-        setCommentCount(lectureState?.student.commentCount)
-        setSubCommentCount(lectureState?.student.subCommentCount)
+    useEffect(() => {
+      window.addEventListener('clickProfile', clickProfileEventHandler);
+      return () => {
+        window.removeEventListener('clickProfile', clickProfileEventHandler);
+      };
+    }, []);
+
+    useEffect(() => {
+      // console.log('LectureCubeDiscussionContainer', lectureState)
+
+      if (lectureState) {
+        // 댓글, 대댓글 Count Data
+        if (lectureState.student) {
+          setCommentCount(lectureState?.student.commentCount);
+          setSubCommentCount(lectureState?.student.subCommentCount);
+        }
+
+        if (lectureState.cubeDetail) {
+          // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
+          if (
+            lectureState.cubeDetail.cubeMaterial &&
+            lectureState.cubeDetail.cubeMaterial.cubeDiscussion
+          ) {
+            setCubeCommentCount(
+              lectureState.cubeDetail.cubeMaterial.cubeDiscussion
+                .completionCondition.commentCount
+            );
+            setCubeSubCommentCount(
+              lectureState.cubeDetail.cubeMaterial.cubeDiscussion
+                .completionCondition.subCommentCount
+            );
+            setCubeAutomaticCompletion(
+              lectureState.cubeDetail.cubeMaterial.cubeDiscussion
+                .automaticCompletion
+            );
+            setCubeRelatedUrlList(
+              lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList
+            );
+            setPrivateComment(
+              lectureState.cubeDetail.cubeMaterial.cubeDiscussion.privateComment
+            );
+          }
+
+          //  관련자료 Data
+          if (lectureState.cubeDetail.cubeContents) {
+            getFileIds();
+          }
+        }
       }
+    }, [lectureState]);
 
-      if(lectureState.cubeDetail){
-        // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
-        if(lectureState.cubeDetail.cubeMaterial
-            && lectureState.cubeDetail.cubeMaterial.cubeDiscussion){
-            setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.commentCount)
-            setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.subCommentCount)
-            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.automaticCompletion)
-            setCubeRelatedUrlList(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList)
-            setPrivateComment(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.privateComment)
-        }
+    const originArr: string[] = [];
+    let origin: string = '';
 
-        //  관련자료 Data
-        if(lectureState.cubeDetail.cubeContents){
-          getFileIds()
-        }
-      }
-    }
-  }, [lectureState]);
+    // 파일 클릭하여 다운로드
+    const fileDownload = (pdf: string, fileId: string) => {
+      depot.downloadDepotFile(fileId);
+    };
 
-  const originArr: string[] = [];
-  let origin: string = '';
-
-  // 파일 클릭하여 다운로드
-  const fileDownload = (pdf: string, fileId: string) => {
-    depot.downloadDepotFile(fileId);
-  };
-
-  // 선택, 전체선택 파일 다운로드
-  const zipFileDownload = useCallback((type: string) => {
-    if(originArr && originArr.length > 0){
-      if (type === 'select') {
-        if (origin === '') {
-          return;
-        }
-        if (originArr!.length === 1) {
-          depot.downloadDepotFile(origin);
-          return;
-        }
-        depot.downloadDepotFiles(originArr);
-      } else {
-        if (type === 'all') {
-          const idArr: string[] = [];
-          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-            idArr.push(foundedFile.id);
-          });
-          if (idArr.length === 0) {
+    // 선택, 전체선택 파일 다운로드
+    const zipFileDownload = useCallback((type: string) => {
+      if (originArr && originArr.length > 0) {
+        if (type === 'select') {
+          if (origin === '') {
             return;
           }
-          depot.downloadDepotFiles(idArr);
+          if (originArr!.length === 1) {
+            depot.downloadDepotFile(origin);
+            return;
+          }
+          depot.downloadDepotFiles(originArr);
+        } else {
+          if (type === 'all') {
+            const idArr: string[] = [];
+            filesMap
+              .get('reference')
+              ?.map((foundedFile: DepotFileViewModel) => {
+                idArr.push(foundedFile.id);
+              });
+            if (idArr.length === 0) {
+              return;
+            }
+            depot.downloadDepotFiles(idArr);
+          }
         }
+      } else {
+        reactAlert({
+          title: '안내',
+          message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+        });
       }
-    }else{
-      reactAlert({
-        title: getPolyglotText('안내', 'Collage-Discussion-안내'),
-        message: getPolyglotText(`다운로드 받으실 첨부파일을 선택해 주세요.`, 'Collage-Discussion-첨부파일1'),
+    }, []);
+
+    const getFileIds = useCallback(() => {
+      const referenceFileBoxId =
+        lectureState?.cubeDetail.cubeContents &&
+        lectureState?.cubeDetail.cubeContents.fileBoxId;
+      Promise.resolve().then(() => {
+        if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
       });
-    }
-  }, []);
+    }, [lectureState?.cubeDetail.cubeContents]);
 
-  const getFileIds = useCallback(() => {
-    const referenceFileBoxId = lectureState?.cubeDetail.cubeContents && lectureState?.cubeDetail.cubeContents.fileBoxId;
-    Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
-    });
-  }, [lectureState?.cubeDetail.cubeContents]);
+    const findFiles = useCallback((type: string, fileBoxId: string) => {
+      depot.getDepotFiles(fileBoxId).then((files) => {
+        filesMap.set(type, files);
+        const newMap = new Map(filesMap.set(type, files));
+        setFilesMap(newMap);
+      });
+    }, []);
 
-  const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
-      filesMap.set(type, files);
-      const newMap = new Map(filesMap.set(type, files));
-      setFilesMap(newMap);
-    });
-  }, []);
+    const checkOne = useCallback((e: any, value: any, depotData: any) => {
+      if (value.checked && depotData.id) {
+        originArr.push(depotData.id);
+        origin = depotData.id;
+      }
+      if (!(value.checked && depotData.id)) {
+        originArr.splice(originArr.indexOf(depotData.id), 1);
+      }
+    }, []);
 
-  const checkOne = useCallback((e: any, value: any, depotData: any) => {
-    if (value.checked && depotData.id) {
-      originArr.push(depotData.id);
-      origin = depotData.id;
-    }
-    if (!(value.checked && depotData.id)) {
-      originArr.splice(originArr.indexOf(depotData.id), 1);
-    }
-  }, []);
+    // 코멘드 등록 시 학습처리 CommentList -> Props
+    const registerStudent = useCallback(async () => {
+      if (lectureState && lectureState.student === undefined) {
+        await submitRegisterStudent();
+      }
+    }, [lectureState]);
 
-  // 코멘드 등록 시 학습처리 CommentList -> Props
-  const registerStudent = useCallback(async () => {
-    if(lectureState && lectureState.student === undefined){
-      await submitRegisterStudent()
-    }
-  }, [lectureState]);
+    // 코멘드 등록 시 화면 새로고침 CommentList -> Props
+    const onRefresh = () => {
+      setTimeout(() => {
+        refresh(1);
+      }, 1000);
+    };
 
-  // 코멘드 등록 시 화면 새로고침 CommentList -> Props
-  const onRefresh = () => {
-    setTimeout(() => {
-      refresh(1)
-    }, 1000);
-  };
+    // Manager-Front 에서 등록한 이수조건 엔터 값 처리
+    const replaceEnterWithBr = (target?: string) => {
+      let setHtml = '';
+      if (target) {
+        setHtml = target.split('\n').join('<br />');
+      }
+      return setHtml;
+    };
 
-  // Manager-Front 에서 등록한 이수조건 엔터 값 처리
-  const replaceEnterWithBr = (target?: string) => {
-    let setHtml = '';
-    if(target){
-      setHtml = target.split('\n').join('<br />');
-    }
-    return setHtml;
-  };
+    const clickProfileEventHandler = useCallback(async () => {
+      const id = document.body.getAttribute('selectedProfileId');
+      findCommunityProfile(id!).then((result) => {
+        setProfileInfo({
+          id: result!.id,
+          profileImg: result!.profileImg,
+          introduce: result!.introduce,
+          nickName: result!.nickname,
+          creatorName: result!.name,
+        });
+        setProfileOpen(true);
+      });
+    }, []);
 
-  return (
-    <>
-      {lectureState && (
-        <div className="contents">
-          {/* <LectureCubeSummaryContainer /> */}
-          <div className="discuss-wrap">
-            {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
-            <div className="task-condition">
-              <strong className="task-condition">
-                <PolyglotText defaultString="이수 조건" id="Collage-Discussion-이수조건" />
-              </strong>
-              {cubeAutomaticCompletion && !privateComment && cubeCommentCount > 0 && cubeSubCommentCount > 0 && (
-                  <span
-                    dangerouslySetInnerHTML={{__html: getPolyglotText(`다음의 토론 주제에 대한 <strong>나의 생각을 {cubeCommentCount}건</strong> 작성해주시고, 타 학습자의 작성 내용 중 관심이 가는 의견에 대해 <strong>댓글을 {cubeSubCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Discussion-이수안내1')}}
-                  />
-              )}
-              {cubeAutomaticCompletion && (privateComment || (cubeCommentCount > 0 && cubeSubCommentCount === 0)) && (
-                <span
-                  dangerouslySetInnerHTML={{__html: getPolyglotText(`다음의 토론 주제에 대한 <strong>나의 생각을 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Discussion-이수안내2')}}
-                />
-              )}
-              {cubeAutomaticCompletion && !privateComment && cubeCommentCount === 0 && cubeSubCommentCount > 0 && (
-                <span
-                  dangerouslySetInnerHTML={{__html: getPolyglotText(`타 학습자의 작성 내용 중 관심이 가는 의견에 대해 <strong>댓글을 {cubeSubCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Discussion-이수안내3')}}
-                />
-              )}
-              {!cubeAutomaticCompletion && (
+    return (
+      <>
+        {lectureState && (
+          <div className="contents">
+            {/* <LectureCubeSummaryContainer /> */}
+            <div className="discuss-wrap">
+              {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
+              <div className="task-condition">
+                <strong className="task-condition">이수 조건</strong>
+                {cubeAutomaticCompletion &&
+                  !privateComment &&
+                  cubeCommentCount > 0 &&
+                  cubeSubCommentCount > 0 && (
+                    <span>
+                      다음의 토론 주제에 대한{' '}
+                      <strong>나의 생각을 {cubeCommentCount}건</strong>{' '}
+                      작성해주시고, 타 학습자의 작성 내용 중 관심이 가는 의견에
+                      대해 <strong>댓글을 {cubeSubCommentCount}건</strong>{' '}
+                      작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                  )}
+                {cubeAutomaticCompletion &&
+                  (privateComment ||
+                    (cubeCommentCount > 0 && cubeSubCommentCount === 0)) && (
+                    <span>
+                      다음의 토론 주제에 대한{' '}
+                      <strong>나의 생각을 {cubeCommentCount}건</strong>{' '}
+                      작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                  )}
+                {cubeAutomaticCompletion &&
+                  !privateComment &&
+                  cubeCommentCount === 0 &&
+                  cubeSubCommentCount > 0 && (
+                    <span>
+                      타 학습자의 작성 내용 중 관심이 가는 의견에 대해{' '}
+                      <strong>댓글을 {cubeSubCommentCount}건</strong>{' '}
+                      작성해주시면 자동으로 이수 처리가 됩니다.
+                    </span>
+                  )}
+                {!cubeAutomaticCompletion && (
                   <span>
-                    <PolyglotText defaultString="본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다." id="Collage-Discussion-이수처리안내" />
+                    본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해
+                    드립니다.
                   </span>
-              )}
-              {(lectureDescription && lectureDescription.completionTerms) && (
-                <Fragment>
-                  <p
-                    dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }}
-                  />
-                </Fragment>
-              )}
-            </div>
+                )}
+                {lectureDescription && lectureDescription.completionTerms && (
+                  <Fragment>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: replaceEnterWithBr(
+                          lectureDescription.completionTerms
+                        ),
+                      }}
+                    />
+                  </Fragment>
+                )}
+              </div>
 
-            {/* 교육내용 표현 */}
-            <div className="discuss-box2 task">
-              {lectureDescription && lectureDescription.description && (
-                <Fragment>
-                  <span className="discuss-intro-title">
-                    <PolyglotText defaultString="토론 안내" id="Collage-Discussion-토론안내" />
-                  </span>
+              {/* 교육내용 표현 */}
+              <div className="discuss-box2 task">
+                {lectureDescription && lectureDescription.description && (
+                  <Fragment>
+                    <span className="discuss-intro-title">토론 안내</span>
                     <LectureDescriptionView
                       htmlContent={lectureDescription.description}
                     />
-                </Fragment>
+                  </Fragment>
                 )}
-            </div>
+              </div>
 
-            {/* 관련 URL Link */}
-            <div className="discuss-box2">
-              {cubeRelatedUrlList &&
-                cubeRelatedUrlList.length > 0 &&
-                (cubeRelatedUrlList[0].title !== '' ||
-                  cubeRelatedUrlList[0].url !== '') && (
+              {/* 관련 URL Link */}
+              <div className="discuss-box2">
+                {cubeRelatedUrlList &&
+                  cubeRelatedUrlList.length > 0 &&
+                  (cubeRelatedUrlList[0].title !== '' ||
+                    cubeRelatedUrlList[0].url !== '') && (
                     <div className="community-board-down discuss2">
                       <div className="board-down-title href">
                         <p>
@@ -233,118 +313,136 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
                             alt=""
                             style={{ display: 'inline-block' }}
                           />
-                          <PolyglotText defaultString="관련 URL" id="Collage-Discussion- URL" />
+                          관련 URL
                         </p>
                         {cubeRelatedUrlList &&
-                          cubeRelatedUrlList.map(
-                            (item: any, index: number) => (
-                              <a href={item.url} target="blank" key={index}>
-                                {item.title}
-                              </a>
-                            )
-                          )}
+                          cubeRelatedUrlList.map((item: any, index: number) => (
+                            <a href={item.url} target="blank" key={index}>
+                              {item.title}
+                            </a>
+                          ))}
                       </div>
                     </div>
                   )}
 
-              {/* 첨부파일 표현 */}
-              {filesMap.get('reference') && (
-                <div className="community-board-down discuss2">
-                  <div className="community-contants">
-                    <div className="community-board-down">
-                      <div className="board-down-title">
-                        <p>
-                          <img
-                            src={iconFile}
-                          />
-                          <PolyglotText defaultString="첨부파일" id="Collage-Discussion-첨부파일2" />
-                        </p>
-                        <div className="board-down-title-right">
-                          <button
-                            className="ui icon button left post delete"
-                            onClick={() => zipFileDownload('select')}
-                          >
-                            <i aria-hidden="true" className="icon check icon" />
-                            <PolyglotText defaultString="선택 다운로드" id="Collage-Discussion-선택다운로드" />
-                          </button>
-                          <button
-                            className="ui icon button left post list2"
-                            onClick={() => zipFileDownload('all')}
-                          >
-                            <img
-                              src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
-                            />
-                            <PolyglotText defaultString="전체 다운로드" id="Collage-Discussion-전체다운로드" />
-                          </button>
+                {/* 첨부파일 표현 */}
+                {filesMap.get('reference') && (
+                  <div className="community-board-down discuss2">
+                    <div className="community-contants">
+                      <div className="community-board-down">
+                        <div className="board-down-title">
+                          <p>
+                            <img src={iconFile} />
+                            첨부파일
+                          </p>
+                          <div className="board-down-title-right">
+                            <button
+                              className="ui icon button left post delete"
+                              onClick={() => zipFileDownload('select')}
+                            >
+                              <i
+                                aria-hidden="true"
+                                className="icon check icon"
+                              />
+                              선택 다운로드
+                            </button>
+                            <button
+                              className="ui icon button left post list2"
+                              onClick={() => zipFileDownload('all')}
+                            >
+                              <img
+                                src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                              />
+                              전체 다운로드
+                            </button>
+                          </div>
                         </div>
+                        {filesMap.get('reference') &&
+                          filesMap
+                            .get('reference')
+                            .map((foundedFile: DepotFileViewModel) => (
+                              <div className="down">
+                                <Checkbox
+                                  className="base"
+                                  label={foundedFile.name}
+                                  name={'depot' + foundedFile.id}
+                                  onChange={(event, value) =>
+                                    checkOne(event, value, foundedFile)
+                                  }
+                                />
+                                <Icon
+                                  className="icon-down-type4"
+                                  onClick={() =>
+                                    fileDownload(
+                                      foundedFile.name,
+                                      foundedFile.id
+                                    )
+                                  }
+                                />
+                              </div>
+                            ))}
                       </div>
-                      {filesMap.get('reference') &&
-                        filesMap
-                          .get('reference')
-                          .map((foundedFile: DepotFileViewModel) => (
-                            <div className="down">
-                              <Checkbox
-                                className="base"
-                                label={foundedFile.name}
-                                name={'depot' + foundedFile.id}
-                                onChange={(event, value) =>
-                                  checkOne(event, value, foundedFile)
-                                }
-                              />
-                              <Icon
-                                className="icon-down-type4"
-                                onClick={() =>
-                                  fileDownload(foundedFile.name, foundedFile.id)
-                                }
-                              />
-                            </div>
-                          ))}
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* 내가 작성한 댓글, 대댓글 Count 표현 */}
-          {(lectureState?.student && cubeAutomaticCompletion) && (
-            <div className="scrolling-area area2 ">
+            {/* 내가 작성한 댓글, 대댓글 Count 표현 */}
+            {lectureState?.student && cubeAutomaticCompletion && (
+              <div className="scrolling-area area2 ">
                 <div className="ui segment full">
                   <List as="ul" className="my-task-bar">
                     {cubeCommentCount > 0 && (
                       <List.Item as="li">
-                        <Icon className="my-comment"/>
-                        <PolyglotText defaultString="My Comment" id="Collage-Discussion-Comments" />
-                        <em><strong>{commentCount}<PolyglotText defaultString="건" id="Collage-Discussion-건수" /></strong>/{cubeCommentCount}<PolyglotText defaultString="건" id="Collage-Discussion-건수" /></em>
+                        <Icon className="my-comment" /> My Comment
+                        <em>
+                          <strong>{commentCount}건</strong>/{cubeCommentCount}건
+                        </em>
                       </List.Item>
                     )}
                     {!privateComment && cubeSubCommentCount > 0 && (
                       <List.Item as="li">
-                        <Icon className="my-comment-reply"/>
-                        My reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em>
+                        <Icon className="my-comment-reply" />
+                        My reply
+                        <em>
+                          <strong>{subCommentCount}건</strong>/
+                          {cubeSubCommentCount}건
+                        </em>
                       </List.Item>
                     )}
                   </List>
                 </div>
-            </div>
-          )}
+              </div>
+            )}
 
-          <CommentList
-            feedbackId={lectureState.cubeDetail.cubeContents.commentFeedbackId}
-            hideCamera
-            name={name}
-            email={email}
-            companyName={company}
-            departmentName={department}
-            // cardId={params?.cardId}
-            menuType="discussion"
-            cubeCommentStartFunction={registerStudent}
-            cubeCommentEndFunction={onRefresh}
-          />
-        </div>
-      )}
-    </>
-  );
-}
+            <CommentList
+              feedbackId={
+                lectureState.cubeDetail.cubeContents.commentFeedbackId
+              }
+              hideCamera
+              name={name}
+              email={email}
+              companyName={company}
+              departmentName={department}
+              // cardId={params?.cardId}
+              menuType="discussion"
+              cubeCommentStartFunction={registerStudent}
+              cubeCommentEndFunction={onRefresh}
+            />
+            <CommunityProfileModal
+              open={profileOpen}
+              setOpen={setProfileOpen}
+              userProfile={profileInfo && profileInfo.profileImg}
+              memberId={profileInfo && profileInfo.id}
+              introduce={profileInfo && profileInfo.introduce}
+              nickName={profileInfo && profileInfo.nickName}
+              name={profileInfo && profileInfo.creatorName}
+            />
+          </div>
+        )}
+      </>
+    );
+  };
 
 export default LectureCubeDiscussionView;

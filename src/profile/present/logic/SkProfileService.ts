@@ -20,6 +20,8 @@ class SkProfileService {
 
   skProfileCachingFetch: CachingFetch = new CachingFetch();
 
+  communityProfileCachingFetch: CachingFetch = new CachingFetch();
+
   @observable
   studySummary: StudySummaryModel = new StudySummaryModel();
 
@@ -38,11 +40,10 @@ class SkProfileService {
     //
     let viewProfileName: string = '';
 
-    if(this.skProfile.nameFlag === 'N' &&
-        this.skProfile.nickName !== '' ){
-      viewProfileName = this.skProfile.nickName
-    }else{
-      viewProfileName = this.skProfile.member &&this.skProfile.member.name
+    if (this.skProfile.nameFlag === 'N' && this.skProfile.nickName !== '') {
+      viewProfileName = this.skProfile.nickName;
+    } else {
+      viewProfileName = this.skProfile.member && this.skProfile.member.name;
     }
 
     return viewProfileName;
@@ -83,11 +84,31 @@ class SkProfileService {
     //
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
-      skProfile =>
+      (skProfile) =>
         runInAction(() => (this.skProfile = new SkProfileModel(skProfile)))
     );
     return fetched
       ? this.skProfileCachingFetch.inProgressFetching
+      : this.skProfile;
+  }
+
+  @action
+  async findCommunityProfile() {
+    //
+    const fetched = this.communityProfileCachingFetch.fetch(
+      () => this.skProfileApi.findCommunityProfile(),
+      (skProfile) =>
+        runInAction(() => {
+          this.skProfile = new SkProfileModel(skProfile);
+          this.skProfile.name = skProfile.name;
+          this.skProfile.nickName = skProfile.nickname;
+          this.skProfile.departmentName = skProfile.department.name;
+          this.skProfile.photoImage = skProfile.profileImg;
+          this.skProfile.bgImage = skProfile.profileBgImg;
+        })
+    );
+    return fetched
+      ? this.communityProfileCachingFetch.inProgressFetching
       : this.skProfile;
   }
 
@@ -123,21 +144,21 @@ class SkProfileService {
       async (studySummary: StudySummaryModel) => {
         const collegeData = await findAllCollegeCache();
         if (collegeData !== undefined && studySummary !== undefined) {
-          studySummary.favoriteChannels.idNames.forEach(idName => {
+          studySummary.favoriteChannels.idNames.forEach((idName) => {
             const channelId = idName.id;
-            const college = collegeData.find(c =>
-              c.channels.some(d => d.id === channelId)
+            const college = collegeData.find((c) =>
+              c.channels.some((d) => d.id === channelId)
             );
             if (college !== undefined) {
-              const channel = college.channels.find(c => c.id === channelId);
+              const channel = college.channels.find((c) => c.id === channelId);
               if (channel !== undefined) {
                 idName.name = channel.name;
               }
             }
           });
-          studySummary.favoriteColleges.idNames.forEach(idName => {
+          studySummary.favoriteColleges.idNames.forEach((idName) => {
             const collegeId = idName.id;
-            const college = collegeData.find(c => c.id === collegeId);
+            const college = collegeData.find((c) => c.id === collegeId);
             if (college !== undefined) {
               idName.name = college.name;
             }

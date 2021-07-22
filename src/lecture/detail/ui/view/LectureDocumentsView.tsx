@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Document, Page } from 'react-pdf';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
@@ -45,7 +46,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       return;
     }
     if (learningState !== 'Passed') {
-      findCubeDetailCache(params?.cubeId).then(c => {
+      findCubeDetailCache(params?.cubeId).then((c) => {
         if (c !== undefined) {
           const { cube } = c;
           if (
@@ -72,7 +73,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
 
   const getFiles = useCallback(() => {
-    depot.getDepotFiles(fileBoxId).then(filesArr => {
+    depot.getDepotFiles(fileBoxId).then((filesArr) => {
       setPdfUrl([]);
       // id 여러개 일때
       if (filesArr) {
@@ -80,7 +81,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           setFiles(filesArr);
           setCourseName(filesArr);
           for (let i = 0; i < filesArr.length; ++i) {
-            setPdfUrl(oldArray => [
+            setPdfUrl((oldArray) => [
               ...oldArray,
               '/api/depot/depotFile/flow/download/' + filesArr[i].id,
             ]);
@@ -204,7 +205,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
             className={
               !openToggle ? 'pdf-header-select off' : 'pdf-header-select on'
             }
-            style={{ zIndex: 33 }}
+            style={{ zIndex: 1 }}
           >
             <a
               className="pdf-select-text"

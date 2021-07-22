@@ -77,7 +77,7 @@ const BoxCard: React.FC<Props> = ({ dataArea }) => {
   return (
     <Card.Group className="box-cards">
       {card &&
-        card.map(item => {
+        card.map((item) => {
           const {
             id,
             name,
@@ -96,9 +96,9 @@ const BoxCard: React.FC<Props> = ({ dataArea }) => {
           const isRequired: boolean = required_cinerooms
             .split('|')
             .some(
-              c =>
+              (c) =>
                 Array.isArray(workspaces?.cineroomWorkspaces) &&
-                workspaces.cineroomWorkspaces.some(d => d.id === c)
+                workspaces.cineroomWorkspaces.some((d) => d.id === c)
             );
           let mainCategory: CardCategory = {
             channelId: '',
@@ -112,7 +112,7 @@ const BoxCard: React.FC<Props> = ({ dataArea }) => {
                 collegeId,
                 mainCategory: mainCategory === 1,
               }))
-              .find(c => c.mainCategory === true) || {
+              .find((c) => c.mainCategory === true) || {
               channelId: '',
               collegeId: '',
               mainCategory: true,
@@ -122,27 +122,30 @@ const BoxCard: React.FC<Props> = ({ dataArea }) => {
           }
           const cardId = id.replace('<b>', '').replace('</b>', '');
 
-          return (
-            <CardView
-              key={cardId}
-              cardId={cardId}
-              htmlName={name}
-              name={name}
-              starCount={parseInt(star_count)}
-              stampCount={parseInt(stamp_count)}
-              mainCategory={mainCategory}
-              simpleDescription={simple_description}
-              learningTime={parseInt(learning_time)}
-              thumbImagePath={thumb_image_path}
-              passedStudentCount={parseInt(passed_student_count)}
-              type={type}
-              isRequired={isRequired}
-              capacity={parseInt(student_count)}
-              studentCount={parseInt(student_count)}
-              additionalLearningTime={parseInt(additional_learning_time)}
-              dataArea={dataArea}
-            />
-          );
+          return null;
+
+          // 검색 Card 다국어 때 수정
+          // return (
+          //   <CardView
+          //     key={cardId}
+          //     cardId={cardId}
+          //     htmlName={name}
+          //     name={name}
+          //     starCount={parseInt(star_count)}
+          //     stampCount={parseInt(stamp_count)}
+          //     mainCategory={mainCategory}
+          //     simpleDescription={simple_description}
+          //     learningTime={parseInt(learning_time)}
+          //     thumbImagePath={thumb_image_path}
+          //     passedStudentCount={parseInt(passed_student_count)}
+          //     type={type}
+          //     isRequired={isRequired}
+          //     capacity={parseInt(student_count)}
+          //     studentCount={parseInt(student_count)}
+          //     additionalLearningTime={parseInt(additional_learning_time)}
+          //     dataArea={dataArea}
+          //   />
+          // );
         })}
     </Card.Group>
   );

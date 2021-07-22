@@ -34,8 +34,12 @@ function UserProfileInfoTabCommunity(props: Props) {
   const history = useHistory();
 
   const onViewDetail = (communityId: string) => {
-    props.setOpen(false);
-    history.push(`/community/${communityId}`);
+    //props.setOpen(false);
+    //history.push(`/community/${communityId}`);
+    window.open(
+      `${window.location.origin}/suni-community/community/${communityId}/home`,
+      '_blank'
+    );
   };
 
   return (

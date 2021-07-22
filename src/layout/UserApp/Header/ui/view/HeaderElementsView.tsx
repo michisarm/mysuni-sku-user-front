@@ -60,14 +60,14 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
   return (
     <>
       {menuAuth.some(
-        pagemElement =>
+        (pagemElement) =>
           pagemElement.position === 'TopMenu' &&
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
       <div className="g-menu">
         <div className="nav" data-area={Area.HEADER_GNB}>
           {menuAuth.some(
-            pagemElement =>
+            (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Learning'
           ) &&
@@ -81,7 +81,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               </NavLink>
             )}
           {menuAuth.some(
-            pagemElement =>
+            (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Recommend'
           ) &&
@@ -95,7 +95,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               </NavLink>
             )}
           {menuAuth.some(
-            pagemElement =>
+            (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Create'
           ) &&
@@ -109,7 +109,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               </NavLink>
             )}
           {menuAuth.some(
-            pagemElement =>
+            (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Certification'
           ) &&
@@ -124,17 +124,22 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               </NavLink>
             )}
           {menuAuth.some(
-            pagemElement =>
+            (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
           ) && (
-            <NavLink
-              to={communityPaths.community()}
+            <Link
+              to="#"
               className="item"
-              onClick={() => onClickMenu('Community')}
+              onClick={() =>
+                window.open(
+                  `${window.location.origin}/suni-community/`,
+                  '_blank'
+                )
+              }
             >
-              <PolyglotText defaultString="Community" id="home-gnb-mtm" />
-            </NavLink>
+              Community
+            </Link>
           )}
         </div>
       </div>
@@ -173,12 +178,12 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     >
       <input
         type="text"
-        placeholder={getPolyglotText("Search", "home-gnb-검색창t")}
+        placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
         value={value}
         onChange={onChange}
         onClick={onClick}
         onBlur={onBlur}
-        onKeyPress={e => e.key === 'Enter' && onSearch()}
+        onKeyPress={(e) => e.key === 'Enter' && onSearch()}
       />
       <i aria-hidden="true" className="clear link icon" onClick={onClear} />
       <i aria-hidden="true" className="search link icon" onClick={onSearch} />

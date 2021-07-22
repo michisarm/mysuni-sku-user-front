@@ -31,4 +31,5 @@ export interface SearchCard {
   applying_end_date: string; //
   cube_types: string; //
   cube_organizer_names: string; //
+  paid: string;
 }

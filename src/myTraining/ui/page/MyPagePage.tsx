@@ -25,6 +25,7 @@ import { Image, Label, Icon, Button, List, Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import myPageRoutePaths from 'myTraining/routePaths';
 import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPagePageProps {
@@ -157,55 +158,61 @@ function MyPagePage({
               onChangeTab={onChangeTab}
             /> */}
             <div className="mypage_menu_list">
-              <ul>
-                <li>
-                  <Image
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
-                    alt="뱃지"
-                  />
-                  <Link
-                    to={myPageRoutePaths.myPageEarnedBadgeList()}
-                    className={params.tab === 'EarnedBadgeList' ? 'active' : ''}
-                  >
-                    <PolyglotText
-                      defaultString="My Badge"
-                      id="mapg-mifa-mybadge"
-                    />
-                  </Link>
-                </li>
-                <li>
-                  <Image
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
-                    alt="스탬프"
-                  />
-                  <Link
-                    to={myPageRoutePaths.myPageEarnedStampList()}
-                    className={params.tab === 'EarnedStampList' ? 'active' : ''}
-                  >
-                    <PolyglotText
-                      defaultString="My Stamp"
-                      id="mapg-mifa-mystamp"
-                    />
-                  </Link>
-                </li>
-                <li>
-                  <Image
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
-                    alt="노트"
-                  />
-                  <Link
-                    to={myPageRoutePaths.myPageEarnedNoteList()}
-                    className={params.tab === 'EarnedNoteList' ? 'active' : ''}
-                  >
-                    <PolyglotText defaultString="Note" id="mapg-mifa-note" />
-                  </Link>
-                </li>
-              </ul>
-              <div className="logout-area">
-                <Button onClick={onLogout}>
-                  <PolyglotText defaultString="Logout" id="mapg-mifa-logout" />
-                </Button>
-              </div>
+              {(!isExternalInstructor() && (
+                <>
+                  <ul>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
+                        alt="뱃지"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedBadgeList()}
+                        className={
+                          params.tab === 'EarnedBadgeList' ? 'active' : ''
+                        }
+                      >
+                        My Badge
+                      </Link>
+                    </li>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
+                        alt="스탬프"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedStampList()}
+                        className={
+                          params.tab === 'EarnedStampList' ? 'active' : ''
+                        }
+                      >
+                        My Stamp
+                      </Link>
+                    </li>
+                    <li>
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
+                        alt="노트"
+                      />
+                      <Link
+                        to={myPageRoutePaths.myPageEarnedNoteList()}
+                        className={
+                          params.tab === 'EarnedNoteList' ? 'active' : ''
+                        }
+                      >
+                        Note
+                      </Link>
+                    </li>
+                  </ul>
+                  <div className="logout-area">
+                    <Button onClick={onLogout}>Logout</Button>
+                  </div>
+                </>
+              )) || (
+                <div className="logout-area" style={{ marginTop: '0px' }}>
+                  <Button onClick={onLogout}>Logout</Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

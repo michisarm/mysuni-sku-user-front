@@ -1,21 +1,24 @@
-import React, {useEffect} from 'react'
-import { Button, Checkbox, Image, Modal,} from 'semantic-ui-react'
+import React, { useEffect } from 'react';
+import { Button, Checkbox, Image, Modal } from 'semantic-ui-react';
 import { useParams, useHistory } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
-import Avartar from '../../../style/media/img-profile-80-px.png'
-import UserProfileInfoView from '../../../layout/UserApp/Header/ui/view/UserProfileInfoView'
+import Avartar from '../../../style/media/img-profile-80-px.png';
+import UserProfileInfoView from '../../../layout/UserApp/Header/ui/view/UserProfileInfoView';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 
 interface Props {
   open: boolean;
-  setOpen: (state:boolean) => void,
-  userProfile:string | undefined,
-  memberId:string | undefined,
-  introduce:string | undefined,
-  nickName:string | undefined,
-  name:string | undefined
+  setOpen: (state: boolean) => void;
+  userProfile: string | undefined;
+  memberId: string | undefined;
+  introduce: string | undefined;
+  nickName: string | undefined;
+  name: string | undefined;
 }
 
-const CommunityProfileModal:React.FC<Props> = (props: Props) => {
+const CommunityProfileModal: React.FC<Props> = (props: Props) => {
+  const isExternal = isExternalInstructor();
+
   // const history = useHistory();
   // const currentUser = patronInfo.getDenizenId();
 
@@ -32,8 +35,8 @@ const CommunityProfileModal:React.FC<Props> = (props: Props) => {
     introduce: '',
     profileImg: '',
     profileBgImg: '',
-  }
-  
+  };
+
   return (
     // open={open}
     // <Modal open={open} className="w500 base">
@@ -45,12 +48,12 @@ const CommunityProfileModal:React.FC<Props> = (props: Props) => {
     //       <div className="profile_pic">
     //         <div className="pic_area user">
     //           <p style={{width:"85px",margin:"0 auto"}}>
-    //             <img 
+    //             <img
     //               src={(userProfile &&
     //                   '/files/community/' + userProfile) ||
     //                 'data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCI+DQogICAgPGRlZnM+DQogICAgICAgIDxjaXJjbGUgaWQ9ImEiIGN4PSI0MCIgY3k9IjQwIiByPSI0MCIvPg0KICAgIDwvZGVmcz4NCiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPg0KICAgICAgICA8bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+DQogICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNhIi8+DQogICAgICAgIDwvbWFzaz4NCiAgICAgICAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzkuNSIgc3Ryb2tlPSIjREREIi8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNEREQiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTU5LjExIDY3Ljc4Yy04LjM5LTMuMDU3LTExLjA3NC01LjYzNy0xMS4wNzQtMTEuMTYyIDAtMy4zMTYgMi43NS01LjQ2NSAzLjY4Ny04LjMwNi45MzgtMi44NDIgMS40OC02LjIwNyAxLjkzLTguNjU0LjQ1MS0yLjQ0OC42My0zLjM5NC44NzUtNi4wMDJDNTQuODI4IDMwLjQwMiA1Mi42NSAyMiA0MSAyMmMtMTEuNjQ2IDAtMTMuODMyIDguNDAyLTEzLjUyNSAxMS42NTYuMjQ1IDIuNjA4LjQyNSAzLjU1NS44NzUgNi4wMDIuNDUgMi40NDcuOTg2IDUuODEyIDEuOTIzIDguNjU0LjkzNyAyLjg0MSAzLjY5IDQuOTkgMy42OSA4LjMwNiAwIDUuNTI1LTIuNjgyIDguMTA1LTExLjA3NCAxMS4xNjJDMTQuNDY3IDcwLjg0NCA5IDczLjg2NiA5IDc2djEwaDY0Vjc2YzAtMi4xMzEtNS40Ny01LjE1Mi0xMy44OS04LjIyeiIgbWFzaz0idXJsKCNiKSIvPg0KICAgIDwvZz4NCjwvc3ZnPg0K'
     //               }
-    //               style={{width:"100%"}} 
+    //               style={{width:"100%"}}
     //               alt="프로필 사진"
     //             />
     //           </p>
@@ -68,10 +71,19 @@ const CommunityProfileModal:React.FC<Props> = (props: Props) => {
     //     <button className="ui button pop2 p" onClick={() => handleProfileView(memberId)}>상세보기</button>
     //   </Modal.Actions>
     // </Modal>
-    <div style={{ display: 'none' }}>
-      <UserProfileInfoView open={props.open} setOpen={props.setOpen} memberId={props.memberId} preProfileInfo={preProfileInfo} />
-    </div>
-  )
-}
+    <>
+      {!isExternal && (
+        <div style={{ display: 'none' }}>
+          <UserProfileInfoView
+            open={props.open}
+            setOpen={props.setOpen}
+            memberId={props.memberId}
+            preProfileInfo={preProfileInfo}
+          />
+        </div>
+      )}
+    </>
+  );
+};
 
 export default CommunityProfileModal;

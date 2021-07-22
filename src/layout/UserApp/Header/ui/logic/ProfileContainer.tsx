@@ -46,7 +46,13 @@ class ProfileContainer extends Component<Props, State> {
   componentDidMount() {
     const { skProfileService } = this.props;
 
-    skProfileService!.findSkProfile();
+    if (skProfileService) {
+      if (!isExternalInstructor()) {
+        skProfileService.findSkProfile();
+      } else {
+        skProfileService.findCommunityProfile();
+      }
+    }
     this.findNoReadCount();
 
     setInterval(() => {
@@ -105,7 +111,14 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   routeToAlarmBackLink(backLink: string) {
-    this.props.history.push(backLink);
+    if (backLink.startsWith('/community')) {
+      window.open(
+        `${window.location.origin}/suni-community${backLink}`,
+        '_blank'
+      );
+    } else {
+      this.props.history.push(backLink);
+    }
   }
 
   handleClickAlarm() {
@@ -128,10 +141,8 @@ class ProfileContainer extends Component<Props, State> {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const {
-      myNotieMentions,
-      myNotieNoReadMentionCount,
-    } = NotieService.instance;
+    const { myNotieMentions, myNotieNoReadMentionCount } =
+      NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;

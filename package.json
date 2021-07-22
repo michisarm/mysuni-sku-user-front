@@ -18,7 +18,7 @@
     "@babel/polyfill": "7.0.0",
     "@nara.drama/approval": "0.4.1",
     "@nara.drama/depot": "1.4.1",
-    "@nara.drama/feedback": "0.4.447",
+    "@nara.drama/feedback": "0.4.57",
     "@nara.platform/accent": "0.2.2",
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
@@ -32,6 +32,7 @@
     "html-to-image": "^1.6.2",
     "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.6.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mobx": "^4.15.0",
     "mobx-react": "^6.1.4",
@@ -59,7 +60,7 @@
     "typescript": "3.7.3",
     "xlsx": "latest"
   },
-  "proxy": "http://stg.mysuni.sk.com",
+  "proxy": "https://stg.mysuni.sk.com",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/file-saver": "^2.0.1",

@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-irregular-whitespace*/
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { requestAttendCount } from '../../service/getAttendCount';
-import { requestEncryptEmail } from '../../service/getAttendEmail';
-import { requestAttendEvent } from '../../service/getAttendEvent';
-import { saveAttend } from '../../service/saveAttend';
 import {
-  useAttendCountItem,
-  useAttendEventItem,
-  useEncryptEmail,
-} from '../../store/EventStore';
+  requestAttendCount,
+  requestcountAttendence,
+} from '../../service/getAttendCount';
+import { requestEncryptEmail } from '../../service/getAttendEmail';
+import { saveAttend } from '../../service/saveAttend';
+import { getAttendEventItem } from '../../store/EventStore';
+import { isAfterFlag } from '../../utility/getAfterFlag';
 import AttendanceModal from '../view/AttendanceModal';
 
 interface Props extends RouteComponentProps {
@@ -23,81 +24,44 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
   open,
   setOpen,
 }) {
-  const AttendEventItem = useAttendEventItem();
-  const AttendCountItem = useAttendCountItem();
-  const EncryptEmail = useEncryptEmail();
-  const [afterFlag, setAfterFlag] = useState<boolean>(false)
-
   useEffect(() => {
     if (open) {
-      const today = moment().format('YYYY-MM-DD')
-      const afterFlag = moment(today).isAfter(
-        moment().format('2021-04-30'),
-        'day'
-      );
-      setAfterFlag(afterFlag)
-
-      requestAttendEvent();
-      requestEncryptEmail();
+      requestcountAttendence();
     }
   }, [open]);
 
-  useEffect(() => {
-    if (AttendEventItem === undefined || AttendEventItem.id === '') {
-      return;
-    }
-    requestAttendCount(AttendEventItem.id);
-  }, [AttendEventItem]);
-
-  const handleInputChange = useCallback((name: string, value: any) => {}, []);
-
-  const handleSave = useCallback(() => {}, []);
-
   const attendClick = useCallback(() => {
-    // const today = moment().format('YYYY-MM-DD')
-    // const afterFlag = moment(today).isAfter(
-    //   moment().format('2021-04-28'),
-    //   'day'
-    // );
-    if(afterFlag) {
-      reactAlert({
-        title: '알림',
-        message: '출석 이벤트가 4/30에 종료 되었습니다. 복권 확인은 5/7까지 가능합니다.',
-      });
-      return;
-    }
-    if (AttendEventItem === undefined || AttendEventItem.id === '') {
-      return;
-    }
-    saveAttend(AttendEventItem.id).then(result => {
-      if (result !== undefined) {
-        requestAttendCount(AttendEventItem.id).then((result) => {
-          requestEncryptEmail();
+    const attendEventItem = getAttendEventItem();
+    if (attendEventItem !== undefined) {
+      const isAfterDate = isAfterFlag(attendEventItem.endTime);
+      const attendEndDate = moment(attendEventItem.endTime).format(
+        'YYYY-MM-DD'
+      );
+      const popUpEndDate = moment(attendEventItem.popupEndTime).format(
+        'YYYY-MM-DD'
+      );
+
+      if (isAfterDate) {
+        reactAlert({
+          title: '알림',
+          message: `출석 이벤트가 ${attendEndDate}에 종료 되었습니다. 복권 확인은 ${popUpEndDate}까지 가능합니다.`,
         });
+        return;
       }
-    });
-  }, [AttendEventItem]);
+
+      saveAttend(attendEventItem.id).then((result) => {
+        if (result !== undefined) {
+          requestcountAttendence();
+        }
+      });
+    }
+  }, []);
 
   return (
-    <>
-      {EncryptEmail && (
-        <AttendanceModal
-          open={open}
-          setOpen={setOpen}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          attendClick={attendClick}
-          AttendEventItem={AttendEventItem}
-          AttendCountItem={AttendCountItem}
-          EncryptEmail={EncryptEmail}
-          afterFlag={afterFlag}
-        />
-      )}
-    </>
+    <AttendanceModal open={open} setOpen={setOpen} attendClick={attendClick} />
   );
 };
 
 export default inject(mobxHelper.injectFrom())(
   withRouter(observer(AttendanceModalContainer))
 );
-

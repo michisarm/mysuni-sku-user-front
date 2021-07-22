@@ -49,11 +49,7 @@ function UserProfileInfoTabFeedItem(props: Props) {
     e.preventDefault();
     e.stopPropagation();
     const textarea = document.createElement('textarea');
-    textarea.value =
-      window.location.protocol +
-      '//' +
-      window.location.host +
-      `${process.env.PUBLIC_URL}/community/${communityId}/post/${postId}`;
+    textarea.value = `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`;
     document.body.appendChild(textarea);
     textarea.select();
     textarea.setSelectionRange(0, 9999);
@@ -120,8 +116,12 @@ function UserProfileInfoTabFeedItem(props: Props) {
   const history = useHistory();
 
   const onViewDetail = (communityId: string, postId: string) => {
-    props.setOpen(false);
-    history.push(`/community/${communityId}/post/${postId}`);
+    //props.setOpen(false);
+    //history.push(`/community/${communityId}/post/${postId}`);
+    window.open(
+      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`,
+      '_blank'
+    );
   };
 
   const contentsView = () => {

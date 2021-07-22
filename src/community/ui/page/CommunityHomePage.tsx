@@ -227,6 +227,7 @@ interface Params {
 function CommunityHomePage() {
   const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
+  window.location.href = `/suni-community/community/${communityId}/home`;
   const communityHome = useCommunityHome();
 
   useEffect(() => {

@@ -11,6 +11,7 @@ import {
   findExpert,
   getEmptyQueryOptions,
   QueryOptions,
+  findPreCard,
 } from '../api/searchApi';
 import { createStore } from '../../community/store/Store';
 import moment from 'moment';
@@ -690,7 +691,7 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
     });
     return;
   }
-  setDisplayCard(filterCard(getCard()));
+  setDisplayCard(await filterCard(getCard()));
   closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {
@@ -723,10 +724,143 @@ const SearchFilter: React.FC<Props> = ({
       });
       return;
     }
-    const companyCode = localStorage.getItem('nara.companyCode');
-    if (companyCode === null) {
-      return;
-    }
+    findPreCard(decodedSearchValue).then((searchResult) => {
+      if (searchResult === undefined) {
+        setCollegeOptions([]);
+        setOrganizerOptions([]);
+        setCubeTypeOptions([]);
+        return;
+      }
+      const displayCard: SearchCard[] = [];
+      searchResult.result.rows
+        .map((c) => c.fields)
+        .forEach((c) => {
+          const queries = decodedSearchValue
+            .split(' ')
+            .filter((c) => c.trim() !== '');
+          if (c.name !== undefined && c.name !== null) {
+            if (
+              queries.some(
+                (query) =>
+                  query !== undefined &&
+                  query !== null &&
+                  c.name.toLowerCase().includes(query.toLowerCase())
+              )
+            ) {
+              displayCard.push(c);
+            }
+          }
+        });
+      searchResult.result.rows
+        .map((c) => c.fields)
+        .forEach((c) => {
+          if (!displayCard.some((d) => d.id === c.id)) {
+            displayCard.push(c);
+          }
+        });
+      setCard(displayCard);
+      setDisplayCard([...displayCard]);
+      const collegeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { categories },
+          } = c;
+          const category = (
+            JSON.parse(categories) as SearchCardCategory[]
+          ).find((d) => d.mainCategory === 1);
+          if (category !== undefined) {
+            const a = r.find((d) => d.key === category.collegeId);
+            if (a !== undefined) {
+              a.count = (a.count || 0) + 1;
+              a.text = `${a.value}(${a.count})`;
+            } else {
+              r.push({
+                key: category.collegeId,
+                value: getCollgeName(category.collegeId),
+                text: `${getCollgeName(category.collegeId)}(1)`,
+                count: 1,
+              });
+            }
+          }
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCollegeOptions(collegeOptions);
+
+      const organizerOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_organizer_names },
+          } = c;
+          (JSON.parse(cube_organizer_names) as string[]).forEach(
+            (organizer) => {
+              const a = r.find((d) => d.key === organizer);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: organizer,
+                  value: organizer,
+                  text: `${organizer}(1)`,
+                  count: 1,
+                });
+              }
+            }
+          );
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setOrganizerOptions(organizerOptions);
+
+      const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_types },
+          } = c;
+          (JSON.parse(cube_types) as string[])
+            .reduce<string[]>((r, c) => {
+              if (!r.includes(c)) {
+                r.push(c);
+              }
+              return r;
+            }, [])
+            .forEach((cube) => {
+              const a = r.find((d) => d.key === cube);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: cube,
+                  value: cube,
+                  text: `${cube}(1)`,
+                  count: 1,
+                });
+              }
+            });
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCubeTypeOptions(cubeTypeOptions);
+      search(decodedSearchValue);
+    });
+
     findCard(decodedSearchValue).then((searchResult) => {
       if (searchResult === undefined) {
         setCollegeOptions([]);

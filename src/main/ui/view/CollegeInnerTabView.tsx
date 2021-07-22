@@ -261,9 +261,9 @@ const CollegeInnerTabView = () => {
                   </table>
                 </div>
 
-                <div className="combined-topic">
+                {/* <div className="combined-topic">
                   <Image src={`${PUBLIC_URL}/images/all/ing-16.png`} alt="" />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
