@@ -4,6 +4,7 @@ import { MediaType } from '../../../media/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 import PanoptoListModal from './PanoptoListModalV2';
 import { contentUploader } from '../shared/uploadContent';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   mediaType: MediaType;
@@ -27,20 +28,24 @@ function CreateVideoTypeView({
   return (
     <>
       <div className="section-tit">
-        <span className="text1">부가정보</span>
+        <span className="text1">
+          <PolyglotText defaultString="부가정보" id="Create-NM-부가정보" />
+        </span>
       </div>
       <Form.Field>
-        <label className="necessary">교육자료</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육자료" id="Create-NMVideo-교육자료" />
+        </label>
         <Radio
           className="base"
-          label="영상파일 업로드"
+          label={getPolyglotText('영상파일 업로드', 'Create-NMVideo-영상파일')}
           value={MediaType.InternalMedia}
           checked={mediaType === 'InternalMedia'}
           onChange={onChecked}
         />
         <Radio
           className="base"
-          label="제작영상 가져오기"
+          label={getPolyglotText('제작영상 가져오기', 'Create-NMVideo-제작영상')}
           value={MediaType.InternalMediaUpload}
           checked={mediaType === 'InternalMediaUpload'}
           onChange={onChecked}
@@ -48,7 +53,7 @@ function CreateVideoTypeView({
 
         <Radio
           className="base"
-          label="영상링크"
+          label={getPolyglotText('영상링크', 'Create-NMVideo-영상링크')}
           value={MediaType.LinkMedia}
           checked={mediaType === 'LinkMedia'}
           onChange={onChecked}
@@ -80,7 +85,7 @@ function CreateVideoTypeView({
                     <div className="file-drop" id="drop">
                       <p>
                         <Icon className="upload" />
-                        여기로 파일을 올려주세요.
+                        <PolyglotText defaultString="여기로 파일을 올려주세요." id="Create-NMVideo-업로드영역" />
                       </p>
                       <div className="thumbnails" id="thumbnails">
                         <progress
@@ -95,7 +100,7 @@ function CreateVideoTypeView({
                           type="button"
                           className="btn btn-default"
                           id="btnSubmit"
-                          value="업로드"
+                          value={getPolyglotText('업로드', 'Create-NMVideo-업로드')}
                         />
                       </div>
                     </div>
@@ -109,7 +114,7 @@ function CreateVideoTypeView({
             <div className="ui input h48">
               <input
                 type="text"
-                placeholder="http://"
+                placeholder={getPolyglotText('http://', 'Create-NMVideo-http')}
                 value={linkMediaUrl}
                 onChange={onChangeLinkMedia}
               />
@@ -118,8 +123,10 @@ function CreateVideoTypeView({
           <div className="info-text">
             <Icon className="info16" />
             <span className="blind">infomation</span>
-            교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 1Gbyte 용량의
-            파일을 등록하실 수 있습니다.
+            <PolyglotText
+              defaultString="교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 1Gbyte 용량의 파일을 등록하실 수 있습니다."
+              id="Create-NMVideo-Max1Gbyte"
+            />
           </div>
         </div>
       </Form.Field>

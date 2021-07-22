@@ -23,6 +23,7 @@ const VISIBLE_COLLEGE_IDS = [
   'CLG00020',
   'CLG00018',
 ];
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   channel: ChannelModel;
@@ -61,7 +62,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
                       marginLeft: '0.4rem',
                     }}
                   >
-                    커리큘럼 보기
+                    <PolyglotText
+                      defaultString="커리큘럼 보기"
+                      id="cicl-목록-커리큘럼"
+                    />
                   </span>
                 </a>
               </Link>

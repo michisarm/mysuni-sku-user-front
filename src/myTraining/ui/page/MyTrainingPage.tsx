@@ -31,6 +31,7 @@ import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import EnrollingApi from '../../../lecture/shared/present/apiclient/EnrollingApi';
 import EnrolledListContainer from '../logic/EnrolledListContainer';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface MyTrainingPageProps {
   notieService?: NotieService;
@@ -58,12 +59,8 @@ function MyTrainingPage({
   const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
   const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
-  const {
-    inprogressCount,
-    completedCount,
-    enrolledCount,
-    retryCount,
-  } = myTrainingService!;
+  const { inprogressCount, completedCount, enrolledCount, retryCount } =
+    myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
   const {
@@ -217,7 +214,7 @@ function MyTrainingPage({
     <ContentLayout
       className="mylearning"
       breadcrumb={[
-        { text: 'Learning' },
+        { text: getPolyglotText('Learning', 'learning-brc-dth2') },
         { text: MyLearningContentTypeName[params.tab] },
       ]}
     >

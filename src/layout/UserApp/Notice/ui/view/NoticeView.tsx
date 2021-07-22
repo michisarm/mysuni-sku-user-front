@@ -6,6 +6,7 @@ import { PostModel } from 'board/model';
 import routePaths from 'board/routePaths';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   notices: PostModel[];
@@ -54,7 +55,7 @@ const NoticeView: React.FC<Props> = Props => {
           </div>
           <div className="right">
             <Checkbox
-              label="오늘 하루 보지 않기"
+              label={getPolyglotText("오늘 하루 보지 않기", "home-nt-오늘닫기")}
               className="black"
               checked={hideToday}
               onChange={handleChange}

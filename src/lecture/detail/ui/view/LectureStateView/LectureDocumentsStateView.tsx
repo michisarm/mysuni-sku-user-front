@@ -18,11 +18,12 @@ import LectureState from '../../../viewModel/LectureState';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const DOWNLOAD = '다운로드';
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
-const WAIT = '학습예정';
+const DOWNLOAD = getPolyglotText('다운로드', 'CollageState-Document-다운로드');
+const PROGRESS = getPolyglotText('학습중', 'CollageState-Document-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-Document-학습완료');
+const WAIT = getPolyglotText('학습예정', 'CollageState-Document-학습예정');
 
 const actionClassName = 'bg';
 

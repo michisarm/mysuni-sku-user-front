@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Modal, Button, Image } from 'semantic-ui-react';
+import { PolyglotText } from '../../ui/logic/PolyglotText';
 
 
 interface Props {
@@ -43,13 +44,19 @@ class DialogContainer extends Component<Props> {
         </div>
         <Modal.Actions className="normal twin">
           { onCancel && (
-            <Button secondary onClick={onCancel}>취소</Button>
+            <Button secondary onClick={onCancel}>
+              <PolyglotText defaultString="취소" id="home-관심목록alert-취소" />
+            </Button>
           )}
           { onOk && (
-            <Button primary onClick={onOk}>확인</Button>
+            <Button primary onClick={onOk}>
+              <PolyglotText defaultString="확인" id="home-관심목록alert-확인" />
+            </Button>
           )}
           { onClose && (
-            <Button secondary onClick={onClose}>확인</Button>
+            <Button secondary onClick={onClose}>
+              <PolyglotText defaultString="확인" id="home-관심목록alert-확인" />
+            </Button>
           )}
         </Modal.Actions>
       </Modal>

@@ -2,15 +2,16 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Modal, Header, Image } from 'semantic-ui-react';
+import { PolyglotText } from './PolyglotText';
 
 interface Props {
-  message: string
-  handleClose: () => void
-  handleOk: (type: string) => void
-  open: boolean
-  alertIcon?: string
-  type: string
-  title?: string
+  message: string;
+  handleClose: () => void;
+  handleOk: (type: string) => void;
+  open: boolean;
+  alertIcon?: string;
+  type: string;
+  title?: string;
 }
 
 @observer
@@ -18,7 +19,8 @@ interface Props {
 class AlertWin2 extends React.Component<Props> {
   //
   render() {
-    const { message, handleClose, handleOk, open, alertIcon, type, title } = this.props;
+    const { message, handleClose, handleOk, open, alertIcon, type, title } =
+      this.props;
     return (
       <>
         {/*<Button onClick={this.show('tiny')}>Alert</Button>*/}
@@ -28,32 +30,49 @@ class AlertWin2 extends React.Component<Props> {
         <Modal className="size-mini" open={open} onClose={handleClose}>
           <div className="main">
             <Modal.Header>
-              알림
+              <PolyglotText id="개학등록-승인요청-알림" defaultString="알림" />
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                {
-                  alertIcon === 'triangle' ?
-                    <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/confirm.png`} />
-                    :
-                    <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/alert.png`} />
-                }
+                {alertIcon === 'triangle' ? (
+                  <Image
+                    wrapped
+                    className="modal-img"
+                    size="medium"
+                    src={`${process.env.PUBLIC_URL}/images/modal/confirm.png`}
+                  />
+                ) : (
+                  <Image
+                    wrapped
+                    className="modal-img"
+                    size="medium"
+                    src={`${process.env.PUBLIC_URL}/images/modal/alert.png`}
+                  />
+                )}
                 <div className="title">{title}</div>
                 <p className="center">{message}</p>
               </Modal.Description>
             </Modal.Content>
           </div>
-          {
-            type === '안내' ?
-              <Modal.Actions className="normal">
-                <Button primary onClick={handleClose} type="button">OK</Button>
-              </Modal.Actions>
-              :
-              <Modal.Actions className="actions1">
-                <Button secondary onClick={handleClose} type="button">Cancel</Button>
-                <Button primary onClick={() => handleOk(type)} type="button">OK</Button>
-              </Modal.Actions>
-          }
+          {type === '안내' ? (
+            <Modal.Actions className="normal">
+              <Button primary onClick={handleClose} type="button">
+                <PolyglotText id="개학등록-승인요청-ok2" defaultString="OK" />
+              </Button>
+            </Modal.Actions>
+          ) : (
+            <Modal.Actions className="actions1">
+              <Button secondary onClick={handleClose} type="button">
+                <PolyglotText
+                  id="개학등록-승인요청-취소2"
+                  defaultString="Cancel"
+                />
+              </Button>
+              <Button primary onClick={() => handleOk(type)} type="button">
+                <PolyglotText id="개학등록-승인요청-ok2" defaultString="OK" />
+              </Button>
+            </Modal.Actions>
+          )}
         </Modal>
         {/*<>*/}
         {/*  <Modal size={size} open={open} onClose={this.close}>*/}

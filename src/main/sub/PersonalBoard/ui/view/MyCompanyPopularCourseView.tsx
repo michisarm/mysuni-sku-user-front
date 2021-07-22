@@ -6,6 +6,7 @@ import { Tab } from 'semantic-ui-react';
 import { toPath } from '../../../../../lecture/detail/viewModel/LectureParams';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 import { Area } from 'tracker/model';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   onTabClick: (date: any) => void;
@@ -50,7 +51,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
 
   const panes = [
     {
-      menuItem: '1주일',
+      menuItem: getPolyglotText('1주일', 'home-PersonalBoard-CompanyPopular1w'),
       render: () => (
         <Tab.Pane>
           {popularCourseItem && (
@@ -79,7 +80,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
       ),
     },
     {
-      menuItem: '1개월',
+      menuItem: getPolyglotText('1개월', 'home-PersonalBoard-CompanyPopular1M'),
       render: () => (
         <Tab.Pane>
           {popularCourseItem && (
@@ -108,7 +109,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
       ),
     },
     {
-      menuItem: '3개월',
+      menuItem: getPolyglotText('3개월', 'home-PersonalBoard-CompanyPopular3M'),
       render: () => (
         <Tab.Pane>
           {popularCourseItem && (
@@ -146,7 +147,9 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
           data-area={Area.MAIN_INFO}
         >
           <div className="card-item-tit">
-            <h3>우리 회사 인기 코스</h3>
+            <h3>
+              <PolyglotText defaultString="우리 회사 인기 코스" id="home-PersonalBoard-CompanyPopular" />
+            </h3>
             <span>{searchPeriod}</span>
           </div>
           <div className="card-item-con">

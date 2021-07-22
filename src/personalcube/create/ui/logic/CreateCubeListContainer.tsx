@@ -14,7 +14,7 @@ import CreateCubeService from '../../../personalcube/present/logic/CreateCubeSer
 import { useRequestCreateCubeList } from '../../service/useRequestCreateCubeList';
 import { useScrollMove } from '../../../../myTraining/useScrollMove';
 import { UserCubeRdo } from '../../../personalcube/model/UserCubeRdo';
-
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const PAGE_SIZE = 8;
 
@@ -23,26 +23,30 @@ function CreateCubeListContainer() {
   const params = useParams<CreateCubeListParams>();
   const currentPageNo = parseInt(params.pageNo);
   const { scrollOnceMove } = useScrollMove();
-  const { createCubes, createCubeCount, selectedCubeState } = CreateCubeService.instance;
+  const { createCubes, createCubeCount, selectedCubeState } =
+    CreateCubeService.instance;
 
   useEffect(() => {
     const userCubeRdo: UserCubeRdo = {
       offset: 0,
       limit: currentPageNo * PAGE_SIZE,
       state: selectedCubeState,
-    }
+    };
 
     requestCreateCubeList(userCubeRdo);
 
     return () => {
       CreateCubeService.instance.clearCreateCubes();
-    }
+    };
   }, [selectedCubeState]);
 
-  const requestCreateCubeList = useCallback(async (userCubeRdo: UserCubeRdo) => {
-    await CreateCubeService.instance.findCreateCubes(userCubeRdo);
-    scrollOnceMove();
-  }, [scrollOnceMove]);
+  const requestCreateCubeList = useCallback(
+    async (userCubeRdo: UserCubeRdo) => {
+      await CreateCubeService.instance.findCreateCubes(userCubeRdo);
+      scrollOnceMove();
+    },
+    [scrollOnceMove]
+  );
 
   const onClickSeeMore = useCallback(() => {
     setTimeout(() => {
@@ -50,12 +54,12 @@ function CreateCubeListContainer() {
     }, 1000);
 
     const offset = currentPageNo * PAGE_SIZE;
-    
+
     const userCubeRdo: UserCubeRdo = {
       offset,
       limit: PAGE_SIZE,
       state: selectedCubeState,
-    }
+    };
 
     requestCreateCubeList(userCubeRdo);
 
@@ -64,14 +68,14 @@ function CreateCubeListContainer() {
 
   const onChangeSearchSelect = useCallback((e: any, data: any) => {
     e.preventDefault();
-  
+
     const nextCubeState = data.value;
     CreateCubeService.instance.setSelectedCubeState(nextCubeState);
 
     history.replace(routePaths.currentPage(1));
   }, []);
 
-  const createListViewVisible =createCubes && createCubes.length > 0;
+  const createListViewVisible = createCubes && createCubes.length > 0;
   const seeMoreButtonVisible = createCubeCount > createCubes.length;
 
   return (
@@ -82,33 +86,32 @@ function CreateCubeListContainer() {
         onChange={onChangeSearchSelect}
         searchState={selectedCubeState}
       />
-      {
-        createListViewVisible && (
-          <CreateListView
-            createCubes={createCubes}
-            totalCount={createCubeCount}
-          />
-        )
-      }
-      {
-        !createListViewVisible && (
-          <NoSuchContentPanel
-            message="아직 생성한 학습이 없습니다."
-            link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
-          />
-        )
-      }
-      {
-        seeMoreButtonVisible && (
-          <SeeMoreButton onClick={onClickSeeMore} />
-        )
-      }
+      {createListViewVisible && (
+        <CreateListView
+          createCubes={createCubes}
+          totalCount={createCubeCount}
+        />
+      )}
+      {!createListViewVisible && (
+        <NoSuchContentPanel
+          message={getPolyglotText(
+            '아직 생성한 학습이 없습니다.',
+            'Create-MainList-학습없음'
+          )}
+          link={{
+            text: getPolyglotText(
+              'Create 바로가기',
+              'Create-MainList-바로가기'
+            ),
+            path: routePaths.createNew(),
+          }}
+        />
+      )}
+      {seeMoreButtonVisible && <SeeMoreButton onClick={onClickSeeMore} />}
     </>
   );
 }
 
-
 const CreateCubeListContainerDefault = observer(CreateCubeListContainer);
 
 export default CreateCubeListContainerDefault;
-

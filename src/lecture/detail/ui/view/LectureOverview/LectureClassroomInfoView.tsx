@@ -6,6 +6,7 @@ import TableModal from '../../../../../personalcube/shared/OverviewField/sub/Tab
 import ClassroomModalView from '../../../../category/ui/view/ClassroomModalView';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 import { isEmpty } from 'lodash';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureClassroomInfoViewProps {
   lectureClassroom: LectureClassroom;
@@ -46,7 +47,7 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                       <h3 className="title-style">
                         <div className="ui label onlytext bold size24">
                           <i aria-hidden="true" className="icon period" />
-                          <span>수강신청기간</span>
+                          <span><PolyglotText defaultString="수강신청기간" id="cube-Contents-info수강신청기간" /></span>
                         </div>
                       </h3>
                     </div>
@@ -61,7 +62,7 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                       <h3 className="title-style">
                         <div className="ui label onlytext bold size24">
                           <i aria-hidden="true" className="icon cancellation" />
-                          <span>취소가능기간</span>
+                          <span><PolyglotText defaultString="취소가능기간" id="cube-Contents-취소가능기간" /></span>
                         </div>
                       </h3>
                     </div>
@@ -81,7 +82,7 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                       <h3 className="title-style">
                         <div className="ui label onlytext bold size24">
                           <Icon className="paidcourse" />
-                          <span>유료과정</span>
+                          <span><PolyglotText defaultString="유료과정" id="cube-Contents-유료과정" /></span>
                         </div>
                       </h3>
                     </div>
@@ -89,11 +90,10 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                       {numberWithCommas(
                         lectureClassroom.classrooms[0].freeOfCharge.chargeAmount
                       )}
-                      원
+                      <PolyglotText defaultString="원" id="cube-Contents-원" />
                       <p>
                         {' '}
-                        &#8251; 각 사 HR조직에 청구되며, 참여 인원에 따라 변경
-                        가능합니다.
+                        &#8251; <PolyglotText defaultString="각 사 HR조직에 청구되며, 참여 인원에 따라 변경 가능합니다." id="cube-Contents-HR" />
                       </p>
                     </div>
                   </div>

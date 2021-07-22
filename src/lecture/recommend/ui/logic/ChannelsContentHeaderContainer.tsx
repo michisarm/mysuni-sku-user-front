@@ -13,6 +13,7 @@ import { Area } from 'tracker/model';
 import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand';
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -61,7 +62,9 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
         className="onlytext"
       >
         <span className="personal-channel-tit">
-          <a>관심채널</a>
+          <a>
+            <PolyglotText defaultString="관심채널" id="rcmd-mifa-관심채널" />
+          </a>
         </span>
       </Label>
     );

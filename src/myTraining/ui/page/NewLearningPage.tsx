@@ -6,6 +6,7 @@ import LRSListContainer from '../logic/LRSListContainer';
 import LearningListContainer from '../logic/LearningListContainer';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export enum ContentType {
   Recommend = 'Recommend',
@@ -42,9 +43,15 @@ function NewLearningPage() {
   const getBreadcrumb = () => {
     switch (contentType) {
       case ContentType.Recommend:
-        return '추천학습 과정';
+        return getPolyglotText(
+          '추천학습 과정',
+          '신규학습-신규목록-추천학습과정'
+        );
       case ContentType.Enrolling:
-        return '수강 신청 과정 모아보기';
+        return getPolyglotText(
+          '수강 신청 과정 모아보기',
+          '신규학습-신규목록-모아보기'
+        );
       default:
         return breadcrumbTItle;
     }

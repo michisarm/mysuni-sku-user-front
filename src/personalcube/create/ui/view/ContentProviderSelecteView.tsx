@@ -52,6 +52,7 @@ function ContentsProviderSelecteView({
       <label className="necessary">교육기관 / 출처</label>
       <Grid className="create">
         <Grid.Column>
+          {/* 김민준 */}
           <Select
             placeholder="선택해주세요"
             className="w100"

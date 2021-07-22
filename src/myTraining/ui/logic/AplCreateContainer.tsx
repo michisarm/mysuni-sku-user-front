@@ -41,6 +41,10 @@ import { AplQueryModel } from '../../model/AplQueryModel';
 import { AplModel } from '../../model';
 import { CollegeLectureCountRdo } from '../../../lecture/model';
 import { CollegeLectureCountService } from '../../../lecture/stores';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props
   extends RouteComponentProps<{
@@ -169,12 +173,12 @@ class AplCreateContainer extends React.Component<Props, States> {
         memberService!.findApprovalMemberByEmployeeId(department.manager.id)
       )
       .then(() => companyApproverService!.findCompanyAplApprover())
-      .then(companyAplApprover =>
+      .then((companyAplApprover) =>
         memberService!.findApprovalMemberByEmployeeId(
           companyAplApprover.employeeId
         )
       )
-      .then(companyApprover => {
+      .then((companyApprover) => {
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
@@ -202,7 +206,8 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts =
+          await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -263,9 +268,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     //
     this.onChangeAplProps(
       'period.endDateMoment',
-      moment()
-        .endOf('day')
-        .subtract(-7, 'd')
+      moment().endOf('day').subtract(-7, 'd')
     );
   }
 
@@ -394,7 +397,12 @@ class AplCreateContainer extends React.Component<Props, States> {
           {/*<Form className="ui form">*/}
           <Form>
             <Form.Field>
-              <label className="necessary">교육명</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육명"
+                  defaultString="교육명"
+                />
+              </label>
               <div
                 className={
                   titleCount === 0
@@ -411,7 +419,10 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <input
                   id="title"
                   type="text"
-                  placeholder="교육명을 입력해주세요."
+                  placeholder={getPolyglotText(
+                    '교육명을 입력해주세요.',
+                    '개학등록-uisf-기본tt'
+                  )}
                   value={(apl && apl.title) || ''}
                   onChange={(e: any) => {
                     onChangeAplPropsValid('title', e.target.value);
@@ -424,17 +435,28 @@ class AplCreateContainer extends React.Component<Props, States> {
                   onClick={() => this.onClear('title')}
                 />
                 <span className="validation">
-                  최대 100자까지 입력 가능합니다.{' '}
+                  <PolyglotText
+                    id="개학등록-uisf-교육명100"
+                    defaultString="최대 100자까지 입력 가능합니다."
+                  />
                 </span>
               </div>
             </Form.Field>
             <Form.Field>
-              <label className="necessary">교육형태</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육형태"
+                  defaultString="교육형태"
+                />
+              </label>
               <div className="edu-wrap">
                 <Ref innerRef={this.focusInputRefs.type}>
                   <Select
                     className="w302"
-                    placeholder="Select"
+                    placeholder={getPolyglotText(
+                      'Select',
+                      '개학등록-uisf-slbx'
+                    )}
                     options={SelectType.aplLearningType}
                     value={(apl && apl.type) || 'Select'}
                     onChange={(e: any, data: any) => {
@@ -467,7 +489,10 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <input
                         type="text"
                         id="typeName"
-                        placeholder="기타 교육형태를 입력해주세요."
+                        placeholder={getPolyglotText(
+                          '기타 교육형태를 입력해주세요.',
+                          '개학등록-uisf-직접입력'
+                        )}
                         value={(apl && apl.typeName) || ''}
                         onChange={(e: any) => {
                           onChangeAplPropsValid('typeName', e.target.value);
@@ -487,12 +512,17 @@ class AplCreateContainer extends React.Component<Props, States> {
             </Form.Field>
             <Form.Field>
               {/*<label className="necessary">Channel</label>*/}
-              <label className="necessary">College / Channel</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-코스채널"
+                  defaultString="College / Channel"
+                />
+              </label>
               <Ref innerRef={this.focusInputRefs.collegeId}>
                 <Select
                   className="w302 mr15px"
                   /*control={Select}*/
-                  placeholder="Select"
+                  placeholder={getPolyglotText('Select', '개학등록-uisf-slbx2')}
                   options={collegeSelect}
                   value={(apl && apl.collegeId) || 'Select'}
                   onChange={(e: any, data: any) => {
@@ -530,7 +560,12 @@ class AplCreateContainer extends React.Component<Props, States> {
               ) : null}
             </Form.Field>
             <Form.Field>
-              <label className="necessary">교육기간</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육기간"
+                  defaultString="교육기간"
+                />
+              </label>
               <div className="calendar-wrap">
                 <div className="ui calendar" id="rangestart">
                   {/*<div className="ui input right icon">
@@ -541,7 +576,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <input type="text" />
                   </div>*/}
                   <div className="ui input right icon">
-                    <label>시작일</label>
+                    <label>
+                      <PolyglotText
+                        id="개학등록-uisf-시작"
+                        defaultString="시작일"
+                      />
+                    </label>
                     <DatePicker
                       placeholderText="시작날짜를 선택해주세요."
                       selected={
@@ -565,7 +605,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <span className="dash">-</span>
                 <div className="ui calendar" id="rangeend">
                   <div className="ui input right icon">
-                    <label>종료일</label>
+                    <label>
+                      <PolyglotText
+                        id="개학등록-uisf-종료"
+                        defaultString="종료일"
+                      />
+                    </label>
                     <DatePicker
                       placeholderText="시작날짜를 선택해주세요."
                       selected={
@@ -591,13 +636,20 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
-                  주시기 바랍니다.
+                  <PolyglotText
+                    id="개학등록-uisf-부가1"
+                    defaultString="일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해주시기 바랍니다."
+                  />
                 </div>
               </div>
             </Form.Field>
             <Form.Field>
-              <label className="necessary">교육기관</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육기관"
+                  defaultString="교육기관"
+                />
+              </label>
               <div
                 className={
                   instituteCount === 0
@@ -614,7 +666,10 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <input
                   id="institute"
                   type="text"
-                  placeholder="교육을 수료한 기관명을 입력해주세요."
+                  placeholder={getPolyglotText(
+                    '교육을 수료한 기관명을 입력해주세요.',
+                    '개학등록-uisf-기관입력'
+                  )}
                   value={(apl && apl.institute) || ''}
                   onChange={(e: any) =>
                     onChangeAplPropsValid('institute', e.target.value)
@@ -627,13 +682,21 @@ class AplCreateContainer extends React.Component<Props, States> {
                   onClick={() => this.onClear('institute')}
                 />
                 <span className="validation">
-                  최대 100자까지 입력 가능합니다.{' '}
+                  <PolyglotText
+                    id="개학등록-uisf-백자입력"
+                    defaultString="최대 100자까지 입력 가능합니다."
+                  />
                 </span>
               </div>
             </Form.Field>
 
             <Form.Field>
-              <label className="necessary">교육시간</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육시간"
+                  defaultString="교육시간"
+                />
+              </label>
               <div className="time-wrap">
                 <div className="time">
                   <div
@@ -660,7 +723,9 @@ class AplCreateContainer extends React.Component<Props, States> {
                       }
                       ref={this.focusInputRefs.requestHour}
                     />
-                    <label>시간</label>
+                    <label>
+                      <PolyglotText id="개학등록-uisf-h" defaultString="시간" />
+                    </label>
                     <Icon
                       aria-hidden="true"
                       className="clear link"
@@ -699,7 +764,9 @@ class AplCreateContainer extends React.Component<Props, States> {
                       }
                       ref={this.focusInputRefs.requestMinute}
                     />
-                    <label>분</label>
+                    <label>
+                      <PolyglotText id="개학등록-uisf-m" defaultString="분" />
+                    </label>
                     <Icon
                       aria-hidden="true"
                       className="clear link"
@@ -711,23 +778,37 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  학습시간으로 인정되는 교육시간을 입력해주세요.
+                  <PolyglotText
+                    id="개학등록-uisf-부가2"
+                    defaultString="학습시간으로 인정되는 교육시간을 입력해주세요."
+                  />
                   <br />
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  교육시간은 100시간 이상, 1분 이내는 등록할 수 없습니다.
+                  <PolyglotText
+                    id="개학등록-uisf-부가3"
+                    defaultString="교육시간은 100시간 이상, 1분 이내는 등록할 수 없습니다."
+                  />
                   <br />
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  승인자에 의해 교육시간은 변경될 수 있습니다.
+                  <PolyglotText
+                    id="개학등록-uisf-부가4"
+                    defaultString="승인자에 의해 교육시간은 변경될 수 있습니다."
+                  />
                 </div>
               </div>
             </Form.Field>
 
             <Form.Field>
-              <label className="necessary">교육내용</label>
+              <label className="necessary">
+                <PolyglotText
+                  id="개학등록-uisf-교육내용"
+                  defaultString="교육내용"
+                />
+              </label>
               <div className="ui form">
                 <div
                   className={
@@ -743,7 +824,10 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <TextArea
                     id="content"
                     type="text"
-                    placeholder="교육내용을 1,000자 이내로 입력해주세요."
+                    placeholder={getPolyglotText(
+                      '교육내용을 1,000자 이내로 입력해주세요.',
+                      '개학등록-uisf-기본내용'
+                    )}
                     value={(apl && apl.content) || ''}
                     onChange={(e: any) =>
                       onChangeAplPropsValid('content', e.target.value)
@@ -751,13 +835,21 @@ class AplCreateContainer extends React.Component<Props, States> {
                     ref={this.focusInputRefs.content}
                   />
                   <span className="validation">
-                    최대 1000자 까지 입력 가능합니다.
+                    <PolyglotText
+                      id="개학등록-uisf-천자입력"
+                      defaultString="최대 1000자 까지 입력 가능합니다."
+                    />
                   </span>
                 </div>
               </div>
             </Form.Field>
             <Form.Field>
-              <label>첨부파일</label>
+              <label>
+                <PolyglotText
+                  id="개학등록-uisf-첨부파일"
+                  defaultString="첨부파일"
+                />
+              </label>
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
@@ -782,8 +874,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <span className="text1">
                       <Icon className="info16" />
                       <span className="blind">information</span>
-                      DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의
-                      첨부파일을 등록하실 수 있습니다.
+
+                      <PolyglotText
+                        id="개학등록-uisf-부가5"
+                        defaultString="DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다."
+                      />
                       {/*파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.*/}
                     </span>
                   </div>
@@ -793,7 +888,12 @@ class AplCreateContainer extends React.Component<Props, States> {
             <Form.Field>
               <Grid className="create create2">
                 <Grid.Column>
-                  <label>승인자</label>
+                  <label>
+                    <PolyglotText
+                      id="개학등록-uisf-승인자"
+                      defaultString="승인자"
+                    />
+                  </label>
                 </Grid.Column>
                 <Grid.Column>
                   <Modal.Actions>
@@ -802,11 +902,14 @@ class AplCreateContainer extends React.Component<Props, States> {
                         className="post change-admin btn"
                         onClick={this.onClickChangeApplyReference}
                       >
-                        승인자 변경
+                        <PolyglotText
+                          id="개학등록-uisf-승인변경"
+                          defaultString="승인자 변경"
+                        />
                       </Button>
                     )}
                     <ManagerListModalContainer
-                      ref={managerModal => (this.managerModal = managerModal)}
+                      ref={(managerModal) => (this.managerModal = managerModal)}
                       handleOk={this.onClickManagerListOk}
                       multiSelect={false}
                     />
@@ -823,8 +926,10 @@ class AplCreateContainer extends React.Component<Props, States> {
                           <Icon className="info16">
                             <span className="blind">infomation</span>
                           </Icon>
-                          본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정
-                          해주세요.{' '}
+                          <PolyglotText
+                            id="개학등록-uisf-부가설명"
+                            defaultString="본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정해주세요."
+                          />
                         </div>
                       )}
                     </span>
@@ -834,10 +939,13 @@ class AplCreateContainer extends React.Component<Props, States> {
             </Form.Field>
             <div className="buttons">
               <Button className="fix2 line" onClick={() => handleCancel()}>
-                취소
+                <PolyglotText id="개학등록-uisf-취소" defaultString="취소" />
               </Button>
               <Button className="fix2 bg" onClick={() => handleSave('save')}>
-                승인요청
+                <PolyglotText
+                  id="개학등록-uisf-승인요청"
+                  defaultString="승인요청"
+                />
               </Button>
             </div>
           </Form>

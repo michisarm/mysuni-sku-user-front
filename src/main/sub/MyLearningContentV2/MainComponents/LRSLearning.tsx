@@ -11,6 +11,7 @@ import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel
 import { findRecommendationCards } from '../../../../lecture/recommend/api/recommendApi';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import { useHistory } from 'react-router-dom';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const PAGE_SIZE = 8;
 const CONTENT_TYPE_NAME = '추천과정';
@@ -25,9 +26,9 @@ function getTitle(
   const { recTitle } = viewModel;
   if (recTitle?.length > 0) {
     // return `${profileMemberName}${recTitle}`; api에서 받아오는 recTitle내용 추후 변경시
-    return `${profileMemberName}님의 학습 콘텐츠 기반 추천 과정`;
+    return `${profileMemberName} ${getPolyglotText('님의 학습 콘텐츠 기반 추천 과정', '')}`;
   } else {
-    return `${profileMemberName}님을 위한 mySUNI의 추천 과정`;
+    return `${profileMemberName} ${getPolyglotText('님을 위한 mySUNI의 추천 과정', 'home-Recommend-Title2')}`;
   }
 }
 
@@ -81,7 +82,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
         <div className="right">
           {cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View all <Icon className="morelink" />
+              <PolyglotText defaultString="View all" id="home-Recommend-View all" /> <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -114,7 +115,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
         <NoSuchContentPanel
           message={
             <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
+              {CONTENT_TYPE_NAME}<PolyglotText defaultString="에 해당하는 학습 과정이 없습니다." id="home-Recommend-목록없음" />
             </div>
           }
         />

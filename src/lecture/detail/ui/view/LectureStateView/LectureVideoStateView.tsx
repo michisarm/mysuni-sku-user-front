@@ -12,10 +12,11 @@ import {
 import { hasNoTestAndNoReport } from '../../../utility/cubeTester';
 import LectureState from '../../../viewModel/LectureState';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const APPROVE = '학습하기';
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
+const APPROVE = getPolyglotText('학습하기', 'CollageState-Video-학습하기');
+const PROGRESS = getPolyglotText('학습중', 'CollageState-Video-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-Video-학습완료');
 
 const actionClassName = 'bg';
 
@@ -38,9 +39,9 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
           .valueOf() < Date.now()
       ) {
         reactAlert({
-          title: '안내',
+          title: getPolyglotText('안내', 'CollageState-Video-안내1'),
           message:
-            '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+            getPolyglotText('해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.', 'CollageState-Video-Subtitle1'),
         });
         return;
       }
@@ -81,7 +82,7 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
         data-action-external-link={externalLink}
-        data-action-name={`${APPROVE} 클릭`}
+        data-action-name={`${APPROVE} ${getPolyglotText('클릭', 'CollageState-Video-클릭')}`}
       >
         {APPROVE}
       </button>
@@ -130,9 +131,9 @@ function CPApprovedView(props: CPApprovedViewProps) {
         .valueOf() < Date.now()
     ) {
       reactAlert({
-        title: '안내',
+        title: getPolyglotText('안내', 'CollageState-Video-안내2'),
         message:
-          '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+          getPolyglotText('해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.', 'CollageState-Video-Subtitle2'),
       });
       return;
     }
@@ -165,7 +166,7 @@ function CPApprovedView(props: CPApprovedViewProps) {
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
         data-action-external-link={media.mediaContents.contentsProvider.url}
-        data-action-name={`${APPROVE} 클릭`}
+        data-action-name={`${APPROVE} ${getPolyglotText('클릭', 'CollageState-Video-클릭')}`}
       >
         {APPROVE}
       </button>
@@ -225,7 +226,7 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
           data-action-external-link={media.mediaContents.linkMediaUrl}
-          data-action-name={`${COMPLETE} 클릭`}
+          data-action-name={`${COMPLETE} ${getPolyglotText('클릭', 'CollageState-Video-클릭')}`}
         >
           {COMPLETE}
         </button>

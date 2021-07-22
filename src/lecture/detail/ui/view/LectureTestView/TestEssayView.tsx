@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Icon } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import ExamQuestion from '../../../model/ExamQuestion';
 
 interface TestSingleChoiceViewProps {
@@ -28,7 +29,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> =
           <div className="ui right-top-count input">
             {(showScore && (
               <span className="count count2">
-                <span className="score">평가점수</span>
+                <span className="score"><PolyglotText defaultString="평가점수" id="Test-TestEssay-평가점수" /></span>
                 <span className="score_value">{obtainedScore}</span>
               </span>
             )) || (
@@ -51,8 +52,9 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> =
               readOnly={readOnly}
             />
             <Icon className="clear link" />
-            <span className="validation">
-              You can enter up to {maxLength} characters.
+            <span className="validation" >
+              You can enter up to ${maxLength} characters.
+              {/* <PolyglotText defaultString={`You can enter up to ${maxLength} characters.`} id="Test-TestEssay-Max" values={{maxLength}} /> */}
             </span>
           </div>
         </Form.Field>

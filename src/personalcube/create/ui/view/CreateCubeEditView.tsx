@@ -7,6 +7,7 @@ import SelectOptions from '../../model/SelectOptions';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import ContentsProviderContainer from '../logic/ContentsProviderContainer';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeEditView() {
@@ -42,7 +43,7 @@ function CreateCubeEditView() {
     CreateCubeService.instance.changeCubeSdoProps('description.guide', content);
   };
 
-  const onChangeDifficultyLevel = (e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>{ 
+  const onChangeDifficultyLevel = (e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>{
     e.preventDefault();
     const nextDifficultyLevel = String(data.value);
     CreateCubeService.instance.changeCubeSdoProps('difficultyLevel', nextDifficultyLevel);
@@ -51,44 +52,44 @@ function CreateCubeEditView() {
   return (
     <>
       <div className="section-tit">
-        <span className="text1">교육정보</span>
+        <span className="text1"><PolyglotText defaultString="교육정보" id="Create-DetailContentsEdit-교육정보" /></span>
       </div>
       <Form.Field>
-        <label>교육목표</label>
+        <label><PolyglotText defaultString="교육목표" id="Create-DetailContentsEdit-교육목표" /></label>
         <div className="ui form">
           <div className={classNames('ui right-top-count input', {error: errorFieldName === 'goal'})}>
             <span className="count">
               <span className="now">{cubeSdo.description?.goal.length || 0}</span>/
-              <span className="max">500</span>
+              <span className="max"><PolyglotText defaultString="500" id="Create-DetailContentsEdit-교육목표Max500" />500</span>
             </span>
             <textarea
-              placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
+              placeholder={getPolyglotText('교육 목표를 입력해주세요. (최대 500자 입력 가능)', 'Create-DetailContentsEdit-교육목표Sub')}
               value={cubeSdo.description?.goal}
               onChange={onChangeGoal}
             />
-            <span className="validation">You can enter up to 500 characters.</span>
+            <span className="validation"><PolyglotText defaultString="You can enter up to 500 characters." id="Create-DetailContentsEdit-교육목표Max500Alert" /></span>
           </div>
         </div>
       </Form.Field>
       <Form.Field>
-        <label>교육대상</label>
+        <label><PolyglotText defaultString="교육대상" id="Create-DetailContentsEdit-교육대상" /></label>
         <div className="ui form">
           <div className={classNames('ui right-top-count input', {error: errorFieldName === 'applicants'})}>
             <span className="count">
               <span className="now">{cubeSdo.description?.applicants.length || 0}</span>/
-              <span className="max">500</span>
+              <span className="max"><PolyglotText defaultString="500" id="Create-DetailContentsEdit-교육대상Max500" /></span>
             </span>
             <textarea
-              placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
+              placeholder={getPolyglotText('교육 대상을 입력해주세요. (최대 500자 입력가능)', 'Create-DetailContentsEdit-교육대상Sub')}
               value={cubeSdo.description?.applicants}
               onChange={onChangeApplicants}
             />
-            <span className="validation">You can enter up to 500 characters.</span>
+            <span className="validation"><PolyglotText defaultString="You can enter up to 500 characters." id="Create-DetailContentsEdit-교육대상Max500Alert" /></span>
           </div>
         </div>
       </Form.Field>
       <Form.Field>
-        <label>교육내용</label>
+        <label><PolyglotText defaultString="교육내용" id="Create-DetailContentsEdit-교육내용" /></label>
         <div className="ui editor-wrap">
           <div className="ui editor-wrap">
             <ReactQuill theme="snow"
@@ -102,14 +103,14 @@ function CreateCubeEditView() {
       </Form.Field>
       <Form.Field>
         <div className="ui grid create create2">
-          <div className="column"><label>이수조건</label></div>
+          <div className="column"><label><PolyglotText defaultString="이수조건" id="Create-DetailContentsEdit-이수조건" /></label></div>
           <div className="column">
             <div className="text1">{cubeSdo.description?.completionTerms}</div>
           </div>
         </div>
       </Form.Field>
       <Form.Field>
-        <label>기타안내</label>
+        <label><PolyglotText defaultString="기타안내" id="Create-DetailContentsEdit-기타안내" /></label>
         <div className="ui editor-wrap">
           <ReactQuill theme="snow"
             modules={SelectOptions.modules}
@@ -121,7 +122,7 @@ function CreateCubeEditView() {
       </Form.Field>
       <Form.Field>
         <div className="ui grid create create2">
-          <div className="column"><label>교육시간</label></div>
+          <div className="column"><label><PolyglotText defaultString="교육시간" id="Create-DetailContentsEdit-교육시간" /></label></div>
           <div className="column">
             <div className="text1">
               {timeToHourMinuteFormat(createCubeDetail?.cube.learningTime || 0)}
@@ -130,10 +131,10 @@ function CreateCubeEditView() {
         </div>
       </Form.Field>
       <Form.Field>
-        <label>난이도</label>
+        <label><PolyglotText defaultString="난이도" id="Create-DetailContentsEdit-난이도" /></label>
         <div className="ui grid create">
           <div className="column">
-            <Select placeholder="선택해주세요"
+            <Select placeholder={getPolyglotText('선택해주세요', 'Create-DetailContentsEdit-Difficulty')}
               className="dropdown"
               options={SelectOptions.difficulty}
               value={cubeSdo.difficultyLevel || ''}

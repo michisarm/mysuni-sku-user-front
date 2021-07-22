@@ -40,6 +40,7 @@ import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png'
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   open: boolean;
@@ -230,7 +231,12 @@ function UserProfileinfoProfileCard(props: Props) {
                   <Image
                     src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
                   />
-                  <span className="blind">close</span>
+                  <span className="blind">
+                    <PolyglotText
+                      id="mypage-유저모달-Close"
+                      defaultString="close"
+                    />
+                  </span>
                 </button>
               </div>
 
@@ -245,8 +251,16 @@ function UserProfileinfoProfileCard(props: Props) {
                   {profileInfo?.isNickname ? nickname : profileInfo?.name}
                 </span>
                 <div className="foll-info">
-                  <span>{followerCount || profileInfo?.followerCount}</span>{' '}
-                  Followers<span>{profileInfo?.followingCount}</span> Following
+                  <span>{followerCount || profileInfo?.followerCount}</span>
+                  <PolyglotText
+                    id="mypage-유저모달-Followers"
+                    defaultString="Followers"
+                  />
+                  <span>{profileInfo?.followingCount}</span>
+                  <PolyglotText
+                    id="mypage-유저모달-Following"
+                    defaultString="Following"
+                  />
                 </div>
               </div>
               <div className="count-area">
@@ -255,11 +269,21 @@ function UserProfileinfoProfileCard(props: Props) {
                   <strong>{badgeCount}</strong>
                 </div> */}
                 <div className="cnt-box com-cnt">
-                  <span>커뮤니티</span>
+                  <span>
+                    <PolyglotText
+                      id="mypage-유저모달-커뮤니티"
+                      defaultString="커뮤니티"
+                    />
+                  </span>
                   <strong>{communityCount}</strong>
                 </div>
                 <div className="cnt-box feed-cnt">
-                  <span>Feed</span>
+                  <span>
+                    <PolyglotText
+                      id="mypage-유저모달-Feed"
+                      defaultString="Feed"
+                    />
+                  </span>
                   <strong>{feedCount}</strong>
                 </div>
               </div>
@@ -307,7 +331,9 @@ function UserProfileinfoProfileCard(props: Props) {
           </div>
         </div>
         <div className="close-area">
-          <Button onClick={() => props.setOpen(!props.open)}>Close</Button>
+          <Button onClick={() => props.setOpen(!props.open)}>
+            <PolyglotText id="mypage-유저모달-Close" defaultString="Close" />
+          </Button>
         </div>
       </div>
     </>

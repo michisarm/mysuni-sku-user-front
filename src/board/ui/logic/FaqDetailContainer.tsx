@@ -9,6 +9,7 @@ import ReactQuill from 'react-quill';
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -65,7 +66,8 @@ class FaqDetailContainer extends Component<Props> {
         <Segment className="full">
           <div className="actions bottom">
             <Button icon className="left post list2" onClick={this.onClickList}>
-              <Icon className="list24" /> List
+              <Icon className="list24" />
+              <PolyglotText id="support-FAQ-List2" defaultString="List" />
             </Button>
           </div>
         </Segment>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
 import { Label, Icon, Button, Modal, Table, Checkbox } from 'semantic-ui-react';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   fileBoxIds: string[];
@@ -139,9 +140,9 @@ class FileDownloadPop extends Component<Props, State> {
             // }
           >
             <Modal.Header className="res">
-              Download
+              <PolyglotText defaultString="Download" id="CollageState-DocumentModal-Download" />
               <span className="sub f12">
-                다운로드 받으실 항목을 선택해 주세요.
+                <PolyglotText defaultString="다운로드 받으실 항목을 선택해 주세요." id="CollageState-DocumentModal-Subtitle" />
               </span>
             </Modal.Header>
             <Modal.Content>
@@ -158,7 +159,9 @@ class FileDownloadPop extends Component<Props, State> {
                           }
                         />
                       </Table.HeaderCell>
-                      <Table.HeaderCell scope="col">File Name</Table.HeaderCell>
+                      <Table.HeaderCell scope="col">
+                        <PolyglotText defaultString="File Name" id="CollageState-DocumentModal-FileName" />
+                      </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -185,10 +188,10 @@ class FileDownloadPop extends Component<Props, State> {
             </Modal.Content>
             <Modal.Actions className="actions2">
               <Button className="pop2 d" onClick={this.close}>
-                Cancel
+                <PolyglotText defaultString="Cancel" id="CollageState-DocumentModal-Cancel" />
               </Button>
               <Button className="pop2 p" onClick={this.onDownload}>
-                Select Download
+                <PolyglotText defaultString="Select Download" id="CollageState-DocumentModal-Select" />
               </Button>
             </Modal.Actions>
           </Modal>

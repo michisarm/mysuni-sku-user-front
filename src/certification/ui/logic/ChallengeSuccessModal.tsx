@@ -5,6 +5,7 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeView from '../view/BadgeView';
 import { Badge } from '../../model/Badge';
 import { MyBadge } from '../../model/MyBadge';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface ChallengeSuccessModalProps {
   badge?: Badge | MyBadge;
@@ -23,7 +24,12 @@ function ChallengeSuccessModal({
 
   return (
     <Modal open={successModal} className="base w588">
-      <Modal.Header>Badge 획득 알림</Modal.Header>
+      <Modal.Header>
+        <PolyglotText
+          id="Certification-ChallengetGetModal-획득알림"
+          defaultString="Badge 획득 알림"
+        />
+      </Modal.Header>
       <Modal.Content>
         <div
           className="content-wrap6"
@@ -52,15 +58,28 @@ function ChallengeSuccessModal({
                 </li>
               </ul>
             )}
-            <div className="t1">축하합니다</div>
+            <div className="t1">
+              <PolyglotText
+                id="Certification-ChallengetGetModal-축하"
+                defaultString="축하합니다"
+              />
+            </div>
             <div className="t2">‘{badgeName}’</div>
-            <div className="t3">Badge가 발급되었습니다.</div>
+            <div className="t3">
+              <PolyglotText
+                id="Certification-ChallengetGetModal-발급"
+                defaultString="Badge가 발급되었습니다."
+              />
+            </div>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions className="actions2">
         <Button className="pop2 p" onClick={onClose}>
-          확인
+          <PolyglotText
+            id="Certification-ChallengetGetModal-확인"
+            defaultString="확인"
+          />
         </Button>
       </Modal.Actions>
     </Modal>

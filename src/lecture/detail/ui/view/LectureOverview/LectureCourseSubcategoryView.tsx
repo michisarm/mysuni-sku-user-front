@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Icon, Label, List } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   getChannelName,
   getCollgeName,
@@ -44,7 +45,7 @@ const LectureCourseSubcategoryView: React.FC<LectureCourseSubcategoryViewProps> 
         <h3 className="title-style">
           <Label className="onlytext bold size24">
             <Icon className="category" />
-            <span>{/* Sub Category */}관련 Category</span>
+            <span>{/* Sub Category */}<PolyglotText defaultString="관련 Category" id="Course-Contents-관련카t" /></span>
           </Label>
         </h3>
       </div>

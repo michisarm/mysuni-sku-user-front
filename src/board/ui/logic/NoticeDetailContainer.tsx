@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -104,7 +105,12 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               </div>
               <div className="file">
                 {filesMap && filesMap.get('reference') && (
-                  <span>첨부파일 : </span>
+                  <span>
+                    <PolyglotText
+                      id="support-noti-첨부파일"
+                      defaultString="첨부파일 : "
+                    />
+                  </span>
                 )}
                 <br />
                 {(filesMap &&
@@ -117,8 +123,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                           <a href="#" className="link" key={index}>
                             <span
                               className="ellipsis"
-                              onClick={e => {
-                                depot.downloadDepotFile(foundedFile.id)
+                              onClick={(e) => {
+                                depot.downloadDepotFile(foundedFile.id);
                                 e.preventDefault();
                               }}
                             >
@@ -149,7 +155,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
           </div>
           <div className="actions bottom">
             <Button icon className="left post list2" onClick={this.onClickList}>
-              <Icon className="list24" /> List
+              <Icon className="list24" />
+              <PolyglotText id="support-noti-List2" defaultString="List" />
             </Button>
           </div>
         </Segment>

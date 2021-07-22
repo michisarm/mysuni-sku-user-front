@@ -7,6 +7,7 @@ import ContentsProviderContainer from '../logic/ContentsProviderContainer';
 import ReactQuill from 'react-quill';
 import SelectOptions from '../../model/SelectOptions';
 import { timeToHourMinute } from '../../../../shared/helper/dateTimeHelper';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeContentsFormView() {
@@ -65,7 +66,7 @@ function CreateCubeContentsFormView() {
   const onChangeLearningHour = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const nextHour = parseInt(e.target.value) || 0;
-    
+
     if(nextHour > 40) {
       return;
     }
@@ -81,7 +82,7 @@ function CreateCubeContentsFormView() {
   const onChangeLearningMinute = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const nextMinute = parseInt(e.target.value) || 0;
-    
+
     if(nextMinute >= 60) {
       return;
     }
@@ -98,39 +99,55 @@ function CreateCubeContentsFormView() {
   return (
     <>
       <Form.Field>
-        <label className="necessary">교육목표</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육목표" id="Create-NM-교육목표" />
+        </label>
         <div className="ui form">
           <div className={classNames('ui right-top-count input', { error: errorFieldName === 'goal' })}>
             <span className="count">
               <span className="now">
                 {cubeSdo.description?.goal.length || 0}
               </span>/
-              <span className="max">500</span>
+              <span className="max">
+                <PolyglotText defaultString="500" id="Create-NM-교육목표Max500" />
+              </span>
             </span>
-            <textarea placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
+            <textarea
+              placeholder={getPolyglotText('교육 목표를 입력해주세요. (최대 500자 입력 가능)', 'Create-NM-교육목표Sub')}
               value={cubeSdo.description?.goal}
               onChange={onChangeGoal}
             />
-            <span className="validation">You can enter up to 500 characters.</span>
+            <span className="validation">
+              <PolyglotText defaultString="You can enter up to 500 characters." id="Create-NM-교육목표Max500Alert" />
+            </span>
           </div>
         </div>
       </Form.Field>
       <Form.Field>
-        <label className="necessary">교육대상</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육대상" id="Create-NM-교육대상" />
+        </label>
         <div className={classNames('ui right-top-count input', { error: errorFieldName === 'applicants' })}>
           <span className="count">
             <span className="now">{cubeSdo.description?.applicants.length || 0}</span>/
-            <span className="max">500</span>
+            <span className="max">
+              <PolyglotText defaultString="500" id="Create-NM-교육대상Max500" />
+            </span>
           </span>
-          <textarea placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
+          <textarea
+            placeholder={getPolyglotText('교육 대상을 입력해주세요. (최대 500자 입력가능)', 'Create-NM-교육대상Sub')}
             value={cubeSdo.description?.applicants}
             onChange={onChangeApplicants}
           />
-          <span className="validation">You can enter up to 500 characters.</span>
+          <span className="validation">
+            <PolyglotText defaultString="You can enter up to 500 characters." id="Create-NM-교육대상Max500" />
+          </span>
         </div>
       </Form.Field>
       <Form.Field>
-        <label className="necessary">교육내용</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육내용" id="Create-NM-교육내용" />
+        </label>
         <div className="ui editor-wrap">
           <ReactQuill
             theme="snow"
@@ -142,23 +159,31 @@ function CreateCubeContentsFormView() {
         </div>
       </Form.Field>
       <Form.Field>
-        <label>이수조건</label>
+        <label>
+          <PolyglotText defaultString="이수조건" id="Create-NM-이수조건" />
+        </label>
         <div className={classNames('ui right-top-count input', { error: errorFieldName === 'completionTerms' })}>
           <span className="count">
             <span className="now">{cubeSdo.description?.completionTerms.length || 0}
             </span>/
-            <span className="max">1000</span>
+            <span className="max">
+              <PolyglotText defaultString="1000" id="Create-NM-이수조건Max1000" />
+            </span>
           </span>
           <textarea
-            placeholder="이수조건을 입력해주세요."
+            placeholder={getPolyglotText('이수조건을 입력해주세요.', 'Create-NM-이수조건Sub')}
             value={cubeSdo.description?.completionTerms}
             onChange={onChangeCompletionTerms}
           />
-          <span className="validation">You can enter up to 1000 characters.</span>
+          <span className="validation">
+            <PolyglotText defaultString="You can enter up to 1000 characters." id="Create-NM-이수조건Max1000Alert" />
+          </span>
         </div>
       </Form.Field>
       <Form.Field>
-        <label>기타안내</label>
+        <label>
+          <PolyglotText defaultString="기타안내" id="Create-NM-기타안내" />
+        </label>
         <div className="ui editor-wrap">
           <ReactQuill
             theme="snow"
@@ -172,14 +197,18 @@ function CreateCubeContentsFormView() {
       <Form.Field>
         <div className="ui grid create">
           <div className="column">
-            <label className="necessary">교육시간</label>
+            <label className="necessary">
+              <PolyglotText defaultString="교육시간" id="Create-NM-교육시간" />
+            </label>
             <div className="ui h48 input time">
               <input
                 type="text"
                 value={hour}
                 onChange={onChangeLearningHour}
               />
-              <label>h</label>
+              <label>
+                <PolyglotText defaultString="h" id="Create-NM-교육시간h" />
+              </label>
               <Icon className="clear link" />
             </div>
             <div className="ui h48 input time">
@@ -188,15 +217,19 @@ function CreateCubeContentsFormView() {
                 value={minute}
                 onChange={onChangeLearningMinute}
               />
-              <label>m</label>
+              <label>
+                <PolyglotText defaultString="m" id="Create-NM-교육시간m" />
+              </label>
               <Icon className="clear link" />
             </div>
           </div>
           <div className="column">
-            <label>난이도</label>
+            <label>
+              <PolyglotText defaultString="난이도" id="Create-NM-난이도" />
+            </label>
             <Select
               className="dropdown"
-              placeholder="선택해주세요"
+              placeholder={getPolyglotText('선택해주세요', 'Create-NM-default')}
               value={cubeSdo.difficultyLevel}
               options={SelectOptions.difficulty}
               onChange={onChangeDifficultyLevel}

@@ -3,6 +3,7 @@ import { Table, Form } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import Media from '../../../../lecture/model/Media';
 import { MediaType } from '../../../../lecture/model/MediaType';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface VideoTypeViewProps {
@@ -23,7 +24,7 @@ export default function VideoTypeView({
   return (
     <>
       <Table.Row>
-        <Table.HeaderCell>교육자료</Table.HeaderCell>
+        <Table.HeaderCell><PolyglotText defaultString="교육자료" id="Create-DetailContentsVideo-교육자료" /></Table.HeaderCell>
         <Table.Cell>
           {
             media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length > 0
@@ -45,7 +46,7 @@ export default function VideoTypeView({
         </Table.Cell>
       </Table.Row>
       <Table.Row>
-        <Table.HeaderCell>참고자료</Table.HeaderCell>
+        <Table.HeaderCell><PolyglotText defaultString="참고자료" id="Create-DetailContentsVideo-참고자료" /></Table.HeaderCell>
         <Table.Cell>
           {
             fileMap.get('reference')?.map((foundedFile: DepotFileViewModel, index: number) => (

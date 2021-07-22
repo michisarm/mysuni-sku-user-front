@@ -1,4 +1,3 @@
-
 enum ChallengeStateText {
   WaitForChallenge = '도전하기',
   Challenging = '도전취소', // 도전중인 경우 도전취소 버튼 노출

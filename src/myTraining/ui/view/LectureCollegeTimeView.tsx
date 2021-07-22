@@ -1,6 +1,7 @@
 import React from 'react';
 import { timeToHourMinutePaddingFormat } from '../../../shared/helper/dateTimeHelper';
 import { LectureTimeSummary, getCollegeTime } from '../../../personalcube/personalcube/model/LectureTimeSummary';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 
 interface LectureCollegeTimeViewProps {
@@ -16,14 +17,16 @@ export default function LectureCollegeTimeView({
     <ul className="bullet-list2">
       <li>
         <span className="name b1" style={{ width: 230 }}>
-          AI
+          <PolyglotText defaultString="AI" id="home-학이시-ai강시" />
         </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(collegeTime.aiCollegeTime)}
         </span>
       </li>
       <li>
-        <span className="name b2">DT</span>
+        <span className="name b2">
+          <PolyglotText defaultString="DT" id="home-학이시-dt강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.dtCollegeTime
@@ -31,7 +34,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b3">행복</span>
+        <span className="name b3">
+          <PolyglotText defaultString="행복" id="home-학이시-행복강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.happyCollegeTime
@@ -39,7 +44,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b4">SV</span>
+        <span className="name b4">
+          <PolyglotText defaultString="SV" id="home-학이시-sv강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.svCollegeTime
@@ -47,7 +54,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b5">혁신디자인</span>
+        <span className="name b5">
+          <PolyglotText defaultString="혁신디자인" id="home-학이시-혁디강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.designCollegeTime
@@ -55,7 +64,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b6">Global</span>
+        <span className="name b6">
+          <PolyglotText defaultString="Global" id="home-학이시-gb강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.globalCollegeTime
@@ -63,7 +74,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b7">Leadership</span>
+        <span className="name b7">
+          <PolyglotText defaultString="Leadership" id="home-학이시-리더강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.leadershipCollegeTime
@@ -71,7 +84,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b8">Management</span>
+        <span className="name b8">
+          <PolyglotText defaultString="Management" id="home-학이시-mgmt강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.managementCollegeTime
@@ -79,7 +94,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b9">미래반도체</span>
+        <span className="name b9">
+          <PolyglotText defaultString="미래반도체" id="home-학이시-반도체강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.semiconductorCollegeTime
@@ -87,7 +104,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b13">Environment</span>
+        <span className="name b13">
+          <PolyglotText defaultString="Environment" id="home-학이시-에솔강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.energySolutionCollegeTime
@@ -95,7 +114,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b14">BM Design & Storytelling</span>
+        <span className="name b14">
+          <PolyglotText defaultString="BM Design & Storytelling" id="home-학이시-bm강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.bmDesignerCollegeTime
@@ -103,7 +124,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b10">SK아카데미</span>
+        <span className="name b10">
+          <PolyglotText defaultString="SK아카데미" id="home-학이시-sa강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.skAcademyCollegeTime
@@ -111,7 +134,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b11">SK경영</span>
+        <span className="name b11">
+          <PolyglotText defaultString="SK경영" id="home-학이시-sk경영강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.skManagementCollegeTime
@@ -119,7 +144,9 @@ export default function LectureCollegeTimeView({
         </span>
       </li>
       <li>
-        <span className="name b12">Life Style</span>
+        <span className="name b12">
+          <PolyglotText defaultString="Life Style" id="home-학이시-ls강시" />
+        </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(
             collegeTime.lifeStyleCollegeTime

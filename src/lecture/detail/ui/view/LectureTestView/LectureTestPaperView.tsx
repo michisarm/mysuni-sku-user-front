@@ -28,6 +28,7 @@ import {
 import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { Area } from 'tracker/model';
 import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -111,8 +112,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
 
       if (answerItem!.answers.some((element) => element.answer === '')) {
         reactAlert({
-          title: '알림',
-          message: '빈 항목을 입력하세요.',
+          title: getPolyglotText('알림', 'Test-Testing-알림4'),
+          message: getPolyglotText('빈 항목을 입력하세요.', 'Test-TestFirst-빈항목'),
         });
       } else {
         const params = getLectureParams();
@@ -121,8 +122,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
         }
 
         reactConfirm({
-          title: '알림',
-          message: 'Test를 최종 제출 하시겠습니까?',
+          title: getPolyglotText('알림', 'Test-Testing-알림1'),
+          message: getPolyglotText('Test를 최종 제출 하시겠습니까?', 'Test-Testing-최종제출'),
           onOk: async () => {
             if (answerItem) {
               /*const nextAnswerItem = {
@@ -175,21 +176,29 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
                 {/* 모달 팝업창 */}
                 <div className="test-text ver2">
                   <div className="test-text-box pop-sty">
-                    <span>합격기준</span>
+                    <span><PolyglotText defaultString="합격기준" id="Test-TestPaper-합격기준1" /></span>
                     <span>
-                      <strong>{testItem.successPoint}점</strong>
+                      <strong>{testItem.successPoint}<PolyglotText defaultString="점" id="Test-TestPaper-점" /></strong>
                     </span>
                   </div>
                   <div className="test-text-box pop-sty">
-                    <span>총점</span>
                     <span>
-                      <strong>{testItem.totalPoint}점</strong>
+                      <PolyglotText defaultString="총점" id="Test-TestPaper-총점" />
+                    </span>
+                    <span>
+                      <strong>
+                        {testItem.totalPoint}<PolyglotText defaultString="총" id="Test-TestPaper-점" />
+                      </strong>
                     </span>
                   </div>
                   <div className="test-text-box pop-sty">
-                    <span>내점수</span>
                     <span>
-                      <strong>{answerItem?.obtainedScore || 0}점</strong>
+                      <PolyglotText defaultString="내점수" id="Test-TestPaper-내점수" />
+                    </span>
+                    <span>
+                      <strong>
+                        {answerItem?.obtainedScore || 0}<PolyglotText defaultString="점" id="Test-TestPaper-점" />
+                      </strong>
                     </span>
                   </div>
                 </div>
@@ -225,32 +234,32 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
                         lectureStructureItem.student?.extraWork.testStatus ===
                           'FAIL' && (
                           <button className="ui button free proceeding p18">
-                            미이수
+                            <PolyglotText defaultString="미이수" id="Test-TestPaper-미이수" />
                           </button>
                         )}
                       {lectureStructureItem &&
                         lectureStructureItem.student?.extraWork.testStatus ===
                           'SUBMIT' && (
                           <button className="ui button free proceeding p18">
-                            검수중
+                            <PolyglotText defaultString="검수중" id="Test-TestPaper-검수중" />
                           </button>
                         )}
                       {lectureStructureItem &&
                         lectureStructureItem.student?.extraWork.testStatus ===
                           'PASS' && (
                           <button className="ui button free proceeding p18">
-                            이수
+                            <PolyglotText defaultString="이수" id="Test-TestPaper-이수" />
                           </button>
                         )}
                     </div>
                     <div className="test-text">
                       <div className="test-text-box">
-                        <span>합격기준</span>
-                        <span>{testItem.successPoint}점</span>
+                        <span> <PolyglotText defaultString="합격기준" id="Test-TestPaper-합격기준" /></span>
+                        <span>{testItem.successPoint}<PolyglotText defaultString="점" id="Test-TestPaper-점" /></span>
                       </div>
                       <div className="test-text-box">
-                        <span>총점</span>
-                        <span>{testItem.totalPoint}점</span>
+                        <span><PolyglotText defaultString="총점" id="Test-TestPaper-총점" /></span>
+                        <span>{testItem.totalPoint}<PolyglotText defaultString="점" id="Test-TestPaper-점" /></span>
                       </div>
                     </div>
                   </div>
@@ -269,13 +278,13 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
                         className="ui button fix line"
                         onClick={saveAnswerSheet}
                       >
-                        저장
+                        <PolyglotText defaultString="저장" id="Test-Testing-저장" />
                       </button>
                       <button
                         className="ui button fix bg"
                         onClick={submitAnswerSheet}
                       >
-                        제출
+                        <PolyglotText defaultString="제출" id="Test-Testing-제출" />
                       </button>
                     </p>
                   </div>

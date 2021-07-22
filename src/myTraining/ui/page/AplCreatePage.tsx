@@ -4,7 +4,14 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
 import { patronInfo } from '@nara.platform/dock';
-import { Breadcrumb, Button, Container, Form, Header, Segment } from 'semantic-ui-react';
+import {
+  Breadcrumb,
+  Button,
+  Container,
+  Form,
+  Header,
+  Segment,
+} from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import AplService from 'myTraining/present/logic/AplService';
@@ -17,13 +24,16 @@ import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
 import routePaths from '../../routePaths';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
-interface Props
-  extends RouteComponentProps<{ cineroomId: string; }> {
+interface Props extends RouteComponentProps<{ cineroomId: string }> {
   aplService: AplService;
   apl?: AplModel;
   sharedService?: SharedService;
-  handleOk?: (member: MemberViewModel) => void
+  handleOk?: (member: MemberViewModel) => void;
 }
 
 interface States {
@@ -48,8 +58,7 @@ interface States {
   focusYn: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'myTraining.aplService', 'shared.sharedService'))
+@inject(mobxHelper.injectFrom('myTraining.aplService', 'shared.sharedService'))
 @observer
 @reactAutobind
 class AplCreatePage extends React.Component<Props, States> {
@@ -113,7 +122,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage2: message,
       alertWinOpen2: true,
-      alertTitle2: '필수 정보 입력 안내',
+      alertTitle2: getPolyglotText(
+        '필수 정보 입력 안내',
+        '개학등록-승인요청-필수정보'
+      ),
       alertIcon2: 'triangle',
       alertType2: '안내',
     });
@@ -128,7 +140,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage2: message,
       alertWinOpen2: true,
-      alertTitle2: '요청 정보 입력 안내',
+      alertTitle2: getPolyglotText(
+        '요청 정보 입력 안내',
+        '개학등록-승인요청-요청정보'
+      ),
       alertIcon2: 'triangle',
       alertType2: '안내',
     });
@@ -143,7 +158,10 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
-      alertTitle: '승인 요청 안내',
+      alertTitle: getPolyglotText(
+        '승인 요청 안내',
+        '개학등록-승인요청-주요내용'
+      ),
       alertIcon: 'circle',
       alertType: mode,
     });
@@ -154,7 +172,7 @@ class AplCreatePage extends React.Component<Props, States> {
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
-      alertTitle: '안내',
+      alertTitle: getPolyglotText('안내', '개학등록-승인요청-안내'),
       alertIcon: 'circle',
       alertType: 'list',
     });
@@ -226,8 +244,19 @@ class AplCreatePage extends React.Component<Props, States> {
     const aplObject = AplModel.isBlank(apl);
     let aplMessageList = (
       <>
-        <p className="center">{aplObject} 은(는) 필수 입력 항목입니다.</p>
-        <p className="center">해당 정보를 입력하신 후 승인 요청 해주세요.</p>
+        <p className="center">
+          {aplObject}
+          <PolyglotText
+            id="개학등록-승인요청-필수입력"
+            defaultString="은(는) 필수 입력 항목입니다."
+          />
+        </p>
+        <p className="center">
+          <PolyglotText
+            id="개학등록-승인요청-승인요청"
+            defaultString="해당 정보를 입력하신 후 승인 요청 해주세요."
+          />
+        </p>
       </>
     );
     this.setState({
@@ -246,7 +275,10 @@ class AplCreatePage extends React.Component<Props, States> {
         <>
           <p className="center">
             {' '}
-            교육 종료일자는 시작일과 같거나 이후여야 합니다.
+            <PolyglotText
+              id="개학등록-승인요청-교육일자"
+              defaultString="교육 종료일자는 시작일과 같거나 이후여야 합니다."
+            />
           </p>
         </>
       );
@@ -260,7 +292,6 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if (aplObject === 'success') {
-
       this.setState({
         objStr: '',
         focusYn: 'N',
@@ -270,11 +301,17 @@ class AplCreatePage extends React.Component<Props, States> {
         <>
           <p className="center">
             {' '}
-            입력된 내용으로 개인학습 정보를 승인 요청하시겠습니까?
+            <PolyglotText
+              id="개학등록-승인요청-상세1"
+              defaultString="입력된 내용으로 개인학습 정보를 승인 요청하시겠습니까?"
+            />
           </p>
           <p className="center">
             {' '}
-            승인 요청 후에는 개인학습 정보를 변경하실 수 없습니다.
+            <PolyglotText
+              id="개학등록-승인요청-상세2"
+              defaultString="승인 요청 후에는 개인학습 정보를 변경하실 수 없습니다."
+            />
           </p>
         </>
       );
@@ -288,12 +325,16 @@ class AplCreatePage extends React.Component<Props, States> {
     const aplMessageList = (
       <>
         <p className="center">
-          {' '}
-          개인학습 정보 등록을 취소하시겠습니까?
+          <PolyglotText
+            id="개학등록-승인요청-정보등록"
+            defaultString="개인학습 정보 등록을 취소하시겠습니까?"
+          />
         </p>
         <p className="center">
-          {' '}
-          취소 시 입력했던 정보는 저장되지 않습니다.
+          <PolyglotText
+            id="개학등록-승인요청-취소안내"
+            defaultString="취소 시 입력했던 정보는 저장되지 않습니다."
+          />
         </p>
       </>
     );
@@ -334,13 +375,13 @@ class AplCreatePage extends React.Component<Props, States> {
     const invalidHour = Number(value) >= 100 || Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
     const invalidContent = value.length > 1000;
-    if(name === 'title' || name ==='typeName' || name === 'institute'){
+    if (name === 'title' || name === 'typeName' || name === 'institute') {
       if (invalid) {
         return;
       }
     }
 
-    if(name === 'content'){
+    if (name === 'content') {
       if (invalidContent) {
         return;
       }
@@ -349,7 +390,7 @@ class AplCreatePage extends React.Component<Props, States> {
     if (aplService) aplService.changeAplProps(name, value);
   }
 
-  onChangeAplTimePropsValid(name: string, value: string | number ) {
+  onChangeAplTimePropsValid(name: string, value: string | number) {
     //
     const { aplService } = this.props;
     //if (value === '') value = 0;
@@ -365,13 +406,13 @@ class AplCreatePage extends React.Component<Props, States> {
     const invalidHour = Number(value) >= 100 || Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
 
-    if(name === 'requestHour'){
+    if (name === 'requestHour') {
       if (invalidHour) {
         return;
       }
     }
 
-    if(name === 'requestMinute'){
+    if (name === 'requestMinute') {
       if (invalidMin) {
         return;
       }
@@ -414,7 +455,9 @@ class AplCreatePage extends React.Component<Props, States> {
       Promise.resolve()
         .then(() => this.clearAll())
         .then(() => {
-          this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
+          this.props.history.push(
+            routePaths.myPageLearningTab('PersonalCompleted')
+          );
         });
     }
   }
@@ -437,13 +480,22 @@ class AplCreatePage extends React.Component<Props, States> {
     } = this.state;
 
     return (
-      <ContentLayout breadcrumb={[{ text: '개인학습' },{ text: 'Create' }]}>
+      <ContentLayout
+        breadcrumb={[
+          { text: getPolyglotText('개인학습', '개학등록-승인요청-개인학습') },
+          { text: getPolyglotText('Create', '개학등록-승인요청-create') },
+        ]}
+      >
         <div className="add-personal-learning">
           <div className="add-personal-learning-wrap">
-            <div className="apl-tit">개인학습</div>
+            <div className="apl-tit">
+              <PolyglotText id="개학등록-adl-타이틀" defaultString="개인학습" />
+            </div>
             <div className="apl-notice">
-              ‘mySUNI / 각 사 교육’ 외 개인적으로 학습하였을 경우, <br />
-              승인권자의 확인 후 학습시간으로 등록 할 수 있습니다.
+              <PolyglotText
+                id="개학등록-adl-상세설명"
+                defaultString="‘mySUNI / 각 사 교육’ 외 개인적으로 학습하였을 경우,\n승인권자의 확인 후 학습시간으로 등록 할 수 있습니다."
+              />
             </div>
           </div>
         </div>

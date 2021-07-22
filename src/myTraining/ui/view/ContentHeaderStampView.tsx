@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Label } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   stampCount: number;
@@ -21,14 +22,18 @@ class ContentHeaderStampView extends PureComponent<Props> {
             <div>
               <a
                 href="#"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   onClickItem && onClickItem();
                 }}
               >
-                <span className="text1">Stamp</span>
+                <span className="text1">
+                  <PolyglotText defaultString="Stamp" id="mapg-mifa-mas" />
+                </span>
                 <span className="text2">{stampCount || 0}</span>
-                <span className="text6">개</span>
+                <span className="text6">
+                  <PolyglotText defaultString="개" id="mapg-mifa-ms개" />
+                </span>
               </a>
             </div>
           </Label>
