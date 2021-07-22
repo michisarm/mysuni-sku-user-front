@@ -12,6 +12,7 @@ import { useScrollMove } from '../../../../myTraining/useScrollMove';
 import routePaths from '../../../routePaths';
 import { CreateCube } from '../../model/CreateCube';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface CreateListViewProps {
   createCubes: CreateCube[];
@@ -61,14 +62,15 @@ export default function CreateListView({
                 <Table.Cell className="no">{totalCount - index}</Table.Cell>
                 <Table.Cell className="title">
                   <a>
-                    <span className="ellipsis">{cube.name}</span>
+                    <span className="ellipsis">{cube.name && parsePolyglotString(cube.name)}</span>
                   </a>
                 </Table.Cell>
                 <Table.Cell className="type">
                   {CubeTypeNameType[cube.type] || '-'}
                 </Table.Cell>
                 <Table.Cell>
-                  {EnumUtil.getEnumValue(
+                  {// 김민준
+                  EnumUtil.getEnumValue(
                     CubeStateView,
                     cube.state
                   ).get(cube.state) || '-'}

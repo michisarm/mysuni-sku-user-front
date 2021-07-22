@@ -90,6 +90,8 @@ class QnaListContainer extends React.Component<Props, State> {
     //
     let answerElement = null;
 
+    // 김민준 IdName 타입
+
     if (post.answered) {
       answerElement = (
         <a

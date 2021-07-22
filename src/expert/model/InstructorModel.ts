@@ -1,6 +1,7 @@
 
 import { decorate, observable } from 'mobx';
 import { CategoryModel } from 'shared/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { MemberSummaryModel } from './MemberSummaryModel';
 
 
@@ -17,7 +18,7 @@ export class InstructorModel {
   lectureHour: number = 0;
   careerYear: number = 0;
 
-  career: string = '';
+  career: PolyglotString | null = null;
   tag: string = '';
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
   specialty: string = '';

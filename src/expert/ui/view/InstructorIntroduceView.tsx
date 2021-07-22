@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { InstructorModel } from '../../model/InstructorModel';
 
 
@@ -19,7 +20,7 @@ class InstructorIntroduceView extends Component<Props> {
         <div className="text-info">
           <div className="text01">세부강의 분야</div>
           <div className="text02">
-            {memberSummary.introduction && memberSummary.introduction.split('\n').map( (line, index) => (
+            {memberSummary.introduction && parsePolyglotString(memberSummary.introduction).split('\n').map( (line, index) => (
               <div key={`introduction-${index}`}>{line.replace('"', '')}<br /></div>
             ))}
           </div>
@@ -28,7 +29,7 @@ class InstructorIntroduceView extends Component<Props> {
 
           <div className="text01">주요경력</div>
           <div className="text02">
-            {instructor.career && instructor.career.split('\n').map( (line, index) => (
+            {instructor.career && parsePolyglotString(instructor.career).split('\n').map( (line, index) => (
               <div key={`career-${index}`}>{line.replace('"', '')}<br /></div>
             ))}
           </div>

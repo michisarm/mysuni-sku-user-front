@@ -15,6 +15,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   commentService?: CommentService;
@@ -111,6 +112,7 @@ class NoticeListContainer extends Component<Props, State> {
     const { commentCountMap } = this.props.commentService!;
     const count = commentCountMap.get(post.commentFeedbackId) || 0;
 
+    /* 김민준 - 중요 표시 */
     return (
       <a
         key={index}
@@ -124,7 +126,7 @@ class NoticeListContainer extends Component<Props, State> {
       >
         <span className="cell title">
           <span className="inner">
-            <span className="ellipsis">{post.title}</span>
+            <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span>
             {count > 0 && (
               <span className="rep-num">
                 [<strong>{count}</strong>]

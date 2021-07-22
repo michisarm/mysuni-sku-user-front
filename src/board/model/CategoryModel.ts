@@ -1,6 +1,7 @@
 
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 
 class CategoryModel implements DomainEntity {
@@ -8,7 +9,7 @@ class CategoryModel implements DomainEntity {
   id: string = '';
   entityVersion: number = 0;
 
-  name: string = '';
+  name: PolyglotString | null = null;
   boardId: string = '';
   categoryId: string = '';
   deleted: boolean = false;
