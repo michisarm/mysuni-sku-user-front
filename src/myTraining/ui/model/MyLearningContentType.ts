@@ -1,5 +1,5 @@
 export enum MyLearningContentType {
-  InProgress = 'InProgress',                    // 학습중 
+  InProgress = 'InProgress',                    // 학습중
   InMyList = 'InMyList',                        // 관심목록
   Enrolled = 'Enrolled',                        // 학습예정
   Required = 'Required',                        // 권장과정

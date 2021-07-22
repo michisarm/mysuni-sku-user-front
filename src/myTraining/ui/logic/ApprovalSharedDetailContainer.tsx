@@ -9,6 +9,10 @@ import { ApprovalCubeService } from '../../stores';
 import ApprovalDetailBasicInfoView from '../view/ApprovalDetailBasicInfoView';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props
   extends RouteComponentProps<{
@@ -185,7 +189,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     //   reactAlert({ title: '알림', message: '성공입니다.' });
     //   this.routeToCreateList();
     // }
-    reactAlert({ title: '알림', message: '성공입니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', '승인관리-개학승인-의견입력'),
+      message: '성공입니다.',
+    });
     this.routeToCreateList();
   }
 
@@ -209,12 +216,17 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
         <section className="content bg-white">
           <div className="add-personal-learning">
             <div className="add-personal-learning-wrap">
-              <div className="apl-tit">교육 승인 요청</div>
+              <div className="apl-tit">
+                <PolyglotText
+                  id="승인관리-개학승인-승인요청"
+                  defaultString="교육 승인 요청"
+                />
+              </div>
               <div className="apl-notice">
-                학습 수강에 대한 승인 요청을 결제하실 수 있습니다.
-                <br />
-                승인 혹은 반려 처리에 대한 승인자 의견을 함께 작성하실 수
-                있습니다.
+                <PolyglotText
+                  id="승인관리-개학승인-요청안내"
+                  defaultString="학습 수강에 대한 승인 요청을 결제하실 수 있습니다.\n 승인 혹은 반려 처리에 대한 승인자 의견을 함께 작성하실 수 있습니다."
+                />
               </div>
             </div>
           </div>
@@ -225,12 +237,20 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
                 <>
                   <div className="result-view">
                     <dl className="bl">
-                      <dt>승인자 의견</dt>
+                      <dt>
+                        <PolyglotText
+                          id="승인관리-개학승인-요청안내"
+                          defaultString="승인자 의견"
+                        />
+                      </dt>
                       {approvalCube.proposalState === 'Submitted' && (
                         <div>
                           <dd>
                             <textarea
-                              placeholder="승인자 의견을 입력해주세요"
+                              placeholder={getPolyglotText(
+                                '승인자 의견을 입력해주세요',
+                                '승인관리-개학승인-의견입력'
+                              )}
                               value={
                                 (approvalCube && approvalCube.remark) || ''
                               }
@@ -262,19 +282,28 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
                           className="fix line"
                           onClick={this.routeToCreateList}
                         >
-                          List
+                          <PolyglotText
+                            id="승인관리-개학승인-목록버튼1"
+                            defaultString="List"
+                          />
                         </Button>
                         <Button
                           className="fix line"
                           onClick={this.addRejectedLectureSingle}
                         >
-                          반려
+                          <PolyglotText
+                            id="승인관리-개학승인-반려버튼"
+                            defaultString="반려"
+                          />
                         </Button>
                         <Button
                           className="fix bg"
                           onClick={this.addApprovedLectureSingle}
                         >
-                          승인
+                          <PolyglotText
+                            id="승인관리-개학승인-승인버튼"
+                            defaultString="승인"
+                          />
                         </Button>
                       </div>
                     )}
@@ -284,7 +313,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
                           className="fix line"
                           onClick={this.routeToCreateList}
                         >
-                          List
+                          <PolyglotText
+                            id="승인관리-개학승인-목록버튼2"
+                            defaultString="List"
+                          />
                         </Button>
                       </div>
                     )}

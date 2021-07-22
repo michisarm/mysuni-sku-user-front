@@ -2,6 +2,7 @@ import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import { convertProgressValue } from './convertProgressValue';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 
 interface LearningCompleteSummaryViewProps {
@@ -16,16 +17,18 @@ export default function LearningCompleteSummaryView({
   personalBoardCompletedCount,
 }: LearningCompleteSummaryViewProps) {
   const complateLearningValue = Math.round((completeLectureCount / (personalBoardInprogressCount + completeLectureCount)) * 100);
-  
+
   return (
     <div className="main-gauge">
-      <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
+      <span className="gauge-badge">
+        {CURRENT_YEAR} <PolyglotText defaultString="년 완료학습" id="home-Summary-완료학습학습완료" />
+      </span>
         <Popup
           trigger={
             <div className={`gauge-content gauge-com${complateLearningValue ? convertProgressValue(complateLearningValue) : 5}`}>
               <div className="gauge-content-box">
                 <p>{completeLectureCount}</p>
-                <span>학습중 {personalBoardInprogressCount}</span>
+                <span><PolyglotText defaultString="학습중" id="home-Summary-완료학습학습중" /> {personalBoardInprogressCount}</span>
               </div>
             </div>
           }
@@ -34,7 +37,7 @@ export default function LearningCompleteSummaryView({
           wide
         >
           <span className="personal_pop_tit">
-            누적 완료학습
+            <PolyglotText defaultString="누적 완료학습" id="home-Summary-완료학습누적갯수" />
           </span>
           <span>
             <strong>{personalBoardCompletedCount}</strong>개

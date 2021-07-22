@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface EditorProps {
   contents: string;
@@ -33,7 +34,7 @@ const LectureTaskCreateEditor: React.FC<EditorProps> = function LectureTaskCreat
       const nextTaskCreateItem = { ...taskCreateItem, contents:html };
       setLectureTaskCreateItem(nextTaskCreateItem);
     } else {
-      alert('html 작성 오류');
+      alert(getPolyglotText('html 작성 오류', 'Collage-TaskPostViewDetail-html오류2'));
     }
   }
 
@@ -51,7 +52,7 @@ const LectureTaskCreateEditor: React.FC<EditorProps> = function LectureTaskCreat
     'image',
     'video',
   ];
-  
+
   return (
     <ReactQuill
       theme="snow"

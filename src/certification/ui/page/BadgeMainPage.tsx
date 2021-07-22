@@ -14,15 +14,16 @@ import { BadgeRouteParams } from '../model/BadgeRouteParams';
 import BadgeCategoryContainer from '../logic/BadgeCategoryContainer';
 import ChallengeBadgeListContainer from '../logic/ChallengeBadgeListContainer';
 import { useRequestBadgeAllCount } from '../../service/useRequestBadgeAllCount';
-
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface BadgeMainPageProps {
   badgeService?: BadgeService;
 }
 
-function BadgeMainPage({ 
-  badgeService
- }: BadgeMainPageProps) {
+function BadgeMainPage({ badgeService }: BadgeMainPageProps) {
   const { allBadgeCount, setSelectedLevel } = badgeService!;
 
   const history = useHistory();
@@ -41,7 +42,10 @@ function BadgeMainPage({
         name: MyBadgeContentType.AllBadgeList,
         item: (
           <>
-            Badge List
+            <PolyglotText
+              id="Certification-tabm-뱃지목록"
+              defaultString="Badge List"
+            />
             {<span className="count">+{allBadgeCount.totalCount}</span> || (
               <span className="count">0</span>
             )}
@@ -53,7 +57,10 @@ function BadgeMainPage({
         name: MyBadgeContentType.ChallengingBadgeList,
         item: (
           <>
-            도전중 Badge
+            <PolyglotText
+              id="Certification-tabm-도전뱃지"
+              defaultString="도전중 Badge"
+            />
             {(
               <span className="count">+{allBadgeCount.challengingCount}</span>
             ) || <span className="count">0</span>}
@@ -65,7 +72,7 @@ function BadgeMainPage({
         name: MyBadgeContentType.EarnedBadgeList,
         item: (
           <>
-            My Badge
+            <PolyglotText id="Certification-tabm-mb" defaultString="My Badge" />
             {<span className="count">+{allBadgeCount.issuedCount}</span> || (
               <span className="count">0</span>
             )}
@@ -79,7 +86,7 @@ function BadgeMainPage({
   return (
     <ContentLayout
       breadcrumb={[
-        { text: 'Certification' },
+        { text: getPolyglotText('Certification', 'Certification-cb-dp2') },
         { text: getSubBreadcrumbFromTab(params.tab) },
       ]}
     >
@@ -95,7 +102,12 @@ function BadgeMainPage({
         }
         renderStaticMenu={() => (
           <NavLink to="/introduction/Certification">
-            <div className="item-button">인증제도 소개 바로가기</div>
+            <div className="item-button">
+              <PolyglotText
+                id="Certification-tabm-인증소개"
+                defaultString="인증제도 소개 바로가기"
+              />
+            </div>
           </NavLink>
         )}
       />
@@ -107,6 +119,6 @@ const getSubBreadcrumbFromTab = (tab: string) => {
   return MyBadgeContentTypeName[tab as MyBadgeContentType];
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService'
-))(observer(BadgeMainPage));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(BadgeMainPage)
+);

@@ -8,6 +8,7 @@ import LectureFileView from './LectureFileView';
 import LectureSubcategoryView from './LectureCubeSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import { Icon, Label, List } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -44,7 +45,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
                   <h3 className="title-style">
                     <Label className="onlytext bold size24">
                       <Icon className="goal" />
-                      <span>{/* Goal */}학습목표</span>
+                      <span>{/* Goal */}<PolyglotText defaultString="학습목표" id="cube-Contents-학습목표" /></span>
                     </Label>
                   </h3>
                 </div>
@@ -57,7 +58,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
                   <h3 className="title-style">
                     <Label className="onlytext bold size24">
                       <Icon className="target" />
-                      <span>{/* Target */}대상</span>
+                      <span>{/* Target */}<PolyglotText defaultString="대상" id="cube-Contents-대상" /></span>
                     </Label>
                   </h3>
                 </div>
@@ -70,7 +71,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
                   <h3 className="title-style">
                     <Label className="onlytext bold size24">
                       <Icon className="host" />
-                      <span>{/* Host */}교육기관 출처</span>
+                      <span>{/* Host */}<PolyglotText defaultString="교육기관 출처" id="cube-Contents-교육기관 출처" /></span>
                     </Label>
                   </h3>
                 </div>
@@ -86,7 +87,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
           <List bulleted>
             {!isEmpty(lectureDescription.completionTerms) && (
               <List.Item>
-                <div className="title">{/*Requirements*/}이수조건</div>
+                <div className="title">{/*Requirements*/}<PolyglotText defaultString="이수조건" id="cube-Contents-이수조건" /></div>
                 <div className="detail completion-terms">
                   {lectureDescription.completionTerms}
                 </div>
@@ -94,7 +95,7 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
             )}
             {!isEmpty(lectureDescription.guide) && (
               <List.Item>
-                <div className="title">{/*Other Guides*/}기타안내</div>
+                <div className="title">{/*Other Guides*/}<PolyglotText defaultString="기타안내" id="cube-Contents-기타안내" /></div>
                 <div className="overview ql-snow">
                   <div
                     className="detail ql-editor"

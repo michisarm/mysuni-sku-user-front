@@ -8,6 +8,7 @@ import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class PostModel implements DomainEntity {
   //
@@ -16,6 +17,7 @@ class PostModel implements DomainEntity {
   audienceKey: string = '';
 
   postId: string = '';
+  // title: PolyglotString | null = null;
   title: string = '';
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();

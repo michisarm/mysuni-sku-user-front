@@ -1,6 +1,7 @@
 import ExamQuestion from '../../../model/ExamQuestion';
 import React from 'react';
 import { Form, Icon } from 'semantic-ui-react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
@@ -30,9 +31,8 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           </span>
           <input
             type="text"
-            placeholder={
-              '답변을 입력해주세요. (최대 ' + maxLength + '자 입력 가능)'
-            }
+            placeholder={`답변을 입력해주세요. (최대 ${maxLength}자 입력 가능)`}
+            // placeholder={getPolyglotText(`답변을 입력해주세요. (최대 ${maxLength}자 입력 가능)`, 'Test-TestShortAnswer-답변입력', {{maxLength}})}
             value={answer}
             onChange={(e: any) => {
               if (e.target.value.length <= maxLength) {

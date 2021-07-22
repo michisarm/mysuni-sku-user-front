@@ -25,6 +25,7 @@ import { useLectureParams } from '../../../store/LectureParamsStore';
 import { Area } from 'tracker/model';
 import { getLectureNotePopupState } from '../../../store/LectureNoteStore';
 import { isMobile } from 'react-device-detect'
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -49,7 +50,7 @@ function copyUrl() {
   textarea.setSelectionRange(0, 9999);
   document.execCommand('copy');
   document.body.removeChild(textarea);
-  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  reactAlert({ title: getPolyglotText('알림', 'cicl-학상본문-알림'), message: getPolyglotText('URL이 복사되었습니다.', 'cicl-학상본문-URL') });
 }
 
 function getColor(collegeId: string) {
@@ -253,8 +254,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     const popupState = getLectureNotePopupState()
     if (popupState) {
       reactAlert({
-        title: '알림',
-        message: '새 창에서 Note를 작성 중입니다',
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText('새 창에서 Note를 작성 중입니다', 'cicl-학상본문-새창'),
       })
       return
     }
@@ -323,7 +324,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 lectureSummary.cubeType !== 'ELearning' &&
                 instrutor !== undefined && (
                   <Label className="bold onlytext">
-                    <span className="header-span-first">강사</span>
+                    <span className="header-span-first">
+                      <PolyglotText defaultString="강사" id="cicl-학상본문-강사2" />
+                    </span>
                     <span className="tool-tip">
                       {instrutor.memberSummary?.name}
                       <i>
@@ -349,35 +352,49 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   lectureSummary.cubeType === 'ELearning') &&
                 getCapacity(lectureClassroom.classrooms) !== undefined && (
                   <Label className="bold onlytext">
-                    <span className="header-span-first">정원정보</span>
+                    <span className="header-span-first">
+                      <PolyglotText defaultString="정원정보" id="cicl-학상본문-정원정보" />
+                    </span>
                     <span>{getCapacity(lectureClassroom.classrooms)}</span>
-                    <span>명</span>
+                    <span>
+                      <PolyglotText defaultString="명" id="cicl-학상본문-명" />
+                    </span>
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
               {lectureSummary.cubeType !== 'Community' && (
                   <Label className="bold onlytext">
-                    <span className="header-span-first">이수</span>
+                    <span className="header-span-first">
+                      <PolyglotText defaultString="이수" id="cicl-학상본문-이수" />
+                    </span>
                     <span>
                       {numberWithCommas(lectureSummary.passedStudentCount)}
                     </span>
-                    <span>명</span>
+                    <span>
+                      <PolyglotText defaultString="명" id="cicl-학상본문-명" />
+                    </span>
                   </Label>
                 )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
               {lectureSummary.cubeType === 'Community' && (
                   <>
                     <Label className="bold onlytext">
-                      <span className="header-span-first">참여</span>
+                      <span className="header-span-first">
+                        <PolyglotText defaultString="참여" id="cicl-학상본문-참여" />
+                      </span>
                       <span>
                         {numberWithCommas(lectureSummary.studentCount)}
                       </span>
-                      <span>명</span>
+                      <span>
+                        <PolyglotText defaultString="명" id="cicl-학상본문-명" />
+                      </span>
                     </Label>
                   </>
                 )}
               <Label className="bold onlytext">
-                <span className="header-span-first">담당</span>
+                <span className="header-span-first">
+                  <PolyglotText defaultString="담당" id="cicl-학상본문-담당" />
+                </span>
                 <span className="tool-tip">
                   {lectureSummary.operator.name}
                   <i>
@@ -398,7 +415,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />
-                문의하기
+                <PolyglotText defaultString="문의하기" id="cicl-학상본문-문의" />
               </Link>
             </div>
           </div>
@@ -459,15 +476,17 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
                   }
                 />
-                {inMyLectureModel === undefined
-                  ? '관심목록 추가'
-                  : '관심목록 제거'}
+                {
+                  inMyLectureModel === undefined
+                  ? getPolyglotText('관심목록 추가', 'cicl-학상본문-관심추가')
+                  : getPolyglotText('관심목록 제거', 'cicl-학상본문-관심제거')
+                }
               </span>
             </a>
             <a onClick={copyUrl}>
               <span>
                 <Icon className="linkCopy" />
-                링크 복사
+                <PolyglotText defaultString="링크 복사" id="cicl-학상본문-링크" />
               </span>
             </a>
           </div>

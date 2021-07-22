@@ -3,6 +3,7 @@ import { findAllQuiz } from 'quiz/api/QuizApi';
 import QuizTableList from 'quiz/model/QuizTableList';
 import VideoQuizContentContainer from './VideoQuizContentContainer';
 import { useLectureMedia } from '../../../lecture/detail/store/LectureMediaStore';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   quizPop: boolean;
@@ -48,8 +49,10 @@ const VideoQuizContainer: React.FC<Props> = ({
       style={quizPop ? { display: 'block' } : { display: 'none' }}
     >
       <div className="video-quiz-header">
-        <h1>Video QUIZ</h1>
-        {!checkQuizState && <p>답안을 제출해야 강의 이어보기가 가능합니다.</p>}
+        <h1>
+          <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title1" />
+        </h1>
+        {!checkQuizState && <p><PolyglotText defaultString="답안을 제출해야 강의 이어보기가 가능합니다." id="Collage-VideoQuiz-SubTitle이어보기" /></p>}
       </div>
 
       {quizData && quizData.quizQuestions && quizData.resultAlertMessage && (

@@ -16,12 +16,13 @@ import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail'
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { useSelectedCollege, setSelectedCollege } from '../../../store/SelectedCollegeStore';
 import { setCubeType } from '../../../store/CubeTypeStore';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 function CreateCubeBasicInfoFormView() {
   const params = useParams<CreateCubeParams>();
   const selectedCollege = useSelectedCollege();
-  
+
   const { cubeSdo } = CreateCubeService.instance;
 
   const onChangeName = useCallback((e: any, data: any) => {
@@ -69,11 +70,11 @@ function CreateCubeBasicInfoFormView() {
     CreateCubeService.instance.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
   }, [cubeSdo.categories]);
 
-  
+
   const mainCategory = getMainCategory(cubeSdo.categories);
   const subCategories = getSubCategories(cubeSdo.categories);
   const {collegeIdList, combineCollegeWithChannel } = combineCollege(subCategories);
-  
+
   const mainChannelId = mainCategory?.channelId || '';
   const mainChannelName = getChannelName(mainChannelId) || '';
 
@@ -103,25 +104,29 @@ function CreateCubeBasicInfoFormView() {
       <Form.Field>
         <CreateInput
           required
-          label="강좌명"
-          placeholder="제목을 입력해주세요."
+          label={getPolyglotText('강좌명', 'Create-NM-강좌명')}
+          placeholder={getPolyglotText('제목을 입력해주세요.', 'Create-NM-강좌명PlaceHolder')}
           value={cubeSdo.name}
           sizeLimited
           maxSize={100}
-          invalidMessage="You can enter up to 100 characters."
+          invalidMessage={getPolyglotText('You can enter up to 100 characters.', 'Create-NM-강좌명100cha')}
           onChange={onChangeName}
         />
       </Form.Field>
       <Form.Field>
-        <label className="necessary">채널선택</label>
+        <label className="necessary">
+          <PolyglotText defaultString="채널선택" id="Create-NM-채널선택" />
+        </label>
         <div>
           <ChannelFieldRow>
             <div className="cell v-middle">
-              <span className="text1">메인채널</span>
+              <span className="text1">
+                <PolyglotText defaultString="메인채널" id="Create-NM-메인채널" />
+              </span>
               <MainChannelModalContainer
                 trigger={
                   <Button icon className="left post delete">
-                    채널선택
+                    <PolyglotText defaultString="채널선택" id="Create-NM-채널선택Btn1" />
                   </Button>
                 }
                 defaultSelectedChannel={mainChannel}
@@ -131,7 +136,9 @@ function CreateCubeBasicInfoFormView() {
             <div className="cell v-middle">
               {
                 mainCategory === undefined && (
-                  <span className="text1">메인채널을 선택해주세요.</span>
+                  <span className="text1">
+                    <PolyglotText defaultString="메인채널을 선택해주세요." id="Create-NM-채널선택Sub1" />
+                  </span>
                 )
               }
               {
@@ -146,11 +153,13 @@ function CreateCubeBasicInfoFormView() {
           </ChannelFieldRow>
           <ChannelFieldRow>
             <div className="cell v-middle">
-              <span className="text1">서브채널</span>
+              <span className="text1">
+                <PolyglotText defaultString="서브채널" id="Create-NM-서브채널" />
+              </span>
               <SubChannelModalContainer
                 trigger={
                   <Button icon className="left post delete">
-                    채널선택
+                    <PolyglotText defaultString="채널선택" id="Create-NM-서브채널선택Btn" />
                   </Button>
                 }
                 targetCollegeId={selectedCollege?.collegeId}
@@ -171,7 +180,7 @@ function CreateCubeBasicInfoFormView() {
                   </span>
                 )) || (
                   <span key="select-sub-category" className="text1">
-                    서브채널을 선택해주세요.
+                    <PolyglotText defaultString="서브채널을 선택해주세요." id="Create-NM-서브채널선택Sub" />
                   </span>
                 )
               }
@@ -180,7 +189,9 @@ function CreateCubeBasicInfoFormView() {
         </div>
       </Form.Field>
       <Form.Field>
-        <label className="necessary">교육형태</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육형태" id="Create-NM-교육형태" />
+        </label>
         <div className="select-box">
           {
             params.personalCubeId === undefined && (
@@ -191,8 +202,8 @@ function CreateCubeBasicInfoFormView() {
                 onChange={onChangeCubeType}
               />
             )
-          } 
-          { 
+          }
+          {
             params.personalCubeId !== undefined && (
               <input readOnly value={cubeSdo.type} />
             )

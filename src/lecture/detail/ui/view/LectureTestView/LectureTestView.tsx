@@ -16,6 +16,7 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { checkAnswerSheetAppliesCount } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { retryTestItemMap } from '../../../service/useLectureTest/utility/getTestItemMap';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -41,8 +42,8 @@ const LectureTestView: React.FC<LectureTestViewProps> =
       } else if (view === 'test') {
         if (lectureStructureItem?.can !== true) {
           reactAlert({
-            title: '알림',
-            message: '학습 완료 후 Test 제출이 가능합니다.',
+            title: getPolyglotText('알림', 'cube-Description-알림'),
+            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
           });
           return;
         }
@@ -54,8 +55,8 @@ const LectureTestView: React.FC<LectureTestViewProps> =
           lectureStructureCourseItem?.canSubmit !== true
         ) {
           reactAlert({
-            title: '알림',
-            message: '학습 완료 후 Test 제출이 가능합니다.',
+            title: getPolyglotText('알림', 'cube-Description-알림'),
+            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
           });
           return;
         }

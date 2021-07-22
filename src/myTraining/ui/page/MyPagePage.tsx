@@ -26,6 +26,7 @@ import { Link } from 'react-router-dom';
 import myPageRoutePaths from 'myTraining/routePaths';
 import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -139,7 +140,7 @@ function MyPagePage({
       <ContentLayout
         className="mypagev2"
         breadcrumb={[
-          { text: 'My Page' },
+          { text: getPolyglotText('My Page', 'mapg-mifa-dth2') },
           { text: MyPageContentTypeName[params.tab] },
         ]}
       >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { getCineroomName } from '../../../../shared/service/useCineroom/useRequestCineroom';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface CreateCubeExposureInfoViewProps {
@@ -15,12 +16,16 @@ export default function CreateCubeExposureInfoView({
   return (
     <>
       <div className="section-tit">
-        <span className="text1">노출정보</span>
+        <span className="text1">
+          <PolyglotText defaultString="노출정보" id="Create-DetailExposure-노출정보" />
+        </span>
       </div>
       <Table className="create">
         <Table.Body>
           <Table.Row>
-            <Table.HeaderCell>Tag 정보</Table.HeaderCell>
+            <Table.HeaderCell>
+              <PolyglotText defaultString="Tag 정보" id="Create-DetailExposure-Tag 정보" />
+            </Table.HeaderCell>
             <Table.Cell>
               {
                 tags &&

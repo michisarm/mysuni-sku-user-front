@@ -6,10 +6,11 @@ import { submit } from '../../../service/useLectureState/utility/cubeStateAction
 import LectureState from '../../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
-const JOIN = '작성하기';
+const PROGRESS = getPolyglotText('학습중', 'CollageState-Task-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-Task-학습완료');
+const JOIN = getPolyglotText('작성하기', 'CollageState-Task-작성하기');
 
 const actionClassName = 'bg';
 
@@ -27,7 +28,7 @@ function CanceledView() {
         data-area={Area.CUBE_HEADER}
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${JOIN} 클릭`}
+        data-action-name={`${JOIN} ${getPolyglotText('클릭', 'CollageState-Task-클릭')}`}
       >
         {JOIN}
       </button>
@@ -105,7 +106,7 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
 
   return (
     <>
-      {/* 
+      {/*
         Discussion - 댓글, 대댓글 작성 시 자동으로 학습 시작
         Task - Post 작성 버튼, 댓글, 대댓글 작성 시 자동으로 학습 시작
        */}

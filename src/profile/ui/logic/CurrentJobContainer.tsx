@@ -12,6 +12,7 @@ import { JobGroupService } from 'college/stores';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   jobGroupService?: JobGroupService;
@@ -149,8 +150,8 @@ class CurrentJobContainer extends React.Component<Props, State> {
       !currentJobGroup.currentJobDuty!.id
     ) {
       reactAlert({
-        title: '알림',
-        message: '현재 직군과 현재 직무를 선택해주세요.',
+        title: getPolyglotText('알림', 'job-recent-알림'),
+        message: getPolyglotText('현재 직군과 현재 직무를 선택해주세요.', 'job-recent-주의'),
       });
     } else {
       skProfileUdo = new SkProfileUdo(
@@ -177,10 +178,10 @@ class CurrentJobContainer extends React.Component<Props, State> {
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              Step 01. 현재 직무가 속해 있는 직군을 선택해주세요.
+              <PolyglotText defaultString="Step 01. 현재 직무가 속해 있는 직군을 선택해주세요." id="job-recent-step1" />
             </div>
             <Select
-              placeholder="선택해주세요"
+              placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
               options={selectOptionJobGroup}
               value={
                 currentJobGroup &&
@@ -198,10 +199,10 @@ class CurrentJobContainer extends React.Component<Props, State> {
           currentJobGroup.currentJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 현재 직무를 선택해주세요.
+                <PolyglotText defaultString="Step 02. 현재 직무를 선택해주세요." id="job-recent-step2On" />
               </div>
               <Select
-                placeholder="선택해주세요"
+                placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
                 options={selectOptionJobDuty}
                 value={
                   member &&
@@ -223,7 +224,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
           currentJobGroup.currentJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+                <PolyglotText defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요." id="job-recent-step2Off" />
               </div>
               <div
                 className={classNames('ui h48 input', {
@@ -265,9 +266,11 @@ class CurrentJobContainer extends React.Component<Props, State> {
           {/* <Button className="fix line" onClick={() => this.onPreviousClick()}>
             Previous
           </Button> */}
-          <div className="error">직군 및 직무를 선택해주세요.</div>
+          <div className="error">
+            <PolyglotText defaultString="직군 및 직무를 선택해주세요." id="job-recent-주의" />
+          </div>
           <Button className="fix bg" onClick={() => this.onNextClick()}>
-            다음
+            <PolyglotText defaultString="다음" id="job-recent-다음" />
           </Button>
         </div>
       </Form>

@@ -12,6 +12,7 @@ import { JobGroupService } from 'college/stores';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   jobGroupService?: JobGroupService;
@@ -151,8 +152,8 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       !favoriteJobGroup.favoriteJobDuty!.id
     ) {
       reactAlert({
-        title: '알림',
-        message: '관심 직군과 관심 직무를 선택해주세요.',
+        title: getPolyglotText('알림', 'job-favorite-알림'),
+        message: getPolyglotText('관심 직군과 관심 직무를 선택해주세요.', 'job-favorite-알림내용'),
       });
     } else {
       skProfileUdo = new SkProfileUdo(
@@ -179,7 +180,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              Step 01. 관심 있는 직군을 선택해주세요.
+              <PolyglotText defaultString="Step 01. 관심 있는 직군을 선택해주세요." id="job-favorite-step1" />
             </div>
             <Select
               placeholder="선택해주세요"
@@ -200,7 +201,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
           favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 관심 직무를 선택해주세요.
+                <PolyglotText defaultString="Step 02. 관심 직무를 선택해주세요." id="job-favorite-step2On" />
               </div>
               <Select
                 placeholder="선택해주세요"
@@ -225,7 +226,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
           favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+                <PolyglotText defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요." id="job-favorite-step2Off" />
               </div>
               <div
                 className={classNames('ui h48 input', {
@@ -267,9 +268,11 @@ class FavoriteJobContainer extends React.Component<Props, State> {
           {/* <Button className="fix line" onClick={() => this.onPreviousClick()}>
             Previous
           </Button> */}
-          <div className="error">직군 및 직무를 선택해주세요.</div>
+          <div className="error">
+            <PolyglotText defaultString="직군 및 직무를 선택해주세요." id="job-favorite-주의" />
+          </div>
           <Button className="fix bg" onClick={() => this.onNextClick()}>
-            다음
+            <PolyglotText defaultString="다음" id="job-favorite-다음" />
           </Button>
         </div>
       </Form>

@@ -6,6 +6,7 @@ import { includes } from 'lodash';
 import { reactAutobind } from '@nara.platform/accent';
 import mainRoutePaths from 'main/routePaths';
 import { ChannelModel, CollegeModel } from 'college/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -61,7 +62,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
                       marginLeft: '0.4rem',
                     }}
                   >
-                    커리큘럼 보기
+                    <PolyglotText
+                      defaultString="커리큘럼 보기"
+                      id="cicl-목록-커리큘럼"
+                    />
                   </span>
                 </a>
               </Link>

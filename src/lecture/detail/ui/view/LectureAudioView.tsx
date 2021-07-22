@@ -18,6 +18,7 @@ import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import LectureState from '../../viewModel/LectureState';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface LectureAudioViewProps {
   lectureState: LectureState;
@@ -337,7 +338,9 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
               </button>
             </div>
             <div className="video-overlay-text">
-              <p>다음 학습 이어하기</p>
+              <p>
+                <PolyglotText defaultString="다음 학습 이어하기" id="Collage-Audio-이어하기" />
+              </p>
               <h3>
                 {
                   (nextContent as

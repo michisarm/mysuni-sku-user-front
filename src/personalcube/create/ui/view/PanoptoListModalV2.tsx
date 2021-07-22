@@ -14,6 +14,10 @@ import { SharedService } from 'shared/stores';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
 import { PanoptoService } from '../../../../shared/present/logic/PanoptoService';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 function PanoptoListModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,7 +92,14 @@ function PanoptoListModal() {
             />
           ))
         ) : (
-          <input type="text" placeholder="영상을 업로드해주세요." readOnly />
+          <input
+            type="text"
+            placeholder={getPolyglotText(
+              '영상을 업로드해주세요.',
+              'Create-NMVideo-업로드요청'
+            )}
+            readOnly
+          />
         )}
         <Icon className="clear link" />
         <label
@@ -96,13 +107,21 @@ function PanoptoListModal() {
           className="ui button"
           onClick={handleOpen}
         >
-          파일찾기
+          <PolyglotText defaultString="파일찾기" id="Create-NMVideo-파일찾기" />
         </label>
       </div>
       <Modal className="base w700" open={isOpen} onClose={() => handleClose}>
         <Modal.Header className="res">
-          파일 찾기
-          <span className="sub f12">파일을 선택해 주세요.</span>
+          <PolyglotText
+            defaultString="파일찾기"
+            id="Create-NMVideo-ModalTitle"
+          />
+          <span className="sub f12">
+            <PolyglotText
+              defaultString="파일을 선택해 주세요."
+              id="Create-NMVideo-ModalSubTitle"
+            />
+          </span>
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-60vh">
@@ -110,7 +129,12 @@ function PanoptoListModal() {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell scope="col" />
-                  <Table.HeaderCell scope="col">File Name</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">
+                    <PolyglotText
+                      defaultString="File Name"
+                      id="Create-NMVideo-FileName"
+                    />
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
@@ -154,10 +178,10 @@ function PanoptoListModal() {
         </Modal.Content>
         <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={handleClose} type="button">
-            Cancel
+            <PolyglotText defaultString="Cancel" id="Create-NMVideo-cancel" />
           </Button>
           <Button className="pop2 p" primary onClick={handleOK} type="button">
-            OK
+            <PolyglotText defaultString="OK" id="Create-NMVideo-OK" />
           </Button>
         </Modal.Actions>
       </Modal>

@@ -1,5 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
@@ -13,8 +14,8 @@ interface SurveyViewProps {
 
 function cannotAlert() {
   reactAlert({
-    title: 'Survey 안내',
-    message: '학습 진행 후 Survey 참여 가능합니다.',
+    title: getPolyglotText('Survey 안내', 'Survey-View-Survey안내'),
+    message: getPolyglotText('학습 진행 후 Survey 참여 가능합니다.', 'Survey-View-참여안내'),
   });
 }
 
@@ -36,10 +37,10 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
           state === 'Completed' ? 'complete' : ''
         }`}
       >
-        <span>cube 완료상태</span>
+        <span><PolyglotText defaultString="cube 완료상태" id="Survey-View-cube" /></span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title">Survey</span>
+        <span className="copy-title"><PolyglotText defaultString="Survey" id="Survey-View-Title" /></span>
       </span>
     </StructureLink>
   );

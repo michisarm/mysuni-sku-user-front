@@ -9,6 +9,7 @@ import { initialCondition, getFilterCount } from '../../model/FilterCondition';
 import { FilterConditionName } from '../../model/FilterConditionName';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 
 interface FilterBoxContainerProps {
@@ -32,14 +33,14 @@ function FilterBoxContainer({
       setOpenFilter(false);
       setShowResult(false);
     }
-  }, [showResult]);
+  }, [setOpenFilter, setShowResult, showResult]);
 
   useEffect(() => {
     if (!openFilter) {
       const filterCount = getFilterCount(conditions);
       setFilterCount(filterCount);
     }
-  }, [openFilter]);
+  }, [conditions, openFilter, setFilterCount]);
 
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
@@ -203,12 +204,14 @@ function FilterBoxContainer({
       {openFilter && (
         <>
           <div className="title">
-            Filter
+            <PolyglotText defaultString="Filter" id="learning-LearningFilter1-이름" />
             <a className="result-button" onClick={onClickShowResult}>
-              <span className="result-text">결과보기</span>
+              <span className="result-text">
+                <PolyglotText defaultString="결과보기" id="learning-LearningFilter1-결과1" />결과보기
+              </span>
             </a>
           </div>
-          <FilterBoxView 
+          <FilterBoxView
             colleges={colleges}
             conditions={conditions}
             filterCounts={filterCountViews}
@@ -225,7 +228,9 @@ function FilterBoxContainer({
             onClearAll={onClearAll}
           />
           <div className="moreAll">
-            <a className="more-text" onClick={onClickShowResult}>결과보기</a>
+            <a className="more-text" onClick={onClickShowResult}>
+              <PolyglotText defaultString="결과보기" id="learning-LearningFilter1-결과2" />
+            </a>
           </div>
         </>
       )}

@@ -12,6 +12,7 @@ import { reactAlert } from '@nara.platform/accent';
 import myPageRoutePaths from 'myTraining/routePaths';
 import CommunityProfileModalPreview from '../../../../src/community/ui/view/CommunityAdmin/CommunityProfileModalPreview';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -405,7 +406,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     return (
       <>
         <div className="mypage_contents profile-edit-contents">
-          <strong className="mypage_title">프로필 설정</strong>
+          <strong className="mypage_title">
+            <PolyglotText
+              defaultString="프로필 설정"
+              id="mypage-프로필설정-프로필설정"
+            />
+          </strong>
 
           <Segment className="full">
             <div className="table-wrapper">
@@ -540,7 +546,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
               </div>
             </div>
           )}
-          {/* photoImageBase64 || skProfile.photoFilePath || DefaultImg */}
           <CommunityProfileModalPreview
             open={profilePreview}
             setOpen={(e) =>

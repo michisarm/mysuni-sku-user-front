@@ -1,8 +1,7 @@
-
 import { decorate, observable } from 'mobx';
 import { CategoryModel } from 'shared/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { MemberSummaryModel } from './MemberSummaryModel';
-
 
 export class InstructorModel {
   //
@@ -17,6 +16,7 @@ export class InstructorModel {
   lectureHour: number = 0;
   careerYear: number = 0;
 
+  // career: PolyglotString | null = null;
   career: string = '';
   tag: string = '';
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
@@ -26,13 +26,17 @@ export class InstructorModel {
 
   feedbackId: string = '';
 
-
   constructor(instructor?: InstructorModel) {
     if (instructor) {
       Object.assign(this, { ...instructor });
 
-      this.category = instructor.category && new CategoryModel(instructor.category) || this.category;
-      this.memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
+      this.category =
+        (instructor.category && new CategoryModel(instructor.category)) ||
+        this.category;
+      this.memberSummary =
+        (instructor.memberSummary &&
+          new MemberSummaryModel(instructor.memberSummary)) ||
+        this.memberSummary;
     }
   }
 }
@@ -58,4 +62,3 @@ decorate(InstructorModel, {
 
   feedbackId: observable,
 });
-

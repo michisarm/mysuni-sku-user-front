@@ -39,6 +39,7 @@ import { Image } from 'semantic-ui-react';
 import { useLectureState } from '../../store/LectureStateStore';
 import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import { submitRegisterStudent } from '../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -200,8 +201,8 @@ function LectureTaskContainer() {
 
   const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
     reactConfirm({
-      title: '알림',
-      message: '글을 삭제하시겠습니까?',
+      title: getPolyglotText('알림', 'Collage-Task-알림1'),
+      message: getPolyglotText('글을 삭제하시겠습니까?', 'Collage-Task-삭제알림'),
       onOk: () => {
         deletePost(boardId, taskId, type).then(() => {
           refresh(1).then(() => {
@@ -269,8 +270,8 @@ function LectureTaskContainer() {
 
   const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
     reactConfirm({
-      title: '알림',
-      message: '저장하시겠습니까?',
+      title: getPolyglotText('알림', 'Collage-Task-알림2'),
+      message: getPolyglotText('저장하시겠습니까?', 'Collage-Task-저장알림'),
       onOk: () => {
         if (viewType === 'create') {
           createLectureTask(isReply, detailTaskId).then(() => {
@@ -297,8 +298,8 @@ function LectureTaskContainer() {
             refresh(1).then(() => {
               history.goBack();
               reactAlert({
-                title: '안내',
-                message: '글이 등록되었습니다.',
+                title: getPolyglotText('안내', 'Collage-Task-안내1'),
+                message: getPolyglotText('글이 등록되었습니다.', 'Collage-Task-등록안내'),
               });
             });
           });
@@ -328,8 +329,8 @@ function LectureTaskContainer() {
   async function deletePost(boardId: string, taskId: string, type: string) {
     await deleteCubeLectureTaskPost(boardId, taskId, type).then(() => {
       reactAlert({
-        title: '안내',
-        message: '글이 삭제되었습니다.',
+        title: getPolyglotText('안내', 'Collage-Task-안내2'),
+        message: getPolyglotText('글이 삭제되었습니다.', 'Collage-Task-삭제안내'),
       });
     });
   }
@@ -354,33 +355,34 @@ function LectureTaskContainer() {
         <div className="contents">
           <LectureCubeSummaryContainer />
 
-          <div className="discuss-wrap"> 
+          <div className="discuss-wrap">
             <div className="task-condition">
-              <strong className="task-condition">이수 조건</strong>
+              <strong className="task-condition">
+                <PolyglotText defaultString="이수 조건" id="Collage-Task-이수조건" />
+              </strong>
                 {cubeAutomaticCompletion &&
                   cubePostCount > 0 &&
                   cubeCommentCount > 0 && (
-                    <span>
-                      아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 
-                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(`아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle1')
+                      }}
+                    />
                 )}
                 {cubeAutomaticCompletion &&
                   cubePostCount > 0 &&
                   cubeCommentCount === 0 && (
-                    <span>
-                      다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span dangerouslySetInnerHTML={{__html: getPolyglotText(`다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle2')}} />
                 )}
                 {cubeAutomaticCompletion &&
                   cubePostCount === 0 &&
                   cubeCommentCount > 0 &&(
-                    <span>
-                      타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span dangerouslySetInnerHTML={{__html: getPolyglotText(`타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle3')}} />
                 )}
                 {!cubeAutomaticCompletion && (
-                    <span>본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다.</span>
+                    <span>
+                      <PolyglotText defaultString="본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다." id="Collage-Task-이수조건SubTitle4" />
+                    </span>
                 )}
                 {(lectureDescription && lectureDescription.completionTerms) && (
                   <Fragment>
@@ -389,7 +391,7 @@ function LectureTaskContainer() {
                 )}
             </div>
           </div>
-          
+
           <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}

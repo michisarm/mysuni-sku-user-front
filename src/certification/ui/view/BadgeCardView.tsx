@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface BadgeCardViewProps {
   cardId: string;
@@ -32,13 +33,32 @@ function BadgeCardView({
   return (
     <div className="bar">
       <div className="tit">
-        <a className="ellipsis" href="#" onClick={e => { moveToCardPage(cardId); e.preventDefault(); }}>
+        <a
+          className="ellipsis"
+          href="#"
+          onClick={(e) => {
+            moveToCardPage(cardId);
+            e.preventDefault();
+          }}
+        >
           {cardName}
         </a>
       </div>
       <span className="num" onClick={() => moveToCardPage(cardId)}>
-        {cubeCount}개 강의 구성
-        {isPassed && <span className="completed">학습완료</span>}
+        {cubeCount}
+        <PolyglotText
+          id="Certification-View-갯수"
+          defaultString="개 강의 구성"
+        />
+
+        {isPassed && (
+          <span className="completed">
+            <PolyglotText
+              id="Certification-View-학습완료"
+              defaultString="학습완료"
+            />
+          </span>
+        )}
       </span>
     </div>
   );

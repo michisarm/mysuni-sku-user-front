@@ -15,6 +15,7 @@ import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -76,7 +77,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 className="item"
                 onClick={() => onClickMenu('Learning')}
               >
-                Learning
+                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
               </NavLink>
             )}
           {menuAuth.some(
@@ -90,7 +91,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 className="item"
                 onClick={() => onClickMenu('Recommend')}
               >
-                Recommend
+                <PolyglotText defaultString="Recommend" id="home-gnb-mtr" />
               </NavLink>
             )}
           {menuAuth.some(
@@ -104,7 +105,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 className="item"
                 onClick={() => onClickMenu('Create')}
               >
-                Create
+                <PolyglotText defaultString="Create" id="home-gnb-mtc" />
               </NavLink>
             )}
           {menuAuth.some(
@@ -118,6 +119,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 className="item"
                 onClick={() => onClickMenu('Certification')}
               >
+                <PolyglotText defaultString="Certification" id="home-gnb-mtf" />
                 Certification
               </NavLink>
             )}
@@ -153,6 +155,7 @@ interface SearchBarViewProps {
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   onClear?: () => void;
+  getPolyglotText: (defaultValue: string, id: string) => string;
 }
 
 export const SearchBarView: React.FC<SearchBarViewProps> = ({
@@ -163,6 +166,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onBlur,
   onClick,
   onClear,
+  getPolyglotText,
 }) => (
   <div className="g-search" data-area={Area.HEADER_SEARCH}>
     <div
@@ -174,7 +178,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     >
       <input
         type="text"
-        placeholder="Search"
+        placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
         value={value}
         onChange={onChange}
         onClick={onClick}

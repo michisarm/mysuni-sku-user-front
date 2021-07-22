@@ -28,6 +28,7 @@ import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 import { findCardStudentsByCardIds } from '../../../../certification/api/CardStudentApi';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 
 @autobind
 class LectureService {
@@ -115,8 +116,9 @@ class LectureService {
   @computed
   get recommendLectures() {
     //
-    return (this._recommendLectureListRdo
-      .recommendLectureRdos as IObservableArray).peek();
+    return (
+      this._recommendLectureListRdo.recommendLectureRdos as IObservableArray
+    ).peek();
   }
 
   @computed
@@ -160,9 +162,8 @@ class LectureService {
         orderBy,
       })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    const lectureOffsetElementList = new OffsetElementList<
-      CardWithCardRealtedCount
-    >(response);
+    const lectureOffsetElementList =
+      new OffsetElementList<CardWithCardRealtedCount>(response);
 
     runInAction(
       () =>
@@ -187,9 +188,8 @@ class LectureService {
         offset,
         orderBy,
       })) || new OffsetElementList<CardWithCardRealtedCount>();
-    const lectureOffsetElementList = new OffsetElementList<
-      CardWithCardRealtedCount
-    >(response);
+    const lectureOffsetElementList =
+      new OffsetElementList<CardWithCardRealtedCount>(response);
 
     runInAction(
       () =>
@@ -222,9 +222,8 @@ class LectureService {
         orderBy,
       })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    const lectureOffsetElementList = new OffsetElementList<
-      CardWithCardRealtedCount
-    >(response);
+    const lectureOffsetElementList =
+      new OffsetElementList<CardWithCardRealtedCount>(response);
 
     runInAction(
       () =>
@@ -261,7 +260,7 @@ class LectureService {
     }
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
+      (lecture) => new LectureModel(lecture)
     );
 
     runInAction(
@@ -381,7 +380,7 @@ class LectureService {
     );
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
+      (lecture) => new LectureModel(lecture)
     );
 
     // jz - 강사 상세 페이지
@@ -410,7 +409,7 @@ class LectureService {
     );
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
+      (lecture) => new LectureModel(lecture)
     );
 
     // add totalLectureCount by gon
@@ -440,16 +439,16 @@ class LectureService {
       channelId,
       orderBy
     );
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
-      lectureRdo
-    );
+    const recommendLectureListRdo =
+      await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
     runInAction(() => {
       this._recommendLectureListRdo.totalCount =
         recommendLectureListRdo.totalCount;
-      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos.concat(
-        recommendLectureListRdo.recommendLectureRdos
-      );
+      this._recommendLectureListRdo.recommendLectureRdos =
+        this._recommendLectureListRdo.recommendLectureRdos.concat(
+          recommendLectureListRdo.recommendLectureRdos
+        );
     });
     return recommendLectureListRdo;
   }
@@ -472,9 +471,8 @@ class LectureService {
       channelId,
       orderBy
     );
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
-      lectureRdo
-    );
+    const recommendLectureListRdo =
+      await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
     if (
       recommendLectureListRdo.recommendLectureRdos &&
@@ -484,9 +482,10 @@ class LectureService {
 
       runInAction(
         () =>
-          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
-            recommendLecture.lectures.results
-          ))
+          (this.recommendLecture.lectures.results =
+            this.recommendLecture.lectures.results.concat(
+              recommendLecture.lectures.results
+            ))
       );
       return recommendLecture.lectures;
     }
@@ -567,14 +566,17 @@ class LectureService {
       offsetRequiredCard.results &&
       offsetRequiredCard.results.length > 0
     ) {
-      const cardIds = offsetRequiredCard.results.map(result => result.card.id);
+      const cardIds = offsetRequiredCard.results.map(
+        (result) => result.card.id
+      );
       const cardStudents = await findCardStudentsByCardIds(cardIds);
-      const cardNotes = await this.myTrainingApi.findCardNoteList(cardIds) || [];
+      const cardNotes =
+        (await this.myTrainingApi.findCardNoteList(cardIds)) || [];
 
-      const lectureTableViews = offsetRequiredCard.results.map(result => {
+      const lectureTableViews = offsetRequiredCard.results.map((result) => {
         const card = result.card;
         const mainCategory = card.categories.find(
-          category => category.mainCategory === true
+          (category) => category.mainCategory === true
         ) || {
           collegeId: '',
           channelId: '',
@@ -583,16 +585,18 @@ class LectureService {
 
         const student =
           cardStudents &&
-          cardStudents.find(student => student.lectureId === card.id);
+          cardStudents.find((student) => student.lectureId === card.id);
 
-        const useNote = cardNotes &&
-          cardNotes.length > 0 &&
-          cardNotes.some((note: any) => {
-              if(note?.cardId === card.id){
+        const useNote =
+          (cardNotes &&
+            cardNotes.length > 0 &&
+            cardNotes.some((note: any) => {
+              if (note?.cardId === card.id) {
                 return true;
-              } 
+              }
               return false;
-          }) || false;
+            })) ||
+          false;
 
         if (student) {
           const lectureTableView = new LectureTableViewModel();
@@ -600,7 +604,7 @@ class LectureService {
           lectureTableView.type = card.type;
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
-          lectureTableView.name = card.name;
+          lectureTableView.name = parsePolyglotString(card.name);
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -617,7 +621,7 @@ class LectureService {
         lectureTableView.type = card.type;
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
-        lectureTableView.name = card.name;
+        lectureTableView.name = parsePolyglotString(card.name);
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 
@@ -647,14 +651,17 @@ class LectureService {
       offsetRequiredCard.results &&
       offsetRequiredCard.results.length > 0
     ) {
-      const cardIds = offsetRequiredCard.results.map(result => result.card.id);
+      const cardIds = offsetRequiredCard.results.map(
+        (result) => result.card.id
+      );
       const cardStudents = await findCardStudentsByCardIds(cardIds);
-      const cardNotes = await this.myTrainingApi.findCardNoteList(cardIds) || [];
+      const cardNotes =
+        (await this.myTrainingApi.findCardNoteList(cardIds)) || [];
 
-      const addLectureTableViews = offsetRequiredCard.results.map(result => {
+      const addLectureTableViews = offsetRequiredCard.results.map((result) => {
         const card = result.card;
         const mainCategory = card.categories.find(
-          category => category.mainCategory === true
+          (category) => category.mainCategory === true
         ) || {
           collegeId: '',
           channelId: '',
@@ -663,16 +670,18 @@ class LectureService {
 
         const student =
           cardStudents &&
-          cardStudents.find(student => student.lectureId === card.id);
+          cardStudents.find((student) => student.lectureId === card.id);
 
-        const useNote = cardNotes &&
-          cardNotes.length > 0 &&
-          cardNotes.some((note: any) => {
-              if(note?.cardId === card.id){
+        const useNote =
+          (cardNotes &&
+            cardNotes.length > 0 &&
+            cardNotes.some((note: any) => {
+              if (note?.cardId === card.id) {
                 return true;
-              } 
+              }
               return false;
-          }) || false;
+            })) ||
+          false;
 
         if (student) {
           const lectureTableView = new LectureTableViewModel();
@@ -680,7 +689,7 @@ class LectureService {
           lectureTableView.type = card.type;
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
-          lectureTableView.name = card.name;
+          lectureTableView.name = parsePolyglotString(card.name);
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -697,7 +706,7 @@ class LectureService {
         lectureTableView.type = card.type;
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
-        lectureTableView.name = card.name;
+        lectureTableView.name = parsePolyglotString(card.name);
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 

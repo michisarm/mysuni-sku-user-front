@@ -7,6 +7,7 @@ import { CategoryModel, IdName } from 'shared/model';
 import { CollegeColors, CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {
@@ -200,25 +201,36 @@ class SubChannelModalContainer extends Component<Props, State> {
     return (
       <Modal className="base w1000" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
         <Modal.Header className="res">
-          서브채널 선택
-          <span className="sub f12">서브채널을 선택해주세요.</span>
+          <PolyglotText defaultString="서브채널 선택" id="Create-NMSubChannelModal-SubChannel" />
+          <span className="sub f12">
+            <PolyglotText defaultString="서브채널을 선택해주세요." id="Create-NMSubChannelModal-SubChannelSub" />
+          </span>
         </Modal.Header>
         <Modal.Content>
           <ChannelModalContentWrapper
             header={
               <>
                 <div className="cell v-middle">
-                  <span className="text01">Channel list</span>
+                  <span className="text01">
+                    <PolyglotText defaultString="Channel list" id="Create-NMSubChannelModal-Channel list" />
+                  </span>
                 </div>
                 <div className="cell v-middle">
-                  <span className="text01">Selected</span>
+                  <span className="text01">
+                    <PolyglotText defaultString="Selected" id="Create-NMSubChannelModal-Selected" />
+                  </span>
                   <span className="count">
                     <span className="text01 add">{selectedCategoryChannels.length}</span>
-                    <span className="text02"> / 80</span>
+                    <span className="text02">
+                      <PolyglotText defaultString="/ 80" id="Create-NMSubChannelModal-/80" />{' '}
+                    </span>
                   </span>
                   <div className="right">
                     <button className="clear" onClick={this.onReset}>
-                      <Icon className="reset" /><span className="blind">reset</span>
+                      <Icon className="reset" />
+                      <span className="blind">
+                        <PolyglotText defaultString="reset" id="Create-NMSubChannelModal-reset" />
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -276,8 +288,12 @@ class SubChannelModalContainer extends Component<Props, State> {
           </ChannelModalContentWrapper>
         </Modal.Content>
         <Modal.Actions>
-          <Button type="button" className="w190 pop d" onClick={this.onCancel}>Cancel</Button>
-          <Button type="button" className="w190 pop p" onClick={this.onConfirm}>OK</Button>
+          <Button type="button" className="w190 pop d" onClick={this.onCancel}>
+            <PolyglotText defaultString="Cancel" id="Create-NMSubChannelModal-Cancel" />
+          </Button>
+          <Button type="button" className="w190 pop p" onClick={this.onConfirm}>
+            <PolyglotText defaultString="Ok" id="Create-NMSubChannelModal-OK" />
+          </Button>
         </Modal.Actions>
       </Modal>
     );

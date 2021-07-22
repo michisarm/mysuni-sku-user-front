@@ -7,6 +7,10 @@ import { ApprovalCubeService } from '../../stores';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
 import routePaths from '../../routePaths';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   approvalCubeService?: ApprovalCubeService;
@@ -95,7 +99,8 @@ class ApprovalProcessModalRejected extends Component<Props> {
     // this.clearAll();
     // window.location.href =
     //   '/suni-main/my-training/my-page/ApprovalList/pages/1';
-    window.location.href = process.env.PUBLIC_URL + routePaths.approvalPaidCourse();
+    window.location.href =
+      process.env.PUBLIC_URL + routePaths.approvalPaidCourse();
   }
 
   render() {
@@ -104,21 +109,34 @@ class ApprovalProcessModalRejected extends Component<Props> {
 
     return (
       <Modal open={open} onClose={onCloseModal} className="base w700">
-        <Modal.Header>선택된 결제 반려</Modal.Header>
+        <Modal.Header>
+          <PolyglotText
+            id="승인관리-유료과정-결제반려"
+            defaultString="선택된 결제 반려"
+          />
+        </Modal.Header>
         <Form className="base">
           <Modal.Content>
             <div className="scrolling-80vh">
               <div className="content-wrap6">
                 <div className="my-03-01-pop">
                   <div className="text1">
-                    선택된 항목에 대한 결제를 반려하시겠습니까?
+                    <PolyglotText
+                      id="승인관리-유료과정-선택반려"
+                      defaultString="선택된 항목에 대한 결제를 반려하시겠습니까?"
+                    />
                   </div>
                   <div className="text2">
-                    작성하신 의견은 결제가 반려되는 신청자에게 동일하게
-                    전송됩니다.
+                    <PolyglotText
+                      id="승인관리-유료과정-의견전송"
+                      defaultString="작성하신 의견은 결제가 반려되는 신청자에게 동일하게 전송됩니다."
+                    />
                   </div>
                   <textarea
-                    placeholder="의견을 기재해주세요."
+                    placeholder={getPolyglotText(
+                      '의견을 기재해주세요.',
+                      '승인관리-유료과정-의견기재'
+                    )}
                     value={(approvalCube && approvalCube.remark) || ''}
                     onChange={this.onChangeRemark}
                   />
@@ -128,10 +146,16 @@ class ApprovalProcessModalRejected extends Component<Props> {
           </Modal.Content>
           <Modal.Actions className="actions2">
             <Button className="pop2 d" onClick={onCloseModal}>
-              취소
+              <PolyglotText
+                id="승인관리-유료과정-취소버튼"
+                defaultString="취소"
+              />
             </Button>
             <Button className="pop2 p" onClick={this.addRejectedLectureSingle}>
-              반려
+              <PolyglotText
+                id="승인관리-유료과정-반려버튼"
+                defaultString="반려"
+              />
             </Button>
           </Modal.Actions>
         </Form>

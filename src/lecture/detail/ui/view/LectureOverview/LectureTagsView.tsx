@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Icon, Label, List } from 'semantic-ui-react';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureTagsViewProps {
   lectureTags: LectureTags;
@@ -19,7 +20,7 @@ const LectureTagsView: React.FC<LectureTagsViewProps> = function LectureTagsView
             <h3 className="title-style">
               <Label className="onlytext bold size24">
                 <Icon className="tag2" />
-                <span>{/*Tag*/}태그</span>
+                <span>{/*Tag*/}<PolyglotText defaultString="태그" id="cube-Contents-태그" /></span>
               </Label>
             </h3>
           </div>

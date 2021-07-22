@@ -11,6 +11,10 @@ import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
 import routePaths from '../../routePaths';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   commentService?: CommentService;
@@ -58,7 +62,9 @@ class NoticeListContainer extends Component<Props, State> {
       0,
       this.PINNED_SIZE
     );
-    const feedbackIds = pinnedPosts.results.map(post => post.commentFeedbackId);
+    const feedbackIds = pinnedPosts.results.map(
+      (post) => post.commentFeedbackId
+    );
 
     this.setState({ feedbackIds }, () => {
       //
@@ -105,6 +111,7 @@ class NoticeListContainer extends Component<Props, State> {
     const { commentCountMap } = this.props.commentService!;
     const count = commentCountMap.get(post.commentFeedbackId) || 0;
 
+    /* 김민준 - 중요 표시 */
     return (
       <a
         key={index}
@@ -118,7 +125,12 @@ class NoticeListContainer extends Component<Props, State> {
       >
         <span className="cell title">
           <span className="inner">
-            <span className="ellipsis">{post.title}</span>
+            <span className="ellipsis">
+              {
+                // post.title && parsePolyglotString(post.title)
+                post.title
+              }
+            </span>
             {count > 0 && (
               <span className="rep-num">
                 [<strong>{count}</strong>]
@@ -126,7 +138,10 @@ class NoticeListContainer extends Component<Props, State> {
             )}
           </span>
         </span>
-        <span className="cell view">{post.readCount}명 읽음</span>
+        <span className="cell view">
+          {post.readCount}
+          <PolyglotText id="support-noti-조회수" defaultString="명 읽음" />
+        </span>
         <span className="cell date">
           {post.time && moment(post.time).format('YYYY.MM.DD')}
         </span>
@@ -161,7 +176,12 @@ class NoticeListContainer extends Component<Props, State> {
             </Segment>
           </div>
         ) : pinnedPosts.length === 0 && posts.length === 0 ? (
-          <NoSuchContentPanel message="등록된 Notice가 없습니다." />
+          <NoSuchContentPanel
+            message={getPolyglotText(
+              '등록된 Notice가 없습니다.',
+              'support-noti-목록없음'
+            )}
+          />
         ) : (
           <div className="support-list-wrap">
             <div className="su-list notice">
@@ -179,7 +199,10 @@ class NoticeListContainer extends Component<Props, State> {
                 >
                   <Button icon className="left moreview">
                     <Icon className="moreview" />
-                    list more
+                    <PolyglotText
+                      id="support-noti-더보기"
+                      defaultString="list more"
+                    />
                   </Button>
                 </div>
               )}

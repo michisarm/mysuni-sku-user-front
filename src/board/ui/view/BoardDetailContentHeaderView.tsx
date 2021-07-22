@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   title: string;
@@ -38,8 +39,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
           <div className="user-info">
             {subField}
             <span className="date">
-              {time &&
-                moment(time).format('YYYY.MM.DD HH:mm')}
+              {time && moment(time).format('YYYY.MM.DD HH:mm')}
             </span>
           </div>
           <div className="actions">
@@ -50,7 +50,11 @@ class BoardDetailContentHeaderView extends Component<Props> {
                 onClick={onClickModify}
               >
                 <Icon name="edit" />
-                Edit
+
+                <PolyglotText
+                  defaultString="Edit"
+                  id="support-QnaRead-수정버튼"
+                />
               </Button>
             )}
             {deletable && (
@@ -60,7 +64,11 @@ class BoardDetailContentHeaderView extends Component<Props> {
                 onClick={onClickDelete}
               >
                 <Icon name="delete" />
-                Delete
+
+                <PolyglotText
+                  defaultString="Delete"
+                  id="support-QnaRead-삭제버튼"
+                />
               </Button>
             )}
             <Button
@@ -69,7 +77,8 @@ class BoardDetailContentHeaderView extends Component<Props> {
               onClick={onClickList}
             >
               <Icon className="commu-list16" />
-              List
+
+              <PolyglotText defaultString="List" id="support-noti-list1" />
             </Button>
           </div>
         </div>

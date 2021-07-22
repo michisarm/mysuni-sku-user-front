@@ -30,6 +30,7 @@ import {
   getActiveCubeStructureItem,
 } from '../../../utility/lectureStructureHelper';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -108,7 +109,9 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
           <div className="survey-header-right" style={{pointerEvents: 'none'}}>
             {lectureSurveyState !== undefined &&
               lectureSurveyState.state === 'Completed' && (
-                <button className="ui button free proceeding">참여완료</button>
+                <button className="ui button free proceeding">
+                  <PolyglotText defaultString="참여완료" id="Survey-Survey-참여완료" />
+                </button>
               )}
           </div>
         </div>
@@ -219,12 +222,14 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               src={`${process.env.PUBLIC_URL}/images/all/icon-survey-done.png`}
             />
 
-            <p className="survey-done-txt">이미 Survey에 응답하였습니다.</p>
+            <p className="survey-done-txt">
+              <PolyglotText defaultString="이미 Survey에 응답하였습니다." id="Survey-Survey-응답완료" />
+            </p>
 
             <LectureSurveyResultModalView
               trigger={
                 <button className="ui button free pop d">
-                  Survey결과 통계 보기
+                  <PolyglotText defaultString="Survey결과 통계 보기" id="Survey-Survey-Survey결과 " />
                 </button>
               }
               lectureSurvey={lectureSurvey}
@@ -242,13 +247,13 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               className="ui button fix line"
               onClick={requestSaveLectureSurveyState}
             >
-              저장
+              <PolyglotText defaultString="저장" id="Survey-Survey-저장" />
             </button>
             <button
               className="ui button fix bg"
               onClick={requestSubmitLectureSurveyState}
             >
-              제출
+              <PolyglotText defaultString="제출" id="Survey-Survey-제출" />
             </button>
           </div>
         )}
