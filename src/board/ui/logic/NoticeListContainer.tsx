@@ -15,7 +15,6 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   commentService?: CommentService;
@@ -126,7 +125,12 @@ class NoticeListContainer extends Component<Props, State> {
       >
         <span className="cell title">
           <span className="inner">
-            <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span>
+            <span className="ellipsis">
+              {
+                // post.title && parsePolyglotString(post.title)
+                post.title
+              }
+            </span>
             {count > 0 && (
               <span className="rep-num">
                 [<strong>{count}</strong>]

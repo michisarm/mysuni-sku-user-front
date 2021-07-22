@@ -4,13 +4,16 @@ import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 export class MemberSummaryModel {
   //
   employeeId: string = '';
-  name: PolyglotString | null = null;
+  name: string = '';
+  // name: PolyglotString | null = null;
   email: string = '';
 
-  department: PolyglotString | null = null;
+  // department: PolyglotString | null = null;
+  department: string = '';
   position: string = '';
   photoId: string = '';
-  introduction: PolyglotString | null = null;
+  // introduction: PolyglotString | null = null;
+  introduction: string = '';
 
   constructor(memberSummary?: MemberSummaryModel) {
     //

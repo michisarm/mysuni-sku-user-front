@@ -17,8 +17,8 @@ class PostModel implements DomainEntity {
   audienceKey: string = '';
 
   postId: string = '';
-  title: PolyglotString | null = null;
-  // title: string = '';
+  // title: PolyglotString | null = null;
+  title: string = '';
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();
   time: number = 0;
