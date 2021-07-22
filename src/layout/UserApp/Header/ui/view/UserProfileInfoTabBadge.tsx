@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Table, Rating, Tab, Select, Icon, Image } from 'semantic-ui-react';
-import { useProfileInfoBadgesModel, setProfileInfoBadgesModel } from "../../../store/ProfileInfoBadgeStore";
-import { getProfileInfoBadge } from "../../../service/ProfilePopupService/getProfileInfoBadge";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import {
+  Modal,
+  Table,
+  Rating,
+  Tab,
+  Select,
+  Icon,
+  Image,
+} from 'semantic-ui-react';
+import {
+  useProfileInfoBadgesModel,
+  setProfileInfoBadgesModel,
+} from '../../../store/ProfileInfoBadgeStore';
+import { getProfileInfoBadge } from '../../../service/ProfilePopupService/getProfileInfoBadge';
+import { useHistory } from 'react-router-dom';
 import BadgeRoutePaths from '../../../../../certification/routePaths';
-import moment from "moment";
+import moment from 'moment';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
-  memberId: string | undefined,
-  setOpen: (state: boolean) => void,
+  memberId: string | undefined;
+  setOpen: (state: boolean) => void;
 }
 
 function UserProfileInfoTabBadge(props: Props) {
@@ -16,11 +28,19 @@ function UserProfileInfoTabBadge(props: Props) {
 
   const selectOptions = [];
   const currentDate = new Date();
-  const [startDate, setStartDate] = useState<string>(moment(currentDate.getFullYear() + "-01-01 00:00:01").format('x'));
-  const [endDate, setEndDate] = useState<string>(moment(currentDate.getFullYear() + "-12-31 23:59:59").format('x'));
+  const [startDate, setStartDate] = useState<string>(
+    moment(currentDate.getFullYear() + '-01-01 00:00:01').format('x')
+  );
+  const [endDate, setEndDate] = useState<string>(
+    moment(currentDate.getFullYear() + '-12-31 23:59:59').format('x')
+  );
 
   for (let i = currentDate.getFullYear(); i >= 2020; i--) {
-    selectOptions.push({ key: i, value: i, text: i + "년" });
+    selectOptions.push({
+      key: i,
+      value: i,
+      text: i + getPolyglotText('년', 'mypage-유저모달-년'),
+    });
   }
 
   const badgeData = useProfileInfoBadgesModel();
@@ -28,7 +48,7 @@ function UserProfileInfoTabBadge(props: Props) {
     getProfileInfoBadge(props.memberId, startDate, endDate);
     return () => {
       setProfileInfoBadgesModel(undefined);
-    }
+    };
   }, [props.memberId, startDate, endDate]);
 
   const getStarStyle = (level: string) => {
@@ -49,8 +69,8 @@ function UserProfileInfoTabBadge(props: Props) {
   };
 
   const onChange = (year: string) => {
-    setStartDate(moment(year + "-01-01 00:00:01").format('x'));
-    setEndDate(moment(year + "-12-31 23:59:59").format('x'));
+    setStartDate(moment(year + '-01-01 00:00:01').format('x'));
+    setEndDate(moment(year + '-12-31 23:59:59').format('x'));
   };
 
   return (
@@ -59,14 +79,21 @@ function UserProfileInfoTabBadge(props: Props) {
         <div className="top-line">
           <div className="select-area">
             <Select
-              placeholder="선택"
+              placeholder={getPolyglotText('선택', 'mypage-유저모달-선택')}
               className="ui small-border dropdown m0"
               defaultValue={selectOptions[0].value}
               options={selectOptions}
               onChange={(e: any, data: any) => onChange(data.value)}
             />
           </div>
-          <span>획득한 Badge : <strong>{badgeData?.badgesTotalCount}</strong>개</span>
+          <span>
+            <PolyglotText
+              id="mypage-유저모달-획득"
+              defaultString="획득한 Badge"
+            />
+            : <strong>{badgeData?.badgesTotalCount}</strong>
+            <PolyglotText id="mypage-유저모달-개2" defaultString="개" />
+          </span>
         </div>
       </div>
       {badgeData && badgeData?.badges.length !== 0 && (
@@ -79,15 +106,41 @@ function UserProfileInfoTabBadge(props: Props) {
             </colgroup>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell textAlign="center">Badge명</Table.HeaderCell>
-                <Table.HeaderCell textAlign="center">Level</Table.HeaderCell>
-                <Table.HeaderCell textAlign="center">획득일</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">
+                  <PolyglotText
+                    id="mypage-유저모달-badge"
+                    defaultString="Badge명"
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">
+                  <PolyglotText
+                    id="mypage-유저모달-Level"
+                    defaultString="Level"
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">
+                  <PolyglotText
+                    id="mypage-유저모달-획득일"
+                    defaultString="획득일"
+                  />
+                </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {badgeData?.badges.map((item: any, index: any) => (
                 <Table.Row onDoubleClick={() => onViewDetail(item.id)}>
-                  <Table.Cell><span className="t-navy" style={{ color: item.badgeCategory.themeColor, borderColor: item.badgeCategory.themeColor }}>{item.badgeCategory.name}</span><a title={item.name}>{item.name}</a></Table.Cell>
+                  <Table.Cell>
+                    <span
+                      className="t-navy"
+                      style={{
+                        color: item.badgeCategory.themeColor,
+                        borderColor: item.badgeCategory.themeColor,
+                      }}
+                    >
+                      {item.badgeCategory.name}
+                    </span>
+                    <a title={item.name}>{item.name}</a>
+                  </Table.Cell>
                   <Table.Cell textAlign="center">
                     <Rating
                       defaultRating={getStarStyle(item.level)}
@@ -96,7 +149,9 @@ function UserProfileInfoTabBadge(props: Props) {
                       className="fixed-rating"
                     />
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{moment(item.badgeCategory.time).format('YYYY.MM.DD')}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {moment(item.badgeCategory.time).format('YYYY.MM.DD')}
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -106,9 +161,21 @@ function UserProfileInfoTabBadge(props: Props) {
       {badgeData && badgeData?.badges.length === 0 && (
         <div className="community_nodata">
           <Icon>
-            <Image src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
+            <Image
+              src={`${process.env.PUBLIC_URL}/images/all/no-contents-80-px.svg`}
+            />
           </Icon>
-          <p>선택한 연도에 <br />획득한 Badge가 없습니다.</p>
+          <p>
+            <PolyglotText
+              id="mypage-유저모달-선택연도"
+              defaultString="선택한 연도에"
+            />
+            <br />
+            <PolyglotText
+              id="mypage-유저모달-badgex"
+              defaultString="획득한 Badge가 없습니다."
+            />
+          </p>
         </div>
       )}
     </Tab.Pane>
