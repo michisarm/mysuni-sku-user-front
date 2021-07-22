@@ -56,10 +56,11 @@ class QnaDetailContainer extends Component<Props, States> {
       Promise.resolve()
         .then(() => postService.findPostByPostId(postId))
         .then(() => {
-          if (postService.post.category.id)
+          if (postService.post.category.id) {
             categoryService.findCategoryByCategoryId(
               postService.post.category.id
             );
+          }
         })
         .then(() => this.getFileIds());
     }

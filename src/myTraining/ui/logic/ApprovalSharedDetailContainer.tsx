@@ -189,10 +189,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     //   reactAlert({ title: '알림', message: '성공입니다.' });
     //   this.routeToCreateList();
     // }
-    reactAlert({ title:{getPolyglotText(
-      '알림',
-      '승인관리-개학승인-의견입력'
-    )} , message: '성공입니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', '승인관리-개학승인-의견입력'),
+      message: '성공입니다.',
+    });
     this.routeToCreateList();
   }
 

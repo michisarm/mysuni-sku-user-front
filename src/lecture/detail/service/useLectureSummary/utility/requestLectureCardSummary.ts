@@ -16,6 +16,7 @@ import { getClassroomFromCube } from '../../useLectureClassroom/utility/getClass
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
 import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudentsRom';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 function getVaildLeaningDate(
   validLearningDate: number,
@@ -64,7 +65,7 @@ function parseLectureSummary(
 
   return {
     cardId: id,
-    name,
+    name: parsePolyglotString(name),
     learningTime: timeToHourMinuteFormat(learningTime + additionalLearningTime),
     category: {
       collegeId: mainCategory?.collegeId || '',
@@ -97,12 +98,8 @@ export async function requestLectureCardSummary(cardId: string) {
     return;
   }
 
-  const {
-    card,
-    cardContents,
-    cardOperatorIdentity,
-    cardRelatedCount,
-  } = cardWithContentsAndRelatedCountRom;
+  const { card, cardContents, cardOperatorIdentity, cardRelatedCount } =
+    cardWithContentsAndRelatedCountRom;
 
   if (card === null) {
     return;
@@ -123,16 +120,16 @@ export async function requestLectureCardSummary(cardId: string) {
       cubeIds.push(learningContent.contentId);
     }
     if (learningContent.learningContentType === 'Chapter') {
-      learningContent.children.forEach(c => cubeIds.push(c.contentId));
+      learningContent.children.forEach((c) => cubeIds.push(c.contentId));
     }
   }
   const cubes = await findCubesByIdsCache(cubeIds);
   if (
     Array.isArray(cubes) &&
-    cubes.some(c => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
+    cubes.some((c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
   ) {
     const cube = cubes.find(
-      c => c.type === 'ClassRoomLecture' || c.type === 'ELearning'
+      (c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning'
     );
     if (cube !== undefined) {
       await requestLectureState(cardId, cube.id, cube.type);

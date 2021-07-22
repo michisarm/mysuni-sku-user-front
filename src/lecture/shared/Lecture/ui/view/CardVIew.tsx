@@ -87,9 +87,8 @@ export default function CardView({
     : false,
   dataArea,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -214,10 +213,12 @@ export default function CardView({
             <Icon className="state" />
             <span>{text}</span>
           </Label>
-          <div className="study-date">{`${date} ${getPolyglotText(
-            '학습 시작',
-            'home-Inprogress-Card시작'
-          )}`}</div>
+          <div className="study-date">
+            {`${date} ${getPolyglotText(
+              '학습 시작',
+              'home-Inprogress-Card시작'
+            )}`}
+          </div>
         </>
       );
     }

@@ -6,6 +6,7 @@ import { includes } from 'lodash';
 import { reactAutobind } from '@nara.platform/accent';
 import mainRoutePaths from 'main/routePaths';
 import { ChannelModel, CollegeModel } from 'college/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -23,7 +24,6 @@ const VISIBLE_COLLEGE_IDS = [
   'CLG00020',
   'CLG00018',
 ];
-import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   channel: ChannelModel;

@@ -1,4 +1,5 @@
 import { CardCategory } from '../../../shared/model/CardCategory';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { Card } from '../../model/Card';
 import CardType from '../../shared/model/CardType';
 
@@ -18,7 +19,7 @@ export function makeInMyLectureCdo(card: Card): InMyLectureCdo {
     serviceType: 'Card',
     serviceId: id,
     category: mainCategory,
-    name,
+    name: parsePolyglotString(name),
     cubeType: type,
     learningTime,
     stampCount,
