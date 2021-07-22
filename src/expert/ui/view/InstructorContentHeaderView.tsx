@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
 import Image from '../../../shared/components/Image';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   instructor: InstructorModel;
@@ -19,6 +20,7 @@ class InstructorContentHeaderView extends React.Component<Props> {
     const { instructor } = this.props;
     const { memberSummary } = instructor;
 
+    // 김민준 - 강사관리 소속회사 확인
     return (
       <div className="main-info-area">
         <div className="progress-info-wrap">
@@ -33,9 +35,15 @@ class InstructorContentHeaderView extends React.Component<Props> {
                 </div>
               </div>
               <div className="text-info">
-                <div className="name">{memberSummary.name}</div>
+                <div className="name">
+                  {memberSummary.name &&
+                    parsePolyglotString(memberSummary.name)}
+                </div>
                 <div className="part">
-                  <span>{memberSummary.department} </span>
+                  <span>
+                    {memberSummary.department &&
+                      parsePolyglotString(memberSummary.department)}{' '}
+                  </span>
                   <span>{instructor.internal ? '사내강사' : '사외강사'}</span>
                 </div>
               </div>
