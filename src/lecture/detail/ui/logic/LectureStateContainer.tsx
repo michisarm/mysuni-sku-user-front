@@ -25,7 +25,7 @@ function LectureStateContainer() {
 
   const receiveMessage = useCallback(
     async (event: MessageEvent) => {
-      if (event.origin === 'https://www.skacademy.com') {
+      if (lectureWebpage?.url.includes(event.origin)) {
         if (
           event.data === 'CubePassed' &&
           params.cubeId &&
