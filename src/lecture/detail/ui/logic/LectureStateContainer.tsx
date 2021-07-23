@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { clearFindMyCardRelatedStudentsCache } from '../../api/cardApi';
@@ -44,7 +43,7 @@ function LectureStateContainer() {
         }
       }
     },
-    [lectureState?.cubeType, params.cardId, params.cubeId]
+    [lectureState?.cubeType, params.cardId, params.cubeId, lectureWebpage]
   );
 
   useEffect(() => {
@@ -58,7 +57,7 @@ function LectureStateContainer() {
     return () => {
       window.removeEventListener('message', receiveMessage, false);
     };
-  }, [lectureWebpage?.urlType, lectureState?.cubeType]);
+  }, [lectureWebpage?.urlType, lectureState?.cubeType, receiveMessage]);
 
   if (lectureState === undefined) {
     return null;
