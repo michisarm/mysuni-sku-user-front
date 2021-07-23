@@ -1,9 +1,12 @@
-import {Button, Checkbox, Modal} from 'semantic-ui-react';
-import  {requestMainPagePopupFirst} from '../../service/MainPagePopupService';
-import {useMainPagePopupItem, setMainPagePopupItem} from '../../store/MainPagePopupStore';
-import React, {useEffect, useState} from 'react';
+import { Button, Checkbox, Modal } from 'semantic-ui-react';
+import { requestMainPagePopupFirst } from '../../service/MainPagePopupService';
+import {
+  useMainPagePopupItem,
+  setMainPagePopupItem,
+} from '../../store/MainPagePopupStore';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import moment from "moment";
+import moment from 'moment';
 import { getCookie, setCookie } from '@nara.platform/accent';
 
 function MainPagePopupContainer() {
@@ -20,15 +23,15 @@ function MainPagePopupContainer() {
     setCookie('mainPopupModal', noMoreModal ? 'HIDE' : 'SHOW');
     // @ts-ignore
     setMainPagePopupItem({
-      id            : mainPagePopup?.id,
-      open          : false,
-      contents      : mainPagePopup?.contents,
-      modifiedTime  : mainPagePopup?.modifiedTime,
-      modifier      : mainPagePopup?.modifier,
-      period        : mainPagePopup?.period,
-      time          : mainPagePopup?.time,
-      title         : mainPagePopup?.title,
-    })
+      id: mainPagePopup?.id,
+      open: false,
+      contents: mainPagePopup?.contents,
+      modifiedTime: mainPagePopup?.modifiedTime,
+      modifier: mainPagePopup?.modifier,
+      period: mainPagePopup?.period,
+      time: mainPagePopup?.time,
+      title: mainPagePopup?.title,
+    });
   };
 
   const onHandleChange = () => {
@@ -37,17 +40,26 @@ function MainPagePopupContainer() {
 
   useEffect(() => {
     if (open) {
-      const today = moment().format('YYYY-MM-DD HH')
-      const beforeFlag = moment(today).isBefore(moment().format(mainPagePopup?.period.startDate),'hour');
-      const afterFlag = moment(today).isAfter(moment().format(mainPagePopup?.period.endDate),'hour');
+      const today = moment().format('YYYY-MM-DD HH');
+      const beforeFlag = moment(today).isBefore(
+        moment().format(mainPagePopup?.period.startDate),
+        'hour'
+      );
+      const afterFlag = moment(today).isAfter(
+        moment().format(mainPagePopup?.period.endDate),
+        'hour'
+      );
       //console.log("1====>"+open+":"+today+":"+beforeFlag+":"+afterFlag+":"+getCookie('mainPopupModal'));
       //afterFlag=false,beforeFlag=false라면 오픈. 아니라면 close
-      if(afterFlag){ModalClose();}
-      else if(beforeFlag){ModalClose();}
+      if (afterFlag) {
+        ModalClose();
+      } else if (beforeFlag) {
+        ModalClose();
+      }
 
       const mainModal = getCookie('mainPopupModal');
       if (mainModal === null || mainModal === '' || mainModal === 'SHOW') {
-        setCookie('mainPopupModal','SHOW');
+        setCookie('mainPopupModal', 'SHOW');
       } else {
         ModalClose();
       }
@@ -55,8 +67,9 @@ function MainPagePopupContainer() {
   }, [open]);
 
   return (
+    // 김민준 - popup 보류
     <>
-      <Modal open={open} className="aidt-modal" style={{ width: 1015}}>
+      <Modal open={open} className="aidt-modal" style={{ width: 1015 }}>
         <Modal.Header>
           <div className="right-btn">
             <Checkbox
@@ -69,9 +82,9 @@ function MainPagePopupContainer() {
             </Button>
           </div>
         </Modal.Header>
-        <Modal.Content style={{height: 640}}>
+        <Modal.Content style={{ height: 640 }}>
           {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
-          <div dangerouslySetInnerHTML={{__html:contents|| '' }}/>
+          <div dangerouslySetInnerHTML={{ __html: contents || '' }} />
         </Modal.Content>
       </Modal>
     </>
@@ -79,4 +92,3 @@ function MainPagePopupContainer() {
 }
 
 export default withRouter(MainPagePopupContainer);
-
