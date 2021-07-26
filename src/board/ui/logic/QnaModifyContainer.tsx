@@ -17,6 +17,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   skProfileService?: SkProfileService;
@@ -186,7 +187,10 @@ class QnaModifyContainer extends React.Component<Props, States> {
                 >
                   <span className="count">
                     <span className="now">
-                      {(post && post.title && post.title.length) || 0}
+                      {(post &&
+                        post.title &&
+                        parsePolyglotString(post.title).length) ||
+                        0}
                     </span>
                     /<span className="max">100</span>
                   </span>
@@ -195,7 +199,9 @@ class QnaModifyContainer extends React.Component<Props, States> {
                     placeholder="제목을 입력해주세요."
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    value={(post && post.title) || ''}
+                    value={
+                      post && post.title ? parsePolyglotString(post.title) : ''
+                    }
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });

@@ -20,6 +20,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -56,10 +57,11 @@ class QnaDetailContainer extends Component<Props, States> {
       Promise.resolve()
         .then(() => postService.findPostByPostId(postId))
         .then(() => {
-          if (postService.post.category.id)
+          if (postService.post.category.id) {
             categoryService.findCategoryByCategoryId(
               postService.post.category.id
             );
+          }
         })
         .then(() => this.getFileIds());
     }
@@ -182,7 +184,7 @@ class QnaDetailContainer extends Component<Props, States> {
         <div className="post-view qna">
           <BoardDetailContentHeaderView
             deletable
-            title={post.title}
+            title={post.title ? parsePolyglotString(post.title) : ''}
             time={post.time}
             subField={<span className="category">{category.name}</span>}
             onClickList={this.onClickList}

@@ -14,7 +14,11 @@ import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared/Lecture';
 import LectureModel from '../../../model/LectureModel';
 import LectureServiceType from '../../../model/LectureServiceType';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -59,7 +63,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
             serviceId: lecture.serviceId,
             serviceType: lecture.serviceType,
             category: lecture.category,
-            name: lecture.name,
+            name: lecture.name ? parsePolyglotString(lecture.name) : '',
             description: lecture.description,
             cubeType: lecture.cubeType,
             learningTime: lecture.learningTime,
@@ -111,12 +115,8 @@ class ChannelLecturesLineContainer extends Component<Props> {
 
   render() {
     //
-    const {
-      skProfileService,
-      inMyLectureService,
-      channel,
-      lectures,
-    } = this.props;
+    const { skProfileService, inMyLectureService, channel, lectures } =
+      this.props;
     const { profileMemberName } = skProfileService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { results, totalCount } = lectures;
@@ -127,7 +127,12 @@ class ChannelLecturesLineContainer extends Component<Props> {
           channel={channel}
           title={
             <>
-              <PolyglotText defaultString="채널에서" id="rcmd-추천-Channel" />{profileMemberName}<PolyglotText defaultString="님께 추천하는 과정입니다." id="rcmd-추천-Recommand" />{' '}
+              <PolyglotText defaultString="채널에서" id="rcmd-추천-Channel" />
+              {profileMemberName}
+              <PolyglotText
+                defaultString="님께 추천하는 과정입니다."
+                id="rcmd-추천-Recommand"
+              />{' '}
               <span className="channel">({totalCount})</span>
             </>
           }
@@ -155,8 +160,14 @@ class ChannelLecturesLineContainer extends Component<Props> {
                     reactAlert({
                       title: getPolyglotText('알림', 'rcmd-관심목록-알림'),
                       message: inMyLecture
-                        ? getPolyglotText('본 과정이 관심목록에서 제외되었습니다.', 'rcmd-관심목록-상세1')
-                        : getPolyglotText('본 과정이 관심목록에 추가되었습니다.', 'rcmd-관심목록-상세2'),
+                        ? getPolyglotText(
+                            '본 과정이 관심목록에서 제외되었습니다.',
+                            'rcmd-관심목록-상세1'
+                          )
+                        : getPolyglotText(
+                            '본 과정이 관심목록에 추가되었습니다.',
+                            'rcmd-관심목록-상세2'
+                          ),
                     });
                     this.onActionLecture(inMyLecture || lecture);
                   }}
@@ -166,7 +177,12 @@ class ChannelLecturesLineContainer extends Component<Props> {
             })}
           </Lecture.Group>
         ) : (
-          <NoSuchContentPanel message={getPolyglotText('선택하신 채널에 해당하는 추천 학습과정이 없습니다.', 'rcmd-추천-목록없음')} />
+          <NoSuchContentPanel
+            message={getPolyglotText(
+              '선택하신 채널에 해당하는 추천 학습과정이 없습니다.',
+              'rcmd-추천-목록없음'
+            )}
+          />
         )}
       </>
     );

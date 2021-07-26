@@ -17,7 +17,7 @@ export class InstructorModel {
   careerYear: number = 0;
 
   career: PolyglotString | null = null;
-  tag: string = '';
+  tag: PolyglotString | null = null;
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
   specialty: string = '';
   specialtyEnName: string = '';

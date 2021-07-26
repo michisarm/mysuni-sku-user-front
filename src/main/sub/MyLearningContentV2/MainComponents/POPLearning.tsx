@@ -37,6 +37,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
@@ -46,7 +47,7 @@ interface Props extends RouteComponentProps {
   profileMemberName: string;
 }
 
-const POPLearning: React.FC<Props> = Props => {
+const POPLearning: React.FC<Props> = (Props) => {
   //
   const {
     reviewService,
@@ -70,7 +71,7 @@ const POPLearning: React.FC<Props> = Props => {
 
     return axios
       .get<CardWithCardRealtedCount[]>(url, { params: { ids: joinedIds } })
-      .then(res => res.data);
+      .then((res) => res.data);
   };
 
   const fetchPopCards = async () => {
@@ -130,7 +131,7 @@ const POPLearning: React.FC<Props> = Props => {
         LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
         true
       )
-      .then(response => {
+      .then((response) => {
         popLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(popLectureService!.Title);
@@ -239,7 +240,7 @@ const POPLearning: React.FC<Props> = Props => {
           serviceId: training.serviceId,
           serviceType: training.serviceType,
           category: training.category,
-          name: training.name,
+          name: training.name ? parsePolyglotString(training.name) : '',
           description: training.description,
           cubeType: training.cubeType,
           learningTime: training.learningTime,
@@ -308,7 +309,10 @@ const POPLearning: React.FC<Props> = Props => {
           message={
             <>
               <div className="text">
-                <PolyglotText defaultString="진행중인 학습 과정이 없습니다." id="home-Recommend-Null" />
+                <PolyglotText
+                  defaultString="진행중인 학습 과정이 없습니다."
+                  id="home-Recommend-Null"
+                />
               </div>
               <Button
                 icon
@@ -318,7 +322,10 @@ const POPLearning: React.FC<Props> = Props => {
               >
                 <span className="border">
                   <span className="ellipsis">{profileMemberName}</span>
-                  <PolyglotText defaultString="님에게 추천하는 학습 과정 보기" id="home-Recommend-Recommend" />
+                  <PolyglotText
+                    defaultString="님에게 추천하는 학습 과정 보기"
+                    id="home-Recommend-Recommend"
+                  />
                 </span>
                 <Icon className="morelink" />
               </Button>

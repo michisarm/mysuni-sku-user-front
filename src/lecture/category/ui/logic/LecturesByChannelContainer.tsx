@@ -17,6 +17,7 @@ import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   lectureService?: LectureService;
@@ -68,23 +69,17 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   async findLectures() {
     //
-    const {
-      lectureService,
-      reviewService,
-      inMyLectureService,
-      channel,
-    } = this.props;
+    const { lectureService, reviewService, inMyLectureService, channel } =
+      this.props;
 
     this.setState({ isLoading: true });
-    const {
-      results: cardWithCardRealtedCounts,
-      totalCount,
-    } = await lectureService!.findPagingChannelLectures(
-      channel.id,
-      this.PAGE_SIZE,
-      0,
-      OrderByType.Time
-    );
+    const { results: cardWithCardRealtedCounts, totalCount } =
+      await lectureService!.findPagingChannelLectures(
+        channel.id,
+        this.PAGE_SIZE,
+        0,
+        OrderByType.Time
+      );
     inMyLectureService!.findAllInMyLectures().then(() => {
       this.setState({
         isLoading: false,
@@ -116,7 +111,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
             serviceId: lecture.serviceId,
             serviceType: lecture.serviceType,
             category: lecture.category,
-            name: lecture.name,
+            name: lecture.name ? parsePolyglotString(lecture.name) : '',
             description: lecture.description,
             cubeType: lecture.cubeType,
             learningTime: lecture.learningTime,

@@ -8,7 +8,11 @@ import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
-import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 class PostModel implements DomainEntity {
   //
@@ -82,7 +86,7 @@ class PostModel implements DomainEntity {
     return {
       audienceKey: post.audienceKey && post.audienceKey,
       boardId: post.boardId && post.boardId,
-      title: post.title && post.title,
+      title: post.title ? parsePolyglotString(post.title) : '',
       writer: post.writer && post.writer,
       contents: post.contents && post.contents,
       config: post.config && post.config,

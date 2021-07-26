@@ -1,5 +1,6 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CubeDetail } from '../../../../model/CubeDetail';
 import { findCardCache } from '../../../api/cardApi';
@@ -47,7 +48,7 @@ async function getLectureSummary(
   const { difficultyLevel } = cubeContents;
   const { passedStudentCount, studentCount } = cubeReactiveModel;
 
-  const category = categories.find(c => c.mainCategory);
+  const category = categories.find((c) => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
   const operator = operators.find(
     ({ id }) => id === cubeContents?.operator?.keyString
@@ -123,33 +124,39 @@ async function getLectureInstructor(
   } = cubeDetail;
   const nextInstructors = instructors.slice(0, 0);
   instructors
-    .filter(c => c.representative === true)
-    .forEach(instructor => {
+    .filter((c) => c.representative === true)
+    .forEach((instructor) => {
       if (
-        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+        !nextInstructors.some((c) => c.instructorId === instructor.instructorId)
       ) {
         nextInstructors.push(instructor);
       }
     });
   instructors
-    .filter(c => c.representative === false)
-    .forEach(instructor => {
+    .filter((c) => c.representative === false)
+    .forEach((instructor) => {
       if (
-        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+        !nextInstructors.some((c) => c.instructorId === instructor.instructorId)
       ) {
         nextInstructors.push(instructor);
       }
     });
-  const proimseArray = nextInstructors.map(c => {
+  const proimseArray = nextInstructors.map((c) => {
     return findInstructorCache(c.instructorId)
-      .then(r => {
+      .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name;
+          c.name = r.memberSummary.name
+            ? parsePolyglotString(r.memberSummary.name)
+            : '';
           c.memberSummary = {
             employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department,
+            department: r.memberSummary.department
+              ? parsePolyglotString(r.memberSummary.department)
+              : '',
             email: r.memberSummary.email,
-            name: r.memberSummary.name,
+            name: r.memberSummary.name
+              ? parsePolyglotString(r.memberSummary.name)
+              : '',
             photoId: r.memberSummary.photoId,
           };
         }
@@ -167,7 +174,7 @@ function getLectureFile(cubeDetail: CubeDetail): Promise<LectureFile> {
     cubeContents: { fileBoxId },
   } = cubeDetail;
   const fileBoxIds = [fileBoxId];
-  return getFiles(fileBoxIds).then(files => ({ files }));
+  return getFiles(fileBoxIds).then((files) => ({ files }));
 }
 
 async function getLectureComment(

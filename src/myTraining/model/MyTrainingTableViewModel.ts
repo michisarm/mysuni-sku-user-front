@@ -9,7 +9,10 @@ import { CompletedXlsxModel } from './CompletedXlsxModel';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
 import { LearningType, LearningTypeName } from './LearningType';
-import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 class MyTrainingTableViewModel {
   [key: string]: any;
@@ -33,7 +36,7 @@ class MyTrainingTableViewModel {
   totalLearningCount: number = 0;
   type: LearningType = LearningType.None;
   collegeId: string = '';
-  useNote?: boolean = false;  // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
+  useNote?: boolean = false; // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
 
   cubeName: PolyglotString | null = null;
 
@@ -52,7 +55,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: this.name || '-',
+      과정명: (this.name && parsePolyglotString(this.name)) || '-',
       학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
@@ -66,7 +69,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: this.name || '-',
+      과정명: (this.name && parsePolyglotString(this.name)) || '-',
       학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
@@ -78,7 +81,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: this.name || '-',
+      과정명: (this.name && parsePolyglotString(this.name)) || '-',
       스탬프: String(this.stampCount),
       획득일자: convertTimeToDate(this.endDate),
     };

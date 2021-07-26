@@ -46,6 +46,7 @@ import {
 } from '../../../../shared/store/CollegeStore';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<RouteParams> {
   newPageService?: NewPageService;
@@ -98,9 +99,9 @@ const CollegeLecturesContainer: React.FC<Props> = ({
     }
     const channels =
       collegeModelStore
-        .find(c => c.id === match.params.collegeId)
+        .find((c) => c.id === match.params.collegeId)
         ?.channels.map(
-          c =>
+          (c) =>
             new ChannelModel({
               id: c.id,
               name: c.name,
@@ -182,7 +183,7 @@ class CollegeLecturesContainerInner extends Component<
     this.findChannels();
     this.findInMyLectures();
     const { lectureCountService, match } = this.props;
-    onCollegeModelStore(collegeModelStore => {
+    onCollegeModelStore((collegeModelStore) => {
       if (collegeModelStore === undefined) {
         return;
       }
@@ -191,9 +192,9 @@ class CollegeLecturesContainerInner extends Component<
       }
       const channels =
         collegeModelStore
-          .find(c => c.id === match.params.collegeId)
+          .find((c) => c.id === match.params.collegeId)
           ?.channels.map(
-            c =>
+            (c) =>
               new ChannelModel({
                 id: c.id,
                 name: c.name,
@@ -267,12 +268,8 @@ class CollegeLecturesContainerInner extends Component<
 
   async findPagingCollegeLectures(limit: number, offset: number) {
     //
-    const {
-      match,
-      newPageService,
-      lectureService,
-      scrollOnceMove,
-    } = this.props;
+    const { match, newPageService, lectureService, scrollOnceMove } =
+      this.props;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
@@ -283,7 +280,7 @@ class CollegeLecturesContainerInner extends Component<
       sorting
     );
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       lectures: [...prevState.lectures, ...lectureOffsetList.results],
     }));
 
@@ -367,7 +364,7 @@ class CollegeLecturesContainerInner extends Component<
             serviceId: lecture.serviceId,
             serviceType: lecture.serviceType,
             category: lecture.category,
-            name: lecture.name,
+            name: lecture.name ? parsePolyglotString(lecture.name) : '',
             description: lecture.description,
             cubeType: lecture.cubeType,
             learningTime: lecture.learningTime,
@@ -496,7 +493,12 @@ class CollegeLecturesContainerInner extends Component<
             )}
           </>
         ) : (
-          <NoSuchContentPanel message={getPolyglotText('등록된 학습 과정이 없습니다.', 'cicl-목록-목록없음')} />
+          <NoSuchContentPanel
+            message={getPolyglotText(
+              '등록된 학습 과정이 없습니다.',
+              'cicl-목록-목록없음'
+            )}
+          />
         )}
       </CategoryLecturesWrapperView>
     );
@@ -532,8 +534,8 @@ class CollegeLecturesContainerInner extends Component<
     const { lectureCountService } = this.props;
     const { channels } = lectureCountService!;
     const allSelected =
-      channels.every(c => c.checked === true) ||
-      channels.every(c => c.checked !== true);
+      channels.every((c) => c.checked === true) ||
+      channels.every((c) => c.checked !== true);
 
     return (
       <CategoryLecturesContentWrapperView>

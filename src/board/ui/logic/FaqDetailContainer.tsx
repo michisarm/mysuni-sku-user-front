@@ -10,6 +10,7 @@ import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -46,7 +47,7 @@ class FaqDetailContainer extends Component<Props> {
       <>
         <div className="post-view">
           <BoardDetailContentHeaderView
-            title={post.title}
+            title={post.title ? parsePolyglotString(post.title) : ''}
             time={post.time}
             onClickList={this.onClickList}
           />

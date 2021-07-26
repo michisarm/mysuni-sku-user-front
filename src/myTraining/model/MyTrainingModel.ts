@@ -14,7 +14,10 @@ import { CourseSetModel } from 'course/model';
 import { LectureServiceType } from 'lecture/model';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
-import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 class MyTrainingModel extends DramaEntityObservableModel {
   //
@@ -85,7 +88,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     return {
       No: String(index),
       College: this.category.college.name,
-      과정명: this.name,
+      과정명: this.name ? parsePolyglotString(this.name) : '',
       학습유형: this.cubeType,
       Level: this.level,
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
@@ -97,7 +100,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     return {
       No: String(index),
       College: this.category.college.name,
-      과정명: this.name,
+      과정명: this.name ? parsePolyglotString(this.name) : '',
       학습유형: this.cubeType,
       Level: this.level,
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
