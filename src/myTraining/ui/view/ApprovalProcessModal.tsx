@@ -85,7 +85,10 @@ class ApprovalProcessModal extends Component<Props> {
     //   reactAlert({ title: '알림', message: '성공입니다.' });
     //   this.routeToCreateList();
     // }
-    reactAlert({ title: '알림', message: '성공입니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', '승인관리-유료과정-알림4'),
+      message: getPolyglotText('성공입니다.', '승인관리-유료과정-성공2'),
+    });
     this.routeToCreateList();
   }
 
