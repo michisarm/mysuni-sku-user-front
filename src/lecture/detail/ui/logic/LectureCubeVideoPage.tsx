@@ -9,6 +9,7 @@ import { useLectureParams } from '../../store/LectureParamsStore';
 import { MediaType } from '../../../model/MediaType';
 import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
 import { setTranscriptCount } from '../../store/TranscriptCountStore';
+import _ from 'lodash';
 
 function LectureCubeVideoPage() {
   const params = useLectureParams();
@@ -25,20 +26,17 @@ function LectureCubeVideoPage() {
   }, [params?.cubeId, params?.cubeType]);
 
   useEffect(() => {
-    return onLectureMedia(next => {
+    return onLectureMedia((next) => {
       if (next === undefined) {
         return;
       }
       if (modalTestRef.current === false) {
         modalTestRef.current = true;
         if (
-          next?.mediaType === MediaType.ContentsProviderMedia &&
-          next?.mediaContents !== undefined &&
-          next?.mediaContents !== null &&
-          next?.mediaContents.contentsProvider !== undefined &&
-          next?.mediaContents.contentsProvider !== null &&
-          next?.mediaContents.contentsProvider.expiryDate !== undefined &&
-          next?.mediaContents.contentsProvider.expiryDate !== null &&
+          (next?.mediaType === MediaType.ContentsProviderMedia ||
+            next?.mediaType === MediaType.InternalMedia ||
+            next?.mediaType === MediaType.InternalMediaUpload) &&
+          !_.isEmpty(next.mediaContents.contentsProvider.expiryDate) &&
           moment(next?.mediaContents.contentsProvider.expiryDate).isValid()
         ) {
           if (
