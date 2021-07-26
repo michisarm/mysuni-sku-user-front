@@ -74,13 +74,11 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
     ) {
       //if (submitted) {
       const lectureStructureItem = getActiveStructureItem(params.pathname);
-      if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
-        // 답안을 전송했을 경우 채점
-        if (answerResult) {
-          questionClassName += ' correct ';
-        } else {
-          questionClassName += ' wrong ';
-        }
+      // 답안을 전송했을 경우 채점
+      if (answerResult) {
+        questionClassName += ' correct ';
+      } else {
+        questionClassName += ' wrong ';
       }
       //}
       if (question.imagePath !== undefined && question.imagePath !== '') {
