@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
 import {
   getLectureMedia,
@@ -26,6 +26,8 @@ import { getActiveCourseStructureItem } from '../../utility/lectureStructureHelp
 import { reactAlert } from '@nara.platform/accent';
 import { retMultiVideoOverlap } from '../../service/useLectureMedia/useLectureWatchLog';
 import { useLectureParams } from '../../store/LectureParamsStore';
+import moment from 'moment';
+import _ from 'lodash';
 
 let preliveLectureId = '';
 
@@ -274,9 +276,41 @@ function LectureVideoContainer() {
     },
     [getLectureMedia(), pathname]
   );
+
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
+    useState<boolean>(false);
+
+  const isExpiredContent = useMemo(() => {
+    if (
+      (lectureMedia?.mediaType === MediaType.InternalMedia ||
+        lectureMedia?.mediaType === MediaType.InternalMediaUpload) &&
+      !_.isEmpty(lectureMedia.mediaContents.contentsProvider.expiryDate) &&
+      moment(lectureMedia?.mediaContents.contentsProvider.expiryDate).isValid()
+    ) {
+      if (
+        moment(lectureMedia.mediaContents.contentsProvider.expiryDate)
+          .startOf('day')
+          .valueOf() < Date.now()
+      ) {
+        if (isExpiredContentAlerted === false) {
+          setIsExpiredContentAlerted(true);
+          reactAlert({
+            title: '안내',
+            message:
+              '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+          });
+        }
+        return true;
+      }
+    }
+
+    return false;
+  }, [lectureMedia, isExpiredContentAlerted]);
+
   return (
     <>
-      {lectureMedia !== undefined &&
+      {isExpiredContent !== true &&
+        lectureMedia !== undefined &&
         lectureState !== undefined &&
         (lectureMedia.mediaType == 'InternalMedia' ||
           lectureMedia.mediaType == 'InternalMediaUpload') && (
