@@ -22,7 +22,7 @@ import {
   useFollowersModal,
   useFollowingsModal,
 } from '../../../../../community/store/CommunityFollowModalStore';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   setOpen: () => void;
@@ -73,8 +73,11 @@ function ProfilePopupView(props: Props) {
       skProfile.nickName === ''
     ) {
       reactAlert({
-        title: '안내',
-        message: '닉네임을 등록해주세요.',
+        title: getPolyglotText('안내', 'mypage-popupview-안내'),
+        message: getPolyglotText(
+          '닉네임을 등록해주세요.',
+          'mypage-popupview-닉네임등록'
+        ),
       });
       return;
     }
