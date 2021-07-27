@@ -7,6 +7,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import mainRoutePaths from 'main/routePaths';
 import { ChannelModel, CollegeModel } from 'college/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -37,9 +38,9 @@ class CategoryLecturesHeaderView extends Component<Props> {
     const { channel, college } = this.props;
     const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
     const linkUrl =
-      channel.name === 'AI/DT Literacy'
+      parsePolyglotString(channel.name) === 'AI/DT Literacy'
         ? '/certification/badge/badge-detail/BADGE-2t'
-        : mainRoutePaths.introductionCollege(college.name);
+        : mainRoutePaths.introductionCollege(parsePolyglotString(college.name));
     return (
       <>
         <div className="white-title">

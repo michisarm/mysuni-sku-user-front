@@ -5,7 +5,7 @@ type Channel = Pick<CollegeModel, 'id' | 'name'>;
 
 const initialStore: Channel = {
   id: '',
-  name: '',
+  name: { ko: '', cn: '', en: '' },
 };
 
 const [

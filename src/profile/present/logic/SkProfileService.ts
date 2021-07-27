@@ -7,6 +7,7 @@ import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { findAllCollegeCache } from '../../../college/present/apiclient/CollegeApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 @autobind
 class SkProfileService {
@@ -152,7 +153,7 @@ class SkProfileService {
             if (college !== undefined) {
               const channel = college.channels.find((c) => c.id === channelId);
               if (channel !== undefined) {
-                idName.name = channel.name;
+                idName.name = parsePolyglotString(channel.name);
               }
             }
           });
@@ -160,7 +161,7 @@ class SkProfileService {
             const collegeId = idName.id;
             const college = collegeData.find((c) => c.id === collegeId);
             if (college !== undefined) {
-              idName.name = college.name;
+              idName.name = parsePolyglotString(college.name);
             }
           });
         }

@@ -6,6 +6,7 @@ import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { FilterCondition } from '../../../model/FilterCondition';
 import { FilterConditionName } from '../../../model/FilterConditionName';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   colleges: CollegeModel[];
@@ -23,15 +24,19 @@ function CheckedFilterView(props: Props) {
     const buttons: React.ReactNode[] = [];
     const collegeNames = getCollegeNames(colleges, conditions.collegeIds);
 
-    if (conditions.learningTypes &&
-      conditions.learningTypes.length) {
+    if (conditions.learningTypes && conditions.learningTypes.length) {
       buttons.push(
         conditions.learningTypes.map((learningType, index) => (
           <Fragment key={`checked-learningType-${index}`}>
-            <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, learningType)}>
+            <Button
+              className="del"
+              onClick={() =>
+                onClearOne(FilterConditionName.LearningType, learningType)
+              }
+            >
               {learningType}
             </Button>
-          </Fragment >
+          </Fragment>
         ))
       );
     }
@@ -53,8 +58,7 @@ function CheckedFilterView(props: Props) {
       );
     }
 
-    if (conditions.learningTimes &&
-      conditions.learningTimes.length) {
+    if (conditions.learningTimes && conditions.learningTimes.length) {
       buttons.push(
         conditions.learningTimes.map((learningTime, index) => (
           <Fragment key={`checked-learningTime-${index}`}>
@@ -193,7 +197,10 @@ function CheckedFilterView(props: Props) {
                 <Icon className="reset" />
               </Button>
               <span>
-                <PolyglotText defaultString="전체해제" id="learning-LearningFilter1-전체해제" />
+                <PolyglotText
+                  defaultString="전체해제"
+                  id="learning-LearningFilter1-전체해제"
+                />
               </span>
             </th>
             <td>{renderCheckedConditions()}</td>
@@ -212,9 +219,9 @@ const getCollegeNames = (
   collegeIds: string[]
 ): string[] => {
   /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
-  return collegeIds.map(collegeId => {
-    const college = colleges.filter(college => college.id === collegeId)[0];
-    return college.name;
+  return collegeIds.map((collegeId) => {
+    const college = colleges.filter((college) => college.id === collegeId)[0];
+    return parsePolyglotString(college.name);
   });
 };
 
@@ -225,11 +232,11 @@ const getTextFromValue = (
   switch (filterConditionName) {
     case FilterConditionName.Certification:
       return CheckboxOptions.certifications
-        .filter(certification => certification.value === value)
-        .map(certification => certification.text);
+        .filter((certification) => certification.value === value)
+        .map((certification) => certification.text);
     case FilterConditionName.LearningTime:
       return CheckboxOptions.learningTimes
-        .filter(learningTime => learningTime.value === value)
-        .map(learningTime => learningTime.text);
+        .filter((learningTime) => learningTime.value === value)
+        .map((learningTime) => learningTime.text);
   }
 };
