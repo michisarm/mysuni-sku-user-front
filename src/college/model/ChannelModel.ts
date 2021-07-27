@@ -1,24 +1,26 @@
-
 import { decorate, observable } from 'mobx';
 import { IdName } from '@nara.platform/accent';
 
 import { IdName as IdNameModel } from 'shared/model';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
-
-export class ChannelModel implements IdName {
+export class ChannelModel {
   //
   id: string = '';
-  name: string = '';
+  name: PolyglotString = { ko: '', cn: '', en: '' };
 
-  channelId : string = '';
-  iconfileBoxId : string = '';
-  description : string = '';
-  time : number = 0;
+  channelId: string = '';
+  iconfileBoxId: string = '';
+  description: PolyglotString = { ko: '', cn: '', en: '' };
+  time: number = 0;
 
   checked?: boolean;
   active: boolean = false;
 
-  constructor(channel? : ChannelModel | any) {
+  constructor(channel?: ChannelModel | any) {
     if (channel) {
       Object.assign(this, { ...channel });
       this.id = channel.channelId ? channel.channelId : this.id;
@@ -29,7 +31,7 @@ export class ChannelModel implements IdName {
   toIdName() {
     return new IdNameModel({
       id: this.channelId,
-      name: this.name,
+      name: parsePolyglotString(this.name),
     });
   }
 }
@@ -44,6 +46,5 @@ decorate(ChannelModel, {
   checked: observable,
   active: observable,
 });
-
 
 export default ChannelModel;

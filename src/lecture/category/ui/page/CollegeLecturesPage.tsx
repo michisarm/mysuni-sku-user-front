@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -10,14 +9,16 @@ import { CollegeService } from 'college/stores';
 import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
 import CategoryLecturesContainer from '../logic/CollegeLecturesContainer';
-
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {
-  collegeService: CollegeService,
-  lectureCountService: LectureCountService,
+  collegeService: CollegeService;
+  lectureCountService: LectureCountService;
 }
 
-@inject(mobxHelper.injectFrom('college.collegeService', 'lecture.lectureCountService'))
+@inject(
+  mobxHelper.injectFrom('college.collegeService', 'lecture.lectureCountService')
+)
 @reactAutobind
 @observer
 class CollegeLecturesPage extends Component<Props> {
@@ -29,7 +30,9 @@ class CollegeLecturesPage extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId) {
+    if (
+      prevProps.match.params.collegeId !== this.props.match.params.collegeId
+    ) {
       this.findCollegeAndChannels();
     }
   }
@@ -45,8 +48,11 @@ class CollegeLecturesPage extends Component<Props> {
     }
     const channels = college.channels;
 
-    channels.map((channel) => channel.checked = true);
-    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, channels);
+    channels.map((channel) => (channel.checked = true));
+    lectureCountService!.findLectureCountByCollegeId(
+      match.params.collegeId,
+      channels
+    );
     // collegeService.setChannels(college.channels);
   }
 
@@ -54,9 +60,10 @@ class CollegeLecturesPage extends Component<Props> {
     //
     const { collegeService } = this.props;
     const { college } = collegeService;
-    this.props.history.push(mainRoutePaths.introductionCollege(college.name));
+    this.props.history.push(
+      mainRoutePaths.introductionCollege(parsePolyglotString(college.name))
+    );
   }
-
 
   render() {
     //
@@ -66,9 +73,7 @@ class CollegeLecturesPage extends Component<Props> {
     return (
       <ContentLayout
         className="channel"
-        breadcrumb={[
-          { text: `${collegeService.college.name} College` },
-        ]}
+        breadcrumb={[{ text: `${collegeService.college.name} College` }]}
       >
         <CategoryLecturesHeaderView
           college={college}
