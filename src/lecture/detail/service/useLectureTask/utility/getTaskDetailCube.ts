@@ -25,9 +25,9 @@ async function getTaskItem(postParam: any) {
     writer: {
       employeeId: '',
       email: '',
-      name: '',
+      name: null,
       companyCode: '',
-      companyName: '',
+      companyName: null,
     },
     contents: '',
     time: 0,
@@ -35,7 +35,7 @@ async function getTaskItem(postParam: any) {
     commentFeedbackId: '',
     notice: false,
     pinned: 0, // postpinned -> number = 0
-    writerPatronKeyString: ''
+    writerPatronKeyString: '',
   };
   //
   if (postParam.id !== '' && postParam.type === 'parent') {
@@ -43,16 +43,16 @@ async function getTaskItem(postParam: any) {
     const result = await findPostBody(postParam.id);
 
     if (post !== undefined) {
-      let writerName = ''
+      let writerName = '';
 
-      if(post.patronKey &&
-        post.patronKey.keyString !== ''
-      ){
-        const writerProfile = await SkProfileApi.instance.findProfiles([post.patronKey.keyString]);
-        if(writerProfile && writerProfile.length > 0){
-          writerName = writerProfile[0].nickName
+      if (post.patronKey && post.patronKey.keyString !== '') {
+        const writerProfile = await SkProfileApi.instance.findProfiles([
+          post.patronKey.keyString,
+        ]);
+        if (writerProfile && writerProfile.length > 0) {
+          writerName = writerProfile[0].nickName;
         }
-      } 
+      }
 
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.title = post.title;
@@ -74,17 +74,17 @@ async function getTaskItem(postParam: any) {
     const post = await getReply(postParam.id);
 
     if (post !== undefined) {
-      let writerName = ''
+      let writerName = '';
 
-      if(post.patronKey &&
-        post.patronKey.keyString !== ''
-      ){
-        const writerProfile = await SkProfileApi.instance.findProfiles([post.patronKey.keyString]);
-        if(writerProfile && writerProfile.length > 0){
-          writerName = writerProfile[0].nickName
+      if (post.patronKey && post.patronKey.keyString !== '') {
+        const writerProfile = await SkProfileApi.instance.findProfiles([
+          post.patronKey.keyString,
+        ]);
+        if (writerProfile && writerProfile.length > 0) {
+          writerName = writerProfile[0].nickName;
         }
-      } 
-      
+      }
+
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.postId = post.postId;
       lectureTaskDetail.title = post.title;
@@ -115,7 +115,11 @@ export async function getTaskLearningCardId(lectureId: string) {
   return taskItem;
 }
 
-export async function deleteLectureTaskPost(boardId: string, taskId: string, type: string) {
+export async function deleteLectureTaskPost(
+  boardId: string,
+  taskId: string,
+  type: string
+) {
   const deleteItem = await deleteTaskPost(boardId, taskId, type);
   return deleteItem;
 }

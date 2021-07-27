@@ -275,7 +275,10 @@ class QnaModifyContainer extends React.Component<Props, States> {
                       {/*/>*/}
                       <textarea
                         value={
-                          (post && post.contents && post.contents.contents) ||
+                          (post &&
+                            post.contents &&
+                            post.contents.contents &&
+                            parsePolyglotString(post.contents.contents)) ||
                           ''
                         }
                         onChange={(e) => {

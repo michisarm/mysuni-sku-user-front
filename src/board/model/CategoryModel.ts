@@ -11,7 +11,8 @@ class CategoryModel implements DomainEntity {
   boardId: string = '';
   categoryId: string = '';
   deleted: boolean = false;
-  time: number = 0;
+  // time: number = 0;
+  registeredTime: number = 0;
 
   constructor(category?: CategoryModel) {
     if (category) {
@@ -28,7 +29,7 @@ decorate(CategoryModel, {
   boardId: observable,
   categoryId: observable,
   deleted: observable,
-  time: observable,
+  registeredTime: observable,
 });
 
 export default CategoryModel;

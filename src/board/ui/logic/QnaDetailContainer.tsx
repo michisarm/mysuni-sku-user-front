@@ -185,7 +185,7 @@ class QnaDetailContainer extends Component<Props, States> {
           <BoardDetailContentHeaderView
             deletable
             title={post.title ? parsePolyglotString(post.title) : ''}
-            time={post.time}
+            time={post.registeredTime}
             subField={<span className="category">{category.name}</span>}
             onClickList={this.onClickList}
             onClickDelete={this.deleteQnaDetail}
@@ -197,7 +197,11 @@ class QnaDetailContainer extends Component<Props, States> {
               <div className="content-inner">
                 <ReactQuill
                   theme="bubble"
-                  value={post.contents.contents || ''}
+                  value={
+                    (post.contents.contents &&
+                      parsePolyglotString(post.contents.contents)) ||
+                    ''
+                  }
                   readOnly
                 />
                 <div className="file">

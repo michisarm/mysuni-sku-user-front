@@ -8,6 +8,8 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { getCookie, setCookie } from '@nara.platform/accent';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { NewDatePeriod } from 'shared/model/NewDatePeriod';
 
 function MainPagePopupContainer() {
   const [noMoreModal, setNoMoreModal] = useState(false);
@@ -23,14 +25,14 @@ function MainPagePopupContainer() {
     setCookie('mainPopupModal', noMoreModal ? 'HIDE' : 'SHOW');
     // @ts-ignore
     setMainPagePopupItem({
-      id: mainPagePopup?.id,
+      id: (mainPagePopup && mainPagePopup.id) || '',
       open: false,
-      contents: mainPagePopup?.contents,
-      modifiedTime: mainPagePopup?.modifiedTime,
-      modifier: mainPagePopup?.modifier,
-      period: mainPagePopup?.period,
-      time: mainPagePopup?.time,
-      title: mainPagePopup?.title,
+      contents: (mainPagePopup && mainPagePopup.contents) || null,
+      modifiedTime: (mainPagePopup && mainPagePopup.modifiedTime) || '',
+      modifier: (mainPagePopup && mainPagePopup.modifier) || '',
+      period: (mainPagePopup && mainPagePopup.period) || new NewDatePeriod(),
+      time: (mainPagePopup && mainPagePopup.time) || '',
+      title: (mainPagePopup && mainPagePopup.title) || null,
     });
   };
 
@@ -67,7 +69,6 @@ function MainPagePopupContainer() {
   }, [open]);
 
   return (
-    // 김민준 - popup 보류
     <>
       <Modal open={open} className="aidt-modal" style={{ width: 1015 }}>
         <Modal.Header>
@@ -84,7 +85,11 @@ function MainPagePopupContainer() {
         </Modal.Header>
         <Modal.Content style={{ height: 640 }}>
           {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
-          <div dangerouslySetInnerHTML={{ __html: contents || '' }} />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: (contents && parsePolyglotString(contents)) || '',
+            }}
+          />
         </Modal.Content>
       </Modal>
     </>

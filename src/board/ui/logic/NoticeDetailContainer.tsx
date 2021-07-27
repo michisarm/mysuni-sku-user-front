@@ -93,7 +93,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
         <div className="post-view">
           <BoardDetailContentHeaderView
             title={post.title ? parsePolyglotString(post.title) : ''}
-            time={post.time}
+            time={post.registeredTime}
             onClickList={this.onClickList}
           />
           {post.contents && (
@@ -101,7 +101,12 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               <div className="content-inner ql-snow">
                 <div
                   className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      (post.contents.contents &&
+                        parsePolyglotString(post.contents.contents)) ||
+                      '',
+                  }}
                 />
               </div>
               <div className="file">

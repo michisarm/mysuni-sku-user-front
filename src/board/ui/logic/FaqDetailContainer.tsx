@@ -48,7 +48,7 @@ class FaqDetailContainer extends Component<Props> {
         <div className="post-view">
           <BoardDetailContentHeaderView
             title={post.title ? parsePolyglotString(post.title) : ''}
-            time={post.time}
+            time={post.registeredTime}
             onClickList={this.onClickList}
           />
 
@@ -57,7 +57,12 @@ class FaqDetailContainer extends Component<Props> {
               <div className="content-inner  ql-snow">
                 <div
                   className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      (post.contents.contents &&
+                        parsePolyglotString(post.contents.contents)) ||
+                      '',
+                  }}
                 />
               </div>
             </div>

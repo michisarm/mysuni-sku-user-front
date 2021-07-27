@@ -53,7 +53,6 @@ export interface PostModel {
   content: string;
 }
 
-
 // Feed 추가
 export interface CommunityProfileFeed {
   posts: PostItem[];
@@ -65,8 +64,8 @@ export function getEmtpyCommunityProfileFeed(): CommunityProfileFeed {
   return {
     posts: [],
     postsTotalCount: 0,
-    postsOffset: 0
-  }
+    postsOffset: 0,
+  };
 }
 
 export interface PostItem {

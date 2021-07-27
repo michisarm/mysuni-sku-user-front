@@ -1,14 +1,13 @@
-
 import { decorate, observable } from 'mobx';
-
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class WriterModel {
   //
   employeeId: string = 'Admin';
   email: string = 'aa@mail.com';
-  name: string = 'Roy';
+  name: PolyglotString | null = null;
   companyCode: string = '';
-  companyName: string = '';
+  companyName: PolyglotString | null = null;
 
   constructor(writer?: WriterModel) {
     //
@@ -21,7 +20,7 @@ decorate(WriterModel, {
   email: observable,
   name: observable,
   companyCode: observable,
-  companyName: observable
+  companyName: observable,
 });
 
 export default WriterModel;
