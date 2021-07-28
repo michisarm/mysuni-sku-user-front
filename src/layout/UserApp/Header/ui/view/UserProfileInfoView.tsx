@@ -26,16 +26,13 @@ interface State {}
 function UserProfileInfoView(props: Props) {
   const [selectedMenuName, setSelectMenuName] = useState<string>('Community');
 
-  const setMenu = useCallback(
-    (menuName: string) => {
-      setSelectMenuName(menuName);
-    },
-    [selectedMenuName]
-  );
+  const setMenu = useCallback((menuName: string) => {
+    setSelectMenuName(menuName);
+  }, []);
 
   return (
     <section className="content">
-      <Modal open={props.open} className=" w1044 profile-modal-new">
+      <Modal open={props.open} className=" w1044 profile-modal-new g-type">
         <Modal.Content>
           {props.preProfileInfo && props.preProfileInfo.isSetProfile
             ? getPolyglotText('미리보기', 'mypage-유저모달-미리보기')
@@ -48,25 +45,6 @@ function UserProfileInfoView(props: Props) {
                 memberId={props.memberId}
                 preProfileInfo={props.preProfileInfo}
               />
-            </div>
-            <div className="right-side side-wrapper">
-              <UserProfileInfoTabMenu
-                selectedMenu={selectedMenuName}
-                setMneu={setMenu}
-              />
-              {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
-              {selectedMenuName === 'Community' && (
-                <UserProfileInfoTabCommunity
-                  memberId={props.memberId}
-                  setOpen={props.setOpen}
-                />
-              )}
-              {selectedMenuName === 'Feed' && (
-                <UserProfileInfoTabFeed
-                  memberId={props.memberId}
-                  setOpen={props.setOpen}
-                />
-              )}
             </div>
           </div>
         </Modal.Content>

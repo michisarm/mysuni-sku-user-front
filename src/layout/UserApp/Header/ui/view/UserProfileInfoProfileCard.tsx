@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Image } from 'semantic-ui-react';
 import {
@@ -175,7 +176,7 @@ function UserProfileinfoProfileCard(props: Props) {
 
   //introduce를 ',' 기준으로 구분한다.
   function getTagHtml() {
-    let tagList = new Array();
+    let tagList = [];
     let tagHtml = '';
 
     tagList = introduce ? introduce.split(',') : [''];
@@ -250,44 +251,8 @@ function UserProfileinfoProfileCard(props: Props) {
                 <span className="prof-tit">
                   {profileInfo?.isNickname ? nickname : profileInfo?.name}
                 </span>
-                <div className="foll-info">
-                  <span>{followerCount || profileInfo?.followerCount}</span>
-                  <PolyglotText
-                    id="mypage-유저모달-Followers"
-                    defaultString="Followers"
-                  />
-                  <span>{profileInfo?.followingCount}</span>
-                  <PolyglotText
-                    id="mypage-유저모달-Following"
-                    defaultString="Following"
-                  />
-                </div>
               </div>
-              <div className="count-area">
-                {/* <div className="cnt-box bad-cnt" >
-                  <span>Badge</span>
-                  <strong>{badgeCount}</strong>
-                </div> */}
-                <div className="cnt-box com-cnt">
-                  <span>
-                    <PolyglotText
-                      id="mypage-유저모달-커뮤니티"
-                      defaultString="커뮤니티"
-                    />
-                  </span>
-                  <strong>{communityCount}</strong>
-                </div>
-                <div className="cnt-box feed-cnt">
-                  <span>
-                    <PolyglotText
-                      id="mypage-유저모달-Feed"
-                      defaultString="Feed"
-                    />
-                  </span>
-                  <strong>{feedCount}</strong>
-                </div>
-              </div>
-              {!isExternal && (
+              {/* {!isExternal && (
                 <div className="follow-bttn-area">
                   {props.memberId !== denizenId && (
                     <Button
@@ -302,7 +267,7 @@ function UserProfileinfoProfileCard(props: Props) {
                     </Button>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>

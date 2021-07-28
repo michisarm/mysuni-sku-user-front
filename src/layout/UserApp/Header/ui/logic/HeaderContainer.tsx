@@ -165,7 +165,7 @@ class HeaderContainer extends Component<Props, State> {
               onClick={this.onClickSearchInput}
               onChange={this.onChangeSearchInput}
               onClear={this.onClickClearSearch}
-              getPolyglotText={ getPolyglotText }
+              getPolyglotText={getPolyglotText}
             />
           )}
 
