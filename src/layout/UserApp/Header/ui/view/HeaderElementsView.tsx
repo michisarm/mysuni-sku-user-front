@@ -168,7 +168,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onClear,
   getPolyglotText,
 }) => (
-  <div className="g-search" data-area={Area.HEADER_SEARCH}>
+  <div className="g-search g-ab" data-area={Area.HEADER_SEARCH}>
     <div
       className={classNames('ui h38 search input', {
         focus: focused,
