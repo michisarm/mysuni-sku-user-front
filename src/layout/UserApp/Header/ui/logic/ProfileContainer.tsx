@@ -19,6 +19,7 @@ import {
 import { Button, Popup } from 'semantic-ui-react';
 import ProfilePopupView from '../view/ProfilePopupView';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -141,8 +142,10 @@ class ProfileContainer extends Component<Props, State> {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const { myNotieMentions, myNotieNoReadMentionCount } =
-      NotieService.instance;
+    const {
+      myNotieMentions,
+      myNotieNoReadMentionCount,
+    } = NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
@@ -158,7 +161,7 @@ class ProfileContainer extends Component<Props, State> {
     };
 
     return (
-      <div className="g-info">
+      <div className="g-info g-info2 g-ab2">
         {isExternal ? (
           <>
             <button
@@ -188,7 +191,10 @@ class ProfileContainer extends Component<Props, State> {
                   >
                     <i aria-hidden="true" className="balloon mypage icon" />
                     <span>
-                      <PolyglotText defaultString="강사 서비스" id="home-mapg-강사서비스" />
+                      <PolyglotText
+                        defaultString="강사 서비스"
+                        id="home-mapg-강사서비스"
+                      />
                     </span>
                   </a>
                 </li>
@@ -196,7 +202,10 @@ class ProfileContainer extends Component<Props, State> {
                   <button type="button" onClick={this.onLogout}>
                     <i aria-hidden="true" className="balloon logout icon" />
                     <span>
-                      <PolyglotText defaultString="Logout" id="home-mapg-lgot" />
+                      <PolyglotText
+                        defaultString="Logout"
+                        id="home-mapg-lgot"
+                      />
                     </span>
                   </button>
                 </li>
@@ -207,11 +216,13 @@ class ProfileContainer extends Component<Props, State> {
           <Popup
             className="pop_profile"
             trigger={
-              <Button id="btnProFile" className="user image label">
-                <Image
-                  src={skProfile.photoFilePath || profileImg}
-                  alt="profile"
-                />
+              <Button id="btnProFile" className="user image label btn_user on">
+                <span>
+                  <Image
+                    src={skProfile.photoFilePath || profileImg}
+                    alt="profile"
+                  />
+                </span>
               </Button>
             }
             position="bottom right"
@@ -233,6 +244,7 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
+        <LanguageSelectPopupView />
       </div>
     );
   }
