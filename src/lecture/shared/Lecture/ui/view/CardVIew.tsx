@@ -87,8 +87,9 @@ export default function CardView({
     : false,
   dataArea,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] =
-    useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -340,6 +341,14 @@ export default function CardView({
               {getCollgeName(collegeId)}
             </Label>
           )}
+        </div>
+        <div className="g-lang-area">
+          <Icon className="i-glb" />
+          <div className="g-list">
+            <span>KOR</span> {/*  className="on"**/}
+            <span>CHN</span>
+            <span>ENG</span>
+          </div>
         </div>
         <p
           className="text-area"
