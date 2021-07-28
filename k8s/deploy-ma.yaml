@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-front
+  name: user
   namespace: gdi-skuniv-app-ma
   labels:
-    app: user-front
+    app: user
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-front
+      app: user
   template:
     metadata:
       labels:
-        app: user-front
+        app: user
     spec:
       affinity:
         nodeAffinity:
@@ -30,7 +30,7 @@ spec:
                     values:
                       - 'manager'
       containers:
-        - name: user-front
+        - name: user
           image: dev03/user:0.0.1
           ports:
             - containerPort: 80
