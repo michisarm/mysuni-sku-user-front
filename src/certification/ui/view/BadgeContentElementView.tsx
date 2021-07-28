@@ -201,7 +201,12 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
           {badgeState === ChallengeState.Challenging && (
             <>
               <span className="ing">
-                <span>진행중</span>
+                <span>
+                  <PolyglotText
+                    id="Certification-View-진행중"
+                    defaultString="진행중"
+                  />
+                </span>
                 <span className="num">
                   <b>{learningCompleted}</b>/{learningTotalCount}
                 </span>
