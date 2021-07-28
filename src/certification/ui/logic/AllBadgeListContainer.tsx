@@ -18,6 +18,7 @@ import { BadgeCategoryService } from '../../../lecture/stores';
 import { BadgeBundle, getMainCategoryId } from '../../model/Badge';
 import BadgeView from '../view/BadgeView';
 import { useRequestAllBadges } from '../../service/useRequestAllBadges';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface AllBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -113,7 +114,12 @@ function AllBadgeListContainer({
                 </li>
               );
             })) || (
-            <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
+            <NoSuchContentPanel
+              message={getPolyglotText(
+                '등록된 Badge List가 없습니다.',
+                'Certification-bdls-뱃지없음'
+              )}
+            />
           )}
         </ul>
       </div>

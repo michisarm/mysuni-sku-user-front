@@ -9,6 +9,7 @@ import { NameValueList, NewQueryModel } from '../../shared/model';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { AplType } from './AplType';
 import { AplStateName } from './AplStateName';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 class AplModel extends NewQueryModel {
   //
@@ -66,12 +67,15 @@ class AplModel extends NewQueryModel {
 
   /* 등록일자 */
   @computed get displayCreationTime() {
-    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD') : '-';
+    return this.creationTime
+      ? moment(this.creationTime).format('YYYY.MM.DD')
+      : '-';
   }
 
-
   @computed get displayCreationDateTime() {
-    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+    return this.creationTime
+      ? moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss')
+      : '-';
   }
 
   /* 교육시간(교육인정시간) */
@@ -82,12 +86,18 @@ class AplModel extends NewQueryModel {
       if (this.updateHour || this.updateMinute) {
         allowLearningTime = `${this.updateHour}시 ${this.updateMinute}분`;
       } else {
-        allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+        allowLearningTime =
+          this.allowHour || this.allowMinute
+            ? `${this.allowHour}시 ${this.allowMinute}분`
+            : '-';
       }
     }
 
     if (this.state === AplState.Rejected) {
-      allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+      allowLearningTime =
+        this.allowHour || this.allowMinute
+          ? `${this.allowHour}시 ${this.allowMinute}분`
+          : '-';
     }
 
     return allowLearningTime;
@@ -95,7 +105,9 @@ class AplModel extends NewQueryModel {
 
   /* 교육기간 ex) 2020.10.12~2020.11.12 */
   @computed get displayLearningTime() {
-    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
+    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(
+      this.endDate
+    ).format('YYYY.MM.DD')}`;
   }
 
   /* 처리일자 :: 승인일자 */
@@ -104,14 +116,20 @@ class AplModel extends NewQueryModel {
 
     if (this.state === AplState.Opened) {
       if (this.updateTime) {
-        approvalDateTime = moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+        approvalDateTime = moment(this.updateTime).format(
+          'YYYY.MM.DD HH:mm:ss'
+        );
       } else {
-        approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+        approvalDateTime = this.allowTime
+          ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss')
+          : '-';
       }
     }
 
     if (this.state === AplState.Rejected) {
-      approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+      approvalDateTime = this.allowTime
+        ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss')
+        : '-';
     }
 
     return approvalDateTime;
@@ -143,21 +161,36 @@ class AplModel extends NewQueryModel {
   }*/
 
   static isBlank(aplModel: AplModel): string {
-    if (!aplModel.title) return '교육명';
-    if (!aplModel.type) return '교육형태';
+    if (!aplModel.title)
+      return getPolyglotText('교육명', '개학등록-승인요청-필수1');
+    if (!aplModel.type)
+      return getPolyglotText('교육형태', '개학등록-승인요청-필수2');
     /*if (!aplModel.typeName) return '교육형태명';*/
-    if (aplModel.type === AplType.Etc && !aplModel.typeName) return '교육형태명';
-    if (!aplModel.collegeId) return 'College';
-    if (!aplModel.channelId) return 'Channel';
+    if (aplModel.type === AplType.Etc && !aplModel.typeName)
+      return getPolyglotText('교육형태명', '개학등록-승인요청-필수3');
+    if (!aplModel.collegeId)
+      return getPolyglotText('College', '개학등록-승인요청-필수4');
+
+    if (!aplModel.channelId)
+      return getPolyglotText('Channel', '개학등록-승인요청-필수5');
     /*if (!aplModel.channelId) return 'Channel';*/
-    if (!aplModel.period.startDateMoment) return '교육시작일자';
-    if (!aplModel.period.endDateMoment) return '교육종료일자';
-    if (!aplModel.institute) return '교육기관';
-    if ((Number(aplModel.requestHour) === 0 && Number(aplModel.requestMinute) === 0)) return '교육시간';
+    if (!aplModel.period.startDateMoment)
+      return getPolyglotText('교육시작일자', '개학등록-승인요청-필수6');
+    if (!aplModel.period.endDateMoment)
+      return getPolyglotText('교육종료일자', '개학등록-승인요청-필수7');
+    if (!aplModel.institute)
+      return getPolyglotText('교육기관', '개학등록-승인요청-필수8');
+    if (
+      Number(aplModel.requestHour) === 0 &&
+      Number(aplModel.requestMinute) === 0
+    )
+      return getPolyglotText('교육시간', '개학등록-승인요청-필수9');
     //if (!aplModel.requestHour) return '교육시간(시)';
     //if (!aplModel.requestMinute) return '교육시간(분)';
-    if (!aplModel.content) return '교육내용';
-    if (!aplModel.approvalId) return '승인자';
+    if (!aplModel.content)
+      return getPolyglotText('교육내용', '개학등록-승인요청-필수10');
+    if (!aplModel.approvalId)
+      return getPolyglotText('승인자', '개학등록-승인요청-필수11');
     // if (!aplModel.fileIds) return '첨부파일';
     return 'success';
   }
@@ -216,9 +249,7 @@ class AplModel extends NewQueryModel {
       content: aplModel.content,
       state: aplModel.state,
       creationTime: aplModel.creationTime,
-      creatorId:
-        SkProfileService.instance.skProfile.member.email ||
-        '',
+      creatorId: SkProfileService.instance.skProfile.member.email || '',
       creatorName:
         SkProfileService.instance.skProfile.member.name ||
         patronInfo.getPatronName() ||
@@ -245,7 +276,10 @@ class AplModel extends NewQueryModel {
       교육명: aplModel.title || '-',
       교육형태: aplModel.typeName || '-',
       Channel: aplModel.channelName || '-',
-      교육기간: moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss') + '~' + moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
+      교육기간:
+        moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss') +
+          '~' +
+          moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
       교육시간: aplModel.requestHour + ':' + aplModel.requestMinute || '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplModel.state).get(
