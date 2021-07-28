@@ -20,6 +20,7 @@ import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { CardCategory } from '../../shared/model/CardCategory';
 import { SearchExpert } from '../model/SearchExpert';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   isOnFilter: boolean;
@@ -27,7 +28,7 @@ interface Props {
   closeOnFilter?: () => void;
 }
 
-const SELECT_ALL = 'Select All';
+const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 const InitialConditions: FilterCondition = {
   all_college_name_query: [],
   cube_type_query: [],
@@ -686,8 +687,11 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
   }
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
-      title: '검색',
-      message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+      title: getPolyglotText('검색', '통검-필레팝얼-검색'),
+      message: getPolyglotText(
+        '두 글자 이상 입력 후 검색하셔야 합니다.',
+        '통검-필레팝얼-두글자'
+      ),
     });
     return;
   }
@@ -719,8 +723,11 @@ const SearchFilter: React.FC<Props> = ({
     }
     if (decodedSearchValue.replace(/ /g, '').length < 2) {
       reactAlert({
-        title: '검색',
-        message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+        title: getPolyglotText('검색', '통검-필레팝얼-검색2'),
+        message: getPolyglotText(
+          '두 글자 이상 입력 후 검색하셔야 합니다.',
+          '통검-필레팝얼-두글자2'
+        ),
       });
       return;
     }
@@ -1062,14 +1069,14 @@ const SearchFilter: React.FC<Props> = ({
   return (
     <div className={classNames('filter-table', isOnFilter ? 'on' : '')}>
       <div className="title">
-        Filter
+        <PolyglotText id="통검-필레팝-타이틀" defaultString="Filter" />
         <a className="result-button">
           {/* <img src={ResultBtn} alt="btn" className="result-btn-img" /> */}
           <span
             className="result-text"
             onClick={() => search(searchValue, closeOnFilter)}
           >
-            결과보기
+            <PolyglotText id="통검-필레팝-결과1" defaultString="결과보기" />
           </span>
         </a>
       </div>
@@ -1174,7 +1181,7 @@ const SearchFilter: React.FC<Props> = ({
                 className={`btn_filter_extend ${cpOpened ? 'open' : ''}`}
                 onClick={() => setCpOpened(!cpOpened)}
               >
-                펼치기
+                <PolyglotText id="통검-필레팝-펼치기" defaultString="펼치기" />
               </button>
               {/*<button type="button" className="btn_filter_extend">펼치기</button>*/}
             </th>
@@ -1551,7 +1558,12 @@ const SearchFilter: React.FC<Props> = ({
               <div className="calendar-cell">
                 <div className="ui h40 calendar" id="rangeStart">
                   <div className="ui input right icon">
-                    <label>시작일</label>
+                    <label>
+                      <PolyglotText
+                        id="통검-필레팝-시작일"
+                        defaultString="시작일"
+                      />
+                    </label>
                     <DatePicker
                       selected={filterCondition.learning_start_date_str}
                       onChange={(learning_start_date_str) => {
@@ -1645,7 +1657,12 @@ const SearchFilter: React.FC<Props> = ({
                 <span className="dash">-</span>
                 <div className="ui h40 calendar" id="rangeEnd">
                   <div className="ui input right icon">
-                    <label>종료일</label>
+                    <label>
+                      <PolyglotText
+                        id="통검-필레팝-종료일"
+                        defaultString="종료일"
+                      />
+                    </label>
                     <DatePicker
                       selected={filterCondition.learning_end_date_str}
                       onChange={(learning_end_date_str) => {
@@ -1748,7 +1765,10 @@ const SearchFilter: React.FC<Props> = ({
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  const text = '수강신청 가능 학습만 보기';
+                  const text = getPolyglotText(
+                    '수강신청 가능 학습만 보기',
+                    '통검-필레팝-날짜옵션'
+                  );
                   if (mFilterCondition.applying) {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1790,7 +1810,12 @@ const SearchFilter: React.FC<Props> = ({
                   <Icon className="reset" />
                   <span className="blind">reset</span>
                 </button>
-                <span>전체해제</span>
+                <span>
+                  <PolyglotText
+                    id="통검-필레팝-전체해제"
+                    defaultString="전체해제"
+                  />
+                </span>
               </th>
               <td>
                 {tags.map((tag, index) => (
@@ -1813,7 +1838,7 @@ const SearchFilter: React.FC<Props> = ({
             search(searchValue, closeOnFilter);
           }}
         >
-          결과보기
+          <PolyglotText id="통검-필레팝-결과보기" defaultString="결과보기" />
         </a>
       </div>
     </div>
