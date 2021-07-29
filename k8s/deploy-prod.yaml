@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-front
+  name: user
   labels:
-    app: user-front
+    app: user
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: user-front
+      app: user
   template:
     metadata:
       labels:
-        app: user-front
+        app: user
     spec:
       containers:
-      - name: user-front
+      - name: user
         image: sk-university-dev-registry.cloudzcp.io/sk-university/user-front:236
         ports:
         - containerPort: 80
