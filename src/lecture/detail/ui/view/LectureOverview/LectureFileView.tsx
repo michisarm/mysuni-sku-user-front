@@ -38,12 +38,13 @@ const LectureFileView: React.FC<LectureFileViewProps> = function LectureFileView
                   </a>
                 </div>
               ))}
-              <div className="all-down">
+              {/* 전체 다운로드 시, 성능 이슈로 인해 임시로 전체 다운로드 숨김 처리함. 차후 로딩 UI 적용 예정 */}
+              {/* <div className="all-down">
                 <a onClick={allFilesDownload}>
                   <Icon className="icon-down-type4" />
                   <span>전체 다운로드</span>
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </List.Item>
