@@ -263,7 +263,11 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
             </Button>
             {/* go_lotto에서 show 클래스 여부에 따라 버튼 노출/비노출 */}
           </div>
-          <div className={`enddim2 ${isAfterFlag() && 'show'}`}>
+          <div
+            className={`enddim2 ${
+              isAfterFlag(attendEventItem?.endTime) && 'show'
+            }`}
+          >
             {/* enddim2 에 show 클래스 추가시 종료 안내글 노출됩니다*/}
             <div className="dim_inner">
               <span className="endimg">
