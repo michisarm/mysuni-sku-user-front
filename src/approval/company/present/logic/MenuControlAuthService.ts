@@ -22,7 +22,9 @@ export default class MenuControlAuthService {
   @action
   async findMenuControlAuth(companyCode: string | undefined) {
     //
-    const menuControlAuth = await this.menuControlAuthApi.findMenuControlAuth(companyCode);
+    const menuControlAuth = await this.menuControlAuthApi.findMenuControlAuth(
+      companyCode
+    );
 
     runInAction(() => {
       this.menuControlAuth = menuControlAuth;
@@ -31,11 +33,13 @@ export default class MenuControlAuthService {
   }
 
   @action
-  changeMenuControlAuthProps(name: string, value: string | {} | string[] | undefined) {
+  changeMenuControlAuthProps(
+    name: string,
+    value: string | {} | string[] | undefined
+  ) {
     //
     this.menuControlAuth = _.set(this.menuControlAuth, name, value);
   }
-
 }
 
 Object.defineProperty(MenuControlAuthService, 'instance', {

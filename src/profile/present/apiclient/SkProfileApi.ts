@@ -10,12 +10,14 @@ import ProfileInfoModel from '../../../../src/layout/UserApp/model/ProfileInfoMo
 const BASE_URL = '/api/profile/profiles';
 
 export function registerPisAgreement(pisAgreementSdo: PisAgreementSdo) {
-  const url = '/api/profile/pisAgreements';
+  const url = 'api/user/users/pisAgreement';
+  // const url = '/api/profile/pisAgreements';
   return axios.post(url, pisAgreementSdo).then(AxiosReturn);
 }
 
 export function findMyPisAgreement(agreementFormId: string, serviceId: string) {
-  const url = `/api/profile/pisAgreements/myPisAgreement/${agreementFormId}/${serviceId}`;
+  // const url = `/api/profile/pisAgreements/myPisAgreement/${agreementFormId}/${serviceId}`;
+  const url = `api/user/users/pisAgreement/my?aggrementFormId=${agreementFormId}&serviceId=${serviceId}`;
   return axios.get<CpPisAgreementModel>(url).then(AxiosReturn);
 }
 
@@ -41,10 +43,12 @@ export default class SkProfileApi {
 
   // User 본인 상세보기
   findSkProfile() {
-    return axios
-      // .get<SkProfileModel>(`${this.URL}`)
-      .get<SkProfileModel>(`/api/user/users`)
-      .then((response) => (response && response.data) || null);
+    return (
+      axios
+        // .get<SkProfileModel>(`${this.URL}`)
+        .get<SkProfileModel>(`/api/user/users`)
+        .then((response) => (response && response.data) || null)
+    );
   }
 
   // 본인 정보 수정
@@ -55,10 +59,12 @@ export default class SkProfileApi {
 
   // 본인 StudySummary 조회
   findStudySummary() {
-    return axios
-      // .get<StudySummaryModel>(this.URL + '/summary')
-      .get<StudySummaryModel>('api/user/users/additionalInfo')
-      .then((response) => (response && response.data) || null);
+    return (
+      axios
+        // .get<StudySummaryModel>(this.URL + '/summary')
+        .get<StudySummaryModel>('api/user/users/additionalInfo')
+        .then((response) => (response && response.data) || null)
+    );
   }
 
   // 본인 studysummary 등록 - 로그인시 skprofile에 생성된 studySummary update
@@ -78,10 +84,12 @@ export default class SkProfileApi {
   }
 
   findProfiles(denizenKeys: string[]) {
-    return axios
-      // .post<string[]>(this.URL + '/byDenizenKeys', denizenKeys) 
-      .post<string[]>('api/user/users/byDenizenIds', denizenKeys)
-      .then((response: any) => (response && response.data) || []);
+    return (
+      axios
+        // .post<string[]>(this.URL + '/byDenizenKeys', denizenKeys)
+        .post<string[]>('api/user/users/byDenizenIds', denizenKeys)
+        .then((response: any) => (response && response.data) || [])
+    );
   }
 }
 
