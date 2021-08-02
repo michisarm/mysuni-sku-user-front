@@ -61,7 +61,8 @@ export function findBadgesByBadgeIssueState(
 export function findAllFollow(
 ): Promise<string[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow`;
+  // const url = `${BASE_URL_Follow}/flow`;
+  const url = `/api/community/follows`;
 
   return axios
     .get<string[]>(url)
@@ -72,7 +73,8 @@ export function followMember(
   memberId: string,
 ): Promise<FollowModel | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow/${memberId}`;
+  // const url = `${BASE_URL_Follow}/flow/${memberId}`;
+  const url = `/api/community/follows?followingId=${memberId}`;
   return axios
     .post<FollowModel>(url)
     .then(AxiosReturn);
@@ -83,7 +85,8 @@ export function unfollowMember(
   memberId: string,
 ): Promise<FollowModel | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow/${memberId}/unfollow`;
+  // const url = `${BASE_URL_Follow}/flow/${memberId}/unfollow`;
+  const url = `/api/community/follows?followingId=${memberId}`;
   return axios
     .delete<FollowModel>(url)
     .then(AxiosReturn);
@@ -91,6 +94,7 @@ export function unfollowMember(
 
 export function findProfilePhoto(denizenKeys: string[]) {
   const axios = getAxios();
-  return axios.post<string[]>('/api/profile/profiles/byDenizenKeys', denizenKeys)
+  // return axios.post<string[]>('/api/profile/profiles/byDenizenKeys', denizenKeys)
+  return axios.post<string[]>('api/user/users/byDenizenIds', denizenKeys)
     .then((response: any) => response && response.data || []);
 }

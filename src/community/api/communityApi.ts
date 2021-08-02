@@ -38,7 +38,7 @@ export function registerCommunityCommentPost(title: string): Promise<string> {
       audienceKey: '',
       sourceEntity: { id: 'post', name: 'post' },
     })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function registerPost(
@@ -48,7 +48,7 @@ export function registerPost(
   const url = `${BASE_URL}/communities/${communityId}/posts/flow`;
   return axiosApi
     .post<Post>(url, postCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function registerNoticePost(
@@ -58,7 +58,7 @@ export function registerNoticePost(
   const url = `${BASE_URL}/communities/${communityId}/posts/flow/noticePosts`;
   return axiosApi
     .post<Post>(url, postCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function registerAnonymousePost(
@@ -69,7 +69,7 @@ export function registerAnonymousePost(
   const url = `${BASE_URL}/communities/${communityId}/posts/flow/anonymous`;
   return axiosApi
     .post<Post>(url, postCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findPostViewsByMenuId(
@@ -95,8 +95,9 @@ export function findAllPostViewsFromMyCommunities(
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const initLimit = 10;
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset +
-    initLimit}`;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${
+    offset + initLimit
+  }`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -140,12 +141,12 @@ export function findAllPostViews(
 
 export function findPostView(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/post/${postId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
+  return axiosApi.get<Post>(url).then((response) => response && response.data);
 }
 
 export function findPostViewWithRead(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/postWithIncreaseReadCount/${postId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
+  return axiosApi.get<Post>(url).then((response) => response && response.data);
 }
 
 //커뮤니티 - 전체글
@@ -164,7 +165,7 @@ export function findAllPost(
   const url = `${BASE_URL}/postviews/community/${postRdo.communityId}`;
   return axiosApi
     .get<OffsetElementList<Post>>(url, { params })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 //커뮤니티 - 공지사항
@@ -183,7 +184,7 @@ export function findNoticePost(
   const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}`;
   return axiosApi
     .get<OffsetElementList<Post>>(url, { params })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function modifyCommunityPost(
@@ -194,7 +195,7 @@ export function modifyCommunityPost(
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}/nameValues`;
   return axiosApi
     .put<Post>(url, nameValues)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findProfile(): Promise<Profile | undefined> {
@@ -310,7 +311,7 @@ export function findMyMenus(
 
 export function findPostByMenuId(menuId: string): Promise<Post> {
   const url = `${BASE_URL}/post/menu/${menuId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
+  return axiosApi.get<Post>(url).then((response) => response && response.data);
 }
 
 export function findPostByMenuIdAndType(
@@ -318,7 +319,7 @@ export function findPostByMenuIdAndType(
   type: string
 ): Promise<Post> {
   const url = `${BASE_URL}/postviews/post/menu/${menuId}/type/${type}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
+  return axiosApi.get<Post>(url).then((response) => response && response.data);
 }
 
 export function deleteCommunityPost(
@@ -326,7 +327,7 @@ export function deleteCommunityPost(
   postId: string
 ): Promise<Post> {
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
-  return axiosApi.delete(url).then(response => response && response.data);
+  return axiosApi.delete(url).then((response) => response && response.data);
 }
 // follow main **********************************************************
 export function followPostList(
@@ -336,14 +337,15 @@ export function followPostList(
   const url = `${BASE_URL}/postviews/followers?offset=${offset}&limit=${limit}`;
   return axiosApi
     .get<OffsetElementList<Post>>(url)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 export function followList(
   offset: number,
   limit: number,
   nickName: string
 ): Promise<OffsetElementList<FollowCommunityItem> | undefined> {
-  const url = `/api/profile/profiles/following?nickName=${nickName}`;
+  const url = `/api/community/follows/followings?nickName=${nickName}`;
+  // const url = `/api/profile/profiles/following?nickName=${nickName}`;
   return axiosApi
     .get<OffsetElementList<FollowCommunityItem>>(url)
     .then(AxiosReturn);
@@ -356,7 +358,8 @@ export function followingsModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
   // const url = `${BASE_URL}/profileviews/following`;
-  const url = `/api/profile/profiles/following`;
+  // const url = `/api/profile/profiles/following`;
+  const url = `/api/community/follows/followings`;
   return axiosApi
     .get<OffsetElementList<FollowModalItem>>(url)
     .then(AxiosReturn);
@@ -366,7 +369,8 @@ export function followersModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
   // const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
-  const url = `/api/profile/profiles/follow?limit=100&offset=0`;
+  // const url = `/api/profile/profiles/follow?limit=100&offset=0`;
+  const url = `/api/community/follows?limit=100&offset=0`;
   return axiosApi.get(url).then(AxiosReturn);
 }
 
@@ -386,7 +390,7 @@ export function findMenu(
   menuId: string
 ): Promise<CommunityMenu> {
   const url = `${BASE_URL}/${communityId}/menus/${menuId}`;
-  return axiosApi.get(url).then(response => {
+  return axiosApi.get(url).then((response) => {
     return response && response.data;
   });
 }
@@ -421,7 +425,7 @@ export function findAllPostViewsFromProfileBookmark(
 //커뮤니티 - 그룹장리스트
 export function findNoticePostGroupManager(communityId: string): Promise<any> {
   const url = `${BASE_URL}/groupviews/groupList?communityId=${communityId}`;
-  return axiosApi.get(url).then(response => {
+  return axiosApi.get(url).then((response) => {
     return response && response.data;
   });
 }
@@ -429,7 +433,7 @@ export function findNoticePostGroupManager(communityId: string): Promise<any> {
 //커뮤니티 - 그룹리스트
 export function getCommunityGroups(communityId: string): Promise<any> {
   const url = `${BASE_URL}/communities/${communityId}/groups`;
-  return axiosApi.get(url).then(response => {
+  return axiosApi.get(url).then((response) => {
     return response && response.data;
   });
 }
@@ -442,7 +446,8 @@ export function saveCommunityAdminMenu(
 ): Promise<any> {
   if (
     params.id === selectedRow.id &&
-    (selectedRow.type === 'DISCUSSION' || selectedRow.type === 'ANODISCUSSION') &&
+    (selectedRow.type === 'DISCUSSION' ||
+      selectedRow.type === 'ANODISCUSSION') &&
     (params.type === 'DISCUSSION' || params.type === 'ANODISCUSSION')
   ) {
     const discussMenuParams = {
@@ -459,14 +464,16 @@ export function saveCommunityAdminMenu(
     };
 
     const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
-    return axiosApi.put(url, discussMenuParams).then(response => {
+    return axiosApi.put(url, discussMenuParams).then((response) => {
       return response && response.data;
     });
-  }else{
+  } else {
     const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-    return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
-      return response && response.data;
-    });
+    return axiosApi
+      .put(url, { nameValues: params.nameValues })
+      .then((response) => {
+        return response && response.data;
+      });
   }
 }
 
@@ -476,7 +483,7 @@ export function deleteCommunityAdminMenu(
 ): Promise<any> {
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus/${params}`;
-  return axiosApi.delete(url).then(response => {
+  return axiosApi.delete(url).then((response) => {
     return response && response.data;
   });
 }
@@ -487,7 +494,7 @@ export function addCommunityAdminMenu(
 ): Promise<any> {
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus`;
-  return axiosApi.post(url, addRow).then(response => {
+  return axiosApi.post(url, addRow).then((response) => {
     return response && response.data;
   });
 }
@@ -503,14 +510,14 @@ export function addCommunityAdminDiscussion(
     groupId: addRow.groupId === null ? '' : addRow.groupId,
   };
 
-  return axiosApi.post(url, params).then(response => {
+  return axiosApi.post(url, params).then((response) => {
     return response && response.data;
   });
 }
 
 export function findCommunitySurvey(params: any): Promise<any> {
   const url = `/api/survey/surveyForms/searchKey?`;
-  return axiosApi.get(url, { params }).then(response => {
+  return axiosApi.get(url, { params }).then((response) => {
     return response;
   });
 }
@@ -518,7 +525,7 @@ export function findCommunitySurvey(params: any): Promise<any> {
 export function findPostMenuDiscussion(menuId: string): Promise<any> {
   return axiosApi
     .get<any>(`${BASE_URL}/post/menu/${menuId}`)
-    .then(response => response && response.data && response.data);
+    .then((response) => response && response.data && response.data);
 }
 
 export function findMenuDiscussionFeedBack(
@@ -526,19 +533,19 @@ export function findMenuDiscussionFeedBack(
 ): Promise<any> {
   return axiosApi
     .get(`${FEEDBACK_URL}/feedback/${commentFeedbackId}/comment`)
-    .then(response => response && response.data && response.data);
+    .then((response) => response && response.data && response.data);
 }
 
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   const url = `/api/survey/surveyForms/${surveyId}`;
-  return axiosApi.get(url).then(response => {
+  return axiosApi.get(url).then((response) => {
     return response;
   });
 }
 
 export function setCommunityMenuOrder(communityId: string): Promise<any> {
   const url = `/api/community/${communityId}/menus/order`;
-  return axiosApi.put(url).then(response => {
+  return axiosApi.put(url).then((response) => {
     return response;
   });
 }
@@ -549,7 +556,7 @@ export function deleteMember(
 ): Promise<string> {
   return axiosApi
     .put(`${BASE_URL}/communities/${communityId}/members/flow/draw/${memberId}`)
-    .then(response => response && 'success');
+    .then((response) => response && 'success');
 }
 export function rejectMember(
   communityId: string,
@@ -559,5 +566,5 @@ export function rejectMember(
     .put(
       `${BASE_URL}/communities/${communityId}/members/flow/reject/${memberId}`
     )
-    .then(response => response && 'success');
+    .then((response) => response && 'success');
 }
