@@ -4,7 +4,9 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PostRdo from '../../model/PostRdo';
 import { getCommunityPostList } from '../../service/useCommunityPostCreate/utility/getCommunityPostList';
-import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
+import CommunityPostListContainer, {
+  SearchType,
+} from '../logic/CommunityPostListContainer';
 
 interface Params {
   communityId: string;
@@ -13,8 +15,9 @@ interface Params {
 
 function PostsPage() {
   const { communityId, menuId } = useParams<Params>();
+  window.location.href = `/suni-community/community/${communityId}/board/${menuId}`;
   useEffect(() => {
-    requestCommunityMenus(communityId);  // 메뉴 클릭시 재호출
+    requestCommunityMenus(communityId); // 메뉴 클릭시 재호출
 
     const params: PostRdo = {
       title: '',
@@ -26,12 +29,19 @@ function PostsPage() {
       menuId,
       communityId,
       sort: 'createdTime',
-      pinned: false
+      pinned: false,
     };
     getCommunityPostList(params);
   }, [communityId, menuId]);
 
-  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string, offset?: number, limit?: number) => {
+  const onSearch = (
+    sortType: string,
+    pinned: boolean,
+    searchType: SearchType,
+    searchText: string,
+    offset?: number,
+    limit?: number
+  ) => {
     const param: PostRdo = {
       title: '',
       html: '',
@@ -55,11 +65,13 @@ function PostsPage() {
     }
 
     getPostListMapFromCommunity(param);
-  }
+  };
 
   return (
     <CommunityPostListContainer
-      handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}
+      handelOnSearch={(sortType, pinned, searchType, searchText) =>
+        onSearch(sortType, pinned, searchType, searchText)
+      }
     />
   );
 }

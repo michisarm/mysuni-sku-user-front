@@ -89,23 +89,18 @@ function MyTrainingListView({
     }
     const collegeName = () => {
       // 김민준
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find(
-          (college) => college.id === myTraining.category.college.id
-        )?.name;
+      if (myTraining.category && myTraining.category.collegeId) {
+        const findCollege = colleges?.find(
+          (college) => college.id === myTraining.category.collegeId
+        );
+        if (findCollege?.name !== undefined) {
+          return parsePolyglotString(findCollege.name);
+        }
       }
 
       return '';
     };
-    const collegeName2 = () => {
-      // 김민준
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find((college) => college.id === myTraining.collegeId)
-          ?.name;
-      }
 
-      return '';
-    };
     return (
       // 김민준
       <>
@@ -114,7 +109,7 @@ function MyTrainingListView({
         <Table.Cell className="title">
           <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
-              {myTraining.name && parsePolyglotString(myTraining.name)}
+              {parsePolyglotString(myTraining.name)}
             </span>
             {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
@@ -136,8 +131,8 @@ function MyTrainingListView({
       myTraining.learningTime
     );
     const collegeName = () => {
-      if (myTraining.category && myTraining.category.college) {
         // 김민준
+      if (myTraining.category && myTraining.category.collegeId) {
         return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
       }

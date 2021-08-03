@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import AplService from 'myTraining/present/logic/AplService';
@@ -7,7 +6,7 @@ import AplDetailContainer from '../logic/AplDetailContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
 import { useParams } from 'react-router-dom';
 import { mobxHelper } from '@nara.platform/accent';
-
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   aplService?: AplService;
@@ -37,8 +36,8 @@ function AplDetailPageV2(props: Props) {
   return (
     <ContentLayout
       breadcrumb={[
-        { text: '승인관리' },
-        { text: '개인학습' }
+        { text: getPolyglotText('승인관리', '승인관리-mifa-승인관리') },
+        { text: getPolyglotText('개인학습', '승인관리-mifa-개인학습') },
       ]}
     >
       <MyApprovalContentHeader model={apl} />
@@ -47,6 +46,6 @@ function AplDetailPageV2(props: Props) {
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.aplService'
-))(observer(AplDetailPageV2));
+export default inject(mobxHelper.injectFrom('myTraining.aplService'))(
+  observer(AplDetailPageV2)
+);

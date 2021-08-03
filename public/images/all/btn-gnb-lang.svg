@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>67DB8818-9B91-4D0D-AA5C-67CC70DC83EB</title>
+    <defs>
+        <circle id="path-1" cx="10.5" cy="10.5" r="10.5"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Language_1_LA-GN-10_A" transform="translate(-1264.000000, -20.000000)">
+            <g id="btn_Language" transform="translate(1264.000000, 20.000000)">
+                <g id="Group-5-+-Group-5-Mask" transform="translate(7.500000, 7.500000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <circle stroke="#222222" cx="10.5" cy="10.5" r="10"></circle>
+                    <g id="Group-5" mask="url(#mask-2)">
+                        <g transform="translate(0.500000, 0.750000)">
+                            <path d="M8.6216774,0 C6.2072258,3.29823596 5,6.57016141 5,9.81577635 C5,13.0613913 6.2072258,16.2894658 8.6216774,19.5" id="Line" stroke="#222222" stroke-width="1" fill="none" stroke-linecap="round"></path>
+                            <path d="M15,0 C12.6020571,3.29823596 11.4030857,6.57016141 11.4030857,9.81577635 C11.4030857,13.0613913 12.6020571,16.2894658 15,19.5" id="Line" stroke="#222222" stroke-width="1" fill="none" stroke-linecap="round" transform="translate(13.201543, 9.750000) scale(-1, 1) translate(-13.201543, -9.750000) "></path>
+                            <polygon id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(10.000000, 9.750000) rotate(-270.000000) translate(-10.000000, -9.750000) " points="9.52272727 -0.25 10.4772727 -0.25 10.4772727 19.75 9.52272727 19.75"></polygon>
+                        </g>
+                    </g>
+                    <g id="Group-5" mask="url(#mask-2)" stroke="#222222" stroke-linecap="round">
+                        <g transform="translate(10.500000, 10.500000) rotate(-270.000000) translate(-10.500000, -10.500000) translate(4.000000, 0.750000)" id="Line">
+                            <path d="M13,0 C11.6666667,3.29823596 11,6.57016141 11,9.81577635 C11,13.0613913 11.6666667,16.2894658 13,19.5"></path>
+                            <path d="M2,0 C0.666666667,3.29823596 0,6.57016141 0,9.81577635 C0,13.0613913 0.666666667,16.2894658 2,19.5" transform="translate(1.000000, 9.750000) scale(-1, 1) translate(-1.000000, -9.750000) "></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,3 +1,4 @@
+import { Action, ActionType, Area, FieldType } from 'tracker/model/ActionType';
 import React from 'react';
 
 export interface Abtest {
@@ -19,10 +20,12 @@ export interface AbtestParams {
   refererSearch?: string;
   abtest?: string;
   target?: HTMLElement;
+  area?: Area | string;
 }
 
 export enum DATA_TYPES {
   ABTEST = '[data-abtest]',
+  AREA = '[data-area]',
 }
 
 export interface AbtestResult {
@@ -46,6 +49,7 @@ export interface AbtestResultModifyModel {
   type: string;
   action: string;
   url: string;
+  area?: Area | string;
 }
 
 export const initAbtest = () => {

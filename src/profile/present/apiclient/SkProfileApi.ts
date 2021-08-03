@@ -6,6 +6,7 @@ import SkProfileUdo from '../../model/SkProfileUdo';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
 import { CpPisAgreementModel } from '../../model/CpPisAgreementModel';
 import ProfileInfoModel from '../../../../src/layout/UserApp/model/ProfileInfoModel';
+import CommunityProfileModel from '../../model/CommunityProfileModel';
 
 const BASE_URL = '/api/profile/profiles';
 
@@ -38,6 +39,7 @@ export function findUserProfile(
 export default class SkProfileApi {
   //
   URL = '/api/profile/profiles';
+  COMMUNITY_URL = '/api/community/profiles';
 
   static instance: SkProfileApi;
 
@@ -49,6 +51,13 @@ export default class SkProfileApi {
         .get<SkProfileModel>(`/api/user/users`)
         .then((response) => (response && response.data) || null)
     );
+  }
+
+  // User 본인 상세보기
+  findCommunityProfile() {
+    return axios
+      .get<CommunityProfileModel>(`${this.COMMUNITY_URL}`)
+      .then((response) => (response && response.data) || null);
   }
 
   // 본인 정보 수정

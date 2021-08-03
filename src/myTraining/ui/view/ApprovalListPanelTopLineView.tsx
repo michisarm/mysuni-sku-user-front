@@ -88,7 +88,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
     const { selectedList } = approvalCubeService!;
 
     if (selectedList.length < 1) {
-      reactAlert({ title: '알림', message: '반려하실 건을 선택해주세요.' });
+      reactAlert({
+        title: getPolyglotText('알림', '승인관리-유료과정-알림3'),
+        message: getPolyglotText(
+          '반려하실 건을 선택해주세요.',
+          '승인관리-유료과정-반려선택'
+        ),
+      });
       return;
     }
 
@@ -100,7 +106,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
     const { selectedList } = approvalCubeService!;
 
     if (selectedList.length < 1) {
-      reactAlert({ title: '알림', message: '승인하실 건을 선택해주세요.' });
+      reactAlert({
+        title: getPolyglotText('알림', '승인관리-유료과정-알림5'),
+        message: getPolyglotText(
+          '승인하실 건을 선택해주세요.',
+          '승인관리-유료과정-승인선택'
+        ),
+      });
       return;
     }
 

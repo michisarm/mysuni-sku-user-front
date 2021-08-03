@@ -19,6 +19,7 @@ import { MyContentType } from '../model/MyContentType';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import MyStampService from '../../present/logic/MyStampService';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
@@ -70,58 +71,64 @@ function LineHeaderContainerV2({
    }; */
 
   /* handlers */
-  const downloadExcel = useCallback(async (contentType: MyContentType) => {
-    const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(
-      contentType
-    );
-    const lastIndex = myTrainingTableViews.length;
-    let xlsxList: MyXlsxList = [];
-    let filename: MyXlsxFilename = MyXlsxFilename.None;
+  const downloadExcel = useCallback(
+    async (contentType: MyContentType) => {
+      const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(
+        contentType
+      );
+      const lastIndex = myTrainingTableViews.length;
+      let xlsxList: MyXlsxList = [];
+      let filename: MyXlsxFilename = MyXlsxFilename.None;
 
-    switch (contentType) {
-      case MyLearningContentType.InProgress:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(
-            myTrainingTableView.category.college.id
-          );
-          return myTrainingTableView.toXlsxForInProgress(
-            lastIndex - index,
-            collegeName
-          );
-        });
+      switch (contentType) {
+        case MyLearningContentType.InProgress:
+          xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+            const collegeName = getCollgeName(
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
+            );
+            return myTrainingTableView.toXlsxForInProgress(
+              lastIndex - index,
+              collegeName
+            );
+          });
 
-        filename = MyXlsxFilename.InProgress;
-        break;
-      case MyLearningContentType.Completed:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(
-            myTrainingTableView.category.college.id
-          );
-          return myTrainingTableView.toXlsxForCompleted(
-            lastIndex - index,
-            collegeName
-          );
-        });
+          filename = MyXlsxFilename.InProgress;
+          break;
+        case MyLearningContentType.Completed:
+          xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+            const collegeName = getCollgeName(
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
+            );
+            return myTrainingTableView.toXlsxForCompleted(
+              lastIndex - index,
+              collegeName
+            );
+          });
 
-        filename = MyXlsxFilename.Completed;
-        break;
-      case MyPageContentType.EarnedStampList:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(
-            myTrainingTableView.category.college.id
-          );
-          return myTrainingTableView.toXlsxForMyStamp(
-            lastIndex - index,
-            collegeName
-          );
-        });
+          filename = MyXlsxFilename.Completed;
+          break;
+        case MyPageContentType.EarnedStampList:
+          xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+            const collegeName = getCollgeName(
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
+            );
+            return myTrainingTableView.toXlsxForMyStamp(
+              lastIndex - index,
+              collegeName
+            );
+          });
 
-        filename = MyXlsxFilename.EarnedStampList;
-        break;
-    }
+          filename = MyXlsxFilename.EarnedStampList;
+          break;
+      }
 
-    writeExcelFile(xlsxList, filename);
-  }, []);
+      writeExcelFile(xlsxList, filename);
+    },
+    [getModelsForExcel]
+  );
 
   /* render */
   return (

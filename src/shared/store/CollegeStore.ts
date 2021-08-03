@@ -5,7 +5,7 @@ type College = Pick<CollegeModel, 'id' | 'name'>;
 
 const initialStore: College = {
   id: '',
-  name: '',
+  name: { ko: '', cn: '', en: '' },
 };
 
 const [

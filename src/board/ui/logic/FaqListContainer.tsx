@@ -135,9 +135,8 @@ class FaqListContainer extends React.Component<Props, State> {
       >
         <span className="cell title">
           <span className="inner">
-            <span className="ellipsis">
-              {post.title && parsePolyglotString(post.title)}
-            </span>
+            {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
+            <span className="ellipsis">{post.title}</span>
           </span>
         </span>
       </a>
@@ -166,7 +165,8 @@ class FaqListContainer extends React.Component<Props, State> {
                       name="radioGroup"
                       index={index}
                       label={
-                        category.name && parsePolyglotString(category.name)
+                        // category.name && parsePolyglotString(category.name)
+                        category.name
                       }
                       value={category.categoryId}
                       checked={categoryIndex === index}
@@ -208,7 +208,8 @@ class FaqListContainer extends React.Component<Props, State> {
                       name="radioGroup"
                       index={index}
                       label={
-                        category.name && parsePolyglotString(category.name)
+                        // category.name && parsePolyglotString(category.name)
+                        category.name
                       }
                       value={category.categoryId}
                       checked={categoryIndex === index}

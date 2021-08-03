@@ -46,10 +46,10 @@ class AplUdoModel {
   ) {
     return new AplUdoModel(
       apl.id,
-      apl.title ? parsePolyglotString(apl.title) : '',
+      parsePolyglotString(apl.title),
       apl.creatorId,
       apl.creatorName,
-      apl.approvalName,
+      parsePolyglotString(apl.approvalName),
       apl.approvalEmail,
       true,
       allowHour,
@@ -61,10 +61,10 @@ class AplUdoModel {
   public static createForReject(apl: AplModel, causeOfReturn: string) {
     return new AplUdoModel(
       apl.id,
-      apl.title ? parsePolyglotString(apl.title) : '',
+      parsePolyglotString(apl.title),
       apl.creatorId,
       apl.creatorName,
-      apl.approvalName,
+      parsePolyglotString(apl.approvalName),
       apl.approvalEmail,
       false,
       0,

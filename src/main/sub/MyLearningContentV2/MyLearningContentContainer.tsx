@@ -56,34 +56,40 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
         }
         return <LeraningContainer key={i} cardBundle={cardBundle} />;
       })}
-
-      <Abtest name="AB-0" nonExperimentalGroup="A">
-        <ExperimentalGroup name="A">
-          <InProgressLearning profileMemberName={skProfile.profileViewName} />
-        </ExperimentalGroup>
-        <ExperimentalGroup name="B">
-          <InProgressLearning profileMemberName={skProfile.profileViewName} />
-        </ExperimentalGroup>
-      </Abtest>
-
+      <InProgressLearning profileMemberName={skProfile.profileViewName} />
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
       <ChallengingBadge
         // profileMemberName={member.name}
         profileMemberName={skProfile.profileViewName}
       />
-
       <MainBanner />
       <RQDLearning />
-      {cardBundles?.map((cardBundle, i) => {
-        if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
-          return null;
-        }
-        return <LeraningContainer key={i} cardBundle={cardBundle} />;
-      })}
-      <LRSLearning
-        // profileMemberName={member.name}
-        profileMemberName={skProfile.profileViewName}
-      />
+
+      {/* A 신규 -> 인기 -> 추천 (그대로) , B: 추천 -> 인기 -> 신규 */}
+      {cardBundles && (
+        <Abtest name="AB-1" nonExperimentalGroup="A">
+          <ExperimentalGroup name="A">
+            {cardBundles?.map((cardBundle, i) => {
+              if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
+                return null;
+              }
+              return <LeraningContainer key={i} cardBundle={cardBundle} />;
+            })}
+            <LRSLearning profileMemberName={skProfile.profileViewName} />
+          </ExperimentalGroup>
+          <ExperimentalGroup name="B">
+            <LRSLearning profileMemberName={skProfile.profileViewName} />
+            {cardBundles
+              ?.sort((a, b) => a.displayOrder - b.displayOrder)
+              .map((cardBundle, i) => {
+                if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
+                  return null;
+                }
+                return <LeraningContainer key={i} cardBundle={cardBundle} />;
+              })}
+          </ExperimentalGroup>
+        </Abtest>
+      )}
 
       <EnrollingLearning />
     </>

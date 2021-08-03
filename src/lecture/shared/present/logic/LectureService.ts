@@ -28,6 +28,7 @@ import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 import { findCardStudentsByCardIds } from '../../../../certification/api/CardStudentApi';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 
 @autobind
 class LectureService {
@@ -604,7 +605,7 @@ class LectureService {
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
           // 김민준
-          // lectureTableView.name = card.name;
+          lectureTableView.name = card.name;
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -622,7 +623,7 @@ class LectureService {
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
         // 김민준
-        // lectureTableView.name = card.name;
+        lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 
@@ -691,7 +692,7 @@ class LectureService {
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
           // 김민준
-          // lectureTableView.name = card.name;
+          lectureTableView.name = card.name;
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -709,7 +710,7 @@ class LectureService {
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
         // 김민준
-        // lectureTableView.name = card.name;
+        lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 

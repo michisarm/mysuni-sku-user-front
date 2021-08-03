@@ -8,5 +8,8 @@ export function parsePolyglotString(
   polyglotString: PolyglotString,
   languange: 'ko' | 'en' | 'cn' = 'ko'
 ): string {
+  if (polyglotString === null) {
+    return '';
+  }
   return polyglotString[languange];
 }

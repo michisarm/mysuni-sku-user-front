@@ -11,6 +11,7 @@ import {
   findExpert,
   getEmptyQueryOptions,
   QueryOptions,
+  findPreCard,
 } from '../api/searchApi';
 import { createStore } from '../../community/store/Store';
 import moment from 'moment';
@@ -19,6 +20,7 @@ import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { CardCategory } from '../../shared/model/CardCategory';
 import { SearchExpert } from '../model/SearchExpert';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   isOnFilter: boolean;
@@ -26,7 +28,7 @@ interface Props {
   closeOnFilter?: () => void;
 }
 
-const SELECT_ALL = 'Select All';
+const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 const InitialConditions: FilterCondition = {
   all_college_name_query: [],
   cube_type_query: [],
@@ -685,12 +687,15 @@ async function search(searchValue: string, closeOnFilter?: () => void) {
   }
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
-      title: '검색',
-      message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+      title: getPolyglotText('검색', '통검-필레팝얼-검색'),
+      message: getPolyglotText(
+        '두 글자 이상 입력 후 검색하셔야 합니다.',
+        '통검-필레팝얼-두글자'
+      ),
     });
     return;
   }
-  setDisplayCard(filterCard(getCard()));
+  setDisplayCard(await filterCard(getCard()));
   closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {
@@ -718,15 +723,151 @@ const SearchFilter: React.FC<Props> = ({
     }
     if (decodedSearchValue.replace(/ /g, '').length < 2) {
       reactAlert({
-        title: '검색',
-        message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+        title: getPolyglotText('검색', '통검-필레팝얼-검색2'),
+        message: getPolyglotText(
+          '두 글자 이상 입력 후 검색하셔야 합니다.',
+          '통검-필레팝얼-두글자2'
+        ),
       });
       return;
     }
-    const companyCode = localStorage.getItem('nara.companyCode');
-    if (companyCode === null) {
-      return;
-    }
+    findPreCard(decodedSearchValue).then((searchResult) => {
+      if (searchResult === undefined) {
+        setCollegeOptions([]);
+        setOrganizerOptions([]);
+        setCubeTypeOptions([]);
+        return;
+      }
+      const displayCard: SearchCard[] = [];
+      searchResult.result.rows
+        .map((c) => c.fields)
+        .forEach((c) => {
+          const queries = decodedSearchValue
+            .split(' ')
+            .filter((c) => c.trim() !== '');
+          if (c.name !== undefined && c.name !== null) {
+            if (
+              queries.some(
+                (query) =>
+                  query !== undefined &&
+                  query !== null &&
+                  c.name.toLowerCase().includes(query.toLowerCase())
+              )
+            ) {
+              displayCard.push(c);
+            }
+          }
+        });
+      searchResult.result.rows
+        .map((c) => c.fields)
+        .forEach((c) => {
+          if (!displayCard.some((d) => d.id === c.id)) {
+            displayCard.push(c);
+          }
+        });
+      setCard(displayCard);
+      setDisplayCard([...displayCard]);
+      const collegeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { categories },
+          } = c;
+          const category = (
+            JSON.parse(categories) as SearchCardCategory[]
+          ).find((d) => d.mainCategory === 1);
+          if (category !== undefined) {
+            const a = r.find((d) => d.key === category.collegeId);
+            if (a !== undefined) {
+              a.count = (a.count || 0) + 1;
+              a.text = `${a.value}(${a.count})`;
+            } else {
+              r.push({
+                key: category.collegeId,
+                value: getCollgeName(category.collegeId),
+                text: `${getCollgeName(category.collegeId)}(1)`,
+                count: 1,
+              });
+            }
+          }
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCollegeOptions(collegeOptions);
+
+      const organizerOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_organizer_names },
+          } = c;
+          (JSON.parse(cube_organizer_names) as string[]).forEach(
+            (organizer) => {
+              const a = r.find((d) => d.key === organizer);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: organizer,
+                  value: organizer,
+                  text: `${organizer}(1)`,
+                  count: 1,
+                });
+              }
+            }
+          );
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setOrganizerOptions(organizerOptions);
+
+      const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_types },
+          } = c;
+          (JSON.parse(cube_types) as string[])
+            .reduce<string[]>((r, c) => {
+              if (!r.includes(c)) {
+                r.push(c);
+              }
+              return r;
+            }, [])
+            .forEach((cube) => {
+              const a = r.find((d) => d.key === cube);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: cube,
+                  value: cube,
+                  text: `${cube}(1)`,
+                  count: 1,
+                });
+              }
+            });
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCubeTypeOptions(cubeTypeOptions);
+      search(decodedSearchValue);
+    });
+
     findCard(decodedSearchValue).then((searchResult) => {
       if (searchResult === undefined) {
         setCollegeOptions([]);
@@ -928,14 +1069,14 @@ const SearchFilter: React.FC<Props> = ({
   return (
     <div className={classNames('filter-table', isOnFilter ? 'on' : '')}>
       <div className="title">
-        Filter
+        <PolyglotText id="통검-필레팝-타이틀" defaultString="Filter" />
         <a className="result-button">
           {/* <img src={ResultBtn} alt="btn" className="result-btn-img" /> */}
           <span
             className="result-text"
             onClick={() => search(searchValue, closeOnFilter)}
           >
-            결과보기
+            <PolyglotText id="통검-필레팝-결과1" defaultString="결과보기" />
           </span>
         </a>
       </div>
@@ -1040,7 +1181,7 @@ const SearchFilter: React.FC<Props> = ({
                 className={`btn_filter_extend ${cpOpened ? 'open' : ''}`}
                 onClick={() => setCpOpened(!cpOpened)}
               >
-                펼치기
+                <PolyglotText id="통검-필레팝-펼치기" defaultString="펼치기" />
               </button>
               {/*<button type="button" className="btn_filter_extend">펼치기</button>*/}
             </th>
@@ -1417,7 +1558,12 @@ const SearchFilter: React.FC<Props> = ({
               <div className="calendar-cell">
                 <div className="ui h40 calendar" id="rangeStart">
                   <div className="ui input right icon">
-                    <label>시작일</label>
+                    <label>
+                      <PolyglotText
+                        id="통검-필레팝-시작일"
+                        defaultString="시작일"
+                      />
+                    </label>
                     <DatePicker
                       selected={filterCondition.learning_start_date_str}
                       onChange={(learning_start_date_str) => {
@@ -1511,7 +1657,12 @@ const SearchFilter: React.FC<Props> = ({
                 <span className="dash">-</span>
                 <div className="ui h40 calendar" id="rangeEnd">
                   <div className="ui input right icon">
-                    <label>종료일</label>
+                    <label>
+                      <PolyglotText
+                        id="통검-필레팝-종료일"
+                        defaultString="종료일"
+                      />
+                    </label>
                     <DatePicker
                       selected={filterCondition.learning_end_date_str}
                       onChange={(learning_end_date_str) => {
@@ -1614,7 +1765,10 @@ const SearchFilter: React.FC<Props> = ({
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  const text = '수강신청 가능 학습만 보기';
+                  const text = getPolyglotText(
+                    '수강신청 가능 학습만 보기',
+                    '통검-필레팝-날짜옵션'
+                  );
                   if (mFilterCondition.applying) {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1656,7 +1810,12 @@ const SearchFilter: React.FC<Props> = ({
                   <Icon className="reset" />
                   <span className="blind">reset</span>
                 </button>
-                <span>전체해제</span>
+                <span>
+                  <PolyglotText
+                    id="통검-필레팝-전체해제"
+                    defaultString="전체해제"
+                  />
+                </span>
               </th>
               <td>
                 {tags.map((tag, index) => (
@@ -1679,7 +1838,7 @@ const SearchFilter: React.FC<Props> = ({
             search(searchValue, closeOnFilter);
           }}
         >
-          결과보기
+          <PolyglotText id="통검-필레팝-결과보기" defaultString="결과보기" />
         </a>
       </div>
     </div>

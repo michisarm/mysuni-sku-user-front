@@ -10,19 +10,21 @@ interface Params {
 
 function CommunityHtmlPage() {
   const { communityId, menuId } = useParams<Params>();
+  window.location.href = `/suni-community/community/${communityId}/html/${menuId}`;
 
   useEffect(() => {
-    requestCommunityMenus(communityId);  // 메뉴 클릭시 재호출(관리자에서 수정된 html 바로 적용)
-  },[communityId]);
+    requestCommunityMenus(communityId); // 메뉴 클릭시 재호출(관리자에서 수정된 html 바로 적용)
+  }, [communityId]);
 
   const communityHome = useCommunityHome();
   return (
     <>
       {communityHome !== undefined &&
-        communityHome.menus.find(c => c.menuId === menuId) !== undefined && (
+        communityHome.menus.find((c) => c.menuId === menuId) !== undefined && (
           <div
             dangerouslySetInnerHTML={{
-              __html: communityHome.menus.find(c => c.menuId === menuId)!.html,
+              __html: communityHome.menus.find((c) => c.menuId === menuId)!
+                .html,
             }}
           />
         )}

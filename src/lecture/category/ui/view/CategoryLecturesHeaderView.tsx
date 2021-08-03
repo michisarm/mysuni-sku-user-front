@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-
 import { Button } from 'semantic-ui-react';
+import { includes } from 'lodash';
+import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 import { Area } from 'tracker/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+
+const VISIBLE_COLLEGE_IDS = [
+  'CLG00001',
+  'CLG00002',
+  'CLG00003',
+  'CLG00004',
+  'CLG00005',
+  'CLG00006',
+  'CLG00007',
+  'CLG00008',
+  'CLG00019',
+  'CLG0001c',
+  'CLG00020',
+  'CLG00018',
+];
 
 interface Props {
   college: CollegeModel;
@@ -69,55 +85,25 @@ class CategoryLecturesHeaderView extends Component<Props> {
     }
   }
 
-  collegeTabMove(name: string) {
-    switch (name) {
-      case 'AI':
-        return true;
-      case 'DT':
-        return true;
-      case '행복':
-        return true;
-      case 'SV':
-        return true;
-      case '혁신디자인':
-        return true;
-      case 'Global':
-        return true;
-      case 'Leadership':
-        return true;
-      case 'Management':
-        return true;
-      case '미래반도체':
-        return true;
-      case 'Environment':
-        return true;
-      case 'BM Design & Storytelling':
-        return true;
-      case 'SK아카데미':
-        return true;
-      default:
-        return false;
-    }
-  }
-
   render() {
-    //
     const { college, onClickMySuni } = this.props;
+    const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
 
     return (
       <ContentHeader dataArea={Area.COLLEGE_INFO}>
         <ContentHeader.Cell className="thumb">
-          <ThumbnailView icon={this.getThumbnailIcon(college.name)} />
+          <ThumbnailView
+            icon={this.getThumbnailIcon(parsePolyglotString(college.name))}
+          />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="title">
           <TitleView
-            title={`${college.name} College`}
-            subtitle={college.description}
+            title={`${parsePolyglotString(college.name)} College`}
+            subtitle={parsePolyglotString(college.description)}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
-          {/*eslint-disable*/
-          this.collegeTabMove(college.name) === true && (
+          {displayCurriculum === true && (
             <Button
               className="personal line"
               onClick={() => {
@@ -125,12 +111,13 @@ class CategoryLecturesHeaderView extends Component<Props> {
               }}
             >
               <span>
-                <PolyglotText defaultString="College 전체 커리큘럼 보기" id="cicl-mall-clcm" />
+                <PolyglotText
+                  defaultString="College 전체 커리큘럼 보기"
+                  id="cicl-mall-clcm"
+                />
               </span>
             </Button>
-          )
-          /*eslint-enable */
-          }
+          )}
         </ContentHeader.Cell>
       </ContentHeader>
     );

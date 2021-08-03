@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+
 export default {
   hours: [
     { key: '0', text: '00', value: 0 },
@@ -133,15 +135,55 @@ export default {
   ],
 
   aplLearningType: [
-    { key: '0', text: 'Select', value: 'Select' },
-    { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
-    { key: '2', text: 'E-learning', value: 'ELearning' },
-    { key: '3', text: 'Video', value: 'Video' },
-    { key: '4', text: 'Audio', value: 'Audio' },
-    { key: '5', text: 'Community', value: 'Community' },
-    { key: '6', text: 'Web Page', value: 'WebPage' },
-    { key: '7', text: 'Documents', value: 'Documents' },
-    { key: '8', text: 'Experiential', value: 'Experiential' },
-    { key: '9', text: '기타-직접입력', value: 'Etc' },
+    {
+      key: '0',
+      text: getPolyglotText('Select', '개학등록-uisf-sb1'),
+      value: 'Select',
+    },
+    {
+      key: '1',
+      text: getPolyglotText('Classroom', '개학등록-uisf-sb2'),
+      value: 'ClassRoomLecture',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('E-learning', '개학등록-uisf-sb3'),
+      value: 'ELearning',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('Video', '개학등록-uisf-sb4'),
+      value: 'Video',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('Audio', '개학등록-uisf-sb5'),
+      value: 'Audio',
+    },
+    {
+      key: '5',
+      text: getPolyglotText('Community', '개학등록-uisf-sb6'),
+      value: 'Community',
+    },
+    {
+      key: '6',
+      text: getPolyglotText('Web Page', '개학등록-uisf-sb7'),
+      value: 'WebPage',
+    },
+    {
+      key: '7',
+      text: getPolyglotText('Documents', '개학등록-uisf-sb8'),
+      value: 'Documents',
+    },
+    {
+      key: '8',
+      text: getPolyglotText('Experiential', '개학등록-uisf-sb9'),
+      value: 'Experiential',
+    },
+    {
+      key: '9',
+      text: getPolyglotText('기타-직접입력', '개학등록-uisf-sb10'),
+      value: 'Etc',
+    },
   ],
 };

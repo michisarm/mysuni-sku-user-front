@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+
 const SelectOptions = {
   learningType: [
     { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
@@ -440,13 +442,37 @@ const SelectOptions = {
 
   // approval
   approvalSearchDate: [
-    { key: '1', text: '전체', value: '1' },
-    { key: '2', text: '최근 1주일', value: '2' },
-    { key: '3', text: '최근 2주일', value: '3' },
-    { key: '4', text: '최근 1개월', value: '4' },
-    { key: '5', text: '최근 6개월', value: '5' },
-    { key: '6', text: '최근 1년', value: '6' },
-  ]
+    {
+      key: '1',
+      text: getPolyglotText('전체', '승인관리-유료과정-전체'),
+      value: '1',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('최근 1주일', '승인관리-유료과정-1주일'),
+      value: '2',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('최근 2주일', '승인관리-유료과정-2주일'),
+      value: '3',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('최근 1개월', '승인관리-유료과정-1개월'),
+      value: '4',
+    },
+    {
+      key: '5',
+      text: getPolyglotText('최근 6개월', '승인관리-유료과정-6개월'),
+      value: '5',
+    },
+    {
+      key: '6',
+      text: getPolyglotText('최근 1년', '승인관리-유료과정-1년'),
+      value: '6',
+    },
+  ],
 };
 
 export default SelectOptions;

@@ -1,11 +1,12 @@
 import { CardBundleType } from './CardBundleType';
 import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface CardBundle {
   cardIds: string[];
   cards: CardWithCardRealtedCount[];
   displayOrder: number;
-  displayText: string;
+  displayText: PolyglotString;
 
   enabled: boolean;
   id: string;

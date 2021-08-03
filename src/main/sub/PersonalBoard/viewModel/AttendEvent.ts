@@ -1,7 +1,9 @@
 export default interface AttendEvent {
-  startDateTime: string[];
-  endDateTime: string[];
   id: string;
   name: string;
   useYn: boolean;
+  startTime: number;
+  endTime: number;
+  popupStartTime: number;
+  popupEndTime: number;
 }

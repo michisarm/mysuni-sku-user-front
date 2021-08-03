@@ -8,11 +8,7 @@ import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
-import {
-  parsePolyglotString,
-  PolyglotString,
-} from 'shared/viewmodel/PolyglotString';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class PostModel implements DomainEntity {
   //

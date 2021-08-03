@@ -1,4 +1,4 @@
-import { findCommunityProfile } from '../../api/ProfileAPI'
+import { findCommunityProfile } from '../../api/ProfileAPI';
 import {
   setProfileInfoModel,
   getProfileInfoModel,
@@ -6,11 +6,19 @@ import {
 import { profile } from 'console';
 import ProfileInfoModel from '../../model/ProfileInfoModel';
 import { BadgesModel } from '../../model/BadgeModel';
-import { findBadgesByBadgeIssueState, findAllOtherCommunities, findAllPostViewsFromProfileFeed, findProfilePhoto } from '../../api/ProfileInfoAPI';
+import {
+  findBadgesByBadgeIssueState,
+  findAllOtherCommunities,
+  findAllPostViewsFromProfileFeed,
+  findProfilePhoto,
+} from '../../api/ProfileInfoAPI';
 import { findUserProfile } from 'profile/present/apiclient/SkProfileApi';
 
-export async function getProfileInfo(memberId: string | undefined): Promise<void> {
+export async function getProfileInfo(
+  memberId: string | undefined
+): Promise<void> {
   const profileItem: ProfileInfoModel = {
+    id: '',
     name: '',
     company: { id: '', name: '' },
     profileImg: '',
@@ -26,20 +34,22 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
     communityCount: 0,
     isFollow: false,
     isNickname: false,
-
-  }
+  };
   if (memberId !== undefined) {
-    const profileInfo: ProfileInfoModel | undefined = await findUserProfile(memberId);
+    const profileInfo: ProfileInfoModel | undefined = await findUserProfile(
+      memberId
+    );
     if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
       let photoImageFilePath = profileInfo.profileImg;
-      if(!profileInfo.profileImg){
-        const profilePhotos = await findProfilePhoto([memberId])
-        if(profilePhotos && profilePhotos[0]){
+      if (!profileInfo.profileImg) {
+        const profilePhotos = await findProfilePhoto([memberId]);
+        if (profilePhotos && profilePhotos[0]) {
           // photoImageFilePath = "profile/photo" + profilePhotos[0].member?.photoFilename;
-          photoImageFilePath = profilePhotos[0].photoImage
+          photoImageFilePath = profilePhotos[0].photoImage;
         }
       }
-      
+
+      profileItem.id = profileInfo.id;
       profileItem.name = profileInfo.name;
       profileItem.company = profileInfo.company;
       profileItem.profileImg = photoImageFilePath;
@@ -60,15 +70,30 @@ export async function getProfileInfo(memberId: string | undefined): Promise<void
   }
 }
 
-export async function getProfileCount(memberId: string | undefined, startDate: string, endDate: string) {
+export async function getProfileCount(
+  memberId: string | undefined,
+  startDate: string,
+  endDate: string
+) {
   const memberIdValue = memberId === undefined ? '' : memberId;
 
-  const badgeData = await findBadgesByBadgeIssueState(memberIdValue, startDate, endDate);
-  const communityView = await findAllOtherCommunities(memberIdValue, 'createdTime', 0);
-  const postView = await findAllPostViewsFromProfileFeed(memberIdValue, 0)
+  const badgeData = await findBadgesByBadgeIssueState(
+    memberIdValue,
+    startDate,
+    endDate
+  );
+  const communityView = await findAllOtherCommunities(
+    memberIdValue,
+    'createdTime',
+    0
+  );
+  const postView = await findAllPostViewsFromProfileFeed(memberIdValue, 0);
 
-  const result = { badgeCount: badgeData?.totalCount, communityCount: communityView?.totalCount, postCount: postView?.totalCount };
+  const result = {
+    badgeCount: badgeData?.totalCount,
+    communityCount: communityView?.totalCount,
+    postCount: postView?.totalCount,
+  };
 
   return result;
-
 }

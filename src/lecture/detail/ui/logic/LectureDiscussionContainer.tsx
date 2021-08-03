@@ -22,12 +22,22 @@ import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
 import { patronInfo } from '@nara.platform/dock';
 import { reactAlert } from '@nara.platform/accent';
+import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
+import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const fileDownload = (pdf: string, fileId: string) => {
   depot.downloadDepotFile(fileId);
 };
+
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
+}
 
 export default function LectureDiscussionContainer() {
   useRequestLectureDiscussion();
@@ -45,6 +55,8 @@ export default function LectureDiscussionContainer() {
   const originArr: string[] = [];
   let origin: string = '';
   const [feedbackId, setFeedbackId] = useState<string | undefined>('');
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
 
   const commentCountEventHandler = useCallback(async () => {
     async function asyncFun() {
@@ -78,7 +90,7 @@ export default function LectureDiscussionContainer() {
         setCount(comment.count);
       }
 
-      findFeedbackMenu(lectureDiscussion.id).then(res => {
+      findFeedbackMenu(lectureDiscussion.id).then((res) => {
         setLectureFeedbackContent({
           ...res,
         });
@@ -87,13 +99,15 @@ export default function LectureDiscussionContainer() {
     }
     asuncFun();
 
-    return () => setFeedbackId(''); 
+    return () => setFeedbackId('');
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
+    window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('discCommentCount', commentCountEventHandler);
+      window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
 
@@ -131,7 +145,7 @@ export default function LectureDiscussionContainer() {
   }, [lectureFeedbackContent]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
+    depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
@@ -200,7 +214,7 @@ export default function LectureDiscussionContainer() {
     if (lectureFeedbackContent === undefined) return;
 
     // true 이면 null 처리
-    lectureFeedbackContent.relatedUrlList?.map(item => {
+    lectureFeedbackContent.relatedUrlList?.map((item) => {
       if (item.title === '' || item.url === '') {
         setUrlNull(true);
       }
@@ -209,8 +223,26 @@ export default function LectureDiscussionContainer() {
     // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
   }, [lectureFeedbackContent?.relatedUrlList]);
 
+  const clickProfileEventHandler = useCallback(async () => {
+    const id = document.body.getAttribute('selectedProfileId');
+    findCommunityProfile(id!).then((result) => {
+      setProfileInfo({
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, []);
 
-  console.log('OUT feedbackID@@@@@', lectureFeedbackContent?.commentFeedbackId, '|||', feedbackId); 
+  console.log(
+    'OUT feedbackID@@@@@',
+    lectureFeedbackContent?.commentFeedbackId,
+    '|||',
+    feedbackId
+  );
 
   return (
     <>
@@ -241,7 +273,7 @@ export default function LectureDiscussionContainer() {
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
-                      className="discuss-text-belt"
+                      className="discuss-text-belt txtmore"
                       dangerouslySetInnerHTML={{
                         __html: `${lectureFeedbackContent?.content}`,
                       }}
@@ -366,18 +398,29 @@ export default function LectureDiscussionContainer() {
           </div>
 
           {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
-          {(feedbackId !== undefined && feedbackId !== '') && (
-            <CommentList
-              // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
-              feedbackId={feedbackId}
-              hideCamera
-              name={name}
-              email={email}
-              companyName={company}
-              departmentName={department}
-              // cardId={params?.cardId}
-              menuType="discussion"
-            />
+          {feedbackId !== undefined && feedbackId !== '' && (
+            <>
+              <CommentList
+                // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
+                feedbackId={feedbackId}
+                hideCamera
+                name={name}
+                email={email}
+                companyName={company}
+                departmentName={department}
+                // cardId={params?.cardId}
+                menuType="discussion"
+              />
+              <CommunityProfileModal
+                open={profileOpen}
+                setOpen={setProfileOpen}
+                userProfile={profileInfo && profileInfo.profileImg}
+                memberId={profileInfo && profileInfo.id}
+                introduce={profileInfo && profileInfo.introduce}
+                nickName={profileInfo && profileInfo.nickName}
+                name={profileInfo && profileInfo.creatorName}
+              />
+            </>
           )}
         </>
       )}

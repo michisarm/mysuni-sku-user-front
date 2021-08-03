@@ -36,13 +36,17 @@ class InstructorContentHeaderView extends React.Component<Props> {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {memberSummary.name &&
-                    parsePolyglotString(memberSummary.name)}
+                  {
+                    // memberSummary.name && parsePolyglotString(memberSummary.name)
+                    memberSummary.name
+                  }
                 </div>
                 <div className="part">
                   <span>
-                    {memberSummary.department &&
-                      parsePolyglotString(memberSummary.department)}{' '}
+                    {
+                      // memberSummary.department && parsePolyglotString(memberSummary.department)
+                      memberSummary.department
+                    }
                   </span>
                   <span>{instructor.internal ? '사내강사' : '사외강사'}</span>
                 </div>

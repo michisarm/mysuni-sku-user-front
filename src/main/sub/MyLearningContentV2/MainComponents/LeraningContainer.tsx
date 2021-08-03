@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon } from 'semantic-ui-react';
@@ -13,6 +14,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -85,7 +87,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   return (
     <ContentWrapper dataArea={dataArea}>
       <div className="section-head">
-        <strong>{cardBundle?.displayText}</strong>
+        <strong>{parsePolyglotString(cardBundle?.displayText)}</strong>
         <div className="right">
           {cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
@@ -97,7 +99,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
       {cardList.length > 0 ? (
         <Lecture.Group
           type={Lecture.GroupType.Line}
-          dataActionName={cardBundle?.displayText}
+          dataActionName={parsePolyglotString(cardBundle?.displayText)}
         >
           {cardList.map((item, i) => {
             const { card, cardRelatedCount } = item;
@@ -129,7 +131,8 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         <NoSuchContentPanel
           message={
             <div className="text">
-              {cardBundle.displayText}에 해당하는 학습 과정이 없습니다.
+              {parsePolyglotString(cardBundle.displayText)}에 해당하는 학습
+              과정이 없습니다.
             </div>
           }
         />

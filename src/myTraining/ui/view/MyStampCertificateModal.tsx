@@ -152,7 +152,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                   {/* 인증서 영역 끝 */}
                   {/* <Image src={ImgMystamp}/> */}
                   <div className="bottom-button">
-                    {/* <Button 
+                    {/* <Button
                         className="fix line"
                         onClick={this.onClickcertificatePrint}
                       >
@@ -174,8 +174,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                       onClick={() =>
                         this.onClickCertificateImageDownload(
                           myStamp.id,
-                          (myStamp.name && parsePolyglotString(myStamp.name)) ||
-                            '',
+                          parsePolyglotString(myStamp.name),
                           myStamp.time
                         )
                       }

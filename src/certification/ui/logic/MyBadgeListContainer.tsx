@@ -14,6 +14,7 @@ import { BadgeLevel } from '../../model/BadgeLevel';
 import BadgeView from '../view/BadgeView';
 import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
+import MyBadgeModal from '../view/MyBadgeModal';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface MyBadgeListContainerProps {
@@ -43,7 +44,7 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
         selectedLevel={selectedLevel}
         onSelectLevel={onSelectLevel}
       />
-      <div className="badge-list-type">
+      <div className="badge-list-type list-wrapper">
         <ul>
           {(myBadges &&
             myBadges.length > 0 &&
@@ -62,6 +63,7 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                   <div className="badge-name">
                     <span>{myBadge.name}</span>
                   </div>
+                  <MyBadgeModal myBadge={myBadge} />
                 </li>
               );
             })) || (

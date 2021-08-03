@@ -8,6 +8,7 @@ import {
   Card,
   Image,
 } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 // import { Link } from 'react-router-dom';
 
 // internal components
@@ -40,7 +41,11 @@ const ContentsTab: React.FC = () => {
               // as={Link}
               // to="/search/all"
             >
-              전체보기 <span className="count" />
+              <PolyglotText
+                id="통검-요약정보-전체탭"
+                defaultString="전체보기"
+              />
+              <span className="count" />
             </Menu.Item>
             <Menu.Item
               name="LearningCard"
@@ -49,7 +54,11 @@ const ContentsTab: React.FC = () => {
               // as={Link}
               // to="/search/learning-card"
             >
-              학습카드 <span className="count" />
+              <PolyglotText
+                id="통검-요약정보-학카탭"
+                defaultString="학습카드"
+              />
+              <span className="count" />
             </Menu.Item>
             <Menu.Item
               name="Export"
@@ -58,7 +67,8 @@ const ContentsTab: React.FC = () => {
               // as={Link}
               // to="/search/instructor"
             >
-              강사 <span className="count" />
+              <PolyglotText id="통검-요약정보-강사탭" defaultString="강사" />
+              <span className="count" />
             </Menu.Item>
           </Menu>
         </div>

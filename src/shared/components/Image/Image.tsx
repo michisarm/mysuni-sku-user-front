@@ -1,12 +1,18 @@
 import React from 'react';
 import { includes } from 'lodash';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface Props extends Record<string, any> {
-  src: string;
+  src: string | PolyglotString;
 }
 
 function Image({ src, alt, className }: Props) {
   const srcParser = () => {
+    src = typeof src === 'string' ? src : parsePolyglotString(src);
+
     // 절대경로 이거나 base64인 경우
     if (
       src === null ||
@@ -17,11 +23,9 @@ function Image({ src, alt, className }: Props) {
       includes(src, '/static/')
     ) {
       return src;
-
     } else if (includes(src, '/profile/photo/')) {
       // https://mysuni.sk.com, 멤버 사원 이미지
-      return `${process.env.REACT_APP_SK_IM_ROOT_URL}/${src}`;
-      
+      return `${process.env.REACT_APP_SK_IM_ROOT_URL}${src}`;
     }
 
     let next = src.startsWith('/') ? src.substring(1) : src;

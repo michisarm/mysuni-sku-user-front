@@ -132,7 +132,7 @@ function CommunityPostDetailContainer() {
 
   const clickProfileEventHandler = useCallback(async () => {
     const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then(result => {
+    findCommunityProfile(id!).then((result) => {
       setProfileInfo({
         id: result!.id,
         profileImg: result!.profileImg,
@@ -203,7 +203,7 @@ function CommunityPostDetailContainer() {
   });
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
+    depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
@@ -221,7 +221,7 @@ function CommunityPostDetailContainer() {
   const getLikeState = useCallback(() => {
     const memberId = patronInfo.getDenizenId();
     if (memberId != undefined && memberId != '') {
-      getCommunityPostLikeCountByMember(postId, memberId).then(result => {
+      getCommunityPostLikeCountByMember(postId, memberId).then((result) => {
         if (result > 0) {
           setLike(true);
         } else {
@@ -271,7 +271,7 @@ function CommunityPostDetailContainer() {
   const OnClickLike = useCallback(() => {
     const memberId = patronInfo.getDenizenId();
     if (memberId != undefined && memberId != '') {
-      saveCommunityPostLike(postId, memberId).then(result => {
+      saveCommunityPostLike(postId, memberId).then((result) => {
         if (like === true) {
           setLike(false);
           setLikeCount(likeCount - 1);
@@ -283,8 +283,8 @@ function CommunityPostDetailContainer() {
     }
   }, [like, likeCount]);
 
-  const onClickWriter = useCallback(id => {
-    findCommunityProfile(id).then(result => {
+  const onClickWriter = useCallback((id) => {
+    findCommunityProfile(id).then((result) => {
       setProfileInfo({
         id: result!.id,
         profileImg: result!.profileImg,
@@ -375,7 +375,7 @@ function CommunityPostDetailContainer() {
 
   useEffect(() => {
     const findBookmarkPost = communityProfileBookmark?.posts.find(
-      posts => posts.postId === postId
+      (posts) => posts.postId === postId
     );
 
     if (findBookmarkPost) {
@@ -388,7 +388,7 @@ function CommunityPostDetailContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div style={{width: '850px'}}>
+        <div style={{ width: '850px' }}>
           <PostDetailViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -558,22 +558,6 @@ function CommunityPostDetailContainer() {
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
               <div className="paging-list">
-                {postDetail.prevPost && (
-                  <Link to={toUrl('prevPost', postDetail, menuType)}>
-                    <div className="paging-list-box">
-                      <div className="paging-list-icon" />
-                      <h2>이전글</h2>
-                      <h3>{postDetail.prevPost.title}</h3>
-                      <div className="paging-list-span">
-                        <span>
-                          {moment(postDetail.prevPost.createdTime).format(
-                            'YYYY.MM.DD HH:MM'
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                )}
                 {postDetail.nextPost && (
                   <Link to={toUrl('nextPost', postDetail, menuType)}>
                     <div className="paging-list-box">
@@ -583,6 +567,22 @@ function CommunityPostDetailContainer() {
                       <div className="paging-list-span">
                         <span>
                           {moment(postDetail.nextPost.createdTime).format(
+                            'YYYY.MM.DD HH:MM'
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+                {postDetail.prevPost && (
+                  <Link to={toUrl('prevPost', postDetail, menuType)}>
+                    <div className="paging-list-box">
+                      <div className="paging-list-icon" />
+                      <h2>이전글</h2>
+                      <h3>{postDetail.prevPost.title}</h3>
+                      <div className="paging-list-span">
+                        <span>
+                          {moment(postDetail.prevPost.createdTime).format(
                             'YYYY.MM.DD HH:MM'
                           )}
                         </span>

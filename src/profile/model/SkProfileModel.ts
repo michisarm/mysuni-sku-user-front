@@ -30,6 +30,8 @@ class SkProfileModel implements DramaEntity {
   followerCount: number = 0; // 팔로워 숫자
   followingCount: number = 0; // 팔로잉 숫자
   nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+  departmentName: string = '';
+  name: string = '';
 
   constructor(skProfile?: SkProfileModel) {
     //

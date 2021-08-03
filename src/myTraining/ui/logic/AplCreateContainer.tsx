@@ -207,8 +207,7 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts =
-          await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -425,9 +424,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     '교육명을 입력해주세요.',
                     '개학등록-uisf-기본tt'
                   )}
-                  value={
-                    (apl && apl.title && parsePolyglotString(apl.title)) || ''
-                  }
+                  value={(apl && parsePolyglotString(apl.title)) || ''}
                   onChange={(e: any) => {
                     onChangeAplPropsValid('title', e.target.value);
                   }}

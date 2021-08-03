@@ -19,12 +19,17 @@ class MyTrainingTableViewModel {
   id: string = '';
   serviceId: string = '';
   serviceType: string = '';
-  category: CategoryModel = new CategoryModel();
+  // category: CategoryModel = new CategoryModel();
+  category: { categoryId: string; collegeId: string } = {
+    categoryId: '',
+    collegeId: '',
+  };
+
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState?: LearningState;
   cubeType: LearningType = LearningType.None;
   // name: string = '';
-  name: PolyglotString | null = null;
+  name: PolyglotString = { ko: '', en: '', cn: '' };
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
   learningStartDate: number = 0; // 학습시작일
@@ -37,7 +42,6 @@ class MyTrainingTableViewModel {
   type: LearningType = LearningType.None;
   collegeId: string = '';
   useNote?: boolean = false; // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
-
   cubeName: PolyglotString | null = null;
 
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
@@ -55,7 +59,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: (this.name && parsePolyglotString(this.name)) || '-',
+      과정명: parsePolyglotString(this.name) || '-',
       학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
@@ -69,7 +73,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: (this.name && parsePolyglotString(this.name)) || '-',
+      과정명: parsePolyglotString(this.name) || '-',
       학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
@@ -81,7 +85,7 @@ class MyTrainingTableViewModel {
     return {
       No: String(index),
       College: collegeName || '-',
-      과정명: (this.name && parsePolyglotString(this.name)) || '-',
+      과정명: parsePolyglotString(this.name) || '-',
       스탬프: String(this.stampCount),
       획득일자: convertTimeToDate(this.endDate),
     };

@@ -22,7 +22,6 @@ import EmptyIcon from '../../../style/media/survey-empty-btn.png';
 import RadioIcon from '../../../style/media/survay-radio-btn.png';
 import { QuizResult } from 'quiz/model/QuizResult';
 import { reactAlert } from '@nara.platform/accent';
-import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 const VideoQuizContentContainer = ({
   questionData,
@@ -110,13 +109,13 @@ const VideoQuizContentContainer = ({
         const questionAnswers = questionData[
           currentIndex
         ].quizQuestionItems?.filter(
-          questionRow => questionRow.answerItem === true
+          (questionRow) => questionRow.answerItem === true
         );
         const userAnswers = userAnswer?.quizQuestionAnswerItems.filter(
-          userRow => userRow.answerItem === true
+          (userRow) => userRow.answerItem === true
         );
-        const checkedAnswer = questionAnswers?.filter(answer => {
-          if (userAnswers.find(f => f.number === answer.number)) {
+        const checkedAnswer = questionAnswers?.filter((answer) => {
+          if (userAnswers.find((f) => f.number === answer.number)) {
             return answer;
           }
         });
@@ -129,8 +128,8 @@ const VideoQuizContentContainer = ({
           const params = {
             email: currentUser?.email,
             quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
-              .filter(row => row.answerItem === true)
-              .map(row => row.number),
+              .filter((row) => row.answerItem === true)
+              .map((row) => row.number),
             quizQuestionId: questionData[currentIndex]?.id,
           };
           await registerAnswer(params);
@@ -146,21 +145,21 @@ const VideoQuizContentContainer = ({
       ) {
         // 답변 Null Check
         const noAnswerCheck = userAnswer?.quizQuestionAnswerItems.filter(
-          answer => answer.answerItem === true
+          (answer) => answer.answerItem === true
         ).length;
 
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
-            .filter(row => row.answerItem === true)
-            .map(row => row.number),
+            .filter((row) => row.answerItem === true)
+            .map((row) => row.number),
           quizQuestionId: questionData[currentIndex]?.id,
         };
 
         if (noAnswerCheck === 0) {
           reactAlert({
-            title: getPolyglotText('안내', 'Collage-VideoQuiz-안내1'),
-            message: getPolyglotText('답변을 확인해주세요.', 'Collage-VideoQuiz-Subtitle안내1'),
+            title: '안내',
+            message: '답변을 확인해주세요.',
           });
           return;
         }
@@ -184,8 +183,8 @@ const VideoQuizContentContainer = ({
 
         if (noAnswerCheck) {
           reactAlert({
-            title: getPolyglotText('안내', 'Collage-VideoQuiz-안내2'),
-            message: getPolyglotText('답변을 확인해주세요.', 'Collage-VideoQuiz-Subtitle안내2'),
+            title: '안내',
+            message: '답변을 확인해주세요.',
           });
           return;
         }
@@ -311,15 +310,15 @@ const VideoQuizContentContainer = ({
       (questionData[currentIndex].type === 'SingleChoice' ||
         questionData[currentIndex].type === 'MultipleChoice')
     ) {
-      return getPolyglotText('정답 입니다.', 'Collage-VideoQuiz-정답1');
+      return '정답 입니다.';
     } else if (
       questionData[currentIndex].resultView &&
       (questionData[currentIndex].type === 'SingleChoice' ||
         questionData[currentIndex].type === 'MultipleChoice')
     ) {
-      return getPolyglotText('응답이 완료 되었습니다.', 'Collage-VideoQuiz-응답완료1');
+      return '응답이 완료 되었습니다.';
     } else {
-      return getPolyglotText('응답이 완료 되었습니다.', 'Collage-VideoQuiz-응답완료2');
+      return '응답이 완료 되었습니다.';
     }
   };
 
@@ -345,7 +344,7 @@ const VideoQuizContentContainer = ({
           </div>
           <div className="video-quiz-footer" style={{ position: 'absolute' }}>
             <button onClick={onSubmitUserAnswer} className="ui button fix bg">
-              <PolyglotText defaultString="제출하기" id="Collage-VideoQuiz-제출하기" />
+              제출하기
             </button>
           </div>
         </div>
@@ -355,9 +354,7 @@ const VideoQuizContentContainer = ({
       {quizStatus.status && quizStatus.type === 'fail' && questionData && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
-            <h1>
-              <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title2" />
-            </h1>
+            <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
             <div className="imgbox">
@@ -370,36 +367,35 @@ const VideoQuizContentContainer = ({
                 }
               />
             </div>
-            <span className="wro">
-              <PolyglotText defaultString="오답 입니다." id="Collage-VideoQuiz-오답" />
-            </span>
+            <span className="wro">오답 입니다.</span>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
                   questionData[currentIndex].alertMessage.failMessage !== ''
                     ? `${questionData[currentIndex].alertMessage.failMessage}`
-                    : getPolyglotText('다시 확인하고 제출하세요.', 'Collage-VideoQuiz-확인후제출'),
+                    : '다시 확인하고 제출하세요.',
               }}
             />
           </div>
           <div className="video-quiz-footer">
             <button onClick={onCloseQuizPanel} className="ui button fix bg">
-              <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인1" />
+              확인
             </button>
           </div>
         </div>
       )}
 
       {/* 정답 패널 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData &&
+      {quizStatus.status &&
+        quizStatus.type === 'success' &&
+        questionData &&
         //  !questionData[currentIndex].resultView &&
-        questionData[currentIndex].answer && questionData[currentIndex].alertMessage.passMessage !== '' && (
+        questionData[currentIndex].answer &&
+        questionData[currentIndex].alertMessage.passMessage !== '' && (
           <div className="video-quiz-wrap sty2">
             <div className="video-quiz-header">
-              <h1>
-                <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title3" />
-              </h1>
+              <h1>Video QUIZ</h1>
             </div>
             <div className="quiz-content-wrap quiz-center-box">
               <div className="imgbox">
@@ -412,66 +408,75 @@ const VideoQuizContentContainer = ({
                   }
                 />
               </div>
-              <span className="wro">
-                <PolyglotText defaultString="정답 입니다." id="Collage-VideoQuiz-정답2" />
-              </span>
+              <span className="wro">정답 입니다.</span>
               <div
                 className="wro2"
                 dangerouslySetInnerHTML={{
                   __html:
                     questionData[currentIndex].alertMessage.passMessage !== ''
                       ? `${questionData[currentIndex].alertMessage.passMessage}`
-                      : getPolyglotText('딩동댕! 정답입니다.', 'Collage-VideoQuiz-딩동댕'),
+                      : '딩동댕! 정답입니다. ',
                 }}
               />
             </div>
             <div className="video-quiz-footer">
-              <button onClick={onChangeNextQuestion} className="ui button fix bg">
-                <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인2" />
+              <button
+                onClick={onChangeNextQuestion}
+                className="ui button fix bg"
+              >
+                확인
               </button>
             </div>
           </div>
         )}
 
       {/* 답안제출 완료 */}
-      {quizStatus.status && quizStatus.type === 'success' && questionData && (!questionData[currentIndex].answer || questionData[currentIndex].alertMessage.passMessage === '') && (
-        <div className="video-quiz-wrap sty2">
-          <div className="video-quiz-header">
-            <h1>
-              <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title4" />
-            </h1>
-          </div>
-          <div className="quiz-content-wrap quiz-center-box">
-            <div className="imgbox">
-              <img
-                style={{ maxWidth: '100%' }}
-                src={
-                  questionData[currentIndex].alertMessage.passImg
-                    ? `/${questionData[currentIndex].alertMessage.passImg}`
-                    : CompleteIcon
-                }
-              />
+      {quizStatus.status &&
+        quizStatus.type === 'success' &&
+        questionData &&
+        (!questionData[currentIndex].answer ||
+          questionData[currentIndex].alertMessage.passMessage === '') && (
+          <div className="video-quiz-wrap sty2">
+            <div className="video-quiz-header">
+              <h1>Video QUIZ</h1>
             </div>
-            <span className="wro">{successComment()}</span>
-          </div>
-          <div className="video-quiz-footer">
-            {questionData[currentIndex].resultView && (
+            <div className="quiz-content-wrap quiz-center-box">
+              <div className="imgbox">
+                <img
+                  style={{ maxWidth: '100%' }}
+                  src={
+                    questionData[currentIndex].alertMessage.passImg
+                      ? `/${questionData[currentIndex].alertMessage.passImg}`
+                      : CompleteIcon
+                  }
+                />
+              </div>
+              <span className="wro">{successComment()}</span>
+            </div>
+            <div className="video-quiz-footer">
+              {questionData[currentIndex].resultView && (
+                <button
+                  onClick={onChangeResultAnswer}
+                  className="ui button fix bg grey"
+                >
+                  결과보기
+                </button>
+              )}
               <button
-                onClick={onChangeResultAnswer}
-                className="ui button fix bg grey"
+                onClick={onChangeNextQuestion}
+                className="ui button fix bg"
               >
-                <PolyglotText defaultString="결과보기" id="Collage-VideoQuiz-결과보기" />
+                확인
               </button>
-            )}
-            <button onClick={onChangeNextQuestion} className="ui button fix bg">
-              <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인3" />
-            </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* 퀴즈참여 완료 */}
-      {quizStatus.status && quizStatus.type === 'finish' && questionData && onCompleteCurrentQuiz()}
+      {quizStatus.status &&
+        quizStatus.type === 'finish' &&
+        questionData &&
+        onCompleteCurrentQuiz()}
 
       {/* 결과보기 객관식 */}
       {quizStatus.status &&
@@ -508,7 +513,7 @@ const VideoQuizContentContainer = ({
                   dangerouslySetInnerHTML={{
                     __html:
                       `${questionData[currentIndex].subText}` ||
-                      getPolyglotText('다른 분들의 의견을 살펴보세요!', 'Collage-VideoQuiz-다른의견1'),
+                      '다른 분들의 의견을 살펴보세요!',
                   }}
                 />
               </div>
@@ -517,8 +522,10 @@ const VideoQuizContentContainer = ({
                   {questionData[currentIndex].quizQuestionItems?.map(
                     (row, index) => {
                       const myAnswer = resultData?.results
-                        .filter(list => list.memberId === userAnswer?.memberId)
-                        .map(item => item.quizQuestionAnswerItems)
+                        .filter(
+                          (list) => list.memberId === userAnswer?.memberId
+                        )
+                        .map((item) => item.quizQuestionAnswerItems)
                         .flat();
                       const multipleTotal = summaryCount?.reduce(
                         (prev, crr) => prev + crr
@@ -537,7 +544,7 @@ const VideoQuizContentContainer = ({
                               style={{ maxWidth: '100%' }}
                               src={
                                 myAnswer?.includes((index + 1).toString()) ===
-                                  true
+                                true
                                   ? RadioIcon
                                   : EmptyIcon
                               }
@@ -559,54 +566,54 @@ const VideoQuizContentContainer = ({
                                   style={{
                                     width: `${
                                       resultData &&
-                                        quizStatus.type === 'result' &&
-                                        summaryCount &&
-                                        summaryCount[index] &&
-                                        questionData[currentIndex]?.type ===
+                                      quizStatus.type === 'result' &&
+                                      summaryCount &&
+                                      summaryCount[index] &&
+                                      questionData[currentIndex]?.type ===
                                         'SingleChoice'
                                         ? Math.round(
-                                          (summaryCount[index] /
-                                            resultData.totalCount) *
-                                          100
-                                        )
+                                            (summaryCount[index] /
+                                              resultData.totalCount) *
+                                              100
+                                          )
                                         : summaryCount &&
                                           summaryCount[index] &&
                                           questionData[currentIndex]?.type ===
-                                          'MultipleChoice' &&
+                                            'MultipleChoice' &&
                                           multipleTotal
-                                          ? Math.round(
+                                        ? Math.round(
                                             (summaryCount[index] /
                                               multipleTotal) *
-                                            100
+                                              100
                                           )
-                                          : 0
-                                      }%`,
+                                        : 0
+                                    }%`,
                                   }}
                                   className="percent"
                                 />
                               </div>
                               <span style={{ marginLeft: '1rem' }}>
                                 {resultData &&
-                                  quizStatus.type === 'result' &&
-                                  summaryCount &&
-                                  summaryCount[index] &&
-                                  questionData[currentIndex]?.type ===
+                                quizStatus.type === 'result' &&
+                                summaryCount &&
+                                summaryCount[index] &&
+                                questionData[currentIndex]?.type ===
                                   'SingleChoice'
                                   ? Math.round(
-                                    (summaryCount[index] /
-                                      resultData.totalCount) *
-                                    100
-                                  )
+                                      (summaryCount[index] /
+                                        resultData.totalCount) *
+                                        100
+                                    )
                                   : summaryCount &&
                                     summaryCount[index] &&
                                     questionData[currentIndex]?.type ===
-                                    'MultipleChoice' &&
+                                      'MultipleChoice' &&
                                     multipleTotal
-                                    ? Math.round(
+                                  ? Math.round(
                                       (summaryCount[index] / multipleTotal) *
-                                      100
+                                        100
                                     )
-                                    : 0}
+                                  : 0}
                                 <em>%</em>
                               </span>
                             </div>
@@ -638,7 +645,7 @@ const VideoQuizContentContainer = ({
                   onClick={onChangeNextQuestion}
                   className="ui button fix bg"
                 >
-                  <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인4" />
+                  확인
                 </button>
               </div>
             </div>
@@ -679,34 +686,39 @@ const VideoQuizContentContainer = ({
                   dangerouslySetInnerHTML={{
                     __html:
                       `${questionData[currentIndex].subText}` ||
-                      getPolyglotText('다른 분들의 의견을 살펴보세요!', 'Collage-VideoQuiz-다른의견2'),
+                      '다른 분들의 의견을 살펴보세요!',
                   }}
                 />
               </div>
               <div className="quiz-descriptive">
                 {resultData && resultData.results.length > 0
                   ? resultData?.results.map((userList: any, index: number) => (
-                    <div className="descriptive-box" key={index}>
-                      <span>
-                        {userList.email
-                          ?.split('@')[0]
-                          .substr(
-                            0,
-                            userList.email?.split('@')[0].length - 3
-                          ) + '***'}
-                      </span>
-                      <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
-                    </div>
-                  ))
+                      <div className="descriptive-box" key={index}>
+                        <span>
+                          {userList.email
+                            ?.split('@')[0]
+                            .substr(
+                              0,
+                              userList.email?.split('@')[0].length - 3
+                            ) + '***'}
+                        </span>
+                        <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
+                      </div>
+                    ))
                   : null}
-                {resultData && resultData.results.length > 10 && (
-                  <div className="more-comments">
-                    <Button onClick={onLoadMore} icon className="left moreview">
-                      <Icon className="moreview" />
-                      <PolyglotText defaultString="list more" id="Collage-VideoQuiz-listmore" />
-                    </Button>
-                  </div>
-                )}
+                {resultData &&
+                  resultData.totalCount > resultData.results.length && (
+                    <div className="more-comments">
+                      <Button
+                        onClick={onLoadMore}
+                        icon
+                        className="left moreview"
+                      >
+                        <Icon className="moreview" />
+                        list more
+                      </Button>
+                    </div>
+                  )}
               </div>
             </div>
             <div className="video-quiz-footer" style={{ position: 'absolute' }}>
@@ -714,7 +726,7 @@ const VideoQuizContentContainer = ({
                 onClick={onChangeNextQuestion}
                 className="ui button fix bg"
               >
-                <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인5" />
+                확인
               </button>
             </div>
           </div>

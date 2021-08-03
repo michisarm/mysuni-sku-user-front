@@ -8,14 +8,11 @@ import { AplStateName } from '../../model/AplStateName';
 import { AplState } from '../../model/AplState';
 import { useScrollMove } from '../../useScrollMove';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { parse } from 'query-string';
-
 
 interface PersonalCompletedListViewProps {
   apls: AplModel[];
   totalCount: number;
 }
-
 
 export default function PersonalCompletedListView({
   apls,
@@ -27,54 +24,39 @@ export default function PersonalCompletedListView({
   const onViewDetail = (page: string, id: string) => {
     scrollSave();
     history.push(routePaths.approvalPersonalLearningDetail(page, id));
-  }
+  };
 
   return (
     <Table.Body>
-      {
-        apls &&
+      {apls &&
         apls.length > 0 &&
         apls.map((apl, index) => {
           return (
             <Table.Row key={`personalCompleted-list-${index}`}>
-              <Table.Cell>
-                {totalCount - index} 
-              </Table.Cell>
+              <Table.Cell>{totalCount - index}</Table.Cell>
               <Table.Cell className="title">
                 <a href="#" onClick={() => onViewDetail('learning', apl.id)}>
                   <span className="ellipsis">
-                    {apl.title && parsePolyglotString(apl.title)}
+                    {parsePolyglotString(apl.title)}
                   </span>
                 </a>{' '}
               </Table.Cell>
               <Table.Cell>
                 <span className="ellipsis">
-                  {apl.channelName && parsePolyglotString(apl.channelName)}
-                </span> 
+                  {parsePolyglotString(apl.channelName)}
+                </span>
               </Table.Cell>
-              <Table.Cell>
-                {getAllowTime(apl)}
-              </Table.Cell>
-              <Table.Cell>
-                {apl.approvalName}
-              </Table.Cell>
-              <Table.Cell>
-                {apl.approvalEmail}
-              </Table.Cell>
-              <Table.Cell>
-                {AplStateName[apl.state]}
-              </Table.Cell>
-              <Table.Cell>
-                {getApprovalTime(apl)}
-              </Table.Cell>
+              <Table.Cell>{getAllowTime(apl)}</Table.Cell>
+              <Table.Cell>{parsePolyglotString(apl.approvalName)}</Table.Cell>
+              <Table.Cell>{apl.approvalEmail}</Table.Cell>
+              <Table.Cell>{AplStateName[apl.state]}</Table.Cell>
+              <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
             </Table.Row>
           );
-        })
-      }
+        })}
     </Table.Body>
   );
 }
-
 
 const getApprovalTime = (model: AplModel): string => {
   if (model.state === AplState.Opened) {
@@ -88,9 +70,7 @@ const getApprovalTime = (model: AplModel): string => {
   }
 
   if (model.state === AplState.Rejected) {
-    return model.allowTime
-      ? moment(model.allowTime).format('YYYY.MM.DD')
-      : '-';
+    return model.allowTime ? moment(model.allowTime).format('YYYY.MM.DD') : '-';
   }
 
   return '-';

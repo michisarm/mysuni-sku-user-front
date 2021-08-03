@@ -134,7 +134,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     //   reactAlert({ title: '알림', message: '성공입니다.' });
     //   this.routeToCreateList();
     // }
-    reactAlert({ title: '알림', message: '성공입니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', '승인관리-개학승인-알림3'),
+      message: getPolyglotText('성공입니다.', '승인관리-개학승인-성공안내2'),
+    });
     this.routeToCreateList();
   }
 
@@ -154,7 +157,13 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     this.onChangeSelectedStudentProps(newSelectedList);
 
     if (!approvalCube.remark) {
-      reactAlert({ title: '알림', message: '반려 의견을 입력해주세요.' });
+      reactAlert({
+        title: getPolyglotText('알림', '승인관리-개학승인-알림2'),
+        message: getPolyglotText(
+          '반려 의견을 입력해주세요.',
+          '승인관리-개학승인-입력안내'
+        ),
+      });
       return;
     }
 
@@ -190,8 +199,8 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     //   this.routeToCreateList();
     // }
     reactAlert({
-      title: getPolyglotText('알림', '승인관리-개학승인-의견입력'),
-      message: '성공입니다.',
+      title: getPolyglotText('알림', '승인관리-개학승인-알림'),
+      message: getPolyglotText('성공입니다.', '승인관리-개학승인-성공안내'),
     });
     this.routeToCreateList();
   }

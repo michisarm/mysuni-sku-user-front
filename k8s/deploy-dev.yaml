@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
+  name: user-front
   labels:
-    app: user
+    app: user-front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user
+      app: user-front
   template:
     metadata:
       labels:
-        app: user
+        app: user-front
     spec:
       affinity:
         nodeAffinity:
@@ -29,7 +29,7 @@ spec:
                     values:
                       - "user"
       containers:
-      - name: user
+      - name: user-front
         image: dev03/user:0.0.1
         ports:
         - containerPort: 80

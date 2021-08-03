@@ -3,16 +3,17 @@ import CommunityProfileBookmarkContainer from '../logic/CommunityProfileBookmark
 import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 
 function MyProfileBookmarkPage() {
+  window.location.href = '/suni-community/main/bookmark';
 
   useEffect(() => {
     requestProfileBookmarks();
   }, []);
 
-  return (   
+  return (
     <div>
       <CommunityProfileBookmarkContainer />
     </div>
-    );
+  );
 }
 
 export default MyProfileBookmarkPage;

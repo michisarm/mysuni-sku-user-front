@@ -20,13 +20,9 @@ export class AplListViewModel extends AplModel {
     //
     return {
       No: String(index + 1),
-      교육명:
-        (aplListView.title && parsePolyglotString(aplListView.title)) || '-',
+      교육명: parsePolyglotString(aplListView.title) || '-',
       교육형태: aplListView.typeName || '-',
-      Channel:
-        (aplListView.channelName &&
-          parsePolyglotString(aplListView.channelName)) ||
-        '-',
+      Channel: parsePolyglotString(aplListView.channelName) || '-',
       교육기간:
         moment(aplListView.startDate).format('YYYY.MM.DD') +
           '~' +

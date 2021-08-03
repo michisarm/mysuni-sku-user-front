@@ -35,25 +35,23 @@ function getTitle(
 interface Props {
   profileMemberName: string;
 }
-const LRSLearning: React.FC<Props> = Props => {
-  const history = useHistory();
-  //
+const LRSLearning: React.FC<Props> = (Props) => {
   const { profileMemberName } = Props;
-
+  const history = useHistory();
   const [viewModel, setViewModel] = useState<RecommendationViewModel>();
 
   useEffect(() => {
-    findRecommendationCards(PAGE_SIZE).then(next => {
+    findRecommendationCards(PAGE_SIZE).then((next) => {
       if (next !== undefined) {
         setViewModel(next);
       }
     });
   }, []);
 
-  const title = useMemo(() => getTitle(profileMemberName, viewModel), [
-    profileMemberName,
-    viewModel,
-  ]);
+  const title = useMemo(
+    () => getTitle(profileMemberName, viewModel),
+    [profileMemberName, viewModel]
+  );
 
   const onViewAll = () => {
     history.push(myTrainingRoutes.learningLrsLecture());
@@ -66,7 +64,12 @@ const LRSLearning: React.FC<Props> = Props => {
     });
   };
 
-  if (viewModel === undefined) {
+  // 210719 조회되는 cards 가 없을 시, 해당 섹션 보이지 않도록 수정됨.
+  if (
+    viewModel === undefined ||
+    viewModel.cards === undefined ||
+    viewModel.cards.length === 0
+  ) {
     return null;
   }
 

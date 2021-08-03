@@ -6,7 +6,7 @@ class CategoryModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
-
+  // name: string = '';
   name: PolyglotString | null = null;
   boardId: string = '';
   categoryId: string = '';
