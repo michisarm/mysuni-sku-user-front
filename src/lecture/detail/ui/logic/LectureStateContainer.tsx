@@ -24,23 +24,23 @@ function LectureStateContainer() {
 
   const receiveMessage = useCallback(
     async (event: MessageEvent) => {
-      if (lectureWebpage?.url.includes(event.origin)) {
-        if (
-          event.data === 'CubePassed' &&
-          params.cubeId &&
-          lectureState?.cubeType
-        ) {
-          clearFindMyCardRelatedStudentsCache();
-          clearFindCubeDetailCache();
-          setTimeout(() => {
-            requestCardLectureStructure(params.cardId);
-            requestLectureState(
-              params.cardId,
-              params.cubeId || '',
-              lectureState.cubeType
-            );
-          }, 500);
-        }
+      console.log('lectureWebpageURL: ', lectureWebpage?.url);
+      console.log('eventOriginURL: ', event.origin);
+      if (
+        event.data === 'CubePassed' &&
+        params.cubeId &&
+        lectureState?.cubeType
+      ) {
+        clearFindMyCardRelatedStudentsCache();
+        clearFindCubeDetailCache();
+        setTimeout(() => {
+          requestCardLectureStructure(params.cardId);
+          requestLectureState(
+            params.cardId,
+            params.cubeId || '',
+            lectureState.cubeType
+          );
+        }, 500);
       }
     },
     [lectureState?.cubeType, params.cardId, params.cubeId, lectureWebpage]
