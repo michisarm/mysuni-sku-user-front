@@ -84,7 +84,8 @@ function LineHeaderContainerV2({
         case MyLearningContentType.InProgress:
           xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
             const collegeName = getCollgeName(
-              myTrainingTableView.category.college.id
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
             );
             return myTrainingTableView.toXlsxForInProgress(
               lastIndex - index,
@@ -97,7 +98,8 @@ function LineHeaderContainerV2({
         case MyLearningContentType.Completed:
           xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
             const collegeName = getCollgeName(
-              myTrainingTableView.category.college.id
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
             );
             return myTrainingTableView.toXlsxForCompleted(
               lastIndex - index,
@@ -110,7 +112,8 @@ function LineHeaderContainerV2({
         case MyPageContentType.EarnedStampList:
           xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
             const collegeName = getCollgeName(
-              myTrainingTableView.category.college.id
+              // myTrainingTableView.category.college.id
+              myTrainingTableView.category.collegeId
             );
             return myTrainingTableView.toXlsxForMyStamp(
               lastIndex - index,

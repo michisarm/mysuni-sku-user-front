@@ -18,6 +18,7 @@ import dateTimeHelper, {
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
 import { useCollegeStore } from '../../../shared/store/CollegeStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -87,22 +88,18 @@ function MyTrainingListView({
       return null;
     }
     const collegeName = () => {
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find(
-          (college) => college.id === myTraining.category.college.id
-        )?.name;
+      if (myTraining.category && myTraining.category.collegeId) {
+        const findCollege = colleges?.find(
+          (college) => college.id === myTraining.category.collegeId
+        );
+        if (findCollege?.name !== undefined) {
+          return parsePolyglotString(findCollege.name);
+        }
       }
 
       return '';
     };
-    const collegeName2 = () => {
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find((college) => college.id === myTraining.collegeId)
-          ?.name;
-      }
 
-      return '';
-    };
     return (
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
@@ -110,7 +107,7 @@ function MyTrainingListView({
         <Table.Cell className="title">
           <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
-              {myTraining.name}
+              {parsePolyglotString(myTraining.name)}
             </span>
             {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
@@ -132,7 +129,7 @@ function MyTrainingListView({
       myTraining.learningTime
     );
     const collegeName = () => {
-      if (myTraining.category && myTraining.category.college) {
+      if (myTraining.category && myTraining.category.collegeId) {
         return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;
       }

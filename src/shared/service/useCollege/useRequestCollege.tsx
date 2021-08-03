@@ -15,8 +15,6 @@ import CategoryColorType from '../../model/CategoryColorType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 async function requestCollegeAndChannel() {
-  const api = new CollegeApi();
-  // const getCollegeData = await api.findAllCollege();
   const getCollegeData = await findAllCollegeCache();
 
   setCollegeModelStore(getCollegeData);
