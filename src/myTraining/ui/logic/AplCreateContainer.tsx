@@ -45,6 +45,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props
   extends RouteComponentProps<{
@@ -206,8 +207,7 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts =
-          await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -378,7 +378,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     //const collegeSelect = this.setCollege();
     const collegeSelect = this.state.collegeSelect;
     const channelSelect = apl && apl.collegeId && this.setChannel();
-    const titleCount = (apl && apl.title && apl.title.length) || 0;
+    const titleCount =
+      (apl && apl.title && parsePolyglotString(apl.title).length) || 0;
     const typeNameCount = (apl && apl.typeName && apl.typeName.length) || 0;
     const instituteCount = (apl && apl.institute && apl.institute.length) || 0;
     const contentCount = (apl && apl.content && apl.content.length) || 0;
@@ -423,7 +424,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     '교육명을 입력해주세요.',
                     '개학등록-uisf-기본tt'
                   )}
-                  value={(apl && apl.title) || ''}
+                  value={(apl && parsePolyglotString(apl.title)) || ''}
                   onChange={(e: any) => {
                     onChangeAplPropsValid('title', e.target.value);
                   }}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ContentLayout } from 'shared';
@@ -7,6 +8,7 @@ import LearningListContainer from '../logic/LearningListContainer';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export enum ContentType {
   Recommend = 'Recommend',
@@ -31,7 +33,7 @@ function NewLearningPage() {
     const cardBundle = find(cardBundles, { id: type });
 
     if (cardBundle) {
-      setBreadcrumbTItle(cardBundle.displayText);
+      setBreadcrumbTItle(parsePolyglotString(cardBundle.displayText));
       setCardType(cardBundle.type);
     }
   };

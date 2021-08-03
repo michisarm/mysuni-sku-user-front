@@ -1,5 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { CategoryModel, LearningState } from 'shared/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { DifficultyLevel } from './DifficultyLevel';
 import { LearningType } from './LearningType';
 
@@ -9,10 +10,14 @@ class InMyLectureTableViewModel {
   serviceId: string = '';
   serviceType: string = '';
   cardId: string = '';
-  category: CategoryModel = new CategoryModel();
+  category: { categoryId: string; collegeId: string } = {
+    categoryId: '',
+    collegeId: '',
+  };
+
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState: LearningState = LearningState.Progress;
-  name: string = '';
+  name: PolyglotString = { ko: '', en: '', cn: '' };
   cubeType: LearningType = LearningType.None;
   learningTime: number = 0;
   startDate: number = 0;
@@ -22,7 +27,7 @@ class InMyLectureTableViewModel {
   stampCount: number = 0;
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
-  useNote?: boolean = false;  // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
+  useNote?: boolean = false; // 노트 작성 여부 Home > Learning > 학습중 List 에서 아이콘 표현
 
   constructor(inMyLectureTableView?: InMyLectureTableViewModel) {
     if (inMyLectureTableView) {

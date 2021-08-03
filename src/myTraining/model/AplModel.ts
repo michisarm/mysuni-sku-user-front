@@ -10,17 +10,21 @@ import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { AplType } from './AplType';
 import { AplStateName } from './AplStateName';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 class AplModel extends NewQueryModel {
   //
   id: string = '';
-  title: string = '';
+  title: PolyglotString = { ko: '', en: '', cn: '' };
   type: string = '';
   typeName: string = '';
   collegeId: string = '';
-  collegeName: string = '';
+  collegeName: PolyglotString = { ko: '', en: '', cn: '' };
   channelId: string = '';
-  channelName: string = '';
+  channelName: PolyglotString = { ko: '', en: '', cn: '' };
   startDate: number = 0;
   endDate: number = 0;
   institute: string = '';
@@ -39,7 +43,7 @@ class AplModel extends NewQueryModel {
   fileIds: string = '';
   approvalYn: boolean | undefined;
   approvalId: string = '';
-  approvalName: string = '';
+  approvalName: PolyglotString = { ko: '', en: '', cn: '' };
   approvalEmail: string = '';
   approvalTime: number = 0;
   updateId: string = '';
@@ -50,8 +54,8 @@ class AplModel extends NewQueryModel {
   patronKeyString: string = '';
   patronType: string = '';
   pavilionId: string = '';
-  approvalCompany: string = '';
-  approvalDepartment: string = '';
+  approvalCompany: PolyglotString = { ko: '', en: '', cn: '' };
+  approvalDepartment: PolyglotString = { ko: '', en: '', cn: '' };
 
   // requiredSubsidiaries: IdName[] = [];
 
@@ -161,36 +165,46 @@ class AplModel extends NewQueryModel {
   }*/
 
   static isBlank(aplModel: AplModel): string {
-    if (!aplModel.title)
+    if (!aplModel.title) {
       return getPolyglotText('교육명', '개학등록-승인요청-필수1');
-    if (!aplModel.type)
+    }
+    if (!aplModel.type) {
       return getPolyglotText('교육형태', '개학등록-승인요청-필수2');
+    }
     /*if (!aplModel.typeName) return '교육형태명';*/
-    if (aplModel.type === AplType.Etc && !aplModel.typeName)
+    if (aplModel.type === AplType.Etc && !aplModel.typeName) {
       return getPolyglotText('교육형태명', '개학등록-승인요청-필수3');
-    if (!aplModel.collegeId)
+    }
+    if (!aplModel.collegeId) {
       return getPolyglotText('College', '개학등록-승인요청-필수4');
-
-    if (!aplModel.channelId)
+    }
+    if (!aplModel.channelId) {
       return getPolyglotText('Channel', '개학등록-승인요청-필수5');
+    }
     /*if (!aplModel.channelId) return 'Channel';*/
-    if (!aplModel.period.startDateMoment)
+    if (!aplModel.period.startDateMoment) {
       return getPolyglotText('교육시작일자', '개학등록-승인요청-필수6');
-    if (!aplModel.period.endDateMoment)
+    }
+    if (!aplModel.period.endDateMoment) {
       return getPolyglotText('교육종료일자', '개학등록-승인요청-필수7');
-    if (!aplModel.institute)
+    }
+    if (!aplModel.institute) {
       return getPolyglotText('교육기관', '개학등록-승인요청-필수8');
+    }
     if (
       Number(aplModel.requestHour) === 0 &&
       Number(aplModel.requestMinute) === 0
-    )
+    ) {
       return getPolyglotText('교육시간', '개학등록-승인요청-필수9');
+    }
     //if (!aplModel.requestHour) return '교육시간(시)';
     //if (!aplModel.requestMinute) return '교육시간(분)';
-    if (!aplModel.content)
+    if (!aplModel.content) {
       return getPolyglotText('교육내용', '개학등록-승인요청-필수10');
-    if (!aplModel.approvalId)
+    }
+    if (!aplModel.approvalId) {
       return getPolyglotText('승인자', '개학등록-승인요청-필수11');
+    }
     // if (!aplModel.fileIds) return '첨부파일';
     return 'success';
   }
@@ -201,7 +215,7 @@ class AplModel extends NewQueryModel {
       nameValues: [
         {
           name: 'title',
-          value: aplModel.title,
+          value: parsePolyglotString(aplModel.title),
         },
         {
           name: 'type',
@@ -232,13 +246,13 @@ class AplModel extends NewQueryModel {
   static asCdo(aplModel: AplModel): AplCdoModel {
     //
     return {
-      title: aplModel.title,
+      title: parsePolyglotString(aplModel.title),
       type: aplModel.type,
       typeName: aplModel.typeName,
       collegeId: aplModel.collegeId,
-      collegeName: aplModel.collegeName,
+      collegeName: parsePolyglotString(aplModel.collegeName),
       channelId: aplModel.channelId,
-      channelName: aplModel.channelName,
+      channelName: parsePolyglotString(aplModel.channelName),
       startDate: aplModel && aplModel.period && aplModel.period.startDateLong,
       endDate: aplModel && aplModel.period && aplModel.period.endDateLong,
       institute: aplModel.institute,
@@ -257,12 +271,13 @@ class AplModel extends NewQueryModel {
       fileIds: aplModel.fileIds || '',
       approvalYn: aplModel.approvalYn || false,
       approvalId: aplModel.approvalId || '',
-      approvalName: aplModel.approvalName || '',
+      approvalName: parsePolyglotString(aplModel.approvalName) || '',
       updateTime: aplModel.updateTime,
       causeOfReturn: aplModel.causeOfReturn || '',
       approvalEmail: aplModel.approvalEmail || '',
-      approvalCompany: aplModel.approvalCompany || '',
-      approvalDepartment: aplModel.approvalDepartment || '',
+      approvalCompany: parsePolyglotString(aplModel.approvalCompany) || '',
+      approvalDepartment:
+        parsePolyglotString(aplModel.approvalDepartment) || '',
     };
   }
 
@@ -273,9 +288,9 @@ class AplModel extends NewQueryModel {
     //
     return {
       No: String(index + 1),
-      교육명: aplModel.title || '-',
+      교육명: parsePolyglotString(aplModel.title) || '-',
       교육형태: aplModel.typeName || '-',
-      Channel: aplModel.channelName || '-',
+      Channel: parsePolyglotString(aplModel.channelName) || '-',
       교육기간:
         moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss') +
           '~' +

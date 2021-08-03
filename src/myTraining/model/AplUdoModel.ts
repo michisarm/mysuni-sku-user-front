@@ -1,4 +1,5 @@
-import AplModel from "./AplModel";
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import AplModel from './AplModel';
 
 //
 class AplUdoModel {
@@ -14,11 +15,17 @@ class AplUdoModel {
   private readonly causeOfReturn: string;
 
   private constructor(
-    id: string, title: string,
-    creatorId: string, creaetorName: string,
-    approvalName: string, approvalEmail: string,
-    approvalYn: boolean, allowHour: number,
-    allowMinute: number, causeOfReturn: string) {
+    id: string,
+    title: string,
+    creatorId: string,
+    creaetorName: string,
+    approvalName: string,
+    approvalEmail: string,
+    approvalYn: boolean,
+    allowHour: number,
+    allowMinute: number,
+    causeOfReturn: string
+  ) {
     //
     this.id = id;
     this.title = title;
@@ -32,12 +39,38 @@ class AplUdoModel {
     this.causeOfReturn = causeOfReturn;
   }
 
-  public static createForApproval(apl: AplModel, allowHour: number, allowMinute: number) {
-    return new AplUdoModel(apl.id, apl.title, apl.creatorId, apl.creatorName, apl.approvalName, apl.approvalEmail, true, allowHour, allowMinute, '');
+  public static createForApproval(
+    apl: AplModel,
+    allowHour: number,
+    allowMinute: number
+  ) {
+    return new AplUdoModel(
+      apl.id,
+      parsePolyglotString(apl.title),
+      apl.creatorId,
+      apl.creatorName,
+      parsePolyglotString(apl.approvalName),
+      apl.approvalEmail,
+      true,
+      allowHour,
+      allowMinute,
+      ''
+    );
   }
 
   public static createForReject(apl: AplModel, causeOfReturn: string) {
-    return new AplUdoModel(apl.id, apl.title, apl.creatorId, apl.creatorName, apl.approvalName, apl.approvalEmail, false, 0, 0, causeOfReturn);
+    return new AplUdoModel(
+      apl.id,
+      parsePolyglotString(apl.title),
+      apl.creatorId,
+      apl.creatorName,
+      parsePolyglotString(apl.approvalName),
+      apl.approvalEmail,
+      false,
+      0,
+      0,
+      causeOfReturn
+    );
   }
 }
 
