@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState, useEffect, Component } from 'react';
 import { useHistory } from 'react-router';
 import myTrainingRoutePaths from 'myTraining/routePaths';
@@ -66,58 +67,47 @@ function ProfilePopupView(props: Props) {
     }
   }, [skProfile]);
 
-  const onClickToggle = useCallback(
-    async (useNickName) => {
-      if (
-        !SkProfileService.instance.skProfile.id ||
-        !skProfile.nickName ||
-        skProfile.nickName === ''
-      ) {
-        reactAlert({
-          title: getPolyglotText('안내', 'mypage-popupview-안내'),
-          message: getPolyglotText(
-            '닉네임을 등록해주세요.',
-            'mypage-popupview-닉네임등록'
-          ),
-        });
-        return;
+  const onClickToggle = useCallback(async (useNickName) => {
+    if (
+      !SkProfileService.instance.skProfile.id ||
+      !skProfile.nickName ||
+      skProfile.nickName === ''
+    ) {
+      reactAlert({
+        title: getPolyglotText('안내', 'mypage-popupview-안내'),
+        message: getPolyglotText(
+          '닉네임을 등록해주세요.',
+          'mypage-popupview-닉네임등록'
+        ),
+      });
+      return;
+    }
+
+    if (saveFlag) {
+      setSaveFlag(false);
+
+      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
+        skProfile.member.currentJobGroup,
+        skProfile.member.favoriteJobGroup,
+        skProfile.pisAgreement
+      );
+
+      if (useNickName) {
+        setIsNickName(useNickName);
+        skProfileUdo.nameFlag = 'N';
+      } else {
+        setIsNickName(useNickName);
+        skProfileUdo.nameFlag = 'R';
       }
 
-      if (saveFlag) {
-        setSaveFlag(false);
-
-        const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-          skProfile.member.currentJobGroup,
-          skProfile.member.favoriteJobGroup,
-          skProfile.pisAgreement
-        );
-
-        if (useNickName) {
-          setIsNickName(useNickName);
-          skProfileUdo.nameFlag = 'N';
-        } else {
-          setIsNickName(useNickName);
-          skProfileUdo.nameFlag = 'R';
-        }
-
-        await modifySkProfile(skProfileUdo);
-        skProfileService!.findSkProfile().then((skProfile) => {
-          //
-          setSaveFlag(true);
-        });
-      }
-      //getProfilePopup();
-    },
-    [
-      modifySkProfile,
-      saveFlag,
-      skProfile.member.currentJobGroup,
-      skProfile.member.favoriteJobGroup,
-      skProfile.nickName,
-      skProfile.pisAgreement,
-      skProfileService,
-    ]
-  );
+      await modifySkProfile(skProfileUdo);
+      skProfileService!.findSkProfile().then((skProfile) => {
+        //
+        setSaveFlag(true);
+      });
+    }
+    //getProfilePopup();
+  }, []);
 
   //hobby를 ',' 기준으로 구분한다.
   function getTagHtml() {
@@ -217,8 +207,58 @@ function ProfilePopupView(props: Props) {
                     <span className="prof-tit">
                       {isNickName ? skProfile.nickName : skProfile.member.name}
                     </span>
+                    {
+                      <div className="foll-info">
+                        <span>{followersList?.followers.length}</span>
+                        <PolyglotText
+                          defaultString="&nbsp;Followers"
+                          id="mypage-popupview-Followers"
+                        />
+                        <span>{followingsList?.followings.length}</span>
+                        <PolyglotText
+                          defaultString="&nbsp;Following"
+                          id="mypage-popupview-Following"
+                        />
+                      </div>
+                    }
                   </div>
-                  {instructorId !== '' && externalInstructor === 'false' && (
+                  {instructorId &&
+                  instructorId !== '' &&
+                  externalInstructor &&
+                  externalInstructor === 'true' ? (
+                    <div className="page-bttn-area">
+                      <Button className="page-bttn" onClick={onInstructor}>
+                        <PolyglotText
+                          defaultString="강사 서비스"
+                          id="mypage-popupview-강사"
+                        />
+                      </Button>
+                    </div>
+                  ) : instructorId &&
+                    instructorId !== '' &&
+                    externalInstructor &&
+                    externalInstructor === 'false' ? (
+                    <div className="page-bttn-area type2">
+                      <Button
+                        className="page-bttn"
+                        onClick={() => {
+                          props.setOpen();
+                          history.push(myTrainingRoutePaths.myPage());
+                        }}
+                      >
+                        <PolyglotText
+                          defaultString="My Page"
+                          id="mypage-popupview-MyPage"
+                        />
+                      </Button>
+                      <Link to="#" onClick={onInstructor} className="l_to">
+                        <PolyglotText
+                          defaultString="강사 서비스"
+                          id="mypage-popupview-강사2"
+                        />
+                      </Link>
+                    </div>
+                  ) : (
                     <div className="page-bttn-area">
                       <Button
                         className="page-bttn"

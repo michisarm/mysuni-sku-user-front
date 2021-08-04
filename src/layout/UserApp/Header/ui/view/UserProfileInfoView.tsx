@@ -46,6 +46,25 @@ function UserProfileInfoView(props: Props) {
                 preProfileInfo={props.preProfileInfo}
               />
             </div>
+            <div className="right-side side-wrapper">
+              <UserProfileInfoTabMenu
+                selectedMenu={selectedMenuName}
+                setMneu={setMenu}
+              />
+              {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
+              {selectedMenuName === 'Community' && (
+                <UserProfileInfoTabCommunity
+                  memberId={props.memberId}
+                  setOpen={props.setOpen}
+                />
+              )}
+              {selectedMenuName === 'Feed' && (
+                <UserProfileInfoTabFeed
+                  memberId={props.memberId}
+                  setOpen={props.setOpen}
+                />
+              )}
+            </div>
           </div>
         </Modal.Content>
       </Modal>
