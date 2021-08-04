@@ -17,7 +17,7 @@ class InMyLectureTableViewModel {
 
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState: LearningState = LearningState.Progress;
-  name: PolyglotString = { ko: '', en: '', cn: '' };
+  name: PolyglotString = { ko: '', en: '', zh: '' };
   cubeType: LearningType = LearningType.None;
   learningTime: number = 0;
   startDate: number = 0;

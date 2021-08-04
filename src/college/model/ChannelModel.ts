@@ -10,11 +10,11 @@ import {
 export class ChannelModel {
   //
   id: string = '';
-  name: PolyglotString = { ko: '', cn: '', en: '' };
+  name: PolyglotString = { ko: '', zh: '', en: '' };
 
   channelId: string = '';
   iconfileBoxId: string = '';
-  description: PolyglotString = { ko: '', cn: '', en: '' };
+  description: PolyglotString = { ko: '', zh: '', en: '' };
   time: number = 0;
 
   checked?: boolean;

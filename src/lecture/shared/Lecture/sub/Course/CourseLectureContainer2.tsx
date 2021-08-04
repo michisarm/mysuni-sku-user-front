@@ -215,70 +215,62 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   async init() {
-    const {
-      lectureView,
-      examinationService,
-      examPaperService,
-      studentInfo,
-      surveyFormService,
-    } = this.props;
-
-    if (lectureView) {
-      if (studentInfo !== null) {
-        this.getStudentInfoView();
-      }
-
-      examinationService?.setExamination(lectureView.examination);
-      const examPaper = lectureView.examPaper;
-      if (examPaper) {
-        this.state.examTitle = examPaper.title;
-        this.setState({ examTitle: examPaper.title });
-      }
-
-      if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
-        const answerSheetService = await AnswerSheetApi.instance.findAnswerSheet(
-          lectureView.surveyCase.id
-        );
-        // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
-        const surveyForm = await SurveyFormService.instance!.findSurveyForm(
-          lectureView.surveyCase.surveyFormId
-        );
-
-        const disabled =
-          answerSheetService &&
-          answerSheetService.progress === AnswerProgress.Complete;
-        this.state.surveyState = disabled;
-
-        if (
-          surveyForm &&
-          surveyForm.titles &&
-          surveyForm.titles.langStringMap
-        ) {
-          // @ts-ignore
-          this.state.surveyTitle = surveyForm.titles.langStringMap.get('ko');
-        }
-        this.setState({ surveyState: disabled });
-        this.setState({
-          surveyTitle: surveyForm.titles.langStringMap.get('ko'),
-        });
-      }
-
-      if (lectureView.cubeId) {
-        // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
-        const cubeIntro = lectureView.cubeIntro;
-        if (
-          cubeIntro &&
-          cubeIntro?.reportFileBox &&
-          cubeIntro?.reportFileBox.fileBoxId
-        ) {
-          this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
-        }
-      }
-
-      this.viewObject = this.getViewObject();
-
-      this.setExamState(this.studentData);
-    }
+    // const {
+    //   lectureView,
+    //   examinationService,
+    //   examPaperService,
+    //   studentInfo,
+    //   surveyFormService,
+    // } = this.props;
+    // if (lectureView) {
+    //   if (studentInfo !== null) {
+    //     this.getStudentInfoView();
+    //   }
+    //   examinationService?.setExamination(lectureView.examination);
+    //   const examPaper = lectureView.examPaper;
+    //   if (examPaper) {
+    //     this.state.examTitle = examPaper.title;
+    //     this.setState({ examTitle: examPaper.title });
+    //   }
+    //   if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
+    //     const answerSheetService = await AnswerSheetApi.instance.findAnswerSheet(
+    //       lectureView.surveyCase.id
+    //     );
+    //     // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
+    //     const surveyForm = await SurveyFormService.instance!.findSurveyForm(
+    //       lectureView.surveyCase.surveyFormId
+    //     );
+    //     const disabled =
+    //       answerSheetService &&
+    //       answerSheetService.progress === AnswerProgress.Complete;
+    //     this.state.surveyState = disabled;
+    //     if (
+    //       surveyForm &&
+    //       surveyForm.titles &&
+    //       surveyForm.titles.langStringMap
+    //     ) {
+    //       // @ts-ignore
+    //       this.state.surveyTitle = surveyForm.titles.langStringMap.get('ko');
+    //     }
+    //     this.setState({ surveyState: disabled });
+    //     this.setState({
+    //       surveyTitle: surveyForm.titles.langStringMap.get('ko'),
+    //     });
+    //   }
+    //   if (lectureView.cubeId) {
+    //     // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
+    //     const cubeIntro = lectureView.cubeIntro;
+    //     if (
+    //       cubeIntro &&
+    //       cubeIntro?.reportFileBox &&
+    //       cubeIntro?.reportFileBox.fileBoxId
+    //     ) {
+    //       this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
+    //     }
+    //   }
+    //   this.viewObject = this.getViewObject();
+    //   this.setExamState(this.studentData);
+    // }
   }
 
   getStudentInfoView() {
@@ -329,8 +321,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         if (studentForVideo.proposalState === ProposalState.Approved) {
           if (
             studentForVideo.learningState === LearningState.Waiting ||
-            studentForVideo.learningState ===
-              LearningState.Failed /*||
+            studentForVideo.learningState === LearningState.Failed /*||
             studentForVideo.learningState === LearningState.TestWaiting ||
             studentForVideo.learningState === LearningState.HomeworkWaiting ||
             studentForVideo.learningState === LearningState.TestPassed*/
@@ -382,7 +373,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
     return studentService!.registerStudent(studentCdo).then(() => {
-      getStudentForVideo(lectureView.serviceId).then(studentForVideo => {
+      getStudentForVideo(lectureView.serviceId).then((studentForVideo) => {
         this.studentForVideoObj = studentForVideo;
         const classNameForLearningStateTemp = this.setClassNameForLearningState(
           this.studentForVideoObj
@@ -821,7 +812,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   setExamState(studentData?: any) {
-
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
@@ -967,7 +957,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play orange"
-              onClick={e => {
+              onClick={(e) => {
                 this.getMainActionForVideo();
                 e.preventDefault();
               }}
@@ -987,7 +977,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play orange"
-              onClick={e => {
+              onClick={(e) => {
                 this.getMainActionForVideo();
                 e.preventDefault();
               }}
@@ -1007,7 +997,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play completed"
-              onClick={e => {
+              onClick={(e) => {
                 this.getMainActionForVideo();
                 e.preventDefault();
               }}
@@ -1021,7 +1011,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play black"
-              onClick={e => {
+              onClick={(e) => {
                 this.getMainActionForVideo();
                 e.preventDefault();
               }}
@@ -1038,7 +1028,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play orange"
-              onClick={e => {
+              onClick={(e) => {
                 this.checkPreCourseOnViewDetail(lectureView);
                 e.preventDefault();
               }}
@@ -1060,7 +1050,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play orange"
-              onClick={e => {
+              onClick={(e) => {
                 this.checkPreCourseOnViewDetail(lectureView);
                 e.preventDefault();
               }}
@@ -1082,7 +1072,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play completed"
-              onClick={e => {
+              onClick={(e) => {
                 this.checkPreCourseOnViewDetail(lectureView);
                 e.preventDefault();
               }}
@@ -1096,7 +1086,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <a
               href="#"
               className="btn-play black"
-              onClick={e => {
+              onClick={(e) => {
                 this.checkPreCourseOnViewDetail(lectureView);
                 e.preventDefault();
               }}

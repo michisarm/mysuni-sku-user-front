@@ -17,8 +17,8 @@ export class CollegeModel implements DramaEntity {
 
   collegeId: string = '';
   collegeType: CollegeType = CollegeType.University;
-  name: PolyglotString = { ko: '', cn: '', en: '' };
-  description: PolyglotString = { ko: '', cn: '', en: '' };
+  name: PolyglotString = { ko: '', zh: '', en: '' };
+  description: PolyglotString = { ko: '', zh: '', en: '' };
   iconFileBoxId: string = '';
   panoptoFolderId: string = '';
 

@@ -16,5 +16,11 @@ export function getPolyglotText(
   id: string,
   values?: Record<string, string>
 ) {
-  return defaultString;
+  let text = defaultString;
+  if (values !== undefined) {
+    Object.keys(values).forEach((key) => {
+      text = text.replace('{' + key + '}', values[key]);
+    });
+  }
+  return text;
 }

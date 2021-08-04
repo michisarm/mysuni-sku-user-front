@@ -1,3 +1,4 @@
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { DifficultyLevel } from './DifficultyLevel';
 import { Instructor } from './Instructor';
 
@@ -5,11 +6,11 @@ export interface CubeContents {
   commentFeedbackId: string;
   creatorName: string;
   description: {
-    applicants: string;
-    completionTerms: string;
-    description: string;
-    goal: string;
-    guide: string;
+    applicants: PolyglotString;
+    completionTerms: PolyglotString;
+    description: PolyglotString;
+    goal: PolyglotString;
+    guide: PolyglotString;
   };
   difficultyLevel: DifficultyLevel;
   fileBoxId: string;
@@ -41,7 +42,7 @@ export interface CubeContents {
   };
   reviewFeedbackId: string;
   surveyId: string;
-  tags?: [string] | null;
+  tags: PolyglotString | null;
   terms: [
     {
       displaySort: number;

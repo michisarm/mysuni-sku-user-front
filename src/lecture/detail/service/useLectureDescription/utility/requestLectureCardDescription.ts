@@ -3,13 +3,17 @@ import { Card } from '../../../../model/Card';
 import { setLectureDescription } from '../../../store/LectureOverviewStore';
 import { findCardCache } from '../../../api/cardApi';
 import { CardContents } from '../../../../model/CardContents';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../model/LangSupport';
 
 function parseLectureDescription(
+  card: Card,
   cardContens: CardContents
 ): LectureDescription {
+  const { langSupports } = card;
   const { description } = cardContens;
   return {
-    description,
+    description: parsePolyglotString(description, getDefaultLang(langSupports)),
   };
 }
 
@@ -18,10 +22,10 @@ export async function requestLectureCardDescription(cardId: string) {
   if (cardWithContentsAndRelatedCountRom === undefined) {
     return;
   }
-  const { cardContents } = cardWithContentsAndRelatedCountRom;
-  if (cardContents === null) {
+  const { card, cardContents } = cardWithContentsAndRelatedCountRom;
+  if (card === null || cardContents === null) {
     return;
   }
-  const lectureCardDescription = parseLectureDescription(cardContents);
+  const lectureCardDescription = parseLectureDescription(card, cardContents);
   setLectureDescription(lectureCardDescription);
 }

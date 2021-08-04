@@ -28,7 +28,7 @@ class MyTrainingTableViewModel {
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState?: LearningState;
   cubeType: LearningType = LearningType.None;
-  name: PolyglotString = { ko: '', en: '', cn: '' };
+  name: PolyglotString = { ko: '', en: '', zh: '' };
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
   learningStartDate: number = 0; // 학습시작일

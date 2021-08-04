@@ -1,5 +1,6 @@
 import { CriteriaItemModel } from '../../../survey/form/model/CriteriaItemModel';
 import { CriterionModel } from '../../../survey/form/model/CriterionModel';
+import { LangSupport } from '../../model/LangSupport';
 import { CriteriaItem } from '../viewModel/LectureSurveyState';
 import LangStrings from './LangStrings';
 import Question from './SurveyQuestion';
@@ -10,4 +11,5 @@ export default interface SurveyForm {
   titles: LangStrings;
   questions: Question[];
   criterionList: CriterionModel[];
+  langSupports: LangSupport[];
 }

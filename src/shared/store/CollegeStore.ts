@@ -5,15 +5,11 @@ type College = Pick<CollegeModel, 'id' | 'name'>;
 
 const initialStore: College = {
   id: '',
-  name: { ko: '', cn: '', en: '' },
+  name: { ko: '', zh: '', en: '' },
 };
 
-const [
-  setCollegeStore,
-  onCollegeStore,
-  getCollegeStore,
-  useCollegeStore,
-] = createStore<College[]>([initialStore]);
+const [setCollegeStore, onCollegeStore, getCollegeStore, useCollegeStore] =
+  createStore<College[]>([initialStore]);
 
 export { setCollegeStore, onCollegeStore, getCollegeStore, useCollegeStore };
 

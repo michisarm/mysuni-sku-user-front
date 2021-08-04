@@ -5,14 +5,10 @@ type Channel = Pick<CollegeModel, 'id' | 'name'>;
 
 const initialStore: Channel = {
   id: '',
-  name: { ko: '', cn: '', en: '' },
+  name: { ko: '', zh: '', en: '' },
 };
 
-const [
-  setChannelStore,
-  onChannelStore,
-  getChannelStore,
-  useChannelStore,
-] = createStore<Channel[]>([initialStore]);
+const [setChannelStore, onChannelStore, getChannelStore, useChannelStore] =
+  createStore<Channel[]>([initialStore]);
 
 export { setChannelStore, onChannelStore, getChannelStore, useChannelStore };

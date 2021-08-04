@@ -1,5 +1,6 @@
 import Test from 'lecture/detail/model/Test';
 import { DatePeriod } from 'shared/model/DatePeriod';
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { Instructor } from './Instructor';
 import { LearningContent } from './LearningContent';
 import { Member } from './Member';
@@ -17,7 +18,7 @@ export interface CardContents {
   instructors: Instructor[];
   // admin 에서만 사용
   tests: Test[];
-  description: string;
+  description: PolyglotString;
 
   relatedCards: RelatedCard[];
   cardOperator: Member;

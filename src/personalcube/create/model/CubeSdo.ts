@@ -20,7 +20,7 @@ export interface CubeSdo {
   organizerId: string;
   otherOrganizerName?: string;
   operator: {
-    keyString: string,
+    keyString: string;
   };
   fileBoxId?: string;
   materialSdo: CubeMaterialSdo;
@@ -63,7 +63,7 @@ export const initialCubeSdo: CubeSdo = {
   },
   operator: {
     keyString: patronInfo.getDenizenId() || '',
-  }
+  },
 };
 
 export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
@@ -88,28 +88,55 @@ export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
 export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
   const mainCategory = getMainCategory(cubeSdo.categories);
 
-  if (!cubeSdo.name) return getPolyglotText('강좌정보', 'Create-NMButtonRequired-강좌정보');
-  if (!mainCategory) return getPolyglotText('메인채널', 'Create-NMButtonRequired-메인정보');
+  if (!cubeSdo.name)
+    return getPolyglotText('강좌정보', 'Create-NMButtonRequired-강좌정보');
+  if (!mainCategory)
+    return getPolyglotText('메인채널', 'Create-NMButtonRequired-메인정보');
   if (cubeSdo.tags.length > 10) {
-    return getPolyglotText('태그는 10개까지 입력 가능합니다.', 'Create-NMButtonRequired-태그');
+    return getPolyglotText(
+      '태그는 10개까지 입력 가능합니다.',
+      'Create-NMButtonRequired-태그'
+    );
   }
-  if (cubeSdo.type === 'None') return getPolyglotText('교육형태', 'Create-NMButtonRequired-교육형태');
-  if (!cubeSdo.description?.goal) return getPolyglotText('교육목표', 'Create-NMButtonRequired-교육목표');
-  if (!cubeSdo.description?.applicants) return getPolyglotText('교육대상', 'Create-NMButtonRequired-교육대상');
-  if (!cubeSdo.description?.description) return getPolyglotText('교육내용', 'Create-NMButtonRequired-교육내용');
-  if (!cubeSdo.learningTime) return getPolyglotText('교육시간', 'Create-NMButtonRequired-교육시간');
-  if (!cubeSdo.difficultyLevel) return getPolyglotText('난이도', 'Create-NMButtonRequired-난이도');
-  if (!cubeSdo.organizerId) return getPolyglotText('교육기관/출처', 'Create-NMButtonRequired-교육기관출처');
-  if (!cubeSdo.description?.goal) return getPolyglotText('교육목표', 'Create-NMButtonRequired-교육목표');
-  if (!cubeSdo.description?.applicants) return getPolyglotText('교육대상', 'Create-NMButtonRequired-교육대상');
-  if (!cubeSdo.description?.description) return getPolyglotText('교육내용', 'Create-NMButtonRequired-교육내용');
-  if (!cubeSdo.learningTime) return getPolyglotText('교육시간', 'Create-NMButtonRequired-교육시간');
-  if (!cubeSdo.difficultyLevel) return getPolyglotText('난이도', 'reate-NMButtonRequired-난이도');
-  if (!cubeSdo.organizerId) return getPolyglotText('교육기관/출처', 'Create-NMButtonRequired-교육기관출처');
+  if (cubeSdo.type === 'None')
+    return getPolyglotText('교육형태', 'Create-NMButtonRequired-교육형태');
+  if (!cubeSdo.description?.goal)
+    return getPolyglotText('교육목표', 'Create-NMButtonRequired-교육목표');
+  if (!cubeSdo.description?.applicants)
+    return getPolyglotText('교육대상', 'Create-NMButtonRequired-교육대상');
+  if (!cubeSdo.description?.description)
+    return getPolyglotText('교육내용', 'Create-NMButtonRequired-교육내용');
+  if (!cubeSdo.learningTime)
+    return getPolyglotText('교육시간', 'Create-NMButtonRequired-교육시간');
+  if (!cubeSdo.difficultyLevel)
+    return getPolyglotText('난이도', 'Create-NMButtonRequired-난이도');
+  if (!cubeSdo.organizerId)
+    return getPolyglotText(
+      '교육기관/출처',
+      'Create-NMButtonRequired-교육기관출처'
+    );
+  if (!cubeSdo.description?.goal)
+    return getPolyglotText('교육목표', 'Create-NMButtonRequired-교육목표');
+  if (!cubeSdo.description?.applicants)
+    return getPolyglotText('교육대상', 'Create-NMButtonRequired-교육대상');
+  if (!cubeSdo.description?.description)
+    return getPolyglotText('교육내용', 'Create-NMButtonRequired-교육내용');
+  if (!cubeSdo.learningTime)
+    return getPolyglotText('교육시간', 'Create-NMButtonRequired-교육시간');
+  if (!cubeSdo.difficultyLevel)
+    return getPolyglotText('난이도', 'reate-NMButtonRequired-난이도');
+  if (!cubeSdo.organizerId)
+    return getPolyglotText(
+      '교육기관/출처',
+      'Create-NMButtonRequired-교육기관출처'
+    );
 
   if (cubeSdo.type === 'Video' || cubeSdo.type === 'Audio') {
     const mediaContents = cubeSdo.materialSdo.mediaSdo.mediaContents;
-    if (isEmpty(mediaContents?.internalMedias[0]) && !mediaContents?.linkMediaUrl) {
+    if (
+      isEmpty(mediaContents?.internalMedias[0]) &&
+      !mediaContents?.linkMediaUrl
+    ) {
       return getPolyglotText('교육자료', 'Create-NMButtonRequired-교육자료VnA');
     }
   }
@@ -129,7 +156,13 @@ export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
   return 'none';
 }
 
-
 export const alertRequiredField = (message: string) => {
-  reactAlert({ title: getPolyglotText('필수 정보 입력 안내', 'Create-NMButtonRequired-필수정보입력'), message, warning: true });
+  reactAlert({
+    title: getPolyglotText(
+      '필수 정보 입력 안내',
+      'Create-NMButtonRequired-필수정보입력'
+    ),
+    message,
+    warning: true,
+  });
 };
