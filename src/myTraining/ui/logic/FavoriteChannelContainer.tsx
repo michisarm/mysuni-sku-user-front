@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -10,20 +9,22 @@ import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 interface Props {
-  skProfileService?: SkProfileService
-  collegeService?: CollegeService
+  skProfileService?: SkProfileService;
+  collegeService?: CollegeService;
 }
 
 interface States {
-  multiple: boolean
-  open: boolean
+  multiple: boolean;
+  open: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'college.collegeService',
-  'profile.skProfileService'))
+@inject(
+  mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService')
+)
 @observer
 @reactAutobind
 class FavoriteChannelContainer extends Component<Props, States> {
@@ -55,7 +56,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
     reaction(
       () => skProfileService!.studySummaryFavoriteChannels,
-      this.setMultiple,
+      this.setMultiple
     );
   }
 
@@ -85,8 +86,14 @@ class FavoriteChannelContainer extends Component<Props, States> {
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { multiple, open } = this.state;
 
-    const channels = studySummaryFavoriteChannels.map(channel =>
-      new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+    const channels = studySummaryFavoriteChannels.map(
+      (channel) =>
+        new ChannelModel({
+          id: channel.id,
+          channelId: channel.id,
+          name: channel.name,
+          checked: true,
+        })
     );
 
     return (
@@ -94,17 +101,17 @@ class FavoriteChannelContainer extends Component<Props, States> {
         <div className="table-css type2">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">관심 Channel({channels.length || 0})
-
+              <div className="tit-set">
+                관심 Channel({channels.length || 0})
                 <FavoriteChannelChangeModal
                   favorites={channels}
                   onConfirmCallback={this.init}
-                  trigger={(
+                  trigger={
                     <Button icon className="img-icon">
                       <Icon className="setting17" />
                       <span className="blind">setting</span>
                     </Button>
-                  )}
+                  }
                 />
               </div>
             </div>
@@ -116,13 +123,17 @@ class FavoriteChannelContainer extends Component<Props, States> {
                   active: open,
                 })}
               >
-                <div
-                  ref={this.channelsRef}
-                  className="belt"
-                >
-                  {channels && channels.length !== 0 && channels.map((channel, index) => (
-                    <Label className="channel" key={`channel-${index}`}>{channel.name}</Label>
-                  ))}
+                <div ref={this.channelsRef} className="belt">
+                  {channels &&
+                    channels.length !== 0 &&
+                    channels.map((channel, index) => (
+                      <Label className="channel" key={`channel-${index}`}>
+                        {parsePolyglotString(
+                          channel.name,
+                          getDefaultLang(channel.langSupports)
+                        )}
+                      </Label>
+                    ))}
                 </div>
               </div>
             </div>
@@ -133,7 +144,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
                     <Icon
                       className={classNames({
                         'sum-open': !open,
-                        'sum-close': open
+                        'sum-close': open,
                       })}
                     />
                     <span className="blind">open</span>

@@ -18,6 +18,8 @@ import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
@@ -174,12 +176,18 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     return (
       <Form>
         <h3 className="title-filter">
-          <PolyglotText defaultString="관심분야 선택" id="college-favorite-제목" />
+          <PolyglotText
+            defaultString="관심분야 선택"
+            id="college-favorite-제목"
+          />
         </h3>
         <div className="filter-wrap">
           <div className="column">
             <div className="f-tit">
-              <PolyglotText defaultString="College" id="college-favorite-college" />
+              <PolyglotText
+                defaultString="College"
+                id="college-favorite-college"
+              />
             </div>
             <div className="f-list">
               <div className="scrolling">
@@ -211,7 +219,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           </div>
           <div className="column">
             <div className="f-tit">
-              <PolyglotText defaultString="Channel" id="college-favorite-Channel" />
+              <PolyglotText
+                defaultString="Channel"
+                id="college-favorite-Channel"
+              />
             </div>
             <div className="f-list">
               <div className="scrolling">
@@ -233,14 +244,25 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 checked={favorites
                                   .map((favoriteChannel) => favoriteChannel.id)
                                   .includes(channel.id)}
-                                onChange={() => this.onSelectChannel(channel)}
+                                onChange={() =>
+                                  this.onSelectChannel({
+                                    id: channel.id,
+                                    name: parsePolyglotString(
+                                      channel.name,
+                                      getDefaultLang(channel.langSupports)
+                                    ),
+                                  })
+                                }
                               />
                               <label
                                 className="pop"
                                 data-offset="23"
                                 htmlFor={`checkbox_${index}`}
                               >
-                                {channel.name}
+                                {parsePolyglotString(
+                                  channel.name,
+                                  getDefaultLang(channel.langSupports)
+                                )}
                               </label>
                               {/* <Popup
                                 className="custom-black"
@@ -270,7 +292,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           </div>
           <div className="column">
             <div className="f-tit">
-              <PolyglotText defaultString="Selected" id="college-favorite-Seleted" />{' '}
+              <PolyglotText
+                defaultString="Selected"
+                id="college-favorite-Seleted"
+              />{' '}
               <span className="counter">
                 <span className="now">{favorites.length}</span> /{' '}
                 {totalChannelCount}
@@ -287,14 +312,20 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                         onClick={() => this.onSelectChannel(channel)}
                         style={{ 'font-weight': '500' }}
                       >
-                        {channel.name}
+                        {parsePolyglotString(
+                          channel.name,
+                          getDefaultLang(channel.langSupports)
+                        )}
                       </Button>
                     ))) ||
                     ''}
                   {favoriteCompanyChannels.map((channel: ChannelModel) => (
                     <Popup
                       className="custom-black"
-                      content={getPolyglotText('필수 관심채널이며, 삭제 불가능합니다.', 'college-favorite-주의')}
+                      content={getPolyglotText(
+                        '필수 관심채널이며, 삭제 불가능합니다.',
+                        'college-favorite-주의'
+                      )}
                       inverted
                       style={style}
                       position="top center"
@@ -305,7 +336,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                           data-offset="23"
                           style={{ 'font-weight': '500' }}
                         >
-                          {channel.name}
+                          {parsePolyglotString(
+                            channel.name,
+                            getDefaultLang(channel.langSupports)
+                          )}
                         </Button>
                       }
                     />
@@ -316,15 +350,18 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             <Button className="clear" onClick={this.onReset}>
               <Icon className="reset" />
               <span className="blind">
-                <PolyglotText defaultString="reset" id="college-favorite-reset" />
+                <PolyglotText
+                  defaultString="reset"
+                  id="college-favorite-reset"
+                />
               </span>
             </Button>
           </div>
           <Button className="clear" onClick={this.onReset}>
             <Icon className="reset" />
-              <span className="blind">
-                <PolyglotText defaultString="reset" id="college-favorite-reset" />
-              </span>
+            <span className="blind">
+              <PolyglotText defaultString="reset" id="college-favorite-reset" />
+            </span>
           </Button>
         </div>
         {/* <div className="select-error">

@@ -9,6 +9,7 @@ import {
   PolyglotString,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from '../../lecture/model/LangSupport';
 
 export class CollegeModel implements DramaEntity {
   id: string = '';
@@ -27,6 +28,7 @@ export class CollegeModel implements DramaEntity {
   creator: CreatorModel = new CreatorModel();
   openState: string = '';
   time: number = 0;
+  langSupports: LangSupport[] = [];
 
   constructor(college?: CollegeModel) {
     //

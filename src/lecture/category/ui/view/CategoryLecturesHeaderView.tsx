@@ -9,6 +9,7 @@ import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 import { Area } from 'tracker/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 const VISIBLE_COLLEGE_IDS = [
   'CLG00001',
@@ -93,13 +94,24 @@ class CategoryLecturesHeaderView extends Component<Props> {
       <ContentHeader dataArea={Area.COLLEGE_INFO}>
         <ContentHeader.Cell className="thumb">
           <ThumbnailView
-            icon={this.getThumbnailIcon(parsePolyglotString(college.name))}
+            icon={this.getThumbnailIcon(
+              parsePolyglotString(
+                college.name,
+                getDefaultLang(college.langSupports)
+              )
+            )}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="title">
           <TitleView
-            title={`${parsePolyglotString(college.name)} College`}
-            subtitle={parsePolyglotString(college.description)}
+            title={`${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`}
+            subtitle={parsePolyglotString(
+              college.description,
+              getDefaultLang(college.langSupports)
+            )}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">

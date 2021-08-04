@@ -11,6 +11,7 @@ import LectureApi from '../apiclient/LectureApi';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CollegeCountModel from '../../model/CollegeCountModel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 class LectureCountService {
   //
@@ -99,7 +100,10 @@ class LectureCountService {
       (channelCountList, index) =>
         new CollegeCountModel({
           collegeId: colleges[index].collegeId,
-          name: parsePolyglotString(colleges[index].name),
+          name: parsePolyglotString(
+            colleges[index].name,
+            getDefaultLang(colleges[index].langSupports)
+          ),
           lectureCount: channelCountList.reduce(
             (prev, channelCount) => prev + channelCount.lectureCount,
             0

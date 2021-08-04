@@ -10,6 +10,7 @@ import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
 import CategoryLecturesContainer from '../logic/CollegeLecturesContainer';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {
   collegeService: CollegeService;
@@ -61,7 +62,9 @@ class CollegeLecturesPage extends Component<Props> {
     const { collegeService } = this.props;
     const { college } = collegeService;
     this.props.history.push(
-      mainRoutePaths.introductionCollege(parsePolyglotString(college.name))
+      mainRoutePaths.introductionCollege(
+        parsePolyglotString(college.name, getDefaultLang(college.langSupports))
+      )
     );
   }
 
@@ -73,7 +76,14 @@ class CollegeLecturesPage extends Component<Props> {
     return (
       <ContentLayout
         className="channel"
-        breadcrumb={[{ text: `${collegeService.college.name} College` }]}
+        breadcrumb={[
+          {
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`,
+          },
+        ]}
       >
         <CategoryLecturesHeaderView
           college={college}

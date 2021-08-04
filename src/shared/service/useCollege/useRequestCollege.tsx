@@ -13,6 +13,7 @@ import { setChannelStore, getChannelStore } from '../../store/ChannelStore';
 import { find } from 'lodash';
 import CategoryColorType from '../../model/CategoryColorType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 async function requestCollegeAndChannel() {
   const getCollegeData = await findAllCollegeCache();
@@ -40,7 +41,10 @@ export function getCollgeName(collegeId: string) {
   const filterChannelName = find(collegeList, { id: collegeId });
 
   if (filterChannelName && filterChannelName.name !== undefined) {
-    return parsePolyglotString(filterChannelName.name);
+    return parsePolyglotString(
+      filterChannelName.name,
+      getDefaultLang(filterChannelName.langSupports)
+    );
   }
   return '';
 }
@@ -51,7 +55,10 @@ export function getChannelName(channelId: string) {
   const filterChannelName = find(channelList, { id: channelId });
 
   if (filterChannelName && filterChannelName.name !== undefined) {
-    return parsePolyglotString(filterChannelName.name);
+    return parsePolyglotString(
+      filterChannelName.name,
+      getDefaultLang(filterChannelName.langSupports)
+    );
   }
 
   return '';

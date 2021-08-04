@@ -8,6 +8,7 @@ import mainRoutePaths from 'main/routePaths';
 import { ChannelModel, CollegeModel } from 'college/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -38,14 +39,28 @@ class CategoryLecturesHeaderView extends Component<Props> {
     const { channel, college } = this.props;
     const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
     const linkUrl =
-      parsePolyglotString(channel.name) === 'AI/DT Literacy'
+      parsePolyglotString(
+        channel.name,
+        getDefaultLang(channel.langSupports)
+      ) === 'AI/DT Literacy'
         ? '/certification/badge/badge-detail/BADGE-2t'
-        : mainRoutePaths.introductionCollege(parsePolyglotString(college.name));
+        : mainRoutePaths.introductionCollege(
+            parsePolyglotString(
+              channel.name,
+              getDefaultLang(channel.langSupports)
+            )
+          );
     return (
       <>
         <div className="white-title">
           <div className="inner">
-            <strong>{channel.name}</strong>의 학습 과정 입니다.
+            <strong>
+              {parsePolyglotString(
+                channel.name,
+                getDefaultLang(channel.langSupports)
+              )}
+            </strong>
+            의 학습 과정 입니다.
             {displayCurriculum === true && (
               <Link to={linkUrl} className="personal line round">
                 <a href="" className="personal line round">

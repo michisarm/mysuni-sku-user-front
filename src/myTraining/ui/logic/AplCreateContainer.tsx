@@ -46,6 +46,7 @@ import {
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 interface Props
   extends RouteComponentProps<{
@@ -207,7 +208,8 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts =
+          await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -225,7 +227,10 @@ class AplCreateContainer extends React.Component<Props, States> {
         if (college.collegeType === 'Company') {
           collegeSelect.push({
             key: index + 1,
-            text: college.name,
+            text: parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            ),
             value: college.id,
           });
         }
@@ -257,7 +262,10 @@ class AplCreateContainer extends React.Component<Props, States> {
     channels.map((channel, index) => {
       channelSelect.push({
         key: index + 1,
-        text: channel.name,
+        text: parsePolyglotString(
+          channel.name,
+          getDefaultLang(channel.langSupports)
+        ),
         value: channel.id,
       });
     });

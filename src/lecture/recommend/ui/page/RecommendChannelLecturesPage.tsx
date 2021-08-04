@@ -11,6 +11,8 @@ import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService;
@@ -18,10 +20,7 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
 }
 
 @inject(
-  mobxHelper.injectFrom(
-    'college.collegeService',
-    'profile.skProfileService'
-  )
+  mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService')
 )
 @reactAutobind
 @observer
@@ -57,13 +56,18 @@ class RecommendChannelLecturesPage extends Component<Props> {
         className="mylearning"
         breadcrumb={[
           { text: `Recommend`, path: routePaths.recommend() },
-          { text: `${channel.name}` },
+          {
+            text: `${parsePolyglotString(
+              channel.name,
+              getDefaultLang(channel.langSupports)
+            )}`,
+          },
         ]}
       >
         <ChannelLecturesHeaderView
           channel={channel}
           channels={studySummaryFavoriteChannels.map(
-            channel => new ChannelModel(channel)
+            (channel) => new ChannelModel(channel)
           )}
           onSelectChannel={this.onSelectChannel}
         />

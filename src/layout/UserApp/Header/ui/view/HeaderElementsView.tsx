@@ -120,7 +120,6 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 onClick={() => onClickMenu('Certification')}
               >
                 <PolyglotText defaultString="Certification" id="home-gnb-mtf" />
-                Certification
               </NavLink>
             )}
           {menuAuth.some(

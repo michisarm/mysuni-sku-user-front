@@ -10,16 +10,15 @@ import { useScrollMove } from '../../../../myTraining/useScrollMove';
 import routePaths from '../../../routePaths';
 import { CreateCube } from '../../model/CreateCube';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 
 interface CreateListViewProps {
   createCubes: CreateCube[];
   totalCount: number;
 }
 
-export default function CreateListView({
-  createCubes,
-  totalCount,
-}: CreateListViewProps) {
+export default function CreateListView(props: CreateListViewProps) {
+  const { createCubes, totalCount } = props;
   const history = useHistory();
   const { scrollSave } = useScrollMove();
 
@@ -73,7 +72,9 @@ export default function CreateListView({
                 <Table.Cell className="title">
                   <a>
                     {/* <span className="ellipsis">{cube.name && parsePolyglotString(cube.name)}</span> */}
-                    <span className="ellipsis">{cube.name}</span>
+                    <span className="ellipsis">
+                      {parsePolyglotString(cube.name)}
+                    </span>
                   </a>
                 </Table.Cell>
                 <Table.Cell className="type">

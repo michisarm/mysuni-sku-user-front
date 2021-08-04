@@ -114,7 +114,8 @@ class MyStampCertificateModal extends Component<Props, States> {
                 </div>
                 <div className="message-wrapper">
                   <span>
-                    {skProfile.member.name}님의 <strong>{myStamp.name}</strong>
+                    {skProfile.member.name}님의{' '}
+                    <strong>{parsePolyglotString(myStamp.name)}</strong>
                     <br />
                     과정 이수가 완료되었음을 알려드립니다.
                   </span>
@@ -138,7 +139,9 @@ class MyStampCertificateModal extends Component<Props, States> {
                             귀하는 아래 과정을 성공적으로 이수하였기에
                             <br />이 증서를 드립니다.
                           </p>
-                          <span className="category">{myStamp.name}</span>
+                          <span className="category">
+                            {parsePolyglotString(myStamp.name)}
+                          </span>
                           <span className="date">
                             {moment(myStamp.time).format('YYYY.MM.DD')}
                           </span>

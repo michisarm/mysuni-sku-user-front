@@ -18,6 +18,7 @@ import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import ChannelModel from '../../model/ChannelModel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { CollegeBanner } from '../../model/CollegeBanner';
 
 @autobind
 export default class CollegeService {
@@ -57,7 +58,7 @@ export default class CollegeService {
   mainColleges: CollegeModel[] = [];
 
   @observable
-  banner: any[] = [];
+  banner: CollegeBanner[] = [];
 
   constructor(
     collegeApi: CollegeApi = CollegeApi.instance,

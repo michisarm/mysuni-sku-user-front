@@ -4,8 +4,7 @@ import CubeType from '../../../lecture/detail/model/CubeType';
 
 export interface CreateCube {
   cubeId: string;
-  // name: PolyglotString | null;
-  name: string;
+  name: PolyglotString | null;
   state: CubeState;
   type: CubeType;
   time: number;

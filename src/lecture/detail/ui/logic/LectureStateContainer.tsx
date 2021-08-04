@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { clearFindMyCardRelatedStudentsCache } from '../../api/cardApi';
@@ -25,26 +24,26 @@ function LectureStateContainer() {
 
   const receiveMessage = useCallback(
     async (event: MessageEvent) => {
-      if (event.origin === 'https://www.skacademy.com') {
-        if (
-          event.data === 'CubePassed' &&
-          params.cubeId &&
-          lectureState?.cubeType
-        ) {
-          clearFindMyCardRelatedStudentsCache();
-          clearFindCubeDetailCache();
-          setTimeout(() => {
-            requestCardLectureStructure(params.cardId);
-            requestLectureState(
-              params.cardId,
-              params.cubeId || '',
-              lectureState.cubeType
-            );
-          }, 500);
-        }
+      console.log('lectureWebpageURL: ', lectureWebpage?.url);
+      console.log('eventOriginURL: ', event.origin);
+      if (
+        event.data === 'CubePassed' &&
+        params.cubeId &&
+        lectureState?.cubeType
+      ) {
+        clearFindMyCardRelatedStudentsCache();
+        clearFindCubeDetailCache();
+        setTimeout(() => {
+          requestCardLectureStructure(params.cardId);
+          requestLectureState(
+            params.cardId,
+            params.cubeId || '',
+            lectureState.cubeType
+          );
+        }, 500);
       }
     },
-    [lectureState?.cubeType, params.cardId, params.cubeId]
+    [lectureState?.cubeType, params.cardId, params.cubeId, lectureWebpage]
   );
 
   useEffect(() => {
@@ -58,7 +57,7 @@ function LectureStateContainer() {
     return () => {
       window.removeEventListener('message', receiveMessage, false);
     };
-  }, [lectureWebpage?.urlType, lectureState?.cubeType]);
+  }, [lectureWebpage?.urlType, lectureState?.cubeType, receiveMessage]);
 
   if (lectureState === undefined) {
     return null;

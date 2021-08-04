@@ -6,6 +6,7 @@ import {
   PolyglotString,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from '../../lecture/model/LangSupport';
 
 export class ChannelModel {
   //
@@ -19,6 +20,8 @@ export class ChannelModel {
 
   checked?: boolean;
   active: boolean = false;
+
+  langSupports: LangSupport[] = [];
 
   constructor(channel?: ChannelModel | any) {
     if (channel) {

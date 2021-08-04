@@ -12,6 +12,7 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 interface Props {
   collegeService?: CollegeService;
@@ -50,9 +51,8 @@ class SubChannelModalContainer extends Component<Props, State> {
     prevState: Readonly<State>
   ): void {
     //
-    const {
-      defaultSelectedCategoryChannels: prevSelectedCategoryChannels,
-    } = prevProps;
+    const { defaultSelectedCategoryChannels: prevSelectedCategoryChannels } =
+      prevProps;
     const { defaultSelectedCategoryChannels } = this.props;
 
     if (prevSelectedCategoryChannels !== defaultSelectedCategoryChannels) {
@@ -301,7 +301,10 @@ class SubChannelModalContainer extends Component<Props, State> {
                         onClick={() => this.onClickCollege(college)}
                       >
                         <span className={`name ${CollegeColors[index]}`}>
-                          {college.name}
+                          {parsePolyglotString(
+                            college.name,
+                            getDefaultLang(college.langSupports)
+                          )}
                         </span>
                         {collegeType === CollegeType.University && <Icon />}
                       </Accordion.Title>
@@ -311,7 +314,10 @@ class SubChannelModalContainer extends Component<Props, State> {
                             <li key={`channel-${idx}`}>
                               <Checkbox
                                 className="base"
-                                label={channel.name}
+                                label={parsePolyglotString(
+                                  channel.name,
+                                  getDefaultLang(channel.langSupports)
+                                )}
                                 checked={selectedCategoryChannels
                                   .map(
                                     (categoryChannel) =>

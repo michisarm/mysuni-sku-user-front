@@ -9,6 +9,8 @@ import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
 import ReactGA from 'react-ga';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -29,9 +31,7 @@ interface States {
   open: boolean;
 }
 
-@inject(
-  mobxHelper.injectFrom('profile.skProfileService')
-)
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {
@@ -91,7 +91,10 @@ class ChannelsPanelContainer extends Component<Props, States> {
     ReactGA.event({
       category: 'Recommend',
       action: 'Click',
-      label: `Recommend-${channel.name}`,
+      label: `Recommend-${parsePolyglotString(
+        channel.name,
+        getDefaultLang(channel.langSupports)
+      )}`,
     });
   }
 
@@ -110,11 +113,11 @@ class ChannelsPanelContainer extends Component<Props, States> {
                 {configurable && (
                   <FavoriteChannelChangeModal
                     trigger={
-                      <Button
-                        icon
-                        className="img-icon"
-                      >
-                        <Icon className="setting17" style={{ position: 'relative'}} />
+                      <Button icon className="img-icon">
+                        <Icon
+                          className="setting17"
+                          style={{ position: 'relative' }}
+                        />
                         <span className="blind">setting</span>
                       </Button>
                     }
@@ -141,9 +144,12 @@ class ChannelsPanelContainer extends Component<Props, States> {
                       className={`toggle toggle4 ${
                         channel.checked ? 'active' : ''
                       }`}
-                      onClick={e => this.onClickChannel(e, index, channel)}
+                      onClick={(e) => this.onClickChannel(e, index, channel)}
                     >
-                      {channel.name}
+                      {parsePolyglotString(
+                        channel.name,
+                        getDefaultLang(channel.langSupports)
+                      )}
                     </Button>
                   ))}
                 </div>

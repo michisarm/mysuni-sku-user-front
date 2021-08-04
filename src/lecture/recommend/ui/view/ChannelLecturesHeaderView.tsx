@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 
 import { ChannelModel } from 'college/model';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props {
   channel: ChannelModel;
@@ -25,17 +27,23 @@ class ChannelLecturesHeaderView extends Component<Props> {
         <Segment className="full">
           <Dropdown
             className="ui inline transparent large"
-            text={`${channel.name || ''} 채널의 추천과정`}
+            text={`${parsePolyglotString(
+              channel.name,
+              getDefaultLang(channel.langSupports)
+            )} 채널의 추천과정`}
           >
             <Dropdown.Menu>
               {(channels &&
                 channels.length &&
-                channels.map(channel => (
+                channels.map((channel) => (
                   <Dropdown.Item
                     key={`channel_drop_${channel.channelId}`}
                     onClick={() => onSelectChannel(channel)}
                   >
-                    {channel.name}
+                    {parsePolyglotString(
+                      channel.name,
+                      getDefaultLang(channel.langSupports)
+                    )}
                   </Dropdown.Item>
                 ))) ||
                 null}

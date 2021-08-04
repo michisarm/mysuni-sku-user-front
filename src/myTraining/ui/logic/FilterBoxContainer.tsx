@@ -11,6 +11,7 @@ import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 interface FilterBoxContainerProps {
   filterCountService?: FilterCountService;
@@ -51,7 +52,11 @@ function FilterBoxContainer({
 
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(
-      (college) => parsePolyglotString(college.name) === collegeName
+      (college) =>
+        parsePolyglotString(
+          college.name,
+          getDefaultLang(college.langSupports)
+        ) === collegeName
     )[0];
     return college.collegeId;
   };

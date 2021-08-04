@@ -19,6 +19,7 @@ import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
 import { useCollegeStore } from '../../../shared/store/CollegeStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -60,9 +61,9 @@ function MyTrainingListView({
       ReactGA.event({
         category: '학습중인 과정',
         action: 'Click',
-        label: `${myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'} - ${
-          myTraining.name
-        }`,
+        label: `${
+          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
+        } - ${parsePolyglotString(myTraining.name)}`,
       });
     }
     scrollSave();
@@ -93,7 +94,10 @@ function MyTrainingListView({
           (college) => college.id === myTraining.category.collegeId
         );
         if (findCollege?.name !== undefined) {
-          return parsePolyglotString(findCollege.name);
+          return parsePolyglotString(
+            findCollege.name,
+            getDefaultLang(findCollege.langSupports)
+          );
         }
       }
 
@@ -148,7 +152,7 @@ function MyTrainingListView({
                 <span
                   className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}
                 >
-                  {myTraining.cubeName}
+                  {parsePolyglotString(myTraining.cubeName)}
                 </span>
                 {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
               </a>
@@ -186,7 +190,9 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
             <Table.Cell>
@@ -202,7 +208,9 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.endDate)}</Table.Cell>
           </>
@@ -214,7 +222,9 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>

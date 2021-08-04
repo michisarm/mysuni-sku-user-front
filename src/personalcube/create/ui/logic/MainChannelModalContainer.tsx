@@ -12,6 +12,7 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 interface Props {
   collegeService?: CollegeService;
@@ -176,7 +177,10 @@ class MainChannelModalContainer extends Component<Props, State> {
                           onClick={() => this.onClickCollege(college)}
                         >
                           <span className={`name ${CollegeColors[index]}`}>
-                            {college.name}
+                            {parsePolyglotString(
+                              college.name,
+                              getDefaultLang(college.langSupports)
+                            )}
                           </span>
                           <Icon />
                         </Accordion.Title>
@@ -188,7 +192,10 @@ class MainChannelModalContainer extends Component<Props, State> {
                               <li key={`channel-${idx}`}>
                                 <Radio
                                   className="base"
-                                  label={channel.name}
+                                  label={parsePolyglotString(
+                                    channel.name,
+                                    getDefaultLang(channel.langSupports)
+                                  )}
                                   checked={selectedChannel.id === channel.id}
                                   onChange={() => this.onClickChannel(channel)}
                                 />

@@ -26,6 +26,7 @@ interface TestQuestionViewProps {
   dataLoadTime?: Number;
   params: LectureParams;
   obtainedScore: number;
+  modalGbn?: boolean;
 }
 
 function setAnswer(questionNo: number, value: string) {
@@ -59,6 +60,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
     dataLoadTime,
     params,
     obtainedScore,
+    modalGbn,
   }) {
     let questionClassName = ' course-radio-survey ';
     if (
@@ -73,8 +75,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> =
       question.questionType === 'ShortAnswer'
     ) {
       //if (submitted) {
-      const lectureStructureItem = getActiveStructureItem(params.pathname);
-      if (lectureStructureItem?.student?.extraWork.testStatus === 'PASS') {
+      if (modalGbn === true) {
         // 답안을 전송했을 경우 채점
         if (answerResult) {
           questionClassName += ' correct ';

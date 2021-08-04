@@ -1,14 +1,21 @@
-import { AreaType } from "./AreaType";
-
+import {
+  getDefaultLang,
+  LangSupport,
+} from '../../../lecture/model/LangSupport';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from '../../../shared/viewmodel/PolyglotString';
+import { AreaType } from './AreaType';
 
 export interface ContentsProvider {
   id: string;
-  name: string;
+  name: PolyglotString | null;
   phoneNumber: string;
   email: string;
   url: string;
   creator: {
-    keyString: string,
+    keyString: string;
   };
   areaType: AreaType;
   enabled: boolean;
@@ -17,9 +24,12 @@ export interface ContentsProvider {
   depotId: string;
   thumbnailPath: string;
   time: number;
+  langSupports: LangSupport[];
 }
 
-export function getSelectOptions(contentsProviders: ContentsProvider[]): SelectOption[] {
+export function getSelectOptions(
+  contentsProviders: ContentsProvider[]
+): SelectOption[] {
   const selectOptions: SelectOption[] = [];
 
   selectOptions.push({
@@ -28,10 +38,13 @@ export function getSelectOptions(contentsProviders: ContentsProvider[]): SelectO
     value: '',
   });
 
-  contentsProviders.forEach(contentsProvider => {
+  contentsProviders.forEach((contentsProvider) => {
     selectOptions.push({
       key: contentsProvider.id,
-      text: contentsProvider.name,
+      text: parsePolyglotString(
+        contentsProvider.name,
+        getDefaultLang(contentsProvider.langSupports)
+      ),
       value: contentsProvider.id,
     });
   });

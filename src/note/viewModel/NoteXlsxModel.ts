@@ -4,6 +4,7 @@ import Folder from '../model/Folder';
 import { CollegeModel } from '../../college/model';
 import NoteWithLecture from '../model/NoteWithLecture';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../lecture/model/LangSupport';
 
 export class NoteXlsxModel {
   //
@@ -46,7 +47,10 @@ export function convertNoteToNoteXlsxModel(
     Category:
       (collegeName &&
         collegeName.length > 0 &&
-        parsePolyglotString(collegeName[0].name)) ||
+        parsePolyglotString(
+          collegeName[0].name,
+          getDefaultLang(collegeName[0].langSupports)
+        )) ||
       '',
     Card명: noteWithLecture.lectureRom.cardName,
     Cube명: noteWithLecture.lectureRom.cubeName,

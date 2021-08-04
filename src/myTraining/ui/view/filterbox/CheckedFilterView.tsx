@@ -7,6 +7,7 @@ import { FilterCondition } from '../../../model/FilterCondition';
 import { FilterConditionName } from '../../../model/FilterConditionName';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 interface Props {
   colleges: CollegeModel[];
@@ -221,7 +222,10 @@ const getCollegeNames = (
   /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
   return collegeIds.map((collegeId) => {
     const college = colleges.filter((college) => college.id === collegeId)[0];
-    return parsePolyglotString(college.name);
+    return parsePolyglotString(
+      college.name,
+      getDefaultLang(college.langSupports)
+    );
   });
 };
 

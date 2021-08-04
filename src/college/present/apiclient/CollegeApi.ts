@@ -2,6 +2,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import { createCacheApi } from '../../../lecture/detail/api/cacheableApi';
+import { CollegeBanner } from '../../model/CollegeBanner';
 
 const BASE_URL = '/api/college/colleges';
 
@@ -11,18 +12,17 @@ export function findCollege(
   const url = `${BASE_URL}/${collegeId}`;
   return axios
     .get<CollegeModel>(url)
-    .then(response => (response && response.data) || null);
+    .then((response) => (response && response.data) || null);
 }
 
 function findAllCollege() {
   return axios
     .get<CollegeModel[]>('/api/college/colleges')
-    .then(response => response.data);
+    .then((response) => response.data);
 }
 
-export const [findAllCollegeCache, clearfindAllCollegeCache] = createCacheApi(
-  findAllCollege
-);
+export const [findAllCollegeCache, clearfindAllCollegeCache] =
+  createCacheApi(findAllCollege);
 export default class CollegeApi {
   URLCollege = '/api/college/colleges';
   URLJob = '/api/college/jobGroups';
@@ -32,7 +32,7 @@ export default class CollegeApi {
   registerCollege(college: CollegeModel) {
     return axios
       .post<string>(this.URLCollege, college)
-      .then(response => (response && response.data) || null)
+      .then((response) => (response && response.data) || null)
       .catch(() => {});
   }
 
@@ -40,7 +40,9 @@ export default class CollegeApi {
     //
     return axios
       .get<CollegeModel>(this.URLCollege + `/${collegeId}`)
-      .then(response => (response && new CollegeModel(response.data)) || null);
+      .then(
+        (response) => (response && new CollegeModel(response.data)) || null
+      );
   }
 
   findAllColleges() {
@@ -48,10 +50,10 @@ export default class CollegeApi {
     return axios
       .get<CollegeModel[]>(this.URLCollege + '/available')
       .then(
-        response =>
+        (response) =>
           (response &&
             Array.isArray(response.data) &&
-            response.data.map(college => new CollegeModel(college))) ||
+            response.data.map((college) => new CollegeModel(college))) ||
           []
       );
   }
@@ -61,7 +63,7 @@ export default class CollegeApi {
     return axios
       .get<CollegeModel[]>(this.URLCollege + '/forCreate')
       .then(
-        response =>
+        (response) =>
           (response && Array.isArray(response.data) && response.data) || []
       );
   }
@@ -70,7 +72,7 @@ export default class CollegeApi {
     return axios
       .get<JobGroupModel[]>(this.URLJob)
       .then(
-        response =>
+        (response) =>
           (response && Array.isArray(response.data) && response.data) || []
       );
   }
@@ -78,20 +80,20 @@ export default class CollegeApi {
   findJobGroupById(jobGroupId: string) {
     return axios
       .get<JobGroupModel>(this.URLJob + `/${jobGroupId}`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findCollegesForCurrentCineroom() {
     //
     return axios
       .get<CollegeModel[]>(this.URLCollege + `/forCurrentCineroom`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   getBanner() {
     return axios
-      .get<CollegeModel[]>(this.URLCollege + `/banner`)
-      .then(response => (response && response.data) || null);
+      .get<CollegeBanner[]>(this.URLCollege + `/banner`)
+      .then((response) => (response && response.data) || null);
   }
 }
 

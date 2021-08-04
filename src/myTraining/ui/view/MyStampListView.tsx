@@ -9,6 +9,7 @@ import { convertTimeToDate } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
 import MyStampCertificateModal from './MyStampCertificateModal';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 
 interface MyStampListViewProps {
   myStamps: MyTrainingTableViewModel[];
@@ -55,7 +56,9 @@ export default function MyStampListView({
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
                 <a href="#" onClick={(e) => onViewDetail(e, myStamp)}>
-                  <span className="ellipsis">{myStamp.name}</span>
+                  <span className="ellipsis">
+                    {parsePolyglotString(myStamp.name)}
+                  </span>
                 </a>
               </Table.Cell>
               {/* 스탬프 */}
