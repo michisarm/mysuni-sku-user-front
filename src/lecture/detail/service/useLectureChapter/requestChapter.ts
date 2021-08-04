@@ -6,6 +6,8 @@ import { findCubesByIdsCache, findCubeDetailCache } from '../../api/cubeApi';
 import { setLearningContent } from '../../store/LearningContentStore';
 import { setLearningContentCube } from '../../store/LearningContentCubeStore';
 import { LearningContentChildren } from '../../../model/LearningContentChildren';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface DescriptionList {
   id: string;
@@ -33,7 +35,7 @@ export async function requestChapter(params: ChapterParams) {
   const discussionList: LearningContentChildren[] = [];
   const cubeList: LearningContentChildren[] = [];
 
-  learningContent?.children.map(item => {
+  learningContent?.children.map((item) => {
     if (item.learningContentType === 'Cube') {
       cubeIds.push(item.contentId);
       cubeList.push(item);
@@ -54,10 +56,15 @@ export async function requestChapter(params: ChapterParams) {
   );
 
   // cube description 값을 받아 오지 못해서 임시로 cube detail을 조회해서 받아 오도록 해둠
-  await learningContentWithCubeList.forEach(async cube => {
+  await learningContentWithCubeList.forEach(async (cube) => {
     if (cube.isCube) {
       const detailCube = await findCubeDetailCache(cube.cubeId);
-      cube.description = detailCube?.cubeContents.description.description || '';
+      if (detailCube !== undefined) {
+        cube.description = parsePolyglotString(
+          detailCube.cubeContents.description.description,
+          getDefaultLang(detailCube.cube.langSupports)
+        );
+      }
     }
   });
 

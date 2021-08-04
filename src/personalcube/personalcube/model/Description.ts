@@ -1,3 +1,5 @@
+import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+
 export interface Description {
   goal: string;
   applicants: string;

@@ -7,6 +7,8 @@ import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 @autobind
 export default class ApprovalCubeService {
@@ -141,7 +143,10 @@ export default class ApprovalCubeService {
       departmentNames.defaultLanguage =
         approvalCubeDetail.userIdentity.departmentNames?.defaultLanguage || '';
       approvalCube.studentDepartmentNames = departmentNames;
-      approvalCube.cubeName = approvalCubeDetail.cube.name;
+      approvalCube.cubeName = parsePolyglotString(
+        approvalCubeDetail.cube.name,
+        getDefaultLang(approvalCubeDetail.cube.langSupports)
+      );
       approvalCube.cubeType = approvalCubeDetail.cube.type;
       approvalCube.round = approvalCubeDetail.student.round;
       approvalCube.capacity = approvalCubeDetail.classroom.capacity;
@@ -182,21 +187,23 @@ export default class ApprovalCubeService {
     endDate: number = 9999999999999
   ) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
-      ApprovalCubeRdoModel.new(
-        offset,
-        limit,
-        orderBy,
-        proposalState,
-        lectureCardId,
-        endDate
-      )
-    );
+    const approvalCubeOffsetList =
+      await this.approvalCubeApi.findApprovalCubesForSearch(
+        ApprovalCubeRdoModel.new(
+          offset,
+          limit,
+          orderBy,
+          proposalState,
+          lectureCardId,
+          endDate
+        )
+      );
 
     runInAction(() => {
-      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(
-        approvalCubeOffsetList.results
-      );
+      this.approvalCubeOffsetList.results =
+        this.approvalCubeOffsetList.results.concat(
+          approvalCubeOffsetList.results
+        );
       this.approvalCubeOffsetList.totalCount =
         approvalCubeOffsetList.totalCount;
     });
@@ -255,9 +262,8 @@ export default class ApprovalCubeService {
     }
     approvalCubeRdo.limit = 999999999;
 
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
-      approvalCubeRdo
-    );
+    const approvalCubeOffsetList =
+      await this.approvalCubeApi.findApprovalCubesForSearch(approvalCubeRdo);
 
     runInAction(() => {
       this.approvalCubesExcelWrite = this.approvalCubesExcelWrite.concat(

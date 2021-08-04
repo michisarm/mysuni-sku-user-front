@@ -6,7 +6,7 @@ import {
   findSurveySummaryBySurveyCaseIdAndRound,
   findAnswerSummariesBySurveySummaryId,
 } from '../../../api/surveyApi';
-import LangStrings from '../../../model/LangStrings';
+import LangStrings, { langStringsToString } from '../../../model/LangStrings';
 import StudentJoin from '../../../model/StudentJoin';
 import Question from '../../../model/SurveyQuestion';
 import {
@@ -27,9 +27,11 @@ import LectureSurveyAnswerSummary, {
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { findCardCache } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
+import { LangSupport } from '../../../../model/LangSupport';
 
 function parseChoice(
   question: Question,
+  langSupport: LangSupport[],
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): LectureSurveyItem {
   const {
@@ -42,7 +44,7 @@ function parseChoice(
     answerItems,
     visible,
   } = question;
-  const title = sentences.langStringMap[sentences.defaultLanguage];
+  const title = langStringsToString(sentences, langSupport);
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
   let no = parseInt(sequence.number);
   if (isNaN(no)) {
@@ -54,20 +56,20 @@ function parseChoice(
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choices: LectureSurveyItemChoice[] =
     answerItems.items?.map(({ number, values }) => {
-      const mTitle = values.langStringMap[values.defaultLanguage];
+      const mTitle = langStringsToString(values, langSupport);
       let mNo = parseInt(number);
       if (isNaN(mNo)) {
         mNo = 1;
       }
       let mImage: string | undefined;
-      const imageItem = answerItems.imageUrls?.find(c => c.number === number);
+      const imageItem = answerItems.imageUrls?.find((c) => c.number === number);
       if (imageItem !== undefined) {
         mImage = imageItem.imageUrl;
       }
       let count: number | undefined;
       if (lectureSurveyAnswerSummary !== undefined) {
         const answerSummary = lectureSurveyAnswerSummary.find(
-          c => c.questionNumber === questionNumber
+          (c) => c.questionNumber === questionNumber
         );
         if (answerSummary !== undefined) {
           const numberCountMap = answerSummary.summaryItems.numberCountMap;
@@ -103,6 +105,7 @@ function parseChoice(
 function parseCriterion(
   question: Question,
   criterionList: CriterionModel[],
+  langSupports: LangSupport[],
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): LectureSurveyItem {
   const {
@@ -114,7 +117,7 @@ function parseCriterion(
     sequence,
     answerItems,
   } = question;
-  const title = sentences.langStringMap[sentences.defaultLanguage];
+  const title = langStringsToString(sentences, langSupports);
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
   let no = parseInt(sequence.number);
   if (isNaN(no)) {
@@ -124,15 +127,12 @@ function parseCriterion(
   const isRequired = !optional;
   const canMultipleAnswer = answerItems.multipleChoice;
   const criterion = criterionList?.find(
-    c => c.number === answerItems.criterionNumber
+    (c) => c.number === answerItems.criterionNumber
   );
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choices: LectureSurveyItemChoice[] =
     criterion?.criteriaItems?.map(({ value, names, index }) => {
-      const mTitle =
-        ((names.langStringMap as unknown) as Record<string, string>)[
-          names.defaultLanguage
-        ] || '';
+      const mTitle = langStringsToString(names, langSupports);
       let mNo = index !== undefined ? index : 0;
       if (isNaN(mNo)) {
         mNo = 0;
@@ -141,7 +141,7 @@ function parseCriterion(
 
       if (lectureSurveyAnswerSummary !== undefined) {
         const answerSummary = lectureSurveyAnswerSummary.find(
-          c => c.questionNumber === questionNumber
+          (c) => c.questionNumber === questionNumber
         );
         console.log('answerSummary : ', answerSummary);
         if (answerSummary !== undefined) {
@@ -159,7 +159,7 @@ function parseCriterion(
         title: mTitle,
         no: mNo + 1,
         index,
-        names: (names as unknown) as LangStrings,
+        names: names as unknown as LangStrings,
         count,
       };
     }) || [];
@@ -180,6 +180,7 @@ function parseCriterion(
 
 function parseEssay(
   question: Question,
+  langSupports: LangSupport[],
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): LectureSurveyItem {
   const {
@@ -191,7 +192,7 @@ function parseEssay(
     sequence,
     answerItems,
   } = question;
-  const title = sentences.langStringMap[sentences.defaultLanguage];
+  const title = langStringsToString(sentences, langSupports);
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
   let no = parseInt(sequence.number);
   if (isNaN(no)) {
@@ -204,7 +205,7 @@ function parseEssay(
   let sentencesMap: Record<string, number> | undefined;
   if (lectureSurveyAnswerSummary !== undefined) {
     const answerSummary = lectureSurveyAnswerSummary.find(
-      c => c.questionNumber === questionNumber
+      (c) => c.questionNumber === questionNumber
     );
     if (answerSummary?.summaryItems.sentencesMap !== undefined) {
       sentencesMap = answerSummary.summaryItems.sentencesMap;
@@ -213,7 +214,7 @@ function parseEssay(
   let numberCountMap: Record<string, number> | undefined;
   if (lectureSurveyAnswerSummary !== undefined) {
     const answerSummary = lectureSurveyAnswerSummary.find(
-      c => c.questionNumber === questionNumber
+      (c) => c.questionNumber === questionNumber
     );
     if (answerSummary?.summaryItems.numberCountMap !== undefined) {
       numberCountMap = answerSummary.summaryItems.numberCountMap;
@@ -237,6 +238,7 @@ function parseEssay(
 
 function parseMatrix(
   question: Question,
+  langSupports: LangSupport[],
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): LectureSurveyItem {
   const {
@@ -248,7 +250,7 @@ function parseMatrix(
     sequence,
     answerItems,
   } = question;
-  const title = sentences.langStringMap[sentences.defaultLanguage];
+  const title = langStringsToString(sentences, langSupports);
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
   let no = parseInt(sequence.number);
   if (isNaN(no)) {
@@ -261,7 +263,7 @@ function parseMatrix(
   let matrixItems: MatrixItem[] | undefined;
   if (lectureSurveyAnswerSummary !== undefined) {
     const answerSummary = lectureSurveyAnswerSummary.find(
-      c => c.questionNumber === questionNumber
+      (c) => c.questionNumber === questionNumber
     );
     if (answerSummary?.summaryItems.matrixItems !== undefined) {
       matrixItems = answerSummary.summaryItems.matrixItems;
@@ -269,7 +271,7 @@ function parseMatrix(
   }
   const columns: LectureSurveyItemChoice[] =
     answerItems.columnItems?.map(({ number, values }) => {
-      const mTitle = values.langStringMap[values.defaultLanguage];
+      const mTitle = langStringsToString(values, langSupports);
       let mNo = parseInt(number);
       if (isNaN(mNo)) {
         mNo = 1;
@@ -283,7 +285,7 @@ function parseMatrix(
 
   const rows: LectureSurveyItemChoice[] =
     answerItems.rowItems?.map(({ number, values }) => {
-      const mTitle = values.langStringMap[values.defaultLanguage];
+      const mTitle = langStringsToString(values, langSupports);
       let mNo = parseInt(number);
       if (isNaN(mNo)) {
         mNo = 1;
@@ -318,26 +320,27 @@ async function parseSurveyForm(
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): Promise<LectureSurvey | undefined> {
   const surveyForm = await findSurveyForm(surveyId);
-  const { id, titles, questions: remoteQuestions } = surveyForm;
-  const title = titles?.langStringMap[titles.defaultLanguage];
-  const surveyItems = remoteQuestions.map(question => {
+  const { id, titles, questions: remoteQuestions, langSupports } = surveyForm;
+  const title = langStringsToString(titles, langSupports);
+  const surveyItems = remoteQuestions.map((question) => {
     switch (question.questionItemType) {
       case 'Choice':
-        return parseChoice(question, lectureSurveyAnswerSummary);
+        return parseChoice(question, langSupports, lectureSurveyAnswerSummary);
       case 'Essay':
       case 'Date':
       case 'Boolean':
-        return parseEssay(question, lectureSurveyAnswerSummary);
+        return parseEssay(question, langSupports, lectureSurveyAnswerSummary);
       case 'Matrix':
-        return parseMatrix(question, lectureSurveyAnswerSummary);
+        return parseMatrix(question, langSupports, lectureSurveyAnswerSummary);
       case 'Criterion':
         return parseCriterion(
           question,
           surveyForm.criterionList,
+          langSupports,
           lectureSurveyAnswerSummary
         );
       default:
-        return parseEssay(question);
+        return parseEssay(question, langSupports);
     }
   });
   return {
@@ -384,7 +387,7 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },
@@ -407,8 +410,8 @@ async function getCubeLectureSurveyState(
   }
   const studentJoins = await findIsJsonStudentByCube(serviceId);
   if (studentJoins.length > 0) {
-    const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
-      (r, c) => {
+    const studentJoin: StudentJoin | null =
+      studentJoins.reduce<StudentJoin | null>((r, c) => {
         if (r === null) {
           return c;
         }
@@ -416,9 +419,7 @@ async function getCubeLectureSurveyState(
           return c;
         }
         return r;
-      },
-      null
-    );
+      }, null);
     if (studentJoin !== null) {
       const lectureSurveyState = {
         state,
@@ -476,7 +477,7 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },

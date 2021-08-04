@@ -1,7 +1,10 @@
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
+import { LangSupport } from './LangSupport';
+
 export interface ContentsProviderInfo {
   id: string;
   areaType: string;
-  name: string;
+  name: PolyglotString;
   enabled: boolean;
   phoneNumber: string | null;
   email: string | null;
@@ -14,4 +17,5 @@ export interface ContentsProviderInfo {
   };
   link: boolean;
   pisAgree: boolean;
+  langSupports: LangSupport[];
 }

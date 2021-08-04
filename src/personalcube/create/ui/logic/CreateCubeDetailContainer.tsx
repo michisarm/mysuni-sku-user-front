@@ -21,6 +21,8 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 function CreateCubeDetailContainer() {
   const params = useParams<CreateCubeDetailParams>();
@@ -97,7 +99,10 @@ function CreateCubeDetailContainer() {
           {createCubeDetail !== undefined && (
             <Form>
               <CreateCubeBasicInfoView
-                name={createCubeDetail.cube.name}
+                name={parsePolyglotString(
+                  createCubeDetail.cube.name,
+                  getDefaultLang(createCubeDetail.cube.langSupports)
+                )}
                 categories={createCubeDetail.cube.categories}
                 cubeType={createCubeDetail.cube.type}
                 cubeState={params.cubeState}
@@ -106,7 +111,9 @@ function CreateCubeDetailContainer() {
                 remark={getRemark(createCubeDetail.userCube.openRequests)}
               />
               <CreateCubeExposureInfoView
-                tags={createCubeDetail.cubeContents.tags}
+                tags={parsePolyglotString(createCubeDetail.cubeContents.tags)
+                  .split(',')
+                  .map((c) => c.trim())}
               />
               {params.cubeState === 'OpenApproval' && (
                 <CreateCubeDetailInfoView createCubeDetail={createCubeDetail} />

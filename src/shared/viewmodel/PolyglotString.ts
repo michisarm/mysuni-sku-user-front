@@ -1,15 +1,15 @@
 export interface PolyglotString {
-  ko: string;
-  en: string;
-  cn: string;
+  ko: string | null;
+  en: string | null;
+  zh: string | null;
 }
 
 export function parsePolyglotString(
-  polyglotString: PolyglotString,
-  languange: 'ko' | 'en' | 'cn' = 'ko'
+  polyglotString: PolyglotString | null,
+  languange: 'ko' | 'en' | 'zh' = 'ko'
 ): string {
   if (polyglotString === null) {
     return '';
   }
-  return polyglotString[languange];
+  return polyglotString[languange] || '';
 }

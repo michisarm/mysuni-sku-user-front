@@ -18,13 +18,13 @@ import {
 class AplModel extends NewQueryModel {
   //
   id: string = '';
-  title: PolyglotString = { ko: '', en: '', cn: '' };
+  title: PolyglotString = { ko: '', en: '', zh: '' };
   type: string = '';
   typeName: string = '';
   collegeId: string = '';
-  collegeName: PolyglotString = { ko: '', en: '', cn: '' };
+  collegeName: PolyglotString = { ko: '', en: '', zh: '' };
   channelId: string = '';
-  channelName: PolyglotString = { ko: '', en: '', cn: '' };
+  channelName: PolyglotString = { ko: '', en: '', zh: '' };
   startDate: number = 0;
   endDate: number = 0;
   institute: string = '';
@@ -43,7 +43,7 @@ class AplModel extends NewQueryModel {
   fileIds: string = '';
   approvalYn: boolean | undefined;
   approvalId: string = '';
-  approvalName: PolyglotString = { ko: '', en: '', cn: '' };
+  approvalName: PolyglotString = { ko: '', en: '', zh: '' };
   approvalEmail: string = '';
   approvalTime: number = 0;
   updateId: string = '';
@@ -54,8 +54,8 @@ class AplModel extends NewQueryModel {
   patronKeyString: string = '';
   patronType: string = '';
   pavilionId: string = '';
-  approvalCompany: PolyglotString = { ko: '', en: '', cn: '' };
-  approvalDepartment: PolyglotString = { ko: '', en: '', cn: '' };
+  approvalCompany: PolyglotString = { ko: '', en: '', zh: '' };
+  approvalDepartment: PolyglotString = { ko: '', en: '', zh: '' };
 
   // requiredSubsidiaries: IdName[] = [];
 

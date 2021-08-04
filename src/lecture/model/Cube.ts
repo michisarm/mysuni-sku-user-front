@@ -1,20 +1,22 @@
 import { CardCategory } from '../../shared/model/CardCategory';
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import CubeType from './CubeType';
+import { LangSupport } from './LangSupport';
 
 export interface Cube {
+  langSupports: LangSupport[];
   id: string;
   patronKey: {
     keyString: string;
   };
-  name: string;
+  name: PolyglotString;
   type: CubeType;
   enabled: boolean;
   categories: CardCategory[];
   learningTime: number;
   time: number;
-  defaultLanguage: null;
   hasTest: boolean;
-  reportName: string | null;
+  reportName: PolyglotString | null;
   surveyCaseId: string | null;
   sharingCineroomIds: string[];
 }

@@ -27,6 +27,7 @@ import { CriterionQuestionItems } from '../../form/model/CriterionQuestionItems'
 import { ChoiceQuestionItems } from '../../form/model/ChoiceQuestionItems';
 import CriterionView from '../view/CriterionView';
 import { AnswerProgress } from '../../answer/model/AnswerProgress';
+import { langStringsToString } from '../../../lecture/detail/model/LangStrings';
 
 interface Props {
   surveyCaseService?: SurveyCaseService;
@@ -95,11 +96,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   clear() {
-    const {
-      surveyCaseService,
-      surveyFormService,
-      answerSheetService,
-    } = this.props;
+    const { surveyCaseService, surveyFormService, answerSheetService } =
+      this.props;
 
     answerSheetService!.clear();
     surveyCaseService!.clear();
@@ -120,7 +118,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerMap } = answerSheetService!;
     let rtn = true;
     if (questions && questions.length) {
-      questions.map(question => {
+      questions.map((question) => {
         const answer =
           answerMap.get(question.sequence.toSequenceString()) ||
           new AnswerItemModel();
@@ -178,7 +176,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
             serviceId,
             serviceType
           )
-          .then(answerSheetId => {
+          .then((answerSheetId) => {
             answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
             return answerSheetService!.saveAnswerSheet();
           })
@@ -232,7 +230,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
           serviceId,
           serviceType
         )
-        .then(res => {
+        .then((res) => {
           answerSheet.id = res;
           answerSheetService!.changeAnswerSheetProp('id', res);
           return answerSheetService!.saveAnswerSheet();
@@ -250,163 +248,170 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   render() {
-    //
-    const { open } = this.state;
-    const { surveyFormService, answerSheetService, trigger } = this.props;
-    const { surveyForm } = surveyFormService!;
-    if (!surveyForm) {
-      return null;
-    }
-    const { answerMap, answerSheet } = answerSheetService!;
-    const { questions, criterionList } = surveyForm!;
-    const disabled =
-      answerSheet &&
-      answerSheet.progress &&
-      answerSheet.progress === AnswerProgress.Complete;
+    return null;
 
-    return (
-      <Modal
-        open={open}
-        onOpen={this.onOpenModal}
-        onClose={this.onCloseModal}
-        trigger={trigger}
-        className="base w1000 inner-scroll"
-      >
-        <Modal.Header className="res">
-          {surveyForm && surveyForm.title}
-        </Modal.Header>
-        <Modal.Content>
-          <div className="scrolling-80vh">
-            <div className="content-wrap1">
-              <List as="ol" className="num-list">
-                {(questions &&
-                  questions.length &&
-                  questions.map(question => {
-                    let answerArea = null;
-                    const answer =
-                      answerMap.get(question.sequence.toSequenceString()) ||
-                      new AnswerItemModel();
-                    const answerItems = question.answerItems;
+    // //
+    // const { open } = this.state;
+    // const { surveyFormService, answerSheetService, trigger } = this.props;
+    // const { surveyForm } = surveyFormService!;
+    // if (!surveyForm) {
+    //   return null;
+    // }
+    // const { answerMap, answerSheet } = answerSheetService!;
+    // const { questions, criterionList, langSupports } = surveyForm!;
+    // const disabled =
+    //   answerSheet &&
+    //   answerSheet.progress &&
+    //   answerSheet.progress === AnswerProgress.Complete;
 
-                    switch (question.questionItemType) {
-                      case QuestionItemType.Essay:
-                        if (answerItems instanceof EssayQuestionItems) {
-                          if (answerItems.maxLength <= 100) {
-                            answerArea = (
-                              <ShortAnswerView
-                                answer={answer}
-                                disabled={disabled}
-                                onSetAnswer={value =>
-                                  this.onSetAnswer(question, value)
-                                }
-                              />
-                            );
-                          } else {
-                            answerArea = (
-                              <EssayView
-                                answer={answer}
-                                disabled={disabled}
-                                onSetAnswer={value =>
-                                  this.onSetAnswer(question, value)
-                                }
-                              />
-                            );
-                          }
-                        }
+    // return (
+    //   <Modal
+    //     open={open}
+    //     onOpen={this.onOpenModal}
+    //     onClose={this.onCloseModal}
+    //     trigger={trigger}
+    //     className="base w1000 inner-scroll"
+    //   >
+    //     <Modal.Header className="res">
+    //       {surveyForm && langStringsToString(surveyForm.titles, langSupports)}
+    //     </Modal.Header>
+    //     <Modal.Content>
+    //       <div className="scrolling-80vh">
+    //         <div className="content-wrap1">
+    //           <List as="ol" className="num-list">
+    //             {(questions &&
+    //               questions.length &&
+    //               questions.map((question) => {
+    //                 let answerArea = null;
+    //                 const answer =
+    //                   answerMap.get(question.sequence.toSequenceString()) ||
+    //                   new AnswerItemModel();
+    //                 const answerItems = question.answerItems;
 
-                        break;
-                      case QuestionItemType.Choice:
-                        if (answerItems instanceof ChoiceQuestionItems) {
-                          if (answerItems.multipleChoice) {
-                            answerArea = (
-                              <MultiChoiceView
-                                answer={answer}
-                                disabled={disabled}
-                                items={answerItems.items || []}
-                                onSetAnswer={value =>
-                                  this.onSetAnswer(question, value)
-                                }
-                              />
-                            );
-                          } else {
-                            answerArea = (
-                              <SingleChoiceView
-                                question={question}
-                                answer={answer}
-                                disabled={disabled}
-                                items={answerItems.items || []}
-                                onSetAnswer={value =>
-                                  this.onSetAnswer(question, value)
-                                }
-                              />
-                            );
-                          }
-                        }
+    //                 switch (question.questionItemType) {
+    //                   case QuestionItemType.Essay:
+    //                     if (answerItems instanceof EssayQuestionItems) {
+    //                       if (answerItems.maxLength <= 100) {
+    //                         answerArea = (
+    //                           <ShortAnswerView
+    //                             langSupports={langSupports}
+    //                             answer={answer}
+    //                             disabled={disabled}
+    //                             onSetAnswer={(value) =>
+    //                               this.onSetAnswer(question, value)
+    //                             }
+    //                           />
+    //                         );
+    //                       } else {
+    //                         answerArea = (
+    //                           <EssayView
+    //                             langSupports={langSupports}
+    //                             answer={answer}
+    //                             disabled={disabled}
+    //                             onSetAnswer={(value) =>
+    //                               this.onSetAnswer(question, value)
+    //                             }
+    //                           />
+    //                         );
+    //                       }
+    //                     }
 
-                        break;
-                      case QuestionItemType.Criterion:
-                        if (answerItems instanceof CriterionQuestionItems) {
-                          const index = criterionList
-                            .map(criterion => criterion.number)
-                            .findIndex(
-                              number => number === answerItems.criterionNumber
-                            );
-                          const criterion =
-                            index >= 0
-                              ? criterionList[index]
-                              : new CriterionModel();
-                          answerArea = (
-                            <CriterionView
-                              question={question}
-                              answer={answer}
-                              disabled={disabled}
-                              items={criterion.criteriaItems || []}
-                              onSetAnswer={value =>
-                                this.onSetAnswer(question, value)
-                              }
-                            />
-                          );
-                        }
-                        break;
-                    }
-                    return (
-                      <List.Item
-                        as="li"
-                        key={question.sequence.toSequenceString()}
-                      >
-                        <div className="ol-title">{question.sentence}</div>
-                        <div className="ol-answer">{answerArea}</div>
-                      </List.Item>
-                    );
-                  })) ||
-                  null}
-              </List>
-            </div>
-          </div>
-        </Modal.Content>
-        <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onCloseModal}>
-            취소
-          </Button>
-          {!disabled && (
-            <>
-              <Button
-                className="w190 pop s"
-                onClick={() => this.onSaveAnswerSheet(false)}
-              >
-                저장
-              </Button>
-              <Button
-                className="w190 pop p"
-                onClick={() => this.onSubmitClick()}
-              >
-                제출
-              </Button>
-            </>
-          )}
-        </Modal.Actions>
-      </Modal>
-    );
+    //                     break;
+    //                   case QuestionItemType.Choice:
+    //                     if (answerItems instanceof ChoiceQuestionItems) {
+    //                       if (answerItems.multipleChoice) {
+    //                         answerArea = (
+    //                           <MultiChoiceView
+    //                             langSupports={langSupports}
+    //                             answer={answer}
+    //                             disabled={disabled}
+    //                             items={answerItems.items || []}
+    //                             onSetAnswer={(value) =>
+    //                               this.onSetAnswer(question, value)
+    //                             }
+    //                           />
+    //                         );
+    //                       } else {
+    //                         answerArea = (
+    //                           <SingleChoiceView
+    //                             langSupports={langSupports}
+    //                             question={question}
+    //                             answer={answer}
+    //                             disabled={disabled}
+    //                             items={answerItems.items || []}
+    //                             onSetAnswer={(value) =>
+    //                               this.onSetAnswer(question, value)
+    //                             }
+    //                           />
+    //                         );
+    //                       }
+    //                     }
+
+    //                     break;
+    //                   case QuestionItemType.Criterion:
+    //                     if (answerItems instanceof CriterionQuestionItems) {
+    //                       const index = criterionList
+    //                         .map((criterion) => criterion.number)
+    //                         .findIndex(
+    //                           (number) => number === answerItems.criterionNumber
+    //                         );
+    //                       const criterion =
+    //                         index >= 0
+    //                           ? criterionList[index]
+    //                           : new CriterionModel();
+    //                       answerArea = (
+    //                         <CriterionView
+    //                           langSupports={langSupports}
+    //                           question={question}
+    //                           answer={answer}
+    //                           disabled={disabled}
+    //                           items={criterion.criteriaItems || []}
+    //                           onSetAnswer={(value) =>
+    //                             this.onSetAnswer(question, value)
+    //                           }
+    //                         />
+    //                       );
+    //                     }
+    //                     break;
+    //                 }
+    //                 return (
+    //                   <List.Item
+    //                     as="li"
+    //                     key={question.sequence.toSequenceString()}
+    //                   >
+    //                     <div className="ol-title">{question.sentence}</div>
+    //                     <div className="ol-answer">{answerArea}</div>
+    //                   </List.Item>
+    //                 );
+    //               })) ||
+    //               null}
+    //           </List>
+    //         </div>
+    //       </div>
+    //     </Modal.Content>
+    //     <Modal.Actions className="actions">
+    //       <Button className="w190 pop d" onClick={this.onCloseModal}>
+    //         취소
+    //       </Button>
+    //       {!disabled && (
+    //         <>
+    //           <Button
+    //             className="w190 pop s"
+    //             onClick={() => this.onSaveAnswerSheet(false)}
+    //           >
+    //             저장
+    //           </Button>
+    //           <Button
+    //             className="w190 pop p"
+    //             onClick={() => this.onSubmitClick()}
+    //           >
+    //             제출
+    //           </Button>
+    //         </>
+    //       )}
+    //     </Modal.Actions>
+    //   </Modal>
+    // );
   }
 }
 
