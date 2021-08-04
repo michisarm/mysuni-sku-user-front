@@ -40,7 +40,6 @@ import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
@@ -79,8 +78,6 @@ function UserProfileinfoProfileCard(props: Props) {
   const [feedCount, setFeedCount] = useState<number>(0);
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [isFollowFlag, setIsFollowFlag] = useState<boolean>();
-
-  const isExternal = isExternalInstructor();
 
   useEffect(() => {
     communityData &&
@@ -164,12 +161,10 @@ function UserProfileinfoProfileCard(props: Props) {
       if (preProfileInfo.isSetProfile) {
         if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName);
         if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce);
-        if (preProfileInfo.profileImg) {
+        if (preProfileInfo.profileImg)
           setPreProfileImg(preProfileInfo.profileImg);
-        }
-        if (preProfileInfo.profileBgImg) {
+        if (preProfileInfo.profileBgImg)
           setPreProfileBgImg(preProfileInfo.profileBgImg);
-        }
       }
     }
   }, [profileInfo, props.preProfileInfo]);
@@ -251,23 +246,57 @@ function UserProfileinfoProfileCard(props: Props) {
                 <span className="prof-tit">
                   {profileInfo?.isNickname ? nickname : profileInfo?.name}
                 </span>
-              </div>
-              {/* {!isExternal && (
-                <div className="follow-bttn-area">
-                  {props.memberId !== denizenId && (
-                    <Button
-                      className={followClassName}
-                      onClick={() => {
-                        // if(followClickFlag){
-                        onClickFollow();
-                        // }
-                      }}
-                    >
-                      {isFollow}
-                    </Button>
-                  )}
+                <div className="foll-info">
+                  <span>{followerCount || profileInfo?.followerCount}</span>{' '}
+                  <PolyglotText
+                    id="mypage-유저모달-Followers"
+                    defaultString="Followers"
+                  />
+                  <span>{profileInfo?.followingCount}</span>
+                  <PolyglotText
+                    id="mypage-유저모달-Following"
+                    defaultString="Following"
+                  />
                 </div>
-              )} */}
+              </div>
+              <div className="count-area">
+                {/* <div className="cnt-box bad-cnt" >
+                  <span>Badge</span>
+                  <strong>{badgeCount}</strong>
+                </div> */}
+                <div className="cnt-box com-cnt">
+                  <span>
+                    <PolyglotText
+                      id="mypage-유저모달-커뮤니티"
+                      defaultString="커뮤니티"
+                    />
+                  </span>
+                  <strong>{communityCount}</strong>
+                </div>
+                <div className="cnt-box feed-cnt">
+                  <span>
+                    <PolyglotText
+                      id="mypage-유저모달-Feed"
+                      defaultString="Feed"
+                    />
+                  </span>
+                  <strong>{feedCount}</strong>
+                </div>
+              </div>
+              <div className="follow-bttn-area">
+                {props.memberId !== denizenId && (
+                  <Button
+                    className={followClassName}
+                    onClick={() => {
+                      // if(followClickFlag){
+                      onClickFollow();
+                      // }
+                    }}
+                  >
+                    {isFollow}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
