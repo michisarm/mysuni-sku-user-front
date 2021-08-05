@@ -11,6 +11,7 @@ import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeCompRightProps {
   name: string;
@@ -28,18 +29,21 @@ export default function BadgeCompRight({
   const history = useHistory();
   const { scrollSave } = useScrollMove();
 
-  const moveToCardPage = useCallback((e: any, cardId: string) => {
-    e.preventDefault();
-    scrollSave();
+  const moveToCardPage = useCallback(
+    (e: any, cardId: string) => {
+      e.preventDefault();
+      scrollSave();
 
-    const params: LectureParams = {
-      cardId,
-      viewType: 'view',
-      pathname: '',
-    };
+      const params: LectureParams = {
+        cardId,
+        viewType: 'view',
+        pathname: '',
+      };
 
-    history.push(toPath(params));
-  }, []);
+      history.push(toPath(params));
+    },
+    [history, scrollSave]
+  );
 
   return (
     <div className="right-area">
@@ -68,7 +72,7 @@ export default function BadgeCompRight({
                 >
                   <a
                     href="#"
-                    onClick={e => {
+                    onClick={(e) => {
                       moveToCardPage(e, card.id);
                       e.preventDefault();
                     }}
@@ -76,7 +80,9 @@ export default function BadgeCompRight({
                     <span className="class-icon">
                       <Image src={card.thumbImagePath} clasName="ui image" />
                     </span>
-                    <span className="title">{card.name}</span>
+                    <span className="title">
+                      {parsePolyglotString(card.name)}
+                    </span>
                     <span className="time">
                       <Icon className="card-time16" />
                       {` ${formattedLearningTime}`}

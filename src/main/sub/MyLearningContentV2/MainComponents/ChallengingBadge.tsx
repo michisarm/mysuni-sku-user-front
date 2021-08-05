@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -15,6 +16,8 @@ import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
@@ -87,7 +90,10 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
       category: '메인_도전중인-Badge',
       action: 'Click Card',
       // label: `(Badge) - ${myBadges[idx].name}`,
-      label: `${challengeBadges[idx].name}`,
+      label: `${parsePolyglotString(
+        challengeBadges[idx].name,
+        getDefaultLang(challengeBadges[idx].langSupport)
+      )}`,
     });
   };
 
@@ -123,7 +129,10 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
                   <li key={index} onClick={() => onClick(index)}>
                     <BadgeView
                       id={badge.id}
-                      name={badge.name}
+                      name={parsePolyglotString(
+                        badge.name,
+                        getDefaultLang(badge.langSupport)
+                      )}
                       level={badge.level}
                       iconUrl={badge.iconUrl}
                       categoryId={badge.categoryId}

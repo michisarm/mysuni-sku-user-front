@@ -21,6 +21,8 @@ import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 import { saveAs } from 'file-saver';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props {
   myBadge: MyBadge;
@@ -151,8 +153,8 @@ class MyBadgeModal extends Component<Props, States> {
     const { badgeStudent } = badgeStudentService!;
     const { open } = this.state;
 
-    const myBadgeName = myBadge.name;
-    const myBadgeCategoryName = myBadge.badgeCategory.name;
+    const myBadgeName = parsePolyglotString(myBadge.name);
+    const myBadgeCategoryName = parsePolyglotString(myBadge.badgeCategory.name);
     return (
       <>
         <Modal
@@ -197,12 +199,17 @@ class MyBadgeModal extends Component<Props, States> {
                     </div>
                     <div className="message-wrapper">
                       <span>
-                        {badgeStudent.name}
+                        {parsePolyglotString(badgeStudent.name, 'ko')}
                         <PolyglotText
                           id="Certification-mybadgemodal-이수증타이틀1"
                           defaultString="님의"
                         />
-                        <strong>{myBadge.name}</strong>
+                        <strong>
+                          {parsePolyglotString(
+                            myBadge.name,
+                            getDefaultLang(myBadge.langSupport)
+                          )}
+                        </strong>
                         <br />
                         <PolyglotText
                           id="Certification-mybadgemodal-이수증타이틀2"
@@ -242,14 +249,19 @@ class MyBadgeModal extends Component<Props, States> {
                           <Image src={bg_mybadge} />
                           <div className="txt_box">
                             <strong className="name">
-                              {badgeStudent.name}
+                              {parsePolyglotString(badgeStudent.name, 'ko')}
                               <p>
                                 <PolyglotText
                                   id="Certification-mybadgemodal-이수증내용2"
                                   defaultString="귀하는 아래 프로그램의 전 과정을 \n성공적으로 이수하였으며, Badge 획득 요건을\n충족하였기에 이 증서를 드립니다."
                                 />
                               </p>
-                              <span className="category">{myBadge.name}</span>
+                              <span className="category">
+                                {parsePolyglotString(
+                                  myBadge.name,
+                                  getDefaultLang(myBadge.langSupport)
+                                )}
+                              </span>
                               <span className="date">
                                 {moment(
                                   badgeStudent.badgeIssueStateModifiedTime || 0
@@ -260,7 +272,10 @@ class MyBadgeModal extends Component<Props, States> {
                           <div className="badge badge-list-type">
                             <MyBadgeCertificateView
                               id={myBadge.id}
-                              name={myBadge.name}
+                              name={parsePolyglotString(
+                                myBadge.name,
+                                getDefaultLang(myBadge.langSupport)
+                              )}
                               level={myBadge.level}
                               iconUrl={myBadge.iconUrl}
                               categoryId={myBadge.categoryId}
@@ -300,7 +315,7 @@ class MyBadgeModal extends Component<Props, States> {
                           onClick={() =>
                             this.onClickCertificateImageDownload(
                               badgeStudent.id,
-                              badgeStudent.name,
+                              parsePolyglotString(badgeStudent.name, 'ko'),
                               badgeStudent.badgeIssueStateModifiedTime
                             )
                           }
