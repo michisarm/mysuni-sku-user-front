@@ -17,6 +17,7 @@ import {
 } from '../../../ui/view/LectureElementsView';
 import { dateTimeHelper } from '../../../../../shared';
 import { CategoryModel } from '../../../../../shared/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -98,7 +99,7 @@ class ListCardView extends Component<Props> {
           <Thumbnail image={thumbnailImage} />
 
           <Title
-            title={<a>{model.name}</a>}
+            title={<a>{model.name && parsePolyglotString(model.name)}</a>}
             category={new CategoryModel(model.category)}
           >
             <Fields>

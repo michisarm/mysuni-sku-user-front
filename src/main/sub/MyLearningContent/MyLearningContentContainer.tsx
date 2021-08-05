@@ -23,6 +23,7 @@ import {
 } from 'myTraining/model';
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   notieService?: NotieService;
@@ -225,11 +226,8 @@ class MyLearningContentContainer extends Component<Props, State> {
       return;
     }
 
-    const {
-      lectureService,
-      inMyLectureService,
-      myTrainingService,
-    } = this.props;
+    const { lectureService, inMyLectureService, myTrainingService } =
+      this.props;
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
@@ -287,7 +285,7 @@ class MyLearningContentContainer extends Component<Props, State> {
             serviceId: training.serviceId,
             serviceType: training.serviceType,
             category: training.category,
-            name: training.name,
+            name: training.name ? parsePolyglotString(training.name) : '',
             description: training.description,
             cubeType: training.cubeType,
             learningTime: training.learningTime,

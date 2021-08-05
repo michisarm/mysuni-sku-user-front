@@ -18,6 +18,7 @@ import MyTrainingModel from './MyTrainingModel';
 import { CardCategory } from '../../shared/model/CardCategory';
 import { Category } from '../../shared/model/Category';
 import { LectureType } from '../../lecture/detail/viewModel/LectureType';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class InMyLectureModel extends DramaEntityObservableModel {
   //
@@ -25,7 +26,8 @@ class InMyLectureModel extends DramaEntityObservableModel {
   serviceId: string = '';
   category: CategoryModel = new CategoryModel();
 
-  name: string = '';
+  // name: string = '';
+  name: PolyglotString | null = null;
   description: string = '';
   cubeType: CubeType = CubeType.None;
   learningTime: number = 0;

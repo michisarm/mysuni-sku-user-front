@@ -59,7 +59,7 @@ class HeaderContainer extends Component<Props> {
 
     return (
       <HeaderView
-        memberName={skProfile.member.name}
+        memberName={skProfile.name}
         onViewAll={this.onViewAll}
       >
         <FavoriteChannelChangeModal

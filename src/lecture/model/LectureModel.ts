@@ -14,6 +14,7 @@ import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
 import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 //import LectrueRibbon from './LectrueRibbon';
 
 class LectureModel extends DramaEntityObservableModel {
@@ -24,7 +25,8 @@ class LectureModel extends DramaEntityObservableModel {
   requiredSubsidiaries: IdName[] = [];
   courseOpen: CourseOpenModel = new CourseOpenModel();
   category: CategoryModel = new CategoryModel();
-  name: string = '';
+  // name: string = '';
+  name: PolyglotString | null = null;
   cubeType: CubeType = CubeType.None;
   cardId: string = '';
   cubeId: string = '';

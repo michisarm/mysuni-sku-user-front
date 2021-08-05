@@ -77,11 +77,12 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findJobGroupById(data.value);
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobGroup', {
-      id: data.value,
-      name: event.target.innerText,
-    });
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
+    // 김민준 - 객체 없음
+    // skProfileService!.setFavoriteJobGroupProp('favoriteJobGroup', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
+    // skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
   }
 
   setJobDuties() {
@@ -110,10 +111,11 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
-      id: data.value,
-      name: event.target.innerText,
-    });
+    // 김민준 - 객체 없음
+    // skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
   }
 
   selectEtcJobDuty(data: any) {
@@ -124,10 +126,10 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
-      id: 'etc',
-      name: data.value,
-    });
+    // skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
+    //   id: 'etc',
+    //   name: data.value,
+    // });
   }
 
   onPreviousClick() {
@@ -138,17 +140,17 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
   onNextClick() {
     //
     const skProfileService = this.props.skProfileService!;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
 
     let skProfileUdo: SkProfileUdo;
 
     if (
-      !favoriteJobGroup.favoriteJobGroup ||
-      !favoriteJobGroup.favoriteJobGroup!.id ||
-      !favoriteJobGroup.favoriteJobDuty ||
-      !favoriteJobGroup.favoriteJobDuty!.id
+      !favoriteJobDutyId
+      // !favoriteJobGroup.favoriteJobGroup ||
+      // !favoriteJobGroup.favoriteJobGroup!.id ||
+      // !favoriteJobGroup.favoriteJobDuty ||
+      // !favoriteJobGroup.favoriteJobDuty!.id
     ) {
       reactAlert({
         title: '알림',
@@ -156,8 +158,9 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
       });
     } else {
       skProfileUdo = new SkProfileUdo(
-        skProfileService.skProfile.member.currentJobGroup,
-        skProfileService.skProfile.member.favoriteJobGroup,
+        // 객체 없음
+        // skProfileService.skProfile.member.currentJobGroup,
+        // skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
 
@@ -172,9 +175,8 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
 
     return (
       <Form>
@@ -187,19 +189,22 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
               placeholder="선택해주세요"
               options={selectOptionJobGroup}
               value={
-                favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup.id
+                favoriteJobGroupId
+                // favoriteJobGroup &&
+                // favoriteJobGroup.favoriteJobGroup &&
+                // favoriteJobGroup.favoriteJobGroup.id
               }
               onChange={(event: any, data: any) =>
                 this.selectJobGroup(event, data)
               }
             />
           </div>
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
+          {
+            favoriteJobGroupId !== 'etc' ? (
+          // favoriteJobGroup &&
+          // favoriteJobGroup.favoriteJobGroup &&
+          // favoriteJobGroup.favoriteJobGroup.id &&
+          // favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 관심 직무를 선택해주세요.
@@ -208,10 +213,11 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
                 placeholder="선택해주세요"
                 options={selectOptionJobDuty}
                 value={
-                  member &&
-                  member.favoriteJobGroup &&
-                  member.favoriteJobGroup.favoriteJobDuty &&
-                  member.favoriteJobGroup.favoriteJobDuty.id
+                  favoriteJobDutyId
+                  // member &&
+                  // member.favoriteJobGroup &&
+                  // member.favoriteJobGroup.favoriteJobDuty &&
+                  // member.favoriteJobGroup.favoriteJobDuty.id
                 }
                 onChange={(event: any, data: any) =>
                   this.selectJobDuty(event, data)
@@ -221,10 +227,12 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
           ) : (
             ''
           )}
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
+          {
+          favoriteJobGroupId === 'etc' ? (
+          // favoriteJobGroup &&
+          // favoriteJobGroup.favoriteJobGroup &&
+          // favoriteJobGroup.favoriteJobGroup.id &&
+          // favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
@@ -233,18 +241,22 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
                 className={classNames('ui h48 input', {
                   focus: this.state.focus,
                   write:
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name,
+                    // 김민준 - 이름 없음
+                    // favoriteJobGroup &&
+                    // favoriteJobGroup.favoriteJobDuty &&
+                    // favoriteJobGroup.favoriteJobDuty.name,
+                    favoriteJobDutyId
                 })}
               >
                 <input
                   type="text"
                   placeholder="Text.."
                   value={
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name
+                    // 김민준 - 이름 없음
+                    favoriteJobDutyId
+                    // favoriteJobGroup &&
+                    // favoriteJobGroup.favoriteJobDuty &&
+                    // favoriteJobGroup.favoriteJobDuty.name
                   }
                   onClick={() => this.setState({ focus: true })}
                   onChange={e =>

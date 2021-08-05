@@ -107,7 +107,7 @@ class QnaListContainer extends React.Component<Props, State> {
           <span className="cell category" />
           <span className="cell status" />
           <span className="cell date">
-            {post.answeredAt && moment(post.time).format('YYYY.MM.DD')}
+            {post.answeredAt && moment(post.answeredAt).format('YYYY.MM.DD')}
           </span>
         </a>
       );
@@ -132,7 +132,8 @@ class QnaListContainer extends React.Component<Props, State> {
               : getPolyglotText('답변대기', 'support-qna-답변대기')}
           </span>
           <span className="cell date">
-            {post.time && moment(post.time).format('YYYY.MM.DD')}
+            {post.registeredTime &&
+              moment(post.registeredTime).format('YYYY.MM.DD')}
           </span>
         </a>
         {answerElement}

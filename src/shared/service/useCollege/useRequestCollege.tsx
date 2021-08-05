@@ -18,8 +18,10 @@ import { getDefaultLang } from '../../../lecture/model/LangSupport';
 async function requestCollegeAndChannel() {
   const getCollegeData = await findAllCollegeCache();
 
-  setCollegeModelStore(getCollegeData);
-  const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
+  await setCollegeModelStore(getCollegeData);
+  console.log('------');
+  console.log(getCollegeData);
+  const collegeAndChannelList = await devideCollegeAndChannel(getCollegeData);
 
   setChannelStore(collegeAndChannelList.channels);
   setCollegeStore(collegeAndChannelList.colleges);

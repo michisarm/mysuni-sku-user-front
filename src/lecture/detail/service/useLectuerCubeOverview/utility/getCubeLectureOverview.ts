@@ -1,5 +1,6 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { CubeDetail } from '../../../../model/CubeDetail';
@@ -166,12 +167,18 @@ async function getLectureInstructor(
     return findInstructorCache(c.instructorId)
       .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name;
+          c.name = r.memberSummary.name
+            ? parsePolyglotString(r.memberSummary.name)
+            : '';
           c.memberSummary = {
             employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department,
+            department: r.memberSummary.department
+              ? parsePolyglotString(r.memberSummary.department)
+              : '',
             email: r.memberSummary.email,
-            name: r.memberSummary.name,
+            name: r.memberSummary.name
+              ? parsePolyglotString(r.memberSummary.name)
+              : '',
             photoId: r.memberSummary.photoId,
           };
         }

@@ -35,8 +35,10 @@ export async function requestProfile() {
   const skProfileService = SkProfileService.instance;
   const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
   if (
-    skProfileModel !== null &&
-    skProfileModel.studySummaryConfigured === false
+    skProfileModel !== null
+    // 김민준 - studySummaryConfigured 확인필요
+    // && 
+    // skProfileModel.studySummaryConfigured === false
   ) {
     currentHistory?.push(profilePaths.favoriteWelcome());
   }

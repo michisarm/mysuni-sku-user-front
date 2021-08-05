@@ -116,7 +116,7 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, []);
+  }, [history, scrollSave]);
 
   if (collegeModelStore === undefined) {
     return null;
@@ -269,8 +269,12 @@ class CollegeLecturesContainerInner extends Component<
 
   async findPagingCollegeLectures(limit: number, offset: number) {
     //
-    const { match, newPageService, lectureService, scrollOnceMove } =
-      this.props;
+    const {
+      match,
+      newPageService,
+      lectureService,
+      scrollOnceMove,
+    } = this.props;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
@@ -365,7 +369,7 @@ class CollegeLecturesContainerInner extends Component<
             serviceId: lecture.serviceId,
             serviceType: lecture.serviceType,
             category: lecture.category,
-            name: lecture.name,
+            name: lecture.name ? parsePolyglotString(lecture.name) : '',
             description: lecture.description,
             cubeType: lecture.cubeType,
             learningTime: lecture.learningTime,

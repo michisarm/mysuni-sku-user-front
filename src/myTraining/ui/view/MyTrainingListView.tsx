@@ -89,6 +89,7 @@ function MyTrainingListView({
       return null;
     }
     const collegeName = () => {
+      // 김민준
       if (myTraining.category && myTraining.category.collegeId) {
         const findCollege = colleges?.find(
           (college) => college.id === myTraining.category.collegeId
@@ -105,6 +106,7 @@ function MyTrainingListView({
     };
 
     return (
+      // 김민준
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
         <Table.Cell>{collegeName()}</Table.Cell>
@@ -133,6 +135,7 @@ function MyTrainingListView({
       myTraining.learningTime
     );
     const collegeName = () => {
+      // 김민준
       if (myTraining.category && myTraining.category.collegeId) {
         return colleges?.find((college) => college.id === myTraining.collegeId)
           ?.name;

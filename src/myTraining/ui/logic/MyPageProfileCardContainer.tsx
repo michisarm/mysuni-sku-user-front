@@ -81,8 +81,8 @@ function MyPageHeaderContainer({
       setSaveFlag(false);
 
       const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-        skProfile.member.currentJobGroup,
-        skProfile.member.favoriteJobGroup,
+        // skProfile.member.currentJobGroup,
+        // skProfile.member.favoriteJobGroup,
         skProfile.pisAgreement
       );
 
@@ -161,13 +161,17 @@ function MyPageHeaderContainer({
                 <div className="profile-info ">
                   <span className="prof-tit">
                     {showNameFlag
-                      ? skProfile.member?.name || skProfile.name
+                      ? skProfile?.name || skProfile.name
                       : skProfile.nickName}
                   </span>
                   {!isExternalInstructor() && (
                     <div className="foll-info">
-                      <span>{skProfile.followerCount}</span> Followers
+                      {/* <span>{skProfile.followerCount}</span> Followers
                       <span>{skProfile.followingCount}</span> Following
+                      김민준 - 커뮤니티 api 추가 필요
+                      */}
+                      <span>{0}</span> Followers
+                      <span>{0}</span> Following
                     </div>
                   )}
                 </div>

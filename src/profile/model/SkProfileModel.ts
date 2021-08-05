@@ -6,6 +6,7 @@ import MemberLocaleModel from './MemberLocaleModel';
 import EmployeeModel from './EmployeeModel';
 import PisAgreementModel from './PisAgreementModel';
 import ProfileImagePath from '../../../src/shared/components/Image/ProfileImagePath';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class SkProfileModel implements DramaEntity {
   //
@@ -13,59 +14,67 @@ class SkProfileModel implements DramaEntity {
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
 
-  member: EmployeeModel = new EmployeeModel();
-  memberType: MemberType = MemberType.SkMember;
+  // member: EmployeeModel = new EmployeeModel();
+  // memberType: MemberType = MemberType.SkMember;
   memberLocale: MemberLocaleModel = new MemberLocaleModel();
   pisAgreement: PisAgreementModel = new PisAgreementModel();
   signedDate: string = '';
-  passwordAuthenticated: boolean = false;
-  studySummaryConfigured: boolean = false;
+  // passwordAuthenticated: boolean = false;
+  // studySummaryConfigured: boolean = false;
 
-  photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
+  // photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
   photoImage: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
 
   nickName: string = ''; // 닉네임
   bgImage: string = ''; // 배경이미지
   introduce: string = ''; // 자기소개
-  followerCount: number = 0; // 팔로워 숫자
-  followingCount: number = 0; // 팔로잉 숫자
+  // followerCount: number = 0; // 팔로워 숫자
+  // followingCount: number = 0; // 팔로잉 숫자
   nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
-
-  departmentName: string = '';
+  departmentName: PolyglotString = {ko:'', en: '', cn: ''};
+  departmentCode: string = '';
+  email: string = ''
   name: string = '';
+  phone: string = '';
+  employeeId: string = '';
+  companyName: PolyglotString = {ko:'', en: '', cn: ''};
+  companyCode: string = '';
+  // language: Language = null;
+  gdiPhotoImagePath: string = '';
+  useGdiPhoto: boolean = false;
 
   constructor(skProfile?: SkProfileModel) {
     //
     if (skProfile) {
       const patronKey = skProfile.patronKey || this.patronKey;
-      const member =
-        (skProfile.member && new EmployeeModel(skProfile.member)) ||
-        this.member;
+      // const member =
+      //   (skProfile.member && new EmployeeModel(skProfile.member)) ||
+      //   this.member;
       const pisAgreement =
         (skProfile.pisAgreement &&
           new PisAgreementModel(skProfile.pisAgreement)) ||
         this.pisAgreement;
-      Object.assign(this, { ...skProfile, patronKey, member, pisAgreement });
+      Object.assign(this, { ...skProfile, patronKey, pisAgreement });
     }
   }
 
-  @computed
-  get departmentCode() {
-    //
-    return (this.member && this.member.departmentCode) || '';
-  }
+  // @computed
+  // get departmentCode() {
+  //   //
+  //   return (this.member && this.member.departmentCode) || '';
+  // }
 
   static asNameValues(skProfile: SkProfileModel): NameValueList {
     const asNameValues1 = {
       nameValues: [
-        {
-          name: 'member',
-          value: JSON.stringify(skProfile.member),
-        },
-        {
-          name: 'memberType',
-          value: skProfile.memberType,
-        },
+        // {
+        //   name: 'member',
+        //   value: JSON.stringify(skProfile.member),
+        // },
+        // {
+        //   name: 'memberType',
+        //   value: skProfile.memberType,
+        // },
         {
           name: 'pisAgreement',
           value: JSON.stringify(skProfile.pisAgreement),
@@ -74,10 +83,10 @@ class SkProfileModel implements DramaEntity {
           name: 'locale',
           value: JSON.stringify(skProfile.memberLocale),
         },
-        {
-          name: 'passwordAuthenticated',
-          value: skProfile.passwordAuthenticated ? 'true' : 'false',
-        },
+        // {
+        //   name: 'passwordAuthenticated',
+        //   value: skProfile.passwordAuthenticated ? 'true' : 'false',
+        // },
       ],
     };
 
@@ -99,12 +108,13 @@ class SkProfileModel implements DramaEntity {
 
     if (this.photoImage && this.photoImage !== '') {
       photoImageFilePath = ProfileImagePath(this.photoImage);
-    } else {
-      photoImageFilePath =
-        this.member &&
-        this.member.photoFilename &&
-        `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
     }
+    // else {
+      // photoImageFilePath =
+      //   this.member &&
+      //   this.member.photoFilename &&
+      //   `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
+    // }
 
     return photoImageFilePath;
   }
@@ -126,7 +136,7 @@ class SkProfileModel implements DramaEntity {
     if (this.nameFlag === 'N' && this.nickName !== '') {
       viewProfileName = this.nickName;
     } else {
-      viewProfileName = this.member && this.member.name;
+      viewProfileName = this.name;
     }
 
     return viewProfileName;
@@ -136,21 +146,28 @@ class SkProfileModel implements DramaEntity {
 decorate(SkProfileModel, {
   id: observable,
   entityVersion: observable,
-  member: observable,
-  memberType: observable,
+  // member: observable,
+  // memberType: observable,
   memberLocale: observable,
   pisAgreement: observable,
   signedDate: observable,
-  passwordAuthenticated: observable,
-  studySummaryConfigured: observable,
-  photoType: observable,
+  // passwordAuthenticated: observable,
+  // studySummaryConfigured: observable,
+  // photoType: observable,
   photoImage: observable,
-  nickName: observable,
+  // nickName: observable,
   bgImage: observable,
   introduce: observable,
-  followerCount: observable,
-  followingCount: observable,
+  // followerCount: observable,
+  // followingCount: observable,
+  nickName: observable,
   nameFlag: observable,
+  name: observable,
+  phone: observable,
+  employeeId: observable,
+  companyName: observable,
+  email: observable,
+  companyCode: observable,
 });
 
 export default SkProfileModel;

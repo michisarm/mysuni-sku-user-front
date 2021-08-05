@@ -15,6 +15,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   commentService?: CommentService;
@@ -119,7 +120,7 @@ class NoticeListContainer extends Component<Props, State> {
         className={classNames({
           row: true,
           important: post.pinned,
-          new: this.isNewPost(post.time),
+          new: this.isNewPost(post.registeredTime),
         })}
         onClick={() => this.onClickPost(post.postId)}
       >
@@ -143,7 +144,8 @@ class NoticeListContainer extends Component<Props, State> {
           <PolyglotText id="support-noti-조회수" defaultString="명 읽음" />
         </span>
         <span className="cell date">
-          {post.time && moment(post.time).format('YYYY.MM.DD')}
+          {post.registeredTime &&
+            moment(post.registeredTime).format('YYYY.MM.DD')}
         </span>
       </a>
     );

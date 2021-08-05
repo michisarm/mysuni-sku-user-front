@@ -77,11 +77,12 @@ class CurrentJobContainer extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findJobGroupById(data.value);
-    skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
-      id: data.value,
-      name: event.target.innerText,
-    });
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', new IdName());
+    // id만 넘어오는 중
+    // skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', new IdName());
   }
 
   setJobDuties() {
@@ -110,10 +111,11 @@ class CurrentJobContainer extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
-      id: data.value,
-      name: event.target.innerText,
-    });
+    // 김민준 - id만 넘어오는 중
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
   }
 
   selectEtcJobDuty(data: any) {
@@ -124,10 +126,11 @@ class CurrentJobContainer extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
-      id: 'etc',
-      name: data.value,
-    });
+    // 김민준 - id만 넘어오는 중
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
+    //   id: 'etc',
+    //   name: data.value,
+    // });
   }
 
   onPreviousClick() {
@@ -137,26 +140,28 @@ class CurrentJobContainer extends React.Component<Props, State> {
   async onNextClick() {
     //
     const skProfileService = this.props.skProfileService!;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { currentJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const { currentJobGroupId, currentJobDutyId  } = additionalUserInfo!;
 
     let skProfileUdo: SkProfileUdo;
 
     if (
-      !currentJobGroup.currentJobGroup ||
-      !currentJobGroup.currentJobGroup!.id ||
-      !currentJobGroup.currentJobDuty ||
-      !currentJobGroup.currentJobDuty!.id
+      !currentJobDutyId ||
+      !currentJobGroupId
+      // !currentJobGroup.currentJobGroup ||
+      // !currentJobGroup.currentJobGroup!.id ||
+      // !currentJobGroup.currentJobDuty ||
+      // !currentJobGroup.currentJobDuty!.id
     ) {
       reactAlert({
         title: getPolyglotText('알림', 'job-recent-알림'),
         message: getPolyglotText('현재 직군과 현재 직무를 선택해주세요.', 'job-recent-주의'),
       });
     } else {
+      // 김민준 - additional : id만 넘어오는 중
       skProfileUdo = new SkProfileUdo(
-        skProfileService.skProfile.member.currentJobGroup,
-        skProfileService.skProfile.member.favoriteJobGroup,
+        // skProfileService.skProfile.member.currentJobGroup,
+        // skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
       await skProfileService.modifySkProfile(skProfileUdo);
@@ -169,9 +174,8 @@ class CurrentJobContainer extends React.Component<Props, State> {
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { currentJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const { currentJobGroupId, currentJobDutyId  } = additionalUserInfo!;
 
     return (
       <Form>
@@ -184,19 +188,22 @@ class CurrentJobContainer extends React.Component<Props, State> {
               placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
               options={selectOptionJobGroup}
               value={
-                currentJobGroup &&
-                currentJobGroup.currentJobGroup &&
-                currentJobGroup.currentJobGroup.id
+                // currentJobGroup &&
+                // currentJobGroup.currentJobGroup &&
+                // currentJobGroup.currentJobGroup.id
+                currentJobGroupId
               }
               onChange={(event: any, data: any) =>
                 this.selectJobGroup(event, data)
               }
             />
           </div>
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id !== 'etc' ? (
+          {
+          // currentJobGroup &&
+          // currentJobGroup.currentJobGroup &&
+          // currentJobGroup.currentJobGroup.id &&
+          // currentJobGroup.currentJobGroup.id !== 'etc' ? (
+            currentJobGroupId !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 <PolyglotText defaultString="Step 02. 현재 직무를 선택해주세요." id="job-recent-step2On" />
@@ -205,10 +212,11 @@ class CurrentJobContainer extends React.Component<Props, State> {
                 placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
                 options={selectOptionJobDuty}
                 value={
-                  member &&
-                  member.currentJobGroup &&
-                  member.currentJobGroup.currentJobDuty &&
-                  member.currentJobGroup.currentJobDuty.id
+                  currentJobDutyId
+                  // member &&
+                  // member.currentJobGroup &&
+                  // member.currentJobGroup.currentJobDuty &&
+                  // member.currentJobGroup.currentJobDuty.id
                 }
                 onChange={(event: any, data: any) =>
                   this.selectJobDuty(event, data)
@@ -218,10 +226,12 @@ class CurrentJobContainer extends React.Component<Props, State> {
           ) : (
             ''
           )}
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id === 'etc' ? (
+          {
+          // currentJobGroup &&
+          // currentJobGroup.currentJobGroup &&
+          // currentJobGroup.currentJobGroup.id &&
+          // currentJobGroup.currentJobGroup.id === 'etc' ? (
+          currentJobGroupId === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 <PolyglotText defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요." id="job-recent-step2Off" />
@@ -230,18 +240,22 @@ class CurrentJobContainer extends React.Component<Props, State> {
                 className={classNames('ui h48 input', {
                   focus: this.state.focus,
                   write:
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name,
+                    // 김민준 - name 확인 불가 addtional
+                    currentJobDutyId
+                    // currentJobGroup &&
+                    // currentJobGroup.currentJobDuty &&
+                    // currentJobGroup.currentJobDuty.name,
                 })}
               >
                 <input
                   type="text"
                   placeholder="Text.."
                   value={
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name
+                    // 김민준 - name 확인 불가 addtional
+                    currentJobDutyId
+                    // currentJobGroup &&
+                    // currentJobGroup.currentJobDuty &&
+                    // currentJobGroup.currentJobDuty.name
                   }
                   onClick={() => this.setState({ focus: true })}
                   onChange={(e) =>

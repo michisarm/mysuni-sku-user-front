@@ -29,6 +29,7 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -157,9 +158,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   init() {
     //
     const { pageService, lectureService } = this.props;
-    const getChannelOffset: string | null = sessionStorage.getItem(
-      'channelOffset'
-    );
+    const getChannelOffset: string | null =
+      sessionStorage.getItem('channelOffset');
     const prevChannelOffset = getChannelOffset
       ? JSON.parse(getChannelOffset)
       : null;
@@ -182,9 +182,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       scrollOnceMove,
     } = this.props;
 
-    const getChannelOffset: string | null = sessionStorage.getItem(
-      'channelOffset'
-    );
+    const getChannelOffset: string | null =
+      sessionStorage.getItem('channelOffset');
 
     const prevChannelOffset = getChannelOffset
       ? JSON.parse(getChannelOffset)
@@ -195,13 +194,14 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     inMyLectureService!.findAllInMyLectures();
 
-    const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
-      match.params.collegeId,
-      match.params.channelId,
-      page!.limit,
-      page!.nextOffset,
-      sorting
-    );
+    const lectureOffsetList =
+      await lectureService!.findPagingChannelOrderLectures(
+        match.params.collegeId,
+        match.params.channelId,
+        page!.limit,
+        page!.nextOffset,
+        sorting
+      );
     this.setState({ loading: false });
 
     if (typeof scrollOnceMove === 'function') {
@@ -278,7 +278,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             serviceId: lecture.serviceId,
             serviceType: lecture.serviceType,
             category: lecture.category,
-            name: lecture.name,
+            name: lecture.name ? parsePolyglotString(lecture.name) : '',
             description: lecture.description,
             cubeType: lecture.cubeType,
             learningTime: lecture.learningTime,
@@ -343,12 +343,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   render() {
     //
-    const {
-      pageService,
-      lectureService,
-      reviewService,
-      inMyLectureService,
-    } = this.props;
+    const { pageService, lectureService, reviewService, inMyLectureService } =
+      this.props;
     const { sorting, collegeOrder, loading } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;

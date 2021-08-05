@@ -39,7 +39,10 @@ import { Image } from 'semantic-ui-react';
 import { useLectureState } from '../../store/LectureStateStore';
 import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import { submitRegisterStudent } from '../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -84,7 +87,8 @@ function LectureTaskContainer() {
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   // 이수정보 관련
-  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
+  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] =
+    useState<boolean>(false);
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
@@ -94,7 +98,7 @@ function LectureTaskContainer() {
   const [isStudent, setIsStudent] = useState<boolean>(false);
 
   useEffect(() => {
-    if(taskItem){
+    if (taskItem) {
       let totalpage = Math.ceil(taskItem!.totalCount / 10);
       if (taskItem!.totalCount % 10 < 0) {
         totalpage++;
@@ -104,7 +108,7 @@ function LectureTaskContainer() {
   }, [taskItem]);
 
   useEffect(() => {
-    if(lectureState){
+    if (lectureState) {
       // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
       if (
         lectureState.cubeDetail &&
@@ -124,7 +128,8 @@ function LectureTaskContainer() {
             ?.subCommentCount || 0
         );
         setCubeAutomaticCompletion(
-          lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion || false
+          lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion ||
+            false
         );
 
         // 댓글, 대댓글 Count Data
@@ -150,7 +155,6 @@ function LectureTaskContainer() {
     setLectureTaskOffset(0);
   };
 
-
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
     setLectureTaskOffset(nextOffset);
@@ -162,7 +166,7 @@ function LectureTaskContainer() {
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
-    setBoardId(param.boardId)
+    setBoardId(param.boardId);
   }, []);
 
   const onClickList = useCallback(() => {
@@ -177,7 +181,7 @@ function LectureTaskContainer() {
         pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
       });
       setActivePage(1);
-    })
+    });
   }, []);
 
   // const onHandleSave = useCallback(() => {
@@ -199,19 +203,25 @@ function LectureTaskContainer() {
     setIsReply(true);
   }, []);
 
-  const onClickDelete = useCallback((boardId: string, taskId: string, type: string) => {
-    reactConfirm({
-      title: getPolyglotText('알림', 'Collage-Task-알림1'),
-      message: getPolyglotText('글을 삭제하시겠습니까?', 'Collage-Task-삭제알림'),
-      onOk: () => {
-        deletePost(boardId, taskId, type).then(() => {
-          refresh(1).then(() => {
-            history.goBack();
+  const onClickDelete = useCallback(
+    (boardId: string, taskId: string, type: string) => {
+      reactConfirm({
+        title: getPolyglotText('알림', 'Collage-Task-알림1'),
+        message: getPolyglotText(
+          '글을 삭제하시겠습니까?',
+          'Collage-Task-삭제알림'
+        ),
+        onOk: () => {
+          deletePost(boardId, taskId, type).then(() => {
+            refresh(1).then(() => {
+              history.goBack();
+            });
           });
-        });
-      },
-    });
-  }, []);
+        },
+      });
+    },
+    []
+  );
 
   const listHashLink = useCallback((hash: string) => {
     setLectureTaskTab(hash);
@@ -262,7 +272,7 @@ function LectureTaskContainer() {
 
   const replaceEnterWithBr = (target?: string) => {
     let setHtml = '';
-    if(target){
+    if (target) {
       setHtml = target.split('\n').join('<br />');
     }
     return setHtml;
@@ -282,9 +292,9 @@ function LectureTaskContainer() {
               writer: {
                 employeeId: '',
                 email: '',
-                name: '',
+                name: null,
                 companyCode: '',
-                companyName: '',
+                companyName: null,
               },
               name: '',
               contents: '',
@@ -293,13 +303,16 @@ function LectureTaskContainer() {
               commentFeedbackId: '',
               notice: false,
               pinned: 0, // postpinned -> number = 0
-              writerPatronKeyString: ''
+              writerPatronKeyString: '',
             });
             refresh(1).then(() => {
               history.goBack();
               reactAlert({
                 title: getPolyglotText('안내', 'Collage-Task-안내1'),
-                message: getPolyglotText('글이 등록되었습니다.', 'Collage-Task-등록안내'),
+                message: getPolyglotText(
+                  '글이 등록되었습니다.',
+                  'Collage-Task-등록안내'
+                ),
               });
             });
           });
@@ -330,21 +343,24 @@ function LectureTaskContainer() {
     await deleteCubeLectureTaskPost(boardId, taskId, type).then(() => {
       reactAlert({
         title: getPolyglotText('안내', 'Collage-Task-안내2'),
-        message: getPolyglotText('글이 삭제되었습니다.', 'Collage-Task-삭제안내'),
+        message: getPolyglotText(
+          '글이 삭제되었습니다.',
+          'Collage-Task-삭제안내'
+        ),
       });
     });
   }
 
   // 코멘드 등록 시 학습처리 CommentList -> Props
   const onRegisterStudent = useCallback(async () => {
-    if(lectureState && lectureState.student === undefined){
-      await submitRegisterStudent()
+    if (lectureState && lectureState.student === undefined) {
+      await submitRegisterStudent();
     }
   }, [lectureState]);
 
   const onRefresh = () => {
     setTimeout(() => {
-      refresh(1)
+      refresh(1);
     }, 1000);
   };
 
@@ -358,37 +374,66 @@ function LectureTaskContainer() {
           <div className="discuss-wrap">
             <div className="task-condition">
               <strong className="task-condition">
-                <PolyglotText defaultString="이수 조건" id="Collage-Task-이수조건" />
+                <PolyglotText
+                  defaultString="이수 조건"
+                  id="Collage-Task-이수조건"
+                />
               </strong>
-                {cubeAutomaticCompletion &&
-                  cubePostCount > 0 &&
-                  cubeCommentCount > 0 && (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: getPolyglotText(`아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle1')
-                      }}
-                    />
+              {cubeAutomaticCompletion &&
+                cubePostCount > 0 &&
+                cubeCommentCount > 0 && (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        `아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`,
+                        'Collage-Task-이수조건SubTitle1'
+                      ),
+                    }}
+                  />
                 )}
-                {cubeAutomaticCompletion &&
-                  cubePostCount > 0 &&
-                  cubeCommentCount === 0 && (
-                    <span dangerouslySetInnerHTML={{__html: getPolyglotText(`다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle2')}} />
+              {cubeAutomaticCompletion &&
+                cubePostCount > 0 &&
+                cubeCommentCount === 0 && (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        `다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`,
+                        'Collage-Task-이수조건SubTitle2'
+                      ),
+                    }}
+                  />
                 )}
-                {cubeAutomaticCompletion &&
-                  cubePostCount === 0 &&
-                  cubeCommentCount > 0 &&(
-                    <span dangerouslySetInnerHTML={{__html: getPolyglotText(`타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`, 'Collage-Task-이수조건SubTitle3')}} />
+              {cubeAutomaticCompletion &&
+                cubePostCount === 0 &&
+                cubeCommentCount > 0 && (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        `타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`,
+                        'Collage-Task-이수조건SubTitle3'
+                      ),
+                    }}
+                  />
                 )}
-                {!cubeAutomaticCompletion && (
-                    <span>
-                      <PolyglotText defaultString="본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다." id="Collage-Task-이수조건SubTitle4" />
-                    </span>
-                )}
-                {(lectureDescription && lectureDescription.completionTerms) && (
-                  <Fragment>
-                    <p dangerouslySetInnerHTML={{ __html: replaceEnterWithBr(lectureDescription.completionTerms) }} />
-                  </Fragment>
-                )}
+              {!cubeAutomaticCompletion && (
+                <span>
+                  <PolyglotText
+                    defaultString="본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해 드립니다."
+                    id="Collage-Task-이수조건SubTitle4"
+                  />
+                </span>
+              )}
+              {lectureDescription && lectureDescription.completionTerms && (
+                <Fragment>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: replaceEnterWithBr(
+                        lectureDescription.completionTerms
+                      ),
+                    }}
+                  />
+                </Fragment>
+              )}
             </div>
           </div>
 
@@ -445,7 +490,7 @@ function LectureTaskContainer() {
             boardId={boardId}
             lectureState={lectureState}
             taskEdit={taskDetail!}
-            handleSubmitClick={viewType =>
+            handleSubmitClick={(viewType) =>
               handleSubmitClick(viewType, detailTaskId, isReply)
             }
             changeProps={(value: string, name: string, viewType: string) =>
@@ -462,7 +507,7 @@ function LectureTaskContainer() {
             detailTaskId={detailTaskId}
             boardId={boardId}
             lectureState={lectureState}
-            handleSubmitClick={viewType =>
+            handleSubmitClick={(viewType) =>
               handleSubmitClick(viewType, detailTaskId, isReply)
             }
             taskEdit={taskDetail!}

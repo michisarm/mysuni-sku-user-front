@@ -13,9 +13,8 @@ type LectureTaskCreateValue = LectureTaskDetail | undefined;
 let subscriberIdRef = 0;
 export function useLectureTaskCreate(): [LectureTaskCreateValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
-  const [taskCreateValue, setTaskCreateValue] = useState<
-    LectureTaskCreateValue
-  >();
+  const [taskCreateValue, setTaskCreateValue] =
+    useState<LectureTaskCreateValue>();
 
   const params = useLectureParams();
 
@@ -35,7 +34,7 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskCreateItem(next => {
+    return onLectureTaskCreateItem((next) => {
       setTaskCreateValue(next);
     }, subscriberId);
   }, [subscriberId]);
@@ -44,7 +43,7 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskCreateBoardId(next => {
+    return onLectureTaskCreateBoardId((next) => {
       if (next !== undefined) {
         setLectureTaskCreateItem({
           id: next,
@@ -53,9 +52,9 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
           writer: {
             employeeId: '',
             email: '',
-            name: '',
+            name: null,
             companyCode: '',
-            companyName: '',
+            companyName: null,
           },
           name: '',
           contents: '',
@@ -64,7 +63,7 @@ export function useLectureTaskCreate(): [LectureTaskCreateValue] {
           commentFeedbackId: '',
           notice: false,
           pinned: 0, // postpinned -> number = 0
-          writerPatronKeyString: ''
+          writerPatronKeyString: '',
         });
       }
     }, subscriberId);

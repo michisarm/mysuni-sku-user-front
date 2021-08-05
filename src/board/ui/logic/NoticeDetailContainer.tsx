@@ -12,6 +12,7 @@ import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -86,13 +87,14 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { postService, skProfileService } = this.props;
     const { post } = postService!;
     const { filesMap } = this.state;
-    const { member } = skProfileService!.skProfile;
+    const { skProfile } = skProfileService!;
+    // const { member } = skProfileService!.skProfile;
     return (
       <>
         <div className="post-view">
           <BoardDetailContentHeaderView
-            title={post.title}
-            time={post.time}
+            title={post.title ? parsePolyglotString(post.title) : ''}
+            time={post.registeredTime}
             onClickList={this.onClickList}
           />
           {post.contents && (
@@ -100,7 +102,12 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               <div className="content-inner ql-snow">
                 <div
                   className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      (post.contents.contents &&
+                        parsePolyglotString(post.contents.contents)) ||
+                      '',
+                  }}
                 />
               </div>
               <div className="file">
@@ -147,10 +154,10 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              name={skProfile.name}
+              email={skProfile.email}
+              companyName={parsePolyglotString(skProfile.companyName)}
+              departmentName={parsePolyglotString(skProfile.departmentName)}
             />
           </div>
           <div className="actions bottom">

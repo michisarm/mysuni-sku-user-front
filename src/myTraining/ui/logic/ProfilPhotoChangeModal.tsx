@@ -64,7 +64,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
-      skProfile.photoType,
+      '',
+      // skProfile.photoType,
       skProfile.photoImage
     );
 

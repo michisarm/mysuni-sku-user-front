@@ -26,6 +26,7 @@ import { checkMember } from 'community/service/useMember/useMember';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
 import { useCommunityProfileBookmark } from '../../store/CommunityProfileBookmarkStore';
 import { registerBookmark, removeBookmark } from '../../api/communityApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -73,7 +74,7 @@ function CommunityPostDetailContainer() {
 
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
-  const { member } = skProfile;
+  // const { member } = skProfile;
 
   const { pathname } = useLocation();
   const communityProfileBookmark = useCommunityProfileBookmark();
@@ -547,10 +548,10 @@ function CommunityPostDetailContainer() {
               // menuType="discussion"
               menuType={menuType}
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              name={skProfile.name}
+              email=""
+              companyName={parsePolyglotString(skProfile.companyName)}
+              departmentName={parsePolyglotString(skProfile.departmentName)}
               adminAuth={adminAuth}
               communityAdminAuth={communityAdminAuth}
             />

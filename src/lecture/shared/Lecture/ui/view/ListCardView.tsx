@@ -17,6 +17,7 @@ import {
   Title,
 } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -106,7 +107,7 @@ class ListCardView extends Component<Props> {
           <Thumbnail image={image} />
 
           <Title
-            title={<a>{model.name}</a>}
+            title={<a>{model.name && parsePolyglotString(model.name)}</a>}
             category={new CategoryModel(model.category)}
           >
             <Fields>

@@ -263,9 +263,9 @@ class AplModel extends NewQueryModel {
       content: aplModel.content,
       state: aplModel.state,
       creationTime: aplModel.creationTime,
-      creatorId: SkProfileService.instance.skProfile.member.email || '',
+      creatorId: SkProfileService.instance.skProfile.email || '',
       creatorName:
-        SkProfileService.instance.skProfile.member.name ||
+        SkProfileService.instance.skProfile.name ||
         patronInfo.getPatronName() ||
         '',
       fileIds: aplModel.fileIds || '',

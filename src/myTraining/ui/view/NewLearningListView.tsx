@@ -437,7 +437,7 @@ const NewLearningListView: React.FC<Props> = (Props) => {
     const lectureFilterRdo = LectureFilterRdoModel.lrsLectures(
       page!.limit,
       page!.nextOffset,
-      skProfileService!.skProfile.member.email
+      skProfileService!.skProfile.email
       /*, orderBy*/
     );
     const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(

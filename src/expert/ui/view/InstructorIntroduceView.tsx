@@ -25,13 +25,13 @@ class InstructorIntroduceView extends Component<Props> {
           </div>
           <div className="text02">
             {
-              // memberSummary.introduction && parsePolyglotString(memberSummary.introduction).split('\n').map( (line, index) => (
-              memberSummary.introduction &&
-                memberSummary.introduction.split('\n').map((line, index) => (
-                  <div key={`introduction-${index}`}>
-                    {line.replace('"', '')}
-                    <br />
-                  </div>
+              memberSummary.introduction && parsePolyglotString(memberSummary.introduction).split('\n').map( (line, index) => (
+              // memberSummary.introduction &&
+              //   memberSummary.introduction.split('\n').map((line, index) => (
+                <div key={`introduction-${index}`}>
+                  {line.replace('"', '')}
+                  <br />
+                </div>
                 ))
             }
           </div>

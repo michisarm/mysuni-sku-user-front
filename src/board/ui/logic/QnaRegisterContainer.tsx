@@ -17,6 +17,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
@@ -62,16 +63,17 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { postService, categoryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const name = patronInfo.getPatronName() || '';
-    const { email, company } = skProfileService!.skProfile.member;
+    const { email } = skProfileService!.skProfile;
     // postService.clearPost();
     categoryService!.findCategoriesByBoardId('QNA').then(() => {
       postService!.changePostProps('boardId', 'QNA');
       postService!.changePostProps('writer.name', name);
       postService!.changePostProps('writer.email', email);
-      postService!.changePostProps('writer.companyName', company);
+      postService!.changePostProps('writer.companyName', skProfile.companyName);
       postService!.changePostProps(
         'writer.companyCode',
-        skProfileService!.skProfile.member.companyCode
+        skProfile.companyCode
+        // skProfileService!.skProfile.companyName
       );
     });
   }
@@ -180,7 +182,10 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     if (currentUrl.includes('cube') || currentUrl.includes('course')) {
       categorys.map((data, index) => {
-        if (data.name === 'Contents') {
+        if (
+          (data && data.name ? parsePolyglotString(data && data.name) : '') ===
+          'Contents'
+        ) {
           questionType.push({
             key: index,
             value: data.categoryId,
@@ -219,7 +224,10 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 >
                   <span className="count">
                     <span className="now">
-                      {(post && post.title && post.title.length) || 0}
+                      {(post &&
+                        post.title &&
+                        parsePolyglotString(post.title).length) ||
+                        0}
                     </span>
                     /<span className="max">100</span>
                   </span>
@@ -231,7 +239,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     )}
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    value={(post && post.title) || ''}
+                    value={
+                      post && post.title ? parsePolyglotString(post.title) : ''
+                    }
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
@@ -305,7 +315,10 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       {/*/>*/}
                       <textarea
                         value={
-                          (post && post.contents && post.contents.contents) ||
+                          (post &&
+                            post.contents &&
+                            post.contents.contents &&
+                            parsePolyglotString(post.contents.contents)) ||
                           ''
                         }
                         onChange={(e) => {

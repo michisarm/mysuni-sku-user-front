@@ -24,6 +24,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -152,13 +153,16 @@ export default function LectureDiscussionContainer() {
     });
   }, []);
 
-  const { company, department, email, name } = useMemo(() => {
+  const { companyName, departmentName, name } = useMemo(() => {
     const {
       skProfile: {
-        member: { company, department, email, name },
+        companyName,
+        departmentName,
+        name
+        // member: { company, department, email, name },
       },
     } = SkProfileService.instance;
-    return { company, department, email, name };
+    return { companyName, departmentName, name };
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
@@ -405,9 +409,9 @@ export default function LectureDiscussionContainer() {
                 feedbackId={feedbackId}
                 hideCamera
                 name={name}
-                email={email}
-                companyName={company}
-                departmentName={department}
+                email=""
+                companyName={parsePolyglotString(companyName)}
+                departmentName={parsePolyglotString(departmentName)}
                 // cardId={params?.cardId}
                 menuType="discussion"
               />

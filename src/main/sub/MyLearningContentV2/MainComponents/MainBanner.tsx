@@ -10,6 +10,10 @@ import { SkProfileService } from '../../../../profile/stores';
 import Image from '../../../../shared/components/Image/Image';
 import ReactGA from 'react-ga';
 import { originSelfPath } from 'tracker-react/utils';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 enum AnchorTargetType {
   self = '_self',
@@ -19,11 +23,11 @@ enum AnchorTargetType {
 }
 interface BannerProps {
   index: number;
-  targetUrl: string;
+  targetUrl: PolyglotString;
   target: string;
   name: string;
-  imageAlt: StaticRange;
-  imageUrl: string;
+  imageAlt: PolyglotString;
+  imageUrl: PolyglotString;
   onClickBanner: (
     targetUrl: string,
     target: string,
@@ -32,30 +36,30 @@ interface BannerProps {
   ) => void;
 }
 
+// 김민준 메인 배너
 function RenderBanner(props: BannerProps) {
-  const {
-    index,
-    imageAlt,
-    imageUrl,
-    name,
-    target,
-    targetUrl,
-    onClickBanner,
-  } = props;
+  const { index, imageAlt, imageUrl, name, target, targetUrl, onClickBanner } =
+    props;
 
-  const getTargetUrl = originSelfPath(targetUrl);
+  const getTargetUrl = originSelfPath(parsePolyglotString(targetUrl));
 
   return (
     <div className="swiper-slide" key={`main-banner-${index}`}>
-      {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
+      {!/^(http|https)/.test(parsePolyglotString(targetUrl)) &&
+      target === AnchorTargetType.self ? (
         <Link
           className="ui image"
           title={name}
           target={target}
           to={{ pathname: getTargetUrl }}
-          onClick={() => onClickBanner(targetUrl, target, name, index)}
+          onClick={() =>
+            onClickBanner(parsePolyglotString(targetUrl), target, name, index)
+          }
         >
-          <Image alt={imageAlt} src={imageUrl} />
+          <Image
+            alt={parsePolyglotString(imageAlt)}
+            src={parsePolyglotString(imageUrl)}
+          />
         </Link>
       ) : (
         <>
@@ -65,14 +69,27 @@ function RenderBanner(props: BannerProps) {
               className="ui image"
               title={name}
               target={target}
-              href={targetUrl}
-              onClick={() => onClickBanner(targetUrl, target, name, index)}
+              href={parsePolyglotString(targetUrl)}
+              onClick={() =>
+                onClickBanner(
+                  parsePolyglotString(targetUrl),
+                  target,
+                  name,
+                  index
+                )
+              }
             >
-              <Image alt={imageAlt} src={imageUrl} />
+              <Image
+                alt={parsePolyglotString(imageAlt)}
+                src={parsePolyglotString(imageUrl)}
+              />
             </a>
           ) : (
             <div className="ui image">
-              <Image alt={imageAlt} src={imageUrl} />
+              <Image
+                alt={parsePolyglotString(imageAlt)}
+                src={parsePolyglotString(imageUrl)}
+              />
             </div>
           )}
         </>
@@ -86,7 +103,7 @@ interface Props {
   bannerService?: BannerService;
 }
 
-const MainBanner: React.FC<Props> = Props => {
+const MainBanner: React.FC<Props> = (Props) => {
   const { bannerService } = Props;
   const { banners, intervalTime } = bannerService!;
 
