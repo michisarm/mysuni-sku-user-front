@@ -154,7 +154,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
-              name={skProfile.name}
+              name={parsePolyglotString(skProfile.name)}
               email={skProfile.email}
               companyName={parsePolyglotString(skProfile.companyName)}
               departmentName={parsePolyglotString(skProfile.departmentName)}

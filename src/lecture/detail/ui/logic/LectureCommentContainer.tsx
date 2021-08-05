@@ -44,7 +44,7 @@ function LectureCommentContainer() {
           companyName={parsePolyglotString(companyName)}
           departmentName={parsePolyglotString(departmentName)}
           email={email}
-          name={name}
+          name={parsePolyglotString(name)}
         />
       )}
     </>

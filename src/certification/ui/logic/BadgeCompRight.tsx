@@ -12,9 +12,10 @@ import LectureParams, {
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeCompRightProps {
-  name: string;
+  name: PolyglotString;
   categoryId: string;
   badgeCards: CardWithLearningContentCountRom[];
   passedCardIdMap: Map<string, boolean>;

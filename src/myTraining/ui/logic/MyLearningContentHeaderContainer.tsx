@@ -85,7 +85,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           <ContentHeader.ProfileItem
             myPageActive
             image={skProfile.photoFilePath || profileImg}
-            name={skProfile.name}
+            name={parsePolyglotString(skProfile.name)}
             company={parsePolyglotString(skProfile.companyName)}
             department={parsePolyglotString(skProfile.departmentName)}
           />

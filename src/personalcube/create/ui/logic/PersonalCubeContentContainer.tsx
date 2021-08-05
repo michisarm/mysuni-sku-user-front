@@ -110,13 +110,13 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     const { isNext } = this.state;
 
     // const { name, company, email, department, companyCode } = skProfileService!.skProfile.member;
-    const { name, companyName, departmentName } = skProfileService!.skProfile;
+    const { name, companyName, departmentName, email } = skProfileService!.skProfile;
     const { personalCube } = personalCubeService!;
     const { personalCubeId } = match.params;
 
     const createType : string = 'U';
     if (!personalCubeId) {
-      personalCubeService!.registerCube({ ...personalCube, creator: { company: parsePolyglotString(companyName), email: '', name, createType, department: parsePolyglotString(departmentName), companyCode: '' }})
+      personalCubeService!.registerCube({ ...personalCube, creator: { company: parsePolyglotString(companyName), email, name: parsePolyglotString(name), createType, department: parsePolyglotString(departmentName), companyCode: '' }})
       // personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType, department, companyCode }})
         .then((personalCubeId) => {
           if (personalCubeId) {

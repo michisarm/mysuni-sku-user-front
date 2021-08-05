@@ -426,7 +426,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 lectureState.cubeDetail.cubeContents.commentFeedbackId
               }
               hideCamera
-              name={name}
+              name={parsePolyglotString(name)}
               email={email}
               companyName={parsePolyglotString(companyName)}
               departmentName={parsePolyglotString(departmentName)}

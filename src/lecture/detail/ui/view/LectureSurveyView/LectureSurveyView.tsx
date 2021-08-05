@@ -270,7 +270,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               feedbackId={commentId}
               menuType=""
               hideCamera
-              name={skProfile.name}
+              name={parsePolyglotString(skProfile.name)}
               email={skProfile.email}
               companyName={parsePolyglotString(skProfile.companyName)}
               departmentName={parsePolyglotString(skProfile.departmentName)}
@@ -288,8 +288,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               feedbackId={commentId}
               menuType=""
               hideCamera
-              name={skProfile.name}
-              email=""
+              name={parsePolyglotString(skProfile.name)}
+              email={skProfile.email}
               companyName={parsePolyglotString(skProfile.companyName)}
               departmentName={parsePolyglotString(skProfile.departmentName)}
             />

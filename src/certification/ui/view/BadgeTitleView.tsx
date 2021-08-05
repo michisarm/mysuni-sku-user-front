@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga';
+import { parsePolyglotString, PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 
 interface BadgeTitleViewProps {
   college: string;
-  name: string;
+  name: PolyglotString;
 }
 
 let count = 0;
@@ -15,7 +16,7 @@ export function BadgeTitleView({
 
   ++count;
   if (count === 3) {
-    ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${name}`);
+    ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${parsePolyglotString(name)}`);
   }
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export function BadgeTitleView({
   return (
     <div className="title-area">
       <div className="college">{college}</div>
-      <div className="title">{name}</div>
+      <div className="title">{parsePolyglotString(name)}</div>
     </div>
   );
 }

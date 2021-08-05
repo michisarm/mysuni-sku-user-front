@@ -548,8 +548,8 @@ function CommunityPostDetailContainer() {
               // menuType="discussion"
               menuType={menuType}
               hideCamera
-              name={skProfile.name}
-              email=""
+              name={parsePolyglotString(skProfile.name)}
+              email={skProfile.email}
               companyName={parsePolyglotString(skProfile.companyName)}
               departmentName={parsePolyglotString(skProfile.departmentName)}
               adminAuth={adminAuth}
