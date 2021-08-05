@@ -278,7 +278,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           )}
         </HeaderWrapperView>
-        {parsePolyglotString(skProfile.companyName) && (
+        {skProfile.companyCode && (
           <AdditionalToolsMyLearning
             onClickQnA={this.moveToSupportQnA}
             handleClick={this.handleOpenBtnClick}

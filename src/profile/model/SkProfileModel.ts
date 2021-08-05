@@ -160,6 +160,7 @@ decorate(SkProfileModel, {
   introduce: observable,
   // followerCount: observable,
   // followingCount: observable,
+  nickName: observable,
   nameFlag: observable,
   name: observable,
   phone: observable,
