@@ -11,6 +11,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
@@ -46,7 +47,9 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
                 `안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.`,
                 'Course-Navigator-학습중',
                 {
-                  name: SkProfileService.instance.skProfile.name,
+                  name: parsePolyglotString(
+                    SkProfileService.instance.skProfile.name
+                  ),
                 }
               ),
             }}

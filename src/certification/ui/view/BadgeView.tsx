@@ -7,11 +7,14 @@ import { BadgeContentWrapper } from './BadgeContentWrapper';
 import Image from '../../../shared/components/Image';
 import BadgeStarSvg from './BadgeStarSvg';
 import { useRequestBadgeWIthCategory } from '../../service/useRequestBadgeWIthCategory';
-import { parsePolyglotString, PolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface BadgeViewProps {
   id: string;
-  name: PolyglotString;
+  name: string;
   level: BadgeLevel;
   iconUrl: string;
   categoryId: string;
@@ -40,7 +43,7 @@ export default function BadgeView({
     topImagePath === undefined
   ) {
     const badgeCategory = useRequestBadgeWIthCategory(id);
-    
+
     badgeColor = badgeCategory?.themeColor || '#ea012c';
     backgroundImagePath = badgeCategory?.backgroundImagePath;
     topImagePath = badgeCategory?.topImagePath;
@@ -63,8 +66,8 @@ export default function BadgeView({
         <Image src={iconUrl} alt="아이콘" />
       </span>
       <span className="title" style={{ margin: 0 }}>
-        <span className="cell" >
-          <span style={{ display: 'block' }}>{parsePolyglotString(name)}</span>
+        <span className="cell">
+          <span style={{ display: 'block' }}>{name}</span>
         </span>
       </span>
       <p className={`star-score ${starStyle}`}>{emHtml}</p>

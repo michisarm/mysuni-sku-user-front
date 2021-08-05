@@ -15,7 +15,7 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeCompRightProps {
-  name: PolyglotString;
+  name: string;
   categoryId: string;
   badgeCards: CardWithLearningContentCountRom[];
   passedCardIdMap: Map<string, boolean>;
@@ -81,9 +81,7 @@ export default function BadgeCompRight({
                     <span className="class-icon">
                       <Image src={card.thumbImagePath} clasName="ui image" />
                     </span>
-                    <span className="title">
-                      {parsePolyglotString(card.name)}
-                    </span>
+                    <span className="title">{card.name}</span>
                     <span className="time">
                       <Icon className="card-time16" />
                       {` ${formattedLearningTime}`}

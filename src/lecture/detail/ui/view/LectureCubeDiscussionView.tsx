@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useCallback,
   useEffect,
@@ -85,7 +86,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
     return () => {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
-  }, [clickProfileEventHandler]);
+  }, []);
 
   useEffect(() => {
     // console.log('LectureCubeDiscussionContainer', lectureState)
@@ -129,7 +130,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
         }
       }
     }
-  }, [getFileIds, lectureState]);
+  }, []);
 
   const originArr: string[] = [];
   let origin: string = '';
@@ -186,7 +187,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
-  }, [findFiles, lectureState.cubeDetail.cubeContents]);
+  }, [lectureState.cubeDetail.cubeContents]);
 
   const findFiles = useCallback(
     (type: string, fileBoxId: string) => {
