@@ -28,6 +28,7 @@ import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 import ReactGA from 'react-ga';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
+import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -94,6 +95,7 @@ class QuickNavContainer extends Component<Props, State> {
       this.setState({
         menuAuth: response,
       });
+      setMenuAuthModel(response);
     }
   }
 
@@ -114,7 +116,7 @@ class QuickNavContainer extends Component<Props, State> {
   onClickToggle() {
     //
     this.props.notieService!.hasQuickLearningFeeds();
-    this.setState(prevState => {
+    this.setState((prevState) => {
       //
       const nextActive = !prevState.active;
 
@@ -252,7 +254,7 @@ class QuickNavContainer extends Component<Props, State> {
     const { menuAuth } = this.state;
 
     const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
+      (channel) =>
         new ChannelModel({
           ...channel,
           channelId: channel.id,
@@ -299,7 +301,10 @@ class QuickNavContainer extends Component<Props, State> {
               ) && (
                 <BottomMenuItemView
                   iconName="building"
-                  text={getPolyglotText('mySUNI Introduction', 'home-플버튼-msid')}
+                  text={getPolyglotText(
+                    'mySUNI Introduction',
+                    'home-플버튼-msid'
+                  )}
                   onClick={() =>
                     this.onClickIntroduction('mySUNI Introduction')
                   }
@@ -356,7 +361,10 @@ class QuickNavContainer extends Component<Props, State> {
                 <>
                   <BottomMenuItemView
                     iconName="apl"
-                    text={getPolyglotText('개인학습 등록', 'home-플버튼-개학등록')}
+                    text={getPolyglotText(
+                      '개인학습 등록',
+                      'home-플버튼-개학등록'
+                    )}
                     onClick={() => this.onClickApl('개인학습 등록')}
                   />
                 </>

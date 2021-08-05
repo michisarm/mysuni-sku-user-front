@@ -7,6 +7,7 @@ import UserProfileInfoTabCommunity from './UserProfileInfoTabCommunity';
 import UserProfileInfoTabFeed from './UserProfileInfoTabFeed';
 import { useProfileInfoModel } from '../../../store/ProfileInfoStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 
 interface Props {
   open: boolean;
@@ -32,7 +33,12 @@ function UserProfileInfoView(props: Props) {
 
   return (
     <section className="content">
-      <Modal open={props.open} className=" w1044 profile-modal-new g-type">
+      <Modal
+        open={props.open}
+        className={`w1044 profile-modal-new ${
+          isCommunityAuth() ? '' : 'g-type'
+        }`}
+      >
         <Modal.Content>
           {props.preProfileInfo && props.preProfileInfo.isSetProfile
             ? getPolyglotText('미리보기', 'mypage-유저모달-미리보기')
@@ -46,25 +52,27 @@ function UserProfileInfoView(props: Props) {
                 preProfileInfo={props.preProfileInfo}
               />
             </div>
-            <div className="right-side side-wrapper">
-              <UserProfileInfoTabMenu
-                selectedMenu={selectedMenuName}
-                setMneu={setMenu}
-              />
-              {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
-              {selectedMenuName === 'Community' && (
-                <UserProfileInfoTabCommunity
-                  memberId={props.memberId}
-                  setOpen={props.setOpen}
+            {isCommunityAuth() && (
+              <div className="right-side side-wrapper">
+                <UserProfileInfoTabMenu
+                  selectedMenu={selectedMenuName}
+                  setMneu={setMenu}
                 />
-              )}
-              {selectedMenuName === 'Feed' && (
-                <UserProfileInfoTabFeed
-                  memberId={props.memberId}
-                  setOpen={props.setOpen}
-                />
-              )}
-            </div>
+                {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
+                {selectedMenuName === 'Community' && (
+                  <UserProfileInfoTabCommunity
+                    memberId={props.memberId}
+                    setOpen={props.setOpen}
+                  />
+                )}
+                {selectedMenuName === 'Feed' && (
+                  <UserProfileInfoTabFeed
+                    memberId={props.memberId}
+                    setOpen={props.setOpen}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </Modal.Content>
       </Modal>
