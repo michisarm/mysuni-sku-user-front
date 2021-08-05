@@ -11,20 +11,29 @@ import {
 } from '../../model/BadgeStudent';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import { useBadgeStudent } from '../../service/useBadgeStudent';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface ChallengeBoxContainerProps {
   challengeBadge: MyBadge;
 }
 
 function ChallengeBoxContainer({ challengeBadge }: ChallengeBoxContainerProps) {
-  const { badgeStudent, onSetBadgeStudent } = useBadgeStudent(challengeBadge.id);
+  const { badgeStudent, onSetBadgeStudent } = useBadgeStudent(
+    challengeBadge.id
+  );
   const { badgeCards } = useBadgeCards(challengeBadge.cardIds);
 
   const badgeCardCount = badgeCards.length;
-  const passedCardIdMap = badgeStudent && getPassedCardIdMap(badgeStudent) || new Map<string, boolean>();
-  const passedCardCount = badgeStudent && getPassedCardCount(badgeStudent) || 0;
-  const challengeState = badgeStudent && getChallengeState(badgeStudent) || ChallengeState.WaitForChallenge;
-  const formattedIssueTime = badgeStudent && getFormattedIssueTime(badgeStudent) || '';
+  const passedCardIdMap =
+    (badgeStudent && getPassedCardIdMap(badgeStudent)) ||
+    new Map<string, boolean>();
+  const passedCardCount =
+    (badgeStudent && getPassedCardCount(badgeStudent)) || 0;
+  const challengeState =
+    (badgeStudent && getChallengeState(badgeStudent)) ||
+    ChallengeState.WaitForChallenge;
+  const formattedIssueTime =
+    (badgeStudent && getFormattedIssueTime(badgeStudent)) || '';
 
   return (
     <div className="challenge-wrap">
@@ -41,7 +50,7 @@ function ChallengeBoxContainer({ challengeBadge }: ChallengeBoxContainerProps) {
             />
           </div>
           <BadgeCompRight
-            name={challengeBadge.name}
+            name={parsePolyglotString(challengeBadge.name)}
             categoryId={challengeBadge.categoryId}
             badgeCards={badgeCards}
             passedCardIdMap={passedCardIdMap}

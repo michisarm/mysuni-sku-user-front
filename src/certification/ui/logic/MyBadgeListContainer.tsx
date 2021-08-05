@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useCallback } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { useHistory } from 'react-router';
@@ -16,14 +17,20 @@ import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 import MyBadgeModal from '../view/MyBadgeModal';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface MyBadgeListContainerProps {
   badgeService?: BadgeService;
 }
 
 function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
-  const { myBadges, myBadgeCount, selectedLevel, setSelectedLevel } =
-    badgeService!;
+  const {
+    myBadges,
+    myBadgeCount,
+    selectedLevel,
+    setSelectedLevel,
+  } = badgeService!;
 
   const history = useHistory();
   useRequestMyBadges();
@@ -53,7 +60,10 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                 <li key={`my-badge-${index}`}>
                   <BadgeView
                     id={myBadge.id}
-                    name={myBadge.name}
+                    name={parsePolyglotString(
+                      myBadge.name,
+                      getDefaultLang(myBadge.langSupport)
+                    )}
                     level={myBadge.level}
                     iconUrl={myBadge.iconUrl}
                     categoryId={myBadge.categoryId}
@@ -61,7 +71,12 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                     badgeSize={BadgeSize.Small}
                   />
                   <div className="badge-name">
-                    <span>{myBadge.name}</span>
+                    <span>
+                      {parsePolyglotString(
+                        myBadge.name,
+                        getDefaultLang(myBadge.langSupport)
+                      )}
+                    </span>
                   </div>
                   <MyBadgeModal myBadge={myBadge} />
                 </li>

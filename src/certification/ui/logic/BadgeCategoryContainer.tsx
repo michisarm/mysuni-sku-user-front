@@ -12,6 +12,7 @@ import badgePaths from '../../routePaths';
 import { BadgeCategory } from '../../model/BadgeCategory';
 import { useBadgeSlide } from '../../service/useBadgeSlide';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeCategoryContainerProps {
   badgeCategoryService?: BadgeCategoryService;
@@ -20,8 +21,11 @@ interface BadgeCategoryContainerProps {
 function BadgeCategoryContainer({
   badgeCategoryService,
 }: BadgeCategoryContainerProps) {
-  const { categories, selectedCategoryId, setSelectedCategoryId } =
-    badgeCategoryService!;
+  const {
+    categories,
+    selectedCategoryId,
+    setSelectedCategoryId,
+  } = badgeCategoryService!;
 
   useEffect(() => {
     return () => {
@@ -29,8 +33,13 @@ function BadgeCategoryContainer({
     };
   }, []);
 
-  const { isNext, isPrev, onClickNext, onClickPrev, sliceCategories } =
-    useBadgeSlide(categories);
+  const {
+    isNext,
+    isPrev,
+    onClickNext,
+    onClickPrev,
+    sliceCategories,
+  } = useBadgeSlide(categories);
 
   const history = useHistory();
 
@@ -46,7 +55,7 @@ function BadgeCategoryContainer({
 
       history.replace(badgePaths.currentPage(1));
     },
-    [selectedCategoryId]
+    [history, setSelectedCategoryId]
   );
 
   const onClickGA = useCallback((categoryName: string) => {
@@ -108,7 +117,9 @@ function BadgeCategoryContainer({
                   <li
                     key={`badge-category-${index}`}
                     className={classNames('fn-parent', isActive)}
-                    onClick={() => onClickGA(category.name)}
+                    onClick={() =>
+                      onClickGA(parsePolyglotString(category.name))
+                    }
                   >
                     <BadgeCategoryView
                       category={category}

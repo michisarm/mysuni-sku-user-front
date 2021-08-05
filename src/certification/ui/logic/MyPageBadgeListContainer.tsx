@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useCallback } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { useHistory } from 'react-router';
@@ -15,19 +16,22 @@ import BadgeView from '../view/BadgeView';
 import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 import MyBadgeModal from '../view/MyBadgeModal';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MyPageBadgeListContainerProps {
   badgeService?: BadgeService;
 }
 
-function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProps) {
+function MyPageBadgeListContainer({
+  badgeService,
+}: MyPageBadgeListContainerProps) {
   const {
     myBadges,
     myBadgeCount,
     selectedLevel,
     setSelectedLevel,
     findBadge,
-    badge
+    badge,
   } = badgeService!;
 
   const history = useHistory();
@@ -68,7 +72,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                       <li key={`my-badge-${index}`}>
                         <BadgeView
                           id={myBadge.id}
-                          name={myBadge.name}
+                          name={parsePolyglotString(myBadge.name)}
                           level={myBadge.level}
                           iconUrl={myBadge.iconUrl}
                           categoryId={myBadge.categoryId}
@@ -93,9 +97,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                             </div>
                           }
                         > */}
-                          <MyBadgeModal
-                            myBadge={myBadge}
-                          />
+                        <MyBadgeModal myBadge={myBadge} />
                         {/* </Modal> */}
                       </li>
                     );
@@ -130,6 +132,6 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(observer(MyPageBadgeListContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(MyPageBadgeListContainer)
+);

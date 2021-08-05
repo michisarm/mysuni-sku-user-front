@@ -9,6 +9,8 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeView from '../view/BadgeView';
 import { getMainCategoryId } from '../../model/Badge';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LinkedBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -31,7 +33,10 @@ function LinkedBadgeListContainer({
                 <li key={`linked-badge-${index}`}>
                   <BadgeView
                     id={linkedBadge.badge.id}
-                    name={linkedBadge.badge.name}
+                    name={parsePolyglotString(
+                      linkedBadge.badge.name,
+                      getDefaultLang(linkedBadge.badge.langSupport)
+                    )}
                     level={linkedBadge.badge.level}
                     iconUrl={linkedBadge.badge.iconUrl}
                     categoryId={mainCategoryId}
@@ -43,7 +48,12 @@ function LinkedBadgeListContainer({
                     badgeColor={linkedBadge.badgeCategory.themeColor}
                     topImagePath={linkedBadge.badgeCategory.topImagePath}
                   />
-                  <div className="badge-name">{linkedBadge.badge.name}</div>
+                  <div className="badge-name">
+                    {parsePolyglotString(
+                      linkedBadge.badge.name,
+                      getDefaultLang(linkedBadge.badge.langSupport)
+                    )}
+                  </div>
                 </li>
               );
             })}

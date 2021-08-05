@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { inject, observer } from 'mobx-react';
@@ -8,6 +9,8 @@ import BadgeSize from '../model/BadgeSize';
 import { BadgeDetailRouteParams } from '../model/BadgeRouteParams';
 import BadgeView from '../view/BadgeView';
 import { getMainCategoryId } from '../../model/Badge';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface BadgePreviewPageProps {
   badgeService?: BadgeService;
@@ -29,14 +32,22 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
           <li style={{ marginLeft: '14rem' }}>
             <BadgeView
               id={badge.id}
-              name={badge.name}
+              name={parsePolyglotString(
+                badge.name,
+                getDefaultLang(badge.langSupport)
+              )}
               level={badge.level}
               iconUrl={badge.iconUrl}
               categoryId={mainCategoryId}
               badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
             />
-            <div className="badge-name">{badge.name}</div>
+            <div className="badge-name">
+              {parsePolyglotString(
+                badge.name,
+                getDefaultLang(badge.langSupport)
+              )}
+            </div>
           </li>
         </ul>
       )}

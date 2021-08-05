@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Modal, Button } from 'semantic-ui-react';
 import BadgeStyle from '../model/BadgeStyle';
@@ -6,6 +7,8 @@ import BadgeView from '../view/BadgeView';
 import { Badge } from '../../model/Badge';
 import { MyBadge } from '../../model/MyBadge';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface ChallengeSuccessModalProps {
   badge?: Badge | MyBadge;
@@ -20,7 +23,10 @@ function ChallengeSuccessModal({
   successModal,
   onClose,
 }: ChallengeSuccessModalProps) {
-  const badgeName = (badge && badge.name) || '';
+  const badgeName =
+    (badge &&
+      parsePolyglotString(badge.name, getDefaultLang(badge.langSupport))) ||
+    '';
 
   return (
     <Modal open={successModal} className="base w588">
@@ -43,12 +49,14 @@ function ChallengeSuccessModal({
                 <li
                   style={{
                     margin: '0 auto 1.75rem',
-                    float: 'none',
                   }}
                 >
                   <BadgeView
                     id={badge.id}
-                    name={badge.name}
+                    name={parsePolyglotString(
+                      badge.name,
+                      getDefaultLang(badge.langSupport)
+                    )}
                     level={badge.level}
                     iconUrl={badge.iconUrl}
                     categoryId={categoryId}

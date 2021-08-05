@@ -13,6 +13,8 @@ import ChallengeBadgeAlertModal from '../view/ChallengeBadgeAlertModal';
 import { findBadgeStudent } from '../../api/BadgeStudentApi';
 import { BadgeStudent } from '../../model/BadgeStudent';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface BadgeCompLeftProps {
   challengeBadge: MyBadge;
@@ -62,7 +64,10 @@ function BadgeCompLeft({
       <div className="badge-list-type" style={{ padding: 0! }}>
         <BadgeView
           id={challengeBadge.id}
-          name={challengeBadge.name}
+          name={parsePolyglotString(
+            challengeBadge.name,
+            getDefaultLang(challengeBadge.langSupport)
+          )}
           level={challengeBadge.level}
           iconUrl={challengeBadge.iconUrl}
           categoryId={challengeBadge.categoryId}

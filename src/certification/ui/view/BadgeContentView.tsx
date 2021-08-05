@@ -6,6 +6,7 @@ import BadgeCardListContainer from '../logic/BadgeCardListContainer';
 import { Badge } from '../../model/Badge';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeContentViewProps {
   badge: Badge;
@@ -28,7 +29,7 @@ export default function BadgeContentView({ badge }: BadgeContentViewProps) {
                     '인증 내용',
                     'Certification-View-인증내용'
                   )}
-                  contentHtml={badge.description}
+                  contentHtml={parsePolyglotString(badge.description)}
                 />
               )}
               <OverviewField.Item
@@ -36,14 +37,18 @@ export default function BadgeContentView({ badge }: BadgeContentViewProps) {
                   '획득 조건',
                   'Certification-View-획득조건'
                 )}
-                contentHtml={replaceEnterWithBr(badge.acquisitionRequirements)}
+                contentHtml={replaceEnterWithBr(
+                  parsePolyglotString(badge.acquisitionRequirements)
+                )}
               />
               <OverviewField.Item
                 title={getPolyglotText(
                   '자격 증명',
                   'Certification-View-자격증명'
                 )}
-                contentHtml={replaceEnterWithBr(badge.qualification)}
+                contentHtml={replaceEnterWithBr(
+                  parsePolyglotString(badge.qualification)
+                )}
               />
             </OverviewField.List>
             {badge.additionalRequirementsNeeded && (
@@ -71,7 +76,9 @@ export default function BadgeContentView({ badge }: BadgeContentViewProps) {
                 content={<BadgeCardListContainer />}
               />
             </OverviewField.List>
-            {badge.tags && <BadgeTagView tags={badge.tags} />}
+            {badge.tags && (
+              <BadgeTagView tags={parsePolyglotString(badge.tags)} />
+            )}
           </>
         )}
       </div>

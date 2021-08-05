@@ -6,6 +6,8 @@ import { BadgeCategory } from './BadgeCategory';
 import { BadgeLevel } from './BadgeLevel';
 import { BadgeOperator } from './BadgeOperator';
 import { PatronKey } from '@nara.platform/accent';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from 'lecture/model/LangSupport';
 
 export interface BadgeBundle {
   badge: Badge;
@@ -14,7 +16,7 @@ export interface BadgeBundle {
 export interface Badge {
   id: string;
   patronKey: PatronKey;
-  name: string;
+  name: PolyglotString;
   level: BadgeLevel;
   iconUrl: string;
   type: BadgeType;
@@ -23,22 +25,23 @@ export interface Badge {
   subCategories: BadgeCategory[];
   categoryId: string;
   subCategoryIds: string[];
-  description: string;
-  qualification: string;
-  acquisitionRequirements: string;
+  description: PolyglotString;
+  qualification: PolyglotString;
+  acquisitionRequirements: PolyglotString;
   additionalRequirementsNeeded: boolean;
   issueAutomatically: boolean;
-  tags: string;
+  tags: PolyglotString;
   cardIds: string[];
   relatedBadgeIds: string[];
   operator: BadgeOperator;
-  creatorName: string;
+  registerName: PolyglotString;
   creatorEmail: string;
   openRequest: OpenRequest;
   time: number;
   learningTime: number;
   forSelectedMember: boolean;
   groupBasedAccessRule: GroupBasedAccessRule;
+  langSupport: LangSupport[];
 }
 
 interface Category {
@@ -57,7 +60,7 @@ export function getMainCategoryId(badge?: Badge): string {
   }
 
   const mainCategory = badge.categories.find(
-    category => category.mainCategory === true
+    (category) => category.mainCategory === true
   );
 
   if (mainCategory === undefined) {

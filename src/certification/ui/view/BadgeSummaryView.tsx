@@ -7,6 +7,8 @@ import { BadgeTitleView } from './BadgeTitleView';
 import { BadgeInformationView } from './BadgeInformationView';
 import { getCineroomName } from '../../../shared/service/useCineroom/useRequestCineroom';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface BadgeSummaryViewProps {
   badge: Badge;
@@ -23,7 +25,10 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
         <div className="badge-box basic">
           <BadgeView
             id={badge.id}
-            name={badge.name}
+            name={parsePolyglotString(
+              badge.name,
+              getDefaultLang(badge.langSupport)
+            )}
             level={badge.level}
             iconUrl={badge.iconUrl}
             categoryId={mainCategoryId}
@@ -34,7 +39,10 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
       </div>
       <BadgeTitleView
         college={getBadgeCategoryName(mainCategoryId)}
-        name={badge.name}
+        name={parsePolyglotString(
+          badge.name,
+          getDefaultLang(badge.langSupport)
+        )}
       />
       <BadgeInformationView
         certiAdminId={cineroomName}
