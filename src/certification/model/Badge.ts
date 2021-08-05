@@ -42,6 +42,7 @@ export interface Badge {
   forSelectedMember: boolean;
   groupBasedAccessRule: GroupBasedAccessRule;
   langSupport: LangSupport[];
+  collegeId: string;
 }
 
 interface Category {
