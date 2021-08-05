@@ -6,6 +6,7 @@ import { BadgeCategory } from './BadgeCategory';
 import { BadgeLevel } from './BadgeLevel';
 import { BadgeOperator } from './BadgeOperator';
 import { PatronKey } from '@nara.platform/accent';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface BadgeBundle {
   badge: Badge;
@@ -14,7 +15,7 @@ export interface BadgeBundle {
 export interface Badge {
   id: string;
   patronKey: PatronKey;
-  name: string;
+  name: PolyglotString;
   level: BadgeLevel;
   iconUrl: string;
   type: BadgeType;
@@ -23,7 +24,7 @@ export interface Badge {
   subCategories: BadgeCategory[];
   categoryId: string;
   subCategoryIds: string[];
-  description: string;
+  description: PolyglotString;
   qualification: string;
   acquisitionRequirements: string;
   additionalRequirementsNeeded: boolean;

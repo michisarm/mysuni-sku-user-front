@@ -21,6 +21,7 @@ import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 import { saveAs } from 'file-saver';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   myBadge: MyBadge;
@@ -151,7 +152,7 @@ class MyBadgeModal extends Component<Props, States> {
     const { badgeStudent } = badgeStudentService!;
     const { open } = this.state;
 
-    const myBadgeName = myBadge.name;
+    const myBadgeName = parsePolyglotString(myBadge.name);
     const myBadgeCategoryName = myBadge.badgeCategory.name;
     return (
       <>
@@ -260,7 +261,7 @@ class MyBadgeModal extends Component<Props, States> {
                           <div className="badge badge-list-type">
                             <MyBadgeCertificateView
                               id={myBadge.id}
-                              name={myBadge.name}
+                              name={parsePolyglotString(myBadge.name)}
                               level={myBadge.level}
                               iconUrl={myBadge.iconUrl}
                               categoryId={myBadge.categoryId}

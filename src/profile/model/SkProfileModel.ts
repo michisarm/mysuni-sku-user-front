@@ -6,7 +6,7 @@ import MemberLocaleModel from './MemberLocaleModel';
 import EmployeeModel from './EmployeeModel';
 import PisAgreementModel from './PisAgreementModel';
 import ProfileImagePath from '../../../src/shared/components/Image/ProfileImagePath';
-import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { parsePolyglotString, PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class SkProfileModel implements DramaEntity {
   //
@@ -34,7 +34,7 @@ class SkProfileModel implements DramaEntity {
   departmentName: PolyglotString = {ko:'', en: '', cn: ''};
   departmentCode: string = '';
   email: string = ''
-  name: string = '';
+  name: PolyglotString = {ko:'', en: '', cn: ''};
   phone: string = '';
   employeeId: string = '';
   companyName: PolyglotString = {ko:'', en: '', cn: ''};
@@ -136,7 +136,7 @@ class SkProfileModel implements DramaEntity {
     if (this.nameFlag === 'N' && this.nickName !== '') {
       viewProfileName = this.nickName;
     } else {
-      viewProfileName = this.name;
+      viewProfileName = parsePolyglotString(this.name);
     }
 
     return viewProfileName;

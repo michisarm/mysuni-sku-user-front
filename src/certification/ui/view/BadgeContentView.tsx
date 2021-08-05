@@ -6,6 +6,7 @@ import BadgeCardListContainer from '../logic/BadgeCardListContainer';
 import { Badge } from '../../model/Badge';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeContentViewProps {
   badge: Badge;
@@ -28,7 +29,7 @@ export default function BadgeContentView({ badge }: BadgeContentViewProps) {
                     '인증 내용',
                     'Certification-View-인증내용'
                   )}
-                  contentHtml={badge.description}
+                  contentHtml={parsePolyglotString(badge.description)}
                 />
               )}
               <OverviewField.Item

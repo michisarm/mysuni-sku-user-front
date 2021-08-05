@@ -49,7 +49,7 @@ class SkProfileService {
     if (this.skProfile.nameFlag === 'N' && this.skProfile.nickName !== '') {
       viewProfileName = this.skProfile.nickName;
     } else {
-      viewProfileName = this.skProfile && this.skProfile.name;
+      viewProfileName = this.skProfile && parsePolyglotString(this.skProfile.name);
     }
 
     return viewProfileName;

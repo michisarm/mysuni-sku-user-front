@@ -153,16 +153,17 @@ export default function LectureDiscussionContainer() {
     });
   }, []);
 
-  const { companyName, departmentName, name } = useMemo(() => {
+  const { companyName, departmentName, name, email } = useMemo(() => {
     const {
       skProfile: {
         companyName,
         departmentName,
-        name
+        name,
+        email
         // member: { company, department, email, name },
       },
     } = SkProfileService.instance;
-    return { companyName, departmentName, name };
+    return { companyName, departmentName, name, email };
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
@@ -408,8 +409,8 @@ export default function LectureDiscussionContainer() {
                 // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
                 feedbackId={feedbackId}
                 hideCamera
-                name={name}
-                email=""
+                name={parsePolyglotString(name)}
+                email={email}
                 companyName={parsePolyglotString(companyName)}
                 departmentName={parsePolyglotString(departmentName)}
                 // cardId={params?.cardId}

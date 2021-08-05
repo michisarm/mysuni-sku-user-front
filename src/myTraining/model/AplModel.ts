@@ -267,7 +267,7 @@ class AplModel extends NewQueryModel {
       creationTime: aplModel.creationTime,
       creatorId: SkProfileService.instance.skProfile.email || '',
       creatorName:
-        SkProfileService.instance.skProfile.name ||
+        parsePolyglotString(SkProfileService.instance.skProfile.name) ||
         patronInfo.getPatronName() ||
         '',
       fileIds: aplModel.fileIds || '',

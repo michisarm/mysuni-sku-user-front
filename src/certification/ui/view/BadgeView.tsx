@@ -7,10 +7,11 @@ import { BadgeContentWrapper } from './BadgeContentWrapper';
 import Image from '../../../shared/components/Image';
 import BadgeStarSvg from './BadgeStarSvg';
 import { useRequestBadgeWIthCategory } from '../../service/useRequestBadgeWIthCategory';
+import { parsePolyglotString, PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeViewProps {
   id: string;
-  name: string;
+  name: PolyglotString;
   level: BadgeLevel;
   iconUrl: string;
   categoryId: string;
@@ -63,7 +64,7 @@ export default function BadgeView({
       </span>
       <span className="title" style={{ margin: 0 }}>
         <span className="cell" >
-          <span style={{ display: 'block' }}>{name}</span>
+          <span style={{ display: 'block' }}>{parsePolyglotString(name)}</span>
         </span>
       </span>
       <p className={`star-score ${starStyle}`}>{emHtml}</p>

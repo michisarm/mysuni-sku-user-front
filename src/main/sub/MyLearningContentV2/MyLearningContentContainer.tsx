@@ -15,6 +15,7 @@ import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import LRSLearning from './MainComponents/LRSLearning';
 import { Abtest, ExperimentalGroup } from 'abtest/components';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -40,10 +41,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     inMyLectureService!.findAllInMyLectures();
 
-    setMemName(skProfile.name);
+    setMemName(parsePolyglotString(skProfile.name));
     if (memName.length < 1) {
       setTimeout(() => {
-        setMemName(skProfileService!.skProfile.name);
+        setMemName(parsePolyglotString(skProfile.name));
       }, 200);
     }
   }, [inMyLectureService, memName.length, skProfile.name, skProfileService]);
