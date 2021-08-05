@@ -2,22 +2,15 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, deleteCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { getAxios } from 'shared/api/Axios';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { SkProfileService } from 'profile/stores';
 import { NotieService } from 'notie/stores';
-import myTrainingRoutePaths from 'myTraining/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
 import { Area } from 'tracker/model';
 import Image from '../../../../../shared/components/Image';
-import {
-  isExternalInstructor,
-  isInternalInstructor,
-} from '../../../../../shared/helper/findUserRole';
-import { Button, Popup } from 'semantic-ui-react';
-import ProfilePopupView from '../view/ProfilePopupView';
+import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -26,8 +19,6 @@ interface Props extends RouteComponentProps {
 
 interface State {
   balloonShowClass: string;
-  menuAuth: PageElement[];
-  isOpen: boolean;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
@@ -38,8 +29,6 @@ class ProfileContainer extends Component<Props, State> {
 
   state = {
     balloonShowClass: '',
-    menuAuth: [],
-    isOpen: false,
   };
 
   componentDidMount() {
@@ -60,23 +49,11 @@ class ProfileContainer extends Component<Props, State> {
 
     isExternalInstructor() &&
       document.addEventListener('mousedown', this.handleClickOutside);
-
-    this.avaible();
   }
 
   componentWillUnmount() {
     isExternalInstructor() &&
       document.removeEventListener('mousedown', this.handleClickOutside);
-  }
-
-  async avaible() {
-    const response = await findAvailablePageElements();
-
-    if (response) {
-      this.setState({
-        menuAuth: response,
-      });
-    }
   }
 
   handleClickOutside(e: MouseEvent) {
@@ -144,20 +121,10 @@ class ProfileContainer extends Component<Props, State> {
       NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
-    const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
-    const isInstructor = isExternalInstructor() || isInternalInstructor();
-    const baseUrl = `${window.location.protocol}//${window.location.host}/suni-instructor`;
-    const { isOpen } = this.state;
-
-    const setOpen = () => {
-      //this.profileButtonRef.current.click();
-      this.setState({ isOpen: !isOpen });
-      document.getElementById('btnProFile')?.click();
-    };
 
     return (
-      <div className="g-info">
+      <div className="g-info g-info2 g-ab2">
         {isExternal ? (
           <>
             <button
@@ -199,34 +166,14 @@ class ProfileContainer extends Component<Props, State> {
             </div>
           </>
         ) : (
-          <Popup
-            className="pop_profile"
-            trigger={
-              <Button id="btnProFile" className="user image label">
-                <Image
-                  src={skProfile.photoFilePath || profileImg}
-                  alt="profile"
-                />
-              </Button>
-            }
-            position="bottom right"
-            on="click"
-            //open={isOpen}
-            onOpen={setOpen}
-          >
-            <Popup.Content>
-              <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />
-              {/*프로필사진 셋팅전 */}
-            </Popup.Content>
-          </Popup>
-        )}
-        {!isExternal && (
-          <HeaderAlarmView
-            myNotieMentions={myNotieMentions}
-            myNotieNoReadMentionCount={myNotieNoReadMentionCount}
-            routeToAlarmBackLink={this.routeToAlarmBackLink}
-            handleClickAlarm={this.handleClickAlarm}
-          />
+          <>
+            <HeaderAlarmView
+              myNotieMentions={myNotieMentions}
+              myNotieNoReadMentionCount={myNotieNoReadMentionCount}
+              routeToAlarmBackLink={this.routeToAlarmBackLink}
+              handleClickAlarm={this.handleClickAlarm}
+            />
+          </>
         )}
       </div>
     );

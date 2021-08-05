@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Popup } from 'semantic-ui-react';
 import MentionModel from 'notie/model/MentionModel';
 import moment from 'moment';
 import { Area } from 'tracker/model';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import Image from '../../../../../shared/components/Image';
+import { SkProfileService } from '../../../../../profile/stores';
+import ProfilePopupView from './ProfilePopupView';
+import {
+  isExternalInstructor,
+  isInternalInstructor,
+} from '../../../../../shared/helper/findUserRole';
 
 interface Props {
+  skProfileService?: SkProfileService;
   myNotieMentions: MentionModel[];
   myNotieNoReadMentionCount: number;
   routeToAlarmBackLink: (backLink: string) => void;
@@ -14,6 +23,7 @@ interface Props {
 
 interface State {
   alarmShowClass: string;
+  isOpen: boolean;
 }
 
 @reactAutobind
@@ -24,6 +34,7 @@ class HeaderAlarmView extends Component<Props, State> {
 
   state = {
     alarmShowClass: '',
+    isOpen: false,
   };
 
   componentDidMount() {
@@ -50,20 +61,24 @@ class HeaderAlarmView extends Component<Props, State> {
     }
   }
 
-
   render() {
     //
-    const {
-      myNotieMentions,
-      myNotieNoReadMentionCount,
-      routeToAlarmBackLink,
-    } = this.props;
-    const { alarmShowClass } = this.state;
+    const { skProfile } = SkProfileService.instance;
+    const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } =
+      this.props;
+    const { alarmShowClass, isOpen } = this.state;
 
     let existNoReadClass = '';
     if (myNotieNoReadMentionCount > 0) {
       existNoReadClass = 'lms-on';
     }
+    const isInstructor = isExternalInstructor() || isInternalInstructor();
+
+    const setOpen = () => {
+      //this.profileButtonRef.current.click();
+      this.setState({ isOpen: !isOpen });
+      document.getElementById('btnProFile')?.click();
+    };
     return (
       <div ref={this.alarmRef}>
         <a
@@ -92,7 +107,7 @@ class HeaderAlarmView extends Component<Props, State> {
                 }
 
                 if (!result.title.includes('[')) {
-                  result.title = ''
+                  result.title = '';
                 }
 
                 return (
@@ -128,6 +143,26 @@ class HeaderAlarmView extends Component<Props, State> {
               })}
           </div>
         </div>
+        <Popup
+          className="pop_profile"
+          trigger={
+            <Button id="btnProFile" className="user image label btn_user">
+              <Image
+                src={skProfile.photoFilePath || profileImg}
+                alt="profile"
+              />
+            </Button>
+          }
+          position="bottom right"
+          on="click"
+          //open={isOpen}
+          onOpen={setOpen}
+        >
+          <Popup.Content>
+            <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />
+            {/*프로필사진 셋팅전 */}
+          </Popup.Content>
+        </Popup>
       </div>
     );
   }
