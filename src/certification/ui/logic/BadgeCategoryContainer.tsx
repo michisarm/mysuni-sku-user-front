@@ -13,6 +13,7 @@ import { BadgeCategory } from '../../model/BadgeCategory';
 import { useBadgeSlide } from '../../service/useBadgeSlide';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface BadgeCategoryContainerProps {
   badgeCategoryService?: BadgeCategoryService;
@@ -118,7 +119,12 @@ function BadgeCategoryContainer({
                     key={`badge-category-${index}`}
                     className={classNames('fn-parent', isActive)}
                     onClick={() =>
-                      onClickGA(parsePolyglotString(category.name))
+                      onClickGA(
+                        parsePolyglotString(
+                          category.name,
+                          getDefaultLang(category.langSupports)
+                        )
+                      )
                     }
                   >
                     <BadgeCategoryView

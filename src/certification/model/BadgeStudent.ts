@@ -2,10 +2,11 @@ import moment from 'moment';
 import { Badge } from './Badge';
 import { BadgeIssueState } from './BadgeIssueState';
 import ChallengeState from '../shared/Badge/ui/model/ChallengeState';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface BadgeStudent {
   id: string;
-  name: string;
+  name: PolyglotString;
   company: string;
   department: string;
   email: string;
@@ -47,7 +48,7 @@ export function getPassedCardIdMap(
     badgeStudent.completedCardIds &&
     badgeStudent.completedCardIds.length > 0
   ) {
-    badgeStudent.completedCardIds.forEach(cardId => {
+    badgeStudent.completedCardIds.forEach((cardId) => {
       map.set(cardId, true);
     });
   }
