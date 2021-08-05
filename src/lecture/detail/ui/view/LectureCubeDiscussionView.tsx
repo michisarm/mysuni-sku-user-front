@@ -21,6 +21,7 @@ import LectureState from '../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
@@ -157,8 +158,11 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
         }
       } else {
         reactAlert({
-          title: '안내',
-          message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+          title: getPolyglotText('안내', 'Collage-Discussion-안내'),
+          message: getPolyglotText(
+            `다운로드 받으실 첨부파일을 선택해 주세요.`,
+            'Collage-Discussion-첨부파일1'
+          ),
         });
       }
     }, []);
@@ -235,42 +239,75 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             <div className="discuss-wrap">
               {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
               <div className="task-condition">
-                <strong className="task-condition">이수 조건</strong>
+                <strong className="task-condition">
+                  <PolyglotText
+                    id="Collage-Discussion-이수조건"
+                    defaultString="이수 조건"
+                  />
+                </strong>
                 {cubeAutomaticCompletion &&
                   !privateComment &&
                   cubeCommentCount > 0 &&
                   cubeSubCommentCount > 0 && (
-                    <span>
-                      다음의 토론 주제에 대한{' '}
-                      <strong>나의 생각을 {cubeCommentCount}건</strong>{' '}
-                      작성해주시고, 타 학습자의 작성 내용 중 관심이 가는 의견에
-                      대해 <strong>댓글을 {cubeSubCommentCount}건</strong>{' '}
-                      작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          `다음의 토론 주제에 대한
+                          <strong>나의 생각을 {cubeCommentCount}건</strong>
+                          작성해주시고, 타 학습자의 작성 내용 중 관심이 가는 의견에
+                          대해 <strong>댓글을 {cubeSubCommentCount}건</strong>
+                          작성해주시면 자동으로 이수 처리가 됩니다.`,
+                          'Collage-Discussion-이수안내2',
+                          {
+                            cubeCommentCount: cubeCommentCount.toString(),
+                            cubeSubCommentCount: cubeSubCommentCount.toString(),
+                          }
+                        ),
+                      }}
+                    />
                   )}
                 {cubeAutomaticCompletion &&
                   (privateComment ||
                     (cubeCommentCount > 0 && cubeSubCommentCount === 0)) && (
-                    <span>
-                      다음의 토론 주제에 대한{' '}
-                      <strong>나의 생각을 {cubeCommentCount}건</strong>{' '}
-                      작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          `다음의 토론 주제에 대한
+                        <strong>나의 생각을 {cubeCommentCount}건</strong>
+                        작성해주시면 자동으로 이수 처리가 됩니다.`,
+                          'Collage-Discussion-이수안내2',
+                          {
+                            cubeCommentCount: cubeCommentCount.toString(),
+                          }
+                        ),
+                      }}
+                    />
                   )}
                 {cubeAutomaticCompletion &&
                   !privateComment &&
                   cubeCommentCount === 0 &&
                   cubeSubCommentCount > 0 && (
-                    <span>
-                      타 학습자의 작성 내용 중 관심이 가는 의견에 대해{' '}
-                      <strong>댓글을 {cubeSubCommentCount}건</strong>{' '}
-                      작성해주시면 자동으로 이수 처리가 됩니다.
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          `타 학습자의 작성 내용 중 관심이 가는 의견에 대해{' '}
+                        <strong>댓글을 {cubeSubCommentCount}건</strong>{' '}
+                        작성해주시면 자동으로 이수 처리가 됩니다.`,
+                          'Collage-Discussion-이수안내3',
+                          {
+                            cubeSubCommentCount: cubeSubCommentCount.toString(),
+                          }
+                        ),
+                      }}
+                    />
                   )}
                 {!cubeAutomaticCompletion && (
                   <span>
-                    본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해
-                    드립니다.
+                    <PolyglotText
+                      id="Collage-Discussion-이수처리안내"
+                      defaultString="본 과정은 담당자가 이수 조건 충족 여부를 확인 후 이수 처리해
+                      드립니다."
+                    />
                   </span>
                 )}
                 {lectureDescription && lectureDescription.completionTerms && (
@@ -290,7 +327,12 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
               <div className="discuss-box2 task">
                 {lectureDescription && lectureDescription.description && (
                   <Fragment>
-                    <span className="discuss-intro-title">토론 안내</span>
+                    <span className="discuss-intro-title">
+                      <PolyglotText
+                        id="Collage-Discussion-토론안내"
+                        defaultString="토론 안내"
+                      />
+                    </span>
                     <LectureDescriptionView
                       htmlContent={lectureDescription.description}
                     />
@@ -313,7 +355,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                             alt=""
                             style={{ display: 'inline-block' }}
                           />
-                          관련 URL
+                          <PolyglotText
+                            id="Collage-Discussion- URL"
+                            defaultString="관련 URL"
+                          />
                         </p>
                         {cubeRelatedUrlList &&
                           cubeRelatedUrlList.map((item: any, index: number) => (
@@ -333,7 +378,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                         <div className="board-down-title">
                           <p>
                             <img src={iconFile} />
-                            첨부파일
+                            <PolyglotText
+                              id="Collage-Discussion-첨부파일2"
+                              defaultString="첨부파일"
+                            />
                           </p>
                           <div className="board-down-title-right">
                             <button
@@ -344,7 +392,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                                 aria-hidden="true"
                                 className="icon check icon"
                               />
-                              선택 다운로드
+                              <PolyglotText
+                                id="Collage-Discussion-선택다운로드"
+                                defaultString="선택 다운로드"
+                              />
                             </button>
                             <button
                               className="ui icon button left post list2"
@@ -353,7 +404,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                               <img
                                 src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
                               />
-                              전체 다운로드
+                              <PolyglotText
+                                id="Collage-Discussion-전체다운로드"
+                                defaultString="전체 다운로드"
+                              />
                             </button>
                           </div>
                         </div>
@@ -395,19 +449,47 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                   <List as="ul" className="my-task-bar">
                     {cubeCommentCount > 0 && (
                       <List.Item as="li">
-                        <Icon className="my-comment" /> My Comment
+                        <Icon className="my-comment" />
+                        <PolyglotText
+                          id="Collage-Discussion-Comments"
+                          defaultString="My Comment"
+                        />
                         <em>
-                          <strong>{commentCount}건</strong>/{cubeCommentCount}건
+                          <strong>
+                            {commentCount}
+                            <PolyglotText
+                              id="Collage-Discussion-건수"
+                              defaultString="건"
+                            />
+                          </strong>
+                          /{cubeCommentCount}
+                          <PolyglotText
+                            id="Collage-Discussion-건수"
+                            defaultString="건"
+                          />
                         </em>
                       </List.Item>
                     )}
                     {!privateComment && cubeSubCommentCount > 0 && (
                       <List.Item as="li">
                         <Icon className="my-comment-reply" />
-                        My reply
+                        <PolyglotText
+                          id="Collage-Discussion-reply"
+                          defaultString="My reply"
+                        />
                         <em>
-                          <strong>{subCommentCount}건</strong>/
-                          {cubeSubCommentCount}건
+                          <strong>
+                            {subCommentCount}
+                            <PolyglotText
+                              id="Collage-Discussion-건수"
+                              defaultString="건"
+                            />
+                          </strong>
+                          /{cubeSubCommentCount}
+                          <PolyglotText
+                            id="Collage-Discussion-건수"
+                            defaultString="건"
+                          />
                         </em>
                       </List.Item>
                     )}

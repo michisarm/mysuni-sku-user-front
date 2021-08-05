@@ -257,8 +257,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
       const popupState = getLectureNotePopupState();
       if (popupState) {
         reactAlert({
-          title: '알림',
-          message: '새 창에서 Note를 작성 중입니다',
+          title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+          message: getPolyglotText(
+            '새 창에서 Note를 작성 중입니다',
+            'cicl-학상본문-새창'
+          ),
         });
         return;
       }
@@ -338,7 +341,12 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                   lectureSummary.cubeType !== 'ELearning' &&
                   instrutor !== undefined && (
                     <Label className="bold onlytext">
-                      <span className="header-span-first">강사</span>
+                      <span className="header-span-first">
+                        <PolyglotText
+                          defaultString="강사"
+                          id="cicl-학상본문-강사2"
+                        />
+                      </span>
                       <span className="tool-tip">
                         {instrutor.memberSummary?.name}
                         <i>
@@ -364,9 +372,19 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                     lectureSummary.cubeType === 'ELearning') &&
                   getCapacity(lectureClassroom.classrooms) !== undefined && (
                     <Label className="bold onlytext">
-                      <span className="header-span-first">정원정보</span>
+                      <span className="header-span-first">
+                        <PolyglotText
+                          defaultString="정원정보"
+                          id="cicl-학상본문-정원정보"
+                        />
+                      </span>
                       <span>{getCapacity(lectureClassroom.classrooms)}</span>
-                      <span>명</span>
+                      <span>
+                        <PolyglotText
+                          defaultString="명"
+                          id="cicl-학상본문-명"
+                        />
+                      </span>
                     </Label>
                   )}
                 {/* Community => Task 데이터 현행화 후 수정 예정*/}
@@ -409,7 +427,12 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                   </>
                 )}
                 <Label className="bold onlytext">
-                  <span className="header-span-first">담당</span>
+                  <span className="header-span-first">
+                    <PolyglotText
+                      defaultString="담당"
+                      id="cicl-학상본문-담당"
+                    />
+                  </span>
                   <span className="tool-tip">
                     {lectureSummary.operator.name}
                     <i>
@@ -430,7 +453,10 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                   className="ui icon button left post-s"
                 >
                   <Icon className="ask" />
-                  문의하기
+                  <PolyglotText
+                    defaultString="문의하기"
+                    id="cicl-학상본문-문의"
+                  />
                 </Link>
               </div>
             </div>
@@ -458,7 +484,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                         {lectureReview !== undefined
                           ? `${Math.floor(lectureReview.average * 10) / 10}(${
                               lectureReview.reviewerCount
-                            }명)`
+                            })` + getPolyglotText('명', 'cicl-학상본문-명')
                           : ''}
                       </span>
                     </div>
@@ -495,14 +521,21 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                     }
                   />
                   {inMyLectureModel === undefined
-                    ? '관심목록 추가'
-                    : '관심목록 제거'}
+                    ? getPolyglotText('관심목록 추가', 'cicl-학상본문-관심추가')
+                    : getPolyglotText(
+                        '관심목록 제거',
+                        'cicl-학상본문-관심제거'
+                      )}
                 </span>
               </a>
               <a onClick={copyUrl}>
                 <span>
                   <Icon className="linkCopy" />
-                  링크 복사
+
+                  <PolyglotText
+                    defaultString="링크 복사"
+                    id="cicl-학상본문-링크"
+                  />
                 </span>
               </a>
             </div>

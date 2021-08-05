@@ -22,6 +22,7 @@ import { SubsidiaryService } from 'college/stores';
 import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   subsidiaryService?: SubsidiaryService;
@@ -72,7 +73,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
       const subsidiaries = await subsidiaryService.findSubsidiariesByCompany();
 
       const nextSubsidiaries = subsidiaries.map(
-        subsidiary => subsidiary.subsidiary
+        (subsidiary) => subsidiary.subsidiary
       );
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
     } else {
@@ -102,7 +103,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
       { type: ValidationType.MaxSize },
     ];
 
-    const hasNonPass = validations.some(validation => {
+    const hasNonPass = validations.some((validation) => {
       if (typeof validation.validator === 'function') {
         return !validation.validator(file);
       } else {
@@ -167,7 +168,9 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
     let nextSubsidiaries: IdName[] = [];
 
     if (checked) {
-      nextSubsidiaries = subsidiaries.map(subsidiary => subsidiary.subsidiary);
+      nextSubsidiaries = subsidiaries.map(
+        (subsidiary) => subsidiary.subsidiary
+      );
     }
 
     onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
@@ -183,7 +186,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
     } else {
       const nextSubsidiaries = personalCube.subsidiaries.filter(
-        prevSubsidiary => prevSubsidiary.id !== subsidiary.id
+        (prevSubsidiary) => prevSubsidiary.id !== subsidiary.id
       );
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
     }
@@ -205,11 +208,21 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
       <>
         <hr className="dividing" />
         <div className="section-tit">
-          <span className="text1">노출 정보</span>
+          <span className="text1">
+            <PolyglotText
+              id="personalcube-노출정보-노출정보"
+              defaultString="노출 정보"
+            />
+          </span>
         </div>
 
         <Form.Field>
-          <label className="necessary">아이콘 선택</label>
+          <label className="necessary">
+            <PolyglotText
+              id="personalcube-노출정보-아이콘선택"
+              defaultString="아이콘 선택"
+            />
+          </label>
           <Radio
             className="base"
             name="radioGroup"
@@ -232,7 +245,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                 <Select
                   style={{ width: 230 }}
                   className="small-border"
-                  placeholder="선택하세요"
+                  placeholder={getPolyglotText(
+                    '선택하세요',
+                    'personalcube-노출정보-선택'
+                  )}
                   options={SelectOptions.colleges}
                   value={
                     (personalCube.iconBox.iconUrl &&
@@ -279,17 +295,28 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                 {personalCube.iconBox.baseUrl && (
                   <Button onClick={this.onDetachIcon}>
                     <Icon className="clear" />
-                    <span className="blind">delete</span>
+                    <span className="blind">
+                      <PolyglotText
+                        id="personalcube-노출정보-삭제"
+                        defaultString="delete"
+                      />
+                    </span>
                   </Button>
                 )}
               </div>
               <div className="bottom">
                 <span className="text1">
                   <Icon className="info16" />
-                  <span className="blind">infomation</span>
-                  JPG, PNG 파일을 등록하실 수 있습니다. / 최대 500Kbyte 용량의
-                  파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를
-                  추천합니다.
+                  <span className="blind">
+                    <PolyglotText
+                      id="personalcube-노출정보-인포"
+                      defaultString="infomation"
+                    />
+                  </span>
+                  <PolyglotText
+                    id="personalcube-노출정보-파일등록"
+                    defaultString=" JPG, PNG 파일을 등록하실 수 있습니다. / 최대 500Kbyte 용량의 파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를 추천합니다."
+                  />
                 </span>
                 <div className="right-btn">
                   <div className="ui input file2">
@@ -298,7 +325,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                       as="label"
                       onClick={this.onClickSelectFile}
                     >
-                      파일찾기
+                      <PolyglotText
+                        id="personalcube-노출정보-파일찾기"
+                        defaultString="파일찾기"
+                      />
                     </Button>
                     <input
                       ref={this.fileInputRef}
@@ -315,7 +345,12 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
         </Form.Field>
 
         <Form.Field>
-          <label className="necessary">관계사 공개 범위 설정</label>
+          <label className="necessary">
+            <PolyglotText
+              id="personalcube-노출정보-공개범위"
+              defaultString="관계사 공개 범위 설정"
+            />
+          </label>
           <div className="round-wrap">
             {!subsidiaryTargeted && (
               <div className="filter">
@@ -346,7 +381,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                       }
                       disabled={subsidiaryTargeted}
                       checked={personalCube.subsidiaries.some(
-                        cubeSubsidiary =>
+                        (cubeSubsidiary) =>
                           cubeSubsidiary.id === subsidiary.subsidiary.id
                       )}
                       onChange={this.onCheckSubsidiary}
@@ -361,7 +396,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
         <Form.Field>
           <CreateInput
             label="Tag 정보"
-            placeholder="Tag와 Tag는 쉼표(“,”)로 구분합니다."
+            placeholder={getPolyglotText(
+              'Tag와 Tag는 쉼표(“,”)로 구분합니다.',
+              'personalcube-노출정보-태그'
+            )}
             asList
             value={personalCube.tags}
             onChange={this.onChangeTags}

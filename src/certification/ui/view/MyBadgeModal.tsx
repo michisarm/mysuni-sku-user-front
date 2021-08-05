@@ -20,7 +20,7 @@ import { toJpeg, toBlob } from 'html-to-image';
 import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 import { saveAs } from 'file-saver';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 
@@ -216,18 +216,28 @@ class MyBadgeModal extends Component<Props, States> {
                           defaultString="프로그램 이수가 완료되었음을 알려드립니다."
                         />
                       </span>
-                      <p className="message-area">
-                        <PolyglotText
-                          id="Certification-mybadgemodal-이수증내용"
-                          defaultString="본 프로그램의 이수를 위해 의미 있는 시간과 노력을 기울여 주신 것에 진심으로 감사드리며, mySUNI에서 발급한 수료증을 보내드립니다.
-                          \n『${myBadgeName}』 프로그램을 이수한다는 것은 SK의 구성원들이 필히 갖추어야 하는 ${myBadgeCategoryName} 역량에 대한 기본적인 이해와 지식을 보유한 것은 물론, ${myBadgeCategoryName} College에서 제공하는 상위 과정들을 수강할 수 있는 자격을 갖추게 되었음을 의미합니다. \n본 프로그램의 이수를 통해 습득하신 역량이 현재 업무에 실제적으로 활용되기 위해서는지속적인 노력과 학습이 이루어져야 \n한다는 점을 당부드리며, 앞으로도 mySUNI ${myBadgeCategoryName} College에 많은 관심을 부탁드립니다.
-                          \n감사합니다."
-                          values={{ myBadgeName, myBadgeCategoryName }}
-                        />
-                        {/* {`본 프로그램의 이수를 위해 의미 있는 시간과 노력을 기울여 주신 것에 진심으로 감사드리며, mySUNI에서 발급한 수료증을 보내드립니다.
+                      <p
+                        className="message-area"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `본 프로그램의 이수를 위해 의미 있는 시간과 노력을 기울여 주신 것에 진심으로 감사드리며, mySUNI에서 발급한 수료증을 보내드립니다.
+                            \n『{myBadgeName}』 프로그램을 이수한다는 것은 SK의 구성원들이 필히 갖추어야 하는 {name1} 역량에 대한 기본적인 이해와 지식을 보유한 것은 물론, {name2} College에서 제공하는 상위 과정들을 수강할 수 있는 자격을 갖추게 되었음을 의미합니다. \n본 프로그램의 이수를 통해 습득하신 역량이 현재 업무에 실제적으로 활용되기 위해서는지속적인 노력과 학습이 이루어져야 \n한다는 점을 당부드리며, 앞으로도 mySUNI {name3} College에 많은 관심을 부탁드립니다.
+                            \n감사합니다.`,
+                            'Certification-mybadgemodal-이수증내용',
+                            {
+                              myBadgeName: myBadgeName.toString(),
+                              name1: myBadgeCategoryName.toString(),
+                              name2: myBadgeCategoryName.toString(),
+                              name3: myBadgeCategoryName.toString(),
+                            }
+                          ),
+                        }}
+                      />
+
+                      {/* {`본 프로그램의 이수를 위해 의미 있는 시간과 노력을 기울여 주신 것에 진심으로 감사드리며, mySUNI에서 발급한 수료증을 보내드립니다.
                         \n『${myBadge.name}』 프로그램을 이수한다는 것은 SK의 구성원들이 필히 갖추어야 하는 ${myBadge.badgeCategory.name} 역량에 대한 기본적인 이해와 지식을 보유한 것은 물론, ${myBadge.badgeCategory.name} College에서 제공하는 상위 과정들을 수강할 수 있는 자격을 갖추게 되었음을 의미합니다. \n본 프로그램의 이수를 통해 습득하신 역량이 현재 업무에 실제적으로 활용되기 위해서는지속적인 노력과 학습이 이루어져야 \n한다는 점을 당부드리며, 앞으로도 mySUNI ${myBadge.badgeCategory.name} College에 많은 관심을 부탁드립니다.
                         \n감사합니다.`} */}
-                      </p>
+
                       {/* <Image src={ImgMybadge}/> */}
                       {/* <iframe
                       // title="video type"
@@ -250,12 +260,14 @@ class MyBadgeModal extends Component<Props, States> {
                           <div className="txt_box">
                             <strong className="name">
                               {parsePolyglotString(badgeStudent.name, 'ko')}
-                              <p>
-                                <PolyglotText
-                                  id="Certification-mybadgemodal-이수증내용2"
-                                  defaultString="귀하는 아래 프로그램의 전 과정을 \n성공적으로 이수하였으며, Badge 획득 요건을\n충족하였기에 이 증서를 드립니다."
-                                />
-                              </p>
+                              <p
+                                dangerouslySetInnerHTML={{
+                                  __html: getPolyglotText(
+                                    `귀하는 아래 프로그램의 전 과정을 \n성공적으로 이수하였으며,  Badge 획득 요건을\n충족하였기에 이 증서를 드립니다.`,
+                                    'Certification-mybadgemodal-이수증내용2'
+                                  ),
+                                }}
+                              />
                               <span className="category">
                                 {parsePolyglotString(
                                   myBadge.name,
@@ -325,14 +337,19 @@ class MyBadgeModal extends Component<Props, States> {
                             defaultString="인증서 다운로드"
                           />
                         </Button>
-                        <span style={{ textAlign: 'left' }}>
-                          <PolyglotText
-                            id="Certification-mybadgemodal-출력안내1"
-                            defaultString="※ 이미지가 안나올 경우, 인터넷 옵션 &#8250; 도구
+                        <span
+                          style={{ textAlign: 'left' }}
+                          dangerouslySetInnerHTML={{
+                            __html: getPolyglotText(
+                              `※ 이미지가 안나올 경우, 인터넷 옵션 &#8250; 도구
                             &#8250; 고급탭 에서 배경색 및 이미지 인쇄 부분을
-                            체크해주세요."
-                          />
-                          <br />
+                            체크해주세요.`,
+                              'Certification-mybadgemodal-출력안내1'
+                            ),
+                          }}
+                        />
+                        <br />
+                        <span>
                           <PolyglotText
                             id="Certification-mybadgemodal-출력안내2"
                             defaultString="※ 인쇄 사이즈 조정이 어려우면, 이미지 파일을 다운받아

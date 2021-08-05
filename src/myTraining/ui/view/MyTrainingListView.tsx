@@ -20,6 +20,7 @@ import { LearningTypeName } from '../../model/LearningType';
 import { useCollegeStore } from '../../../shared/store/CollegeStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -59,7 +60,10 @@ function MyTrainingListView({
 
     if (contentType === MyLearningContentType.InProgress) {
       ReactGA.event({
-        category: '학습중인 과정',
+        category: getPolyglotText(
+          '학습중인 과정',
+          'MyTrainingList-이벤트-과정'
+        ),
         action: 'Click',
         label: `${
           myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'

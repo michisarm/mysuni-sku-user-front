@@ -24,7 +24,10 @@ import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 // 고도화
 import { CategoryModel, CubeType } from '../../../../../shared/model';
-import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -149,7 +152,12 @@ class BoxCardView extends Component<Props, States> {
               null}
             <Field
               icon="complete"
-              text={`${getPolyglotText('이수', 'home-Inprogress-이수')} ${numeral(model.passedStudentCount).format('0,0')}${getPolyglotText('명', 'home-Inprogress-명')}`}
+              text={`${getPolyglotText(
+                '이수',
+                'home-Inprogress-이수'
+              )} ${numeral(model.passedStudentCount).format(
+                '0,0'
+              )}${getPolyglotText('명', 'home-Inprogress-명')}`}
             />
           </Fields>
 
@@ -175,7 +183,10 @@ class BoxCardView extends Component<Props, States> {
                   <Icon className={action.iconName} />
                 </Button>
                 <Button className="ui button fix bg" onClick={onViewDetail}>
-                  <PolyglotText defaultString="상세보기" id="home-Inprogress-상세보기" />
+                  <PolyglotText
+                    defaultString="상세보기"
+                    id="home-Inprogress-상세보기"
+                  />
                 </Button>
               </>
             )}
@@ -190,7 +201,10 @@ class BoxCardView extends Component<Props, States> {
                 }}
                 onClick={onViewDetail}
               >
-                <PolyglotText defaultString="상세보기" id="home-Inprogress-상세보기" />
+                <PolyglotText
+                  defaultString="상세보기"
+                  id="home-Inprogress-상세보기"
+                />
               </Button>
             )}
           </Buttons>

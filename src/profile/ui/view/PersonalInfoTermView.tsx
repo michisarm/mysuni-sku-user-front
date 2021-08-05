@@ -13,7 +13,8 @@ export class PersonalInfoTermView extends Component {
             <div
               className="inner"
               dangerouslySetInnerHTML={{
-                __html: getPolyglotText(`<p className="text1">
+                __html: getPolyglotText(
+                  `<p className="text1">
                 SK 이노베이션(이하 서비스명 ‘mySUNI’) 개인정보 처리방침
               </p>
               <p className="text1">
@@ -564,7 +565,9 @@ export class PersonalInfoTermView extends Component {
               <p className="text2">
                 <span>②</span>이 개인정보 처리방침은 2021. 06. 14부터
                 적용됩니다.
-              </p>`, 'agreement-outPrivacy-방침')
+              </p>`,
+                  'agreement-outPrivacy-방침'
+                ),
               }}
             />
           </div>

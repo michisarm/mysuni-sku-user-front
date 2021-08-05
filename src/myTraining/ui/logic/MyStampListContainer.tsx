@@ -220,12 +220,14 @@ function MyStampListContainer({
                   <div className="table-wrapper">
                     <div className="community_nodata">
                       <Icon className="no-contents80" />
-                      <p>
-                        <PolyglotText
-                          id="mapg-msmp-Stamp설명"
-                          defaultString="`획득한 Stamp가 없습니다.\nStamp가 있는 학습 과정을 찾아보세요.`"
-                        />
-                      </p>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `획득한 Stamp가 없습니다.\nStamp가 있는 학습 과정을 찾아보세요.`,
+                            'mapg-msmp-Stamp설명'
+                          ),
+                        }}
+                      />
                       <Button
                         icon
                         className="right btn-blue2"
