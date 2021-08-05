@@ -41,6 +41,7 @@ import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png'
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 
 interface Props {
   open: boolean;
@@ -246,57 +247,63 @@ function UserProfileinfoProfileCard(props: Props) {
                 <span className="prof-tit">
                   {profileInfo?.isNickname ? nickname : profileInfo?.name}
                 </span>
-                <div className="foll-info">
-                  <span>{followerCount || profileInfo?.followerCount}</span>{' '}
-                  <PolyglotText
-                    id="mypage-유저모달-Followers"
-                    defaultString="Followers"
-                  />
-                  <span>{profileInfo?.followingCount}</span>
-                  <PolyglotText
-                    id="mypage-유저모달-Following"
-                    defaultString="Following"
-                  />
-                </div>
-              </div>
-              <div className="count-area">
-                {/* <div className="cnt-box bad-cnt" >
-                  <span>Badge</span>
-                  <strong>{badgeCount}</strong>
-                </div> */}
-                <div className="cnt-box com-cnt">
-                  <span>
+                {isCommunityAuth() && (
+                  <div className="foll-info">
+                    <span>{followerCount || profileInfo?.followerCount}</span>{' '}
                     <PolyglotText
-                      id="mypage-유저모달-커뮤니티"
-                      defaultString="커뮤니티"
+                      id="mypage-유저모달-Followers"
+                      defaultString="Followers"
                     />
-                  </span>
-                  <strong>{communityCount}</strong>
-                </div>
-                <div className="cnt-box feed-cnt">
-                  <span>
+                    <span>{profileInfo?.followingCount}</span>
                     <PolyglotText
-                      id="mypage-유저모달-Feed"
-                      defaultString="Feed"
+                      id="mypage-유저모달-Following"
+                      defaultString="Following"
                     />
-                  </span>
-                  <strong>{feedCount}</strong>
-                </div>
-              </div>
-              <div className="follow-bttn-area">
-                {props.memberId !== denizenId && (
-                  <Button
-                    className={followClassName}
-                    onClick={() => {
-                      // if(followClickFlag){
-                      onClickFollow();
-                      // }
-                    }}
-                  >
-                    {isFollow}
-                  </Button>
+                  </div>
                 )}
               </div>
+              {isCommunityAuth() && (
+                <>
+                  <div className="count-area">
+                    {/* <div className="cnt-box bad-cnt" >
+                      <span>Badge</span>
+                      <strong>{badgeCount}</strong>
+                    </div> */}
+                    <div className="cnt-box com-cnt">
+                      <span>
+                        <PolyglotText
+                          id="mypage-유저모달-커뮤니티"
+                          defaultString="커뮤니티"
+                        />
+                      </span>
+                      <strong>{communityCount}</strong>
+                    </div>
+                    <div className="cnt-box feed-cnt">
+                      <span>
+                        <PolyglotText
+                          id="mypage-유저모달-Feed"
+                          defaultString="Feed"
+                        />
+                      </span>
+                      <strong>{feedCount}</strong>
+                    </div>
+                  </div>
+                  <div className="follow-bttn-area">
+                    {props.memberId !== denizenId && (
+                      <Button
+                        className={followClassName}
+                        onClick={() => {
+                          // if(followClickFlag){
+                          onClickFollow();
+                          // }
+                        }}
+                      >
+                        {isFollow}
+                      </Button>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

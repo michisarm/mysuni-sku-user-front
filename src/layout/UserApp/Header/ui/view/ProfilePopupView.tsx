@@ -24,6 +24,7 @@ import {
   useFollowingsModal,
 } from '../../../../../community/store/CommunityFollowModalStore';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 
 interface Props {
   setOpen: () => void;
@@ -207,7 +208,7 @@ function ProfilePopupView(props: Props) {
                     <span className="prof-tit">
                       {isNickName ? skProfile.nickName : skProfile.member.name}
                     </span>
-                    {
+                    {isCommunityAuth() && (
                       <div className="foll-info">
                         <span>{followersList?.followers.length}</span>
                         <PolyglotText
@@ -220,7 +221,7 @@ function ProfilePopupView(props: Props) {
                           id="mypage-popupview-Following"
                         />
                       </div>
-                    }
+                    )}
                   </div>
                   {instructorId &&
                   instructorId !== '' &&
