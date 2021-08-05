@@ -5,8 +5,8 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeStyle from '../model/BadgeStyle';
 import { BadgeTitleView } from './BadgeTitleView';
 import { BadgeInformationView } from './BadgeInformationView';
-import { getCineroomName } from '../../../shared/service/useCineroom/useRequestCineroom';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface BadgeSummaryViewProps {
   badge: Badge;
@@ -14,8 +14,8 @@ interface BadgeSummaryViewProps {
 
 export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
   const mainCategoryId = getMainCategoryId(badge);
-  const cineroomId = getCineroomId(badge);
-  const cineroomName = getCineroomName(cineroomId) || '';
+  const { collegeId } = badge;
+  const collegeName = getCollgeName(collegeId);
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
         name={badge.name}
       />
       <BadgeInformationView
-        certiAdminId={cineroomName}
+        certiAdminId={collegeName}
         designAdminId={mainCategoryId}
         level={badge.level}
         learningTime={badge.learningTime}

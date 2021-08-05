@@ -39,6 +39,7 @@ export interface Badge {
   learningTime: number;
   forSelectedMember: boolean;
   groupBasedAccessRule: GroupBasedAccessRule;
+  collegeId: string;
 }
 
 interface Category {
@@ -57,7 +58,7 @@ export function getMainCategoryId(badge?: Badge): string {
   }
 
   const mainCategory = badge.categories.find(
-    category => category.mainCategory === true
+    (category) => category.mainCategory === true
   );
 
   if (mainCategory === undefined) {
