@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { isEmpty } from 'lodash';
 import { CubeCategory } from '../../../shared/model/CubeCategory';
 import DifficultyLevel from '../../../lecture/detail/model/DifficultyLevel';

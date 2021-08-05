@@ -93,7 +93,7 @@ export const Table = () => {
       round: 1,
       instructor: new InstructorModel({
         ...mockInstructor,
-        name: { ko: '김강사', en: '', cn: '' },
+        name: { ko: '김강사', en: '', zh: '' },
       }),
     }),
     new ClassroomModel({
@@ -101,7 +101,7 @@ export const Table = () => {
       round: 2,
       instructor: new InstructorModel({
         ...mockInstructor,
-        name: { ko: '이강사', en: '', cn: '' },
+        name: { ko: '이강사', en: '', zh: '' },
       }),
     }),
   ];

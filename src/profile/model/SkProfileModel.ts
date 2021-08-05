@@ -31,13 +31,13 @@ class SkProfileModel implements DramaEntity {
   // followerCount: number = 0; // 팔로워 숫자
   // followingCount: number = 0; // 팔로잉 숫자
   nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
-  departmentName: PolyglotString = {ko:'', en: '', cn: ''};
+  departmentName: PolyglotString = { ko: '', en: '', zh: '' };
   departmentCode: string = '';
-  email: string = ''
+  email: string = '';
   name: string = '';
   phone: string = '';
   employeeId: string = '';
-  companyName: PolyglotString = {ko:'', en: '', cn: ''};
+  companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   // language: Language = null;
   gdiPhotoImagePath: string = '';
@@ -110,10 +110,10 @@ class SkProfileModel implements DramaEntity {
       photoImageFilePath = ProfileImagePath(this.photoImage);
     }
     // else {
-      // photoImageFilePath =
-      //   this.member &&
-      //   this.member.photoFilename &&
-      //   `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
+    // photoImageFilePath =
+    //   this.member &&
+    //   this.member.photoFilename &&
+    //   `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
     // }
 
     return photoImageFilePath;

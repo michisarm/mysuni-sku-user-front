@@ -1,6 +1,5 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { CubeDetail } from '../../../../model/CubeDetail';
