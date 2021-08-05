@@ -63,16 +63,17 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { postService, categoryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const name = patronInfo.getPatronName() || '';
-    const { email, company } = skProfileService!.skProfile.member;
+    const { email } = skProfileService!.skProfile;
     // postService.clearPost();
     categoryService!.findCategoriesByBoardId('QNA').then(() => {
       postService!.changePostProps('boardId', 'QNA');
       postService!.changePostProps('writer.name', name);
       postService!.changePostProps('writer.email', email);
-      postService!.changePostProps('writer.companyName', company);
+      postService!.changePostProps('writer.companyName', skProfile.companyName);
       postService!.changePostProps(
         'writer.companyCode',
-        skProfileService!.skProfile.member.companyCode
+        skProfile.companyCode
+        // skProfileService!.skProfile.companyName
       );
     });
   }

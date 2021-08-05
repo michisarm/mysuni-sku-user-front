@@ -34,7 +34,8 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
   }
   const {
     skProfile: {
-      member: { name },
+      name
+      // member: { name },
     },
   } = SkProfileService.instance;
   return (

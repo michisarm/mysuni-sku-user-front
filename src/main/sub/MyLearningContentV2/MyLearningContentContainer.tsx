@@ -25,7 +25,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>();
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
-  const { member } = skProfile;
+  // const { member } = skProfile;
   const [memName, setMemName] = useState('');
 
   const fetchCardBundles = async () => {
@@ -40,13 +40,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     inMyLectureService!.findAllInMyLectures();
 
-    setMemName(member.name);
+    setMemName(skProfile.name);
     if (memName.length < 1) {
       setTimeout(() => {
-        setMemName(skProfileService!.skProfile.member.name);
+        setMemName(skProfileService!.skProfile.name);
       }, 200);
     }
-  }, [inMyLectureService, memName.length, member.name, skProfileService]);
+  }, [inMyLectureService, memName.length, skProfile.name, skProfileService]);
 
   return (
     <>

@@ -12,6 +12,7 @@ import routePaths from '../../../routePaths';
 import CreateMovieModalContainer from './CreateMovieModalContainer';
 import { Area } from 'tracker/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -45,8 +46,8 @@ class CreateProfileContainer extends React.Component<Props> {
             myPageActive
             image={skProfile.photoFilePath || defaultProfileImg}
             name={skProfile.profileViewName}
-            company={skProfile.member.company}
-            department={skProfile.member.department}
+            company={parsePolyglotString(skProfile.companyName)}
+            department={parsePolyglotString(skProfile.departmentName)}
             type="Create"
           />
         </ContentHeader.Cell>

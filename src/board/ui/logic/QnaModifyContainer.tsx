@@ -62,7 +62,7 @@ class QnaModifyContainer extends React.Component<Props, States> {
     const { categoryService, postService, skProfileService } = this.props;
 
     const name = patronInfo.getPatronName() || '';
-    const { email } = skProfileService!.skProfile.member;
+    const { email } = skProfileService!.skProfile;
 
     postService!.clearPost();
     categoryService!.findCategoriesByBoardId('QNA').then(() => {

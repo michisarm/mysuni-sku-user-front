@@ -86,9 +86,10 @@ function ProfilePopupView(props: Props) {
       if (saveFlag) {
         setSaveFlag(false);
 
+        // 김민준 - adddtional에는 id만 있음
         const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-          skProfile.member.currentJobGroup,
-          skProfile.member.favoriteJobGroup,
+          // skProfile.member.currentJobGroup,
+          // skProfile.member.favoriteJobGroup,
           skProfile.pisAgreement
         );
 
@@ -111,8 +112,8 @@ function ProfilePopupView(props: Props) {
     [
       modifySkProfile,
       saveFlag,
-      skProfile.member.currentJobGroup,
-      skProfile.member.favoriteJobGroup,
+      // skProfile.member.currentJobGroup,
+      // skProfile.member.favoriteJobGroup,
       skProfile.nickName,
       skProfile.pisAgreement,
       skProfileService,
@@ -215,7 +216,7 @@ function ProfilePopupView(props: Props) {
                   </div>
                   <div className="profile-info ">
                     <span className="prof-tit">
-                      {isNickName ? skProfile.nickName : skProfile.member.name}
+                      {isNickName ? skProfile.nickName : skProfile.name}
                     </span>
                   </div>
                   {instructorId !== '' && externalInstructor === 'false' && (
@@ -275,9 +276,9 @@ function ProfilePopupView(props: Props) {
               <>
                 <div className="info-area">
                   <span className="prof-name">
-                    {isNickName ? skProfile.member.name : skProfile.nickName}
+                    {isNickName ? skProfile.name : skProfile.nickName}
                   </span>
-                  <span className="comp-name">{skProfile.member.company}</span>
+                  <span className="comp-name">{skProfile.companyName}</span>
                 </div>
                 <div className="tag-area">
                   <div

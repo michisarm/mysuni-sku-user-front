@@ -21,6 +21,7 @@ import LectureState from '../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
@@ -61,13 +62,17 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
     const [profileOpen, setProfileOpen] = useState<boolean>(false);
     const [profileInfo, setProfileInfo] = useState<profileParams>();
 
-    const { company, department, email, name } = useMemo(() => {
+    const { companyName, departmentName, name, email } = useMemo(() => {
       const {
         skProfile: {
-          member: { company, department, email, name },
+          companyName,
+          departmentName,
+          name,
+          email
+          // member: { company, department, email, name },
         },
       } = SkProfileService.instance;
-      return { company, department, email, name };
+      return { companyName, departmentName, name, email };
     }, []);
 
     useEffect(() => {
@@ -423,8 +428,8 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
               hideCamera
               name={name}
               email={email}
-              companyName={company}
-              departmentName={department}
+              companyName={parsePolyglotString(companyName)}
+              departmentName={parsePolyglotString(departmentName)}
               // cardId={params?.cardId}
               menuType="discussion"
               cubeCommentStartFunction={registerStudent}

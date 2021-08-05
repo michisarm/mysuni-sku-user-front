@@ -28,6 +28,7 @@ import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 import ReactGA from 'react-ga';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -77,14 +78,19 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
-  menuControlAuth() {
+  async menuControlAuth() {
     //
     const { skProfileService, menuControlAuthService } = this.props;
-    skProfileService!
-      .findSkProfile()
-      .then((profile: SkProfileModel) =>
-        menuControlAuthService!.findMenuControlAuth(profile.member.companyCode)
-      );
+    // skProfileService!
+    //   .findSkProfile()
+    //   .then((profile: SkProfileModel) =>
+    //     menuControlAuthService!.findMenuControlAuth(parsePolyglotString(profile.companyName))
+    //   );
+
+    await skProfileService!.findSkProfile();
+    const { skProfile } = skProfileService!;
+    await menuControlAuthService!.findMenuControlAuth(parsePolyglotString(skProfile.companyName))
+    await console.log(skProfile);
   }
 
   async avaible() {

@@ -87,7 +87,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { postService, skProfileService } = this.props;
     const { post } = postService!;
     const { filesMap } = this.state;
-    const { member } = skProfileService!.skProfile;
+    const { skProfile } = skProfileService!;
+    // const { member } = skProfileService!.skProfile;
     return (
       <>
         <div className="post-view">
@@ -153,10 +154,10 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              name={skProfile.name}
+              email={skProfile.email}
+              companyName={parsePolyglotString(skProfile.companyName)}
+              departmentName={parsePolyglotString(skProfile.departmentName)}
             />
           </div>
           <div className="actions bottom">

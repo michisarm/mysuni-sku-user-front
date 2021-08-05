@@ -145,12 +145,14 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
-    const { member } = skProfile;
+    // const { member } = skProfile;
 
-    changeCubeIntroProps('operation.operator.name', member.name);
-    changeCubeIntroProps('operation.operator.employeeId', member.employeeId);
-    changeCubeIntroProps('operation.operator.email', member.email);
-    changeCubeIntroProps('operation.operator.company', member.companyCode);
+    changeCubeIntroProps('operation.operator.name', skProfile.name);
+    changeCubeIntroProps('operation.operator.employeeId', skProfile.employeeId);
+    // changeCubeIntroProps('operation.operator.email', member.email);
+    // changeCubeIntroProps('operation.operator.company', member.companyCode);
+    changeCubeIntroProps('operation.operator.email', skProfile.email);
+    changeCubeIntroProps('operation.operator.company', skProfile.companyCode);
   }
 
   setOfficeWeb(contentsId: string) {

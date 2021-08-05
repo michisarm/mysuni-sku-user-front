@@ -1,6 +1,6 @@
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import SkProfileModel from '../../model/SkProfileModel';
+import TempProfileModel  from '../../model/TempProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
@@ -48,7 +48,7 @@ export default class SkProfileApi {
     return (
       axios
         // .get<SkProfileModel>(`${this.URL}`)
-        .get<SkProfileModel>(`/api/user/users`)
+        .get<TempProfileModel>(`/api/user/users/withAdditionalInfo`)
         .then((response) => (response && response.data) || null)
     );
   }

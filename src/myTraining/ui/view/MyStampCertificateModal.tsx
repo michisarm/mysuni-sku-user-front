@@ -114,7 +114,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                 </div>
                 <div className="message-wrapper">
                   <span>
-                    {skProfile.member.name}님의 <strong>{myStamp.name}</strong>
+                    {skProfile.name}님의 <strong>{myStamp.name}</strong>
                     <br />
                     과정 이수가 완료되었음을 알려드립니다.
                   </span>
@@ -133,7 +133,7 @@ class MyStampCertificateModal extends Component<Props, States> {
                       <Image src={bg_mystamp} />
                       <div className="txt_box">
                         <strong className="name">
-                          {skProfile.member.name}
+                          {skProfile.name}
                           <p>
                             귀하는 아래 과정을 성공적으로 이수하였기에
                             <br />이 증서를 드립니다.
