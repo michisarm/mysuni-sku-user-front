@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+
 const SelectOptions = {
   learningType: [
     { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
@@ -44,18 +46,84 @@ const SelectOptions = {
   ],
 
   colleges: [
-    { key: '0', text: 'AI', value: 'h1' },
-    { key: '1', text: 'DT', value: 'h2' },
-    { key: '2', text: '행복', value: 'h3' },
-    { key: '3', text: 'SV', value: 'h4' },
-    { key: '4', text: 'Design', value: 'h5' },
-    { key: '5', text: 'Global', value: 'h6' },
-    { key: '6', text: 'Leadership', value: 'h7' },
-    { key: '7', text: 'Management', value: 'h8' },
-    { key: '8', text: '미래반도체', value: '10i' },
-    { key: '10', text: '에너지솔루션', value: '10m' },
-    { key: '11', text: 'BM Design & Storytelling', value: '10k' },
-    { key: '9', text: 'SK아카데미', value: '10j' },
+    {
+      key: '0',
+      text: getPolyglotText('AI', 'personalcube-노출정보옵션-AI'),
+      value: 'h1',
+    },
+    {
+      key: '1',
+      text: getPolyglotText('DT', 'personalcube-노출정보옵션-DT'),
+      value: 'h2',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('행복', 'personalcube-노출정보옵션-행복'),
+      value: 'h3',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('SV', 'personalcube-노출정보옵션-SV'),
+      value: 'h4',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('Design', 'personalcube-노출정보옵션-Design'),
+      value: 'h5',
+    },
+    {
+      key: '5',
+      text: getPolyglotText('Global', 'personalcube-노출정보옵션-Global'),
+      value: 'h6',
+    },
+    {
+      key: '6',
+      text: getPolyglotText(
+        'Leadership',
+        'personalcube-노출정보옵션-Leadership'
+      ),
+      value: 'h7',
+    },
+    {
+      key: '7',
+      text: getPolyglotText(
+        'Management',
+        'personalcube-노출정보옵션-Management'
+      ),
+      value: 'h8',
+    },
+    {
+      key: '8',
+      text: getPolyglotText(
+        '미래반도체',
+        'personalcube-노출정보옵션-미래반도체'
+      ),
+      value: '10i',
+    },
+    {
+      key: '10',
+      text: getPolyglotText(
+        '에너지솔루션',
+        'personalcube-노출정보옵션-에너지솔루션'
+      ),
+      value: '10m',
+    },
+    {
+      key: '11',
+      text: getPolyglotText(
+        'BM Design & Storytelling',
+        'personalcube-노출정보옵션-BM'
+      ),
+      value: '10k',
+    },
+    {
+      key: '9',
+      text: getPolyglotText(
+        'SK아카데미',
+        'personalcube-노출정보옵션-SK아카데미'
+      ),
+      value: '10j',
+    },
   ],
 
   difficulty: [

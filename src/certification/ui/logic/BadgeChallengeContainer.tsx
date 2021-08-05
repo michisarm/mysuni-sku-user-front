@@ -90,12 +90,13 @@ function BadgeChallengeContainer({
       } else {
         reactAlert({
           title: '',
-          message:
-            `${badge.name}` +
-            getPolyglotText(
-              `Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.<p>뱃지 도전관련 문의는 담당자에게 연락 부탁드립니다.`,
-              'Certification-도전모달-도전시작'
-            ),
+          message: getPolyglotText(
+            `{badgeName}Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.<p>뱃지 도전관련 문의는 담당자에게 연락 부탁드립니다.`,
+            'Certification-도전모달-도전시작',
+            {
+              badgeName: badge.name.toString(),
+            }
+          ),
         });
       }
     } else {

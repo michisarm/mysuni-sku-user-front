@@ -1,6 +1,9 @@
 import React from 'react';
 import { Modal, Button } from 'semantic-ui-react';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   badgeName: string;
@@ -23,13 +26,18 @@ const ChallengeAlertModal: React.FC<Props> = (Props) => {
       <Modal.Content>
         <div className="content-wrap6">
           <div className="badge-p02">
-            <div className="tt">
-              <PolyglotText
-                id="Certification-ChallengetStartModal-도전시작"
-                defaultString="‘${badgeName}’ Badge 도전이 시작되었습니다."
-                values={{ badgeName }}
-              />
-            </div>
+            <div
+              className="tt"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `'{badgeName}' Badge 도전이 시작되었습니다.`,
+                  'Course-Navigator-학습중',
+                  {
+                    badgeName: badgeName.toString(),
+                  }
+                ),
+              }}
+            />
             <PolyglotText
               id="Certification-ChallengetStartModal-뱃지탭"
               defaultString="‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요."

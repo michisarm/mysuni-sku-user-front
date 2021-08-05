@@ -172,7 +172,10 @@ function MyPagePage({
                           params.tab === 'EarnedBadgeList' ? 'active' : ''
                         }
                       >
-                        My Badge
+                        <PolyglotText
+                          id="mapg-mifa-mybadge"
+                          defaultString="My Badge"
+                        />
                       </Link>
                     </li>
                     <li>
@@ -186,7 +189,10 @@ function MyPagePage({
                           params.tab === 'EarnedStampList' ? 'active' : ''
                         }
                       >
-                        My Stamp
+                        <PolyglotText
+                          id="mapg-mifa-mystamp"
+                          defaultString="My Stamp"
+                        />
                       </Link>
                     </li>
                     <li>
@@ -200,17 +206,30 @@ function MyPagePage({
                           params.tab === 'EarnedNoteList' ? 'active' : ''
                         }
                       >
-                        Note
+                        <PolyglotText
+                          id="mapg-mifa-note"
+                          defaultString="Note"
+                        />
                       </Link>
                     </li>
                   </ul>
                   <div className="logout-area">
-                    <Button onClick={onLogout}>Logout</Button>
+                    <Button onClick={onLogout}>
+                      <PolyglotText
+                        id="mapg-mifa-logout"
+                        defaultString="Logout"
+                      />
+                    </Button>
                   </div>
                 </>
               )) || (
                 <div className="logout-area" style={{ marginTop: '0px' }}>
-                  <Button onClick={onLogout}>Logout</Button>
+                  <Button onClick={onLogout}>
+                    <PolyglotText
+                      id="mapg-mifa-logout2"
+                      defaultString="Logout"
+                    />
+                  </Button>
                 </div>
               )}
             </div>

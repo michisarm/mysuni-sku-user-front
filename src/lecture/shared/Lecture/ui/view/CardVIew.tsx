@@ -87,9 +87,8 @@ export default function CardView({
     : false,
   dataArea,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -329,7 +328,10 @@ export default function CardView({
           )}
           <Field
             icon="complete"
-            text={`이수 ${numeral(passedStudentCount).format('0,0')}명`}
+            text={getPolyglotText(
+              `이수 ${numeral(passedStudentCount).format('0,0')}명`,
+              'home-Inprogress-이수인원'
+            )}
           />
         </Fields>
         <div className="foot-area">{renderBottom()}</div>
@@ -361,7 +363,12 @@ export default function CardView({
             <Icon className={inMyLectureModel ? 'remove2' : 'add-list'} />
           </Button>
           <Link to={toPath({ cardId, viewType: 'view', pathname: '' })}>
-            <button className="ui button fix bg">상세보기</button>
+            <button className="ui button fix bg">
+              <PolyglotText
+                defaultString="상세보기"
+                id="home-Inprogress-상세보기2"
+              />
+            </button>
           </Link>
         </div>
       </div>

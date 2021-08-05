@@ -1579,6 +1579,7 @@ export default class PrivacyPolicyView extends Component<Props> {
                           <tr>
                             <td>
                               <a href="http://sk.co.kr" target="_blank">
+                                (
                                 <PolyglotText
                                   id="Privacy-2020Y9M1D-text35"
                                   defaultString="http://sk.co.kr"

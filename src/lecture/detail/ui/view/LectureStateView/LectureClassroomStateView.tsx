@@ -48,13 +48,23 @@ interface CanceledViewProps {
 
 function classroomSubmit(classroom: Classroom) {
   if (classroom.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
-    const messageStr =
-      getPolyglotText(`본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`, 'CollageState-Classroom-승인권자안내');
-    reactAlert({ title: getPolyglotText('알림', 'CollageState-Classroom-알림'), message: messageStr });
+    const messageStr = getPolyglotText(
+      `본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`,
+      'CollageState-Classroom-승인권자안내'
+    );
+    reactAlert({
+      title: getPolyglotText('알림', 'CollageState-Classroom-알림'),
+      message: messageStr,
+    });
   } else if (!classroom.freeOfCharge.approvalProcess) {
-    const messageStr =
-      getPolyglotText(`본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`, 'CollageState-Classroom-신청완료안내');
-    reactAlert({ title: getPolyglotText('알림', 'CollageState-Classroom-알림'), message: messageStr });
+    const messageStr = getPolyglotText(
+      `본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`,
+      'CollageState-Classroom-신청완료안내'
+    );
+    reactAlert({
+      title: getPolyglotText('알림', 'CollageState-Classroom-알림'),
+      message: messageStr,
+    });
   }
 }
 
@@ -76,8 +86,14 @@ function CanceledView(props: CanceledViewProps) {
 
     if (classroom === undefined) {
       reactAlert({
-        title: getPolyglotText('수강신청 기간 안내', 'CollageState-Classroom-수강신청기간안내'),
-        message: getPolyglotText('수강신청 기간이 아닙니다.', 'CollageState-Classroom-기간x'),
+        title: getPolyglotText(
+          '수강신청 기간 안내',
+          'CollageState-Classroom-수강신청기간안내'
+        ),
+        message: getPolyglotText(
+          '수강신청 기간이 아닙니다.',
+          'CollageState-Classroom-기간x'
+        ),
       });
       return;
     }
@@ -167,7 +183,10 @@ function CanceledView(props: CanceledViewProps) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${SUBMIT} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
+        data-action-name={`${SUBMIT} ${getPolyglotText(
+          '클릭',
+          'CollageState-Classroom-클릭'
+        )}`}
       >
         {SUBMIT}
       </button>
@@ -194,7 +213,10 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
+        data-action-name={`${CANCEL} ${getPolyglotText(
+          '클릭',
+          'CollageState-Classroom-클릭'
+        )}`}
       >
         {CANCEL}
       </button>
@@ -227,7 +249,10 @@ function RejectedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
+        data-action-name={`${CANCEL} ${getPolyglotText(
+          '클릭',
+          'CollageState-Classroom-클릭'
+        )}`}
       >
         {CANCEL}
       </button>
@@ -307,10 +332,13 @@ function ApprovedELearningView(props: ApprovedViewProps) {
           }
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
-          data-action-external-link={(document.getElementById(
-            'webpage-link'
-          ) as HTMLAnchorElement)?.href?.toString()}
-          data-action-name={`${APPROVE} ${getPolyglotText('클릭', 'CollageState-Classroom-클릭')}`}
+          data-action-external-link={(
+            document.getElementById('webpage-link') as HTMLAnchorElement
+          )?.href?.toString()}
+          data-action-name={`${APPROVE} ${getPolyglotText(
+            '클릭',
+            'CollageState-Classroom-클릭'
+          )}`}
         >
           {APPROVE}
         </button>
@@ -330,48 +358,46 @@ interface LectureClassroomStateViewProps {
   lectureClassroom: LectureClassroom;
 }
 
-const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> = function LectureClassroomStateView({
-  lectureState,
-  lectureClassroom,
-}) {
-  const {
-    student,
-    cubeDetail: {
-      cube: { id, type },
-    },
-  } = lectureState;
+const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> =
+  function LectureClassroomStateView({ lectureState, lectureClassroom }) {
+    const {
+      student,
+      cubeDetail: {
+        cube: { id, type },
+      },
+    } = lectureState;
 
-  if (student === undefined) {
-    return (
-      <CanceledView
-        lectureClassroom={lectureClassroom}
-        cubeId={id}
-        cubeType={type}
-      />
-    );
-  }
-  if (student.proposalState === 'Canceled') {
-    return (
-      <CanceledView
-        lectureClassroom={lectureClassroom}
-        cubeId={id}
-        cubeType={type}
-      />
-    );
-  }
-  if (student.proposalState === 'Submitted') {
-    return <SubmittedView cubeId={id} cubeType={type} />;
-  }
-  if (student.proposalState === 'Rejected') {
-    return <RejectedView cubeId={id} cubeType={type} />;
-  }
-  if (student.proposalState === 'Approved') {
-    if (lectureState.cubeType === 'ELearning') {
-      return <ApprovedELearningView student={student} />;
+    if (student === undefined) {
+      return (
+        <CanceledView
+          lectureClassroom={lectureClassroom}
+          cubeId={id}
+          cubeType={type}
+        />
+      );
     }
-    return <ApprovedView student={student} />;
-  }
-  return null;
-};
+    if (student.proposalState === 'Canceled') {
+      return (
+        <CanceledView
+          lectureClassroom={lectureClassroom}
+          cubeId={id}
+          cubeType={type}
+        />
+      );
+    }
+    if (student.proposalState === 'Submitted') {
+      return <SubmittedView cubeId={id} cubeType={type} />;
+    }
+    if (student.proposalState === 'Rejected') {
+      return <RejectedView cubeId={id} cubeType={type} />;
+    }
+    if (student.proposalState === 'Approved') {
+      if (lectureState.cubeType === 'ELearning') {
+        return <ApprovedELearningView student={student} />;
+      }
+      return <ApprovedView student={student} />;
+    }
+    return null;
+  };
 
 export default LectureClassroomStateView;

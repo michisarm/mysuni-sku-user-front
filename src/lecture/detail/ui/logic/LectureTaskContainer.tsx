@@ -87,8 +87,10 @@ function LectureTaskContainer() {
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   // 이수정보 관련
-  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] =
-    useState<boolean>(false);
+  const [
+    cubeAutomaticCompletion,
+    setCubeAutomaticCompletion,
+  ] = useState<boolean>(false);
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
@@ -182,7 +184,7 @@ function LectureTaskContainer() {
       });
       setActivePage(1);
     });
-  }, []);
+  }, [history]);
 
   // const onHandleSave = useCallback(() => {
   //   history.goBack();
@@ -196,12 +198,12 @@ function LectureTaskContainer() {
     setCreate(true);
     history.push('#edit');
     // history.goBack();
-  }, []);
+  }, [history]);
 
   const onClickReplies = useCallback(() => {
     history.push('#create');
     setIsReply(true);
-  }, []);
+  }, [history]);
 
   const onClickDelete = useCallback(
     (boardId: string, taskId: string, type: string) => {
@@ -220,7 +222,7 @@ function LectureTaskContainer() {
         },
       });
     },
-    []
+    [history]
   );
 
   const listHashLink = useCallback((hash: string) => {
@@ -278,52 +280,55 @@ function LectureTaskContainer() {
     return setHtml;
   };
 
-  const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
-    reactConfirm({
-      title: getPolyglotText('알림', 'Collage-Task-알림2'),
-      message: getPolyglotText('저장하시겠습니까?', 'Collage-Task-저장알림'),
-      onOk: () => {
-        if (viewType === 'create') {
-          createLectureTask(isReply, detailTaskId).then(() => {
-            setLectureTaskCreateItem({
-              id: detailTaskId!,
-              fileBoxId: '',
-              title: '',
-              writer: {
-                employeeId: '',
-                email: '',
-                name: null,
-                companyCode: '',
-                companyName: null,
-              },
-              name: '',
-              contents: '',
-              time: 0,
-              readCount: 0,
-              commentFeedbackId: '',
-              notice: false,
-              pinned: 0, // postpinned -> number = 0
-              writerPatronKeyString: '',
-            });
-            refresh(1).then(() => {
-              history.goBack();
-              reactAlert({
-                title: getPolyglotText('안내', 'Collage-Task-안내1'),
-                message: getPolyglotText(
-                  '글이 등록되었습니다.',
-                  'Collage-Task-등록안내'
-                ),
+  const handleSubmitClick = useCallback(
+    (viewType, detailTaskId, isReply) => {
+      reactConfirm({
+        title: getPolyglotText('알림', 'Collage-Task-알림2'),
+        message: getPolyglotText('저장하시겠습니까?', 'Collage-Task-저장알림'),
+        onOk: () => {
+          if (viewType === 'create') {
+            createLectureTask(isReply, detailTaskId).then(() => {
+              setLectureTaskCreateItem({
+                id: detailTaskId!,
+                fileBoxId: '',
+                title: '',
+                writer: {
+                  employeeId: '',
+                  email: '',
+                  name: null,
+                  companyCode: '',
+                  companyName: null,
+                },
+                name: '',
+                contents: '',
+                time: 0,
+                readCount: 0,
+                commentFeedbackId: '',
+                notice: false,
+                pinned: 0, // postpinned -> number = 0
+                writerPatronKeyString: '',
+              });
+              refresh(1).then(() => {
+                history.goBack();
+                reactAlert({
+                  title: getPolyglotText('안내', 'Collage-Task-안내1'),
+                  message: getPolyglotText(
+                    '글이 등록되었습니다.',
+                    'Collage-Task-등록안내'
+                  ),
+                });
               });
             });
-          });
-        } else {
-          updateLectureTask(detailTaskId, isReply).then(() => {
-            history.goBack();
-          });
-        }
-      },
-    });
-  }, []);
+          } else {
+            updateLectureTask(detailTaskId, isReply).then(() => {
+              history.goBack();
+            });
+          }
+        },
+      });
+    },
+    [history]
+  );
 
   useEffect(() => {
     const params = getLectureParams();
@@ -386,7 +391,11 @@ function LectureTaskContainer() {
                     dangerouslySetInnerHTML={{
                       __html: getPolyglotText(
                         `아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`,
-                        'Collage-Task-이수조건SubTitle1'
+                        'Collage-Task-이수조건SubTitle1',
+                        {
+                          cubePostCount: cubePostCount.toString(),
+                          cubeCommentCount: cubeCommentCount.toString(),
+                        }
                       ),
                     }}
                   />
@@ -398,7 +407,10 @@ function LectureTaskContainer() {
                     dangerouslySetInnerHTML={{
                       __html: getPolyglotText(
                         `다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount > 1 && cubePostCount + "건"} 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`,
-                        'Collage-Task-이수조건SubTitle2'
+                        'Collage-Task-이수조건SubTitle2',
+                        {
+                          cubePostCount: cubePostCount.toString(),
+                        }
                       ),
                     }}
                   />
@@ -410,7 +422,10 @@ function LectureTaskContainer() {
                     dangerouslySetInnerHTML={{
                       __html: getPolyglotText(
                         `타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`,
-                        'Collage-Task-이수조건SubTitle3'
+                        'Collage-Task-이수조건SubTitle3',
+                        {
+                          cubeCommentCount: cubeCommentCount.toString(),
+                        }
                       ),
                     }}
                   />

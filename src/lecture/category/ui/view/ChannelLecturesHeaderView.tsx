@@ -60,7 +60,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
                 getDefaultLang(channel.langSupports)
               )}
             </strong>
-            의 학습 과정 입니다.
+            <PolyglotText
+              defaultString="의 학습 과정 입니다."
+              id="cicl-목록-학습과정"
+            />
             {displayCurriculum === true && (
               <Link to={linkUrl} className="personal line round">
                 <a href="" className="personal line round">

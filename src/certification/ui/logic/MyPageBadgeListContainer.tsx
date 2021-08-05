@@ -17,6 +17,7 @@ import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 import MyBadgeModal from '../view/MyBadgeModal';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPageBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -106,9 +107,15 @@ function MyPageBadgeListContainer({
                     message={
                       <>
                         <div className="text">
-                          획득한 Badge가 없습니다.
+                          <PolyglotText
+                            defaultString="획득한 Badge가 없습니다."
+                            id="Certification-mabd-뱃지없음"
+                          />
                           <br />
-                          등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+                          <PolyglotText
+                            defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
+                            id="Certification-mabd-뱃지도전"
+                          />
                         </div>
                         <Button
                           icon
@@ -116,7 +123,12 @@ function MyPageBadgeListContainer({
                           className="right btn-blue2"
                           onClick={moveToBadgeList}
                         >
-                          <span className="border">Badge List 바로가기</span>
+                          <span className="border">
+                            <PolyglotText
+                              defaultString="Badge List 바로가기"
+                              id="Certification-mabd-바로가기"
+                            />
+                          </span>
                           <Icon className="morelink" />
                         </Button>
                       </>
