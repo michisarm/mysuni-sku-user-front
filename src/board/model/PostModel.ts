@@ -9,6 +9,7 @@ import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from 'lecture/model/LangSupport';
 
 class PostModel implements DomainEntity {
   //
@@ -38,6 +39,7 @@ class PostModel implements DomainEntity {
 
   commentFeedbackId: string = '';
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
+  langSupports: LangSupport[] = [];
 
   constructor(post?: PostModel) {
     if (post) {
@@ -144,7 +146,7 @@ decorate(PostModel, {
   config: observable,
   category: observable,
   boardId: observable,
-
+  langSupports: observable,
   pinned: observable,
   deleted: observable,
   answered: observable,
