@@ -28,9 +28,10 @@ class ContentHeaderContainer extends Component<Props> {
             <Icon className="sk-university-login" />
             <span className="blind">my suni</span>
           </div>
-          {skProfile.studySummaryConfigured === false && (
+          {/* 김민준 */}
+          {/* {skProfile.studySummaryConfigured === false && (
             <ProfileSelectStepView step={step} />
-          )}
+          )} */}
         </div>
         <div className="title-box">
           <Icon className={`login-sub${step === 6 ? 3 : step} woman`} />

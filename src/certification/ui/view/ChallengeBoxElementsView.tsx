@@ -1,5 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface BadgeStatusProps {
   children: React.ReactNode;

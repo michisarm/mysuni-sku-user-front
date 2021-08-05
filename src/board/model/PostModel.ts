@@ -9,6 +9,7 @@ import OpenState from './OpenState';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from 'lecture/model/LangSupport';
 
 class PostModel implements DomainEntity {
   //
@@ -17,11 +18,12 @@ class PostModel implements DomainEntity {
   audienceKey: string = '';
 
   postId: string = '';
-  // title: PolyglotString | null = null;
-  title: string = '';
+  title: PolyglotString | null = null;
+  // title: string = '';
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();
-  time: number = 0;
+  registeredTime: number = 0;
+  // time: number = 0;
   readCount: string = '';
   config: PostConfigModel = new PostConfigModel();
   category: IdName = new IdName();
@@ -37,6 +39,7 @@ class PostModel implements DomainEntity {
 
   commentFeedbackId: string = '';
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
+  langSupports: LangSupport[] = [];
 
   constructor(post?: PostModel) {
     if (post) {
@@ -82,7 +85,7 @@ class PostModel implements DomainEntity {
     return {
       audienceKey: post.audienceKey && post.audienceKey,
       boardId: post.boardId && post.boardId,
-      title: post.title && post.title,
+      title: post.title,
       writer: post.writer && post.writer,
       contents: post.contents && post.contents,
       config: post.config && post.config,
@@ -137,12 +140,13 @@ decorate(PostModel, {
   title: observable,
   writer: observable,
   contents: observable,
-  time: observable,
+  // time: observable,
+  registeredTime: observable,
   readCount: observable,
   config: observable,
   category: observable,
   boardId: observable,
-
+  langSupports: observable,
   pinned: observable,
   deleted: observable,
   answered: observable,

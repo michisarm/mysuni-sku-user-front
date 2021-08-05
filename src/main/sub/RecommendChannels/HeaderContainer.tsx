@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderView from './HeaderView';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 
 interface Props extends RouteComponentProps {
@@ -59,7 +60,7 @@ class HeaderContainer extends Component<Props> {
 
     return (
       <HeaderView
-        memberName={skProfile.member.name}
+        memberName={parsePolyglotString(skProfile.name)}
         onViewAll={this.onViewAll}
       >
         <FavoriteChannelChangeModal

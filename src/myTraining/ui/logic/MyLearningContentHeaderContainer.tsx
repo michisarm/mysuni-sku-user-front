@@ -18,6 +18,7 @@ import BadgeRoutePaths from '../../../certification/routePaths';
 import MyTrainingRoutePaths from '../../routePaths';
 import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoModel';
 import { MyBadgeRdo } from '../../../certification/model/MyBadgeRdo';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -74,7 +75,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     //
     const { skProfileService, myLearningSummaryService, badgeService, history } = this.props;
     const { skProfile } = skProfileService!;
-    const { member } = skProfile;
+    // const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
     const myBadgeCount = badgeService!.allBadgeCount.issuedCount;
 
@@ -84,9 +85,9 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           <ContentHeader.ProfileItem
             myPageActive
             image={skProfile.photoFilePath || profileImg}
-            name={member.name}
-            company={member.company}
-            department={member.department}
+            name={parsePolyglotString(skProfile.name)}
+            company={parsePolyglotString(skProfile.companyName)}
+            department={parsePolyglotString(skProfile.departmentName)}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>

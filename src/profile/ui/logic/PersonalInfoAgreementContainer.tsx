@@ -121,8 +121,9 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
         if (reAgree) {
           history.push(routePaths.currentJob());
-        } else if (skProfile.studySummaryConfigured) {
-          history.push('/');
+          // 김민준 - 해당 값 확인 필요
+        // } else if (skProfile.studySummaryConfigured) {
+        //   history.push('/');
         } else {
           history.push(routePaths.favoriteWelcome());
         }

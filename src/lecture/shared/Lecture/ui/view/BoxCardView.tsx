@@ -24,6 +24,7 @@ import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 // 고도화
 import { CategoryModel, CubeType } from '../../../../../shared/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import {
   getPolyglotText,
   PolyglotText,
@@ -135,7 +136,7 @@ class BoxCardView extends Component<Props, States> {
           <Thumbnail image={thumbnailImage} />
 
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 
@@ -167,7 +168,7 @@ class BoxCardView extends Component<Props, States> {
         {/* hover 시 컨텐츠 */}
         <div className="hover-content">
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 

@@ -14,6 +14,7 @@ import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand'
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -48,7 +49,7 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     const { skProfileService, collegeLectureCountService } = this.props;
 
     skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
-      this.setState({ companyCode: profile.member.companyCode });
+      this.setState({ companyCode: profile.companyCode });
     });
     skProfileService!.findStudySummary();
     collegeLectureCountService!.findCollegeLectureCounts();
@@ -79,7 +80,7 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
       channels,
     } = this.props;
     const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
-    const { member } = skProfile;
+    // const { member } = skProfile;
 
     const favoriteChannels = studySummaryFavoriteChannels.map(
       channel =>
@@ -95,8 +96,8 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}
             name={skProfile.profileViewName}
-            company={member.company}
-            department={member.department}
+            company={parsePolyglotString(skProfile.companyName)}
+            department={parsePolyglotString(skProfile.departmentName)}
             imageEditable={false}
             myPageActive
             type="Recommend"

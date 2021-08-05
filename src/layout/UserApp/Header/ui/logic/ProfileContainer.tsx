@@ -146,7 +146,7 @@ class ProfileContainer extends Component<Props, State> {
       myNotieMentions,
       myNotieNoReadMentionCount,
     } = NotieService.instance;
-    const { member } = skProfile;
+    // const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
@@ -169,9 +169,9 @@ class ProfileContainer extends Component<Props, State> {
               onClick={this.onTogglePop}
               ref={this.profileButtonRef}
             >
-              <span className="name">{member.name}</span>
+              <span className="name">{skProfile.name}</span>
               <span className="affiliation">
-                {member.company} {member.department}
+                {skProfile.companyName} {skProfile.departmentName}
               </span>
               <Image
                 src={skProfile.photoFilePath || profileImg}

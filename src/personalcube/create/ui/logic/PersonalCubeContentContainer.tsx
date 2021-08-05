@@ -17,6 +17,7 @@ import { OfficeWebService } from '../../../officeweb/stores';
 import BasicInfoFormContainer from './BasicInfoFormContainer';
 import ExposureInfoFormContainer from './ExposureInfoFormContainer';
 import { FormTitle } from '../view/DetailElementsView';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
@@ -108,13 +109,15 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     const { skProfileService, personalCubeService, match } = this.props;
     const { isNext } = this.state;
 
-    const { name, company, email, department, companyCode } = skProfileService!.skProfile.member;
+    // const { name, company, email, department, companyCode } = skProfileService!.skProfile.member;
+    const { name, companyName, departmentName, email } = skProfileService!.skProfile;
     const { personalCube } = personalCubeService!;
     const { personalCubeId } = match.params;
 
     const createType : string = 'U';
     if (!personalCubeId) {
-      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType, department, companyCode }})
+      personalCubeService!.registerCube({ ...personalCube, creator: { company: parsePolyglotString(companyName), email, name: parsePolyglotString(name), createType, department: parsePolyglotString(departmentName), companyCode: '' }})
+      // personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType, department, companyCode }})
         .then((personalCubeId) => {
           if (personalCubeId) {
             this.routeToCreateIntro(personalCubeId);

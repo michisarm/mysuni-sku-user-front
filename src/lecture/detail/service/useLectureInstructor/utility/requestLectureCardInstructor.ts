@@ -4,22 +4,27 @@ import { Instructor } from '../../../../model/Instructor';
 import { findCardCache } from '../../../api/cardApi';
 import { setLectureInstructor } from '../../../store/LectureOverviewStore';
 import { find } from 'lodash';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 function getUniqueList(instructors: Instructor[]) {
   const uniqueInstructorList: Instructor[] = [];
 
   instructors
-    .filter(c => c.representative === true)
-    .forEach(c => {
-      if (!uniqueInstructorList.some(d => d.instructorId === c.instructorId)) {
+    .filter((c) => c.representative === true)
+    .forEach((c) => {
+      if (
+        !uniqueInstructorList.some((d) => d.instructorId === c.instructorId)
+      ) {
         uniqueInstructorList.push(c);
       }
     });
 
   instructors
-    .filter(c => c.representative === false)
-    .forEach(c => {
-      if (!uniqueInstructorList.some(d => d.instructorId === c.instructorId)) {
+    .filter((c) => c.representative === false)
+    .forEach((c) => {
+      if (
+        !uniqueInstructorList.some((d) => d.instructorId === c.instructorId)
+      ) {
         uniqueInstructorList.push(c);
       }
     });
@@ -31,15 +36,19 @@ async function parseLectureInstructor(cardContents: CardContents) {
   const { instructors } = cardContents;
   const instructorList = getUniqueList(instructors);
 
-  const proimseArray = instructorList.map(c => {
+  const proimseArray = instructorList.map((c) => {
     return findInstructorCache(c.instructorId)
-      .then(r => {
+      .then((r) => {
         if (r !== undefined) {
           c.memberSummary = {
             employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department,
+            department: r.memberSummary.department
+              ? parsePolyglotString(r.memberSummary.department)
+              : '',
             email: r.memberSummary.email,
-            name: r.memberSummary.name,
+            name: r.memberSummary.name
+              ? parsePolyglotString(r.memberSummary.name)
+              : '',
             photoId: r.memberSummary.photoId,
           };
         }

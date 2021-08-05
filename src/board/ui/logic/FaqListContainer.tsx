@@ -13,6 +13,8 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -125,6 +127,7 @@ class FaqListContainer extends React.Component<Props, State> {
 
   renderPostRow(post: PostModel, index: number) {
     //
+    console.log(post.langSupports);
     return (
       <a
         key={index}
@@ -135,7 +138,12 @@ class FaqListContainer extends React.Component<Props, State> {
         <span className="cell title">
           <span className="inner">
             {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
-            <span className="ellipsis">{post.title}</span>
+            <span className="ellipsis">
+              {parsePolyglotString(
+                post.title,
+                getDefaultLang(post.langSupports)
+              )}
+            </span>
           </span>
         </span>
       </a>
@@ -163,10 +171,7 @@ class FaqListContainer extends React.Component<Props, State> {
                       className="base"
                       name="radioGroup"
                       index={index}
-                      label={
-                        // category.name && parsePolyglotString(category.name)
-                        category.name
-                      }
+                      label={parsePolyglotString(category.name)}
                       value={category.categoryId}
                       checked={categoryIndex === index}
                       onChange={this.onChangeCategory}
@@ -206,10 +211,7 @@ class FaqListContainer extends React.Component<Props, State> {
                       className="base"
                       name="radioGroup"
                       index={index}
-                      label={
-                        // category.name && parsePolyglotString(category.name)
-                        category.name
-                      }
+                      label={parsePolyglotString(category.name)}
                       value={category.categoryId}
                       checked={categoryIndex === index}
                       onChange={this.onChangeCategory}

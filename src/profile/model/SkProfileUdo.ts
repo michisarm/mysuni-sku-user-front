@@ -14,20 +14,20 @@ class SkProfileUdo {
   nameFlag  : string = '';    // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
 
   constructor(
-    currentJobGroupModel?: CurrentJobGroupModel,
-    favoriteJobGroupModel?: FavoriteJobGroupModel,
+    // currentJobGroupModel?: CurrentJobGroupModel,
+    // favoriteJobGroupModel?: FavoriteJobGroupModel,
     pisAgreement?: PisAgreementModel,
     nickName?: string,
     bgImage?: string,
     introduce?: string,
     nameFlag?: string,
   ) {
-    if (currentJobGroupModel) {
-      this.currentJobGroup = currentJobGroupModel;
-    }
-    if (favoriteJobGroupModel) {
-      this.favoriteJobGroup = favoriteJobGroupModel;
-    }
+    // if (currentJobGroupModel) {
+    //   this.currentJobGroup = currentJobGroupModel;
+    // }
+    // if (favoriteJobGroupModel) {
+    //   this.favoriteJobGroup = favoriteJobGroupModel;
+    // }
     if (pisAgreement) {
       this.pisAgreement = pisAgreement;
     }
@@ -47,7 +47,8 @@ class SkProfileUdo {
 
   static fromPisAgreement(pisAgreement: PisAgreementModel) {
     //
-    return new SkProfileUdo({} as any, {} as any, pisAgreement, '' as string);
+    // return new SkProfileUdo({} as any, {} as any, pisAgreement, '' as string);
+    return new SkProfileUdo( pisAgreement, '' as string);
   }
 }
 

@@ -31,6 +31,7 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { Area } from 'tracker/model';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -78,7 +79,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
 
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
-  const { member } = skProfile;
+  // const { member } = skProfile;
   const [surveyTitle, setSurveyTitle] = useState<string>();
   useEffect(() => {
     if (currentMenu?.name !== undefined) {
@@ -269,10 +270,10 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               feedbackId={commentId}
               menuType=""
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              name={parsePolyglotString(skProfile.name)}
+              email={skProfile.email}
+              companyName={parsePolyglotString(skProfile.companyName)}
+              departmentName={parsePolyglotString(skProfile.departmentName)}
             />
           </div>
         )}
@@ -287,10 +288,10 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               feedbackId={commentId}
               menuType=""
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              name={parsePolyglotString(skProfile.name)}
+              email={skProfile.email}
+              companyName={parsePolyglotString(skProfile.companyName)}
+              departmentName={parsePolyglotString(skProfile.departmentName)}
             />
           </div>
         )}

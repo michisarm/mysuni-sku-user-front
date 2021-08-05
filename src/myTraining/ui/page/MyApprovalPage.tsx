@@ -52,7 +52,7 @@ function MyApprovalPage({
   const getMenuAuth = async () => {
     if (!skProfile) {
       const profile: SkProfileModel = await skProfileService!.findSkProfile();
-      menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
+      menuControlAuthService!.findMenuControlAuth(profile.companyCode);
     }
   }
 

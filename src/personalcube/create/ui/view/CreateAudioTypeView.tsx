@@ -249,16 +249,17 @@ class CreateAudioTypeView extends React.Component<Props> {
     const cineroomId = sessionStorage.getItem('cineroomId');
 
     if (collegeForPanopto.panoptoFolderId) {
-      if (cineroomId === 'ne1-m2-c2')
+      if (cineroomId === 'ne1-m2-c2') {
         window.localStorage.setItem(
           'externalId',
           collegeForPanopto.panoptoFolderId
         );
-      else
+      } else {
         window.localStorage.setItem(
           'externalId',
           collegesForPanopto[0].panoptoFolderId
         );
+      }
     }
   }
 

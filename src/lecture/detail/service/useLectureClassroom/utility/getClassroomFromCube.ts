@@ -1,3 +1,4 @@
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import {
   countClassroomStudentsCache,
@@ -21,16 +22,22 @@ export async function getClassroomFromCube(cubeId: string) {
     operators,
   } = cubeDetail;
 
-  const proimseArray = instructors.map(c => {
+  const proimseArray = instructors.map((c) => {
     return findInstructorCache(c.instructorId)
-      .then(r => {
+      .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name;
+          c.name = r.memberSummary.name
+            ? parsePolyglotString(r.memberSummary.name)
+            : '';
           c.memberSummary = {
             employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department,
+            department: r.memberSummary.department
+              ? parsePolyglotString(r.memberSummary.department)
+              : '',
             email: r.memberSummary.email,
-            name: r.memberSummary.name,
+            name: r.memberSummary.name
+              ? parsePolyglotString(r.memberSummary.name)
+              : '',
             photoId: r.memberSummary.photoId,
           };
         }
@@ -41,7 +48,7 @@ export async function getClassroomFromCube(cubeId: string) {
 
   if (classrooms !== null && (classrooms as unknown) !== '') {
     setLectureClassroom({
-      classrooms: classrooms.map(remote => {
+      classrooms: classrooms.map((remote) => {
         const {
           id,
           round,
@@ -73,7 +80,7 @@ export async function getClassroomFromCube(cubeId: string) {
           cancellableEndDate: cancellablePeriod.endDate,
           location,
           siteUrl,
-          instructor: instructors.filter(c => c.round === round),
+          instructor: instructors.filter((c) => c.round === round),
           capacity,
           freeOfCharge: {
             approvalProcess: freeOfCharge.approvalProcess,
@@ -82,10 +89,10 @@ export async function getClassroomFromCube(cubeId: string) {
           },
           enrollingAvailable,
           capacityClosed,
-          studentCount: counts.find(c => c.left === round)?.right || 0,
+          studentCount: counts.find((c) => c.left === round)?.right || 0,
           cancellationPenalty,
           remote,
-          operator: operators.find(c => c.id === keyString),
+          operator: operators.find((c) => c.id === keyString),
         };
       }),
       remote: classrooms,

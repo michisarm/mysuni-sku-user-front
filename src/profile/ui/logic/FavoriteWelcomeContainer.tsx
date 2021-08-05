@@ -27,7 +27,7 @@ class FavoriteWelcomeContainer extends Component<Props> {
   render() {
     //
     const { skProfileService } = this.props;
-    const { member } = skProfileService!.skProfile;
+    const { name } = skProfileService!.skProfile;
 
     return (
       <div className="setting-introduction">
@@ -35,7 +35,7 @@ class FavoriteWelcomeContainer extends Component<Props> {
           <div className="inner interest">
             <div className="img-wrap" />
             <div className="text-wrap">
-              <h2>안녕하세요. {member.name}님</h2>
+              <h2>안녕하세요. {name}님</h2>
               <p>
                 무슨 교육을 수강해야 할지, 내게 필요한 강의는 무엇인지 난감하시죠.<br />
                 본인의 관심사와 향후 하고 싶은 직무 분야를 선택해주시면, 그에 맞는 <br />

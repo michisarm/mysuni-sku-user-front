@@ -20,6 +20,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -183,8 +184,8 @@ class QnaDetailContainer extends Component<Props, States> {
         <div className="post-view qna">
           <BoardDetailContentHeaderView
             deletable
-            title={post.title}
-            time={post.time}
+            title={post.title ? parsePolyglotString(post.title) : ''}
+            time={post.registeredTime}
             subField={<span className="category">{category.name}</span>}
             onClickList={this.onClickList}
             onClickDelete={this.deleteQnaDetail}
@@ -196,7 +197,11 @@ class QnaDetailContainer extends Component<Props, States> {
               <div className="content-inner">
                 <ReactQuill
                   theme="bubble"
-                  value={post.contents.contents || ''}
+                  value={
+                    (post.contents.contents &&
+                      parsePolyglotString(post.contents.contents)) ||
+                    ''
+                  }
                   readOnly
                 />
                 <div className="file">

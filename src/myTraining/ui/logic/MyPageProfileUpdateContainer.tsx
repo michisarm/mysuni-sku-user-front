@@ -99,9 +99,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileService!.setProfileProp('photoType', photoTypeTemp);
     }
 
+    // 김민준 - phtoType 체크 필요
     await skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
-      skProfile.photoType,
+      '',
+      // skProfile.photoType,
       skProfile.photoImage
     );
   }
@@ -255,8 +257,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     let skProfileUdo: SkProfileUdo;
     skProfileUdo = new SkProfileUdo(
-      skProfileService.skProfile.member.currentJobGroup,
-      skProfileService.skProfile.member.favoriteJobGroup,
+      // skProfileService.skProfile.member.currentJobGroup,
+      // skProfileService.skProfile.member.favoriteJobGroup,
       skProfileService.skProfile.pisAgreement
     );
 
@@ -471,7 +473,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      {skProfile.member?.name || skProfile.name}
+                      {skProfile.name || skProfile.name}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -482,7 +484,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      {skProfile.member?.department || skProfile.departmentName}
+                      {skProfile.departmentName || skProfile.departmentName}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>

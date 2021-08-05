@@ -12,6 +12,7 @@ import LectureParams, {
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface BadgeCompRightProps {
   name: string;
@@ -80,9 +81,7 @@ export default function BadgeCompRight({
                     <span className="class-icon">
                       <Image src={card.thumbImagePath} clasName="ui image" />
                     </span>
-                    <span className="title">
-                      {parsePolyglotString(card.name)}
-                    </span>
+                    <span className="title">{card.name}</span>
                     <span className="time">
                       <Icon className="card-time16" />
                       {` ${formattedLearningTime}`}

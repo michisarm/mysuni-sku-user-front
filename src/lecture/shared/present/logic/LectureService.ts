@@ -604,7 +604,8 @@ class LectureService {
           lectureTableView.type = card.type;
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
-          lectureTableView.name = parsePolyglotString(card.name);
+          // 김민준
+          lectureTableView.name = card.name;
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -621,7 +622,8 @@ class LectureService {
         lectureTableView.type = card.type;
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
-        lectureTableView.name = parsePolyglotString(card.name);
+        // 김민준
+        lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 
@@ -689,7 +691,8 @@ class LectureService {
           lectureTableView.type = card.type;
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
-          lectureTableView.name = parsePolyglotString(card.name);
+          // 김민준
+          lectureTableView.name = card.name;
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
           lectureTableView.updateTime = student.updateTime;
@@ -706,7 +709,8 @@ class LectureService {
         lectureTableView.type = card.type;
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
-        lectureTableView.name = parsePolyglotString(card.name);
+        // 김민준
+        lectureTableView.name = card.name;
         lectureTableView.learningTime = card.learningTime;
         lectureTableView.useNote = useNote;
 

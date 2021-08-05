@@ -15,6 +15,7 @@ import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import LRSLearning from './MainComponents/LRSLearning';
 import { Abtest, ExperimentalGroup } from 'abtest/components';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -25,7 +26,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>();
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
-  const { member } = skProfile;
+  // const { member } = skProfile;
   const [memName, setMemName] = useState('');
 
   const fetchCardBundles = async () => {
@@ -40,13 +41,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     inMyLectureService!.findAllInMyLectures();
 
-    setMemName(member.name);
+    setMemName(parsePolyglotString(skProfile.name));
     if (memName.length < 1) {
       setTimeout(() => {
-        setMemName(skProfileService!.skProfile.member.name);
+        setMemName(parsePolyglotString(skProfile.name));
       }, 200);
     }
-  }, [inMyLectureService, memName.length, member.name, skProfileService]);
+  }, [inMyLectureService, memName.length, skProfile.name, skProfileService]);
 
   return (
     <>

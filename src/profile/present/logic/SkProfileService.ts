@@ -8,6 +8,8 @@ import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { findAllCollegeCache } from '../../../college/present/apiclient/CollegeApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import AdditionalUserInfoModel from 'profile/model/AdditionalUserInfoModel';
+import TempProfileModel from 'profile/model/TempProfileModel';
 
 @autobind
 class SkProfileService {
@@ -18,6 +20,9 @@ class SkProfileService {
 
   @observable
   skProfile: SkProfileModel = new SkProfileModel();
+
+  @observable
+  additionalUserInfo: AdditionalUserInfoModel = new AdditionalUserInfoModel();
 
   skProfileCachingFetch: CachingFetch = new CachingFetch();
 
@@ -44,21 +49,22 @@ class SkProfileService {
     if (this.skProfile.nameFlag === 'N' && this.skProfile.nickName !== '') {
       viewProfileName = this.skProfile.nickName;
     } else {
-      viewProfileName = this.skProfile.member && this.skProfile.member.name;
+      viewProfileName = this.skProfile && parsePolyglotString(this.skProfile.name);
     }
 
     return viewProfileName;
     // return this.skProfile.member.name;
   }
 
-  @computed
-  get profileMemberEmail() {
-    return this.skProfile.member.email;
-  }
+  // 김민준
+  // @computed
+  // get profileMemberEmail() {
+  //   return this.skProfile.member.email;
+  // }
 
   @computed
   get profileMemberCompanyCode() {
-    return this.skProfile.member.companyCode;
+    return this.skProfile.companyCode;
   }
 
   @computed
@@ -85,12 +91,32 @@ class SkProfileService {
     //
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
-      (skProfile) =>
-        runInAction(() => (this.skProfile = new SkProfileModel(skProfile)))
+      (tempProfile: TempProfileModel) =>
+      this.divideProfileModel(tempProfile)
+      // runInAction(() => (
+      //     this.skProfile = new SkProfileModel(tempProfile.user)
+      //  ))
+      //  &&
+      //  runInAction(() => (
+      //    this.additionalUserInfo = new AdditionalUserInfoModel(tempProfile.additionalUserInfo)
+      //  ))
     );
+
     return fetched
       ? this.skProfileCachingFetch.inProgressFetching
       : this.skProfile;
+  }
+
+  @action
+  async divideProfileModel(user: TempProfileModel) {
+    
+    await runInAction(() => (
+      this.skProfile = new SkProfileModel(user.user)
+    ))
+
+    await runInAction(() => (
+      this.additionalUserInfo = new AdditionalUserInfoModel(user.additionalUserInfo)
+    ))
   }
 
   @action
@@ -117,23 +143,24 @@ class SkProfileService {
     return this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 
-  @action
-  setFavoriteJobGroupProp(name: string, value: any) {
-    this.skProfile.member.favoriteJobGroup = _.set(
-      this.skProfile.member.favoriteJobGroup,
-      name,
-      value
-    );
-  }
+  // 김민준 - 현재 id만 넘어오는 중 (additional)
+  // @action
+  // setFavoriteJobGroupProp(name: string, value: any) {
+  //   this.additionalUserInfo.favoriteJobGroup = _.set(
+  //     this.skProfile.member.favoriteJobGroup,
+  //     name,
+  //     value
+  //   );
+  // }
 
-  @action
-  setCurrentJobGroupProp(name: string, value: any) {
-    this.skProfile.member.currentJobGroup = _.set(
-      this.skProfile.member.currentJobGroup,
-      name,
-      value
-    );
-  }
+  // @action
+  // setCurrentJobGroupProp(name: string, value: any) {
+  //   this.skProfile.member.currentJobGroup = _.set(
+  //     this.skProfile.member.currentJobGroup,
+  //     name,
+  //     value
+  //   );
+  // }
 
   // StudySummary ------------------------------------------------------------------------------------------------------
 
@@ -227,10 +254,10 @@ class SkProfileService {
     this.studySummary = _.set(this.studySummary, name, value);
   }
 
-  @action
-  setMemberProp(name: string, value: string | {} | string[]) {
-    this.skProfile.member = _.set(this.skProfile.member, name, value);
-  }
+  // @action
+  // setMemberProp(name: string, value: string | {} | string[]) {
+  //   this.skProfile.member = _.set(this.skProfile.member, name, value);
+  // }
 
   @action
   setProfileProp(name: string, value: string | {} | string[] | number) {

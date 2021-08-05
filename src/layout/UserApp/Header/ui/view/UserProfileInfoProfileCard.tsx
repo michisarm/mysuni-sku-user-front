@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable  */
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Image } from 'semantic-ui-react';
 import {
@@ -160,12 +160,18 @@ function UserProfileinfoProfileCard(props: Props) {
       setProfileBgImg(profileInfo.profileBgImg);
 
       if (preProfileInfo.isSetProfile) {
-        if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName);
-        if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce);
-        if (preProfileInfo.profileImg)
+        if (preProfileInfo.nickName) {
+          setNickname(preProfileInfo.nickName);
+        }
+        if (preProfileInfo.introduce) {
+          setIntroduce(preProfileInfo.introduce);
+        }
+        if (preProfileInfo.profileImg) {
           setPreProfileImg(preProfileInfo.profileImg);
-        if (preProfileInfo.profileBgImg)
+        }
+        if (preProfileInfo.profileBgImg) {
           setPreProfileBgImg(preProfileInfo.profileBgImg);
+        }
       }
     }
   }, [profileInfo, props.preProfileInfo]);
