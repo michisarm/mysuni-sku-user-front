@@ -125,9 +125,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const foundProfile: SkProfileModel =
       await skProfileService!.findSkProfile();
     if (foundProfile) {
-      menuControlAuthService!.findMenuControlAuth(
-        foundProfile.companyCode
-      );
+      menuControlAuthService!.findMenuControlAuth(foundProfile.companyCode);
     }
   }
 
@@ -310,7 +308,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   }}
                 >
                   <Icon className="add24" />
-                  <span>개인학습</span>
+                  <span>
+                    <PolyglotText
+                      defaultString="관심 채널 설정"
+                      id="home-PersonalBoard-관심채널2"
+                    />
+                  </span>
                 </a>
               </div>
             )}
@@ -331,7 +334,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                         data-pathname="관심 채널 설정"
                         data-page="#attention-channel"
                       >
-                        관심 채널 설정
+                        <PolyglotText
+                          defaultString="관심 채널 설정"
+                          id="home-PersonalBoard-개인학습2"
+                        />
                       </span>
                     </a>
                   }
