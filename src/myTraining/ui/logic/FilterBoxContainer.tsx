@@ -357,7 +357,6 @@ function FilterBoxContainer({
                   defaultString="결과보기"
                   id="learning-LearningFilter1-결과1"
                 />
-                결과보기
               </span>
             </a>
           </div>

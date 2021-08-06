@@ -13,6 +13,7 @@ import myPageRoutePaths from 'myTraining/routePaths';
 import CommunityProfileModalPreview from '../../../../src/community/ui/view/CommunityAdmin/CommunityProfileModalPreview';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -473,7 +474,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      {skProfile.name || skProfile.name}
+                      {parsePolyglotString(skProfile.name)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -484,7 +485,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      {skProfile.departmentName || skProfile.departmentName}
+                      {parsePolyglotString(skProfile.departmentName)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
