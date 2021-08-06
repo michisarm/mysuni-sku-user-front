@@ -13,6 +13,7 @@ import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   jobGroupService?: JobGroupService;
@@ -41,11 +42,10 @@ class CurrentJobContainer extends React.Component<Props, State> {
     jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile().then((skProfile) => {
       //
-      const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
-
-      if (skProfile.member.currentJobGroup.currentJobGroup) {
-        jobGroupService!.findJobGroupById(currentJobGroup.id);
-      }
+      // const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
+      // if (skProfile.member.currentJobGroup.currentJobGroup) {
+      //   jobGroupService!.findJobGroupById(currentJobGroup.id);
+      // }
     });
   }
 
@@ -60,7 +60,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
         jobGroupSelect.push({
           key: index + 1,
           value: jobGroup.jobGroupId,
-          text: jobGroup.name,
+          text: parsePolyglotString(jobGroup.name),
         });
       });
       jobGroupSelect.push({
@@ -95,7 +95,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
         jobDutySelect.push({
           key: index + 1,
           value: jobDuty.id,
-          text: jobDuty.name,
+          text: parsePolyglotString(jobDuty.name),
         });
       });
     }
