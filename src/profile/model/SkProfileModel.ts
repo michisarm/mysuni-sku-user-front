@@ -173,6 +173,7 @@ decorate(SkProfileModel, {
   email: observable,
   companyCode: observable,
   language: observable,
+  departmentCode: observable,
 });
 
 export default SkProfileModel;
