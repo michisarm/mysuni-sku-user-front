@@ -14,6 +14,7 @@ import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -217,9 +218,15 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         onClose={this.onCloseModal}
       >
         <Modal.Header className="res">
-          관심 Channel 변경
+          <PolyglotText
+            defaultString="관심 Channel 변경"
+            id="Recommend-ChannelChangeModal-타이틀"
+          />
           <span className="sub f12">
-            맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.
+            <PolyglotText
+              defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요."
+              id="Recommend-ChannelChangeModal-타이틀"
+            />
           </span>
         </Modal.Header>
         <Modal.Content>
@@ -246,10 +253,16 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         </Modal.Content>
         <Modal.Actions className="actions">
           <Button className="w190 pop d" onClick={this.onCloseModal}>
-            Cancel
+            <PolyglotText
+              defaultString=" Cancel"
+              id="Recommend-ChannelChangeModal-취소"
+            />
           </Button>
           <Button className="w190 pop p" onClick={this.onConfirm}>
-            Confirm
+            <PolyglotText
+              defaultString="Confirm"
+              id="Recommend-ChannelChangeModal-승인"
+            />
           </Button>
         </Modal.Actions>
       </Modal>
