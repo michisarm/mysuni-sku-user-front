@@ -923,12 +923,16 @@ class AplCreateContainer extends React.Component<Props, States> {
                       multiSelect={false}
                     />
                     <span className="text1">
-                      <b>{(apl && apl.approvalName) || ''}</b>
+                      <b>
+                        {(apl && parsePolyglotString(apl.approvalName)) || ''}
+                      </b>
                       <span className="ml40">
-                        {(apl && apl.approvalCompany) || ''}
+                        {(apl && parsePolyglotString(apl.approvalCompany)) ||
+                          ''}
                       </span>
                       <span className="line">
-                        {(apl && apl.approvalDepartment) || ''}
+                        {(apl && parsePolyglotString(apl.approvalDepartment)) ||
+                          ''}
                       </span>
                       {approvalShow && (
                         <div className="info-text">
