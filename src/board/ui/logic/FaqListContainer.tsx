@@ -126,8 +126,6 @@ class FaqListContainer extends React.Component<Props, State> {
   }
 
   renderPostRow(post: PostModel, index: number) {
-    //
-    console.log(post.langSupports);
     return (
       <a
         key={index}
@@ -179,6 +177,7 @@ class FaqListContainer extends React.Component<Props, State> {
                   ))}
               </div>
             </div>
+
             <Segment
               style={{
                 paddingTop: 0,
@@ -193,13 +192,6 @@ class FaqListContainer extends React.Component<Props, State> {
               <Loadingpanel loading={isLoading} />
             </Segment>
           </div>
-        ) : result.length === 0 ? (
-          <NoSuchContentPanel
-            message={getPolyglotText(
-              '등록된 FAQ가 없습니다.',
-              'support-FAQ-목록없음'
-            )}
-          />
         ) : (
           <div className="support-list-wrap">
             <div className="list-top">
@@ -220,7 +212,16 @@ class FaqListContainer extends React.Component<Props, State> {
               </div>
             </div>
             <div className="su-list faq">
-              {result.map((post, index) => this.renderPostRow(post, index))}
+              {result.length === 0 ? (
+                <NoSuchContentPanel
+                  message={getPolyglotText(
+                    '등록된 FAQ가 없습니다.',
+                    'support-FAQ-목록없음'
+                  )}
+                />
+              ) : (
+                result.map((post, index) => this.renderPostRow(post, index))
+              )}
             </div>
 
             {result.length > 0 && result.length < totalCount && (

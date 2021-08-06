@@ -19,8 +19,6 @@ async function requestCollegeAndChannel() {
   const getCollegeData = await findAllCollegeCache();
 
   await setCollegeModelStore(getCollegeData);
-  console.log('------');
-  console.log(getCollegeData);
   const collegeAndChannelList = await devideCollegeAndChannel(getCollegeData);
 
   setChannelStore(collegeAndChannelList.channels);
