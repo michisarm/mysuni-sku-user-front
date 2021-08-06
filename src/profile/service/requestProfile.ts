@@ -4,6 +4,7 @@ import { findMyPisAgreement } from '../present/apiclient/SkProfileApi';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import profilePaths from '../routePaths';
 import { setPisAgreementViewModel } from '../store/PisAgreementStore';
+import { isEmpty } from 'lodash';
 
 export async function requestProfile() {
   // TODO :: 현재 하드코딩 => 변경 예정
@@ -35,10 +36,8 @@ export async function requestProfile() {
   const skProfileService = SkProfileService.instance;
   const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
   if (
-    skProfileModel !== null
-    // 김민준 - studySummaryConfigured 확인필요
-    // && 
-    // skProfileModel.studySummaryConfigured === false
+    skProfileModel !== null &&
+    !isEmpty(skProfileService.additionalUserInfo.currentJobGroupId)
   ) {
     currentHistory?.push(profilePaths.favoriteWelcome());
   }

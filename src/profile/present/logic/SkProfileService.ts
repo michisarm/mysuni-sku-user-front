@@ -149,14 +149,10 @@ class SkProfileService {
     this.additionalUserInfo.favoriteJobGroupId = favoriteGroupId;
   }
 
-  // @action
-  // setCurrentJobGroupProp(name: string, value: any) {
-  //   this.skProfile.member.currentJobGroup = _.set(
-  //     this.skProfile.member.currentJobGroup,
-  //     name,
-  //     value
-  //   );
-  // }
+  @action
+  setCurrentJobGroupProp(favoriteGroupId: string) {
+    this.additionalUserInfo.favoriteJobDutyId = favoriteGroupId;
+  }
 
   // StudySummary ------------------------------------------------------------------------------------------------------
 
@@ -165,33 +161,33 @@ class SkProfileService {
     //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
-      async (studySummary: StudySummaryModel) => {
+      async (studySummary: AdditionalUserInfoModel) => {
         const collegeData = await findAllCollegeCache();
-        if (collegeData !== undefined && studySummary !== undefined) {
-          studySummary.favoriteChannels.idNames.forEach((idName) => {
-            const channelId = idName.id;
-            const college = collegeData.find((c) =>
-              c.channels.some((d) => d.id === channelId)
-            );
-            if (college !== undefined) {
-              const channel = college.channels.find((c) => c.id === channelId);
-              if (channel !== undefined) {
-                idName.name = parsePolyglotString(channel.name);
-              }
-            }
-          });
-          studySummary.favoriteColleges.idNames.forEach((idName) => {
-            const collegeId = idName.id;
-            const college = collegeData.find((c) => c.id === collegeId);
-            if (college !== undefined) {
-              idName.name = parsePolyglotString(college.name);
-            }
-          });
-        }
+        // if (collegeData !== undefined && studySummary !== undefined) {
+        //   studySummary.favoriteChannelIds.forEach((id) => {
+        //     const channelId = id;
+        //     const college = collegeData.find((c) =>
+        //       c.channels.some((d) => d.id === channelId)
+        //     );
+        //     if (college !== undefined) {
+        //       const channel = college.channels.find((c) => c.id === channelId);
+        //       if (channel !== undefined) {
+        //         idName.name = parsePolyglotString(channel.name);
+        //       }
+        //     }
+        //   });
+        //   studySummary.favoriteColleges.idNames.forEach((idName) => {
+        //     const collegeId = idName.id;
+        //     const college = collegeData.find((c) => c.id === collegeId);
+        //     if (college !== undefined) {
+        //       idName.name = parsePolyglotString(college.name);
+        //     }
+        //   });
+        // }
 
-        runInAction(
-          () => (this.studySummary = new StudySummaryModel(studySummary))
-        );
+        // runInAction(
+        //   () => (this.studySummary = new StudySummaryModel(studySummary))
+        // );
       }
     );
 
