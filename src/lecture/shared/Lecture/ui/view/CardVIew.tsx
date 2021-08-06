@@ -43,6 +43,7 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { LangSupport, getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props {
   cardId: string;
@@ -63,6 +64,7 @@ interface Props {
   capacity?: number;
   permittedCinerooms?: PermittedCineroom[];
   dataArea?: Area;
+  langSupport?: LangSupport[];
 }
 
 export default function CardView({
@@ -86,14 +88,19 @@ export default function CardView({
     ? isIncludeCineroomId(permittedCinerooms)
     : false,
   dataArea,
+  langSupport,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] =
-    useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
   const hoverTimer = useRef(0);
-  const parseName = parsePolyglotString(name);
+  const parseName = parsePolyglotString(
+    name,
+    getDefaultLang(langSupport || [])
+  );
 
   useEffect(() => {
     return autorun(() => {
@@ -355,7 +362,10 @@ export default function CardView({
         <p
           className="text-area"
           dangerouslySetInnerHTML={{
-            __html: parsePolyglotString(simpleDescription),
+            __html: parsePolyglotString(
+              simpleDescription,
+              getDefaultLang(langSupport || [])
+            ),
           }}
         />
         <div className="btn-area">

@@ -12,6 +12,7 @@ import {
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import { useBadgeStudent } from '../../service/useBadgeStudent';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface ChallengeBoxContainerProps {
   challengeBadge: MyBadge;
@@ -50,7 +51,10 @@ function ChallengeBoxContainer({ challengeBadge }: ChallengeBoxContainerProps) {
             />
           </div>
           <BadgeCompRight
-            name={parsePolyglotString(challengeBadge.name)}
+            name={parsePolyglotString(
+              challengeBadge.name,
+              getDefaultLang(challengeBadge.langSupport)
+            )}
             categoryId={challengeBadge.categoryId}
             badgeCards={badgeCards}
             passedCardIdMap={passedCardIdMap}
