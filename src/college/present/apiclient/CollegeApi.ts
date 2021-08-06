@@ -3,6 +3,7 @@ import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import { createCacheApi } from '../../../lecture/detail/api/cacheableApi';
 import { CollegeBanner } from '../../model/CollegeBanner';
+import { AxiosReturn } from '../../../shared/api/AxiosReturn';
 
 const BASE_URL = '/api/college/colleges';
 
@@ -10,15 +11,11 @@ export function findCollege(
   collegeId: string
 ): Promise<CollegeModel | undefined> {
   const url = `${BASE_URL}/${collegeId}`;
-  return axios
-    .get<CollegeModel>(url)
-    .then((response) => (response && response.data) || null);
+  return axios.get<CollegeModel>(url).then(AxiosReturn);
 }
 
 function findAllCollege() {
-  return axios
-    .get<CollegeModel[]>('/api/college/colleges')
-    .then((response) => response.data);
+  return axios.get<CollegeModel[]>('/api/college/colleges').then(AxiosReturn);
 }
 
 export const [findAllCollegeCache, clearfindAllCollegeCache] =

@@ -17,12 +17,13 @@ import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 async function requestCollegeAndChannel() {
   const getCollegeData = await findAllCollegeCache();
+  if (getCollegeData !== undefined) {
+    setCollegeModelStore(getCollegeData);
+    const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
 
-  await setCollegeModelStore(getCollegeData);
-  const collegeAndChannelList = await devideCollegeAndChannel(getCollegeData);
-
-  setChannelStore(collegeAndChannelList.channels);
-  setCollegeStore(collegeAndChannelList.colleges);
+    setChannelStore(collegeAndChannelList.channels);
+    setCollegeStore(collegeAndChannelList.colleges);
+  }
 }
 
 export function useRequestCollege() {

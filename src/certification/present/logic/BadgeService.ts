@@ -139,7 +139,6 @@ class BadgeService {
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
-    console.log(',asdfasf', offsetElementList);
     if (
       offsetElementList &&
       offsetElementList.results &&

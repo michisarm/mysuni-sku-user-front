@@ -35,9 +35,9 @@ interface States {
 @observer
 @reactAutobind
 class ChannelsContentHeaderContainer extends Component<Props, States> {
-  state = {
-    companyCode: '',
-  };
+  // state = {
+  //   companyCode: '',
+  // };
 
   //
   componentDidMount(): void {
@@ -48,9 +48,9 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     //
     const { skProfileService, collegeLectureCountService } = this.props;
 
-    skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
-      this.setState({ companyCode: profile.companyCode });
-    });
+    // skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
+    //   this.setState({ companyCode: profile.companyCode });
+    // });
     skProfileService!.findStudySummary();
     collegeLectureCountService!.findCollegeLectureCounts();
     //여기서?????? 최근학습중인 채널????
@@ -59,9 +59,7 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
   getFavoriteChannelButton() {
     //
     return (
-      <Label
-        className="onlytext"
-      >
+      <Label className="onlytext">
         <span className="personal-channel-tit">
           <a>
             <PolyglotText defaultString="관심채널" id="rcmd-mifa-관심채널" />
@@ -73,17 +71,14 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
 
   render() {
     //
-    const { companyCode } = this.state;
-    const {
-      skProfileService,
-      collegeLectureCountService,
-      channels,
-    } = this.props;
+    //const { companyCode } = this.state;
+    const { skProfileService, collegeLectureCountService, channels } =
+      this.props;
     const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
     // const { member } = skProfile;
 
     const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
+      (channel) =>
         new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
@@ -104,8 +99,8 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          {companyCode && (
-            <ChannelsHeaderInfoContainer companyCode={companyCode} />
+          {skProfile.companyCode && (
+            <ChannelsHeaderInfoContainer companyCode={skProfile.companyCode} />
           )}
           {/* <div className="recommend-info">
           <div className="personal-channel-list">

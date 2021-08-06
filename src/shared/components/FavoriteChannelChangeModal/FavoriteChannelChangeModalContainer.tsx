@@ -55,19 +55,19 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   ) {
     //
     const companyChannels = colleges
-      .filter(college => college.collegeType === CollegeType.Company)
-      .map(college =>
+      .filter((college) => college.collegeType === CollegeType.Company)
+      .map((college) =>
         college.channels.map(
-          channel =>
+          (channel) =>
             new ChannelModel({ channelId: channel.id, name: channel.name })
         )
       )
       .flat();
 
     const favoriteChannelsWithoutCompany = favoriteChannels.filter(
-      channel =>
+      (channel) =>
         !companyChannels.some(
-          companyChannel => companyChannel.channelId === channel.channelId
+          (companyChannel) => companyChannel.channelId === channel.channelId
         )
     );
 
@@ -79,11 +79,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   async onOpenModal() {
     //
-    const {
-      collegeService,
-      collegeLectureCountService,
-      favorites,
-    } = this.props;
+    const { collegeService, collegeLectureCountService, favorites } =
+      this.props;
     const favoriteChannels = [...favorites];
 
     this.setState({
@@ -92,7 +89,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     });
 
     collegeService!.findChannelByName('');
-    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges =
+      await collegeLectureCountService!.findCollegeLectureCounts();
 
     this.setDefaultFavorites(favoriteChannels, colleges);
   }
@@ -141,14 +139,14 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
       this.setState({ selectedCollegeIds: [] });
       colleges
-        .filter(college => {
-          const searchedChannels = college.channels.filter(channel =>
+        .filter((college) => {
+          const searchedChannels = college.channels.filter((channel) =>
             channelIds.includes(channel.id)
           );
           return searchedChannels.length > 0 ? college : null;
         })
-        .map(college => college.id)
-        .forEach(collegeId => this.onToggleCollege(collegeId));
+        .map((college) => college.id)
+        .forEach((collegeId) => this.onToggleCollege(collegeId));
     }
   }
 
@@ -166,7 +164,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
     if (selectedCollegeIds.includes(collegeId)) {
       selectedCollegeIds = selectedCollegeIds.filter(
-        selectedCollegeId => selectedCollegeId !== collegeId
+        (selectedCollegeId) => selectedCollegeId !== collegeId
       );
     } else {
       selectedCollegeIds.push(collegeId);
@@ -180,11 +178,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
     if (
       favoriteChannels
-        .map(favoriteChannel => favoriteChannel.id)
+        .map((favoriteChannel) => favoriteChannel.id)
         .includes(channel.id)
     ) {
       favoriteChannels = favoriteChannels.filter(
-        favoriteChannel => favoriteChannel.id !== channel.id
+        (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
       favoriteChannels.push(new ChannelModel(channel));
@@ -202,10 +200,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       selectedCollegeIds,
     }: State = this.state;
     const { channelIds } = collegeService!;
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      collegeLectureCountService!;
 
     return (
       <Modal
@@ -216,9 +212,15 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         onClose={this.onCloseModal}
       >
         <Modal.Header className="res">
-          <PolyglotText defaultString="관심 Channel 변경" id="home-ChannelChangeModal-타이틀" />
+          <PolyglotText
+            defaultString="관심 Channel 변경"
+            id="home-ChannelChangeModal-타이틀"
+          />
           <span className="sub f12">
-            <PolyglotText defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요." id="home-ChannelChangeModal-설명" />
+            <PolyglotText
+              defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요."
+              id="home-ChannelChangeModal-설명"
+            />
           </span>
         </Modal.Header>
         <Modal.Content>
@@ -245,10 +247,16 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         </Modal.Content>
         <Modal.Actions className="actions">
           <Button className="w190 pop d" onClick={this.onCloseModal}>
-            <PolyglotText defaultString="Cancel" id="home-ChannelChangeModal-취소" />
+            <PolyglotText
+              defaultString="Cancel"
+              id="home-ChannelChangeModal-취소"
+            />
           </Button>
           <Button className="w190 pop p" onClick={this.onConfirm}>
-            <PolyglotText defaultString="Confirm" id="home-ChannelChangeModal-승인" />
+            <PolyglotText
+              defaultString="Confirm"
+              id="home-ChannelChangeModal-승인"
+            />
           </Button>
         </Modal.Actions>
       </Modal>
