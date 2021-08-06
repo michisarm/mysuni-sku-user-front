@@ -45,6 +45,7 @@ class SkProfileModel implements DramaEntity {
   // language: Language = null;
   gdiPhotoImagePath: string = '';
   useGdiPhoto: boolean = false;
+  language: string = '';
 
   constructor(skProfile?: SkProfileModel) {
     //
@@ -171,6 +172,7 @@ decorate(SkProfileModel, {
   companyName: observable,
   email: observable,
   companyCode: observable,
+  language: observable,
 });
 
 export default SkProfileModel;

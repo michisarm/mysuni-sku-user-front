@@ -276,19 +276,17 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileUdo.nickName !== '' ||
       skProfileUdo.introduce !== ''
     ) {
-      skProfileService.modifySkProfile(skProfileUdo).then(() => {
-        reactAlert({
-          title: getPolyglotText('알림', 'mypage-프로필설정-알림7'),
-          message: getPolyglotText(
-            '프로필 정보가 수정됐습니다.',
-            'mypage-프로필설정-수정완료1'
-          ),
-        });
-
-        this.clear();
-
-        skProfileService!.findSkProfile();
-      });
+      // skProfileService.modifySkProfile(skProfileUdo).then(() => {
+      //   reactAlert({
+      //     title: getPolyglotText('알림', 'mypage-프로필설정-알림7'),
+      //     message: getPolyglotText(
+      //       '프로필 정보가 수정됐습니다.',
+      //       'mypage-프로필설정-수정완료1'
+      //     ),
+      //   });
+      //   this.clear();
+      //   skProfileService!.findSkProfile();
+      // });
     } else {
       reactAlert({
         title: getPolyglotText('알림', 'mypage-프로필설정-알림8'),

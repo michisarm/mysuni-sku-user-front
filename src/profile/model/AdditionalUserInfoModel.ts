@@ -1,17 +1,25 @@
 import { decorate, observable } from 'mobx';
 import { IdNameList } from 'shared/model';
+import { LearningGoal } from './LearningGoal';
 
 class AdditionalUserInfoModel {
   //
   id: string = '';
-  // learningGoal: 
+  learningGoal: LearningGoal = {
+    attendance: 0,
+    dailyTime: {
+      hours: 0,
+      minutes: 0,
+    },
+    hour: 0,
+  };
+
   currentJobDutyId: string = '';
   currentJobGroupId: string = '';
   favoriteChannelIds: [] = [];
   favoriteJobDutyId: string = '';
   favoriteJobGroupId: string = '';
   favoriteLearningTypes: IdNameList | null = null;
-
 
   constructor(addtionalModel?: AdditionalUserInfoModel) {
     //
@@ -26,7 +34,7 @@ class AdditionalUserInfoModel {
 
 decorate(AdditionalUserInfoModel, {
   id: observable,
-  // learningGoal: 
+  learningGoal: observable,
   currentJobDutyId: observable,
   currentJobGroupId: observable,
   favoriteChannelIds: observable,

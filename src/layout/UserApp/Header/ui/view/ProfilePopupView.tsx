@@ -102,7 +102,7 @@ function ProfilePopupView(props: Props) {
         skProfileUdo.nameFlag = 'R';
       }
 
-      await modifySkProfile(skProfileUdo);
+      // await modifySkProfile(skProfileUdo);
       skProfileService!.findSkProfile().then((skProfile) => {
         //
         setSaveFlag(true);

@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Popup, Image } from 'semantic-ui-react';
+import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
+import { SkProfileService } from 'profile/stores';
 
 export function LanguageSelectPopupView() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const skProfile = SkProfileService.instance.skProfile;
   const onOpenPopup = () => {
     setIsOpen(true);
   };
   const onClosePopup = () => {
     setIsOpen(false);
+  };
+
+  const onSelectLanguge = async (lang: string) => {
+    const params = {
+      nameValues: [
+        {
+          name: 'Language',
+          value: lang,
+        },
+      ],
+    };
+
+    await SkProfileApi.instance.modifySkProfile(params);
   };
 
   return (
@@ -39,17 +54,32 @@ export function LanguageSelectPopupView() {
       <Popup.Content>
         <div className="lang_inner">
           <ul>
-            {/* 내가 선택한 언어 class on추가 */}
             <li>
-              <Link className="on" to="/">
+              <Link
+                className={`${skProfile.language === 'Korean' ? 'on' : ''}`}
+                to="/"
+                onClick={() => onSelectLanguge('Korean')}
+              >
                 한국어
               </Link>
             </li>
             <li>
-              <Link to="/">中文(简体)</Link>
+              <Link
+                className={`${skProfile.language === 'China' ? 'on' : ''}`}
+                to="/"
+                onClick={() => onSelectLanguge('China')}
+              >
+                中文(简体)
+              </Link>
             </li>
             <li>
-              <Link to="/">English</Link>
+              <Link
+                className={`${skProfile.language === 'English' ? 'on' : ''}`}
+                to="/"
+                onClick={() => onSelectLanguge('English')}
+              >
+                English
+              </Link>
             </li>
           </ul>
         </div>

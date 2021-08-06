@@ -141,7 +141,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
     //
     const skProfileService = this.props.skProfileService!;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobGroupId, currentJobDutyId  } = additionalUserInfo!;
+    const { currentJobGroupId, currentJobDutyId } = additionalUserInfo!;
 
     let skProfileUdo: SkProfileUdo;
 
@@ -155,7 +155,10 @@ class CurrentJobContainer extends React.Component<Props, State> {
     ) {
       reactAlert({
         title: getPolyglotText('알림', 'job-recent-알림'),
-        message: getPolyglotText('현재 직군과 현재 직무를 선택해주세요.', 'job-recent-주의'),
+        message: getPolyglotText(
+          '현재 직군과 현재 직무를 선택해주세요.',
+          'job-recent-주의'
+        ),
       });
     } else {
       // 김민준 - additional : id만 넘어오는 중
@@ -164,7 +167,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
         // skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
-      await skProfileService.modifySkProfile(skProfileUdo);
+      // await skProfileService.modifySkProfile(skProfileUdo);
       this.props.history.push(routePaths.favoriteJob());
     }
   }
@@ -175,14 +178,17 @@ class CurrentJobContainer extends React.Component<Props, State> {
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobGroupId, currentJobDutyId  } = additionalUserInfo!;
+    const { currentJobGroupId, currentJobDutyId } = additionalUserInfo!;
 
     return (
       <Form>
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              <PolyglotText defaultString="Step 01. 현재 직무가 속해 있는 직군을 선택해주세요." id="job-recent-step1" />
+              <PolyglotText
+                defaultString="Step 01. 현재 직무가 속해 있는 직군을 선택해주세요."
+                id="job-recent-step1"
+              />
             </div>
             <Select
               placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
@@ -199,78 +205,89 @@ class CurrentJobContainer extends React.Component<Props, State> {
             />
           </div>
           {
-          // currentJobGroup &&
-          // currentJobGroup.currentJobGroup &&
-          // currentJobGroup.currentJobGroup.id &&
-          // currentJobGroup.currentJobGroup.id !== 'etc' ? (
+            // currentJobGroup &&
+            // currentJobGroup.currentJobGroup &&
+            // currentJobGroup.currentJobGroup.id &&
+            // currentJobGroup.currentJobGroup.id !== 'etc' ? (
             currentJobGroupId !== 'etc' ? (
-            <div className="select-box">
-              <div className="select-title">
-                <PolyglotText defaultString="Step 02. 현재 직무를 선택해주세요." id="job-recent-step2On" />
-              </div>
-              <Select
-                placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
-                options={selectOptionJobDuty}
-                value={
-                  currentJobDutyId
-                  // member &&
-                  // member.currentJobGroup &&
-                  // member.currentJobGroup.currentJobDuty &&
-                  // member.currentJobGroup.currentJobDuty.id
-                }
-                onChange={(event: any, data: any) =>
-                  this.selectJobDuty(event, data)
-                }
-              />
-            </div>
-          ) : (
-            ''
-          )}
-          {
-          // currentJobGroup &&
-          // currentJobGroup.currentJobGroup &&
-          // currentJobGroup.currentJobGroup.id &&
-          // currentJobGroup.currentJobGroup.id === 'etc' ? (
-          currentJobGroupId === 'etc' ? (
-            <div className="select-box">
-              <div className="select-title">
-                <PolyglotText defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요." id="job-recent-step2Off" />
-              </div>
-              <div
-                className={classNames('ui h48 input', {
-                  focus: this.state.focus,
-                  write:
-                    // 김민준 - name 확인 불가 addtional
+              <div className="select-box">
+                <div className="select-title">
+                  <PolyglotText
+                    defaultString="Step 02. 현재 직무를 선택해주세요."
+                    id="job-recent-step2On"
+                  />
+                </div>
+                <Select
+                  placeholder={getPolyglotText(
+                    '선택해주세요',
+                    'job-recent-select'
+                  )}
+                  options={selectOptionJobDuty}
+                  value={
                     currentJobDutyId
+                    // member &&
+                    // member.currentJobGroup &&
+                    // member.currentJobGroup.currentJobDuty &&
+                    // member.currentJobGroup.currentJobDuty.id
+                  }
+                  onChange={(event: any, data: any) =>
+                    this.selectJobDuty(event, data)
+                  }
+                />
+              </div>
+            ) : (
+              ''
+            )
+          }
+          {
+            // currentJobGroup &&
+            // currentJobGroup.currentJobGroup &&
+            // currentJobGroup.currentJobGroup.id &&
+            // currentJobGroup.currentJobGroup.id === 'etc' ? (
+            currentJobGroupId === 'etc' ? (
+              <div className="select-box">
+                <div className="select-title">
+                  <PolyglotText
+                    defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요."
+                    id="job-recent-step2Off"
+                  />
+                </div>
+                <div
+                  className={classNames('ui h48 input', {
+                    focus: this.state.focus,
+                    write:
+                      // 김민준 - name 확인 불가 addtional
+                      currentJobDutyId,
                     // currentJobGroup &&
                     // currentJobGroup.currentJobDuty &&
                     // currentJobGroup.currentJobDuty.name,
-                })}
-              >
-                <input
-                  type="text"
-                  placeholder="Text.."
-                  value={
-                    // 김민준 - name 확인 불가 addtional
-                    currentJobDutyId
-                    // currentJobGroup &&
-                    // currentJobGroup.currentJobDuty &&
-                    // currentJobGroup.currentJobDuty.name
-                  }
-                  onClick={() => this.setState({ focus: true })}
-                  onChange={(e) =>
-                    this.selectEtcJobDuty({ value: e.target.value })
-                  }
-                />
-                <Icon
-                  className="clear link"
-                  onClick={() => this.selectEtcJobDuty({ value: '' })}
-                />
+                  })}
+                >
+                  <input
+                    type="text"
+                    placeholder="Text.."
+                    value={
+                      // 김민준 - name 확인 불가 addtional
+                      currentJobDutyId
+                      // currentJobGroup &&
+                      // currentJobGroup.currentJobDuty &&
+                      // currentJobGroup.currentJobDuty.name
+                    }
+                    onClick={() => this.setState({ focus: true })}
+                    onChange={(e) =>
+                      this.selectEtcJobDuty({ value: e.target.value })
+                    }
+                  />
+                  <Icon
+                    className="clear link"
+                    onClick={() => this.selectEtcJobDuty({ value: '' })}
+                  />
+                </div>
               </div>
-            </div>
-          ) : (
-            ''
-          )}
+            ) : (
+              ''
+            )
+          }
         </div>
         {/*<div className="select-error">*/}
         {/*  <Icon className="error16" /><span className="blind">error</span>*/}
@@ -281,7 +298,10 @@ class CurrentJobContainer extends React.Component<Props, State> {
             Previous
           </Button> */}
           <div className="error">
-            <PolyglotText defaultString="직군 및 직무를 선택해주세요." id="job-recent-주의" />
+            <PolyglotText
+              defaultString="직군 및 직무를 선택해주세요."
+              id="job-recent-주의"
+            />
           </div>
           <Button className="fix bg" onClick={() => this.onNextClick()}>
             <PolyglotText defaultString="다음" id="job-recent-다음" />

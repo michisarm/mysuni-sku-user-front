@@ -49,7 +49,8 @@ class SkProfileService {
     if (this.skProfile.nameFlag === 'N' && this.skProfile.nickName !== '') {
       viewProfileName = this.skProfile.nickName;
     } else {
-      viewProfileName = this.skProfile && parsePolyglotString(this.skProfile.name);
+      viewProfileName =
+        this.skProfile && parsePolyglotString(this.skProfile.name);
     }
 
     return viewProfileName;
@@ -91,8 +92,7 @@ class SkProfileService {
     //
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
-      (tempProfile: TempProfileModel) =>
-      this.divideProfileModel(tempProfile)
+      (tempProfile: TempProfileModel) => this.divideProfileModel(tempProfile)
       // runInAction(() => (
       //     this.skProfile = new SkProfileModel(tempProfile.user)
       //  ))
@@ -109,14 +109,14 @@ class SkProfileService {
 
   @action
   async divideProfileModel(user: TempProfileModel) {
-    
-    await runInAction(() => (
-      this.skProfile = new SkProfileModel(user.user)
-    ))
+    await runInAction(() => (this.skProfile = new SkProfileModel(user.user)));
 
-    await runInAction(() => (
-      this.additionalUserInfo = new AdditionalUserInfoModel(user.additionalUserInfo)
-    ))
+    await runInAction(
+      () =>
+        (this.additionalUserInfo = new AdditionalUserInfoModel(
+          user.additionalUserInfo
+        ))
+    );
   }
 
   @action
@@ -139,19 +139,15 @@ class SkProfileService {
       : this.skProfile;
   }
 
-  modifySkProfile(skProfileUdo: SkProfileUdo) {
-    return this.skProfileApi.modifySkProfile(skProfileUdo);
+  modifySkProfile(nameValues: NameValueList) {
+    return this.skProfileApi.modifySkProfile(nameValues);
   }
 
   // 김민준 - 현재 id만 넘어오는 중 (additional)
-  // @action
-  // setFavoriteJobGroupProp(name: string, value: any) {
-  //   this.additionalUserInfo.favoriteJobGroup = _.set(
-  //     this.skProfile.member.favoriteJobGroup,
-  //     name,
-  //     value
-  //   );
-  // }
+  @action
+  setFavoriteJobGroupProp(favoriteGroupId: string) {
+    this.additionalUserInfo.favoriteJobGroupId = favoriteGroupId;
+  }
 
   // @action
   // setCurrentJobGroupProp(name: string, value: any) {

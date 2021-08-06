@@ -1,6 +1,6 @@
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import TempProfileModel  from '../../model/TempProfileModel';
+import TempProfileModel from '../../model/TempProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
@@ -61,8 +61,8 @@ export default class SkProfileApi {
   }
 
   // 본인 정보 수정
-  modifySkProfile(skProfileUdo: SkProfileUdo) {
-    return axios.put<void>('/api/user/users', skProfileUdo);
+  modifySkProfile(nameValues: NameValueList) {
+    return axios.put<void>('/api/user/users', nameValues);
     // return axios.put<void>(this.URL, skProfileUdo);
   }
 

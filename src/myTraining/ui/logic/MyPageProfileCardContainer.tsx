@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -93,7 +94,7 @@ function MyPageHeaderContainer({
 
       skProfileUdo.nameFlag = value === true ? 'R' : 'N';
 
-      await modifySkProfile(skProfileUdo);
+      // await modifySkProfile(skProfileUdo);
       skProfileService!.findSkProfile().then((skProfile) => {
         setSaveFlag(true);
       });

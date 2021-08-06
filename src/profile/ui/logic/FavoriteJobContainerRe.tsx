@@ -38,7 +38,7 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findAllJobGroups();
-    skProfileService!.findSkProfile().then(skProfile => {
+    skProfileService!.findSkProfile().then((skProfile) => {
       //
       const favoriteJobGroup =
         skProfile.member.favoriteJobGroup.favoriteJobGroup;
@@ -141,7 +141,12 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
     //
     const skProfileService = this.props.skProfileService!;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+    } = additionalUserInfo;
 
     let skProfileUdo: SkProfileUdo;
 
@@ -164,9 +169,9 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
         skProfileService.skProfile.pisAgreement
       );
 
-      skProfileService.modifySkProfile(skProfileUdo).then(() => {
-        this.props.history.push('/');
-      });
+      // skProfileService.modifySkProfile(skProfileUdo).then(() => {
+      //   this.props.history.push('/');
+      // });
     }
   }
 
@@ -176,11 +181,16 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+    } = additionalUserInfo;
 
     return (
       <Form>
-        <div className="select-cont-wrap" style={{height:'20rem'}}>
+        <div className="select-cont-wrap" style={{ height: '20rem' }}>
           <div className="select-box">
             <div className="select-title">
               Step 01. 관심 있는 직군을 선택해주세요.
@@ -199,12 +209,11 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
               }
             />
           </div>
-          {
-            favoriteJobGroupId !== 'etc' ? (
-          // favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup.id &&
-          // favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
+          {favoriteJobGroupId !== 'etc' ? (
+            // favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup.id &&
+            // favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 관심 직무를 선택해주세요.
@@ -227,12 +236,11 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
           ) : (
             ''
           )}
-          {
-          favoriteJobGroupId === 'etc' ? (
-          // favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup.id &&
-          // favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
+          {favoriteJobGroupId === 'etc' ? (
+            // favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup.id &&
+            // favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
@@ -245,7 +253,7 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
                     // favoriteJobGroup &&
                     // favoriteJobGroup.favoriteJobDuty &&
                     // favoriteJobGroup.favoriteJobDuty.name,
-                    favoriteJobDutyId
+                    favoriteJobDutyId,
                 })}
               >
                 <input
@@ -259,7 +267,7 @@ class FavoriteJobContainerRe extends React.Component<Props, State> {
                     // favoriteJobGroup.favoriteJobDuty.name
                   }
                   onClick={() => this.setState({ focus: true })}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.selectEtcJobDuty({ value: e.target.value })
                   }
                 />
