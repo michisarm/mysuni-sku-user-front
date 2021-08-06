@@ -25,6 +25,7 @@ import {
 } from '../../../../../community/store/CommunityFollowModalStore';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   setOpen: () => void;
@@ -206,7 +207,9 @@ function ProfilePopupView(props: Props) {
                   </div>
                   <div className="profile-info ">
                     <span className="prof-tit">
-                      {isNickName ? skProfile.nickName : skProfile.name}
+                      {isNickName
+                        ? skProfile.nickName
+                        : parsePolyglotString(skProfile.name)}
                     </span>
                     {isCommunityAuth() && (
                       <div className="foll-info">
@@ -316,9 +319,13 @@ function ProfilePopupView(props: Props) {
               <>
                 <div className="info-area">
                   <span className="prof-name">
-                    {isNickName ? skProfile.name : skProfile.nickName}
+                    {isNickName
+                      ? parsePolyglotString(skProfile.name)
+                      : skProfile.nickName}
                   </span>
-                  <span className="comp-name">{skProfile.companyName}</span>
+                  <span className="comp-name">
+                    {parsePolyglotString(skProfile.companyName)}
+                  </span>
                 </div>
                 <div className="tag-area">
                   <div
