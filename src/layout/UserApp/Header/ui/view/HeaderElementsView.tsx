@@ -130,10 +130,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               to="#"
               className="item"
               onClick={() =>
-                window.open(
-                  `${window.location.origin}/suni-community/`,
-                  '_blank'
-                )
+                (window.location.href = `${window.location.origin}/suni-community/`)
               }
             >
               Community
