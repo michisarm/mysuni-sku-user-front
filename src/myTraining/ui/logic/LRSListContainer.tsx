@@ -82,7 +82,7 @@ function LearningContainer() {
                         type={card.type}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
-                        langSupport={card.langSupports}
+                        langSupports={card.langSupports}
                       />
                     </CardGroup>
                   </li>
