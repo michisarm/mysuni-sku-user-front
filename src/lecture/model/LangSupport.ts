@@ -1,3 +1,5 @@
+import { isObservableArray } from 'mobx';
+
 export interface LangSupport {
   defaultLang: boolean;
   lang: string;
@@ -6,6 +8,10 @@ export interface LangSupport {
 export function getDefaultLang(
   langSupports: LangSupport[]
 ): 'ko' | 'en' | 'zh' {
+  if (isObservableArray(langSupports)) {
+    langSupports = Array.from(langSupports);
+  }
+
   if (Array.isArray(langSupports)) {
     const langSupport = langSupports.find((c) => c.defaultLang);
     if (langSupport !== undefined) {
