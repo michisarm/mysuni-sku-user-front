@@ -45,6 +45,19 @@ import {
 } from 'shared/viewmodel/PolyglotString';
 import { LangSupport, getDefaultLang } from 'lecture/model/LangSupport';
 
+// type Language = "Korean" | "English" | "China";
+
+function parseLanguge(lang: string) {
+  switch (lang) {
+    case 'China':
+      return 'CHN';
+    case 'English':
+      return 'ENG';
+    default:
+      return 'KOR';
+  }
+}
+
 interface Props {
   cardId: string;
   learningTime: number;
@@ -64,7 +77,7 @@ interface Props {
   capacity?: number;
   permittedCinerooms?: PermittedCineroom[];
   dataArea?: Area;
-  langSupport?: LangSupport[];
+  langSupports: LangSupport[];
 }
 
 export default function CardView({
@@ -88,7 +101,7 @@ export default function CardView({
     ? isIncludeCineroomId(permittedCinerooms)
     : false,
   dataArea,
-  langSupport,
+  langSupports,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
@@ -99,7 +112,7 @@ export default function CardView({
   const hoverTimer = useRef(0);
   const parseName = parsePolyglotString(
     name,
-    getDefaultLang(langSupport || [])
+    getDefaultLang(langSupports || [])
   );
 
   useEffect(() => {
@@ -354,9 +367,11 @@ export default function CardView({
         <div className="g-lang-area">
           <Icon className="i-glb" />
           <div className="g-list">
-            <span>KOR</span> {/*  className="on"**/}
-            <span>CHN</span>
-            <span>ENG</span>
+            {langSupports.map((langSupport) => (
+              <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
+                {parseLanguge(langSupport.lang)}
+              </span>
+            ))}
           </div>
         </div>
         <p
@@ -364,7 +379,7 @@ export default function CardView({
           dangerouslySetInnerHTML={{
             __html: parsePolyglotString(
               simpleDescription,
-              getDefaultLang(langSupport || [])
+              getDefaultLang(langSupports)
             ),
           }}
         />

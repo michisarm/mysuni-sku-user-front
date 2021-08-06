@@ -177,7 +177,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                     studentCount={upcomingClassroomInfo?.studentCount}
                     remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
                     dataArea={dataArea}
-                    langSupport={card.langSupports}
+                    langSupports={card.langSupports}
                   />
                 );
               })}
