@@ -21,6 +21,7 @@ import {
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -184,9 +185,20 @@ class QnaDetailContainer extends Component<Props, States> {
         <div className="post-view qna">
           <BoardDetailContentHeaderView
             deletable
-            title={post.title ? parsePolyglotString(post.title) : ''}
+            title={
+              post.title
+                ? parsePolyglotString(
+                    post.title,
+                    getDefaultLang(post.langSupports)
+                  )
+                : ''
+            }
             time={post.registeredTime}
-            subField={<span className="category">{category.name}</span>}
+            subField={
+              <span className="category">
+                {parsePolyglotString(category.name)}
+              </span>
+            }
             onClickList={this.onClickList}
             onClickDelete={this.deleteQnaDetail}
             // onClickModify={this.onClickModify}
