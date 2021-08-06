@@ -21,6 +21,8 @@ import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import DefaultBgImg from '../../../style/media/img-my-profile-card-bg.png';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -71,8 +73,11 @@ function MyPageHeaderContainer({
   const onClickShowName = useCallback(async (value: boolean) => {
     if (!skProfile.id || !skProfile.nickName || skProfile.nickName === '') {
       reactAlert({
-        title: '안내',
-        message: '닉네임을 등록해주세요.',
+        title: getPolyglotText('안내', 'mypage-프로필카드-안내'),
+        message: getPolyglotText(
+          '닉네임을 등록해주세요.',
+          'mypage-프로필카드-등록안내'
+        ),
       });
       return;
     }
@@ -124,7 +129,10 @@ function MyPageHeaderContainer({
                         onClickShowName(true)
                       }
                     >
-                      실명
+                      <PolyglotText
+                        defaultString="실명"
+                        id="mypage-프로필카드-실명"
+                      />
                     </Button>
                     <Button
                       className={`name-chng-bttn ${
@@ -137,7 +145,10 @@ function MyPageHeaderContainer({
                         onClickShowName(false)
                       }
                     >
-                      닉네임
+                      <PolyglotText
+                        defaultString="닉네임"
+                        id="mypage-프로필카드-닉네임"
+                      />
                     </Button>
                   </div>
                 </div>
@@ -161,7 +172,7 @@ function MyPageHeaderContainer({
                 <div className="profile-info ">
                   <span className="prof-tit">
                     {showNameFlag
-                      ? skProfile?.name || skProfile.name
+                      ? parsePolyglotString(skProfile.name)
                       : skProfile.nickName}
                   </span>
                   {!isExternalInstructor() && (
@@ -170,8 +181,16 @@ function MyPageHeaderContainer({
                       <span>{skProfile.followingCount}</span> Following
                       김민준 - 커뮤니티 api 추가 필요
                       */}
-                      <span>{0}</span> Followers
-                      <span>{0}</span> Following
+                      <span>{0}</span>
+                      <PolyglotText
+                        defaultString="Followers"
+                        id="mypage-프로필카드-Followers"
+                      />
+                      <span>{0}</span>
+                      <PolyglotText
+                        defaultString="Following"
+                        id="mypage-프로필카드-Following"
+                      />
                     </div>
                   )}
                 </div>
@@ -184,7 +203,10 @@ function MyPageHeaderContainer({
                       clickTabHandler && clickTabHandler('profile')
                     }
                   >
-                    프로필 설정
+                    <PolyglotText
+                      defaultString="프로필 설정"
+                      id="mypage-프로필카드-프로필설정"
+                    />
                   </Button>
                 </div>
               </div>
