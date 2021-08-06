@@ -21,6 +21,7 @@ import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import DefaultBgImg from '../../../style/media/img-my-profile-card-bg.png';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -161,7 +162,7 @@ function MyPageHeaderContainer({
                 <div className="profile-info ">
                   <span className="prof-tit">
                     {showNameFlag
-                      ? skProfile?.name || skProfile.name
+                      ? parsePolyglotString(skProfile.name)
                       : skProfile.nickName}
                   </span>
                   {!isExternalInstructor() && (
