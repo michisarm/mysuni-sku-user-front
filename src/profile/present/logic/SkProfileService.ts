@@ -5,7 +5,6 @@ import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
-import SkProfileUdo from '../../model/SkProfileUdo';
 import { findAllCollegeCache } from '../../../college/present/apiclient/CollegeApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import AdditionalUserInfoModel from 'profile/model/AdditionalUserInfoModel';
