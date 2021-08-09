@@ -12,6 +12,7 @@ export function TopBannerContainer() {
   }, [setOpenTopBanner]);
 
   const displayTopBanner = topBanner !== undefined && openTopBanner === true;
+
   return (
     <>
       {topBanner !== undefined && displayTopBanner && (
