@@ -213,7 +213,7 @@ function parseCardReportItem(
   cardContents: CardContents,
   cardStudent: Student | null
 ): LectureStructureReportItem {
-  const { id, name } = card;
+  const { id, name, langSupports } = card;
   const {
     reportFileBox: { reportName },
   } = cardContents;
@@ -240,7 +240,7 @@ function parseCardReportItem(
 
   return {
     id: `report-${id}`,
-    name: parsePolyglotString(reportName),
+    name: parsePolyglotString(reportName, getDefaultLang(langSupports)),
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -354,7 +354,7 @@ function parseDiscussionItem(
   params.pathname = toPath(params);
   return {
     id: contentId,
-    name: name ? name : '',
+    name: parsePolyglotString(name, getDefaultLang(card.langSupports)),
     type: 'DISCUSSION',
     params,
     path: params.pathname,
@@ -754,7 +754,7 @@ function parseChapterItem(
   params.pathname = toPath(params);
   return {
     id: contentId,
-    name: name ? name : '',
+    name: parsePolyglotString(name, getDefaultLang(card.langSupports)),
     type: 'CHAPTER',
     params,
     path: params.pathname,
