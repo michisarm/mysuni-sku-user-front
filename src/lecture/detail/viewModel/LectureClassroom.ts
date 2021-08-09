@@ -1,5 +1,6 @@
 import { Classroom as RemoteClassroom } from '../../model/Classroom';
 import { UserIdentity } from 'shared/model/UserIdentity';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 export interface Classroom {
   id: string;
@@ -15,13 +16,14 @@ export interface Classroom {
     instructorId: string;
     representative: boolean;
     round: number;
-    name?: string;
-    memberSummary?: {
-      department: string;
-      email: string;
-      name: string;
-      photoId: string;
-    };
+    instructorWithIdentity?: InstructorWithIdentity;
+    // name?: string;
+    // memberSummary?: {
+    //   department: string;
+    //   email: string;
+    //   name: string;
+    //   photoId: string;
+    // };
   }[];
   siteUrl: string;
   capacity: number;

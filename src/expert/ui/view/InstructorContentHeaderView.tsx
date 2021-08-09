@@ -6,9 +6,10 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
 import Image from '../../../shared/components/Image';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 interface Props {
-  instructor: InstructorModel;
+  instructorWithIdentity: InstructorWithIdentity | null;
 }
 
 @observer
@@ -17,8 +18,7 @@ class InstructorContentHeaderView extends React.Component<Props> {
   //
   render() {
     //
-    const { instructor } = this.props;
-    const { memberSummary } = instructor;
+    const { instructorWithIdentity } = this.props;
 
     // 김민준 - 강사관리 소속회사 확인
     return (
@@ -29,26 +29,33 @@ class InstructorContentHeaderView extends React.Component<Props> {
               <div className="profile">
                 <div className="pic">
                   <Image
-                    src={memberSummary.photoId || profileImg}
+                    src={
+                      instructorWithIdentity?.instructor.photoFilePath ||
+                      profileImg
+                    }
                     alt="기본 프로필사진"
                   />
                 </div>
               </div>
               <div className="text-info">
                 <div className="name">
-                  {
-                    // memberSummary.name && parsePolyglotString(memberSummary.name)
-                    memberSummary.name
-                  }
+                  {parsePolyglotString(instructorWithIdentity?.instructor.name)}
                 </div>
                 <div className="part">
                   <span>
-                    {
-                      // memberSummary.department && parsePolyglotString(memberSummary.department)
-                      memberSummary.department
-                    }
+                    {instructorWithIdentity?.instructor.internal
+                      ? parsePolyglotString(
+                          instructorWithIdentity?.userIdentity.departmentName
+                        )
+                      : parsePolyglotString(
+                          instructorWithIdentity?.instructor.organization
+                        )}
                   </span>
-                  <span>{instructor.internal ? '사내강사' : '사외강사'}</span>
+                  <span>
+                    {instructorWithIdentity?.instructor.internal
+                      ? '사내강사'
+                      : '사외강사'}
+                  </span>
                 </div>
               </div>
             </div>
