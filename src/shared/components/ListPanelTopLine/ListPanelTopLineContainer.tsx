@@ -57,14 +57,16 @@ class ListPanelTopLineContainer extends Component<Props> {
           />
         );
       } else {
-        <div
-          dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              `총 <strong>${count || 0}개</strong>의 리스트가 있습니다.`,
-              'Create-MainList-리스트'
-            ),
-          }}
-        />;
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `총 <strong>${count || 0}개</strong>의 리스트가 있습니다.`,
+                'Create-MainList-리스트'
+              ),
+            }}
+          />
+        );
       }
     }
 
