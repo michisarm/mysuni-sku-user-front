@@ -90,9 +90,7 @@ class QuickNavContainer extends Component<Props, State> {
 
     await skProfileService!.findSkProfile();
     const { skProfile } = skProfileService!;
-    await menuControlAuthService!.findMenuControlAuth(
-      parsePolyglotString(skProfile.companyName)
-    );
+    await menuControlAuthService!.findMenuControlAuth();
     await console.log(skProfile);
   }
 
@@ -363,9 +361,7 @@ class QuickNavContainer extends Component<Props, State> {
                 />
               )}
               {/*0907 개인학습 등록 메뉴 추가*/}
-              {(menuControlAuth.companyCode === '' ||
-                (menuControlAuth.authCode === MenuControlAuth.User &&
-                  menuControlAuth.useYn === MenuControlAuth.Yes)) && (
+              {menuControlAuth.useApl && (
                 <>
                   <BottomMenuItemView
                     iconName="apl"

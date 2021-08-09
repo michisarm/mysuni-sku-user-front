@@ -3,7 +3,6 @@ import { timeToHourMinutePaddingFormat } from '../../../shared/helper/dateTimeHe
 import { MenuControlAuthModel } from '../../../approval/company/model/MenuControlAuthModel';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
-
 interface MyCompanyCollegeTimeViewProps {
   myCompanyLearningTime: number;
   aplTime: number;
@@ -15,25 +14,28 @@ export default function MyCompanyCollegeTimeView({
   aplTime,
   menuControlAuth,
 }: MyCompanyCollegeTimeViewProps) {
-
   return (
     <ul className="bullet-list2">
       <li>
         <span className="name" style={{ width: 230 }}>
-          <PolyglotText defaultString="관계사 학습시간" id="home-학이시-mc관시" />
+          <PolyglotText
+            defaultString="관계사 학습시간"
+            id="home-학이시-mc관시"
+          />
         </span>
         <span className="time">
           {timeToHourMinutePaddingFormat(myCompanyLearningTime)}
         </span>
       </li>
-      {menuControlAuth.hasMenuAuth() && (
+      {menuControlAuth.useApl && (
         <li>
           <span className="name">
-            <PolyglotText defaultString="개인 학습시간" id="home-학이시-mc개시" />
+            <PolyglotText
+              defaultString="개인 학습시간"
+              id="home-학이시-mc개시"
+            />
           </span>
-          <span className="time">
-            {timeToHourMinutePaddingFormat(aplTime)}
-          </span>
+          <span className="time">{timeToHourMinutePaddingFormat(aplTime)}</span>
         </li>
       )}
     </ul>

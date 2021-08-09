@@ -35,12 +35,12 @@ export async function requestProfile() {
 
   const skProfileService = SkProfileService.instance;
   const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
-  if (
-    skProfileModel !== null &&
-    !isEmpty(skProfileService.additionalUserInfo.currentJobGroupId)
-  ) {
-    currentHistory?.push(profilePaths.favoriteWelcome());
-  }
+  // if (
+  //   skProfileModel !== null &&
+  //   !isEmpty(skProfileService.additionalUserInfo.currentJobGroupId)
+  // ) {
+  //   currentHistory?.push(profilePaths.favoriteWelcome());
+  // }
 }
 
 function needToReAgree(signedDate: number) {

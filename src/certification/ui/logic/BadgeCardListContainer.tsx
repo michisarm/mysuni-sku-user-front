@@ -41,7 +41,9 @@ function BadgeCardListContainer({
       {(badgeCards &&
         badgeCards.length > 0 &&
         badgeCards.map((badgeCard, index) => {
-          const cardName = `${index + 1}. ${badgeCard.card.name}`;
+          const cardName = `${index + 1}. ${parsePolyglotString(
+            badgeCard.card.name
+          )}`;
           const cubeCount =
             badgeCard.cubeCount < 10
               ? `0${badgeCard.cubeCount}`

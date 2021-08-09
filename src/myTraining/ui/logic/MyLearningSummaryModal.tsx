@@ -89,8 +89,11 @@ class MyLearningSummaryModal extends Component<Props> {
 
   render() {
     const { openModal, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } =
-      this.props;
+    const {
+      trigger,
+      myLearningSummaryService,
+      menuControlAuthService,
+    } = this.props;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
 
@@ -98,7 +101,7 @@ class MyLearningSummaryModal extends Component<Props> {
     const today = moment(new Date()).format('YYYY.MM.DD');
 
     const totalMyCompanyLearningTime =
-      (menuControlAuth.hasMenuAuth() &&
+      (menuControlAuth.useApl &&
         myLearningSummary.displayMyCompanyLearningTime +
           myLearningSummary.aplAllowTime) ||
       myLearningSummary.displayMyCompanyLearningTime;
@@ -225,7 +228,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 )}
                                 )
                               </strong>
-                              {(menuControlAuth.hasMenuAuth() && (
+                              {(menuControlAuth.useApl && (
                                 <span
                                   dangerouslySetInnerHTML={{
                                     __html: getPolyglotText(
