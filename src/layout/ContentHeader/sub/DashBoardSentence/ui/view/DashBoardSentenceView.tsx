@@ -10,7 +10,7 @@ const DashBoardSentenceView: React.FC<Props> = function DashBoardSentenceView(
 ) {
   return (
     <>
-      {dashBoardTxt && <p>{parsePolyglotString(dashBoardTxt.dashBoardTxt)}</p>}
+      {dashBoardTxt && <p>{dashBoardTxt.dashBoardTxt}</p>}
       {!dashBoardTxt && <p />}
     </>
   );
