@@ -45,7 +45,7 @@ class SkProfileService {
     //
     let viewProfileName: string = '';
 
-    if (this.skProfile.nameFlag === 'N' && this.skProfile.nickName !== '') {
+    if (this.skProfile.displayNicknameFirst) {
       viewProfileName = this.skProfile.nickName;
     } else {
       viewProfileName =
@@ -129,8 +129,8 @@ class SkProfileService {
           this.skProfile.name = skProfile.name;
           this.skProfile.nickName = skProfile.nickname;
           this.skProfile.departmentName = skProfile.department.name;
-          this.skProfile.photoImage = skProfile.profileImg;
-          this.skProfile.bgImage = skProfile.profileBgImg;
+          this.skProfile.photoImagePath = skProfile.profileImg;
+          this.skProfile.backgroundImagePath = skProfile.profileBgImg;
         })
     );
     return fetched
