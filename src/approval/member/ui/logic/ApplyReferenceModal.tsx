@@ -59,9 +59,10 @@ class ApplyReferenceModal extends React.Component<Props> {
     } = this.props;
     skProfileService!
       .findSkProfile()
-      .then((profile: SkProfileModel) =>
-        departmentService!.findDepartmentByCode(profile.departmentCode)
-      )
+      .then((profile: SkProfileModel) => {
+        return departmentService!.findDepartmentByCode(skProfileService!.skProfile.departmentCode)
+        // return departmentService!.findDepartmentByCode(profile.departmentCode)
+      })
       .then((department: DepartmentModel) =>
         memberService!.findApprovalMemberByEmployeeId(department.manager.id)
       )
