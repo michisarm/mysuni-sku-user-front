@@ -149,8 +149,18 @@ class SkProfileService {
   }
 
   @action
-  setCurrentJobGroupProp(favoriteGroupId: string) {
-    this.additionalUserInfo.favoriteJobDutyId = favoriteGroupId;
+  setFavoriteJobDutyProp(favoriteJobDutyId: string) {
+    this.additionalUserInfo.favoriteJobDutyId = favoriteJobDutyId;
+  }
+
+  @action
+  setCurrentJobGroupProp(currentJobGroupId: string) {
+    this.additionalUserInfo.currentJobGroupId = currentJobGroupId;
+  }
+
+  @action
+  setCurrentJobDutyProp(currentJobDutyId: string) {
+    this.additionalUserInfo.currentJobDutyId = currentJobDutyId;
   }
 
   // StudySummary ------------------------------------------------------------------------------------------------------

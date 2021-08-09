@@ -43,7 +43,7 @@ export default class SkProfileApi {
   static instance: SkProfileApi;
 
   // User 본인 상세보기
-  findSkProfile() {
+  findSkProfile(): Promise<TempProfileModel> {
     return axios
       .get<TempProfileModel>(`/api/user/users/withAdditionalInfo`)
       .then((response) => (response && response.data) || null);
