@@ -144,7 +144,12 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     //
     const skProfileService = this.props.skProfileService!;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+    } = additionalUserInfo;
 
     let skProfileUdo: SkProfileUdo;
 
@@ -157,7 +162,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     ) {
       reactAlert({
         title: getPolyglotText('알림', 'job-favorite-알림'),
-        message: getPolyglotText('관심 직군과 관심 직무를 선택해주세요.', 'job-favorite-알림내용'),
+        message: getPolyglotText(
+          '관심 직군과 관심 직무를 선택해주세요.',
+          'job-favorite-알림내용'
+        ),
       });
     } else {
       skProfileUdo = new SkProfileUdo(
@@ -166,7 +174,8 @@ class FavoriteJobContainer extends React.Component<Props, State> {
         // skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
-      await skProfileService.modifySkProfile(skProfileUdo);
+      // 컴파일 오류 주석 처리
+      // await skProfileService.modifySkProfile(skProfileUdo);
       this.props.history.push(routePaths.favoriteCollege());
     }
   }
@@ -177,14 +186,22 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
     const { additionalUserInfo } = skProfileService!;
-    const { currentJobDutyId, currentJobGroupId, favoriteJobGroupId, favoriteJobDutyId } = additionalUserInfo;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+    } = additionalUserInfo;
 
     return (
       <Form>
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              <PolyglotText defaultString="Step 01. 관심 있는 직군을 선택해주세요." id="job-favorite-step1" />
+              <PolyglotText
+                defaultString="Step 01. 관심 있는 직군을 선택해주세요."
+                id="job-favorite-step1"
+              />
             </div>
             <Select
               placeholder="선택해주세요"
@@ -200,15 +217,17 @@ class FavoriteJobContainer extends React.Component<Props, State> {
               }
             />
           </div>
-          {
-          favoriteJobGroupId !== 'etc' ? (
-          // favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup.id &&
-          // favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
+          {favoriteJobGroupId !== 'etc' ? (
+            // favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup.id &&
+            // favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                <PolyglotText defaultString="Step 02. 관심 직무를 선택해주세요." id="job-favorite-step2On" />
+                <PolyglotText
+                  defaultString="Step 02. 관심 직무를 선택해주세요."
+                  id="job-favorite-step2On"
+                />
               </div>
               <Select
                 placeholder="선택해주세요"
@@ -228,25 +247,27 @@ class FavoriteJobContainer extends React.Component<Props, State> {
           ) : (
             ''
           )}
-          {
-            favoriteJobGroupId ? (
-          // favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup &&
-          // favoriteJobGroup.favoriteJobGroup.id &&
-          // favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
+          {favoriteJobGroupId ? (
+            // favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup &&
+            // favoriteJobGroup.favoriteJobGroup.id &&
+            // favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                <PolyglotText defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요." id="job-favorite-step2Off" />
+                <PolyglotText
+                  defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요."
+                  id="job-favorite-step2Off"
+                />
               </div>
               <div
                 className={classNames('ui h48 input', {
                   focus: this.state.focus,
                   write:
-                  // 김민준 - name 없음
+                    // 김민준 - name 없음
                     // favoriteJobGroup &&
                     // favoriteJobGroup.favoriteJobDuty &&
                     // favoriteJobGroup.favoriteJobDuty.name,
-                    favoriteJobDutyId
+                    favoriteJobDutyId,
                 })}
               >
                 <input
@@ -283,7 +304,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
             Previous
           </Button> */}
           <div className="error">
-            <PolyglotText defaultString="직군 및 직무를 선택해주세요." id="job-favorite-주의" />
+            <PolyglotText
+              defaultString="직군 및 직무를 선택해주세요."
+              id="job-favorite-주의"
+            />
           </div>
           <Button className="fix bg" onClick={() => this.onNextClick()}>
             <PolyglotText defaultString="다음" id="job-favorite-다음" />
