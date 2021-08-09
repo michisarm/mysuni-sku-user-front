@@ -1,6 +1,8 @@
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+
 export default interface ReportFileBox {
   report: boolean;
   fileBoxId: string;
-  reportName: string;
-  reportQuestion: string;
+  reportName: PolyglotString | null;
+  reportQuestion: PolyglotString | null;
 }

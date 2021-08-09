@@ -8,6 +8,8 @@ import {
 } from 'lecture/detail/viewModel/LectureReport';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCardCache } from '../../../api/cardApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 export async function getReportItem(
   coursePlanId: string,
@@ -28,17 +30,19 @@ export async function getReportItem(
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
 
-  if (
-    coursePlan.cardContents.reportFileBox.reportName !== '' &&
-    coursePlan.cardContents.reportFileBox.reportName !== null
-  ) {
+  if (coursePlan.cardContents.reportFileBox.reportName !== null) {
     let state: State = 'None';
 
     reportFileBox.fileBoxId = coursePlan.cardContents.reportFileBox.fileBoxId;
     reportFileBox.report = coursePlan.cardContents.reportFileBox.report;
-    reportFileBox.reportName = coursePlan.cardContents.reportFileBox.reportName;
-    reportFileBox.reportQuestion =
-      coursePlan.cardContents.reportFileBox.reportQuestion;
+    reportFileBox.reportName = parsePolyglotString(
+      coursePlan.cardContents.reportFileBox.reportName,
+      getDefaultLang(coursePlan.card?.langSupports || [])
+    );
+    reportFileBox.reportQuestion = parsePolyglotString(
+      coursePlan.cardContents.reportFileBox.reportQuestion,
+      getDefaultLang(coursePlan.card?.langSupports || [])
+    );
 
     if (student !== undefined && student !== null) {
       if (
