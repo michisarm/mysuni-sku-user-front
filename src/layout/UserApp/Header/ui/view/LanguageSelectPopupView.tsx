@@ -10,6 +10,7 @@ export function LanguageSelectPopupView() {
   const onOpenPopup = () => {
     setIsOpen(true);
   };
+
   const onClosePopup = () => {
     setIsOpen(false);
   };
@@ -18,13 +19,14 @@ export function LanguageSelectPopupView() {
     const params = {
       nameValues: [
         {
-          name: 'Language',
+          name: 'language',
           value: lang,
         },
       ],
     };
 
     await SkProfileApi.instance.modifySkProfile(params);
+    onClosePopup();
   };
 
   return (
