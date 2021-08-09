@@ -53,16 +53,17 @@ function ProfilePopupView(props: Props) {
   useEffect(() => {
     if (
       (skProfile.nickName === null || skProfile.nickName === '') &&
-      (skProfile.introduce === null || skProfile.introduce === '')
+      (skProfile.selfIntroduction === null || skProfile.selfIntroduction === '')
     ) {
       setIsSettingProfile(false);
     } else {
       setIsSettingProfile(true);
     }
-  }, [skProfile.nickName, skProfile.introduce]);
+  }, [skProfile.nickName, skProfile.selfIntroduction]);
 
   useEffect(() => {
-    if (skProfile.nameFlag === 'R') {
+    // 김민준 - true/false 검증 필요
+    if (!skProfile.displayNicknameFirst) {
       setIsNickName(false);
     } else {
       setIsNickName(true);
@@ -96,10 +97,10 @@ function ProfilePopupView(props: Props) {
 
       if (useNickName) {
         setIsNickName(useNickName);
-        skProfileUdo.nameFlag = 'N';
+        skProfileUdo.displayNicknameFirst = true;
       } else {
         setIsNickName(useNickName);
-        skProfileUdo.nameFlag = 'R';
+        skProfileUdo.displayNicknameFirst = false;
       }
 
       // await modifySkProfile(skProfileUdo);
@@ -116,8 +117,8 @@ function ProfilePopupView(props: Props) {
     let tagList = [];
     let tagHtml = '';
 
-    if (skProfile && skProfile.introduce !== null) {
-      tagList = skProfile ? skProfile.introduce.split(',') : [''];
+    if (skProfile && skProfile.selfIntroduction !== null) {
+      tagList = skProfile ? skProfile.selfIntroduction.split(',') : [''];
       tagList.map((tag, index) => {
         if (tag !== '') {
           tagHtml += '<span>#' + tag + '</span>';

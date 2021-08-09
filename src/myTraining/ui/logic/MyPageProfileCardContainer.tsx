@@ -62,7 +62,7 @@ function MyPageHeaderContainer({
     // badgeService!.findAllBadgeCount();
     // myTrainingService!.countMyTrainingsWithStamp();
 
-    if (skProfile.nameFlag === 'N') {
+    if (skProfile.displayNicknameFirst) {
       setShowNameFlag(false);
     } else {
       setShowNameFlag(true);
@@ -92,7 +92,7 @@ function MyPageHeaderContainer({
         skProfile.pisAgreement
       );
 
-      skProfileUdo.nameFlag = value === true ? 'R' : 'N';
+      skProfileUdo.displayNicknameFirst = value === true ? true : false;
 
       // await modifySkProfile(skProfileUdo);
       skProfileService!.findSkProfile().then((skProfile) => {

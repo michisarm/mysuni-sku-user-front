@@ -82,7 +82,7 @@ export default function CreateListView(props: CreateListViewProps) {
                 </Table.Cell>
                 <Table.Cell>
                   {
-                    // 김민준
+                    // 김민준 - 다국어 enumType
                     EnumUtil.getEnumValue(CubeStateView, cube.state).get(
                       cube.state
                     ) || '-'
