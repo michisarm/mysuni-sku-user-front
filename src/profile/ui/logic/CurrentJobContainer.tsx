@@ -42,6 +42,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
 
     jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile().then((skProfile) => {
+      console.log(skProfile);
       //
       // const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
       // if (skProfile.member.currentJobGroup.currentJobGroup) {
