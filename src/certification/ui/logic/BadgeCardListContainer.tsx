@@ -6,6 +6,7 @@ import { BadgeCardService } from '../../stores';
 import CardStudentService from '../../present/logic/CardStudentService';
 import BadgeCardView from '../view/BadgeCardView';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface BadgeCardListContainerProps {
   badgeCardService?: BadgeCardService;
@@ -63,7 +64,14 @@ function BadgeCardListContainer({
               />
             </div>
           );
-        })) || <div>학습정보가 존재하지 않습니다.</div>}
+        })) || (
+        <div>
+          <PolyglotText
+            defaultString="학습정보가 존재하지 않습니다."
+            id="Certification-View-정보없음"
+          />
+        </div>
+      )}
     </div>
   );
 }
