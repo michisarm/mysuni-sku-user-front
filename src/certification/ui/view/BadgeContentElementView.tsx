@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { dateTimeHelper } from 'shared';
 import moment from 'moment';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import ChallengeStateText from '../../shared/Badge/ui/model/ChallengeStateText';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import { Area } from 'tracker/model';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -188,6 +187,42 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   } = BadgeStatusProps;
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
+  function badgeStateText() {
+    if (badgeState === ChallengeState.WaitForChallenge) {
+      return (
+        <PolyglotText id="Certification-View-도전" defaultString="도전하기" />
+      );
+    } else if (badgeState === ChallengeState.Challenging) {
+      return (
+        <PolyglotText
+          id="Certification-View-도전취소"
+          defaultString="도전취소"
+        />
+      );
+    } else if (badgeState === ChallengeState.ReadyForRequest) {
+      return (
+        <PolyglotText
+          id="Certification-View-발급요청"
+          defaultString="발급요청"
+        />
+      );
+    } else if (badgeState === ChallengeState.Requested) {
+      return (
+        <PolyglotText
+          id="Certification-View-발급취소"
+          defaultString="발급요청 취소"
+        />
+      );
+    } else if (badgeState === ChallengeState.Issued) {
+      return (
+        <PolyglotText
+          id="Certification-View-획득완료"
+          defaultString="획득완료"
+        />
+      );
+    }
+  }
+
   return (
     <div className="status">
       {(badgeState === ChallengeState.WaitForChallenge ||
@@ -196,7 +231,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
         badgeState === ChallengeState.Requested) && (
         <>
           <Button className="fix bg" onClick={onClickButton}>
-            {ChallengeStateText[ChallengeState[badgeState]]}
+            {badgeStateText()}
           </Button>
           {badgeState === ChallengeState.Challenging && (
             <>
@@ -226,9 +261,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
       {/*발급요청 완료, 획득 완료*/}
       {badgeState === ChallengeState.Issued && (
         <>
-          <div className={classNames('big black')}>
-            {ChallengeStateText[badgeState as ChallengeState]}
-          </div>
+          <div className={classNames('big black')}>{badgeStateText()}</div>
           <span className="txt">
             {issueStateTimeFormat} {description}
           </span>

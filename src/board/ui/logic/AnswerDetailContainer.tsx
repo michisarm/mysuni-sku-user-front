@@ -11,6 +11,7 @@ import routePaths from '../../routePaths';
 import { AnswerService, CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -97,11 +98,7 @@ class AnswerDetailContainer extends Component<Props, States> {
             <BoardDetailContentHeaderView
               title={answer.title}
               time={answer.writtenTime}
-              subField={
-                <span className="category">
-                  {parsePolyglotString(post.category.name)}
-                </span>
-              }
+              subField={<span className="category">{post.category.name}</span>}
               onClickList={this.onClickList}
             />
 
@@ -119,7 +116,13 @@ class AnswerDetailContainer extends Component<Props, States> {
                   />
                 </div>
                 <div className="file">
-                  <span>첨부파일 :</span>
+                  <span>
+                    <PolyglotText
+                      id="support-qna-첨부파일"
+                      defaultString="첨부파일"
+                    />
+                    :
+                  </span>
                   <br />
                   {(filesMap &&
                     filesMap.get('reference') &&
