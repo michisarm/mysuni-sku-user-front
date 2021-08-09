@@ -30,8 +30,6 @@ function DashBoardSentenceContainer(){
 
   }, [dashBoardSentence])
 
-  console.log(dashBoardTxt);
-
 return (
 
   <>
