@@ -63,26 +63,23 @@ function ListLeftTopPanel(props: Props) {
     switch (contentType) {
       case MyLearningContentType.PersonalCompleted:
         return (
-          <div className="list-number">
-            <PolyglotText defaultString="전체" id="learning-개인보드-전체" />
-            <strong>
-              {totalCount || 0}
-              <PolyglotText
-                defaultString="개"
-                id="learning-개인보드-게시물수"
-              />
-            </strong>
-            <PolyglotText
-              defaultString="의 개인학습"
-              id="learning-개인보드-개인학습"
-            />
-          </div>
+          <div className="list-number"
+            dangerouslySetInnerHTML={{__html: getPolyglotText(
+              '전체 <strong>{count}개<strong>의 개인학습',
+              'learning-개인보드-전체',
+              {count: totalCount + '' || 0 + ''})}}
+          />
         );
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="list-number">
-            <span>
-              <PolyglotText defaultString="전체" id="승인관리-개인학습-전체" />
+            <span dangerouslySetInnerHTML={{__html: getPolyglotText('전체 <b>{count}개</b>', 'learning-개인보드-전체1', {count: countModel!.all+''})}} />
+            <span dangerouslySetInnerHTML={{__html: getPolyglotText('등록 <b>{count}개</b>', 'learning-개인보드-등록', {count: countModel!.opened+''})}} />
+            <span dangerouslySetInnerHTML={{__html: getPolyglotText('승인 <b>{count}개</b>', 'learning-개인보드-승인', {count: countModel!.openApproval+''})}} />
+            <span dangerouslySetInnerHTML={{__html: getPolyglotText('승인 대기 중 <b>{count}개</b>', 'learning-개인보드-승인대기', {count: countModel!.rejected+''})}} />
+            <span dangerouslySetInnerHTML={{__html: getPolyglotText('반려 <b>{count}개</b>', 'learning-개인보드-반려', {count: countModel!.rejected+''})}} />
+            {/* <span>
+              <PolyglotText defaultString="전체" id="승인관리-개인보드-전체" />
               <b>
                 {countModel!.all}
                 <PolyglotText
@@ -124,26 +121,12 @@ function ListLeftTopPanel(props: Props) {
                 />
               </b>
               <PolyglotText defaultString="반려" id="learning-개인보드-반려" />
-            </span>
+            </span> */}
           </div>
         );
       default:
         return (
-          <div className="list-number">
-            <PolyglotText defaultString="총" id="learning-학보드-게시물총수" />{' '}
-            <strong>
-              {totalCount || 0}
-              {getPolyglotText('개', 'learning-학보드-게시물수')}
-            </strong>
-            {countMessage
-              ? countMessage
-              : getPolyglotText(
-                  '의 리스트가 있습니다.',
-                  'learning-학보드-게시물리스트'
-                )}
-            {/*총 <strong>{totalCount || 0}개</strong>*/}
-            {/*{countMessage ? countMessage : '의 리스트가 있습니다.'}*/}
-          </div>
+          <div className="list-number" dangerouslySetInnerHTML={{__html: getPolyglotText('총 {count}개의 리스트가 있습니다.', 'learning-학보드-게시물총수', {count: totalCount+'' || 0+''})}} />
         );
     }
   };
