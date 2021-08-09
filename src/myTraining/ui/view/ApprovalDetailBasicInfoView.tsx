@@ -40,7 +40,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="조직"
                   />
                 </dt>
-                <dd>{approvalCube.getStudentDepartmentNames}</dd>
+                <dd>{approvalCube.studentDepartmentName}</dd>
               </dl>
               <dl className="bl">
                 <dt>

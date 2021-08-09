@@ -111,38 +111,13 @@ export default class ApprovalCubeService {
     if (approvalCubeDetail) {
       const approvalCube = new ApprovalCubeModel();
       approvalCube.studentId = approvalCubeDetail.student.id;
-      if (approvalCubeDetail.userIdentity.names?.defaultLanguage === 'ko') {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.ko;
-      } else if (
-        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'en'
-      ) {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.en;
-      } else if (
-        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'zh'
-      ) {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.zh;
-      }
-      const langStringMap: Map<string, string> = new Map<string, string>();
-      langStringMap.set(
-        'ko',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.ko || ''
+      approvalCube.studentName = parsePolyglotString(
+        approvalCubeDetail.userIdentity.name
       );
-      langStringMap.set(
-        'en',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.en || ''
+
+      approvalCube.studentDepartmentName = parsePolyglotString(
+        approvalCubeDetail.userIdentity.departmentName
       );
-      langStringMap.set(
-        'zh',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.zh || ''
-      );
-      const departmentNames: LangStrings = new LangStrings();
-      departmentNames.langStringMap = langStringMap;
-      departmentNames.defaultLanguage =
-        approvalCubeDetail.userIdentity.departmentNames?.defaultLanguage || '';
-      approvalCube.studentDepartmentNames = departmentNames;
       approvalCube.cubeName = parsePolyglotString(
         approvalCubeDetail.cube.name,
         getDefaultLang(approvalCubeDetail.cube.langSupports)

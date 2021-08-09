@@ -285,7 +285,7 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.getStudentDepartmentNames}
+                        {cube.studentDepartmentName}
                       </span>
                     </a>
                   </Table.Cell>
