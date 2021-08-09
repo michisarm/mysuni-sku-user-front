@@ -30,8 +30,10 @@ function DashBoardSentenceContainer(){
 
   }, [dashBoardSentence])
 
+  console.log(dashBoardTxt);
+
 return (
-  
+
   <>
   { dashBoardTxt && (
     <DashBoardSentenceView dashBoardTxt={dashBoardTxt}/>

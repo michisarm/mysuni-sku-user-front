@@ -2,6 +2,7 @@ import LearningState from '../model/LearningState';
 import { LectureType } from './LectureType';
 import LectureParams from './LectureParams';
 import CubeType from '../model/CubeType';
+import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
