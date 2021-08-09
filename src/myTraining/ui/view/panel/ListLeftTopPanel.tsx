@@ -89,7 +89,7 @@ function ListLeftTopPanel(props: Props) {
                   defaultString="개"
                   id="learning-개인보드-게시물수"
                 />
-              </b>{' '}
+              </b>
               <PolyglotText defaultString="등록" id="learning-개인보드-등록" />
             </span>
             <span>
@@ -99,7 +99,7 @@ function ListLeftTopPanel(props: Props) {
                   defaultString="개"
                   id="learning-개인보드-게시물수"
                 />
-              </b>{' '}
+              </b>
               <PolyglotText defaultString="승인" id="learning-개인보드-승인" />
             </span>
             <span>
@@ -109,7 +109,7 @@ function ListLeftTopPanel(props: Props) {
                   defaultString="개"
                   id="learning-개인보드-게시물수"
                 />
-              </b>{' '}
+              </b>
               <PolyglotText
                 defaultString="승인 대기 중"
                 id="learning-개인보드-승인대기"
@@ -122,7 +122,7 @@ function ListLeftTopPanel(props: Props) {
                   defaultString="개"
                   id="learning-개인보드-게시물수"
                 />
-              </b>{' '}
+              </b>
               <PolyglotText defaultString="반려" id="learning-개인보드-반려" />
             </span>
           </div>
