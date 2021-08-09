@@ -7,8 +7,12 @@ import {
 } from 'lecture/detail/viewModel/LectureReport';
 import { CubeContents } from '../../../../model/CubeContents';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import { Cube } from 'lecture/model/Cube';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 export async function getReportItem(
+  cube: Cube,
   cubeContents: CubeContents,
   paramsPathname?: string
 ): Promise<LectureReport> {
@@ -44,7 +48,20 @@ export async function getReportItem(
       }
       studentReport.id = student.id;
     }
-    lectureReport.reportFileBox = reportFileBox;
+    if (reportFileBox !== null && reportFileBox !== undefined) {
+      lectureReport.reportFileBox = {
+        report: reportFileBox.report,
+        fileBoxId: reportFileBox.fileBoxId,
+        reportName: parsePolyglotString(
+          reportFileBox.reportName,
+          getDefaultLang(cube.langSupports)
+        ),
+        reportQuestion: parsePolyglotString(
+          reportFileBox.reportQuestion,
+          getDefaultLang(cube.langSupports)
+        ),
+      };
+    }
     lectureReport.studentReport = studentReport;
     if (lectureStructureItem?.student?.extraWork.reportStatus === 'PASS') {
       state = 'Completed';

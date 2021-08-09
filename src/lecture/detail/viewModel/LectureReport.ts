@@ -61,8 +61,8 @@ export interface StudentReport {
 export interface ReportFileBox {
   report?: boolean;
   fileBoxId?: string;
-  reportName?: PolyglotString;
-  reportQuestion?: PolyglotString;
+  reportName?: string;
+  reportQuestion?: string;
 }
 
 export interface LectureReport {
