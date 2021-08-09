@@ -127,10 +127,7 @@ class NoticeListContainer extends Component<Props, State> {
         <span className="cell title">
           <span className="inner">
             <span className="ellipsis">
-              {
-                // post.title && parsePolyglotString(post.title)
-                post.title
-              }
+              {post.title && parsePolyglotString(post.title)}
             </span>
             {count > 0 && (
               <span className="rep-num">

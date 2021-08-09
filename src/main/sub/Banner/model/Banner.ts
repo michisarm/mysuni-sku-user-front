@@ -1,7 +1,9 @@
+import { PolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+
 export interface Banner {
   language: number;
   name: string;
-  imageUrl: string;
+  imageUrl: PolyglotString;
   imageAlt: string;
   target: string;
   creatorName: string;

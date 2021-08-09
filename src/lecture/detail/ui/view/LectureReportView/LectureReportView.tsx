@@ -34,6 +34,7 @@ import { LectureStructureReportItem } from '../../../viewModel/LectureStructure'
 import { Area } from 'tracker/model';
 import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -192,7 +193,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
             <div
               className="ui editor-wrap"
               dangerouslySetInnerHTML={{
-                __html: `${lectureReport?.reportFileBox?.reportQuestion?.replace(
+                __html: `${parsePolyglotString(lectureReport?.reportFileBox?.reportQuestion || null).replace(
                   /(\n|\r\n)/g,
                   '<br/>'
                 )}`,
