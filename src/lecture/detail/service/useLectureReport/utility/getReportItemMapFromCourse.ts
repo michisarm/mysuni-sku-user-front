@@ -8,6 +8,7 @@ import {
 } from 'lecture/detail/viewModel/LectureReport';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCardCache } from '../../../api/cardApi';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 export async function getReportItem(
   coursePlanId: string,
@@ -29,8 +30,8 @@ export async function getReportItem(
   const reportFileBox: ReportFileBox = {};
 
   if (
-    coursePlan.cardContents.reportFileBox.reportName !== '' &&
-    coursePlan.cardContents.reportFileBox.reportName !== null
+    parsePolyglotString(coursePlan.cardContents.reportFileBox.reportName) !== '' &&
+    parsePolyglotString(coursePlan.cardContents.reportFileBox.reportName) !== null
   ) {
     let state: State = 'None';
 

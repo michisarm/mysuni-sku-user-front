@@ -10,6 +10,7 @@ import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { LangSupport } from 'lecture/model/LangSupport';
+import IdPolyglotString from 'shared/model/IdPolyglotString';
 
 class PostModel implements DomainEntity {
   //
@@ -26,7 +27,7 @@ class PostModel implements DomainEntity {
   // time: number = 0;
   readCount: string = '';
   config: PostConfigModel = new PostConfigModel();
-  category: IdName = new IdName();
+  category: IdPolyglotString = new IdPolyglotString();
   boardId: string = '';
   pinned: boolean = false;
   deleted: boolean = false;
@@ -46,7 +47,7 @@ class PostModel implements DomainEntity {
       const writer =
         (post.writer && new WriterModel(post.writer)) || this.writer;
       const category =
-        (post.category && new IdName(post.category)) || this.category;
+        (post.category && new IdPolyglotString(post.category)) || this.category;
       const contents =
         (post.contents && new PostContentsModel(post.contents)) ||
         this.contents;

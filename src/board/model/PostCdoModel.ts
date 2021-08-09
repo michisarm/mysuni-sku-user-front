@@ -5,6 +5,7 @@ import PostContentsModel from './PostContentsModel';
 import WriterModel from './WriterModel';
 import AlarmInfoModel from './AlarmInfoModel';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import IdPolyglotString from 'shared/model/IdPolyglotString';
 
 class PostCdoModel {
   //
@@ -14,7 +15,7 @@ class PostCdoModel {
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();
   config: PostConfigModel = new PostConfigModel();
-  category: IdName = new IdName();
+  category: IdPolyglotString = new IdPolyglotString();
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
 }
 

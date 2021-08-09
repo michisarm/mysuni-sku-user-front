@@ -2,6 +2,7 @@ import LearningState from '../model/LearningState';
 import { LectureType } from './LectureType';
 import LectureParams from './LectureParams';
 import CubeType from '../model/CubeType';
+import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
@@ -60,8 +61,8 @@ export interface StudentReport {
 export interface ReportFileBox {
   report?: boolean;
   fileBoxId?: string;
-  reportName?: string;
-  reportQuestion?: string;
+  reportName?: PolyglotString;
+  reportQuestion?: PolyglotString;
 }
 
 export interface LectureReport {

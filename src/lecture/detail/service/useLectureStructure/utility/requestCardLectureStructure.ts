@@ -240,7 +240,7 @@ function parseCardReportItem(
 
   return {
     id: `report-${id}`,
-    name: reportName || '',
+    name: parsePolyglotString(reportName),
     type: 'REPORT',
     params,
     path: params.pathname,
