@@ -154,11 +154,11 @@ function BadgeChallengeContainer({
       reactAlert({
         title: getPolyglotText(
           '도전 취소 실패',
-          'Certification-BadgeChallenge-발급요청실패T'
+          'Certification-BadgeChallenge-도전취소실패T'
         ),
         message: getPolyglotText(
           '뱃지 도전 취소 요청을 실패했습니다.',
-          'Certification-BadgeChallenge-발급요청실패M'
+          'Certification-BadgeChallenge-도전취소실패M'
         ),
       });
     }

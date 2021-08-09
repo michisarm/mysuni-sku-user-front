@@ -31,7 +31,7 @@ const ChallengeAlertModal: React.FC<Props> = (Props) => {
               dangerouslySetInnerHTML={{
                 __html: getPolyglotText(
                   `'{badgeName}' Badge 도전이 시작되었습니다.`,
-                  'Course-Navigator-학습중',
+                  'Certification-ChallengetStartModal-도전시작',
                   {
                     badgeName: badgeName.toString(),
                   }

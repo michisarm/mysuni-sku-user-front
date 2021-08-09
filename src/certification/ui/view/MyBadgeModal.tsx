@@ -221,14 +221,14 @@ class MyBadgeModal extends Component<Props, States> {
                         dangerouslySetInnerHTML={{
                           __html: getPolyglotText(
                             `본 프로그램의 이수를 위해 의미 있는 시간과 노력을 기울여 주신 것에 진심으로 감사드리며, mySUNI에서 발급한 수료증을 보내드립니다.
-                            \n『{myBadgeName}』 프로그램을 이수한다는 것은 SK의 구성원들이 필히 갖추어야 하는 {name1} 역량에 대한 기본적인 이해와 지식을 보유한 것은 물론, {name2} College에서 제공하는 상위 과정들을 수강할 수 있는 자격을 갖추게 되었음을 의미합니다. \n본 프로그램의 이수를 통해 습득하신 역량이 현재 업무에 실제적으로 활용되기 위해서는지속적인 노력과 학습이 이루어져야 \n한다는 점을 당부드리며, 앞으로도 mySUNI {name3} College에 많은 관심을 부탁드립니다.
-                            \n감사합니다.`,
+                            <br/>『{myBadgeName}』 프로그램을 이수한다는 것은 SK의 구성원들이 필히 갖추어야 하는 {CategoyName1} 역량에 대한 기본적인 이해와 지식을 보유한 것은 물론, {CategoyName2} College에서 제공하는 상위 과정들을 수강할 수 있는 자격을 갖추게 되었음을 의미합니다. <br/>본 프로그램의 이수를 통해 습득하신 역량이 현재 업무에 실제적으로 활용되기 위해서는지속적인 노력과 학습이 이루어져야 <br/>한다는 점을 당부드리며, 앞으로도 mySUNI {CategoyName3} College에 많은 관심을 부탁드립니다.
+                            <br/>감사합니다.`,
                             'Certification-mybadgemodal-이수증내용',
                             {
                               myBadgeName: myBadgeName.toString(),
-                              name1: myBadgeCategoryName.toString(),
-                              name2: myBadgeCategoryName.toString(),
-                              name3: myBadgeCategoryName.toString(),
+                              CategoyName1: myBadgeCategoryName.toString(),
+                              CategoyName2: myBadgeCategoryName.toString(),
+                              CategoyName3: myBadgeCategoryName.toString(),
                             }
                           ),
                         }}
@@ -263,7 +263,7 @@ class MyBadgeModal extends Component<Props, States> {
                               <p
                                 dangerouslySetInnerHTML={{
                                   __html: getPolyglotText(
-                                    `귀하는 아래 프로그램의 전 과정을 \n성공적으로 이수하였으며,  Badge 획득 요건을\n충족하였기에 이 증서를 드립니다.`,
+                                    `귀하는 아래 프로그램의 전 과정을 <br/>성공적으로 이수하였으며,  Badge 획득 요건을<br/>충족하였기에 이 증서를 드립니다.`,
                                     'Certification-mybadgemodal-이수증내용2'
                                   ),
                                 }}

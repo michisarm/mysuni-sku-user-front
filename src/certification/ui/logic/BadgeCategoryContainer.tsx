@@ -22,11 +22,8 @@ interface BadgeCategoryContainerProps {
 function BadgeCategoryContainer({
   badgeCategoryService,
 }: BadgeCategoryContainerProps) {
-  const {
-    categories,
-    selectedCategoryId,
-    setSelectedCategoryId,
-  } = badgeCategoryService!;
+  const { categories, selectedCategoryId, setSelectedCategoryId } =
+    badgeCategoryService!;
 
   useEffect(() => {
     return () => {
@@ -34,13 +31,8 @@ function BadgeCategoryContainer({
     };
   }, []);
 
-  const {
-    isNext,
-    isPrev,
-    onClickNext,
-    onClickPrev,
-    sliceCategories,
-  } = useBadgeSlide(categories);
+  const { isNext, isPrev, onClickNext, onClickPrev, sliceCategories } =
+    useBadgeSlide(categories);
 
   const history = useHistory();
 
@@ -102,7 +94,10 @@ function BadgeCategoryContainer({
             </span>
             <span className="title">
               <span className="ellipsis">
-                <PolyglotText defaultString="전체보기" id="sub-tab-menu" />
+                <PolyglotText
+                  defaultString="전체보기"
+                  id="Certification-섭탭메뉴-전체보기"
+                />
               </span>
             </span>
           </a>
