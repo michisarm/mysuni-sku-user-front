@@ -37,8 +37,8 @@ export interface CubeContents {
   reportFileBox: {
     report: boolean;
     fileBoxId: string;
-    reportName: string;
-    reportQuestion: string;
+    reportName: PolyglotString;
+    reportQuestion: PolyglotString;
   };
   reviewFeedbackId: string;
   surveyId: string;
