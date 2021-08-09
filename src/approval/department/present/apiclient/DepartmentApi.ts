@@ -9,8 +9,15 @@ export default class DepartmentApi {
 
   findDepartmentByCode(departmentCode: string) {
     //
-    return axios.get<DepartmentModel>(this.rootURL + `/departmentCode?code=${departmentCode}`)
-      .then((response) => response && response.data && new DepartmentModel(response.data) || new DepartmentModel());
+    return axios
+      .get<DepartmentModel>(
+        this.rootURL + `/byDepartmentCode?code=${departmentCode}`
+      )
+      .then(
+        (response) =>
+          (response && response.data && new DepartmentModel(response.data)) ||
+          new DepartmentModel()
+      );
   }
 }
 
