@@ -64,7 +64,7 @@ class InstructorPage extends Component<Props, State> {
       instructorId,
       offset: cards.length,
       limit: PAGE_SIZE,
-    }).then(next => {
+    }).then((next) => {
       if (next !== undefined) {
         const nextCards = [...cards, ...next.results];
         this.setState({ cards: nextCards, cardsTotalCount: next.totalCount });

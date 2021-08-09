@@ -15,6 +15,7 @@ import { CollegeLectureCountService } from 'lecture/stores';
 import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export const history = createBrowserHistory();
 
@@ -213,9 +214,15 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
       <section className="content f-channel">
         <div className="cont-inner">
           <div className="res header">
-            관심 Channel 변경
+          <PolyglotText
+            defaultString="관심 Channel 변경"
+            id="home-ChannelChangeModal-타이틀"
+          />
             <span className="sub f12">
-              맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.
+            <PolyglotText
+              defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요."
+              id="home-ChannelChangeModal-설명"
+            />
             </span>
           </div>
           <div>

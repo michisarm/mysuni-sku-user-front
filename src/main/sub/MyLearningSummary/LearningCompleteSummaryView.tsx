@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import { convertProgressValue } from './convertProgressValue';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 
 interface LearningCompleteSummaryViewProps {
@@ -39,9 +39,7 @@ export default function LearningCompleteSummaryView({
           <span className="personal_pop_tit">
             <PolyglotText defaultString="누적 완료학습" id="home-Summary-완료학습누적갯수" />
           </span>
-          <span>
-            <strong>{personalBoardCompletedCount}</strong>개
-          </span>
+          <span dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{personalBoardCompletedCount}</strong>개', 'home-Summary-개', {personalBoardCompletedCount: personalBoardCompletedCount+''})}} />
         </Popup>
     </div>
   );

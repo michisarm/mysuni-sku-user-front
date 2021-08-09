@@ -1,6 +1,5 @@
 import { Classroom as RemoteClassroom } from '../../model/Classroom';
-import { Member } from '../../model/Member';
-import { UserIdentity } from '../../model/UserIdentity';
+import { UserIdentity } from 'shared/model/UserIdentity';
 
 export interface Classroom {
   id: string;
