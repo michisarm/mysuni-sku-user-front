@@ -3,18 +3,32 @@ import { CompanyApproverModel } from '../../model/CompanyApproverModel';
 
 export default class CompanyApproverApi {
   //
-    rootURL = '/api/approval/companyApprover';
+  rootURL = '/api/approval/members';
 
   static instance: CompanyApproverApi;
 
   findCompanyApprover() {
-    return axios.get<CompanyApproverModel>(this.rootURL)
-      .then((response) => response && response.data && new CompanyApproverModel(response.data) || new CompanyApproverModel());
+    return axios
+      .get<CompanyApproverModel>(this.rootURL + '/myCourseApprover')
+      .then(
+        (response) =>
+          (response &&
+            response.data &&
+            new CompanyApproverModel(response.data)) ||
+          new CompanyApproverModel()
+      );
   }
 
   findCompanyAplApprover() {
-    return axios.get<CompanyApproverModel>(this.rootURL+'/apl')
-      .then((response) => response && response.data && new CompanyApproverModel(response.data) || new CompanyApproverModel());
+    return axios
+      .get<CompanyApproverModel>(this.rootURL + '/myAplApprover')
+      .then(
+        (response) =>
+          (response &&
+            response.data &&
+            new CompanyApproverModel(response.data)) ||
+          new CompanyApproverModel()
+      );
   }
 }
 
