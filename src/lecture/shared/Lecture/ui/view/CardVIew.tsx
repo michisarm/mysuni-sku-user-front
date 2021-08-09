@@ -49,7 +49,7 @@ import { LangSupport, getDefaultLang } from 'lecture/model/LangSupport';
 
 function parseLanguge(lang: string) {
   switch (lang) {
-    case 'China':
+    case 'Chinese':
       return 'CHN';
     case 'English':
       return 'ENG';
