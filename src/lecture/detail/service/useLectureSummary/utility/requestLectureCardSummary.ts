@@ -3,7 +3,6 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
 import { CardRelatedCount } from '../../../../model/CardRelatedCount';
-import { UserIdentity } from '../../../../model/UserIdentity';
 import { findCardCache } from '../../../api/cardApi';
 import { findCubesByIdsCache } from '../../../api/cubeApi';
 import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
@@ -17,6 +16,8 @@ import { requestLectureState } from '../../useLectureState/utility/requestLectur
 import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
 import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudentsRom';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { UserIdentity } from 'shared/model/UserIdentity';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 function getVaildLeaningDate(
   validLearningDate: number,
@@ -59,6 +60,7 @@ function parseLectureSummary(
     difficultyLevel,
     name,
     stampCount,
+    langSupports,
   } = card;
   const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
@@ -73,8 +75,14 @@ function parseLectureSummary(
     },
     operator: {
       email: cardOperatorIdentity?.email || '',
-      name: cardOperatorIdentity?.names?.langStringMap.ko || '',
-      companyName: cardOperatorIdentity?.companyNames?.langStringMap.ko || '',
+      name: parsePolyglotString(
+        cardOperatorIdentity?.name,
+        getDefaultLang(langSupports)
+      ),
+      companyName: parsePolyglotString(
+        cardOperatorIdentity?.companyName,
+        getDefaultLang(langSupports)
+      ),
     },
     stampCount,
     thumbImagePath,

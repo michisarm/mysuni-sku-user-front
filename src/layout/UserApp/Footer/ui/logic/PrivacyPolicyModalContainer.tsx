@@ -96,7 +96,7 @@ export default class PrivacyPolicyModalContainer extends Component<
             <PolyglotText defaultString="개인정보 처리방침" id="home-개정얼-타이틀" />
             <Select
               className="small-border select-right"
-              placeholder="선택하세요"
+              placeholder={getPolyglotText('선택하세요', 'home-개정얼-선택')}
               options={privacyPolicyOption}
               value={policyVer}
               onChange={this.onChangePolicy}

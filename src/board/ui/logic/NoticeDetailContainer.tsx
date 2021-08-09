@@ -115,8 +115,9 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                   <span>
                     <PolyglotText
                       id="support-noti-첨부파일"
-                      defaultString="첨부파일 : "
+                      defaultString="첨부파일"
                     />
+                    :
                   </span>
                 )}
                 <br />

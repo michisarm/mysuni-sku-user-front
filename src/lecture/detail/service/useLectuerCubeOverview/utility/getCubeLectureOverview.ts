@@ -64,8 +64,11 @@ async function getLectureSummary(
     learningTime,
     operator: {
       email: operator?.email || '',
-      name: operator?.names?.langStringMap.ko || '',
-      companyName: operator?.companyNames?.langStringMap.ko || '',
+      name: parsePolyglotString(operator?.name, getDefaultLang(langSupports)),
+      companyName: parsePolyglotString(
+        operator?.companyName,
+        getDefaultLang(langSupports)
+      ),
     },
     passedStudentCount,
     studentCount,

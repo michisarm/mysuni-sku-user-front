@@ -35,7 +35,6 @@ class FooterContainer extends Component {
                 defaultString="Introduction"
                 id="home-ftr-바로가1"
               />
-              Introduction
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportNotice()}
@@ -56,7 +55,7 @@ class FooterContainer extends Component {
               className="item"
               onClick={() => onClick('Q&A')}
             >
-              <PolyglotText defaultString="Q&" id="home-ftr-바로가4" />
+              <PolyglotText defaultString="Q&A" id="home-ftr-바로가4" />
             </NavLink>
           </>
         )}

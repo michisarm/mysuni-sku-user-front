@@ -77,7 +77,7 @@ class HeaderContainer extends Component<Props, State> {
       <div className="row head">
         <div className="cell v-middle">
           <span className="text01">
-            <PolyglotText defaultString="Channel list" id="home-ChannelChangeModal-타이틀" />
+            <PolyglotText defaultString="Channel list" id="home-ChannelChangeModal-채널목록" />
           </span>
           <div className="right">
             <div className={classNames('ui h30 search input', { focus, write: searchKey })}>

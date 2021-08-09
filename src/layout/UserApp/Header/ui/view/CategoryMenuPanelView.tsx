@@ -195,7 +195,7 @@ class CategoryMenuPanelView extends Component<Props> {
                         onRouteChannel(e);
                       }}
                     >
-                      전체보기
+                      <PolyglotText defaultString="전체보기" id="home-cipp-전체보기" />
                       <i className="arr-r-gray" />
                     </button>
                   </div>

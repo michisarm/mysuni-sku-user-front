@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button } from 'semantic-ui-react';
 import { Classroom } from '../../../../../lecture/detail/viewModel/LectureClassroom';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   classrooms: Classroom[];
@@ -95,7 +96,7 @@ class TableModal extends Component<Props, States> {
                     <Table.Cell>{classroom.round}</Table.Cell>
                     <Table.Cell>
                       {classroom.instructor.length > 0 &&
-                        classroom.instructor.map(item => (
+                        classroom.instructor.map((item) => (
                           <>
                             {item.name}
                             <p />
@@ -103,12 +104,12 @@ class TableModal extends Component<Props, States> {
                         ))}
                     </Table.Cell>
                     <Table.Cell>
-                      {classroom.operator?.names?.langStringMap.ko}
-                      {(classroom.operator?.companyNames ||
+                      {parsePolyglotString(classroom.operator?.name)}
+                      {(classroom.operator?.companyName ||
                         classroom.operator?.email) && (
                         <>
                           <span className="dash" />
-                          {classroom.operator?.companyNames?.langStringMap.ko}
+                          {parsePolyglotString(classroom.operator?.companyName)}
                           <br />
                           {classroom.operator?.email}
                         </>
