@@ -47,7 +47,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   // language: Language = null;
-  language: string = '';
+  language: string = 'Korean';
 
   constructor(skProfile?: SkProfileModel) {
     //
