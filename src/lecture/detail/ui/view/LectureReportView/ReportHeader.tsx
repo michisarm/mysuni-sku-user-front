@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { useLectureReport } from '../../../store/LectureReportStore';
-import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 interface ReportHeaderProps {}
 
@@ -13,7 +12,7 @@ const ReportHeader: React.FC<ReportHeaderProps> = function ReportHeader({}) {
       {lectureReport && (
         <div className="survey-header">
           <div className="survey-header-left">
-            {parsePolyglotString(lectureReport.reportFileBox?.reportName || null)}
+            {lectureReport.reportFileBox?.reportName}
           </div>
           <div className="survey-header-right">
             {lectureReport.state !== 'None' && (
