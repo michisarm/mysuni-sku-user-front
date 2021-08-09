@@ -195,6 +195,7 @@ function createPanoptoEmbedPlayer() {
       }
     }
     embedApi = new window.EmbedApi('panopto-embed-player', options);
+    embedApi.setVolume(0.5);
     onProgress();
     intervalId = setInterval(onProgress, 500);
   }
