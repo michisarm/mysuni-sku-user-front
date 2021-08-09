@@ -149,8 +149,8 @@ class SkProfileService {
   }
 
   @action
-  setCurrentJobGroupProp(favoriteGroupId: string) {
-    this.additionalUserInfo.favoriteJobDutyId = favoriteGroupId;
+  setCurrentJobGroupProp(currentJobGroupId: string) {
+    this.additionalUserInfo.currentJobGroupId = currentJobGroupId;
   }
 
   // StudySummary ------------------------------------------------------------------------------------------------------
