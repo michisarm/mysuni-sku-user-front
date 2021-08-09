@@ -15,6 +15,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -22,7 +23,7 @@ interface Props extends RouteComponentProps {
 
 const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
-  const [title] = useState('Deep Change를 위한 권장과정');
+  const [title] = useState(getPolyglotText('Deep Change를 위한 권장과정', 'home-DeepChange-Title'));
 
   const fetchCardList = async () => {
     const cardIds = await findRequiredLearning();

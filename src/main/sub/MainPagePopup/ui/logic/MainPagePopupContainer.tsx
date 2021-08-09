@@ -10,6 +10,7 @@ import moment from 'moment';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { NewDatePeriod } from 'shared/model/NewDatePeriod';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 function MainPagePopupContainer() {
   const [noMoreModal, setNoMoreModal] = useState(false);
@@ -74,7 +75,7 @@ function MainPagePopupContainer() {
         <Modal.Header>
           <div className="right-btn">
             <Checkbox
-              label="더 이상 보지 않기"
+              label={getPolyglotText('더 이상 보지 않기', '공통-공통-안보기')}
               className="base"
               onChange={onHandleChange}
             />

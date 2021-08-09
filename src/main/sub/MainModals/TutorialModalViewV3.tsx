@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button, Checkbox, Image, Modal } from 'semantic-ui-react';
 import Swiper from 'react-id-swiper';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const TutorialModalViewV3 = () => {
   //
@@ -51,7 +52,7 @@ const TutorialModalViewV3 = () => {
     <Modal open={modalOpen} close={ModalClose} className="base w1000 tutorials2 front scrolling">
       <Modal.Header className="header2">
         <div className="right-btn">
-          <Checkbox label="더 이상 보지 않기" className="base" onChange={onHandleChange} />
+          <Checkbox label={getPolyglotText('더 이상 보지 않기', '공통-공통-안보기')} className="base" onChange={onHandleChange} />
           <Button className="close" onClick={ModalClose}>Close</Button>
         </div>
       </Modal.Header>
