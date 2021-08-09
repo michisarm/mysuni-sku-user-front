@@ -14,6 +14,7 @@ import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { find } from 'lodash';
 
 interface Props extends RouteComponentProps {
   jobGroupService?: JobGroupService;
@@ -41,6 +42,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
 
     jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile().then((skProfile) => {
+      console.log(skProfile);
       //
       // const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
       // if (skProfile.member.currentJobGroup.currentJobGroup) {
@@ -77,6 +79,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findJobGroupById(data.value);
+    skProfileService?.setCurrentJobGroupProp(data.value);
     // id만 넘어오는 중
     // skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
     //   id: data.value,
@@ -104,13 +107,13 @@ class CurrentJobContainer extends React.Component<Props, State> {
   }
 
   selectJobDuty(event: any, data: any) {
-    //
     const { skProfileService } = this.props;
 
     this.setState({
       focus: false,
     });
 
+    skProfileService?.setCurrentJobGroupProp(data.value);
     // 김민준 - id만 넘어오는 중
     // skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
     //   id: data.value,
@@ -145,14 +148,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
 
     let skProfileUdo: SkProfileUdo;
 
-    if (
-      !currentJobDutyId ||
-      !currentJobGroupId
-      // !currentJobGroup.currentJobGroup ||
-      // !currentJobGroup.currentJobGroup!.id ||
-      // !currentJobGroup.currentJobDuty ||
-      // !currentJobGroup.currentJobDuty!.id
-    ) {
+    if (!currentJobDutyId || !currentJobGroupId) {
       reactAlert({
         title: getPolyglotText('알림', 'job-recent-알림'),
         message: getPolyglotText(
@@ -193,101 +189,76 @@ class CurrentJobContainer extends React.Component<Props, State> {
             <Select
               placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
               options={selectOptionJobGroup}
-              value={
-                // currentJobGroup &&
-                // currentJobGroup.currentJobGroup &&
-                // currentJobGroup.currentJobGroup.id
-                currentJobGroupId
-              }
               onChange={(event: any, data: any) =>
                 this.selectJobGroup(event, data)
               }
             />
           </div>
-          {
-            // currentJobGroup &&
-            // currentJobGroup.currentJobGroup &&
-            // currentJobGroup.currentJobGroup.id &&
-            // currentJobGroup.currentJobGroup.id !== 'etc' ? (
-            currentJobGroupId !== 'etc' ? (
-              <div className="select-box">
-                <div className="select-title">
-                  <PolyglotText
-                    defaultString="Step 02. 현재 직무를 선택해주세요."
-                    id="job-recent-step2On"
-                  />
-                </div>
-                <Select
-                  placeholder={getPolyglotText(
-                    '선택해주세요',
-                    'job-recent-select'
-                  )}
-                  options={selectOptionJobDuty}
-                  value={
-                    currentJobDutyId
-                    // member &&
-                    // member.currentJobGroup &&
-                    // member.currentJobGroup.currentJobDuty &&
-                    // member.currentJobGroup.currentJobDuty.id
-                  }
-                  onChange={(event: any, data: any) =>
-                    this.selectJobDuty(event, data)
-                  }
+          {currentJobGroupId !== 'etc' ? (
+            <div className="select-box">
+              <div className="select-title">
+                <PolyglotText
+                  defaultString="Step 02. 현재 직무를 선택해주세요."
+                  id="job-recent-step2On"
                 />
               </div>
-            ) : (
-              ''
-            )
-          }
-          {
-            // currentJobGroup &&
-            // currentJobGroup.currentJobGroup &&
-            // currentJobGroup.currentJobGroup.id &&
-            // currentJobGroup.currentJobGroup.id === 'etc' ? (
-            currentJobGroupId === 'etc' ? (
-              <div className="select-box">
-                <div className="select-title">
-                  <PolyglotText
-                    defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요."
-                    id="job-recent-step2Off"
-                  />
-                </div>
-                <div
-                  className={classNames('ui h48 input', {
-                    focus: this.state.focus,
-                    write:
-                      // 김민준 - name 확인 불가 addtional
-                      currentJobDutyId,
+              <Select
+                placeholder={getPolyglotText(
+                  '선택해주세요',
+                  'job-recent-select'
+                )}
+                options={selectOptionJobDuty}
+                onChange={(event: any, data: any) =>
+                  this.selectJobDuty(event, data)
+                }
+              />
+            </div>
+          ) : (
+            ''
+          )}
+          {currentJobGroupId === 'etc' ? (
+            <div className="select-box">
+              <div className="select-title">
+                <PolyglotText
+                  defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요."
+                  id="job-recent-step2Off"
+                />
+              </div>
+              <div
+                className={classNames('ui h48 input', {
+                  focus: this.state.focus,
+                  write:
+                    // 김민준 - name 확인 불가 addtional
+                    currentJobDutyId,
+                  // currentJobGroup &&
+                  // currentJobGroup.currentJobDuty &&
+                  // currentJobGroup.currentJobDuty.name,
+                })}
+              >
+                <input
+                  type="text"
+                  placeholder="Text.."
+                  value={
+                    // 김민준 - name 확인 불가 addtional
+                    currentJobDutyId
                     // currentJobGroup &&
                     // currentJobGroup.currentJobDuty &&
-                    // currentJobGroup.currentJobDuty.name,
-                  })}
-                >
-                  <input
-                    type="text"
-                    placeholder="Text.."
-                    value={
-                      // 김민준 - name 확인 불가 addtional
-                      currentJobDutyId
-                      // currentJobGroup &&
-                      // currentJobGroup.currentJobDuty &&
-                      // currentJobGroup.currentJobDuty.name
-                    }
-                    onClick={() => this.setState({ focus: true })}
-                    onChange={(e) =>
-                      this.selectEtcJobDuty({ value: e.target.value })
-                    }
-                  />
-                  <Icon
-                    className="clear link"
-                    onClick={() => this.selectEtcJobDuty({ value: '' })}
-                  />
-                </div>
+                    // currentJobGroup.currentJobDuty.name
+                  }
+                  onClick={() => this.setState({ focus: true })}
+                  onChange={(e) =>
+                    this.selectEtcJobDuty({ value: e.target.value })
+                  }
+                />
+                <Icon
+                  className="clear link"
+                  onClick={() => this.selectEtcJobDuty({ value: '' })}
+                />
               </div>
-            ) : (
-              ''
-            )
-          }
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         {/*<div className="select-error">*/}
         {/*  <Icon className="error16" /><span className="blind">error</span>*/}

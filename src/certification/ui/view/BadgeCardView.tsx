@@ -3,7 +3,10 @@ import { useHistory } from 'react-router-dom';
 import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface BadgeCardViewProps {
   cardId: string;
@@ -45,10 +48,16 @@ function BadgeCardView({
         </a>
       </div>
       <span className="num" onClick={() => moveToCardPage(cardId)}>
-        {cubeCount}
-        <PolyglotText
-          id="Certification-View-갯수"
-          defaultString="개 강의 구성"
+        <div
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              `{cubeCount}개 강의 구성`,
+              'Certification-View-갯수',
+              {
+                cubeCount,
+              }
+            ),
+          }}
         />
 
         {isPassed && (

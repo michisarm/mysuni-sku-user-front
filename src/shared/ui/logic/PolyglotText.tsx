@@ -1,4 +1,5 @@
 import React from 'react';
+import { findI18nResource } from 'shared/viewmodel/PolyglotText';
 
 interface PolyglotTextProps {
   defaultString: string;
@@ -8,7 +9,7 @@ interface PolyglotTextProps {
 
 export function PolyglotText(props: PolyglotTextProps) {
   const { defaultString, id, values } = props;
-  return <>{defaultString}</>;
+  return <>{getPolyglotText(defaultString, id, values)}</>;
 }
 
 export function getPolyglotText(
@@ -16,7 +17,7 @@ export function getPolyglotText(
   id: string,
   values?: Record<string, string>
 ) {
-  let text = defaultString;
+  let text = findI18nResource(id) || defaultString;
   if (values !== undefined) {
     Object.keys(values).forEach((key) => {
       text = text.replace('{' + key + '}', values[key]);

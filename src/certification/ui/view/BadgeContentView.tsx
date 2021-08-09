@@ -60,7 +60,7 @@ export default function BadgeContentView({ badge }: BadgeContentViewProps) {
                     'Certification-View-추가발급'
                   )}
                   contentHtml={getPolyglotText(
-                    '해당 Badge는 학습 이수 외에도 추가 미션이 있습니다.\n학습 이수 완료 후, 발급 요청하시면 담당자가 추가 미션에 대해 안내 드릴 예정입니다.',
+                    '해당 Badge는 학습 이수 외에도 추가 미션이 있습니다.<br/>학습 이수 완료 후, 발급 요청하시면 담당자가 추가 미션에 대해 안내 드릴 예정입니다.',
                     'Certification-View-발급안내'
                   )}
                 />

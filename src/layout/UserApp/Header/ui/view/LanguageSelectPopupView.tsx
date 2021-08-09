@@ -27,6 +27,7 @@ export function LanguageSelectPopupView() {
 
     await SkProfileApi.instance.modifySkProfile(params);
     onClosePopup();
+    window.location.href = '/suni-main';
   };
 
   return (
@@ -57,31 +58,31 @@ export function LanguageSelectPopupView() {
         <div className="lang_inner">
           <ul>
             <li>
-              <Link
+              <button
                 className={`${skProfile.language === 'Korean' ? 'on' : ''}`}
-                to="/"
+                style={{ padding: '12px 24px', fontSize: '14px' }}
                 onClick={() => onSelectLanguge('Korean')}
               >
                 한국어
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
-                className={`${skProfile.language === 'China' ? 'on' : ''}`}
-                to="/"
-                onClick={() => onSelectLanguge('China')}
+              <button
+                className={`${skProfile.language === 'Chinese' ? 'on' : ''}`}
+                style={{ padding: '12px 24px', fontSize: '14px' }}
+                onClick={() => onSelectLanguge('Chinese')}
               >
                 中文(简体)
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
+              <button
                 className={`${skProfile.language === 'English' ? 'on' : ''}`}
-                to="/"
+                style={{ padding: '12px 24px', fontSize: '14px' }}
                 onClick={() => onSelectLanguge('English')}
               >
                 English
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

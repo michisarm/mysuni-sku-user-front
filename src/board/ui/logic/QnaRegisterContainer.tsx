@@ -17,7 +17,10 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
@@ -67,9 +70,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     // postService.clearPost();
     categoryService!.findCategoriesByBoardId('QNA').then(() => {
       postService!.changePostProps('boardId', 'QNA');
-      postService!.changePostProps('writer.name', name);
+      //postService!.changePostProps('writer.name', name);
       postService!.changePostProps('writer.email', email);
-      postService!.changePostProps('writer.companyName', skProfile.companyName);
+      //postService!.changePostProps('writer.companyName', skProfile.companyName);
       postService!.changePostProps(
         'writer.companyCode',
         skProfile.companyCode
@@ -188,8 +191,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
         ) {
           questionType.push({
             key: index,
-            value: data.categoryId,
-            text: data.name,
+            value: { id: data.categoryId, name: data.name },
+            text: parsePolyglotString(data.name),
           });
         }
       });
@@ -197,8 +200,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       categorys.map((data, index) => {
         questionType.push({
           key: index,
-          value: data.categoryId,
-          text: data.name,
+          value: { id: data.categoryId, name: data.name },
+          text: parsePolyglotString(data.name),
         });
       });
     }
@@ -246,8 +249,17 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
                       } else {
-                        this.setState({ write: e.target.value, fieldName: '' });
-                        this.onChangePostProps('title', e.target.value);
+                        const value = e.target.value;
+                        this.setState({ write: value, fieldName: '' });
+                        const polyglotString: PolyglotString = {
+                          en: null,
+                          ko: null,
+                          zh: null,
+                        };
+                        polyglotString.en = value;
+                        polyglotString.ko = value;
+                        polyglotString.zh = value;
+                        this.onChangePostProps('title', polyglotString);
                       }
                     }}
                   />
@@ -255,7 +267,15 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     className="clear link"
                     onClick={(e: any) => {
                       this.setState({ write: '' });
-                      this.onChangePostProps('title', e.target.value);
+                      const polyglotString: PolyglotString = {
+                        en: null,
+                        ko: null,
+                        zh: null,
+                      };
+                      polyglotString.en = '';
+                      polyglotString.ko = '';
+                      polyglotString.zh = '';
+                      this.onChangePostProps('title', polyglotString);
                     }}
                   />
                   <span className="validation">
@@ -282,10 +302,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     className="dropdown selection"
                     options={questionType}
                     onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', {
-                        id: data.value,
-                        name: e.target.innerText,
-                      })
+                      this.onChangePostProps('category', data.value)
                     }
                   />
                 </div>
@@ -326,7 +343,18 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                           if (value.length > 1000) {
                             this.setState({ fieldName: 'contents.contents' });
                           } else {
-                            this.onChangePostProps('contents.contents', value);
+                            const polyglotString: PolyglotString = {
+                              en: null,
+                              ko: null,
+                              zh: null,
+                            };
+                            polyglotString.en = value;
+                            polyglotString.ko = value;
+                            polyglotString.zh = value;
+                            this.onChangePostProps(
+                              'contents.contents',
+                              polyglotString
+                            );
                             this.setState({
                               length: value.length,
                               fieldName: '',

@@ -62,11 +62,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileService!.setProfileProp('photoType', photoTypeTemp);
     }
 
+    // 김민준 - useGdiPhoto 값에 따라서 다른 path 사용
     skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
       '',
       // skProfile.photoType,
-      skProfile.photoImage
+      skProfile.photoImagePath
     );
 
     this.onClose();

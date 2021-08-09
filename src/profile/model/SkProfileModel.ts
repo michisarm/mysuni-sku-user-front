@@ -26,14 +26,18 @@ class SkProfileModel implements DramaEntity {
   // studySummaryConfigured: boolean = false;
 
   // photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
-  photoImage: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
+  photoImagePath: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 주소
+  gdiPhotoImagePath: string = ''; // gdi를 통해 업데이트한 이미지 주소값
+  useGdiPhoto: boolean = false;
+  backgroundImagePath: string = ''; // 배경이미지 주소
 
   nickName: string = ''; // 닉네임
-  bgImage: string = ''; // 배경이미지
-  introduce: string = ''; // 자기소개
+  // introduce: string = ''; // 자기소개
+  selfIntroduction: string = ''; // 자기소개
   // followerCount: number = 0; // 팔로워 숫자
   // followingCount: number = 0; // 팔로잉 숫자
-  nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+  // nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+  displayNicknameFirst: boolean = false; // 닉네임/실명 여부 값(false: 실명, true: 닉네임)
   departmentName: PolyglotString = { ko: '', en: '', zh: '' };
   departmentCode: string = '';
   email: string = '';
@@ -43,9 +47,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   // language: Language = null;
-  gdiPhotoImagePath: string = '';
-  useGdiPhoto: boolean = false;
-  language: string = '';
+  language: string = 'Korean';
 
   constructor(skProfile?: SkProfileModel) {
     //
@@ -110,8 +112,8 @@ class SkProfileModel implements DramaEntity {
     //
     let photoImageFilePath: string = '';
 
-    if (this.photoImage && this.photoImage !== '') {
-      photoImageFilePath = ProfileImagePath(this.photoImage);
+    if (this.photoImagePath && this.photoImagePath !== '') {
+      photoImageFilePath = ProfileImagePath(this.photoImagePath);
     }
     // else {
     // photoImageFilePath =
@@ -127,7 +129,7 @@ class SkProfileModel implements DramaEntity {
   get bgFilePath() {
     //
     let bgImageFilePath: string = '';
-    bgImageFilePath = ProfileImagePath(this.bgImage);
+    bgImageFilePath = ProfileImagePath(this.backgroundImagePath);
 
     return bgImageFilePath;
   }
@@ -137,7 +139,7 @@ class SkProfileModel implements DramaEntity {
     //
     let viewProfileName: string = '';
 
-    if (this.nameFlag === 'N' && this.nickName !== '') {
+    if (this.displayNicknameFirst) {
       viewProfileName = this.nickName;
     } else {
       viewProfileName = parsePolyglotString(this.name);
@@ -158,14 +160,14 @@ decorate(SkProfileModel, {
   // passwordAuthenticated: observable,
   // studySummaryConfigured: observable,
   // photoType: observable,
-  photoImage: observable,
+  photoImagePath: observable,
   // nickName: observable,
-  bgImage: observable,
-  introduce: observable,
+  backgroundImagePath: observable,
+  selfIntroduction: observable,
   // followerCount: observable,
   // followingCount: observable,
   nickName: observable,
-  nameFlag: observable,
+  displayNicknameFirst: observable,
   name: observable,
   phone: observable,
   employeeId: observable,

@@ -100,12 +100,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       skProfileService!.setProfileProp('photoType', photoTypeTemp);
     }
 
-    // 김민준 - phtoType 체크 필요
+    // 김민준 - phtoType 체크 필요 -> useGdiPhoto 값에 따라서 다른 path 사용
     await skProfileService!.modifyPhotoImageByProfileId(
       skProfile.id,
       '',
       // skProfile.photoType,
-      skProfile.photoImage
+      skProfile.photoImagePath
     );
   }
 
@@ -239,7 +239,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     } else {
       if (
         SkProfileService.instance.skProfile.id &&
-        (!skProfile.introduce || skProfile.introduce === '')
+        (!skProfile.selfIntroduction || skProfile.selfIntroduction === '')
       ) {
         reactAlert({
           title: getPolyglotText('알림', 'mypage-프로필설정-알림6'),
@@ -265,16 +265,16 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     if (bgImageFile !== undefined) {
       const imagePath = await uploadFileProfile(bgImageFile);
-      if (imagePath) skProfileUdo.bgImage = imagePath;
+      if (imagePath) skProfileUdo.backgroundImagePath = imagePath;
     }
 
     if (nickNameTemp) skProfileUdo.nickName = nickNameTemp;
-    if (introduceTemp) skProfileUdo.introduce = introduceTemp;
+    if (introduceTemp) skProfileUdo.selfIntroduction = introduceTemp;
 
     if (
-      skProfileUdo.bgImage !== '' ||
+      skProfileUdo.backgroundImagePath !== '' ||
       skProfileUdo.nickName !== '' ||
-      skProfileUdo.introduce !== ''
+      skProfileUdo.selfIntroduction !== ''
     ) {
       // skProfileService.modifySkProfile(skProfileUdo).then(() => {
       //   reactAlert({
@@ -524,11 +524,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                           value={
                             changeIntroduce
                               ? introduceTemp
-                              : skProfile.introduce
+                              : skProfile.selfIntroduction
                           }
                         />
                       )) ||
-                        (changeIntroduce ? introduceTemp : skProfile.introduce)}
+                        (changeIntroduce ? introduceTemp : skProfile.selfIntroduction)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">
