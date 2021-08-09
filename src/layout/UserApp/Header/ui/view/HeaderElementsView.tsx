@@ -137,7 +137,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 )
               }
             >
-              Community
+            <PolyglotText defaultString="Community" id="home-gnb-mtm" />
             </Link>
           )}
         </div>

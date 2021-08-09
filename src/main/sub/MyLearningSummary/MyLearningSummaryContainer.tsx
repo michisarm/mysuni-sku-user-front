@@ -240,8 +240,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           </div>
           <div className="personal-header-title">
             <h3>
-              {skProfile.profileViewName}
-              <PolyglotText defaultString="님," id="home-Summary-님" />
+              <div dangerouslySetInnerHTML={{__html: getPolyglotText('{profileViewName} 님', 'home-Summary-님', {profileViewName: skProfile.profileViewName})}} />
             </h3>
             <DashBoardSentenceContainer />
           </div>

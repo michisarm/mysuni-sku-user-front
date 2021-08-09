@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
 import { timeToHourMinute } from '../../../../../shared/helper/dateTimeHelper';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   activeIndex: number;
@@ -92,17 +92,17 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                       </div>
                     </div>
                   </div>
-                  <span className="gauge-number">
-                    <strong>
-                      {badgeLearningTimeItem.badgeMyCount
-                        ? badgeLearningTimeItem.badgeMyCount
-                        : 0}
-                    </strong>
-                    <PolyglotText
-                      defaultString="개"
-                      id="home-PersonalBoard-갯수"
-                    />
-                  </span>
+                  <span className="gauge-number"
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText('<strong>{badgeMyCount}</strong>개',
+                        'home-PersonalBoard-갯수',
+                        {badgeMyCount: badgeLearningTimeItem.badgeMyCount
+                          ? badgeLearningTimeItem.badgeMyCount+''
+                          : 0+''
+                        }
+                      )
+                    }}
+                  />
                 </div>
                 <div className="card-gauge-bar">
                   <span className="gauge-tit">
@@ -136,17 +136,15 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                       </div>
                     </div>
                   </div>
-                  <span className="gauge-number">
-                    <strong>
-                      {badgeLearningTimeItem.companyAvgBadgeCount
-                        ? badgeLearningTimeItem.companyAvgBadgeCount
-                        : 0}
-                    </strong>
-                    <PolyglotText
-                      defaultString="개"
-                      id="home-PersonalBoard-갯수AVG"
-                    />
-                  </span>
+                  <span className="gauge-number"
+                    dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{companyAvgBadgeCount}</strong>개',
+                      'home-PersonalBoard-갯수AVG',
+                      {companyAvgBadgeCount: badgeLearningTimeItem.companyAvgBadgeCount
+                        ? badgeLearningTimeItem.companyAvgBadgeCount+''
+                        : 0+''
+                      }
+                    )}}  
+                  />
                 </div>
               </div>
             </div>
@@ -160,13 +158,10 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     />
                   </h3>
                 </a>
-                <span>
-                  {moment().year()}
-                  <PolyglotText
-                    defaultString="년 완료 학습"
-                    id="home-PersonalBoard-완료학습"
-                  />
-                </span>
+                <span dangerouslySetInnerHTML={{__html: getPolyglotText('{year}년 완료 학습',
+                  'home-PersonalBoard-완료학습',
+                  {year: moment().year()+''})}}
+                />
               </div>
               <div className="card-item-con">
                 <div className="card-gauge-bar color-manage">
