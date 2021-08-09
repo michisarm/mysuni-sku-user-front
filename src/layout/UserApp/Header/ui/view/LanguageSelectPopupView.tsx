@@ -67,9 +67,9 @@ export function LanguageSelectPopupView() {
             </li>
             <li>
               <Link
-                className={`${skProfile.language === 'China' ? 'on' : ''}`}
+                className={`${skProfile.language === 'Chinese' ? 'on' : ''}`}
                 to="/"
-                onClick={() => onSelectLanguge('China')}
+                onClick={() => onSelectLanguge('Chinese')}
               >
                 中文(简体)
               </Link>
