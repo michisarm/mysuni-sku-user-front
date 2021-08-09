@@ -13,6 +13,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -122,10 +123,14 @@ class QnaListContainer extends React.Component<Props, State> {
         >
           <span className="cell title">
             <span className="inner">
-              <span className="ellipsis">{post.title}</span>
+              <span className="ellipsis">
+                {parsePolyglotString(post.title)}
+              </span>
             </span>
           </span>
-          <span className="cell category">{post.category.name}</span>
+          <span className="cell category">
+            {parsePolyglotString(post.category.name)}
+          </span>
           <span className="cell status">
             {post.answered
               ? getPolyglotText('답변완료', 'support-qna-답변완료')

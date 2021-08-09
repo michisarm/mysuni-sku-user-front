@@ -1,10 +1,11 @@
 import React from 'react';
 import Image from '../../../../../shared/components/Image';
+import { parsePolyglotString, PolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 interface TopBannerViewProps {
   target: string;
   linkUrl: string;
-  imageUrl: string;
+  imageUrl: PolyglotString;
   backgroundColor: string;
   onClose: () => void;
 }
@@ -16,6 +17,8 @@ export function TopBannerView({
   backgroundColor,
   onClose,
 }: TopBannerViewProps) {
+
+
   return (
     <section className="top_banner" style={{ background: backgroundColor }}>
       <div className="inner">
