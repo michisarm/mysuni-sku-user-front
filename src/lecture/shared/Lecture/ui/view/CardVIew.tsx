@@ -45,11 +45,9 @@ import {
 } from 'shared/viewmodel/PolyglotString';
 import { LangSupport, getDefaultLang } from 'lecture/model/LangSupport';
 
-// type Language = "Korean" | "English" | "China";
-
 function parseLanguge(lang: string) {
   switch (lang) {
-    case 'China':
+    case 'Chinese':
       return 'CHN';
     case 'English':
       return 'ENG';
