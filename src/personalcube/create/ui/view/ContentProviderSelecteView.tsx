@@ -6,6 +6,7 @@ import { useContentsProviders } from '../../../store/ContentsProviderStore';
 import { getSelectOptions } from '../../../personalcube/model/ContentsProvider';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 
 interface ContentsProviderSelectViewProps {
@@ -49,12 +50,14 @@ function ContentsProviderSelecteView({
 
   return (
     <>
-      <label className="necessary">교육기관 / 출처</label>
+      <label className="necessary">
+        <PolyglotText defaultString="교육기관 / 출처" id="Create-DetailContentsEdit" />
+      </label>
       <Grid className="create">
         <Grid.Column>
           {/* 김민준 - 목록 */}
           <Select
-            placeholder="선택해주세요"
+            placeholder={getPolyglotText('선택해주세요', 'Create-DetailContentsEdit')}
             className="w100"
             options = {getSelectOptions(contentsProviders || [])}
             onChange={onChangeOrganizerId}
@@ -66,7 +69,7 @@ function ContentsProviderSelecteView({
             <Grid.Column>
               <div className={classNames('ui right-top-count input', { focus, write })}>
                 <input type="text"
-                  placeholder="선택사항이 없는 경우, 교육기관/출처 를 입력해주세요."
+                  placeholder={getPolyglotText('선택사항이 없는 경우, 교육기관/출처 를 입력해주세요.', 'Create-DetailContentsEdit')}
                   value={cubeSdo.otherOrganizerName || ''}
                   onClick={onFocus}
                   onBlur={onBlur}

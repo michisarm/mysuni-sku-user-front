@@ -25,12 +25,12 @@ const SelectOptions = {
   ],
 
   cubeType: [
-    { key: '0', text: '선택해주세요', value: 'None' },
-    { key: '1', text: 'Video', value: 'Video' },
-    { key: '2', text: 'Audio', value: 'Audio' },
+    { key: '0', text: getPolyglotText('선택해주세요', 'Create-NM-cubetype'), value: 'None' },
+    { key: '1', text: getPolyglotText('Video', 'Create-NM-Video'), value: 'Video' },
+    { key: '2', text: getPolyglotText('Audio', 'Create-NM-Audio'), value: 'Audio' },
     // { key: '3', text: 'Community', value: 'Community' },
-    { key: '4', text: 'Web Page', value: 'WebPage' },
-    { key: '5', text: 'Documents', value: 'Documents' },
+    { key: '4', text: getPolyglotText('Web Page', 'Create-NM-Web Page'), value: 'WebPage' },
+    { key: '5', text: getPolyglotText('Documents', 'Create-NM-Documents'), value: 'Documents' },
   ],
 
   cubeOrCourse: [
@@ -127,10 +127,10 @@ const SelectOptions = {
   ],
 
   difficulty: [
-    { key: '1', text: 'Basic', value: 'Basic' },
-    { key: '2', text: 'Intermediate', value: 'Intermediate' },
-    { key: '3', text: 'Advanced', value: 'Advanced' },
-    { key: '4', text: 'Expert', value: 'Expert' },
+    { key: '1', text: getPolyglotText('Basic', 'Create-NM-Basic'), value: 'Basic' },
+    { key: '2', text: getPolyglotText('Intermediate', 'Create-NM-Intermediate'), value: 'Intermediate' },
+    { key: '3', text: getPolyglotText('Advanced', 'Create-NM-Advanced'), value: 'Advanced' },
+    { key: '4', text: getPolyglotText('Expert', 'Create-NM-Expert'), value: 'Expert' },
   ],
 
   assignment: [
@@ -292,11 +292,11 @@ const SelectOptions = {
   ],
 
   userStatus: [
-    { key: '0', text: '전체', value: '' },
-    { key: '1', text: '저장', value: 'Created' },
-    { key: '2', text: '승인대기', value: 'OpenApproval' },
-    { key: '3', text: '승인', value: 'Opened' },
-    { key: '4', text: '반려', value: 'Rejected' },
+    { key: '0', text: getPolyglotText('전체','Create-MainList-userStatus'), value: '' },
+    { key: '1', text: getPolyglotText('저장','Create-MainList-저장'), value: 'Created' },
+    { key: '2', text: getPolyglotText('승인대기','Create-MainList-승대'), value: 'OpenApproval' },
+    { key: '3', text: getPolyglotText('승인','Create-MainList-승인'), value: 'Opened' },
+    { key: '4', text: getPolyglotText('반려','Create-MainList-반려'), value: 'Rejected' },
   ],
 
   openType: [
