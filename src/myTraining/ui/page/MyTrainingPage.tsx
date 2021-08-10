@@ -6,7 +6,7 @@ import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
-import { MyLearningContentTypeName } from '../model/MyLearningContentType';
+import { learningContentTypeName } from '../model/MyLearningContentType';
 import { CollegeService } from '../../../college/stores';
 import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
@@ -23,12 +23,13 @@ function MyTrainingPage() {
   }, []);
 
   const params = useParams<MyTrainingRouteParams>();
+
   return (
     <ContentLayout
       className="mylearning"
       breadcrumb={[
         { text: getPolyglotText('Learning', 'learning-brc-dth2') },
-        { text: MyLearningContentTypeName[params.tab] },
+        { text: learningContentTypeName(params.tab) },
       ]}
     >
       <MyTrainingHeaderContainer />
