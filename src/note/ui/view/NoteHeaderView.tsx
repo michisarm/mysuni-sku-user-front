@@ -46,6 +46,7 @@ import {
 import NoteWithLecture from '../../model/NoteWithLecture';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface NoteHeaderViewProps {
   noteList: OffsetElementList<NoteWithLecture>;
@@ -68,10 +69,14 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
 
   const [collegeOptions, setCollegeOptions] = useState<
     { key: string; value: string; text: string }[]
-  >([{ key: '', value: '', text: '전체' }]);
+  >([
+    { key: '', value: '', text: getPolyglotText('전체', 'mypage-note-전체1') },
+  ]);
   const [channelOptions, setChannelOptions] = useState<
     { key: string; value: string; text: string }[]
-  >([{ key: '', value: '', text: '전체' }]);
+  >([
+    { key: '', value: '', text: getPolyglotText('전체', 'mypage-note-전체2') },
+  ]);
   const [college, setCollege] = useState<string>('');
   const [channel, setChannel] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
@@ -82,7 +87,11 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
     (colleges: CollegeModel[]) => {
       const collegesSelect: any = [];
       if (colleges) {
-        collegesSelect.push({ key: '', text: '전체', value: '' });
+        collegesSelect.push({
+          key: '',
+          text: getPolyglotText('전체', 'mypage-note-전체3'),
+          value: '',
+        });
         colleges.map((field, index) => {
           collegesSelect.push({
             key: index + 1,
@@ -127,7 +136,11 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
 
         const channelSelect: any = [];
         if (colleges) {
-          channelSelect.push({ key: '', text: '전체', value: '' });
+          channelSelect.push({
+            key: '',
+            text: getPolyglotText('전체', 'mypage-note-전체4'),
+            value: '',
+          });
           collegeList.map((field, index) => {
             if (field.id === data.value) {
               field.channels.map((channel, i) => {
@@ -159,7 +172,11 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
   );
 
   const SearchOptions = [
-    { key: 'all', value: 'all', text: '전체' },
+    {
+      key: 'all',
+      value: 'all',
+      text: getPolyglotText('전체', 'mypage-note-전체5'),
+    },
     { key: 'name', value: 'name', text: '과정명' },
     { key: 'content', value: 'content', text: 'Note 내용' },
   ];
@@ -229,7 +246,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             as={Link}
             to="/my-training/my-page/EarnedNoteList/pages/1"
           >
-            모아보기
+            <PolyglotText id="mypage-note-모아보기" defaultString="모아보기" />
           </Menu.Item>
           <Menu.Item
             name="NoteFolder"
@@ -238,7 +255,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             as={Link}
             to="/my-training/my-page/EarnedNoteList/pages/2"
           >
-            폴더보기
+            <PolyglotText id="mypage-note-폴더보기" defaultString="폴더보기" />
           </Menu.Item>
         </Menu>
       </div>
@@ -249,18 +266,28 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
           <Table>
             <Table.Body>
               <Table.Row>
-                <Table.HeaderCell>Note 작성일자</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <PolyglotText
+                    id="mypage-note-작성일자"
+                    defaultString="Note 작성일자"
+                  />
+                </Table.HeaderCell>
                 <Table.Cell>
                   <Calendar searchBox={searchBox} />
                 </Table.Cell>
               </Table.Row>
 
               <Table.Row>
-                <Table.HeaderCell>Category</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <PolyglotText
+                    id="mypage-note-Category"
+                    defaultString="Category"
+                  />
+                </Table.HeaderCell>
                 <Table.Cell>
                   <div className="option_box">
                     <Select
-                      placeholder="전체"
+                      placeholder={getPolyglotText('전체', 'mypage-note-전체6')}
                       options={collegeOptions}
                       onChange={(e, data) => changeColleges(data)}
                     />
@@ -268,7 +295,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
                   <div className="option_box">
                     <Select
                       className="option_detail"
-                      placeholder="전체"
+                      placeholder={getPolyglotText('전체', 'mypage-note-전체7')}
                       options={channelOptions}
                       value={channel}
                       onChange={(e, data) => changeChannel(data)}
@@ -278,11 +305,16 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
               </Table.Row>
 
               <Table.Row>
-                <Table.HeaderCell>검색어</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <PolyglotText
+                    id="mypage-note-검색어"
+                    defaultString="검색어"
+                  />
+                </Table.HeaderCell>
                 <Table.Cell>
                   <div className="option_box">
                     <Select
-                      placeholder="전체"
+                      placeholder={getPolyglotText('전체', 'mypage-note-전체8')}
                       options={SearchOptions}
                       onChange={(e, data) => {
                         setSearchType(data.value as string);
@@ -293,7 +325,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
                     <input
                       type="text"
                       disabled={searchType === 'all' ? true : false}
-                      placeholder="검색어를 입력해주세요."
+                      placeholder={getPolyglotText(
+                        '검색어를 입력해주세요.',
+                        'mypage-note-검색어입력'
+                      )}
                       value={searchText}
                       onKeyPress={(e) =>
                         e.key === 'Enter' && handleSubmitClick()
@@ -304,7 +339,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
                       className="note_btn"
                       onClick={() => handleSubmitClick()}
                     >
-                      검색
+                      <PolyglotText
+                        id="mypage-note-검색"
+                        defaultString="검색"
+                      />
                     </Button>
                   </div>
                 </Table.Cell>
@@ -314,12 +352,24 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
         </div>
 
         <div className="total_box">
-          <span className="tit_cnt">
-            총 <strong>{noteList.results.length}개의 학습과정</strong>
-          </span>
-          <span className="tit_cnt">
-            총 <strong>{subNoteCount}개의 Note</strong>
-          </span>
+          <span
+            className="tit_cnt"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `총 <strong>${noteList.results.length}개의 학습과정</strong>`,
+                'mypage-note-학습과정갯수'
+              ),
+            }}
+          />
+          <span
+            className="tit_cnt"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `총 <strong>${subNoteCount}개의 Note</strong>`,
+                'mypage-note-노트갯수'
+              ),
+            }}
+          />
           <Button
             className="btn_download"
             onClick={(e, data) => excelDownload()}
@@ -328,7 +378,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
               src={`${PUBLIC_URL}/images/all/icon-excel-24-px.svg`}
               alt="엑셀아이콘"
             />
-            전체 Note 다운로드
+            <PolyglotText
+              id="mypage-note-노트다운로드"
+              defaultString="전체 Note 다운로드"
+            />
           </Button>
         </div>
 
@@ -337,10 +390,16 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             <Icon>
               <Image src={`${PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
             </Icon>
-            <p className="txt">
-              작성된 Note가 없습니다.
-              <span>원하는 결과의 학습 과정명과 Note 내용을 검색해보세요!</span>
-            </p>
+            <p
+              className="txt"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  ` 작성된 Note가 없습니다.
+                  <span>원하는 결과의 학습 과정명과 Note 내용을 검색해보세요!</span>`,
+                  'mypage-note-노트없음'
+                ),
+              }}
+            />
           </div>
         )}
       </Segment>
