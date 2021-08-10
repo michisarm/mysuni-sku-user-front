@@ -6,7 +6,7 @@ import { mobxHelper } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import AplService from 'myTraining/present/logic/AplService';
-import AplUdoModel from 'myTraining/model/AplUdoModel';
+import AplApprovalUdo from 'myTraining/model/AplApprovalUdo';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 import { AlertWin, ConfirmWin } from 'shared';
@@ -157,7 +157,7 @@ function AplDetailContainer(props: Props) {
   const onConfirmReject = useCallback(
     async (remark: string) => {
       /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
-      const aplUdo = AplUdoModel.createForReject(model, remark);
+      const aplUdo = AplApprovalUdo.createForReject(model.id, remark);
       await aplService!.modifyAplWithApprovalState(aplUdo);
 
       setOpenRejectModal(false);
@@ -185,8 +185,8 @@ function AplDetailContainer(props: Props) {
     const allowHourNumber = Number.parseInt(allowHour);
     const allowMinuteNumber = Number.parseInt(allowMinute);
 
-    const aplUdo = AplUdoModel.createForApproval(
-      model,
+    const aplUdo = AplApprovalUdo.createForApproval(
+      model.id,
       allowHourNumber,
       allowMinuteNumber
     );

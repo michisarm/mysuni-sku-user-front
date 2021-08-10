@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   model: AplModel;
@@ -29,7 +30,9 @@ function ApprovalInfoView(props: Props) {
             />
           </dt>
           <dd>
-            <span>{model.creatorName}</span>
+            <span>
+              {parsePolyglotString(model.registrantUserIdentity?.name)}
+            </span>
             <span className="l">{model.displayCreationDateTime}</span>
           </dd>
         </dl>

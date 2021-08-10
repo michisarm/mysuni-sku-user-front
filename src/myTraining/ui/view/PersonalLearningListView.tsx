@@ -5,6 +5,7 @@ import moment from 'moment';
 import myTrainingPaths from '../../routePaths';
 import { AplModel } from '../../model';
 import { AplState } from '../../model/AplState';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface PersonalLearningListViewProps {
   apls: AplModel[];
@@ -15,18 +16,19 @@ export function PersonalLearningListView({
   apls,
   totalCount,
 }: PersonalLearningListViewProps) {
-
   const history = useHistory();
- 
+
   const onViewDetail = useCallback((id: string) => {
-    history.push(myTrainingPaths.approvalPersonalLearningDetail('approval', id));
+    history.push(
+      myTrainingPaths.approvalPersonalLearningDetail('approval', id)
+    );
   }, []);
-  
+
   const getApprovalTime = (model: AplModel): string => {
     /* 승인 상태에 따라 승인시간을 다르게 보여줌. */
     if (model.state === AplState.Opened) {
-      if (model.updateTime) {
-        return moment(model.updateTime).format('YYYY.MM.DD');
+      if (model.modifiedTime) {
+        return moment(model.modifiedTime).format('YYYY.MM.DD');
       } else {
         return model.allowTime
           ? moment(model.allowTime).format('YYYY.MM.DD')
@@ -71,8 +73,7 @@ export function PersonalLearningListView({
 
   return (
     <Table.Body>
-      {
-        apls &&
+      {apls &&
         apls.length > 0 &&
         apls.map((apl: AplModel, index: number) => {
           return (
@@ -96,10 +97,15 @@ export function PersonalLearningListView({
                 {apl.displayCreationTime} {/* 등록일자 */}
               </Table.Cell>
               <Table.Cell>
-                <span className="ellipsis">{apl.creatorName}</span> {/* 생성자 */}
+                <span className="ellipsis">
+                  {parsePolyglotString(apl.registrantUserIdentity?.name)}
+                </span>{' '}
+                {/* 생성자 */}
               </Table.Cell>
               <Table.Cell>
-                <span className="ellipsis">{apl.creatorId}</span>{' '}
+                <span className="ellipsis">
+                  {apl.registrantUserIdentity?.email}
+                </span>{' '}
                 {/* 생성자 E-mail */}
               </Table.Cell>
               <Table.Cell>
@@ -110,8 +116,7 @@ export function PersonalLearningListView({
               </Table.Cell>
             </Table.Row>
           );
-        })
-      }
+        })}
     </Table.Body>
   );
 }

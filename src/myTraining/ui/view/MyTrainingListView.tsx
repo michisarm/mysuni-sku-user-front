@@ -21,6 +21,7 @@ import { useCollegeStore } from '../../../shared/store/CollegeStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -92,34 +93,17 @@ function MyTrainingListView({
     if (contentType === MyLearningContentType.Enrolled) {
       return null;
     }
-    const collegeName = () => {
-      // 김민준
-      if (myTraining.category && myTraining.category.collegeId) {
-        const findCollege = colleges?.find(
-          (college) => college.id === myTraining.category.collegeId
-        );
-        if (findCollege?.name !== undefined) {
-          return parsePolyglotString(
-            findCollege.name,
-            getDefaultLang(findCollege.langSupports)
-          );
-        }
-      }
-
-      return '';
-    };
+    const collegeId = myTraining.category?.collegeId || '';
 
     return (
-      // 김민준
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
-        <Table.Cell>{collegeName()}</Table.Cell>
+        <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
               {parsePolyglotString(myTraining.name)}
             </span>
-            {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
         </Table.Cell>
       </>
@@ -138,22 +122,13 @@ function MyTrainingListView({
     const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(
       myTraining.learningTime
     );
-    const collegeName = () => {
-      // 김민준
-      if (myTraining.category && myTraining.category.collegeId) {
-        return colleges?.find((college) => college.id === myTraining.collegeId)
-          ?.name;
-      }
-
-      return '';
-    };
 
     switch (contentType) {
       case MyLearningContentType.Enrolled: {
         return (
           <>
             <Table.Cell>{totalCount - index}</Table.Cell>
-            <Table.Cell>{collegeName()}</Table.Cell>
+            <Table.Cell>{getCollgeName(myTraining.collegeId)}</Table.Cell>
             <Table.Cell className="title">
               <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
                 <span
@@ -161,14 +136,10 @@ function MyTrainingListView({
                 >
                   {parsePolyglotString(myTraining.cubeName)}
                 </span>
-                {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
               </a>
             </Table.Cell>
             <Table.Cell>{learningType || '-'} </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'}
-              {/* Level */}
-            </Table.Cell>
+            <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>{formattedLearningTime}</Table.Cell>
             <Table.Cell>
               {(myTraining.stampCount !== 0 && myTraining.stampCount) || '-'}
