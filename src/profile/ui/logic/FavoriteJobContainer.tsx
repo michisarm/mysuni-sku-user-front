@@ -74,8 +74,14 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   componentDidMount(): void {
     const { jobGroupService, skProfileService } = this.props;
 
-    jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile();
+    jobGroupService!.findAllJobGroups();
+
+    if (skProfileService?.additionalUserInfo.favoriteJobGroupId) {
+      jobGroupService!.findJobGroupById(
+        skProfileService?.additionalUserInfo.favoriteJobGroupId
+      );
+    }
   }
 
   onPreviousClick() {
@@ -108,7 +114,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     if (data.value === 'etc') {
-      skProfileService?.setCurrentJobDutyProp('etc');
+      skProfileService?.setFavoriteJobDutyProp('etc');
     }
 
     if (data.value !== 'etc') {
