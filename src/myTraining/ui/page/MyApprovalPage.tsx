@@ -92,12 +92,27 @@ function MyApprovalPage({
   };
 
   const getTabItem = (contentType: MyApprovalContentType, count: number) => {
-    return (
-      <>
-        <PolyglotText id="승인관리-mifa-유료과정탭" defaultString="유료과정" />
-        <span className="count">+{(count > 0 && count) || 0}</span>
-      </>
-    );
+    if (contentType === 'PaidCourse') {
+      return (
+        <>
+          <PolyglotText
+            id="승인관리-mifa-유료과정탭"
+            defaultString="유료과정"
+          />
+          <span className="count">+{(count > 0 && count) || 0}</span>
+        </>
+      );
+    } else if (contentType === 'PersonalLearning') {
+      return (
+        <>
+          <PolyglotText
+            id="승인관리-mifa-개인학습탭"
+            defaultString="개인학습"
+          />
+          <span className="count">+{(count > 0 && count) || 0}</span>
+        </>
+      );
+    }
   };
 
   /* handlers */
