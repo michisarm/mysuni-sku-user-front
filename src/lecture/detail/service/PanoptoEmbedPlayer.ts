@@ -72,6 +72,7 @@ function createPanoptoEmbedPlayer() {
     if (embedApi === undefined) {
       return;
     }
+    embedApi.setVolume(0.5);
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
     setPanoptoEmbedPlayerState({
@@ -195,7 +196,6 @@ function createPanoptoEmbedPlayer() {
       }
     }
     embedApi = new window.EmbedApi('panopto-embed-player', options);
-    embedApi.setVolume(0.5);
     onProgress();
     intervalId = setInterval(onProgress, 500);
   }
