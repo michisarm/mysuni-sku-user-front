@@ -74,7 +74,6 @@ export default function InMyLectureListView({
                   >
                     {parsePolyglotString(inMyLecture.name)}
                   </span>
-                  {/* <span className="ellipsis noteOn">{inMyLecture.name}</span> */}
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>

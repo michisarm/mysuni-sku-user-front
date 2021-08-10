@@ -24,7 +24,7 @@ function UserProfileInfoTabMenu(props: Props) {
         >
           <PolyglotText
             defaultString="커뮤니티"
-            id="mypage-유저모달-커뮤니티"
+            id="mypage-유저모달-커뮤니티2"
           />
         </Menu.Item>
         <Menu.Item

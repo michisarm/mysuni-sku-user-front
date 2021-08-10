@@ -5,6 +5,8 @@ import { findCardCache } from '../../../api/cardApi';
 import { setLectureInstructor } from '../../../store/LectureOverviewStore';
 import { find } from 'lodash';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 function getUniqueList(instructors: Instructor[]) {
   const uniqueInstructorList: Instructor[] = [];
@@ -36,24 +38,11 @@ async function parseLectureInstructor(cardContents: CardContents) {
   const { instructors } = cardContents;
   const instructorList = getUniqueList(instructors);
 
-  const proimseArray = instructorList.map((c) => {
-    return findInstructorCache(c.instructorId)
-      .then((r) => {
-        if (r !== undefined) {
-          c.memberSummary = {
-            employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department
-              ? parsePolyglotString(r.memberSummary.department)
-              : '',
-            email: r.memberSummary.email,
-            name: r.memberSummary.name
-              ? parsePolyglotString(r.memberSummary.name)
-              : '',
-            photoId: r.memberSummary.photoId,
-          };
-        }
-      })
-      .catch(() => {});
+  const proimseArray = instructorList.map(async (c) => {
+    const r = await findInstructorWithIdentityCache(c.instructorId);
+    if (r !== undefined) {
+      c.instructorWithIdentity = r;
+    }
   });
   await Promise.all(proimseArray);
   return {

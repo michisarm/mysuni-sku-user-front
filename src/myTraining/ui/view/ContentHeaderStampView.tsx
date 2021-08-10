@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Label } from 'semantic-ui-react';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   stampCount: number;
@@ -30,10 +30,18 @@ class ContentHeaderStampView extends PureComponent<Props> {
                 <span className="text1">
                   <PolyglotText defaultString="Stamp" id="mapg-mifa-mas" />
                 </span>
-                <span className="text2">{stampCount || 0}</span>
-                <span className="text6">
-                  <PolyglotText defaultString="개" id="mapg-mifa-ms개" />
-                </span>
+                <span
+                  className="text2"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `{stampCount}개`,
+                      'mapg-mifa-ms개',
+                      {
+                        stampCount: (stampCount || 0).toString(),
+                      }
+                    ),
+                  }}
+                />
               </a>
             </div>
           </Label>

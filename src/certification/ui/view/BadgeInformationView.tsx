@@ -39,8 +39,8 @@ export function BadgeInformationView({
         <span className="detail design">
           <span>
             <PolyglotText
-              id="Certification-View-설계주체"
-              defaultString="설계 주체"
+              id="Certification-View-설계주체2"
+              defaultString="설계 주체dd"
             />
           </span>
           <span>{getBadgeCategoryName(designAdminId)}</span>

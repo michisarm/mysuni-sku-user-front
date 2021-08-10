@@ -122,10 +122,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   async requestMenuAuth() {
     const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel =
-      await skProfileService!.findSkProfile();
+    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
     if (foundProfile) {
-      menuControlAuthService!.findMenuControlAuth(foundProfile.companyCode);
+      menuControlAuthService!.findMenuControlAuth();
     }
   }
 
@@ -185,8 +184,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const { personalBoardInprogressCount, personalBoardCompletedCount } =
-      myTrainingService!;
+    const {
+      personalBoardInprogressCount,
+      personalBoardCompletedCount,
+    } = myTrainingService!;
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
@@ -240,8 +241,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           </div>
           <div className="personal-header-title">
             <h3>
-              {skProfile.profileViewName}
-              <PolyglotText defaultString="님," id="home-Summary-님" />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '{profileViewName} 님',
+                    'home-Summary-님',
+                    { profileViewName: skProfile.profileViewName }
+                  ),
+                }}
+              />
             </h3>
             <DashBoardSentenceContainer />
           </div>
@@ -298,7 +306,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               favorites={favoriteChannels}
               onConfirmCallback={this.onConfirmFavorite}
             />
-            {menuControlAuth.hasMenuAuth() && (
+            {menuControlAuth.useApl && (
               <div>
                 <a
                   href="#"
@@ -345,7 +353,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   onConfirmCallback={this.onConfirmFavorite}
                 />
               </div>
-              {menuControlAuth.hasMenuAuth() && (
+              {menuControlAuth.useApl && (
                 <div>
                   <a
                     href="#"

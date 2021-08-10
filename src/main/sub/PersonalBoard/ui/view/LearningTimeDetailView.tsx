@@ -3,7 +3,7 @@ import { MyLearningSummaryModal } from 'myTraining';
 import { PersonalBoardDoughnutChartView } from '@sku/chart';
 import React, { useEffect, useMemo } from 'react';
 import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   showApl: boolean;
@@ -83,13 +83,10 @@ function LearningTimeDetailView(props: Props) {
                   </a>
                 }
               />
-              <span>
-                {moment().year()}
-                <PolyglotText
-                  defaultString="년 기준"
-                  id="home-PersonalBoard-TimeDetailYear"
-                />
-              </span>
+              <span dangerouslySetInnerHTML={{__html: getPolyglotText('{year}년 기준',
+                  'home-PersonalBoard-TimeDetailYear',
+                  {year: moment().year()+''})}}
+              />
             </div>
             <div className="card-item-con sty2">
               <div className="item-con-box">

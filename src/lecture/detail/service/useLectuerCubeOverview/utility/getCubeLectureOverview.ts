@@ -32,6 +32,8 @@ import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/Lec
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
+import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
+import { Instructor } from 'expert/model/Instructor';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -64,8 +66,11 @@ async function getLectureSummary(
     learningTime,
     operator: {
       email: operator?.email || '',
-      name: operator?.names?.langStringMap.ko || '',
-      companyName: operator?.companyNames?.langStringMap.ko || '',
+      name: parsePolyglotString(operator?.name, getDefaultLang(langSupports)),
+      companyName: parsePolyglotString(
+        operator?.companyName,
+        getDefaultLang(langSupports)
+      ),
     },
     passedStudentCount,
     studentCount,
@@ -163,23 +168,10 @@ async function getLectureInstructor(
       }
     });
   const proimseArray = nextInstructors.map((c) => {
-    return findInstructorCache(c.instructorId)
+    return findInstructorWithIdentityCache(c.instructorId)
       .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name
-            ? parsePolyglotString(r.memberSummary.name)
-            : '';
-          c.memberSummary = {
-            employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department
-              ? parsePolyglotString(r.memberSummary.department)
-              : '',
-            email: r.memberSummary.email,
-            name: r.memberSummary.name
-              ? parsePolyglotString(r.memberSummary.name)
-              : '',
-            photoId: r.memberSummary.photoId,
-          };
+          c.instructorWithIdentity = r;
         }
       })
       .catch(() => {});

@@ -5,6 +5,7 @@ import {
   findCubeDetailCache,
 } from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
+import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
 
 export async function getClassroomFromCube(cubeId: string) {
   if (cubeId === undefined) {
@@ -23,23 +24,10 @@ export async function getClassroomFromCube(cubeId: string) {
   } = cubeDetail;
 
   const proimseArray = instructors.map((c) => {
-    return findInstructorCache(c.instructorId)
+    return findInstructorWithIdentityCache(c.instructorId)
       .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name
-            ? parsePolyglotString(r.memberSummary.name)
-            : '';
-          c.memberSummary = {
-            employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department
-              ? parsePolyglotString(r.memberSummary.department)
-              : '',
-            email: r.memberSummary.email,
-            name: r.memberSummary.name
-              ? parsePolyglotString(r.memberSummary.name)
-              : '',
-            photoId: r.memberSummary.photoId,
-          };
+          c.instructorWithIdentity = r;
         }
       })
       .catch(() => {});

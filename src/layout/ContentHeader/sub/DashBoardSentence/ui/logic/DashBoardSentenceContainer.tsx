@@ -31,7 +31,7 @@ function DashBoardSentenceContainer(){
   }, [dashBoardSentence])
 
 return (
-  
+
   <>
   { dashBoardTxt && (
     <DashBoardSentenceView dashBoardTxt={dashBoardTxt}/>

@@ -67,25 +67,31 @@ export function getRecentlyLearningChannel() {
 
 //목표설정
 export function findLearningObjectives() {
-  return axiosApi
-    .get<any>(`/api/profile/profiles`)
-    .then((response) => response && response.data);
+  return (
+    axiosApi
+      // .get<any>(`/api/profile/profiles`)
+      .get<any>(`/api/user/users/withAdditionalInfo`)
+      .then((response) => response && response.data)
+  );
 }
 
 //목표설정
 export function updateLearningObjectives(item: LearningObjectives) {
-  return axiosApi
-    .put<any>(`/api/profile/profiles`, {
-      goal: {
-        attendance: item.WeekAttendanceGoal,
-        dailyTime: {
-          hours: item.DailyLearningTimeHour,
-          minutes: item.DailyLearningTimeMinute,
+  return (
+    axiosApi
+      // .put<any>(`/api/profile/profiles`, {
+      .put<any>(`/api/user/users`, {
+        goal: {
+          attendance: item.WeekAttendanceGoal,
+          dailyTime: {
+            hours: item.DailyLearningTimeHour,
+            minutes: item.DailyLearningTimeMinute,
+          },
+          hour: item.AnnualLearningObjectives,
         },
-        hour: item.AnnualLearningObjectives,
-      },
-    })
-    .then((response) => response && response.data);
+      })
+      .then((response) => response && response.data)
+  );
 }
 
 //college별 학습 비중

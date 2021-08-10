@@ -127,12 +127,8 @@ class ChannelLecturesLineContainer extends Component<Props> {
           channel={channel}
           title={
             <>
-              <PolyglotText defaultString="채널에서" id="rcmd-추천-Channel" />
-              {profileMemberName}
-              <PolyglotText
-                defaultString="님께 추천하는 과정입니다."
-                id="rcmd-추천-Recommand"
-              />{' '}
+              <div dangerouslySetInnerHTML={{__html: getPolyglotText('채널에서 {name}님께 추천하는 과정입니다.', 'rcmd-추천-Channel', {name: profileMemberName})}} />
+              {' '}
               <span className="channel">({totalCount})</span>
             </>
           }

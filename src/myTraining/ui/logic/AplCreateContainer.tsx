@@ -172,13 +172,11 @@ class AplCreateContainer extends React.Component<Props, States> {
         departmentService!.findDepartmentByCode(profile.departmentCode)
       )
       .then((department: DepartmentModel) =>
-        memberService!.findApprovalMemberByEmployeeId(department.manager.id)
+        memberService!.findApprovalMemberByEmployeeId(department.managerId)
       )
       .then(() => companyApproverService!.findCompanyAplApprover())
       .then((companyAplApprover) =>
-        memberService!.findApprovalMemberByEmployeeId(
-          companyAplApprover.employeeId
-        )
+        memberService!.findApprovalMemberByEmployeeId(companyAplApprover.id)
       )
       .then((companyApprover) => {
         this.onChangeAplProps('approvalId', companyApprover.id);
@@ -208,8 +206,7 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts =
-          await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -386,8 +383,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     //const collegeSelect = this.setCollege();
     const collegeSelect = this.state.collegeSelect;
     const channelSelect = apl && apl.collegeId && this.setChannel();
-    const titleCount =
-      (apl && apl.title && parsePolyglotString(apl.title).length) || 0;
+    const titleCount = (apl && apl.title && apl.title.length) || 0;
     const typeNameCount = (apl && apl.typeName && apl.typeName.length) || 0;
     const instituteCount = (apl && apl.institute && apl.institute.length) || 0;
     const contentCount = (apl && apl.content && apl.content.length) || 0;
@@ -432,7 +428,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     '교육명을 입력해주세요.',
                     '개학등록-uisf-기본tt'
                   )}
-                  value={(apl && parsePolyglotString(apl.title)) || ''}
+                  value={(apl && apl.title) || ''}
                   onChange={(e: any) => {
                     onChangeAplPropsValid('title', e.target.value);
                   }}
@@ -924,14 +920,24 @@ class AplCreateContainer extends React.Component<Props, States> {
                     />
                     <span className="text1">
                       <b>
-                        {(apl && parsePolyglotString(apl.approvalName)) || ''}
+                        {(apl &&
+                          parsePolyglotString(
+                            apl.approvalUserIdentity?.name
+                          )) ||
+                          ''}
                       </b>
                       <span className="ml40">
-                        {(apl && parsePolyglotString(apl.approvalCompany)) ||
+                        {(apl &&
+                          parsePolyglotString(
+                            apl.approvalUserIdentity?.companyName
+                          )) ||
                           ''}
                       </span>
                       <span className="line">
-                        {(apl && parsePolyglotString(apl.approvalDepartment)) ||
+                        {(apl &&
+                          parsePolyglotString(
+                            apl.approvalUserIdentity?.departmentName
+                          )) ||
                           ''}
                       </span>
                       {approvalShow && (

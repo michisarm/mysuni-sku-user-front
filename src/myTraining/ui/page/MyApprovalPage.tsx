@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -7,17 +6,20 @@ import { ContentLayout } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
 import { ApprovalCubeService, AplService } from 'myTraining/stores';
 import { MenuControlAuthService } from 'approval/stores';
-import { SkProfileService } from 'profile/stores'; 
+import { SkProfileService } from 'profile/stores';
 import routePaths from '../../routePaths';
 import { SkProfileModel } from 'profile/model';
 import { CountType } from 'myTraining/model/AplRdoModel';
-import { MyApprovalContentType, MyApprovalContentTypeName } from '../model/MyApprovalContentType';
+import {
+  MyApprovalContentType,
+  MyApprovalContentTypeName,
+} from '../model/MyApprovalContentType';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import PersonalLearningListContainer from '../logic/PersonalLearningListContainer';
-
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyApprovalPageProps {
   approvalCubeService?: ApprovalCubeService;
@@ -32,8 +34,12 @@ function MyApprovalPage({
   skProfileService,
   aplService,
 }: MyApprovalPageProps) {
-  const { approvalCubeOffsetList: { totalCount: paidCourseCount } } = approvalCubeService!;
-  const { aplCount: { all: personalLearningCount } } = aplService!;
+  const {
+    approvalCubeOffsetList: { totalCount: paidCourseCount },
+  } = approvalCubeService!;
+  const {
+    aplCount: { all: personalLearningCount },
+  } = aplService!;
   const { menuControlAuth } = menuControlAuthService!;
   const { skProfile } = skProfileService!;
 
@@ -51,27 +57,27 @@ function MyApprovalPage({
   /* functions */
   const getMenuAuth = async () => {
     if (!skProfile) {
-      const profile: SkProfileModel = await skProfileService!.findSkProfile();
-      menuControlAuthService!.findMenuControlAuth(profile.companyCode);
+      menuControlAuthService!.findMenuControlAuth();
     }
-  }
+  };
 
   const getTabs = (): TabItemModel[] => {
     /* menuControlAuth 의 companyCode 가 없을 경우에만 개인학습 탭을 보여준다. */
-    if (menuControlAuth.companyCode === ''
-      || ( menuControlAuth.authCode === MenuControlAuth.User
-      && menuControlAuth.useYn === MenuControlAuth.Yes)) {
+    if (menuControlAuth.useApl) {
       return [
         {
           name: MyApprovalContentType.PaidCourse,
           item: getTabItem(MyApprovalContentType.PaidCourse, paidCourseCount),
-          render: () => <MyApprovalListContainer />
+          render: () => <MyApprovalListContainer />,
         },
         {
           name: MyApprovalContentType.PersonalLearning,
-          item: getTabItem(MyApprovalContentType.PersonalLearning, personalLearningCount),
-          render: () => <PersonalLearningListContainer />
-        }
+          item: getTabItem(
+            MyApprovalContentType.PersonalLearning,
+            personalLearningCount
+          ),
+          render: () => <PersonalLearningListContainer />,
+        },
       ];
     }
 
@@ -80,16 +86,16 @@ function MyApprovalPage({
       {
         name: MyApprovalContentType.PaidCourse,
         item: getTabItem(MyApprovalContentType.PaidCourse, paidCourseCount),
-        render: () => <MyApprovalListContainer />
-      }
-    ]
+        render: () => <MyApprovalListContainer />,
+      },
+    ];
   };
 
   const getTabItem = (contentType: MyApprovalContentType, count: number) => {
     return (
       <>
-        {MyApprovalContentTypeName[contentType]}
-        <span className="count">+{count > 0 && count || 0}</span>
+        <PolyglotText id="승인관리-mifa-유료과정탭" defaultString="유료과정" />
+        <span className="count">+{(count > 0 && count) || 0}</span>
       </>
     );
   };
@@ -101,12 +107,21 @@ function MyApprovalPage({
   };
 
   /* render */
+
+  console.log(params.tab);
+  function myApprovalText() {
+    if (params.tab === MyApprovalContentType.PaidCourse) {
+      return getPolyglotText('유료과정', '승인관리-mifa-유료과정bread');
+    } else {
+      return getPolyglotText('개인학습', '승인관리-mifa-개인학습bread');
+    }
+  }
   return (
     <ContentLayout
       className="MyApprovalPage"
       breadcrumb={[
-        { text: '승인관리' },
-        { text: MyApprovalContentTypeName[params.tab] }
+        { text: getPolyglotText('승인관리', '승인관리-mifa-승인관리bread') },
+        { text: myApprovalText() },
       ]}
     >
       <MyApprovalContentHeader />
@@ -115,14 +130,15 @@ function MyApprovalPage({
         defaultActiveName={params.tab}
         onChangeTab={onChangeTab}
       />
-
     </ContentLayout>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'approvalCube.approvalCubeService',
-  'approval.menuControlAuthService',
-  'profile.skProfileService',
-  'myTraining.aplService'
-))(observer(MyApprovalPage));
+export default inject(
+  mobxHelper.injectFrom(
+    'approvalCube.approvalCubeService',
+    'approval.menuControlAuthService',
+    'profile.skProfileService',
+    'myTraining.aplService'
+  )
+)(observer(MyApprovalPage));

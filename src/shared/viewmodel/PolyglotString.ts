@@ -19,7 +19,7 @@ function parseLanguage(languange: string): 'ko' | 'en' | 'zh' {
 }
 
 export function parsePolyglotString(
-  polyglotString: PolyglotString | null,
+  polyglotString: PolyglotString | null | undefined,
   languange: 'ko' | 'en' | 'zh' = 'ko'
 ): string {
   if (polyglotString === null || polyglotString === undefined) {

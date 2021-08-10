@@ -58,6 +58,7 @@ import { setNoteCount, getNoteCount } from '../../store/NoteCountStore';
 import CategoryColorType from '../../../shared/model/CategoryColorType';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface NoteViewProps {
   noteList: OffsetElementList<NoteWithLecture>;
@@ -82,7 +83,13 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<
     { key: number; value: string; text: string }[]
-  >([{ key: 0, value: '0000', text: '폴더미지정' }]);
+  >([
+    {
+      key: 0,
+      value: '0000',
+      text: getPolyglotText('폴더미지정', 'mypage-noteList-폴더미지정2'),
+    },
+  ]);
   const [collegeList, setCollegeList] = useState<CollegeModel[]>();
   const history = useHistory();
   const params = useParams<MyPageRouteParams>();
@@ -101,7 +108,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
 
   const selectFolder = useCallback((folder: Folder) => {
     const folderSelect: any = [];
-    folderSelect.push({ key: '0000', text: '폴더미지정', value: '0000' });
+    folderSelect.push({
+      key: '0000',
+      text: getPolyglotText('폴더미지정', 'mypage-noteList-폴더미지정3'),
+      value: '0000',
+    });
     if (folder) {
       folder.folders.idNames.map((field, index) => {
         folderSelect.push({
@@ -114,7 +125,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     params.pageNo === '1' &&
       folderSelect.push({
         key: 'addFolder',
-        text: '+폴더 만들기',
+        text: '+' + getPolyglotText('폴더미지정', 'mypage-noteList-폴더만들기'),
         value: 'addFolder',
       });
     return folderSelect;
@@ -155,8 +166,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     async (index: number, noteWithLecture: NoteWithLecture) => {
       if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
         reactAlert({
-          title: '알림',
-          message: '작성 중인 노트를 저장해주세요',
+          title: getPolyglotText('알림', 'mypage-noteList-알림1'),
+          message: getPolyglotText(
+            '작성 중인 노트를 저장해주세요',
+            'mypage-noteList-노트저장1'
+          ),
         });
         return;
       }
@@ -172,8 +186,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     async (noteCdo: NoteCdo, id: string, index: number) => {
       if (noteCdo.content === null || noteCdo.content === '') {
         reactAlert({
-          title: '알림',
-          message: '노트 내용을 작성해주세요.',
+          title: getPolyglotText('알림', 'mypage-noteList-알림2'),
+          message: getPolyglotText(
+            '노트 내용을 작성해주세요.',
+            'mypage-noteList-노트작성1'
+          ),
         });
         return;
       }
@@ -207,8 +224,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
       if (noteUdo.content === null || noteUdo.content === '') {
         reactAlert({
-          title: '알림',
-          message: '노트 내용을 작성해주세요.',
+          title: getPolyglotText('알림', 'mypage-noteList-알림3'),
+          message: getPolyglotText(
+            '노트 내용을 작성해주세요.',
+            'mypage-noteList-노트작성2'
+          ),
         });
         return;
       }
@@ -230,8 +250,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     async (index: number, note: Note, cubeId?: string) => {
       if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
         reactAlert({
-          title: '알림',
-          message: '작성 중인 노트를 저장해주세요',
+          title: getPolyglotText('알림', 'mypage-noteList-알림4'),
+          message: getPolyglotText(
+            '작성 중인 노트를 저장해주세요',
+            'mypage-noteList-노트저장2'
+          ),
         });
         return;
       }
@@ -243,8 +266,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
   const deleteNote = useCallback(
     async (id: string, index: number, note: Note) => {
       reactConfirm({
-        title: '알림',
-        message: '노트를 삭제하시겠습니까?',
+        title: getPolyglotText('알림', 'mypage-noteList-알림5'),
+        message: getPolyglotText(
+          '노트를 삭제하시겠습니까?',
+          'mypage-noteList-노트삭제'
+        ),
         onCancel: () => {
           return true;
         },
@@ -396,18 +422,23 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                         )
                       )}
                   </div>
-                  <strong className="header">{item.lectureRom.cardName}</strong>
+                  <strong className="header">
+                    {parsePolyglotString(item.lectureRom.cardName)}
+                  </strong>
                   <Link
                     className="time"
                     to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}
                   >
-                    <p>{item.lectureRom.cubeName}</p>
+                    <p>{parsePolyglotString(item.lectureRom.cubeName)}</p>
                   </Link>
                 </div>
 
                 <div className="option_box">
                   <Select
-                    placeholder="폴더 미지정"
+                    placeholder={getPolyglotText(
+                      '폴더 미지정',
+                      'mypage-noteList-폴더미지정'
+                    )}
                     options={folderOptions}
                     value={item.note.folderId}
                     onChange={(e, data) =>
@@ -459,15 +490,26 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                   {/* <NoteContent1 /> */}
                   <div className="note_content">
                     <div className="note_content_total">
-                      <strong className="txt">작성한 노트</strong>
-                      <span className="cnt">
-                        {subNoteList?.map(
-                          (f) =>
-                            f.index === index &&
-                            f.noteWithLectureList.results.length
-                        )}
-                        개
-                      </span>
+                      <strong className="txt">
+                        <PolyglotText
+                          id="mypage-noteList-작성노트"
+                          defaultString="작성한 노트"
+                        />
+                      </strong>
+                      <span
+                        className="cnt"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `${subNoteList?.map(
+                              (f) =>
+                                f.index === index &&
+                                f.noteWithLectureList.results.length
+                            )}
+                            개`,
+                            'mypage-noteList-노트수'
+                          ),
+                        }}
+                      />
 
                       {/* 노트 작성 시작하게되면 폰트 색상 및 아이콘 변경이 있습니다.  active 클래스 추가될 경우 폰트 색상(회색--> 청록색 ) 변경됩니다 */}
                       <Button
@@ -482,12 +524,20 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                       <div className="mynote mynote_write">
                         <div className="note_info">
                           <span className="date">
-                            {moment().format('YYYY년 MM월 DD일 작성')}
+                            {moment().format(
+                              getPolyglotText(
+                                'YYYY년 MM월 DD일 작성',
+                                'mypage-noteList-date작성1'
+                              )
+                            )}
                           </span>
                         </div>
                         <Form>
                           <TextArea
-                            placeholder="Note 내용을 입력해주세요."
+                            placeholder={getPolyglotText(
+                              'Note 내용을 입력해주세요.',
+                              'mypage-noteList-내용입력1'
+                            )}
                             value={noteCdoItem.noteCdo?.content}
                             onChange={(e, data) => {
                               (data.value as string).length < 1001 &&
@@ -507,7 +557,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             className="cancel"
                             onClick={(e, data) => setNoteCdoItem(undefined)}
                           >
-                            취소
+                            <PolyglotText
+                              id="mypage-noteList-취소1"
+                              defaultString="취소"
+                            />
                           </Button>
                           <Button
                             className="save"
@@ -516,7 +569,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                               save(noteCdoItem.noteCdo, item.note.id, index)
                             }
                           >
-                            저장
+                            <PolyglotText
+                              id="mypage-noteList-저장1"
+                              defaultString="저장"
+                            />
                           </Button>
                           <span className="txt_cnt">
                             <span className="txt_now">
@@ -594,11 +650,17 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                   <span className="date">
                                     {subItem.note.updateDate !== 0
                                       ? moment(subItem.note.updateDate).format(
-                                          'YYYY년 MM월 DD일 편집'
+                                          getPolyglotText(
+                                            'YYYY년 MM월 DD일 편집',
+                                            'mypage-noteList-date편집'
+                                          )
                                         )
                                       : subItem.note.createDate &&
                                         moment(subItem.note.createDate).format(
-                                          'YYYY년 MM월 DD일 작성'
+                                          getPolyglotText(
+                                            'YYYY년 MM월 DD일 작성',
+                                            'mypage-noteList-date작성2'
+                                          )
                                         )}
                                   </span>
                                 </div>
@@ -627,7 +689,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                     <>
                                       <Form>
                                         <TextArea
-                                          placeholder="Note 내용을 입력해주세요."
+                                          placeholder={getPolyglotText(
+                                            'Note 내용을 입력해주세요.',
+                                            'mypage-noteList-내용입력2'
+                                          )}
                                           value={noteUdoItem.noteUdo?.content}
                                           onChange={(e, data) =>
                                             (data.value as string).length <
@@ -664,7 +729,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                             setNoteUdoItem(undefined)
                                           }
                                         >
-                                          취소
+                                          <PolyglotText
+                                            id="mypage-noteList-취소2"
+                                            defaultString="취소"
+                                          />
                                         </Button>
                                         <Button
                                           className="save"
@@ -678,7 +746,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                             )
                                           }
                                         >
-                                          저장
+                                          <PolyglotText
+                                            id="mypage-noteList-저장2"
+                                            defaultString="저장"
+                                          />
                                         </Button>
                                         <span className="txt_cnt">
                                           <span className="txt_now">
@@ -714,7 +785,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                 }}
               >
                 <Icon aria-hidden="true" className="moreview" />
-                list more
+                <PolyglotText
+                  id="mypage-noteList-more"
+                  defaultString="list more"
+                />
               </Button>
             </div>
           )}

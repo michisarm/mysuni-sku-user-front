@@ -59,11 +59,7 @@ function PersonalBoardContainer(props: Props) {
 
   const showApl = useCallback(() => {
     const { menuControlAuth } = menuControlAuthService!;
-    return menuControlAuth.companyCode === '' ||
-      (menuControlAuth.authCode === MenuControlAuth.User &&
-        menuControlAuth.useYn === MenuControlAuth.Yes)
-      ? true
-      : false;
+    return menuControlAuth.useApl;
   }, []);
 
   return (

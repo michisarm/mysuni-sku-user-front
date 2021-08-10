@@ -73,9 +73,8 @@ function LineHeaderContainerV2({
   /* handlers */
   const downloadExcel = useCallback(
     async (contentType: MyContentType) => {
-      const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(
-        contentType
-      );
+      const myTrainingTableViews: MyTrainingTableViewModel[] =
+        await getModelsForExcel(contentType);
       const lastIndex = myTrainingTableViews.length;
       let xlsxList: MyXlsxList = [];
       let filename: MyXlsxFilename = MyXlsxFilename.None;
@@ -83,10 +82,13 @@ function LineHeaderContainerV2({
       switch (contentType) {
         case MyLearningContentType.InProgress:
           xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-            const collegeName = getCollgeName(
-              // myTrainingTableView.category.college.id
-              myTrainingTableView.category.collegeId
-            );
+            const collegeName =
+              (myTrainingTableView.category?.collegeId &&
+                getCollgeName(
+                  // myTrainingTableView.category.college.id
+                  myTrainingTableView.category.collegeId
+                )) ||
+              '';
             return myTrainingTableView.toXlsxForInProgress(
               lastIndex - index,
               collegeName

@@ -68,6 +68,7 @@ class ManagerListModalContainer extends React.Component<Props, States> {
         departmentCode={skProfile.departmentCode}
         showAllCompanies={cineroomId === 'ne1-m2-c2'}
         multiSelect={multiSelect}
+        language={skProfile.language}
       />
     );
   }

@@ -20,11 +20,9 @@ export default class MenuControlAuthService {
   }
 
   @action
-  async findMenuControlAuth(companyCode: string | undefined) {
+  async findMenuControlAuth() {
     //
-    const menuControlAuth = await this.menuControlAuthApi.findMenuControlAuth(
-      companyCode
-    );
+    const menuControlAuth = await this.menuControlAuthApi.findMenuControlAuth();
 
     runInAction(() => {
       this.menuControlAuth = menuControlAuth;

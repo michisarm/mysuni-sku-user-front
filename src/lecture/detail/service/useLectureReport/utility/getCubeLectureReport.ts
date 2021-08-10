@@ -12,9 +12,9 @@ export async function getCubeLectureReport(
     const cubeDetail = await findCubeDetailCache(cubeId);
 
     if (cubeDetail !== undefined && pathname !== undefined) {
-      const { cubeContents } = cubeDetail;
+      const { cube, cubeContents } = cubeDetail;
       //const student = await findByCubeId(cubeId);
-      const next = await getReportItem(cubeContents, pathname);
+      const next = await getReportItem(cube, cubeContents, pathname);
       setLectureReport(next);
     }
   }

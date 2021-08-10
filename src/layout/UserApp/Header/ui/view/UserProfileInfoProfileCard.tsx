@@ -286,7 +286,7 @@ function UserProfileinfoProfileCard(props: Props) {
                     <div className="cnt-box feed-cnt">
                       <span>
                         <PolyglotText
-                          id="mypage-유저모달-Feed"
+                          id="mypage-유저모달-Feed2"
                           defaultString="Feed"
                         />
                       </span>

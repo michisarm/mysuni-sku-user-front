@@ -51,7 +51,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
         <strong>
           <PolyglotText
             id="home-Inprogress-Title"
-            defaultString={`${profileMemberName}님이 학습중인 과정`}
+            defaultString={'{profileMemberName}님이 학습중인 과정'}
             values={{ profileMemberName }}
           />
           {/* {`${profileMemberName}님이 학습중인 과정`} */}
@@ -136,7 +136,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                       <span className="ellipsis">{profileMemberName}</span>{' '}
                       <PolyglotText
                         defaultString="님이 학습 중인 과정 보기"
-                        id=""
+                        id="home-Inprogress-진행중"
                       />
                     </span>
                     <Icon className="morelink" />

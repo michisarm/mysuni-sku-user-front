@@ -4,6 +4,11 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  getChannelName,
+  getCollgeName,
+} from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   model: AplModel;
@@ -112,6 +117,8 @@ function MyApprovalInfoTable(props: Props) {
     );
   };
 
+  const collegeName = getCollgeName(model.collegeId);
+  const channelName = getChannelName(model.channelId);
   /* render */
   return (
     <table className="ui create table">
@@ -137,7 +144,7 @@ function MyApprovalInfoTable(props: Props) {
             <PolyglotText id="승인관리-개인상세-th3" defaultString="Channel" />
           </th>
           <td>
-            <div>{model.displayCollegeChannelName}</div>
+            <div>{`${collegeName} | ${channelName}`}</div>
           </td>
         </tr>
         <tr>
@@ -207,9 +214,17 @@ function MyApprovalInfoTable(props: Props) {
             </th>
             <td>
               <div>
-                <span>{model.approvalName}</span>
-                <span className="l">{model.approvalCompany}</span>
-                <span className="l">{model.approvalDepartment}</span>
+                <span>
+                  {parsePolyglotString(model.approvalUserIdentity?.name)}
+                </span>
+                <span className="l">
+                  {parsePolyglotString(model.approvalUserIdentity?.companyName)}
+                </span>
+                <span className="l">
+                  {parsePolyglotString(
+                    model.approvalUserIdentity?.departmentName
+                  )}
+                </span>
               </div>
             </td>
           </tr>

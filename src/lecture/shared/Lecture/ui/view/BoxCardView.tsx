@@ -153,12 +153,13 @@ class BoxCardView extends Component<Props, States> {
               null}
             <Field
               icon="complete"
-              text={`${getPolyglotText(
-                '이수',
-                'home-Inprogress-이수'
-              )} ${numeral(model.passedStudentCount).format(
-                '0,0'
-              )}${getPolyglotText('명', 'home-Inprogress-명')}`}
+              // text={`${getPolyglotText(
+              //   '이수',
+              //   'home-Inprogress-이수'
+              // )} ${numeral(model.passedStudentCount).format(
+              //   '0,0'
+              // )}${getPolyglotText('명', 'home-Inprogress-명')}`}
+              text={getPolyglotText('이수 {personCount}명', 'home-Inprogress-이수', {personCount: numeral(model.passedStudentCount).format('0,0')})}
             />
           </Fields>
 

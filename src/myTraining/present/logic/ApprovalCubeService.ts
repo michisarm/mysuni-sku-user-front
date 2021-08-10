@@ -33,7 +33,7 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
-  searchOrderBy: string = 'UpdateTimeDesc';
+  searchOrderBy: string = 'ModifiedTimeDesc';
 
   @observable
   searchEndDate: number = 9999999999999;
@@ -111,42 +111,17 @@ export default class ApprovalCubeService {
     if (approvalCubeDetail) {
       const approvalCube = new ApprovalCubeModel();
       approvalCube.studentId = approvalCubeDetail.student.id;
-      if (approvalCubeDetail.userIdentity.names?.defaultLanguage === 'ko') {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.ko;
-      } else if (
-        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'en'
-      ) {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.en;
-      } else if (
-        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'zh'
-      ) {
-        approvalCube.studentName =
-          approvalCubeDetail.userIdentity.names?.langStringMap.zh;
+      if (approvalCubeDetail.userIdentity.name !== undefined) {
+        approvalCube.studentName = approvalCubeDetail.userIdentity.name;
       }
-      const langStringMap: Map<string, string> = new Map<string, string>();
-      langStringMap.set(
-        'ko',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.ko || ''
-      );
-      langStringMap.set(
-        'en',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.en || ''
-      );
-      langStringMap.set(
-        'zh',
-        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.zh || ''
-      );
-      const departmentNames: LangStrings = new LangStrings();
-      departmentNames.langStringMap = langStringMap;
-      departmentNames.defaultLanguage =
-        approvalCubeDetail.userIdentity.departmentNames?.defaultLanguage || '';
-      approvalCube.studentDepartmentNames = departmentNames;
-      approvalCube.cubeName = parsePolyglotString(
-        approvalCubeDetail.cube.name,
-        getDefaultLang(approvalCubeDetail.cube.langSupports)
-      );
+      if (approvalCubeDetail.userIdentity.departmentName !== undefined) {
+        approvalCube.studentDepartmentNames =
+          approvalCubeDetail.userIdentity.departmentName;
+      }
+      if (approvalCubeDetail.cube.name !== undefined) {
+        approvalCube.cubeName = approvalCubeDetail.cube.name;
+      }
+
       approvalCube.cubeType = approvalCubeDetail.cube.type;
       approvalCube.round = approvalCubeDetail.student.round;
       approvalCube.capacity = approvalCubeDetail.classroom.capacity;
@@ -181,7 +156,7 @@ export default class ApprovalCubeService {
   async findApprovalCubesForSearch(
     offset: number,
     limit: number,
-    orderBy: string = 'UpdateTimeDesc',
+    orderBy: string = 'ModifiedTimeDesc',
     proposalState: ProposalState = ProposalState.Submitted,
     lectureCardId: string = '',
     endDate: number = 9999999999999

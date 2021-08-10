@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button, Checkbox, Image, Modal } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Area } from 'tracker/model';
 
 const AiDtModalView = () => {
@@ -37,7 +38,7 @@ const AiDtModalView = () => {
       <Modal.Header>
         <div className="right-btn">
           <Checkbox
-            label="더 이상 보지 않기"
+            label={getPolyglotText('더 이상 보지 않기', '공통-공통-안보기')}
             className="base"
             onChange={onHandleChange}
           />

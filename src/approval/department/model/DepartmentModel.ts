@@ -12,13 +12,14 @@ export class DepartmentModel {
   level: number = 0;
   sortOrder: string = '';
   chartDisplayed: boolean = false;
-  manager: IdName = new IdName();
+  // manager: IdName = new IdName();
+  managerId: string = '';
 
   constructor(department?: DepartmentModel) {
     if (department) {
       const names = new LangStrings(department.names);
-      const manager = new IdName(department.manager);
-      Object.assign(this, { ...department, names, manager });
+      // const manager = new IdName(department.manager);
+      Object.assign(this, { ...department, names });
     }
   }
 }
@@ -33,5 +34,6 @@ decorate(DepartmentModel, {
   level: observable,
   sortOrder: observable,
   chartDisplayed: observable,
-  manager: observable,
+  managerId: observable,
+  // manager: observable,
 });

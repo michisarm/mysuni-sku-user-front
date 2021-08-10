@@ -1,5 +1,5 @@
-import { SkProfileService } from "../../profile/stores";
-import { MenuControlAuthService } from "../../approval/stores";
+import { SkProfileService } from '../../profile/stores';
+import { MenuControlAuthService } from '../../approval/stores';
 
 export function useRequestMenuAuth() {
   requestMenuAuth();
@@ -12,6 +12,5 @@ const requestMenuAuth = async () => {
     return;
   }
 
-  const foundProfile = await SkProfileService.instance.findSkProfile();
-  MenuControlAuthService.instance.findMenuControlAuth(foundProfile.member.companyCode);
+  MenuControlAuthService.instance.findMenuControlAuth();
 };

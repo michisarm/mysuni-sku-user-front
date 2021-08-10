@@ -31,8 +31,10 @@ class FooterContainer extends Component {
               className="item"
               onClick={() => onClick('Introduction')}
             >
-              <PolyglotText defaultString="Introduction" id="home-ftr-바로가1" />
-              Introduction
+              <PolyglotText
+                defaultString="Introduction"
+                id="home-ftr-바로가1"
+              />
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportNotice()}
@@ -40,7 +42,6 @@ class FooterContainer extends Component {
               onClick={() => onClick('Notice')}
             >
               <PolyglotText defaultString="Notice" id="home-ftr-바로가2" />
-
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportFAQ()}
@@ -48,22 +49,23 @@ class FooterContainer extends Component {
               onClick={() => onClick('FAQ')}
             >
               <PolyglotText defaultString="FAQ" id="home-ftr-바로가3" />
-
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportQnA()}
               className="item"
               onClick={() => onClick('Q&A')}
             >
-              <PolyglotText defaultString="Q&" id="home-ftr-바로가4" />
-              A
+              <PolyglotText defaultString="Q&A" id="home-ftr-바로가4" />
             </NavLink>
           </>
         )}
         <PrivacyPolicyModalContainer
           trigger={
             <a className="item" style={{ color: 'red' }}>
-              <PolyglotText defaultString="개인정보 처리방침" id="home-ftr-바로가5" />
+              <PolyglotText
+                defaultString="개인정보 처리방침"
+                id="home-ftr-바로가5"
+              />
             </a>
           }
         />
