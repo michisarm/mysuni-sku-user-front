@@ -25,6 +25,7 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getProfilePopup } from 'layout/UserApp/service/ProfilePopupService/getProfilePopup';
 import { useProfilePopupModel } from 'layout/UserApp/store/ProfilePopupStore';
+import { isEmpty } from 'lodash';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -100,6 +101,22 @@ function MyPageHeaderContainer({
     }
   }, []);
 
+  const getProfileImage = () => {
+    if (bgImageBase64) {
+      return bgImageBase64;
+    }
+
+    if (skProfile.useGdiPhoto) {
+      return skProfile.gdiPhotoImagePath;
+    }
+
+    if (isEmpty(skProfile.photoImagePath)) {
+      return DefaultImg;
+    }
+
+    return skProfile.photoImagePath;
+  };
+
   return (
     <>
       <div className="profile-contents-area">
@@ -159,9 +176,7 @@ function MyPageHeaderContainer({
                   <ProfileImage
                     id="profileImage"
                     className="ui image"
-                    src={
-                      photoImageBase64 || skProfile.photoImagePath || DefaultImg
-                    }
+                    src={getProfileImage()}
                     onError={(event: any) =>
                       (event.currentTarget.style.display = 'none')
                     }

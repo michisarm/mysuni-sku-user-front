@@ -18,6 +18,7 @@ import {
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { isEmpty } from 'lodash';
 
 interface Props {
   setOpen: () => void;
@@ -120,6 +121,18 @@ function ProfilePopupView(props: Props) {
     window.open(`${window.location.origin}/suni-instructor/`, '_blank');
   }
 
+  const getProfileImage = () => {
+    if (skProfile.useGdiPhoto) {
+      return skProfile.gdiPhotoImagePath;
+    }
+
+    if (isEmpty(skProfile.photoImagePath)) {
+      return DefaultImg;
+    }
+
+    return skProfile.photoImagePath;
+  };
+
   return (
     <>
       {skProfile && (
@@ -185,7 +198,7 @@ function ProfilePopupView(props: Props) {
                   </div>
 
                   <div className="image-area">
-                    <ProfileImage src={skProfile.photoFilePath || DefaultImg} />
+                    <ProfileImage src={getProfileImage()} />
                   </div>
                   <div className="profile-info ">
                     <span className="prof-tit">
