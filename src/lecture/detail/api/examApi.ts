@@ -2,8 +2,19 @@ import { axiosApi } from '@nara.platform/accent';
 import { AnswerSheetSdo } from '../model/AnswerSheet';
 import AnswerSheetDetail from '../model/AnswerSheetDetail';
 import ExamDetail from '../model/ExamDetail';
+import { SkProfileService } from 'profile/stores';
 
 const BASE_URL = '/api/exam';
+
+function paramsSerializer(paramObj: Record<string, any>) {
+  const params = new URLSearchParams();
+  for (const key in paramObj) {
+    if (paramObj[key] !== undefined) {
+      params.append(key, paramObj[key]);
+    }
+  }
+  return params.toString();
+}
 
 export function findExamPaperDetail(
   examPaperIds: string[]
@@ -11,18 +22,13 @@ export function findExamPaperDetail(
   const url = `${BASE_URL}/examPapers/detail`;
   return axiosApi
     .get<ExamDetail>(url, {
-      params: examPaperIds,
-      paramsSerializer: paramObj => {
-        const params = new URLSearchParams();
-        paramObj.forEach((key: string) => {
-          //params.append(key, paramObj[key]);
-          params.append('examPaperIds', key);
-        });
-
-        return params.toString();
+      params: {
+        examPaperIds,
+        language: SkProfileService.instance.skProfile.language,
       },
+      paramsSerializer,
     })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findAnswerSheetsDetail(
@@ -33,7 +39,7 @@ export function findAnswerSheetsDetail(
     .get<AnswerSheetDetail>(url, {
       params: { lectureId },
     })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function saveExamAnswerSheet(
@@ -42,7 +48,7 @@ export function saveExamAnswerSheet(
   const url = `${BASE_URL}/answersheets/save`;
   return axiosApi
     .post<string>(url, answerSheetSdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function submitExamAnswerSheet(
@@ -51,7 +57,7 @@ export function submitExamAnswerSheet(
   const url = `${BASE_URL}/answersheets/submit`;
   return axiosApi
     .post<string>(url, answerSheetSdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findAnswerSheetAppliesCount(
@@ -62,5 +68,5 @@ export function findAnswerSheetAppliesCount(
     .get<number>(url, {
       params: { lectureId },
     })
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }

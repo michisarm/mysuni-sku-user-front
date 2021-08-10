@@ -223,8 +223,8 @@ function MyStampListContainer({
                       <p
                         dangerouslySetInnerHTML={{
                           __html: getPolyglotText(
-                            `획득한 Stamp가 없습니다.\nStamp가 있는 학습 과정을 찾아보세요.`,
-                            'mapg-msmp-Stamp설명'
+                            `획득한 Stamp가 없습니다.<br/>Stamp가 있는 학습 과정을 찾아보세요.`,
+                            'mapg-msmp-Stamp설명dd'
                           ),
                         }}
                       />

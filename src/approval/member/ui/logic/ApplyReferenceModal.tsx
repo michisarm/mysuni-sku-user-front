@@ -362,23 +362,27 @@ class ApplyReferenceModal extends React.Component<Props> {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.companyName}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>
+                          {parsePolyglotString(companyApprover.companyName)}
+                        </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.departmentName}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>
+                          {parsePolyglotString(companyApprover.departmentName)}
+                        </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
+                        <Table.Cell verticalAlign="middle" />
                         <span>{parsePolyglotString(companyApprover.name)}</span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
+                        <Table.Cell verticalAlign="middle" />
                         <span>{companyApprover.title}</span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
+                        <Table.Cell verticalAlign="middle" />
                         <span>{companyApprover.email}</span>
                       </Table.Cell>
                     </Table.Row>
@@ -387,7 +391,7 @@ class ApplyReferenceModal extends React.Component<Props> {
               </div>
             </Modal.Content>
             <Modal.Actions className="actions">
-              {approvalShow === true && (
+              {approvalShow && (
                 <Button
                   className="w190 pop p"
                   onClick={this.onClickChangeApplyReference}
