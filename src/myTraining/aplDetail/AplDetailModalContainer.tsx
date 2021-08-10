@@ -1,91 +1,23 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import { AlertWin, ConfirmWin } from 'shared';
 import ApprovalRejectModal from 'myTraining/ui/view/modal/ApprovalRejectModal';
-import {
-  getAplDetailForm,
-  getAplDetailModal,
-  setAplDetailModal,
-  useAplDetailForm,
-  useAplDetailModal,
-} from './aplDetail.stores';
-import { initAplDetailForm, initAplDetailModal } from './aplDetail.models';
+import { useAplDetailModal } from './aplDetail.stores';
+import { initAplDetailModal } from './aplDetail.models';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   cancelRouteToList,
   onCancelApproval,
   onCancelReject,
+  onCloseAlertModal,
+  onConfirmApproval,
+  onConfirmReject,
   routeToList,
 } from './aplDetail.events';
-import { AplService } from 'myTraining/stores';
-import AplApprovalUdo from 'myTraining/model/AplApprovalUdo';
 
 function AplDetailModalContainer() {
   const { openListModal, openRejectModal, openApprovalModal, openAlertModal } =
     useAplDetailModal() || initAplDetailModal();
-  const { allowHour, allowMinute, allowHourRef, allowMinuteRef } =
-    useAplDetailForm() || initAplDetailForm();
-  const aplService = AplService.instance;
-  const { apl } = aplService;
-
-  const onCloseAlertModal = useCallback(() => {
-    const aplDetailModal = getAplDetailModal();
-    const aplDetailForm = getAplDetailForm();
-    if (aplDetailModal === undefined || aplDetailForm === undefined) {
-      return;
-    }
-
-    if (!aplDetailForm.allowHour) {
-      allowHourRef.current?.focus();
-    }
-
-    if (!aplDetailForm.allowMinute) {
-      allowMinuteRef.current?.focus();
-    }
-    setAplDetailModal({
-      ...aplDetailModal,
-      openAlertModal: false,
-    });
-  }, []);
-
-  const onConfirmReject = useCallback(
-    async (remark: string) => {
-      /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
-      const aplUdo = AplApprovalUdo.createForReject(apl.id, remark);
-      await aplService!.modifyAplWithApprovalState(aplUdo);
-
-      const aplDetailModal = getAplDetailModal();
-      if (aplDetailModal !== undefined) {
-        setAplDetailModal({
-          ...aplDetailModal,
-          openRejectModal: false,
-        });
-      }
-      routeToList();
-    },
-    [apl]
-  );
-
-  const onConfirmApproval = useCallback(async () => {
-    /* aplUdo 를 생성해 승인 로직을 처리해야 함. */
-    const allowHourNumber = Number.parseInt(allowHour);
-    const allowMinuteNumber = Number.parseInt(allowMinute);
-
-    const aplUdo = AplApprovalUdo.createForApproval(
-      apl.id,
-      allowHourNumber,
-      allowMinuteNumber
-    );
-    await aplService!.modifyAplWithApprovalState(aplUdo);
-    const aplDetailModal = getAplDetailModal();
-    if (aplDetailModal !== undefined) {
-      setAplDetailModal({
-        ...aplDetailModal,
-        openApprovalModal: false,
-      });
-    }
-    routeToList();
-  }, [allowHour, allowMinute, apl]);
 
   return (
     <>

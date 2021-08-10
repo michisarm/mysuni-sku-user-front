@@ -38,7 +38,6 @@ function MyApprovalInfoTable(props: Props) {
   } = props;
   const { page } = useParams<RouteParams>();
 
-  /* handlers */
   const changeAllowHour = useCallback((e: any) => {
     onChangeTime('hour', e);
   }, []);
@@ -55,7 +54,6 @@ function MyApprovalInfoTable(props: Props) {
     onClearTime('minute');
   }, [onClearTime]);
 
-  /* render functions */
   const getAllowTimeByState = (model: AplModel) => {
     /* LearningPage :: 전체 */
     if (page === 'learning') {
@@ -119,7 +117,6 @@ function MyApprovalInfoTable(props: Props) {
 
   const collegeName = getCollgeName(model.collegeId);
   const channelName = getChannelName(model.channelId);
-  /* render */
   return (
     <table className="ui create table">
       <tbody>
