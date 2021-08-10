@@ -166,7 +166,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     skProfileService!
       .findSkProfile()
       .then((profile: SkProfileModel) =>
-        departmentService!.findDepartmentByCode(profile.departmentCode)
+        departmentService!.findDepartmentByCode(profile?.departmentCode)
       )
       .then((department: DepartmentModel) =>
         memberService!.findApprovalMemberByEmployeeId(department.managerId)

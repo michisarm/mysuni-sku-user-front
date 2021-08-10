@@ -7,7 +7,7 @@ import { MyApprovalRouteParams } from 'myTraining/model/MyApprovalRouteParams';
 import { MenuControlAuthService } from 'approval/stores';
 import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
 import MyApprovalListContainer from 'myTraining/ui/logic/MyApprovalListContainer';
-import PersonalLearningListContainer from 'myTraining/ui/logic/PersonalLearningListContainer';
+import PersonalLearningListContainer from 'myTraining/personalLearning/PersonalLearningListContainer';
 import MyApprovalTabItemView from './MyApprovalTabItemView';
 import ApprovalCubeService from 'myTraining/present/logic/ApprovalCubeService';
 import { AplService } from 'myTraining/stores';

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
-import { ApprovalViewType } from '../../logic/PersonalLearningListContainer';
+import { ApprovalViewType } from '../../../personalLearning/PersonalLearningListContainer';
 import { ContentType } from '../../logic/NewLearningListContainer';
 import { EnrollingViewType } from '../../logic/NewLearningListContainer';
 import { MyLearningContentType } from '../../model/MyLearningContentType';

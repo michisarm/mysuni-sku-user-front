@@ -13,7 +13,7 @@ import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
 import { AplRdoModel, CountType } from '../../model/AplRdoModel';
-import { ApprovalViewType } from '../../ui/logic/PersonalLearningListContainer';
+import { ApprovalViewType } from '../../personalLearning/PersonalLearningListContainer';
 import AplApprovalUdo from '../../model/AplApprovalUdo';
 
 @autobind

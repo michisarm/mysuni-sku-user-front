@@ -1,31 +1,27 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+import { Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
-import { MyApprovalContentType } from '../model/MyApprovalContentType';
+import { MyApprovalContentType } from '../ui/model/MyApprovalContentType';
 import { SeeMoreButton } from 'lecture';
 import {
   ListLeftTopPanel,
   ListRightTopPanel,
   ListTopPanelTemplate,
-} from '../view/panel';
+} from '../ui/view/panel';
 import { NoSuchContentPanel } from 'shared';
-import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
-import { PersonalLearningListView } from '../view/PersonalLearningListView';
-import routePaths from '../../routePaths';
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
-import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import { MyApprovalRouteParams } from '../model/MyApprovalRouteParams';
+import { PersonalLearningListView } from './PersonalLearningListView';
+import routePaths from '../routePaths';
+import NoSuchContentPanelMessages from '../ui/model/NoSuchContentPanelMessages';
+import MyLearningListHeaderView from '../ui/view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../ui/view/table/MyLearningListTemplate';
+import { onClickItem } from './personalLearningList.events';
 
-interface PersonalLearningListContainerProps {
-  aplService?: AplService;
-}
-
-function PersonalLearningListContainer({
-  aplService,
-}: PersonalLearningListContainerProps) {
-  const { apls: offsetApl, aplCount } = aplService!;
+function PersonalLearningListContainer() {
+  const aplService = AplService.instance;
+  const { apls: offsetApl, aplCount } = aplService;
 
   const history = useHistory();
   const params = useParams<MyApprovalRouteParams>();
@@ -107,7 +103,6 @@ function PersonalLearningListContainer({
 
   const message = NoSuchContentPanelMessages.getMessageByConentType(params.tab);
 
-  /* render */
   return (
     <div className="confirm-list-wrap">
       <ListTopPanelTemplate
@@ -129,6 +124,7 @@ function PersonalLearningListContainer({
           <PersonalLearningListView
             apls={offsetApl.results}
             totalCount={offsetApl.totalCount}
+            onClickItem={onClickItem}
           />
         </MyLearningListTemplate>
       )) || <NoSuchContentPanel message={message} />}
@@ -137,10 +133,7 @@ function PersonalLearningListContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom('myTraining.aplService'))(
-  observer(PersonalLearningListContainer)
-);
+export default observer(PersonalLearningListContainer);
 
-/* globals */
 export type ApprovalViewType = '' | 'OpenApproval' | 'Opened' | 'Rejected';
 const PAGE_SIZE = 20;
