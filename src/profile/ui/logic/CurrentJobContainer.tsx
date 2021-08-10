@@ -61,8 +61,14 @@ class CurrentJobContainer extends React.Component<Props, State> {
   componentDidMount(): void {
     const { jobGroupService, skProfileService } = this.props;
 
-    jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile();
+    jobGroupService!.findAllJobGroups();
+
+    if (skProfileService?.additionalUserInfo.currentJobGroupId) {
+      jobGroupService!.findJobGroupById(
+        skProfileService?.additionalUserInfo.currentJobGroupId
+      );
+    }
   }
 
   onPreviousClick() {
