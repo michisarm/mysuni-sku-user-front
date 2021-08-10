@@ -6,7 +6,6 @@ import { MenuControlAuthModel } from '../../model/MenuControlAuthModel';
 
 @autobind
 export default class MenuControlAuthService {
-  //
   static instance: MenuControlAuthService;
 
   menuControlAuthApi: MenuControlAuthApi;
@@ -15,13 +14,11 @@ export default class MenuControlAuthService {
   menuControlAuth: MenuControlAuthModel = new MenuControlAuthModel();
 
   constructor(menuControlAuthApi: MenuControlAuthApi) {
-    //
     this.menuControlAuthApi = menuControlAuthApi;
   }
 
   @action
   async findMenuControlAuth() {
-    //
     const menuControlAuth = await this.menuControlAuthApi.findMenuControlAuth();
 
     runInAction(() => {
@@ -35,7 +32,6 @@ export default class MenuControlAuthService {
     name: string,
     value: string | {} | string[] | undefined
   ) {
-    //
     this.menuControlAuth = _.set(this.menuControlAuth, name, value);
   }
 }

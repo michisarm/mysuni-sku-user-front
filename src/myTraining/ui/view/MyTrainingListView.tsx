@@ -10,7 +10,6 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import dateTimeHelper, {
   timeToHourMinutePaddingFormat,
   convertTimeToDate,
@@ -22,6 +21,7 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -172,7 +172,7 @@ function MyTrainingListView({
                 myTraining.learningTime + myTraining.additionalLearningTime
               )}
             </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
@@ -205,7 +205,7 @@ function MyTrainingListView({
               )}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
           </>
         );
       }

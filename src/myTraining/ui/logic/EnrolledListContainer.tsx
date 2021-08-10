@@ -15,7 +15,6 @@ import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
@@ -24,6 +23,7 @@ import { useRequestFilterCountView } from '../../service/useRequestFilterCountVi
 import { useScrollMove } from '../../useScrollMove';
 import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
 import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface EnrolledListContainerProps {
   skProfileService?: SkProfileService;
@@ -124,7 +124,8 @@ function EnrolledListContainer({
   };
 
   const updateInProgressStorage = async () => {
-    const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
+    const inProgressTableViews =
+      await myTrainingService!.findAllInProgressStorage();
     sessionStorage.setItem(
       'inProgressTableViews',
       JSON.stringify(inProgressTableViews)
@@ -233,7 +234,7 @@ function EnrolledListContainer({
         <>
           {(!resultEmpty && (
             <>
-              <MyLearningListTemplate>
+              <MyLearningListTemplate contentType={contentType}>
                 <MyLearningListHeaderView
                   contentType={contentType}
                   onClickSort={onClickSort}

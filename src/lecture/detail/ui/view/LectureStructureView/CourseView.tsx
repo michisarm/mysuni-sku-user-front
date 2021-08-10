@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
@@ -66,13 +66,8 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         <button
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
-        >
-          <PolyglotText defaultString="총" id="Course-Contents-총" />
-          <strong>
-            {(items || cubes || []).length}<PolyglotText defaultString="개" id="Course-Contents-개" />
-          </strong>
-          {' '}<PolyglotText defaultString="강의 구성" id="Course-Contents-강의" />
-        </button>
+          dangerouslySetInnerHTML={{__html: getPolyglotText('총<strong>{count}개</strong> 강의 구성', 'Course-Contents-강의개수', {count: (items || cubes || []).length + ''})}}
+        />
         <span
           className={`label-state-learning ${
             state === 'Progress' ? 'proceeding' : ''

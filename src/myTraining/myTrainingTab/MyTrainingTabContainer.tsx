@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from 'myTraining/model/MyTrainingRouteParams';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { MenuControlAuthService } from 'approval/stores';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';

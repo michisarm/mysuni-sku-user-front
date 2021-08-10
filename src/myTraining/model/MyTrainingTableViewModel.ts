@@ -37,6 +37,7 @@ class MyTrainingTableViewModel {
   endDate: number = 0; // 학습완료일
   createDate: number = 0; // 등록일
   time: number = 0; // 최근학습일 || 취소 미이수일
+  modifiedTime: number = 0; // time이 modifiedTime으로 변경됨
   stampCount: number = 0;
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
@@ -63,7 +64,7 @@ class MyTrainingTableViewModel {
       학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      최근학습일: convertTimeToDate(this.time),
+      최근학습일: convertTimeToDate(this.modifiedTime),
     };
   }
 
@@ -103,6 +104,7 @@ decorate(MyTrainingTableViewModel, {
   learningTime: observable,
   startDate: observable,
   time: observable,
+  modifiedTime: observable,
   endDate: observable,
   createDate: observable,
   stampCount: observable,

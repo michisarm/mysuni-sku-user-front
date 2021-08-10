@@ -5,7 +5,11 @@ import { mobxHelper, Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
 import { MyApprovalContentType } from '../model/MyApprovalContentType';
 import { SeeMoreButton } from 'lecture';
-import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
+import {
+  ListLeftTopPanel,
+  ListRightTopPanel,
+  ListTopPanelTemplate,
+} from '../view/panel';
 import { NoSuchContentPanel } from 'shared';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import { PersonalLearningListView } from '../view/PersonalLearningListView';
@@ -14,11 +18,9 @@ import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 
-
 interface PersonalLearningListContainerProps {
   aplService?: AplService;
 }
-
 
 function PersonalLearningListContainer({
   aplService,
@@ -61,7 +63,7 @@ function PersonalLearningListContainer({
     }
 
     return 1;
-  }
+  };
 
   const clearStore = (): void => {
     aplService!.clearApls();
@@ -75,7 +77,7 @@ function PersonalLearningListContainer({
     initStore();
     await aplService!.findAllAplsForApproval(viewType);
     checkShowSeeMore();
-  }
+  };
 
   const checkShowSeeMore = () => {
     if (offsetApl.results.length >= offsetApl.totalCount) {
@@ -103,7 +105,6 @@ function PersonalLearningListContainer({
     history.replace(routePaths.currentPage(getPageNo()));
   }, []);
 
-
   const message = NoSuchContentPanelMessages.getMessageByConentType(params.tab);
 
   /* render */
@@ -113,55 +114,32 @@ function PersonalLearningListContainer({
         className="list-top"
         contentType={MyApprovalContentType.PersonalLearning}
       >
-        {
-          offsetApl &&
-          offsetApl.results &&
-          offsetApl.results.length > 0 &&
-          (
-            <ListLeftTopPanel
-              contentType={params.tab}
-              countModel={aplCount}
-            />
-          )
-        }
+        {offsetApl && offsetApl.results && offsetApl.results.length > 0 && (
+          <ListLeftTopPanel contentType={params.tab} countModel={aplCount} />
+        )}
         <ListRightTopPanel
           contentType={params.tab}
           checkedViewType={viewType}
           onChangeViewType={onChangeViewType}
         />
       </ListTopPanelTemplate>
-      {
-        offsetApl &&
-        offsetApl.results &&
-        offsetApl.results.length > 0 &&
-        (
-          <MyLearningListTemplate>
-            <MyLearningListHeaderView
-              contentType={params.tab}
-            />
-            <PersonalLearningListView 
-              apls={offsetApl.results}
-              totalCount={offsetApl.totalCount}
-            />
-          </MyLearningListTemplate>
-        ) || (
-        <NoSuchContentPanel message={message} />
-        )
-      }
-      {showSeeMore &&
-        (
-          <SeeMoreButton
-            onClick={onClickSeeMore}
+      {(offsetApl && offsetApl.results && offsetApl.results.length > 0 && (
+        <MyLearningListTemplate contentType={params.tab}>
+          <MyLearningListHeaderView contentType={params.tab} />
+          <PersonalLearningListView
+            apls={offsetApl.results}
+            totalCount={offsetApl.totalCount}
           />
-        )
-      }
+        </MyLearningListTemplate>
+      )) || <NoSuchContentPanel message={message} />}
+      {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
     </div>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.aplService'
-))(observer(PersonalLearningListContainer));
+export default inject(mobxHelper.injectFrom('myTraining.aplService'))(
+  observer(PersonalLearningListContainer)
+);
 
 /* globals */
 export type ApprovalViewType = '' | 'OpenApproval' | 'Opened' | 'Rejected';

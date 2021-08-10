@@ -5,7 +5,7 @@ import { mobxHelper, Offset } from '@nara.platform/accent';
 import { Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
 import InMyLectureService from '../../present/logic/InMyLectureService';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import { SeeMoreButton } from '../../../lecture';
@@ -19,7 +19,6 @@ import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
-
 
 interface InMyLectureListContainerProps {
   inMyLectureService?: InMyLectureService;
@@ -49,7 +48,7 @@ function InMyLectureListContainer({
     inMyLectureService!.clearAllTableViews();
     inMyLectureService!.initFilterRdo();
 
-    if(params.pageNo === '1') {
+    if (params.pageNo === '1') {
       requestInMyLectures();
       return;
     }
@@ -61,7 +60,7 @@ function InMyLectureListContainer({
   }, []);
 
   useEffect(() => {
-    if(showResult) {
+    if (showResult) {
       inMyLectureService!.setFilterRdoByConditions(conditions);
       requestInMyLecturesByConditions();
     }
@@ -82,7 +81,7 @@ function InMyLectureListContainer({
     checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
-  }
+  };
 
   const requestInMyLecturesWithPage = async (offset: Offset) => {
     setIsLoading(true);
@@ -90,10 +89,11 @@ function InMyLectureListContainer({
     checkShowSeeMore();
     setIsLoading(false);
     scrollOnceMove();
-  }
+  };
 
   const checkShowSeeMore = (): void => {
-    const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
+    const { inMyLectureTableViews, inMyLectureTableCount } =
+      inMyLectureService!;
 
     if (inMyLectureTableViews.length >= inMyLectureTableCount) {
       setShowSeeMore(false);
@@ -121,11 +121,11 @@ function InMyLectureListContainer({
     }, 1000);
 
     history.replace(`./${nextPageNo}`);
-  }
+  };
 
-  const onClickSort = useCallback((column: string, direction: Direction) => { 
-      inMyLectureService!.sortTableViews(column, direction);
-    }, []);
+  const onClickSort = useCallback((column: string, direction: Direction) => {
+    inMyLectureService!.sortTableViews(column, direction);
+  }, []);
 
   const noSuchMessage = (
     contentType: MyContentType,
@@ -149,46 +149,44 @@ function InMyLectureListContainer({
           <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
-      {
-        inMyLectureTableViews &&
-        inMyLectureTableViews.length > 0 && (
-          <>
-            {(!resultEmpty && (
-              <>
-                <MyLearningListTemplate>
-                  <MyLearningListHeaderView
-                    contentType={contentType}
-                    onClickSort={onClickSort}
-                  />
-                  <InMyLectureListView
-                    inMyLectures={inMyLectureTableViews}
-                    totalCount={inMyLectureTableCount}
-                  />
-                </MyLearningListTemplate>
-                {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              </>
-            )) || (
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-                {!isLoading && (
-                  <NoSuchContentPanel
-                    message={noSuchMessage(contentType, true)}
-                  />
-                )}
-              </Segment>
-            )}
-          </>
-      ) || (
+      {(inMyLectureTableViews && inMyLectureTableViews.length > 0 && (
+        <>
+          {(!resultEmpty && (
+            <>
+              <MyLearningListTemplate contentType={contentType}>
+                <MyLearningListHeaderView
+                  contentType={contentType}
+                  onClickSort={onClickSort}
+                />
+                <InMyLectureListView
+                  inMyLectures={inMyLectureTableViews}
+                  totalCount={inMyLectureTableCount}
+                />
+              </MyLearningListTemplate>
+              {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+            </>
+          )) || (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+              {!isLoading && (
+                <NoSuchContentPanel
+                  message={noSuchMessage(contentType, true)}
+                />
+              )}
+            </Segment>
+          )}
+        </>
+      )) || (
         <Segment
           style={{
             paddingTop: 0,
@@ -202,9 +200,7 @@ function InMyLectureListContainer({
         >
           <Loadingpanel loading={isLoading} />
           {!isLoading && (
-            <NoSuchContentPanel
-              message={noSuchMessage(contentType)}
-            />
+            <NoSuchContentPanel message={noSuchMessage(contentType)} />
           )}
         </Segment>
       )}
@@ -215,7 +211,7 @@ function InMyLectureListContainer({
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.inMyLectureService',
-    'shared.filterBoxService',
+    'shared.filterBoxService'
   )
 )(observer(InMyLectureListContainer));
 

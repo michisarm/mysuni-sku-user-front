@@ -1,17 +1,15 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import {
   Button,
   TextArea,
   Form,
   Modal,
-  Table,
   Segment,
   Select,
   Icon,
-  Image,
   Grid,
   Ref,
 } from 'semantic-ui-react';
@@ -34,7 +32,6 @@ import {
 } from '../../../approval/stores';
 import SkProfileModel from '../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../approval/department/model/DepartmentModel';
-import { CompanyApproverModel } from '../../../approval/company/model/CompanyApproverModel';
 import { AplType } from '../../model/AplType';
 import { AplApprovalType } from '../../model/AplApprovalType';
 import { AplQueryModel } from '../../model/AplQueryModel';
@@ -206,7 +203,8 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts =
+          await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
@@ -976,7 +974,3 @@ class AplCreateContainer extends React.Component<Props, States> {
 }
 
 export default withRouter(AplCreateContainer);
-//export default AplCreateContainer;
-// export default inject(mobxHelper.injectFrom('aplService'))(
-//   withRouter(observer(AplCreateContainer))
-// );

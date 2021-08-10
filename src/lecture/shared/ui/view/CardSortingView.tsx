@@ -23,7 +23,7 @@ class CardSortingView extends Component<Props> {
               <Form.Field>
                 <Radio
                   className="base"
-                  label={getPolyglotText('편성순', 'cicl-목록-최신순')}
+                  label={getPolyglotText('편성순', 'cicl-목록-편성순')}
                   name="sortRadioGroup"
                   value={OrderByType.collegeOrder}
                   checked={value === OrderByType.collegeOrder}
@@ -34,7 +34,7 @@ class CardSortingView extends Component<Props> {
             <Form.Field>
               <Radio
                 className="base"
-                label={getPolyglotText('최신순', 'cicl-목록-평성순')}
+                label={getPolyglotText('최신순', 'cicl-목록-최신순')}
                 name="sortRadioGroup"
                 value={OrderByType.Time}
                 checked={value === OrderByType.Time}
