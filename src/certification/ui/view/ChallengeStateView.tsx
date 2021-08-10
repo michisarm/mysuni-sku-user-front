@@ -65,6 +65,35 @@ function ChallengeStateView({
     }
   }
 
+  function challengeStateDescription() {
+    if (challengeState === ChallengeState.WaitForChallenge) {
+      return (
+        <PolyglotText
+          id="Certification-View-도전설명"
+          defaultString="Badge획득에 도전 해보세요."
+        />
+      );
+    } else if (challengeState === ChallengeState.Challenging) {
+      return '';
+    } else if (challengeState === ChallengeState.ReadyForRequest) {
+      return (
+        <PolyglotText
+          id="Certification-View-완료알림"
+          defaultString="Badge획득 도전이 완료되었습니다."
+        />
+      );
+    } else if (challengeState === ChallengeState.Requested) {
+      return (
+        <PolyglotText
+          id="Certification-View-발급요청2"
+          defaultString="발급 요청"
+        />
+      );
+    } else if (challengeState === ChallengeState.Issued) {
+      return <PolyglotText id="Certification-View-획득" defaultString="획득" />;
+    }
+  }
+
   return (
     <div className="status">
       {(challengeState === ChallengeState.WaitForChallenge ||
@@ -92,10 +121,10 @@ function ChallengeStateView({
           )}
           {challengeState === ChallengeState.Requested ? (
             <span className="txt">
-              {formattedIssueStateTime} {stateDescription}
+              {formattedIssueStateTime} {challengeStateDescription()}
             </span>
           ) : (
-            <span className="txt">{stateDescription}</span>
+            <span className="txt">{challengeStateDescription()}</span>
           )}
         </>
       )}
@@ -105,7 +134,8 @@ function ChallengeStateView({
         <>
           <div className={classNames('big black')}>{challengeStateText()}</div>
           <span className="txt">
-            {formattedIssueStateTime} {stateDescription}
+            {formattedIssueStateTime}
+            {challengeStateDescription()}
           </span>
         </>
       )}
