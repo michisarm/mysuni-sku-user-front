@@ -38,13 +38,12 @@ export function useRequestCollege() {
 
 export function getCollgeName(collegeId: string) {
   const collegeList = getCollegeStore();
+  const foundCollege = find(collegeList, { id: collegeId });
 
-  const filterChannelName = find(collegeList, { id: collegeId });
-
-  if (filterChannelName && filterChannelName.name !== undefined) {
+  if (foundCollege && foundCollege.name !== undefined) {
     return parsePolyglotString(
-      filterChannelName.name,
-      getDefaultLang(filterChannelName.langSupports)
+      foundCollege.name,
+      getDefaultLang(foundCollege.langSupports)
     );
   }
   return '';
@@ -52,13 +51,12 @@ export function getCollgeName(collegeId: string) {
 
 export function getChannelName(channelId: string) {
   const channelList = getChannelStore();
+  const foundChannel = find(channelList, { id: channelId });
 
-  const filterChannelName = find(channelList, { id: channelId });
-
-  if (filterChannelName && filterChannelName.name !== undefined) {
+  if (foundChannel && foundChannel.name !== undefined) {
     return parsePolyglotString(
-      filterChannelName.name,
-      getDefaultLang(filterChannelName.langSupports)
+      foundChannel.name,
+      getDefaultLang(foundChannel.langSupports)
     );
   }
 

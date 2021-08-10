@@ -64,14 +64,18 @@ export default function RequiredCardListView({
               <Table.Cell className="title">
                 <a
                   href="#"
-                  onClick={e => {
+                  onClick={(e) => {
                     onViewDetail(e, requiredCard.serviceId);
                   }}
                 >
-                  <span className={`ellipsis ${requiredCard.useNote ?  'noteOn' : ''}`}>
-                    {requiredCard.name && parsePolyglotString(requiredCard.name)}
+                  <span
+                    className={`ellipsis ${
+                      requiredCard.useNote ? 'noteOn' : ''
+                    }`}
+                  >
+                    {requiredCard.name &&
+                      parsePolyglotString(requiredCard.name)}
                   </span>
-                  {/* <span className="ellipsis noteOn">{requiredCard.name}</span> */}
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>
