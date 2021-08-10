@@ -2,9 +2,8 @@ import { decorate, observable } from 'mobx';
 import { CubeType, CubeState } from 'shared/model';
 
 export class ApprovalContentsRdoModel {
-
-  serviceType?: string;                     // PersonalCube | Course
-  cubeType?: CubeType;          // cube 일 경우
+  serviceType?: string; // PersonalCube | Course
+  cubeType?: CubeType; // cube 일 경우
   college?: string;
   channel?: string;
   cubeState?: CubeState;
@@ -35,4 +34,3 @@ decorate(ApprovalContentsRdoModel, {
   limit: observable,
   offset: observable,
 });
-

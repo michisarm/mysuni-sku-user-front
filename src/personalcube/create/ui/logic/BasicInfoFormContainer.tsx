@@ -182,7 +182,7 @@ class BasicInfoFormContainer extends Component<Props, State> {
                       {categoryChannels[0].college.name}
                       {` > `}
                       {categoryChannels
-                        .map(categoryChannel => categoryChannel.channel.name)
+                        .map((categoryChannel) => categoryChannel.channel.name)
                         .join(', ')}
                     </span>
                   ))

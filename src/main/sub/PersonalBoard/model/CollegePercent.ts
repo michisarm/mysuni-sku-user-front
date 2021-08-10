@@ -2,12 +2,13 @@
 //   items: T[];
 // }
 
-
 // export interface CollegePercent {
 //   items: CollegePercentData[]
 // }
 
+import { PolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+
 export interface CollegePercentData {
-  college: string,
-  learningTime: number
+  collegeName: PolyglotString;
+  learningTime: number;
 }
