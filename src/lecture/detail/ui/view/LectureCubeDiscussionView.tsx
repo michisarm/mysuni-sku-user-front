@@ -238,10 +238,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
     findCommunityProfile(id!).then((result) => {
       setProfileInfo({
         id: result!.id,
-        profileImg: result!.profileImg,
-        introduce: result!.introduce,
+        profileImg: result!.photoImagePath,
+        introduce: result!.selfIntroduction,
         nickName: result!.nickname,
-        creatorName: result!.name,
+        creatorName: parsePolyglotString(result!.name),
       });
       setProfileOpen(true);
     });

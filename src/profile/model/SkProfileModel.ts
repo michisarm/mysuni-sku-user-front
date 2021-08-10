@@ -1,9 +1,7 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
 import { NameValueList } from 'shared/model';
-import MemberType from './MemberType';
 import MemberLocaleModel from './MemberLocaleModel';
-import EmployeeModel from './EmployeeModel';
 import PisAgreementModel from './PisAgreementModel';
 import ProfileImagePath from '../../../src/shared/components/Image/ProfileImagePath';
 import {
@@ -12,7 +10,6 @@ import {
 } from 'shared/viewmodel/PolyglotString';
 
 class SkProfileModel implements DramaEntity {
-  //
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
@@ -31,12 +28,10 @@ class SkProfileModel implements DramaEntity {
   useGdiPhoto: boolean = false;
   backgroundImagePath: string = ''; // 배경이미지 주소
 
-  nickName: string = ''; // 닉네임
-  // introduce: string = ''; // 자기소개
+  nickname: string = ''; // 닉네임
   selfIntroduction: string = ''; // 자기소개
   // followerCount: number = 0; // 팔로워 숫자
   // followingCount: number = 0; // 팔로잉 숫자
-  // nameFlag: string = 'R'; // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
   displayNicknameFirst: boolean = false; // 닉네임/실명 여부 값(false: 실명, true: 닉네임)
   departmentName: PolyglotString = { ko: '', en: '', zh: '' };
   departmentCode: string = '';
@@ -46,16 +41,11 @@ class SkProfileModel implements DramaEntity {
   employeeId: string = '';
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
-  // language: Language = null;
   language: string = 'Korean';
 
   constructor(skProfile?: SkProfileModel) {
-    //
     if (skProfile) {
       const patronKey = skProfile.patronKey || this.patronKey;
-      // const member =
-      //   (skProfile.member && new EmployeeModel(skProfile.member)) ||
-      //   this.member;
       const pisAgreement =
         (skProfile.pisAgreement &&
           new PisAgreementModel(skProfile.pisAgreement)) ||
@@ -64,23 +54,9 @@ class SkProfileModel implements DramaEntity {
     }
   }
 
-  // @computed
-  // get departmentCode() {
-  //   //
-  //   return (this.member && this.member.departmentCode) || '';
-  // }
-
   static asNameValues(skProfile: SkProfileModel): NameValueList {
     const asNameValues1 = {
       nameValues: [
-        // {
-        //   name: 'member',
-        //   value: JSON.stringify(skProfile.member),
-        // },
-        // {
-        //   name: 'memberType',
-        //   value: skProfile.memberType,
-        // },
         {
           name: 'pisAgreement',
           value: JSON.stringify(skProfile.pisAgreement),
@@ -89,10 +65,6 @@ class SkProfileModel implements DramaEntity {
           name: 'locale',
           value: JSON.stringify(skProfile.memberLocale),
         },
-        // {
-        //   name: 'passwordAuthenticated',
-        //   value: skProfile.passwordAuthenticated ? 'true' : 'false',
-        // },
       ],
     };
 
@@ -109,25 +81,17 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get photoFilePath() {
-    //
     let photoImageFilePath: string = '';
 
     if (this.photoImagePath && this.photoImagePath !== '') {
       photoImageFilePath = ProfileImagePath(this.photoImagePath);
     }
-    // else {
-    // photoImageFilePath =
-    //   this.member &&
-    //   this.member.photoFilename &&
-    //   `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.photoFilename}`;
-    // }
 
     return photoImageFilePath;
   }
 
   @computed
   get bgFilePath() {
-    //
     let bgImageFilePath: string = '';
     bgImageFilePath = ProfileImagePath(this.backgroundImagePath);
 
@@ -136,11 +100,10 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get profileViewName() {
-    //
     let viewProfileName: string = '';
 
     if (this.displayNicknameFirst) {
-      viewProfileName = this.nickName;
+      viewProfileName = this.nickname;
     } else {
       viewProfileName = parsePolyglotString(this.name);
     }
@@ -161,12 +124,11 @@ decorate(SkProfileModel, {
   // studySummaryConfigured: observable,
   // photoType: observable,
   photoImagePath: observable,
-  // nickName: observable,
   backgroundImagePath: observable,
   selfIntroduction: observable,
   // followerCount: observable,
   // followingCount: observable,
-  nickName: observable,
+  nickname: observable,
   displayNicknameFirst: observable,
   name: observable,
   phone: observable,

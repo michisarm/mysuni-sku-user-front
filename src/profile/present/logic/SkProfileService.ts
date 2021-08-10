@@ -1,11 +1,14 @@
 import { observable, action, runInAction, computed } from 'mobx';
-import { autobind, NameValueList, CachingFetch } from '@nara.platform/accent';
-
+import {
+  autobind,
+  NameValueList,
+  CachingFetch,
+  IdNameList,
+} from '@nara.platform/accent';
 import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
-import { findAllCollegeCache } from '../../../college/present/apiclient/CollegeApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import AdditionalUserInfoModel from 'profile/model/AdditionalUserInfoModel';
 import TempProfileModel from 'profile/model/TempProfileModel';
@@ -36,31 +39,22 @@ class SkProfileService {
   reAgree: boolean = false;
 
   constructor(skProfileApi: SkProfileApi) {
-    //
     this.skProfileApi = skProfileApi;
   }
 
   @computed
   get profileMemberName() {
-    //
     let viewProfileName: string = '';
 
     if (this.skProfile.displayNicknameFirst) {
-      viewProfileName = this.skProfile.nickName;
+      viewProfileName = this.skProfile.nickname;
     } else {
       viewProfileName =
         this.skProfile && parsePolyglotString(this.skProfile.name);
     }
 
     return viewProfileName;
-    // return this.skProfile.member.name;
   }
-
-  // 김민준
-  // @computed
-  // get profileMemberEmail() {
-  //   return this.skProfile.member.email;
-  // }
 
   @computed
   get profileMemberCompanyCode() {
@@ -69,7 +63,6 @@ class SkProfileService {
 
   @computed
   get studySummaryFavoriteChannels() {
-    //
     const { favoriteChannels } = this.studySummary;
     return (favoriteChannels && favoriteChannels.idNames) || [];
   }
@@ -88,17 +81,9 @@ class SkProfileService {
 
   @action
   async findSkProfile() {
-    //
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
       (tempProfile: TempProfileModel) => this.divideProfileModel(tempProfile)
-      // runInAction(() => (
-      //     this.skProfile = new SkProfileModel(tempProfile.user)
-      //  ))
-      //  &&
-      //  runInAction(() => (
-      //    this.additionalUserInfo = new AdditionalUserInfoModel(tempProfile.additionalUserInfo)
-      //  ))
     );
 
     return fetched
@@ -127,7 +112,7 @@ class SkProfileService {
         runInAction(() => {
           this.skProfile = new SkProfileModel(skProfile);
           this.skProfile.name = skProfile.name;
-          this.skProfile.nickName = skProfile.nickname;
+          this.skProfile.nickname = skProfile.nickname;
           this.skProfile.departmentName = skProfile.department.name;
           this.skProfile.photoImagePath = skProfile.profileImg;
           this.skProfile.backgroundImagePath = skProfile.profileBgImg;
@@ -154,6 +139,11 @@ class SkProfileService {
   }
 
   @action
+  setUserDefinedFavoriteJobDuty(userDefinedFavoriteJobDuty: string) {
+    this.additionalUserInfo.userDefinedFavoriteJobDuty = userDefinedFavoriteJobDuty;
+  }
+
+  @action
   setCurrentJobGroupProp(currentJobGroupId: string) {
     this.additionalUserInfo.currentJobGroupId = currentJobGroupId;
   }
@@ -163,40 +153,19 @@ class SkProfileService {
     this.additionalUserInfo.currentJobDutyId = currentJobDutyId;
   }
 
+  @action
+  setUserDefinedCurrentJobDuty(userDefinedCurrentJobDuty: string) {
+    this.additionalUserInfo.userDefinedCurrentJobDuty = userDefinedCurrentJobDuty;
+  }
+
   // StudySummary ------------------------------------------------------------------------------------------------------
 
   @action
   async findStudySummary() {
-    //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
-      async (studySummary: AdditionalUserInfoModel) => {
-        const collegeData = await findAllCollegeCache();
-        // if (collegeData !== undefined && studySummary !== undefined) {
-        //   studySummary.favoriteChannelIds.forEach((id) => {
-        //     const channelId = id;
-        //     const college = collegeData.find((c) =>
-        //       c.channels.some((d) => d.id === channelId)
-        //     );
-        //     if (college !== undefined) {
-        //       const channel = college.channels.find((c) => c.id === channelId);
-        //       if (channel !== undefined) {
-        //         idName.name = parsePolyglotString(channel.name);
-        //       }
-        //     }
-        //   });
-        //   studySummary.favoriteColleges.idNames.forEach((idName) => {
-        //     const collegeId = idName.id;
-        //     const college = collegeData.find((c) => c.id === collegeId);
-        //     if (college !== undefined) {
-        //       idName.name = parsePolyglotString(college.name);
-        //     }
-        //   });
-        // }
-
-        // runInAction(
-        //   () => (this.studySummary = new StudySummaryModel(studySummary))
-        // );
+      async (additionalUserInfo: AdditionalUserInfoModel) => {
+        runInAction(() => (this.additionalUserInfo = additionalUserInfo));
       }
     );
 
@@ -216,38 +185,17 @@ class SkProfileService {
   /**
    * mySUNI에서 본인 증명사진 base64 데이터 저장
    */
-  modifyPhotoImageByProfileId(
-    profileId: string,
-    photoType: string,
-    photoImage: string
-  ) {
-    let asNameValues = {} as NameValueList;
+  modifyPhotoImageByProfileId(photoImage: string) {
+    const params = {
+      nameValues: [
+        {
+          name: 'photoImagePath',
+          value: photoImage,
+        },
+      ],
+    };
 
-    if (!photoType || photoType === '0') {
-      asNameValues = {
-        nameValues: [
-          {
-            name: 'photoType',
-            value: '0', // 0 - 타시스템인 IM으로부터 인터페이스 받은 증명사진을 보여줌.
-          },
-        ],
-      };
-    } else if (photoType && photoType === '1') {
-      asNameValues = {
-        nameValues: [
-          {
-            name: 'photoType',
-            value: '1', // 1 - mySUNI에서 사용자가 등록한 증명사진를 보여줌.
-          },
-          {
-            name: 'photoImage',
-            value: photoImage,
-          },
-        ],
-      };
-    }
-
-    return this.skProfileApi.modifyPhotoUrlByProfileId(profileId, asNameValues);
+    return this.skProfileApi.modifySkProfile(params);
   }
 
   @action
@@ -255,14 +203,14 @@ class SkProfileService {
     this.studySummary = _.set(this.studySummary, name, value);
   }
 
-  // @action
-  // setMemberProp(name: string, value: string | {} | string[]) {
-  //   this.skProfile.member = _.set(this.skProfile.member, name, value);
-  // }
+  @action
+  setProfileProp(value: string) {
+    this.skProfile.photoImagePath = value;
+  }
 
   @action
-  setProfileProp(name: string, value: string | {} | string[] | number) {
-    this.skProfile = _.set(this.skProfile, name, value);
+  setAdditionalUserInfo(learningTyps: IdNameList) {
+    this.additionalUserInfo.favoriteLearningTypes = learningTyps;
   }
 }
 

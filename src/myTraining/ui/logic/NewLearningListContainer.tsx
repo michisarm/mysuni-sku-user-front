@@ -78,8 +78,9 @@ const NewLearningListContainer: React.FC<Props> = (Props) => {
           className="section-count"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              `총 <span>${totalCount}개</span>의 리스트가 있습니다.`,
-              '신규학습-신규목록-목록개수z'
+              `총 <span>{totalCount}개</span>의 리스트가 있습니다.`,
+              '신규학습-신규목록-목록개수',
+              { totalCount: totalCount.toString() }
             ),
           }}
         />

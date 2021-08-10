@@ -48,27 +48,16 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   async onConfirm() {
-    //
-    const { photoTypeTemp, imageFile } = this.state;
+    const { imageFile } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
     if (imageFile !== undefined) {
       const imagePath = await uploadFileProfile(imageFile);
-      skProfileService!.setProfileProp('photoImage', imagePath || '');
+      skProfileService!.setProfileProp(imagePath || '');
     }
 
-    if (photoTypeTemp) {
-      skProfileService!.setProfileProp('photoType', photoTypeTemp);
-    }
-
-    // 김민준 - useGdiPhoto 값에 따라서 다른 path 사용
-    skProfileService!.modifyPhotoImageByProfileId(
-      skProfile.id,
-      '',
-      // skProfile.photoType,
-      skProfile.photoImagePath
-    );
+    skProfileService!.modifyPhotoImageByProfileId(skProfile.photoImagePath);
 
     this.onClose();
   }
@@ -122,8 +111,14 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   render() {
-    const { name, company, department, size, trigger, skProfileService } =
-      this.props;
+    const {
+      name,
+      company,
+      department,
+      size,
+      trigger,
+      skProfileService,
+    } = this.props;
     const { skProfile } = skProfileService!;
 
     /**

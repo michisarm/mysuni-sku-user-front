@@ -37,7 +37,7 @@ function ProfilePopupView(props: Props) {
   const [isNickName, setIsNickName] = useState<boolean>();
   const [isSettingProfile, setIsSettingProfile] = useState<boolean>(true);
   const skProfileService = SkProfileService.instance;
-  const { skProfile, modifySkProfile } = skProfileService;
+  const { skProfile } = skProfileService;
   const history = useHistory();
   const externalInstructor = localStorage.getItem('nara.externalInstructor');
   const instructorId = localStorage.getItem('nara.instructorId');
@@ -52,29 +52,24 @@ function ProfilePopupView(props: Props) {
 
   useEffect(() => {
     if (
-      (skProfile.nickName === null || skProfile.nickName === '') &&
+      (skProfile.nickname === null || skProfile.nickname === '') &&
       (skProfile.selfIntroduction === null || skProfile.selfIntroduction === '')
     ) {
       setIsSettingProfile(false);
     } else {
       setIsSettingProfile(true);
     }
-  }, [skProfile.nickName, skProfile.selfIntroduction]);
+  }, [skProfile.nickname, skProfile.selfIntroduction]);
 
   useEffect(() => {
-    // 김민준 - true/false 검증 필요
-    if (!skProfile.displayNicknameFirst) {
-      setIsNickName(false);
-    } else {
-      setIsNickName(true);
-    }
+    setIsNickName(skProfile.displayNicknameFirst);
   }, [skProfile]);
 
   const onClickToggle = useCallback(async (useNickName) => {
     if (
       !SkProfileService.instance.skProfile.id ||
-      !skProfile.nickName ||
-      skProfile.nickName === ''
+      !skProfile.nickname ||
+      skProfile.nickname === ''
     ) {
       reactAlert({
         title: getPolyglotText('안내', 'mypage-popupview-안내'),
@@ -88,28 +83,21 @@ function ProfilePopupView(props: Props) {
 
     if (saveFlag) {
       setSaveFlag(false);
-      // 김민준 - adddtional에는 id만 있음
-      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-        // skProfile.member.currentJobGroup,
-        // skProfile.member.favoriteJobGroup,
-        skProfile.pisAgreement
-      );
 
-      if (useNickName) {
-        setIsNickName(useNickName);
-        skProfileUdo.displayNicknameFirst = true;
-      } else {
-        setIsNickName(useNickName);
-        skProfileUdo.displayNicknameFirst = false;
-      }
+      const params = {
+        nameValues: [
+          {
+            name: 'displayNicknameFirst',
+            value: JSON.stringify(useNickName),
+          },
+        ],
+      };
 
-      // await modifySkProfile(skProfileUdo);
-      skProfileService!.findSkProfile().then((skProfile) => {
-        //
+      await skProfileService.modifySkProfile(params);
+      skProfileService!.findSkProfile().then(() => {
         setSaveFlag(true);
       });
     }
-    //getProfilePopup();
   }, []);
 
   //hobby를 ',' 기준으로 구분한다.
@@ -209,7 +197,7 @@ function ProfilePopupView(props: Props) {
                   <div className="profile-info ">
                     <span className="prof-tit">
                       {isNickName
-                        ? skProfile.nickName
+                        ? skProfile.nickname
                         : parsePolyglotString(skProfile.name)}
                     </span>
                     {isCommunityAuth() && (
@@ -322,7 +310,7 @@ function ProfilePopupView(props: Props) {
                   <span className="prof-name">
                     {isNickName
                       ? parsePolyglotString(skProfile.name)
-                      : skProfile.nickName}
+                      : skProfile.nickname}
                   </span>
                   <span className="comp-name">
                     {parsePolyglotString(skProfile.companyName)}
