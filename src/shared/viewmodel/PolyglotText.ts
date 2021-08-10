@@ -73,6 +73,10 @@ export async function initializeI18nResource() {
   );
 
   if (nextI18nResoruces !== undefined) {
+    localStorage.removeItem('i18nResources_Korean');
+    localStorage.removeItem('i18nResources_English');
+    localStorage.removeItem('i18nResources_Chinese');
+
     localStorage.setItem(i18nResourcesKey, JSON.stringify(nextI18nResoruces));
     localStorage.setItem(
       'i18nResourceTime',
