@@ -292,11 +292,31 @@ const SelectOptions = {
   ],
 
   userStatus: [
-    { key: '0', text: '전체', value: '' },
-    { key: '1', text: '저장', value: 'Created' },
-    { key: '2', text: '승인대기', value: 'OpenApproval' },
-    { key: '3', text: '승인', value: 'Opened' },
-    { key: '4', text: '반려', value: 'Rejected' },
+    {
+      key: '0',
+      text: getPolyglotText('전체', 'Create-DetailBasic-전체'),
+      value: '',
+    },
+    {
+      key: '1',
+      text: getPolyglotText('저장', 'Create-DetailBasic-저장'),
+      value: 'Created',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('승인대기', 'Create-DetailBasic-승인대기'),
+      value: 'OpenApproval',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('승인', 'Create-DetailBasic-승인'),
+      value: 'Opened',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('반려', 'Create-DetailBasic-반려'),
+      value: 'Rejected',
+    },
   ],
 
   openType: [
