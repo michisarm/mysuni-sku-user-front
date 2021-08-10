@@ -2,8 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import {
   MyLearningContentType,
-  MyLearningContentTypeName,
+  learningContentTypeName,
 } from 'myTraining/ui/model/MyLearningContentType';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyTrainingTabItemViewProps {
   contentType: MyLearningContentType;
@@ -16,7 +17,7 @@ function MyTrainingTabItemView({
 }: MyTrainingTabItemViewProps) {
   return (
     <>
-      {MyLearningContentTypeName[contentType]}
+      {learningContentTypeName(contentType)}
       <span className="count">+{(count > 0 && count) || 0}</span>
     </>
   );

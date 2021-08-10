@@ -20,6 +20,8 @@ class AdditionalUserInfoModel {
   favoriteJobDutyId: string = '';
   favoriteJobGroupId: string = '';
   favoriteLearningTypes: IdNameList | null = null;
+  userDefinedFavoriteJobDuty: string = '';
+  userDefinedCurrentJobDuty: string = '';
 
   constructor(addtionalModel?: AdditionalUserInfoModel) {
     //

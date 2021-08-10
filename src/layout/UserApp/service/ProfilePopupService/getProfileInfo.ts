@@ -1,72 +1,31 @@
-import { findCommunityProfile } from '../../api/ProfileAPI';
-import {
-  setProfileInfoModel,
-  getProfileInfoModel,
-} from '../../store/ProfileInfoStore';
-import { profile } from 'console';
-import ProfileInfoModel from '../../model/ProfileInfoModel';
-import { BadgesModel } from '../../model/BadgeModel';
+import { setProfileInfoModel, ProfileInfo } from '../../store/ProfileInfoStore';
 import {
   findBadgesByBadgeIssueState,
   findAllOtherCommunities,
   findAllPostViewsFromProfileFeed,
-  findProfilePhoto,
+  findFollowWithFollowingCount,
 } from '../../api/ProfileInfoAPI';
 import { findUserProfile } from 'profile/present/apiclient/SkProfileApi';
 
 export async function getProfileInfo(
   memberId: string | undefined
 ): Promise<void> {
-  const profileItem: ProfileInfoModel = {
-    id: '',
-    name: '',
-    company: { id: '', name: '' },
-    profileImg: '',
-    profileBgImg: '',
-    nickname: '',
-    oriNickname: '',
-    introduce: '',
-    hobby: '',
-    followerCount: 0,
-    followingCount: 0,
-    feedCount: 0,
-    badgeCount: 0,
-    communityCount: 0,
-    isFollow: false,
-    isNickname: false,
-  };
   if (memberId !== undefined) {
-    const profileInfo: ProfileInfoModel | undefined = await findUserProfile(
-      memberId
-    );
-    if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
-      let photoImageFilePath = profileInfo.profileImg;
-      if (!profileInfo.profileImg) {
-        const profilePhotos = await findProfilePhoto([memberId]);
-        if (profilePhotos && profilePhotos[0]) {
-          // photoImageFilePath = "profile/photo" + profilePhotos[0].member?.photoFilename;
-          photoImageFilePath = profilePhotos[0].photoImage;
-        }
-      }
+    const profileInfo = await findUserProfile(memberId);
+    const followWithFollowingCount = await findFollowWithFollowingCount();
 
-      profileItem.id = profileInfo.id;
-      profileItem.name = profileInfo.name;
-      profileItem.company = profileInfo.company;
-      profileItem.profileImg = photoImageFilePath;
-      profileItem.profileBgImg = profileInfo.profileBgImg;
-      profileItem.nickname = profileInfo.nickname;
-      profileItem.oriNickname = profileInfo.nickname;
-      profileItem.introduce = profileInfo.introduce;
-      profileItem.hobby = profileInfo.hobby;
-      profileItem.followerCount = profileInfo.followerCount;
-      profileItem.followingCount = profileInfo.followingCount;
-      profileItem.feedCount = profileInfo.feedCount;
-      profileItem.badgeCount = profileInfo.badgeCount;
-      profileItem.communityCount = profileInfo.communityCount;
-      profileItem.isFollow = profileInfo.isFollow;
-      profileItem.isNickname = profileInfo.isNickname;
+    if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
+      const parseProfileInfo: ProfileInfo = {
+        ...profileInfo,
+        followCount: followWithFollowingCount?.followerCount || 0,
+        followingCount: followWithFollowingCount?.followingCount || 0,
+        photoImagePath: profileInfo.useGdiPhoto
+          ? profileInfo.gdiPhotoImagePath
+          : profileInfo.photoImagePath,
+      };
+
+      setProfileInfoModel(parseProfileInfo);
     }
-    setProfileInfoModel(profileItem);
   }
 }
 

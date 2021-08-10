@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "@nara.drama/approval": "0.4.5",
+    "@nara.drama/approval": "0.4.5-1",
     "@nara.drama/depot": "1.4.1",
     "@nara.drama/feedback": "0.4.63",
     "@nara.platform/accent": "0.2.2",

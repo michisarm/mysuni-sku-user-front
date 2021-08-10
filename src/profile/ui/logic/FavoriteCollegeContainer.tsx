@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  reactAutobind,
-  mobxHelper,
-  reactAlert,
-  IdName,
-} from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, IdName } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -16,10 +11,14 @@ import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import StudySummaryModel from '../../model/StudySummaryModel';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { find } from 'lodash';
+import { findAllCollegeCache } from 'college/present/apiclient/CollegeApi';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
@@ -29,7 +28,7 @@ interface Props extends RouteComponentProps {
 
 interface State {
   selectedCollege: CollegeLectureCountRdo;
-  favorites: ChannelModel[];
+  favorites: IdName[];
   favoriteCompanyChannels: ChannelModel[];
 }
 
@@ -54,10 +53,9 @@ const style = {
 @observer
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, State> {
-  //
   state = {
     selectedCollege: new CollegeLectureCountRdo(),
-    favorites: [] as ChannelModel[],
+    favorites: [] as IdName[],
     favoriteCompanyChannels: [] as ChannelModel[],
   };
 
@@ -69,13 +67,13 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   async init() {
-    //
-    const { collegeService, skProfileService, collegeLectureCountService } =
-      this.props;
-    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { skProfileService, collegeLectureCountService } = this.props;
+    const { additionalUserInfo } = skProfileService!;
 
-    const colleges: CollegeLectureCountRdo[] =
-      await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
+    const collegeData = await findAllCollegeCache();
+
+    // 필수 관심채널 필터링
     const companyChannels = colleges
       .filter((college) => college.collegeType === CollegeType.Company)
       .map((college) =>
@@ -86,28 +84,31 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
       )
       .flat();
 
-    // skProfileService!.findSkProfile();
-    // skProfileService!.findStudySummary()
-    // collegeService!.findAllChannel();
+    const parseFavoritesList: IdName[] = [];
 
-    const channels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({
-          id: channel.id,
-          channelId: channel.id,
-          name: channel.name,
-          checked: true,
-        })
-    );
+    additionalUserInfo.favoriteChannelIds.forEach((channelId) => {
+      if (collegeData !== undefined) {
+        const findCollege = find(collegeData, { id: channelId });
 
-    const favoriteChannelsWithoutCompany = channels.filter(
+        if (findCollege !== undefined) {
+          parseFavoritesList.push({
+            id: channelId,
+            name: parsePolyglotString(
+              findCollege.name,
+              getDefaultLang(findCollege.langSupports)
+            ),
+          });
+        }
+      }
+    });
+
+    const favoriteChannelsWithoutCompany = parseFavoritesList.filter(
       (channel) =>
         !companyChannels.some(
-          (companyChannel) => companyChannel.channelId === channel.channelId
+          (companyChannel) => companyChannel.channelId === channel.id
         )
     );
 
-    // this.setState({ favorites: [...channels] });
     this.setState({
       favorites: favoriteChannelsWithoutCompany,
       favoriteCompanyChannels: companyChannels,
@@ -115,12 +116,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   onSelectCollege(college: CollegeLectureCountRdo) {
-    //
     this.setState({ selectedCollege: college });
   }
 
-  onSelectChannel(channel: IdName | ChannelModel) {
-    //
+  onSelectChannel(channel: IdName) {
     let { favorites }: State = this.state;
 
     if (
@@ -132,7 +131,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
-      favorites.push(new ChannelModel(channel));
+      favorites.push(channel);
     }
     this.setState({ favorites });
   }
@@ -142,35 +141,33 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   async onNextClick() {
-    //
-    const { collegeService, skProfileService, history } = this.props;
+    const { skProfileService, history } = this.props;
     const { favorites, favoriteCompanyChannels } = this.state;
 
-    // if (favorites.length < 3) {
-    //   reactAlert({
-    //     title: '알림',
-    //     message: '관심 분야는 3개이상 선택해 주세요.',
-    //   });
-    // } else {
-    const nextFavoriteChannels = [...favorites, ...favoriteCompanyChannels];
-    // collegeService!.favoriteChannels = [...favorites];
-    collegeService!.favoriteChannels = [...nextFavoriteChannels];
-    skProfileService!.setStudySummaryProp(
-      'favoriteChannels',
-      collegeService!.favoriteChannelIdNames
-    );
-    await skProfileService!.modifyStudySummary(
-      StudySummaryModel.asNameValues(skProfileService!.studySummary)
-    );
+    const nextFavoriteChannels = [
+      ...favorites.map((item) => item.id),
+      ...favoriteCompanyChannels.map((item) => item.id),
+    ];
+
+    const params = {
+      nameValues: [
+        {
+          name: 'favoriteChannelIds',
+          value: JSON.stringify(nextFavoriteChannels),
+        },
+      ],
+    };
+
+    await skProfileService!.modifyStudySummary(params);
 
     history.push(routePaths.favoriteLearningType());
-    // }
   }
 
   render() {
-    const { channelMap } = this.props.collegeService!;
-    const { collegeLectureCounts, totalChannelCount } =
-      this.props.collegeLectureCountService!;
+    const {
+      collegeLectureCounts,
+      totalChannelCount,
+    } = this.props.collegeLectureCountService!;
     const { selectedCollege, favorites, favoriteCompanyChannels } = this.state;
 
     return (
@@ -206,7 +203,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                           onChange={() => this.onSelectCollege(college)}
                         />
                         <label htmlFor={`radio_${index}`}>
-                          {college.name}
+                          {parsePolyglotString(
+                            college.name,
+                            getDefaultLang(college.langSupports)
+                          )}
                           {college?.channelCounts?.length !== undefined
                             ? `(${college?.channelCounts?.length})`
                             : ''}
@@ -231,8 +231,6 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                     {(selectedCollege &&
                       selectedCollege.channels.length &&
                       selectedCollege.channels.map((channel, index) => {
-                        const ch =
-                          channelMap.get(channel.id) || new ChannelModel();
                         return (
                           <li key={index}>
                             <div className="ui base checkbox popup-wrap">
@@ -264,22 +262,6 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                   getDefaultLang(channel.langSupports)
                                 )}
                               </label>
-                              {/* <Popup
-                                className="custom-black"
-                                content={ch.description}
-                                inverted
-                                style={style}
-                                trigger={
-                                  <label
-                                    className="pop"
-                                    data-offset="23"
-                                    htmlFor={`checkbox_${index}`}
-                                  >
-                                    {channel.name}{' '}
-                                    <span>({channel.count})</span>
-                                  </label>
-                                }
-                              /> */}
                             </div>
                           </li>
                         );
@@ -304,21 +286,17 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             <div className="f-list">
               <div className="scrolling">
                 <div className="selected">
-                  {(favorites &&
+                  {favorites &&
                     favorites.map((channel, index) => (
                       <Button
                         className="del"
                         key={index}
                         onClick={() => this.onSelectChannel(channel)}
-                        style={{ 'font-weight': '500' }}
+                        style={{ fontWeight: '500' }}
                       >
-                        {parsePolyglotString(
-                          channel.name,
-                          getDefaultLang(channel.langSupports)
-                        )}
+                        {channel.name}
                       </Button>
-                    ))) ||
-                    ''}
+                    ))}
                   {favoriteCompanyChannels.map((channel: ChannelModel) => (
                     <Popup
                       className="custom-black"
@@ -334,10 +312,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                           key={`del_${channel.id}`}
                           className="del default"
                           data-offset="23"
-                          style={{ 'font-weight': '500' }}
+                          style={{ fontWeight: '500' }}
                         >
                           {parsePolyglotString(
-                            channel.name,
+                            channel.name as PolyglotString,
                             getDefaultLang(channel.langSupports)
                           )}
                         </Button>
@@ -364,13 +342,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             </span>
           </Button>
         </div>
-        {/* <div className="select-error">
-          <Icon value="error16" />
-          <span className="blind">error</span>
-          <span>관심 분야를 3개 이상 선택해주세요.</span>
-        </div> */}
         <div className="button-area">
-          {/* <div className="error">관심 분야를 3개 이상 선택해주세요.</div> */}
           <Button className="fix bg" onClick={this.onNextClick}>
             <PolyglotText defaultString="다음" id="college-favorite-다음" />
           </Button>

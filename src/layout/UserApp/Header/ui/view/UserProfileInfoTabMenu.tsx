@@ -1,8 +1,7 @@
-import React, { useState, useCallback, Component } from 'react';
-import { Link } from 'react-router-dom';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { useProfileInfoModel } from '../../../store/ProfileInfoStore';
 
 interface Props {
   selectedMenu: string;
