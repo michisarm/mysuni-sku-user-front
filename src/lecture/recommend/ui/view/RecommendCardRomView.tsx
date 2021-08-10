@@ -95,7 +95,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
             })
           ) : (
             <NoSuchContentPanel
-              message={`${getChannelName()} ${getPolyglotText(
+              message={`${getChannelName() || ''} ${getPolyglotText(
                 '채널에 해당하는 추천 학습과정이 없습니다.',
                 'rcmd-추천-채널없음'
               )}`}

@@ -205,13 +205,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> =
         <div className="documents-viewer" ref={headerWidth}>
           <div className="pdf-header">
             <i className="list24 icon" />
-            <span className="pdf-header-title">
-              <strong>{courseName.length}</strong>
-              <PolyglotText
-                defaultString="개의 교육 자료가 있습니다."
-                id="Collage-Documents-교육자료"
-              />
-            </span>
+            <span className="pdf-header-title"
+              dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{count}</strong>개의 교육 자료가 있습니다.',
+                'Collage-Documents-교육자료',
+                {count: courseName.length})}}
+            />
             <div
               className={
                 !openToggle ? 'pdf-header-select off' : 'pdf-header-select on'
