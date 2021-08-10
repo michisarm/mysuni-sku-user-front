@@ -72,7 +72,7 @@ function createPanoptoEmbedPlayer() {
     if (embedApi === undefined) {
       return;
     }
-    embedApi.setVolume(0.5);
+    embedApi.setVolume(0.6);
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
     setPanoptoEmbedPlayerState({
