@@ -8,24 +8,31 @@ import ManagerListModalContainer from './ManagerListModalContainer';
 import SkProfileModel from '../../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../department/model/DepartmentModel';
 import { CompanyApproverModel } from '../../../company/model/CompanyApproverModel';
-import { DepartmentService, MemberService, CompanyApproverService } from '../../../stores';
+import {
+  DepartmentService,
+  MemberService,
+  CompanyApproverService,
+} from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
-  skProfileService?: SkProfileService
-  memberService?: MemberService
-  companyApproverService?: CompanyApproverService
-  departmentService?: DepartmentService
-  trigger?: React.ReactNode
-  handleOk: (member: MemberViewModel) => void
+  skProfileService?: SkProfileService;
+  memberService?: MemberService;
+  companyApproverService?: CompanyApproverService;
+  departmentService?: DepartmentService;
+  trigger?: React.ReactNode;
+  handleOk: (member: MemberViewModel) => void;
 }
 
-@inject(mobxHelper.injectFrom(
-  'approval.memberService',
-  'approval.companyApproverService',
-  'approval.departmentService',
-  'profile.skProfileService'
-))
+@inject(
+  mobxHelper.injectFrom(
+    'approval.memberService',
+    'approval.companyApproverService',
+    'approval.departmentService',
+    'profile.skProfileService'
+  )
+)
 @reactAutobind
 @observer
 class ApplyReferenceModalApproval extends React.Component<Props> {
@@ -41,11 +48,21 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
 
   init() {
     //
-    const { skProfileService, departmentService, memberService, companyApproverService } = this.props;
-    skProfileService!.findSkProfile()
-      .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
-      .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
-      .then((companyApprover: CompanyApproverModel) => companyApproverService!.findCompanyApprover());
+    const {
+      skProfileService,
+      departmentService,
+      memberService,
+      companyApproverService,
+    } = this.props;
+    skProfileService!
+      .findSkProfile()
+      .then((profile: SkProfileModel) =>
+        departmentService!.findDepartmentByCode(profile.departmentCode)
+      )
+      .then((department: DepartmentModel) =>
+        memberService!.findApprovalMemberByEmployeeId(department.managerId)
+      )
+      .then(() => companyApproverService!.findCompanyApprover());
   }
 
   onOpenModalApproval() {
@@ -95,60 +112,59 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
 
     // 회사명
     let companyNamVal = '';
-    if ( approvalMember.companyName === '' ) {
-      companyNamVal = companyApprover.companyName;
+    if (parsePolyglotString(approvalMember.companyName) === '') {
+      companyNamVal = parsePolyglotString(companyApprover.companyName);
     } else {
-      companyNamVal = approvalMember.companyName;
+      companyNamVal = parsePolyglotString(approvalMember.companyName);
     }
     const companyNam = companyNamVal;
 
-
     // 부서명
     let departmentNameVal = '';
-    if ( approvalMember.departmentName === '' ) {
-      departmentNameVal = companyApprover.departmentName;
+    if (parsePolyglotString(approvalMember.departmentName) === '') {
+      departmentNameVal = parsePolyglotString(companyApprover.departmentName);
     } else {
-      departmentNameVal = approvalMember.departmentName;
+      departmentNameVal = parsePolyglotString(approvalMember.departmentName);
     }
     const departmentName = departmentNameVal;
 
     // 이름
     let userNameVal = '';
-    if ( approvalMember.name === '' ) {
-      userNameVal = companyApprover.name;
+    if (parsePolyglotString(approvalMember.name) === '') {
+      userNameVal = parsePolyglotString(companyApprover.name);
     } else {
-      userNameVal = approvalMember.name;
+      userNameVal = parsePolyglotString(approvalMember.name);
     }
     const userName = userNameVal;
 
     // 직위
     let titleNameVal = '';
-    if ( approvalMember.titleName === '' ) {
-      titleNameVal = companyApprover.titleName;
+    if (approvalMember.title === '') {
+      titleNameVal = companyApprover.title;
     } else {
-      titleNameVal = approvalMember.titleName;
+      titleNameVal = approvalMember.title;
     }
     const titleName = titleNameVal;
 
     // 직책
     let dutiesVal = '';
-    if ( approvalMember.dutiesName === '' ) {
-      dutiesVal = companyApprover.dutiesName;
+    if (approvalMember.duty === '') {
+      dutiesVal = companyApprover.duty;
     } else {
-      dutiesVal = approvalMember.dutiesName;
+      dutiesVal = approvalMember.duty;
     }
     const dutiesName = dutiesVal;
 
     // 직위/직책
     let titleDutiesVal = '';
-    if( dutiesName !== '') {
+    if (dutiesName !== '') {
       titleDutiesVal = titleName + '/' + dutiesName;
     }
     const titleDuties = titleDutiesVal;
 
     // 이메일
     let emailVal = '';
-    if ( approvalMember.email === '' ) {
+    if (approvalMember.email === '') {
       emailVal = companyApprover.email;
     } else {
       emailVal = approvalMember.email;
@@ -159,8 +175,9 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     let approverTypeVal = '';
     // 승인자 변경하기 활성, 비활성처리
     let approvalShowVal;
-    if ( companyApprover.approverType === 'Leader_Approve') {
-      approverTypeVal = '본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.';
+    if (companyApprover.approverType === 'Leader_Approve') {
+      approverTypeVal =
+        '본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.';
       approvalShowVal = true;
     } else {
       approvalShowVal = false;
@@ -172,7 +189,14 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     const approverTypeStr = approverTypeVal;
 
     return (
-      <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModalApproval}>
+      <Modal
+        className="base w1000"
+        size="small"
+        trigger={trigger}
+        open={open}
+        onClose={this.close}
+        onOpen={this.onOpenModalApproval}
+      >
         <Modal.Header className="res">
           {/*Class Series Detail*/}승인자 설정
           <span className="sub f12">{approverTypeStr}</span>
@@ -199,25 +223,45 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
 
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><span>{companyNam}</span></Table.Cell>
-                  <Table.Cell><span>{departmentName}</span></Table.Cell>
-                  <Table.Cell><span>{userName}</span></Table.Cell>
-                  <Table.Cell><span>{titleDuties}</span></Table.Cell>
-                  <Table.Cell><span>{email}</span></Table.Cell>
+                  <Table.Cell>
+                    <span>{companyNam}</span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <span>{departmentName}</span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <span>{userName}</span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <span>{titleDuties}</span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <span>{email}</span>
+                  </Table.Cell>
                 </Table.Row>
-
               </Table.Body>
             </Table>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          { approvalShow === true && <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button> }
+          {approvalShow === true && (
+            <Button
+              className="w190 pop p"
+              onClick={this.onClickChangeApplyReference}
+            >
+              승인자 변경하기
+            </Button>
+          )}
           <ManagerListModalContainer
-            ref={managerModal => this.managerModal = managerModal}
+            ref={(managerModal) => (this.managerModal = managerModal)}
             handleOk={this.onClickManagerListOk}
           />
-          <Button className="w190 pop d" onClick={this.close}>Cancel</Button>
-          <Button className="w190 pop p" onClick={this.onOk}>OK</Button>
+          <Button className="w190 pop d" onClick={this.close}>
+            Cancel
+          </Button>
+          <Button className="w190 pop p" onClick={this.onOk}>
+            OK
+          </Button>
         </Modal.Actions>
       </Modal>
     );

@@ -59,8 +59,12 @@ function MyTrainingPage({
   const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
   const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
-  const { inprogressCount, completedCount, enrolledCount, retryCount } =
-    myTrainingService!;
+  const {
+    inprogressCount,
+    completedCount,
+    enrolledCount,
+    retryCount,
+  } = myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
   const {
@@ -88,11 +92,7 @@ function MyTrainingPage({
   };
 
   const getTabs = (): TabItemModel[] => {
-    if (
-      menuControlAuth.companyCode === '' ||
-      (menuControlAuth.authCode === MenuControlAuth.User &&
-        menuControlAuth.useYn === MenuControlAuth.Yes)
-    ) {
+    if (menuControlAuth.useApl) {
       return [
         {
           name: MyLearningContentType.InProgress,

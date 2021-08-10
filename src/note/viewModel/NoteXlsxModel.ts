@@ -52,8 +52,8 @@ export function convertNoteToNoteXlsxModel(
           getDefaultLang(collegeName[0].langSupports)
         )) ||
       '',
-    Card명: noteWithLecture.lectureRom.cardName,
-    Cube명: noteWithLecture.lectureRom.cubeName,
+    Card명: parsePolyglotString(noteWithLecture.lectureRom.cardName),
+    Cube명: parsePolyglotString(noteWithLecture.lectureRom.cubeName),
     학습유형: noteWithLecture.note.cubeType,
     Playtime: noteWithLecture.note.playTime,
     작성일자: moment(noteWithLecture.note.createDate).format('YYYY-MM-DD'),

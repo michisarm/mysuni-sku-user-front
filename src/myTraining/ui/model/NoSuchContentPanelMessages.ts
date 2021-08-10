@@ -1,5 +1,5 @@
 import { MyContentType } from './MyContentType';
-
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const NoSuchContentPanelMessages = {
   InProgress: '학습중인 과정이 없습니다.',
@@ -11,14 +11,17 @@ const NoSuchContentPanelMessages = {
   Retry: '취소/미이수에 해당하는 학습 과정이 없습니다.',
   EarnedBadgeList: `획득한 Badge가 없습니다.
   등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.`,
-  EarnedStampList: '획득한 스탬프가 없습니다.',
+  EarnedStampList: getPolyglotText(
+    '획득한 스탬프가 없습니다.',
+    'mapg-msmp-목록없음'
+  ),
   PaidCourse: '등록된 정보가 없습니다.',
   PersonalLearning: '승인 요청한 정보가 없습니다.',
   EarnedNoteList: '노트가 없습니다.',
   MyProfile: '로그인 정보를 확인해주세요',
   getMessageByConentType: (contentType: MyContentType): string => {
     return NoSuchContentPanelMessages[contentType];
-  }
+  },
 };
 
 export default NoSuchContentPanelMessages;

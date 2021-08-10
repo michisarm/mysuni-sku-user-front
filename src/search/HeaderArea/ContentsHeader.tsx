@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
 import SearchFilter from '../Components/SearchFilter';
 import { useParams } from 'react-router-dom';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const ContentsHeader: React.FC = () => {
   //
@@ -57,13 +57,16 @@ const ContentsHeader: React.FC = () => {
     <>
       <div className="sort-condition">
         <Segment className="full">
-          <div className="keyword">
-            <span>{`${searchValue}`}</span>
-            <PolyglotText
-              id="통검-요약정보-타이틀"
-              defaultString="에 대한 검색 결과 입니다."
-            />
-          </div>
+          <div
+            className="keyword"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '<span>{value}</span>에 대한 검색 결과 입니다.',
+                '통검-요약정보-타이틀',
+                { value: searchValue }
+              ),
+            }}
+          />
           <div className="right-area">
             {/* <div className="sort">
               <Radio

@@ -3,7 +3,6 @@ import { Button } from 'semantic-ui-react';
 import moment from 'moment';
 import classNames from 'classnames';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import ChallengeStateText from '../../shared/Badge/ui/model/ChallengeStateText';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { ChallengeStateDescription } from '../model/ChallengeStateDescription';
@@ -27,8 +26,44 @@ function ChallengeStateView({
   const formattedIssueStateTime =
     moment(issueStateTime).format('YYYY.MM.DD') || '';
 
-  const stateText = ChallengeStateText[challengeState];
+  //const stateText = ChallengeStateText[challengeState];
   const stateDescription = ChallengeStateDescription[challengeState];
+
+  function challengeStateText() {
+    if (challengeState === ChallengeState.WaitForChallenge) {
+      return (
+        <PolyglotText id="Certification-View-도전" defaultString="도전하기" />
+      );
+    } else if (challengeState === ChallengeState.Challenging) {
+      return (
+        <PolyglotText
+          id="Certification-View-도전취소"
+          defaultString="도전취소"
+        />
+      );
+    } else if (challengeState === ChallengeState.ReadyForRequest) {
+      return (
+        <PolyglotText
+          id="Certification-View-발급요청"
+          defaultString="발급요청"
+        />
+      );
+    } else if (challengeState === ChallengeState.Requested) {
+      return (
+        <PolyglotText
+          id="Certification-View-발급취소"
+          defaultString="발급요청 취소"
+        />
+      );
+    } else if (challengeState === ChallengeState.Issued) {
+      return (
+        <PolyglotText
+          id="Certification-View-획득완료"
+          defaultString="획득완료"
+        />
+      );
+    }
+  }
 
   return (
     <div className="status">
@@ -38,7 +73,7 @@ function ChallengeStateView({
         challengeState === ChallengeState.Requested) && (
         <>
           <Button className="fix bg" onClick={onClickButton}>
-            {stateText}
+            {challengeStateText()}
           </Button>
           {challengeState === ChallengeState.Challenging && (
             <>
@@ -68,7 +103,7 @@ function ChallengeStateView({
       {/*발급요청 완료, 획득 완료*/}
       {challengeState === ChallengeState.Issued && (
         <>
-          <div className={classNames('big black')}>{stateText}</div>
+          <div className={classNames('big black')}>{challengeStateText()}</div>
           <span className="txt">
             {formattedIssueStateTime} {stateDescription}
           </span>

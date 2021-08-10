@@ -39,7 +39,7 @@ export function BadgeInformationView({
         <span className="detail design">
           <span>
             <PolyglotText
-              id="Certification-View-설계주체"
+              id="Certification-View-설계주체2"
               defaultString="설계 주체"
             />
           </span>

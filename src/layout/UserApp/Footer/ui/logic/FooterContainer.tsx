@@ -31,7 +31,10 @@ class FooterContainer extends Component {
               className="item"
               onClick={() => onClick('Introduction')}
             >
-              <PolyglotText defaultString="Introduction" id="home-ftr-바로가1" />
+              <PolyglotText
+                defaultString="Introduction"
+                id="home-ftr-바로가1"
+              />
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportNotice()}
@@ -59,7 +62,10 @@ class FooterContainer extends Component {
         <PrivacyPolicyModalContainer
           trigger={
             <a className="item" style={{ color: 'red' }}>
-              <PolyglotText defaultString="개인정보 처리방침" id="home-ftr-바로가5" />
+              <PolyglotText
+                defaultString="개인정보 처리방침"
+                id="home-ftr-바로가5"
+              />
             </a>
           }
         />

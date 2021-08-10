@@ -81,7 +81,7 @@ function MyPageBadgeListContainer({
                           badgeSize={BadgeSize.Small}
                         />
                         <div className="badge-name">
-                          <span>{myBadge.name}</span>
+                          <span>{parsePolyglotString(myBadge.name)}</span>
                         </div>
                         {/* <Modal
                           open={open}
@@ -90,7 +90,7 @@ function MyPageBadgeListContainer({
                           on="click"
                           trigger={
                             <div className="button-area">
-                              <Button 
+                              <Button
                                 className="fix line"
                               >
                                 인증서 보기
