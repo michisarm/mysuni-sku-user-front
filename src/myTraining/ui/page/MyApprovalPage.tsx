@@ -129,6 +129,7 @@ function MyApprovalPage({
       return getPolyglotText('개인학습', '승인관리-mifa-개인학습bread');
     }
   }
+
   return (
     <ContentLayout
       className="MyApprovalPage"
