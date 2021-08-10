@@ -114,7 +114,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                       activated={cube.survey.path === pathname}
                     />
                   )}
-                  {cube?.report !== undefined && (
+                  {cube?.report !== undefined && (cube.report.name !== null && cube.report.name !== '') &&  (
                     <ReportView
                       name={cube.report.name}
                       state={cube.report.state}
@@ -184,7 +184,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           activated={lectureStructure.card.survey.path === pathname}
         />
       )}
-      {lectureStructure.card?.report !== undefined && (
+      {lectureStructure.card?.report !== undefined && (lectureStructure.card?.report.name !== null && lectureStructure.card?.report.name !== '') && (
         <ProgramReportView
           name={lectureStructure.card.report.name}
           state={lectureStructure.card.report.state}
