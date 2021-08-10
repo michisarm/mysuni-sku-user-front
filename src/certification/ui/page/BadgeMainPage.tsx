@@ -116,7 +116,15 @@ function BadgeMainPage({ badgeService }: BadgeMainPageProps) {
 }
 
 const getSubBreadcrumbFromTab = (tab: string) => {
-  return MyBadgeContentTypeName[tab as MyBadgeContentType];
+  if (tab === 'ChallengingBadgeList') {
+    return getPolyglotText('도전중 Badge', 'Certification-tabm-도전뱃지');
+  } else if (tab === 'AllBadgeList') {
+    return getPolyglotText('Badge List', 'Certification-tabm-뱃지목록');
+  } else if (tab === 'EarnedBadgeList') {
+    return getPolyglotText('My Badge', 'Certification-tabm-mb');
+  } else {
+    return '';
+  }
 };
 
 export default inject(mobxHelper.injectFrom('badge.badgeService'))(
