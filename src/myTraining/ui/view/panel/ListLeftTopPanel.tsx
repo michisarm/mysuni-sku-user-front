@@ -63,21 +63,65 @@ function ListLeftTopPanel(props: Props) {
     switch (contentType) {
       case MyLearningContentType.PersonalCompleted:
         return (
-          <div className="list-number"
-            dangerouslySetInnerHTML={{__html: getPolyglotText(
-              '전체 <strong>{count}개<strong>의 개인학습',
-              'learning-개인보드-전체',
-              {count: totalCount + '' || 0 + ''})}}
+          <div
+            className="list-number"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '전체 <strong>{count}개<strong>의 개인학습',
+                'learning-개인보드-전체',
+                { count: totalCount + '' || 0 + '' }
+              ),
+            }}
           />
         );
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="list-number">
-            <span dangerouslySetInnerHTML={{__html: getPolyglotText('전체 <b>{count}개</b>', 'learning-개인보드-전체1', {count: countModel!.all+''})}} />
-            <span dangerouslySetInnerHTML={{__html: getPolyglotText('등록 <b>{count}개</b>', 'learning-개인보드-등록', {count: countModel!.opened+''})}} />
-            <span dangerouslySetInnerHTML={{__html: getPolyglotText('승인 <b>{count}개</b>', 'learning-개인보드-승인', {count: countModel!.openApproval+''})}} />
-            <span dangerouslySetInnerHTML={{__html: getPolyglotText('승인 대기 중 <b>{count}개</b>', 'learning-개인보드-승인대기', {count: countModel!.rejected+''})}} />
-            <span dangerouslySetInnerHTML={{__html: getPolyglotText('반려 <b>{count}개</b>', 'learning-개인보드-반려', {count: countModel!.rejected+''})}} />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '전체 <b>{count}개</b>',
+                  'learning-개인보드-전체1',
+                  { count: countModel!.all + '' }
+                ),
+              }}
+            />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '등록 <b>{count}개</b>',
+                  'learning-개인보드-등록',
+                  { count: countModel!.opened + '' }
+                ),
+              }}
+            />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '승인 <b>{count}개</b>',
+                  'learning-개인보드-승인',
+                  { count: countModel!.openApproval + '' }
+                ),
+              }}
+            />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '승인 대기 중 <b>{count}개</b>',
+                  'learning-개인보드-승인대기',
+                  { count: countModel!.rejected + '' }
+                ),
+              }}
+            />
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '반려 <b>{count}개</b>',
+                  'learning-개인보드-반려',
+                  { count: countModel!.rejected + '' }
+                ),
+              }}
+            />
             {/* <span>
               <PolyglotText defaultString="전체" id="승인관리-개인보드-전체" />
               <b>
@@ -126,7 +170,21 @@ function ListLeftTopPanel(props: Props) {
         );
       default:
         return (
-          <div className="list-number" dangerouslySetInnerHTML={{__html: getPolyglotText('총 {count}개의 리스트가 있습니다.', 'learning-학보드-게시물총수', {count: totalCount+'' || 0+''})}} />
+          <div
+            className="list-number"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '총 <strong>{totalCount}개</strong> {countMessage}',
+                'learning-학보드-게시물총수',
+                {
+                  totalCount: (totalCount || 0).toString(),
+                  countMessage: countMessage
+                    ? countMessage
+                    : '의 리스트가 있습니다.',
+                }
+              ),
+            }}
+          />
         );
     }
   };
