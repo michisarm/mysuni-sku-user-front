@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -15,7 +15,6 @@ import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
@@ -24,6 +23,7 @@ import { useRequestFilterCountView } from '../../service/useRequestFilterCountVi
 import { useScrollMove } from '../../useScrollMove';
 import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
 import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
@@ -52,11 +52,8 @@ function MyTrainingListContainer({
 
   const { scrollOnceMove } = useScrollMove();
 
-  const {
-    myTrainingTableViews,
-    myTrainingTableCount,
-    myTrainingTableCount2,
-  } = myTrainingService!;
+  const { myTrainingTableViews, myTrainingTableCount, myTrainingTableCount2 } =
+    myTrainingService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
@@ -133,7 +130,8 @@ function MyTrainingListContainer({
   };
 
   const updateInProgressStorage = async () => {
-    const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
+    const inProgressTableViews =
+      await myTrainingService!.findAllInProgressStorage();
     sessionStorage.setItem(
       'inProgressTableViews',
       JSON.stringify(inProgressTableViews)
@@ -243,7 +241,7 @@ function MyTrainingListContainer({
         <>
           {(!resultEmpty && (
             <>
-              <MyLearningListTemplate>
+              <MyLearningListTemplate contentType={contentType}>
                 <MyLearningListHeaderView
                   contentType={contentType}
                   onClickSort={onClickSort}

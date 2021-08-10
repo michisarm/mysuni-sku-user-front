@@ -1,33 +1,24 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
 import { Table } from 'semantic-ui-react';
 import moment from 'moment';
-import routePaths from '../../routePaths';
-import { AplModel } from '../../model';
-import { AplStateName } from '../../model/AplStateName';
-import { AplState } from '../../model/AplState';
-import { useScrollMove } from '../../useScrollMove';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
+import { AplStateName } from 'myTraining/model/AplStateName';
+import { AplModel } from 'myTraining/model';
+import { AplState } from 'myTraining/model/AplState';
 
 interface PersonalCompletedListViewProps {
-  apls: AplModel[];
   totalCount: number;
+  apls: AplModel[];
+  onClickItem: (page: string, id: string) => void;
 }
 
 function PersonalCompletedListView({
-  apls,
   totalCount,
+  apls,
+  onClickItem,
 }: PersonalCompletedListViewProps) {
-  const history = useHistory();
-  const { scrollSave } = useScrollMove();
-
-  const onViewDetail = (page: string, id: string) => {
-    scrollSave();
-    history.push(routePaths.approvalPersonalLearningDetail(page, id));
-  };
-
   return (
     <Table.Body>
       {apls &&
@@ -38,7 +29,7 @@ function PersonalCompletedListView({
             <Table.Row key={`personalCompleted-list-${index}`}>
               <Table.Cell>{totalCount - index}</Table.Cell>
               <Table.Cell className="title">
-                <a href="#" onClick={() => onViewDetail('learning', apl.id)}>
+                <a onClick={() => onClickItem('learning', apl.id)}>
                   <span className="ellipsis">{apl.title}</span>
                 </a>{' '}
               </Table.Cell>
@@ -49,7 +40,7 @@ function PersonalCompletedListView({
               <Table.Cell>
                 {parsePolyglotString(apl.approvalUserIdentity?.name)}
               </Table.Cell>
-              <Table.Cell>{apl.approvalUserIdentity?.email}</Table.Cell>
+              <Table.Cell>{apl.approvalUserIdentity?.email || '-'}</Table.Cell>
               <Table.Cell>{AplStateName[apl.state]}</Table.Cell>
               <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
             </Table.Row>

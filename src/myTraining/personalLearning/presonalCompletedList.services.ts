@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AplService } from 'myTraining/stores';
 import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from 'myTraining/model/MyTrainingRouteParams';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { setIsLoading } from 'shared/store/IsLoadingStore';
 import { setResultEmpty } from 'myTraining/myTraining.stores';
 import { useScrollMove } from 'myTraining/useScrollMove';

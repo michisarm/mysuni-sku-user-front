@@ -63,7 +63,7 @@ function MyApprovalPage({
 
   const getTabs = (): TabItemModel[] => {
     /* menuControlAuth 의 companyCode 가 없을 경우에만 개인학습 탭을 보여준다. */
-    if (menuControlAuth.useApl) {
+    if (menuControlAuth.useApl === false) {
       return [
         {
           name: MyApprovalContentType.PaidCourse,
@@ -107,8 +107,6 @@ function MyApprovalPage({
   };
 
   /* render */
-
-  console.log(params.tab);
   function myApprovalText() {
     if (params.tab === MyApprovalContentType.PaidCourse) {
       return getPolyglotText('유료과정', '승인관리-mifa-유료과정bread');

@@ -2,7 +2,6 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { MenuControlAuthModel } from '../../model/MenuControlAuthModel';
 
 export default class MenuControlAuthApi {
-  //
   rootURL = '/api/user/userWorkspaces';
 
   static instance: MenuControlAuthApi;
