@@ -9,7 +9,6 @@ import MyBadgeContentType from '../model/MyBadgeContentType';
 import AllBadgeListContainer from '../logic/AllBadgeListContainer';
 import BadgeService from '../../present/logic/BadgeService';
 import MyBadgeListContainer from '../logic/MyBadgeListContainer';
-import MyBadgeContentTypeName from '../model/MyBadgeContentTypeName';
 import { BadgeRouteParams } from '../model/BadgeRouteParams';
 import BadgeCategoryContainer from '../logic/BadgeCategoryContainer';
 import ChallengeBadgeListContainer from '../logic/ChallengeBadgeListContainer';
