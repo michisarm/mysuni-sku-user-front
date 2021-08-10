@@ -1,20 +1,27 @@
-import { IdName } from '@nara.platform/accent';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export default interface ProfileInfoModel {
   id: string;
-  name: string;
-  company: IdName;
-  profileImg: string;
-  profileBgImg: string;
+  name: PolyglotString;
+  companyName: PolyglotString;
+  useGdiPhoto: boolean;
+  photoImagePath: string;
+  backgroundImagePath: string;
+  gdiPhotoImagePath: string;
+  language: string;
   nickname: string;
-  oriNickname: string;
-  introduce: string;
-  hobby: string;
-  followerCount: number;
-  followingCount: number;
-  feedCount: number;
-  badgeCount: number;
-  communityCount: number;
-  isFollow: boolean;
-  isNickname: boolean;
+  selfIntroduction: string;
+  phone: string;
+  gender: string;
+  signedDate: number;
+  registeredTime: number;
+  modifiedTime: number;
+  modifier: string;
+  birthDate: string;
+  companyCode: string;
+  departmentCode: string;
+  departmentName: PolyglotString;
+  displayNicknameFirst: boolean;
+  email: string;
+  employeeId: string;
 }

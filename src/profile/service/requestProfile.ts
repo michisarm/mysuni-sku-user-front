@@ -37,7 +37,7 @@ export async function requestProfile() {
   const skProfileModel: SkProfileModel = await skProfileService.findSkProfile();
   if (
     skProfileModel !== null &&
-    !isEmpty(skProfileService.additionalUserInfo.currentJobGroupId)
+    isEmpty(skProfileService.additionalUserInfo.currentJobGroupId)
   ) {
     currentHistory?.push(profilePaths.favoriteWelcome());
   }

@@ -42,6 +42,7 @@ import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   open: boolean;
@@ -155,9 +156,9 @@ function UserProfileinfoProfileCard(props: Props) {
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
       setNickname(profileInfo.nickname);
-      setIntroduce(profileInfo.introduce);
-      setProfileImg(profileInfo.profileImg);
-      setProfileBgImg(profileInfo.profileBgImg);
+      setIntroduce(profileInfo.selfIntroduction);
+      setProfileImg(profileInfo.photoImagePath);
+      setProfileBgImg(profileInfo.backgroundImagePath);
 
       if (preProfileInfo.isSetProfile) {
         if (preProfileInfo.nickName) {
@@ -204,7 +205,7 @@ function UserProfileinfoProfileCard(props: Props) {
   // }, [followData])
 
   function onClickFollow() {
-    const count = profileInfo?.followerCount || 0;
+    const count = profileInfo?.followCount || 0;
     if (isFollow === 'Unfollow') {
       unfollowMember(props.memberId!).then(() => {
         getFollow();
@@ -251,11 +252,13 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
               <div className="profile-info ">
                 <span className="prof-tit">
-                  {profileInfo?.isNickname ? nickname : profileInfo?.name}
+                  {profileInfo?.displayNicknameFirst
+                    ? nickname
+                    : profileInfo && parsePolyglotString(profileInfo.name)}
                 </span>
                 {isCommunityAuth() && (
                   <div className="foll-info">
-                    <span>{followerCount || profileInfo?.followerCount}</span>{' '}
+                    <span>{followerCount || profileInfo?.followCount}</span>{' '}
                     <PolyglotText
                       id="mypage-유저모달-Followers"
                       defaultString="Followers"
@@ -271,10 +274,6 @@ function UserProfileinfoProfileCard(props: Props) {
               {isCommunityAuth() && (
                 <>
                   <div className="count-area">
-                    {/* <div className="cnt-box bad-cnt" >
-                      <span>Badge</span>
-                      <strong>{badgeCount}</strong>
-                    </div> */}
                     <div className="cnt-box com-cnt">
                       <span>
                         <PolyglotText
@@ -298,11 +297,7 @@ function UserProfileinfoProfileCard(props: Props) {
                     {props.memberId !== denizenId && (
                       <Button
                         className={followClassName}
-                        onClick={() => {
-                          // if(followClickFlag){
-                          onClickFollow();
-                          // }
-                        }}
+                        onClick={onClickFollow}
                       >
                         {isFollow}
                       </Button>
@@ -317,9 +312,13 @@ function UserProfileinfoProfileCard(props: Props) {
       <div className="tag-info-area">
         <div className="info-area">
           <span className="prof-name">
-            {profileInfo?.isNickname ? profileInfo?.name : nickname}
+            {profileInfo?.displayNicknameFirst
+              ? nickname
+              : profileInfo && parsePolyglotString(profileInfo.name)}
           </span>
-          <span className="comp-name">{profileInfo?.company?.name}</span>
+          <span className="comp-name">
+            {profileInfo && parsePolyglotString(profileInfo.companyName)}
+          </span>
         </div>
         <div className="tag-area">
           <div

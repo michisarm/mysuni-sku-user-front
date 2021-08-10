@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CommentList, CommentService } from '@nara.drama/feedback';
 import moment from 'moment';
 import React, {
@@ -159,7 +160,7 @@ export default function LectureDiscussionContainer() {
         companyName,
         departmentName,
         name,
-        email
+        email,
         // member: { company, department, email, name },
       },
     } = SkProfileService.instance;
@@ -233,10 +234,10 @@ export default function LectureDiscussionContainer() {
     findCommunityProfile(id!).then((result) => {
       setProfileInfo({
         id: result!.id,
-        profileImg: result!.profileImg,
-        introduce: result!.introduce,
+        profileImg: result!.photoImagePath,
+        introduce: result!.selfIntroduction,
         nickName: result!.nickname,
-        creatorName: result!.name,
+        creatorName: parsePolyglotString(result!.name),
       });
       setProfileOpen(true);
     });

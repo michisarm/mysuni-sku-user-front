@@ -86,31 +86,21 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   async onConfirm() {
-    //
-    const { photoTypeTemp, photoImageFile } = this.state;
+    const { photoImageFile } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
     if (photoImageFile !== undefined) {
       const imagePath = await uploadFileProfile(photoImageFile);
-      skProfileService!.setProfileProp('photoImage', imagePath || '');
+      skProfileService?.setProfileProp(imagePath || '');
     }
 
-    if (photoTypeTemp) {
-      skProfileService!.setProfileProp('photoType', photoTypeTemp);
-    }
-
-    // 김민준 - phtoType 체크 필요 -> useGdiPhoto 값에 따라서 다른 path 사용
     await skProfileService!.modifyPhotoImageByProfileId(
-      skProfile.id,
-      '',
-      // skProfile.photoType,
       skProfile.photoImagePath
     );
   }
 
   validatedAll(file: File) {
-    //
     const validations: any[] = [
       { type: 'Extension', validValue: this.VALID_ICON_EXTENSION },
       { type: ValidationType.MaxSize },
@@ -131,7 +121,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   setProfileImageFile(type: string, file: File) {
-    //
     if (!file || (file instanceof File && !this.validatedAll(file))) {
       return;
     }
@@ -146,7 +135,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const fileReader = new FileReader();
 
     fileReader.onload = (e: any) => {
-      //
       if ('photoImageFile' === type) {
         this.setState({ photoImageTemp: e.target.result });
         onChangeImageFile && onChangeImageFile(type, e.target.result);
@@ -203,7 +191,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     } else {
       if (
         SkProfileService.instance.skProfile.id &&
-        (!skProfile.nickName || skProfile.nickName === '')
+        (!skProfile.nickname || skProfile.nickname === '')
       ) {
         reactAlert({
           title: getPolyglotText('알림', 'mypage-프로필설정-알림3'),
@@ -256,37 +244,47 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       await this.onConfirm();
     }
 
-    let skProfileUdo: SkProfileUdo;
-    skProfileUdo = new SkProfileUdo(
-      // skProfileService.skProfile.member.currentJobGroup,
-      // skProfileService.skProfile.member.favoriteJobGroup,
-      skProfileService.skProfile.pisAgreement
-    );
-
     if (bgImageFile !== undefined) {
       const imagePath = await uploadFileProfile(bgImageFile);
-      if (imagePath) skProfileUdo.backgroundImagePath = imagePath;
+
+      if (imagePath) {
+        skProfile.backgroundImagePath = imagePath;
+      }
     }
 
-    if (nickNameTemp) skProfileUdo.nickName = nickNameTemp;
-    if (introduceTemp) skProfileUdo.selfIntroduction = introduceTemp;
+    if (nickNameTemp) {
+      skProfile.nickname = nickNameTemp;
+    }
+
+    if (introduceTemp) {
+      skProfile.selfIntroduction = introduceTemp;
+    }
 
     if (
-      skProfileUdo.backgroundImagePath !== '' ||
-      skProfileUdo.nickName !== '' ||
-      skProfileUdo.selfIntroduction !== ''
+      skProfile.backgroundImagePath !== '' ||
+      skProfile.nickname !== '' ||
+      skProfile.selfIntroduction !== ''
     ) {
-      // skProfileService.modifySkProfile(skProfileUdo).then(() => {
-      //   reactAlert({
-      //     title: getPolyglotText('알림', 'mypage-프로필설정-알림7'),
-      //     message: getPolyglotText(
-      //       '프로필 정보가 수정됐습니다.',
-      //       'mypage-프로필설정-수정완료1'
-      //     ),
-      //   });
-      //   this.clear();
-      //   skProfileService!.findSkProfile();
-      // });
+      const params = {
+        nameValues: [
+          { name: 'nickname', value: skProfile.nickname },
+          { name: 'selfIntroduction', value: skProfile.selfIntroduction },
+          { name: 'photoImagePath', value: skProfile.photoImagePath },
+          { name: 'backgroundImagePath', value: skProfile.backgroundImagePath },
+        ],
+      };
+
+      skProfileService.modifySkProfile(params).then(() => {
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림7'),
+          message: getPolyglotText(
+            '프로필 정보가 수정됐습니다.',
+            'mypage-프로필설정-수정완료1'
+          ),
+        });
+        this.clear();
+        skProfileService!.findSkProfile();
+      });
     } else {
       reactAlert({
         title: getPolyglotText('알림', 'mypage-프로필설정-알림8'),
@@ -499,11 +497,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                           placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
                           onChange={(e) => this.handleNickNameChange(e)}
                           value={
-                            changeNickName ? nickNameTemp : skProfile.nickName
+                            changeNickName ? nickNameTemp : skProfile.nickname
                           }
                         />
                       )) ||
-                        (changeNickName ? nickNameTemp : skProfile.nickName)}
+                        (changeNickName ? nickNameTemp : skProfile.nickname)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -528,7 +526,9 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                           }
                         />
                       )) ||
-                        (changeIntroduce ? introduceTemp : skProfile.selfIntroduction)}
+                        (changeIntroduce
+                          ? introduceTemp
+                          : skProfile.selfIntroduction)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">

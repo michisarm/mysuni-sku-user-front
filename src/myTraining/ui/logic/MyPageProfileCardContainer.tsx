@@ -16,7 +16,6 @@ import {
 } from '../../../community/store/CommunityFollowModalStore';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { reactAlert } from '@nara.platform/accent';
-import SkProfileUdo from '../../../profile/model/SkProfileUdo';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 // import DefaultBgImg from 'style/../../public/images/all/img-my-profile-card-bg.png';
 import DefaultBgImg from '../../../style/media/img-my-profile-card-bg.png';
@@ -59,9 +58,6 @@ function MyPageHeaderContainer({
     // requestFollowersModal();
     // requestFollowingsModal();
 
-    // badgeService!.findAllBadgeCount();
-    // myTrainingService!.countMyTrainingsWithStamp();
-
     if (skProfile.displayNicknameFirst) {
       setShowNameFlag(false);
     } else {
@@ -72,7 +68,7 @@ function MyPageHeaderContainer({
   useRequestLearningSummary();
 
   const onClickShowName = useCallback(async (value: boolean) => {
-    if (!skProfile.id || !skProfile.nickName || skProfile.nickName === '') {
+    if (!skProfile.id || !skProfile.nickname || skProfile.nickname === '') {
       reactAlert({
         title: getPolyglotText('안내', 'mypage-프로필카드-안내'),
         message: getPolyglotText(
@@ -86,16 +82,15 @@ function MyPageHeaderContainer({
     if (saveFlag) {
       setSaveFlag(false);
 
-      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-        // skProfile.member.currentJobGroup,
-        // skProfile.member.favoriteJobGroup,
-        skProfile.pisAgreement
-      );
+      const params = {
+        nameValues: [
+          { name: 'displayNicknameFirst', value: JSON.stringify(value) },
+        ],
+      };
 
-      skProfileUdo.displayNicknameFirst = value === true ? true : false;
+      await modifySkProfile(params);
 
-      // await modifySkProfile(skProfileUdo);
-      skProfileService!.findSkProfile().then((skProfile) => {
+      skProfileService!.findSkProfile().then(() => {
         setSaveFlag(true);
       });
     }
@@ -107,7 +102,9 @@ function MyPageHeaderContainer({
         <div className="profile-wrapper">
           <div className="bg-wrapper">
             <ProfileImage
-              src={bgImageBase64 || skProfile.bgFilePath || DefaultBgImg}
+              src={
+                bgImageBase64 || skProfile.backgroundImagePath || DefaultBgImg
+              }
               onError={(event: any) => {
                 event.currentTarget.style.display = 'none';
               }}
@@ -127,7 +124,7 @@ function MyPageHeaderContainer({
                         saveFlag &&
                         !showNameFlag &&
                         !isExternalInstructor() &&
-                        onClickShowName(true)
+                        onClickShowName(false)
                       }
                     >
                       <PolyglotText
@@ -143,7 +140,7 @@ function MyPageHeaderContainer({
                         saveFlag &&
                         showNameFlag &&
                         !isExternalInstructor() &&
-                        onClickShowName(false)
+                        onClickShowName(true)
                       }
                     >
                       <PolyglotText
@@ -159,7 +156,7 @@ function MyPageHeaderContainer({
                     id="profileImage"
                     className="ui image"
                     src={
-                      photoImageBase64 || skProfile.photoFilePath || DefaultImg
+                      photoImageBase64 || skProfile.photoImagePath || DefaultImg
                     }
                     onError={(event: any) =>
                       (event.currentTarget.style.display = 'none')
@@ -174,7 +171,7 @@ function MyPageHeaderContainer({
                   <span className="prof-tit">
                     {showNameFlag
                       ? parsePolyglotString(skProfile.name)
-                      : skProfile.nickName}
+                      : skProfile.nickname}
                   </span>
                   {!isExternalInstructor() && (
                     <div className="foll-info">

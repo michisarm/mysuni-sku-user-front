@@ -1,11 +1,9 @@
-import React, { useCallback, useState, useEffect, Component } from 'react';
+import React, { useCallback, useState } from 'react';
 import UserProfileInfoProfileCard from './UserProfileInfoProfileCard';
 import UserProfileInfoTabMenu from './UserProfileInfoTabMenu';
-import { Modal, Table, Rating, Tab, Select } from 'semantic-ui-react';
-import UserProfileInfoTabBadge from './UserProfileInfoTabBadge';
+import { Modal } from 'semantic-ui-react';
 import UserProfileInfoTabCommunity from './UserProfileInfoTabCommunity';
 import UserProfileInfoTabFeed from './UserProfileInfoTabFeed';
-import { useProfileInfoModel } from '../../../store/ProfileInfoStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 
