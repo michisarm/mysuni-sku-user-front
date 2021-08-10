@@ -14,9 +14,16 @@ import {
   setLectureNoteWriteState,
   useLectureNoteTab,
 } from '../../store/LectureNoteStore';
-import { loadPlayVideo, playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
+import {
+  loadPlayVideo,
+  playVideo,
+  seekTo,
+} from '../../service/PanoptoEmbedPlayer';
 import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
   children,
@@ -103,7 +110,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
   }, [nowScroll]);
 
   // 리스트 헤더위치 추출
-  const tabScrollRef = useCallback(node => {
+  const tabScrollRef = useCallback((node) => {
     if (node !== null) {
       setScrollValue(window.pageYOffset + node.getBoundingClientRect().top);
     }
@@ -117,7 +124,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         }
         setNoteTabDetail(true);
       } else {
-        setLectureNoteItem()
+        setLectureNoteItem();
         setNoteTabDetail(false);
         setLectureNoteWriteState(false);
       }
@@ -167,7 +174,14 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
               <Icon />
               <span>Note</span>
               <div className="bubble">
-                <p dangerouslySetInnerHTML={{__html: getPolyglotText(`Note는 각 콘텐츠별로<br />작성하실 수 있습니다.`, 'cube-DetailLayout-작성')}} />
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `Note는 각 콘텐츠별로<br />작성하실 수 있습니다.`,
+                      'cube-DetailLayout-작성'
+                    ),
+                  }}
+                />
               </div>
             </Button>
           )}
@@ -191,7 +205,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
           onClick={openStructure}
         >
           <span>
-            <PolyglotText defaultString="펼치기" id="cube-DetailLayout-펼치기" />
+            <PolyglotText
+              defaultString="펼치기"
+              id="cube-DetailLayout-펼치기"
+            />
           </span>
         </a>
         <div className="course-detail-center">

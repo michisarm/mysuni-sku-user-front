@@ -60,7 +60,7 @@ function CreateCubeEditView() {
           <div className={classNames('ui right-top-count input', {error: errorFieldName === 'goal'})}>
             <span className="count">
               <span className="now">{cubeSdo.description?.goal.length || 0}</span>/
-              <span className="max"><PolyglotText defaultString="500" id="Create-DetailContentsEdit-교육목표Max500" />500</span>
+              <span className="max"><PolyglotText defaultString="500" id="Create-DetailContentsEdit-교육목표Max500" /></span>
             </span>
             <textarea
               placeholder={getPolyglotText('교육 목표를 입력해주세요. (최대 500자 입력 가능)', 'Create-DetailContentsEdit-교육목표Sub')}

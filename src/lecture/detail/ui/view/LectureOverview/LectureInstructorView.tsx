@@ -5,6 +5,7 @@ import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstruc
 import LectureApi from 'layout/UserApp/present/apiclient/LectureApi';
 import Image from '../../../../../shared/components/Image';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -24,7 +25,13 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
           <h3 className="title-style">
             <Label className="onlytext bold size24">
               <Icon className="host" />
-              <span>{/*Tag*/}<PolyglotText defaultString="강사정보" id="Course-Contents-강사정보" /></span>
+              <span>
+                {/*Tag*/}
+                <PolyglotText
+                  defaultString="강사정보"
+                  id="Course-Contents-강사정보"
+                />
+              </span>
             </Label>
           </h3>
         </div>
@@ -33,24 +40,39 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
         {lectureInstructor &&
           lectureInstructor.instructors &&
           lectureInstructor.instructors.map(
-            ({ instructorId, representative, memberSummary }, index) => (
+            (
+              { instructorId, representative, instructorWithIdentity },
+              index
+            ) => (
               <Link
                 className="ui profile tool-tip"
                 to={`/expert/instructor/${instructorId}/Introduce`}
               >
-                {representative === true && <Represent />}
+                {representative && <Represent />}
                 <div className="pic s80">
-                  {memberSummary?.photoId && (
+                  {instructorWithIdentity?.instructor.photoFilePath && (
                     <Image
                       alt="프로필사진"
                       className="ui image"
-                      src={memberSummary?.photoId}
+                      src={instructorWithIdentity?.instructor.photoFilePath}
                     />
                   )}
                 </div>
                 <i>
-                  <span className="tip-name">{memberSummary?.name}</span>
-                  <a className="tip-id">{memberSummary?.department}</a>
+                  <span className="tip-name">
+                    {parsePolyglotString(
+                      instructorWithIdentity?.instructor.name
+                    )}
+                  </span>
+                  <a className="tip-id">
+                    {instructorWithIdentity?.instructor.internal
+                      ? parsePolyglotString(
+                          instructorWithIdentity.userIdentity.departmentName
+                        )
+                      : parsePolyglotString(
+                          instructorWithIdentity?.instructor.organization
+                        )}
+                  </a>
                 </i>
               </Link>
             )

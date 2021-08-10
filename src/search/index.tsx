@@ -5,6 +5,7 @@ import './style.css';
 // internal Components
 import HeaderArea from './HeaderArea';
 import { setSearchUI, useSearchUI } from './model/SearchUI';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 function LoadingView() {
   return (
@@ -12,7 +13,12 @@ function LoadingView() {
       <div className="spin">
         <div className="path" />
       </div>
-      <p>mySUNI가 열심히 검색중입니다. 잠시만 기다려주세요.</p>
+      <p>
+        <PolyglotText
+          id="통검-필레팝-로딩뷰"
+          defaultString="mySUNI가 열심히 검색중입니다. 잠시만 기다려주세요."
+        />
+      </p>
     </div>
   );
 }

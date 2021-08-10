@@ -25,12 +25,8 @@ interface MyBadgeListContainerProps {
 }
 
 function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
-  const {
-    myBadges,
-    myBadgeCount,
-    selectedLevel,
-    setSelectedLevel,
-  } = badgeService!;
+  const { myBadges, myBadgeCount, selectedLevel, setSelectedLevel } =
+    badgeService!;
 
   const history = useHistory();
   useRequestMyBadges();
@@ -87,12 +83,12 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                 <>
                   <div className="text">
                     <PolyglotText
-                      id="Certification-mabd-뱃지없음"
+                      id="mapg-mabd-뱃지없음"
                       defaultString="획득한 Badge가 없습니다."
                     />
                     <br />
                     <PolyglotText
-                      id="Certification-mabd-뱃지도전"
+                      id="mapg-mabd-뱃지도전"
                       defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
                     />
                   </div>
@@ -104,7 +100,7 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                   >
                     <span className="border">
                       <PolyglotText
-                        id="Certification-mabd-바로가기"
+                        id="mapg-mabd-목록없음"
                         defaultString="Badge List 바로가기"
                       />
                     </span>

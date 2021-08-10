@@ -5,7 +5,7 @@ class ApprovalCubeRdoModel {
   //
   offset: number = 0;
   limit: number = 0;
-  sortOrder: string = 'UpdateTimeDesc';
+  sortOrder: string = 'ModifiedTimeDesc';
   proposalState: ProposalState = ProposalState.Submitted;
   cubeId: string = '';
   endDate: number = 9999999999999;
@@ -40,7 +40,7 @@ class ApprovalCubeRdoModel {
 
   static newDefault(limit: number, offset: number) {
     //
-    const sortOrder: string = 'UpdateTimeDesc';
+    const sortOrder: string = 'ModifiedTimeDesc';
     const proposalState: ProposalState = ProposalState.Submitted;
     const cubeId: string = '';
     const endDate: number = 0;

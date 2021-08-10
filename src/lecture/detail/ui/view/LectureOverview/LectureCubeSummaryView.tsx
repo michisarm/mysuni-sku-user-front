@@ -30,6 +30,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -348,7 +349,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                         />
                       </span>
                       <span className="tool-tip">
-                        {instrutor.memberSummary?.name}
+                        {parsePolyglotString(
+                          instrutor.instructorWithIdentity?.instructor.name
+                        )}
                         <i>
                           <Link
                             to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
@@ -356,10 +359,21 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                             style={{ whiteSpace: 'nowrap', display: 'block' }}
                             target="_blank"
                           >
-                            {instrutor.memberSummary?.name}
+                            {parsePolyglotString(
+                              instrutor.instructorWithIdentity?.instructor.name
+                            )}
                           </Link>
                           <span className="tip-id">
-                            {instrutor.memberSummary?.department}
+                            {instrutor.instructorWithIdentity?.instructor
+                              .internal
+                              ? parsePolyglotString(
+                                  instrutor.instructorWithIdentity?.userIdentity
+                                    ?.departmentName
+                                )
+                              : parsePolyglotString(
+                                  instrutor.instructorWithIdentity?.instructor
+                                    ?.organization
+                                )}
                           </span>
                         </i>
                       </span>

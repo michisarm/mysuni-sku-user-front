@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   name: string;
@@ -23,7 +24,7 @@ export function ChapterStructureView(props: Props) {
   } = props;
   const onToggleClick = useCallback(() => {
     if (collapsedIds.includes(contentId)) {
-      onToggle(collapsedIds.filter(c => c !== contentId));
+      onToggle(collapsedIds.filter((c) => c !== contentId));
     } else {
       onToggle([...collapsedIds, contentId]);
     }
@@ -35,11 +36,21 @@ export function ChapterStructureView(props: Props) {
       >
         <a className="btn-over-view enable v2">{name}</a>
         <a
-          className={`btn-accordion ${!collapsedIds.includes(contentId) &&
-            'open'}`}
+          className={`btn-accordion ${
+            !collapsedIds.includes(contentId) && 'open'
+          }`}
+          Chapter-Structure-구성갯수
           onClick={onToggleClick}
         >
-          총<strong>{`${cubeCount}개`}</strong> 구성
+          <div
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `총<strong>{cubeCount}개</strong> 구성`,
+                'Chapter-Structure-구성갯수',
+                { cubeCount: cubeCount.toString() }
+              ),
+            }}
+          />
         </a>
       </div>
     </Link>

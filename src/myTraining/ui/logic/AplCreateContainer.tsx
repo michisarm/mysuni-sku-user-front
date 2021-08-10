@@ -172,13 +172,11 @@ class AplCreateContainer extends React.Component<Props, States> {
         departmentService!.findDepartmentByCode(profile.departmentCode)
       )
       .then((department: DepartmentModel) =>
-        memberService!.findApprovalMemberByEmployeeId(department.manager.id)
+        memberService!.findApprovalMemberByEmployeeId(department.managerId)
       )
       .then(() => companyApproverService!.findCompanyAplApprover())
       .then((companyAplApprover) =>
-        memberService!.findApprovalMemberByEmployeeId(
-          companyAplApprover.employeeId
-        )
+        memberService!.findApprovalMemberByEmployeeId(companyAplApprover.id)
       )
       .then((companyApprover) => {
         this.onChangeAplProps('approvalId', companyApprover.id);
@@ -208,8 +206,7 @@ class AplCreateContainer extends React.Component<Props, States> {
           this.setCollege(collegeLectureCounts);
         }
       } else {
-        const collegeLectureCounts =
-          await collegeLectureCountService!.findCollegeLectureCounts();
+        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }

@@ -1,6 +1,7 @@
 import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { DifficultyLevel } from './DifficultyLevel';
 import { Instructor } from './Instructor';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 export interface CubeContents {
   commentFeedbackId: string;
@@ -19,14 +20,7 @@ export interface CubeContents {
     instructorId: string;
     representative: boolean;
     round: number;
-    name?: string;
-    memberSummary?: {
-      employeeId: string;
-      department: string;
-      email: string;
-      name: string;
-      photoId: string;
-    };
+    instructorWithIdentity?: InstructorWithIdentity;
   }[];
   operator: { keyString: string };
   organizerId: string;

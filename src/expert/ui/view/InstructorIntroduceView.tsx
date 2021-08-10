@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { InstructorModel } from '../../model/InstructorModel';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 interface Props {
-  instructor: InstructorModel;
+  instructorWithIdentity: InstructorWithIdentity | null;
 }
 
 class InstructorIntroduceView extends Component<Props> {
   //
   render() {
     //
-    const { instructor } = this.props;
-    const { memberSummary } = instructor;
+    const { instructorWithIdentity } = this.props;
 
     return (
       <div className="expert-cont">
@@ -24,16 +23,18 @@ class InstructorIntroduceView extends Component<Props> {
             />
           </div>
           <div className="text02">
-            {
-              memberSummary.introduction && parsePolyglotString(memberSummary.introduction).split('\n').map( (line, index) => (
-              // memberSummary.introduction &&
-              //   memberSummary.introduction.split('\n').map((line, index) => (
+            {parsePolyglotString(
+              instructorWithIdentity?.instructor.lectureField
+            )
+              .split('\n')
+              .map((line, index) => (
+                // memberSummary.introduction &&
+                //   memberSummary.introduction.split('\n').map((line, index) => (
                 <div key={`introduction-${index}`}>
                   {line.replace('"', '')}
                   <br />
                 </div>
-                ))
-            }
+              ))}
           </div>
 
           <div className="dash" />
@@ -45,9 +46,9 @@ class InstructorIntroduceView extends Component<Props> {
             />
           </div>
           <div className="text02">
-            {instructor.career &&
-              // parsePolyglotString(instructor.career).split('\n').map((line, index) => (
-              instructor.career.split('\n').map((line, index) => (
+            {parsePolyglotString(instructorWithIdentity?.instructor.career)
+              .split('\n')
+              .map((line, index) => (
                 <div key={`career-${index}`}>
                   {line.replace('"', '')}
                   <br />

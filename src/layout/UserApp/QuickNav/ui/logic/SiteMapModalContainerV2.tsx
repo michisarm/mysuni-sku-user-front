@@ -13,7 +13,10 @@ import communityRoutePaths from 'community/routePaths';
 import { CollegeLectureCountService } from 'lecture/stores';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
-import { PolyglotText, getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode;
@@ -87,7 +90,10 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       },
       {
         collegeId: 'CLG00020',
-        name: getPolyglotText('BM Design & Storytelling', 'home-사이트맵-중카11'),
+        name: getPolyglotText(
+          'BM Design & Storytelling',
+          'home-사이트맵-중카11'
+        ),
         path: lectureRoutePaths.collegeLectures('CLG00020'),
       },
       {
@@ -124,17 +130,40 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: getPolyglotText('Learning', 'home-사이트맵-대카테2'),
       items: [
-        { name: getPolyglotText('학습중', 'home-사이트맵-중카20'), path: myPageRoutePaths.learningInProgress() },
-        { name: getPolyglotText('관심목록', 'home-사이트맵-중카21'), path: myPageRoutePaths.learningInMyList() },
-        { name: getPolyglotText('학습예정', 'home-사이트맵-중카22'), path: myPageRoutePaths.learningEnrolled() },
-        { name: getPolyglotText('권장과정', 'home-사이트맵-중카23'), path: myPageRoutePaths.learningRequired() },
-        { name: getPolyglotText('학습완료', 'home-사이트맵-중카24'), path: myPageRoutePaths.learningCompleted() },
-        { name: getPolyglotText('취소/미이수', 'home-사이트맵-중카25'), path: myPageRoutePaths.learningRetry() },
+        {
+          name: getPolyglotText('학습중', 'home-사이트맵-중카20'),
+          path: myPageRoutePaths.learningInProgress(),
+        },
+        {
+          name: getPolyglotText('관심목록', 'home-사이트맵-중카21'),
+          path: myPageRoutePaths.learningInMyList(),
+        },
+        {
+          name: getPolyglotText('학습예정', 'home-사이트맵-중카22'),
+          path: myPageRoutePaths.learningEnrolled(),
+        },
+        {
+          name: getPolyglotText('권장과정', 'home-사이트맵-중카23'),
+          path: myPageRoutePaths.learningRequired(),
+        },
+        {
+          name: getPolyglotText('학습완료', 'home-사이트맵-중카24'),
+          path: myPageRoutePaths.learningCompleted(),
+        },
+        {
+          name: getPolyglotText('취소/미이수', 'home-사이트맵-중카25'),
+          path: myPageRoutePaths.learningRetry(),
+        },
       ],
     },
     {
       name: getPolyglotText('Recommend', 'home-사이트맵-대카테3'),
-      items: [{ name: getPolyglotText('Recommend', 'home-사이트맵-중카26'), path: lectureRoutePaths.recommend() }],
+      items: [
+        {
+          name: getPolyglotText('Recommend', 'home-사이트맵-중카26'),
+          path: lectureRoutePaths.recommend(),
+        },
+      ],
     },
     {
       name: (
@@ -145,9 +174,18 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         </span>
       ),
       items: [
-        { name: getPolyglotText('My Community', 'home-사이트맵-중카27'), path: communityRoutePaths.myCommunity() },
-        { name: getPolyglotText('Community List', 'home-사이트맵-중카28'), path: communityRoutePaths.communityList() },
-        { name: getPolyglotText('Follow', 'home-사이트맵-중카29'), path: communityRoutePaths.follow() },
+        {
+          name: getPolyglotText('My Community', 'home-사이트맵-중카27'),
+          path: communityRoutePaths.myCommunity(),
+        },
+        {
+          name: getPolyglotText('Community List', 'home-사이트맵-중카28'),
+          path: communityRoutePaths.communityList(),
+        },
+        {
+          name: getPolyglotText('Follow', 'home-사이트맵-중카29'),
+          path: communityRoutePaths.follow(),
+        },
       ],
     },
   ];
@@ -156,8 +194,14 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: getPolyglotText('Introduction', 'home-사이트맵-대카테5'),
       items: [
-        { name: getPolyglotText('mySUNI 소개', 'home-사이트맵-중카30'), path: mainRoutePaths.introductionMySuni() },
-        { name: getPolyglotText('College 소개', 'home-사이트맵-중카31'), path: mainRoutePaths.introductionCollege() },
+        {
+          name: getPolyglotText('mySUNI 소개', 'home-사이트맵-중카30'),
+          path: mainRoutePaths.introductionMySuni(),
+        },
+        {
+          name: getPolyglotText('College 소개', 'home-사이트맵-중카31'),
+          path: mainRoutePaths.introductionCollege(),
+        },
         {
           name: getPolyglotText('인증제도 소개', 'home-사이트맵-중카32'),
           path: mainRoutePaths.introductionCertification(),
@@ -167,24 +211,48 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: getPolyglotText('Create', 'home-사이트맵-대카테6'),
       items: [
-        { name: getPolyglotText('Create', 'home-사이트맵-중카33'), path: createRoutePaths.createCreate() },
-        { name: getPolyglotText('Shared', 'home-사이트맵-중카34'), path: createRoutePaths.createShared() },
+        {
+          name: getPolyglotText('Create', 'home-사이트맵-중카33'),
+          path: createRoutePaths.createCreate(),
+        },
+        {
+          name: getPolyglotText('Shared', 'home-사이트맵-중카34'),
+          path: createRoutePaths.createShared(),
+        },
       ],
     },
     {
       name: getPolyglotText('My Page', 'home-사이트맵-대카테7'),
       items: [
-        { name: getPolyglotText('My Profile', 'home-사이트맵-중카42'), path: myPageRoutePaths.myPageProfile() },
-        { name: getPolyglotText('My Badge', 'home-사이트맵-중카35'), path: myPageRoutePaths.myPageEarnedBadgeList() },
-        { name: getPolyglotText('My Stamp', 'home-사이트맵-중카36'), path: myPageRoutePaths.myPageEarnedStampList() },
-        { name: getPolyglotText('Note', 'home-사이트맵-중카43'), path: myPageRoutePaths.myPageEarnedNoteList() },
+        {
+          name: getPolyglotText('My Profile', 'home-사이트맵-중카42'),
+          path: myPageRoutePaths.myPageProfile(),
+        },
+        {
+          name: getPolyglotText('My Badge', 'home-사이트맵-중카35'),
+          path: myPageRoutePaths.myPageEarnedBadgeList(),
+        },
+        {
+          name: getPolyglotText('My Stamp', 'home-사이트맵-중카36'),
+          path: myPageRoutePaths.myPageEarnedStampList(),
+        },
+        {
+          name: getPolyglotText('Note', 'home-사이트맵-중카43'),
+          path: myPageRoutePaths.myPageEarnedNoteList(),
+        },
       ],
     },
     {
       name: getPolyglotText('승인관리', 'home-사이트맵-대카테8'),
       items: [
-        { name: getPolyglotText('유료과정', 'home-사이트맵-중카37'), path: myPageRoutePaths.approvalPaidCourse() },
-        { name: getPolyglotText('개인학습', 'home-사이트맵-중카38'), path: myPageRoutePaths.approvalPersonalLearning() },
+        {
+          name: getPolyglotText('유료과정ㅇㅇ', 'home-사이트맵-중카37ㅋㅋ'),
+          path: myPageRoutePaths.approvalPaidCourse(),
+        },
+        {
+          name: getPolyglotText('개인학습', 'home-사이트맵-중카38'),
+          path: myPageRoutePaths.approvalPersonalLearning(),
+        },
       ],
     },
     {
@@ -196,9 +264,18 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         </span>
       ),
       items: [
-        { name: getPolyglotText('Notice', 'home-사이트맵-중카39'), path: boardRoutePaths.supportNotice() },
-        { name: getPolyglotText('FAQ', 'home-사이트맵-중카40'), path: boardRoutePaths.supportFAQ() },
-        { name: getPolyglotText('Q&A', 'home-사이트맵-중카41'), path: boardRoutePaths.supportQnA() },
+        {
+          name: getPolyglotText('Notice', 'home-사이트맵-중카39'),
+          path: boardRoutePaths.supportNotice(),
+        },
+        {
+          name: getPolyglotText('FAQ', 'home-사이트맵-중카40'),
+          path: boardRoutePaths.supportFAQ(),
+        },
+        {
+          name: getPolyglotText('Q&A', 'home-사이트맵-중카41'),
+          path: boardRoutePaths.supportQnA(),
+        },
       ],
     },
   ];
@@ -219,11 +296,12 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     const { collegeLectureCountService } = this.props;
     const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
 
-    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges =
+      await collegeLectureCountService!.findCollegeLectureCounts();
 
     const categorySiteMap = {
       ...baseCategoryItems,
-      items: baseCategoryItems.items.map(item => {
+      items: baseCategoryItems.items.map((item) => {
         //
         const college = colleges.find(
           (college: any) => college.id === item.collegeId
@@ -283,7 +361,10 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         onClose={this.onClose}
       >
         <Modal.Header>
-          <PolyglotText defaultString="mySUNI Site Map" id="home-사이트맵-mssm" />
+          <PolyglotText
+            defaultString="mySUNI Site Map"
+            id="home-사이트맵-mssm"
+          />
           <div className="right-btn">
             <Button icon className="btn-blue2" onClick={this.onClickHome}>
               <Icon className="homelink" />

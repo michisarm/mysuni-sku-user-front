@@ -49,13 +49,17 @@ export function RecommendCardRomView(props: RecommendCardRom) {
       }
     >
       <div className="section-head">
-        <span className="channel">{getChannelName()}</span>
-        {`${getPolyglotText('채널에서', 'rcmd-추천-Channel')} ${
-          SkProfileService.instance.profileMemberName
-        } ${getPolyglotText(
-          '님께 추천하는 과정입니다.',
-          'rcmd-추천-Recommand'
-        )}`}
+        <span
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText('<b>{channel}</b>채널에서 {name}님께 추천하는 과정입니다.',
+              'rcmd-추천-Channel',
+              {channel: getChannelName() || '',
+                name: SkProfileService.instance.profileMemberName || ''
+              }
+            )
+          }}
+        />
+        {' '}
         <span className="channel">{`(${getCardCount()})`}</span>
         {isCardWithRelatedCountRoms && (
           <div className="right">

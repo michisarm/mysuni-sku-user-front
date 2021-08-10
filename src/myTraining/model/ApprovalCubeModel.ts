@@ -19,6 +19,10 @@ import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 import { OperationModel } from './OperationModel';
 import { ApprovalCubeXlsxModel } from './ApprovalCubeXlsxModel';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 export class ApprovalCubeModel implements DramaEntity {
   //
@@ -50,9 +54,9 @@ export class ApprovalCubeModel implements DramaEntity {
   studentId: string = '';
   rollBookId: string = '';
   classroomId: string = '';
-  studentName: string = '';
-  studentDepartmentName: string = '';
-  cubeName: string = '';
+  studentName: PolyglotString | null = null;
+  studentDepartmentNames: PolyglotString | null = null;
+  cubeName: PolyglotString | null = null;
 
   round: number = 0;
   approvedStudentCount: number = 0;
@@ -168,9 +172,9 @@ export class ApprovalCubeModel implements DramaEntity {
     //
     return {
       No: index + 1,
-      신청자: approvalCube.studentName,
-      조직: approvalCube.studentDepartmentName,
-      과정명: approvalCube.cubeName,
+      신청자: parsePolyglotString(approvalCube.studentName),
+      조직: parsePolyglotString(approvalCube.studentDepartmentNames),
+      과정명: parsePolyglotString(approvalCube.cubeName),
       차수: approvalCube.round,
       신청상태: ApprovalCubeModel.getProposalStateName(
         approvalCube.proposalState
@@ -212,7 +216,7 @@ decorate(ApprovalCubeModel, {
   rollBookId: observable,
   classroomId: observable,
   studentName: observable,
-  studentDepartmentName: observable,
+  studentDepartmentNames: observable,
   cubeName: observable,
 
   round: observable,

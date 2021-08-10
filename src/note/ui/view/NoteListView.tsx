@@ -396,12 +396,14 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                         )
                       )}
                   </div>
-                  <strong className="header">{item.lectureRom.cardName}</strong>
+                  <strong className="header">
+                    {parsePolyglotString(item.lectureRom.cardName)}
+                  </strong>
                   <Link
                     className="time"
                     to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}
                   >
-                    <p>{item.lectureRom.cubeName}</p>
+                    <p>{parsePolyglotString(item.lectureRom.cubeName)}</p>
                   </Link>
                 </div>
 

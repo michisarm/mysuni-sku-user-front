@@ -1330,7 +1330,7 @@ const SearchFilter: React.FC<Props> = ({
               <Checkbox
                 className="base"
                 name={FilterConditionName.Required}
-                label="포함"
+                label={getPolyglotText('포함', '통검-필레팝-핵포함')}
                 checked={filterCondition.hasRequired === true}
                 onChange={() => {
                   const mFilterCondition = getFilterCondition();
@@ -1370,7 +1370,7 @@ const SearchFilter: React.FC<Props> = ({
               <Checkbox
                 className="base"
                 name={FilterConditionName.Required}
-                label="비포함"
+                label={getPolyglotText('비포함', '통검-필레팝-핵비포')}
                 checked={filterCondition.notRequired === true}
                 onChange={() => {
                   const mFilterCondition = getFilterCondition();
@@ -1757,7 +1757,10 @@ const SearchFilter: React.FC<Props> = ({
               </div>
               <Checkbox
                 className="base"
-                label="수강신청 가능 학습만 보기"
+                label={getPolyglotText(
+                  '수강신청 가능 학습만 보기',
+                  '통검-필레팝-날짜옵션'
+                )}
                 value="true"
                 checked={filterCondition.applying}
                 onChange={() => {
@@ -1838,7 +1841,7 @@ const SearchFilter: React.FC<Props> = ({
             search(searchValue, closeOnFilter);
           }}
         >
-          <PolyglotText id="통검-필레팝-결과보기" defaultString="결과보기" />
+          <PolyglotText id="통검-필레팝-결과2" defaultString="결과보기" />
         </a>
       </div>
     </div>
