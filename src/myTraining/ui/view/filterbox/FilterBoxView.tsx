@@ -231,7 +231,10 @@ export function FilterBoxView({
               <div className="ui h40 calendar" id="rangestart">
                 <div className="ui input right icon">
                   <label>
-                    <PolyglotText defaultString="시작일" id="learning-LearningFilter2-시작일" />
+                    <PolyglotText
+                      defaultString="시작일"
+                      id="learning-LearningFilter2-시작일"
+                    />
                   </label>
                   <ReactDatePicker
                     selected={conditions.startDate}
@@ -247,7 +250,10 @@ export function FilterBoxView({
               <div className="ui h40 calendar" id="rangeend">
                 <div className="ui input right icon write">
                   <label>
-                    <PolyglotText defaultString="종료일" id="learning-LearningFilter2-종료일" />
+                    <PolyglotText
+                      defaultString="종료일"
+                      id="learning-LearningFilter2-종료일"
+                    />
                   </label>
                   <ReactDatePicker
                     selected={conditions.endDate}

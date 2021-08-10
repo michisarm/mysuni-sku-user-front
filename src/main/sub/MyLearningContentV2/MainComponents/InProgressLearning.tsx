@@ -63,6 +63,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             ),
           }}
         />
+
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>

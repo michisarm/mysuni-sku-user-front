@@ -1,7 +1,6 @@
 import { decorate, observable } from 'mobx';
 import OrderByType from './OrderByType';
 
-
 class SharedRdoModel {
   //
   college: string = '';
@@ -17,7 +16,7 @@ class SharedRdoModel {
     }
   }
 
-  static newShared(limit: number, offset: number, channelIds?:string[]) {
+  static newShared(limit: number, offset: number, channelIds?: string[]) {
     return new SharedRdoModel({
       college: '',
       channelIds,

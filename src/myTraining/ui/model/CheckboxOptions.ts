@@ -2,50 +2,175 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const CheckboxOptions = {
   difficultyLevels: [
-    { key: 0, text: getPolyglotText('Basic', 'learning-LearningFilter2-난이도1') , value: 'Basic' },
-    { key: 1, text: getPolyglotText('Intermediate', 'learning-LearningFilter2-난이도2'), value: 'Intermediate' },
-    { key: 2, text: getPolyglotText('Advanced', 'learning-LearningFilter2-난이도3'), value: 'Advanced' },
-    { key: 3, text: getPolyglotText('Expert', 'learning-LearningFilter2-난이도4'), value: 'Expert' },
+    {
+      key: 0,
+      text: getPolyglotText('Basic', 'learning-LearningFilter2-난이도1'),
+      value: 'Basic',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('Intermediate', 'learning-LearningFilter2-난이도2'),
+      value: 'Intermediate',
+    },
+    {
+      key: 2,
+      text: getPolyglotText('Advanced', 'learning-LearningFilter2-난이도3'),
+      value: 'Advanced',
+    },
+    {
+      key: 3,
+      text: getPolyglotText('Expert', 'learning-LearningFilter2-난이도4'),
+      value: 'Expert',
+    },
   ],
 
   organizers: [
-    { key: 0, text: getPolyglotText('mySUNI','learning-LearningFilter2-기관1'), value: 'mySUNI' },
-    { key: 1, text: getPolyglotText('Coursera','learning-LearningFilter2-기관2'), value: 'Coursera' },
-    { key: 2, text: getPolyglotText('Linkedin','learning-LearningFilter2-기관3'), value: 'Linkedin' },
+    {
+      key: 0,
+      text: getPolyglotText('mySUNI', 'learning-LearningFilter2-기관1'),
+      value: 'mySUNI',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('Coursera', 'learning-LearningFilter2-기관2'),
+      value: 'Coursera',
+    },
+    {
+      key: 2,
+      text: getPolyglotText('Linkedin', 'learning-LearningFilter2-기관3'),
+      value: 'Linkedin',
+    },
   ],
 
   learningTypes: [
-    { key: 0, text: getPolyglotText('Course','learning-LearningFilter2-교육1'), value: 'Course' },
-    { key: 1, text: getPolyglotText('Video','learning-LearningFilter2-교육2'), value: 'Video' },
-    { key: 2, text: getPolyglotText('Audio','learning-LearningFilter2-교육3'), value: 'Audio' },
-    { key: 3, text: getPolyglotText('e-Learning','learning-LearningFilter2-교육4'), value: 'ELearning' },
-    { key: 4, text: getPolyglotText('Classroom','learning-LearningFilter2-교육5'), value: 'ClassRoomLecture' },
-    { key: 5, text: getPolyglotText('Community','learning-LearningFilter2-교육6'), value: 'Community' },
-    { key: 6, text: getPolyglotText('Task','learning-LearningFilter2-교육7'), value: 'Task' },
-    { key: 7, text: getPolyglotText('Web Page','learning-LearningFilter2-교육8'), value: 'WebPage' },
-    { key: 8, text: getPolyglotText('Documents','learning-LearningFilter2-교육9'), value: 'Documents' },
-    { key: 9, text: getPolyglotText('Experiential','learning-LearningFilter2-교육10'), value: 'Experiential' },
-    { key: 10, text: getPolyglotText('Cohort','learning-LearningFilter2-교육11'), value: 'Cohort' },
-    { key: 11, text: getPolyglotText('Discussion','learning-LearningFilter2-교육12'), value: 'Discussion' },
+    {
+      key: 0,
+      text: getPolyglotText('Course', 'learning-LearningFilter2-교육1'),
+      value: 'Course',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('Video', 'learning-LearningFilter2-교육2'),
+      value: 'Video',
+    },
+    {
+      key: 2,
+      text: getPolyglotText('Audio', 'learning-LearningFilter2-교육3'),
+      value: 'Audio',
+    },
+    {
+      key: 3,
+      text: getPolyglotText('e-Learning', 'learning-LearningFilter2-교육4'),
+      value: 'ELearning',
+    },
+    {
+      key: 4,
+      text: getPolyglotText('Classroom', 'learning-LearningFilter2-교육5'),
+      value: 'ClassRoomLecture',
+    },
+    {
+      key: 5,
+      text: getPolyglotText('Community', 'learning-LearningFilter2-교육6'),
+      value: 'Community',
+    },
+    {
+      key: 6,
+      text: getPolyglotText('Task', 'learning-LearningFilter2-교육7'),
+      value: 'Task',
+    },
+    {
+      key: 7,
+      text: getPolyglotText('Web Page', 'learning-LearningFilter2-교육8'),
+      value: 'WebPage',
+    },
+    {
+      key: 8,
+      text: getPolyglotText('Documents', 'learning-LearningFilter2-교육9'),
+      value: 'Documents',
+    },
+    {
+      key: 9,
+      text: getPolyglotText('Experiential', 'learning-LearningFilter2-교육10'),
+      value: 'Experiential',
+    },
+    {
+      key: 10,
+      text: getPolyglotText('Cohort', 'learning-LearningFilter2-교육11'),
+      value: 'Cohort',
+    },
+    {
+      key: 11,
+      text: getPolyglotText('Discussion', 'learning-LearningFilter2-교육12'),
+      value: 'Discussion',
+    },
   ],
 
   learningTimes: [
-    { key: 0, text: getPolyglotText('30분 미만','learning-LearningFilter2-시간1'), value: 'type1' },
-    { key: 1, text: getPolyglotText('30분 이상~1시간 미만','learning-LearningFilter2-시간2'), value: 'type2' },
-    { key: 2, text: getPolyglotText('1시간 이상~4시간 미만','learning-LearningFilter2-시간3'), value: 'type3' },
-    { key: 3, text: getPolyglotText('4시간 이상~12시간 미만','learning-LearningFilter2-시간4'), value: 'type4' },
-    { key: 4, text: getPolyglotText('12시간 이상','learning-LearningFilter2-시간5'), value: 'type5' },
+    {
+      key: 0,
+      text: getPolyglotText('30분 미만', 'learning-LearningFilter2-시간1'),
+      value: 'type1',
+    },
+    {
+      key: 1,
+      text: getPolyglotText(
+        '30분 이상~1시간 미만',
+        'learning-LearningFilter2-시간2'
+      ),
+      value: 'type2',
+    },
+    {
+      key: 2,
+      text: getPolyglotText(
+        '1시간 이상~4시간 미만',
+        'learning-LearningFilter2-시간3'
+      ),
+      value: 'type3',
+    },
+    {
+      key: 3,
+      text: getPolyglotText(
+        '4시간 이상~12시간 미만',
+        'learning-LearningFilter2-시간4'
+      ),
+      value: 'type4',
+    },
+    {
+      key: 4,
+      text: getPolyglotText('12시간 이상', 'learning-LearningFilter2-시간5'),
+      value: 'type5',
+    },
   ],
 
   requireds: [
-    { key: 0, text: getPolyglotText('선택안함','learning-LearningFilter2-항목택1'), value: 'none' },
-    { key: 1, text: getPolyglotText('유','learning-LearningFilter2-항목택2'), value: 'true' },
-    { key: 2, text: getPolyglotText('무','learning-LearningFilter2-항목택3'), value: 'false' },
+    {
+      key: 0,
+      text: getPolyglotText('선택안함', 'learning-LearningFilter2-항목택1'),
+      value: 'none',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('유', 'learning-LearningFilter2-항목택2'),
+      value: 'true',
+    },
+    {
+      key: 2,
+      text: getPolyglotText('무', 'learning-LearningFilter2-항목택3'),
+      value: 'false',
+    },
   ],
 
   certifications: [
-    { key: 0, text: getPolyglotText('Stamp','learning-LearningFilter2-자격1'), value: 'stamp' },
-    { key: 1, text: getPolyglotText('Badge','learning-LearningFilter2-자격2'), value: 'badge' },
+    {
+      key: 0,
+      text: getPolyglotText('Stamp', 'learning-LearningFilter2-자격1'),
+      value: 'stamp',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('Badge', 'learning-LearningFilter2-자격2'),
+      value: 'badge',
+    },
   ],
 
   viewTypes: [

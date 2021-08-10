@@ -1,9 +1,7 @@
-
 import CollegeService from './present/logic/CollegeService';
 import SubsidiaryService from './present/logic/SubsidiaryService';
 import ContentsProviderService from './present/logic/ContentsProviderService';
 import JobGroupService from './present/logic/JobGroupService';
-
 
 export default {
   college: {

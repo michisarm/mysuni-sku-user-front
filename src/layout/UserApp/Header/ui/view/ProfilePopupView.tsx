@@ -1,15 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useState, useEffect, Component } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import {
-  useProfilePopupModel,
-  getProfilePopupModel,
-} from '../../../store/ProfilePopupStore';
+import { useProfilePopupModel } from '../../../store/ProfilePopupStore';
 import { Button, Image } from 'semantic-ui-react';
 import { getProfilePopup } from '../../../service/ProfilePopupService/getProfilePopup';
 import { SkProfileService } from 'profile/stores';
-import SkProfileUdo from '../../../../../../src/profile/model/SkProfileUdo';
 import { reactAlert } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
@@ -19,13 +15,10 @@ import {
   requestFollowersModal,
   requestFollowingsModal,
 } from '../../../../../community/service/useFollowModal/utility/requestFollowModalIntro';
-import {
-  useFollowersModal,
-  useFollowingsModal,
-} from '../../../../../community/store/CommunityFollowModalStore';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { isEmpty } from 'lodash';
 
 interface Props {
   setOpen: () => void;
@@ -33,7 +26,7 @@ interface Props {
 }
 
 function ProfilePopupView(props: Props) {
-  //const profileInfo = useProfilePopupModel()
+  const profileInfo = useProfilePopupModel();
   const [isNickName, setIsNickName] = useState<boolean>();
   const [isSettingProfile, setIsSettingProfile] = useState<boolean>(true);
   const skProfileService = SkProfileService.instance;
@@ -41,13 +34,14 @@ function ProfilePopupView(props: Props) {
   const history = useHistory();
   const externalInstructor = localStorage.getItem('nara.externalInstructor');
   const instructorId = localStorage.getItem('nara.instructorId');
-  const followersList = useFollowersModal();
-  const followingsList = useFollowingsModal();
+  // const followersList = useFollowersModal();
+  // const followingsList = useFollowingsModal();
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
 
   useEffect(() => {
     requestFollowersModal();
     requestFollowingsModal();
+    getProfilePopup();
   }, []);
 
   useEffect(() => {
@@ -127,6 +121,18 @@ function ProfilePopupView(props: Props) {
     window.open(`${window.location.origin}/suni-instructor/`, '_blank');
   }
 
+  const getProfileImage = () => {
+    if (skProfile.useGdiPhoto) {
+      return skProfile.gdiPhotoImagePath;
+    }
+
+    if (isEmpty(skProfile.photoImagePath)) {
+      return DefaultImg;
+    }
+
+    return skProfile.photoImagePath;
+  };
+
   return (
     <>
       {skProfile && (
@@ -192,7 +198,7 @@ function ProfilePopupView(props: Props) {
                   </div>
 
                   <div className="image-area">
-                    <ProfileImage src={skProfile.photoFilePath || DefaultImg} />
+                    <ProfileImage src={getProfileImage()} />
                   </div>
                   <div className="profile-info ">
                     <span className="prof-tit">
@@ -202,12 +208,12 @@ function ProfilePopupView(props: Props) {
                     </span>
                     {isCommunityAuth() && (
                       <div className="foll-info">
-                        <span>{followersList?.followers.length}</span>
+                        <span>{profileInfo?.followerCount || 0}</span>
                         <PolyglotText
                           defaultString="&nbsp;Followers"
                           id="mypage-popupview-Followers"
                         />
-                        <span>{followingsList?.followings.length}</span>
+                        <span>{profileInfo?.followingCount || 0}</span>
                         <PolyglotText
                           defaultString="&nbsp;Following"
                           id="mypage-popupview-Following"
