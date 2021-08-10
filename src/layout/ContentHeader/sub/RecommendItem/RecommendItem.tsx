@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {
@@ -20,14 +20,13 @@ class RecommendItem extends Component<Props> {
     return (
       <div className="recommend-info personal-channel-header">
         {top}
-
         <span className="value1">
-          <span className="text01">{favoriteChannelCount}</span>
+          <span className="text01" dangerouslySetInnerHTML={{__html: getPolyglotText('{count}개', 'rcmd-mifa-관심개수', {count: totalChannelCount && totalChannelCount+'' || '0'})}} />
           {/* <span className="text02">/</span>
           <span className="text03">{totalChannelCount}</span> */}
-          <span className="text04">
-            <PolyglotText defaultString="개" id="rcmd-mifa-관심개수" />
-          </span>
+          {/* <span className="text04">
+            <PolyglotText defaultString="개" id="" />
+          </span> */}
         </span>
       </div>
     );

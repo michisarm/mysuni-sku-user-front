@@ -8,6 +8,7 @@ import { FilterCondition } from '../../../model/FilterCondition';
 import { FilterConditionName } from '../../../model/FilterConditionName';
 import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface FilterBoxViewProps {
   colleges: CollegeModel[];
@@ -229,7 +230,9 @@ export function FilterBoxView({
             <div className="calendar-cell">
               <div className="ui h40 calendar" id="rangestart">
                 <div className="ui input right icon">
-                  <label>시작일</label>
+                  <label>
+                    <PolyglotText defaultString="시작일" id="learning-LearningFilter2-시작일" />
+                  </label>
                   <ReactDatePicker
                     selected={conditions.startDate}
                     onChange={onChangeStartDate}
@@ -243,7 +246,9 @@ export function FilterBoxView({
               <span className="dash">-</span>
               <div className="ui h40 calendar" id="rangeend">
                 <div className="ui input right icon write">
-                  <label>종료일</label>
+                  <label>
+                    <PolyglotText defaultString="종료일" id="learning-LearningFilter2-종료일" />
+                  </label>
                   <ReactDatePicker
                     selected={conditions.endDate}
                     onChange={onChangeEndDate}
