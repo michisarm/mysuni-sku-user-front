@@ -186,7 +186,7 @@ function ListLeftTopPanel(props: Props) {
                       'learning-학보드-게시물총수-메시지',
                       {
                         totalCount: (totalCount || 0).toString(),
-                        countMessage: countMessage,
+                        countMessage,
                       }
                     )
                   : ''
