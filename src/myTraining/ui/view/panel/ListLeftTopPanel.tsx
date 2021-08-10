@@ -174,9 +174,14 @@ function ListLeftTopPanel(props: Props) {
             className="list-number"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                '총 {count}개의 리스트가 있습니다.',
+                '총 <strong>{totalCount}개</strong> {countMessage}',
                 'learning-학보드-게시물총수',
-                { count: totalCount + '' || 0 + '' }
+                {
+                  totalCount: (totalCount || 0).toString(),
+                  countMessage: countMessage
+                    ? countMessage
+                    : '의 리스트가 있습니다.',
+                }
               ),
             }}
           />
