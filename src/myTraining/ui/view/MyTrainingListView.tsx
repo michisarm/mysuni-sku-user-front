@@ -172,7 +172,7 @@ function MyTrainingListView({
                 myTraining.learningTime + myTraining.additionalLearningTime
               )}
             </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
@@ -205,7 +205,7 @@ function MyTrainingListView({
               )}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
           </>
         );
       }

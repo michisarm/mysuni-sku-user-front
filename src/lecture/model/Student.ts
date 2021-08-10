@@ -16,6 +16,7 @@ export default interface Student {
   studentScore: StudentScore;
   creationTime: number;
   updateTime: number;
+  modifiedTime: number;
   lectureId: string;
   cardId: string;
   joinRequests: JoinRequest[];
@@ -23,6 +24,7 @@ export default interface Student {
   round: number;
   examAttendance: boolean;
   updateTimeForTest: number;
+  modifiedTimeForTest: number;
   homeworkFileBoxId?: string;
 
   sumViewSeconds: string;
