@@ -162,6 +162,15 @@ class ProfileContainer extends Component<Props, State> {
 
     return (
       <div className="g-info g-info2 g-ab2">
+        <LanguageSelectPopupView />
+        {!isExternal && (
+          <HeaderAlarmView
+            myNotieMentions={myNotieMentions}
+            myNotieNoReadMentionCount={myNotieNoReadMentionCount}
+            routeToAlarmBackLink={this.routeToAlarmBackLink}
+            handleClickAlarm={this.handleClickAlarm}
+          />
+        )}
         {isExternal ? (
           <>
             <button
@@ -216,7 +225,7 @@ class ProfileContainer extends Component<Props, State> {
           <Popup
             className="pop_profile"
             trigger={
-              <Button id="btnProFile" className="user image label btn_user on">
+              <Button id="btnProFile" className="user image label btn_user">
                 <span>
                   <Image
                     src={skProfile.photoFilePath || profileImg}
@@ -236,15 +245,6 @@ class ProfileContainer extends Component<Props, State> {
             </Popup.Content>
           </Popup>
         )}
-        {!isExternal && (
-          <HeaderAlarmView
-            myNotieMentions={myNotieMentions}
-            myNotieNoReadMentionCount={myNotieNoReadMentionCount}
-            routeToAlarmBackLink={this.routeToAlarmBackLink}
-            handleClickAlarm={this.handleClickAlarm}
-          />
-        )}
-        <LanguageSelectPopupView />
       </div>
     );
   }
