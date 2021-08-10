@@ -351,6 +351,10 @@ const getFieldName = async (id: string, type: string) => {
         });
       }
     }
+    if (name) {
+      // default ko 없을시 ko, en, zh 순으로 다른 언어 1개만 선택
+      name = name.ko ? name.ko : name.en ? name.en : name.zh ? name.zh : '';
+    }
     if (lsTest() && name) {
       let tempObj;
       if (field) {
