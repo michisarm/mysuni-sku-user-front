@@ -51,8 +51,9 @@ class SubChannelModalContainer extends Component<Props, State> {
     prevState: Readonly<State>
   ): void {
     //
-    const { defaultSelectedCategoryChannels: prevSelectedCategoryChannels } =
-      prevProps;
+    const {
+      defaultSelectedCategoryChannels: prevSelectedCategoryChannels,
+    } = prevProps;
     const { defaultSelectedCategoryChannels } = this.props;
 
     if (prevSelectedCategoryChannels !== defaultSelectedCategoryChannels) {

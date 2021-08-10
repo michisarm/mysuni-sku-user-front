@@ -1,16 +1,20 @@
-
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 
-import { IdName, NameValueList, CategoryModel, CreatorModel, IconBoxModel } from 'shared/model';
+import {
+  IdName,
+  NameValueList,
+  CategoryModel,
+  CreatorModel,
+  IconBoxModel,
+} from 'shared/model';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from '../../shared/model/CourseOpenModel';
 import { StampModel } from './StampModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { OpenRequestModel } from './OpenRequestModel';
 import { CoursePlanCdoModel } from './CoursePlanCdoModel';
-
 
 export class CoursePlanModel implements DramaEntity {
   //
@@ -40,21 +44,50 @@ export class CoursePlanModel implements DramaEntity {
 
   constructor(coursePlan?: CoursePlanModel) {
     if (coursePlan) {
-      const category = coursePlan.category && new CategoryModel(coursePlan.category) || this.category;
-      const courseOperator = coursePlan.courseOperator && new CourseOperatorModel(coursePlan.courseOperator) || this.courseOperator;
-      const iconBox = coursePlan.iconBox && new IconBoxModel(coursePlan.iconBox) || this.iconBox;
-      const courseOpen = coursePlan.courseOpen && new CourseOpenModel(coursePlan.courseOpen) || this.courseOpen;
-      const reportFileBox = coursePlan.reportFileBox && new ReportFileBoxModel(coursePlan.reportFileBox) || this.reportFileBox;
-      const stamp = coursePlan.stamp && new StampModel(coursePlan.stamp) || this.stamp;
-      const creator = coursePlan.creator && new CreatorModel(coursePlan.creator) || this.creator;
+      const category =
+        (coursePlan.category && new CategoryModel(coursePlan.category)) ||
+        this.category;
+      const courseOperator =
+        (coursePlan.courseOperator &&
+          new CourseOperatorModel(coursePlan.courseOperator)) ||
+        this.courseOperator;
+      const iconBox =
+        (coursePlan.iconBox && new IconBoxModel(coursePlan.iconBox)) ||
+        this.iconBox;
+      const courseOpen =
+        (coursePlan.courseOpen && new CourseOpenModel(coursePlan.courseOpen)) ||
+        this.courseOpen;
+      const reportFileBox =
+        (coursePlan.reportFileBox &&
+          new ReportFileBoxModel(coursePlan.reportFileBox)) ||
+        this.reportFileBox;
+      const stamp =
+        (coursePlan.stamp && new StampModel(coursePlan.stamp)) || this.stamp;
+      const creator =
+        (coursePlan.creator && new CreatorModel(coursePlan.creator)) ||
+        this.creator;
 
-      Object.assign(this, { ...coursePlan, category, courseOperator, iconBox, courseOpen, reportFileBox, stamp, creator });
+      Object.assign(this, {
+        ...coursePlan,
+        category,
+        courseOperator,
+        iconBox,
+        courseOpen,
+        reportFileBox,
+        stamp,
+        creator,
+      });
 
       // UI Model
       const companyCode = patronInfo.getPatronCompanyCode();
 
-      this.required = coursePlan && coursePlan.courseOpen && coursePlan.courseOpen.requiredSubsidiaries
-        && coursePlan.courseOpen.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
+      this.required =
+        coursePlan &&
+        coursePlan.courseOpen &&
+        coursePlan.courseOpen.requiredSubsidiaries &&
+        coursePlan.courseOpen.requiredSubsidiaries.some(
+          (subsidiary) => subsidiary.id === companyCode
+        );
     }
   }
 
@@ -112,7 +145,7 @@ export class CoursePlanModel implements DramaEntity {
     return asNameValues;
   }
 
-  static isBlank(coursePlan: CoursePlanModel) : string {
+  static isBlank(coursePlan: CoursePlanModel): string {
     // if (!coursePlan.channel) return '대표 카테고리';
     // if (!coursePlan.channel.channel) return '대표 카테고리';
     // if (!coursePlan.channel.college) return '대표 카테고리';
@@ -126,7 +159,7 @@ export class CoursePlanModel implements DramaEntity {
   static makeChannelsMap(channelList: CategoryModel[]) {
     const channelListMap = new Map<string, string[]>();
 
-    channelList.map(channel => {
+    channelList.map((channel) => {
       if (!channelListMap.get(channel.college.name)) {
         channelListMap.set(channel.college.name, [channel.channel.name]);
       } else {
@@ -143,7 +176,7 @@ export class CoursePlanModel implements DramaEntity {
   static makeChannelsIdNameMap(channelList: CategoryModel[]) {
     const channelListMap = new Map<IdName, IdName[]>();
 
-    channelList.map(channel => {
+    channelList.map((channel) => {
       if (!channelListMap.get(channel.college)) {
         channelListMap.set(channel.college, [channel.channel]);
       } else {
@@ -159,21 +192,19 @@ export class CoursePlanModel implements DramaEntity {
 
   static asCdo(coursePlan: CoursePlanModel): CoursePlanCdoModel {
     //
-    return (
-      {
-        audienceKey: 'r2p8-r@nea-m5-c5',
-        category: coursePlan.category,
-        subCategories: coursePlan.subCategories,
-        name: coursePlan.name,
-        contentsId: coursePlan.contentsId,
-        courseOperator: coursePlan.courseOperator,
-        iconBox: coursePlan.iconBox,
-        courseOpen: coursePlan.courseOpen,
-        reportFileBox: coursePlan.reportFileBox,
-        stamp: coursePlan.stamp,
-        creator: coursePlan.creator,
-      }
-    );
+    return {
+      audienceKey: 'r2p8-r@nea-m5-c5',
+      category: coursePlan.category,
+      subCategories: coursePlan.subCategories,
+      name: coursePlan.name,
+      contentsId: coursePlan.contentsId,
+      courseOperator: coursePlan.courseOperator,
+      iconBox: coursePlan.iconBox,
+      courseOpen: coursePlan.courseOpen,
+      reportFileBox: coursePlan.reportFileBox,
+      stamp: coursePlan.stamp,
+      creator: coursePlan.creator,
+    };
   }
 }
 
