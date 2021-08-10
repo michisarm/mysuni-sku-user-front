@@ -19,6 +19,7 @@ import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import PersonalLearningListContainer from '../logic/PersonalLearningListContainer';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyApprovalPageProps {
   approvalCubeService?: ApprovalCubeService;
@@ -93,7 +94,7 @@ function MyApprovalPage({
   const getTabItem = (contentType: MyApprovalContentType, count: number) => {
     return (
       <>
-        {MyApprovalContentTypeName[contentType]}
+        <PolyglotText id="승인관리-mifa-유료과정탭" defaultString="유료과정" />
         <span className="count">+{(count > 0 && count) || 0}</span>
       </>
     );
@@ -106,12 +107,21 @@ function MyApprovalPage({
   };
 
   /* render */
+
+  console.log(params.tab);
+  function myApprovalText() {
+    if (params.tab === MyApprovalContentType.PaidCourse) {
+      return getPolyglotText('유료과정', '승인관리-mifa-유료과정bread');
+    } else {
+      return getPolyglotText('개인학습', '승인관리-mifa-개인학습bread');
+    }
+  }
   return (
     <ContentLayout
       className="MyApprovalPage"
       breadcrumb={[
-        { text: '승인관리' },
-        { text: MyApprovalContentTypeName[params.tab] },
+        { text: getPolyglotText('승인관리', '승인관리-mifa-승인관리bread') },
+        { text: myApprovalText() },
       ]}
     >
       <MyApprovalContentHeader />
