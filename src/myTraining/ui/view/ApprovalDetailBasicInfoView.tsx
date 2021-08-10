@@ -4,6 +4,7 @@ import { Form, Table } from 'semantic-ui-react';
 
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   approvalCube: ApprovalCubeModel;
@@ -31,7 +32,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="신청자"
                   />
                 </dt>
-                <dd>{approvalCube.studentName}</dd>
+                <dd>{parsePolyglotString(approvalCube.studentName)}</dd>
               </dl>
               <dl className="in">
                 <dt>
@@ -40,7 +41,9 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="조직"
                   />
                 </dt>
-                <dd>{approvalCube.studentDepartmentName}</dd>
+                <dd>
+                  {parsePolyglotString(approvalCube.studentDepartmentNames)}
+                </dd>
               </dl>
               <dl className="bl">
                 <dt>
@@ -59,7 +62,9 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                             defaultString="과정명"
                           />
                         </Table.HeaderCell>
-                        <Table.Cell>{approvalCube.cubeName}</Table.Cell>
+                        <Table.Cell>
+                          {parsePolyglotString(approvalCube.cubeName)}
+                        </Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>

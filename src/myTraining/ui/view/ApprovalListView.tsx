@@ -10,6 +10,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   approvalCubeService: ApprovalCubeService;
@@ -276,7 +277,9 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell name"
                   >
                     <a>
-                      <span className="ellipsis">{cube.studentName}</span>
+                      <span className="ellipsis">
+                        {parsePolyglotString(cube.studentName)}
+                      </span>
                     </a>
                   </Table.Cell>
                   <Table.Cell
@@ -285,7 +288,7 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.studentDepartmentName}
+                        {parsePolyglotString(cube.studentDepartmentNames)}
                       </span>
                     </a>
                   </Table.Cell>
@@ -294,7 +297,9 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell title"
                   >
                     <a>
-                      <span className="ellipsis">{cube.cubeName}</span>
+                      <span className="ellipsis">
+                        {parsePolyglotString(cube.cubeName)}
+                      </span>
                     </a>
                   </Table.Cell>
                   <Table.Cell

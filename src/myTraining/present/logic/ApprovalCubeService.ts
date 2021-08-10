@@ -33,7 +33,7 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
-  searchOrderBy: string = 'UpdateTimeDesc';
+  searchOrderBy: string = 'ModifiedTimeDesc';
 
   @observable
   searchEndDate: number = 9999999999999;
@@ -111,17 +111,17 @@ export default class ApprovalCubeService {
     if (approvalCubeDetail) {
       const approvalCube = new ApprovalCubeModel();
       approvalCube.studentId = approvalCubeDetail.student.id;
-      approvalCube.studentName = parsePolyglotString(
-        approvalCubeDetail.userIdentity.name
-      );
+      if (approvalCubeDetail.userIdentity.name !== undefined) {
+        approvalCube.studentName = approvalCubeDetail.userIdentity.name;
+      }
+      if (approvalCubeDetail.userIdentity.departmentName !== undefined) {
+        approvalCube.studentDepartmentNames =
+          approvalCubeDetail.userIdentity.departmentName;
+      }
+      if (approvalCubeDetail.cube.name !== undefined) {
+        approvalCube.cubeName = approvalCubeDetail.cube.name;
+      }
 
-      approvalCube.studentDepartmentName = parsePolyglotString(
-        approvalCubeDetail.userIdentity.departmentName
-      );
-      approvalCube.cubeName = parsePolyglotString(
-        approvalCubeDetail.cube.name,
-        getDefaultLang(approvalCubeDetail.cube.langSupports)
-      );
       approvalCube.cubeType = approvalCubeDetail.cube.type;
       approvalCube.round = approvalCubeDetail.student.round;
       approvalCube.capacity = approvalCubeDetail.classroom.capacity;
@@ -156,7 +156,7 @@ export default class ApprovalCubeService {
   async findApprovalCubesForSearch(
     offset: number,
     limit: number,
-    orderBy: string = 'UpdateTimeDesc',
+    orderBy: string = 'ModifiedTimeDesc',
     proposalState: ProposalState = ProposalState.Submitted,
     lectureCardId: string = '',
     endDate: number = 9999999999999
