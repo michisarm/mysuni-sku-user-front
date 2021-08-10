@@ -1,4 +1,5 @@
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from 'lecture/model/LangSupport';
 
 export interface Instructor {
   collegeId: string;
@@ -9,4 +10,5 @@ export interface Instructor {
   lectureField: PolyglotString | null;
   career: PolyglotString | null;
   name: PolyglotString | null;
+  langSupports: LangSupport[];
 }

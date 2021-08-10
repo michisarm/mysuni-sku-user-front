@@ -24,7 +24,7 @@ class InstructorIntroduceView extends Component<Props> {
           </div>
           <div className="text02">
             {parsePolyglotString(
-              instructorWithIdentity?.instructor.lectureField
+              instructorWithIdentity?.instructor?.lectureField
             )
               .split('\n')
               .map((line, index) => (
@@ -46,7 +46,7 @@ class InstructorIntroduceView extends Component<Props> {
             />
           </div>
           <div className="text02">
-            {parsePolyglotString(instructorWithIdentity?.instructor.career)
+            {parsePolyglotString(instructorWithIdentity?.instructor?.career)
               .split('\n')
               .map((line, index) => (
                 <div key={`career-${index}`}>
