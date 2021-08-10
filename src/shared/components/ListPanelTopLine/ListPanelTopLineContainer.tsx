@@ -24,10 +24,9 @@ class ListPanelTopLineContainer extends Component<Props> {
           <div
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${
-                  count || 0
-                }개</strong>의 획득할 수 있는 Badge가 있습니다.`,
-                'Certification-bdls-lcnt'
+                `총 <strong>{count}개</strong>의 획득할 수 있는 Badge가 있습니다.`,
+                'Certification-bdls-lcnt',
+                { count: (count || 0).toString() }
               ),
             }}
           />
@@ -37,10 +36,9 @@ class ListPanelTopLineContainer extends Component<Props> {
           <div
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${
-                  count || 0
-                }개</strong>의 도전중인 Badge가 있습니다.`,
-                'Certification-clls-lcnt'
+                `총 <strong>{count}개</strong>의 도전중인 Badge가 있습니다.`,
+                'Certification-clls-lcnt',
+                { count: (count || 0).toString() }
               ),
             }}
           />
@@ -50,8 +48,9 @@ class ListPanelTopLineContainer extends Component<Props> {
           <div
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${count || 0}개</strong>의 Badge를 획득하였습니다.`,
-                'Certification-clls-lcnt'
+                `총 <strong>{count}개</strong>의 Badge를 획득하였습니다.`,
+                'Certification-mabd-lcnt',
+                { count: (count || 0).toString() }
               ),
             }}
           />
@@ -61,8 +60,9 @@ class ListPanelTopLineContainer extends Component<Props> {
           <div
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${count || 0}개</strong>의 리스트가 있습니다.`,
-                'Create-MainList-리스트'
+                `총 <strong>{count}개</strong>의 리스트가 있습니다.`,
+                'Create-MainList-리스트',
+                { count: (count || 0).toString() }
               ),
             }}
           />

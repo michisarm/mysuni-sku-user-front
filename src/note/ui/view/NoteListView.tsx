@@ -496,14 +496,20 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                           defaultString="작성한 노트"
                         />
                       </strong>
-                      <span className="cnt">
-                        {subNoteList?.map(
-                          (f) =>
-                            f.index === index &&
-                            f.noteWithLectureList.results.length
-                        )}
-                        개
-                      </span>
+                      <span
+                        className="cnt"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `${subNoteList?.map(
+                              (f) =>
+                                f.index === index &&
+                                f.noteWithLectureList.results.length
+                            )}
+                            개`,
+                            'mypage-noteList-노트수'
+                          ),
+                        }}
+                      />
 
                       {/* 노트 작성 시작하게되면 폰트 색상 및 아이콘 변경이 있습니다.  active 클래스 추가될 경우 폰트 색상(회색--> 청록색 ) 변경됩니다 */}
                       <Button

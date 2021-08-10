@@ -33,8 +33,9 @@ class ContentHeaderBadgeView extends PureComponent<Props> {
                   className="text3"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      `${badgeCount || 0}개`,
-                      'mapg-mifa-mb개'
+                      `{badgeCount}개`,
+                      'mapg-mifa-mb개',
+                      { badgeCount: (badgeCount || 0).toString() }
                     ),
                   }}
                 />
