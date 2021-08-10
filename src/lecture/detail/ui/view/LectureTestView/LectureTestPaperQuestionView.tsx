@@ -29,9 +29,10 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
     const lectureStructureItem = getActiveStructureItem(params.pathname);
     let readOnly = false;
     if (
-      lectureStructureItem &&
-      (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
-        lectureStructureItem.student?.extraWork.testStatus === 'PASS')
+      modalGbn ||
+      (lectureStructureItem &&
+        (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+          lectureStructureItem.student?.extraWork.testStatus === 'PASS'))
     ) {
       readOnly = true;
     }
