@@ -253,12 +253,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                         this.setState({ write: value, fieldName: '' });
                         const polyglotString: PolyglotString = {
                           en: null,
-                          ko: null,
+                          ko: value,
                           zh: null,
                         };
-                        polyglotString.en = value;
-                        polyglotString.ko = value;
-                        polyglotString.zh = value;
                         this.onChangePostProps('title', polyglotString);
                       }
                     }}
@@ -269,12 +266,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       this.setState({ write: '' });
                       const polyglotString: PolyglotString = {
                         en: null,
-                        ko: null,
+                        ko: '',
                         zh: null,
                       };
-                      polyglotString.en = '';
-                      polyglotString.ko = '';
-                      polyglotString.zh = '';
                       this.onChangePostProps('title', polyglotString);
                     }}
                   />
@@ -345,12 +339,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                           } else {
                             const polyglotString: PolyglotString = {
                               en: null,
-                              ko: null,
+                              ko: value,
                               zh: null,
                             };
-                            polyglotString.en = value;
-                            polyglotString.ko = value;
-                            polyglotString.zh = value;
                             this.onChangePostProps(
                               'contents.contents',
                               polyglotString

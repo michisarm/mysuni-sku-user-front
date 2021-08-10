@@ -3,7 +3,6 @@ import { patronInfo } from '@nara.platform/dock';
 import { CubeType } from 'shared/model';
 import OrderByType from './OrderByType';
 
-
 class LectureRdoModel {
   //
   college: string = '';
@@ -17,7 +16,6 @@ class LectureRdoModel {
   cubeType?: CubeType;
   creatorId?: string;
 
-
   constructor(lectureRdo?: LectureRdoModel) {
     //
     if (lectureRdo) {
@@ -25,7 +23,12 @@ class LectureRdoModel {
     }
   }
 
-  static newWithCollege(collegeId: string, limit: number, offset: number, orderBy: OrderByType) {
+  static newWithCollege(
+    collegeId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
     //
     return new LectureRdoModel({
       college: collegeId,
@@ -38,7 +41,12 @@ class LectureRdoModel {
     });
   }
 
-  static newWithChannel(channelId: string, limit: number, offset: number, orderBy: OrderByType) {
+  static newWithChannel(
+    channelId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
     //
     return new LectureRdoModel({
       college: '',
@@ -51,7 +59,13 @@ class LectureRdoModel {
     });
   }
 
-  static newWithChannelOrder(collegeId:string, channelId: string, limit: number, offset: number, orderBy: OrderByType) {
+  static newWithChannelOrder(
+    collegeId: string,
+    channelId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
     //
     return new LectureRdoModel({
       college: collegeId,
@@ -78,7 +92,14 @@ class LectureRdoModel {
     });
   }
 
-  static newRecommend(channelLimit: number, channelOffset: number, limit: number, offset: number, channel?: string, orderBy?: OrderByType) {
+  static newRecommend(
+    channelLimit: number,
+    channelOffset: number,
+    limit: number,
+    offset: number,
+    channel?: string,
+    orderBy?: OrderByType
+  ) {
     return new LectureRdoModel({
       college: '',
       channel: channel || '',

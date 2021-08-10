@@ -67,10 +67,10 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
                   <a className="tip-id">
                     {instructorWithIdentity?.instructor.internal
                       ? parsePolyglotString(
-                          instructorWithIdentity.userIdentity.departmentName
+                          instructorWithIdentity.userIdentity?.departmentName
                         )
                       : parsePolyglotString(
-                          instructorWithIdentity?.instructor.organization
+                          instructorWithIdentity?.instructor?.organization
                         )}
                   </a>
                 </i>

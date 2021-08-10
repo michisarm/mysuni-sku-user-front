@@ -1,4 +1,4 @@
-import { decorate, observable } from "mobx";
+import { decorate, observable } from 'mobx';
 
 class FilterCountViewModel {
   collegeId: string = '';
@@ -16,24 +16,37 @@ class FilterCountViewModel {
   experiential: number = 0;
   cohort: number = 0;
   discussion: number = 0;
-  
 
   public constructor(filterCountView?: FilterCountViewModel) {
     if (filterCountView) {
-      this.collegeId = filterCountView.collegeId ? filterCountView.collegeId : '';
+      this.collegeId = filterCountView.collegeId
+        ? filterCountView.collegeId
+        : '';
       this.college = filterCountView.college ? filterCountView.college : 0;
       this.course = filterCountView.course ? filterCountView.course : 0;
       this.video = filterCountView.video ? filterCountView.video : 0;
       this.audio = filterCountView.audio ? filterCountView.audio : 0;
-      this.elearning = filterCountView.elearning ? filterCountView.elearning : 0;
-      this.classroomLecture = filterCountView.classroomLecture ? filterCountView.classroomLecture : 0;
-      this.community = filterCountView.community ? filterCountView.community : 0;
+      this.elearning = filterCountView.elearning
+        ? filterCountView.elearning
+        : 0;
+      this.classroomLecture = filterCountView.classroomLecture
+        ? filterCountView.classroomLecture
+        : 0;
+      this.community = filterCountView.community
+        ? filterCountView.community
+        : 0;
       this.task = filterCountView.task ? filterCountView.task : 0;
       this.webPage = filterCountView.webPage ? filterCountView.webPage : 0;
-      this.documents = filterCountView.documents ? filterCountView.documents : 0;
-      this.experiential = filterCountView.experiential ? filterCountView.experiential : 0;
+      this.documents = filterCountView.documents
+        ? filterCountView.documents
+        : 0;
+      this.experiential = filterCountView.experiential
+        ? filterCountView.experiential
+        : 0;
       this.cohort = filterCountView.cohort ? filterCountView.cohort : 0;
-      this.discussion = filterCountView.discussion ? filterCountView.discussion : 0;
+      this.discussion = filterCountView.discussion
+        ? filterCountView.discussion
+        : 0;
     }
   }
 
@@ -66,12 +79,14 @@ class FilterCountViewModel {
       default:
         return 0;
     }
-  }
+  };
 
-  public static getTotalFilterCountView = (filterCountViews: FilterCountViewModel[]): FilterCountViewModel => {
+  public static getTotalFilterCountView = (
+    filterCountViews: FilterCountViewModel[]
+  ): FilterCountViewModel => {
     const totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
 
-    filterCountViews.forEach(filterCountView => {
+    filterCountViews.forEach((filterCountView) => {
       totalFilterCountView.college += filterCountView.college;
       totalFilterCountView.course += filterCountView.course;
       totalFilterCountView.video += filterCountView.video;
@@ -85,15 +100,24 @@ class FilterCountViewModel {
       totalFilterCountView.experiential += filterCountView.experiential;
       totalFilterCountView.cohort += filterCountView.cohort;
       totalFilterCountView.discussion += filterCountView.discussion;
-    })
+    });
 
     totalFilterCountView.totalCount =
-      totalFilterCountView.course + totalFilterCountView.video + totalFilterCountView.audio +
-      totalFilterCountView.elearning + totalFilterCountView.classroomLecture + totalFilterCountView.community + totalFilterCountView.task +
-      totalFilterCountView.webPage + totalFilterCountView.documents + totalFilterCountView.experiential + totalFilterCountView.cohort + totalFilterCountView.discussion;
+      totalFilterCountView.course +
+      totalFilterCountView.video +
+      totalFilterCountView.audio +
+      totalFilterCountView.elearning +
+      totalFilterCountView.classroomLecture +
+      totalFilterCountView.community +
+      totalFilterCountView.task +
+      totalFilterCountView.webPage +
+      totalFilterCountView.documents +
+      totalFilterCountView.experiential +
+      totalFilterCountView.cohort +
+      totalFilterCountView.discussion;
 
     return totalFilterCountView;
-  }
+  };
 }
 
 export default FilterCountViewModel;

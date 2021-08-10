@@ -608,8 +608,8 @@ class LectureService {
           lectureTableView.name = card.name;
           lectureTableView.learningTime = card.learningTime;
           lectureTableView.learningState = student.learningState;
-          lectureTableView.updateTime = student.updateTime;
-          lectureTableView.updateTimeForTest = student.updateTimeForTest;
+          lectureTableView.updateTime = student.modifiedTime;
+          lectureTableView.updateTimeForTest = student.modifiedTimeForTest;
           lectureTableView.passedLearningCount = student.completePhaseCount;
           lectureTableView.totalLearningCount = student.phaseCount;
           lectureTableView.useNote = useNote;

@@ -26,7 +26,7 @@ function getTitle(
   const { recTitle } = viewModel;
   if (recTitle?.length > 0) {
     // return `${profileMemberName}${recTitle}`; api에서 받아오는 recTitle내용 추후 변경시
-    return `${profileMemberName} ${getPolyglotText('님의 학습 콘텐츠 기반 추천 과정', '')}`;
+    return `${profileMemberName} ${getPolyglotText('님의 학습 콘텐츠 기반 추천 과정', 'home-Recommend-Title1')}`;
   } else {
     return `${profileMemberName} ${getPolyglotText('님을 위한 mySUNI의 추천 과정', 'home-Recommend-Title2')}`;
   }

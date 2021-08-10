@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export const useScrollMove = () => {
   const [scrollPos, setScrollPos] = useState<any>(() =>
@@ -37,3 +37,10 @@ export const useScrollMove = () => {
 
   return { scrollMove, scrollOnceMove, scrollSave };
 };
+
+export function scrollSave() {
+  const scrollPos: number = document.documentElement.scrollTop
+    ? document.documentElement.scrollTop
+    : document.body.scrollTop;
+  return sessionStorage.setItem('SCROLL_POS', JSON.stringify(scrollPos));
+}

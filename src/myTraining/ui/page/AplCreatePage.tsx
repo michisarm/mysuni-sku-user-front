@@ -1,19 +1,9 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
-import { patronInfo } from '@nara.platform/dock';
-import {
-  Breadcrumb,
-  Button,
-  Container,
-  Form,
-  Header,
-  Segment,
-} from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import { AplState } from '../../model/AplState';

@@ -80,7 +80,7 @@ export class PersonalCubeModel implements DramaEntity {
       this.required =
         personalCube.requiredSubsidiaries &&
         personalCube.requiredSubsidiaries.some(
-          subsidiary => subsidiary.id === companyCode
+          (subsidiary) => subsidiary.id === companyCode
         );
     }
   }
@@ -154,7 +154,7 @@ export class PersonalCubeModel implements DramaEntity {
   static makeChannelsMap(channelList: CategoryModel[]) {
     const channelListMap = new Map<string, string[]>();
 
-    channelList.map(channel => {
+    channelList.map((channel) => {
       if (!channelListMap.get(channel.college.name)) {
         channelListMap.set(channel.college.name, [channel.channel.name]);
       } else {
@@ -171,7 +171,7 @@ export class PersonalCubeModel implements DramaEntity {
   static makeChannelsIdNameMap(channelList: CategoryModel[]) {
     const channelListMap = new Map<IdName, IdName[]>();
 
-    channelList.map(channel => {
+    channelList.map((channel) => {
       if (!channelListMap.get(channel.college)) {
         channelListMap.set(channel.college, [channel.channel]);
       } else {
@@ -211,7 +211,7 @@ export class PersonalCubeModel implements DramaEntity {
     const collegeMap: Map<string, CategoryModel[]> = new Map();
     const subCategories = personalCube.subCategories;
 
-    subCategories.map(subCategory => {
+    subCategories.map((subCategory) => {
       //
       const collegeChannels = collegeMap.get(subCategory.college.id);
 

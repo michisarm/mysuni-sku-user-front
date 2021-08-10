@@ -23,6 +23,9 @@ import ProfileImage from '../../../../src/shared/components/Image/Image';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getProfilePopup } from 'layout/UserApp/service/ProfilePopupService/getProfilePopup';
+import { useProfilePopupModel } from 'layout/UserApp/store/ProfilePopupStore';
+import { isEmpty } from 'lodash';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -42,6 +45,7 @@ function MyPageHeaderContainer({
   const [showNameFlag, setShowNameFlag] = useState<boolean>();
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
   const params = useParams<MyPageRouteParams>();
+  const profileInfo = useProfilePopupModel();
 
   useEffect(() => {
     if (skProfileService) {
@@ -51,6 +55,7 @@ function MyPageHeaderContainer({
         skProfileService.findCommunityProfile();
       }
     }
+    getProfilePopup();
   }, []);
 
   useEffect(() => {
@@ -95,6 +100,22 @@ function MyPageHeaderContainer({
       });
     }
   }, []);
+
+  const getProfileImage = () => {
+    if (bgImageBase64) {
+      return bgImageBase64;
+    }
+
+    if (skProfile.useGdiPhoto) {
+      return skProfile.gdiPhotoImagePath;
+    }
+
+    if (isEmpty(skProfile.photoImagePath)) {
+      return DefaultImg;
+    }
+
+    return skProfile.photoImagePath;
+  };
 
   return (
     <>
@@ -155,9 +176,7 @@ function MyPageHeaderContainer({
                   <ProfileImage
                     id="profileImage"
                     className="ui image"
-                    src={
-                      photoImageBase64 || skProfile.photoImagePath || DefaultImg
-                    }
+                    src={getProfileImage()}
                     onError={(event: any) =>
                       (event.currentTarget.style.display = 'none')
                     }
@@ -179,12 +198,12 @@ function MyPageHeaderContainer({
                       <span>{skProfile.followingCount}</span> Following
                       김민준 - 커뮤니티 api 추가 필요
                       */}
-                      <span>{0}</span>
+                      <span>{profileInfo?.followerCount || 0}</span>
                       <PolyglotText
                         defaultString="Followers"
                         id="mypage-프로필카드-Followers"
                       />
-                      <span>{0}</span>
+                      <span>{profileInfo?.followingCount || 0}</span>
                       <PolyglotText
                         defaultString="Following"
                         id="mypage-프로필카드-Following"

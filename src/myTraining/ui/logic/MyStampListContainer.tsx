@@ -166,7 +166,7 @@ function MyStampListContainer({
             <>
               {(!resultEmpty && (
                 <>
-                  <MyLearningListTemplate>
+                  <MyLearningListTemplate contentType={contentType}>
                     <MyLearningListHeaderView
                       contentType={contentType}
                       onClickSort={onClickSort}

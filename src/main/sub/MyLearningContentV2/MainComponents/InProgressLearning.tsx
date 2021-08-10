@@ -13,7 +13,10 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
-import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
@@ -49,13 +52,13 @@ function InProgressLearning({ profileMemberName, history }: Props) {
     <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
         <strong>
+          <span className="ellipsis">{profileMemberName}</span>
           <PolyglotText
+            defaultString="님이 학습중인 과정"
             id="home-Inprogress-Title"
-            defaultString={'{profileMemberName}님이 학습중인 과정'}
-            values={{ profileMemberName }}
           />
-          {/* {`${profileMemberName}님이 학습중인 과정`} */}
         </strong>
+
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
