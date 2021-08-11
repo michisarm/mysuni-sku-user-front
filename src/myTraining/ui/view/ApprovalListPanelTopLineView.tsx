@@ -146,7 +146,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
               />
               <Radio
                 className="base"
-                label={getPolyglotText('반려', '승인관리-유료과정-반려2')}
+                label={getPolyglotText('반려dd', '승인관리-유료과정-반려2')}
                 name="radioGroup"
                 value="Rejected"
                 checked={searchState === 'Rejected'}
@@ -154,7 +154,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
               />
               <Radio
                 className="base"
-                label={getPolyglotText('승인', '승인관리-유료과정-승인2')}
+                label={getPolyglotText('승인dd', '승인관리-유료과정-승인2')}
                 name="radioGroup"
                 value="Approved"
                 checked={searchState === 'Approved'}

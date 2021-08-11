@@ -1,12 +1,12 @@
-import { computed } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import moment from 'moment';
 import { AplCdoModel } from './AplCdoModel';
 import { AplState } from './AplState';
 import { NameValueList, NewQueryModel } from '../../shared/model';
 import { AplType } from './AplType';
-import { AplStateName } from './AplStateName';
+import { aplStateNamePolyglotText } from './AplStateName';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { UserIdentity } from 'shared/model/UserIdentity';
+import { initUserIdentity, UserIdentity } from 'shared/model/UserIdentity';
 
 class AplModel extends NewQueryModel {
   id: string = '';
@@ -35,9 +35,9 @@ class AplModel extends NewQueryModel {
   causeOfReturn: string = '';
   patronKeyString: string = '';
 
-  registrantUserIdentity: UserIdentity | undefined;
-  modifierUserIdentity: UserIdentity | undefined;
-  approvalUserIdentity: UserIdentity | undefined;
+  registrantUserIdentity: UserIdentity = initUserIdentity();
+  modifierUserIdentity: UserIdentity = initUserIdentity();
+  approvalUserIdentity: UserIdentity = initUserIdentity();
 
   constructor(aplModel?: AplModel) {
     super();
@@ -118,7 +118,7 @@ class AplModel extends NewQueryModel {
 
   /* 승인상태 */
   @computed get displayStateName() {
-    const stateName = AplStateName[this.state];
+    const stateName = aplStateNamePolyglotText(this.state);
     return stateName;
   }
 
@@ -227,3 +227,33 @@ class AplModel extends NewQueryModel {
 }
 
 export default AplModel;
+
+decorate(AplModel, {
+  id: observable,
+  title: observable,
+  type: observable,
+  typeName: observable,
+  collegeId: observable,
+  channelId: observable,
+  startDate: observable,
+  endDate: observable,
+  institute: observable,
+  requestHour: observable,
+  requestMinute: observable,
+  allowHour: observable,
+  allowMinute: observable,
+  allowTime: observable,
+  updateHour: observable,
+  updateMinute: observable,
+  content: observable,
+  state: observable,
+  registeredTime: observable,
+  modifiedTime: observable,
+  fileIds: observable,
+  approvalYn: observable,
+  causeOfReturn: observable,
+  patronKeyString: observable,
+  registrantUserIdentity: observable,
+  modifierUserIdentity: observable,
+  approvalUserIdentity: observable,
+});

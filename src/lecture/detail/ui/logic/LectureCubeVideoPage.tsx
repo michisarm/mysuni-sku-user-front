@@ -51,12 +51,15 @@ function LectureCubeVideoPage() {
           ) {
             reactAlert({
               title: '',
-              message: `${moment(
-                next.mediaContents.contentsProvider.expiryDate
-              ).format('YYYY-MM-DD')} ${getPolyglotText(
-                '까지 만료되는 콘텐츠 입니다.',
-                'Collage-Video-만료'
-              )}`,
+              message: getPolyglotText('{date}까지 만료되는 콘텐츠 입니다.',
+                'Collage-Video-만료',
+                {date: moment(next.mediaContents.contentsProvider.expiryDate).format('YYYY-MM-DD')})
+              // message: `${moment(
+              //   next.mediaContents.contentsProvider.expiryDate
+              // ).format('YYYY-MM-DD')} ${getPolyglotText(
+              //   '까지 만료되는 콘텐츠 입니다.',
+              //   'Collage-Video-만료'
+              // )}`,
             });
           }
         }

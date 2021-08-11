@@ -10,6 +10,7 @@ import {
   setAplDetailForm,
   setAplDetailModal,
 } from './aplDetail.stores';
+import AplApprovalUdo from 'myTraining/model/AplApprovalUdo';
 
 export function routeToList() {
   const params = getAplDetailRouteParams();
@@ -134,3 +135,88 @@ export function onCancelApproval() {
     });
   }
 }
+
+export const onClickApproval = () => {
+  /* allowHour & allowMinute 가 공백일 때, 필수 입력 알람창을 띄워야 함. */
+  const aplDetailModal = getAplDetailModal();
+  const aplDetailForm = getAplDetailForm();
+  if (aplDetailModal === undefined || aplDetailForm === undefined) {
+    return;
+  }
+  if (aplDetailForm.allowHour === '' || aplDetailForm.allowMinute === '') {
+    setAplDetailModal({
+      ...aplDetailModal,
+      openAlertModal: true,
+    });
+    return;
+  }
+
+  setAplDetailModal({
+    ...aplDetailModal,
+    openApprovalModal: true,
+  });
+};
+
+export const onCloseAlertModal = () => {
+  const aplDetailModal = getAplDetailModal();
+  const aplDetailForm = getAplDetailForm();
+  if (aplDetailModal === undefined || aplDetailForm === undefined) {
+    return;
+  }
+
+  if (!aplDetailForm.allowHour) {
+    aplDetailForm.allowHourRef.current?.focus();
+  }
+
+  if (!aplDetailForm.allowMinute) {
+    aplDetailForm.allowMinuteRef.current?.focus();
+  }
+  setAplDetailModal({
+    ...aplDetailModal,
+    openAlertModal: false,
+  });
+};
+
+export const onConfirmReject = async (remark: string) => {
+  /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
+  const aplService = AplService.instance;
+  const { apl } = aplService;
+  const aplUdo = AplApprovalUdo.createForReject(apl.id, remark);
+  await aplService.modifyAplWithApprovalState(aplUdo);
+
+  const aplDetailModal = getAplDetailModal();
+  if (aplDetailModal !== undefined) {
+    setAplDetailModal({
+      ...aplDetailModal,
+      openRejectModal: false,
+    });
+  }
+  routeToList();
+};
+
+export const onConfirmApproval = async () => {
+  /* aplUdo 를 생성해 승인 로직을 처리해야 함. */
+  const aplService = AplService.instance;
+  const { apl } = aplService;
+  const aplDetailForm = getAplDetailForm();
+  if (aplDetailForm === undefined) {
+    return;
+  }
+  const allowHourNumber = Number.parseInt(aplDetailForm.allowHour);
+  const allowMinuteNumber = Number.parseInt(aplDetailForm.allowMinute);
+
+  const aplUdo = AplApprovalUdo.createForApproval(
+    apl.id,
+    allowHourNumber,
+    allowMinuteNumber
+  );
+  await aplService.modifyAplWithApprovalState(aplUdo);
+  const aplDetailModal = getAplDetailModal();
+  if (aplDetailModal !== undefined) {
+    setAplDetailModal({
+      ...aplDetailModal,
+      openApprovalModal: false,
+    });
+  }
+  routeToList();
+};

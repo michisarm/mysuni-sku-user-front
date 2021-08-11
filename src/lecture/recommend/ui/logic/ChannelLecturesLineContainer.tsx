@@ -123,55 +123,63 @@ class ChannelLecturesLineContainer extends Component<Props> {
 
     return (
       <>
-        <Lecture.LineHeader
-          channel={channel}
-          title={
-            <>
-              <div dangerouslySetInnerHTML={{__html: getPolyglotText('채널에서 {name}님께 추천하는 과정입니다.', 'rcmd-추천-Channel', {name: profileMemberName})}} />
-              {' '}
-              <span className="channel">({totalCount})</span>
-            </>
-          }
-          onViewAll={this.onViewAll}
-        />
-
         {results && results.length > 0 ? (
-          <Lecture.Group type={Lecture.GroupType.Line}>
-            {results.map((lecture: LectureModel, index: number) => {
-              const inMyLecture =
-                inMyLectureMap.get(lecture.serviceId) || undefined;
+          <>
+            <Lecture.LineHeader
+              channel={channel}
+              title={
+                <>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        '채널에서 {name}님께 추천하는 과정입니다.',
+                        'rcmd-추천-Channel',
+                        { name: profileMemberName }
+                      ),
+                    }}
+                  />{' '}
+                  <span className="channel">({totalCount})</span>
+                </>
+              }
+              onViewAll={this.onViewAll}
+            />
+            <Lecture.Group type={Lecture.GroupType.Line}>
+              {results.map((lecture: LectureModel, index: number) => {
+                const inMyLecture =
+                  inMyLectureMap.get(lecture.serviceId) || undefined;
 
-              return (
-                <Lecture
-                  key={`lecture-${index}`}
-                  model={lecture}
-                  rating={lecture.rating}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: getPolyglotText('알림', 'rcmd-관심목록-알림'),
-                      message: inMyLecture
-                        ? getPolyglotText(
-                            '본 과정이 관심목록에서 제외되었습니다.',
-                            'rcmd-관심목록-상세1'
-                          )
-                        : getPolyglotText(
-                            '본 과정이 관심목록에 추가되었습니다.',
-                            'rcmd-관심목록-상세2'
-                          ),
-                    });
-                    this.onActionLecture(inMyLecture || lecture);
-                  }}
-                  onViewDetail={this.onViewDetail}
-                />
-              );
-            })}
-          </Lecture.Group>
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={lecture.rating}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={
+                      inMyLecture
+                        ? Lecture.ActionType.Remove
+                        : Lecture.ActionType.Add
+                    }
+                    onAction={() => {
+                      reactAlert({
+                        title: getPolyglotText('알림', 'rcmd-관심목록-알림'),
+                        message: inMyLecture
+                          ? getPolyglotText(
+                              '본 과정이 관심목록에서 제외되었습니다.',
+                              'rcmd-관심목록-상세1'
+                            )
+                          : getPolyglotText(
+                              '본 과정이 관심목록에 추가되었습니다.',
+                              'rcmd-관심목록-상세2'
+                            ),
+                      });
+                      this.onActionLecture(inMyLecture || lecture);
+                    }}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
+          </>
         ) : (
           <NoSuchContentPanel
             message={getPolyglotText(

@@ -98,7 +98,11 @@ class AnswerDetailContainer extends Component<Props, States> {
             <BoardDetailContentHeaderView
               title={answer.title}
               time={answer.writtenTime}
-              subField={<span className="category">{post.category.name}</span>}
+              subField={
+                <span className="category">
+                  {parsePolyglotString(post.category.name)}
+                </span>
+              }
               onClickList={this.onClickList}
             />
 

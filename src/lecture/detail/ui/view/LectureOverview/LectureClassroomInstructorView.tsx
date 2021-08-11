@@ -4,6 +4,7 @@ import { Label, Icon } from 'semantic-ui-react';
 import Image from '../../../../../shared/components/Image';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LectureClassroomInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -42,7 +43,7 @@ export function LectureClassroomInstructorView(
               >
                 {representative === true && <Represent />}
                 <div className="pic s80">
-                  {instructorWithIdentity?.instructor.photoFilePath && (
+                  {instructorWithIdentity?.instructor?.photoFilePath && (
                     <Image
                       alt="프로필사진"
                       className="ui image"
@@ -53,16 +54,25 @@ export function LectureClassroomInstructorView(
                 <i>
                   <span className="tip-name">
                     {parsePolyglotString(
-                      instructorWithIdentity?.instructor.name
+                      instructorWithIdentity?.instructor?.name,
+                      getDefaultLang(
+                        instructorWithIdentity?.instructor?.langSupports
+                      )
                     )}
                   </span>
                   <a className="tip-id">
-                    {instructorWithIdentity?.instructor.internal
+                    {instructorWithIdentity?.instructor?.internal
                       ? parsePolyglotString(
-                          instructorWithIdentity?.userIdentity?.departmentName
+                          instructorWithIdentity?.userIdentity?.departmentName,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor?.langSupports
+                          )
                         )
                       : parsePolyglotString(
-                          instructorWithIdentity?.instructor?.organization
+                          instructorWithIdentity?.instructor?.organization,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor?.langSupports
+                          )
                         )}
                   </a>
                 </i>

@@ -51,13 +51,18 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   return (
     <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
-        <strong>
-          <span className="ellipsis">{profileMemberName}</span>
-          <PolyglotText
-            defaultString="님이 학습중인 과정"
-            id="home-Inprogress-Title"
-          />
-        </strong>
+        {/* {`${profileMemberName}님이 학습중인 과정`} */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              `<strong>{profileMemberName}님이 학습중인 과정</strong>`,
+              'home-Inprogress-Title',
+              {
+                profileMemberName,
+              }
+            ),
+          }}
+        />
 
         <div className="right">
           {cardList && cardList.length > 0 && (

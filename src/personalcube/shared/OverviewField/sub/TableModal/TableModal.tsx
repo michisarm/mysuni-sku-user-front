@@ -99,7 +99,7 @@ class TableModal extends Component<Props, States> {
                         classroom.instructor.map((item) => (
                           <>
                             {parsePolyglotString(
-                              item.instructorWithIdentity?.instructor.name
+                              item.instructorWithIdentity?.instructor?.name
                             )}
                             <p />
                           </>

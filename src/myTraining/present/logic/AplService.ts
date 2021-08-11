@@ -13,7 +13,7 @@ import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
 import { AplRdoModel, CountType } from '../../model/AplRdoModel';
-import { ApprovalViewType } from '../../ui/logic/PersonalLearningListContainer';
+import { ApprovalViewType } from '../../personalLearning/PersonalLearningListContainer';
 import AplApprovalUdo from '../../model/AplApprovalUdo';
 
 @autobind
@@ -178,7 +178,6 @@ export default class AplService {
     name: string,
     value: string | {} | string[] | boolean | undefined | Moment
   ) {
-    //
     if (value === 'Select') value = '';
     this.apl = _.set(this.apl, name, value);
   }

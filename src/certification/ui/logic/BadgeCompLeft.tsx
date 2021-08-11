@@ -12,7 +12,10 @@ import BadgeView from '../view/BadgeView';
 import ChallengeBadgeAlertModal from '../view/ChallengeBadgeAlertModal';
 import { findBadgeStudent } from '../../api/BadgeStudentApi';
 import { BadgeStudent } from '../../model/BadgeStudent';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 
@@ -126,17 +129,15 @@ function BadgeCompLeft({
                   <b>{passedCardCount}</b>/{badgeCardCount}
                 </span>
               </span>
-              <span className="txt">
-                <PolyglotText
-                  id="Certification-clls-상태설명1"
-                  defaultString="Badge 도전 학습 모두 완료 시"
-                />
-                <br />
-                <PolyglotText
-                  id="Certification-clls-상태설명2"
-                  defaultString="자동으로 Badge가 발급됩니다."
-                />
-              </span>
+              <span
+                className="txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `Badge 도전 학습 모두 완료 시<br />자동으로 Badge가 발급됩니다.`,
+                    'Certification-clls-상태설명'
+                  ),
+                }}
+              />
             </>
           )}
         <ChallengeBadgeAlertModal

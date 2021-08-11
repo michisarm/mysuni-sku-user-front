@@ -91,7 +91,6 @@ class QuickNavContainer extends Component<Props, State> {
     await skProfileService!.findSkProfile();
     const { skProfile } = skProfileService!;
     await menuControlAuthService!.findMenuControlAuth();
-    await console.log(skProfile);
   }
 
   async avaible() {

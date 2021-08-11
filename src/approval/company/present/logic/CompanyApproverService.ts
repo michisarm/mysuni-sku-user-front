@@ -37,7 +37,8 @@ export default class CompanyApproverService {
   @action
   async findCompanyAplApprover() {
     //
-    const companyApprover = await this.companyApproverApi.findCompanyAplApprover();
+    const companyApprover =
+      await this.companyApproverApi.findCompanyAplApprover();
 
     runInAction(() => {
       this.companyApprover = companyApprover;
@@ -53,7 +54,6 @@ export default class CompanyApproverService {
     Object.assign(newCompanyApprover, approver);
     this.companyApprover = newCompanyApprover;
   }
-
 }
 
 Object.defineProperty(CompanyApproverService, 'instance', {

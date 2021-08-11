@@ -31,6 +31,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -350,7 +351,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                       </span>
                       <span className="tool-tip">
                         {parsePolyglotString(
-                          instrutor.instructorWithIdentity?.instructor.name
+                          instrutor.instructorWithIdentity?.instructor?.name,
+                          getDefaultLang(
+                            instrutor.instructorWithIdentity?.instructor
+                              ?.langSupports
+                          )
                         )}
                         <i>
                           <Link
@@ -360,19 +365,32 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                             target="_blank"
                           >
                             {parsePolyglotString(
-                              instrutor.instructorWithIdentity?.instructor.name
+                              instrutor.instructorWithIdentity?.instructor
+                                ?.name,
+                              getDefaultLang(
+                                instrutor.instructorWithIdentity?.instructor
+                                  ?.langSupports
+                              )
                             )}
                           </Link>
                           <span className="tip-id">
                             {instrutor.instructorWithIdentity?.instructor
-                              .internal
+                              ?.internal
                               ? parsePolyglotString(
                                   instrutor.instructorWithIdentity?.userIdentity
-                                    ?.departmentName
+                                    ?.departmentName,
+                                  getDefaultLang(
+                                    instrutor.instructorWithIdentity?.instructor
+                                      .langSupports
+                                  )
                                 )
                               : parsePolyglotString(
                                   instrutor.instructorWithIdentity?.instructor
-                                    ?.organization
+                                    ?.organization,
+                                  getDefaultLang(
+                                    instrutor.instructorWithIdentity?.instructor
+                                      ?.langSupports
+                                  )
                                 )}
                           </span>
                         </i>

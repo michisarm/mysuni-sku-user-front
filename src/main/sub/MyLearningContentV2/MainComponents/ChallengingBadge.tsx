@@ -15,7 +15,7 @@ import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
-import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 
@@ -100,13 +100,12 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
   return (
     <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
       <div className="section-head">
-        <strong>
-          <span className="ellipsis">{profileMemberName}</span>
+        <strong dangerouslySetInnerHTML={{__html: getPolyglotText('<span className="ellipsis">{name}</span>님이 도전중인 Badge', 'home-ChallengeBadges-Title', {name: profileMemberName})}} />
+          {/* <span className="ellipsis">{profileMemberName}</span>
           <PolyglotText
             defaultString="님이 도전중인 Badge"
             id="home-ChallengeBadges-Title"
-          />
-        </strong>
+          /> */}
         <div className="right">
           {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>

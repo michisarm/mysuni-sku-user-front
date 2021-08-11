@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import moment from 'moment';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
-import { AplStateName } from 'myTraining/model/AplStateName';
+import { aplStateNamePolyglotText } from 'myTraining/model/AplStateName';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 
@@ -41,7 +41,7 @@ function PersonalCompletedListView({
                 {parsePolyglotString(apl.approvalUserIdentity?.name)}
               </Table.Cell>
               <Table.Cell>{apl.approvalUserIdentity?.email || '-'}</Table.Cell>
-              <Table.Cell>{AplStateName[apl.state]}</Table.Cell>
+              <Table.Cell>{aplStateNamePolyglotText(apl.state)}</Table.Cell>
               <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
             </Table.Row>
           );

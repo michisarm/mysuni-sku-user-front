@@ -53,6 +53,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
       setOpened(true);
     }
   }, [opened]);
+
   return (
     <>
       <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
@@ -86,6 +87,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           items.map(item => {
             if (item.type === 'CUBE') {
               const cube = item as LectureStructureCubeItem;
+
               return (
                 <Fragment key={cube.cubeId}>
                   {cube.isDurationable !== true && (
@@ -113,7 +115,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       }
                     />
                   )}
-                  {cube.test !== undefined && (
+                  {cube.test !== undefined && cube.test.name !== null && (
                     <TestView
                       activated={cube.test.path === pathname}
                       name={cube.test.name}
@@ -131,7 +133,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.survey.can}
                     />
                   )}
-                  {cube.report !== undefined && (
+                  {cube.report !== undefined && (cube.report.name !== null && cube.report.name !== '') && (
                     <ReportView
                       activated={cube.report.path === pathname}
                       name={cube.report.name}
@@ -174,7 +176,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             can={survey.can}
           />
         )}
-        {report && (
+        {report && (report.name !== null && report.name !== '') && (
           <CourseReportView
             name={report.name}
             state={report.state}
