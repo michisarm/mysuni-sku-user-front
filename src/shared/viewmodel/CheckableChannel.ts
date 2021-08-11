@@ -1,5 +1,5 @@
 export interface CheckableChannel {
   id: string;
-  name: string;
+  name?: string;
   checked: boolean;
 }

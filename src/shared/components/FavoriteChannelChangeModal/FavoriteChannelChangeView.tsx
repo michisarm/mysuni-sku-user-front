@@ -8,15 +8,16 @@ import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { parsePolyglotString } from '../../viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
   channelIds: string[];
   selectedCollegeIds: string[];
-  favoriteChannels: ChannelModel[];
+  favoriteChannels: string[];
   favoriteCompanyChannels: ChannelModel[];
   onToggleCollege: (collegeId: string) => void;
-  onToggleChannel: (channel: IdName | ChannelModel) => void;
+  onToggleChannel: (channel: string) => void;
 }
 
 @observer
@@ -41,9 +42,7 @@ class FavoriteChannelChangeView extends Component<Props> {
 
     return (
       collegeType === CollegeType.Company ||
-      favoriteChannels
-        .map((favoriteChannel) => favoriteChannel.id)
-        .includes(channelId)
+      favoriteChannels.includes(channelId)
     );
   }
 
@@ -121,13 +120,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                                         CollegeType.Company
                                       }
                                       onChange={() =>
-                                        onToggleChannel({
-                                          id: channel.id,
-                                          name: parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          ),
-                                        })
+                                        onToggleChannel(channel.id)
                                       }
                                     />
                                   </li>
@@ -147,16 +140,13 @@ class FavoriteChannelChangeView extends Component<Props> {
           <div className="select-area">
             <div className="scrolling-60vh">
               <div className="select-item">
-                {favoriteChannels.map((channel: ChannelModel) => (
+                {favoriteChannels.map((channel) => (
                   <Button
-                    key={`del_${channel.id}`}
+                    key={`del_${channel}`}
                     className="del"
                     onClick={() => onToggleChannel(channel)}
                   >
-                    {parsePolyglotString(
-                      channel.name,
-                      getDefaultLang(channel.langSupports)
-                    )}
+                    {getChannelName(channel)}
                   </Button>
                 ))}
                 {favoriteCompanyChannels.map((channel: ChannelModel) => (

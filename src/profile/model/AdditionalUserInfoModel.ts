@@ -16,7 +16,7 @@ class AdditionalUserInfoModel {
 
   currentJobDutyId: string = '';
   currentJobGroupId: string = '';
-  favoriteChannelIds: [] = [];
+  favoriteChannelIds: string[] = [];
   favoriteJobDutyId: string = '';
   favoriteJobGroupId: string = '';
   favoriteLearningTypes: IdNameList | null = null;

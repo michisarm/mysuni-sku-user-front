@@ -28,8 +28,7 @@ interface Props {
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
   channels?: IdName[];
-  favorites?: ChannelModel[];
-  studySummaryFavoriteChannels: IdName[];
+  favorites?: string[];
   actions: React.ReactNode;
   banner?: CollegeBanner;
   test?: {};
@@ -53,53 +52,41 @@ class CategoryMenuPanelView extends Component<Props> {
 
   //초기 선택
   categoryCheck(id: string) {
-    const array: boolean[] = [];
-    this.props.favorites?.map((value) => {
-      if (value.id === id) {
-        array.push(true);
-      } else {
-        array.push(false);
-      }
-    });
-    if (array.indexOf(true) !== -1) {
-      return true;
-    } else {
-      return false;
+    const { favorites } = this.props;
+
+    if (favorites !== undefined) {
+      return favorites.includes(id);
     }
   }
 
-  favoriteChannel(e: any, channel: any) {
+  favoriteChannel(e: React.ChangeEvent<HTMLInputElement>) {
     const { skProfileService } = this.props;
-    const array: any[] = [];
-    this.props.favorites?.map((value, index) => {
-      if (value.id === channel.id) {
-        array.splice(index, 1);
+    const channelId = e.target.id;
+    const prevFavorites = this.props.favorites;
+    const params = {
+      nameValues: [
+        {
+          name: 'favoriteChannelIds',
+          value: '[]',
+        },
+      ],
+    };
+
+    if (prevFavorites !== undefined) {
+      const isIncludesFavorite = prevFavorites.includes(channelId);
+
+      if (isIncludesFavorite) {
+        const filteredFavorite = prevFavorites.filter(
+          (favoriteId) => favoriteId !== channelId
+        );
+        params.nameValues[0].value = JSON.stringify(filteredFavorite);
+        skProfileService!.modifyStudySummary(params);
       } else {
-        array.push(value);
+        const nextFavorites = [...prevFavorites, channelId];
+        params.nameValues[0].value = JSON.stringify(nextFavorites);
+        skProfileService!.modifyStudySummary(params);
       }
-    });
-    const checkedValue = document.getElementsByName(
-      channel.id
-    )[0] as HTMLInputElement;
-    if (checkedValue.checked) {
-      //체크 안되어있는 경우
-      const nextFavoriteChannels = [
-        ...this.props.studySummaryFavoriteChannels,
-        channel,
-      ];
-      skProfileService!.setStudySummaryProp('favoriteChannels', {
-        idNames: nextFavoriteChannels,
-      });
-      skProfileService!.modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      );
-    } else {
-      skProfileService!.setStudySummaryProp('favoriteChannels', {
-        idNames: array,
-      });
-      skProfileService!.modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      );
+      skProfileService!.findStudySummary();
     }
   }
 
@@ -195,7 +182,10 @@ class CategoryMenuPanelView extends Component<Props> {
                         onRouteChannel(e);
                       }}
                     >
-                      <PolyglotText defaultString="전체보기" id="home-cipp-전체보기" />
+                      <PolyglotText
+                        defaultString="전체보기"
+                        id="home-cipp-전체보기"
+                      />
                       <i className="arr-r-gray" />
                     </button>
                   </div>
@@ -272,9 +262,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                       id={channel.id}
                                       name={channel.id}
                                       checked={this.categoryCheck(channel.id)}
-                                      onChange={(e) => {
-                                        this.favoriteChannel(e, channel);
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
@@ -300,12 +288,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                       checked={this.categoryCheck(
                                         channels[index + 1].id
                                       )}
-                                      onChange={(e) => {
-                                        this.favoriteChannel(
-                                          e,
-                                          channels[index + 1]
-                                        );
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
@@ -334,9 +317,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                       id={channel.id}
                                       name={channel.id}
                                       checked={this.categoryCheck(channel.id)}
-                                      onChange={(e) => {
-                                        this.favoriteChannel(e, channel);
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
