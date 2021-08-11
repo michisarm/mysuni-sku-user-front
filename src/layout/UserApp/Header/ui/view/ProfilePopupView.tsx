@@ -296,17 +296,15 @@ function ProfilePopupView(props: Props) {
                     src={`${process.env.PUBLIC_URL}/images/all/icon-tooltip-w-20-px.svg`}
                   />
                 </i>
-                <p className="tool-tip-box">
-                  <PolyglotText
-                    defaultString="프로필을 설정해서"
-                    id="mypage-popupview-설명1"
-                  />
-                  <br />
-                  <PolyglotText
-                    defaultString="자유롭게 활동해 보세요!"
-                    id="mypage-popupview-설명2"
-                  />
-                </p>
+                <p
+                  className="tool-tip-box"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `프로필을 설정해서 <br />자유롭게 활동해 보세요!`,
+                      'mypage-popupview-설명'
+                    ),
+                  }}
+                />
               </Button>
             )}
             {isSettingProfile && (

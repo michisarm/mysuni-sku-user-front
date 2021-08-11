@@ -14,7 +14,7 @@ import {
   setProfileInfoCommunityModel,
 } from '../../../store/ProfileInfoCommunityStore';
 import { useHistory } from 'react-router-dom';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   memberId: string | undefined;
@@ -41,19 +41,21 @@ function UserProfileInfoTabCommunity(props: Props) {
       '_blank'
     );
   };
-
   return (
     <Tab.Pane>
       <div className="list-wrapper">
         <div className="top-line front-dot community-line">
-          <span>
-            <PolyglotText
-              id="mypage-유저모달-가입"
-              defaultString="가입한 커뮤니티"
-            />
-            :<strong>{communityData?.communitiesTotalCount}</strong>
-            <PolyglotText id="mypage-유저모달-개" defaultString="개" />
-          </span>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `가입한 커뮤니티:{count}</strong>개`,
+                'mypage-유저모달-가입',
+                {
+                  count: (communityData?.communitiesTotalCount || 0).toString(),
+                }
+              ),
+            }}
+          />
         </div>
       </div>
       {communityData && communityData.communities.length > 0 && (
