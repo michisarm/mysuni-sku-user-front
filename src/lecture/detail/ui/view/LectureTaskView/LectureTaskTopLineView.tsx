@@ -33,7 +33,9 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
     <div className="task-title-wrap">
       <div
         className="task-number"
-        dangerouslySetInnerHTML={{__html: getPolyglotText(`<span>총 <strong>${totalCount || 0} 건</strong>의 게시글이 있습니다.</span>`, 'Collage-TaskPostView-게시글갯수')}}
+        dangerouslySetInnerHTML={{__html: getPolyglotText('<span>총 <strong>{totalCount} 건</strong>의 게시글이 있습니다.</span>',
+        'Collage-TaskPostView-게시글갯수',
+        {totalCount: (totalCount && totalCount || 0).toString()})}}
       />
       {totalCount > 0 || lectureTaskOrder === "My" ? (
         <div className="course-radio task">
