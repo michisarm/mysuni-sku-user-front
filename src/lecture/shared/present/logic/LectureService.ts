@@ -21,7 +21,11 @@ import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
-import { findByRdo, countRequiredCards } from '../../../detail/api/cardApi';
+import {
+  findByRdo,
+  countRequiredCards,
+  findCardsByRdo,
+} from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
 import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
@@ -559,22 +563,19 @@ class LectureService {
   @action
   async findAllRequiredCards(): Promise<boolean> {
     const cardRdo = this._lectureFilterRdoV2.toCardRdo();
-    const offsetRequiredCard = await findByRdo(cardRdo);
+    const offsetRequiredCard = await findCardsByRdo(cardRdo);
 
     if (
       offsetRequiredCard &&
       offsetRequiredCard.results &&
       offsetRequiredCard.results.length > 0
     ) {
-      const cardIds = offsetRequiredCard.results.map(
-        (result) => result.card.id
-      );
+      const cardIds = offsetRequiredCard.results.map((result) => result.id);
       const cardStudents = await findCardStudentsByCardIds(cardIds);
       const cardNotes =
         (await this.myTrainingApi.findCardNoteList(cardIds)) || [];
 
-      const lectureTableViews = offsetRequiredCard.results.map((result) => {
-        const card = result.card;
+      const lectureTableViews = offsetRequiredCard.results.map((card) => {
         const mainCategory = card.categories.find(
           (category) => category.mainCategory === true
         ) || {
