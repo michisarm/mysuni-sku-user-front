@@ -10,7 +10,7 @@ import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
 import { useLectureTask } from '../../../service/useLectureTask/useLectureTask';
 import { useLocation, useHistory } from 'react-router-dom';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskViewProps {
   taskItem?: LectureTask;
@@ -92,18 +92,24 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
                     {cubePostCount > 0 && (
                       <List.Item as="li">
                         <Icon className="my-post" />
-                        <PolyglotText defaultString="My Post" id="Collage-Task-myPost" />
-                        <em>
-                          <strong>{postCount}<PolyglotText defaultString="건" id="Collage-Task-건수" /></strong>/{cubePostCount}<PolyglotText defaultString="건" id="Collage-Task-건수" />
-                        </em>
+                        <PolyglotText defaultString="My Post" id="Collage-Task-myPost" />{' '}
+                        <em dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{postCount}건<strong>/{cubePostCount}건',
+                          'Collage-Task-MyPost건수',
+                          {postCount: (postCount && postCount).toString(),
+                            cubePostCount: (cubePostCount && cubePostCount).toString()
+                          })}}
+                        />
                       </List.Item>
                     )}
                     {cubeCommentCount > 0 && (
                       <List.Item as="li"><Icon className="my-comment"/>
-                        <PolyglotText defaultString="My reply" id="Collage-Task-reply" />
-                        <em>
-                          <strong>{commentCount}<PolyglotText defaultString="건" id="Collage-Task-건수" /></strong>/{cubeCommentCount}<PolyglotText defaultString="건" id="Collage-Task-건수" />
-                        </em>
+                        <PolyglotText defaultString="My reply" id="Collage-Task-reply" />{' '}
+                        <em dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{commentCount}건</strong>/{cubeCommentCount}건',
+                          'Collage-Task-Myreply건수',
+                          {commentCount: (commentCount && commentCount).toString(),
+                            cubeCommentCount: (cubeCommentCount && cubeCommentCount).toString()
+                          })}}
+                        />
                       </List.Item>
                     )}
                     {/* {cubeSubCommentCount > 0 && (
