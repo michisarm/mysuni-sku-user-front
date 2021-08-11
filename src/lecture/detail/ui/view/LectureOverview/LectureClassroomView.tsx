@@ -120,7 +120,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> =
                           {instructor.map((item) => (
                             <span key={item.instructorId}>
                               {parsePolyglotString(
-                                item.instructorWithIdentity?.instructor.name
+                                item.instructorWithIdentity?.instructor?.name
                               )}
                             </span>
                           ))}

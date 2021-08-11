@@ -391,7 +391,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 {
                   inMyLectureModel === undefined
                   ? getPolyglotText('관심목록 추가', 'Collage-Video-관심추가')
-                  : getPolyglotText('관심목록 제거', 'Collage-Video-링크복사')
+                  : getPolyglotText('관심목록 제거', 'Collage-Video-관심제거')
                 }
               </span>
             </a>

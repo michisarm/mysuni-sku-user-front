@@ -28,6 +28,7 @@ import { retMultiVideoOverlap } from '../../service/useLectureMedia/useLectureWa
 import { useLectureParams } from '../../store/LectureParamsStore';
 import moment from 'moment';
 import _ from 'lodash';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 let preliveLectureId = '';
 
@@ -131,8 +132,8 @@ function LectureVideoContainer() {
         ) {
           setSurveyAlerted(true);
           reactAlert({
-            title: '안내',
-            message: 'Survey 설문 참여를 해주세요.',
+            title: getPolyglotText('안내', 'Collage-Video-안내'),
+            message: getPolyglotText('Survey 설문 참여를 해주세요.', 'Collage-Video-Survey'),
             onClose: () => {
               if (course?.survey?.path !== undefined) {
                 history.push(course.survey.path);
@@ -183,9 +184,9 @@ function LectureVideoContainer() {
       if (viewState !== 'end') {
         if (!res || (res === 'false' && res !== preliveLectureId)) {
           reactAlert({
-            title: '알림',
+            title: getPolyglotText('알림', 'Collage-Video-알림'),
             message:
-              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+              getPolyglotText('현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.', 'Collage-Video-기존학습'),
           });
         }
       }

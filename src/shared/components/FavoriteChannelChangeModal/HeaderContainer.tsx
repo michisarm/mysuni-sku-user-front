@@ -97,7 +97,7 @@ class HeaderContainer extends Component<Props, State> {
         </div>
         <div className="cell v-middle">
           <span className="text01">
-            <PolyglotText defaultString="Selected" id="home-ChannelChangeModal-설명" />
+            <PolyglotText defaultString="Selected" id="home-ChannelChangeModal-sltd" />
           </span>
           <span className="count">
             <span className="text01 add">{selectedChannelCount}</span>

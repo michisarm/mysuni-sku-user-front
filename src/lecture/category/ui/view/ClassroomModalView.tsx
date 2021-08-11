@@ -244,7 +244,7 @@ class ClassroomModalView extends Component<Props, States> {
                                     <>
                                       {parsePolyglotString(
                                         item.instructorWithIdentity?.instructor
-                                          .name
+                                          ?.name
                                       )}
                                       <p />
                                     </>

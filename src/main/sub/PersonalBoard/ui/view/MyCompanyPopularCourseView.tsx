@@ -6,13 +6,17 @@ import { Tab } from 'semantic-ui-react';
 import { toPath } from '../../../../../lecture/detail/viewModel/LectureParams';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 import { Area } from 'tracker/model';
-import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   onTabClick: (date: any) => void;
 }
 
-const MyCompanyPopularCourseView: React.FC<Props> = Props => {
+const MyCompanyPopularCourseView: React.FC<Props> = (Props) => {
   const { history, onTabClick } = Props;
   const popularCourseItem = usePopularCourseItem();
   const [searchPeriod, setSearchPeriod] = useState<string>('');
@@ -44,7 +48,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
     );
   };
 
-  const popularCourseClass = useCallback(index => {
+  const popularCourseClass = useCallback((index) => {
     const className = ['sv', 'global', 'happy', 'ai', 'inno'];
     return className[index];
   }, []);
@@ -68,7 +72,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
                           pathname: '',
                         })}
                       >
-                        {cardName}
+                        {parsePolyglotString(cardName)}
                       </Link>
                     </p>
                   </li>
@@ -97,7 +101,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
                           pathname: '',
                         })}
                       >
-                        {cardName}
+                        {parsePolyglotString(cardName)}
                       </Link>
                     </p>
                   </li>
@@ -126,7 +130,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
                           pathname: '',
                         })}
                       >
-                        {cardName}
+                        {parsePolyglotString(cardName)}
                       </Link>
                     </p>
                   </li>
@@ -148,7 +152,10 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
         >
           <div className="card-item-tit">
             <h3>
-              <PolyglotText defaultString="우리 회사 인기 코스" id="home-PersonalBoard-CompanyPopular" />
+              <PolyglotText
+                defaultString="우리 회사 인기 코스"
+                id="home-PersonalBoard-CompanyPopular"
+              />
             </h3>
             <span>{searchPeriod}</span>
           </div>

@@ -82,7 +82,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '전체 <b>{count}개</b>',
                   'learning-개인보드-전체1',
-                  { count: countModel!.all + '' }
+                  { count: (countModel!.all || 0).toString() }
                 ),
               }}
             />
@@ -91,7 +91,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '등록 <b>{count}개</b>',
                   'learning-개인보드-등록',
-                  { count: countModel!.opened + '' }
+                  { count: (countModel!.opened || 0).toString() }
                 ),
               }}
             />
@@ -100,7 +100,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '승인 <b>{count}개</b>',
                   'learning-개인보드-승인',
-                  { count: countModel!.openApproval + '' }
+                  { count: (countModel!.openApproval || 0).toString() }
                 ),
               }}
             />
@@ -109,7 +109,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '승인 대기 중 <b>{count}개</b>',
                   'learning-개인보드-승인대기',
-                  { count: countModel!.rejected + '' }
+                  { count: (countModel!.rejected || 0).toString() }
                 ),
               }}
             />
@@ -118,7 +118,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '반려 <b>{count}개</b>',
                   'learning-개인보드-반려',
-                  { count: countModel!.rejected + '' }
+                  { count: (countModel!.rejected || 0).toString() }
                 ),
               }}
             />

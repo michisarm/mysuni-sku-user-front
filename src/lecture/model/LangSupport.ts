@@ -6,20 +6,22 @@ export interface LangSupport {
 }
 
 export function getDefaultLang(
-  langSupports: LangSupport[]
+  langSupports?: LangSupport[]
 ): 'ko' | 'en' | 'zh' {
-  if (isObservableArray(langSupports)) {
-    langSupports = Array.from(langSupports);
-  }
+  if (langSupports !== undefined) {
+    if (isObservableArray(langSupports)) {
+      langSupports = Array.from(langSupports);
+    }
 
-  if (Array.isArray(langSupports)) {
-    const langSupport = langSupports.find((c) => c.defaultLang);
-    if (langSupport !== undefined) {
-      if (langSupport.lang === 'English') {
-        return 'en';
-      }
-      if (langSupport.lang === 'Chinese') {
-        return 'zh';
+    if (Array.isArray(langSupports)) {
+      const langSupport = langSupports.find((c) => c.defaultLang);
+      if (langSupport !== undefined) {
+        if (langSupport.lang === 'English') {
+          return 'en';
+        }
+        if (langSupport.lang === 'Chinese') {
+          return 'zh';
+        }
       }
     }
   }

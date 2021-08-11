@@ -7,6 +7,7 @@ import {
   PolyglotString,
 } from '../../../shared/viewmodel/PolyglotString';
 import { AreaType } from './AreaType';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export interface ContentsProvider {
   id: string;
@@ -34,7 +35,10 @@ export function getSelectOptions(
 
   selectOptions.push({
     key: '',
-    text: '선택해주세요',
+    text: getPolyglotText(
+      '선택해주세요',
+      'Create-DetailContentsEdit-Difficulty'
+    ),
     value: '',
   });
 

@@ -3,10 +3,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { InstructorModel } from '../../model/InstructorModel';
 import Image from '../../../shared/components/Image';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props {
   instructorWithIdentity: InstructorWithIdentity | null;
@@ -30,7 +30,7 @@ class InstructorContentHeaderView extends React.Component<Props> {
                 <div className="pic">
                   <Image
                     src={
-                      instructorWithIdentity?.instructor.photoFilePath ||
+                      instructorWithIdentity?.instructor?.photoFilePath ||
                       profileImg
                     }
                     alt="기본 프로필사진"
@@ -39,20 +39,31 @@ class InstructorContentHeaderView extends React.Component<Props> {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {parsePolyglotString(instructorWithIdentity?.instructor.name)}
+                  {parsePolyglotString(
+                    instructorWithIdentity?.instructor?.name,
+                    getDefaultLang(
+                      instructorWithIdentity?.instructor?.langSupports
+                    )
+                  )}
                 </div>
                 <div className="part">
                   <span>
-                    {instructorWithIdentity?.instructor.internal
+                    {instructorWithIdentity?.instructor?.internal
                       ? parsePolyglotString(
-                          instructorWithIdentity?.userIdentity.departmentName
+                          instructorWithIdentity?.userIdentity?.departmentName,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor.langSupports
+                          )
                         )
                       : parsePolyglotString(
-                          instructorWithIdentity?.instructor.organization
+                          instructorWithIdentity?.instructor?.organization,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor?.langSupports
+                          )
                         )}
                   </span>
                   <span>
-                    {instructorWithIdentity?.instructor.internal
+                    {instructorWithIdentity?.instructor?.internal
                       ? '사내강사'
                       : '사외강사'}
                   </span>
@@ -60,41 +71,6 @@ class InstructorContentHeaderView extends React.Component<Props> {
               </div>
             </div>
           </div>
-          {/* <div className="cell">
-            <div className="cell-inner">
-              {(instructor.category.college.name || memberSummary.email) && (
-                <div className="expert-info">
-                  <Label className="onlytext">
-                    <Icon className="college16" /><span>전문분야</span>
-                  </Label>
-
-                  <span className="value1">
-                    <span>{instructor.category.college.name}</span>
-                    <span>{instructor.category.channel.name}</span>
-                    {/* <a href="#">{memberSummary.email}</a> * /}
-                  </span>
-                </div>
-              )}
-
-              <div className="expert-info">
-                <Label className="onlytext">
-                  <Icon className="class16" /><span>참여한 강의</span>
-                </Label>
-                <span className="value2">
-                  <strong>{instructor.lectureCount}</strong><span>개</span>
-                </span>
-              </div>
-              <div className="expert-info">
-                <Label className="onlytext">
-                  <Icon className="total-time" /><span>총 강의시간</span>
-                </Label>
-                <span className="value3">
-                  <strong>{instructor.lectureHour}</strong><span>h</span>
-                  <strong className="min">00</strong><span>m</span>
-                </span>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     );
