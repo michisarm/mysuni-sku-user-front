@@ -121,7 +121,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
                         <span className="blind">setting</span>
                       </Button>
                     }
-                    favorites={channels}
+                    favorites={channels.map((channel) => channel.id)}
                     onConfirmCallback={() => {
                       this.findStudySummary();
                       if (onConfirmCallback) onConfirmCallback();

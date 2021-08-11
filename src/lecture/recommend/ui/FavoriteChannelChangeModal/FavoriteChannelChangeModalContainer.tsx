@@ -15,6 +15,7 @@ import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel'
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -44,7 +45,7 @@ interface State {
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   //
-  state = {
+  state: State = {
     open: false,
     selectedCollegeIds: [],
     favoriteChannels: [],
@@ -61,10 +62,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       .map((college) =>
         college.channels.map((channel) => ({
           id: channel.id,
-          name: parsePolyglotString(
-            channel.name,
-            getDefaultLang(channel.langSupports)
-          ),
+          name: getChannelName(channel.id),
           checked: false,
         }))
       )
@@ -85,8 +83,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   async onOpenModal() {
     //
-    const { collegeService, collegeLectureCountService, favorites } =
-      this.props;
+    const {
+      collegeService,
+      collegeLectureCountService,
+      favorites,
+    } = this.props;
     const favoriteChannels = [...favorites];
 
     this.setState({
@@ -95,8 +96,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     });
 
     collegeService!.findChannelByName('');
-    const colleges =
-      await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
 
     this.setDefaultFavorites(favoriteChannels, colleges);
   }
@@ -115,23 +115,26 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     const { skProfileService, onConfirmCallback } = this.props;
     const { favoriteChannels, favoriteCompanyChannels } = this.state;
     const nextFavoriteChannels = [
-      ...favoriteChannels,
-      ...favoriteCompanyChannels,
+      ...favoriteChannels.map((item) => item.id),
+      ...favoriteCompanyChannels.map((item) => item.id),
     ];
 
-    skProfileService!.setStudySummaryProp('favoriteChannels', {
-      idNames: nextFavoriteChannels,
+    const params = {
+      nameValues: [
+        {
+          name: 'favoriteChannelIds',
+          value: JSON.stringify(nextFavoriteChannels),
+        },
+      ],
+    };
+
+    skProfileService!.modifyStudySummary(params).then(() => {
+      if (typeof onConfirmCallback === 'function') {
+        onConfirmCallback();
+      }
+      skProfileService?.findSkProfile();
+      this.onCloseModal();
     });
-    skProfileService!
-      .modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      )
-      .then(() => {
-        if (typeof onConfirmCallback === 'function') {
-          onConfirmCallback();
-        }
-        this.onCloseModal();
-      });
   }
 
   async onSearch(e: any, searchKey: string) {
@@ -206,8 +209,10 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       selectedCollegeIds,
     }: State = this.state;
     const { channelIds } = collegeService!;
-    const { collegeLectureCounts, totalChannelCount } =
-      collegeLectureCountService!;
+    const {
+      collegeLectureCounts,
+      totalChannelCount,
+    } = collegeLectureCountService!;
 
     return (
       <Modal

@@ -11,6 +11,7 @@ import ReactGA from 'react-ga';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import FavoriteChannelChangeModal from '../FavoriteChannelChangeModal';
 import { Action, Area } from 'tracker/model';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -31,9 +32,7 @@ interface States {
   open: boolean;
 }
 
-@inject(
-  mobxHelper.injectFrom('profile.skProfileService')
-)
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class RecommendChannelsPanelContainer extends Component<Props, States> {
@@ -152,9 +151,9 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
                       className={`toggle toggle4 ${
                         channel.checked ? 'active' : ''
                       }`}
-                      onClick={e => this.onClickChannel(e, index, channel)}
+                      onClick={(e) => this.onClickChannel(e, index, channel)}
                     >
-                      {channel.name}
+                      {getChannelName(channel.id)}
                     </Button>
                   ))}
                 </div>

@@ -122,8 +122,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   async requestMenuAuth() {
     const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel =
-      await skProfileService!.findSkProfile();
+    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
     if (foundProfile) {
       menuControlAuthService!.findMenuControlAuth();
     }
@@ -182,18 +181,17 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       badgeService,
       menuControlAuthService,
     } = this.props;
-    const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
+    const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const { personalBoardInprogressCount, personalBoardCompletedCount } =
-      myTrainingService!;
+    const {
+      personalBoardInprogressCount,
+      personalBoardCompletedCount,
+    } = myTrainingService!;
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     const sumOfCurrentYearLectureTime =
       (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) ||

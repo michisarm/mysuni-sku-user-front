@@ -20,14 +20,14 @@ interface Props {
   collegeLectureCountService?: CollegeLectureCountService;
 
   trigger?: React.ReactNode;
-  favorites: ChannelModel[];
+  favorites: string[];
   onConfirmCallback: () => void;
 }
 
 interface State {
   open: boolean;
   selectedCollegeIds: string[];
-  favoriteChannels: ChannelModel[];
+  favoriteChannels: string[];
   favoriteCompanyChannels: ChannelModel[];
 }
 
@@ -42,7 +42,7 @@ interface State {
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   //
-  state = {
+  state: State = {
     open: false,
     selectedCollegeIds: [],
     favoriteChannels: [],
@@ -50,7 +50,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   };
 
   setDefaultFavorites(
-    favoriteChannels: ChannelModel[],
+    favoriteChannels: string[],
     colleges: CollegeLectureCountRdo[]
   ) {
     //
@@ -65,9 +65,9 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       .flat();
 
     const favoriteChannelsWithoutCompany = favoriteChannels.filter(
-      (channel) =>
+      (channelId) =>
         !companyChannels.some(
-          (companyChannel) => companyChannel.channelId === channel.channelId
+          (companyChannel) => companyChannel.channelId === channelId
         )
     );
 
@@ -79,8 +79,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   async onOpenModal() {
     //
-    const { collegeService, collegeLectureCountService, favorites } =
-      this.props;
+    const {
+      collegeService,
+      collegeLectureCountService,
+      favorites,
+    } = this.props;
     const favoriteChannels = [...favorites];
 
     this.setState({
@@ -89,8 +92,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     });
 
     collegeService!.findChannelByName('');
-    const colleges =
-      await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
 
     this.setDefaultFavorites(favoriteChannels, colleges);
   }
@@ -110,22 +112,25 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     const { favoriteChannels, favoriteCompanyChannels } = this.state;
     const nextFavoriteChannels = [
       ...favoriteChannels,
-      ...favoriteCompanyChannels,
+      ...favoriteCompanyChannels.map((item) => item.id),
     ];
 
-    skProfileService!.setStudySummaryProp('favoriteChannels', {
-      idNames: nextFavoriteChannels,
+    const params = {
+      nameValues: [
+        {
+          name: 'favoriteChannelIds',
+          value: JSON.stringify(nextFavoriteChannels),
+        },
+      ],
+    };
+
+    skProfileService!.modifyStudySummary(params).then(() => {
+      if (typeof onConfirmCallback === 'function') {
+        onConfirmCallback();
+      }
+      skProfileService?.findSkProfile();
+      this.onCloseModal();
     });
-    skProfileService!
-      .modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      )
-      .then(() => {
-        if (typeof onConfirmCallback === 'function') {
-          onConfirmCallback();
-        }
-        this.onCloseModal();
-      });
   }
 
   async onSearch(e: any, searchKey: string) {
@@ -172,20 +177,15 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     this.setState({ selectedCollegeIds: [...selectedCollegeIds] });
   }
 
-  onToggleChannel(channel: IdName | ChannelModel) {
-    //
+  onToggleChannel(channelId: string) {
     let { favoriteChannels }: State = this.state;
 
-    if (
-      favoriteChannels
-        .map((favoriteChannel) => favoriteChannel.id)
-        .includes(channel.id)
-    ) {
+    if (favoriteChannels.includes(channelId)) {
       favoriteChannels = favoriteChannels.filter(
-        (favoriteChannel) => favoriteChannel.id !== channel.id
+        (favoriteChannelId) => favoriteChannelId !== channelId
       );
     } else {
-      favoriteChannels.push(new ChannelModel(channel));
+      favoriteChannels.push(channelId);
     }
     this.setState({ favoriteChannels: [...favoriteChannels] });
   }
@@ -200,8 +200,10 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       selectedCollegeIds,
     }: State = this.state;
     const { channelIds } = collegeService!;
-    const { collegeLectureCounts, totalChannelCount } =
-      collegeLectureCountService!;
+    const {
+      collegeLectureCounts,
+      totalChannelCount,
+    } = collegeLectureCountService!;
 
     return (
       <Modal

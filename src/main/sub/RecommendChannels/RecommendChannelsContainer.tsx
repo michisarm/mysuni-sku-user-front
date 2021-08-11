@@ -123,14 +123,11 @@ class RecommendChannelsContainer extends Component<Props> {
       collegeLectureCountService,
       lectureService,
     } = this.props;
-    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { additionalUserInfo } = skProfileService!;
     const { totalChannelCount } = collegeLectureCountService!;
     const { recommendLectures } = lectureService!;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     return (
       <Wrapper>
