@@ -80,16 +80,18 @@ export function updateLearningObjectives(item: LearningObjectives) {
   return (
     axiosApi
       // .put<any>(`/api/profile/profiles`, {
-      .put<any>(`/api/user/users`, {
-        goal: {
-          attendance: item.WeekAttendanceGoal,
-          dailyTime: {
-            hours: item.DailyLearningTimeHour,
-            minutes: item.DailyLearningTimeMinute,
+      .put<any>(`/api/user/users/additionalInfo`, [
+        {
+          learningGoal: {
+            attendance: item.WeekAttendanceGoal,
+            dailyTime: {
+              hours: item.DailyLearningTimeHour,
+              minutes: item.DailyLearningTimeMinute,
+            },
+            hour: item.AnnualLearningObjectives,
           },
-          hour: item.AnnualLearningObjectives,
         },
-      })
+      ])
       .then((response) => response && response.data)
   );
 }
