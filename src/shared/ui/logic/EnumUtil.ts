@@ -31,7 +31,7 @@ export function cubeStatePolyglot(s: string) {
   if (s === '저장') {
     return getPolyglotText('저장', 'Create-MainList-저장');
   } else if (s === '승인') {
-    return getPolyglotText('승인ts', 'Create-MainList-승인dd');
+    return getPolyglotText('승인', 'Create-MainList-승인dd');
   } else if (s === '승인대기') {
     return getPolyglotText('승인대기', 'Create-MainList-승대');
   } else if (s === '반려') {
