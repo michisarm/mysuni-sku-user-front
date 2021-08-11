@@ -1,4 +1,4 @@
-import { computed } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import moment from 'moment';
 import { AplCdoModel } from './AplCdoModel';
 import { AplState } from './AplState';
@@ -227,3 +227,33 @@ class AplModel extends NewQueryModel {
 }
 
 export default AplModel;
+
+decorate(AplModel, {
+  id: observable,
+  title: observable,
+  type: observable,
+  typeName: observable,
+  collegeId: observable,
+  channelId: observable,
+  startDate: observable,
+  endDate: observable,
+  institute: observable,
+  requestHour: observable,
+  requestMinute: observable,
+  allowHour: observable,
+  allowMinute: observable,
+  allowTime: observable,
+  updateHour: observable,
+  updateMinute: observable,
+  content: observable,
+  state: observable,
+  registeredTime: observable,
+  modifiedTime: observable,
+  fileIds: observable,
+  approvalYn: observable,
+  causeOfReturn: observable,
+  patronKeyString: observable,
+  registrantUserIdentity: observable,
+  modifierUserIdentity: observable,
+  approvalUserIdentity: observable,
+});

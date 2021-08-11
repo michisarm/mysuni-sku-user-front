@@ -178,7 +178,6 @@ export default class AplService {
     name: string,
     value: string | {} | string[] | boolean | undefined | Moment
   ) {
-    //
     if (value === 'Select') value = '';
     this.apl = _.set(this.apl, name, value);
   }
