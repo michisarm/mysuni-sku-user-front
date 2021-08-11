@@ -122,7 +122,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   async requestMenuAuth() {
     const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
+    const foundProfile: SkProfileModel =
+      await skProfileService!.findSkProfile();
     if (foundProfile) {
       menuControlAuthService!.findMenuControlAuth();
     }
@@ -184,10 +185,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const {
-      personalBoardInprogressCount,
-      personalBoardCompletedCount,
-    } = myTrainingService!;
+    const { personalBoardInprogressCount, personalBoardCompletedCount } =
+      myTrainingService!;
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
@@ -315,8 +314,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <Icon className="add24" />
                   <span>
                     <PolyglotText
-                      defaultString="관심 채널 설정"
-                      id="home-PersonalBoard-관심채널2"
+                      defaultString="개인학습"
+                      id="home-PersonalBoard-개인학습"
                     />
                   </span>
                 </a>
@@ -341,7 +340,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                       >
                         <PolyglotText
                           defaultString="관심 채널 설정"
-                          id="home-PersonalBoard-개인학습2"
+                          id="home-PersonalBoard-관심채널2"
                         />
                       </span>
                     </a>
@@ -363,7 +362,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     <span>
                       <PolyglotText
                         defaultString="개인학습"
-                        id="home-PersonalBoard-개인학습"
+                        id="home-PersonalBoard-개인학습2"
                       />
                     </span>
                   </a>
