@@ -20,3 +20,38 @@ export interface UserIdentity {
   photoImagePath: string;
   selfIntroduction: string;
 }
+
+export function initUserIdentity(): UserIdentity {
+  return {
+    backgroundImagePath: '',
+    birthDate: '',
+    companyCode: '',
+    companyName: {
+      ko: '',
+      en: '',
+      zh: '',
+    },
+    departmentCode: '',
+    departmentName: {
+      ko: '',
+      en: '',
+      zh: '',
+    },
+    displayNicknameFirst: false,
+    email: '',
+    employeeId: '',
+    gdiPhotoImagePath: '',
+    gender: 'Male',
+    language: 'Korean',
+    id: '',
+    name: {
+      ko: '',
+      en: '',
+      zh: '',
+    },
+    nickname: '',
+    phone: '',
+    photoImagePath: '',
+    selfIntroduction: '',
+  };
+}

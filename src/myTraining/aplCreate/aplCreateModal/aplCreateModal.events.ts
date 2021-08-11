@@ -97,7 +97,16 @@ export function handleOKConfirmWinApl() {
 
 export function handleSaveOk(type: string) {
   if (type === 'save') handleOKConfirmWinApl();
-  if (type === 'list') routeToList();
+  if (type === 'list') {
+    const aplCreateModal = getAplCreateModal();
+    if (aplCreateModal !== undefined) {
+      setAplCreateModal({
+        ...aplCreateModal,
+        alertWinOpen: false,
+      });
+    }
+    routeToList();
+  }
 }
 
 export function handleAlertOk(type: string) {

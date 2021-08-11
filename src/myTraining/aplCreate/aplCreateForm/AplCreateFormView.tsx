@@ -1,19 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { FileBox2, ValidationType } from '@nara.drama/depot';
-import { PatronType } from '@nara.platform/accent';
 import { Form, Icon, TextArea } from 'semantic-ui-react';
-import { depotHelper } from 'shared';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { onClear } from '../aplCreate.events';
-import { getFileBoxIdForReference, setChannel } from '../aplCreate.services';
+import { getChannelOptions } from './aplCreateForm.services';
 import { AplModel } from 'myTraining/model';
-import AplCollegeSelectView from './AplCollegeSelectView';
-import AplDateSelectView from './AplDateSelectView';
-import AplApprovalSelectView from './AplApprovalSelectView';
+import AplCreateCollegeView from './AplCreateCollegeView';
+import AplCreateDateView from './AplCreateDateView';
+import AplCreateApproverView from './AplCreateApproverView';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
-import AplTypeSelectView from './AplTypeSelectView';
+import AplCreateTypeView from './AplCreateTypeView';
 import AplCreateLearningTimeView from './AplCreateLearningTimeView';
+import AplCreateFileView from './AplCreateFileView';
+import { onChangeFile } from './aplCreateForm.events';
 
 interface AplCreateFormViewProps {
   apl: AplModel;
@@ -39,7 +38,7 @@ function AplCreateFormView({
   const instituteCount = (apl && apl.institute && apl.institute.length) || 0;
   const contentCount = (apl && apl.content && apl.content.length) || 0;
   const { collegeOptions } = AplCreateCollegeService.instance;
-  const channelOptions = apl && apl.collegeId && setChannel();
+  const channelOptions = apl && apl.collegeId && getChannelOptions();
 
   return (
     <>
@@ -86,13 +85,13 @@ function AplCreateFormView({
           </span>
         </div>
       </Form.Field>
-      <AplTypeSelectView
+      <AplCreateTypeView
         apl={apl}
         typeRef={focusInputRefs.type}
         typeNameRef={focusInputRefs.typeName}
         changeAplProps={changeAplProps}
       />
-      <AplCollegeSelectView
+      <AplCreateCollegeView
         apl={apl}
         collegeOptions={collegeOptions}
         channelOptions={channelOptions}
@@ -100,7 +99,7 @@ function AplCreateFormView({
         channelRef={focusInputRefs.channelId}
         changeAplProps={changeAplProps}
       />
-      <AplDateSelectView
+      <AplCreateDateView
         apl={apl}
         startDateRef={focusInputRefs.startDate}
         endDateRef={focusInputRefs.endDate}
@@ -193,43 +192,8 @@ function AplCreateFormView({
           </div>
         </div>
       </Form.Field>
-      <Form.Field>
-        <label>
-          <PolyglotText id="개학등록-uisf-첨부파일" defaultString="첨부파일" />
-        </label>
-        <div className="lg-attach">
-          <div className="attach-inner">
-            <FileBox2
-              vaultKey={{
-                keyString: 'sku-depot',
-                patronType: PatronType.Audience,
-              }}
-              patronKey={{
-                keyString: 'sku-denizen',
-                patronType: PatronType.Audience,
-              }}
-              validations={[
-                {
-                  type: ValidationType.Duplication,
-                  validator: depotHelper.duplicationValidator,
-                },
-              ]}
-              onChange={getFileBoxIdForReference}
-            />
-            <div className="bottom">
-              <span className="text1">
-                <Icon className="info16" />
-                <span className="blind">information</span>
-                <PolyglotText
-                  id="개학등록-uisf-부가5"
-                  defaultString="DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다."
-                />
-              </span>
-            </div>
-          </div>
-        </div>
-      </Form.Field>
-      <AplApprovalSelectView apl={apl} approvalShow={approvalShow} />
+      <AplCreateFileView onChangeFile={onChangeFile} />
+      <AplCreateApproverView apl={apl} approvalShow={approvalShow} />
     </>
   );
 }

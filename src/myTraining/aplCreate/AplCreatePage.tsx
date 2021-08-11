@@ -1,18 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import 'react-datepicker/dist/react-datepicker.css';
 import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import AplCreateFormContainer from './aplCreateForm/AplCreateFormContainer';
-import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
-import { AplCreateHeaderView } from 'myTraining/aplCreate/AplCreateHeaderView';
 import AplCreateModalContainer from './aplCreateModal/AplCreateModalContainer';
+import { AplCreateHeaderView } from 'myTraining/aplCreate/AplCreateHeaderView';
+import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
 
 @observer
 @reactAutobind
 class AplCreatePage extends React.Component {
-  componentDidMount(): void {
+  componentDidMount() {
     document.body.classList.add('white');
 
     const aplService = AplService.instance;

@@ -6,7 +6,7 @@ import { NameValueList, NewQueryModel } from '../../shared/model';
 import { AplType } from './AplType';
 import { aplStateNamePolyglotText } from './AplStateName';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { UserIdentity } from 'shared/model/UserIdentity';
+import { initUserIdentity, UserIdentity } from 'shared/model/UserIdentity';
 
 class AplModel extends NewQueryModel {
   id: string = '';
@@ -35,9 +35,9 @@ class AplModel extends NewQueryModel {
   causeOfReturn: string = '';
   patronKeyString: string = '';
 
-  registrantUserIdentity: UserIdentity | undefined;
-  modifierUserIdentity: UserIdentity | undefined;
-  approvalUserIdentity: UserIdentity | undefined;
+  registrantUserIdentity: UserIdentity = initUserIdentity();
+  modifierUserIdentity: UserIdentity = initUserIdentity();
+  approvalUserIdentity: UserIdentity = initUserIdentity();
 
   constructor(aplModel?: AplModel) {
     super();

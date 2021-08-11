@@ -7,7 +7,7 @@ import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { onChangeAplPropsValid, onClear } from '../aplCreate.events';
 import { AplModel } from 'myTraining/model';
 
-interface AplTypeSelectViewProps {
+interface AplCreateTypeViewProps {
   apl: AplModel;
   typeRef: any;
   typeNameRef: any;
@@ -17,12 +17,12 @@ interface AplTypeSelectViewProps {
   ) => void;
 }
 
-function AplTypeSelectView({
+function AplCreateTypeView({
   apl,
   typeRef,
   typeNameRef,
   changeAplProps,
-}: AplTypeSelectViewProps) {
+}: AplCreateTypeViewProps) {
   const typeNameCount = (apl && apl.typeName && apl.typeName.length) || 0;
 
   return (
@@ -87,4 +87,4 @@ function AplTypeSelectView({
   );
 }
 
-export default observer(AplTypeSelectView);
+export default observer(AplCreateTypeView);
