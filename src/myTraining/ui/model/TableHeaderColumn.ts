@@ -152,7 +152,7 @@ const TableHeaderColumn = {
   EarnedStampCount: [
     { key: 0, text: getPolyglotText('No', 'mapg-msmp-헤더1') },
     { key: 1, text: getPolyglotText('College', 'mapg-msmp-헤더2') },
-    { key: 2, text: getPolyglotText('과정명ㅇㅇ', 'mapg-msmp-헤더3') },
+    { key: 2, text: getPolyglotText('과정명', 'mapg-msmp-헤더3') },
     // { key: 3, text: getPolyglotText('스탬프', 'mapg-msmp-헤더4'), icon: true },
     {
       key: 3,

@@ -4,7 +4,7 @@ import { AplCdoModel } from './AplCdoModel';
 import { AplState } from './AplState';
 import { NameValueList, NewQueryModel } from '../../shared/model';
 import { AplType } from './AplType';
-import { AplStateName } from './AplStateName';
+import { aplStateNamePolyglotText } from './AplStateName';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { UserIdentity } from 'shared/model/UserIdentity';
 
@@ -118,7 +118,7 @@ class AplModel extends NewQueryModel {
 
   /* 승인상태 */
   @computed get displayStateName() {
-    const stateName = AplStateName[this.state];
+    const stateName = aplStateNamePolyglotText(this.state);
     return stateName;
   }
 
