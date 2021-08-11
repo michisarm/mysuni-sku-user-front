@@ -220,12 +220,12 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         <Modal.Header className="res">
           <PolyglotText
             defaultString="관심 Channel 변경"
-            id="Recommend-ChannelChangeModal-타이틀"
+            id="home-ChannelChangeModal-타이틀"
           />
           <span className="sub f12">
             <PolyglotText
               defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요."
-              id="Recommend-ChannelChangeModal-설명"
+              id="home-ChannelChangeModal-설명"
             />
           </span>
         </Modal.Header>
