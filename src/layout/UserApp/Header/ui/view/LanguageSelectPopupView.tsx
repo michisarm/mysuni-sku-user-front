@@ -27,7 +27,7 @@ export function LanguageSelectPopupView() {
 
     await SkProfileApi.instance.modifySkProfile(params);
     onClosePopup();
-    window.location.href = `://${window.location.host}/suni-main`;
+    window.location.href = `//${window.location.host}/suni-main`;
   };
 
   return (
