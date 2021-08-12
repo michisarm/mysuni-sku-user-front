@@ -302,7 +302,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               favorites={favoriteChannels}
               onConfirmCallback={this.onConfirmFavorite}
             />
-            {menuControlAuth.useApl === false && (
+            {menuControlAuth.useApl === true && (
               <div>
                 <a
                   href="#"
@@ -349,7 +349,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   onConfirmCallback={this.onConfirmFavorite}
                 />
               </div>
-              {menuControlAuth.useApl === false && (
+              {menuControlAuth.useApl === true && (
                 <div>
                   <a
                     href="#"
