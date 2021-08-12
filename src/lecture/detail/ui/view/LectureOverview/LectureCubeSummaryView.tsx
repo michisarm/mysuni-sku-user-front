@@ -516,7 +516,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                         {lectureReview !== undefined
                           ? `${Math.floor(lectureReview.average * 10) / 10}(${
                               lectureReview.reviewerCount
-                            })` + getPolyglotText('명', 'cicl-학상본문-명')
+                            }${getPolyglotText('명', 'cicl-학상본문-명')})`
                           : ''}
                       </span>
                     </div>
