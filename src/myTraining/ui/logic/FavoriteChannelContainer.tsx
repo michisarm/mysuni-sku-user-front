@@ -11,6 +11,7 @@ import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -83,18 +84,10 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
   render() {
     const { skProfileService } = this.props;
-    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { additionalUserInfo } = skProfileService!;
     const { multiple, open } = this.state;
 
-    const channels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({
-          id: channel.id,
-          channelId: channel.id,
-          name: channel.name,
-          checked: true,
-        })
-    );
+    const channels = additionalUserInfo.favoriteChannelIds;
 
     return (
       <div className="channel-of-interest">
@@ -126,12 +119,9 @@ class FavoriteChannelContainer extends Component<Props, States> {
                 <div ref={this.channelsRef} className="belt">
                   {channels &&
                     channels.length !== 0 &&
-                    channels.map((channel, index) => (
+                    channels.map((channelId, index) => (
                       <Label className="channel" key={`channel-${index}`}>
-                        {parsePolyglotString(
-                          channel.name,
-                          getDefaultLang(channel.langSupports)
-                        )}
+                        {getChannelName(channelId)}
                       </Label>
                     ))}
                 </div>

@@ -173,24 +173,13 @@ function ListLeftTopPanel(props: Props) {
           <div
             className="list-number"
             dangerouslySetInnerHTML={{
-              __html: `${getPolyglotText(
-                '총 <strong>{totalCount}개</strong>',
+              __html: getPolyglotText(
+                '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
                   totalCount: (totalCount || 0).toString(),
                 }
-              )}${
-                countMessage
-                  ? getPolyglotText(
-                      '{countMessage} 의 리스트가 있습니다.',
-                      'learning-학보드-게시물총수-메시지',
-                      {
-                        totalCount: (totalCount || 0).toString(),
-                        countMessage,
-                      }
-                    )
-                  : ''
-              }`,
+              ),
             }}
           />
         );

@@ -91,7 +91,6 @@ class QuickNavContainer extends Component<Props, State> {
     await skProfileService!.findSkProfile();
     const { skProfile } = skProfileService!;
     await menuControlAuthService!.findMenuControlAuth();
-    await console.log(skProfile);
   }
 
   async avaible() {
@@ -255,18 +254,11 @@ class QuickNavContainer extends Component<Props, State> {
     //
     const { skProfileService, menuControlAuthService } = this.props;
     const { active } = this.state;
-    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { menuAuth } = this.state;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({
-          ...channel,
-          channelId: channel.id,
-          checked: true,
-        })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     return (
       <QuickNavWrapperView

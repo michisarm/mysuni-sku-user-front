@@ -1,7 +1,5 @@
-import { observable, computed } from 'mobx';
-import { IdNameCount } from 'shared/model';
+import { observable } from 'mobx';
 import { CollegeType } from 'college/model';
-import { IdName } from '@nara.platform/accent';
 import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { LangSupport } from './LangSupport';
 

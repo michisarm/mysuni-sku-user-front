@@ -76,8 +76,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
     } else {
-      const collegeLectureCounts =
-        await collegeLectureCountService!.findCollegeLectureCounts();
+      const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
       if (collegeLectureCounts.length > 0) {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
@@ -199,15 +198,15 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService, collegeService } =
-      this.props;
+    const {
+      skProfileService,
+      collegeLectureCountService,
+      collegeService,
+    } = this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
 
-    const { studySummaryFavoriteChannels } = skProfileService!;
-    const channels =
-      studySummaryFavoriteChannels.map(
-        (channel) => new ChannelModel({ ...channel, channelId: channel.id })
-      ) || [];
+    const { additionalUserInfo } = skProfileService!;
+    const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();
 
     return (
@@ -237,7 +236,6 @@ class CategoryMenuContainer extends Component<Props, State> {
                     activeCollege={activeCollege}
                     channels={collegeLectureCountService!.channelCounts}
                     favorites={channels}
-                    studySummaryFavoriteChannels={studySummaryFavoriteChannels}
                     actions={this.renderMenuActions()}
                     onActiveCollege={this.onActiveCollege}
                     onRouteChannel={this.onClickChannel}

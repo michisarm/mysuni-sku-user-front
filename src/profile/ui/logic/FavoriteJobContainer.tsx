@@ -38,14 +38,15 @@ function getAdditionalInfoParams(
         name: 'favoriteJobDutyId',
         value: favoriteJobDutyId,
       },
+      {
+        name: 'userDefinedFavoriteJobDuty',
+        value: '',
+      },
     ],
   };
 
   if (favoriteJobGroupId === 'etc') {
-    params.nameValues.push({
-      name: 'userDefinedfavoriteJobDuty',
-      value: userDefinedFavoriteJobDuty,
-    });
+    params.nameValues[2].value = userDefinedFavoriteJobDuty;
   }
 
   return params;
@@ -113,16 +114,17 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   selectJobGroup(_: React.SyntheticEvent, data: DropdownProps) {
     const { jobGroupService, skProfileService } = this.props;
 
-    if (data.value === 'etc') {
-      skProfileService?.setFavoriteJobDutyProp('etc');
-    }
-
     if (data.value !== 'etc') {
       jobGroupService!.findJobGroupById(data.value as string);
     }
 
     skProfileService?.setFavoriteJobGroupProp(data.value as string);
-    skProfileService?.setFavoriteJobDutyProp('');
+
+    if (data.value === 'etc') {
+      skProfileService?.setFavoriteJobDutyProp('etc');
+    } else {
+      skProfileService?.setFavoriteJobDutyProp('');
+    }
   }
 
   setJobDuties() {
@@ -180,7 +182,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     if (
       isEmpty(favoriteJobGroupId) ||
       isEmpty(favoriteJobDutyId) ||
-      isEmpty(userDefinedFavoriteJobDuty)
+      (favoriteJobGroupId === 'etc' && isEmpty(userDefinedFavoriteJobDuty))
     ) {
       reactAlert({
         title: getPolyglotText('알림', 'job-favorite-알림'),

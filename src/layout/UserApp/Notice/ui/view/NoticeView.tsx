@@ -4,16 +4,18 @@ import { Button, Checkbox } from 'semantic-ui-react';
 import moment from 'moment';
 import { PostModel } from 'board/model';
 import routePaths from 'board/routePaths';
-import { getCookie, setCookie } from '@nara.platform/accent';
+import { setCookie } from '@nara.platform/accent';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   notices: PostModel[];
   showNoti: boolean;
 }
 
-const NoticeView: React.FC<Props> = Props => {
+const NoticeView: React.FC<Props> = (Props) => {
   const { notices, showNoti, history } = Props;
   const [hideToday, setHideToday] = useState(false);
   const [showNotice, setShowNotice] = useState(showNoti);
@@ -40,22 +42,22 @@ const NoticeView: React.FC<Props> = Props => {
 
   return showNotice && notices.length > 0 ? (
     <>
-      <section
-        className="notice-bar visible"
-        data-area={Area.HEADER_NOTICE}
-      >
+      <section className="notice-bar visible" data-area={Area.HEADER_NOTICE}>
         <div className="inner">
           <div className="text">
             <a
               className="ellipsis"
               onClick={() => onClickPost(notices[0].postId)}
             >
-              {notices[0].title}
+              {parsePolyglotString(
+                notices[0].title,
+                getDefaultLang(notices[0].langSupports)
+              )}
             </a>
           </div>
           <div className="right">
             <Checkbox
-              label={getPolyglotText("오늘 하루 보지 않기", "home-nt-오늘닫기")}
+              label={getPolyglotText('오늘 하루 보지 않기', 'home-nt-오늘닫기')}
               className="black"
               checked={hideToday}
               onChange={handleChange}

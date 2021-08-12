@@ -15,7 +15,7 @@ const NoSuchContentPanelMessages = {
     'learning-my-권장과정'
   ),
   Enrolled: getPolyglotText(
-    '학습예정중인 과정이 없습니다.',
+    '학습예정인 과정이 없습니다.',
     'learning-my-학습예정'
   ),
   Completed: getPolyglotText(

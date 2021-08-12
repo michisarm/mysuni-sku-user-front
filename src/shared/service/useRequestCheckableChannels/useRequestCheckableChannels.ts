@@ -5,11 +5,10 @@ import { setCheckableChannelsStore } from '../../store/CheckableChannelsStore';
 import { CheckableChannel } from '../../viewmodel/CheckableChannel';
 
 function getValueFromMobx() {
-  const next: CheckableChannel[] = SkProfileService.instance.studySummaryFavoriteChannels.map(
-    c => {
+  const next: CheckableChannel[] = SkProfileService.instance.additionalUserInfo.favoriteChannelIds.map(
+    (channelId) => {
       return {
-        id: c.id,
-        name: c.name,
+        id: channelId,
         checked: false,
       };
     }

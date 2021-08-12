@@ -7,19 +7,24 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { onClickManagerListOk } from '../aplCreate.events';
 import { AplModel } from 'myTraining/model';
 
-interface AplApprovalSelectViewProps {
+interface AplCreateApproverViewProps {
   apl: AplModel;
   approvalShow: boolean;
 }
 
-function AplApprovalSelectView({
+function AplCreateApproverView({
   apl,
   approvalShow,
-}: AplApprovalSelectViewProps) {
+}: AplCreateApproverViewProps) {
   let managerModal: any = null;
   const onClickChangeApplyReference = () => {
     managerModal.onShow(true);
   };
+
+  console.log(
+    'apl.approver ',
+    parsePolyglotString(apl.approvalUserIdentity?.name)
+  );
 
   return (
     <Form.Field>
@@ -48,21 +53,15 @@ function AplApprovalSelectView({
               multiSelect={false}
             />
             <span className="text1">
-              <b>
-                {(apl && parsePolyglotString(apl.approvalUserIdentity?.name)) ||
-                  ''}
-              </b>
+              <b>{parsePolyglotString(apl.approvalUserIdentity?.name) || ''}</b>
               <span className="ml40">
-                {(apl &&
-                  parsePolyglotString(apl.approvalUserIdentity?.companyName)) ||
+                {parsePolyglotString(apl.approvalUserIdentity?.companyName) ||
                   ''}
               </span>
               <span className="line">
-                {(apl &&
-                  parsePolyglotString(
-                    apl.approvalUserIdentity?.departmentName
-                  )) ||
-                  ''}
+                {parsePolyglotString(
+                  apl.approvalUserIdentity?.departmentName
+                ) || ''}
               </span>
               {approvalShow && (
                 <div className="info-text">
@@ -83,4 +82,4 @@ function AplApprovalSelectView({
   );
 }
 
-export default observer(AplApprovalSelectView);
+export default observer(AplCreateApproverView);

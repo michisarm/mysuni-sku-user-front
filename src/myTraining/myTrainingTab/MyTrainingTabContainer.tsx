@@ -29,7 +29,7 @@ function MyTrainingTabContainer() {
   } = AplService.instance;
 
   const getTabs = (): TabItemModel[] => {
-    if (menuControlAuth.useApl === false) {
+    if (menuControlAuth.useApl === true) {
       return [
         {
           name: MyLearningContentType.InProgress,

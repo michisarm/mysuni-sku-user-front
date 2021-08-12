@@ -181,7 +181,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       badgeService,
       menuControlAuthService,
     } = this.props;
-    const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
+    const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const {
@@ -191,10 +191,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     const sumOfCurrentYearLectureTime =
       (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) ||
@@ -306,7 +303,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               favorites={favoriteChannels}
               onConfirmCallback={this.onConfirmFavorite}
             />
-            {menuControlAuth.useApl === false && (
+            {menuControlAuth.useApl === true && (
               <div>
                 <a
                   href="#"
@@ -318,8 +315,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <Icon className="add24" />
                   <span>
                     <PolyglotText
-                      defaultString="관심 채널 설정"
-                      id="home-PersonalBoard-관심채널2"
+                      defaultString="개인학습"
+                      id="home-PersonalBoard-개인학습"
                     />
                   </span>
                 </a>
@@ -344,7 +341,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                       >
                         <PolyglotText
                           defaultString="관심 채널 설정"
-                          id="home-PersonalBoard-개인학습2"
+                          id="home-PersonalBoard-관심채널2"
                         />
                       </span>
                     </a>
@@ -353,7 +350,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   onConfirmCallback={this.onConfirmFavorite}
                 />
               </div>
-              {menuControlAuth.useApl === false && (
+              {menuControlAuth.useApl === true && (
                 <div>
                   <a
                     href="#"
@@ -366,7 +363,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     <span>
                       <PolyglotText
                         defaultString="개인학습"
-                        id="home-PersonalBoard-개인학습"
+                        id="home-PersonalBoard-개인학습2"
                       />
                     </span>
                   </a>

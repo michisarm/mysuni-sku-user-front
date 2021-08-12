@@ -26,9 +26,9 @@ export function learningContentTypeName(s: string) {
   } else if (s === 'InMyList') {
     return getPolyglotText('관심목록', 'learning-tabm-탭관심');
   } else if (s === 'Enrolled') {
-    return getPolyglotText('학습예정', 'learning-tabm-탭권장');
+    return getPolyglotText('학습예정', 'learning-tabm-탭학예');
   } else if (s === 'Required') {
-    return getPolyglotText('권장과정', 'learning-tabm-탭학예');
+    return getPolyglotText('권장과정', 'learning-tabm-탭권장');
   } else if (s === 'Completed') {
     return getPolyglotText('mySUNI 학습완료', 'learning-tabm-탭학완');
   } else if (s === 'PersonalCompleted') {

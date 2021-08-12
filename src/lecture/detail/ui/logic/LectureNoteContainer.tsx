@@ -478,13 +478,20 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                                 id="note-popup-작성노트"
                               />
                             </strong>
-                            <span className="count">
-                              {noteItem?.totalCount}
-                              <PolyglotText
-                                defaultString="개"
-                                id="note-popup-개"
-                              />
-                            </span>
+                            <span
+                              className="count"
+                              dangerouslySetInnerHTML={{
+                                __html: getPolyglotText(
+                                  `{totalCount}개`,
+                                  'note-popup-개',
+                                  {
+                                    totalCount:
+                                      (noteItem?.totalCount).toString(),
+                                  }
+                                ),
+                              }}
+                            />
+
                             {!isMobile && (
                               <Button
                                 id="handlePopup"

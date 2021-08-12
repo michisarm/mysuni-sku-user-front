@@ -26,7 +26,7 @@ class RecommendItem extends Component<Props> {
             className="text01"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText('{count}개', 'rcmd-mifa-관심개수', {
-                count: (totalChannelCount && totalChannelCount + '') || '0',
+                count: String(favoriteChannelCount) || '0',
               }),
             }}
           />

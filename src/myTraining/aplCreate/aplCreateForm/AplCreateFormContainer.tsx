@@ -14,9 +14,9 @@ import {
 import {
   focusInput,
   initWeek,
-  requestAplCreate,
+  requestAplApprover,
   requestAplCreateColleges,
-} from '../aplCreate.services';
+} from './aplCreateForm.services';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
 import { CompanyApproverService } from 'approval/stores';
 import AplCreateFormView from './AplCreateFormView';
@@ -25,7 +25,7 @@ import AplCreateFormView from './AplCreateFormView';
 @reactAutobind
 class AplCreateFormContainer extends React.Component {
   componentDidMount() {
-    requestAplCreate();
+    requestAplApprover();
     requestAplCreateColleges();
     initWeek();
     focusInput();
@@ -43,8 +43,6 @@ class AplCreateFormContainer extends React.Component {
 
     const approvalShow =
       originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
-
-    console.log('apl :: ', apl);
 
     return (
       <Segment className="full">

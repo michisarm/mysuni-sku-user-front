@@ -17,7 +17,7 @@ interface AplCollegeSelectViewProps {
   ) => void;
 }
 
-function AplCollegeSelectView({
+function AplCreateCollgeView({
   apl,
   collegeOptions,
   channelOptions,
@@ -69,4 +69,4 @@ function AplCollegeSelectView({
   );
 }
 
-export default observer(AplCollegeSelectView);
+export default observer(AplCreateCollgeView);

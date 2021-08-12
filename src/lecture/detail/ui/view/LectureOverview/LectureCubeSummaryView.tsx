@@ -414,7 +414,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                       <span>
                         <PolyglotText
                           defaultString="명"
-                          id="cicl-학상본문-명"
+                          id="cicl-학상본문-명2"
                         />
                       </span>
                     </Label>
@@ -432,7 +432,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                       {numberWithCommas(lectureSummary.passedStudentCount)}
                     </span>
                     <span>
-                      <PolyglotText defaultString="명" id="cicl-학상본문-명" />
+                      <PolyglotText defaultString="명" id="cicl-학상본문-명3" />
                     </span>
                   </Label>
                 )}
@@ -452,7 +452,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                       <span>
                         <PolyglotText
                           defaultString="명"
-                          id="cicl-학상본문-명"
+                          id="cicl-학상본문-명4"
                         />
                       </span>
                     </Label>
@@ -516,7 +516,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                         {lectureReview !== undefined
                           ? `${Math.floor(lectureReview.average * 10) / 10}(${
                               lectureReview.reviewerCount
-                            })` + getPolyglotText('명', 'cicl-학상본문-명')
+                            }${getPolyglotText('명', 'cicl-학상본문-명')})`
                           : ''}
                       </span>
                     </div>

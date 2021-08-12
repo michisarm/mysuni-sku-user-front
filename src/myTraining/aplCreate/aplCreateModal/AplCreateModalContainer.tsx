@@ -31,7 +31,7 @@ function AplCreateModalContainer() {
         alertIcon="circle"
         title={alertTitle}
         type={alertType}
-        handleOk={handleSaveOk}
+        handleOk={() => handleSaveOk(alertType)}
       />
       <AlertWin2
         message={alertMessage2}

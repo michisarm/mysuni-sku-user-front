@@ -1,13 +1,7 @@
-import { mobxHelper } from '@nara.platform/accent';
 import MenuControlAuthService from 'approval/company/present/logic/MenuControlAuthService';
-import BadgeService from 'certification/present/logic/BadgeService';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { MyLearningSummaryService } from 'myTraining/stores';
-import { SkProfileModel } from 'profile/model';
-import { SkProfileService } from 'profile/stores';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { MenuControlAuth } from 'shared/model/MenuControlAuth';
+import React, { useCallback, useEffect } from 'react';
 import { requestBadgeLearningTime } from '../../service/getBadgeLearningTime';
 import { requestCollegePercent } from '../../service/getCollegePercent';
 import { requestPopularCourse } from '../../service/getPopularCourse';
@@ -19,23 +13,15 @@ import LearningTimeDetailView from '../view/LearningTimeDetailView';
 import MyCompanyPopularCourseView from '../view/MyCompanyPopularCourseView';
 import { Area } from 'tracker/model';
 
-interface Props extends RouteComponentProps {
-  myLearningSummaryService?: MyLearningSummaryService;
-  menuControlAuthService?: MenuControlAuthService;
-  badgeService?: BadgeService;
-  skProfileService?: SkProfileService;
+interface Props {
   companyCode: string;
   activeIndex: number;
 }
 
 function PersonalBoardContainer(props: Props) {
-  const {
-    myLearningSummaryService,
-    menuControlAuthService,
-    companyCode,
-    activeIndex,
-  } = props;
-  const { myLearningSummary } = myLearningSummaryService!;
+  const { companyCode, activeIndex } = props;
+  const { myLearningSummary } = MyLearningSummaryService.instance;
+  const { menuControlAuth } = MenuControlAuthService.instance;
 
   useEffect(() => {
     requestBadgeLearningTime(companyCode);
@@ -57,16 +43,11 @@ function PersonalBoardContainer(props: Props) {
     requestPopularCourse(companyCode, date);
   }, []);
 
-  const showApl = useCallback(() => {
-    const { menuControlAuth } = menuControlAuthService!;
-    return menuControlAuth.useApl;
-  }, []);
-
   return (
     <>
       <div className="personal-contents" data-area={Area.MAIN_INFO}>
         <BadgeLearningTimeView activeIndex={activeIndex} />
-        <LearningTimeDetailView showApl={showApl()} />
+        <LearningTimeDetailView showApl={menuControlAuth.useApl} />
         <CollegeTopChartView
           myLearningSummary={myLearningSummary}
           activeIndex={activeIndex}
@@ -77,13 +58,4 @@ function PersonalBoardContainer(props: Props) {
   );
 }
 
-export default inject(
-  mobxHelper.injectFrom(
-    'profile.skProfileService',
-    'myTraining.myLearningSummaryService',
-    'myTraining.myTrainingService',
-    'badge.badgeService',
-    'profile.skProfileService',
-    'approval.menuControlAuthService'
-  )
-)(withRouter(observer(PersonalBoardContainer)));
+export default observer(PersonalBoardContainer);

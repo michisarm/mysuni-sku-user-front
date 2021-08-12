@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { AplModel } from 'myTraining/model';
 
-interface AplDateSelectViewProps {
+interface AplCreateDateViewProps {
   apl: AplModel;
   startDateRef: any;
   endDateRef: any;
@@ -16,12 +16,12 @@ interface AplDateSelectViewProps {
   ) => void;
 }
 
-function AplDateSelectView({
+function AplCreateDateView({
   apl,
   startDateRef,
   endDateRef,
   changeAplProps,
-}: AplDateSelectViewProps) {
+}: AplCreateDateViewProps) {
   return (
     <Form.Field>
       <label className="necessary">
@@ -88,4 +88,4 @@ function AplDateSelectView({
   );
 }
 
-export default observer(AplDateSelectView);
+export default observer(AplCreateDateView);

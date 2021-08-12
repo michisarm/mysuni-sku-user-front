@@ -9,6 +9,7 @@ import { CollegeLectureCountRdo } from 'lecture/model';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
@@ -103,10 +104,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                                       className="base"
                                       label={
                                         <label>
-                                          {parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          )}
+                                          {getChannelName(channel.id)}
                                         </label>
                                       }
                                       name={parsePolyglotString(
@@ -124,10 +122,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                                       onChange={() =>
                                         onToggleChannel({
                                           id: channel.id,
-                                          name: parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          ),
+                                          name: getChannelName(channel.id),
                                           checked: false,
                                         })
                                       }
@@ -155,12 +150,12 @@ class FavoriteChannelChangeView extends Component<Props> {
                     className="del"
                     onClick={() => onToggleChannel(channel)}
                   >
-                    {channel.name}
+                    {getChannelName(channel.id)}
                   </Button>
                 ))}
                 {favoriteCompanyChannels.map((channel: CheckableChannel) => (
                   <Button key={`del_${channel.id}`} className="del default">
-                    {channel.name}
+                    {getChannelName(channel.id)}
                   </Button>
                 ))}
               </div>
