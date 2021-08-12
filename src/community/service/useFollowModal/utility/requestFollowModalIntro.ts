@@ -11,9 +11,12 @@ import {
   getFollowingsModal,
   setFollowingsModal,
 } from '../../../store/CommunityFollowModalStore';
+import { getProfilePopupModel } from 'layout/UserApp/store/ProfilePopupStore';
 
 export function requestFollowersModal() {
-  followersModal().then((lists) => {
+  const memberId = getProfilePopupModel()?.id || '';
+
+  followersModal(memberId).then((lists) => {
     const followMadalIntro = getFollowersModal() || {
       followers: [],
       followings: [],
@@ -35,7 +38,9 @@ export function requestFollowersModal() {
 }
 
 export function requestFollowingsModal() {
-  followingsModal().then((lists) => {
+  const memberId = getProfilePopupModel()?.id || '';
+
+  followingsModal(memberId).then((lists) => {
     const followMadalIntro = getFollowingsModal() || {
       followers: [],
       followings: [],

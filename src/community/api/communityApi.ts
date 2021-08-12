@@ -13,6 +13,7 @@ import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/Follow
 import { NameValueList } from 'shared/model';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
+import { FollowWithFollowingCount } from 'community/model/FollowWithFollowingCount';
 
 const BASE_URL = '/api/community';
 const FEEDBACK_URL = '/api/feedback';
@@ -354,23 +355,31 @@ export function followList(
 // *******************************
 
 // 모달 팔로워 **************************
-export function followingsModal(): Promise<
-  OffsetElementList<FollowModalItem> | undefined
-> {
+
+export function findFollowerWithFollowingCount(
+  memberId: string
+): Promise<FollowWithFollowingCount | undefined> {
+  const url = `/api/community/follows/count/${memberId}`;
+  return axiosApi.get<FollowWithFollowingCount>(url).then(AxiosReturn);
+}
+
+export function followingsModal(
+  memberId: string
+): Promise<OffsetElementList<FollowModalItem> | undefined> {
   // const url = `${BASE_URL}/profileviews/following`;
-  // const url = `/api/profile/profiles/following`;
-  const url = `/api/community/follows/followings`;
+  // const url = `/api/profile/profiles/following`;ㅊ
+  const url = `/api/community/follows/followings/${memberId}`;
   return axiosApi
     .get<OffsetElementList<FollowModalItem>>(url)
     .then(AxiosReturn);
 }
 
-export function followersModal(): Promise<
-  OffsetElementList<FollowModalItem> | undefined
-> {
+export function followersModal(
+  memberId: string
+): Promise<OffsetElementList<FollowModalItem> | undefined> {
   // const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
   // const url = `/api/profile/profiles/follow?limit=100&offset=0`;
-  const url = `/api/community/follows?limit=100&offset=0`;
+  const url = `/api/community/follows/followers/${memberId}`;
   return axiosApi.get(url).then(AxiosReturn);
 }
 

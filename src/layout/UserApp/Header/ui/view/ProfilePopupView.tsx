@@ -34,14 +34,12 @@ function ProfilePopupView(props: Props) {
   const history = useHistory();
   const externalInstructor = localStorage.getItem('nara.externalInstructor');
   const instructorId = localStorage.getItem('nara.instructorId');
-  // const followersList = useFollowersModal();
-  // const followingsList = useFollowingsModal();
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
 
   useEffect(() => {
+    getProfilePopup();
     requestFollowersModal();
     requestFollowingsModal();
-    getProfilePopup();
   }, []);
 
   useEffect(() => {

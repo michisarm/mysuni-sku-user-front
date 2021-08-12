@@ -1,38 +1,50 @@
 import ProfilePopupModel from '../../model/ProfilePopupModel';
-import { findCommunityMyProfile } from '../../api/ProfileAPI'
-import {
-    setProfilePopupModel,
-    getProfilePopupModel,
-} from '../../store/ProfilePopupStore';
+import { findCommunityMyProfile } from '../../api/ProfileAPI';
+import { setProfilePopupModel } from '../../store/ProfilePopupStore';
+import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
+import { findFollowerWithFollowingCount } from 'community/api/communityApi';
 
 export async function getProfilePopup(): Promise<void> {
-    const profileItem: ProfilePopupModel = {
-        name: '',
-        company: { id: '', name: '' },
-        profileImg: '',
-        profileBgImg: '',
-        nickname: '',
-        oriNickname: '',
-        nameFlag: 'R',
-        introduce: '',
-        hobby: '',
-        followerCount: 0,
-        followingCount: 0,
-    }
+  const profileItem: ProfilePopupModel = {
+    id: '',
+    name: { ko: '', en: '', zh: '' },
+    company: { ko: '', en: '', zh: '' },
+    profileImg: '',
+    profileBgImg: '',
+    nickname: '',
+    displayNicknameFirst: false,
+    selfIntroduce: '',
+    followerCount: 0,
+    followingCount: 0,
+  };
 
-    const myProfile: ProfilePopupModel = await findCommunityMyProfile();
-    if (myProfile && myProfile !== undefined && myProfile !== null) {
-        profileItem.name = myProfile.name;
-        profileItem.company = myProfile.company;
-        profileItem.profileImg = myProfile.profileImg;
-        profileItem.profileBgImg = myProfile.profileBgImg;
-        profileItem.nickname = myProfile.nickname;
-        profileItem.oriNickname = myProfile.nickname;
-        profileItem.nameFlag = myProfile.nameFlag;
-        profileItem.introduce = myProfile.introduce;
-        profileItem.hobby = myProfile.hobby;
-        profileItem.followerCount = myProfile.followerCount;
-        profileItem.followingCount = myProfile.followingCount;
-    }
-    setProfilePopupModel(profileItem);
+  const myProfile = await SkProfileApi.instance.findSkProfile();
+  if (myProfile && myProfile !== undefined && myProfile !== null) {
+    const {
+      id,
+      name,
+      companyName,
+      photoFilePath,
+      gdiPhotoImagePath,
+      useGdiPhoto,
+      backgroundImagePath,
+      nickname,
+      displayNicknameFirst,
+      selfIntroduction,
+    } = myProfile.user;
+
+    const followCount = await findFollowerWithFollowingCount(id);
+    profileItem.id = id;
+    profileItem.name = name;
+    profileItem.company = companyName;
+    profileItem.profileImg = useGdiPhoto ? gdiPhotoImagePath : photoFilePath;
+    profileItem.profileBgImg = backgroundImagePath;
+    profileItem.nickname = nickname;
+    profileItem.displayNicknameFirst = displayNicknameFirst;
+    profileItem.selfIntroduce = selfIntroduction;
+    profileItem.followerCount = (followCount && followCount.followerCount) || 0;
+    profileItem.followingCount =
+      (followCount && followCount.followingCount) || 0;
+  }
+  setProfilePopupModel(profileItem);
 }
