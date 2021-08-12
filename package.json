@@ -60,7 +60,7 @@
     "typescript": "3.7.3",
     "xlsx": "latest"
   },
-  "proxy": "http://ma.mysuni.sk.com",
+  "proxy": "http://stg.mysuni.sk.com",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/file-saver": "^2.0.1",
