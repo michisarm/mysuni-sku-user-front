@@ -125,7 +125,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     params.pageNo === '1' &&
       folderSelect.push({
         key: 'addFolder',
-        text: '+' + getPolyglotText('폴더미지정', 'mypage-noteList-폴더만들기'),
+        text: '+' + getPolyglotText('폴더만들기', 'mypage-noteList-폴더만들기'),
         value: 'addFolder',
       });
     return folderSelect;

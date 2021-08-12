@@ -66,9 +66,8 @@ export default function LearningTimeSummaryView({
                 <LearningTimeView learningTime={totalLearningTime} />
               </p>
               <span>
-                <PolyglotText defaultString="목표" id="home-Summary-목표" />{' '}
-                /*오타?*/
-                {learningObjectives!.AnnualLearningObjectives}
+                <PolyglotText defaultString="목표" id="home-Summary-목표" />
+                {learningObjectives!.AnnualLearningObjectives}h
               </span>
             </div>
           </div>

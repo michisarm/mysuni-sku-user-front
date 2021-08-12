@@ -24,6 +24,8 @@ import {
 } from '../../store/RecommendPageStore';
 import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
 import { RecommendCardRomView } from '../view/RecommendCardRomView';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 
 const CHANNELS_SIZE = 5;
 const CARDS_SIZE = 8;
@@ -34,7 +36,7 @@ function onSelectChannel(channel: CheckableChannel) {
     return;
   }
   setCheckableChannelsStore(
-    checkableChannels.map(c => {
+    checkableChannels.map((c) => {
       if (c.id === channel.id) {
         return { ...c, checked: !c.checked };
       }
@@ -49,7 +51,7 @@ function onConfirmCallback() {
     return;
   }
   setCheckableChannelsStore(
-    checkableChannels.map(c => {
+    checkableChannels.map((c) => {
       return { ...c, checked: false };
     })
   );
@@ -85,14 +87,14 @@ async function requestFindRecommendCards() {
     }
     setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
     const promiseArray = checkableChannels
-      .filter(c => c.checked === true)
-      .map<Promise<RecommendCardRom>>(c => {
+      .filter((c) => c.checked === true)
+      .map<Promise<RecommendCardRom>>((c) => {
         const cardRdo: CardRdo = {
           channelIds: c.id,
           offset: 0,
           limit: CARDS_SIZE,
         };
-        return findByRdoCache(cardRdo).then(r => {
+        return findByRdoCache(cardRdo).then((r) => {
           if (r !== undefined) {
             return {
               channelId: c.id,
@@ -137,12 +139,13 @@ export default function RecommendContentBodyContainer() {
     requestFindRecommendCards();
   }, []);
   const channels = useCheckableChannelsStore();
+
   useEffect(() => {
     if (channels === undefined) {
       return;
     }
     const allChannelSelected =
-      channels.every(c => c.checked) || channels.every(c => !c.checked);
+      channels.every((c) => c.checked) || channels.every((c) => !c.checked);
     const allChannelTotalCount = channels.length;
     const next = getRecommendPage();
     if (next == undefined) {
@@ -154,6 +157,7 @@ export default function RecommendContentBodyContainer() {
   if (channels === undefined) {
     return null;
   }
+
   return (
     <ChannelsContentWrapperView
       channels={channels}
@@ -191,7 +195,7 @@ function AllChannelsContainerView() {
   return (
     <div className="recommend-area">
       {Array.isArray(recommendCardRoms) &&
-        recommendCardRoms.map(c => {
+        recommendCardRoms.map((c) => {
           return <RecommendCardRomView key={c.channelId} {...c} />;
         })}
       <ListMoreView />
