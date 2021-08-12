@@ -13,6 +13,11 @@ import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLectures
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { IdName } from '../../../../shared/model';
+import {
+  getChannelStore,
+  setChannelStore,
+} from '../../../../shared/store/ChannelStore';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService;
@@ -28,9 +33,23 @@ class RecommendChannelLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { skProfileService } = this.props;
+    this.init();
+  }
 
-    skProfileService.findStudySummary();
+  async init() {
+    //
+    const { skProfileService, collegeService } = this.props;
+
+    await skProfileService.findStudySummary();
+    const channelStore = getChannelStore();
+
+    console.log(channelStore);
+
+    if (!channelStore || channelStore.length === 0) {
+      await collegeService.findAllColleges();
+      const channels = collegeService.channelsInColleges;
+      setChannelStore(channels);
+    }
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -45,8 +64,9 @@ class RecommendChannelLecturesPage extends Component<Props> {
         params: { channelId },
       },
     } = this.props;
+
     const { studySummaryFavoriteChannels } = skProfileService;
-    const channel: ChannelModel = new ChannelModel({
+    const channel: IdName = new IdName({
       id: channelId,
       name: getChannelName(channelId),
     });
@@ -57,15 +77,12 @@ class RecommendChannelLecturesPage extends Component<Props> {
         breadcrumb={[
           { text: `Recommend`, path: routePaths.recommend() },
           {
-            text: `${parsePolyglotString(
-              channel.name,
-              getDefaultLang(channel.langSupports)
-            )}`,
+            text: `${channel.name}`,
           },
         ]}
       >
         <ChannelLecturesHeaderView
-          channel={channel}
+          channelIdName={channel}
           channels={studySummaryFavoriteChannels.map(
             (channel) => new ChannelModel(channel)
           )}

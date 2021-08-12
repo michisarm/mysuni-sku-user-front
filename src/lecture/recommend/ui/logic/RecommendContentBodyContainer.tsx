@@ -24,8 +24,8 @@ import {
 } from '../../store/RecommendPageStore';
 import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
 import { RecommendCardRomView } from '../view/RecommendCardRomView';
-import { CollegeService } from 'college/stores';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 
 const CHANNELS_SIZE = 5;
 const CARDS_SIZE = 8;
@@ -134,29 +134,9 @@ async function listMoreRequestFindRecommendCards() {
   await requestFindRecommendCards();
 }
 
-async function setChannelNames() {
-  //
-  await CollegeService!.instance.findAllChannel();
-
-  const channelMap = CollegeService.instance.channelMap;
-
-  const channels: CheckableChannel[] = [];
-
-  getCheckableChannelsStore()?.forEach((channel) => {
-    channels.push({
-      id: channel.id,
-      name: parsePolyglotString(channelMap.get(channel.id)?.name || null),
-      checked: channel.checked,
-    } as CheckableChannel);
-  });
-
-  setCheckableChannelsStore(channels);
-}
-
 export default function RecommendContentBodyContainer() {
   useEffect(() => {
     requestFindRecommendCards();
-    setChannelNames();
   }, []);
   const channels = useCheckableChannelsStore();
 
@@ -177,6 +157,7 @@ export default function RecommendContentBodyContainer() {
   if (channels === undefined) {
     return null;
   }
+
   return (
     <ChannelsContentWrapperView
       channels={channels}

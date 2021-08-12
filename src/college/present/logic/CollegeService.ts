@@ -193,6 +193,20 @@ export default class CollegeService {
     this._channels[index] = _.set(this._channels[index], name, value);
   }
 
+  @computed
+  get channelsInColleges() {
+    //
+    const channels: ChannelModel[] = [];
+
+    this._colleges?.forEach((college) => {
+      college.channels?.forEach((channel) => {
+        channels.push(new ChannelModel(channel));
+      });
+    });
+
+    return channels;
+  }
+
   // Other Channels ----------------------------------------------------------------------------------------------------
 
   @action
