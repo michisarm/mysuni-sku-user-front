@@ -89,11 +89,8 @@ class MyLearningSummaryModal extends Component<Props> {
 
   render() {
     const { openModal, checkedTab } = this.state;
-    const {
-      trigger,
-      myLearningSummaryService,
-      menuControlAuthService,
-    } = this.props;
+    const { trigger, myLearningSummaryService, menuControlAuthService } =
+      this.props;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
 
@@ -136,12 +133,6 @@ class MyLearningSummaryModal extends Component<Props> {
                     <span className="blind">total time</span>
                     <span className="text01">
                       {year}.01.01 ~ {today}
-                    </span>
-                    <span className="text02">
-                      <PolyglotText
-                        defaultString="총 학습시간"
-                        id="home-학이시-총학시간"
-                      />
                     </span>
                   </div>
                   <div className="cell v-middle">
