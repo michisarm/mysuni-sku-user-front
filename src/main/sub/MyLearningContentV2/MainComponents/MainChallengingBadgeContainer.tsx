@@ -1,12 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import React, { useCallback, useEffect } from 'react';
+import { observer } from 'mobx-react';
 import { Button, Icon } from 'semantic-ui-react';
 import { NoSuchContentPanel } from 'shared';
-import { RouteComponentProps, withRouter } from 'react-router';
 import certificationRoutes from 'certification/routePaths';
-import { BadgeService } from 'certification/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
@@ -15,66 +11,43 @@ import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
 import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import { BadgeService } from 'lecture/stores';
+import { useHistory } from 'react-router-dom';
+import { SkProfileService } from 'profile/stores';
 
-interface Props extends RouteComponentProps {
-  badgeService?: BadgeService;
+function MainChallengingBadgeContainer() {
+  const history = useHistory();
 
-  profileMemberName: string;
-}
+  const badgeService = BadgeService.instance;
+  const { challengeBadges } = badgeService;
+  const {
+    skProfile: { profileViewName },
+  } = SkProfileService.instance;
 
-const ChallengingBadge: React.FC<Props> = (Props) => {
-  //
-  const { badgeService, profileMemberName, history } = Props;
-
-  const CONTENT_TYPE = 'Badge';
-  /*
-    메인화면에 표시되는 도전 뱃지 4개(기존의 요구사항).
-    뱃지 사이즈가 변경되면서 5개로 수정.(BadgeSize.Large -> BadgeSize.Small)
-  */
-  const PAGE_SIZE = 5;
-
-  const { challengeBadges } = badgeService!;
-
-  // // lectureService 변경  실행
   useEffect(() => {
-    findMyContent();
-
-    return () => {
-      badgeService!.clearChallengeBadges();
-    };
-  }, []);
-
-  const findMyContent = async () => {
-    // // 세션 스토리지에 정보가 있는 경우 가져오기
-    // const savedChallengingBadgeList = window.navigator.onLine && window.sessionStorage.getItem('ChallengingBadgeList');
-    // if (savedChallengingBadgeList) {
-    //   const badges: OffsetElementList<BadgeModel> = JSON.parse(savedChallengingBadgeList);
-    //   if (badges.totalCount > PAGE_SIZE - 1) {
-    //     badgeService!.setPagingChallengingBadges(badges);
-    //     return;
-    //   }
-    // }
-
     const myBadgeRdo: MyBadgeRdo = {
       offset: 0,
       limit: 5,
     };
+    badgeService.findAllChallengeBadges(myBadgeRdo, true);
 
-    badgeService!.findAllChallengeBadges(myBadgeRdo, true);
-  };
+    return () => {
+      badgeService.clearChallengeBadges();
+    };
+  }, []);
 
-  const onViewAll = () => {
-    //
+  const onViewAll = useCallback(() => {
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(certificationRoutes.badgeChallengingBadgeList());
-  };
+  }, [history]);
 
-  // Badge List로 이동
-  const onClickLink = () => {
-    //
+  const onClickLink = useCallback(() => {
     history.push(certificationRoutes.badgeAllBadgeList());
 
     ReactGA.event({
@@ -82,30 +55,37 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
       action: 'Click',
       label: '도전중인 Badge 전체보기',
     });
-  };
+  }, [history]);
 
-  // react-ga event
-  const onClick = (idx: number) => {
-    ReactGA.event({
-      category: '메인_도전중인-Badge',
-      action: 'Click Card',
-      // label: `(Badge) - ${myBadges[idx].name}`,
-      label: `${parsePolyglotString(
-        challengeBadges[idx].name,
-        getDefaultLang(challengeBadges[idx].langSupport)
-      )}`,
-    });
-  };
+  const onClick = useCallback(
+    (idx: number) => {
+      ReactGA.event({
+        category: '메인_도전중인-Badge',
+        action: 'Click Card',
+        // label: `(Badge) - ${myBadges[idx].name}`,
+        label: `${parsePolyglotString(
+          challengeBadges[idx].name,
+          getDefaultLang(challengeBadges[idx].langSupport)
+        )}`,
+      });
+    },
+    [challengeBadges]
+  );
 
   return (
     <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
       <div className="section-head">
-        <strong dangerouslySetInnerHTML={{__html: getPolyglotText('<span className="ellipsis">{name}</span>님이 도전중인 Badge', 'home-ChallengeBadges-Title', {name: profileMemberName})}} />
-          {/* <span className="ellipsis">{profileMemberName}</span>
-          <PolyglotText
-            defaultString="님이 도전중인 Badge"
-            id="home-ChallengeBadges-Title"
-          /> */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<strong>${getPolyglotText(
+              '{name}님이 도전중인 Badge',
+              'home-ChallengeBadges-Title',
+              {
+                name: profileViewName,
+              }
+            )}</strong>`,
+          }}
+        />
         <div className="right">
           {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
@@ -179,8 +159,6 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
       )}
     </ContentWrapper>
   );
-};
+}
 
-export default inject(mobxHelper.injectFrom('badge.badgeService'))(
-  withRouter(observer(ChallengingBadge))
-);
+export default observer(MainChallengingBadgeContainer);

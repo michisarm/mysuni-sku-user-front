@@ -122,8 +122,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   async requestMenuAuth() {
     const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel =
-      await skProfileService!.findSkProfile();
+    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
     if (foundProfile) {
       menuControlAuthService!.findMenuControlAuth();
     }
@@ -185,8 +184,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const { personalBoardInprogressCount, personalBoardCompletedCount } =
-      myTrainingService!;
+    const {
+      personalBoardInprogressCount,
+      personalBoardCompletedCount,
+    } = myTrainingService!;
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
@@ -302,7 +303,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               favorites={favoriteChannels}
               onConfirmCallback={this.onConfirmFavorite}
             />
-            {menuControlAuth.useApl === false && (
+            {menuControlAuth.useApl === true && (
               <div>
                 <a
                   href="#"
@@ -349,7 +350,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   onConfirmCallback={this.onConfirmFavorite}
                 />
               </div>
-              {menuControlAuth.useApl === false && (
+              {menuControlAuth.useApl === true && (
                 <div>
                   <a
                     href="#"

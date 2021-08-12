@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-
 import { SkProfileService } from 'profile/stores';
 import InProgressLearning from './MainComponents/InProgressLearning';
-import ChallengingBadge from './MainComponents/ChallengingBadge';
+import MainChallengingBadgeContainer from './MainComponents/MainChallengingBadgeContainer';
 import MainBanner from './MainComponents/MainBanner';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
@@ -14,7 +13,6 @@ import RQDLearning from './MainComponents/RQDLearning';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import LRSLearning from './MainComponents/LRSLearning';
-import { Abtest, ExperimentalGroup } from 'abtest/components';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
@@ -60,11 +58,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
         return <LeraningContainer key={i} cardBundle={cardBundle} />;
       })}
       <InProgressLearning profileMemberName={skProfile.profileViewName} />
-      {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
-      <ChallengingBadge
-        // profileMemberName={member.name}
-        profileMemberName={skProfile.profileViewName}
-      />
+      <MainChallengingBadgeContainer />
       <MainBanner />
       <RQDLearning />
       {cardBundles?.map((cardBundle, i) => {

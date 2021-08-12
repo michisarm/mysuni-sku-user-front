@@ -67,7 +67,8 @@ export default function LearningTimeSummaryView({
               </p>
               <span>
                 <PolyglotText defaultString="목표" id="home-Summary-목표" />{' '}
-                {learningObjectives!.AnnualLearningObjectives}h
+                /*오타?*/
+                {learningObjectives!.AnnualLearningObjectives}
               </span>
             </div>
           </div>

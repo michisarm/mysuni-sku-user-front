@@ -26,7 +26,7 @@ function MyApprovalTabContainer() {
   } = AplService.instance;
 
   const getTabs = (): TabItemModel[] => {
-    if (menuControlAuth.useApl === false) {
+    if (menuControlAuth.useApl === true) {
       return [
         {
           name: MyApprovalContentType.PaidCourse,
