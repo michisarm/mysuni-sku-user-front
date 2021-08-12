@@ -27,14 +27,15 @@ function getAdditionalInfoParams(
         name: 'currentJobDutyId',
         value: currentJobDutyId,
       },
+      {
+        name: 'userDefinedCurrentJobDuty',
+        value: '',
+      },
     ],
   };
 
   if (currentJobGroupId === 'etc') {
-    params.nameValues.push({
-      name: 'userDefinedCurrentJobDuty',
-      value: userDefinedCurrentJobDuty,
-    });
+    params.nameValues[2].value = userDefinedCurrentJobDuty;
   }
 
   return params;
@@ -111,16 +112,16 @@ class CurrentJobContainer extends React.Component<Props, State> {
   selectJobGroup(_: React.SyntheticEvent, data: DropdownProps) {
     const { jobGroupService, skProfileService } = this.props;
 
-    if (data.value === 'etc') {
-      skProfileService?.setCurrentJobDutyProp('etc');
-    }
-
     if (data.value !== 'etc') {
       jobGroupService!.findJobGroupById(data.value as string);
     }
 
     skProfileService?.setCurrentJobGroupProp(data.value as string);
-    skProfileService?.setCurrentJobDutyProp('');
+    if (data.value === 'etc') {
+      skProfileService?.setCurrentJobDutyProp('etc');
+    } else {
+      skProfileService?.setCurrentJobDutyProp('');
+    }
   }
 
   setJobDuties() {
@@ -157,7 +158,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService?.setUserDefinedFavoriteJobDuty(e.target.value);
+    skProfileService?.setUserDefinedCurrentJobDuty(e.target.value);
   }
 
   onInitEtcJobDuty() {
@@ -178,7 +179,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
     if (
       isEmpty(currentJobDutyId) ||
       isEmpty(currentJobGroupId) ||
-      isEmpty(userDefinedCurrentJobDuty)
+      (currentJobDutyId === 'etc' && isEmpty(userDefinedCurrentJobDuty))
     ) {
       reactAlert({
         title: getPolyglotText('알림', 'job-recent-알림'),
