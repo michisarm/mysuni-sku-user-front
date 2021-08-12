@@ -24,7 +24,10 @@ const LineHeaderContainer: FunctionComponent<LineHeaderProps> = ({
     },
     []
   );
-
+  SelectOptions.difficultyLevel[0].text = getPolyglotText(
+    '전체',
+    'Certification-bdls-sl전체'
+  );
   return (
     <ListPanelTopLine count={totalCount} countMessage={countMessage}>
       <div className="right-wrap">

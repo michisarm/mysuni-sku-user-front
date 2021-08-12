@@ -4,7 +4,7 @@ const SelectOptions = {
   difficultyLevel: [
     {
       key: '0',
-      text: getPolyglotText('전체', 'Certification-bdls-sl전체'),
+      text: '전체',
       value: '',
     },
     { key: '1', text: 'Level1', value: 'Level1' },
