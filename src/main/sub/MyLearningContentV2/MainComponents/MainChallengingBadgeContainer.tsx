@@ -77,13 +77,13 @@ function MainChallengingBadgeContainer() {
       <div className="section-head">
         <div
           dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              `<strong>{profileViewName}님이 도전중인 Badge</strong>`,
+            __html: `<strong>${getPolyglotText(
+              '{profileViewName}님이 도전중인 Badge',
               'home-ChallengeBadges-Title',
               {
                 profileViewName,
               }
-            ),
+            )}</strong>`,
           }}
         />
         <div className="right">
