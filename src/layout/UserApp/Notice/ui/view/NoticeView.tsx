@@ -4,7 +4,7 @@ import { Button, Checkbox } from 'semantic-ui-react';
 import moment from 'moment';
 import { PostModel } from 'board/model';
 import routePaths from 'board/routePaths';
-import { getCookie, setCookie } from '@nara.platform/accent';
+import { setCookie } from '@nara.platform/accent';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';

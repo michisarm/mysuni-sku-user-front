@@ -53,13 +53,13 @@ function InProgressLearning({ profileMemberName, history }: Props) {
       <div className="section-head">
         <div
           dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              `<strong>{profileMemberName}님이 학습중인 과정</strong>`,
+            __html: `<strong>${getPolyglotText(
+              `{profileMemberName}님이 학습중인 과정`,
               'home-Inprogress-Title',
               {
                 profileMemberName,
               }
-            ),
+            )}</strong>`,
           }}
         />
         <div className="right">
