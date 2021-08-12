@@ -1,6 +1,7 @@
-import { axiosApi } from '@nara.platform/accent';
+import { axiosApi, NameValueList } from '@nara.platform/accent';
 import BadgeFilterRdoModel from 'certification/ui/model/BadgeFilterRdoModel';
 import moment from 'moment';
+import { LearningGoal } from 'profile/model/LearningGoal';
 import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
 import { AxiosReturn } from '../../../../shared/api/AxiosReturn';
 import { CollegePercentData } from '../model/CollegePercent';
@@ -76,24 +77,31 @@ export function findLearningObjectives() {
 }
 
 //목표설정
-export function updateLearningObjectives(item: LearningObjectives) {
-  return (
-    axiosApi
-      // .put<any>(`/api/profile/profiles`, {
-      .put<any>(`/api/user/users/additionalInfo`, [
-        {
-          learningGoal: {
-            attendance: item.WeekAttendanceGoal,
-            dailyTime: {
-              hours: item.DailyLearningTimeHour,
-              minutes: item.DailyLearningTimeMinute,
-            },
-            hour: item.AnnualLearningObjectives,
-          },
-        },
-      ])
-      .then((response) => response && response.data)
-  );
+// export function updateLearningObjectives(nameValues: NameValueList) {
+//   return (
+//     axiosApi
+//       // .put<any>(`/api/profile/profiles`, {
+//       .put<any>(`/api/user/users/additionalInfo`, {
+//         learningGoal: {
+//           attendance: item.WeekAttendanceGoal,
+//           dailyTime: {
+//             hours: item.DailyLearningTimeHour,
+//             minutes: item.DailyLearningTimeMinute,
+//           },
+//           hour: item.AnnualLearningObjectives,
+//         },
+//       })
+//       .then((response) => response && response.data)
+//   );
+// }
+
+//0812 updateAdditionalInfo 수정 추가
+export function updateLearningObjectives(
+  learningGoal: NameValueList
+): Promise<LearningGoal> {
+  return axiosApi
+    .put<LearningGoal>('/api/user/users/additionalInfo', learningGoal)
+    .then((response) => response && response.data);
 }
 
 //college별 학습 비중
