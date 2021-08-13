@@ -124,7 +124,10 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
               />
             }
             totalChannelCount={collegeLectureCountService!.totalChannelCount}
-            favoriteChannelCount={99 || 0}
+            favoriteChannelCount={
+              skProfileService?.additionalUserInfo.favoriteChannelIds.length ||
+              0
+            }
           />
         </ContentHeader.Cell>
       </ContentHeaderRecommand>
