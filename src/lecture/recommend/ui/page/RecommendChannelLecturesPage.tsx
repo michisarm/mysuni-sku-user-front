@@ -31,8 +31,15 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
 @observer
 class RecommendChannelLecturesPage extends Component<Props> {
   //
-  componentDidMount() {
+  // componentDidMount() {
+  //   //
+  //   this.init();
+  // }
+
+  constructor(props: Props) {
     //
+    super(props);
+
     this.init();
   }
 
@@ -42,8 +49,6 @@ class RecommendChannelLecturesPage extends Component<Props> {
 
     await skProfileService.findStudySummary();
     const channelStore = getChannelStore();
-
-    console.log(channelStore);
 
     if (!channelStore || channelStore.length === 0) {
       await collegeService.findAllColleges();
@@ -71,6 +76,8 @@ class RecommendChannelLecturesPage extends Component<Props> {
       name: getChannelName(channelId),
     });
 
+    console.log(studySummaryFavoriteChannels);
+
     return (
       <ContentLayout
         className="mylearning"
@@ -84,7 +91,13 @@ class RecommendChannelLecturesPage extends Component<Props> {
         <ChannelLecturesHeaderView
           channelIdName={channel}
           channels={studySummaryFavoriteChannels.map(
-            (channel) => new ChannelModel(channel)
+            (channelId) =>
+              new ChannelModel({
+                id: channelId,
+                name: getChannelName(channelId),
+                channelId,
+                checked: true,
+              })
           )}
           onSelectChannel={this.onSelectChannel}
         />

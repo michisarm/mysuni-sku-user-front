@@ -63,8 +63,9 @@ class SkProfileService {
 
   @computed
   get studySummaryFavoriteChannels() {
-    const { favoriteChannels } = this.studySummary;
-    return (favoriteChannels && favoriteChannels.idNames) || [];
+    // const { favoriteChannels } = this.studySummary;
+    // return (favoriteChannels && favoriteChannels.idNames) || [];
+    return [...this.additionalUserInfo.favoriteChannelIds] || [];
   }
 
   // SkProfile ---------------------------------------------------------------------------------------------------------
