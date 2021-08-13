@@ -4,6 +4,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import MentionModel from 'notie/model/MentionModel';
 import moment from 'moment';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   myNotieMentions: MentionModel[];
@@ -50,14 +51,10 @@ class HeaderAlarmView extends Component<Props, State> {
     }
   }
 
-
   render() {
     //
-    const {
-      myNotieMentions,
-      myNotieNoReadMentionCount,
-      routeToAlarmBackLink,
-    } = this.props;
+    const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } =
+      this.props;
     const { alarmShowClass } = this.state;
 
     let existNoReadClass = '';
@@ -71,14 +68,18 @@ class HeaderAlarmView extends Component<Props, State> {
           onClick={this.onTogglePop}
           ref={this.alarmButtonRef}
         >
-          <span>알림</span>
+          <span>
+            <PolyglotText defaultString="알림" id="home-header-알림1" />
+          </span>
         </a>
         <div
           className={`lms-alarm-list ${alarmShowClass}`}
           ref={this.alarmButtonRef}
         >
           <div className="lms-alarm-header">
-            <span className="lms-alarm-title">알림</span>
+            <span className="lms-alarm-title">
+              <PolyglotText defaultString="알림" id="home-header-알림2" />
+            </span>
             <Button icon className="img-icon" onClick={this.onTogglePop}>
               <Icon className="clear2 selected link" />
             </Button>
@@ -92,7 +93,7 @@ class HeaderAlarmView extends Component<Props, State> {
                 }
 
                 if (!result.title.includes('[')) {
-                  result.title = ''
+                  result.title = '';
                 }
 
                 return (

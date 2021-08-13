@@ -38,10 +38,7 @@ class ChannelLecturesHeaderView extends Component<Props> {
                     key={`channel_drop_${channel.channelId}`}
                     onClick={() => onSelectChannel(channel)}
                   >
-                    {parsePolyglotString(
-                      channel.name,
-                      getDefaultLang(channel.langSupports)
-                    )}
+                    {channel.name}
                   </Dropdown.Item>
                 ))) ||
                 null}

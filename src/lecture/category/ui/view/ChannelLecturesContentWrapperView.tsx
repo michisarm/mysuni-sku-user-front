@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   lectureCount: number;
@@ -26,9 +27,18 @@ class ChannelLecturesContentWrapperView extends Component<Props> {
           }
         >
           {!countDisabled && (
-            <div className="section-count">
-              총 <span>{lectureCount}</span>개의 학습 과정이 있습니다.
-            </div>
+            <div
+              className="section-count"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `총 <span>{lectureCount}</span>개의 학습 과정이 있습니다.`,
+                  'cicl-디테일-헤더',
+                  {
+                    lectureCount: lectureCount.toString(),
+                  }
+                ),
+              }}
+            />
           )}
           {children}
         </div>

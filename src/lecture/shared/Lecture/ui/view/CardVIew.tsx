@@ -101,9 +101,8 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -347,8 +346,9 @@ export default function CardView({
           <Field
             icon="complete"
             text={getPolyglotText(
-              `이수 ${numeral(passedStudentCount).format('0,0')}명`,
-              'home-Inprogress-이수인원'
+              `이수 {number}명`,
+              'home-Inprogress-이수인원',
+              { number: numeral(passedStudentCount).format('0,0') }
             )}
           />
         </Fields>

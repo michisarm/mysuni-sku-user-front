@@ -102,8 +102,8 @@ function MyPageHeaderContainer({
   }, []);
 
   const getProfileImage = () => {
-    if (bgImageBase64) {
-      return bgImageBase64;
+    if (photoImageBase64) {
+      return photoImageBase64;
     }
 
     if (skProfile.useGdiPhoto) {
