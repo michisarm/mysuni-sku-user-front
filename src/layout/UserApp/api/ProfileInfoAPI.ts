@@ -83,12 +83,12 @@ export function unfollowMember(
   return axios.delete<FollowModel>(url).then(AxiosReturn);
 }
 
-export function findFollowWithFollowingCount(): Promise<
-  FollowCount | undefined
-> {
+export function findFollowWithFollowingCount(
+  memberId: string
+): Promise<FollowCount | undefined> {
   const axios = getAxios();
 
-  const url = `${BASE_URL}/follows/count`;
+  const url = `${BASE_URL}/follows/count/${memberId}`;
   return axios.get<FollowCount>(url).then(AxiosReturn);
 }
 
