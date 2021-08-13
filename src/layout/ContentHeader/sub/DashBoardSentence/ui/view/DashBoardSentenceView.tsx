@@ -7,7 +7,7 @@ interface Props {
 const DashBoardSentenceView: React.FC<Props> = function DashBoardSentenceView(
   dashBoardTxt
 ) {
-  return <>{<p>{dashBoardTxt?.dashBoardTxt || ''}</p>}</>;
+  return <p>{dashBoardTxt?.dashBoardTxt || ''}</p>;
 };
 
 export default DashBoardSentenceView;
