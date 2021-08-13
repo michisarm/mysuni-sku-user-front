@@ -218,13 +218,15 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                 {lectureSummary.stampCount !== undefined && (
                   <Label className="bold onlytext">
                     <Icon className="stamp" />
-                    <span>
-                      {lectureSummary.stampCount}
-                      <PolyglotText
-                        defaultString="개"
-                        id="Course-Summary-갯수"
-                      />
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          '{stampCount}개',
+                          'Course-Summary-갯수',
+                          { stampCount: lectureSummary.stampCount.toString() }
+                        ),
+                      }}
+                    />
                   </Label>
                 )}
                 <Label className="bold onlytext">
