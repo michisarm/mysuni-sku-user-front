@@ -6,12 +6,16 @@ import CheckboxOptions from '../model/CheckboxOptions';
 import { FilterBoxView } from '../view/filterbox/FilterBoxView';
 import { CollegeService } from '../../../college/stores';
 import { initialCondition, getFilterCount } from '../../model/FilterCondition';
-import { FilterConditionName } from '../../model/FilterConditionName';
+import {
+  FilterConditionName,
+  filterConditionNamePolyglot,
+} from '../../model/FilterConditionName';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { CheckboxProps } from 'semantic-ui-react';
 
 interface FilterBoxContainerProps {
   filterCountService?: FilterCountService;
@@ -68,9 +72,9 @@ function FilterBoxContainer({
     setShowResult(true);
   };
 
-  const onCheckAll = (e: any, data: any) => {
+  const onCheckAll = (_: React.FormEvent, data: CheckboxProps) => {
     switch (data.name) {
-      case FilterConditionName.LearningType:
+      case filterConditionNamePolyglot(FilterConditionName.LearningType):
         if (
           conditions.learningTypes.length ===
           CheckboxOptions.learningTypes.length
@@ -87,7 +91,7 @@ function FilterBoxContainer({
           ],
         });
         break;
-      case FilterConditionName.College:
+      case filterConditionNamePolyglot(FilterConditionName.College):
         if (conditions.collegeIds.length === colleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
           break;
@@ -98,7 +102,7 @@ function FilterBoxContainer({
           collegeIds: [...colleges.map((college) => college.id)],
         });
         break;
-      case FilterConditionName.DifficultyLevel:
+      case filterConditionNamePolyglot(FilterConditionName.DifficultyLevel):
         if (
           conditions.difficultyLevels.length ===
           CheckboxOptions.difficultyLevels.length
@@ -115,7 +119,7 @@ function FilterBoxContainer({
           ],
         });
         break;
-      case FilterConditionName.Organizer:
+      case filterConditionNamePolyglot(FilterConditionName.Organizer):
         if (
           conditions.organizers.length === CheckboxOptions.organizers.length
         ) {
@@ -129,7 +133,7 @@ function FilterBoxContainer({
           ],
         });
         break;
-      case FilterConditionName.LearningTime:
+      case filterConditionNamePolyglot(FilterConditionName.LearningTime):
         if (
           conditions.learningTimes.length ===
           CheckboxOptions.learningTimes.length
@@ -146,7 +150,7 @@ function FilterBoxContainer({
           ],
         });
         break;
-      case FilterConditionName.Certification:
+      case filterConditionNamePolyglot(FilterConditionName.Certification):
         if (
           conditions.certifications.length ===
           CheckboxOptions.certifications.length
@@ -166,9 +170,13 @@ function FilterBoxContainer({
     }
   };
 
-  const onCheckOne = (e: any, data: any) => {
+  const onCheckOne = (_: React.FormEvent, data: CheckboxProps) => {
+    if (typeof data.value !== 'string') {
+      return;
+    }
+
     switch (data.name) {
-      case FilterConditionName.LearningType:
+      case filterConditionNamePolyglot(FilterConditionName.LearningType):
         if (conditions.learningTypes.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -184,7 +192,7 @@ function FilterBoxContainer({
           learningTypes: conditions.learningTypes.concat(data.value),
         });
         break;
-      case FilterConditionName.College:
+      case filterConditionNamePolyglot(FilterConditionName.College):
         if (conditions.collegeIds.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -200,7 +208,7 @@ function FilterBoxContainer({
           collegeIds: conditions.collegeIds.concat(data.value),
         });
         break;
-      case FilterConditionName.DifficultyLevel:
+      case filterConditionNamePolyglot(FilterConditionName.DifficultyLevel):
         if (conditions.difficultyLevels.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -215,7 +223,7 @@ function FilterBoxContainer({
           difficultyLevels: conditions.difficultyLevels.concat(data.value),
         });
         break;
-      case FilterConditionName.LearningTime:
+      case filterConditionNamePolyglot(FilterConditionName.LearningTime):
         if (conditions.learningTimes.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -230,7 +238,7 @@ function FilterBoxContainer({
           learningTimes: conditions.learningTimes.concat(data.value),
         });
         break;
-      case FilterConditionName.Organizer:
+      case filterConditionNamePolyglot(FilterConditionName.Organizer):
         if (conditions.organizers.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -245,10 +253,10 @@ function FilterBoxContainer({
           organizers: conditions.organizers.concat(data.value),
         });
         break;
-      case FilterConditionName.Required:
+      case filterConditionNamePolyglot(FilterConditionName.Required):
         setConditions({ ...conditions, required: data.value });
         break;
-      case FilterConditionName.Certification:
+      case filterConditionNamePolyglot(FilterConditionName.Certification):
         if (conditions.certifications.includes(data.value)) {
           setConditions({
             ...conditions,
@@ -272,7 +280,7 @@ function FilterBoxContainer({
 
   const onClearOne = (type: string, condition: string) => {
     switch (type) {
-      case FilterConditionName.LearningType:
+      case filterConditionNamePolyglot(FilterConditionName.LearningType):
         setConditions({
           ...conditions,
           learningTypes: conditions.learningTypes.filter(
@@ -280,7 +288,7 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.College:
+      case filterConditionNamePolyglot(FilterConditionName.College):
         setConditions({
           ...conditions,
           collegeIds: conditions.collegeIds.filter(
@@ -288,7 +296,7 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.DifficultyLevel:
+      case filterConditionNamePolyglot(FilterConditionName.DifficultyLevel):
         setConditions({
           ...conditions,
           difficultyLevels: conditions.difficultyLevels.filter(
@@ -296,7 +304,7 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.Organizer:
+      case filterConditionNamePolyglot(FilterConditionName.Organizer):
         setConditions({
           ...conditions,
           organizers: conditions.organizers.filter(
@@ -304,10 +312,10 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.Required:
+      case filterConditionNamePolyglot(FilterConditionName.Required):
         setConditions({ ...conditions, required: '' });
         break;
-      case FilterConditionName.LearningTime:
+      case filterConditionNamePolyglot(FilterConditionName.LearningTime):
         setConditions({
           ...conditions,
           learningTimes: conditions.learningTimes.filter(
@@ -315,7 +323,7 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.Certification:
+      case filterConditionNamePolyglot(FilterConditionName.Certification):
         setConditions({
           ...conditions,
           certifications: conditions.certifications.filter(
@@ -323,7 +331,7 @@ function FilterBoxContainer({
           ),
         });
         break;
-      case FilterConditionName.LearningSchedule:
+      case filterConditionNamePolyglot(FilterConditionName.LearningSchedule):
         if (condition === 'true') {
           setConditions({ ...conditions, applying: '' });
           break;

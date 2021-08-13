@@ -84,7 +84,7 @@ export function FilterBoxView({
           <td>
             <Checkbox
               className="base"
-              name={FilterConditionName.College}
+              name={filterConditionNamePolyglot(FilterConditionName.College)}
               label={`${SELECT_ALL} (${totalFilterCount.college})`}
               checked={conditions.collegeIds.length === colleges.length}
               onChange={onCheckAll}
