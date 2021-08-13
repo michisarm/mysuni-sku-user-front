@@ -18,7 +18,9 @@ export function useRequestLectureDiscussion() {
     }
 
     requestLectureDiscussion(params.cardId, params.contentId);
-    return setLectureDiscussion;
+    return () => {
+      setLectureDiscussion();
+    };
   }, [params?.cardId, params?.contentId]);
 }
 
@@ -29,6 +31,9 @@ export function useRequestLectureFeedbackContent() {
       return;
     }
     requestLectureFeedbackContent(lectureDiscussion.id);
+    return () => {
+      setLectureFeedbackContent();
+    };
   }, [lectureDiscussion?.id]);
 }
 
