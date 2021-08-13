@@ -3,11 +3,9 @@ import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { countByFeedbackId } from 'lecture/detail/api/feedbackApi';
-import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import {
   useRequestLectureDiscussion,
   useRequestLectureFeedbackContent,
@@ -17,6 +15,9 @@ import CommunityProfileModal from '../../../../community/ui/view/CommunityProfil
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackContent';
+import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
+import { useParams } from 'react-router-dom';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -36,11 +37,11 @@ export default function LectureDiscussionContainer() {
   useRequestLectureDiscussion();
   useRequestLectureFeedbackContent();
   const lectureDiscussion = useLectureDiscussion();
-  const [lectureFeedbackContent] = useLectureFeedbackContent();
+  const lectureFeedbackContent = useLectureFeedbackContent();
+  const params = useParams<LectureParams>();
 
-  const [more, setMore] = useState<boolean>();
+  const [more, setMore] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
-  const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -56,6 +57,13 @@ export default function LectureDiscussionContainer() {
       setCount(count);
     }
   }, [setCount]);
+
+  useEffect(() => {
+    return () => {
+      setMore(false);
+      setFilesMap(new Map());
+    };
+  }, [params.cardId, params?.contentId]);
 
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
@@ -79,12 +87,6 @@ export default function LectureDiscussionContainer() {
       }
     );
     getFileIds();
-    const checkContentValue =
-      parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
-      parsePolyglotString(lectureFeedbackContent?.content) === ''
-        ? true
-        : false;
-    setContentCheck(checkContentValue);
   }, [
     lectureDiscussion?.id,
     lectureFeedbackContent?.commentFeedbackId,
@@ -95,11 +97,12 @@ export default function LectureDiscussionContainer() {
     const referenceFileBoxId =
       lectureFeedbackContent && lectureFeedbackContent.depotId;
 
-    Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
-      else setFilesMap(new Map<string, any>());
-    });
-  }, [lectureFeedbackContent]);
+    if (referenceFileBoxId) {
+      findFiles('reference', referenceFileBoxId);
+    } else {
+      setFilesMap(new Map());
+    }
+  }, [lectureFeedbackContent?.depotId]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then((files) => {
@@ -109,12 +112,9 @@ export default function LectureDiscussionContainer() {
     });
   }, []);
 
-  const { companyName, departmentName, name, email } = useMemo(() => {
-    const {
-      skProfile: { companyName, departmentName, name, email },
-    } = SkProfileService.instance;
-    return { companyName, departmentName, name, email };
-  }, []);
+  const {
+    skProfile: { companyName, departmentName, name, email },
+  } = SkProfileService.instance;
 
   const zipFileDownload = useCallback((type: string) => {
     if (originArr && originArr.length > 0) {
@@ -179,6 +179,15 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const relatedUrlVisible = relatedUrlVisiable(lectureFeedbackContent);
+  console.log(
+    'content: :: ',
+    parsePolyglotString(lectureFeedbackContent?.content)
+  );
+  const checkContentValue =
+    parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
+    parsePolyglotString(lectureFeedbackContent?.content) === ''
+      ? true
+      : false;
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -203,7 +212,7 @@ export default function LectureDiscussionContainer() {
             <div className="discuss-box2">
               <div
                 className="discuss-text-wrap"
-                style={contentCheck ? { display: 'none' } : {}}
+                style={checkContentValue ? { display: 'none' } : {}}
               >
                 {more === true && (
                   <div className="ql-snow">
@@ -271,7 +280,7 @@ export default function LectureDiscussionContainer() {
                   </div>
                 </div>
               )}
-              {filesMap.get('reference') && (
+              {lectureFeedbackContent.depotId && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">

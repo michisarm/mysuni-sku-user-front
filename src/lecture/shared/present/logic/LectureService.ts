@@ -647,22 +647,18 @@ class LectureService {
     this._lectureFilterRdoV2.setOffset(offset);
 
     const cardRdo = this._lectureFilterRdoV2.toCardRdo();
-    const offsetRequiredCard = await findByRdo(cardRdo);
-
+    const offsetRequiredCard = await findCardsByRdo(cardRdo);
     if (
       offsetRequiredCard &&
       offsetRequiredCard.results &&
       offsetRequiredCard.results.length > 0
     ) {
-      const cardIds = offsetRequiredCard.results.map(
-        (result) => result.card.id
-      );
+      const cardIds = offsetRequiredCard.results.map((card) => card.id);
       const cardStudents = await findCardStudentsByCardIds(cardIds);
       const cardNotes =
         (await this.myTrainingApi.findCardNoteList(cardIds)) || [];
 
-      const addLectureTableViews = offsetRequiredCard.results.map((result) => {
-        const card = result.card;
+      const addLectureTableViews = offsetRequiredCard.results.map((card) => {
         const mainCategory = card.categories.find(
           (category) => category.mainCategory === true
         ) || {
