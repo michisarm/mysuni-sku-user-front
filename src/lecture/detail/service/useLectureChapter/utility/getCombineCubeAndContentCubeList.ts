@@ -19,7 +19,7 @@ export function getCombineCubeAndContentCubeList(
       const course: LectureChpaterCubeList = {
         cubeId: filterCubeList?.id || '',
         name: parsePolyglotString(contentCubeList[i].name),
-        description: contentCubeList[i].description,
+        description: parsePolyglotString(contentCubeList[i].description),
         type: filterCubeList?.type || 'None',
         learningTime: filterCubeList?.learningTime || 0,
         isCube: true,

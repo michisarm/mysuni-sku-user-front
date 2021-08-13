@@ -7,6 +7,6 @@ export interface LearningContent {
   parentId: string | null;
   learningContentType: LearningContentType;
   chapter: boolean;
-  description: string;
+  description: PolyglotString;
   children: LearningContentChildren[];
 }
