@@ -1,11 +1,17 @@
 import React, { Fragment } from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import ReactDatePicker from 'react-datepicker';
-import CheckboxOptions from '../../model/CheckboxOptions';
+import CheckboxOptions, {
+  learningTimePolyglot,
+  requiredPolyglot,
+} from '../../model/CheckboxOptions';
 import { CollegeModel } from '../../../../college/model';
 import FilterCountViewModel from '../../../model/FilterCountViewModel';
 import { FilterCondition } from '../../../model/FilterCondition';
-import { FilterConditionName } from '../../../model/FilterConditionName';
+import {
+  FilterConditionName,
+  filterConditionNamePolyglot,
+} from '../../../model/FilterConditionName';
 import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -35,11 +41,15 @@ export function FilterBoxView({
     <table className="">
       <tbody>
         <tr>
-          <th>{FilterConditionName.LearningType}</th>
+          <th>
+            {filterConditionNamePolyglot(FilterConditionName.LearningType)}
+          </th>
           <td>
             <Checkbox
               className="base"
-              name={FilterConditionName.LearningType}
+              name={filterConditionNamePolyglot(
+                FilterConditionName.LearningType
+              )}
               label={`${SELECT_ALL} (${totalFilterCount.totalCount})`}
               checked={
                 conditions.learningTypes.length ===
@@ -51,7 +61,9 @@ export function FilterBoxView({
               <Fragment key={`checkbox-learningType-${index}`}>
                 <Checkbox
                   className="base"
-                  name={FilterConditionName.LearningType}
+                  name={filterConditionNamePolyglot(
+                    FilterConditionName.LearningType
+                  )}
                   label={`${
                     learningType.text
                   } (${totalFilterCount.getCountFromLearningType(
@@ -68,7 +80,7 @@ export function FilterBoxView({
           </td>
         </tr>
         <tr>
-          <th>{FilterConditionName.College}</th>
+          <th>{filterConditionNamePolyglot(FilterConditionName.College)}</th>
           <td>
             <Checkbox
               className="base"
@@ -83,7 +95,9 @@ export function FilterBoxView({
                 <Fragment key={`checkbox-college-${index}`}>
                   <Checkbox
                     className="base"
-                    name={FilterConditionName.College}
+                    name={filterConditionNamePolyglot(
+                      FilterConditionName.College
+                    )}
                     label={`${parsePolyglotString(
                       college.name,
                       getDefaultLang(college.langSupports)
@@ -97,11 +111,15 @@ export function FilterBoxView({
           </td>
         </tr>
         <tr>
-          <th>{FilterConditionName.DifficultyLevel}</th>
+          <th>
+            {filterConditionNamePolyglot(FilterConditionName.DifficultyLevel)}
+          </th>
           <td>
             <Checkbox
               className="base"
-              name={FilterConditionName.DifficultyLevel}
+              name={filterConditionNamePolyglot(
+                FilterConditionName.DifficultyLevel
+              )}
               label={SELECT_ALL}
               checked={
                 conditions.difficultyLevels.length ===
@@ -113,7 +131,9 @@ export function FilterBoxView({
               <Fragment key={`checkbox-difficultyLevel-${index}`}>
                 <Checkbox
                   className="base"
-                  name={FilterConditionName.DifficultyLevel}
+                  name={filterConditionNamePolyglot(
+                    FilterConditionName.DifficultyLevel
+                  )}
                   label={difficultyLevel.text}
                   value={difficultyLevel.value}
                   checked={conditions.difficultyLevels.includes(
@@ -126,11 +146,15 @@ export function FilterBoxView({
           </td>
         </tr>
         <tr>
-          <th>{FilterConditionName.LearningTime}</th>
+          <th>
+            {filterConditionNamePolyglot(FilterConditionName.LearningTime)}
+          </th>
           <td>
             <Checkbox
               className="base"
-              name={FilterConditionName.LearningTime}
+              name={filterConditionNamePolyglot(
+                FilterConditionName.LearningTime
+              )}
               label={SELECT_ALL}
               checked={
                 conditions.learningTimes.length ===
@@ -142,8 +166,10 @@ export function FilterBoxView({
               <Fragment key={`checkbox-learningTime-${index}`}>
                 <Checkbox
                   className="base"
-                  name={FilterConditionName.LearningTime}
-                  label={learningTime.text}
+                  name={filterConditionNamePolyglot(
+                    FilterConditionName.LearningTime
+                  )}
+                  label={learningTimePolyglot(learningTime.text)}
                   value={learningTime.value}
                   checked={conditions.learningTimes.includes(
                     learningTime.value
@@ -179,14 +205,16 @@ export function FilterBoxView({
           </td>
         </tr> */}
         <tr>
-          <th>{FilterConditionName.Required}</th>
+          <th>{filterConditionNamePolyglot(FilterConditionName.Required)}</th>
           <td>
             {CheckboxOptions.requireds.map((required, index) => (
               <Fragment key={`checkbox-required-${index}`}>
                 <Checkbox
                   className="base radio"
-                  name={FilterConditionName.Required}
-                  label={required.text}
+                  name={filterConditionNamePolyglot(
+                    FilterConditionName.Required
+                  )}
+                  label={requiredPolyglot(required.text)}
                   value={required.value}
                   checked={conditions.required === required.value}
                   onChange={onCheckOne}
@@ -196,11 +224,15 @@ export function FilterBoxView({
           </td>
         </tr>
         <tr>
-          <th>{FilterConditionName.Certification}</th>
+          <th>
+            {filterConditionNamePolyglot(FilterConditionName.Certification)}
+          </th>
           <td>
             <Checkbox
               className="base"
-              name={FilterConditionName.Certification}
+              name={filterConditionNamePolyglot(
+                FilterConditionName.Certification
+              )}
               label={SELECT_ALL}
               checked={
                 conditions.certifications.length ===
@@ -212,7 +244,9 @@ export function FilterBoxView({
               <Fragment key={`checkbox-certification-${index}`}>
                 <Checkbox
                   className="base"
-                  name={FilterConditionName.Certification}
+                  name={filterConditionNamePolyglot(
+                    FilterConditionName.Certification
+                  )}
                   label={certification.text}
                   value={certification.value}
                   checked={conditions.certifications.includes(
@@ -225,7 +259,9 @@ export function FilterBoxView({
           </td>
         </tr>
         <tr>
-          <th>{FilterConditionName.LearningSchedule}</th>
+          <th>
+            {filterConditionNamePolyglot(FilterConditionName.LearningSchedule)}
+          </th>
           <td>
             <div className="calendar-cell">
               <div className="ui h40 calendar" id="rangestart">
