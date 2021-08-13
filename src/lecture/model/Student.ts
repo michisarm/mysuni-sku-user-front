@@ -14,7 +14,7 @@ export default interface Student {
   sessionId: string;
   isFinishMedia: boolean;
   studentScore: StudentScore;
-  creationTime: number;
+  registeredTime: number;
   updateTime: number;
   modifiedTime: number;
   lectureId: string;
