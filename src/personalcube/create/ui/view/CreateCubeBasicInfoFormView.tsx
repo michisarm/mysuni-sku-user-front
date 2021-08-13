@@ -33,6 +33,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 function CreateCubeBasicInfoFormView() {
   const params = useParams<CreateCubeParams>();
@@ -42,7 +43,8 @@ function CreateCubeBasicInfoFormView() {
 
   const onChangeName = useCallback((e: any, data: any) => {
     e.preventDefault();
-    CreateCubeService.instance.changeCubeSdoProps('name', data.value);
+    const polyglotString = { en: null, ko: data.value, zh: null };
+    CreateCubeService.instance.changeCubeSdoProps('name', polyglotString);
   }, []);
 
   const onChangeCubeType = useCallback(
@@ -103,9 +105,8 @@ function CreateCubeBasicInfoFormView() {
 
   const mainCategory = getMainCategory(cubeSdo.categories);
   const subCategories = getSubCategories(cubeSdo.categories);
-  const { collegeIdList, combineCollegeWithChannel } = combineCollege(
-    subCategories
-  );
+  const { collegeIdList, combineCollegeWithChannel } =
+    combineCollege(subCategories);
 
   const mainChannelId = mainCategory?.channelId || '';
   const mainChannelName = getChannelName(mainChannelId) || '';
@@ -141,7 +142,7 @@ function CreateCubeBasicInfoFormView() {
             '제목을 입력해주세요.',
             'Create-NM-강좌명PlaceHolder'
           )}
-          value={cubeSdo.name}
+          value={parsePolyglotString(cubeSdo.name)}
           sizeLimited
           maxSize={100}
           invalidMessage={getPolyglotText(

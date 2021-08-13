@@ -36,26 +36,21 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
   const { media, board, officeWeb } = cubeMaterial;
 
   return {
-    name: parsePolyglotString(cube.name),
+    name: cube.name,
     type: cube.type,
     categories: cube.categories,
     learningTime: cube.learningTime,
     difficultyLevel: cubeContents.difficultyLevel,
     description: {
-      goal: parsePolyglotString(cubeContents.description.goal),
-      applicants: parsePolyglotString(cubeContents.description.applicants),
-      description: parsePolyglotString(cubeContents.description.description),
-      completionTerms: parsePolyglotString(
-        cubeContents.description.completionTerms
-      ),
-      guide: parsePolyglotString(cubeContents.description.guide),
+      goal: cubeContents.description.goal,
+      applicants: cubeContents.description.applicants,
+      description: cubeContents.description.description,
+      completionTerms: cubeContents.description.completionTerms,
+      guide: cubeContents.description.guide,
     },
     organizerId: cubeContents.organizerId,
     otherOrganizerName: cubeContents.otherOrganizerName,
-    tags:
-      parsePolyglotString(cubeContents.tags)
-        .split(',')
-        .map((c) => c.trim()) || [],
+    tags: cubeContents.tags || { en: null, ko: null, zh: null },
     fileBoxId: cubeContents.fileBoxId,
     materialSdo: {
       mediaSdo: {
@@ -64,10 +59,7 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
         mediaType: media?.mediaType,
       },
       boardSdo: {
-        name: parsePolyglotString(
-          board?.name || null,
-          getDefaultLang(cube.langSupports)
-        ),
+        name: board?.name,
         config: board?.config,
         learningPeriod: board?.learningPeriod,
       },

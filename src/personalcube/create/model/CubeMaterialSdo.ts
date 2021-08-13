@@ -1,6 +1,7 @@
 import { MediaType } from '../../../lecture/model/MediaType';
 import { MediaContents } from '../../../lecture/model/MediaContents';
 import { DatePeriod } from '../../../shared/model/DatePeriod';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface CubeMaterialSdo {
   mediaSdo: MediaSdo;
@@ -15,7 +16,7 @@ export interface MediaSdo {
 }
 
 export interface boardSdo {
-  name?: string;
+  name?: PolyglotString;
   config?: BoardConfig;
   learningPeriod?: DatePeriod;
   automaticCompletion?: boolean;
