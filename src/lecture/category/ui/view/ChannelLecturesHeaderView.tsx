@@ -62,7 +62,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
             </strong>
             <PolyglotText
               defaultString="의 학습 과정 입니다."
-              id="cicl-목록-학습과정"
+              id="cicl-목록-학습과정2"
             />
             {displayCurriculum === true && (
               <Link to={linkUrl} className="personal line round">
