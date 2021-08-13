@@ -20,6 +20,7 @@ import { Button, Popup } from 'semantic-ui-react';
 import ProfilePopupView from '../view/ProfilePopupView';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
+import { isCollegeManager } from 'shared/helper/isCollegeManager';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -162,7 +163,7 @@ class ProfileContainer extends Component<Props, State> {
 
     return (
       <div className="g-info g-info2 g-ab2">
-        <LanguageSelectPopupView />
+        {isCollegeManager() && <LanguageSelectPopupView />}
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}

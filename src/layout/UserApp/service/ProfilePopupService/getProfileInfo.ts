@@ -12,9 +12,11 @@ export async function getProfileInfo(
 ): Promise<void> {
   if (memberId !== undefined) {
     const profileInfo = await findUserProfile(memberId);
-    const followWithFollowingCount = await findFollowWithFollowingCount();
+    const followWithFollowingCount = await findFollowWithFollowingCount(
+      memberId
+    );
 
-    if (profileInfo && profileInfo !== undefined && profileInfo !== null) {
+    if (profileInfo) {
       const parseProfileInfo: ProfileInfo = {
         ...profileInfo,
         followCount: followWithFollowingCount?.followerCount || 0,
