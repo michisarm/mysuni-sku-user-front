@@ -14,6 +14,7 @@ import { LearningStateName, LearningState } from '../../../shared/model';
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { stateNamePolytglot } from 'shared/model/LearningStateName';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -87,7 +88,7 @@ export default function RequiredCardListView({
                 {convertTimeToDate(requiredCard.updateTime)}
               </Table.Cell>
               <Table.Cell>{progressRate}</Table.Cell>
-              <Table.Cell>{learningState}</Table.Cell>
+              <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
             </Table.Row>
           );
         })}
