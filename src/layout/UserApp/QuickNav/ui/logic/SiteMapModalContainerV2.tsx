@@ -246,7 +246,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       name: getPolyglotText('승인관리', 'home-사이트맵-대카테8'),
       items: [
         {
-          name: getPolyglotText('유료과정', 'home-사이트맵-중카37ㅋㅋ'),
+          name: getPolyglotText('유료과정', 'home-사이트맵-중카37'),
           path: myPageRoutePaths.approvalPaidCourse(),
         },
         {
