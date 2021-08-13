@@ -40,263 +40,281 @@ interface LectureSurveyViewProps {
   lectureStructure?: LectureStructure;
 }
 
-const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
-  lectureSurvey,
-  lectureSurveyState,
-  currentMenu,
-  lectureStructure,
-}) {
-  const params = useLectureParams();
-  const surveyCaseId = lectureSurveyState?.surveyCaseId;
-  const [commentId, setCommentID] = useState('');
+const LectureSurveyView: React.FC<LectureSurveyViewProps> =
+  function LectureSurveyView({
+    lectureSurvey,
+    lectureSurveyState,
+    currentMenu,
+    lectureStructure,
+  }) {
+    const params = useLectureParams();
+    const surveyCaseId = lectureSurveyState?.surveyCaseId;
+    const [commentId, setCommentID] = useState('');
 
-  const requestSaveLectureSurveyState = useCallback(() => {
-    if (params !== undefined) {
-      saveLectureSurveyState(params);
-    } else {
-      saveCommunitySurveyState();
-    }
-  }, [params, currentMenu]);
-
-  const requestSubmitLectureSurveyState = useCallback(() => {
-    if (params !== undefined) {
-      submitLectureSurveyState(params);
-    } else {
-      submitCommunitySurveyState();
-    }
-  }, [params, currentMenu]);
-
-  useEffect(() => {
-    const surveyCaseService = SurveyCaseService.instance;
-    if (surveyCaseId !== undefined) {
-      surveyCaseService.findSurveyCaseFeedBack(surveyCaseId).then(result => {
-        if (result !== '') {
-          setCommentID(result.commentFeedbackId);
-        }
-      });
-    }
-  }, [surveyCaseId]);
-
-  const skProfileService = SkProfileService.instance;
-  const { skProfile } = skProfileService;
-  // const { member } = skProfile;
-  const [surveyTitle, setSurveyTitle] = useState<string>();
-  useEffect(() => {
-    if (currentMenu?.name !== undefined) {
-      setSurveyTitle(currentMenu?.name);
-    } else {
-      const params = getLectureParams();
-      if (params === undefined) {
-        return;
+    const requestSaveLectureSurveyState = useCallback(() => {
+      if (params !== undefined) {
+        saveLectureSurveyState(params);
+      } else {
+        saveCommunitySurveyState();
       }
-      const name =
-        getActiveCubeStructureItem(params.pathname)?.name ||
-        getActiveCourseStructureItem()?.name ||
-        '';
-      setSurveyTitle(`${name}과정 Survey`);
-    }
-  }, [lectureStructure, currentMenu?.name]);
+    }, [params, currentMenu]);
 
-  return (
-    <>
-      <div
-        className="course-info-header"
-        data-area={Area.CUBE_HEADER}
-      >
-        <div className="survey-header">
-          <div className="survey-header-left test_ing width50">
-            {surveyTitle}
-          </div>
-          <div className="survey-header-right" style={{pointerEvents: 'none'}}>
-            {lectureSurveyState !== undefined &&
-              lectureSurveyState.state === 'Completed' && (
-                <button className="ui button free proceeding">
-                  <PolyglotText defaultString="참여완료" id="Survey-Survey-참여완료" />
-                </button>
-              )}
+    const requestSubmitLectureSurveyState = useCallback(() => {
+      if (params !== undefined) {
+        submitLectureSurveyState(params);
+      } else {
+        submitCommunitySurveyState();
+      }
+    }, [params, currentMenu]);
+
+    useEffect(() => {
+      const surveyCaseService = SurveyCaseService.instance;
+      if (surveyCaseId !== undefined) {
+        surveyCaseService
+          .findSurveyCaseFeedBack(surveyCaseId)
+          .then((result) => {
+            if (result !== '') {
+              setCommentID(result.commentFeedbackId);
+            }
+          });
+      }
+    }, [surveyCaseId]);
+
+    const skProfileService = SkProfileService.instance;
+    const { skProfile } = skProfileService;
+    // const { member } = skProfile;
+    const [surveyTitle, setSurveyTitle] = useState<string>();
+    useEffect(() => {
+      if (currentMenu?.name !== undefined) {
+        setSurveyTitle(currentMenu?.name);
+      } else {
+        const params = getLectureParams();
+        if (params === undefined) {
+          return;
+        }
+        const name =
+          getActiveCubeStructureItem(params.pathname)?.name ||
+          getActiveCourseStructureItem()?.name ||
+          '';
+        setSurveyTitle(`${name}과정 Survey`);
+      }
+    }, [lectureStructure, currentMenu?.name]);
+
+    return (
+      <>
+        <div className="course-info-header" data-area={Area.CUBE_HEADER}>
+          <div className="survey-header">
+            <div className="survey-header-left test_ing width50">
+              {surveyTitle}
+            </div>
+            <div
+              className="survey-header-right"
+              style={{ pointerEvents: 'none' }}
+            >
+              {lectureSurveyState !== undefined &&
+                lectureSurveyState.state === 'Completed' && (
+                  <button className="ui button free proceeding">
+                    <PolyglotText
+                      defaultString="참여완료"
+                      id="Survey-Survey-참여완료"
+                    />
+                  </button>
+                )}
+            </div>
           </div>
         </div>
-      </div>
 
-      {lectureSurveyState !== undefined &&
-        (lectureSurveyState.state === 'Progress' ||
-          lectureSurveyState.state === 'Start') &&
-        lectureSurvey.surveyItems.map(lectureSurveyItem => {
-          if (lectureSurveyItem.type === 'Criterion') {
-            return (
-              <LectureSurveyCriterionView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Choice') {
-            return (
-              <LectureSurveyChoiceView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Essay') {
-            return (
-              <LectureSurveyEssayView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Date') {
-            return (
-              <LectureSurveyDateView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Boolean') {
-            return (
-              <LectureSurveyBooleanView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Matrix') {
-            return (
-              <LectureSurveyMatrixView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                lectureSurveyState={lectureSurveyState}
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          return null;
-        })}
+        {lectureSurveyState !== undefined &&
+          (lectureSurveyState.state === 'Progress' ||
+            lectureSurveyState.state === 'Start') &&
+          lectureSurvey.surveyItems.map((lectureSurveyItem) => {
+            if (lectureSurveyItem.type === 'Criterion') {
+              return (
+                <LectureSurveyCriterionView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Choice') {
+              return (
+                <LectureSurveyChoiceView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Essay') {
+              return (
+                <LectureSurveyEssayView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Date') {
+              return (
+                <LectureSurveyDateView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Boolean') {
+              return (
+                <LectureSurveyBooleanView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Matrix') {
+              return (
+                <LectureSurveyMatrixView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            return null;
+          })}
 
-      {lectureSurveyState !== undefined &&
-        lectureSurveyState.state === 'Completed' && (
-          <div className="course-info-ing">
-            <Image
-              style={{ display: 'inline-block' }}
-              src={`${process.env.PUBLIC_URL}/images/all/icon-survey-done.png`}
-            />
+        {lectureSurveyState !== undefined &&
+          lectureSurveyState.state === 'Completed' && (
+            <div className="course-info-ing">
+              <Image
+                style={{ display: 'inline-block' }}
+                src={`${process.env.PUBLIC_URL}/images/all/icon-survey-done.png`}
+              />
 
-            <p className="survey-done-txt">
-              <PolyglotText defaultString="이미 Survey에 응답하였습니다." id="Survey-Survey-응답완료" />
-            </p>
+              <p className="survey-done-txt">
+                <PolyglotText
+                  defaultString="이미 Survey에 응답하였습니다."
+                  id="Survey-Survey-응답완료"
+                />
+              </p>
 
-            <LectureSurveyResultModalView
-              trigger={
-                <button className="ui button free pop d">
-                  <PolyglotText defaultString="Survey결과 통계 보기" id="Survey-Survey-Survey결과 " />
-                </button>
-              }
-              lectureSurvey={lectureSurvey}
-              lectureSurveyState={lectureSurveyState}
-              currentMenu={currentMenu}
-              lectureStructure={lectureStructure}
-            />
-          </div>
-        )}
+              <LectureSurveyResultModalView
+                trigger={
+                  <button className="ui button free pop d">
+                    <PolyglotText
+                      defaultString="Survey결과 통계 보기"
+                      id="Survey-Survey-Survey결과"
+                    />
+                  </button>
+                }
+                lectureSurvey={lectureSurvey}
+                lectureSurveyState={lectureSurveyState}
+                currentMenu={currentMenu}
+                lectureStructure={lectureStructure}
+              />
+            </div>
+          )}
 
-      {lectureSurveyState !== undefined &&
-        lectureSurveyState.state !== 'Completed' && (
-          <div className="survey-preview">
-            <button
-              className="ui button fix line"
-              onClick={requestSaveLectureSurveyState}
-            >
-              <PolyglotText defaultString="저장" id="Survey-Survey-저장" />
-            </button>
-            <button
-              className="ui button fix bg"
-              onClick={requestSubmitLectureSurveyState}
-            >
-              <PolyglotText defaultString="제출" id="Survey-Survey-제출" />
-            </button>
-          </div>
-        )}
+        {lectureSurveyState !== undefined &&
+          lectureSurveyState.state !== 'Completed' && (
+            <div className="survey-preview">
+              <button
+                className="ui button fix line"
+                onClick={requestSaveLectureSurveyState}
+              >
+                <PolyglotText defaultString="저장" id="Survey-Survey-저장" />
+              </button>
+              <button
+                className="ui button fix bg"
+                onClick={requestSubmitLectureSurveyState}
+              >
+                <PolyglotText defaultString="제출" id="Survey-Survey-제출" />
+              </button>
+            </div>
+          )}
 
-      {lectureSurveyState !== undefined &&
-        lectureSurveyState.state === 'Completed' &&
-        commentId !== null &&
-        commentId !== undefined &&
-        commentId !== '' &&
-        currentMenu?.name === undefined && (
-          <div className="outline">
-            <CommentList
-              feedbackId={commentId}
-              menuType=""
-              hideCamera
-              name={parsePolyglotString(skProfile.name)}
-              email={skProfile.email}
-              companyName={parsePolyglotString(skProfile.companyName)}
-              departmentName={parsePolyglotString(skProfile.departmentName)}
-            />
-          </div>
-        )}
-      {lectureSurveyState !== undefined &&
-        lectureSurveyState.state === 'Completed' &&
-        commentId !== null &&
-        commentId !== undefined &&
-        commentId !== '' &&
-        currentMenu?.name !== undefined && (
-          <div className="outline">
-            <CommunityCommentList
-              feedbackId={commentId}
-              menuType=""
-              hideCamera
-              name={parsePolyglotString(skProfile.name)}
-              email={skProfile.email}
-              companyName={parsePolyglotString(skProfile.companyName)}
-              departmentName={parsePolyglotString(skProfile.departmentName)}
-            />
-          </div>
-        )}
-    </>
-  );
-};
+        {lectureSurveyState !== undefined &&
+          lectureSurveyState.state === 'Completed' &&
+          commentId !== null &&
+          commentId !== undefined &&
+          commentId !== '' &&
+          currentMenu?.name === undefined && (
+            <div className="outline">
+              <CommentList
+                feedbackId={commentId}
+                menuType=""
+                hideCamera
+                name={parsePolyglotString(skProfile.name)}
+                email={skProfile.email}
+                companyName={parsePolyglotString(skProfile.companyName)}
+                departmentName={parsePolyglotString(skProfile.departmentName)}
+              />
+            </div>
+          )}
+        {lectureSurveyState !== undefined &&
+          lectureSurveyState.state === 'Completed' &&
+          commentId !== null &&
+          commentId !== undefined &&
+          commentId !== '' &&
+          currentMenu?.name !== undefined && (
+            <div className="outline">
+              <CommunityCommentList
+                feedbackId={commentId}
+                menuType=""
+                hideCamera
+                name={parsePolyglotString(skProfile.name)}
+                email={skProfile.email}
+                companyName={parsePolyglotString(skProfile.companyName)}
+                departmentName={parsePolyglotString(skProfile.departmentName)}
+              />
+            </div>
+          )}
+      </>
+    );
+  };
 
 export default LectureSurveyView;
