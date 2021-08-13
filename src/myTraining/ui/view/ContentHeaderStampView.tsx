@@ -30,18 +30,7 @@ class ContentHeaderStampView extends PureComponent<Props> {
                 <span className="text1">
                   <PolyglotText defaultString="Stamp" id="mapg-mifa-mas" />
                 </span>
-                <span
-                  className="text2"
-                  dangerouslySetInnerHTML={{
-                    __html: getPolyglotText(
-                      `{stampCount}개`,
-                      'mapg-mifa-ms개',
-                      {
-                        stampCount: (stampCount || 0).toString(),
-                      }
-                    ),
-                  }}
-                />
+                <span className="text2">{stampCount || 0}</span>
               </a>
             </div>
           </Label>
