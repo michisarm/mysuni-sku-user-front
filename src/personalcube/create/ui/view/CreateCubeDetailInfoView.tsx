@@ -131,7 +131,9 @@ export default function CreateCubeDetailInfoView({
               </Table.HeaderCell>
               <Table.Cell>
                 <div>
-                  {getContentsProviderName(cubeContents.organizerId)}
+                  {parsePolyglotString(
+                    getContentsProviderName(cubeContents.organizerId) || null
+                  )}
                   {cubeContents.organizerId === 'PVD00018' &&
                     `: ${cubeContents.otherOrganizerName}`}
                 </div>
