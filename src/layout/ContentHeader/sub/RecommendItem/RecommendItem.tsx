@@ -22,14 +22,8 @@ class RecommendItem extends Component<Props> {
       <div className="recommend-info personal-channel-header">
         {top}
         <span className="value1">
-          <span
-            className="text01"
-            dangerouslySetInnerHTML={{
-              __html: getPolyglotText('{count}개', 'rcmd-mifa-관심개수', {
-                count: String(favoriteChannelCount) || '0',
-              }),
-            }}
-          />
+          <span className="text01">{favoriteChannelCount || 0}</span>
+
           {/* <span className="text02">/</span>
           <span className="text03">{totalChannelCount}</span> */}
           {/* <span className="text04">
