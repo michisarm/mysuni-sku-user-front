@@ -23,7 +23,7 @@ enum AnchorTargetType {
 }
 interface BannerProps {
   index: number;
-  targetUrl: PolyglotString;
+  targetUrl: string;
   target: string;
   name: string;
   imageAlt: PolyglotString;
@@ -38,23 +38,27 @@ interface BannerProps {
 
 // 김민준 메인 배너
 function RenderBanner(props: BannerProps) {
-  const { index, imageAlt, imageUrl, name, target, targetUrl, onClickBanner } =
-    props;
+  const {
+    index,
+    imageAlt,
+    imageUrl,
+    name,
+    target,
+    targetUrl,
+    onClickBanner,
+  } = props;
 
-  const getTargetUrl = originSelfPath(parsePolyglotString(targetUrl));
+  const getTargetUrl = originSelfPath(targetUrl);
 
   return (
     <div className="swiper-slide" key={`main-banner-${index}`}>
-      {!/^(http|https)/.test(parsePolyglotString(targetUrl)) &&
-      target === AnchorTargetType.self ? (
+      {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
         <Link
           className="ui image"
           title={name}
           target={target}
           to={{ pathname: getTargetUrl }}
-          onClick={() =>
-            onClickBanner(parsePolyglotString(targetUrl), target, name, index)
-          }
+          onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
           <Image
             alt={parsePolyglotString(imageAlt)}
@@ -69,15 +73,8 @@ function RenderBanner(props: BannerProps) {
               className="ui image"
               title={name}
               target={target}
-              href={parsePolyglotString(targetUrl)}
-              onClick={() =>
-                onClickBanner(
-                  parsePolyglotString(targetUrl),
-                  target,
-                  name,
-                  index
-                )
-              }
+              href={targetUrl}
+              onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
               <Image
                 alt={parsePolyglotString(imageAlt)}
