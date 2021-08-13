@@ -28,8 +28,8 @@ function getVaildLeaningDate(
     cardRelatedStudent.cardStudent &&
     validLearningDate
   ) {
-    const { creationTime } = cardRelatedStudent.cardStudent;
-    const parseCreateDate = new Date(creationTime);
+    const { registeredTime } = cardRelatedStudent.cardStudent;
+    const parseCreateDate = new Date(registeredTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
     const year = parseCreateDate.getFullYear();
@@ -106,8 +106,12 @@ export async function requestLectureCardSummary(cardId: string) {
     return;
   }
 
-  const { card, cardContents, cardOperatorIdentity, cardRelatedCount } =
-    cardWithContentsAndRelatedCountRom;
+  const {
+    card,
+    cardContents,
+    cardOperatorIdentity,
+    cardRelatedCount,
+  } = cardWithContentsAndRelatedCountRom;
 
   if (card === null) {
     return;
