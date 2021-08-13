@@ -1,5 +1,40 @@
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
+export function learningTimePolyglot(s: string) {
+  if (s === '30분 미만') {
+    return getPolyglotText('30분 미만', 'learning-LearningFilter2-시간1');
+  } else if (s === '30분 이상~1시간 미만') {
+    return getPolyglotText(
+      '30분 이상~1시간 미만',
+      'learning-LearningFilter2-시간2'
+    );
+  } else if (s === '1시간 이상~4시간 미만') {
+    return getPolyglotText(
+      '1시간 이상~4시간 미만',
+      'learning-LearningFilter2-시간3'
+    );
+  } else if (s === '4시간 이상~12시간 미만') {
+    return getPolyglotText(
+      '4시간 이상~12시간 미만',
+      'learning-LearningFilter2-시간4'
+    );
+  } else if (s === '12시간 이상') {
+    return getPolyglotText('12시간 이상', 'learning-LearningFilter2-시간5');
+  } else {
+    return '';
+  }
+}
+
+export function requiredPolyglot(s: string) {
+  if (s === '선택안함') {
+    return getPolyglotText('선택안함', 'learning-LearningFilter2-항목택1');
+  } else if (s === '유') {
+    return getPolyglotText('유', 'learning-LearningFilter2-항목택2');
+  } else if (s === '무') {
+    return getPolyglotText('무', 'learning-LearningFilter2-항목택3');
+  } else return '';
+}
+
 const CheckboxOptions = {
   difficultyLevels: [
     {
@@ -108,36 +143,27 @@ const CheckboxOptions = {
   learningTimes: [
     {
       key: 0,
-      text: getPolyglotText('30분 미만', 'learning-LearningFilter2-시간1'),
+      text: '30분 미만',
       value: 'type1',
     },
     {
       key: 1,
-      text: getPolyglotText(
-        '30분 이상~1시간 미만',
-        'learning-LearningFilter2-시간2'
-      ),
+      text: '30분 이상~1시간 미만',
       value: 'type2',
     },
     {
       key: 2,
-      text: getPolyglotText(
-        '1시간 이상~4시간 미만',
-        'learning-LearningFilter2-시간3'
-      ),
+      text: '1시간 이상~4시간 미만',
       value: 'type3',
     },
     {
       key: 3,
-      text: getPolyglotText(
-        '4시간 이상~12시간 미만',
-        'learning-LearningFilter2-시간4'
-      ),
+      text: '4시간 이상~12시간 미만',
       value: 'type4',
     },
     {
       key: 4,
-      text: getPolyglotText('12시간 이상', 'learning-LearningFilter2-시간5'),
+      text: '12시간 이상',
       value: 'type5',
     },
   ],
@@ -145,17 +171,17 @@ const CheckboxOptions = {
   requireds: [
     {
       key: 0,
-      text: getPolyglotText('선택안함', 'learning-LearningFilter2-항목택1'),
+      text: '선택안함',
       value: 'none',
     },
     {
       key: 1,
-      text: getPolyglotText('유', 'learning-LearningFilter2-항목택2'),
+      text: '유',
       value: 'true',
     },
     {
       key: 2,
-      text: getPolyglotText('무', 'learning-LearningFilter2-항목택3'),
+      text: '무',
       value: 'false',
     },
   ],

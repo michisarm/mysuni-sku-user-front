@@ -15,6 +15,7 @@ import { getCollgeName } from '../../../shared/service/useCollege/useRequestColl
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { stateNamePolytglot } from 'shared/model/LearningStateName';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -85,7 +86,7 @@ export default function InMyLectureListView({
                 {convertTimeToDate(inMyLecture.lastStudyDate)}
               </Table.Cell>
               <Table.Cell>{progressRate}</Table.Cell>
-              <Table.Cell>{learningState}</Table.Cell>
+              <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
             </Table.Row>
           );
         })}

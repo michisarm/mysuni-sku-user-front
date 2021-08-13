@@ -11,6 +11,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 function CreateCubeContentsFormView() {
   const [errorFieldName, setErrorFieldName] = useState<string>('');
@@ -25,9 +26,10 @@ function CreateCubeContentsFormView() {
       setErrorFieldName('goal');
     } else {
       setErrorFieldName('');
+      const polyglotString = { en: null, ko: e.target.value, zh: null };
       CreateCubeService.instance.changeCubeSdoProps(
         'description.goal',
-        e.target.value
+        polyglotString
       );
     }
   };
@@ -39,17 +41,19 @@ function CreateCubeContentsFormView() {
       setErrorFieldName('applicants');
     } else {
       setErrorFieldName('');
+      const polyglotString = { en: null, ko: e.target.value, zh: null };
       CreateCubeService.instance.changeCubeSdoProps(
         'description.applicants',
-        e.target.value
+        polyglotString
       );
     }
   };
 
   const onChangeDescripiton = (content: string) => {
+    const polyglotString = { en: null, ko: content, zh: null };
     CreateCubeService.instance.changeCubeSdoProps(
       'description.description',
-      content
+      polyglotString
     );
   };
 
@@ -62,15 +66,20 @@ function CreateCubeContentsFormView() {
       setErrorFieldName('completionTerms');
     } else {
       setErrorFieldName('');
+      const polyglotString = { en: null, ko: e.target.value, zh: null };
       CreateCubeService.instance.changeCubeSdoProps(
         'description.completionTerms',
-        e.target.value
+        polyglotString
       );
     }
   };
 
   const onChangeGuide = (content: string) => {
-    CreateCubeService.instance.changeCubeSdoProps('description.guide', content);
+    const polyglotString = { en: null, ko: content, zh: null };
+    CreateCubeService.instance.changeCubeSdoProps(
+      'description.guide',
+      polyglotString
+    );
   };
 
   const onChangeDifficultyLevel = (
@@ -137,7 +146,7 @@ function CreateCubeContentsFormView() {
           >
             <span className="count">
               <span className="now">
-                {cubeSdo.description?.goal?.length || 0}
+                {parsePolyglotString(cubeSdo.description?.goal).length || 0}
               </span>
               /
               <span className="max">
@@ -152,7 +161,7 @@ function CreateCubeContentsFormView() {
                 '교육 목표를 입력해주세요. (최대 500자 입력 가능)',
                 'Create-NM-교육목표Sub'
               )}
-              value={cubeSdo.description?.goal}
+              value={parsePolyglotString(cubeSdo.description?.goal)}
               onChange={onChangeGoal}
             />
             <span className="validation">
@@ -175,7 +184,7 @@ function CreateCubeContentsFormView() {
         >
           <span className="count">
             <span className="now">
-              {cubeSdo.description?.applicants.length || 0}
+              {parsePolyglotString(cubeSdo.description?.applicants).length || 0}
             </span>
             /
             <span className="max">
@@ -187,7 +196,7 @@ function CreateCubeContentsFormView() {
               '교육 대상을 입력해주세요. (최대 500자 입력가능)',
               'Create-NM-교육대상Sub'
             )}
-            value={cubeSdo.description?.applicants}
+            value={parsePolyglotString(cubeSdo.description?.applicants)}
             onChange={onChangeApplicants}
           />
           <span className="validation">
@@ -207,7 +216,7 @@ function CreateCubeContentsFormView() {
             theme="snow"
             modules={SelectOptions.modules}
             formats={SelectOptions.formats}
-            value={cubeSdo.description?.description}
+            value={parsePolyglotString(cubeSdo.description?.description)}
             onChange={onChangeDescripiton}
           />
         </div>
@@ -223,7 +232,8 @@ function CreateCubeContentsFormView() {
         >
           <span className="count">
             <span className="now">
-              {cubeSdo.description?.completionTerms.length || 0}
+              {parsePolyglotString(cubeSdo.description?.completionTerms)
+                .length || 0}
             </span>
             /
             <span className="max">
@@ -238,7 +248,7 @@ function CreateCubeContentsFormView() {
               '이수조건을 입력해주세요.',
               'Create-NM-이수조건Sub'
             )}
-            value={cubeSdo.description?.completionTerms}
+            value={parsePolyglotString(cubeSdo.description?.completionTerms)}
             onChange={onChangeCompletionTerms}
           />
           <span className="validation">
@@ -258,7 +268,7 @@ function CreateCubeContentsFormView() {
             theme="snow"
             modules={SelectOptions.modules}
             formats={SelectOptions.formats}
-            value={cubeSdo.description?.guide}
+            value={parsePolyglotString(cubeSdo.description?.guide)}
             onChange={onChangeGuide}
           />
         </div>

@@ -9,12 +9,16 @@ import { getMainCategory } from './CreateCubeDetail';
 import { reactAlert } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 export interface CubeSdo {
-  name: string;
+  name: PolyglotString;
   type: CubeType;
   categories: CubeCategory[];
-  tags: string[];
+  tags: PolyglotString;
   learningTime: number;
   difficultyLevel: DifficultyLevel;
   description: Description;
@@ -28,18 +32,18 @@ export interface CubeSdo {
 }
 
 export const initialCubeSdo: CubeSdo = {
-  name: '',
+  name: { ko: '', en: '', zh: '' },
   type: 'None',
   categories: [],
-  tags: [],
+  tags: { ko: '', en: '', zh: '' },
   learningTime: 0,
   difficultyLevel: 'Basic',
   description: {
-    applicants: '',
-    completionTerms: '',
-    description: '',
-    goal: '',
-    guide: '',
+    applicants: { ko: '', en: '', zh: '' },
+    completionTerms: { ko: '', en: '', zh: '' },
+    description: { ko: '', en: '', zh: '' },
+    goal: { ko: '', en: '', zh: '' },
+    guide: { ko: '', en: '', zh: '' },
   },
   organizerId: '',
   otherOrganizerName: '',
@@ -72,7 +76,7 @@ export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
 
   if (!cubeSdo.name) return '강좌정보';
   if (!mainCategory) return '메인채널';
-  if (cubeSdo.tags.length > 10) {
+  if (parsePolyglotString(cubeSdo.tags).split(',').length > 10) {
     return '태그는 10개까지 입력 가능합니다.';
   }
   if (cubeSdo.type === 'None') return '교육형태';
@@ -89,11 +93,11 @@ export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
 export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
   const mainCategory = getMainCategory(cubeSdo.categories);
 
-  if (!cubeSdo.name)
+  if (!parsePolyglotString(cubeSdo.name))
     return getPolyglotText('강좌정보', 'Create-NMButtonRequired-강좌정보');
   if (!mainCategory)
     return getPolyglotText('메인채널', 'Create-NMButtonRequired-메인정보');
-  if (cubeSdo.tags.length > 10) {
+  if (parsePolyglotString(cubeSdo.tags).toString().split(',').length > 10) {
     return getPolyglotText(
       '태그는 10개까지 입력 가능합니다.',
       'Create-NMButtonRequired-태그'

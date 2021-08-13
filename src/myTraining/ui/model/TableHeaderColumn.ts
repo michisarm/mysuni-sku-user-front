@@ -31,7 +31,7 @@ export function inProgressPolyglot(s: string) {
     return getPolyglotText('생성자 E-mail', '승인관리-개인학습-헤더7');
   } else if (s === '상태') {
     return getPolyglotText('상태', '승인관리-개인학습-헤더8');
-  } else if (s === '승일일자') {
+  } else if (s === '승인일자') {
     return getPolyglotText('승인일자', '승인관리-개인학습-헤더9');
   } else if (s === '교육시간') {
     return getPolyglotText('교육시간', 'learning-개인학습-h시간');
@@ -46,7 +46,7 @@ export function inProgressPolyglot(s: string) {
   } else if (s === '취소/미수일') {
     return getPolyglotText('취소/미이수일', 'learning-취소미이수-취소dt');
   } else if (s === '승인자 E-mail') {
-    return getPolyglotText('승인자 E-mail', 'learnaing-개인학습-h이메일');
+    return getPolyglotText('승인자 E-mail', 'learning-개인학습-h이메일');
   } else {
     return s;
   }
