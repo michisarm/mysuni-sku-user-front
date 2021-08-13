@@ -70,15 +70,9 @@ export default function LearningCompleteSummaryView({
             id="home-Summary-완료학습누적갯수"
           />
         </span>
-        <span
-          dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              '<strong>{personalBoardCompletedCount}</strong>개',
-              'home-Summary-개',
-              { personalBoardCompletedCount: personalBoardCompletedCount + '' }
-            ),
-          }}
-        />
+        <span>
+          <strong>{personalBoardCompletedCount}</strong>
+        </span>
       </Popup>
     </div>
   );
