@@ -199,7 +199,9 @@ function CreateCubeEditView() {
             </label>
           </div>
           <div className="column">
-            <div className="text1">{cubeSdo.description?.completionTerms}</div>
+            <div className="text1">
+              {parsePolyglotString(cubeSdo.description?.completionTerms)}
+            </div>
           </div>
         </div>
       </Form.Field>
