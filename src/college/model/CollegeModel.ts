@@ -5,6 +5,11 @@ import { IdName } from 'shared/model';
 import { CollegeType } from './CollegeType';
 import { CreatorModel } from './CreatorModel';
 import ChannelModel from './ChannelModel';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from '../../lecture/model/LangSupport';
 
 export class CollegeModel implements DramaEntity {
   id: string = '';
@@ -13,8 +18,8 @@ export class CollegeModel implements DramaEntity {
 
   collegeId: string = '';
   collegeType: CollegeType = CollegeType.University;
-  name: string = '';
-  description: string = '';
+  name: PolyglotString = { ko: '', zh: '', en: '' };
+  description: PolyglotString = { ko: '', zh: '', en: '' };
   iconFileBoxId: string = '';
   panoptoFolderId: string = '';
 
@@ -23,6 +28,7 @@ export class CollegeModel implements DramaEntity {
   creator: CreatorModel = new CreatorModel();
   openState: string = '';
   time: number = 0;
+  langSupports: LangSupport[] = [];
 
   constructor(college?: CollegeModel) {
     //
@@ -43,7 +49,7 @@ export class CollegeModel implements DramaEntity {
     //
     return new IdName({
       id: this.collegeId,
-      name: this.name,
+      name: parsePolyglotString(this.name),
     });
   }
 }

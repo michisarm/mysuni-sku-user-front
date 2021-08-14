@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Label } from 'semantic-ui-react';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   badgeCount: number;
@@ -17,19 +18,20 @@ class ContentHeaderBadgeView extends PureComponent<Props> {
       <div className="cell-inner">
         <div className="stamp-wrap">
           <Label className="stamp">
-              <div>
-                <a
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    onClickItem && onClickItem();
-                  }}
-                >
-                  <span className="text1">Badge</span>
-                  <span className="text3">{badgeCount || 0}</span>
-                  <span className="text5">개</span>
-                </a>
-              </div>
+            <div>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClickItem && onClickItem();
+                }}
+              >
+                <span className="text1">
+                  <PolyglotText defaultString="Badge" id="mapg-mifa-mbtt" />
+                </span>
+                <span className="text3">{badgeCount || 0}</span>
+              </a>
+            </div>
           </Label>
         </div>
       </div>

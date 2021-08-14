@@ -1,12 +1,18 @@
 import React from 'react';
 import { includes } from 'lodash';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface Props extends Record<string, any> {
-  src: string;
+  src: string | PolyglotString;
 }
 
 function Image({ src, alt, className }: Props) {
   const srcParser = () => {
+    src = typeof src === 'string' ? src : parsePolyglotString(src);
+
     // 절대경로 이거나 base64인 경우
     if (
       src === null ||

@@ -15,6 +15,11 @@ import {
 } from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 import { Classroom } from '../../../../lecture/detail/viewModel/LectureClassroom';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -58,15 +63,16 @@ class ApplyReferenceModal extends React.Component<Props> {
     } = this.props;
     skProfileService!
       .findSkProfile()
-      .then((profile: SkProfileModel) =>
-        departmentService!.findDepartmentByCode(profile.departmentCode)
-      )
+      .then((profile: SkProfileModel) => {
+        return departmentService!.findDepartmentByCode(
+          skProfileService!.skProfile.departmentCode
+        );
+        // return departmentService!.findDepartmentByCode(profile.departmentCode)
+      })
       .then((department: DepartmentModel) =>
-        memberService!.findApprovalMemberByEmployeeId(department.manager.id)
+        memberService!.findApprovalMemberByEmployeeId(department.managerId)
       )
-      .then((companyApprover: CompanyApproverModel) =>
-        companyApproverService!.findCompanyApprover()
-      );
+      .then(() => companyApproverService!.findCompanyApprover());
   }
 
   onOpenModal() {
@@ -146,10 +152,15 @@ class ApplyReferenceModal extends React.Component<Props> {
     let approverTypeVal = '';
     // 승인자 변경하기 활성, 비활성처리
     if (companyApprover.approverType === 'Leader_Approve') {
-      approverTypeVal =
-        '본 과정의 승인은 학습자 본인의 리더(부서장)가 진행합니다. 승인요청 받을 리더정보를 확인 후 필요 시 변경해 주시길 바랍니다.';
+      approverTypeVal = getPolyglotText(
+        '본 과정의 승인은 학습자 본인의 리더(부서장)가 진행합니다. 승인요청 받을 리더정보를 확인 후 필요 시 변경해 주시길 바랍니다.',
+        'CollageState-ClassroomModalRefer-리더'
+      );
     } else {
-      approverTypeVal = '본 과정의 승인은 HR담당자가 진행합니다.';
+      approverTypeVal = getPolyglotText(
+        '본 과정의 승인은 HR담당자가 진행합니다.',
+        'CollageState-ClassroomModalRefer-HR담당자'
+      );
     }
     // 승인자 변경하기 활성, 비활성처리 (최조 승인자의 approverType에 따름)
     const approvalShow =
@@ -171,10 +182,16 @@ class ApplyReferenceModal extends React.Component<Props> {
               onOpen={this.onOpenModal}
             >
               <Modal.Header className="res">
-                {/*Class Series Detail*/}신청 참조처 설정
+                {/*Class Series Detail*/}
+                <PolyglotText
+                  defaultString="신청 참조처 설정"
+                  id="CollageState-ClassroomModalRefer-신청참조처"
+                />
                 <span className="sub f12">
-                  본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여
-                  주시기바랍니다.
+                  <PolyglotText
+                    defaultString="본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다."
+                    id="CollageState-ClassroomModalRefer-Subtitle"
+                  />
                 </span>
               </Modal.Header>
               <Modal.Content>
@@ -189,11 +206,36 @@ class ApplyReferenceModal extends React.Component<Props> {
                     </colgroup>
                     <Table.Header>
                       <Table.Row>
-                        <Table.HeaderCell>회사</Table.HeaderCell>
-                        <Table.HeaderCell>부서</Table.HeaderCell>
-                        <Table.HeaderCell>이름</Table.HeaderCell>
-                        <Table.HeaderCell>직위/직책</Table.HeaderCell>
-                        <Table.HeaderCell>이메일</Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="회사"
+                            id="CollageState-ClassroomModalRefer-회사"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="부서"
+                            id="CollageState-ClassroomModalRefer-부서"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="이름"
+                            id="CollageState-ClassroomModalRefer-이름"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="직위/직책"
+                            id="CollageState-ClassroomModalRefer-직위/직책"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="이메일"
+                            id="CollageState-ClassroomModalRefer-이메일"
+                          />
+                        </Table.HeaderCell>
                       </Table.Row>
                     </Table.Header>
 
@@ -206,10 +248,12 @@ class ApplyReferenceModal extends React.Component<Props> {
                           <span>{approvalMember.departmentName}</span>
                         </Table.Cell>
                         <Table.Cell>
-                          <span>{approvalMember.name}</span>
+                          <span>
+                            {parsePolyglotString(approvalMember.name)}
+                          </span>
                         </Table.Cell>
                         <Table.Cell>
-                          <span>{approvalMember.titleName}</span>
+                          <span>{approvalMember.title}</span>
                         </Table.Cell>
                         <Table.Cell>
                           <span>{approvalMember.email}</span>
@@ -224,18 +268,27 @@ class ApplyReferenceModal extends React.Component<Props> {
                   className="w190 pop p"
                   onClick={this.onClickChangeApplyReference}
                 >
-                  참조자 변경하기
+                  <PolyglotText
+                    defaultString="참조자 변경하기"
+                    id="CollageState-ClassroomModalRefer-참조자 변경하기"
+                  />
                 </Button>
                 <ManagerListModalContainer
-                  ref={managerModal => (this.managerModal = managerModal)}
+                  ref={(managerModal) => (this.managerModal = managerModal)}
                   handleOk={this.onClickManagerListOk}
                   multiSelect={false}
                 />
                 <Button className="w190 pop p" onClick={this.onOk}>
-                  확인
+                  <PolyglotText
+                    defaultString="확인"
+                    id="CollageState-ClassroomModalRefer-확인"
+                  />
                 </Button>
                 <Button className="w190 pop d" onClick={this.close}>
-                  취소
+                  <PolyglotText
+                    defaultString="취소"
+                    id="CollageState-ClassroomModalRefer-취소"
+                  />
                 </Button>
               </Modal.Actions>
             </Modal>
@@ -254,7 +307,11 @@ class ApplyReferenceModal extends React.Component<Props> {
             onOpen={this.onOpenModal}
           >
             <Modal.Header className="res">
-              {/*Class Series Detail*/}승인자 설정
+              {/*Class Series Detail*/}
+              <PolyglotText
+                defaultString="승인자 설정"
+                id="CollageState-ClassroomModalRefer-승인자 설정"
+              />
               <span className="sub f12">{approverTypeStr}</span>
             </Modal.Header>
             <Modal.Content>
@@ -269,34 +326,63 @@ class ApplyReferenceModal extends React.Component<Props> {
                   </colgroup>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>회사</Table.HeaderCell>
-                      <Table.HeaderCell>부서</Table.HeaderCell>
-                      <Table.HeaderCell>이름</Table.HeaderCell>
-                      <Table.HeaderCell>직위/직책</Table.HeaderCell>
-                      <Table.HeaderCell>이메일</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="회사"
+                          id="CollageState-ClassroomModalRefer-승인자회사"
+                        />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="부서"
+                          id="CollageState-ClassroomModalRefer-승인자부서"
+                        />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="이름"
+                          id="CollageState-ClassroomModalRefer-승인자이름"
+                        />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="직위/직책"
+                          id="CollageState-ClassroomModalRefer-승인자직위"
+                        />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="이메일"
+                          id="CollageState-ClassroomModalRefer-승인자이메일"
+                        />
+                      </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.companyName}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>
+                          {parsePolyglotString(companyApprover.companyName)}
+                        </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.departmentName}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>
+                          {parsePolyglotString(companyApprover.departmentName)}
+                        </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.name}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>{parsePolyglotString(companyApprover.name)}</span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                        <span>{companyApprover.titleName}</span>
+                        <Table.Cell verticalAlign="middle" />
+                        <span>{companyApprover.title}</span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
+                        <Table.Cell verticalAlign="middle" />
                         <span>{companyApprover.email}</span>
                       </Table.Cell>
                     </Table.Row>
@@ -305,24 +391,33 @@ class ApplyReferenceModal extends React.Component<Props> {
               </div>
             </Modal.Content>
             <Modal.Actions className="actions">
-              {approvalShow === true && (
+              {approvalShow && (
                 <Button
                   className="w190 pop p"
                   onClick={this.onClickChangeApplyReference}
                 >
-                  승인자 변경하기
+                  <PolyglotText
+                    defaultString="승인자 변경하기"
+                    id="CollageState-ClassroomModalRefer-승인자 변경하기"
+                  />
                 </Button>
               )}
               <ManagerListModalContainer
-                ref={managerModal => (this.managerModal = managerModal)}
+                ref={(managerModal) => (this.managerModal = managerModal)}
                 handleOk={this.onClickManagerListOk}
                 multiSelect={false}
               />
               <Button className="w190 pop d" onClick={this.close}>
-                Cancel
+                <PolyglotText
+                  defaultString="Cancel"
+                  id="CollageState-ClassroomModalRefer-Cancel"
+                />
               </Button>
               <Button className="w190 pop p" onClick={this.onOk}>
-                OK
+                <PolyglotText
+                  defaultString="OK"
+                  id="CollageState-ClassroomModalRefer-OK"
+                />
               </Button>
             </Modal.Actions>
           </Modal>

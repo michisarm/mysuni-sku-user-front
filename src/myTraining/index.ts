@@ -1,14 +1,7 @@
-//import AplListContainer from './ui/logic/AplListContainer';
-//import AplDetailContainer from './ui/logic/AplDetailContainer';
-import AplCreatePage from './ui/page/AplCreatePage';
+import AplCreatePage from './aplCreate/AplCreatePage';
 import AplListPage from './ui/page/AplListPage';
 
-export {
-  //AplListContainer,
-  //AplDetailContainer,
-  AplCreatePage,
-  AplListPage,
-};
+export { AplCreatePage, AplListPage };
 
 export { default as SelectOptions } from './ui/model/SelectOptions';
 export { default as NoSuchContentPanelMessages } from './ui/model/NoSuchContentPanelMessages';

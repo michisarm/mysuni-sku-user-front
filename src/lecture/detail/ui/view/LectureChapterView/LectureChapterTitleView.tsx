@@ -1,8 +1,12 @@
 import React from 'react';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   name: string | null;
-  description: string;
+  description: PolyglotString;
 }
 
 function LectureChapterTitleView({ name, description }: Props) {
@@ -23,7 +27,9 @@ function LectureChapterTitleView({ name, description }: Props) {
           </div>
           <div
             className="contents-text"
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{
+              __html: parsePolyglotString(description),
+            }}
           />
         </div>
       </div>

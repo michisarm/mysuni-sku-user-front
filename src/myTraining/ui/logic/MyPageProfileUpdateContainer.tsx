@@ -12,6 +12,8 @@ import { reactAlert } from '@nara.platform/accent';
 import myPageRoutePaths from 'myTraining/routePaths';
 import CommunityProfileModalPreview from '../../../../src/community/ui/view/CommunityAdmin/CommunityProfileModalPreview';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -84,29 +86,21 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   async onConfirm() {
-    //
-    const { photoTypeTemp, photoImageFile } = this.state;
+    const { photoImageFile } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
     if (photoImageFile !== undefined) {
       const imagePath = await uploadFileProfile(photoImageFile);
-      skProfileService!.setProfileProp('photoImage', imagePath || '');
-    }
-
-    if (photoTypeTemp) {
-      skProfileService!.setProfileProp('photoType', photoTypeTemp);
+      skProfileService?.setProfileProp(imagePath || '');
     }
 
     await skProfileService!.modifyPhotoImageByProfileId(
-      skProfile.id,
-      skProfile.photoType,
-      skProfile.photoImage
+      skProfile.photoImagePath
     );
   }
 
   validatedAll(file: File) {
-    //
     const validations: any[] = [
       { type: 'Extension', validValue: this.VALID_ICON_EXTENSION },
       { type: ValidationType.MaxSize },
@@ -127,7 +121,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   }
 
   setProfileImageFile(type: string, file: File) {
-    //
     if (!file || (file instanceof File && !this.validatedAll(file))) {
       return;
     }
@@ -142,7 +135,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const fileReader = new FileReader();
 
     fileReader.onload = (e: any) => {
-      //
       if ('photoImageFile' === type) {
         this.setState({ photoImageTemp: e.target.result });
         onChangeImageFile && onChangeImageFile(type, e.target.result);
@@ -178,42 +170,72 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     if (changeNickName) {
       if (!nickNameTemp || nickNameTemp === '') {
-        reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림1'),
+          message: getPolyglotText(
+            '닉네임을 입력해주세요',
+            'mypage-프로필설정-닉네임입력1'
+          ),
+        });
         return;
       } else if (nickNameTemp.length > 20) {
         reactAlert({
-          title: '알림',
-          message: '닉네임은 최대 20자까지 입력 가능합니다.',
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림2'),
+          message: getPolyglotText(
+            '닉네임은 최대 20자까지 입력 가능합니다.',
+            'mypage-프로필설정-닉네임최대1'
+          ),
         });
         return;
       }
     } else {
       if (
         SkProfileService.instance.skProfile.id &&
-        (!skProfile.nickName || skProfile.nickName === '')
+        (!skProfile.nickname || skProfile.nickname === '')
       ) {
-        reactAlert({ title: '알림', message: '닉네임을 입력해주세요' });
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림3'),
+          message: getPolyglotText(
+            '닉네임을 입력해주세요',
+            'mypage-프로필설정-닉네임입력2'
+          ),
+        });
         return;
       }
     }
 
     if (changeIntroduce) {
       if (!introduceTemp || introduceTemp === '') {
-        reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림4'),
+          message: getPolyglotText(
+            '자기소개를 입력해주세요',
+            'mypage-프로필설정-자기소개1'
+          ),
+        });
         return;
       } else if (introduceTemp.length > 45) {
         reactAlert({
-          title: '알림',
-          message: '자기소개는 최대 45자까지 입력 가능합니다.',
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림5'),
+          message: getPolyglotText(
+            '자기소개는 최대 45자까지 입력 가능합니다.',
+            'mypage-프로필설정-자기소개최대1'
+          ),
         });
         return;
       }
     } else {
       if (
         SkProfileService.instance.skProfile.id &&
-        (!skProfile.introduce || skProfile.introduce === '')
+        (!skProfile.selfIntroduction || skProfile.selfIntroduction === '')
       ) {
-        reactAlert({ title: '알림', message: '자기소개를 입력해주세요' });
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림6'),
+          message: getPolyglotText(
+            '자기소개를 입력해주세요',
+            'mypage-프로필설정-자기소개2'
+          ),
+        });
         return;
       }
     }
@@ -222,40 +244,54 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       await this.onConfirm();
     }
 
-    let skProfileUdo: SkProfileUdo;
-    skProfileUdo = new SkProfileUdo(
-      skProfileService.skProfile.member.currentJobGroup,
-      skProfileService.skProfile.member.favoriteJobGroup,
-      skProfileService.skProfile.pisAgreement
-    );
-
     if (bgImageFile !== undefined) {
       const imagePath = await uploadFileProfile(bgImageFile);
-      if (imagePath) skProfileUdo.bgImage = imagePath;
+
+      if (imagePath) {
+        skProfile.backgroundImagePath = imagePath;
+      }
     }
 
-    if (nickNameTemp) skProfileUdo.nickName = nickNameTemp;
-    if (introduceTemp) skProfileUdo.introduce = introduceTemp;
+    if (nickNameTemp) {
+      skProfile.nickname = nickNameTemp;
+    }
+
+    if (introduceTemp) {
+      skProfile.selfIntroduction = introduceTemp;
+    }
 
     if (
-      skProfileUdo.bgImage !== '' ||
-      skProfileUdo.nickName !== '' ||
-      skProfileUdo.introduce !== ''
+      skProfile.backgroundImagePath !== '' ||
+      skProfile.nickname !== '' ||
+      skProfile.selfIntroduction !== ''
     ) {
-      skProfileService.modifySkProfile(skProfileUdo).then(() => {
+      const params = {
+        nameValues: [
+          { name: 'nickname', value: skProfile.nickname },
+          { name: 'selfIntroduction', value: skProfile.selfIntroduction },
+          { name: 'photoImagePath', value: skProfile.photoImagePath },
+          { name: 'backgroundImagePath', value: skProfile.backgroundImagePath },
+        ],
+      };
+
+      skProfileService.modifySkProfile(params).then(() => {
         reactAlert({
-          title: '알림',
-          message: '프로필 정보가 수정됐습니다.',
+          title: getPolyglotText('알림', 'mypage-프로필설정-알림7'),
+          message: getPolyglotText(
+            '프로필 정보가 수정됐습니다.',
+            'mypage-프로필설정-수정완료1'
+          ),
         });
-
         this.clear();
-
         skProfileService!.findSkProfile();
       });
     } else {
       reactAlert({
-        title: '알림',
-        message: '프로필 정보가 수정됐습니다.',
+        title: getPolyglotText('알림', 'mypage-프로필설정-알림8'),
+        message: getPolyglotText(
+          '프로필 정보가 수정됐습니다.',
+          'mypage-프로필설정-수정완료2'
+        ),
       });
 
       this.clear();
@@ -324,8 +360,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   handleNickNameChange(e: any) {
     if (e.target.value.length > 20) {
       reactAlert({
-        title: '알림',
-        message: '닉네임은 최대 20자까지 입력 가능합니다.',
+        title: getPolyglotText('알림', 'mypage-프로필설정-알림9'),
+        message: getPolyglotText(
+          '닉네임은 최대 20자까지 입력 가능합니다.',
+          'mypage-프로필설정-닉네임최대2'
+        ),
       });
       return;
     }
@@ -339,8 +378,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
   handleIntroduceChange(e: any) {
     if (e.target.value.length > 45) {
       reactAlert({
-        title: '알림',
-        message: '자기소개는 최대 45자까지 입력 가능합니다.',
+        title: getPolyglotText('알림', 'mypage-프로필설정-알림10'),
+        message: getPolyglotText(
+          '자기소개는 최대 45자까지 입력 가능합니다.',
+          'mypage-프로필설정-자기소개최대2'
+        ),
       });
       return;
     }
@@ -405,7 +447,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     return (
       <>
         <div className="mypage_contents profile-edit-contents">
-          <strong className="mypage_title">프로필 설정</strong>
+          <strong className="mypage_title">
+            <PolyglotText
+              defaultString="프로필 설정"
+              id="mypage-프로필설정-프로필설정"
+            />
+          </strong>
 
           <Segment className="full">
             <div className="table-wrapper">
@@ -416,51 +463,81 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                 </colgroup>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell>이름</Table.Cell>
                     <Table.Cell>
-                      {skProfile.member?.name || skProfile.name}
+                      <PolyglotText
+                        defaultString="이름"
+                        id="mypage-프로필설정-이름"
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {parsePolyglotString(skProfile.name)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>소속</Table.Cell>
                     <Table.Cell>
-                      {skProfile.member?.department || skProfile.departmentName}
+                      <PolyglotText
+                        defaultString="소속"
+                        id="mypage-프로필설정-소속"
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {parsePolyglotString(skProfile.departmentName)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>닉네임</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="닉네임"
+                        id="mypage-프로필설정-닉네임"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {(!isExternalInstructor() && (
                         <Input
                           placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
                           onChange={(e) => this.handleNickNameChange(e)}
                           value={
-                            changeNickName ? nickNameTemp : skProfile.nickName
+                            changeNickName ? nickNameTemp : skProfile.nickname
                           }
                         />
                       )) ||
-                        (changeNickName ? nickNameTemp : skProfile.nickName)}
+                        (changeNickName ? nickNameTemp : skProfile.nickname)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>자기소개</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="자기소개"
+                        id="mypage-프로필설정-자기소개"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {(!isExternalInstructor() && (
                         <TextArea
-                          placeholder={`자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`}
+                          placeholder={getPolyglotText(
+                            `자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`,
+                            'mypage-프로필설정-자기소개설명'
+                          )}
                           onChange={(e) => this.handleIntroduceChange(e)}
                           value={
                             changeIntroduce
                               ? introduceTemp
-                              : skProfile.introduce
+                              : skProfile.selfIntroduction
                           }
                         />
                       )) ||
-                        (changeIntroduce ? introduceTemp : skProfile.introduce)}
+                        (changeIntroduce
+                          ? introduceTemp
+                          : skProfile.selfIntroduction)}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">
-                    <Table.Cell>프로필 이미지</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="프로필 이미지"
+                        id="mypage-프로필설정-프로필이미지"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {!isExternalInstructor() && (
                         <div className="ui w624 input">
@@ -468,7 +545,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                             htmlFor="fileup01"
                             className="ui button line02"
                           >
-                            파일 첨부
+                            <PolyglotText
+                              defaultString="파일 첨부"
+                              id="mypage-프로필설정-파일첨부1"
+                            />
                           </label>
                           <input
                             type="file"
@@ -489,7 +569,12 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row className="bttn-line">
-                    <Table.Cell>배경 이미지</Table.Cell>
+                    <Table.Cell>
+                      <PolyglotText
+                        defaultString="배경 이미지"
+                        id="mypage-프로필설정-배경이미지"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {!isExternalInstructor() && (
                         <div className="ui w624 input">
@@ -497,7 +582,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                             htmlFor="fileup02"
                             className="ui button line02"
                           >
-                            파일 첨부
+                            <PolyglotText
+                              defaultString="파일 첨부"
+                              id="mypage-프로필설정-파일첨부2"
+                            />
                           </label>
                           <input
                             type="file"
@@ -524,23 +612,36 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           {!isExternalInstructor() && (
             <div className="mypage-edit-bottom">
               <span>
-                <strong>미리보기</strong> 버튼으로 내 프로필이 다른 사람에게
-                어떻게 보여지는지 확인해 보세요.
+                <strong>
+                  <PolyglotText
+                    defaultString="미리보기"
+                    id="mypage-프로필설정-미리보기1"
+                  />
+                </strong>
+                <PolyglotText
+                  defaultString="버튼으로 내 프로필이 다른 사람에게 어떻게 보여지는지 확인해보세요."
+                  id="mypage-프로필설정-설명"
+                />
               </span>
               <div className="bttn-area">
                 <Button
                   className="fix line"
                   onClick={() => this.handleModalPrivew(true)}
                 >
-                  미리보기
+                  <PolyglotText
+                    defaultString="미리보기"
+                    id="mypage-프로필설정-미리보기2"
+                  />
                 </Button>
                 <Button className="fix bg" onClick={this.handleSave}>
-                  저장
+                  <PolyglotText
+                    defaultString="저장"
+                    id="mypage-프로필설정-저장"
+                  />
                 </Button>
               </div>
             </div>
           )}
-          {/* photoImageBase64 || skProfile.photoFilePath || DefaultImg */}
           <CommunityProfileModalPreview
             open={profilePreview}
             setOpen={(e) =>

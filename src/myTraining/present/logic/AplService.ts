@@ -12,10 +12,9 @@ import AplFlowApi from '../apiclient/AplFlowApi';
 import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
-import AplUdoModel from '../../model/AplUdoModel';
 import { AplRdoModel, CountType } from '../../model/AplRdoModel';
-import { ApprovalViewType } from '../../ui/logic/PersonalLearningListContainer';
-
+import { ApprovalViewType } from '../../personalLearning/PersonalLearningListContainer';
+import AplApprovalUdo from '../../model/AplApprovalUdo';
 
 @autobind
 export default class AplService {
@@ -66,16 +65,14 @@ export default class AplService {
 
   aplRdo: AplRdoModel = new AplRdoModel();
 
-
   @computed get allowTime(): number {
     const totalAllowHour = this.apls.results
-      .map(result => result.allowHour)
+      .map((result) => result.allowHour)
       .reduce((a, b) => a + b, 0);
 
     const totalAllowMinute = this.apls.results
-      .map(result => result.allowMinute)
+      .map((result) => result.allowMinute)
       .reduce((a, b) => a + b, 0);
-
 
     return totalAllowHour * 60 + totalAllowMinute;
   }
@@ -87,11 +84,9 @@ export default class AplService {
 
   @action
   async findAllAplsByQuery() {
-    //
     const apls = await this.aplApi.findAllAplsByQuery(
       AplQueryModel.asAplRdo(this.aplQuery)
     );
-    //apls.results.map((apl) => new AplListViewModel(apl));
     runInAction(() => (this.apls = apls));
     return apls;
   }
@@ -100,7 +95,7 @@ export default class AplService {
   async findApl(aplId: string) {
     //
     const apl = await this.aplApi.findApl(aplId);
-    runInAction(() => this.apl = apl);
+    runInAction(() => (this.apl = apl));
     return apl;
   }
 
@@ -126,15 +121,9 @@ export default class AplService {
   }
 
   @action
-  async findCreatApl(
-    aplType?: string | undefined,
-    company?: string | null
-  ) {
+  async findCreatApl(aplType?: string | undefined, company?: string | null) {
     //
-    const apl = await this.aplApi.findCreateApl(
-      aplType,
-      company
-    );
+    const apl = await this.aplApi.findCreateApl(aplType, company);
     runInAction(() => (this.apl = apl));
     return apl;
   }
@@ -146,12 +135,7 @@ export default class AplService {
     startDate: number,
     endDate: number
   ) {
-    return this.aplApi.findCountMainCheck(
-      company,
-      aplType,
-      startDate,
-      endDate
-    );
+    return this.aplApi.findCountMainCheck(company, aplType, startDate, endDate);
   }
 
   @action
@@ -194,19 +178,14 @@ export default class AplService {
     name: string,
     value: string | {} | string[] | boolean | undefined | Moment
   ) {
-    //
     if (value === 'Select') value = '';
     this.apl = _.set(this.apl, name, value);
   }
 
   /**SAVE 2020 10 28*/
-  saveApl(
-    apl: AplModel,
-  ) {
+  saveApl(apl: AplModel) {
     //
-    return this.aplApi.saveApl(
-      AplModel.asCdo(apl),
-    );
+    return this.aplApi.saveApl(AplModel.asCdo(apl));
   }
 
   modifyApl(isUse: boolean, aplId?: number) {
@@ -244,7 +223,9 @@ export default class AplService {
       AplQueryModel.asAplRdo(this.aplQuery)
     );
 
-    runInAction(() => this.apls.results = [...this.apls.results, ...apls.results]);
+    runInAction(
+      () => (this.apls.results = [...this.apls.results, ...apls.results])
+    );
   }
 
   @action
@@ -256,19 +237,13 @@ export default class AplService {
     this.aplRdo.countType = countType;
     const aplCount = await this.aplApi.findAplCount(this.aplRdo);
 
-    runInAction(() => this.aplCount = aplCount);
+    runInAction(() => (this.aplCount = aplCount));
   }
 
   @action
-  async findCreatAapl(
-    aplType?: string | undefined,
-    company?: string | null
-  ) {
+  async findCreatAapl(aplType?: string | undefined, company?: string | null) {
     //
-    const apl = await this.aplApi.findCreateApl(
-      aplType,
-      company
-    );
+    const apl = await this.aplApi.findCreateApl(aplType, company);
     runInAction(() => (this.apl = apl));
     return apl;
   }
@@ -285,8 +260,8 @@ export default class AplService {
   }
 
   ///////////////////////// 개편 /////////////////////////
-  async modifyAplWithApprovalState(aplUdo: AplUdoModel) {
-    await this.aplApi.modifyAplWithApprovalState(aplUdo);
+  async modifyAplWithApprovalState(aplApprovalUdo: AplApprovalUdo) {
+    await this.aplApi.modifyAplWithApprovalState(aplApprovalUdo);
   }
 
   async findAllAplsForApproval(viewType: ApprovalViewType) {
@@ -295,7 +270,9 @@ export default class AplService {
     const offsetApl = await this.aplApi.findAllAplsForApproval(this.aplRdo);
 
     if (offsetApl) {
-      const results = offsetApl.results.map(result => new AplListViewModel(result));
+      const results = offsetApl.results.map(
+        (result: AplListViewModel) => new AplListViewModel(result)
+      );
       runInAction(() => {
         this.apls = offsetApl;
         this.apls.results = results;

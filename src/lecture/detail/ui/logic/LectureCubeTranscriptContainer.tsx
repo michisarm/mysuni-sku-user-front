@@ -10,6 +10,7 @@ import { findTranscript } from '../../service/useTranscript/utility/useTranscrip
 import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/LectureCubeSummary';
 import { PlayerState, seekTo } from '../../service/PanoptoEmbedPlayer';
 import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const style = {
   borderRadius: '0.375rem',
@@ -180,7 +181,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
       <div className="transcript-box" id="tanscript-scroll">
         <div className="transcript-top">
           <Select
-            placeholder="분류를 선택해주세요"
+            placeholder={getPolyglotText('분류를 선택해주세요', 'cube-Contents-분류를 선택해주세요')}
             className="ui small-border dropdown m0"
             defaultValue={transLangVal}
             options={selectTransLangObj}
@@ -196,8 +197,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
               wide
             >
               <p>
-                현재 선택된 언어의 Transcript를 <br /> txt 파일로 다운로드
-                받으실 수 있습니다.
+                <PolyglotText defaultString="현재 선택된 언어의 Transcript를 <br /> txt 파일로 다운로드 받으실 수 있습니다." id="cube-Contents-다운로드 " />
               </p>
             </Popup>
             <button
@@ -216,7 +216,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
               }}
             >
               <Icon className="icon-down-type5" />
-              Download
+              <PolyglotText defaultString="Download" id="cube-Contents-Download" />
             </button>
           </div>
         </div>
@@ -242,7 +242,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
             );
           })
         ) : (
-          <span>저장 된 대본이 없습니다.</span>
+          <span><PolyglotText defaultString="저장 된 대본이 없습니다." id="cube-Contents-대본없음" /></span>
         )}
       </div>
     </>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface GraderCommentViewProps {
   graderComment: string;
@@ -10,7 +11,9 @@ export function GraderCommentView({
 
   return (
     <div className="course-radio-survey">
-      <h5>테스트 결과 코멘트</h5>
+      <h5>
+        <PolyglotText defaultString="결과 코멘트" id="Test-TestPaper-결과" />
+      </h5>
       <div className="ui editor-wrap">
         <div className="content-area">
           <div className="content-inner ql-snow">

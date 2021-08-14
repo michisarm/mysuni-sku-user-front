@@ -1,6 +1,8 @@
 import { findCardCache } from '../../../api/cardApi';
 import { setLectureDiscussion } from '../../../store/LectureDiscussionStore';
 import { LearningContent } from '../../../../model/LearningContent';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 export async function requestLectureDiscussion(
   cardId: string,
@@ -18,15 +20,16 @@ export async function requestLectureDiscussion(
   const {
     card: {
       patronKey: { keyString },
+      langSupports,
     },
     cardContents: { learningContents, creatorName },
   } = cardWithContentsAndRelatedCountRom;
 
   let discussion: LearningContent | undefined;
 
-  learningContents.map(content => {
+  learningContents.map((content) => {
     if (content.chapter) {
-      content.children.forEach(child => {
+      content.children.forEach((child) => {
         if (
           child.contentId.substring(child.contentId.length - 4) === discussionId
         ) {
@@ -51,7 +54,7 @@ export async function requestLectureDiscussion(
 
   setLectureDiscussion({
     id: contentId,
-    name: name === null ? '' : name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     creator: creatorName,
     creatorAudienceId: keyString,
     time: cardWithContentsAndRelatedCountRom.card.cardStateUpdatedTime,

@@ -18,6 +18,9 @@ import { BadgeCategoryService } from '../../../lecture/stores';
 import { BadgeBundle, getMainCategoryId } from '../../model/Badge';
 import BadgeView from '../view/BadgeView';
 import { useRequestAllBadges } from '../../service/useRequestAllBadges';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface AllBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -44,7 +47,7 @@ function AllBadgeListContainer({
     return () => {
       badgeService!.clearBadges();
     };
-  }, [selectedCategoryId]);
+  }, [badgeService, history, selectedCategoryId, setSelectedLevel]);
 
   useEffect(() => {
     if (badges.length > 0) {
@@ -52,7 +55,7 @@ function AllBadgeListContainer({
         scrollOnceMove();
       }, 800);
     }
-  }, [badges.length]);
+  }, [badges.length, scrollOnceMove]);
 
   const onSelectLevel = (level: BadgeLevel) => {
     history.replace(routePaths.currentPage(1));
@@ -95,7 +98,10 @@ function AllBadgeListContainer({
                 <li key={`all-badge-${index}`}>
                   <BadgeView
                     id={badgeBundle.badge.id}
-                    name={badgeBundle.badge.name}
+                    name={parsePolyglotString(
+                      badgeBundle.badge.name,
+                      getDefaultLang(badgeBundle.badge.langSupport)
+                    )}
                     level={badgeBundle.badge.level}
                     iconUrl={badgeBundle.badge.iconUrl}
                     categoryId={mainCategoryId}
@@ -108,12 +114,22 @@ function AllBadgeListContainer({
                     topImagePath={badgeBundle.badgeCategory.topImagePath}
                   />
                   <div className="badge-name">
-                    <span>{badgeBundle.badge.name}</span>
+                    <span>
+                      {parsePolyglotString(
+                        badgeBundle.badge.name,
+                        getDefaultLang(badgeBundle.badge.langSupport)
+                      )}
+                    </span>
                   </div>
                 </li>
               );
             })) || (
-            <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
+            <NoSuchContentPanel
+              message={getPolyglotText(
+                '등록된 Badge List가 없습니다.',
+                'Certification-bdls-뱃지없음'
+              )}
+            />
           )}
         </ul>
       </div>

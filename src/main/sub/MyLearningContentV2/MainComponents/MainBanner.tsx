@@ -10,6 +10,10 @@ import { SkProfileService } from '../../../../profile/stores';
 import Image from '../../../../shared/components/Image/Image';
 import ReactGA from 'react-ga';
 import { originSelfPath } from 'tracker-react/utils';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 enum AnchorTargetType {
   self = '_self',
@@ -22,8 +26,8 @@ interface BannerProps {
   targetUrl: string;
   target: string;
   name: string;
-  imageAlt: StaticRange;
-  imageUrl: string;
+  imageAlt: PolyglotString;
+  imageUrl: PolyglotString;
   onClickBanner: (
     targetUrl: string,
     target: string,
@@ -32,6 +36,7 @@ interface BannerProps {
   ) => void;
 }
 
+// 김민준 메인 배너
 function RenderBanner(props: BannerProps) {
   const {
     index,
@@ -55,7 +60,10 @@ function RenderBanner(props: BannerProps) {
           to={{ pathname: getTargetUrl }}
           onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
-          <Image alt={imageAlt} src={imageUrl} />
+          <Image
+            alt={parsePolyglotString(imageAlt)}
+            src={parsePolyglotString(imageUrl)}
+          />
         </Link>
       ) : (
         <>
@@ -68,11 +76,17 @@ function RenderBanner(props: BannerProps) {
               href={targetUrl}
               onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
-              <Image alt={imageAlt} src={imageUrl} />
+              <Image
+                alt={parsePolyglotString(imageAlt)}
+                src={parsePolyglotString(imageUrl)}
+              />
             </a>
           ) : (
             <div className="ui image">
-              <Image alt={imageAlt} src={imageUrl} />
+              <Image
+                alt={parsePolyglotString(imageAlt)}
+                src={parsePolyglotString(imageUrl)}
+              />
             </div>
           )}
         </>
@@ -86,7 +100,7 @@ interface Props {
   bannerService?: BannerService;
 }
 
-const MainBanner: React.FC<Props> = Props => {
+const MainBanner: React.FC<Props> = (Props) => {
   const { bannerService } = Props;
   const { banners, intervalTime } = bannerService!;
 

@@ -8,6 +8,10 @@ import ApprovalProcessModalRejected from './ApprovalProcessModalRejected';
 import { ProposalState } from '../../../shared/model';
 import SelectOptions from '../model/SelectOptions';
 import { ApprovalCubeService } from '../../stores';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   totalCount: number;
@@ -84,7 +88,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
     const { selectedList } = approvalCubeService!;
 
     if (selectedList.length < 1) {
-      reactAlert({ title: '알림', message: '반려하실 건을 선택해주세요.' });
+      reactAlert({
+        title: getPolyglotText('알림', '승인관리-유료과정-알림3'),
+        message: getPolyglotText(
+          '반려하실 건을 선택해주세요.',
+          '승인관리-유료과정-반려선택'
+        ),
+      });
       return;
     }
 
@@ -96,7 +106,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
     const { selectedList } = approvalCubeService!;
 
     if (selectedList.length < 1) {
-      reactAlert({ title: '알림', message: '승인하실 건을 선택해주세요.' });
+      reactAlert({
+        title: getPolyglotText('알림', '승인관리-유료과정-알림5'),
+        message: getPolyglotText(
+          '승인하실 건을 선택해주세요.',
+          '승인관리-유료과정-승인선택'
+        ),
+      });
       return;
     }
 
@@ -122,7 +138,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
             <div className="right-area">
               <Radio
                 className="base"
-                label="승인요청"
+                label={getPolyglotText('승인요청', '승인관리-유료과정-승요')}
                 name="radioGroup"
                 value="Submitted"
                 checked={searchState === 'Submitted'}
@@ -130,7 +146,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
               />
               <Radio
                 className="base"
-                label="반려"
+                label={getPolyglotText('반려dd', '승인관리-유료과정-반려2')}
                 name="radioGroup"
                 value="Rejected"
                 checked={searchState === 'Rejected'}
@@ -138,7 +154,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
               />
               <Radio
                 className="base"
-                label="승인"
+                label={getPolyglotText('승인dd', '승인관리-유료과정-승인2')}
                 name="radioGroup"
                 value="Approved"
                 checked={searchState === 'Approved'}
@@ -159,7 +175,11 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
                       className="left post return"
                       onClick={this.handleRejectClick}
                     >
-                      <Icon className="return" /> 반려
+                      <Icon className="return" />
+                      <PolyglotText
+                        id="승인관리-유료과정-반려"
+                        defaultString="반려"
+                      />
                     </Button>
                     <ApprovalProcessModalRejected
                       open={this.state.approvalProcessModalRejectedOpen}
@@ -175,7 +195,11 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
                       className="left post approval"
                       onClick={this.handleApproveClick}
                     >
-                      <Icon className="approval" /> 승인
+                      <Icon className="approval" />
+                      <PolyglotText
+                        id="승인관리-유료과정-승인"
+                        defaultString="승인"
+                      />
                     </Button>
                     <ApprovalProcessModal
                       open={this.state.approvalProcessModalOpen}
@@ -195,7 +219,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
 
             <div className="right-area">
               <Select
-                placeholder="과정선택"
+                placeholder={getPolyglotText(
+                  '과정선택',
+                  '승인관리-유료과정-과정선택'
+                )}
                 options={lectures}
                 onChange={(e: any, data: any) =>
                   onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)
@@ -204,7 +231,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
                 className="ui small-border dropdown selection list-title-sel"
               />
               <Select
-                placeholder="교육기간"
+                placeholder={getPolyglotText(
+                  '교육기간',
+                  '승인관리-유료과정-교육기간'
+                )}
                 options={SelectOptions.approvalSearchDate}
                 onChange={this.handleSearchPeriodChange}
                 value={defaultValue && defaultValue}
@@ -227,7 +257,11 @@ function ExcelDownloadButton(props: ExcelDownloadButtonProps) {
   function renderDownloadButton() {
     return (
       <Button icon className="left post excel-down" onClick={onClick}>
-        <Icon className="excel-down" /> 엑셀 다운로드
+        <Icon className="excel-down" />
+        <PolyglotText
+          id="승인관리-유료과정-엑셀다운"
+          defaultString="엑셀 다운로드"
+        />
       </Button>
     );
   }

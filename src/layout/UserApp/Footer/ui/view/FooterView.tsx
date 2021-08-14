@@ -3,6 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import { Icon, Button } from 'semantic-ui-react';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   nav: React.ReactNode;
@@ -22,11 +23,11 @@ class FooterView extends Component<Props> {
             <span className="blind">mySUNI</span>
           </i>
           <div className="f-copyright">
-            COPYRIGHT{' '}
+            <PolyglotText defaultString="COPYRIGHT" id="home-ftr-cc" />{' '}
             <Icon name="copyright">
               <span className="blind">copyright sign</span>
             </Icon>
-            mySUNI. ALL RIGHTS RESERVED.
+            <PolyglotText defaultString="mySUNI. ALL RIGHTS RESERVED." id="home-ftr-arr" />
           </div>
           <div className="f-nav">{nav}</div>
 

@@ -8,6 +8,7 @@ import { Modal } from 'semantic-ui-react';
 import LectureTestPaperView from './LectureTestPaperView';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureTestPaperModalViewProps {
   trigger: React.ReactNode;
@@ -57,7 +58,9 @@ const LectureTestPaperModalView: React.FC<LectureTestPaperModalViewProps> = func
             <img
               src={`${process.env.PUBLIC_URL}/images/all/icon-close-player-28-px.png`}
             />
-            <span>Close</span>
+            <span>
+              <PolyglotText defaultString="Close" id="Test-TestModal-Close" />
+            </span>
           </button>
         </Modal.Header>
         <Modal.Content className="test-content-modal">

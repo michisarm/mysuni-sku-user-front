@@ -1,6 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
@@ -14,8 +15,8 @@ interface ReportViewProps {
 
 function cannotAlert() {
   reactAlert({
-    title: 'Report 안내',
-    message: '학습 진행 후 Report 참여 가능합니다.',
+    title: getPolyglotText('Report 안내', 'Report-CouseView-Report안내'),
+    message: getPolyglotText('학습 진행 후 Report 참여 가능합니다.', 'Report-CouseView-참여안내'),
   });
 }
 
@@ -38,12 +39,12 @@ const CourseReportView: React.FC<ReportViewProps> = function CourseReportView({
           state === 'Completed' ? 'complete' : ''
         }`}
       >
-        <span>cube 완료상태</span>
+        <span><PolyglotText defaultString="cube 완료상태" id="Report-CouseView-cube" /></span>
       </span>
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>Report</li>
+          <li><PolyglotText defaultString="Report" id="Report-CouseView-Title" /></li>
         </ul>
       </span>
     </StructureLink>

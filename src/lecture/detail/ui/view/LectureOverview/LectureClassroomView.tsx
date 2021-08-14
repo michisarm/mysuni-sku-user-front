@@ -3,8 +3,10 @@ import moment from 'moment';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Label, Table } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import TableModal from '../../../../../personalcube/shared/OverviewField/sub/TableModal';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface LectureClassroomViewProps {
   lectureClassroom: LectureClassroom;
@@ -25,89 +27,131 @@ function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
 
-const LectureClassroomView: React.FC<LectureClassroomViewProps> = function LectureClassroomView({
-  lectureClassroom,
-}) {
-  return (
-    <div className="contents overview width100" id="lms-classroom">
-      <div className="ov-paragraph ov-paragraph-v2">
-        <div className="series-wrap">
-          <h3 className="title-style">
-            <Label className="onlytext bold size24">
-              <Icon className="series" />
-              <span>차수정보</span>
-            </Label>
-          </h3>
-          <TableModal
-            classrooms={lectureClassroom.classrooms}
-            trigger={
-              <Button icon className="right btn-blue">
-                more <Icon className="morelink" />
-              </Button>
-            }
-          />
-          <Table className="ui table th-info">
-            <colgroup>
-              <col width="120px" />
-              <col />
-              <col />
-              <col />
-              <col />
-            </colgroup>
-            <Table.Body>
-              {lectureClassroom.classrooms.map(
-                ({
-                  round,
-                  instructor,
-                  freeOfCharge,
-                  location,
-                  applyingStartDate,
-                  applyingEndDate,
-                  learningStartDate,
-                  learningEndDate,
-                }) => (
-                  <Fragment key={round}>
-                    <Table.Row>
-                      <Table.HeaderCell rowSpan="2">
-                        <span>{round}차수</span>
-                      </Table.HeaderCell>
-                      <Table.HeaderCell>강사정보</Table.HeaderCell>
-                      <Table.HeaderCell>비용</Table.HeaderCell>
-                      <Table.HeaderCell>장소</Table.HeaderCell>
-                      <Table.HeaderCell>수강신청기간</Table.HeaderCell>
-                      <Table.HeaderCell>교육기간</Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell>
-                        {instructor.map((item) => (
-                          <span key={item.instructorId}>{item.name}</span>
-                        ))}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {`${numberWithCommas(freeOfCharge.chargeAmount)} 원`}
-                      </Table.Cell>
-                      <Table.Cell>{location}</Table.Cell>
-                      <Table.Cell>
-                        {`${formatDate(applyingStartDate)} ~ ${formatDate(
-                          applyingEndDate
-                        )}`}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {`${formatDate(learningStartDate)} ~ ${formatDate(
-                          learningEndDate
-                        )}`}
-                      </Table.Cell>
-                    </Table.Row>
-                  </Fragment>
-                )
-              )}
-            </Table.Body>
-          </Table>
+const LectureClassroomView: React.FC<LectureClassroomViewProps> =
+  function LectureClassroomView({ lectureClassroom }) {
+    return (
+      <div className="contents overview width100" id="lms-classroom">
+        <div className="ov-paragraph ov-paragraph-v2">
+          <div className="series-wrap">
+            <h3 className="title-style">
+              <Label className="onlytext bold size24">
+                <Icon className="series" />
+                <span>
+                  <PolyglotText
+                    defaultString="차수정보"
+                    id="cube-Contents-차수정보"
+                  />
+                </span>
+              </Label>
+            </h3>
+            <TableModal
+              classrooms={lectureClassroom.classrooms}
+              trigger={
+                <Button icon className="right btn-blue">
+                  <PolyglotText defaultString="more" id="cube-Contents-more" />{' '}
+                  <Icon className="morelink" />
+                </Button>
+              }
+            />
+            <Table className="ui table th-info">
+              <colgroup>
+                <col width="120px" />
+                <col />
+                <col />
+                <col />
+                <col />
+              </colgroup>
+              <Table.Body>
+                {lectureClassroom.classrooms.map(
+                  ({
+                    round,
+                    instructor,
+                    freeOfCharge,
+                    location,
+                    applyingStartDate,
+                    applyingEndDate,
+                    learningStartDate,
+                    learningEndDate,
+                  }) => (
+                    <Fragment key={round}>
+                      <Table.Row>
+                        <Table.HeaderCell rowSpan="2">
+                          <span>
+                            {round}
+                            <PolyglotText
+                              defaultString="차수"
+                              id="cube-Contents-차수"
+                            />
+                          </span>
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="강사정보"
+                            id="cube-Contents-강사정보"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="비용"
+                            id="cube-Contents-비용"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="장소"
+                            id="cube-Contents-장소"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="수강신청기간"
+                            id="cube-Contents-수강신청기간"
+                          />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                          <PolyglotText
+                            defaultString="교육기간"
+                            id="cube-Contents-교육기간"
+                          />
+                        </Table.HeaderCell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell>
+                          {instructor.map((item) => (
+                            <span key={item.instructorId}>
+                              {parsePolyglotString(
+                                item.instructorWithIdentity?.instructor?.name
+                              )}
+                            </span>
+                          ))}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {`${numberWithCommas(
+                            freeOfCharge.chargeAmount
+                          )} ${getPolyglotText('원', 'cube-Contents-원')}`}
+                        </Table.Cell>
+                        <Table.Cell>{location}</Table.Cell>
+                        <Table.Cell>
+                          {`${formatDate(applyingStartDate)} ~ ${formatDate(
+                            applyingEndDate
+                          )}`}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {`${formatDate(learningStartDate)} ~ ${formatDate(
+                            learningEndDate
+                          )}`}
+                        </Table.Cell>
+                      </Table.Row>
+                    </Fragment>
+                  )
+                )}
+              </Table.Body>
+            </Table>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default LectureClassroomView;
 

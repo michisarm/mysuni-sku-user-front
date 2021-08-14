@@ -41,6 +41,11 @@ import { Action, Area } from 'tracker/model';
 import Image from '../../../shared/components/Image';
 import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
 import { requestAttendEvent } from '../PersonalBoard/service/getAttendEvent';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -119,9 +124,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfileService, menuControlAuthService } = this.props;
     const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
     if (foundProfile) {
-      menuControlAuthService!.findMenuControlAuth(
-        foundProfile.member.companyCode
-      );
+      menuControlAuthService!.findMenuControlAuth();
     }
   }
 
@@ -178,7 +181,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       badgeService,
       menuControlAuthService,
     } = this.props;
-    const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
+    const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const {
@@ -188,10 +191,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      (channel) =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     const sumOfCurrentYearLectureTime =
       (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) ||
@@ -237,7 +237,17 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <div className="personal-header-title">
-            <h3>{skProfile.profileViewName}님,</h3>
+            <h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '{profileViewName} 님',
+                    'home-Summary-님',
+                    { profileViewName: skProfile.profileViewName }
+                  ),
+                }}
+              />
+            </h3>
             <DashBoardSentenceContainer />
           </div>
           <div className="main-gauge-box">
@@ -271,24 +281,29 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           )}
         </HeaderWrapperView>
-        {skProfile.member.companyCode && (
+        {skProfile.companyCode && (
           <AdditionalToolsMyLearning
             onClickQnA={this.moveToSupportQnA}
             handleClick={this.handleOpenBtnClick}
             activeIndex={activeIndex}
-            companyCode={skProfile.member.companyCode}
+            companyCode={skProfile.companyCode}
           >
             <FavoriteChannelChangeModal
               trigger={
                 <a>
                   <Icon className="channel24" />
-                  <span>관심 채널 설정</span>
+                  <span>
+                    <PolyglotText
+                      defaultString="관심 채널 설정"
+                      id="home-PersonalBoard-관심채널"
+                    />
+                  </span>
                 </a>
               }
               favorites={favoriteChannels}
               onConfirmCallback={this.onConfirmFavorite}
             />
-            {menuControlAuth.hasMenuAuth() && (
+            {menuControlAuth.useApl === true && (
               <div>
                 <a
                   href="#"
@@ -298,7 +313,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   }}
                 >
                   <Icon className="add24" />
-                  <span>개인학습</span>
+                  <span>
+                    <PolyglotText
+                      defaultString="개인학습"
+                      id="home-PersonalBoard-개인학습"
+                    />
+                  </span>
                 </a>
               </div>
             )}
@@ -319,7 +339,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                         data-pathname="관심 채널 설정"
                         data-page="#attention-channel"
                       >
-                        관심 채널 설정
+                        <PolyglotText
+                          defaultString="관심 채널 설정"
+                          id="home-PersonalBoard-관심채널2"
+                        />
                       </span>
                     </a>
                   }
@@ -327,7 +350,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   onConfirmCallback={this.onConfirmFavorite}
                 />
               </div>
-              {menuControlAuth.hasMenuAuth() && (
+              {menuControlAuth.useApl === true && (
                 <div>
                   <a
                     href="#"
@@ -337,14 +360,24 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     }}
                   >
                     <Icon className="card-main24" />
-                    <span>개인학습</span>
+                    <span>
+                      <PolyglotText
+                        defaultString="개인학습"
+                        id="home-PersonalBoard-개인학습2"
+                      />
+                    </span>
                   </a>
                 </div>
               )}
             </div>
             <div className="right">
               <a onClick={this.moveToSupportQnA} className="contact-us wh">
-                <span>1:1 문의하기</span>
+                <span>
+                  <PolyglotText
+                    defaultString="1:1 문의하기"
+                    id="home-PersonalBoard-1대1"
+                  />
+                </span>
                 <Icon className="arrow-w-16" />
               </a>
             </div>
@@ -358,7 +391,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             } else {
               reactAlert({
                 title: '',
-                message: `목표 설정이 완료됐습니다.`,
+                // message: `목표 설정이 완료됐습니다.`,
+                message: getPolyglotText(
+                  '목표 설정이 완료됐습니다.',
+                  'home-PersonalBoard-complete'
+                ),
               });
             }
             return this.setState({ learningObjectivesOpen: value });

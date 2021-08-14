@@ -1,3 +1,4 @@
+import { SkProfileService } from '../../../profile/stores';
 import {
   getEmptyPanoptoEmbedPlayerState,
   getPanoptoEmbedPlayerState,
@@ -73,6 +74,40 @@ function createPanoptoEmbedPlayer() {
       return;
     }
     embedApi.setVolume(0.6);
+    if (SkProfileService.instance.skProfile.language === 'Korean') {
+      embedApi.disableCaptions();
+    } else {
+      if (embedApi.hasCaptions()) {
+        const getCaptionTracks: string[] = embedApi.getCaptionTracks();
+        console.log('getCaptionTracks', getCaptionTracks);
+        if (
+          SkProfileService.instance.skProfile.language === 'English' &&
+          getCaptionTracks.includes('기본값')
+        ) {
+          const index = getCaptionTracks.findIndex((c) => c === '기본값');
+          if (index > -1) {
+            embedApi.enableCaptions(index);
+          }
+        } else if (
+          SkProfileService.instance.skProfile.language === 'Chinese' &&
+          getCaptionTracks.some(
+            (c) =>
+              c.includes('Simplified Chinese') ||
+              c.includes('Traditional Chinese')
+          )
+        ) {
+          const index = getCaptionTracks.findIndex(
+            (c) =>
+              c.includes('Simplified Chinese') ||
+              c.includes('Traditional Chinese')
+          );
+          if (index > -1) {
+            embedApi.enableCaptions(index);
+          }
+        }
+      }
+    }
+
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
     setPanoptoEmbedPlayerState({

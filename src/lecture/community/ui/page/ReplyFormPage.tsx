@@ -7,6 +7,8 @@ import { ReplyForm } from '@sku/personalcube';
 import { CollegeService } from 'college/stores';
 import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props
   extends RouteComponentProps<{
@@ -38,12 +40,8 @@ class ReplyFormPage extends React.Component<Props> {
   }
 
   routeTo() {
-    const {
-      collegeId,
-      cubeId,
-      lectureCardId,
-      postId,
-    } = this.props.match.params;
+    const { collegeId, cubeId, lectureCardId, postId } =
+      this.props.match.params;
     this.props.history.push(
       `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/posts${
         postId && postId !== 'new' ? `/${postId}` : ''
@@ -69,11 +67,17 @@ class ReplyFormPage extends React.Component<Props> {
         className="content bg-white"
         breadcrumb={[
           {
-            text: `${college.name} College`,
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`,
             path: routePaths.collegeLectures(college.collegeId),
           },
           {
-            text: `${college.name} Lecture`,
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} Lecture`,
             path: routePaths.lectureCardOverviewPrev(
               college.collegeId,
               cubeId,

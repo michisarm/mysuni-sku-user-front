@@ -5,16 +5,18 @@ import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
+import { LangSupport } from '../../../lecture/model/LangSupport';
 
 interface Props {
-  answer: AnswerItemModel
-  disabled?: boolean
-  onSetAnswer:(answer: string) => void
+  answer: AnswerItemModel;
+  disabled?: boolean;
+  onSetAnswer: (answer: string) => void;
+  langSupports: LangSupport[];
 }
 
 interface State {
-  focus: boolean
-  error: boolean
+  focus: boolean;
+  error: boolean;
 }
 
 @reactAutobind
@@ -28,12 +30,21 @@ class ShortAnswerView extends React.Component<Props, State> {
 
   render() {
     const { focus, error } = this.state;
-    const { answer, disabled, onSetAnswer } = this.props;
+    const { answer, disabled, onSetAnswer, langSupports } = this.props;
     const { sentence } = answer;
 
     return (
-      <div className={classNames('ui right-top-count input', { focus, write: answer && !disabled, error })}>
-        <span className="count"><span className="now">{sentence.length}</span>/<span className="max">100</span></span>
+      <div
+        className={classNames('ui right-top-count input', {
+          focus,
+          write: answer && !disabled,
+          error,
+        })}
+      >
+        <span className="count">
+          <span className="now">{sentence.length}</span>/
+          <span className="max">100</span>
+        </span>
         <input
           type="text"
           placeholder="답변을 입력해주세요. (최대 100자 입력 가능)"
@@ -42,7 +53,7 @@ class ShortAnswerView extends React.Component<Props, State> {
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
           onChange={(e) => {
-            if (e.target.value.length > 100 ) {
+            if (e.target.value.length > 100) {
               this.setState({ error: true });
             } else {
               this.setState({ error: false });

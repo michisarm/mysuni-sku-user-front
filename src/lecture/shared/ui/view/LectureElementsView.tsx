@@ -4,6 +4,7 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 import { CategoryModel } from 'shared/model';
 import Image from '../../../../shared/components/Image';
 import { ContentType } from 'myTraining/ui/page/NewLearningPage';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface TitleProps {
   title: string | React.ReactNode;
@@ -96,8 +97,16 @@ interface RibbonProps {
 
 export const Ribbon = ({ required, stampReady }: RibbonProps) => (
   <div className="card-ribbon-wrap">
-    {required && <Label className="ribbon2">핵인싸과정</Label>}
-    {stampReady && <Label className="ribbon2">Stamp</Label>}
+    {required && (
+      <Label className="ribbon2">
+        <PolyglotText defaultString="핵인싸과정" id="home-Inprogress-Ribbon2" />
+      </Label>
+    )}
+    {stampReady && (
+      <Label className="ribbon2">
+        <PolyglotText defaultString="Stamp" id="home-Inprogress-Ribbon1" />
+      </Label>
+    )}
   </div>
 );
 
@@ -108,13 +117,20 @@ interface EnrollingRibbonProps {
 export const EnrollingRibbon = ({ model }: EnrollingRibbonProps) => (
   <div className="card-ribbon-wrap">
     {model.studentCount >= model.capacity && (
-      <Label className="done">정원 마감</Label>
+      <Label className="done">
+        <PolyglotText defaultString="정원 마감" id="home-Enrolling-Ribbon2" />
+      </Label>
     )}
 
     {model.studentCount < model.capacity && model.differDays === 0 ? (
-      <Label className="day">오늘 마감</Label>
+      <Label className="day">
+        <PolyglotText defaultString="오늘 마감" id="home-Enrolling-Ribbon3" />
+      </Label>
     ) : (
-      <Label className="day">D-{model.differDays}</Label>
+      <Label className="day">
+        <PolyglotText defaultString="D-" id="home-Enrolling-Ribbon4" />
+        {model.differDays}
+      </Label>
     )}
   </div>
 );

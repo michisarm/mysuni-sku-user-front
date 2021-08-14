@@ -7,6 +7,9 @@ import { IdNameCount } from 'shared/model';
 import { CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
+import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
@@ -41,7 +44,7 @@ class FavoriteChannelChangeView extends Component<Props> {
     return (
       collegeType === CollegeType.Company ||
       favoriteChannels
-        .map(favoriteChannel => favoriteChannel.id)
+        .map((favoriteChannel) => favoriteChannel.id)
         .includes(channelId)
     );
   }
@@ -78,7 +81,10 @@ class FavoriteChannelChangeView extends Component<Props> {
                           onClick={() => onToggleCollege(college.id)}
                         >
                           <span className={`name ${this.color[index]}`}>
-                            {college.name}
+                            {parsePolyglotString(
+                              college.name,
+                              getDefaultLang(college.langSupports)
+                            )}
                           </span>
                           <Icon />
                         </Accordion.Title>
@@ -89,15 +95,22 @@ class FavoriteChannelChangeView extends Component<Props> {
                             {college.channels &&
                               college.channels.length > 0 &&
                               college.channels
-                                .filter(channel =>
+                                .filter((channel) =>
                                   channelIds.includes(channel.id)
                                 )
                                 .map((channel, index) => (
                                   <li key={`channel-${index}`}>
                                     <Checkbox
                                       className="base"
-                                      label={<label>{channel.name}</label>}
-                                      name={channel.name}
+                                      label={
+                                        <label>
+                                          {getChannelName(channel.id)}
+                                        </label>
+                                      }
+                                      name={parsePolyglotString(
+                                        channel.name,
+                                        getDefaultLang(channel.langSupports)
+                                      )}
                                       checked={this.isChecked(
                                         college.collegeType,
                                         channel.id
@@ -109,7 +122,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                                       onChange={() =>
                                         onToggleChannel({
                                           id: channel.id,
-                                          name: channel.name,
+                                          name: getChannelName(channel.id),
                                           checked: false,
                                         })
                                       }
@@ -137,12 +150,12 @@ class FavoriteChannelChangeView extends Component<Props> {
                     className="del"
                     onClick={() => onToggleChannel(channel)}
                   >
-                    {channel.name}
+                    {getChannelName(channel.id)}
                   </Button>
                 ))}
                 {favoriteCompanyChannels.map((channel: CheckableChannel) => (
                   <Button key={`del_${channel.id}`} className="del default">
-                    {channel.name}
+                    {getChannelName(channel.id)}
                   </Button>
                 ))}
               </div>

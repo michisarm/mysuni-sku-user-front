@@ -26,6 +26,7 @@ import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
 import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
 import { isMobile } from 'react-device-detect'
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -191,8 +192,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setQuizPop(false);
         pauseVideo();
         reactAlert({
-          title: '영상이 중지됐습니다.',
-          message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+          title: getPolyglotText('영상이 중지됐습니다.', 'Collage-Video-영상중지'),
+          message: getPolyglotText('퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.', 'Collage-Video-답안제출'),
           onClose: () => onScrollTop(),
         });
       } else if (quizCurrentTime !== matchesQuizTime) {
@@ -318,7 +319,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           {pauseVideoSticky && (
             <div className="video-overlay-small art">
               <button onClick={onScrollTop} type="button">
-                <span className="copy">퀴즈풀고 이어보기</span>
+                <span className="copy">
+                  <PolyglotText defaultString="퀴즈풀고 이어보기" id="Collage-Video-퀴즈풀기" />
+                </span>
               </button>
             </div>
           )}
@@ -339,7 +342,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                     </button>
                   </div>
                   <div className="video-overlay-text">
-                    <p>다음 학습 이어하기</p>
+                    <p>
+                      <PolyglotText defaultString="다음 학습 이어하기" id="Collage-Video-이어하기" />
+                    </p>
                     <h3>
                       {nextContent &&
                         (nextContent as LectureStructureCubeItem).name}
@@ -354,7 +359,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   <button>
                     <img src={playerBtn} />
                   </button>
-                  <span className="copy">다음 학습 이어하기</span>
+                  <span className="copy">
+                    <PolyglotText defaultString="다음 학습 이어하기" id="Collage-Video-이어하기" />
+                  </span>
                 </div>
               </>
             )}
@@ -381,15 +388,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                     inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
                   }
                 />
-                {inMyLectureModel === undefined
-                  ? '관심목록 추가'
-                  : '관심목록 제거'}
+                {
+                  inMyLectureModel === undefined
+                  ? getPolyglotText('관심목록 추가', 'Collage-Video-관심추가')
+                  : getPolyglotText('관심목록 제거', 'Collage-Video-관심제거')
+                }
               </span>
             </a>
             <a onClick={copyUrl}>
               <span>
                 <Icon className="linkCopy" />
-                링크 복사
+                <PolyglotText defaultString="링크 복사" id="Collage-Video-링크복사" />
               </span>
             </a>
           </div>

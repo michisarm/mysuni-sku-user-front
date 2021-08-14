@@ -10,6 +10,8 @@ import { CollegeModel, ChannelModel } from 'college/model';
 import LectureApi from '../apiclient/LectureApi';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CollegeCountModel from '../../model/CollegeCountModel';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 class LectureCountService {
   //
@@ -86,7 +88,7 @@ class LectureCountService {
   @action
   async findCollegesCount(colleges: CollegeModel[]) {
     //
-    const promises = colleges.map(college =>
+    const promises = colleges.map((college) =>
       this.lectureApi.findLectureCountByChannels(
         college.collegeId,
         college.channels
@@ -98,7 +100,10 @@ class LectureCountService {
       (channelCountList, index) =>
         new CollegeCountModel({
           collegeId: colleges[index].collegeId,
-          name: colleges[index].name,
+          name: parsePolyglotString(
+            colleges[index].name,
+            getDefaultLang(colleges[index].langSupports)
+          ),
           lectureCount: channelCountList.reduce(
             (prev, channelCount) => prev + channelCount.lectureCount,
             0
@@ -114,7 +119,7 @@ class LectureCountService {
   getCollegeCount(collegeId: string) {
     //
     const collegeCount = this._collegeCountList.find(
-      collegeCount => collegeCount.collegeId === collegeId
+      (collegeCount) => collegeCount.collegeId === collegeId
     );
 
     if (!collegeCount) {

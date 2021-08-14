@@ -24,6 +24,11 @@ import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 // 고도화
 import { CategoryModel, CubeType } from '../../../../../shared/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -131,7 +136,7 @@ class BoxCardView extends Component<Props, States> {
           <Thumbnail image={thumbnailImage} />
 
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 
@@ -148,7 +153,13 @@ class BoxCardView extends Component<Props, States> {
               null}
             <Field
               icon="complete"
-              text={`이수 ${numeral(model.passedStudentCount).format('0,0')}명`}
+              // text={`${getPolyglotText(
+              //   '이수',
+              //   'home-Inprogress-이수'
+              // )} ${numeral(model.passedStudentCount).format(
+              //   '0,0'
+              // )}${getPolyglotText('명', 'home-Inprogress-명')}`}
+              text={getPolyglotText('이수 {personCount}명', 'home-Inprogress-이수', {personCount: numeral(model.passedStudentCount).format('0,0')})}
             />
           </Fields>
 
@@ -158,7 +169,7 @@ class BoxCardView extends Component<Props, States> {
         {/* hover 시 컨텐츠 */}
         <div className="hover-content">
           <Title
-            title={model.name}
+            title={model.name && parsePolyglotString(model.name)}
             category={new CategoryModel(model.category)}
           />
 
@@ -174,7 +185,10 @@ class BoxCardView extends Component<Props, States> {
                   <Icon className={action.iconName} />
                 </Button>
                 <Button className="ui button fix bg" onClick={onViewDetail}>
-                  상세보기
+                  <PolyglotText
+                    defaultString="상세보기"
+                    id="home-Inprogress-상세보기"
+                  />
                 </Button>
               </>
             )}
@@ -189,7 +203,10 @@ class BoxCardView extends Component<Props, States> {
                 }}
                 onClick={onViewDetail}
               >
-                상세보기
+                <PolyglotText
+                  defaultString="상세보기"
+                  id="home-Inprogress-상세보기"
+                />
               </Button>
             )}
           </Buttons>

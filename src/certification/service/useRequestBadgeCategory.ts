@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { BadgeCategoryService } from '../../lecture/stores';
 
 export function useRequestBadgeCategory(): void {
@@ -8,8 +9,13 @@ export function useRequestBadgeCategory(): void {
 }
 
 export function getBadgeCategoryName(badgeCategoryId: string) {
-  return (
-    BadgeCategoryService.instance.categories.find(c => c.id === badgeCategoryId)
-      ?.name || ''
+  const polyglotName = BadgeCategoryService.instance.categories.find(
+    (c) => c.id === badgeCategoryId
   );
+
+  if (polyglotName === undefined) {
+    return '';
+  }
+
+  return parsePolyglotString(polyglotName.name);
 }

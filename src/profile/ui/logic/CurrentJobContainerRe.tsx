@@ -38,7 +38,7 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findAllJobGroups();
-    skProfileService!.findSkProfile().then(skProfile => {
+    skProfileService!.findSkProfile().then((skProfile) => {
       //
       const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
 
@@ -76,11 +76,13 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findJobGroupById(data.value);
-    skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
-      id: data.value,
-      name: event.target.innerText,
-    });
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', new IdName());
+    // 김민준 - 객체 없음
+    // skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
+    // 김민준 - 객체 없음
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', new IdName());
   }
 
   setJobDuties() {
@@ -109,10 +111,11 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
-      id: data.value,
-      name: event.target.innerText,
-    });
+    // 김민준 - 객체 없음
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
+    //   id: data.value,
+    //   name: event.target.innerText,
+    // });
   }
 
   selectEtcJobDuty(data: any) {
@@ -123,10 +126,11 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
-      id: 'etc',
-      name: data.value,
-    });
+    // 김민준 - 객체 없음
+    // skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
+    //   id: 'etc',
+    //   name: data.value,
+    // });
   }
 
   onPreviousClick() {
@@ -136,17 +140,23 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
   onNextClick() {
     //
     const skProfileService = this.props.skProfileService!;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { currentJobGroup, favoriteJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobDutyId,
+      favoriteJobGroupId,
+    } = additionalUserInfo!;
 
     let skProfileUdo: SkProfileUdo;
 
     if (
-      !currentJobGroup.currentJobGroup ||
-      !currentJobGroup.currentJobGroup!.id ||
-      !currentJobGroup.currentJobDuty ||
-      !currentJobGroup.currentJobDuty!.id
+      // !currentJobGroup.currentJobGroup ||
+      // !currentJobGroup.currentJobGroup!.id ||
+      // !currentJobGroup.currentJobDuty ||
+      // !currentJobGroup.currentJobDuty!.id
+      !currentJobDutyId ||
+      !currentJobGroupId
     ) {
       reactAlert({
         title: '알림',
@@ -154,21 +164,23 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
       });
     } else {
       skProfileUdo = new SkProfileUdo(
-        skProfileService.skProfile.member.currentJobGroup,
-        skProfileService.skProfile.member.favoriteJobGroup,
+        // 김민준 해당 객체 없음 additional
+        // skProfileService.skProfile.member.currentJobGroup,
+        // skProfileService.skProfile.member.favoriteJobGroup,
         skProfileService.skProfile.pisAgreement
       );
-      skProfileService.modifySkProfile(skProfileUdo).then(() => {
-        if (
-          !favoriteJobGroup.favoriteJobGroup ||
-          !favoriteJobGroup.favoriteJobGroup!.id ||
-          favoriteJobGroup.favoriteJobGroup!.id === ''
-        ) {
-          this.props.history.push(routePaths.favoriteJobRe());
-        } else {
-          this.props.history.push('/');
-        }
-      });
+      // skProfileService.modifySkProfile(skProfileUdo).then(() => {
+      //   if (
+      //     favoriteJobGroupId === ''
+      //     // !favoriteJobGroup.favoriteJobGroup ||
+      //     // !favoriteJobGroup.favoriteJobGroup!.id ||
+      //     // favoriteJobGroup.favoriteJobGroup!.id === ''
+      //   ) {
+      //     this.props.history.push(routePaths.favoriteJobRe());
+      //   } else {
+      //     this.props.history.push('/');
+      //   }
+      // });
       // this.props.history.push(routePaths.favoriteLearningType());
       // this.props.history.push(routePaths.favoriteJob());
     }
@@ -179,9 +191,13 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { currentJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const {
+      currentJobDutyId,
+      currentJobGroupId,
+      favoriteJobDutyId,
+      favoriteJobGroupId,
+    } = additionalUserInfo!;
 
     return (
       <Form>
@@ -194,19 +210,21 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
               placeholder="선택해주세요"
               options={selectOptionJobGroup}
               value={
-                currentJobGroup &&
-                currentJobGroup.currentJobGroup &&
-                currentJobGroup.currentJobGroup.id
+                // currentJobGroup &&
+                // currentJobGroup.currentJobGroup &&
+                // currentJobGroup.currentJobGroup.id
+                ''
               }
               onChange={(event: any, data: any) =>
                 this.selectJobGroup(event, data)
               }
             />
           </div>
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id !== 'etc' ? (
+          {
+            // currentJobGroup &&
+            // currentJobGroup.currentJobGroup &&
+            // currentJobGroup.currentJobGroup.id &&
+            // currentJobGroup.currentJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 현재 직무를 선택해주세요.
@@ -215,58 +233,66 @@ class CurrentJobContainerRe extends React.Component<Props, State> {
                 placeholder="선택해주세요"
                 options={selectOptionJobDuty}
                 value={
-                  member &&
-                  member.currentJobGroup &&
-                  member.currentJobGroup.currentJobDuty &&
-                  member.currentJobGroup.currentJobDuty.id
+                  // member &&
+                  // member.currentJobGroup &&
+                  // member.currentJobGroup.currentJobDuty &&
+                  // member.currentJobGroup.currentJobDuty.id
+                  ''
                 }
                 onChange={(event: any, data: any) =>
                   this.selectJobDuty(event, data)
                 }
               />
             </div>
-          ) : (
-            ''
-          )}
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id === 'etc' ? (
-            <div className="select-box">
-              <div className="select-title">
-                Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+            // ) : (
+            //   ''
+          }
+          {
+            // currentJobGroup &&
+            // currentJobGroup.currentJobGroup &&
+            // currentJobGroup.currentJobGroup.id &&
+            // currentJobGroup.currentJobGroup.id === 'etc' ? (
+            currentJobGroupId === 'etc' ? (
+              <div className="select-box">
+                <div className="select-title">
+                  Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+                </div>
+                <div
+                  className={classNames('ui h48 input', {
+                    focus: this.state.focus,
+                    write:
+                      // 김민준 - name 없음 addtional
+                      // currentJobGroup &&
+                      // currentJobGroup.currentJobDuty &&
+                      // currentJobGroup.currentJobDuty.name,
+                      currentJobGroupId,
+                  })}
+                >
+                  <input
+                    type="text"
+                    placeholder="Text.."
+                    value={
+                      // 김민준 - name 없음 addtional
+                      // currentJobGroup &&
+                      // currentJobGroup.currentJobDuty &&
+                      // currentJobGroup.currentJobDuty.name
+                      currentJobDutyId
+                    }
+                    onClick={() => this.setState({ focus: true })}
+                    onChange={(e) =>
+                      this.selectEtcJobDuty({ value: e.target.value })
+                    }
+                  />
+                  <Icon
+                    className="clear link"
+                    onClick={() => this.selectEtcJobDuty({ value: '' })}
+                  />
+                </div>
               </div>
-              <div
-                className={classNames('ui h48 input', {
-                  focus: this.state.focus,
-                  write:
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name,
-                })}
-              >
-                <input
-                  type="text"
-                  placeholder="Text.."
-                  value={
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name
-                  }
-                  onClick={() => this.setState({ focus: true })}
-                  onChange={e =>
-                    this.selectEtcJobDuty({ value: e.target.value })
-                  }
-                />
-                <Icon
-                  className="clear link"
-                  onClick={() => this.selectEtcJobDuty({ value: '' })}
-                />
-              </div>
-            </div>
-          ) : (
-            ''
-          )}
+            ) : (
+              ''
+            )
+          }
         </div>
         {/*<div className="select-error">*/}
         {/*  <Icon className="error16" /><span className="blind">error</span>*/}

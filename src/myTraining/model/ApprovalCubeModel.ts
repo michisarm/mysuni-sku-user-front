@@ -19,6 +19,10 @@ import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 import { OperationModel } from './OperationModel';
 import { ApprovalCubeXlsxModel } from './ApprovalCubeXlsxModel';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 export class ApprovalCubeModel implements DramaEntity {
   //
@@ -50,9 +54,9 @@ export class ApprovalCubeModel implements DramaEntity {
   studentId: string = '';
   rollBookId: string = '';
   classroomId: string = '';
-  studentName: string = '';
-  studentDepartmentNames: LangStrings = new LangStrings();
-  cubeName: string = '';
+  studentName: PolyglotString | null = null;
+  studentDepartmentNames: PolyglotString | null = null;
+  cubeName: PolyglotString | null = null;
 
   round: number = 0;
   approvedStudentCount: number = 0;
@@ -102,10 +106,6 @@ export class ApprovalCubeModel implements DramaEntity {
           new EnrollingModel(approvalCube.enrolling)) ||
         this.enrolling;
 
-      const studentDepartmentNames = new LangStrings(
-        approvalCube.studentDepartmentNames
-      );
-
       Object.assign(this, {
         ...approvalCube,
         creator,
@@ -116,7 +116,6 @@ export class ApprovalCubeModel implements DramaEntity {
         freeOfCharge,
         operation,
         enrolling,
-        studentDepartmentNames,
       });
 
       // UI Model
@@ -125,7 +124,7 @@ export class ApprovalCubeModel implements DramaEntity {
       this.required =
         approvalCube.requiredSubsidiaries &&
         approvalCube.requiredSubsidiaries.some(
-          subsidiary => subsidiary.id === companyCode
+          (subsidiary) => subsidiary.id === companyCode
         );
     }
   }
@@ -173,9 +172,9 @@ export class ApprovalCubeModel implements DramaEntity {
     //
     return {
       No: index + 1,
-      신청자: approvalCube.studentName,
-      조직: approvalCube.getStudentDepartmentNames,
-      과정명: approvalCube.cubeName,
+      신청자: parsePolyglotString(approvalCube.studentName),
+      조직: parsePolyglotString(approvalCube.studentDepartmentNames),
+      과정명: parsePolyglotString(approvalCube.cubeName),
       차수: approvalCube.round,
       신청상태: ApprovalCubeModel.getProposalStateName(
         approvalCube.proposalState
@@ -188,21 +187,6 @@ export class ApprovalCubeModel implements DramaEntity {
         moment(approvalCube.creationTime).format('YYYY.MM.DD'),
       '인당 교육금액': numeral(approvalCube.chargeAmount).format('0,0'),
     };
-  }
-
-  @computed
-  get getStudentDepartmentNames() {
-    if (
-      this.studentDepartmentNames &&
-      this.studentDepartmentNames.langStringMap
-    ) {
-      return (
-        this.studentDepartmentNames.langStringMap.get(
-          this.studentDepartmentNames.defaultLanguage
-        ) || ''
-      );
-    }
-    return '';
   }
 }
 

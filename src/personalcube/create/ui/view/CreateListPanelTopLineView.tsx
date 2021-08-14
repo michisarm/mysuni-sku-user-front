@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Select } from 'semantic-ui-react';
 import { ListPanelTopLine } from 'shared';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 interface Props {
@@ -29,7 +30,7 @@ class CreateListPanelTopLineView extends React.Component<Props> {
       >
         <div className="right-wrap">
           <Select
-            placeholder="전체"
+            placeholder={getPolyglotText('전체', 'Create-MainList-userStatus')}
             className="small-border m0"
             value={searchState}
             options={searchSelectOptions}

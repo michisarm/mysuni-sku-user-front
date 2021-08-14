@@ -13,6 +13,8 @@ import { getCollgeName } from '../../../shared/service/useCollege/useRequestColl
 import { LearningStateName, LearningState } from '../../../shared/model';
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { stateNamePolytglot } from 'shared/model/LearningStateName';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -63,12 +65,18 @@ export default function RequiredCardListView({
               <Table.Cell className="title">
                 <a
                   href="#"
-                  onClick={e => {
+                  onClick={(e) => {
                     onViewDetail(e, requiredCard.serviceId);
                   }}
                 >
-                  <span className={`ellipsis ${requiredCard.useNote ?  'noteOn' : ''}`}>{requiredCard.name}</span>
-                  {/* <span className="ellipsis noteOn">{requiredCard.name}</span> */}
+                  <span
+                    className={`ellipsis ${
+                      requiredCard.useNote ? 'noteOn' : ''
+                    }`}
+                  >
+                    {requiredCard.name &&
+                      parsePolyglotString(requiredCard.name)}
+                  </span>
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>
@@ -80,7 +88,7 @@ export default function RequiredCardListView({
                 {convertTimeToDate(requiredCard.updateTime)}
               </Table.Cell>
               <Table.Cell>{progressRate}</Table.Cell>
-              <Table.Cell>{learningState}</Table.Cell>
+              <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
             </Table.Row>
           );
         })}

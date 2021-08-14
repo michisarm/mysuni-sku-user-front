@@ -5,6 +5,9 @@ import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
 import BadgeSize from '../../../../../certification/ui/model/BadgeSize';
 import BadgeStyle from '../../../../../certification/ui/model/BadgeStyle';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LectureBadgeViewProps {
   lectureBadge: LectureBadge;
@@ -26,7 +29,13 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
               <h3 className="title-style">
                 <Label className="onlytext bold size24">
                   <Icon className="lms-badge" />
-                  <span>{/*Tag*/}관련 Badge</span>
+                  <span>
+                    {/*Tag*/}
+                    <PolyglotText
+                      defaultString="관련 Badge"
+                      id="Course-Contents-관련 Badge"
+                    />
+                  </span>
                 </Label>
               </h3>
             </div>
@@ -34,13 +43,16 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
           <div className="scrolling lms-badge-list">
             <div className="badge-list-type">
               <ul className="belt">
-                {lectureBadge.badges.map(bundle => {
+                {lectureBadge.badges.map((bundle) => {
                   const { badge, badgeCategory } = bundle;
                   return (
                     <li>
                       <BadgeView
                         id={badge.id}
-                        name={badge.name}
+                        name={parsePolyglotString(
+                          badge.name,
+                          getDefaultLang(badge.langSupport)
+                        )}
                         level="Level1"
                         iconUrl={badge.iconUrl}
                         categoryId={badgeCategory.id}

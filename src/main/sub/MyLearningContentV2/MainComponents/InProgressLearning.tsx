@@ -13,6 +13,10 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
@@ -47,11 +51,25 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   return (
     <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
-        <strong>{`${profileMemberName}님이 학습중인 과정`}</strong>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<strong>${getPolyglotText(
+              `{profileMemberName}님이 학습중인 과정`,
+              'home-Inprogress-Title',
+              {
+                profileMemberName,
+              }
+            )}</strong>`,
+          }}
+        />
         <div className="right">
           {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
-              View all <Icon className="morelink" />
+              <PolyglotText
+                defaultString="View all"
+                id="home-Inprogress-ViewAll"
+              />{' '}
+              <Icon className="morelink" />
             </Button>
           )}
         </div>
@@ -81,6 +99,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
                     dataArea={Area.MAIN_LEARNING}
+                    langSupports={card.langSupports}
                     // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함
                     // 정원 마감 : capacity <= student_count
                     // D-DAY OR D-14 ... : 수강신청 마감일 - TODAY
@@ -107,7 +126,12 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             <NoSuchContentPanel
               message={
                 <>
-                  <div className="text">진행중인 학습 과정이 없습니다.</div>
+                  <div className="text">
+                    <PolyglotText
+                      defaultString="진행중인 학습 과정이 없습니다."
+                      id="home-Inprogress-진행없음"
+                    />
+                  </div>
                   <Button
                     icon
                     as="a"
@@ -115,8 +139,11 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     onClick={onViewAll}
                   >
                     <span className="border">
-                      <span className="ellipsis">{profileMemberName}</span> 님이
-                      학습 중인 과정 보기
+                      <span className="ellipsis">{profileMemberName}</span>{' '}
+                      <PolyglotText
+                        defaultString="님이 학습 중인 과정 보기"
+                        id="home-Inprogress-진행중"
+                      />
                     </span>
                     <Icon className="morelink" />
                   </Button>

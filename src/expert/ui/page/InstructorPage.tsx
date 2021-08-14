@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
-import InstructorService from '../../present/logic/InstructorService';
 import InstructorContentHeaderView from '../view/InstructorContentHeaderView';
 import InstructorIntroduceView from '../view/InstructorIntroduceView';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { findByRdoCache } from '../../../lecture/detail/api/cardApi';
 import { InstructorLecturesView } from '../view/InstructorLecturesView';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
+import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
 
 const PAGE_SIZE = 8;
 
-interface Props extends RouteComponentProps<RouteParams> {
-  instructorService: InstructorService;
-}
+interface Props extends RouteComponentProps<RouteParams> {}
 
 interface State {
   cardsTotalCount: number;
   cards: CardWithCardRealtedCount[];
+  instructorWithIdentity: InstructorWithIdentity | null;
 }
 
 interface RouteParams {
@@ -33,8 +32,6 @@ enum ContentType {
   Lecture = 'Lecture',
 }
 
-@inject(mobxHelper.injectFrom('expert.instructorService'))
-@observer
 @reactAutobind
 class InstructorPage extends Component<Props, State> {
   //
@@ -44,15 +41,21 @@ class InstructorPage extends Component<Props, State> {
     this.state = {
       cardsTotalCount: 0,
       cards: [],
+      instructorWithIdentity: null,
     };
   }
 
   componentDidMount() {
     //
-    const { instructorService, match } = this.props;
+    const { match } = this.props;
     const { instructorId } = match.params;
-
-    instructorService.findInstructor(instructorId);
+    findInstructorWithIdentityCache(instructorId).then(
+      (instructorWithIdentity) => {
+        if (instructorWithIdentity !== undefined) {
+          this.setState({ instructorWithIdentity });
+        }
+      }
+    );
     this.requestCards();
   }
 
@@ -64,7 +67,7 @@ class InstructorPage extends Component<Props, State> {
       instructorId,
       offset: cards.length,
       limit: PAGE_SIZE,
-    }).then(next => {
+    }).then((next) => {
       if (next !== undefined) {
         const nextCards = [...cards, ...next.results];
         this.setState({ cards: nextCards, cardsTotalCount: next.totalCount });
@@ -106,9 +109,13 @@ class InstructorPage extends Component<Props, State> {
 
   renderIntroduce() {
     //
-    const { instructor } = this.props.instructorService!;
+    const { instructorWithIdentity } = this.state;
 
-    return <InstructorIntroduceView instructor={instructor} />;
+    return (
+      <InstructorIntroduceView
+        instructorWithIdentity={instructorWithIdentity}
+      />
+    );
   }
 
   renderLecture() {
@@ -125,12 +132,14 @@ class InstructorPage extends Component<Props, State> {
 
   render() {
     //
-    const { instructor } = this.props.instructorService!;
+    const { instructorWithIdentity } = this.state;
     const { params } = this.props.match;
 
     return (
       <ContentLayout className="mylearning" breadcrumb={[{ text: 'Expert' }]}>
-        <InstructorContentHeaderView instructor={instructor} />
+        <InstructorContentHeaderView
+          instructorWithIdentity={instructorWithIdentity}
+        />
 
         <Tab
           allMounted

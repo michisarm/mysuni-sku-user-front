@@ -12,6 +12,12 @@ import BadgeView from '../view/BadgeView';
 import ChallengeBadgeAlertModal from '../view/ChallengeBadgeAlertModal';
 import { findBadgeStudent } from '../../api/BadgeStudentApi';
 import { BadgeStudent } from '../../model/BadgeStudent';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface BadgeCompLeftProps {
   challengeBadge: MyBadge;
@@ -61,7 +67,10 @@ function BadgeCompLeft({
       <div className="badge-list-type" style={{ padding: 0! }}>
         <BadgeView
           id={challengeBadge.id}
-          name={challengeBadge.name}
+          name={parsePolyglotString(
+            challengeBadge.name,
+            getDefaultLang(challengeBadge.langSupport)
+          )}
           level={challengeBadge.level}
           iconUrl={challengeBadge.iconUrl}
           categoryId={challengeBadge.categoryId}
@@ -75,17 +84,31 @@ function BadgeCompLeft({
             <span className="number">
               <b>{IssueStateNameType.Requested}</b>
             </span>
-            <span className="txt mt2">{issueTime} 발급 요청</span>
+            <span className="txt mt2">
+              {issueTime}
+              <PolyglotText
+                id="Certification-clls-발급요청1"
+                defaultString="발급 요청"
+              />
+            </span>
           </span>
         )}
         {challengeState !== ChallengeState.Requested &&
           !challengeBadge.issueAutomatically && (
             <>
               <Button className="fix line" onClick={onClickRequestIssue}>
-                발급요청
+                <PolyglotText
+                  id="Certification-clls-발급요청2"
+                  defaultString="발급요청"
+                />
               </Button>
               <span className="number">
-                <span className="ing-txt">진행중</span>
+                <span className="ing-txt">
+                  <PolyglotText
+                    id="Certification-clls-학습상태1"
+                    defaultString="진행중"
+                  />
+                </span>
                 <span>
                   <b>{passedCardCount}</b>/{badgeCardCount}
                 </span>
@@ -96,15 +119,25 @@ function BadgeCompLeft({
           challengeBadge.issueAutomatically && (
             <>
               <span className="number">
-                <span className="ing-txt">진행중</span>
+                <span className="ing-txt">
+                  <PolyglotText
+                    id="Certification-clls-학습상태2"
+                    defaultString="진행중"
+                  />
+                </span>
                 <span>
                   <b>{passedCardCount}</b>/{badgeCardCount}
                 </span>
               </span>
-              <span className="txt">
-                Badge 도전 학습 모두 완료 시<br />
-                자동으로 Badge가 발급됩니다.
-              </span>
+              <span
+                className="txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `Badge 도전 학습 모두 완료 시<br />자동으로 Badge가 발급됩니다.`,
+                    'Certification-clls-상태설명'
+                  ),
+                }}
+              />
             </>
           )}
         <ChallengeBadgeAlertModal

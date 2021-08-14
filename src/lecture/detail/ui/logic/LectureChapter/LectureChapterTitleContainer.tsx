@@ -1,6 +1,7 @@
 import React from 'react';
 import LectureChapterTitleView from '../../view/LectureChapterView/LectureChapterTitleView';
 import { useLearningContent } from '../../../store/LearningContentStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 function LectureChapterTitleContainer() {
   const LearningContent = useLearningContent();
@@ -9,7 +10,7 @@ function LectureChapterTitleContainer() {
     <>
       {LearningContent && (
         <LectureChapterTitleView
-          name={LearningContent.name}
+          name={parsePolyglotString(LearningContent.name)}
           description={LearningContent.description}
         />
       )}

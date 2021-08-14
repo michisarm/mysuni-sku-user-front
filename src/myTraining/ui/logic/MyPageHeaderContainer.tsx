@@ -16,6 +16,7 @@ import lecturePaths from '../../../lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -94,8 +95,8 @@ function MyPageHeaderContainer({
           imageEditable={true}
           image={skProfile.photoFilePath || profileImg}
           name={skProfile.profileViewName}
-          company={skProfile.member.company}
-          department={skProfile.member.department}
+          company={parsePolyglotString(skProfile.companyName)}
+          department={parsePolyglotString(skProfile.departmentName)}
           type="Learning"
         />
       </ContentHeader.Cell>

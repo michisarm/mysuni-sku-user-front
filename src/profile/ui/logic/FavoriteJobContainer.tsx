@@ -4,7 +4,14 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Form, Button, Icon, Select, Input } from 'semantic-ui-react';
+import {
+  Form,
+  Button,
+  Icon,
+  Select,
+  Input,
+  DropdownProps,
+} from 'semantic-ui-react';
 import classNames from 'classnames';
 import { IdName } from 'shared/model';
 import { JobGroupService } from 'college/stores';
@@ -12,6 +19,38 @@ import { JobGroupService } from 'college/stores';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { isEmpty } from 'lodash';
+
+function getAdditionalInfoParams(
+  favoriteJobGroupId: string,
+  favoriteJobDutyId: string,
+  userDefinedFavoriteJobDuty: string
+) {
+  const params = {
+    nameValues: [
+      {
+        name: 'favoriteJobGroupId',
+        value: favoriteJobGroupId,
+      },
+      {
+        name: 'favoriteJobDutyId',
+        value: favoriteJobDutyId,
+      },
+      {
+        name: 'userDefinedFavoriteJobDuty',
+        value: '',
+      },
+    ],
+  };
+
+  if (favoriteJobGroupId === 'etc') {
+    params.nameValues[2].value = userDefinedFavoriteJobDuty;
+  }
+
+  return params;
+}
 
 interface Props extends RouteComponentProps {
   jobGroupService?: JobGroupService;
@@ -34,33 +73,33 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   };
 
   componentDidMount(): void {
-    //
     const { jobGroupService, skProfileService } = this.props;
 
+    skProfileService!.findSkProfile();
     jobGroupService!.findAllJobGroups();
-    skProfileService!.findSkProfile().then((skProfile) => {
-      //
-      const favoriteJobGroup =
-        skProfile.member.favoriteJobGroup.favoriteJobGroup;
 
-      if (skProfile.member.favoriteJobGroup.favoriteJobGroup) {
-        jobGroupService!.findJobGroupById(favoriteJobGroup.id);
-      }
-    });
+    if (skProfileService?.additionalUserInfo.favoriteJobGroupId) {
+      jobGroupService!.findJobGroupById(
+        skProfileService?.additionalUserInfo.favoriteJobGroupId
+      );
+    }
+  }
+
+  onPreviousClick() {
+    this.props.history.push(routePaths.currentJob());
   }
 
   setJobGroup() {
-    //
     const { jobGroups } = this.props.jobGroupService!;
-    const jobGroupSelect: any = [];
+    const jobGroupSelect: { key: number; value: string; text: string }[] = [];
 
     if (jobGroups) {
       jobGroupSelect.push({ key: 0, value: '', text: '선택해주세요' });
       jobGroups.map((jobGroup, index) => {
         jobGroupSelect.push({
           key: index + 1,
-          value: jobGroup.jobGroupId,
-          text: jobGroup.name,
+          value: jobGroup.id,
+          text: parsePolyglotString(jobGroup.name),
         });
       });
       jobGroupSelect.push({
@@ -72,29 +111,32 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     return jobGroupSelect;
   }
 
-  selectJobGroup(event: any, data: any) {
-    //
+  selectJobGroup(_: React.SyntheticEvent, data: DropdownProps) {
     const { jobGroupService, skProfileService } = this.props;
 
-    jobGroupService!.findJobGroupById(data.value);
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobGroup', {
-      id: data.value,
-      name: event.target.innerText,
-    });
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
+    if (data.value !== 'etc') {
+      jobGroupService!.findJobGroupById(data.value as string);
+    }
+
+    skProfileService?.setFavoriteJobGroupProp(data.value as string);
+
+    if (data.value === 'etc') {
+      skProfileService?.setFavoriteJobDutyProp('etc');
+    } else {
+      skProfileService?.setFavoriteJobDutyProp('');
+    }
   }
 
   setJobDuties() {
-    //
     const { jobGroup } = this.props.jobGroupService!;
-    const jobDutySelect: any = [];
+    const jobDutySelect: { key: number; value: string; text: string }[] = [];
 
     if (jobGroup) {
       jobGroup.jobDuties.map((jobDuty, index) => {
         jobDutySelect.push({
           key: index + 1,
           value: jobDuty.id,
-          text: jobDuty.name,
+          text: parsePolyglotString(jobDuty.name),
         });
       });
     }
@@ -102,174 +144,144 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     return jobDutySelect;
   }
 
-  selectJobDuty(event: any, data: any) {
-    //
+  selectJobDuty(_: React.SyntheticEvent, data: DropdownProps) {
     const { skProfileService } = this.props;
 
     this.setState({
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
-      id: data.value,
-      name: event.target.innerText,
-    });
+    skProfileService?.setFavoriteJobDutyProp(data.value as string);
   }
 
-  selectEtcJobDuty(data: any) {
-    //
+  onChangeEtcJobDuty(e: React.ChangeEvent<HTMLInputElement>) {
     const { skProfileService } = this.props;
 
     this.setState({
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
-      id: 'etc',
-      name: data.value,
-    });
+    skProfileService?.setUserDefinedFavoriteJobDuty(e.target.value);
   }
 
-  onPreviousClick() {
-    // this.props.history.push(routePaths.favoriteCollege());
-    this.props.history.push(routePaths.currentJob());
+  onInitEtcJobDuty() {
+    const { skProfileService } = this.props;
+
+    skProfileService?.setUserDefinedCurrentJobDuty('');
   }
 
   async onNextClick() {
-    //
     const skProfileService = this.props.skProfileService!;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
-
-    let skProfileUdo: SkProfileUdo;
+    const { additionalUserInfo } = skProfileService!;
+    const {
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+      userDefinedFavoriteJobDuty,
+    } = additionalUserInfo;
 
     if (
-      !favoriteJobGroup.favoriteJobGroup ||
-      !favoriteJobGroup.favoriteJobGroup!.id ||
-      !favoriteJobGroup.favoriteJobDuty ||
-      !favoriteJobGroup.favoriteJobDuty!.id
+      isEmpty(favoriteJobGroupId) ||
+      isEmpty(favoriteJobDutyId) ||
+      (favoriteJobGroupId === 'etc' && isEmpty(userDefinedFavoriteJobDuty))
     ) {
       reactAlert({
-        title: '알림',
-        message: '관심 직군과 관심 직무를 선택해주세요.',
+        title: getPolyglotText('알림', 'job-favorite-알림'),
+        message: getPolyglotText(
+          '관심 직군과 관심 직무를 선택해주세요.',
+          'job-favorite-알림내용'
+        ),
       });
     } else {
-      skProfileUdo = new SkProfileUdo(
-        skProfileService.skProfile.member.currentJobGroup,
-        skProfileService.skProfile.member.favoriteJobGroup,
-        skProfileService.skProfile.pisAgreement
+      await skProfileService.modifyStudySummary(
+        getAdditionalInfoParams(
+          favoriteJobGroupId,
+          favoriteJobDutyId,
+          userDefinedFavoriteJobDuty
+        )
       );
-      await skProfileService.modifySkProfile(skProfileUdo);
       this.props.history.push(routePaths.favoriteCollege());
     }
   }
 
   render() {
-    //
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty = this.setJobDuties();
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
+    const { additionalUserInfo } = skProfileService!;
+    const {
+      favoriteJobGroupId,
+      favoriteJobDutyId,
+      userDefinedFavoriteJobDuty,
+    } = additionalUserInfo;
 
     return (
       <Form>
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              Step 01. 관심 있는 직군을 선택해주세요.
+              <PolyglotText
+                defaultString="Step 01. 관심 있는 직군을 선택해주세요."
+                id="job-favorite-step1"
+              />
             </div>
             <Select
               placeholder="선택해주세요"
               options={selectOptionJobGroup}
-              value={
-                favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup.id
-              }
-              onChange={(event: any, data: any) =>
-                this.selectJobGroup(event, data)
-              }
+              value={favoriteJobGroupId}
+              onChange={this.selectJobGroup}
             />
           </div>
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
+          {favoriteJobGroupId !== 'etc' && (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 관심 직무를 선택해주세요.
+                <PolyglotText
+                  defaultString="Step 02. 관심 직무를 선택해주세요."
+                  id="job-favorite-step2On"
+                />
               </div>
               <Select
                 placeholder="선택해주세요"
                 options={selectOptionJobDuty}
-                value={
-                  member &&
-                  member.favoriteJobGroup &&
-                  member.favoriteJobGroup.favoriteJobDuty &&
-                  member.favoriteJobGroup.favoriteJobDuty.id
-                }
-                onChange={(event: any, data: any) =>
-                  this.selectJobDuty(event, data)
-                }
+                value={favoriteJobDutyId}
+                onChange={this.selectJobDuty}
               />
             </div>
-          ) : (
-            ''
           )}
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
+          {favoriteJobGroupId === 'etc' && (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+                <PolyglotText
+                  defaultString="Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요."
+                  id="job-favorite-step2Off"
+                />
               </div>
               <div
                 className={classNames('ui h48 input', {
                   focus: this.state.focus,
-                  write:
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name,
+                  write: userDefinedFavoriteJobDuty,
                 })}
               >
                 <input
                   type="text"
                   placeholder="Text.."
-                  value={
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name
-                  }
+                  value={userDefinedFavoriteJobDuty}
                   onClick={() => this.setState({ focus: true })}
-                  onChange={(e) =>
-                    this.selectEtcJobDuty({ value: e.target.value })
-                  }
+                  onChange={this.onChangeEtcJobDuty}
                 />
-                <Icon
-                  className="clear link"
-                  onClick={() => this.selectEtcJobDuty({ value: '' })}
-                />
+                <Icon className="clear link" onClick={this.onInitEtcJobDuty} />
               </div>
             </div>
-          ) : (
-            ''
           )}
         </div>
-        {/*<div className="select-error">*/}
-        {/*  <Icon className="error16" /><span className="blind">error</span>*/}
-        {/*  <span>직군 및 직무를 선택해주세요.</span>*/}
-        {/*</div>*/}
         <div className="button-area">
-          {/* <Button className="fix line" onClick={() => this.onPreviousClick()}>
-            Previous
-          </Button> */}
-          <div className="error">직군 및 직무를 선택해주세요.</div>
+          <div className="error">
+            <PolyglotText
+              defaultString="직군 및 직무를 선택해주세요."
+              id="job-favorite-주의"
+            />
+          </div>
           <Button className="fix bg" onClick={() => this.onNextClick()}>
-            다음
+            <PolyglotText defaultString="다음" id="job-favorite-다음" />
           </Button>
         </div>
       </Form>

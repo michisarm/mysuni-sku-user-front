@@ -65,9 +65,10 @@ class ManagerListModalContainer extends React.Component<Props, States> {
         handleOk={this.handleOk}
         handleCancel={this.onShow}
         companyCode={(companyCode && companyCode) || ''}
-        departmentCode={skProfile.member.departmentCode}
+        departmentCode={skProfile.departmentCode}
         showAllCompanies={cineroomId === 'ne1-m2-c2'}
         multiSelect={multiSelect}
+        // language={skProfile.language}
       />
     );
   }

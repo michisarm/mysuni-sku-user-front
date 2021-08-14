@@ -1,8 +1,11 @@
-
 import React from 'react';
 
 import { Table } from 'semantic-ui-react';
-import { PersonalCubeModel, CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import {
+  PersonalCubeModel,
+  CubeType,
+  CubeTypeNameType,
+} from 'personalcube/personalcube/model';
 import moment from 'moment';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 
@@ -11,32 +14,46 @@ interface Props {
 }
 
 class SharedDetailBasicInfoView extends React.Component<Props> {
-  render()
-  {
+  render() {
     const { personalCube } = this.props;
     const selectedChannels: any = [];
     let rejectRemarks: any = '';
 
     if (personalCube && personalCube.subCategories) {
-      const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
+      const channelListMap = PersonalCubeModel.makeChannelsMap(
+        personalCube.subCategories
+      );
 
-      channelListMap.forEach((value, key, map) => (
+      channelListMap.forEach((value, key, map) =>
         selectedChannels.push(
           map.size === 1 ? null : <p key={key} />,
-          <span key={key}>{key}<span className="dash" /></span>,
+          <span key={key}>
+            {key}
+            <span className="dash" />
+          </span>,
           value.map((channel, index) => {
             if (index === 0) return <span key={index}>{channel}</span>;
             else return <span key={index}>, {channel}</span>;
           })
         )
-      ));
+      );
     }
 
-    if (personalCube && personalCube.openRequests && personalCube.openRequests.length > 0 && personalCube.openRequests[0].response)
-    {
-      rejectRemarks = <><br />사유<span className="dash" />{personalCube.openRequests[0].response.remark}</>;
-    } else
-    {
+    if (
+      personalCube &&
+      personalCube.openRequests &&
+      personalCube.openRequests.length > 0 &&
+      personalCube.openRequests[0].response
+    ) {
+      rejectRemarks = (
+        <>
+          <br />
+          사유
+          <span className="dash" />
+          {personalCube.openRequests[0].response.remark}
+        </>
+      );
+    } else {
       rejectRemarks = '';
     }
 
@@ -45,7 +62,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
         <div className="section-tit">
           <span className="text1">기본정보</span>
         </div>
-        { personalCube && (
+        {personalCube && (
           <Table className="create">
             <Table.Body>
               <Table.Row>
@@ -57,35 +74,46 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
               <Table.Row>
                 <Table.HeaderCell>메인채널</Table.HeaderCell>
                 <Table.Cell>
-                  {personalCube.category && personalCube.category.college && personalCube.category.college.name}
+                  {personalCube.category &&
+                    personalCube.category.college &&
+                    personalCube.category.college.name}
                   <span className="dash" />
-                  {personalCube.category && personalCube.category.channel && personalCube.category.channel.name}
+                  {personalCube.category &&
+                    personalCube.category.channel &&
+                    personalCube.category.channel.name}
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.HeaderCell>서브채널</Table.HeaderCell>
-                <Table.Cell>
-                  { selectedChannels && selectedChannels }
-                </Table.Cell>
+                <Table.Cell>{selectedChannels && selectedChannels}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.HeaderCell>교육형태</Table.HeaderCell>
                 <Table.Cell>
-                  <div>{personalCube.contents && CubeTypeNameType[CubeType[personalCube.contents.type]]}</div>
+                  <div>
+                    {personalCube.contents &&
+                      CubeTypeNameType[CubeType[personalCube.contents.type]]}
+                  </div>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.HeaderCell>생성정보</Table.HeaderCell>
                 <Table.Cell>
-                  <div>{moment(personalCube.time).format('YYYY.MM.DD')}
-                    <span className="dash" />{personalCube.creator && personalCube.creator.name}
+                  <div>
+                    {moment(personalCube.time).format('YYYY.MM.DD')}
+                    <span className="dash" />
+                    {personalCube.creator && personalCube.creator.name}
                   </div>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.HeaderCell>승인정보</Table.HeaderCell>
                 <Table.Cell>
-                  <div>{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}
+                  <div>
+                    {EnumUtil.getEnumValue(
+                      CubeStateView,
+                      personalCube.cubeState
+                    ).get(personalCube.cubeState)}
                     {rejectRemarks}
                   </div>
                 </Table.Cell>
@@ -99,4 +127,3 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
 }
 
 export default SharedDetailBasicInfoView;
-

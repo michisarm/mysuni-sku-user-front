@@ -10,6 +10,8 @@ import {
   LectureCountService,
   CollegeLectureCountService,
 } from 'lecture/stores';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../model/LangSupport';
 
 interface Props {
   collegeService?: CollegeService;
@@ -84,8 +86,8 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   onSelectChannel(channel: ChannelModel) {
     //
     let { channels }: State = this.state;
-    if (channels.map(ch => ch.id).includes(channel.id)) {
-      channels = channels.filter(ch => ch.id !== channel.id);
+    if (channels.map((ch) => ch.id).includes(channel.id)) {
+      channels = channels.filter((ch) => ch.id !== channel.id);
     } else channels.push(new ChannelModel(channel));
     this.setState({ channels });
   }
@@ -162,7 +164,11 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                           })}
                           onClick={() => this.handleClick(college)}
                         >
-                          {college.name} ({college.channels.length})
+                          {parsePolyglotString(
+                            college.name,
+                            getDefaultLang(college.langSupports)
+                          )}{' '}
+                          ({college.channels.length})
                         </Button>
                       ))) ||
                       null}
@@ -189,7 +195,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                                 type="checkbox"
                                 className="hidden"
                                 checked={channels
-                                  .map(ch => ch.id)
+                                  .map((ch) => ch.id)
                                   .includes(channel.id)}
                               />
                               <label>
@@ -227,13 +233,16 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                   <div className="selected">
                     {/* 선택 전 */}
                     {channels && channels.length > 0 ? (
-                      channels.map(channel => (
+                      channels.map((channel) => (
                         <Button
                           className="del"
                           key={`del_${channel.id}`}
                           onClick={() => this.onSelectChannel(channel)}
                         >
-                          {channel.name}
+                          {parsePolyglotString(
+                            channel.name,
+                            getDefaultLang(channel.langSupports)
+                          )}
                         </Button>
                       ))
                     ) : (

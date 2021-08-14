@@ -6,6 +6,9 @@ import { includes } from 'lodash';
 import { reactAutobind } from '@nara.platform/accent';
 import mainRoutePaths from 'main/routePaths';
 import { ChannelModel, CollegeModel } from 'college/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -36,14 +39,31 @@ class CategoryLecturesHeaderView extends Component<Props> {
     const { channel, college } = this.props;
     const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
     const linkUrl =
-      channel.name === 'AI/DT Literacy'
+      parsePolyglotString(
+        channel.name,
+        getDefaultLang(channel.langSupports)
+      ) === 'AI/DT Literacy'
         ? '/certification/badge/badge-detail/BADGE-2t'
-        : mainRoutePaths.introductionCollege(college.name);
+        : mainRoutePaths.introductionCollege(
+            parsePolyglotString(
+              channel.name,
+              getDefaultLang(channel.langSupports)
+            )
+          );
     return (
       <>
         <div className="white-title">
           <div className="inner">
-            <strong>{channel.name}</strong>의 학습 과정 입니다.
+            <strong>
+              {parsePolyglotString(
+                channel.name,
+                getDefaultLang(channel.langSupports)
+              )}
+            </strong>
+            <PolyglotText
+              defaultString="의 학습 과정 입니다."
+              id="cicl-목록-학습과정2"
+            />
             {displayCurriculum === true && (
               <Link to={linkUrl} className="personal line round">
                 <a href="" className="personal line round">
@@ -61,7 +81,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
                       marginLeft: '0.4rem',
                     }}
                   >
-                    커리큘럼 보기
+                    <PolyglotText
+                      defaultString="커리큘럼 보기"
+                      id="cicl-목록-커리큘럼"
+                    />
                   </span>
                 </a>
               </Link>

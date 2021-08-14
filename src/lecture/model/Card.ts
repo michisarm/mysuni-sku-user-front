@@ -5,17 +5,19 @@ import { GroupBasedAccessRule } from './GroupBasedAccessRule';
 import { PermittedCineroom } from './PermittedCineroom';
 import { PatronKey } from '@nara.platform/accent';
 import CardType from '../shared/model/CardType';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LangSupport } from './LangSupport';
 export interface Card {
   id: string;
-  name: string;
+  name: PolyglotString;
   type: CardType;
   patronKey: PatronKey;
   thumbImagePath: string;
   stampCount: number;
-  simpleDescription: string;
+  simpleDescription: PolyglotString;
   difficultyLevel?: DifficultyLevel;
   searchable: boolean;
-  tags?: string[] | null;
+  tags?: PolyglotString | null;
   categories: CardCategory[];
   permittedCinerooms?: PermittedCineroom[];
   learningTime: number;
@@ -24,4 +26,5 @@ export interface Card {
   cardStateUpdatedTime: number;
   mainCategory: CardCategory;
   groupBasedAccessRule?: GroupBasedAccessRule;
+  langSupports: LangSupport[];
 }

@@ -10,6 +10,8 @@ import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
 import { AnswerService, CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -65,7 +67,7 @@ class AnswerDetailContainer extends Component<Props, States> {
     //
     const { filesMap } = this.state;
 
-    depot.getDepotFiles(fileBoxId).then(files => {
+    depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
       this.setState({ filesMap: newMap });
@@ -96,7 +98,11 @@ class AnswerDetailContainer extends Component<Props, States> {
             <BoardDetailContentHeaderView
               title={answer.title}
               time={answer.writtenTime}
-              subField={<span className="category">{post.category.name}</span>}
+              subField={
+                <span className="category">
+                  {parsePolyglotString(post.category.name)}
+                </span>
+              }
               onClickList={this.onClickList}
             />
 
@@ -106,12 +112,21 @@ class AnswerDetailContainer extends Component<Props, States> {
                   <div
                     className="ql-editor"
                     dangerouslySetInnerHTML={{
-                      __html: answer.contents.contents,
+                      __html:
+                        (answer.contents.contents &&
+                          parsePolyglotString(answer.contents.contents)) ||
+                        '',
                     }}
                   />
                 </div>
                 <div className="file">
-                  <span>첨부파일 :</span>
+                  <span>
+                    <PolyglotText
+                      id="support-qna-첨부파일"
+                      defaultString="첨부파일"
+                    />
+                    :
+                  </span>
                   <br />
                   {(filesMap &&
                     filesMap.get('reference') &&
@@ -122,8 +137,8 @@ class AnswerDetailContainer extends Component<Props, States> {
                           <a href="#" className="link" key={index}>
                             <span
                               className="ellipsis"
-                              onClick={e => {
-                                depot.downloadDepotFile(foundedFile.id)
+                              onClick={(e) => {
+                                depot.downloadDepotFile(foundedFile.id);
                                 e.preventDefault();
                               }}
                             >

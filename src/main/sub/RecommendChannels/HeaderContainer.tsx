@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -11,13 +10,13 @@ import { SkProfileService } from 'profile/stores';
 
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderView from './HeaderView';
-
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService,
-  totalChannelCount: number,
-  favoriteChannels: ChannelModel[],
-  onFindStudySummary: () => void,
+  skProfileService?: SkProfileService;
+  totalChannelCount: number;
+  favoriteChannels: string[];
+  onFindStudySummary: () => void;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
@@ -54,21 +53,30 @@ class HeaderContainer extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, totalChannelCount, favoriteChannels } = this.props;
+    const {
+      skProfileService,
+      totalChannelCount,
+      favoriteChannels,
+    } = this.props;
     const { skProfile } = skProfileService!;
 
     return (
       <HeaderView
-        memberName={skProfile.member.name}
+        memberName={parsePolyglotString(skProfile.name)}
         onViewAll={this.onViewAll}
       >
         <FavoriteChannelChangeModal
-          trigger={(
+          trigger={
             <Button icon className="img-icon">
-              <span className="underline">현재 선택된 관심 Channel(<span className="sel">{favoriteChannels.length}</span>/{totalChannelCount})</span>
-              <Icon className="setting17" /><span className="blind">setting</span>
+              <span className="underline">
+                현재 선택된 관심 Channel(
+                <span className="sel">{favoriteChannels.length}</span>/
+                {totalChannelCount})
+              </span>
+              <Icon className="setting17" />
+              <span className="blind">setting</span>
             </Button>
-          )}
+          }
           favorites={favoriteChannels}
           onConfirmCallback={this.onConfirmFavorite}
         />

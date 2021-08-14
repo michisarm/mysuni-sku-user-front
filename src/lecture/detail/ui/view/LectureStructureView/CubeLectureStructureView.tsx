@@ -77,7 +77,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                     can={cube.survey.can}
                   />
                 )}
-                {cube.report !== undefined && (
+                {cube.report !== undefined && (cube.report.name !== null && cube.report.name !== '') &&  (
                   <ReportView
                     activated={cube.report.path === pathname}
                     name={cube.report.name}
@@ -120,7 +120,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           can={survey.can}
         />
       )}
-      {report && (
+      {report  && (report.name !== null && report.name !== '') && (
         <CourseReportView
           name={report.name}
           state={report.state}

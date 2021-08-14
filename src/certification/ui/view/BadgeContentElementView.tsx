@@ -4,10 +4,12 @@ import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { dateTimeHelper } from 'shared';
 import moment from 'moment';
-import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import ChallengeStateText from '../../shared/Badge/ui/model/ChallengeStateText';
+import ChallengeState, {
+  challengeStateText,
+} from '../../shared/Badge/ui/model/ChallengeState';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   children: React.ReactNode;
@@ -64,9 +66,8 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({
   learningTime,
 }) => {
   //
-  const learningTimeFormat = dateTimeHelper.timeToHourMinuteFormat(
-    learningTime
-  );
+  const learningTimeFormat =
+    dateTimeHelper.timeToHourMinuteFormat(learningTime);
 
   // Level
   const getDifficultyLevel = (level: string) => {
@@ -84,19 +85,31 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({
     <div className="info">
       <div>
         <span className="detail admin">
-          <span>인증/관리 주체</span>
+          <span>
+            <PolyglotText
+              defaultString="인증/관리 주체"
+              id="Certification-View-인증관리주체"
+            />
+          </span>
           <span>{certiAdminCategoryName}</span>
         </span>
       </div>
       <div>
         <span className="detail design">
-          <span>설계 주체</span>
+          <span>
+            <PolyglotText
+              defaultString="설계 주체"
+              id="Certification-View-설계주체"
+            />
+          </span>
           <span>{designAdminName}</span>
         </span>
       </div>
       <div>
         <span className="detail level">
-          <span>Level</span>
+          <span>
+            <PolyglotText defaultString="Level" id="Certification-View-Level" />
+          </span>
           <span
             dangerouslySetInnerHTML={{
               __html: getDifficultyLevel(difficultyLevel),
@@ -104,7 +117,12 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({
           />
         </span>
         <span className="detail period">
-          <span>총 학습시간</span>
+          <span>
+            <PolyglotText
+              defaultString="총 학습시간"
+              id="Certification-View-총학습시간"
+            />
+          </span>
           <span>{learningTimeFormat}</span>
         </span>
       </div>
@@ -136,7 +154,12 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({
       <h3 className="title-style">
         <Label className="onlytext bold size24">
           <Icon className="series" />
-          <span>연관 Badge</span>
+          <span>
+            <PolyglotText
+              defaultString="연관 Badge"
+              id="Certification-View-연관뱃지"
+            />
+          </span>
         </Label>
       </h3>
       {children}
@@ -154,7 +177,7 @@ interface BadgeStatusProps {
   learningCompleted?: number;
 }
 
-export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
+export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   //
   const {
     badgeState,
@@ -174,12 +197,17 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
         badgeState === ChallengeState.Requested) && (
         <>
           <Button className="fix bg" onClick={onClickButton}>
-            {ChallengeStateText[ChallengeState[badgeState]]}
+            {challengeStateText(badgeState)}
           </Button>
           {badgeState === ChallengeState.Challenging && (
             <>
               <span className="ing">
-                <span>진행중</span>
+                <span>
+                  <PolyglotText
+                    id="Certification-View-진행중"
+                    defaultString="진행중"
+                  />
+                </span>
                 <span className="num">
                   <b>{learningCompleted}</b>/{learningTotalCount}
                 </span>
@@ -200,7 +228,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
       {badgeState === ChallengeState.Issued && (
         <>
           <div className={classNames('big black')}>
-            {ChallengeStateText[badgeState as ChallengeState]}
+            {challengeStateText(badgeState)}
           </div>
           <span className="txt">
             {issueStateTimeFormat} {description}

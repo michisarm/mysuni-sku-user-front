@@ -14,8 +14,9 @@ export default interface Student {
   sessionId: string;
   isFinishMedia: boolean;
   studentScore: StudentScore;
-  creationTime: number;
+  registeredTime: number;
   updateTime: number;
+  modifiedTime: number;
   lectureId: string;
   cardId: string;
   joinRequests: JoinRequest[];
@@ -23,6 +24,7 @@ export default interface Student {
   round: number;
   examAttendance: boolean;
   updateTimeForTest: number;
+  modifiedTimeForTest: number;
   homeworkFileBoxId?: string;
 
   sumViewSeconds: string;

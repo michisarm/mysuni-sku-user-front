@@ -1,19 +1,16 @@
 import { createStore } from './Store';
 import { CollegeModel } from '../../college/model/CollegeModel';
 
-type College = Pick<CollegeModel, 'id' | 'name'>;
+type College = Pick<CollegeModel, 'id' | 'name' | 'langSupports'>;
 
 const initialStore: College = {
   id: '',
-  name: '',
+  name: { ko: '', zh: '', en: '' },
+  langSupports: [],
 };
 
-const [
-  setCollegeStore,
-  onCollegeStore,
-  getCollegeStore,
-  useCollegeStore,
-] = createStore<College[]>([initialStore]);
+const [setCollegeStore, onCollegeStore, getCollegeStore, useCollegeStore] =
+  createStore<College[]>([initialStore]);
 
 export { setCollegeStore, onCollegeStore, getCollegeStore, useCollegeStore };
 

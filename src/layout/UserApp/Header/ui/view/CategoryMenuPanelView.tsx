@@ -14,6 +14,13 @@ import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
 import { originSelfPath } from 'tracker-react/utils';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
+import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -21,19 +28,16 @@ interface Props {
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
   channels?: IdName[];
-  favorites?: ChannelModel[];
-  studySummaryFavoriteChannels: IdName[];
+  favorites?: string[];
   actions: React.ReactNode;
-  banner: any;
+  banner?: CollegeBanner;
   test?: {};
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
   onRouteChannel: (e: any, channel?: IdName) => void;
   onConfirmCallback?: () => void;
   handleCategoryOpen: (flag: boolean) => void;
 }
-@inject(
-  mobxHelper.injectFrom('profile.skProfileService')
-)
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
@@ -48,53 +52,41 @@ class CategoryMenuPanelView extends Component<Props> {
 
   //초기 선택
   categoryCheck(id: string) {
-    const array: boolean[] = [];
-    this.props.favorites?.map(value => {
-      if (value.id === id) {
-        array.push(true);
-      } else {
-        array.push(false);
-      }
-    });
-    if (array.indexOf(true) !== -1) {
-      return true;
-    } else {
-      return false;
+    const { favorites } = this.props;
+
+    if (favorites !== undefined) {
+      return favorites.includes(id);
     }
   }
 
-  favoriteChannel(e: any, channel: any) {
+  favoriteChannel(e: React.ChangeEvent<HTMLInputElement>) {
     const { skProfileService } = this.props;
-    const array: any[] = [];
-    this.props.favorites?.map((value, index) => {
-      if (value.id === channel.id) {
-        array.splice(index, 1);
+    const channelId = e.target.id;
+    const prevFavorites = this.props.favorites;
+    const params = {
+      nameValues: [
+        {
+          name: 'favoriteChannelIds',
+          value: '[]',
+        },
+      ],
+    };
+
+    if (prevFavorites !== undefined) {
+      const isIncludesFavorite = prevFavorites.includes(channelId);
+
+      if (isIncludesFavorite) {
+        const filteredFavorite = prevFavorites.filter(
+          (favoriteId) => favoriteId !== channelId
+        );
+        params.nameValues[0].value = JSON.stringify(filteredFavorite);
+        skProfileService!.modifyStudySummary(params);
       } else {
-        array.push(value);
+        const nextFavorites = [...prevFavorites, channelId];
+        params.nameValues[0].value = JSON.stringify(nextFavorites);
+        skProfileService!.modifyStudySummary(params);
       }
-    });
-    const checkedValue = document.getElementsByName(
-      channel.id
-    )[0] as HTMLInputElement;
-    if (checkedValue.checked) {
-      //체크 안되어있는 경우
-      const nextFavoriteChannels = [
-        ...this.props.studySummaryFavoriteChannels,
-        channel,
-      ];
-      skProfileService!.setStudySummaryProp('favoriteChannels', {
-        idNames: nextFavoriteChannels,
-      });
-      skProfileService!.modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      );
-    } else {
-      skProfileService!.setStudySummaryProp('favoriteChannels', {
-        idNames: array,
-      });
-      skProfileService!.modifyStudySummary(
-        StudySummaryModel.asNameValues(skProfileService!.studySummary)
-      );
+      skProfileService!.findStudySummary();
     }
   }
 
@@ -125,14 +117,18 @@ class CategoryMenuPanelView extends Component<Props> {
       <div className="layer lms-category">
         <div className="table-css">
           <div className="row head">
-            <div className="cell v-middle">College</div>
-            <div className="cell v-middle">Channel</div>
+            <div className="cell v-middle">
+              <PolyglotText defaultString="College" id="home-cipp-구분cl" />
+            </div>
+            <div className="cell v-middle">
+              <PolyglotText defaultString="Channel" id="home-cipp-구분ch" />
+            </div>
           </div>
           <div className="row body">
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
-                  {colleges.map(college => (
+                  {colleges.map((college) => (
                     <button
                       key={`category_${college.id}`}
                       className={classNames('', {
@@ -140,14 +136,17 @@ class CategoryMenuPanelView extends Component<Props> {
                           activeCollege && activeCollege.id === college.id,
                         bm: college.id === 'CLG00020',
                       })}
-                      onClick={e => {
+                      onClick={(e) => {
                         onActiveCollege(e, college);
                       }}
                       data-area={Area.HEADER_CATEGORYLIST}
                       data-action={Action.CLICK}
                       data-action-name={`CATEGORY 목록 클릭::${college.name}`}
                     >
-                      {college.name}
+                      {parsePolyglotString(
+                        college.name,
+                        getDefaultLang(college.langSupports)
+                      )}
                     </button>
                   ))}
                 </div>
@@ -161,19 +160,32 @@ class CategoryMenuPanelView extends Component<Props> {
                     data-area={Area.HEADER_CATEGORY}
                   >
                     <span className="category-title">
-                      {activeCollege.name} College
+                      {parsePolyglotString(
+                        activeCollege.name,
+                        getDefaultLang(activeCollege.langSupports)
+                      )}{' '}
+                      <PolyglotText defaultString="College" id="home-cipp-ch" />
                       {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
                     <button
                       className="btn-category-all"
-                      onClick={e => {
+                      onClick={(e) => {
                         this.onClickChannelActionLog(
-                          `${activeCollege.name} 전체보기`
+                          `${parsePolyglotString(
+                            activeCollege.name,
+                            getDefaultLang(activeCollege.langSupports)
+                          )} ${getPolyglotText(
+                            '전체보기',
+                            'home-cipp-전체보기'
+                          )}`
                         );
                         onRouteChannel(e);
                       }}
                     >
-                      전체보기
+                      <PolyglotText
+                        defaultString="전체보기"
+                        id="home-cipp-전체보기"
+                      />
                       <i className="arr-r-gray" />
                     </button>
                   </div>
@@ -185,18 +197,18 @@ class CategoryMenuPanelView extends Component<Props> {
                       <div className="category-row">
                         <span className="check-type2">
                           <label htmlFor={channel.id}>
-                            <input type="checkbox" 
+                            <input type="checkbox"
                               id={channel.id}
                               name={channel.id}
                               checked={this.categoryCheck(channel.id)}
                               onChange={(e)=> {
                                 this.favoriteChannel(e, channel);
                               }}
-                              key={index} 
+                              key={index}
                             />
                             <span className="check-type2-marker"/>
                           </label>
-                          <a 
+                          <a
                             className="check-type2-text"
                             onClick={e => {
                               this.onClickChannelActionLog(channel.name);
@@ -207,18 +219,18 @@ class CategoryMenuPanelView extends Component<Props> {
                         </span>
                         <span className="check-type2">
                           <label htmlFor={channel.id}>
-                            <input type="checkbox" 
+                            <input type="checkbox"
                               id={channel.id}
                               name={channel.id}
                               checked={this.categoryCheck(channel.id)}
                               onChange={(e)=> {
                                 this.favoriteChannel(e, channel);
                               }}
-                              key={index} 
+                              key={index}
                             />
                             <span className="check-type2-marker"/>
                           </label>
-                          <a 
+                          <a
                             className="check-type2-text"
                             onClick={e => {
                               this.onClickChannelActionLog(channel.name);
@@ -228,7 +240,7 @@ class CategoryMenuPanelView extends Component<Props> {
                           </a>
                         </span>
                       </div>
-                      
+
                     </Fragment>
                   ))
                 }
@@ -250,16 +262,14 @@ class CategoryMenuPanelView extends Component<Props> {
                                       id={channel.id}
                                       name={channel.id}
                                       checked={this.categoryCheck(channel.id)}
-                                      onChange={e => {
-                                        this.favoriteChannel(e, channel);
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
                                   </label>
                                   <a
                                     className="check-type2-text"
-                                    onClick={e => {
+                                    onClick={(e) => {
                                       this.onClickChannelActionLog(
                                         channel.name
                                       );
@@ -278,19 +288,14 @@ class CategoryMenuPanelView extends Component<Props> {
                                       checked={this.categoryCheck(
                                         channels[index + 1].id
                                       )}
-                                      onChange={e => {
-                                        this.favoriteChannel(
-                                          e,
-                                          channels[index + 1]
-                                        );
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
                                   </label>
                                   <a
                                     className="check-type2-text"
-                                    onClick={e => {
+                                    onClick={(e) => {
                                       this.onClickChannelActionLog(
                                         channels[index + 1].name
                                       );
@@ -312,16 +317,14 @@ class CategoryMenuPanelView extends Component<Props> {
                                       id={channel.id}
                                       name={channel.id}
                                       checked={this.categoryCheck(channel.id)}
-                                      onChange={e => {
-                                        this.favoriteChannel(e, channel);
-                                      }}
+                                      onChange={this.favoriteChannel}
                                       key={index}
                                     />
                                     <span className="check-type2-marker" />
                                   </label>
                                   <a
                                     className="check-type2-text"
-                                    onClick={e => {
+                                    onClick={(e) => {
                                       this.onClickChannelActionLog(
                                         channel.name
                                       );
@@ -337,7 +340,7 @@ class CategoryMenuPanelView extends Component<Props> {
                         }
                       })}
                   </div>
-                  {banner.viewType === '2' && (
+                  {banner?.viewType === '2' && (
                     <>
                       <div
                         className="category-banner"
@@ -347,8 +350,10 @@ class CategoryMenuPanelView extends Component<Props> {
                           banner.collegeBannerContents[0].useLink === 0 && (
                             <span className="banner-holder">
                               <img
-                                src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                onClick={e =>
+                                src={`${parsePolyglotString(
+                                  banner.collegeBannerContents[0].imageUrl
+                                )}`}
+                                onClick={(e) =>
                                   gaClickEvent(`${activeCollege.name}`, 1)
                                 }
                                 alt=""
@@ -358,36 +363,50 @@ class CategoryMenuPanelView extends Component<Props> {
                         {banner.collegeBannerContents[0].visible === 1 &&
                           banner.collegeBannerContents[0].useLink === 1 && (
                             <span className="banner-holder">
-                              { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
-                                (
-                                  <Link
-                                    to={originSelfPath(banner.collegeBannerContents[0].linkUrl)}
-                                    onClick={()=>{
-                                      handleCategoryOpen(false);
-                                      gaClickEvent(`${activeCollege.name}`, 1);
-                                    }}
-                                  >
-                                    <img
-                                      src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                      alt=""
-                                    />
-                                  </Link>
-                                ) : (
-                                  <a
-                                    href={encodeURI(
-                                      banner.collegeBannerContents[0].linkUrl
-                                    )}
-                                  >
-                                    <img
-                                      src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                      onClick={e =>
-                                        gaClickEvent(`${activeCollege.name}`, 1)
-                                      }
-                                      alt=""
-                                    />
-                                  </a>
+                              {!/^(http|https)/.test(
+                                originSelfPath(
+                                  parsePolyglotString(
+                                    banner.collegeBannerContents[0].linkUrl
+                                  )
                                 )
-                              }
+                              ) ? (
+                                <Link
+                                  to={originSelfPath(
+                                    parsePolyglotString(
+                                      banner.collegeBannerContents[0].linkUrl
+                                    )
+                                  )}
+                                  onClick={() => {
+                                    handleCategoryOpen(false);
+                                    gaClickEvent(`${activeCollege.name}`, 1);
+                                  }}
+                                >
+                                  <img
+                                    src={`${parsePolyglotString(
+                                      banner.collegeBannerContents[0].imageUrl
+                                    )}`}
+                                    alt=""
+                                  />
+                                </Link>
+                              ) : (
+                                <a
+                                  href={encodeURI(
+                                    parsePolyglotString(
+                                      banner.collegeBannerContents[0].linkUrl
+                                    )
+                                  )}
+                                >
+                                  <img
+                                    src={`${parsePolyglotString(
+                                      banner.collegeBannerContents[0].imageUrl
+                                    )}`}
+                                    onClick={(e) =>
+                                      gaClickEvent(`${activeCollege.name}`, 1)
+                                    }
+                                    alt=""
+                                  />
+                                </a>
+                              )}
                             </span>
                           )}
                         {banner.collegeBannerContents[0].visible === 0 && (
@@ -402,54 +421,70 @@ class CategoryMenuPanelView extends Component<Props> {
                           </span>
                         )}
 
-                        {banner.collegeBannerContents[1].visible === 1 &&
+                        {banner?.collegeBannerContents[1].visible === 1 &&
                           banner.collegeBannerContents[1].useLink === 0 && (
                             <span className="banner-holder">
                               <img
-                                src={`${banner.collegeBannerContents[1].imageUrl}`}
-                                onClick={e =>
+                                src={`${parsePolyglotString(
+                                  banner.collegeBannerContents[1].imageUrl
+                                )}`}
+                                onClick={(e) =>
                                   gaClickEvent(`${activeCollege.name}`, 2)
                                 }
                                 alt=""
                               />
                             </span>
                           )}
-                        {banner.collegeBannerContents[1].visible === 1 &&
+                        {banner?.collegeBannerContents[1].visible === 1 &&
                           banner.collegeBannerContents[1].useLink === 1 && (
                             <span className="banner-holder">
-                              { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
-                                (
-                                  <Link
-                                    to={originSelfPath(banner.collegeBannerContents[1].linkUrl)}
-                                    onClick={()=>{
-                                      handleCategoryOpen(false);
-                                      gaClickEvent(`${activeCollege.name}`, 2);
-                                    }}
-                                  >
-                                    <img
-                                      src={`${banner.collegeBannerContents[1].imageUrl}`}
-                                      alt=""
-                                    />
-                                  </Link>
-                                ) : (
-                                  <a
-                                    href={encodeURI(
-                                      banner.collegeBannerContents[1].linkUrl
-                                    )}
-                                  >
-                                    <img
-                                      src={`${banner.collegeBannerContents[1].imageUrl}`}
-                                      onClick={e =>
-                                        gaClickEvent(`${activeCollege.name}`, 2)
-                                      }
-                                      alt=""
-                                    />
-                                  </a>
+                              {!/^(http|https)/.test(
+                                originSelfPath(
+                                  parsePolyglotString(
+                                    banner.collegeBannerContents[0].linkUrl
+                                  )
                                 )
-                              }
+                              ) ? (
+                                <Link
+                                  to={originSelfPath(
+                                    parsePolyglotString(
+                                      banner.collegeBannerContents[1].linkUrl
+                                    )
+                                  )}
+                                  onClick={() => {
+                                    handleCategoryOpen(false);
+                                    gaClickEvent(`${activeCollege.name}`, 2);
+                                  }}
+                                >
+                                  <img
+                                    src={`${parsePolyglotString(
+                                      banner.collegeBannerContents[1].imageUrl
+                                    )}`}
+                                    alt=""
+                                  />
+                                </Link>
+                              ) : (
+                                <a
+                                  href={encodeURI(
+                                    parsePolyglotString(
+                                      banner.collegeBannerContents[1].linkUrl
+                                    )
+                                  )}
+                                >
+                                  <img
+                                    src={`${parsePolyglotString(
+                                      banner.collegeBannerContents[1].imageUrl
+                                    )}`}
+                                    onClick={(e) =>
+                                      gaClickEvent(`${activeCollege.name}`, 2)
+                                    }
+                                    alt=""
+                                  />
+                                </a>
+                              )}
                             </span>
                           )}
-                        {banner.collegeBannerContents[1].visible === 0 && (
+                        {banner?.collegeBannerContents[1].visible === 0 && (
                           <span className="banner-holder">
                             <span
                               style={{
@@ -463,7 +498,7 @@ class CategoryMenuPanelView extends Component<Props> {
                       </div>
                     </>
                   )}
-                  {banner.viewType === '1' && (
+                  {banner?.viewType === '1' && (
                     <div
                       className="category-banner-single"
                       data-area={Area.HEADER_BANNER}
@@ -480,8 +515,10 @@ class CategoryMenuPanelView extends Component<Props> {
                       {banner.collegeBannerContents[0].visible === 1 &&
                         banner.collegeBannerContents[0].useLink === 0 && (
                           <img
-                            src={`${banner.collegeBannerContents[0].imageUrl}`}
-                            onClick={e =>
+                            src={`${parsePolyglotString(
+                              banner.collegeBannerContents[0].imageUrl
+                            )}`}
+                            onClick={(e) =>
                               gaClickEvent(`${activeCollege.name}`, 1)
                             }
                             alt=""
@@ -490,36 +527,50 @@ class CategoryMenuPanelView extends Component<Props> {
                       {banner.collegeBannerContents[0].visible === 1 &&
                         banner.collegeBannerContents[0].useLink === 1 && (
                           <>
-                            { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
-                              (
-                                <Link
-                                  to={originSelfPath(banner.collegeBannerContents[0].linkUrl)}
-                                  onClick={()=>{
-                                    handleCategoryOpen(false);
-                                    gaClickEvent(`${activeCollege.name}`, 1);
-                                  }}
-                                >
-                                  <img
-                                    src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                    alt=""
-                                  />
-                                </Link>
-                              ) : (
-                                <a
-                                  href={encodeURI(
-                                    banner.collegeBannerContents[0].linkUrl
-                                  )}
-                                >
-                                  <img
-                                    src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                    onClick={e =>
-                                      gaClickEvent(`${activeCollege.name}`, 1)
-                                    }
-                                    alt=""
-                                  />
-                                </a>
+                            {!/^(http|https)/.test(
+                              originSelfPath(
+                                parsePolyglotString(
+                                  banner.collegeBannerContents[0].linkUrl
+                                )
                               )
-                            }
+                            ) ? (
+                              <Link
+                                to={originSelfPath(
+                                  parsePolyglotString(
+                                    banner.collegeBannerContents[0].linkUrl
+                                  )
+                                )}
+                                onClick={() => {
+                                  handleCategoryOpen(false);
+                                  gaClickEvent(`${activeCollege.name}`, 1);
+                                }}
+                              >
+                                <img
+                                  src={`${parsePolyglotString(
+                                    banner.collegeBannerContents[0].imageUrl
+                                  )}`}
+                                  alt=""
+                                />
+                              </Link>
+                            ) : (
+                              <a
+                                href={encodeURI(
+                                  parsePolyglotString(
+                                    banner.collegeBannerContents[0].linkUrl
+                                  )
+                                )}
+                              >
+                                <img
+                                  src={`${parsePolyglotString(
+                                    banner.collegeBannerContents[0].imageUrl
+                                  )}`}
+                                  onClick={(e) =>
+                                    gaClickEvent(`${activeCollege.name}`, 1)
+                                  }
+                                  alt=""
+                                />
+                              </a>
+                            )}
                           </>
                         )}
                       {banner.collegeBannerContents[0].visible === 0 && <div />}

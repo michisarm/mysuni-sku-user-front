@@ -3,19 +3,22 @@ import { CubeDiscussion } from '../detail/model/CubeDiscussion';
 import { Classroom } from './Classroom';
 import { CubeCommunity } from './CubeCommunity';
 import Media from './Media';
-import { BoardConfig, TaskCubeCompletionCondition } from '../../personalcube/create/model/CubeMaterialSdo';
+import {
+  BoardConfig,
+  TaskCubeCompletionCondition,
+} from '../../personalcube/create/model/CubeMaterialSdo';
 import { DatePeriod } from '../../shared/model/DatePeriod';
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 
-export interface CubeMaterial { }
+export interface CubeMaterial {}
 interface Board {
   id: string;
-  name: string;
+  name: PolyglotString;
   config: BoardConfig;
   learningPeriod: DatePeriod;
   automaticCompletion: boolean;
   completionCondition: TaskCubeCompletionCondition;
 }
-
 
 export interface CubeMaterial {
   board: Board | null;

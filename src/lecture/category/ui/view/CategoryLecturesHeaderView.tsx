@@ -7,6 +7,9 @@ import { ContentHeader } from 'shared';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 const VISIBLE_COLLEGE_IDS = [
   'CLG00001',
@@ -90,12 +93,25 @@ class CategoryLecturesHeaderView extends Component<Props> {
     return (
       <ContentHeader dataArea={Area.COLLEGE_INFO}>
         <ContentHeader.Cell className="thumb">
-          <ThumbnailView icon={this.getThumbnailIcon(college.name)} />
+          <ThumbnailView
+            icon={this.getThumbnailIcon(
+              parsePolyglotString(
+                college.name,
+                getDefaultLang(college.langSupports)
+              )
+            )}
+          />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="title">
           <TitleView
-            title={`${college.name} College`}
-            subtitle={college.description}
+            title={`${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`}
+            subtitle={parsePolyglotString(
+              college.description,
+              getDefaultLang(college.langSupports)
+            )}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
@@ -106,7 +122,12 @@ class CategoryLecturesHeaderView extends Component<Props> {
                 onClickMySuni();
               }}
             >
-              <span>College 전체 커리큘럼 보기</span>
+              <span>
+                <PolyglotText
+                  defaultString="College 전체 커리큘럼 보기"
+                  id="cicl-mall-clcm"
+                />
+              </span>
             </Button>
           )}
         </ContentHeader.Cell>

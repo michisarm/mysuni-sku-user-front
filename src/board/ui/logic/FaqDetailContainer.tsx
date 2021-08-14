@@ -9,6 +9,8 @@ import ReactQuill from 'react-quill';
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -45,8 +47,8 @@ class FaqDetailContainer extends Component<Props> {
       <>
         <div className="post-view">
           <BoardDetailContentHeaderView
-            title={post.title}
-            time={post.time}
+            title={post.title ? parsePolyglotString(post.title) : ''}
+            time={post.registeredTime}
             onClickList={this.onClickList}
           />
 
@@ -55,7 +57,12 @@ class FaqDetailContainer extends Component<Props> {
               <div className="content-inner  ql-snow">
                 <div
                   className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      (post.contents.contents &&
+                        parsePolyglotString(post.contents.contents)) ||
+                      '',
+                  }}
                 />
               </div>
             </div>
@@ -65,7 +72,8 @@ class FaqDetailContainer extends Component<Props> {
         <Segment className="full">
           <div className="actions bottom">
             <Button icon className="left post list2" onClick={this.onClickList}>
-              <Icon className="list24" /> List
+              <Icon className="list24" />
+              <PolyglotText id="support-FAQ-List2" defaultString="List" />
             </Button>
           </div>
         </Segment>

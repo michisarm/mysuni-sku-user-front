@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  Fragment,
-  useCallback,
-} from 'react';
+import React, { useEffect, Fragment, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
@@ -20,6 +16,7 @@ import { MyBadge } from '../../model/MyBadge';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import { BadgeRouteParams } from '../model/BadgeRouteParams';
 import { useRequestChallengeBadges } from '../../service/useRequestChallengeBadges';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface ChallengeBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -32,7 +29,12 @@ function ChallengeBadgeListContainer({
   const params = useParams<BadgeRouteParams>();
   const { scrollOnceMove } = useScrollMove();
 
-  const { challengeBadges, challengeBadgeCount, selectedLevel, setSelectedLevel } = badgeService!;
+  const {
+    challengeBadges,
+    challengeBadgeCount,
+    selectedLevel,
+    setSelectedLevel,
+  } = badgeService!;
   useRequestChallengeBadges();
 
   useEffect(() => {
@@ -43,7 +45,6 @@ function ChallengeBadgeListContainer({
     }
   }, [challengeBadges]);
 
-  
   const getCurrentPageNo = () => {
     return parseInt(params.pageNo);
   };
@@ -54,11 +55,10 @@ function ChallengeBadgeListContainer({
 
   const onClickSeeMore = () => {
     const currentPageNo = getCurrentPageNo();
-    const nextPageNo = currentPageNo + 1;  
+    const nextPageNo = currentPageNo + 1;
 
     history.replace(routePaths.currentPage(nextPageNo));
   };
-
 
   const onSelectLevel = (level: BadgeLevel) => {
     history.replace(routePaths.currentPage(1));
@@ -78,21 +78,26 @@ function ChallengeBadgeListContainer({
         countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {
-        challengeBadges &&
+      {(challengeBadges &&
         challengeBadges.length > 0 &&
         challengeBadges.map((challengeBadge: MyBadge, index: number) => (
           <Fragment key={`challenge-box-${index}`}>
             <ChallengeBoxContainer challengeBadge={challengeBadge} />
           </Fragment>
-        )) || (
+        ))) || (
         <NoSuchContentPanel
           message={
             <>
               <div className="text">
-                도전중인 Badge가 없습니다.
+                <PolyglotText
+                  defaultString="도전중인 Badge가 없습니다."
+                  id="Certification-clls-뱃지없음"
+                />
                 <br />
-                새로운 Badge에 도전해보시겠습니까?
+                <PolyglotText
+                  defaultString="새로운 Badge에 도전해보시겠습니까?"
+                  id="Certification-clls-뱃지도전"
+                />
               </div>
               <Button
                 icon
@@ -100,7 +105,11 @@ function ChallengeBadgeListContainer({
                 className="right btn-blue2"
                 onClick={moveToBadgeList}
               >
-                Badge List 바로가기 <Icon className="morelink" />
+                <PolyglotText
+                  defaultString="Badge List 바로가기"
+                  id="Certification-clls-목록없음"
+                />
+                <Icon className="morelink" />
               </Button>
             </>
           }
@@ -111,6 +120,6 @@ function ChallengeBadgeListContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(observer(ChallengeBadgeListContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(ChallengeBadgeListContainer)
+);

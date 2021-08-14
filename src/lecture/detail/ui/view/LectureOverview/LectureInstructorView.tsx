@@ -4,6 +4,9 @@ import { Icon, Label } from 'semantic-ui-react';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureApi from 'layout/UserApp/present/apiclient/LectureApi';
 import Image from '../../../../../shared/components/Image';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -13,51 +16,80 @@ function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
 
-const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps> = function LectureInstructorView({
-  lectureInstructor,
-}) {
-  return (
-    <>
-      <div className="section-head">
-        <div className="title">
-          <h3 className="title-style">
-            <Label className="onlytext bold size24">
-              <Icon className="host" />
-              <span>{/*Tag*/}강사정보</span>
-            </Label>
-          </h3>
+const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps> =
+  function LectureInstructorView({ lectureInstructor }) {
+    return (
+      <>
+        <div className="section-head">
+          <div className="title">
+            <h3 className="title-style">
+              <Label className="onlytext bold size24">
+                <Icon className="host" />
+                <span>
+                  {/*Tag*/}
+                  <PolyglotText
+                    defaultString="강사정보"
+                    id="Course-Contents-강사정보"
+                  />
+                </span>
+              </Label>
+            </h3>
+          </div>
         </div>
-      </div>
-      <div className="scrolling course-profile">
-        {lectureInstructor &&
-          lectureInstructor.instructors &&
-          lectureInstructor.instructors.map(
-            ({ instructorId, representative, memberSummary }, index) => (
-              <Link
-                className="ui profile tool-tip"
-                to={`/expert/instructor/${instructorId}/Introduce`}
-              >
-                {representative === true && <Represent />}
-                <div className="pic s80">
-                  {memberSummary?.photoId && (
-                    <Image
-                      alt="프로필사진"
-                      className="ui image"
-                      src={memberSummary?.photoId}
-                    />
-                  )}
-                </div>
-                <i>
-                  <span className="tip-name">{memberSummary?.name}</span>
-                  <a className="tip-id">{memberSummary?.department}</a>
-                </i>
-              </Link>
-            )
-          )}
-      </div>
-    </>
-  );
-};
+        <div className="scrolling course-profile">
+          {lectureInstructor &&
+            lectureInstructor.instructors &&
+            lectureInstructor.instructors.map(
+              (
+                { instructorId, representative, instructorWithIdentity },
+                index
+              ) => (
+                <Link
+                  className="ui profile tool-tip"
+                  to={`/expert/instructor/${instructorId}/Introduce`}
+                >
+                  {representative && <Represent />}
+                  <div className="pic s80">
+                    {instructorWithIdentity?.instructor?.photoFilePath && (
+                      <Image
+                        alt="프로필사진"
+                        className="ui image"
+                        src={instructorWithIdentity?.instructor.photoFilePath}
+                      />
+                    )}
+                  </div>
+                  <i>
+                    <span className="tip-name">
+                      {parsePolyglotString(
+                        instructorWithIdentity?.instructor?.name,
+                        getDefaultLang(
+                          instructorWithIdentity?.instructor?.langSupports
+                        )
+                      )}
+                    </span>
+                    <a className="tip-id">
+                      {instructorWithIdentity?.instructor?.internal
+                        ? parsePolyglotString(
+                            instructorWithIdentity.userIdentity?.departmentName,
+                            getDefaultLang(
+                              instructorWithIdentity?.instructor.langSupports
+                            )
+                          )
+                        : parsePolyglotString(
+                            instructorWithIdentity?.instructor?.organization,
+                            getDefaultLang(
+                              instructorWithIdentity?.instructor?.langSupports
+                            )
+                          )}
+                    </a>
+                  </i>
+                </Link>
+              )
+            )}
+        </div>
+      </>
+    );
+  };
 
 export default LectureInstructorView;
 

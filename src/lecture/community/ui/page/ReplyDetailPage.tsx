@@ -7,6 +7,8 @@ import { ReplyDetail } from '@sku/personalcube';
 import { CollegeService } from 'college/stores';
 import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props
   extends RouteComponentProps<{
@@ -54,11 +56,17 @@ class ReplyDetailPage extends React.Component<Props> {
         className="content community"
         breadcrumb={[
           {
-            text: `${college.name} College`,
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`,
             path: routePaths.collegeLectures(college.collegeId),
           },
           {
-            text: `${college.name} Lecture`,
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} Lecture`,
             path: routePaths.lectureCardOverviewPrev(
               college.collegeId,
               cubeId,

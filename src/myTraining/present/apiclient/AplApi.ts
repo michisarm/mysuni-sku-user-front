@@ -5,22 +5,26 @@ import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplCdoModel } from '../../model/AplCdoModel';
 import { AplModel } from '../../model';
-import AplUdoModel from '../../model/AplUdoModel';
+import AplUdoModel from '../../model/AplApprovalUdo';
 
 export default class AplApi {
-
   serverUrl = '/api/mytraining/apl';
-  devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API ;
+  devUrl =
+    process.env.REACT_APP_MY_LEARNING_SUMMARY_API === undefined ||
+    process.env.REACT_APP_MY_LEARNING_SUMMARY_API === ''
+      ? this.serverUrl
+      : process.env.REACT_APP_MY_LEARNING_SUMMARY_API;
 
-  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
+  URL =
+    process.env.REACT_APP_ENVIRONMENT === undefined ||
+    process.env.REACT_APP_ENVIRONMENT === 'server'
+      ? this.serverUrl
+      : this.devUrl;
 
   static instance: AplApi;
 
   //Query
   findAllAplsByQuery(aplRdo: AplRdoModel) {
-    //
     return axios
       .get<OffsetElementList<AplListViewModel>>(this.URL, {
         params: aplRdo,
@@ -46,19 +50,22 @@ export default class AplApi {
   }
 
   findAplCount(aplRdo: AplRdoModel) {
-    return axios.get(this.URL + '/summary/count', { params: aplRdo })
-      .then(response =>
-        response && response.data && new AplCountModel(response.data) || new AplCountModel());
+    return axios
+      .get(this.URL + '/summary/count', { params: aplRdo })
+      .then(
+        (response) =>
+          (response && response.data && new AplCountModel(response.data)) ||
+          new AplCountModel()
+      );
   }
 
   //Query
   findAplsTreeByQuery(aplRdo: AplRdoModel) {
     //
     return axios
-      .get<OffsetElementList<AplListViewModel>>(
-        this.URL + `/tree/apl`,
-        { params: aplRdo }
-      )
+      .get<OffsetElementList<AplListViewModel>>(this.URL + `/tree/apl`, {
+        params: aplRdo,
+      })
       .then(
         (response: any) =>
           (response &&
@@ -82,7 +89,6 @@ export default class AplApi {
       );
   }
 
-
   aplCountAll() {
     //
     return axios
@@ -101,8 +107,7 @@ export default class AplApi {
           response &&
           response.data &&
           response.data.map(
-            (apl: AplListViewModel) =>
-              new AplListViewModel(apl)
+            (apl: AplListViewModel) => new AplListViewModel(apl)
           )
       );
   }
@@ -138,15 +143,23 @@ export default class AplApi {
   modifyAplWithApprovalState(aplUdo: AplUdoModel) {
     return axios
       .put(`${this.devUrl}/approvals`, aplUdo)
-      .then(response => response && response.data || null)
-      .catch(err => err && null);
+      .then((response) => (response && response.data) || null)
+      .catch((err) => err && null);
   }
 
   findAllAplsForApproval(aplRdo: AplRdoModel) {
     return axios
-      .get<OffsetElementList<AplListViewModel>>(`${this.devUrl}/approval-list`, { params: aplRdo })
-      .then(response => response && new OffsetElementList<AplListViewModel>(response.data) || null)
-      .catch(err => err && null);
+      .get<OffsetElementList<AplListViewModel>>(
+        `${this.devUrl}/approval-list`,
+        { params: aplRdo }
+      )
+      .then(
+        (response) =>
+          (response &&
+            new OffsetElementList<AplListViewModel>(response.data)) ||
+          null
+      )
+      .catch((err) => err && null);
   }
   ///////////////////////// 개편 /////////////////////////
 }

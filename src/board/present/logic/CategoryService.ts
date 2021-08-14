@@ -4,7 +4,6 @@ import _ from 'lodash';
 import CategoryApi from '../apiclient/CategoryApi';
 import CategoryModel from '../../model/CategoryModel';
 
-
 @autobind
 class CategoryService {
   //
@@ -26,14 +25,22 @@ class CategoryService {
   async findCategoriesByBoardId(boardId: string) {
     //
     const categorys = await this.categoryApi.findCategoriesByBoardId(boardId);
-    return runInAction(() => this.categorys = categorys.map(category => new CategoryModel(category)));
+    return runInAction(
+      () =>
+        (this.categorys = categorys.map(
+          (category) => new CategoryModel(category)
+        ))
+    );
   }
 
   @action
   async findCategoryByCategoryId(categoryId: string) {
     //
-    const category = await this.categoryApi.findCategoryByCategoryId(categoryId);
-    return runInAction(() => this.category = new CategoryModel(category));
+    const category = await this.categoryApi.findCategoryByCategoryId(
+      categoryId
+    );
+
+    return runInAction(() => (this.category = new CategoryModel(category)));
   }
 
   @action

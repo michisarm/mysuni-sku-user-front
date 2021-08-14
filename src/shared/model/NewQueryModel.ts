@@ -18,7 +18,6 @@ decorate(NewQueryModel, {
   channel: observable,
   searchPart: observable,
   searchWord: observable,
-
   offset: observable,
   limit: observable,
 });

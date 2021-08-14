@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Icon, Radio, CheckboxProps } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { MediaType } from '../../../media/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
@@ -21,20 +22,24 @@ function CreateAudioTypeView({
   return (
     <>
       <div className="section-tit">
-        <span className="text1">부가정보</span>
+        <span className="text1">
+          <PolyglotText defaultString="부가정보" id="Create-NMAudio-부가정보" />
+        </span>
       </div>
       <Form.Field>
-        <label className="necessary">교육자료</label>
+        <label className="necessary">
+          <PolyglotText defaultString="교육자료" id="Create-NMAudio-교육자료" />
+        </label>
         <Radio
           className="base"
-          label="오디오 파일 업로드"
+          label={getPolyglotText('오디오 파일 업로드', 'Create-NMAudio-파일업로드')}
           value={MediaType.InternalMedia}
           checked={mediaType === 'InternalMedia'}
           onChange={onChecked}
         />
         <Radio
           className="base"
-          label="오디오 링크"
+          label={getPolyglotText('오디오 링크', 'Create-NMAudio-업로드영역')}
           value={MediaType.LinkMedia}
           checked={mediaType === 'LinkMedia'}
           onChange={onChecked}
@@ -65,7 +70,7 @@ function CreateAudioTypeView({
                   <div className="file-drop" id="drop">
                     <p>
                       <Icon className="upload" />
-                      여기로 파일을 올려주세요.
+                      <PolyglotText defaultString="여기로 파일을 올려주세요." id="Create-NMAudio-업로드영역" />
                     </p>
                     <div className="thumbnails" id="thumbnails">
                       <progress
@@ -80,7 +85,7 @@ function CreateAudioTypeView({
                         type="button"
                         className="btn btn-default"
                         id="btnSubmit"
-                        value="업로드"
+                        value={getPolyglotText('업로드', 'Create-NMAudio-업로드')}
                       />
                     </div>
                   </div>
@@ -93,7 +98,7 @@ function CreateAudioTypeView({
               <input
                 type="text"
                 name=""
-                placeholder="http://"
+                placeholder={getPolyglotText('http://', 'Create-NMAudio-http')}
                 value={linkMediaUrl}
                 onChange={onChangeLinkMedia}
               />
@@ -102,8 +107,10 @@ function CreateAudioTypeView({
           <div className="info-text">
             <Icon className="info16" />
             <span className="blind">infomation</span>
-            교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 1Gbyte 용량의
-            파일을 등록하실 수 있습니다.
+            <PolyglotText
+              defaultString="교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 1Gbyte 용량의 파일을 등록하실 수 있습니다."
+              id="Create-NMAudio-Max1Gbyte"
+            />
           </div>
         </div>
       </Form.Field>

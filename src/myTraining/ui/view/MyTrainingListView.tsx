@@ -10,7 +10,6 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import dateTimeHelper, {
   timeToHourMinutePaddingFormat,
   convertTimeToDate,
@@ -18,6 +17,11 @@ import dateTimeHelper, {
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
 import { useCollegeStore } from '../../../shared/store/CollegeStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -57,11 +61,14 @@ function MyTrainingListView({
 
     if (contentType === MyLearningContentType.InProgress) {
       ReactGA.event({
-        category: '학습중인 과정',
+        category: getPolyglotText(
+          '학습중인 과정',
+          'MyTrainingList-이벤트-과정'
+        ),
         action: 'Click',
-        label: `${myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'} - ${
-          myTraining.name
-        }`,
+        label: `${
+          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
+        } - ${parsePolyglotString(myTraining.name)}`,
       });
     }
     scrollSave();
@@ -86,33 +93,17 @@ function MyTrainingListView({
     if (contentType === MyLearningContentType.Enrolled) {
       return null;
     }
-    const collegeName = () => {
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find(
-          (college) => college.id === myTraining.category.college.id
-        )?.name;
-      }
+    const collegeId = myTraining.category?.collegeId || '';
 
-      return '';
-    };
-    const collegeName2 = () => {
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find((college) => college.id === myTraining.collegeId)
-          ?.name;
-      }
-
-      return '';
-    };
     return (
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
-        <Table.Cell>{collegeName()}</Table.Cell>
+        <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
             <span className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}>
-              {myTraining.name}
+              {parsePolyglotString(myTraining.name)}
             </span>
-            {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
           </a>
         </Table.Cell>
       </>
@@ -131,36 +122,24 @@ function MyTrainingListView({
     const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(
       myTraining.learningTime
     );
-    const collegeName = () => {
-      if (myTraining.category && myTraining.category.college) {
-        return colleges?.find((college) => college.id === myTraining.collegeId)
-          ?.name;
-      }
-
-      return '';
-    };
 
     switch (contentType) {
       case MyLearningContentType.Enrolled: {
         return (
           <>
             <Table.Cell>{totalCount - index}</Table.Cell>
-            <Table.Cell>{collegeName()}</Table.Cell>
+            <Table.Cell>{getCollgeName(myTraining.collegeId)}</Table.Cell>
             <Table.Cell className="title">
               <a href="#" onClick={(e) => onViewDetail(e, myTraining)}>
                 <span
                   className={`ellipsis ${myTraining.useNote ? 'noteOn' : ''}`}
                 >
-                  {myTraining.cubeName}
+                  {parsePolyglotString(myTraining.cubeName)}
                 </span>
-                {/* <span className="ellipsis noteOn">{myTraining.name}</span> */}
               </a>
             </Table.Cell>
             <Table.Cell>{learningType || '-'} </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'}
-              {/* Level */}
-            </Table.Cell>
+            <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>{formattedLearningTime}</Table.Cell>
             <Table.Cell>
               {(myTraining.stampCount !== 0 && myTraining.stampCount) || '-'}
@@ -189,9 +168,11 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
@@ -205,7 +186,9 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
             <Table.Cell>{convertTimeToDate(myTraining.endDate)}</Table.Cell>
           </>
@@ -217,10 +200,12 @@ function MyTrainingListView({
             <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
-              {timeToHourMinutePaddingFormat(myTraining.learningTime+myTraining.additionalLearningTime)}
+              {timeToHourMinutePaddingFormat(
+                myTraining.learningTime + myTraining.additionalLearningTime
+              )}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
           </>
         );
       }

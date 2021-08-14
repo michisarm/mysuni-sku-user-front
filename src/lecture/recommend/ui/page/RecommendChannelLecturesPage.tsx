@@ -11,6 +11,13 @@ import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
+import { IdName } from '../../../../shared/model';
+import {
+  getChannelStore,
+  setChannelStore,
+} from '../../../../shared/store/ChannelStore';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService;
@@ -18,20 +25,36 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
 }
 
 @inject(
-  mobxHelper.injectFrom(
-    'college.collegeService',
-    'profile.skProfileService'
-  )
+  mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService')
 )
 @reactAutobind
 @observer
 class RecommendChannelLecturesPage extends Component<Props> {
   //
-  componentDidMount() {
-    //
-    const { skProfileService } = this.props;
+  // componentDidMount() {
+  //   //
+  //   this.init();
+  // }
 
-    skProfileService.findStudySummary();
+  constructor(props: Props) {
+    //
+    super(props);
+
+    this.init();
+  }
+
+  async init() {
+    //
+    const { skProfileService, collegeService } = this.props;
+
+    await skProfileService.findStudySummary();
+    const channelStore = getChannelStore();
+
+    if (!channelStore || channelStore.length === 0) {
+      await collegeService.findAllColleges();
+      const channels = collegeService.channelsInColleges;
+      setChannelStore(channels);
+    }
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -46,24 +69,35 @@ class RecommendChannelLecturesPage extends Component<Props> {
         params: { channelId },
       },
     } = this.props;
+
     const { studySummaryFavoriteChannels } = skProfileService;
-    const channel: ChannelModel = new ChannelModel({
+    const channel: IdName = new IdName({
       id: channelId,
       name: getChannelName(channelId),
     });
+
+    console.log(studySummaryFavoriteChannels);
 
     return (
       <ContentLayout
         className="mylearning"
         breadcrumb={[
           { text: `Recommend`, path: routePaths.recommend() },
-          { text: `${channel.name}` },
+          {
+            text: `${channel.name}`,
+          },
         ]}
       >
         <ChannelLecturesHeaderView
-          channel={channel}
+          channelIdName={channel}
           channels={studySummaryFavoriteChannels.map(
-            channel => new ChannelModel(channel)
+            (channelId) =>
+              new ChannelModel({
+                id: channelId,
+                name: getChannelName(channelId),
+                channelId,
+                checked: true,
+              })
           )}
           onSelectChannel={this.onSelectChannel}
         />

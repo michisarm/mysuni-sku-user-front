@@ -3,21 +3,20 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
-import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Area } from 'tracker/model';
 import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand';
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
-import { SkProfileModel } from 'profile/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
-  channels: ChannelModel[];
 }
 
 interface States {
@@ -33,11 +32,6 @@ interface States {
 @observer
 @reactAutobind
 class ChannelsContentHeaderContainer extends Component<Props, States> {
-  state = {
-    companyCode: '',
-  };
-
-  //
   componentDidMount(): void {
     this.init();
   }
@@ -46,42 +40,31 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     //
     const { skProfileService, collegeLectureCountService } = this.props;
 
-    skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
-      this.setState({ companyCode: profile.member.companyCode });
-    });
+    // skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
+    //   this.setState({ companyCode: profile.companyCode });
+    // });
     skProfileService!.findStudySummary();
     collegeLectureCountService!.findCollegeLectureCounts();
     //여기서?????? 최근학습중인 채널????
   }
 
   getFavoriteChannelButton() {
-    //
     return (
-      <Label
-        className="onlytext"
-      >
+      <Label className="onlytext">
         <span className="personal-channel-tit">
-          <a>관심채널</a>
+          <a>
+            <PolyglotText defaultString="관심채널" id="rcmd-mifa-관심채널" />
+          </a>
         </span>
       </Label>
     );
   }
 
   render() {
-    //
-    const { companyCode } = this.state;
-    const {
-      skProfileService,
-      collegeLectureCountService,
-      channels,
-    } = this.props;
-    const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
-    const { member } = skProfile;
+    const { skProfileService, collegeLectureCountService } = this.props;
+    const { additionalUserInfo, skProfile } = skProfileService!;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     return (
       <ContentHeaderRecommand
@@ -92,16 +75,16 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}
             name={skProfile.profileViewName}
-            company={member.company}
-            department={member.department}
+            company={parsePolyglotString(skProfile.companyName)}
+            department={parsePolyglotString(skProfile.departmentName)}
             imageEditable={false}
             myPageActive
             type="Recommend"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          {companyCode && (
-            <ChannelsHeaderInfoContainer companyCode={companyCode} />
+          {skProfile.companyCode && (
+            <ChannelsHeaderInfoContainer companyCode={skProfile.companyCode} />
           )}
           {/* <div className="recommend-info">
           <div className="personal-channel-list">
@@ -141,7 +124,10 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
               />
             }
             totalChannelCount={collegeLectureCountService!.totalChannelCount}
-            favoriteChannelCount={channels.length || 0}
+            favoriteChannelCount={
+              skProfileService?.additionalUserInfo.favoriteChannelIds.length ||
+              0
+            }
           />
         </ContentHeader.Cell>
       </ContentHeaderRecommand>

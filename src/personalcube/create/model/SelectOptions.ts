@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+
 const SelectOptions = {
   learningType: [
     { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
@@ -23,12 +25,12 @@ const SelectOptions = {
   ],
 
   cubeType: [
-    { key: '0', text: '선택해주세요', value: 'None' },
-    { key: '1', text: 'Video', value: 'Video' },
-    { key: '2', text: 'Audio', value: 'Audio' },
+    { key: '0', text: getPolyglotText('선택해주세요', 'Create-NM-cubetype'), value: 'None' },
+    { key: '1', text: getPolyglotText('Video', 'Create-NM-Video'), value: 'Video' },
+    { key: '2', text: getPolyglotText('Audio', 'Create-NM-Audio'), value: 'Audio' },
     // { key: '3', text: 'Community', value: 'Community' },
-    { key: '4', text: 'Web Page', value: 'WebPage' },
-    { key: '5', text: 'Documents', value: 'Documents' },
+    { key: '4', text: getPolyglotText('Web Page', 'Create-NM-Web Page'), value: 'WebPage' },
+    { key: '5', text: getPolyglotText('Documents', 'Create-NM-Documents'), value: 'Documents' },
   ],
 
   cubeOrCourse: [
@@ -44,25 +46,91 @@ const SelectOptions = {
   ],
 
   colleges: [
-    { key: '0', text: 'AI', value: 'h1' },
-    { key: '1', text: 'DT', value: 'h2' },
-    { key: '2', text: '행복', value: 'h3' },
-    { key: '3', text: 'SV', value: 'h4' },
-    { key: '4', text: 'Design', value: 'h5' },
-    { key: '5', text: 'Global', value: 'h6' },
-    { key: '6', text: 'Leadership', value: 'h7' },
-    { key: '7', text: 'Management', value: 'h8' },
-    { key: '8', text: '미래반도체', value: '10i' },
-    { key: '10', text: '에너지솔루션', value: '10m' },
-    { key: '11', text: 'BM Design & Storytelling', value: '10k' },
-    { key: '9', text: 'SK아카데미', value: '10j' },
+    {
+      key: '0',
+      text: getPolyglotText('AI', 'personalcube-노출정보옵션-AI'),
+      value: 'h1',
+    },
+    {
+      key: '1',
+      text: getPolyglotText('DT', 'personalcube-노출정보옵션-DT'),
+      value: 'h2',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('행복', 'personalcube-노출정보옵션-행복'),
+      value: 'h3',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('SV', 'personalcube-노출정보옵션-SV'),
+      value: 'h4',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('Design', 'personalcube-노출정보옵션-Design'),
+      value: 'h5',
+    },
+    {
+      key: '5',
+      text: getPolyglotText('Global', 'personalcube-노출정보옵션-Global'),
+      value: 'h6',
+    },
+    {
+      key: '6',
+      text: getPolyglotText(
+        'Leadership',
+        'personalcube-노출정보옵션-Leadership'
+      ),
+      value: 'h7',
+    },
+    {
+      key: '7',
+      text: getPolyglotText(
+        'Management',
+        'personalcube-노출정보옵션-Management'
+      ),
+      value: 'h8',
+    },
+    {
+      key: '8',
+      text: getPolyglotText(
+        '미래반도체',
+        'personalcube-노출정보옵션-미래반도체'
+      ),
+      value: '10i',
+    },
+    {
+      key: '10',
+      text: getPolyglotText(
+        '에너지솔루션',
+        'personalcube-노출정보옵션-에너지솔루션'
+      ),
+      value: '10m',
+    },
+    {
+      key: '11',
+      text: getPolyglotText(
+        'BM Design & Storytelling',
+        'personalcube-노출정보옵션-BM'
+      ),
+      value: '10k',
+    },
+    {
+      key: '9',
+      text: getPolyglotText(
+        'SK아카데미',
+        'personalcube-노출정보옵션-SK아카데미'
+      ),
+      value: '10j',
+    },
   ],
 
   difficulty: [
-    { key: '1', text: 'Basic', value: 'Basic' },
-    { key: '2', text: 'Intermediate', value: 'Intermediate' },
-    { key: '3', text: 'Advanced', value: 'Advanced' },
-    { key: '4', text: 'Expert', value: 'Expert' },
+    { key: '1', text: getPolyglotText('Basic', 'Create-NM-Basic'), value: 'Basic' },
+    { key: '2', text: getPolyglotText('Intermediate', 'Create-NM-Intermediate'), value: 'Intermediate' },
+    { key: '3', text: getPolyglotText('Advanced', 'Create-NM-Advanced'), value: 'Advanced' },
+    { key: '4', text: getPolyglotText('Expert', 'Create-NM-Expert'), value: 'Expert' },
   ],
 
   assignment: [
@@ -224,11 +292,31 @@ const SelectOptions = {
   ],
 
   userStatus: [
-    { key: '0', text: '전체', value: '' },
-    { key: '1', text: '저장', value: 'Created' },
-    { key: '2', text: '승인대기', value: 'OpenApproval' },
-    { key: '3', text: '승인', value: 'Opened' },
-    { key: '4', text: '반려', value: 'Rejected' },
+    {
+      key: '0',
+      text: getPolyglotText('전체', 'Create-DetailBasic-전체'),
+      value: '',
+    },
+    {
+      key: '1',
+      text: getPolyglotText('저장', 'Create-DetailBasic-저장'),
+      value: 'Created',
+    },
+    {
+      key: '2',
+      text: getPolyglotText('승인대기', 'Create-DetailBasic-승인대기'),
+      value: 'OpenApproval',
+    },
+    {
+      key: '3',
+      text: getPolyglotText('승인', 'Create-DetailBasic-승인'),
+      value: 'Opened',
+    },
+    {
+      key: '4',
+      text: getPolyglotText('반려', 'Create-DetailBasic-반려'),
+      value: 'Rejected',
+    },
   ],
 
   openType: [

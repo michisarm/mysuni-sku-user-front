@@ -33,6 +33,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
   newLectureService?: NEWLectureService;
@@ -226,7 +227,7 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
           serviceId: training.serviceId,
           serviceType: training.serviceType,
           category: training.category,
-          name: training.name,
+          name: training.name ? parsePolyglotString(training.name) : '',
           description: training.description,
           cubeType: training.cubeType,
           learningTime: training.learningTime,

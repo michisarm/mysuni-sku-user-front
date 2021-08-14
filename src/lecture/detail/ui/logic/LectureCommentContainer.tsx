@@ -1,6 +1,7 @@
 import { CommentService, ReviewService } from '@nara.drama/feedback';
 import { autorun } from 'mobx';
 import React, { useEffect, useRef } from 'react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { SkProfileService } from '../../../../profile/stores';
 import LectureCommentsContainer from '../../../category/ui/logic/LectureCommentsContainer';
 import { updateLectureReview } from '../../service/useLectuerCubeOverview/utility/updateLectureReview';
@@ -11,7 +12,8 @@ function LectureCommentContainer() {
   const [lectureComment] = useLectureComment();
   const {
     skProfile: {
-      member: { company, department, email, name },
+      companyName, departmentName, name, email
+      // member: { company, department, email, name },
     },
   } = SkProfileService.instance;
   useEffect(() => {
@@ -39,10 +41,10 @@ function LectureCommentContainer() {
         <LectureCommentsContainer
           commentFeedbackId={lectureComment.commentId}
           reviewFeedbackId={lectureComment.reviewId}
-          companyName={company}
-          departmentName={department}
+          companyName={parsePolyglotString(companyName)}
+          departmentName={parsePolyglotString(departmentName)}
           email={email}
-          name={name}
+          name={parsePolyglotString(name)}
         />
       )}
     </>

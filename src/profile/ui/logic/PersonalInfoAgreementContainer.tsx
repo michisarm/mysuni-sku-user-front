@@ -16,6 +16,7 @@ import {
 import { MySuniServiceTermView } from '../view/MySuniServiceTermView';
 import { ContentTermView } from '../view/ContentTermView';
 import { PersonalInfoTermView } from '../view/PersonalInfoTermView';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -86,8 +87,8 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
     if (!mySuniChecked || !international) {
       reactAlert({
-        title: '알림',
-        message: '개인정보 처리방침을 확인하시고 동의해주세요',
+        title: getPolyglotText('알림', 'agreement-outPrivacy-알림'),
+        message: getPolyglotText('개인정보 처리방침을 확인하시고 동의해주세요', 'agreement-outPrivacy-내용'),
       });
       return;
     }
@@ -120,8 +121,9 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
         if (reAgree) {
           history.push(routePaths.currentJob());
-        } else if (skProfile.studySummaryConfigured) {
-          history.push('/');
+          // 김민준 - 해당 값 확인 필요
+        // } else if (skProfile.studySummaryConfigured) {
+        //   history.push('/');
         } else {
           history.push(routePaths.favoriteWelcome());
         }
@@ -168,7 +170,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
             <li style={{ display: 'none' }}>
               <Checkbox
                 className="base black"
-                label="전체동의"
+                label={getPolyglotText('전체동의', 'agreement-outPrivacy-버튼1')}
                 checked={mySuniChecked && domesticChecked && international}
                 onChange={this.onChangeAllCheck}
               />
@@ -176,12 +178,14 @@ class PersonalInfoAgreementContainer extends Component<Props> {
             <li>
               <span className="agree-dot" />
               <span className="agree-cont" style={{ width: 969 }}>
-                <b style={{ color: '#db1111' }}>[필수]</b> 홈페이지 회원가입 및
-                관리 및 mySUNI 콘텐츠/서비스 제공
+                <b style={{ color: '#db1111' }}>
+                  <PolyglotText defaultString="[필수]" id="agreement-outPrivacy-필수" />
+                </b>
+                <PolyglotText defaultString="홈페이지 회원가입 및 관리 및 mySUNI 콘텐츠/서비스 제공" id="agreement-outPrivacy-내용1" />
               </span>
               <Radio
                 name="mySuniChecked"
-                label="동의"
+                label={getPolyglotText('동의', 'agreement-outPrivacy-버튼2')}
                 className="base"
                 checked={initCheckOne && mySuniChecked}
                 onChange={() => this.onChangeCheck('mySuniChecked', true)}
@@ -189,7 +193,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
               />
               <Radio
                 name="mySuniChecked"
-                label="미동의"
+                label={getPolyglotText('미동의', 'agreement-outPrivacy-버튼3')}
                 className="base"
                 checked={initCheckOne && !mySuniChecked}
                 onChange={() => this.onChangeCheck('mySuniChecked', false)}
@@ -200,11 +204,11 @@ class PersonalInfoAgreementContainer extends Component<Props> {
             <li style={{ marginTop: 20 }}>
               <span className="agree-dot" />
               <span className="agree-cont" style={{ width: 969 }}>
-                [선택] 개인 맞춤형 특화 컨텐츠 제공
+                <PolyglotText defaultString="[선택] 개인 맞춤형 특화 컨텐츠 제공" id="agreement-outPrivacy-내용2" />
               </span>
               <Radio
                 name="domesticChecked"
-                label="동의"
+                label={getPolyglotText('동의', 'agreement-outPrivacy-버튼2')}
                 className="base"
                 checked={initCheckTwo && domesticChecked}
                 onChange={() => this.onChangeCheck('domesticChecked', true)}
@@ -212,7 +216,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
               />
               <Radio
                 name="domesticChecked"
-                label="미동의"
+                label={getPolyglotText('미동의', 'agreement-outPrivacy-버튼3')}
                 className="base"
                 checked={initCheckTwo && !domesticChecked}
                 onChange={() => this.onChangeCheck('domesticChecked', false)}
@@ -223,11 +227,14 @@ class PersonalInfoAgreementContainer extends Component<Props> {
             <li style={{ marginTop: 20 }}>
               <span className="agree-dot" />
               <span className="agree-cont" style={{ width: 969 }}>
-                <b style={{ color: '#db1111' }}>[필수]</b> 개인정보 처리방침
+                <b style={{ color: '#db1111' }}>
+                  <PolyglotText defaultString="[필수]" id="agreement-outPrivacy-필수" />
+                </b>
+                <PolyglotText defaultString="개인정보 처리방침" id="agreement-outPrivacy-내용3" />
               </span>
               <Radio
                 name="international"
-                label="동의"
+                label={getPolyglotText('동의', 'agreement-outPrivacy-버튼2')}
                 className="base"
                 checked={initCheckThr && international}
                 onChange={() => this.onChangeCheck('international', true)}
@@ -235,7 +242,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
               />
               <Radio
                 name="international"
-                label="미동의"
+                label={getPolyglotText('미동의', 'agreement-outPrivacy-버튼3')}
                 className="base"
                 checked={initCheckThr && !international}
                 onChange={() => this.onChangeCheck('international', false)}
@@ -247,11 +254,10 @@ class PersonalInfoAgreementContainer extends Component<Props> {
         </div>
         <div className="button-area">
           <div className="error">
-            개인정보 제공 동의를 하지 않으시면 mySUNI 서비스를 이용 하실 수
-            없습니다.
+            <PolyglotText defaultString="개인정보 제공 동의를 하지 않으시면 mySUNI 서비스를 이용 하실 수 없습니다." id="agreement-outPrivacy-주의" />
           </div>
           <Button className="fix bg" onClick={this.onConfirm}>
-            다음
+            <PolyglotText defaultString="다음" id="agreement-outPrivacy-다음" />
           </Button>
         </div>
       </div>

@@ -1,15 +1,17 @@
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { DifficultyLevel } from './DifficultyLevel';
 import { Instructor } from './Instructor';
+import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 
 export interface CubeContents {
   commentFeedbackId: string;
   creatorName: string;
   description: {
-    applicants: string;
-    completionTerms: string;
-    description: string;
-    goal: string;
-    guide: string;
+    applicants: PolyglotString;
+    completionTerms: PolyglotString;
+    description: PolyglotString;
+    goal: PolyglotString;
+    guide: PolyglotString;
   };
   difficultyLevel: DifficultyLevel;
   fileBoxId: string;
@@ -18,14 +20,7 @@ export interface CubeContents {
     instructorId: string;
     representative: boolean;
     round: number;
-    name?: string;
-    memberSummary?: {
-      employeeId: string;
-      department: string;
-      email: string;
-      name: string;
-      photoId: string;
-    };
+    instructorWithIdentity?: InstructorWithIdentity;
   }[];
   operator: { keyString: string };
   organizerId: string;
@@ -36,12 +31,12 @@ export interface CubeContents {
   reportFileBox: {
     report: boolean;
     fileBoxId: string;
-    reportName: string;
-    reportQuestion: string;
+    reportName: PolyglotString;
+    reportQuestion: PolyglotString;
   };
   reviewFeedbackId: string;
   surveyId: string;
-  tags?: [string] | null;
+  tags: PolyglotString | null;
   terms: [
     {
       displaySort: number;

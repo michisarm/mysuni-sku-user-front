@@ -1,6 +1,15 @@
-
-import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
-import { autobind, CachingFetch, axiosApi as axios } from '@nara.platform/accent';
+import {
+  IObservableArray,
+  observable,
+  action,
+  runInAction,
+  computed,
+} from 'mobx';
+import {
+  autobind,
+  CachingFetch,
+  axiosApi as axios,
+} from '@nara.platform/accent';
 
 import _ from 'lodash';
 import { IdNameList } from 'shared/model';
@@ -8,7 +17,8 @@ import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import ChannelModel from '../../model/ChannelModel';
-
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { CollegeBanner } from '../../model/CollegeBanner';
 
 @autobind
 export default class CollegeService {
@@ -30,7 +40,7 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  favoriteChannels : ChannelModel [] = [];
+  favoriteChannels: ChannelModel[] = [];
 
   @observable
   channel: ChannelModel = new ChannelModel();
@@ -48,9 +58,12 @@ export default class CollegeService {
   mainColleges: CollegeModel[] = [];
 
   @observable
-  banner: any[] = [];
+  banner: CollegeBanner[] = [];
 
-  constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
+  constructor(
+    collegeApi: CollegeApi = CollegeApi.instance,
+    channelApi: ChannelApi = ChannelApi.instance
+  ) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
   }
@@ -72,14 +85,18 @@ export default class CollegeService {
   @computed
   get channelIds(): string[] {
     //
-    return this.channels.map(channel => channel.channelId);
+    return this.channels.map((channel) => channel.channelId);
   }
 
   @computed
-  get favoriteChannelIdNames() : IdNameList {
-    const list : IdNameList = new IdNameList();
+  get favoriteChannelIdNames(): IdNameList {
+    const list: IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.id, name: channel.name, active: false });
+      list.idNames.push({
+        id: channel.id,
+        name: parsePolyglotString(channel.name),
+        active: false,
+      });
     });
     return list;
   }
@@ -87,14 +104,14 @@ export default class CollegeService {
   @computed
   get channelMap() {
     const map = new Map<string, ChannelModel>();
-    this._channels.map(channel => map.set(channel.channelId, channel));
+    this._channels.map((channel) => map.set(channel.channelId, channel));
     return map;
   }
 
   @computed
   get totalChannelCount() {
     let total = 0;
-    this._colleges.map(college => {
+    this._colleges.map((college) => {
       total += college.channels.length;
     });
     return total;
@@ -116,7 +133,7 @@ export default class CollegeService {
     if (!college) {
       return undefined;
     }
-    runInAction(() => this.college = college);
+    runInAction(() => (this.college = college));
     return college;
   }
 
@@ -132,10 +149,12 @@ export default class CollegeService {
     //
     const fetched = this.collegesCachingFetch.fetch(
       () => this.collegeApi.findAllColleges(),
-      (colleges) => runInAction(() => this._colleges = colleges),
+      (colleges) => runInAction(() => (this._colleges = colleges))
     );
 
-    return fetched ? this.collegesCachingFetch.inProgressFetching : this.colleges;
+    return fetched
+      ? this.collegesCachingFetch.inProgressFetching
+      : this.colleges;
   }
 
   // Panopto ----------------------------------------------------------------------------------------------------------
@@ -150,7 +169,7 @@ export default class CollegeService {
   async findAllCollegesForPanopto() {
     //
     const colleges = await this.collegeApi.findAllCollegesForCreate();
-    return runInAction(() => this.collegesForPanopto = colleges);
+    return runInAction(() => (this.collegesForPanopto = colleges));
   }
 
   @action
@@ -174,6 +193,20 @@ export default class CollegeService {
     this._channels[index] = _.set(this._channels[index], name, value);
   }
 
+  @computed
+  get channelsInColleges() {
+    //
+    const channels: ChannelModel[] = [];
+
+    this._colleges?.forEach((college) => {
+      college.channels?.forEach((channel) => {
+        channels.push(new ChannelModel(channel));
+      });
+    });
+
+    return channels;
+  }
+
   // Other Channels ----------------------------------------------------------------------------------------------------
 
   @action
@@ -181,7 +214,15 @@ export default class CollegeService {
     const channels = this.college.channels;
 
     channels.map((channel) => {
-      this.college.channels.push(new ChannelModel({ ...channel, id: channel.id, channelId: channel.id, name: channel.name, checked: false }));
+      this.college.channels.push(
+        new ChannelModel({
+          ...channel,
+          id: channel.id,
+          channelId: channel.id,
+          name: channel.name,
+          checked: false,
+        })
+      );
     });
   }
 
@@ -202,30 +243,38 @@ export default class CollegeService {
   @action
   async findAllChannel() {
     const channels = await this.channelApi.findAllChannel();
-    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
+    runInAction(
+      () =>
+        (this._channels = channels.map((channel) => new ChannelModel(channel)))
+    );
   }
 
   @action
   async findChannels(collegeId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
-    const channels = college.channels.map(channel => new ChannelModel(channel));
+    const channels = college.channels.map(
+      (channel) => new ChannelModel(channel)
+    );
 
-    runInAction(() => this._channels = channels);
+    runInAction(() => (this._channels = channels));
     return channels;
   }
 
   @action
   async findChannelById(channelId: string) {
     const channel = await this.channelApi.findChannel(channelId);
-    runInAction(() => this.channel = new ChannelModel(channel));
+    runInAction(() => (this.channel = new ChannelModel(channel)));
   }
 
   //channel 이름 검색 추가
   @action
-  async findChannelByName(name:string) {
+  async findChannelByName(name: string) {
     const channels = await this.channelApi.findChannelByName(name);
-    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
+    runInAction(
+      () =>
+        (this._channels = channels.map((channel) => new ChannelModel(channel)))
+    );
   }
 
   @action
@@ -238,8 +287,9 @@ export default class CollegeService {
     }
     return runInAction(() => {
       this.college = college;
-      const channel = this.college.channels
-        .find((channel) => channel.id === channelId);
+      const channel = this.college.channels.find(
+        (channel) => channel.id === channelId
+      );
 
       if (channel) {
         this.channel = new ChannelModel(channel);
@@ -252,24 +302,26 @@ export default class CollegeService {
     //
     // const colleges = await this.collegeApi.findAllColleges();
     const mainColleges = await this.collegeApi.findCollegesForCurrentCineroom();
-    return runInAction(() => this.mainColleges = mainColleges);
+    return runInAction(() => (this.mainColleges = mainColleges));
   }
 
   @action
   async findMainCollege(collegeId: string) {
     //
     const mainCollege = await this.collegeApi.findCollege(collegeId);
-    if (mainCollege) return runInAction(() => this.mainCollege = new CollegeModel(mainCollege));
+    if (mainCollege) {
+      return runInAction(
+        () => (this.mainCollege = new CollegeModel(mainCollege))
+      );
+    }
     return null;
   }
-
 
   @action
   async getBanner() {
     const banner = await this.collegeApi.getBanner();
-    if(banner) return runInAction(() => this.banner = banner);
+    if (banner) return runInAction(() => (this.banner = banner));
   }
-
 }
 
 Object.defineProperty(CollegeService, 'instance', {

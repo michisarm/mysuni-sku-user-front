@@ -1,4 +1,5 @@
 import { observable, decorate } from 'mobx';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CardCategory } from '../../shared/model/CardCategory';
 import CardType from '../shared/model/CardType';
 
@@ -10,7 +11,8 @@ class LectureTableViewModel {
   type: CardType = 'None';
   category: CardCategory = initialCardCategory;
   difficultyLevel: string = '';
-  name: string = '';
+  // name: string = '';
+  name: PolyglotString | null = null;
   learningTime: number = 0;
   learningState: string = '';
   updateTime: number = 0;

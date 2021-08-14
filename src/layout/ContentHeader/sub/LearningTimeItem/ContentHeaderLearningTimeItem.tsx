@@ -2,6 +2,10 @@ import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Label, Icon } from 'semantic-ui-react';
 import { MyLearningSummaryModal } from 'myTraining';
+import {
+  PolyglotText,
+  getPolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   minute?: number;
@@ -118,10 +122,17 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
                 style={{ paddingLeft: '100px' }}
               >
                 <Label className="onlytext">
-                  <span>
-                    <strong>{year}년</strong>
-                    학습시간
-                  </span>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        `<strong>{year}년</strong>학습시간`,
+                        'mapg-mifa-년도',
+                        {
+                          year: (year || 0).toString(),
+                        }
+                      ),
+                    }}
+                  />
                 </Label>
                 {total}
               </Button>

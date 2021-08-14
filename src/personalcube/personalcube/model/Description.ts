@@ -1,7 +1,9 @@
+import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+
 export interface Description {
-  goal: string;
-  applicants: string;
-  description: string;
-  completionTerms: string;
-  guide: string;
+  goal: PolyglotString;
+  applicants: PolyglotString;
+  description: PolyglotString;
+  completionTerms: PolyglotString;
+  guide: PolyglotString;
 }

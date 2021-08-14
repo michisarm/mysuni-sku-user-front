@@ -18,11 +18,12 @@ import LectureState from '../../../viewModel/LectureState';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 import { Action, ActionType, Area } from 'tracker/model';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
-const DOWNLOAD = '다운로드';
-const PROGRESS = '학습중';
-const COMPLETE = '학습완료';
-const WAIT = '학습예정';
+const DOWNLOAD = getPolyglotText('다운로드', 'CollageState-Document-다운로드');
+const PROGRESS = getPolyglotText('학습중', 'CollageState-Document-학습중');
+const COMPLETE = getPolyglotText('학습완료', 'CollageState-Document-학습완료');
+const WAIT = getPolyglotText('학습예정', 'CollageState-Document-학습예정');
 
 const actionClassName = 'bg';
 
@@ -110,11 +111,7 @@ function ApprovedView(props: ApprovedViewProps) {
     if (cubeDetail === undefined) {
       return;
     }
-    if (
-      (cubeDetail.cube.reportName === null ||
-        cubeDetail.cube.reportName === '') &&
-      !cubeDetail.cube.hasTest
-    ) {
+    if (cubeDetail.cube.reportName === null && !cubeDetail.cube.hasTest) {
       completeLearning();
     }
   }, []);
@@ -164,47 +161,47 @@ interface LectureDocumentsStateViewProps {
   lectureStructure: LectureStructure;
 }
 
-const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> = function LectureDocumentsStateView({
-  lectureState,
-  lectureWebpage,
-  lectureStructure,
-}) {
-  const { student } = lectureState;
+const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> =
+  function LectureDocumentsStateView({
+    lectureState,
+    lectureWebpage,
+    lectureStructure,
+  }) {
+    const { student } = lectureState;
 
-  const [fileDonwloadPopShow, setFileDonwloadPopShow] = useState<boolean>(
-    false
-  );
-  const closeFileDonwloadPop = useCallback(() => {
-    setFileDonwloadPopShow(false);
-  }, []);
+    const [fileDonwloadPopShow, setFileDonwloadPopShow] =
+      useState<boolean>(false);
+    const closeFileDonwloadPop = useCallback(() => {
+      setFileDonwloadPopShow(false);
+    }, []);
 
-  const hookAction = useCallback(() => {
-    setFileDonwloadPopShow(true);
-  }, []);
+    const hookAction = useCallback(() => {
+      setFileDonwloadPopShow(true);
+    }, []);
 
-  const { pathname } = useLocation();
+    const { pathname } = useLocation();
 
-  return (
-    <>
-      {(student === undefined || student?.proposalState === 'Canceled') && (
-        <CanceledView hookAction={hookAction} />
-      )}
-      {student?.proposalState === 'Approved' && (
-        <ApprovedView
-          pathname={pathname}
-          hookAction={hookAction}
-          student={student}
-          lectureStructure={lectureStructure}
-        />
-      )}
-      {fileDonwloadPopShow && (
-        <FileDownloadPop
-          fileBoxIds={[lectureWebpage.fileBoxId]}
-          onClose={closeFileDonwloadPop}
-        />
-      )}
-    </>
-  );
-};
+    return (
+      <>
+        {(student === undefined || student?.proposalState === 'Canceled') && (
+          <CanceledView hookAction={hookAction} />
+        )}
+        {student?.proposalState === 'Approved' && (
+          <ApprovedView
+            pathname={pathname}
+            hookAction={hookAction}
+            student={student}
+            lectureStructure={lectureStructure}
+          />
+        )}
+        {fileDonwloadPopShow && (
+          <FileDownloadPop
+            fileBoxIds={[lectureWebpage.fileBoxId]}
+            onClose={closeFileDonwloadPop}
+          />
+        )}
+      </>
+    );
+  };
 
 export default LectureDocumentsStateView;

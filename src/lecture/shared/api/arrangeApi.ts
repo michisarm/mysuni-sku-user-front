@@ -1,6 +1,4 @@
 import { getAxios } from 'shared/api/Axios';
-import { AxiosReturn } from 'shared/api/AxiosReturn';
-import { createCacheApi } from '../../detail/api/cacheableApi';
 import { PageElement } from '../model/PageElement';
 import { CardBundle } from '../model/CardBundle';
 

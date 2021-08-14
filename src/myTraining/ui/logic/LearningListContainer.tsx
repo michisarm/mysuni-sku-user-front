@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Segment } from 'semantic-ui-react';
@@ -19,6 +20,7 @@ import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel'
 import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface MatchPrams {
   type: string;
@@ -72,7 +74,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       const filteredCardBundle = find(cardBundles, { id: match.params.type });
 
       if (filteredCardBundle) {
-        setTitle(filteredCardBundle.displayText);
+        setTitle(parsePolyglotString(filteredCardBundle.displayText));
         setCardType(filteredCardBundle.type);
 
         const joinedIds = filteredCardBundle.cardIds.join();
@@ -175,6 +177,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                     studentCount={upcomingClassroomInfo?.studentCount}
                     remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
                     dataArea={dataArea}
+                    langSupports={card.langSupports}
                   />
                 );
               })}

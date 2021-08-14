@@ -8,6 +8,8 @@ import { CollegeService } from 'college/stores';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../logic/ChannelLecturesContainer';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -53,10 +55,18 @@ class ChannelLecturesPage extends Component<Props> {
       <ContentLayout
         breadcrumb={[
           {
-            text: `${college.name} College`,
+            text: `${parsePolyglotString(
+              college.name,
+              getDefaultLang(college.langSupports)
+            )} College`,
             path: routePaths.collegeLectures(college.collegeId),
           },
-          { text: `${channel.name} Channel` },
+          {
+            text: `${parsePolyglotString(
+              channel.name,
+              getDefaultLang(channel.langSupports)
+            )} Channel`,
+          },
         ]}
       >
         <ChannelLecturesHeaderView

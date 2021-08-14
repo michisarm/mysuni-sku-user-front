@@ -12,6 +12,10 @@ import MyLearningSummaryService from '../../present/logic/MyLearningSummaryServi
 import MySuniCollegeTimeView from '../view/MySuniCollegeTimeView';
 import MyCompanyCollegeTimeView from '../view/MyCompanyCollegeTimeView';
 import LectureCollegeTimeView from '../view/LectureCollegeTimeView';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   trigger: React.ReactNode;
@@ -46,7 +50,6 @@ enum TabType {
 @observer
 @reactAutobind
 class MyLearningSummaryModal extends Component<Props> {
-
   state: State = {
     openModal: false,
     checkedTab: TabType.mySUNI,
@@ -59,7 +62,7 @@ class MyLearningSummaryModal extends Component<Props> {
       openModal: true,
     });
   }
-  
+
   onCloseModal() {
     this.setState({
       openModal: false,
@@ -86,15 +89,19 @@ class MyLearningSummaryModal extends Component<Props> {
 
   render() {
     const { openModal, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } = this.props;
+    const { trigger, myLearningSummaryService, menuControlAuthService } =
+      this.props;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
-  
+
     const year = moment().year();
     const today = moment(new Date()).format('YYYY.MM.DD');
-    
-    const totalMyCompanyLearningTime = menuControlAuth.hasMenuAuth() && myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime || myLearningSummary.displayMyCompanyLearningTime;
-    
+
+    const totalMyCompanyLearningTime =
+      (menuControlAuth.useApl &&
+        myLearningSummary.displayMyCompanyLearningTime +
+          myLearningSummary.aplAllowTime) ||
+      myLearningSummary.displayMyCompanyLearningTime;
 
     return (
       <Modal
@@ -105,10 +112,15 @@ class MyLearningSummaryModal extends Component<Props> {
         trigger={trigger}
       >
         <Modal.Header className="res">
-          학습 이수 시간
+          <PolyglotText
+            defaultString="학습 이수 시간"
+            id="home-학이시-타이틀"
+          />
           <span className="sub f12">
-            mySUNI에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을
-            구분하여 확인하실 수 있습니다.
+            <PolyglotText
+              defaultString="mySUNI에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을 구분하여 확인하실 수 있습니다."
+              id="home-학이시-부가설명"
+            />
           </span>
         </Modal.Header>
         <Modal.Content>
@@ -122,13 +134,25 @@ class MyLearningSummaryModal extends Component<Props> {
                     <span className="text01">
                       {year}.01.01 ~ {today}
                     </span>
-                    <span className="text02">총 학습시간</span>
                   </div>
                   <div className="cell v-middle">
                     <span className="text01">
-                      {checkedTab === TabType.MyCompany ? 'My Company 학습 시간' : 'College 별 학습 시간'}
+                      {checkedTab === TabType.MyCompany
+                        ? getPolyglotText(
+                            'My Company 학습 시간',
+                            'home-학이시-mct'
+                          )
+                        : getPolyglotText(
+                            'College 별 학습 시간',
+                            'home-학이시-cl시간'
+                          )}
                     </span>
-                    <span className="text02">(단위 : 시간)</span>
+                    <span className="text02">
+                      <PolyglotText
+                        defaultString="(단위 : 시간)"
+                        id="home-학이시-단위"
+                      />
+                    </span>
                   </div>
                 </div>
                 <div className="row">
@@ -150,13 +174,22 @@ class MyLearningSummaryModal extends Component<Props> {
                             />
                             <label>
                               <strong>
-                                mySUNI (
+                                <PolyglotText
+                                  defaultString="mySUNI"
+                                  id="home-학이시-Suni"
+                                />
+                                (
                                 {timeToHourMinutePaddingFormat(
                                   myLearningSummary.displayMySUNILearningTime
                                 )}
                                 )
                               </strong>
-                              <span>mySUNI College에서 학습한 시간</span>
+                              <span>
+                                <PolyglotText
+                                  defaultString="mySUNI College에서 학습한 시간"
+                                  id="home-학이시-mshr"
+                                />
+                              </span>
                             </label>
                             <span className="buri" />
                           </div>
@@ -176,22 +209,33 @@ class MyLearningSummaryModal extends Component<Props> {
                             />
                             <label>
                               <strong>
-                                My Company (
+                                <PolyglotText
+                                  defaultString="My Company"
+                                  id="home-학이시-마컴패니"
+                                />
+                                (
                                 {timeToHourMinutePaddingFormat(
                                   totalMyCompanyLearningTime
                                 )}
                                 )
                               </strong>
-                              {
-                                menuControlAuth.hasMenuAuth() && (
-                                  <span>
-                                    각 사에서 학습한 시간과 개인학습 <br />
-                                    등록으로 인정받은 시간
-                                  </span>
-                                ) || (
-                                  <span>각 사에서 학습한 시간</span>
-                                )
-                              }
+                              {(menuControlAuth.useApl && (
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: getPolyglotText(
+                                      `각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간`,
+                                      'home-학이시-mch1'
+                                    ),
+                                  }}
+                                />
+                              )) || (
+                                <span>
+                                  <PolyglotText
+                                    defaultString="각 사에서 학습한 시간"
+                                    id="home-학이시-mch2"
+                                  />
+                                </span>
+                              )}
                             </label>
                             <span className="buri" />
                           </div>
@@ -211,14 +255,26 @@ class MyLearningSummaryModal extends Component<Props> {
                             />
                             <label>
                               <strong>
-                                강의시간 (
-                                {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0)}
+                                <PolyglotText
+                                  defaultString="강의시간"
+                                  id="home-학이시-강의시간"
+                                />
+                                (
+                                {timeToHourMinutePaddingFormat(
+                                  (lectureTimeSummary &&
+                                    lectureTimeSummary.sumOfCurrentYearLectureTime) ||
+                                    0
+                                )}
                                 )
                               </strong>
-                              <span>
-                                mySUNI College와 각사에서 <br />
-                                강의를 통해 인정받은 시간
-                              </span>
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: getPolyglotText(
+                                    `mySUNI College와 각사에서 <br />강의를 통해 인정받은 시간`,
+                                    'home-학이시-강의인정'
+                                  ),
+                                }}
+                              />
                             </label>
                             <span className="buri" />
                           </div>
@@ -227,30 +283,25 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                   </div>
                   <div className="cell vtop">
-                    {
-                      checkedTab === TabType.mySUNI && (
-                        <MySuniCollegeTimeView 
-                          myLearningSummary={myLearningSummary}
-                        />
-                      )
-                    }
-                    {
-                      checkedTab === TabType.MyCompany && (
-                        <MyCompanyCollegeTimeView 
-                          myCompanyLearningTime={myLearningSummary.displayMyCompanyLearningTime}
-                          aplTime={myLearningSummary.aplAllowTime}
-                          menuControlAuth={menuControlAuth}
-                        />
-                      )
-                    }
-                    {
-                      checkedTab === TabType.LectureTime && (
-                        <LectureCollegeTimeView 
-                          lectureTimeSummary={lectureTimeSummary}
-                        />
-                      )
-                    }
-                    {' '}
+                    {checkedTab === TabType.mySUNI && (
+                      <MySuniCollegeTimeView
+                        myLearningSummary={myLearningSummary}
+                      />
+                    )}
+                    {checkedTab === TabType.MyCompany && (
+                      <MyCompanyCollegeTimeView
+                        myCompanyLearningTime={
+                          myLearningSummary.displayMyCompanyLearningTime
+                        }
+                        aplTime={myLearningSummary.aplAllowTime}
+                        menuControlAuth={menuControlAuth}
+                      />
+                    )}
+                    {checkedTab === TabType.LectureTime && (
+                      <LectureCollegeTimeView
+                        lectureTimeSummary={lectureTimeSummary}
+                      />
+                    )}{' '}
                   </div>
                 </div>
               </div>
@@ -259,7 +310,7 @@ class MyLearningSummaryModal extends Component<Props> {
         </Modal.Content>
         <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={this.onCloseModal}>
-            Close
+            <PolyglotText defaultString="Close" id="home-학이시-닫기" />
           </Button>
         </Modal.Actions>
       </Modal>

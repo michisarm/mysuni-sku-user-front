@@ -18,6 +18,10 @@ import { CollegeService } from 'college/stores';
 
 import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -29,7 +33,7 @@ interface Props extends RouteComponentProps {
 interface State {
   categoryOpen: boolean;
   activeCollege?: CollegeLectureCountRdo;
-  banner: any;
+  banner?: CollegeBanner;
 }
 
 @inject(
@@ -100,10 +104,10 @@ class CategoryMenuContainer extends Component<Props, State> {
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     //
     const { collegeLectureCountService, collegeService } = this.props;
-    let bannerData = {};
-    collegeService!.getBanner().then(result => {
+    let bannerData: CollegeBanner | undefined;
+    collegeService!.getBanner().then((result) => {
       if (result) {
-        result.map((item: any, index: number) => {
+        result.map((item) => {
           if (item.collegeId === college.id) {
             bannerData = item;
           }
@@ -114,7 +118,12 @@ class CategoryMenuContainer extends Component<Props, State> {
         banner: bannerData,
       });
     });
-    collegeLectureCountService!.setChannelCounts(college.channels);
+    collegeLectureCountService!.setChannelCounts(
+      college.channels.map((c) => ({
+        id: c.id,
+        name: parsePolyglotString(c.name, getDefaultLang(c.langSupports)),
+      }))
+    );
   }
 
   onClickChannel(e: any, channel?: IdName) {
@@ -196,11 +205,8 @@ class CategoryMenuContainer extends Component<Props, State> {
     } = this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
 
-    const { studySummaryFavoriteChannels } = skProfileService!;
-    const channels =
-      studySummaryFavoriteChannels.map(
-        channel => new ChannelModel({ ...channel, channelId: channel.id })
-      ) || [];
+    const { additionalUserInfo } = skProfileService!;
+    const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();
 
     return (
@@ -213,7 +219,7 @@ class CategoryMenuContainer extends Component<Props, State> {
                   className="detail-open"
                   onClick={() => this.onClickActionLog('Category')}
                 >
-                  Category
+                  <PolyglotText id="home-gnb-ct" defaultString="Category" />
                 </Button>
               }
               on="click"
@@ -230,7 +236,6 @@ class CategoryMenuContainer extends Component<Props, State> {
                     activeCollege={activeCollege}
                     channels={collegeLectureCountService!.channelCounts}
                     favorites={channels}
-                    studySummaryFavoriteChannels={studySummaryFavoriteChannels}
                     actions={this.renderMenuActions()}
                     onActiveCollege={this.onActiveCollege}
                     onRouteChannel={this.onClickChannel}
@@ -244,7 +249,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         </div>
 
         <FavoriteChannelChangeModal
-          ref={modal => (this.modal = modal)}
+          ref={(modal) => (this.modal = modal)}
           favorites={channels}
           onConfirmCallback={this.onConfirmFavorite}
         />

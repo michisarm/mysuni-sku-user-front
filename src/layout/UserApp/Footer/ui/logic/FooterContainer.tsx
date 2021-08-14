@@ -8,6 +8,7 @@ import FooterView from '../view/FooterView';
 
 import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 @reactAutobind
 class FooterContainer extends Component {
@@ -30,35 +31,41 @@ class FooterContainer extends Component {
               className="item"
               onClick={() => onClick('Introduction')}
             >
-              Introduction
+              <PolyglotText
+                defaultString="Introduction"
+                id="home-ftr-바로가1"
+              />
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportNotice()}
               className="item"
               onClick={() => onClick('Notice')}
             >
-              Notice
+              <PolyglotText defaultString="Notice" id="home-ftr-바로가2" />
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportFAQ()}
               className="item"
               onClick={() => onClick('FAQ')}
             >
-              FAQ
+              <PolyglotText defaultString="FAQ" id="home-ftr-바로가3" />
             </NavLink>
             <NavLink
               to={boardRoutePaths.supportQnA()}
               className="item"
               onClick={() => onClick('Q&A')}
             >
-              Q&A
+              <PolyglotText defaultString="Q&A" id="home-ftr-바로가4" />
             </NavLink>
           </>
         )}
         <PrivacyPolicyModalContainer
           trigger={
             <a className="item" style={{ color: 'red' }}>
-              개인정보 처리방침
+              <PolyglotText
+                defaultString="개인정보 처리방침"
+                id="home-ftr-바로가5"
+              />
             </a>
           }
         />

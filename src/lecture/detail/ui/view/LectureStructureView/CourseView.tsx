@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
@@ -52,6 +53,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
       setOpened(true);
     }
   }, [opened]);
+
   return (
     <>
       <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
@@ -65,15 +67,16 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         <button
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
-        >
-          총<strong>{(items || cubes || []).length}개</strong> 구성
-        </button>
+          dangerouslySetInnerHTML={{__html: getPolyglotText('총<strong>{count}개</strong> 강의 구성', 'Course-Contents-강의개수', {count: (items || cubes || []).length + ''})}}
+        />
         <span
           className={`label-state-learning ${
             state === 'Progress' ? 'proceeding' : ''
           } ${state === 'Completed' ? 'complete' : ''}`}
         >
-          <span>진행상태</span>
+          <span>
+            <PolyglotText defaultString="진행상태" id="Course-Contents-진행상태" />
+          </span>
         </span>
       </div>
       <div
@@ -84,6 +87,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           items.map(item => {
             if (item.type === 'CUBE') {
               const cube = item as LectureStructureCubeItem;
+
               return (
                 <Fragment key={cube.cubeId}>
                   {cube.isDurationable !== true && (
@@ -111,7 +115,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       }
                     />
                   )}
-                  {cube.test !== undefined && (
+                  {cube.test !== undefined && cube.test.name !== null && (
                     <TestView
                       activated={cube.test.path === pathname}
                       name={cube.test.name}
@@ -129,7 +133,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.survey.can}
                     />
                   )}
-                  {cube.report !== undefined && (
+                  {cube.report !== undefined && (cube.report.name !== null && cube.report.name !== '') && (
                     <ReportView
                       activated={cube.report.path === pathname}
                       name={cube.report.name}
@@ -172,7 +176,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             can={survey.can}
           />
         )}
-        {report && (
+        {report && (report.name !== null && report.name !== '') && (
           <CourseReportView
             name={report.name}
             state={report.state}

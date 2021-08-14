@@ -10,6 +10,7 @@ import { Lecture, SeeMoreButton } from 'lecture';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
 import { Area } from 'tracker/model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface RequestMore {
   (): void;
@@ -43,7 +44,12 @@ export function InstructorLecturesView(props: Props) {
           {needMore && <SeeMoreButton onClick={requestMore} />}
         </>
       ) : (
-        <NoSuchContentPanel message="등록된 강의가 없습니다." />
+        <NoSuchContentPanel
+          message={getPolyglotText(
+            '등록된 강의가 없습니다.',
+            '통검-강사소개-강의없음'
+          )}
+        />
       )}
     </div>
   );

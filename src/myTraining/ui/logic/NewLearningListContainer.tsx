@@ -9,6 +9,7 @@ import {
   ListTopPanelTemplate,
 } from '../view/panel';
 import myTrainingRoutes from 'myTraining/routePaths';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export enum ContentType {
   New = 'New',
@@ -22,7 +23,7 @@ interface Props extends RouteComponentProps {
   setPageTitle: (contentType: ContentType) => void;
 }
 
-const NewLearningListContainer: React.FC<Props> = Props => {
+const NewLearningListContainer: React.FC<Props> = (Props) => {
   //
   const { contentType, setPageTitle, history } = Props;
 
@@ -73,10 +74,16 @@ const NewLearningListContainer: React.FC<Props> = Props => {
       {/*</div>*/}
 
       <div className="sort-reult">
-        <div className="section-count">
-          총 <span>{totalCount}개</span>의 리스트가 있습니다.
-        </div>
-
+        <div
+          className="section-count"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              `총 <span>{totalCount}개</span>의 리스트가 있습니다.`,
+              '신규학습-신규목록-목록개수',
+              { totalCount: totalCount.toString() }
+            ),
+          }}
+        />
         {contentType == ContentType.Enrolling && (
           <div className="comments-sort">
             <ListTopPanelTemplate

@@ -8,6 +8,7 @@ import {
   LectureCardModel,
   LectureModel,
 } from 'lecture/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class InMyLectureCdoModel {
   //
@@ -71,7 +72,7 @@ class InMyLectureCdoModel {
       serviceId: lecture.serviceId,
       serviceType: lecture.serviceType,
       category: lecture.category,
-      name: lecture.name,
+      name: lecture.name ? parsePolyglotString(lecture.name) : '',
       description: lecture.description,
       cubeType: lecture.cubeType,
       learningTime: lecture.learningTime,

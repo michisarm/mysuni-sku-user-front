@@ -10,6 +10,7 @@ import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
 import { useLectureTask } from '../../../service/useLectureTask/useLectureTask';
 import { useLocation, useHistory } from 'react-router-dom';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskViewProps {
   taskItem?: LectureTask;
@@ -89,11 +90,28 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
               <div className="ui segment full">
                   <List as="ul" className="my-task-bar">
                     {cubePostCount > 0 && (
-                      <List.Item as="li"><Icon className="my-post"/> My Post<em><strong>{postCount}건</strong>/{cubePostCount}건</em></List.Item>
+                      <List.Item as="li">
+                        <Icon className="my-post" />
+                        <PolyglotText defaultString="My Post" id="Collage-Task-myPost" />{' '}
+                        <em dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{postCount}건<strong>/{cubePostCount}건',
+                          'Collage-Task-MyPost건수',
+                          {postCount: (postCount && postCount).toString(),
+                            cubePostCount: (cubePostCount && cubePostCount).toString()
+                          })}}
+                        />
+                      </List.Item>
                     )}
                     {cubeCommentCount > 0 && (
-                      <List.Item as="li"><Icon className="my-comment"/> My reply<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
-                    )}               
+                      <List.Item as="li"><Icon className="my-comment"/>
+                        <PolyglotText defaultString="My reply" id="Collage-Task-reply" />{' '}
+                        <em dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{commentCount}건</strong>/{cubeCommentCount}건',
+                          'Collage-Task-Myreply건수',
+                          {commentCount: (commentCount && commentCount).toString(),
+                            cubeCommentCount: (cubeCommentCount && cubeCommentCount).toString()
+                          })}}
+                        />
+                      </List.Item>
+                    )}
                     {/* {cubeSubCommentCount > 0 && (
                       <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
                     )} */}

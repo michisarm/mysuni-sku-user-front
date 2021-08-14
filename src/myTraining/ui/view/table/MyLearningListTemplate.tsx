@@ -1,27 +1,25 @@
 import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
 import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
-import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
-import { MyPageRouteParams } from '../../../model/MyPageRouteParams';
-import { MyApprovalRouteParams } from '../../../model/MyApprovalRouteParams';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 
 interface MyLearningListTemplateProps {
+  contentType:
+    | MyLearningContentType
+    | MyPageContentType
+    | MyApprovalContentType;
   children: React.ReactNode;
 }
 
 function MyLearningListTemplate({
+  contentType,
   children,
 }: MyLearningListTemplateProps) {
-  const params = useParams<MyTrainingRouteParams | MyPageRouteParams | MyApprovalRouteParams>();
-  const contentType = params.tab;
-
   return (
-    <div className={getWrapperStyle(params.tab)}>
-      <Table className={getTableStyle(params.tab)}>
-        {params.tab === MyLearningContentType.PersonalCompleted && (
+    <div className={getWrapperStyle(contentType)}>
+      <Table className={getTableStyle(contentType)}>
+        {contentType === MyLearningContentType.PersonalCompleted && (
           <colgroup>
             <col width="10%" />
             <col width="25%" />
@@ -62,10 +60,10 @@ function MyLearningListTemplate({
         )}
         {contentType === MyPageContentType.EarnedStampList && (
           <colgroup>
-            <col width="80px"/>
-            <col width="100px"/>
-            <col width="420px"/>
-            <col width="150px"/>
+            <col width="80px" />
+            <col width="100px" />
+            <col width="420px" />
+            <col width="150px" />
             {/* 스탬프 인증서 보기 */}
             {/* <col width="100px"/> */}
           </colgroup>
@@ -79,7 +77,9 @@ function MyLearningListTemplate({
 export default memo(MyLearningListTemplate);
 
 /* globals */
-const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
+const getWrapperStyle = (
+  contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType
+): string => {
   switch (contentType) {
     /* My Stamp */
     case MyPageContentType.EarnedStampList:
@@ -89,7 +89,9 @@ const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType 
   }
 };
 
-const getTableStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
+const getTableStyle = (
+  contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType
+): string => {
   switch (contentType) {
     /* 학습중 */
     case MyLearningContentType.InProgress:

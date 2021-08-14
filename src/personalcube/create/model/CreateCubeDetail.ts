@@ -5,6 +5,8 @@ import { CubeSdo } from './CubeSdo';
 import { CubeCategory } from '../../../shared/model/CubeCategory';
 import { UserCube } from './UserCube';
 import { OpenRequest } from './OpenRequest';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 export interface CreateCubeDetail {
   cube: Cube;
@@ -14,11 +16,11 @@ export interface CreateCubeDetail {
 }
 
 export function getMainCategory(categories: CubeCategory[]) {
-  return categories.find(category => category.mainCategory === true);
+  return categories.find((category) => category.mainCategory === true);
 }
 
 export function getSubCategories(categories: CubeCategory[]) {
-  return categories.filter(category => category.mainCategory === false);
+  return categories.filter((category) => category.mainCategory === false);
 }
 
 export function getRemark(openRequests: OpenRequest[]) {
@@ -39,10 +41,16 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
     categories: cube.categories,
     learningTime: cube.learningTime,
     difficultyLevel: cubeContents.difficultyLevel,
-    description: cubeContents.description,
+    description: {
+      goal: cubeContents.description.goal,
+      applicants: cubeContents.description.applicants,
+      description: cubeContents.description.description,
+      completionTerms: cubeContents.description.completionTerms,
+      guide: cubeContents.description.guide,
+    },
     organizerId: cubeContents.organizerId,
     otherOrganizerName: cubeContents.otherOrganizerName,
-    tags: cubeContents.tags || [],
+    tags: cubeContents.tags || { en: null, ko: null, zh: null },
     fileBoxId: cubeContents.fileBoxId,
     materialSdo: {
       mediaSdo: {

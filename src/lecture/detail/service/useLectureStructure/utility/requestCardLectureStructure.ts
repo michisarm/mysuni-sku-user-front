@@ -37,6 +37,8 @@ import {
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
 import { isEmpty } from 'lodash';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../model/LangSupport';
 
 function parseCubeTestItem(
   card: Card,
@@ -44,7 +46,7 @@ function parseCubeTestItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureTestItem {
-  const { id, name } = cube;
+  const { id, name, langSupports } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -70,7 +72,7 @@ function parseCubeTestItem(
   }
   return {
     id: `test-${id}`,
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     type: 'EXAM',
     params,
     path: params.pathname,
@@ -87,7 +89,7 @@ function parseCubeReportItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureReportItem {
-  const { id, reportName } = cube;
+  const { id, reportName, langSupports } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -113,7 +115,7 @@ function parseCubeReportItem(
 
   return {
     id: `report-${id}`,
-    name: reportName || '',
+    name: parsePolyglotString(reportName, getDefaultLang(langSupports)) || '',
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -130,7 +132,7 @@ function parseCubeSurveyItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureSurveyItem {
-  const { id, name, surveyCaseId } = cube;
+  const { id, name, surveyCaseId, langSupports } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -156,7 +158,7 @@ function parseCubeSurveyItem(
 
   return {
     id: surveyCaseId || '',
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     type: 'SURVEY',
     params,
     path: params.pathname,
@@ -195,7 +197,7 @@ function parseCardTestItem(
   }
   return {
     id: `test-${id}`,
-    name,
+    name: parsePolyglotString(name),
     type: 'EXAM',
     params,
     path: params.pathname,
@@ -211,7 +213,7 @@ function parseCardReportItem(
   cardContents: CardContents,
   cardStudent: Student | null
 ): LectureStructureReportItem {
-  const { id, name } = card;
+  const { id, name, langSupports } = card;
   const {
     reportFileBox: { reportName },
   } = cardContents;
@@ -238,7 +240,7 @@ function parseCardReportItem(
 
   return {
     id: `report-${id}`,
-    name: reportName || '',
+    name: parsePolyglotString(reportName, getDefaultLang(langSupports)),
     type: 'REPORT',
     params,
     path: params.pathname,
@@ -279,7 +281,7 @@ function parseCardSurveyItem(
 
   return {
     id: surveyCaseId,
-    name,
+    name: parsePolyglotString(name),
     type: 'SURVEY',
     params,
     path: params.pathname,
@@ -306,7 +308,7 @@ function parseCardItem(
   const item: LectureStructureCardItem = {
     cardId: id,
     cubes: [],
-    name,
+    name: parsePolyglotString(name),
     learningState: cardStudent?.learningState,
     student: cardStudent === null ? undefined : cardStudent,
     order: -1,
@@ -352,7 +354,7 @@ function parseDiscussionItem(
   params.pathname = toPath(params);
   return {
     id: contentId,
-    name: name ? name : '',
+    name: parsePolyglotString(name, getDefaultLang(card.langSupports)),
     type: 'DISCUSSION',
     params,
     path: params.pathname,
@@ -374,6 +376,7 @@ function parseDurationableCubeItem(
   const {
     id,
     name,
+    langSupports,
     type,
     learningTime,
     surveyCaseId,
@@ -390,7 +393,7 @@ function parseDurationableCubeItem(
   params.pathname = toPath(params);
   const item: LectureStructureDurationableCubeItem = {
     cardId: card.id,
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     cubeId: id,
     cubeType: type,
     learningState: cubeStudent?.learningState,
@@ -412,7 +415,7 @@ function parseDurationableCubeItem(
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
     item.test.can = item.test.can && item.duration === 100;
   }
-  if (reportName !== null && reportName !== '') {
+  if (reportName !== null) {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
     item.report.can = item.report.can && item.duration === 100;
   }
@@ -431,6 +434,7 @@ async function parseDiscussionCubeItem(
   const {
     id,
     name,
+    langSupports,
     type,
     learningTime,
     surveyCaseId,
@@ -447,7 +451,7 @@ async function parseDiscussionCubeItem(
   params.pathname = toPath(params);
   const item: LectureStructureCubeItem = {
     cardId: card.id,
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     cubeId: id,
     cubeType: type,
     learningState: cubeStudent?.learningState,
@@ -464,7 +468,7 @@ async function parseDiscussionCubeItem(
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
   }
-  if (reportName !== null && reportName !== '') {
+  if (reportName !== null) {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
   if (surveyCaseId !== null && surveyCaseId !== '') {
@@ -519,6 +523,7 @@ async function parseTaskCubeItem(
   const {
     id,
     name,
+    langSupports,
     type,
     learningTime,
     surveyCaseId,
@@ -535,7 +540,7 @@ async function parseTaskCubeItem(
   params.pathname = toPath(params);
   const item: LectureStructureCubeItem = {
     cardId: card.id,
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     cubeId: id,
     cubeType: type,
     learningState: cubeStudent?.learningState,
@@ -552,7 +557,7 @@ async function parseTaskCubeItem(
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
   }
-  if (reportName !== null && reportName !== '') {
+  if (reportName !== null) {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
   if (surveyCaseId !== null && surveyCaseId !== '') {
@@ -617,9 +622,10 @@ export async function isPrecoursePassed(cardId: string) {
     return true;
   }
 
-  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
-    (course) => course.required
-  );
+  const filterPrecourse =
+    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+      (course) => course.required
+    );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
 
@@ -656,6 +662,7 @@ async function parseCubeItem(
   const {
     id,
     name,
+    langSupports,
     type,
     learningTime,
     surveyCaseId,
@@ -702,7 +709,7 @@ async function parseCubeItem(
   params.pathname = toPath(params);
   const item: LectureStructureCubeItem = {
     cardId: card.id,
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     cubeId: id,
     cubeType: type,
     learningState: cubeStudent?.learningState,
@@ -719,7 +726,7 @@ async function parseCubeItem(
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
   }
-  if (reportName !== undefined && reportName !== null && reportName !== '') {
+  if (reportName !== undefined && reportName !== null) {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
   if (
@@ -747,7 +754,7 @@ function parseChapterItem(
   params.pathname = toPath(params);
   return {
     id: contentId,
-    name: name ? name : '',
+    name: parsePolyglotString(name, getDefaultLang(card.langSupports)),
     type: 'CHAPTER',
     params,
     path: params.pathname,

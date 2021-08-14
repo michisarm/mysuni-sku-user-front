@@ -5,9 +5,12 @@ import { observer } from 'mobx-react';
 
 import { ChannelModel } from 'college/model';
 import { Area } from 'tracker/model';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
+import { IdName } from '../../../../shared/model';
 
 interface Props {
-  channel: ChannelModel;
+  channelIdName: IdName;
   channels: ChannelModel[];
   onSelectChannel: (channel: ChannelModel) => void;
 }
@@ -18,19 +21,19 @@ class ChannelLecturesHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { channel, channels, onSelectChannel } = this.props;
+    const { channelIdName, channels, onSelectChannel } = this.props;
 
     return (
       <div className="main-filter" data-area={Area.RECOMMEND_TITLE}>
         <Segment className="full">
           <Dropdown
             className="ui inline transparent large"
-            text={`${channel.name || ''} 채널의 추천과정`}
+            text={`${channelIdName.name} 채널의 추천과정`}
           >
             <Dropdown.Menu>
               {(channels &&
                 channels.length &&
-                channels.map(channel => (
+                channels.map((channel) => (
                   <Dropdown.Item
                     key={`channel_drop_${channel.channelId}`}
                     onClick={() => onSelectChannel(channel)}

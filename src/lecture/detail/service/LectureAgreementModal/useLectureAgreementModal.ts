@@ -9,6 +9,8 @@ import {
 } from '../../store/LectureAgreementModalStore';
 import { getLectureState } from '../../store/LectureStateStore';
 import { isEmpty } from 'lodash';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 export async function requestLectureAgreementModal() {
   const lectureState = getLectureState();
@@ -16,13 +18,20 @@ export async function requestLectureAgreementModal() {
   if (lectureState !== undefined) {
     const organizedId = lectureState.cubeDetail.cubeContents.organizerId;
     const contentProvider = await findContentProviderCache(organizedId);
+    let organizedName = '';
+    if (contentProvider !== undefined) {
+      organizedName = parsePolyglotString(
+        contentProvider.name,
+        getDefaultLang(contentProvider.langSupports)
+      );
+    }
     const lectureAgreementModal =
       getLectureAgreementModal() || initLectureAgreementModal();
 
     setLectureAgreementModal({
       ...lectureAgreementModal,
       organizedId,
-      organizedName: contentProvider?.name || '',
+      organizedName,
     });
   }
 }

@@ -11,6 +11,8 @@ import { IdNameCount } from 'shared/model';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
 import { findAvailableColleges } from '../../../../college/api/collegeApi';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../model/LangSupport';
 
 @autobind
 class CollegeLectureCountService {
@@ -46,16 +48,19 @@ class CollegeLectureCountService {
   @computed
   get totalChannelCount() {
     let total = 0;
-    this._collegeLectureCounts.map(college => {
+    this._collegeLectureCounts.map((college) => {
       total += college.channels.length;
     });
     return total;
   }
 
   getCollegesByChannelName(name: string) {
-    return this._collegeLectureCounts.map(college => {
-      const selectedChannels = college.channels.filter(channel =>
-        channel.name.includes(name)
+    return this._collegeLectureCounts.map((college) => {
+      const selectedChannels = college.channels.filter((channel) =>
+        parsePolyglotString(
+          channel.name,
+          getDefaultLang(channel.langSupports)
+        ).includes(name)
       );
       return selectedChannels.length > 0 ? college : null;
     });

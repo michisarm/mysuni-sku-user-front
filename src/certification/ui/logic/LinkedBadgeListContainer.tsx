@@ -8,6 +8,9 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeView from '../view/BadgeView';
 import { getMainCategoryId } from '../../model/Badge';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LinkedBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -30,22 +33,39 @@ function LinkedBadgeListContainer({
                 <li key={`linked-badge-${index}`}>
                   <BadgeView
                     id={linkedBadge.badge.id}
-                    name={linkedBadge.badge.name}
+                    name={parsePolyglotString(
+                      linkedBadge.badge.name,
+                      getDefaultLang(linkedBadge.badge.langSupport)
+                    )}
                     level={linkedBadge.badge.level}
                     iconUrl={linkedBadge.badge.iconUrl}
                     categoryId={mainCategoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
-                    backgroundImagePath={linkedBadge.badgeCategory.backgroundImagePath}
+                    backgroundImagePath={
+                      linkedBadge.badgeCategory.backgroundImagePath
+                    }
                     badgeColor={linkedBadge.badgeCategory.themeColor}
                     topImagePath={linkedBadge.badgeCategory.topImagePath}
                   />
-                  <div className="badge-name">{linkedBadge.badge.name}</div>
+                  <div className="badge-name">
+                    {parsePolyglotString(
+                      linkedBadge.badge.name,
+                      getDefaultLang(linkedBadge.badge.langSupport)
+                    )}
+                  </div>
                 </li>
               );
             })}
           </ul>
-        )) || <NoSuchContentPanel message="등록된 연관 Badge가 없습니다." />}
+        )) || (
+          <NoSuchContentPanel
+            message={getPolyglotText(
+              '등록된 연관 Badge가 없습니다.',
+              'Certification-View-목록없음'
+            )}
+          />
+        )}
       </div>
     </LinkedBadgeListWrapper>
   );

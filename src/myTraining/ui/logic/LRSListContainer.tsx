@@ -32,7 +32,7 @@ function LearningContainer() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    findRecommendationCards().then(next => {
+    findRecommendationCards().then((next) => {
       if (next !== undefined) {
         setViewModel(next);
       }
@@ -82,6 +82,7 @@ function LearningContainer() {
                         type={card.type}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
+                        langSupports={card.langSupports}
                       />
                     </CardGroup>
                   </li>

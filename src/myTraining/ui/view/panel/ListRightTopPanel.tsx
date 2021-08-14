@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
-import { ApprovalViewType } from '../../logic/PersonalLearningListContainer';
+import { ApprovalViewType } from '../../../personalLearning/PersonalLearningListContainer';
 import { ContentType } from '../../logic/NewLearningListContainer';
 import { EnrollingViewType } from '../../logic/NewLearningListContainer';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyContentType } from '../../model/MyContentType';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   contentType: MyContentType | ContentType;
@@ -98,7 +99,7 @@ function ListRightTopPanel(props: Props) {
           >
             {!activeFilter && <Icon className="filter2" aria-hidden="true" />}
             <span>
-              Filter
+              <PolyglotText id="mapg-msmp-필터열기" defaultString="Filter" />
               {(filterCount && filterCount > 0 && `(${filterCount})`) || ''}
             </span>
           </Button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'semantic-ui-react';
 import CloseIcon from '../../../../style/media/icon-close-player-28-px.png';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 const QuizImagePopup = ({
   open,
@@ -26,7 +27,9 @@ const QuizImagePopup = ({
         />
         <button className="admin_popup_close" onClick={onClose}>
           <img src={CloseIcon} />
-          <span>Close</span>
+          <span>
+            <PolyglotText defaultString="Close" id="Collage-VideoQuiz-Close" />
+          </span>
         </button>
       </Modal.Header>
       <Modal.Content className="admin_popup_add">

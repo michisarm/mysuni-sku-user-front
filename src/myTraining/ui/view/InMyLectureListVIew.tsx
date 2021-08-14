@@ -14,6 +14,8 @@ import {
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
 import { LearningTypeName } from '../../model/LearningType';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { stateNamePolytglot } from 'shared/model/LearningStateName';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -29,7 +31,7 @@ export default function InMyLectureListView({
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();
-    
+
     scrollSave();
 
     const params: LectureParams = {
@@ -47,20 +49,32 @@ export default function InMyLectureListView({
         inMyLectures.length > 0 &&
         inMyLectures.map((inMyLecture, index) => {
           const learningType = LearningTypeName[inMyLecture.cubeType];
-          const collegeName = getCollgeName(inMyLecture.category.college.id);
-          const learningState = inMyLecture.learningState &&
-              LearningStateName[inMyLecture.learningState] || '-';
-          const progressRate = inMyLecture.learningState &&
-              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}` || '-';
+          const collegeName = getCollgeName(inMyLecture.category.collegeId);
+          const learningState =
+            (inMyLecture.learningState &&
+              LearningStateName[inMyLecture.learningState]) ||
+            '-';
+          const progressRate =
+            (inMyLecture.learningState &&
+              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
+            '-';
 
           return (
             <Table.Row key={`inMyLecture-list-${index}`}>
               <Table.Cell>{totalCount - index}</Table.Cell>
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
-                <a href="#" onClick={e => onViewDetail(e, inMyLecture.serviceId)}>
-                  <span className={`ellipsis ${inMyLecture.useNote ?  'noteOn' : ''}`}>{inMyLecture.name}</span>
-                  {/* <span className="ellipsis noteOn">{inMyLecture.name}</span> */}
+                <a
+                  href="#"
+                  onClick={(e) => onViewDetail(e, inMyLecture.serviceId)}
+                >
+                  <span
+                    className={`ellipsis ${
+                      inMyLecture.useNote ? 'noteOn' : ''
+                    }`}
+                  >
+                    {parsePolyglotString(inMyLecture.name)}
+                  </span>
                 </a>
               </Table.Cell>
               <Table.Cell>{learningType || '-'} </Table.Cell>
@@ -72,7 +86,7 @@ export default function InMyLectureListView({
                 {convertTimeToDate(inMyLecture.lastStudyDate)}
               </Table.Cell>
               <Table.Cell>{progressRate}</Table.Cell>
-              <Table.Cell>{learningState}</Table.Cell>
+              <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
             </Table.Row>
           );
         })}

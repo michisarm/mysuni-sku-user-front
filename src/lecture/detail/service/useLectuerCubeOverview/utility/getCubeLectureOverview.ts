@@ -1,7 +1,9 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { CubeDetail } from '../../../../model/CubeDetail';
+import { getDefaultLang } from '../../../../model/LangSupport';
 import { findCardCache } from '../../../api/cardApi';
 import {
   findContentProviderCache,
@@ -30,6 +32,8 @@ import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/Lec
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
+import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
+import { Instructor } from 'expert/model/Instructor';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -43,17 +47,17 @@ async function getLectureSummary(
 ): Promise<LectureCubeSummary> {
   const { cube, cubeContents, cubeReactiveModel, operators } = cubeDetail;
 
-  const { id, name, categories, type } = cube;
+  const { id, name, langSupports, categories, type } = cube;
   const { difficultyLevel } = cubeContents;
   const { passedStudentCount, studentCount } = cubeReactiveModel;
 
-  const category = categories.find(c => c.mainCategory);
+  const category = categories.find((c) => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
   const operator = operators.find(
     ({ id }) => id === cubeContents?.operator?.keyString
   );
   return {
-    name,
+    name: parsePolyglotString(name, getDefaultLang(langSupports)),
     category: {
       collegeId: category?.collegeId || '',
       channelId: category?.channelId || '',
@@ -62,8 +66,11 @@ async function getLectureSummary(
     learningTime,
     operator: {
       email: operator?.email || '',
-      name: operator?.names?.langStringMap.ko || '',
-      companyName: operator?.companyNames?.langStringMap.ko || '',
+      name: parsePolyglotString(operator?.name, getDefaultLang(langSupports)),
+      companyName: parsePolyglotString(
+        operator?.companyName,
+        getDefaultLang(langSupports)
+      ),
     },
     passedStudentCount,
     studentCount,
@@ -75,6 +82,7 @@ async function getLectureSummary(
 async function getLectureDescription(
   cubeDetail: CubeDetail
 ): Promise<LectureDescription> {
+  const { langSupports } = cubeDetail.cube;
   const {
     description: { description, applicants, completionTerms, goal, guide },
     organizerId,
@@ -87,9 +95,25 @@ async function getLectureDescription(
   if (otherOrganizerName?.length > 0) {
     organizer = otherOrganizerName;
   } else if (organizerId?.length > 0) {
-    organizer = (await findContentProviderCache(organizerId))?.name || '';
+    const contentsProviderInfo = await findContentProviderCache(organizerId);
+    if (contentsProviderInfo !== undefined) {
+      organizer = parsePolyglotString(
+        contentsProviderInfo.name,
+        getDefaultLang(contentsProviderInfo.langSupports)
+      );
+    }
   }
-  return { description, applicants, completionTerms, goal, guide, organizer };
+  return {
+    description: parsePolyglotString(description, getDefaultLang(langSupports)),
+    applicants: parsePolyglotString(applicants, getDefaultLang(langSupports)),
+    completionTerms: parsePolyglotString(
+      completionTerms,
+      getDefaultLang(langSupports)
+    ),
+    goal: parsePolyglotString(goal, getDefaultLang(langSupports)),
+    guide: parsePolyglotString(guide, getDefaultLang(langSupports)),
+    organizer,
+  };
 }
 
 function getLectureSubcategory(cubeDetail: CubeDetail): LectureSubcategory {
@@ -103,6 +127,7 @@ function getLectureSubcategory(cubeDetail: CubeDetail): LectureSubcategory {
 
 function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   const {
+    cube: { langSupports },
     cubeContents: { tags },
   } = cubeDetail;
   if (tags === null || tags === undefined) {
@@ -111,7 +136,9 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
     };
   }
   return {
-    tags,
+    tags: parsePolyglotString(tags, getDefaultLang(langSupports))
+      .split(',')
+      .map((c) => c.trim()),
   };
 }
 
@@ -123,35 +150,28 @@ async function getLectureInstructor(
   } = cubeDetail;
   const nextInstructors = instructors.slice(0, 0);
   instructors
-    .filter(c => c.representative === true)
-    .forEach(instructor => {
+    .filter((c) => c.representative === true)
+    .forEach((instructor) => {
       if (
-        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+        !nextInstructors.some((c) => c.instructorId === instructor.instructorId)
       ) {
         nextInstructors.push(instructor);
       }
     });
   instructors
-    .filter(c => c.representative === false)
-    .forEach(instructor => {
+    .filter((c) => c.representative === false)
+    .forEach((instructor) => {
       if (
-        !nextInstructors.some(c => c.instructorId === instructor.instructorId)
+        !nextInstructors.some((c) => c.instructorId === instructor.instructorId)
       ) {
         nextInstructors.push(instructor);
       }
     });
-  const proimseArray = nextInstructors.map(c => {
-    return findInstructorCache(c.instructorId)
-      .then(r => {
+  const proimseArray = nextInstructors.map((c) => {
+    return findInstructorWithIdentityCache(c.instructorId)
+      .then((r) => {
         if (r !== undefined) {
-          c.name = r.memberSummary.name;
-          c.memberSummary = {
-            employeeId: r.memberSummary.employeeId,
-            department: r.memberSummary.department,
-            email: r.memberSummary.email,
-            name: r.memberSummary.name,
-            photoId: r.memberSummary.photoId,
-          };
+          c.instructorWithIdentity = r;
         }
       })
       .catch(() => {});
@@ -167,7 +187,7 @@ function getLectureFile(cubeDetail: CubeDetail): Promise<LectureFile> {
     cubeContents: { fileBoxId },
   } = cubeDetail;
   const fileBoxIds = [fileBoxId];
-  return getFiles(fileBoxIds).then(files => ({ files }));
+  return getFiles(fileBoxIds).then((files) => ({ files }));
 }
 
 async function getLectureComment(

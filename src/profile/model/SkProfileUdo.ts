@@ -9,45 +9,49 @@ class SkProfileUdo {
   favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
   pisAgreement: PisAgreementModel = new PisAgreementModel();
   nickName  : string = '';
-  bgImage   : string = '';
-  introduce : string = '';
-  nameFlag  : string = '';    // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+  // bgImage   : string = '';
+  // introduce : string = '';
+  // nameFlag  : string = '';    // 닉네임/실명 여부 플래그(R: 실명 ,  N: 닉네임)
+  backgroundImagePath   : string = '';
+  selfIntroduction : string = '';
+  displayNicknameFirst  : boolean = false;    // 닉네임/실명 여부 플래그(F: 실명 / T: 닉네임)
 
   constructor(
-    currentJobGroupModel?: CurrentJobGroupModel,
-    favoriteJobGroupModel?: FavoriteJobGroupModel,
+    // currentJobGroupModel?: CurrentJobGroupModel,
+    // favoriteJobGroupModel?: FavoriteJobGroupModel,
     pisAgreement?: PisAgreementModel,
     nickName?: string,
-    bgImage?: string,
-    introduce?: string,
-    nameFlag?: string,
+    backgroundImagePath?: string,
+    selfIntroduction?: string,
+    displayNicknameFirst?: boolean,
   ) {
-    if (currentJobGroupModel) {
-      this.currentJobGroup = currentJobGroupModel;
-    }
-    if (favoriteJobGroupModel) {
-      this.favoriteJobGroup = favoriteJobGroupModel;
-    }
+    // if (currentJobGroupModel) {
+    //   this.currentJobGroup = currentJobGroupModel;
+    // }
+    // if (favoriteJobGroupModel) {
+    //   this.favoriteJobGroup = favoriteJobGroupModel;
+    // }
     if (pisAgreement) {
       this.pisAgreement = pisAgreement;
     }
     if(nickName){
       this.nickName = nickName;
     }
-    if(bgImage){
-      this.bgImage = bgImage;
+    if(backgroundImagePath){
+      this.backgroundImagePath = backgroundImagePath;
     }
-    if(introduce){
-      this.introduce = introduce;
+    if(selfIntroduction){
+      this.selfIntroduction = selfIntroduction;
     }
-    if(nameFlag){
-      this.nameFlag = nameFlag;
+    if(displayNicknameFirst){
+      this.displayNicknameFirst = displayNicknameFirst;
     }
   }
 
   static fromPisAgreement(pisAgreement: PisAgreementModel) {
     //
-    return new SkProfileUdo({} as any, {} as any, pisAgreement, '' as string);
+    // return new SkProfileUdo({} as any, {} as any, pisAgreement, '' as string);
+    return new SkProfileUdo( pisAgreement, '' as string);
   }
 }
 
@@ -56,9 +60,9 @@ decorate(SkProfileUdo, {
   favoriteJobGroup: observable,
   pisAgreement: observable,
   nickName: observable,
-  bgImage: observable,
-  introduce: observable,
-  nameFlag: observable,
+  backgroundImagePath: observable,
+  selfIntroduction: observable,
+  displayNicknameFirst: observable,
 });
 
 export default SkProfileUdo;

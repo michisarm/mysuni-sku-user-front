@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Image } from 'semantic-ui-react';
 import {
@@ -39,7 +40,9 @@ import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   open: boolean;
@@ -77,8 +80,6 @@ function UserProfileinfoProfileCard(props: Props) {
   const [feedCount, setFeedCount] = useState<number>(0);
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [isFollowFlag, setIsFollowFlag] = useState<boolean>();
-
-  const isExternal = isExternalInstructor();
 
   useEffect(() => {
     communityData &&
@@ -155,13 +156,17 @@ function UserProfileinfoProfileCard(props: Props) {
     // }
     if (profileInfo !== undefined && preProfileInfo !== undefined) {
       setNickname(profileInfo.nickname);
-      setIntroduce(profileInfo.introduce);
-      setProfileImg(profileInfo.profileImg);
-      setProfileBgImg(profileInfo.profileBgImg);
+      setIntroduce(profileInfo.selfIntroduction);
+      setProfileImg(profileInfo.photoImagePath);
+      setProfileBgImg(profileInfo.backgroundImagePath);
 
       if (preProfileInfo.isSetProfile) {
-        if (preProfileInfo.nickName) setNickname(preProfileInfo.nickName);
-        if (preProfileInfo.introduce) setIntroduce(preProfileInfo.introduce);
+        if (preProfileInfo.nickName) {
+          setNickname(preProfileInfo.nickName);
+        }
+        if (preProfileInfo.introduce) {
+          setIntroduce(preProfileInfo.introduce);
+        }
         if (preProfileInfo.profileImg) {
           setPreProfileImg(preProfileInfo.profileImg);
         }
@@ -174,7 +179,7 @@ function UserProfileinfoProfileCard(props: Props) {
 
   //introduce를 ',' 기준으로 구분한다.
   function getTagHtml() {
-    let tagList = new Array();
+    let tagList = [];
     let tagHtml = '';
 
     tagList = introduce ? introduce.split(',') : [''];
@@ -200,7 +205,7 @@ function UserProfileinfoProfileCard(props: Props) {
   // }, [followData])
 
   function onClickFollow() {
-    const count = profileInfo?.followerCount || 0;
+    const count = profileInfo?.followCount || 0;
     if (isFollow === 'Unfollow') {
       unfollowMember(props.memberId!).then(() => {
         getFollow();
@@ -230,7 +235,12 @@ function UserProfileinfoProfileCard(props: Props) {
                   <Image
                     src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
                   />
-                  <span className="blind">close</span>
+                  <span className="blind">
+                    <PolyglotText
+                      id="mypage-유저모달-Close"
+                      defaultString="close"
+                    />
+                  </span>
                 </button>
               </div>
 
@@ -242,42 +252,58 @@ function UserProfileinfoProfileCard(props: Props) {
               </div>
               <div className="profile-info ">
                 <span className="prof-tit">
-                  {profileInfo?.isNickname ? nickname : profileInfo?.name}
+                  {profileInfo?.displayNicknameFirst
+                    ? nickname
+                    : profileInfo && parsePolyglotString(profileInfo.name)}
                 </span>
-                <div className="foll-info">
-                  <span>{followerCount || profileInfo?.followerCount}</span>{' '}
-                  Followers<span>{profileInfo?.followingCount}</span> Following
-                </div>
+                {isCommunityAuth() && (
+                  <div className="foll-info">
+                    <span>{followerCount || profileInfo?.followCount}</span>{' '}
+                    <PolyglotText
+                      id="mypage-유저모달-Followers"
+                      defaultString="Followers"
+                    />
+                    <span>{profileInfo?.followingCount}</span>
+                    <PolyglotText
+                      id="mypage-유저모달-Following"
+                      defaultString="Following"
+                    />
+                  </div>
+                )}
               </div>
-              <div className="count-area">
-                {/* <div className="cnt-box bad-cnt" >
-                  <span>Badge</span>
-                  <strong>{badgeCount}</strong>
-                </div> */}
-                <div className="cnt-box com-cnt">
-                  <span>커뮤니티</span>
-                  <strong>{communityCount}</strong>
-                </div>
-                <div className="cnt-box feed-cnt">
-                  <span>Feed</span>
-                  <strong>{feedCount}</strong>
-                </div>
-              </div>
-              {!isExternal && (
-                <div className="follow-bttn-area">
-                  {props.memberId !== denizenId && (
-                    <Button
-                      className={followClassName}
-                      onClick={() => {
-                        // if(followClickFlag){
-                        onClickFollow();
-                        // }
-                      }}
-                    >
-                      {isFollow}
-                    </Button>
-                  )}
-                </div>
+              {isCommunityAuth() && (
+                <>
+                  <div className="count-area">
+                    <div className="cnt-box com-cnt">
+                      <span>
+                        <PolyglotText
+                          id="mypage-유저모달-커뮤니티"
+                          defaultString="커뮤니티"
+                        />
+                      </span>
+                      <strong>{communityCount}</strong>
+                    </div>
+                    <div className="cnt-box feed-cnt">
+                      <span>
+                        <PolyglotText
+                          id="mypage-유저모달-Feed2"
+                          defaultString="Feed"
+                        />
+                      </span>
+                      <strong>{feedCount}</strong>
+                    </div>
+                  </div>
+                  <div className="follow-bttn-area">
+                    {props.memberId !== denizenId && (
+                      <Button
+                        className={followClassName}
+                        onClick={onClickFollow}
+                      >
+                        {isFollow}
+                      </Button>
+                    )}
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -286,9 +312,13 @@ function UserProfileinfoProfileCard(props: Props) {
       <div className="tag-info-area">
         <div className="info-area">
           <span className="prof-name">
-            {profileInfo?.isNickname ? profileInfo?.name : nickname}
+            {profileInfo?.displayNicknameFirst
+              ? nickname
+              : profileInfo && parsePolyglotString(profileInfo.name)}
           </span>
-          <span className="comp-name">{profileInfo?.company?.name}</span>
+          <span className="comp-name">
+            {profileInfo && parsePolyglotString(profileInfo.companyName)}
+          </span>
         </div>
         <div className="tag-area">
           <div
@@ -307,7 +337,9 @@ function UserProfileinfoProfileCard(props: Props) {
           </div>
         </div>
         <div className="close-area">
-          <Button onClick={() => props.setOpen(!props.open)}>Close</Button>
+          <Button onClick={() => props.setOpen(!props.open)}>
+            <PolyglotText id="mypage-유저모달-Close" defaultString="Close" />
+          </Button>
         </div>
       </div>
     </>

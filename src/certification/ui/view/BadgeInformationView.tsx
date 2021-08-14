@@ -2,6 +2,7 @@ import React from 'react';
 import { dateTimeHelper } from '../../shared';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface BadgeInformationViewProps {
   certiAdminId: string;
@@ -17,28 +18,39 @@ export function BadgeInformationView({
   learningTime,
 }: BadgeInformationViewProps) {
   //
-  const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(
-    learningTime
-  );
+  const formattedLearningTime =
+    dateTimeHelper.timeToHourMinuteFormat(learningTime);
   const levelHtml = getLevelHtml(level);
 
   return (
     <div className="info">
       <div>
         <span className="detail admin">
-          <span>인증/관리 주체</span>
+          <span>
+            <PolyglotText
+              id="Certification-View-인증관리"
+              defaultString="인증/관리 주체"
+            />
+          </span>
           <span>{certiAdminId}</span>
         </span>
       </div>
       <div>
         <span className="detail design">
-          <span>설계 주체</span>
+          <span>
+            <PolyglotText
+              id="Certification-View-설계주체2"
+              defaultString="설계 주체"
+            />
+          </span>
           <span>{getBadgeCategoryName(designAdminId)}</span>
         </span>
       </div>
       <div>
         <span className="detail level">
-          <span>Level</span>
+          <span>
+            <PolyglotText id="Certification-View-레벨" defaultString="Level" />
+          </span>
           <span
             dangerouslySetInnerHTML={{
               __html: levelHtml,
@@ -46,7 +58,12 @@ export function BadgeInformationView({
           />
         </span>
         <span className="detail period">
-          <span>총 학습시간</span>
+          <span>
+            <PolyglotText
+              id="Certification-View-총학시간"
+              defaultString="총 학습시간"
+            />
+          </span>
           <span>{formattedLearningTime}</span>
         </span>
       </div>

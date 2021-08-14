@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { State } from '../../../viewModel/LectureState';
 
 interface ProgramDiscussionViewProps {
@@ -22,12 +23,16 @@ const ProgramDiscussionView: React.FC<ProgramDiscussionViewProps> = function Pro
       onClick={() => window.scrollTo({ top: 0 })}
     >
       <span className="label-state-cube n-discuss">
-        <span>토론하기</span>
+        <span>
+          <PolyglotText defaultString="토론하기" id="Discussion-ProgramView-토론하기" />
+        </span>
       </span>
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>Talk</li>
+          <li>
+            <PolyglotText defaultString="Talk" id="Discussion-ProgramView-Talk" />
+          </li>
         </ul>
       </span>
     </Link>

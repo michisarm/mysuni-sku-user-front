@@ -1,10 +1,16 @@
-import {Button, Checkbox, Modal} from 'semantic-ui-react';
-import  {requestMainPagePopupFirst} from '../../service/MainPagePopupService';
-import {useMainPagePopupItem, setMainPagePopupItem} from '../../store/MainPagePopupStore';
-import React, {useEffect, useState} from 'react';
+import { Button, Checkbox, Modal } from 'semantic-ui-react';
+import { requestMainPagePopupFirst } from '../../service/MainPagePopupService';
+import {
+  useMainPagePopupItem,
+  setMainPagePopupItem,
+} from '../../store/MainPagePopupStore';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import moment from "moment";
+import moment from 'moment';
 import { getCookie, setCookie } from '@nara.platform/accent';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { NewDatePeriod } from 'shared/model/NewDatePeriod';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 function MainPagePopupContainer() {
   const [noMoreModal, setNoMoreModal] = useState(false);
@@ -20,15 +26,15 @@ function MainPagePopupContainer() {
     setCookie('mainPopupModal', noMoreModal ? 'HIDE' : 'SHOW');
     // @ts-ignore
     setMainPagePopupItem({
-      id            : mainPagePopup?.id,
-      open          : false,
-      contents      : mainPagePopup?.contents,
-      modifiedTime  : mainPagePopup?.modifiedTime,
-      modifier      : mainPagePopup?.modifier,
-      period        : mainPagePopup?.period,
-      time          : mainPagePopup?.time,
-      title         : mainPagePopup?.title,
-    })
+      id: (mainPagePopup && mainPagePopup.id) || '',
+      open: false,
+      contents: (mainPagePopup && mainPagePopup.contents) || null,
+      modifiedTime: (mainPagePopup && mainPagePopup.modifiedTime) || '',
+      modifier: (mainPagePopup && mainPagePopup.modifier) || '',
+      period: (mainPagePopup && mainPagePopup.period) || new NewDatePeriod(),
+      time: (mainPagePopup && mainPagePopup.time) || '',
+      title: (mainPagePopup && mainPagePopup.title) || null,
+    });
   };
 
   const onHandleChange = () => {
@@ -37,17 +43,26 @@ function MainPagePopupContainer() {
 
   useEffect(() => {
     if (open) {
-      const today = moment().format('YYYY-MM-DD HH')
-      const beforeFlag = moment(today).isBefore(moment().format(mainPagePopup?.period.startDate),'hour');
-      const afterFlag = moment(today).isAfter(moment().format(mainPagePopup?.period.endDate),'hour');
+      const today = moment().format('YYYY-MM-DD HH');
+      const beforeFlag = moment(today).isBefore(
+        moment().format(mainPagePopup?.period.startDate),
+        'hour'
+      );
+      const afterFlag = moment(today).isAfter(
+        moment().format(mainPagePopup?.period.endDate),
+        'hour'
+      );
       //console.log("1====>"+open+":"+today+":"+beforeFlag+":"+afterFlag+":"+getCookie('mainPopupModal'));
       //afterFlag=false,beforeFlag=false라면 오픈. 아니라면 close
-      if(afterFlag){ModalClose();}
-      else if(beforeFlag){ModalClose();}
+      if (afterFlag) {
+        ModalClose();
+      } else if (beforeFlag) {
+        ModalClose();
+      }
 
       const mainModal = getCookie('mainPopupModal');
       if (mainModal === null || mainModal === '' || mainModal === 'SHOW') {
-        setCookie('mainPopupModal','SHOW');
+        setCookie('mainPopupModal', 'SHOW');
       } else {
         ModalClose();
       }
@@ -56,11 +71,11 @@ function MainPagePopupContainer() {
 
   return (
     <>
-      <Modal open={open} className="aidt-modal" style={{ width: 1015}}>
+      <Modal open={open} className="aidt-modal" style={{ width: 1015 }}>
         <Modal.Header>
           <div className="right-btn">
             <Checkbox
-              label="더 이상 보지 않기"
+              label={getPolyglotText('더 이상 보지 않기', '공통-공통-안보기')}
               className="base"
               onChange={onHandleChange}
             />
@@ -69,9 +84,13 @@ function MainPagePopupContainer() {
             </Button>
           </div>
         </Modal.Header>
-        <Modal.Content style={{height: 640}}>
+        <Modal.Content style={{ height: 640 }}>
           {/*<ReactQuill theme="bubble" value={(mainPagePopup?.contents) || ''} readOnly />*/}
-          <div dangerouslySetInnerHTML={{__html:contents|| '' }}/>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: (contents && parsePolyglotString(contents)) || '',
+            }}
+          />
         </Modal.Content>
       </Modal>
     </>
@@ -79,4 +98,3 @@ function MainPagePopupContainer() {
 }
 
 export default withRouter(MainPagePopupContainer);
-

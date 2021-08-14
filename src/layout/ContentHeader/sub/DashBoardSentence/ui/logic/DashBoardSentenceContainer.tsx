@@ -1,45 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { requestDashBoardSentence } from '../../service/getBadgeLearningTime';
 import { useDashBoardSentenceItem } from '../../store/DashBoardSentenceStore';
-import DashBoardSentenceView from '../view/DashBoardSentenceView';
 
-function DashBoardSentenceContainer(){
+function DashBoardSentenceContainer() {
+  const [dashBoardTxt, setDashBoardTxt] = useState<any>('');
 
-  const [dashBoardTxt, setDashBoardTxt] = useState<any>('')
-
-  const dashBoardSentence = useDashBoardSentenceItem()
+  const dashBoardSentence = useDashBoardSentenceItem();
 
   useEffect(() => {
-    const index = localStorage.getItem('dashBoardSentenceIndex')
-    localStorage.setItem('dashBoardSentenceIndex', index === 'undefined' ? '0' : String(Number(index)+1))
-    requestDashBoardSentence()
-  }, [])
+    const index = localStorage.getItem('dashBoardSentenceIndex');
+    localStorage.setItem(
+      'dashBoardSentenceIndex',
+      index === 'undefined' ? '0' : String(Number(index) + 1)
+    );
+    requestDashBoardSentence();
+  }, []);
 
   useEffect(() => {
-    if(dashBoardSentence === undefined) {
-      setDashBoardTxt('')
-      return
+    if (dashBoardSentence === undefined) {
+      setDashBoardTxt('');
+      return;
     }
-    const dashBoardTxt = dashBoardSentence.dashboardSentence[Number(localStorage.getItem('dashBoardSentenceIndex'))]
-    if(dashBoardTxt === undefined) {
-      localStorage.setItem('dashBoardSentenceIndex', '0')
-      setDashBoardTxt(dashBoardSentence.dashboardSentence[0])
+    const dashBoardTxt =
+      dashBoardSentence.dashboardSentence[
+        Number(localStorage.getItem('dashBoardSentenceIndex'))
+      ];
+    if (dashBoardTxt === undefined) {
+      localStorage.setItem('dashBoardSentenceIndex', '0');
+      setDashBoardTxt(dashBoardSentence.dashboardSentence[0]);
     } else {
-      setDashBoardTxt(dashBoardTxt)
+      setDashBoardTxt(dashBoardTxt);
     }
+  }, [dashBoardSentence]);
 
-  }, [dashBoardSentence])
-
-return (
-  
-  <>
-  { dashBoardTxt && (
-    <DashBoardSentenceView dashBoardTxt={dashBoardTxt}/>
-  )}
-  { dashBoardTxt === '' && (
-    <DashBoardSentenceView dashBoardTxt=""/>
-  )}
-  </>
-)
+  return <p>{dashBoardTxt}</p>;
 }
-export default DashBoardSentenceContainer
+export default DashBoardSentenceContainer;

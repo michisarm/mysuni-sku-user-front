@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useCallback } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { useHistory } from 'react-router';
@@ -15,19 +16,23 @@ import BadgeView from '../view/BadgeView';
 import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 import MyBadgeModal from '../view/MyBadgeModal';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPageBadgeListContainerProps {
   badgeService?: BadgeService;
 }
 
-function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProps) {
+function MyPageBadgeListContainer({
+  badgeService,
+}: MyPageBadgeListContainerProps) {
   const {
     myBadges,
     myBadgeCount,
     selectedLevel,
     setSelectedLevel,
     findBadge,
-    badge
+    badge,
   } = badgeService!;
 
   const history = useHistory();
@@ -68,7 +73,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                       <li key={`my-badge-${index}`}>
                         <BadgeView
                           id={myBadge.id}
-                          name={myBadge.name}
+                          name={parsePolyglotString(myBadge.name)}
                           level={myBadge.level}
                           iconUrl={myBadge.iconUrl}
                           categoryId={myBadge.categoryId}
@@ -76,7 +81,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                           badgeSize={BadgeSize.Small}
                         />
                         <div className="badge-name">
-                          <span>{myBadge.name}</span>
+                          <span>{parsePolyglotString(myBadge.name)}</span>
                         </div>
                         {/* <Modal
                           open={open}
@@ -85,7 +90,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                           on="click"
                           trigger={
                             <div className="button-area">
-                              <Button 
+                              <Button
                                 className="fix line"
                               >
                                 인증서 보기
@@ -93,9 +98,7 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                             </div>
                           }
                         > */}
-                          <MyBadgeModal
-                            myBadge={myBadge}
-                          />
+                        <MyBadgeModal myBadge={myBadge} />
                         {/* </Modal> */}
                       </li>
                     );
@@ -104,9 +107,15 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                     message={
                       <>
                         <div className="text">
-                          획득한 Badge가 없습니다.
+                          <PolyglotText
+                            defaultString="획득한 Badge가 없습니다."
+                            id="Certification-mabd-뱃지없음"
+                          />
                           <br />
-                          등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+                          <PolyglotText
+                            defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
+                            id="Certification-mabd-뱃지도전"
+                          />
                         </div>
                         <Button
                           icon
@@ -114,7 +123,12 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
                           className="right btn-blue2"
                           onClick={moveToBadgeList}
                         >
-                          <span className="border">Badge List 바로가기</span>
+                          <span className="border">
+                            <PolyglotText
+                              defaultString="Badge List 바로가기"
+                              id="Certification-mabd-바로가기"
+                            />
+                          </span>
                           <Icon className="morelink" />
                         </Button>
                       </>
@@ -130,6 +144,6 @@ function MyPageBadgeListContainer({ badgeService }: MyPageBadgeListContainerProp
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(observer(MyPageBadgeListContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(MyPageBadgeListContainer)
+);

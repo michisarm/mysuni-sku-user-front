@@ -3,7 +3,6 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
 import { CardRelatedCount } from '../../../../model/CardRelatedCount';
-import { UserIdentity } from '../../../../model/UserIdentity';
 import { findCardCache } from '../../../api/cardApi';
 import { findCubesByIdsCache } from '../../../api/cubeApi';
 import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
@@ -16,6 +15,9 @@ import { getClassroomFromCube } from '../../useLectureClassroom/utility/getClass
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
 import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudentsRom';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { UserIdentity } from 'shared/model/UserIdentity';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 function getVaildLeaningDate(
   validLearningDate: number,
@@ -26,8 +28,8 @@ function getVaildLeaningDate(
     cardRelatedStudent.cardStudent &&
     validLearningDate
   ) {
-    const { creationTime } = cardRelatedStudent.cardStudent;
-    const parseCreateDate = new Date(creationTime);
+    const { registeredTime } = cardRelatedStudent.cardStudent;
+    const parseCreateDate = new Date(registeredTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
     const year = parseCreateDate.getFullYear();
@@ -58,13 +60,14 @@ function parseLectureSummary(
     difficultyLevel,
     name,
     stampCount,
+    langSupports,
   } = card;
   const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
 
   return {
     cardId: id,
-    name,
+    name: parsePolyglotString(name),
     learningTime: timeToHourMinuteFormat(learningTime + additionalLearningTime),
     category: {
       collegeId: mainCategory?.collegeId || '',
@@ -72,8 +75,14 @@ function parseLectureSummary(
     },
     operator: {
       email: cardOperatorIdentity?.email || '',
-      name: cardOperatorIdentity?.names?.langStringMap.ko || '',
-      companyName: cardOperatorIdentity?.companyNames?.langStringMap.ko || '',
+      name: parsePolyglotString(
+        cardOperatorIdentity?.name,
+        getDefaultLang(langSupports)
+      ),
+      companyName: parsePolyglotString(
+        cardOperatorIdentity?.companyName,
+        getDefaultLang(langSupports)
+      ),
     },
     stampCount,
     thumbImagePath,
@@ -123,16 +132,16 @@ export async function requestLectureCardSummary(cardId: string) {
       cubeIds.push(learningContent.contentId);
     }
     if (learningContent.learningContentType === 'Chapter') {
-      learningContent.children.forEach(c => cubeIds.push(c.contentId));
+      learningContent.children.forEach((c) => cubeIds.push(c.contentId));
     }
   }
   const cubes = await findCubesByIdsCache(cubeIds);
   if (
     Array.isArray(cubes) &&
-    cubes.some(c => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
+    cubes.some((c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
   ) {
     const cube = cubes.find(
-      c => c.type === 'ClassRoomLecture' || c.type === 'ELearning'
+      (c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning'
     );
     if (cube !== undefined) {
       await requestLectureState(cardId, cube.id, cube.type);

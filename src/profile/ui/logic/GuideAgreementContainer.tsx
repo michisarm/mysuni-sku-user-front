@@ -10,6 +10,7 @@ import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
 import PisAgreementModel from '../../model/PisAgreementModel';
 import GuideAgreementView from '../view/GuideAgreementView';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -23,9 +24,8 @@ interface Props extends RouteComponentProps {
 class GuideAgreementContainer extends Component<Props> {
   onCancel() {
     reactAlert({
-      title: '알림',
-      message:
-        '<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>',
+      title: getPolyglotText('알림', 'guide-TOS-알림'),
+      message: getPolyglotText('<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>', 'guide-TOS-알림내용'),
     });
   }
 
@@ -47,7 +47,7 @@ class GuideAgreementContainer extends Component<Props> {
             Cancel
           </Button> */}
           <Button className="fix bg" onClick={this.onConfirm}>
-            다음
+            <PolyglotText defaultString="다음" id="guide-TOS-다음" />
           </Button>
         </div>
       </div>

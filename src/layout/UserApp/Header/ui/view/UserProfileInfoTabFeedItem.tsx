@@ -25,6 +25,7 @@ import {
 import { getPostDetailInPreview } from '../../../../../community/service/useCommunityPostCreate/utility/getPostDetail';
 import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 import { PostItem } from '../../../model/PostModel';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   item: PostItem;
@@ -54,7 +55,10 @@ function UserProfileInfoTabFeedItem(props: Props) {
     textarea.setSelectionRange(0, 9999);
     document.execCommand('copy');
     document.body.removeChild(textarea);
-    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', 'mypage-유저모달-알림'),
+      message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
+    });
   };
 
   function bookmark(e: any) {
@@ -172,10 +176,18 @@ function UserProfileInfoTabFeedItem(props: Props) {
               <span className="line id">{props.item.profileId}</span>
               <span className="line id">{props.item.createdTime}</span>
               <span className="line id">
-                좋아요 <strong>{props.item.likeCount}</strong>
+                <PolyglotText
+                  id="mypage-유저모달-좋아요"
+                  defaultString="좋아요"
+                />
+                <strong>{props.item.likeCount}</strong>
               </span>
               <span className="line id">
-                댓글수 <strong>{props.item.replyCount}</strong>
+                <PolyglotText
+                  id="mypage-유저모달-댓글수"
+                  defaultString="댓글수"
+                />
+                <strong>{props.item.replyCount}</strong>
               </span>
             </div>
           </Comment.Text>
@@ -206,9 +218,19 @@ function UserProfileInfoTabFeedItem(props: Props) {
             }}
             className="more-bttn feed-tit"
           >
-            <span className="ico_feed board">게시물</span>
+            <span className="ico_feed board">
+              <PolyglotText
+                id="mypage-유저모달-게시물"
+                defaultString="게시물"
+              />
+            </span>
             <a>{props.item.name}</a>
-            <span className="ico_feed file blind">첨부파일</span>
+            <span className="ico_feed file blind">
+              <PolyglotText
+                id="mypage-유저모달-첨부파일"
+                defaultString="첨부파일"
+              />
+            </span>
             <i aria-hidden="true" className="dropdown icon" />
           </Accordion.Title>
           <Accordion.Content active={active}>

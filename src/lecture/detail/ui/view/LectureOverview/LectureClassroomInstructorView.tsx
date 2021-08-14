@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Label, Icon } from 'semantic-ui-react';
 import Image from '../../../../../shared/components/Image';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface LectureClassroomInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -31,24 +33,48 @@ export function LectureClassroomInstructorView(
         {lectureInstructor &&
           lectureInstructor.instructors &&
           lectureInstructor.instructors.map(
-            ({ instructorId, representative, memberSummary }, index) => (
+            (
+              { instructorId, representative, instructorWithIdentity },
+              index
+            ) => (
               <Link
                 className="ui profile tool-tip"
                 to={`/expert/instructor/${instructorId}/Introduce`}
               >
                 {representative === true && <Represent />}
                 <div className="pic s80">
-                  {memberSummary?.photoId && (
+                  {instructorWithIdentity?.instructor?.photoFilePath && (
                     <Image
                       alt="프로필사진"
                       className="ui image"
-                      src={memberSummary?.photoId}
+                      src={instructorWithIdentity?.instructor.photoFilePath}
                     />
                   )}
                 </div>
                 <i>
-                  <span className="tip-name">{memberSummary?.name}</span>
-                  <a className="tip-id">{memberSummary?.department}</a>
+                  <span className="tip-name">
+                    {parsePolyglotString(
+                      instructorWithIdentity?.instructor?.name,
+                      getDefaultLang(
+                        instructorWithIdentity?.instructor?.langSupports
+                      )
+                    )}
+                  </span>
+                  <a className="tip-id">
+                    {instructorWithIdentity?.instructor?.internal
+                      ? parsePolyglotString(
+                          instructorWithIdentity?.userIdentity?.departmentName,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor?.langSupports
+                          )
+                        )
+                      : parsePolyglotString(
+                          instructorWithIdentity?.instructor?.organization,
+                          getDefaultLang(
+                            instructorWithIdentity?.instructor?.langSupports
+                          )
+                        )}
+                  </a>
                 </i>
               </Link>
             )

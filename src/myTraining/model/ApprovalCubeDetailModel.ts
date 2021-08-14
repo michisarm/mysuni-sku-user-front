@@ -1,7 +1,7 @@
 import { Cube } from '../../lecture/model/Cube';
 import { Classroom } from '../../lecture/model/Classroom';
 import Student from '../../lecture/model/Student';
-import { UserIdentity } from '../../lecture/model/UserIdentity';
+import { UserIdentity } from 'shared/model/UserIdentity';
 
 export default interface ApprovalCubeDetailModel {
   //

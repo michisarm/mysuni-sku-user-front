@@ -1,10 +1,9 @@
-
 import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 
 import JobGroupApi from '../apiclient/JobGroupApi';
 import { JobGroupModel } from '../../model/JobGroupModel';
-
+import { findJobDuty } from 'college/api/collegeApi';
 
 @autobind
 class JobGroupService {
@@ -19,7 +18,6 @@ class JobGroupService {
   @observable
   jobGroup: JobGroupModel = new JobGroupModel();
 
-
   constructor(jobGroupApi: JobGroupApi = JobGroupApi.instance) {
     //
     this.jobGroupApi = jobGroupApi;
@@ -30,22 +28,31 @@ class JobGroupService {
     //
     const jobGroups = await this.jobGroupApi.findAllJobGroups();
 
-    runInAction(() => this.jobGroups = jobGroups);
+    runInAction(() => (this.jobGroups = jobGroups));
     return jobGroups;
   }
 
   @action
   async findJobGroupById(jobGroupId: string) {
     //
-    const jobGroup = await this.jobGroupApi.findJobGroupById(jobGroupId);
+    const jobGroup = await findJobDuty();
 
-    runInAction(() => this.jobGroup = jobGroup);
+    const parsejobGroup = jobGroup
+      ?.filter((job) => job.jobGroupId === jobGroupId)
+      .map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+
+    runInAction(() => (this.jobGroup.jobDuties = parsejobGroup || []));
     return jobGroup;
   }
 }
 
 Object.defineProperty(JobGroupService, 'instance', {
-  value: new JobGroupService(JobGroupApi.instance,),
+  value: new JobGroupService(JobGroupApi.instance),
   writable: false,
   configurable: false,
 });

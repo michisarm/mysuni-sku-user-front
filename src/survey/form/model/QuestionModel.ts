@@ -22,8 +22,12 @@ export class QuestionModel extends DramaEntityObservableModel {
     super();
     if (question) {
       //
-      const sequence = question.sequence && new SequenceModel(question.sequence) || this.sequence;
-      const sentences = question.sentences && new LangStrings(question.sentences) || this.sentences;
+      const sequence =
+        (question.sequence && new SequenceModel(question.sequence)) ||
+        this.sequence;
+      const sentences =
+        (question.sentences && new LangStrings(question.sentences)) ||
+        this.sentences;
       Object.assign(this, { ...question, sequence, sentences });
       switch (this.questionItemType) {
         case QuestionItemType.Criterion:
@@ -36,14 +40,6 @@ export class QuestionModel extends DramaEntityObservableModel {
           this.answerItems = new EssayQuestionItems(question.answerItems);
       }
     }
-  }
-
-  @computed
-  get sentence() {
-    if (this.sentences && this.sentences.langStringMap) {
-      return this.sentences.langStringMap.get(this.sentences.defaultLanguage) || '';
-    }
-    return '';
   }
 }
 

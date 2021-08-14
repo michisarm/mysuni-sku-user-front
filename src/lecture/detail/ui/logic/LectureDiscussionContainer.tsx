@@ -1,33 +1,27 @@
-import { CommentList, CommentService } from '@nara.drama/feedback';
+import { CommentList } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
+import { countByFeedbackId } from 'lecture/detail/api/feedbackApi';
 import {
-  countByFeedbackId,
-  findFeedbackMenu,
-} from 'lecture/detail/api/feedbackApi';
-import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
-import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { useParams } from 'react-router-dom';
-import LectureParams from '../../viewModel/LectureParams';
-import { patronInfo } from '@nara.platform/dock';
+  useRequestLectureDiscussion,
+  useRequestLectureFeedbackContent,
+} from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackContent';
+import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
+import { useParams } from 'react-router-dom';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-const fileDownload = (pdf: string, fileId: string) => {
+const fileDownload = (fileId: string) => {
   depot.downloadDepotFile(fileId);
 };
 
@@ -41,66 +35,35 @@ interface profileParams {
 
 export default function LectureDiscussionContainer() {
   useRequestLectureDiscussion();
+  useRequestLectureFeedbackContent();
   const lectureDiscussion = useLectureDiscussion();
+  const lectureFeedbackContent = useLectureFeedbackContent();
   const params = useParams<LectureParams>();
 
-  const [lectureFeedbackContent] = useLectureFeedbackContent();
-  const [more, setMore] = useState<boolean>();
+  const [more, setMore] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
-  const [contentCheck, setContentCheck] = useState<boolean>(false);
-  const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
   const originArr: string[] = [];
   let origin: string = '';
-  const [feedbackId, setFeedbackId] = useState<string | undefined>('');
   const [profileOpen, setProfileOpen] = useState<boolean>(false);
   const [profileInfo, setProfileInfo] = useState<profileParams>();
 
   const commentCountEventHandler = useCallback(async () => {
-    async function asyncFun() {
-      if (document.body.getAttribute('feedbackid') !== undefined) {
-        const { count } = await countByFeedbackId(
-          document.body.getAttribute('feedbackid')!
-        );
-        setCount(count);
-      }
+    const feedbackId = document.body.getAttribute('feedbackid');
+    if (feedbackId !== undefined && feedbackId !== null) {
+      const { count } = await countByFeedbackId(feedbackId);
+      setCount(count);
     }
-    asyncFun();
-  }, [lectureFeedbackContent]);
+  }, [setCount]);
 
   useEffect(() => {
-    async function asuncFun() {
-      if (lectureDiscussion?.id === undefined) {
-        return;
-      }
-
-      // 관련 url 빈값 체크 함수
-      emptyCheckUrl();
-
-      //comment count
-      if (
-        lectureFeedbackContent !== undefined &&
-        lectureFeedbackContent.commentFeedbackId !== undefined
-      ) {
-        const comment = await countByFeedbackId(
-          lectureFeedbackContent?.commentFeedbackId
-        );
-        setCount(comment.count);
-      }
-
-      findFeedbackMenu(lectureDiscussion.id).then((res) => {
-        setLectureFeedbackContent({
-          ...res,
-        });
-        setFeedbackId(res.commentFeedbackId);
-      });
-    }
-    asuncFun();
-
-    return () => setFeedbackId('');
-  }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
+    return () => {
+      setMore(false);
+      setFilesMap(new Map());
+    };
+  }, [params.cardId, params?.contentId]);
 
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
@@ -112,37 +75,34 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   useEffect(() => {
-    async function asyncFun() {
-      if (
-        lectureFeedbackContent !== undefined &&
-        lectureFeedbackContent.commentFeedbackId !== undefined
-      ) {
-        const { count } = await countByFeedbackId(
-          lectureFeedbackContent?.commentFeedbackId
-        );
-        setCount(count);
-      }
+    if (
+      lectureDiscussion?.id === undefined ||
+      lectureFeedbackContent?.commentFeedbackId === undefined
+    ) {
+      return;
     }
+    countByFeedbackId(lectureFeedbackContent.commentFeedbackId).then(
+      (comment) => {
+        setCount(comment.count);
+      }
+    );
     getFileIds();
-    asyncFun();
-
-    const checkContentValue =
-      lectureFeedbackContent?.content === '<p><br></p>' ||
-      lectureFeedbackContent?.content === ''
-        ? true
-        : false;
-    setContentCheck(checkContentValue);
-  }, [lectureFeedbackContent]);
+  }, [
+    lectureDiscussion?.id,
+    lectureFeedbackContent?.commentFeedbackId,
+    lectureFeedbackContent?.content,
+  ]);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId =
       lectureFeedbackContent && lectureFeedbackContent.depotId;
 
-    Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
-      else setFilesMap(new Map<string, any>());
-    });
-  }, [lectureFeedbackContent]);
+    if (referenceFileBoxId) {
+      findFiles('reference', referenceFileBoxId);
+    } else {
+      setFilesMap(new Map());
+    }
+  }, [lectureFeedbackContent?.depotId]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then((files) => {
@@ -152,14 +112,9 @@ export default function LectureDiscussionContainer() {
     });
   }, []);
 
-  const { company, department, email, name } = useMemo(() => {
-    const {
-      skProfile: {
-        member: { company, department, email, name },
-      },
-    } = SkProfileService.instance;
-    return { company, department, email, name };
-  }, []);
+  const {
+    skProfile: { companyName, departmentName, name, email },
+  } = SkProfileService.instance;
 
   const zipFileDownload = useCallback((type: string) => {
     if (originArr && originArr.length > 0) {
@@ -209,41 +164,30 @@ export default function LectureDiscussionContainer() {
     }
   }, []);
 
-  // 관련 url 빈값 체크 함수
-  const emptyCheckUrl = useCallback(() => {
-    if (lectureFeedbackContent === undefined) return;
-
-    // true 이면 null 처리
-    lectureFeedbackContent.relatedUrlList?.map((item) => {
-      if (item.title === '' || item.url === '') {
-        setUrlNull(true);
-      }
-    });
-
-    // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
-  }, [lectureFeedbackContent?.relatedUrlList]);
-
   const clickProfileEventHandler = useCallback(async () => {
     const id = document.body.getAttribute('selectedProfileId');
     findCommunityProfile(id!).then((result) => {
       setProfileInfo({
         id: result!.id,
-        profileImg: result!.profileImg,
-        introduce: result!.introduce,
+        profileImg: result!.photoImagePath,
+        introduce: result!.selfIntroduction,
         nickName: result!.nickname,
-        creatorName: result!.name,
+        creatorName: parsePolyglotString(result!.name),
       });
       setProfileOpen(true);
     });
   }, []);
 
+  const relatedUrlVisible = relatedUrlVisiable(lectureFeedbackContent);
   console.log(
-    'OUT feedbackID@@@@@',
-    lectureFeedbackContent?.commentFeedbackId,
-    '|||',
-    feedbackId
+    'content: :: ',
+    parsePolyglotString(lectureFeedbackContent?.content)
   );
-
+  const checkContentValue =
+    parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
+    parsePolyglotString(lectureFeedbackContent?.content) === ''
+      ? true
+      : false;
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -261,34 +205,47 @@ export default function LectureDiscussionContainer() {
               </span>
               <span>
                 <strong className="peo-date">
-                  {moment(lectureDiscussion?.time).format('YYYY.MM.DD')}
+                  {moment(lectureDiscussion.time).format('YYYY.MM.DD')}
                 </strong>
               </span>
             </div>
             <div className="discuss-box2">
               <div
                 className="discuss-text-wrap"
-                style={contentCheck ? { display: 'none' } : {}}
+                style={checkContentValue ? { display: 'none' } : {}}
               >
-                {lectureFeedbackContent && more && (
+                {more === true && (
                   <div className="ql-snow">
                     <div
                       className="discuss-text-belt txtmore"
                       dangerouslySetInnerHTML={{
-                        __html: `${lectureFeedbackContent?.content}`,
+                        __html: `${parsePolyglotString(
+                          lectureFeedbackContent?.content
+                        )}`,
                       }}
                     />
                   </div>
                 )}
-                {lectureFeedbackContent && !more && (
+                {more === false && (
                   <div
                     className="discuss-text-belt"
                     dangerouslySetInnerHTML={{
-                      __html: `${lectureFeedbackContent?.content}`,
+                      __html: `${parsePolyglotString(
+                        lectureFeedbackContent?.content
+                      )}`,
                     }}
                   />
                 )}
-                {!more && (
+                {more === true && (
+                  <button
+                    className="ui icon button right btn-blue"
+                    onClick={hideMore}
+                  >
+                    hide
+                    <i aria-hidden="true" className="icon hide2" />
+                  </button>
+                )}
+                {more === false && (
                   <button
                     className="ui icon button right btn-blue"
                     onClick={viewMore}
@@ -300,19 +257,8 @@ export default function LectureDiscussionContainer() {
                     />
                   </button>
                 )}
-                {more && (
-                  <button
-                    className="ui icon button right btn-blue"
-                    onClick={hideMore}
-                  >
-                    hide
-                    <i aria-hidden="true" className="icon hide2" />
-                  </button>
-                )}
               </div>
-              {/* eslint-disable */}
-              {/* 관련 URL */}
-              {urlNull === false ? (
+              {relatedUrlVisible === true && (
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                     <p>
@@ -324,22 +270,17 @@ export default function LectureDiscussionContainer() {
                       />
                       관련 URL
                     </p>
-                    {lectureFeedbackContent &&
-                      lectureFeedbackContent.relatedUrlList?.map(
-                        (item: any) => (
-                          <>
-                            <a href={`https://${item.url}`} target="blank">
-                              {item.title}
-                            </a>
-                          </>
-                        )
-                      )}
+                    {lectureFeedbackContent.relatedUrlList?.map((item: any) => (
+                      <>
+                        <a href={`https://${item.url}`} target="blank">
+                          {item.title}
+                        </a>
+                      </>
+                    ))}
                   </div>
                 </div>
-              ) : null}
-              {/* eslint-enable */}
-              {/* 관련 자료 */}
-              {filesMap.get('reference') && (
+              )}
+              {lectureFeedbackContent.depotId && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -384,9 +325,7 @@ export default function LectureDiscussionContainer() {
                               />
                               <Icon
                                 className="icon-down-type4"
-                                onClick={() =>
-                                  fileDownload(foundedFile.name, foundedFile.id)
-                                }
+                                onClick={() => fileDownload(foundedFile.id)}
                               />
                             </div>
                           ))}
@@ -396,19 +335,15 @@ export default function LectureDiscussionContainer() {
               )}
             </div>
           </div>
-
-          {/* {lectureFeedbackContent?.commentFeedbackId && ( */}
-          {feedbackId !== undefined && feedbackId !== '' && (
+          {lectureFeedbackContent?.commentFeedbackId !== undefined && (
             <>
               <CommentList
-                // feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
-                feedbackId={feedbackId}
+                feedbackId={lectureFeedbackContent.commentFeedbackId}
                 hideCamera
-                name={name}
+                name={parsePolyglotString(name)}
                 email={email}
-                companyName={company}
-                departmentName={department}
-                // cardId={params?.cardId}
+                companyName={parsePolyglotString(companyName)}
+                departmentName={parsePolyglotString(departmentName)}
                 menuType="discussion"
               />
               <CommunityProfileModal

@@ -11,6 +11,7 @@ import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import boardRoutePaths from 'board/routePaths';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 //import SiteMapModalContainer from './SiteMapModalContainer';
 import SiteMapModalContainer from './SiteMapModalContainerV2';
@@ -27,6 +28,8 @@ import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 import ReactGA from 'react-ga';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
+import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -76,14 +79,18 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
-  menuControlAuth() {
+  async menuControlAuth() {
     //
     const { skProfileService, menuControlAuthService } = this.props;
-    skProfileService!
-      .findSkProfile()
-      .then((profile: SkProfileModel) =>
-        menuControlAuthService!.findMenuControlAuth(profile.member.companyCode)
-      );
+    // skProfileService!
+    //   .findSkProfile()
+    //   .then((profile: SkProfileModel) =>
+    //     menuControlAuthService!.findMenuControlAuth(parsePolyglotString(profile.companyName))
+    //   );
+
+    await skProfileService!.findSkProfile();
+    const { skProfile } = skProfileService!;
+    await menuControlAuthService!.findMenuControlAuth();
   }
 
   async avaible() {
@@ -93,6 +100,7 @@ class QuickNavContainer extends Component<Props, State> {
       this.setState({
         menuAuth: response,
       });
+      setMenuAuthModel(response);
     }
   }
 
@@ -113,7 +121,7 @@ class QuickNavContainer extends Component<Props, State> {
   onClickToggle() {
     //
     this.props.notieService!.hasQuickLearningFeeds();
-    this.setState(prevState => {
+    this.setState((prevState) => {
       //
       const nextActive = !prevState.active;
 
@@ -246,18 +254,11 @@ class QuickNavContainer extends Component<Props, State> {
     //
     const { skProfileService, menuControlAuthService } = this.props;
     const { active } = this.state;
-    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { menuAuth } = this.state;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
-        new ChannelModel({
-          ...channel,
-          channelId: channel.id,
-          checked: true,
-        })
-    );
+    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
     return (
       <QuickNavWrapperView
@@ -271,7 +272,7 @@ class QuickNavContainer extends Component<Props, State> {
               <TopMenuItemView
                 iconName="learning32"
                 notieActive={this.props.notieService!.notieActive}
-                text="Learning"
+                text={getPolyglotText('Learning', 'home-플버튼-lrn')}
                 onClick={() => this.onClickLearning('Learning')}
               />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
@@ -283,7 +284,7 @@ class QuickNavContainer extends Component<Props, State> {
                 <TopMenuItemView
                   iconName="support32"
                   notieActive={this.props.notieService!.notieActive}
-                  text="Support"
+                  text={getPolyglotText('Support', 'home-플버튼-sp')}
                   onClick={() => this.onClickSupport('Support')}
                 />
               )}
@@ -298,7 +299,10 @@ class QuickNavContainer extends Component<Props, State> {
               ) && (
                 <BottomMenuItemView
                   iconName="building"
-                  text="mySUNI Introduction"
+                  text={getPolyglotText(
+                    'mySUNI Introduction',
+                    'home-플버튼-msid'
+                  )}
                   onClick={() =>
                     this.onClickIntroduction('mySUNI Introduction')
                   }
@@ -313,7 +317,7 @@ class QuickNavContainer extends Component<Props, State> {
                   trigger={
                     <BottomMenuItemView
                       iconName="admin"
-                      text="관심채널"
+                      text={getPolyglotText('관심채널', 'home-플버튼-관심채널')}
                       onClick={() => this.onClose('관심채널')}
                     />
                   }
@@ -330,7 +334,7 @@ class QuickNavContainer extends Component<Props, State> {
                   trigger={
                     <BottomMenuItemView
                       iconName="sitemap"
-                      text="Site Map"
+                      text={getPolyglotText('Site Map', 'home-플버튼-사이트맵')}
                       onClick={() => this.onClose('Site Map')}
                     />
                   }
@@ -344,18 +348,19 @@ class QuickNavContainer extends Component<Props, State> {
               ) && (
                 <BottomMenuItemView
                   iconName="confirm"
-                  text="승인관리"
+                  text={getPolyglotText('승인관리', 'home-플버튼-승인관리')}
                   onClick={() => this.onClickApproval('승인관리')}
                 />
               )}
               {/*0907 개인학습 등록 메뉴 추가*/}
-              {(menuControlAuth.companyCode === '' ||
-                (menuControlAuth.authCode === MenuControlAuth.User &&
-                  menuControlAuth.useYn === MenuControlAuth.Yes)) && (
+              {menuControlAuth.useApl && (
                 <>
                   <BottomMenuItemView
                     iconName="apl"
-                    text="개인학습 등록"
+                    text={getPolyglotText(
+                      '개인학습 등록',
+                      'home-플버튼-개학등록'
+                    )}
                     onClick={() => this.onClickApl('개인학습 등록')}
                   />
                 </>
@@ -370,7 +375,7 @@ class QuickNavContainer extends Component<Props, State> {
               {this.hasAdminRole && (
                 <BottomMenuItemView
                   iconName="admin24"
-                  text="Admin Site"
+                  text={getPolyglotText('Admin Site', 'home-플버튼-adst')}
                   onClick={() => this.onClickAdminSite('Admin Site')}
                 />
               )}

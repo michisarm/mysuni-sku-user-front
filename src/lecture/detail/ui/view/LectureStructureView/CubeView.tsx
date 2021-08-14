@@ -4,6 +4,7 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function parseCubeType(cubeType: CubeType) {
   switch (cubeType) {
@@ -58,7 +59,7 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
           state === 'Completed' ? 'complete' : ''
         }`}
       >
-        <span>cube 완료상태</span>
+        <span><PolyglotText defaultString="cube 완료상태" id="Cube-Contents-완료상태" /></span>
       </span>
       <span className="copy-holder">
         <span className="copy-title">{name}</span>

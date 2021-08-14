@@ -19,6 +19,7 @@ import './LectureCubeContentView.css';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureFileView from './LectureFileView';
 import { Action, Area } from 'tracker/model';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -87,7 +88,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             data-action={Action.CLICK}
             data-action-name="CARD TAB 클릭::Overview"
           >
-            Overview
+            <PolyglotText defaultString="Overview" id="Course-ContentsView-Overview" />
           </a>
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
@@ -99,7 +100,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::강사정보"
               >
-                강사정보
+                <PolyglotText defaultString="강사정보" id="Course-ContentsView-강사정보" />
               </a>
             )}
           {lectureBadge &&
@@ -112,7 +113,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::관련 Badge"
               >
-                관련 Badge
+                <PolyglotText defaultString="관련 Badge" id="Course-ContentsView-관련 Badge" />
               </a>
             )}
           {lectureRelations &&
@@ -125,7 +126,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::관련과정"
               >
-                관련과정
+                <PolyglotText defaultString="관련과정" id="Course-ContentsView-관련과정" />
               </a>
             )}
           <a
@@ -136,7 +137,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             data-action-name="CARD TAB 클릭::Comments"
           >
             <i className="lms-comment-icon" />
-            Comments
+            <PolyglotText defaultString="Comments" id="Course-ContentsView-Comments" />
             <span className="count">
               {lectureComment !== undefined && lectureComment.commentsCount > 0
                 ? `+${lectureComment.commentsCount}`

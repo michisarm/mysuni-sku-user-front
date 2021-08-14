@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "@nara.drama/approval": "0.4.1",
+    "@nara.drama/approval": "0.4.5-1",
     "@nara.drama/depot": "1.4.1",
-    "@nara.drama/feedback": "0.4.57",
+    "@nara.drama/feedback": "^0.4.64",
     "@nara.platform/accent": "0.2.2",
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
@@ -60,7 +60,7 @@
     "typescript": "3.7.3",
     "xlsx": "latest"
   },
-  "proxy": "https://stg.mysuni.sk.com",
+  "proxy": "http://stg.mysuni.sk.com",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/file-saver": "^2.0.1",
@@ -89,7 +89,8 @@
       "import/order": "off",
       "no-lonely-if": "off",
       "react/jsx-indent": "off",
-      "consistent-return": "off"
+      "consistent-return": "off",
+      "curly": "off"
     }
   },
   "browserslist": []

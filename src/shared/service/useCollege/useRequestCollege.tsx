@@ -12,17 +12,18 @@ import {
 import { setChannelStore, getChannelStore } from '../../store/ChannelStore';
 import { find } from 'lodash';
 import CategoryColorType from '../../model/CategoryColorType';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 async function requestCollegeAndChannel() {
-  const api = new CollegeApi();
-  // const getCollegeData = await api.findAllCollege();
   const getCollegeData = await findAllCollegeCache();
+  if (getCollegeData !== undefined) {
+    setCollegeModelStore(getCollegeData);
+    const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
 
-  setCollegeModelStore(getCollegeData);
-  const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
-
-  setChannelStore(collegeAndChannelList.channels);
-  setCollegeStore(collegeAndChannelList.colleges);
+    setChannelStore(collegeAndChannelList.channels);
+    setCollegeStore(collegeAndChannelList.colleges);
+  }
 }
 
 export function useRequestCollege() {
@@ -37,18 +38,29 @@ export function useRequestCollege() {
 
 export function getCollgeName(collegeId: string) {
   const collegeList = getCollegeStore();
+  const foundCollege = find(collegeList, { id: collegeId });
 
-  const filterChannelName = find(collegeList, { id: collegeId });
-
-  return filterChannelName?.name || '';
+  if (foundCollege && foundCollege.name !== undefined) {
+    return parsePolyglotString(
+      foundCollege.name,
+      getDefaultLang(foundCollege.langSupports)
+    );
+  }
+  return '';
 }
 
 export function getChannelName(channelId: string) {
   const channelList = getChannelStore();
+  const foundChannel = find(channelList, { id: channelId });
 
-  const filterChannelName = find(channelList, { id: channelId });
+  if (foundChannel && foundChannel.name !== undefined) {
+    return parsePolyglotString(
+      foundChannel.name,
+      getDefaultLang(foundChannel.langSupports)
+    );
+  }
 
-  return filterChannelName?.name || '';
+  return '';
 }
 
 export function getColor(categoryId: string) {

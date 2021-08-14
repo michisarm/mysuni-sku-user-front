@@ -3,7 +3,12 @@ import { useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
-
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  getChannelName,
+  getCollgeName,
+} from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   model: AplModel;
@@ -20,12 +25,19 @@ interface RouteParams {
   page: string;
 }
 
-
 function MyApprovalInfoTable(props: Props) {
-  const { model, files, allowHour, allowMinute, onChangeTime, onClearTime, allowHourRef, allowMinuteRef } = props;
+  const {
+    model,
+    files,
+    allowHour,
+    allowMinute,
+    onChangeTime,
+    onClearTime,
+    allowHourRef,
+    allowMinuteRef,
+  } = props;
   const { page } = useParams<RouteParams>();
 
-  /* handlers */
   const changeAllowHour = useCallback((e: any) => {
     onChangeTime('hour', e);
   }, []);
@@ -42,97 +54,130 @@ function MyApprovalInfoTable(props: Props) {
     onClearTime('minute');
   }, [onClearTime]);
 
-  /* render functions */
   const getAllowTimeByState = (model: AplModel) => {
     /* LearningPage :: 전체 */
-    if(page === 'learning') {
-      return (
-        <div>{model.displayAllowTime}</div>
-      );
+    if (page === 'learning') {
+      return <div>{model.displayAllowTime}</div>;
     }
     /* MyApprovalPage :: 승인 & 반려 */
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
-      return (
-        <div>{model.displayAllowTime}</div>
-      );
+      return <div>{model.displayAllowTime}</div>;
     }
     /* MyApprovalPage :: 승인대기 */
     return (
       <div className="time-wrap">
         <div className="time">
           <div className={`ui h48 input time ${getWriteStyle(allowHour)}`}>
-            <input type="text" value={allowHour} onChange={changeAllowHour} ref={allowHourRef} />
-            <label>시</label>
-            <i className="clear link icon" aria-hidden="true" onClick={clearAllowHour} />
+            <input
+              type="text"
+              value={allowHour}
+              onChange={changeAllowHour}
+              ref={allowHourRef}
+            />
+            <label>
+              <PolyglotText id="승인관리-개인상세-설명" defaultString="시" />
+            </label>
+            <i
+              className="clear link icon"
+              aria-hidden="true"
+              onClick={clearAllowHour}
+            />
           </div>
         </div>
         <div className="time">
           <div className={`ui h48 input time ${getWriteStyle(allowMinute)}`}>
-            <input type="text" value={allowMinute} onChange={changeAllowMinute} ref={allowMinuteRef} />
-            <label>분</label>
-            <i className="clear link icon" aria-hidden="true" onClick={clearAllowMinute} />
+            <input
+              type="text"
+              value={allowMinute}
+              onChange={changeAllowMinute}
+              ref={allowMinuteRef}
+            />
+            <label>
+              <PolyglotText id="승인관리-개인상세-설명1" defaultString="분" />
+            </label>
+            <i
+              className="clear link icon"
+              aria-hidden="true"
+              onClick={clearAllowMinute}
+            />
           </div>
         </div>
         <div className="info-text">
           <i className="info16 icon">
             <span className="blind">infomation</span>
           </i>
-          학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해 교육시간은 변경될 수 있습니다.
+          <PolyglotText
+            id="승인관리-개인상세-설명2"
+            defaultString="학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해 교육시간은 변경될 수 있습니다."
+          />
         </div>
       </div>
     );
-  }
+  };
 
-  /* render */
+  const collegeName = getCollgeName(model.collegeId);
+  const channelName = getChannelName(model.channelId);
   return (
     <table className="ui create table">
       <tbody>
         <tr>
-          <th scope="row">교육명</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th1" defaultString="교육명" />
+          </th>
           <td>
-            <div>
-              {model.title}
-            </div>
+            <div>{model.title}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">교육형태</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th2" defaultString="교육형태" />
+          </th>
           <td>
             <div>{model.displayTypeName}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">Channel</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th3" defaultString="Channel" />
+          </th>
           <td>
-            <div>{model.displayCollegeChannelName}</div>
+            <div>{`${collegeName} | ${channelName}`}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">교육기간</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th4" defaultString="교육기간" />
+          </th>
           <td>
             <div>{model.displayLearningTime}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">교육기관</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th5" defaultString="교육기관" />
+          </th>
           <td>
             <div>{model.institute}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">교육시간</th>
-          <td>
-            {getAllowTimeByState(model)}
-          </td>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th6" defaultString="교육시간" />
+          </th>
+          <td>{getAllowTimeByState(model)}</td>
         </tr>
         <tr>
-          <th scope="row">교육내용</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th7" defaultString="교육내용" />
+          </th>
           <td>
             <div>{model.content}</div>
           </td>
         </tr>
         <tr>
-          <th scope="row">첨부파일</th>
+          <th scope="row">
+            <PolyglotText id="승인관리-개인상세-th8" defaultString="첨부파일" />
+          </th>
           <td>
             {(files &&
               files.get('reference') &&
@@ -143,7 +188,7 @@ function MyApprovalInfoTable(props: Props) {
                     <a href="#" className="link" key={index}>
                       <span
                         className="ellipsis"
-                        onClick={e => {
+                        onClick={(e) => {
                           depot.downloadDepotFile(foundedFile.id);
                           e.preventDefault();
                         }}
@@ -156,22 +201,33 @@ function MyApprovalInfoTable(props: Props) {
               null}
           </td>
         </tr>
-        {model.state === AplState.Opened &&
-          (
-            <tr>
-              <th scope="row">승인자</th>
-              <td>
-                <div>
-                  <span>{model.approvalName}</span>
-                  <span className="l">{model.approvalCompany}</span>
-                  <span className="l">{model.approvalDepartment}</span>
-                </div>
-              </td>
-            </tr>
-          )
-        }
+        {model.state === AplState.Opened && (
+          <tr>
+            <th scope="row">
+              <PolyglotText
+                id="승인관리-개인상세-승인자"
+                defaultString="승인자"
+              />
+            </th>
+            <td>
+              <div>
+                <span>
+                  {parsePolyglotString(model.approvalUserIdentity?.name)}
+                </span>
+                <span className="l">
+                  {parsePolyglotString(model.approvalUserIdentity?.companyName)}
+                </span>
+                <span className="l">
+                  {parsePolyglotString(
+                    model.approvalUserIdentity?.departmentName
+                  )}
+                </span>
+              </div>
+            </td>
+          </tr>
+        )}
       </tbody>
-    </table >
+    </table>
   );
 }
 
@@ -180,4 +236,4 @@ export default memo(MyApprovalInfoTable);
 /* globals */
 const getWriteStyle = (time: string) => {
   return time === '' ? '' : 'write';
-}
+};

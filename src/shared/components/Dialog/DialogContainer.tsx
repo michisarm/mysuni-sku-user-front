@@ -1,13 +1,12 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Modal, Button, Image } from 'semantic-ui-react';
-
+import { PolyglotText } from '../../ui/logic/PolyglotText';
 
 interface Props {
-  title: string
-  message: string
-  warning?: boolean
+  title: string;
+  message: string;
+  warning?: boolean;
   onOk?: () => void;
   onCancel?: () => void;
   onClose?: () => void;
@@ -26,30 +25,43 @@ class DialogContainer extends Component<Props> {
     const image = warning ? 'alert.png' : 'confirm.png';
 
     return (
-      <Modal
-        open
-        className="size-mini"
-      >
+      <Modal open className="size-mini">
         <div className="main">
-          <Modal.Header>안내</Modal.Header>
+          <Modal.Header>
+            <PolyglotText defaultString="안내" id="home-관심목록alert-안내" />
+          </Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/${image}`} />
+              <Image
+                wrapped
+                className="modal-img"
+                size="medium"
+                src={`${process.env.PUBLIC_URL}/images/modal/${image}`}
+              />
               <div className="title">{title}</div>
-              <div className="center" dangerouslySetInnerHTML={{ __html: message }} />
+              <div
+                className="center"
+                dangerouslySetInnerHTML={{ __html: message }}
+              />
               {/*<div dangerouslySetInnerHTML={{ __html: message }} />*/}
             </Modal.Description>
           </Modal.Content>
         </div>
         <Modal.Actions className="normal twin">
-          { onCancel && (
-            <Button secondary onClick={onCancel}>취소</Button>
+          {onCancel && (
+            <Button secondary onClick={onCancel}>
+              <PolyglotText defaultString="취소" id="home-관심목록alert-취소" />
+            </Button>
           )}
-          { onOk && (
-            <Button primary onClick={onOk}>확인</Button>
+          {onOk && (
+            <Button primary onClick={onOk}>
+              <PolyglotText defaultString="확인" id="home-관심목록alert-확인" />
+            </Button>
           )}
-          { onClose && (
-            <Button secondary onClick={onClose}>확인</Button>
+          {onClose && (
+            <Button secondary onClick={onClose}>
+              <PolyglotText defaultString="확인" id="home-관심목록alert-확인" />
+            </Button>
           )}
         </Modal.Actions>
       </Modal>

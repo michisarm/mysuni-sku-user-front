@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Icon, Popup } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import MentionModel from 'notie/model/MentionModel';
 import moment from 'moment';
 import { Area } from 'tracker/model';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import Image from '../../../../../shared/components/Image';
-import { SkProfileService } from '../../../../../profile/stores';
-import ProfilePopupView from './ProfilePopupView';
-import {
-  isExternalInstructor,
-  isInternalInstructor,
-} from '../../../../../shared/helper/findUserRole';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
-  skProfileService?: SkProfileService;
   myNotieMentions: MentionModel[];
   myNotieNoReadMentionCount: number;
   routeToAlarmBackLink: (backLink: string) => void;
@@ -23,7 +15,6 @@ interface Props {
 
 interface State {
   alarmShowClass: string;
-  isOpen: boolean;
 }
 
 @reactAutobind
@@ -34,7 +25,6 @@ class HeaderAlarmView extends Component<Props, State> {
 
   state = {
     alarmShowClass: '',
-    isOpen: false,
   };
 
   componentDidMount() {
@@ -63,22 +53,14 @@ class HeaderAlarmView extends Component<Props, State> {
 
   render() {
     //
-    const { skProfile } = SkProfileService.instance;
     const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } =
       this.props;
-    const { alarmShowClass, isOpen } = this.state;
+    const { alarmShowClass } = this.state;
 
     let existNoReadClass = '';
     if (myNotieNoReadMentionCount > 0) {
       existNoReadClass = 'lms-on';
     }
-    const isInstructor = isExternalInstructor() || isInternalInstructor();
-
-    const setOpen = () => {
-      //this.profileButtonRef.current.click();
-      this.setState({ isOpen: !isOpen });
-      document.getElementById('btnProFile')?.click();
-    };
     return (
       <div ref={this.alarmRef}>
         <a
@@ -86,14 +68,18 @@ class HeaderAlarmView extends Component<Props, State> {
           onClick={this.onTogglePop}
           ref={this.alarmButtonRef}
         >
-          <span>알림</span>
+          <span>
+            <PolyglotText defaultString="알림" id="home-header-알림1" />
+          </span>
         </a>
         <div
           className={`lms-alarm-list ${alarmShowClass}`}
           ref={this.alarmButtonRef}
         >
           <div className="lms-alarm-header">
-            <span className="lms-alarm-title">알림</span>
+            <span className="lms-alarm-title">
+              <PolyglotText defaultString="알림" id="home-header-알림2" />
+            </span>
             <Button icon className="img-icon" onClick={this.onTogglePop}>
               <Icon className="clear2 selected link" />
             </Button>
@@ -143,26 +129,6 @@ class HeaderAlarmView extends Component<Props, State> {
               })}
           </div>
         </div>
-        <Popup
-          className="pop_profile"
-          trigger={
-            <Button id="btnProFile" className="user image label btn_user">
-              <Image
-                src={skProfile.photoFilePath || profileImg}
-                alt="profile"
-              />
-            </Button>
-          }
-          position="bottom right"
-          on="click"
-          //open={isOpen}
-          onOpen={setOpen}
-        >
-          <Popup.Content>
-            <ProfilePopupView setOpen={setOpen} isInstructor={isInstructor} />
-            {/*프로필사진 셋팅전 */}
-          </Popup.Content>
-        </Popup>
       </div>
     );
   }

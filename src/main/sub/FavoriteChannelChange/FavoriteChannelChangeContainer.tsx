@@ -15,6 +15,8 @@ import { CollegeLectureCountService } from 'lecture/stores';
 import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getChannelName } from '../../../shared/service/useCollege/useRequestCollege';
 
 export const history = createBrowserHistory();
 
@@ -68,19 +70,19 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
   ) {
     //
     const companyChannels = colleges
-      .filter(college => college.collegeType === CollegeType.Company)
-      .map(college =>
+      .filter((college) => college.collegeType === CollegeType.Company)
+      .map((college) =>
         college.channels.map(
-          channel =>
+          (channel) =>
             new ChannelModel({ channelId: channel.id, name: channel.name })
         )
       )
       .flat();
 
     const favoriteChannelsWithoutCompany = favoriteChannels.filter(
-      channel =>
+      (channel) =>
         !companyChannels.some(
-          companyChannel => companyChannel.channelId === channel.channelId
+          (companyChannel) => companyChannel.channelId === channel.channelId
         )
     );
 
@@ -99,8 +101,13 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
     const { studySummaryFavoriteChannels } = skProfileService!;
 
     const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+      (channelId) =>
+        new ChannelModel({
+          id: channelId,
+          name: getChannelName(channelId),
+          channelId,
+          checked: true,
+        })
     );
 
     this.setState({
@@ -169,7 +176,7 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
 
     if (selectedCollegeIds.includes(college.id)) {
       selectedCollegeIds = selectedCollegeIds.filter(
-        collegeId => collegeId !== college.id
+        (collegeId) => collegeId !== college.id
       );
     } else {
       selectedCollegeIds.push(college.id);
@@ -183,18 +190,18 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
 
     if (
       favoriteChannels
-        .map(favoriteChannel => favoriteChannel.id)
+        .map((favoriteChannel) => favoriteChannel.id)
         .includes(channel.id)
     ) {
       favoriteChannels = favoriteChannels.filter(
-        favoriteChannel => favoriteChannel.id !== channel.id
+        (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
       favoriteChannels.push(new ChannelModel(channel));
     }
     this.setState({ favoriteChannels: [...favoriteChannels] });
   }
-  
+
   render() {
     //
     const { collegeService, collegeLectureCountService } = this.props;
@@ -213,9 +220,15 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
       <section className="content f-channel">
         <div className="cont-inner">
           <div className="res header">
-            관심 Channel 변경
+            <PolyglotText
+              defaultString="관심 Channel 변경"
+              id="home-ChannelChangeModal-타이틀"
+            />
             <span className="sub f12">
-              맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.
+              <PolyglotText
+                defaultString="맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요."
+                id="home-ChannelChangeModal-설명"
+              />
             </span>
           </div>
           <div>

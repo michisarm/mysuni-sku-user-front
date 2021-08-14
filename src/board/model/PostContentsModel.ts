@@ -1,10 +1,9 @@
-
 import { decorate, observable } from 'mobx';
-
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 class PostContentsModel {
   //
-  contents: string = '';
+  contents: PolyglotString | null = null;
   depotId: string = '';
 
   constructor(postContents?: PostContentsModel) {

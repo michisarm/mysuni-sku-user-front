@@ -6,6 +6,11 @@ import moment from 'moment';
 import numeral from 'numeral';
 import { Button, Checkbox, Icon, Table } from 'semantic-ui-react';
 import ApprovalCubeService from '../../present/logic/ApprovalCubeService';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   approvalCubeService: ApprovalCubeService;
@@ -68,10 +73,10 @@ class ApprovalListView extends React.Component<Props, States> {
       this.onChangeSelectedProposalStateProps(allProposalState);
       this.setState({ cubeAll: 'No' });
     } else {
-      approvalCubes.forEach(approvalCube => {
+      approvalCubes.forEach((approvalCube) => {
         allList.push(approvalCube.studentId);
       });
-      approvalCubes.forEach(approvalCube => {
+      approvalCubes.forEach((approvalCube) => {
         allProposalState.push(approvalCube.proposalState);
       });
       this.onChangeSelectedStudentProps(allList);
@@ -107,30 +112,44 @@ class ApprovalListView extends React.Component<Props, States> {
   }
 
   render() {
-    const {
-      approvalCubeService,
-      totalCount,
-      handleClickCubeRow,
-      searchState,
-    } = this.props;
+    const { approvalCubeService, totalCount, handleClickCubeRow, searchState } =
+      this.props;
     const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
     const { results: approvalCubes } = approvalCubeOffsetList;
     const { cubeAll } = this.state;
 
-    let approvalNameVal = '신청일자';
+    let approvalNameVal = getPolyglotText(
+      '신청일자',
+      '승인관리-유료과정-신청일자'
+    );
 
     if (searchState === 'Submitted') {
-      approvalNameVal = '신청일자';
+      approvalNameVal = getPolyglotText(
+        '신청일자',
+        '승인관리-유료과정-신청일자'
+      );
     } else if (searchState === 'Rejected') {
-      approvalNameVal = '반려일자';
+      approvalNameVal = getPolyglotText(
+        '반려일자',
+        '승인관리-유료과정-반려일자'
+      );
     } else if (searchState === 'Approved') {
-      approvalNameVal = '승인일자';
+      approvalNameVal = getPolyglotText(
+        '승인일자',
+        '승인관리-유료과정-승인일자'
+      );
     } else {
-      approvalNameVal = '신청일자';
+      approvalNameVal = getPolyglotText(
+        '신청일자',
+        '승인관리-유료과정-신청일자'
+      );
     }
 
     const approvalDateName = approvalNameVal;
-    const noTitle = '승인요청 학습이 없습니다.';
+    const noTitle = getPolyglotText(
+      '승인요청 학습이 없습니다.',
+      '승인관리-유료과정-목록없음'
+    );
 
     return (
       <div id="DataTableRow">
@@ -148,16 +167,44 @@ class ApprovalListView extends React.Component<Props, States> {
                   onChange={(e: any, data: any) => this.checkAll(data.value)}
                 />
               </Table.HeaderCell>
-              <Table.HeaderCell className="cell num">No</Table.HeaderCell>
-              <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
-              <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
-              <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
-              <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
+              <Table.HeaderCell className="cell num">
+                <PolyglotText id="승인관리-유료과정-목록1" defaultString="No" />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="cell name">
+                <PolyglotText
+                  id="승인관리-유료과정-목록2"
+                  defaultString="신청자"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="cell team">
+                <PolyglotText
+                  id="승인관리-유료과정-목록3"
+                  defaultString="조직"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="cell title">
+                <PolyglotText
+                  id="승인관리-유료과정-목록4"
+                  defaultString="과정명"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="cell class">
+                <PolyglotText
+                  id="승인관리-유료과정-목록5"
+                  defaultString="차수"
+                />
+              </Table.HeaderCell>
               <Table.HeaderCell className="cell status">
-                신청현황
+                <PolyglotText
+                  id="승인관리-유료과정-목록6"
+                  defaultString="신청현황"
+                />
               </Table.HeaderCell>
               <Table.HeaderCell className="cell term">
-                (차수)교육기간{' '}
+                <PolyglotText
+                  id="승인관리-유료과정-목록7"
+                  defaultString="(차수)교육기간"
+                />
                 <Button
                   icon
                   className="img-icon"
@@ -174,7 +221,10 @@ class ApprovalListView extends React.Component<Props, States> {
                 {approvalDateName}
               </Table.HeaderCell>
               <Table.HeaderCell className="cell pay">
-                인당 교육금액{' '}
+                <PolyglotText
+                  id="승인관리-유료과정-목록8"
+                  defaultString="인당 교육금액"
+                />
                 <Button
                   icon
                   className="img-icon"
@@ -195,7 +245,12 @@ class ApprovalListView extends React.Component<Props, States> {
                 <Table.Cell colSpan="10">
                   <div className="no-cont-wrap">
                     <Icon className="no-contents80" />
-                    <span className="blind">콘텐츠 없음</span>
+                    <span className="blind">
+                      <PolyglotText
+                        id="승인관리-유료과정-목록없음title"
+                        defaultString="콘텐츠 없음"
+                      />
+                    </span>
                     <div className="text">{noTitle}</div>
                   </div>
                 </Table.Cell>
@@ -222,7 +277,9 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell name"
                   >
                     <a>
-                      <span className="ellipsis">{cube.studentName}</span>
+                      <span className="ellipsis">
+                        {parsePolyglotString(cube.studentName)}
+                      </span>
                     </a>
                   </Table.Cell>
                   <Table.Cell
@@ -231,7 +288,7 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.getStudentDepartmentNames}
+                        {parsePolyglotString(cube.studentDepartmentNames)}
                       </span>
                     </a>
                   </Table.Cell>
@@ -240,7 +297,9 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell title"
                   >
                     <a>
-                      <span className="ellipsis">{cube.cubeName}</span>
+                      <span className="ellipsis">
+                        {parsePolyglotString(cube.cubeName)}
+                      </span>
                     </a>
                   </Table.Cell>
                   <Table.Cell

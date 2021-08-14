@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -15,12 +16,16 @@ import {
 } from '../../../community/store/CommunityFollowModalStore';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { reactAlert } from '@nara.platform/accent';
-import SkProfileUdo from '../../../profile/model/SkProfileUdo';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 // import DefaultBgImg from 'style/../../public/images/all/img-my-profile-card-bg.png';
 import DefaultBgImg from '../../../style/media/img-my-profile-card-bg.png';
 import ProfileImage from '../../../../src/shared/components/Image/Image';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getProfilePopup } from 'layout/UserApp/service/ProfilePopupService/getProfilePopup';
+import { useProfilePopupModel } from 'layout/UserApp/store/ProfilePopupStore';
+import { isEmpty } from 'lodash';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -40,6 +45,7 @@ function MyPageHeaderContainer({
   const [showNameFlag, setShowNameFlag] = useState<boolean>();
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
   const params = useParams<MyPageRouteParams>();
+  const profileInfo = useProfilePopupModel();
 
   useEffect(() => {
     if (skProfileService) {
@@ -49,6 +55,7 @@ function MyPageHeaderContainer({
         skProfileService.findCommunityProfile();
       }
     }
+    getProfilePopup();
   }, []);
 
   useEffect(() => {
@@ -56,10 +63,7 @@ function MyPageHeaderContainer({
     // requestFollowersModal();
     // requestFollowingsModal();
 
-    // badgeService!.findAllBadgeCount();
-    // myTrainingService!.countMyTrainingsWithStamp();
-
-    if (skProfile.nameFlag === 'N') {
+    if (skProfile.displayNicknameFirst) {
       setShowNameFlag(false);
     } else {
       setShowNameFlag(true);
@@ -69,10 +73,13 @@ function MyPageHeaderContainer({
   useRequestLearningSummary();
 
   const onClickShowName = useCallback(async (value: boolean) => {
-    if (!skProfile.id || !skProfile.nickName || skProfile.nickName === '') {
+    if (!skProfile.id || !skProfile.nickname || skProfile.nickname === '') {
       reactAlert({
-        title: '안내',
-        message: '닉네임을 등록해주세요.',
+        title: getPolyglotText('안내', 'mypage-프로필카드-안내'),
+        message: getPolyglotText(
+          '닉네임을 등록해주세요.',
+          'mypage-프로필카드-등록안내'
+        ),
       });
       return;
     }
@@ -80,20 +87,35 @@ function MyPageHeaderContainer({
     if (saveFlag) {
       setSaveFlag(false);
 
-      const skProfileUdo: SkProfileUdo = new SkProfileUdo(
-        skProfile.member.currentJobGroup,
-        skProfile.member.favoriteJobGroup,
-        skProfile.pisAgreement
-      );
+      const params = {
+        nameValues: [
+          { name: 'displayNicknameFirst', value: JSON.stringify(value) },
+        ],
+      };
 
-      skProfileUdo.nameFlag = value === true ? 'R' : 'N';
+      await modifySkProfile(params);
 
-      await modifySkProfile(skProfileUdo);
-      skProfileService!.findSkProfile().then((skProfile) => {
+      skProfileService!.findSkProfile().then(() => {
         setSaveFlag(true);
       });
     }
   }, []);
+
+  const getProfileImage = () => {
+    if (photoImageBase64) {
+      return photoImageBase64;
+    }
+
+    if (skProfile.useGdiPhoto) {
+      return skProfile.gdiPhotoImagePath;
+    }
+
+    if (isEmpty(skProfile.photoImagePath)) {
+      return DefaultImg;
+    }
+
+    return skProfile.photoImagePath;
+  };
 
   return (
     <>
@@ -101,7 +123,9 @@ function MyPageHeaderContainer({
         <div className="profile-wrapper">
           <div className="bg-wrapper">
             <ProfileImage
-              src={bgImageBase64 || skProfile.bgFilePath || DefaultBgImg}
+              src={
+                bgImageBase64 || skProfile.backgroundImagePath || DefaultBgImg
+              }
               onError={(event: any) => {
                 event.currentTarget.style.display = 'none';
               }}
@@ -121,10 +145,13 @@ function MyPageHeaderContainer({
                         saveFlag &&
                         !showNameFlag &&
                         !isExternalInstructor() &&
-                        onClickShowName(true)
+                        onClickShowName(false)
                       }
                     >
-                      실명
+                      <PolyglotText
+                        defaultString="실명"
+                        id="mypage-프로필카드-실명"
+                      />
                     </Button>
                     <Button
                       className={`name-chng-bttn ${
@@ -134,10 +161,13 @@ function MyPageHeaderContainer({
                         saveFlag &&
                         showNameFlag &&
                         !isExternalInstructor() &&
-                        onClickShowName(false)
+                        onClickShowName(true)
                       }
                     >
-                      닉네임
+                      <PolyglotText
+                        defaultString="닉네임"
+                        id="mypage-프로필카드-닉네임"
+                      />
                     </Button>
                   </div>
                 </div>
@@ -146,9 +176,7 @@ function MyPageHeaderContainer({
                   <ProfileImage
                     id="profileImage"
                     className="ui image"
-                    src={
-                      photoImageBase64 || skProfile.photoFilePath || DefaultImg
-                    }
+                    src={getProfileImage()}
                     onError={(event: any) =>
                       (event.currentTarget.style.display = 'none')
                     }
@@ -161,13 +189,25 @@ function MyPageHeaderContainer({
                 <div className="profile-info ">
                   <span className="prof-tit">
                     {showNameFlag
-                      ? skProfile.member?.name || skProfile.name
-                      : skProfile.nickName}
+                      ? parsePolyglotString(skProfile.name)
+                      : skProfile.nickname}
                   </span>
                   {!isExternalInstructor() && (
                     <div className="foll-info">
-                      <span>{skProfile.followerCount}</span> Followers
+                      {/* <span>{skProfile.followerCount}</span> Followers
                       <span>{skProfile.followingCount}</span> Following
+                      김민준 - 커뮤니티 api 추가 필요
+                      */}
+                      <span>{profileInfo?.followerCount || 0}</span>
+                      <PolyglotText
+                        defaultString="Followers"
+                        id="mypage-프로필카드-Followers"
+                      />
+                      <span>{profileInfo?.followingCount || 0}</span>
+                      <PolyglotText
+                        defaultString="Following"
+                        id="mypage-프로필카드-Following"
+                      />
                     </div>
                   )}
                 </div>
@@ -180,7 +220,10 @@ function MyPageHeaderContainer({
                       clickTabHandler && clickTabHandler('profile')
                     }
                   >
-                    프로필 설정
+                    <PolyglotText
+                      defaultString="프로필 설정"
+                      id="mypage-프로필카드-프로필설정"
+                    />
                   </Button>
                 </div>
               </div>

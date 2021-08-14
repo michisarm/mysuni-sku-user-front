@@ -5,6 +5,7 @@ import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -12,83 +13,90 @@ interface LectureSurveyEssayViewProps {
   lectureSurveyState?: LectureSurveyState;
 }
 
-const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveyEssayView({
-  lectureSurveyItem,
-  lectureSurveyAnswerItem,
-  lectureSurveyState,
-}) {
-  const { maxLength } = lectureSurveyItem;
+const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
+  function LectureSurveyEssayView({
+    lectureSurveyItem,
+    lectureSurveyAnswerItem,
+    lectureSurveyState,
+  }) {
+    const { maxLength } = lectureSurveyItem;
 
-  const onChangeValue = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      if (e.target.value.length <= (maxLength || 0)) {
-        selectSentenceAnswer(lectureSurveyItem, e.target.value);
-      } else if (
-        (maxLength || 0) === 0 &&
-        e.target.value.length >= (maxLength || 0)
-      ) {
-        selectSentenceAnswer(lectureSurveyItem, e.target.value);
-      }
-    },
-    [lectureSurveyItem]
-  );
-  return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <Form>
-        <Form.Field>
-          <div style={{ margin: '20px 0' }}>
-            {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
-          </div>
-          <div className="ui right-top-count input">
-            <span className="count">
-              <span className="now">
-                {lectureSurveyAnswerItem !== undefined &&
-                lectureSurveyAnswerItem.sentence !== undefined
-                  ? lectureSurveyAnswerItem.sentence.length
-                  : 0}
+    const onChangeValue = useCallback(
+      (e: ChangeEvent<HTMLTextAreaElement>) => {
+        if (e.target.value.length <= (maxLength || 0)) {
+          selectSentenceAnswer(lectureSurveyItem, e.target.value);
+        } else if (
+          (maxLength || 0) === 0 &&
+          e.target.value.length >= (maxLength || 0)
+        ) {
+          selectSentenceAnswer(lectureSurveyItem, e.target.value);
+        }
+      },
+      [lectureSurveyItem]
+    );
+    return (
+      <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+        <Form>
+          <Form.Field>
+            <div style={{ margin: '20px 0' }}>
+              {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+            </div>
+            <div className="ui right-top-count input">
+              <span className="count">
+                <span className="now">
+                  {lectureSurveyAnswerItem !== undefined &&
+                  lectureSurveyAnswerItem.sentence !== undefined
+                    ? lectureSurveyAnswerItem.sentence.length
+                    : 0}
+                </span>
+                &nbsp;&#47;&nbsp;
+                <span className="max">{`${maxLength}`}</span>
               </span>
-              &nbsp;&#47;&nbsp;
-              <span className="max">{`${maxLength}`}</span>
-            </span>
-            <textarea
-              placeholder="답변을 입력해주세요."
-              value={
-                lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence
-              }
-              onChange={onChangeValue}
-              readOnly={false}
-            />
-            <Icon className="clear link" />
-            <span className="validation">
-              {`You can enter up to ${maxLength} characters.`}
-            </span>
-          </div>
-        </Form.Field>
-      </Form>
-
-      {lectureSurveyState === undefined ||
-        (lectureSurveyState.state === 'Progress' &&
-          lectureSurveyItem.isRequired === true &&
-          lectureSurveyAnswerItem === undefined && (
-            <div style={{ marginTop: '10px' }}>
-              <Image
-                style={{ display: 'inline-block', marginRight: '5px' }}
-                src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+              <textarea
+                placeholder={getPolyglotText(
+                  '답변을 입력해주세요.',
+                  'survey-placeholder-답변입력'
+                )}
+                value={
+                  lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence
+                }
+                onChange={onChangeValue}
+                readOnly={false}
               />
-              <span
-                style={{
-                  color: '#e1002a',
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  verticalAlign: 'text-bottom',
-                }}
-              >
-                해당 문항은 필수 항목 입니다.
+              <Icon className="clear link" />
+              <span className="validation">
+                {`You can enter up to ${maxLength} characters.`}
               </span>
             </div>
-          ))}
-    </LectureSurveyChoiceLayout>
-  );
-};
+          </Form.Field>
+        </Form>
+
+        {lectureSurveyState === undefined ||
+          (lectureSurveyState.state === 'Progress' &&
+            lectureSurveyItem.isRequired === true &&
+            lectureSurveyAnswerItem === undefined && (
+              <div style={{ marginTop: '10px' }}>
+                <Image
+                  style={{ display: 'inline-block', marginRight: '5px' }}
+                  src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+                />
+                <span
+                  style={{
+                    color: '#e1002a',
+                    fontSize: '14px',
+                    lineHeight: '16px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                >
+                  <PolyglotText
+                    defaultString="해당 문항은 필수 항목 입니다."
+                    id="survey-설명-필수항목"
+                  />
+                </span>
+              </div>
+            ))}
+      </LectureSurveyChoiceLayout>
+    );
+  };
 
 export default LectureSurveyEssayView;

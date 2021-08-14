@@ -1,15 +1,18 @@
 
 import React, { FunctionComponent } from 'react';
 import { Segment, Form, Step } from 'semantic-ui-react';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 export const ContentWrapperWithHeader: FunctionComponent = ({ children }) => (
   <>
     <div className="add-personal-learning support">
       <div className="add-personal-learning-wrap">
-        <div className="apl-tit">Create</div>
-        <div className="apl-notice">
-          내가 갖고 있는 지식을 강좌로 만들 수 있습니다.<br />관리자의 확인 절차를 거쳐 다른 mySUNI 사용자에게 전파해보세요.
+        <div className="apl-tit"><PolyglotText defaultString="Create" id="Create-NM-Title" /></div>
+        <div className="apl-notice" >
+          <PolyglotText defaultString="내가 갖고 있는 지식을 강좌로 만들 수 있습니다." id="Create-NM-Subtitle1" />
+          <br />
+          <PolyglotText defaultString="관리자의 확인 절차를 거쳐 다른 mySUNI 사용자에게 전파해보세요." id="Create-NM-Subtitle2" />
         </div>
       </div>
     </div>

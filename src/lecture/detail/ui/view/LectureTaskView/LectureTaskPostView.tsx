@@ -9,6 +9,7 @@ import { Icon, Pagination } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
 import { NoSuchContentPanel } from 'shared';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LectureTaskPostViewProps {
   taskItem: LectureTask;
@@ -67,7 +68,9 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
                 </span>
               </span>
               <span className="writer">{task.writer}</span>
-              <span className="view">{task.readCount} 읽음</span>
+              <span className="view">
+                {task.readCount}{' '}<PolyglotText defaultString="읽음" id="Collage-Task-읽음" />
+              </span>
               <span className="date">
                 {task.time && moment(task.time).format('YYYY.MM.DD')}
               </span>
@@ -76,8 +79,12 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
         {task.delete === true && (
             <span className="del">
               <Icon className="listdel24" />
-              <span className="blind">삭제됨</span>
-              <span>삭제된 글입니다.</span>
+              <span className="blind">
+                <PolyglotText defaultString="삭제됨" id="Collage-Task-삭제됨" />
+              </span>
+              <span>
+                <PolyglotText defaultString="삭제된 글입니다." id="Collage-Task-삭제완료" />
+              </span>
             </span>
         )}
       </div>
@@ -100,7 +107,7 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
     param => {
       handleClickTaskRow(param);
     },
-    [taskItem]
+    [handleClickTaskRow]
   );
 
   return (
@@ -120,7 +127,7 @@ const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function Lecture
                   </Fragment>
                 ))
         ) : (
-          <NoSuchContentPanel message="등록된 게시글이 없습니다." />
+          <NoSuchContentPanel message={getPolyglotText('등록된 게시글이 없습니다.', 'Collage-TaskPostView-게시글없음')} />
         )}
       </div>
       <div className="lms-paging-holder">

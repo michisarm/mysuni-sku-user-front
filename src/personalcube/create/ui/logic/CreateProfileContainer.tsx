@@ -11,6 +11,8 @@ import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.p
 import routePaths from '../../../routePaths';
 import CreateMovieModalContainer from './CreateMovieModalContainer';
 import { Area } from 'tracker/model';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -44,15 +46,15 @@ class CreateProfileContainer extends React.Component<Props> {
             myPageActive
             image={skProfile.photoFilePath || defaultProfileImg}
             name={skProfile.profileViewName}
-            company={skProfile.member.company}
-            department={skProfile.member.department}
+            company={parsePolyglotString(skProfile.companyName)}
+            department={parsePolyglotString(skProfile.departmentName)}
             type="Create"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="create-wrap">
           <Button className="personal line" onClick={this.onClickCreate}>
             <Icon className="create16" />
-            <span className="blind">create</span>
+            <span className="blind"><PolyglotText defaultString="create" id="Create-mifa-제작" /></span>
             <span>Create</span>
           </Button>
           <CreateMovieModalContainer
@@ -62,7 +64,7 @@ class CreateProfileContainer extends React.Component<Props> {
               >
                 <Icon className="movie16" />
                 <span className="blind">create movie</span>
-                <span>Create Movie</span>
+                <span><PolyglotText defaultString="Create movie" id="Create-mifa-movie제작" /></span>
               </Button>
             }
           />

@@ -1,25 +1,20 @@
-import { patronInfo } from '@nara.platform/dock';
 import { computed, decorate, observable } from 'mobx';
 import moment from 'moment';
 import { AplCdoModel } from './AplCdoModel';
-import { AplXlsxModel } from './AplXlsxModel';
-import EnumUtil, { AplStateView } from '../../shared/ui/logic/EnumUtil';
 import { AplState } from './AplState';
 import { NameValueList, NewQueryModel } from '../../shared/model';
-import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { AplType } from './AplType';
-import { AplStateName } from './AplStateName';
+import { aplStateNamePolyglotText } from './AplStateName';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { initUserIdentity, UserIdentity } from 'shared/model/UserIdentity';
 
 class AplModel extends NewQueryModel {
-  //
   id: string = '';
   title: string = '';
   type: string = '';
   typeName: string = '';
   collegeId: string = '';
-  collegeName: string = '';
   channelId: string = '';
-  channelName: string = '';
   startDate: number = 0;
   endDate: number = 0;
   institute: string = '';
@@ -32,46 +27,36 @@ class AplModel extends NewQueryModel {
   updateMinute: number = 0;
   content: string = '';
   state: AplState = AplState.Created;
-  creationTime: number = 0;
-  creatorId: string = '';
-  creatorName: string = '';
+  registeredTime: number = 0;
+  modifiedTime: number = 0;
   fileIds: string = '';
   approvalYn: boolean | undefined;
-  approvalId: string = '';
-  approvalName: string = '';
-  approvalEmail: string = '';
-  approvalTime: number = 0;
-  updateId: string = '';
-  updateName: string = '';
-  updateTime: number = 0;
-  causeOfReturn: string = '';
-  cineroomId: string = '';
-  patronKeyString: string = '';
-  patronType: string = '';
-  pavilionId: string = '';
-  approvalCompany: string = '';
-  approvalDepartment: string = '';
 
-  // requiredSubsidiaries: IdName[] = [];
+  causeOfReturn: string = '';
+  patronKeyString: string = '';
+
+  registrantUserIdentity: UserIdentity = initUserIdentity();
+  modifierUserIdentity: UserIdentity = initUserIdentity();
+  approvalUserIdentity: UserIdentity = initUserIdentity();
 
   constructor(aplModel?: AplModel) {
     super();
     if (aplModel) {
-      // const cubeIntro = apl.cubeIntro && new IdName(apl.cubeIntro) || this.cubeIntro;
-      // let tag = '';
-      // if (apl.tags) apl.tags.forEach(tags => tag = `${tag ? `${tag},${tags}` : tags}`);
       Object.assign(this, { ...aplModel });
     }
   }
 
   /* 등록일자 */
   @computed get displayCreationTime() {
-    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD') : '-';
+    return this.registeredTime
+      ? moment(this.registeredTime).format('YYYY.MM.DD')
+      : '-';
   }
 
-
   @computed get displayCreationDateTime() {
-    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+    return this.registeredTime
+      ? moment(this.registeredTime).format('YYYY.MM.DD HH:mm:ss')
+      : '-';
   }
 
   /* 교육시간(교육인정시간) */
@@ -82,12 +67,18 @@ class AplModel extends NewQueryModel {
       if (this.updateHour || this.updateMinute) {
         allowLearningTime = `${this.updateHour}시 ${this.updateMinute}분`;
       } else {
-        allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+        allowLearningTime =
+          this.allowHour || this.allowMinute
+            ? `${this.allowHour}시 ${this.allowMinute}분`
+            : '-';
       }
     }
 
     if (this.state === AplState.Rejected) {
-      allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+      allowLearningTime =
+        this.allowHour || this.allowMinute
+          ? `${this.allowHour}시 ${this.allowMinute}분`
+          : '-';
     }
 
     return allowLearningTime;
@@ -95,7 +86,9 @@ class AplModel extends NewQueryModel {
 
   /* 교육기간 ex) 2020.10.12~2020.11.12 */
   @computed get displayLearningTime() {
-    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
+    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(
+      this.endDate
+    ).format('YYYY.MM.DD')}`;
   }
 
   /* 처리일자 :: 승인일자 */
@@ -103,15 +96,21 @@ class AplModel extends NewQueryModel {
     let approvalDateTime = '-';
 
     if (this.state === AplState.Opened) {
-      if (this.updateTime) {
-        approvalDateTime = moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+      if (this.modifiedTime) {
+        approvalDateTime = moment(this.modifiedTime).format(
+          'YYYY.MM.DD HH:mm:ss'
+        );
       } else {
-        approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+        approvalDateTime = this.allowTime
+          ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss')
+          : '-';
       }
     }
 
     if (this.state === AplState.Rejected) {
-      approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+      approvalDateTime = this.allowTime
+        ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss')
+        : '-';
     }
 
     return approvalDateTime;
@@ -119,7 +118,7 @@ class AplModel extends NewQueryModel {
 
   /* 승인상태 */
   @computed get displayStateName() {
-    const stateName = AplStateName[this.state];
+    const stateName = aplStateNamePolyglotText(this.state);
     return stateName;
   }
 
@@ -132,38 +131,47 @@ class AplModel extends NewQueryModel {
     return this.typeName;
   }
 
-  @computed get displayCollegeChannelName() {
-    return `${this.collegeName} | ${this.channelName}`;
-  }
-
-  /*@computed
-  get isNameShowAsYesNo() {
-    if (this.isNameShow === undefined) return '';
-    return this.isNameShow ? 'Yes' : 'No';
-  }*/
-
   static isBlank(aplModel: AplModel): string {
-    if (!aplModel.title) return '교육명';
-    if (!aplModel.type) return '교육형태';
-    /*if (!aplModel.typeName) return '교육형태명';*/
-    if (aplModel.type === AplType.Etc && !aplModel.typeName) return '교육형태명';
-    if (!aplModel.collegeId) return 'College';
-    if (!aplModel.channelId) return 'Channel';
-    /*if (!aplModel.channelId) return 'Channel';*/
-    if (!aplModel.period.startDateMoment) return '교육시작일자';
-    if (!aplModel.period.endDateMoment) return '교육종료일자';
-    if (!aplModel.institute) return '교육기관';
-    if ((Number(aplModel.requestHour) === 0 && Number(aplModel.requestMinute) === 0)) return '교육시간';
-    //if (!aplModel.requestHour) return '교육시간(시)';
-    //if (!aplModel.requestMinute) return '교육시간(분)';
-    if (!aplModel.content) return '교육내용';
-    if (!aplModel.approvalId) return '승인자';
-    // if (!aplModel.fileIds) return '첨부파일';
+    if (!aplModel.title) {
+      return getPolyglotText('교육명', '개학등록-승인요청-필수1');
+    }
+    if (!aplModel.type) {
+      return getPolyglotText('교육형태', '개학등록-승인요청-필수2');
+    }
+    if (aplModel.type === AplType.Etc && !aplModel.typeName) {
+      return getPolyglotText('교육형태명', '개학등록-승인요청-필수3');
+    }
+    if (!aplModel.collegeId) {
+      return getPolyglotText('College', '개학등록-승인요청-필수4');
+    }
+    if (!aplModel.channelId) {
+      return getPolyglotText('Channel', '개학등록-승인요청-필수5');
+    }
+    if (!aplModel.period.startDateMoment) {
+      return getPolyglotText('교육시작일자', '개학등록-승인요청-필수6');
+    }
+    if (!aplModel.period.endDateMoment) {
+      return getPolyglotText('교육종료일자', '개학등록-승인요청-필수7');
+    }
+    if (!aplModel.institute) {
+      return getPolyglotText('교육기관', '개학등록-승인요청-필수8');
+    }
+    if (
+      Number(aplModel.requestHour) === 0 &&
+      Number(aplModel.requestMinute) === 0
+    ) {
+      return getPolyglotText('교육시간', '개학등록-승인요청-필수9');
+    }
+    if (!aplModel.content) {
+      return getPolyglotText('교육내용', '개학등록-승인요청-필수10');
+    }
+    if (!aplModel.approvalUserIdentity?.id) {
+      return getPolyglotText('승인자', '개학등록-승인요청-필수11');
+    }
     return 'success';
   }
 
   static asNameValues(aplModel: AplModel): NameValueList {
-    //const asNameValues = {
     return {
       nameValues: [
         {
@@ -192,20 +200,15 @@ class AplModel extends NewQueryModel {
         },
       ],
     };
-
-    // return asNameValues;
   }
 
   static asCdo(aplModel: AplModel): AplCdoModel {
-    //
     return {
       title: aplModel.title,
       type: aplModel.type,
       typeName: aplModel.typeName,
       collegeId: aplModel.collegeId,
-      collegeName: aplModel.collegeName,
       channelId: aplModel.channelId,
-      channelName: aplModel.channelName,
       startDate: aplModel && aplModel.period && aplModel.period.startDateLong,
       endDate: aplModel && aplModel.period && aplModel.period.endDateLong,
       institute: aplModel.institute,
@@ -215,57 +218,23 @@ class AplModel extends NewQueryModel {
       allowMinute: aplModel.requestMinute,
       content: aplModel.content,
       state: aplModel.state,
-      creationTime: aplModel.creationTime,
-      creatorId:
-        SkProfileService.instance.skProfile.member.email ||
-        '',
-      creatorName:
-        SkProfileService.instance.skProfile.member.name ||
-        patronInfo.getPatronName() ||
-        '',
       fileIds: aplModel.fileIds || '',
       approvalYn: aplModel.approvalYn || false,
-      approvalId: aplModel.approvalId || '',
-      approvalName: aplModel.approvalName || '',
-      updateTime: aplModel.updateTime,
+      approvalId: aplModel.approvalUserIdentity?.id || '',
       causeOfReturn: aplModel.causeOfReturn || '',
-      approvalEmail: aplModel.approvalEmail || '',
-      approvalCompany: aplModel.approvalCompany || '',
-      approvalDepartment: aplModel.approvalDepartment || '',
-    };
-  }
-
-  /*
-   * @deprecated use aplModelListViewModel.asXLSX
-   */
-  static asXLSX(aplModel: AplModel, index: number): AplXlsxModel {
-    //
-    return {
-      No: String(index + 1),
-      교육명: aplModel.title || '-',
-      교육형태: aplModel.typeName || '-',
-      Channel: aplModel.channelName || '-',
-      교육기간: moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss') + '~' + moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
-      교육시간: aplModel.requestHour + ':' + aplModel.requestMinute || '-',
-      상태:
-        EnumUtil.getEnumValue(AplStateView, aplModel.state).get(
-          aplModel.state
-        ) || '-',
-      생성자: aplModel.creatorName || '-',
-      승인일자:
-        moment(aplModel.creationTime).format('YYYY.MM.DD HH:mm:ss') || '-',
     };
   }
 }
 
+export default AplModel;
+
 decorate(AplModel, {
+  id: observable,
   title: observable,
   type: observable,
   typeName: observable,
   collegeId: observable,
-  collegeName: observable,
   channelId: observable,
-  channelName: observable,
   startDate: observable,
   endDate: observable,
   institute: observable,
@@ -278,21 +247,13 @@ decorate(AplModel, {
   updateMinute: observable,
   content: observable,
   state: observable,
-  creationTime: observable,
-  creatorId: observable,
-  creatorName: observable,
+  registeredTime: observable,
+  modifiedTime: observable,
   fileIds: observable,
   approvalYn: observable,
-  approvalId: observable,
-  approvalName: observable,
-  approvalTime: observable,
-  updateId: observable,
-  updateName: observable,
-  updateTime: observable,
   causeOfReturn: observable,
-  approvalEmail: observable,
-  approvalCompany: observable,
-  approvalDepartment: observable,
+  patronKeyString: observable,
+  registrantUserIdentity: observable,
+  modifierUserIdentity: observable,
+  approvalUserIdentity: observable,
 });
-
-export default AplModel;

@@ -1,25 +1,17 @@
 import { computed, decorate, observable } from 'mobx';
-import { LangStrings } from 'shared/model';
+import LangStrings from '../../../lecture/detail/model/LangStrings';
 
 export class CriteriaItemModel {
   index: number = 0;
-  names: LangStrings = new LangStrings();
+  names: LangStrings | null = null;
   value: number | undefined = undefined;
 
   constructor(criteriaItem?: CriteriaItemModel) {
     //
     if (criteriaItem) {
-      const names = criteriaItem.names && new LangStrings(criteriaItem.names) || this.names;
+      const names = criteriaItem.names;
       Object.assign(this, { ...criteriaItem, names });
     }
-  }
-
-  @computed
-  get name() {
-    if (this.names && this.names.langStringMap) {
-      return this.names.langStringMap.get(this.names.defaultLanguage) || '';
-    }
-    return '';
   }
 }
 

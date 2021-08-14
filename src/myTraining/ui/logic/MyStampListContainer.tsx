@@ -20,13 +20,12 @@ import { useRequestFilterCountView } from '../../service/useRequestFilterCountVi
 import FilterBoxContainer from './FilterBoxContainer';
 import { useScrollMove } from '../../useScrollMove';
 import myTrainingRoutePaths from '../../routePaths';
-
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyStampListContainerProps {
   myStampService?: MyStampService;
   filterBoxService?: FilterBoxService;
 }
-
 
 function MyStampListContainer({
   myStampService,
@@ -50,7 +49,7 @@ function MyStampListContainer({
   useEffect(() => {
     myStampService!.clearAllMyStamps();
     myStampService!.initFilterRdo();
-    if(params.pageNo === '1') {
+    if (params.pageNo === '1') {
       requestStamps();
       return;
     }
@@ -62,11 +61,10 @@ function MyStampListContainer({
   }, []);
 
   useEffect(() => {
-    if(showResult) {
+    if (showResult) {
       myStampService!.setFilterRdoByConditions(conditions);
       requestStampsByConditions();
     }
-
   }, [showResult]);
 
   const requestStamps = async () => {
@@ -84,15 +82,15 @@ function MyStampListContainer({
     checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
-  }
+  };
 
   const requestStampsWithPage = async (offset: Offset) => {
     setIsLoading(true);
     await myStampService!.findAllMyStampsWithPage(offset);
-    checkShowSeeMore(); 
-    setIsLoading(false)
+    checkShowSeeMore();
+    setIsLoading(false);
     scrollOnceMove();
-  }
+  };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     myStampService!.sortMyStamps(column, direction);
@@ -101,7 +99,7 @@ function MyStampListContainer({
   const onClickSeeMore = () => {
     const currentPageNo = parseInt(params.pageNo);
     const nextPageNo = currentPageNo + 1;
-    
+
     const limit = PAGE_SIZE;
     const offset = currentPageNo * PAGE_SIZE;
 
@@ -112,7 +110,7 @@ function MyStampListContainer({
     }, 1000);
 
     history.replace(`./${nextPageNo}`);
-  }
+  };
 
   const checkShowSeeMore = (): void => {
     const { myStamps, myStampCount } = myStampService!;
@@ -130,7 +128,7 @@ function MyStampListContainer({
   };
 
   const moveToLearningList = useCallback(() => {
-    history.push(myTrainingRoutePaths.learningInProgress())
+    history.push(myTrainingRoutePaths.learningInProgress());
   }, []);
 
   const noSuchMessage = (
@@ -138,7 +136,11 @@ function MyStampListContainer({
     withFilter: boolean = false
   ) => {
     return (
-      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
+      (withFilter &&
+        getPolyglotText(
+          '필터 조건에 해당하는 결과가 없습니다.',
+          'mapg-msmp-검색x'
+        )) ||
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
   };
@@ -146,7 +148,9 @@ function MyStampListContainer({
   return (
     <>
       <div className="mypage_contents my-stamp-list">
-        <strong className="mypage_title">My Stamp</strong>
+        <strong className="mypage_title">
+          <PolyglotText id="mapg-msmp-Stamp" defaultString="My Stamp" />
+        </strong>
         <div className="ui segment full">
           {((!resultEmpty || filterCount > 0) && (
             <>
@@ -158,46 +162,44 @@ function MyStampListContainer({
               <FilterBoxContainer />
             </>
           )) || <div style={{ marginTop: 50 }} />}
-          {
-            myStamps &&
-            myStamps.length > 0 && (
-              <>
-                {(!resultEmpty && (
-                  <>
-                    <MyLearningListTemplate>
-                      <MyLearningListHeaderView
-                        contentType={contentType}
-                        onClickSort={onClickSort}
-                      />
-                      <MyStampListView
-                        myStamps={myStamps}
-                        totalCount={myStampCount}
-                      />
-                    </MyLearningListTemplate>
-                    {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-                  </>
-                )) || (
-                  <Segment
-                    style={{
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingLeft: 0,
-                      paddingRight: 0,
-                      height: 400,
-                      boxShadow: '0 0 0 0',
-                      border: 0,
-                    }}
-                  >
-                    <Loadingpanel loading={isLoading} />
-                    {!isLoading && (
-                      <NoSuchContentPanel
-                        message={noSuchMessage(contentType, true)}
-                      />
-                    )}
-                  </Segment>
-                )}
-              </>
-          ) || (
+          {(myStamps && myStamps.length > 0 && (
+            <>
+              {(!resultEmpty && (
+                <>
+                  <MyLearningListTemplate contentType={contentType}>
+                    <MyLearningListHeaderView
+                      contentType={contentType}
+                      onClickSort={onClickSort}
+                    />
+                    <MyStampListView
+                      myStamps={myStamps}
+                      totalCount={myStampCount}
+                    />
+                  </MyLearningListTemplate>
+                  {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+                </>
+              )) || (
+                <Segment
+                  style={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    height: 400,
+                    boxShadow: '0 0 0 0',
+                    border: 0,
+                  }}
+                >
+                  <Loadingpanel loading={isLoading} />
+                  {!isLoading && (
+                    <NoSuchContentPanel
+                      message={noSuchMessage(contentType, true)}
+                    />
+                  )}
+                </Segment>
+              )}
+            </>
+          )) || (
             <Segment
               style={{
                 paddingTop: 0,
@@ -215,22 +217,32 @@ function MyStampListContainer({
                 //   message={noSuchMessage(contentType)}
                 // />
                 <Segment className="full">
-                    <div className="table-wrapper">
-                        <div className="community_nodata">
-                            <Icon className="no-contents80" />
-                            <p>
-                                {`획득한 Stamp가 없습니다.\nStamp가 있는 학습 과정을 찾아보세요.`}
-                            </p>
-                            <Button 
-                              icon 
-                              className="right btn-blue2"
-                              onClick={moveToLearningList}
-                            >
-                                <span className="border">Learning 학습중 바로가기</span>
-                                <Icon className="morelink"/>
-                            </Button>
-                        </div>
+                  <div className="table-wrapper">
+                    <div className="community_nodata">
+                      <Icon className="no-contents80" />
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `획득한 Stamp가 없습니다.<br/>Stamp가 있는 학습 과정을 찾아보세요.`,
+                            'mapg-msmp-Stamp설명'
+                          ),
+                        }}
+                      />
+                      <Button
+                        icon
+                        className="right btn-blue2"
+                        onClick={moveToLearningList}
+                      >
+                        <span className="border">
+                          <PolyglotText
+                            id="mapg-msmp-바로가기"
+                            defaultString="Learning 학습중 바로가기"
+                          />
+                        </span>
+                        <Icon className="morelink" />
+                      </Button>
                     </div>
+                  </div>
                 </Segment>
               )}
             </Segment>
@@ -242,10 +254,7 @@ function MyStampListContainer({
 }
 
 export default inject(
-  mobxHelper.injectFrom(
-    'myTraining.myStampService',
-    'shared.filterBoxService',
-  )
+  mobxHelper.injectFrom('myTraining.myStampService', 'shared.filterBoxService')
 )(observer(MyStampListContainer));
 
 const PAGE_SIZE = 20;

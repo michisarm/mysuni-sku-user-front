@@ -1,15 +1,14 @@
-import { IdName } from '@nara.platform/accent';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export default interface ProfilePoupModel {
-  name: string;
-  company: IdName;
+  id: string;
+  name: PolyglotString;
+  company: PolyglotString;
   profileImg: string;
   profileBgImg: string;
   nickname: string;
-  oriNickname: string;
-  nameFlag: string;
-  introduce: string;
-  hobby: string;
+  displayNicknameFirst: boolean;
+  selfIntroduce: string;
   followerCount: number;
   followingCount: number;
 }

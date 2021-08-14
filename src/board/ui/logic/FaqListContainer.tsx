@@ -9,6 +9,12 @@ import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
 import routePaths from '../../routePaths';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -75,10 +81,12 @@ class FaqListContainer extends React.Component<Props, State> {
     postService.clearPosts();
 
     let totalCount = 0;
-    await postService.findPostsByCategoryId(categoryId, 0, offset).then(res => {
-      totalCount = res.totalCount;
-      this.setState({ isLoading: false });
-    });
+    await postService
+      .findPostsByCategoryId(categoryId, 0, offset)
+      .then((res) => {
+        totalCount = res.totalCount;
+        this.setState({ isLoading: false });
+      });
 
     if (offset < totalCount) {
       this.setState({ offset: offset + 10 });
@@ -118,7 +126,6 @@ class FaqListContainer extends React.Component<Props, State> {
   }
 
   renderPostRow(post: PostModel, index: number) {
-    //
     return (
       <a
         key={index}
@@ -128,7 +135,13 @@ class FaqListContainer extends React.Component<Props, State> {
       >
         <span className="cell title">
           <span className="inner">
-            <span className="ellipsis">{post.title}</span>
+            {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
+            <span className="ellipsis">
+              {parsePolyglotString(
+                post.title,
+                getDefaultLang(post.langSupports)
+              )}
+            </span>
           </span>
         </span>
       </a>
@@ -156,7 +169,7 @@ class FaqListContainer extends React.Component<Props, State> {
                       className="base"
                       name="radioGroup"
                       index={index}
-                      label={category.name}
+                      label={parsePolyglotString(category.name)}
                       value={category.categoryId}
                       checked={categoryIndex === index}
                       onChange={this.onChangeCategory}
@@ -164,6 +177,7 @@ class FaqListContainer extends React.Component<Props, State> {
                   ))}
               </div>
             </div>
+
             <Segment
               style={{
                 paddingTop: 0,
@@ -178,8 +192,6 @@ class FaqListContainer extends React.Component<Props, State> {
               <Loadingpanel loading={isLoading} />
             </Segment>
           </div>
-        ) : result.length === 0 ? (
-          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
         ) : (
           <div className="support-list-wrap">
             <div className="list-top">
@@ -191,7 +203,7 @@ class FaqListContainer extends React.Component<Props, State> {
                       className="base"
                       name="radioGroup"
                       index={index}
-                      label={category.name}
+                      label={parsePolyglotString(category.name)}
                       value={category.categoryId}
                       checked={categoryIndex === index}
                       onChange={this.onChangeCategory}
@@ -200,14 +212,26 @@ class FaqListContainer extends React.Component<Props, State> {
               </div>
             </div>
             <div className="su-list faq">
-              {result.map((post, index) => this.renderPostRow(post, index))}
+              {result.length === 0 ? (
+                <NoSuchContentPanel
+                  message={getPolyglotText(
+                    '등록된 FAQ가 없습니다.',
+                    'support-FAQ-목록없음'
+                  )}
+                />
+              ) : (
+                result.map((post, index) => this.renderPostRow(post, index))
+              )}
             </div>
 
             {result.length > 0 && result.length < totalCount && (
               <div className="more-comments" onClick={this.onClickListMore}>
                 <Button icon className="left moreview">
                   <Icon className="moreview" />
-                  list more
+                  <PolyglotText
+                    id="support-FAQ-더보기"
+                    defaultString="list more"
+                  />
                 </Button>
               </div>
             )}

@@ -13,6 +13,14 @@ import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import {
+  PolyglotString,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
@@ -57,17 +65,28 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   componentDidMount(): void {
     const { postService, categoryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
-    const name = patronInfo.getPatronName() || '';
-    const { email, company } = skProfileService!.skProfile.member;
+    //const names = JSON.parse(patronInfo.getPatronName() || '') || '';
+    const { email } = skProfileService!.skProfile;
     // postService.clearPost();
     categoryService!.findCategoriesByBoardId('QNA').then(() => {
       postService!.changePostProps('boardId', 'QNA');
-      postService!.changePostProps('writer.name', name);
+      const writerName: PolyglotString = {
+        en: skProfile.name.en,
+        ko: skProfile.name.ko,
+        zh: skProfile.name.zh,
+      };
+      postService!.changePostProps('writer.name', writerName);
       postService!.changePostProps('writer.email', email);
-      postService!.changePostProps('writer.companyName', company);
+      const writerCompanyName: PolyglotString = {
+        en: skProfile.companyName.en,
+        ko: skProfile.companyName.ko,
+        zh: skProfile.companyName.zh,
+      };
+      postService!.changePostProps('writer.companyName', writerCompanyName);
       postService!.changePostProps(
         'writer.companyCode',
-        skProfileService!.skProfile.member.companyCode
+        skProfile.companyCode
+        // skProfileService!.skProfile.companyName
       );
     });
   }
@@ -105,7 +124,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     postService!
       .registerPost(post)
-      .then(postId =>
+      .then((postId) =>
         history.push(routePaths.supportQnAPost(postId as string))
       );
     this.onClose();
@@ -176,11 +195,14 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     if (currentUrl.includes('cube') || currentUrl.includes('course')) {
       categorys.map((data, index) => {
-        if (data.name === 'Contents') {
+        if (
+          (data && data.name ? parsePolyglotString(data && data.name) : '') ===
+          'Contents'
+        ) {
           questionType.push({
             key: index,
-            value: data.categoryId,
-            text: data.name,
+            value: { id: data.categoryId, name: data.name },
+            text: parsePolyglotString(data.name),
           });
         }
       });
@@ -188,8 +210,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       categorys.map((data, index) => {
         questionType.push({
           key: index,
-          value: data.categoryId,
-          text: data.name,
+          value: { id: data.categoryId, name: data.name },
+          text: parsePolyglotString(data.name),
         });
       });
     }
@@ -200,7 +222,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
           <div className="apl-form-wrap support">
             <Form>
               <Form.Field>
-                <label>제목</label>
+                <label>
+                  <PolyglotText
+                    id="support-QnaWrite-제목"
+                    defaultString="제목"
+                  />
+                </label>
                 <div
                   className={classNames('ui right-top-count input', {
                     focus,
@@ -210,22 +237,36 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 >
                   <span className="count">
                     <span className="now">
-                      {(post && post.title && post.title.length) || 0}
+                      {(post &&
+                        post.title &&
+                        parsePolyglotString(post.title).length) ||
+                        0}
                     </span>
                     /<span className="max">100</span>
                   </span>
                   <input
                     type="text"
-                    placeholder="제목을 입력해주세요."
+                    placeholder={getPolyglotText(
+                      '제목을 입력해주세요.',
+                      'support-QnaWrite-제목입력'
+                    )}
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    value={(post && post.title) || ''}
+                    value={
+                      post && post.title ? parsePolyglotString(post.title) : ''
+                    }
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
                       } else {
-                        this.setState({ write: e.target.value, fieldName: '' });
-                        this.onChangePostProps('title', e.target.value);
+                        const value = e.target.value;
+                        this.setState({ write: value, fieldName: '' });
+                        const polyglotString: PolyglotString = {
+                          en: null,
+                          ko: value,
+                          zh: null,
+                        };
+                        this.onChangePostProps('title', polyglotString);
                       }
                     }}
                   />
@@ -233,32 +274,50 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     className="clear link"
                     onClick={(e: any) => {
                       this.setState({ write: '' });
-                      this.onChangePostProps('title', e.target.value);
+                      const polyglotString: PolyglotString = {
+                        en: null,
+                        ko: '',
+                        zh: null,
+                      };
+                      this.onChangePostProps('title', polyglotString);
                     }}
                   />
                   <span className="validation">
-                    You can enter up to 100 characters.
+                    <PolyglotText
+                      id="support-QnaWrite-백자안내"
+                      defaultString="You can enter up to 100 characters."
+                    />
                   </span>
                 </div>
               </Form.Field>
               <Form.Field>
-                <label>문의유형</label>
+                <label>
+                  <PolyglotText
+                    id="support-QnaWrite-문의유형"
+                    defaultString="문의유형"
+                  />
+                </label>
                 <div className="select-box">
                   <Select
-                    placeholder="분류를 선택해주세요"
+                    placeholder={getPolyglotText(
+                      '분류를 선택해주세요',
+                      'support-QnaWrite-분류선택'
+                    )}
                     className="dropdown selection"
                     options={questionType}
                     onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', {
-                        id: data.value,
-                        name: e.target.innerText,
-                      })
+                      this.onChangePostProps('category', data.value)
                     }
                   />
                 </div>
               </Form.Field>
               <Form.Field>
-                <label>내용</label>
+                <label>
+                  <PolyglotText
+                    id="support-QnaWrite-내용"
+                    defaultString="내용"
+                  />
+                </label>
                 <div className="ui editor-wrap">
                   <div className="ui form">
                     <div
@@ -277,15 +336,26 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       {/*/>*/}
                       <textarea
                         value={
-                          (post && post.contents && post.contents.contents) ||
+                          (post &&
+                            post.contents &&
+                            post.contents.contents &&
+                            parsePolyglotString(post.contents.contents)) ||
                           ''
                         }
-                        onChange={e => {
+                        onChange={(e) => {
                           const value = e.target.value;
                           if (value.length > 1000) {
                             this.setState({ fieldName: 'contents.contents' });
                           } else {
-                            this.onChangePostProps('contents.contents', value);
+                            const polyglotString: PolyglotString = {
+                              en: null,
+                              ko: value,
+                              zh: null,
+                            };
+                            this.onChangePostProps(
+                              'contents.contents',
+                              polyglotString
+                            );
                             this.setState({
                               length: value.length,
                               fieldName: '',
@@ -295,14 +365,22 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       />
 
                       <span className="validation">
-                        You can enter up to 1000 characters.
+                        <PolyglotText
+                          id="support-QnaWrite-천자안내"
+                          defaultString="You can enter up to 1000 characters."
+                        />
                       </span>
                     </div>
                   </div>
                 </div>
               </Form.Field>
               <Form.Field>
-                <label>첨부파일</label>
+                <label>
+                  <PolyglotText
+                    id="support-QnaWrite-첨부파일"
+                    defaultString="첨부파일"
+                  />
+                </label>
                 <Form>
                   <div className="line-attach width-sm">
                     <div className="attach-inner">
@@ -338,10 +416,16 @@ class QnaRegisterContainer extends React.Component<Props, States> {
               </Form.Field>
               <div className="buttons">
                 <Button className="fix line" onClick={this.onClose}>
-                  Close
+                  <PolyglotText
+                    id="support-QnaWrite-닫기"
+                    defaultString="Close"
+                  />
                 </Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>
-                  Submit
+                  <PolyglotText
+                    id="support-QnaWrite-제출"
+                    defaultString="Submit"
+                  />
                 </Button>
               </div>
             </Form>
@@ -353,11 +437,14 @@ class QnaRegisterContainer extends React.Component<Props, States> {
           handleClose={this.handleCloseAlertWin}
         />
         <ConfirmWin
-          message="저장하시겠습니까?"
+          message={getPolyglotText(
+            '저장하시겠습니까?',
+            'support-QnaWrite-저장mg'
+          )}
           open={confirmWinOpen}
-          title="저장안내"
-          buttonYesName="OK"
-          buttonNoName="Cancel"
+          title={getPolyglotText('저장안내', 'support-QnaWrite-저장tt')}
+          buttonYesName={getPolyglotText('OK', 'support-QnaWrite-ok')}
+          buttonNoName={getPolyglotText('Cancel', 'support-QnaWrite-cancel')}
           handleClose={this.handleCloseConfirmWin}
           handleOk={this.handleOKConfirmWin}
         />

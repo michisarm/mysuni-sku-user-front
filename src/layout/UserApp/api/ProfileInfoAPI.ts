@@ -5,7 +5,7 @@ import Axios, { AxiosResponse } from 'axios';
 import { PostModel } from '../model/PostModel';
 import { MyBadgeRdo } from '../../../certification/model/MyBadgeRdo';
 import { BadgeModel, BadgesModel } from '../model/BadgeModel';
-import { FollowModel } from '../model/FollowModel';
+import { FollowCount, FollowModel } from '../model/FollowModel';
 
 const BASE_URL = '/api/community';
 const BASE_URL_Badge = '/api/badge/badges';
@@ -47,50 +47,55 @@ export function findAllPostViewsFromProfileFeed(
 export function findBadgesByBadgeIssueState(
   memberId: string,
   startDate: string,
-  endDate: string,
+  endDate: string
 ): Promise<OffsetElementList<BadgeModel> | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL_Badge}/findBadges/${memberId}?level=&issued=true&offset=0&limit=9999&startDate=${startDate}&endDate=${endDate}`;
 
-  return axios
-    .get<OffsetElementList<BadgeModel>>(url)
-    .then(AxiosReturn);
+  return axios.get<OffsetElementList<BadgeModel>>(url).then(AxiosReturn);
 }
 
 // Follow List 조회
-export function findAllFollow(
-): Promise<string[] | undefined> {
+export function findAllFollow(): Promise<string[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow`;
+  // const url = `${BASE_URL_Follow}/flow`;
+  const url = `/api/community/follows`;
 
-  return axios
-    .get<string[]>(url)
-    .then(AxiosReturn);
+  return axios.get<string[]>(url).then(AxiosReturn);
 }
 
 export function followMember(
-  memberId: string,
+  memberId: string
 ): Promise<FollowModel | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow/${memberId}`;
-  return axios
-    .post<FollowModel>(url)
-    .then(AxiosReturn);
+  // const url = `${BASE_URL_Follow}/flow/${memberId}`;
+  const url = `/api/community/follows?followingId=${memberId}`;
+  return axios.post<FollowModel>(url).then(AxiosReturn);
 }
 
 // unFollow
 export function unfollowMember(
-  memberId: string,
+  memberId: string
 ): Promise<FollowModel | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL_Follow}/flow/${memberId}/unfollow`;
-  return axios
-    .delete<FollowModel>(url)
-    .then(AxiosReturn);
+  // const url = `${BASE_URL_Follow}/flow/${memberId}/unfollow`;
+  const url = `/api/community/follows?followingId=${memberId}`;
+  return axios.delete<FollowModel>(url).then(AxiosReturn);
+}
+
+export function findFollowWithFollowingCount(
+  memberId: string
+): Promise<FollowCount | undefined> {
+  const axios = getAxios();
+
+  const url = `${BASE_URL}/follows/count/${memberId}`;
+  return axios.get<FollowCount>(url).then(AxiosReturn);
 }
 
 export function findProfilePhoto(denizenKeys: string[]) {
   const axios = getAxios();
-  return axios.post<string[]>('/api/profile/profiles/byDenizenKeys', denizenKeys)
-    .then((response: any) => response && response.data || []);
+  // return axios.post<string[]>('/api/profile/profiles/byDenizenKeys', denizenKeys)
+  return axios
+    .post<string[]>('/api/user/users/byDenizenIds', denizenKeys)
+    .then((response: any) => (response && response.data) || []);
 }

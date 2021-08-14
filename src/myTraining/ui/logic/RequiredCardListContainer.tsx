@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import ReactGA from 'react-ga';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { LectureService, SeeMoreButton } from '../../../lecture';
 import { Direction } from '../../model/Direction';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -18,7 +17,7 @@ import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
-
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
@@ -43,15 +42,15 @@ function RequiredCardListContainer({
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
-  
+
   useEffect(() => {
     lectureService!.clearAllTableViews();
     lectureService!.initFilterRdo();
-    
-    if(params.pageNo === '1') {
+
+    if (params.pageNo === '1') {
       requestRequiredCards();
       return;
-    } 
+    }
 
     const currentPageNo = parseInt(params.pageNo);
     const limit = currentPageNo * PAGE_SIZE;
@@ -60,7 +59,7 @@ function RequiredCardListContainer({
   }, []);
 
   useEffect(() => {
-    if(showResult) {
+    if (showResult) {
       lectureService!.setFilterRdoByConditions(conditions);
       requestRequiredCardsByConditions();
     }
@@ -81,7 +80,7 @@ function RequiredCardListContainer({
     checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
-  }
+  };
 
   const requestRequiredCardsWithPage = async (offset: Offset) => {
     setIsLoading(true);
@@ -93,7 +92,7 @@ function RequiredCardListContainer({
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
-  }, []);  
+  }, []);
 
   const onClickSeeMore = () => {
     setTimeout(() => {
@@ -108,9 +107,8 @@ function RequiredCardListContainer({
 
     requestRequiredCardsWithPage({ offset, limit });
 
-
     history.replace(`./${nextPageNo}`);
-  }
+  };
 
   const checkShowSeeMore = (): void => {
     const { lectureTableViews, lectureTableCount } = lectureService!;
@@ -126,7 +124,6 @@ function RequiredCardListContainer({
 
     setShowSeeMore(true);
   };
-
 
   const noSuchMessage = (
     contentType: MyLearningContentType,
@@ -150,46 +147,44 @@ function RequiredCardListContainer({
           <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
-      {
-        lectureTableViews &&
-        lectureTableViews.length > 0 && (
-          <>
-            {(!resultEmpty && (
-              <>
-                <MyLearningListTemplate>
-                  <MyLearningListHeaderView
-                    contentType={contentType}
-                    onClickSort={onClickSort}
-                  />
-                  <RequiredCardListView 
-                    requiredCards={lectureTableViews}
-                    totalCount={lectureTableCount}
-                  />
-                </MyLearningListTemplate>
-                {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              </>
-            )) || (
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-                {!isLoading && (
-                  <NoSuchContentPanel
-                    message={noSuchMessage(contentType, true)}
-                  />
-                )}
-              </Segment>
-            )}
-          </>
-      ) || (
+      {(lectureTableViews && lectureTableViews.length > 0 && (
+        <>
+          {(!resultEmpty && (
+            <>
+              <MyLearningListTemplate contentType={contentType}>
+                <MyLearningListHeaderView
+                  contentType={contentType}
+                  onClickSort={onClickSort}
+                />
+                <RequiredCardListView
+                  requiredCards={lectureTableViews}
+                  totalCount={lectureTableCount}
+                />
+              </MyLearningListTemplate>
+              {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+            </>
+          )) || (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+              {!isLoading && (
+                <NoSuchContentPanel
+                  message={noSuchMessage(contentType, true)}
+                />
+              )}
+            </Segment>
+          )}
+        </>
+      )) || (
         <Segment
           style={{
             paddingTop: 0,
@@ -203,9 +198,7 @@ function RequiredCardListContainer({
         >
           <Loadingpanel loading={isLoading} />
           {!isLoading && (
-            <NoSuchContentPanel
-              message={noSuchMessage(contentType)}
-            />
+            <NoSuchContentPanel message={noSuchMessage(contentType)} />
           )}
         </Segment>
       )}
@@ -213,9 +206,8 @@ function RequiredCardListContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'lecture.lectureService',
-  'shared.filterBoxService',
-))(observer(RequiredCardListContainer));
+export default inject(
+  mobxHelper.injectFrom('lecture.lectureService', 'shared.filterBoxService')
+)(observer(RequiredCardListContainer));
 
 const PAGE_SIZE = 20;

@@ -25,9 +25,10 @@ export const getBrowser = () => {
   let ua;
   let result = { brand: '', version: '' };
   // Chromium 기반 최신 브라우져 UA 프리징 대비
-  if (window.navigator.userAgentData) {
-    ua = window.navigator.userAgentData.brands.filter((a: { brand: string }) =>
-      /Google Chrome|Microsoft Edge|Whale/.test(a.brand)
+  if ((window.navigator as any).userAgentData) {
+    ua = (window.navigator as any).userAgentData.brands.filter(
+      (a: { brand: string }) =>
+        /Google Chrome|Microsoft Edge|Whale/.test(a.brand)
     )[0];
     if (ua) {
       let brand;

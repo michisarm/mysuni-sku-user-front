@@ -7,21 +7,26 @@ import { CategoryModel, IdName } from 'shared/model';
 import { CollegeColors, CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
-
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
 
 interface Props {
-  collegeService?: CollegeService
-  trigger: React.ReactNode
-  defaultSelectedCategoryChannels: CategoryModel[]
-  collegeType?: CollegeType
-  targetCollegeId?: string
-  onConfirmCategoryChannels: (categoryChannels: CategoryModel[]) => void
+  collegeService?: CollegeService;
+  trigger: React.ReactNode;
+  defaultSelectedCategoryChannels: CategoryModel[];
+  collegeType?: CollegeType;
+  targetCollegeId?: string;
+  onConfirmCategoryChannels: (categoryChannels: CategoryModel[]) => void;
 }
 
 interface State {
-  open: boolean
-  selectedCollege: IdName
-  selectedCategoryChannels: CategoryModel[]
+  open: boolean;
+  selectedCollege: IdName;
+  selectedCategoryChannels: CategoryModel[];
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService'))
@@ -35,16 +40,20 @@ class SubChannelModalContainer extends Component<Props, State> {
     selectedCategoryChannels: [],
   };
 
-
   componentDidMount(): void {
     //
     this.findAllColleges();
     this.setSelectedCategoryChannels();
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<State>
+  ): void {
     //
-    const { defaultSelectedCategoryChannels: prevSelectedCategoryChannels } = prevProps;
+    const {
+      defaultSelectedCategoryChannels: prevSelectedCategoryChannels,
+    } = prevProps;
     const { defaultSelectedCategoryChannels } = this.props;
 
     if (prevSelectedCategoryChannels !== defaultSelectedCategoryChannels) {
@@ -68,7 +77,9 @@ class SubChannelModalContainer extends Component<Props, State> {
     //
     const { defaultSelectedCategoryChannels } = this.props;
 
-    this.setState({ selectedCategoryChannels: [ ...defaultSelectedCategoryChannels]});
+    this.setState({
+      selectedCategoryChannels: [...defaultSelectedCategoryChannels],
+    });
   }
 
   setSelectedCollege() {
@@ -76,7 +87,9 @@ class SubChannelModalContainer extends Component<Props, State> {
     const { collegeService, targetCollegeId } = this.props;
     const { colleges } = collegeService!;
 
-    const college = colleges.find(college => college.collegeId === targetCollegeId);
+    const college = colleges.find(
+      (college) => college.collegeId === targetCollegeId
+    );
 
     if (college) {
       this.setState({ selectedCollege: college.toIdName() });
@@ -89,13 +102,17 @@ class SubChannelModalContainer extends Component<Props, State> {
     const { targetCollegeId, collegeType } = this.props;
 
     if (collegeType && collegeType === CollegeType.Company) {
-      const college = colleges.find(college => college.collegeId === targetCollegeId);
+      const college = colleges.find(
+        (college) => college.collegeId === targetCollegeId
+      );
 
       if (college) {
         return [college];
       }
     }
-    return colleges.filter(college => college.collegeType === CollegeType.University);
+    return colleges.filter(
+      (college) => college.collegeType === CollegeType.University
+    );
   }
 
   isActiveCollege(college: CollegeModel) {
@@ -103,7 +120,9 @@ class SubChannelModalContainer extends Component<Props, State> {
     const { collegeType } = this.props;
     const { selectedCollege } = this.state;
 
-    return collegeType === CollegeType.Company ? true :  college.collegeId === selectedCollege.id;
+    return collegeType === CollegeType.Company
+      ? true
+      : college.collegeId === selectedCollege.id;
   }
 
   onOpen() {
@@ -115,8 +134,7 @@ class SubChannelModalContainer extends Component<Props, State> {
         title: '메인채널 선택',
         message: '서브채널을 선택하기 전에 메인채널을 먼저 선택해 주세요.',
       });
-    }
-    else {
+    } else {
       this.setState({ open: true });
     }
   }
@@ -142,7 +160,7 @@ class SubChannelModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ selectedCategoryChannels: []});
+    this.setState({ selectedCategoryChannels: [] });
   }
 
   onClickCollege(currentSelectedCollege: CollegeModel) {
@@ -152,8 +170,7 @@ class SubChannelModalContainer extends Component<Props, State> {
 
     if (currentSelectedCollege.collegeId === selectedCollege.id) {
       nextSelectedCollege = new IdName();
-    }
-    else {
+    } else {
       nextSelectedCollege = currentSelectedCollege.toIdName();
     }
 
@@ -162,20 +179,32 @@ class SubChannelModalContainer extends Component<Props, State> {
     });
   }
 
-  onClickChannel(e: any, { checked }: any, channel: IdName) {
+  onClickChannel(
+    e: any,
+    { checked }: any,
+    channel: { id: string; name: PolyglotString; active?: boolean }
+  ) {
     //
     this.setState((state) => {
       //
       let selectedCategoryChannels = [...state.selectedCategoryChannels];
+      const parseChannel: IdName = {
+        id: channel.id,
+        name: parsePolyglotString(channel.name),
+        active: channel.active,
+      };
 
       if (checked) {
-        selectedCategoryChannels.push(new CategoryModel({
-          college: state.selectedCollege,
-          channel,
-        }),);
-      }
-      else {
-        selectedCategoryChannels = selectedCategoryChannels.filter(categoryModel => categoryModel.channel.id !== channel.id);
+        selectedCategoryChannels.push(
+          new CategoryModel({
+            college: state.selectedCollege,
+            channel: parseChannel,
+          })
+        );
+      } else {
+        selectedCategoryChannels = selectedCategoryChannels.filter(
+          (categoryModel) => categoryModel.channel.id !== channel.id
+        );
       }
 
       return { selectedCategoryChannels };
@@ -185,8 +214,9 @@ class SubChannelModalContainer extends Component<Props, State> {
   onRemove(categoryChannel: CategoryModel) {
     //
     this.setState((state) => ({
-      selectedCategoryChannels: state.selectedCategoryChannels.filter((categoryModel) =>
-        categoryModel.channel.id !== categoryChannel.channel.id
+      selectedCategoryChannels: state.selectedCategoryChannels.filter(
+        (categoryModel) =>
+          categoryModel.channel.id !== categoryChannel.channel.id
       ),
     }));
   }
@@ -198,27 +228,64 @@ class SubChannelModalContainer extends Component<Props, State> {
     const targetColleges = this.getTargetColleges();
 
     return (
-      <Modal className="base w1000" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
+      <Modal
+        className="base w1000"
+        open={open}
+        trigger={trigger}
+        onOpen={this.onOpen}
+        onClose={this.onClose}
+      >
         <Modal.Header className="res">
-          서브채널 선택
-          <span className="sub f12">서브채널을 선택해주세요.</span>
+          <PolyglotText
+            defaultString="서브채널 선택"
+            id="Create-NMSubChannelModal-SubChannel"
+          />
+          <span className="sub f12">
+            <PolyglotText
+              defaultString="서브채널을 선택해주세요."
+              id="Create-NMSubChannelModal-SubChannelSub"
+            />
+          </span>
         </Modal.Header>
         <Modal.Content>
           <ChannelModalContentWrapper
             header={
               <>
                 <div className="cell v-middle">
-                  <span className="text01">Channel list</span>
+                  <span className="text01">
+                    <PolyglotText
+                      defaultString="Channel list"
+                      id="Create-NMSubChannelModal-Channel list"
+                    />
+                  </span>
                 </div>
                 <div className="cell v-middle">
-                  <span className="text01">Selected</span>
+                  <span className="text01">
+                    <PolyglotText
+                      defaultString="Selected"
+                      id="Create-NMSubChannelModal-Selected"
+                    />
+                  </span>
                   <span className="count">
-                    <span className="text01 add">{selectedCategoryChannels.length}</span>
-                    <span className="text02"> / 80</span>
+                    <span className="text01 add">
+                      {selectedCategoryChannels.length}
+                    </span>
+                    <span className="text02">
+                      <PolyglotText
+                        defaultString="/ 80"
+                        id="Create-NMSubChannelModal-/80"
+                      />{' '}
+                    </span>
                   </span>
                   <div className="right">
                     <button className="clear" onClick={this.onReset}>
-                      <Icon className="reset" /><span className="blind">reset</span>
+                      <Icon className="reset" />
+                      <span className="blind">
+                        <PolyglotText
+                          defaultString="reset"
+                          id="Create-NMSubChannelModal-reset"
+                        />
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -228,28 +295,39 @@ class SubChannelModalContainer extends Component<Props, State> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling-60vh">
-                  { targetColleges.map((college, index) => (
+                  {targetColleges.map((college, index) => (
                     <Accordion key={`college-${index}`} className="channel">
                       <Accordion.Title
                         active={this.isActiveCollege(college)}
                         onClick={() => this.onClickCollege(college)}
                       >
-                        <span className={`name ${CollegeColors[index]}`}>{college.name}</span>
-                        { collegeType === CollegeType.University && <Icon />}
+                        <span className={`name ${CollegeColors[index]}`}>
+                          {parsePolyglotString(
+                            college.name,
+                            getDefaultLang(college.langSupports)
+                          )}
+                        </span>
+                        {collegeType === CollegeType.University && <Icon />}
                       </Accordion.Title>
                       <Accordion.Content active={this.isActiveCollege(college)}>
                         <ul>
-                          { college.channels.map((channel, idx) => (
+                          {college.channels.map((channel, idx) => (
                             <li key={`channel-${idx}`}>
                               <Checkbox
                                 className="base"
-                                label={channel.name}
-                                checked={
-                                  selectedCategoryChannels
-                                    .map((categoryChannel => categoryChannel.channel.id))
-                                    .includes(channel.id)
+                                label={parsePolyglotString(
+                                  channel.name,
+                                  getDefaultLang(channel.langSupports)
+                                )}
+                                checked={selectedCategoryChannels
+                                  .map(
+                                    (categoryChannel) =>
+                                      categoryChannel.channel.id
+                                  )
+                                  .includes(channel.id)}
+                                onChange={(e, data) =>
+                                  this.onClickChannel(e, data, channel)
                                 }
-                                onChange={(e, data) => this.onClickChannel(e, data, channel)}
                               />
                             </li>
                           ))}
@@ -265,8 +343,13 @@ class SubChannelModalContainer extends Component<Props, State> {
                 <div className="scrolling-60vh">
                   <div className="select-item">
                     {selectedCategoryChannels.map((categoryChannel, index) => (
-                      <Button key={`category-channel-${index}`} className="del" onClick={() => this.onRemove(categoryChannel)}>
-                        {categoryChannel.college.name} &gt; {categoryChannel.channel.name}
+                      <Button
+                        key={`category-channel-${index}`}
+                        className="del"
+                        onClick={() => this.onRemove(categoryChannel)}
+                      >
+                        {categoryChannel.college.name} &gt;{' '}
+                        {categoryChannel.channel.name}
                       </Button>
                     ))}
                   </div>
@@ -276,8 +359,15 @@ class SubChannelModalContainer extends Component<Props, State> {
           </ChannelModalContentWrapper>
         </Modal.Content>
         <Modal.Actions>
-          <Button type="button" className="w190 pop d" onClick={this.onCancel}>Cancel</Button>
-          <Button type="button" className="w190 pop p" onClick={this.onConfirm}>OK</Button>
+          <Button type="button" className="w190 pop d" onClick={this.onCancel}>
+            <PolyglotText
+              defaultString="Cancel"
+              id="Create-NMSubChannelModal-Cancel"
+            />
+          </Button>
+          <Button type="button" className="w190 pop p" onClick={this.onConfirm}>
+            <PolyglotText defaultString="Ok" id="Create-NMSubChannelModal-OK" />
+          </Button>
         </Modal.Actions>
       </Modal>
     );

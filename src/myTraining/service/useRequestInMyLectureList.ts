@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from "react";
-import InMyLectureService from "../present/logic/InMyLectureService";
-import FilterBoxService from "../../shared/present/logic/FilterBoxService";
-import { useParams } from "react-router-dom";
-import { MyTrainingRouteParams } from "../model/MyTrainingRouteParams";
-import { Offset } from "@nara.platform/accent";
-
+import { useEffect, useState, useRef } from 'react';
+import InMyLectureService from '../present/logic/InMyLectureService';
+import FilterBoxService from '../../shared/present/logic/FilterBoxService';
+import { useParams } from 'react-router-dom';
+import { Offset } from '@nara.platform/accent';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 
 interface ReturnValue {
   isLoading: boolean;
@@ -23,7 +22,7 @@ export function useRequestInMyLectureList(): ReturnValue {
 
   const { showResult, conditions } = FilterBoxService.instance;
 
-  useEffect(() => {  
+  useEffect(() => {
     requestInMyLectures();
     return () => {
       InMyLectureService.instance.clearAllTableViews();
@@ -31,20 +30,20 @@ export function useRequestInMyLectureList(): ReturnValue {
   }, []);
 
   useEffect(() => {
-    if(showResult) {
+    if (showResult) {
       requestInMyLecturesByConditions();
     }
-  }, [showResult])
+  }, [showResult]);
 
   useEffect(() => {
-    if(params.pageNo === '1') {
+    if (params.pageNo === '1') {
       return;
     }
 
     requestInMyLecturesWithPage();
   }, [params.pageNo]);
 
-  const requestInMyLectures = async () => {  
+  const requestInMyLectures = async () => {
     setIsLoading(true);
     InMyLectureService.instance.initFilterRdo();
     const isEmpty = await InMyLectureService.instance.findAllTableViews();
@@ -56,7 +55,8 @@ export function useRequestInMyLectureList(): ReturnValue {
   const requestInMyLecturesByConditions = async () => {
     setIsLoading(true);
     InMyLectureService.instance.setFilterRdoByConditions(conditions);
-    const isEmpty = await InMyLectureService.instance.findAllTableViewsByConditions();
+    const isEmpty =
+      await InMyLectureService.instance.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
@@ -66,12 +66,15 @@ export function useRequestInMyLectureList(): ReturnValue {
     pageInfo.current.limit = 20;
     pageInfo.current.offset += pageInfo.current.limit;
 
-    await InMyLectureService.instance.findAllTableViewsWithPage(pageInfo.current);
+    await InMyLectureService.instance.findAllTableViewsWithPage(
+      pageInfo.current
+    );
     checkShowSeeMore();
-  }
+  };
 
   const checkShowSeeMore = () => {
-    const { inMyLectureTableViews, inMyLectureTableCount } = InMyLectureService.instance;
+    const { inMyLectureTableViews, inMyLectureTableCount } =
+      InMyLectureService.instance;
 
     if (inMyLectureTableViews.length >= inMyLectureTableCount) {
       setShowSeeMore(false);
@@ -83,7 +86,7 @@ export function useRequestInMyLectureList(): ReturnValue {
     }
 
     setShowSeeMore(true);
-  }
+  };
 
   return { isLoading, resultEmpty, showSeeMore };
 }

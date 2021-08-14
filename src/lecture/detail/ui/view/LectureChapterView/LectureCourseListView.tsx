@@ -8,6 +8,7 @@ import CubeIconType from '../../../../shared/Lecture/model/CubeIconType';
 import { Icon, Label } from 'semantic-ui-react';
 import CubeTypeNameType from '../../../../../myTraining/model/CubeTypeNameType';
 import CubeType from '../../../../model/CubeType';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   courseCount: number;
@@ -29,11 +30,16 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
   return (
     <div className="course-info-essential">
       <div className="essential-top">
-        <span>
-          총 <strong>{courseCount}개</strong>의 강의가 구성되어 있습니다.
-        </span>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              `총 <strong>${courseCount}개</strong>의 강의가 구성되어 있습니다.`,
+              'lecture-card-강의구성'
+            ),
+          }}
+        />
       </div>
-      {learningContents.map(cube => {
+      {learningContents.map((cube) => {
         const description = cube.description || '';
         const isDiscussion = cube.type === 'None';
 

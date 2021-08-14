@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Table } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import OfficeWeb from '../../../../lecture/detail/model/OfficeWeb';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 
 
@@ -22,7 +23,7 @@ export default function WebPageTypeView({
   return (
     <>
       <Table.Row>
-        <Table.HeaderCell>교육자료</Table.HeaderCell>
+        <Table.HeaderCell><PolyglotText defaultString="교육자료" id="Create-DetailContentsWeb-교육자료" /></Table.HeaderCell>
         <Table.Cell>
           <div className="text2">
             <a onClick={onClickWebPageUrl}>
@@ -32,7 +33,7 @@ export default function WebPageTypeView({
         </Table.Cell>
       </Table.Row>
       <Table.Row>
-        <Table.HeaderCell>참고자료</Table.HeaderCell>
+        <Table.HeaderCell><PolyglotText defaultString="참고자료" id="Create-DetailContentsWeb-참고자료" /></Table.HeaderCell>
         <Table.Cell>
         {
           fileMap.get('reference')?.map((foundedFile: DepotFileViewModel, index: number) => (

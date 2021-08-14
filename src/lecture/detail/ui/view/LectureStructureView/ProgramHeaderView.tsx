@@ -1,4 +1,5 @@
 import React from 'react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import { State } from '../../../viewModel/LectureState';
 
@@ -32,7 +33,7 @@ const ProgramHeaderView: React.FC<ProgramHeaderViewProps> = function ProgramHead
             className={`label-state-learning ${state === 'Progress' &&
               'proceeding'} ${state === 'Completed' && 'complete'}`}
           >
-            <span>진행상태</span>
+            <span><PolyglotText defaultString="진행상태" id="Program-Header-진행상태" /></span>
           </span>
         </div>
       </div>
