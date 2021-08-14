@@ -24,6 +24,7 @@ import { LectureClassroomInstructorView } from './LectureClassroomInstructorView
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { SkProfileService } from '../../../../../profile/stores';
 
 interface Params {
   cardId: string;
@@ -101,7 +102,15 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
     // };
 
     // 대본 관련 Props 세팅
-    const [transLangVal, setTransLangVal] = useState<string>('ko');
+    const [transLangVal, setTransLangVal] = useState<string>(() => {
+      if (SkProfileService.instance.skProfile.language === 'English') {
+        return 'en';
+      }
+      if (SkProfileService.instance.skProfile.language === 'Chinese') {
+        return 'cn';
+      }
+      return 'ko';
+    });
 
     // const [ deliveryId, setDeliveryId ] = useState<string>('');
 
