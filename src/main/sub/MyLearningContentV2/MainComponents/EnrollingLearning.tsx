@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { Lecture } from 'lecture';
@@ -12,7 +12,6 @@ import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
 import {
   getPolyglotText,
@@ -27,22 +26,22 @@ function EnrollingLearning({ history }: RouteComponentProps) {
   );
 
   useEffect(() => {
-    fetchLearningCardLsit().then(() => setIsLoading(true));
+    fetchEnrollingCardList();
   }, []);
 
-  const fetchLearningCardLsit = async () => {
-    const EnrollingCardList = await findEnrollingCardList(
+  const fetchEnrollingCardList = async () => {
+    setIsLoading(true);
+    const enrollingCardList = await findEnrollingCardList(
       LectureFilterRdoModel.enrLectures(8, 0, false)
     );
-
-    setCardList(EnrollingCardList.results);
+    setIsLoading(false);
+    setCardList(enrollingCardList.results);
   };
 
   const onViewAll = () => {
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(`/my-training/new-learning/Enrolling/pages/1`);
 
-    // react-ga event
     ReactGA.event({
       category: title,
       action: 'Click',
@@ -99,7 +98,17 @@ function EnrollingLearning({ history }: RouteComponentProps) {
           })}
         </Lecture.Group>
       ) : (
-        <>
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
           <Loadingpanel loading={isLoading} color="#eff0f1" />
           {!isLoading && (
             <NoSuchContentPanel
@@ -113,7 +122,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
               }
             />
           )}
-        </>
+        </Segment>
       )}
     </ContentWrapper>
   );
