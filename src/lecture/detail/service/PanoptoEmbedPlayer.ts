@@ -25,6 +25,8 @@ export interface OnProgressEventHandler {
   ): void;
 }
 
+function initializeHoverCaptionButton() {}
+
 function createPanoptoEmbedPlayer() {
   let intervalId: any = 0;
   let embedApi: any | undefined;

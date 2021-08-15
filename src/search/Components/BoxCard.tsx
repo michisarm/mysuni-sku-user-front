@@ -7,6 +7,7 @@ import CategoryColorType from '../../shared/model/CategoryColorType';
 import { SearchCardCategory } from '../model/SearchCard';
 import { useDisplayCard } from './SearchFilter';
 import { Area } from 'tracker/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props {
   dataArea?: Area;
@@ -122,30 +123,50 @@ const BoxCard: React.FC<Props> = ({ dataArea }) => {
           }
           const cardId = id.replace('<b>', '').replace('</b>', '');
 
-          return null;
+          let namePolyglotString: PolyglotString = {
+            ko: null,
+            en: null,
+            zh: null,
+          };
+          try {
+            namePolyglotString = JSON.parse(name) as PolyglotString;
+          } catch (error) {
+            //
+          }
+          let simple_descriptionPolyglotString: PolyglotString = {
+            ko: null,
+            en: null,
+            zh: null,
+          };
+          try {
+            simple_descriptionPolyglotString = JSON.parse(
+              simple_description
+            ) as PolyglotString;
+          } catch (error) {
+            //
+          }
 
-          // 검색 Card 다국어 때 수정
-          // return (
-          //   <CardView
-          //     key={cardId}
-          //     cardId={cardId}
-          //     htmlName={name}
-          //     name={name}
-          //     starCount={parseInt(star_count)}
-          //     stampCount={parseInt(stamp_count)}
-          //     mainCategory={mainCategory}
-          //     simpleDescription={simple_description}
-          //     learningTime={parseInt(learning_time)}
-          //     thumbImagePath={thumb_image_path}
-          //     passedStudentCount={parseInt(passed_student_count)}
-          //     type={type}
-          //     isRequired={isRequired}
-          //     capacity={parseInt(student_count)}
-          //     studentCount={parseInt(student_count)}
-          //     additionalLearningTime={parseInt(additional_learning_time)}
-          //     dataArea={dataArea}
-          //   />
-          // );
+          return (
+            <CardView
+              key={cardId}
+              cardId={cardId}
+              // htmlName={name}
+              name={namePolyglotString}
+              starCount={parseInt(star_count)}
+              stampCount={parseInt(stamp_count)}
+              mainCategory={mainCategory}
+              simpleDescription={simple_descriptionPolyglotString}
+              learningTime={parseInt(learning_time)}
+              thumbImagePath={thumb_image_path}
+              passedStudentCount={parseInt(passed_student_count)}
+              type={type}
+              isRequired={isRequired}
+              capacity={parseInt(student_count)}
+              studentCount={parseInt(student_count)}
+              additionalLearningTime={parseInt(additional_learning_time)}
+              dataArea={dataArea}
+            />
+          );
         })}
     </Card.Group>
   );
