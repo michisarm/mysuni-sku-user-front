@@ -93,3 +93,7 @@ GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=te
 
 ###
 GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx='%ED%96%89%EB%B3%B5'+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96
+
+
+###
+GET https://mysuni.sk.com/search/api/search?select=id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid&from=card_new.card_new&where=name=%27AI%27+allword+and+((permitted_cinerooms+IN+%7Bne1-m2-c17%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c10%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c30%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c4%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c7%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c3%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c40%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c2%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c29%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c24%7D)+or+(permitted_cinerooms+IN+%7Bne1-m2-c53%7D))&offset=0&limit=999&t=1628994013021&default-hilite=off

@@ -75,7 +75,7 @@ interface Props {
   capacity?: number;
   permittedCinerooms?: PermittedCineroom[];
   dataArea?: Area;
-  langSupports: LangSupport[];
+  langSupports?: LangSupport[];
 }
 
 export default function CardView({
@@ -362,16 +362,18 @@ export default function CardView({
             </Label>
           )}
         </div>
-        <div className="g-lang-area">
-          <Icon className="i-glb" />
-          <div className="g-list">
-            {langSupports.map((langSupport) => (
-              <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
-                {parseLanguge(langSupport.lang)}
-              </span>
-            ))}
+        {Array.isArray(langSupports) && (
+          <div className="g-lang-area">
+            <Icon className="i-glb" />
+            <div className="g-list">
+              {langSupports.map((langSupport) => (
+                <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
+                  {parseLanguge(langSupport.lang)}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         <p
           className="text-area"
           dangerouslySetInnerHTML={{
