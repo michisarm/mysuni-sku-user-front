@@ -1,4 +1,5 @@
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 export default interface ProfileInfoModel {
   id: string;
@@ -24,4 +25,23 @@ export default interface ProfileInfoModel {
   displayNicknameFirst: boolean;
   email: string;
   employeeId: string;
+}
+
+export function getPhotoImagePath(
+  profileInfoModel: ProfileInfoModel | undefined
+) {
+  if (profileInfoModel === undefined) {
+    return defaultProfileImg;
+  }
+  if (profileInfoModel.useGdiPhoto === true) {
+    return `/profile/photo${profileInfoModel.gdiPhotoImagePath}`;
+  }
+  if (
+    profileInfoModel.photoImagePath === undefined ||
+    profileInfoModel.photoImagePath === null ||
+    profileInfoModel.photoImagePath === ''
+  ) {
+    return defaultProfileImg;
+  }
+  return profileInfoModel.photoImagePath;
 }
