@@ -76,7 +76,8 @@ class CategoryMenuContainer extends Component<Props, State> {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
     } else {
-      const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+      const collegeLectureCounts =
+        await collegeLectureCountService!.findCollegeLectureCounts();
       if (collegeLectureCounts.length > 0) {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
@@ -198,11 +199,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const {
-      skProfileService,
-      collegeLectureCountService,
-      collegeService,
-    } = this.props;
+    const { skProfileService, collegeLectureCountService, collegeService } =
+      this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
 
     const { additionalUserInfo } = skProfileService!;
