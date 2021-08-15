@@ -21,6 +21,7 @@ import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure'
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -82,13 +83,8 @@ async function coreSaveLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -100,7 +96,7 @@ async function coreSaveLectureSurveyState() {
     evaluationSheet: {
       id: lectureSurveyState.evaluationSheetId,
       answerSheetId: lectureSurveyState.answerSheetId,
-      answers: answerItem.map(c => {
+      answers: answerItem.map((c) => {
         return {
           questionNumber: c.questionNumber,
           answerItemType: c.answerItemType,
@@ -125,13 +121,8 @@ async function coreSubmitLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -143,7 +134,7 @@ async function coreSubmitLectureSurveyState() {
     evaluationSheet: {
       id: lectureSurveyState.evaluationSheetId,
       answerSheetId: lectureSurveyState.answerSheetId,
-      answers: answerItem.map(c => {
+      answers: answerItem.map((c) => {
         return {
           questionNumber: c.questionNumber,
           answerItemType: c.answerItemType,
@@ -159,10 +150,12 @@ async function coreSubmitLectureSurveyState() {
     },
   };
   const requiredMissAnswers = lectureSurvey.surveyItems
-    .filter(c => c.isRequired)
-    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber));
+    .filter((c) => c.isRequired)
+    .filter(
+      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
+    );
 
-  const a = requiredMissAnswers.map(r => r.rows);
+  const a = requiredMissAnswers.map((r) => r.rows);
 
   // if (
   //   answerSheetCdo.evaluationSheet.answers.length !== 0 &&
@@ -176,9 +169,10 @@ async function coreSubmitLectureSurveyState() {
   // }
   if (requiredMissAnswers.length > 0) {
     reactAlert({
-      title: '알림',
+      title: getPolyglotText('알림', 'survey-save-alert1'),
       message:
-        requiredMissAnswers.map(r => ' ' + r.no + '번') + '은 필수 항목입니다',
+        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
+        '은 필수 항목입니다',
     });
 
     // requiredMissAnswers.forEach(c => {
@@ -189,8 +183,11 @@ async function coreSubmitLectureSurveyState() {
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
   reactAlert({
-    title: '알림',
-    message: 'Survey 설문 참여가 완료 되었습니다.',
+    title: getPolyglotText('알림', 'survey-save-alert2'),
+    message: getPolyglotText(
+      'Survey 설문 참여가 완료 되었습니다.',
+      'survey-설문참여-완료메세지'
+    ),
   });
   return true;
 }
@@ -201,13 +198,8 @@ export async function coreLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -219,7 +211,7 @@ export async function coreLectureSurveyState() {
     evaluationSheet: {
       id: lectureSurveyState.evaluationSheetId,
       answerSheetId: lectureSurveyState.answerSheetId,
-      answers: answerItem.map(c => {
+      answers: answerItem.map((c) => {
         return {
           questionNumber: c.questionNumber,
           answerItemType: c.answerItemType,
@@ -235,16 +227,19 @@ export async function coreLectureSurveyState() {
     },
   };
   const requiredMissAnswers = lectureSurvey.surveyItems
-    .filter(c => c.isRequired)
-    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber));
+    .filter((c) => c.isRequired)
+    .filter(
+      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
+    );
   if (requiredMissAnswers.length > 0) {
     reactAlert({
-      title: '알림',
+      title: getPolyglotText('알림', 'survey-save-alert3'),
       message:
-        requiredMissAnswers.map(r => ' ' + r.no + '번') + '은 필수 항목입니다',
+        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
+        '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach(c => {
+    requiredMissAnswers.forEach((c) => {
       console.log(c.no);
     });
     return;
@@ -299,8 +294,11 @@ export async function saveLectureSurveyState(lectureParams: LectureParams) {
   updateCardLectureStructure(lectureParams.cardId);
 
   reactAlert({
-    title: '알림',
-    message: 'Survey 설문 이 저장 되었습니다.',
+    title: getPolyglotText('알림', 'survey-save-alert4'),
+    message: getPolyglotText(
+      'Survey 설문이 저장 되었습니다.',
+      'survey-설문저장-완료메세지2'
+    ),
   });
 }
 
@@ -346,8 +344,11 @@ export async function saveCommunitySurveyState() {
   //requestLectureStructure(lectureParams, pathname);
 
   reactAlert({
-    title: '알림',
-    message: 'Survey 설문 이 저장 되었습니다.',
+    title: getPolyglotText('알림', 'survey-save-alert5'),
+    message: getPolyglotText(
+      'Survey 설문이 저장 되었습니다.',
+      'survey-설문저장-완료메세지'
+    ),
   });
 }
 
@@ -383,7 +384,7 @@ export function selectSentenceAnswer(
     return;
   }
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
-    c => c.questionNumber === questionNumber
+    (c) => c.questionNumber === questionNumber
   );
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
@@ -395,7 +396,7 @@ export function selectSentenceAnswer(
       },
     ];
   } else {
-    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map(c => {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
         return { ...c, sentence: value };
       } else {
@@ -419,7 +420,7 @@ export function selectBooleanAnswer(
     return;
   }
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
-    c => c.questionNumber === questionNumber
+    (c) => c.questionNumber === questionNumber
   );
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
@@ -431,7 +432,7 @@ export function selectBooleanAnswer(
       },
     ];
   } else {
-    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map(c => {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
         return { ...c, itemNumbers: [value] };
       } else {
@@ -456,7 +457,7 @@ export function selectChoiceAnswer(
   }
   const next = value.toString();
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
-    c => c.questionNumber === questionNumber
+    (c) => c.questionNumber === questionNumber
   );
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
@@ -468,11 +469,14 @@ export function selectChoiceAnswer(
       },
     ];
   } else {
-    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map(c => {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
         if (canMultipleAnswer) {
           if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
-            return { ...c, itemNumbers: c.itemNumbers.filter(d => d !== next) };
+            return {
+              ...c,
+              itemNumbers: c.itemNumbers.filter((d) => d !== next),
+            };
           } else {
             return { ...c, itemNumbers: [...(c.itemNumbers || []), next] };
           }
@@ -504,12 +508,12 @@ export function selectCriterionAnswer(
     return;
   }
   const next = parseInt(value.toString());
-  const choice = choices.find(c => c.no === next);
+  const choice = choices.find((c) => c.no === next);
   if (choice === undefined) {
     return;
   }
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
-    c => c.questionNumber === questionNumber
+    (c) => c.questionNumber === questionNumber
   );
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
@@ -525,7 +529,7 @@ export function selectCriterionAnswer(
       },
     ];
   } else {
-    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map(c => {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
         return {
           ...c,
@@ -560,7 +564,7 @@ export function selectMatrixAnswer(
     return;
   }
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
-    c => c.questionNumber === questionNumber
+    (c) => c.questionNumber === questionNumber
   );
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
@@ -572,10 +576,10 @@ export function selectMatrixAnswer(
       },
     ];
   } else {
-    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map(c => {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
         const matrixItem = (c.matrixItem || []).filter(
-          d => d.rowNumber !== next.rowNumber
+          (d) => d.rowNumber !== next.rowNumber
         );
         return { ...c, matrixItem: [...matrixItem, next] };
       } else {

@@ -1,8 +1,10 @@
 import { axiosApi } from '@nara.platform/accent';
+import { UserWorkspace } from 'approval/models/UserWorkspace';
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
 import { Agreement } from '../model/Agreement';
 import Profile from '../model/Profile';
+import { createCacheApi } from './cacheableApi';
 
 const BASE_URL = '/api/user/users';
 
@@ -51,3 +53,12 @@ export function updateAgreement(
 
   return axios.post(url, params).then(AxiosReturn);
 }
+
+export function findMyUserWorkspace() {
+  const axios = getAxios();
+  const url = '/api/user/userWorkspaces/my';
+  return axios.get<UserWorkspace>(url).then(AxiosReturn);
+}
+
+export const [findMyUserWorkspaceCache, clearFindMyUserWorkspaceCache] =
+  createCacheApi(findMyUserWorkspace);

@@ -340,14 +340,14 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
                         </span>
                       )}
                       <span className="date">
-                        {item.note.updateDate === 0
-                          ? moment(item.note.createDate).format(
+                        {item.note.modifiedTime === 0
+                          ? moment(item.note.registeredTime).format(
                               getPolyglotText(
                                 'YYYY.MM.DD 작성',
                                 'note-popup-작성시간'
                               )
                             )
-                          : moment(item.note.updateDate).format(
+                          : moment(item.note.modifiedTime).format(
                               getPolyglotText(
                                 'YYYY.MM.DD 편집',
                                 'note-popup-편집시간'

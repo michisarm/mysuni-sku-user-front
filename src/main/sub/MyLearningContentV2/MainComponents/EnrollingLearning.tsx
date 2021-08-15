@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
+import { Loadingpanel } from 'shared';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
@@ -51,21 +51,26 @@ function EnrollingLearning() {
   };
 
   return (
-    <>
-      {(cardList && cardList.length > 0 && (
-        <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
-          <div className="section-head">
+    <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
+      <div className="section-head">
+        {isLoading === true ||
+          (isLoading === false && cardList && cardList.length > 0 && (
             <strong>{title}</strong>
-            <div className="right">
-              <Button icon className="right btn-blue" onClick={onViewAll}>
-                <PolyglotText
-                  defaultString="View all"
-                  id="home-Enrolling-View all"
-                />
-                <Icon className="morelink" />
-              </Button>
-            </div>
-          </div>
+          ))}
+        <div className="right">
+          {cardList && cardList.length > 0 && (
+            <Button icon className="right btn-blue" onClick={onViewAll}>
+              <PolyglotText
+                defaultString="View all"
+                id="home-Enrolling-View all"
+              />
+              <Icon className="morelink" />
+            </Button>
+          )}
+        </div>
+      </div>
+      {(cardList && cardList.length > 0 && (
+        <>
           <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
             {cardList.map((item, i) => {
               const { card, cardRelatedCount, upcomingClassroomInfo } = item;
@@ -98,23 +103,27 @@ function EnrollingLearning() {
               );
             })}
           </Lecture.Group>
-        </ContentWrapper>
+        </>
       )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} color="#eff0f1" />
-        </Segment>
+        <>
+          {isLoading === true && (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} color="#eff0f1" />
+            </Segment>
+          )}
+        </>
       )}
-    </>
+    </ContentWrapper>
   );
 }
 
