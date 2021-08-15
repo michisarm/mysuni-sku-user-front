@@ -80,13 +80,16 @@ class CategoryMenuPanelView extends Component<Props> {
           (favoriteId) => favoriteId !== channelId
         );
         params.nameValues[0].value = JSON.stringify(filteredFavorite);
-        skProfileService!.modifyStudySummary(params);
+        skProfileService!
+          .modifyStudySummary(params)
+          .then(() => skProfileService!.findStudySummary());
       } else {
         const nextFavorites = [...prevFavorites, channelId];
         params.nameValues[0].value = JSON.stringify(nextFavorites);
-        skProfileService!.modifyStudySummary(params);
+        skProfileService!
+          .modifyStudySummary(params)
+          .then(() => skProfileService!.findStudySummary());
       }
-      skProfileService!.findStudySummary();
     }
   }
 
