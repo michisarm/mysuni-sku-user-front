@@ -81,9 +81,9 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get photoFilePath() {
-    return this.useGdiPhoto === true
-      ? ProfileImagePath(`/profile/photo${this.gdiPhotoImagePath}`)
-      : ProfileImagePath(this.photoImagePath);
+    return this.photoImagePath.startsWith('/profile')
+      ? ProfileImagePath(this.photoImagePath)
+      : ProfileImagePath(`/profile/photo${this.gdiPhotoImagePath}`);
   }
 
   @computed
