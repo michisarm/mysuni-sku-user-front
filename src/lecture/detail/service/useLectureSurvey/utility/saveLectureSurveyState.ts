@@ -184,7 +184,10 @@ async function coreSubmitLectureSurveyState() {
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert2'),
-    message: 'Survey 설문 참여가 완료 되었습니다.',
+    message: getPolyglotText(
+      'Survey 설문 참여가 완료 되었습니다.',
+      'survey-설문참여-완료메세지'
+    ),
   });
   return true;
 }
@@ -291,8 +294,11 @@ export async function saveLectureSurveyState(lectureParams: LectureParams) {
   updateCardLectureStructure(lectureParams.cardId);
 
   reactAlert({
-    title: '알림',
-    message: 'Survey 설문 이 저장 되었습니다.',
+    title: getPolyglotText('알림', 'survey-save-alert4'),
+    message: getPolyglotText(
+      'Survey 설문이 저장 되었습니다.',
+      'survey-설문저장-완료메세지2'
+    ),
   });
 }
 
@@ -338,8 +344,11 @@ export async function saveCommunitySurveyState() {
   //requestLectureStructure(lectureParams, pathname);
 
   reactAlert({
-    title: '알림',
-    message: 'Survey 설문 이 저장 되었습니다.',
+    title: getPolyglotText('알림', 'survey-save-alert5'),
+    message: getPolyglotText(
+      'Survey 설문이 저장 되었습니다.',
+      'survey-설문저장-완료메세지'
+    ),
   });
 }
 

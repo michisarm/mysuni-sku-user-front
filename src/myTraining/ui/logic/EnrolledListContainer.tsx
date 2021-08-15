@@ -204,7 +204,7 @@ function EnrolledListContainer({
       (withFilter &&
         getPolyglotText(
           '필터 조건에 해당하는 결과가 없습니다.',
-          'mapg-msmp-검색x1'
+          'mapg-msmp-검색x2'
         )) ||
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
