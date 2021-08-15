@@ -356,8 +356,9 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             className="tit_cnt"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${noteList.results.length}개의 학습과정</strong>`,
-                'mypage-note-학습과정갯수'
+                `총 <strong>{count}개의 학습과정</strong>`,
+                'mypage-note-학습과정갯수',
+                { count: (noteList.results.length || 0).toString() }
               ),
             }}
           />
@@ -365,8 +366,9 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             className="tit_cnt"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `총 <strong>${subNoteCount}개의 Note</strong>`,
-                'mypage-note-노트갯수'
+                `총 <strong>{count}개의 Note</strong>`,
+                'mypage-note-노트갯수',
+                { count: (subNoteCount || 0).toString() }
               ),
             }}
           />
