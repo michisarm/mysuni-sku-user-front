@@ -394,12 +394,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
       }, 500);
     };
 
+    const isSticked = scroll > videoPosition && !enabled;
+
     return (
       <div
         className={
-          scroll > videoPosition &&
-          !enabled &&
-          lectureMedia?.mediaType === 'InternalMedia'
+          isSticked && lectureMedia?.mediaType === 'InternalMedia'
             ? 'video-fixed-holder lms-video-fixed'
             : 'video-fixed-holder'
         }
@@ -457,13 +457,23 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
             }}
           >
             <div id="panopto-embed-player" />
-            {hoverControllerVisible && (
+            {hoverControllerVisible && !isSticked && (
               <div
                 id="panopto-embed-player-hover-container"
-                style={{ right: 154, bottom: 13, position: 'absolute' }}
+                style={{
+                  right: isSticked ? 129 : 154,
+                  bottom: isSticked ? 3 : 17,
+                  position: 'absolute',
+                }}
               >
                 <div
-                  style={{ padding: 20, backgroundColor: 'black' }}
+                  style={{
+                    paddingLeft: isSticked ? 6 : 20,
+                    paddingRight: isSticked ? 6 : 20,
+                    paddingTop: isSticked ? 12 : 20,
+                    paddingBottom: isSticked ? 12 : 16,
+                    backgroundColor: isSticked ? 'transparent' : 'transparent',
+                  }}
                   id="panopto-embed-player-hover-caption-container"
                 >
                   <Image
