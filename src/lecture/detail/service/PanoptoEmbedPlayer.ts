@@ -293,12 +293,18 @@ function createPanoptoEmbedPlayer() {
   function disableCaptions() {
     if (embedApi !== undefined) {
       embedApi.disableCaptions();
+      setTimeout(() => {
+        onProgress(true);
+      }, 1000);
     }
   }
 
   function enableCaptions(captionIndex: number) {
     if (embedApi !== undefined) {
       embedApi.enableCaptions(captionIndex);
+      setTimeout(() => {
+        onProgress(true);
+      }, 1000);
     }
   }
 
