@@ -93,11 +93,11 @@ export function filterConditionNamePolyglot(s: string) {
 }
 
 export const insiderInclude = getPolyglotText(
-  '핵인싸 포함aa',
+  '핵인싸 포함',
   '필터-핵인싸-포함'
 );
 export const insiderExclude = getPolyglotText(
-  '핵인싸 비포함bb',
+  '핵인싸 비포함',
   '필터-핵인싸-비포함'
 );
 interface Options {
