@@ -19,6 +19,7 @@ import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface InMyLectureListContainerProps {
   inMyLectureService?: InMyLectureService;
@@ -132,7 +133,11 @@ function InMyLectureListContainer({
     withFilter: boolean = false
   ) => {
     return (
-      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
+      (withFilter &&
+        getPolyglotText(
+          '필터 조건에 해당하는 결과가 없습니다.',
+          'mapg-msmp-검색x3'
+        )) ||
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
   };

@@ -15,11 +15,11 @@ import {
 import CheckboxOptions from '../model/CheckBoxOption';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { SearchExpert } from '../model/SearchExpert';
-import { findMyUserWorkspaceCache } from '../../lecture/detail/api/approvalApi';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
 import { setSearchUI, getSearchUI } from '../model/SearchUI';
+import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
