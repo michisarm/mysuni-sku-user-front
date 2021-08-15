@@ -55,7 +55,6 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
           viewType,
           pathname: '',
         };
-        console.log(cube.name, params);
 
         return (
           <div className="essential-wrap" key={cube.cubeId}>

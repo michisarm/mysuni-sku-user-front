@@ -12,11 +12,11 @@ export interface LectureNoteItem {
   patronKey: object;
   cubeId: string;
   folderId: string;
-  createDate: number;
+  registeredTime: number;
   content: string;
   convertContent?: string;
   playTime: string;
-  updateDate: number;
+  modifiedTime: number;
   type: string;
 }
 
@@ -41,13 +41,13 @@ export interface LectureNoteItemNote {
   channelId: string;
   collegeId: string;
   content: string;
-  createDate: number;
+  registeredTime: number;
   cubeId: string;
   cubeType: string;
   folderId: string;
   id: string;
   patronKey: object;
   playTime: string;
-  updateDate: number;
+  modifiedTime: number;
   type?: string;
 }

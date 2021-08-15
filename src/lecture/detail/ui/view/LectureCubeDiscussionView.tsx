@@ -89,7 +89,6 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
   }, []);
 
   useEffect(() => {
-    // console.log('LectureCubeDiscussionContainer', lectureState)
 
     if (lectureState) {
       // 댓글, 대댓글 Count Data
