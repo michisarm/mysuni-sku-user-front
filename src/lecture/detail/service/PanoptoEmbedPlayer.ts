@@ -53,7 +53,6 @@ function createPanoptoEmbedPlayer() {
   }
 
   function onStateChange(playerState: PlayerState) {
-    console.log('onStateChange', playerState);
     if (embedApi === undefined) {
       return;
     }
@@ -67,6 +66,7 @@ function createPanoptoEmbedPlayer() {
       currentTime,
       duration,
     });
+    onProgress(true);
   }
 
   function onReady() {
@@ -79,27 +79,29 @@ function createPanoptoEmbedPlayer() {
     } else {
       if (embedApi.hasCaptions()) {
         const getCaptionTracks: string[] = embedApi.getCaptionTracks();
-        console.log('getCaptionTracks', getCaptionTracks);
+        console.log(getCaptionTracks);
+        const parsedCaptionTracks = parseCaptionTracks(getCaptionTracks);
+        console.log(parsedCaptionTracks);
         if (
           SkProfileService.instance.skProfile.language === 'English' &&
-          getCaptionTracks.includes('기본값')
+          parsedCaptionTracks.includes('English')
         ) {
-          const index = getCaptionTracks.findIndex((c) => c === '기본값');
+          const index = parsedCaptionTracks.findIndex((c) => c === 'English');
           if (index > -1) {
             embedApi.enableCaptions(index);
           }
         } else if (
           SkProfileService.instance.skProfile.language === 'Chinese' &&
-          getCaptionTracks.some(
+          parsedCaptionTracks.some(
             (c) =>
-              c.includes('Simplified Chinese') ||
-              c.includes('Traditional Chinese')
+              c.includes('SimplifiedChinese') ||
+              c.includes('TraditionalChinese')
           )
         ) {
-          const index = getCaptionTracks.findIndex(
+          const index = parsedCaptionTracks.findIndex(
             (c) =>
-              c.includes('Simplified Chinese') ||
-              c.includes('Traditional Chinese')
+              c.includes('SimplifiedChinese') ||
+              c.includes('TraditionalChinese')
           );
           if (index > -1) {
             embedApi.enableCaptions(index);
@@ -107,11 +109,12 @@ function createPanoptoEmbedPlayer() {
         }
       }
     }
-
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
+    const captionTracks: string[] = embedApi.getCaptionTracks();
     setPanoptoEmbedPlayerState({
       ...state,
+      captionTracks,
       isVideoReadied: true,
     });
   }
@@ -131,7 +134,7 @@ function createPanoptoEmbedPlayer() {
 
   function onLoginShown() {}
 
-  function onProgress() {
+  function onProgress(forceFire?: boolean) {
     if (embedApi === undefined) {
       return;
     }
@@ -141,11 +144,13 @@ function createPanoptoEmbedPlayer() {
     const duration: number = embedApi.getDuration();
     const playbackRate: number = embedApi.getPlaybackRate();
     const hasCaptions: boolean = embedApi.hasCaptions();
-    const captionTracks: string[] = embedApi.getCaptionTracks();
-    const selectedCaptionTrack: string = embedApi.getSelectedCaptionTrack();
+    const selectedCaptionTrack: number = embedApi.getSelectedCaptionTrack();
 
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
+    if (state.selectedCaptionTrack !== selectedCaptionTrack) {
+      console.log(selectedCaptionTrack);
+    }
     const next = {
       ...state,
       isMuted,
@@ -154,10 +159,9 @@ function createPanoptoEmbedPlayer() {
       duration,
       playbackRate,
       hasCaptions,
-      captionTracks,
       selectedCaptionTrack,
     };
-    if (JSON.stringify(state) === JSON.stringify(next)) {
+    if (forceFire !== true && JSON.stringify(state) === JSON.stringify(next)) {
       return;
     }
     setPanoptoEmbedPlayerState(next);
@@ -284,6 +288,17 @@ function createPanoptoEmbedPlayer() {
       embedApi.seekTo(position);
     }
   }
+  function disableCaptions() {
+    if (embedApi !== undefined) {
+      embedApi.disableCaptions();
+    }
+  }
+
+  function enableCaptions(captionIndex: number) {
+    if (embedApi !== undefined) {
+      embedApi.enableCaptions(captionIndex);
+    }
+  }
 
   return {
     initializePanoptoEmbedPlayer,
@@ -294,6 +309,8 @@ function createPanoptoEmbedPlayer() {
     pauseVideo,
     stopVideo,
     seekTo,
+    disableCaptions,
+    enableCaptions,
   };
 }
 
@@ -327,4 +344,33 @@ export const {
   pauseVideo,
   stopVideo,
   seekTo,
+  disableCaptions,
+  enableCaptions,
 } = createPanoptoEmbedPlayer();
+
+export function parseCaptionTracks(captionTracks?: string[]): string[] {
+  const r: string[] = [];
+  if (Array.isArray(captionTracks)) {
+    captionTracks.forEach((c, i) => {
+      if (c.includes('Chinese')) {
+        if (c.includes('Simplified')) {
+          r[i] = 'SimplifiedChinese';
+        } else {
+          r[i] = 'TraditionalChinese';
+        }
+      } else if (c.includes('Korean')) {
+        r[i] = 'Korean';
+      } else if (c.includes('English')) {
+        r[i] = 'English';
+      } else if (c.includes('기본값')) {
+        if (captionTracks.some((d) => d.includes('Korean'))) {
+          r[i] = 'English';
+        } else {
+          r[i] = 'Korean';
+        }
+      }
+    });
+  }
+  console.log('parseCaptionTracks', r);
+  return r;
+}
