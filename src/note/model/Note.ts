@@ -9,8 +9,8 @@ export default interface Note {
   content: string;
   folderId: string;
   playTime: string;
-  createDate: number;
-  updateDate: number;
+  registeredTime: number;
+  modifiedTime: number;
 }
 
 export function getConvertEnter(content: string): string {
