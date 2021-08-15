@@ -6,6 +6,7 @@ import {
   findFollowWithFollowingCount,
 } from '../../api/ProfileInfoAPI';
 import { findUserProfile } from 'profile/present/apiclient/SkProfileApi';
+import { getPhotoImagePath } from 'layout/UserApp/model/ProfileInfoModel';
 
 export async function getProfileInfo(
   memberId: string | undefined
@@ -21,11 +22,8 @@ export async function getProfileInfo(
         ...profileInfo,
         followCount: followWithFollowingCount?.followerCount || 0,
         followingCount: followWithFollowingCount?.followingCount || 0,
-        photoImagePath: profileInfo.photoImagePath.startsWith('/profile')
-          ? profileInfo.photoImagePath
-          : profileInfo.gdiPhotoImagePath,
+        photoImagePath: getPhotoImagePath(profileInfo),
       };
-
       setProfileInfoModel(parseProfileInfo);
     }
   }

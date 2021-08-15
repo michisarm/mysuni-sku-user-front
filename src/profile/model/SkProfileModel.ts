@@ -74,6 +74,9 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get photoFilePath() {
+    if (this.useGdiPhoto === true) {
+      return `/profile/photo${this.gdiPhotoImagePath}`;
+    }
     if (
       this.photoImagePath === undefined ||
       this.photoImagePath === null ||
@@ -81,11 +84,7 @@ class SkProfileModel implements DramaEntity {
     ) {
       return defaultProfileImg;
     }
-
-    const useCustomPhoto = this.photoImagePath.startsWith('/profile');
-    return useCustomPhoto === true
-      ? this.photoImagePath
-      : `/profile/photo${this.gdiPhotoImagePath}`;
+    return this.photoImagePath;
   }
 
   @computed

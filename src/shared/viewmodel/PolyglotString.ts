@@ -10,7 +10,7 @@ export interface PolyglotString {
   z?: string | null;
 }
 
-function parseLanguage(languange: string): 'ko' | 'en' | 'zh' {
+export function parseLanguage(languange: string): 'ko' | 'en' | 'zh' {
   if (languange === 'English') {
     return 'en';
   }

@@ -5,7 +5,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 import { FavoriteChannelChangeModal } from 'shared';
 import { NotieService } from 'notie/stores';
-import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -22,14 +21,11 @@ import {
   BottomMenuItemView,
 } from '../view/QuickNavElementsView';
 import MenuControlAuthService from '../../../../../approval/company/present/logic/MenuControlAuthService';
-import SkProfileModel from '../../../../../profile/model/SkProfileModel';
-import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 
 import ReactGA from 'react-ga';
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
