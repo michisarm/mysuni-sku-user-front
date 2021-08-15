@@ -211,7 +211,8 @@ const LectureNoteAdd: React.FC<Props> = function LectureNoteView({
               <Button className="cancel" onClick={() => onHandleCancel()}>
                 <PolyglotText defaultString="취소" id="note-popup-취소버튼" />
               </Button>
-              <Button className="save" onClick={() => onSave()}>
+              {/*<Button className="save" onClick={() => onSave()}>*/}
+              <Button className="save" onClick={() => {}}>
                 <PolyglotText defaultString="저장" id="note-popup-저장버튼" />
               </Button>
               <span className="txt_cnt">

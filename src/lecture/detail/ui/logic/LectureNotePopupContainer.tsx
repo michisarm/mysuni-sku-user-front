@@ -31,10 +31,10 @@ const LectureNotePopupContainer: React.FC = ({
     patronKey: {},
     cubeId: '',
     folderId: '',
-    createDate: 0,
+    registeredTime: 0,
     content: '',
     playTime: '',
-    updateDate: 0,
+    modifiedTime: 0,
     type: '',
   })
   const noteItem = useLectureNoteItem()
@@ -95,10 +95,10 @@ const LectureNotePopupContainer: React.FC = ({
             patronKey: {},
             cubeId: '',
             folderId: '',
-            createDate: 0,
+            registeredTime: 0,
             content: '',
             playTime: '',
-            updateDate: 0,
+            modifiedTime: 0,
             type: '',
           })
           setLectureNoteWriteState(false)
@@ -112,15 +112,15 @@ const LectureNotePopupContainer: React.FC = ({
   const timeToString = useCallback((time) => {
     if(String(time).length === 1) {
       time = '0'+time
-    } 
+    }
     return time
   }, [])
 
-  const convertTime = useCallback((playTime) => { 
+  const convertTime = useCallback((playTime) => {
     const hour = timeToString(Math.floor(Number(playTime) / 3600))
     const min = timeToString(Math.floor(Number(playTime%3600)/60))
     const sec = timeToString(Math.floor(Number(playTime)%60))
-    return hour + ":" + min + ":" + sec 
+    return hour + ":" + min + ":" + sec
   }, [])
 
   const onSave = useCallback(() => {
@@ -135,10 +135,10 @@ const LectureNotePopupContainer: React.FC = ({
       reactAlert({
         title: '알림',
         message: '노트 내용을 작성해주세요.',
-      }); 
+      });
       return false
     }
-    
+
     findCardCache(urlParams.cardId).then((result) => {
       if(result && result.card) {
         const param = {
@@ -164,10 +164,10 @@ const LectureNotePopupContainer: React.FC = ({
             patronKey: {},
             cubeId: '',
             folderId: '',
-            createDate: 0,
+            registeredTime: 0,
             content: '',
             playTime: '',
-            updateDate: 0,
+            modifiedTime: 0,
             type: '',
           })
           setLectureNoteWriteState(false)
@@ -196,10 +196,10 @@ const LectureNotePopupContainer: React.FC = ({
       reactAlert({
         title: '알림',
         message: '노트 내용을 작성해주세요.',
-      }); 
+      });
       return
     }
-    
+
     requestLectureNoteModify(id, param).then(() => {
       //리스트 조회
       requestLectureNote(urlParams.cardId, urlParams.cubeId!)
@@ -214,10 +214,10 @@ const LectureNotePopupContainer: React.FC = ({
         patronKey: {},
         cubeId: '',
         folderId: '',
-        createDate: 0,
+        registeredTime: 0,
         content: '',
         playTime: '',
-        updateDate: 0,
+        modifiedTime: 0,
         type: '',
       })
       setLectureNoteWriteState(false)
@@ -225,6 +225,8 @@ const LectureNotePopupContainer: React.FC = ({
       setLectureNoteTab(false)
     })
   }, [noteItem, addNote, urlParams])
+
+
   return (
     <>
       {loadingState?.isLoading ? (
@@ -267,23 +269,23 @@ const LectureNotePopupContainer: React.FC = ({
                           } */}
                       </div>
                     </div>
-                    <LectureNoteAdd 
-                      addNote={addNote} 
+                    <LectureNoteAdd
+                      addNote={addNote}
                       editorVisibleFlag={editorVisibleFlag}
                       cubeType={urlParams.cubeType}
                       noteType="popup"
-                      onChange={onChange} 
-                      onSave={onSave} 
+                      onChange={onChange}
+                      onSave={onSave}
                       onChangeTime={onChangeTime}
                       handleEditorVisibleFlag={handleEditorVisibleFlag}
                     />
                     <LectureNoteList
-                      addNote={addNote} 
-                      noteItem={noteItem} 
+                      addNote={addNote}
+                      noteItem={noteItem}
                       cubeType={urlParams.cubeType}
                       noteType="popup"
                       onChange={onChange}
-                      onChangeEdit={onChangeEdit} 
+                      onChangeEdit={onChangeEdit}
                       onSave={onEdit}
                       onDelete={onDelete}
                     />
