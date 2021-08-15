@@ -361,25 +361,36 @@ export default function CardView({
         <div className="foot-area">{renderBottom()}</div>
       </div>
       <div className="hover-content">
-        <div className="title-area">
-          {mainCategory && (
-            <Label className={getColor(collegeId)}>
-              {getCollgeName(collegeId)}
-            </Label>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div className="title-area">
+            {mainCategory && (
+              <Label className={getColor(collegeId)}>
+                {getCollgeName(collegeId)}
+              </Label>
+            )}
+          </div>
+          {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
+            <div
+              className="g-lang-area"
+              style={{ marginLeft: 'auto', marginTop: '0px' }}
+            >
+              <Icon className="i-glb" />
+              <div className="g-list">
+                {langSupports.map((langSupport) => (
+                  <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
+                    {parseLanguge(langSupport.lang)}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
-        {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
-          <div className="g-lang-area">
-            <Icon className="i-glb" />
-            <div className="g-list">
-              {langSupports.map((langSupport) => (
-                <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
-                  {parseLanguge(langSupport.lang)}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
         <p
           className="text-area"
           dangerouslySetInnerHTML={{
