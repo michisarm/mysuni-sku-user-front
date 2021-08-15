@@ -35,6 +35,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   language: string = 'Korean';
+  userGroupSequences = { sequences: [] };
 
   constructor(skProfile?: SkProfileModel) {
     if (skProfile) {
@@ -128,6 +129,7 @@ decorate(SkProfileModel, {
   companyCode: observable,
   language: observable,
   departmentCode: observable,
+  userGroupSequences: observable,
 });
 
 export default SkProfileModel;
