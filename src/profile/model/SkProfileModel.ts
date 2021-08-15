@@ -35,7 +35,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   language: string = 'Korean';
-  userGroupSequences = { sequences: [] };
+  userGroupSequences: { sequences: number[] } = { sequences: [] };
 
   constructor(skProfile?: SkProfileModel) {
     if (skProfile) {
