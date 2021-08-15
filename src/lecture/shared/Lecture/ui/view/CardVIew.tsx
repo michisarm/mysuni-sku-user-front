@@ -27,7 +27,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { toPath } from '../../../../detail/viewModel/LectureParams';
 import { InMyLectureModel } from '../../../../../myTraining/model';
-import { autorun } from 'mobx';
+import { autorun, isObservableArray } from 'mobx';
 import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
 import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
@@ -75,7 +75,7 @@ interface Props {
   capacity?: number;
   permittedCinerooms?: PermittedCineroom[];
   dataArea?: Area;
-  langSupports: LangSupport[];
+  langSupports?: LangSupport[];
 }
 
 export default function CardView({
@@ -101,16 +101,22 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] =
-    useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
   const hoverTimer = useRef(0);
-  const parseName = parsePolyglotString(
-    name,
-    getDefaultLang(langSupports || [])
-  );
+  const parseName = useMemo<string>(() => {
+    if (langSupports !== undefined) {
+      const parsed = parsePolyglotString(name, getDefaultLang(langSupports));
+      return parsed;
+    } else {
+      const parsed = parsePolyglotString(name);
+      return parsed;
+    }
+  }, [name, langSupports]);
 
   useEffect(() => {
     return autorun(() => {
@@ -355,22 +361,35 @@ export default function CardView({
         <div className="foot-area">{renderBottom()}</div>
       </div>
       <div className="hover-content">
-        <div className="title-area">
-          {mainCategory && (
-            <Label className={getColor(collegeId)}>
-              {getCollgeName(collegeId)}
-            </Label>
-          )}
-        </div>
-        <div className="g-lang-area">
-          <Icon className="i-glb" />
-          <div className="g-list">
-            {langSupports.map((langSupport) => (
-              <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
-                {parseLanguge(langSupport.lang)}
-              </span>
-            ))}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div className="title-area">
+            {mainCategory && (
+              <Label className={getColor(collegeId)}>
+                {getCollgeName(collegeId)}
+              </Label>
+            )}
           </div>
+          {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
+            <div
+              className="g-lang-area"
+              style={{ marginLeft: 'auto', marginTop: '0px' }}
+            >
+              <Icon className="i-glb" />
+              <div className="g-list">
+                {langSupports.map((langSupport) => (
+                  <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
+                    {parseLanguge(langSupport.lang)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <p
           className="text-area"

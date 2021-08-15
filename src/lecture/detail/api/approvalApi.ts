@@ -9,12 +9,3 @@ export function findMembersByDenizenKeys(denizenKeys: string[]) {
   const url = `${BASE_URL}/members/byDenizenKeys`;
   return axios.post<string[]>(url, denizenKeys).then(AxiosReturn);
 }
-
-export function findMyUserWorkspace() {
-  const axios = getAxios();
-  const url = `${BASE_URL}/userWorkspaces/my`;
-  return axios.get<UserWorkspace>(url).then(AxiosReturn);
-}
-
-export const [findMyUserWorkspaceCache, clearFindMyUserWorkspaceCache] =
-  createCacheApi(findMyUserWorkspace);

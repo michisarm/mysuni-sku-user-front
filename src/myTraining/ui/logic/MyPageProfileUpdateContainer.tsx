@@ -253,7 +253,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     }
 
     if (nickNameTemp) {
-      skProfile.nickname = nickNameTemp;
+      // skProfile.nickname = nickNameTemp;
+      skProfileService.modifyProfileNickName(nickNameTemp);
     }
 
     if (introduceTemp) {

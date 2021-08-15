@@ -101,22 +101,6 @@ function MyPageHeaderContainer({
     }
   }, []);
 
-  const getProfileImage = () => {
-    if (photoImageBase64) {
-      return photoImageBase64;
-    }
-
-    if (skProfile.useGdiPhoto) {
-      return skProfile.gdiPhotoImagePath;
-    }
-
-    if (isEmpty(skProfile.photoImagePath)) {
-      return DefaultImg;
-    }
-
-    return skProfile.photoImagePath;
-  };
-
   return (
     <>
       <div className="profile-contents-area">
@@ -176,7 +160,7 @@ function MyPageHeaderContainer({
                   <ProfileImage
                     id="profileImage"
                     className="ui image"
-                    src={getProfileImage()}
+                    src={skProfile.photoFilePath || DefaultImg}
                     onError={(event: any) =>
                       (event.currentTarget.style.display = 'none')
                     }

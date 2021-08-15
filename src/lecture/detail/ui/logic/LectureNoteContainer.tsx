@@ -58,10 +58,10 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
     patronKey: {},
     cubeId: '',
     folderId: '',
-    createDate: 0,
+    registeredTime: 0,
     content: '',
     playTime: '',
-    updateDate: 0,
+    modifiedTime: 0,
     type: '',
   });
   const noteItem = useLectureNoteItem();
@@ -187,10 +187,10 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
             patronKey: {},
             cubeId: '',
             folderId: '',
-            createDate: 0,
+            registeredTime: 0,
             content: '',
             playTime: '',
-            updateDate: 0,
+            modifiedTime: 0,
             type: '',
           });
           setLectureNoteWriteState(false);
@@ -248,10 +248,10 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
             patronKey: {},
             cubeId: '',
             folderId: '',
-            createDate: 0,
+            registeredTime: 0,
             content: '',
             playTime: '',
-            updateDate: 0,
+            modifiedTime: 0,
             type: '',
           });
           setLectureNoteWriteState(false);
@@ -292,7 +292,6 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
             }
           }
         });
-        console.log('playTime', playTime);
 
         param = {
           content,
@@ -334,10 +333,10 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
           patronKey: {},
           cubeId: '',
           folderId: '',
-          createDate: 0,
+          registeredTime: 0,
           content: '',
           playTime: '',
-          updateDate: 0,
+          modifiedTime: 0,
           type: '',
         });
         setLectureNoteWriteState(false);
@@ -402,8 +401,6 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
     const sec = timeToString(Math.floor(Number(playTime) % 60));
     return hour + ':' + min + ':' + sec;
   }, []);
-
-  console.log('pathname', pathname);
 
   return (
     <>

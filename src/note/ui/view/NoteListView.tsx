@@ -100,10 +100,14 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
 
   useEffect(() => {
     //조회시 하위 목록 조회 초기화
-    setSubNoteList([]);
-    setActiveIndexList([-1]);
+    // setSubNoteList([]);
+    setActiveIndexList([...activeIndexList]);
 
-    // noteList && noteList.results.map((m, index) => searchNoteByCubeId(index, m.cubeId, m.cardId))
+    noteList && noteList.results.forEach(async (m, index) => {
+      if(activeIndexList.some((target) => target === index)) {
+        await searchNoteByCubeId(index, m.lectureRom.cubeId, m.lectureRom.cardId);
+      }
+    })
   }, [noteList]);
 
   const selectFolder = useCallback((folder: Folder) => {
@@ -146,6 +150,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       });
 
       const noteList = await requestNoteList();
+      console.log(noteList);
       noteList &&
         setSubNoteList(
           subNoteList
@@ -184,6 +189,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
 
   const save = useCallback(
     async (noteCdo: NoteCdo, id: string, index: number) => {
+      console.log(activeIndexList);
       if (noteCdo.content === null || noteCdo.content === '') {
         reactAlert({
           title: getPolyglotText('알림', 'mypage-noteList-알림2'),
@@ -216,6 +222,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       // await requestNoteCount();
       const noteCount = getNoteCount() || 0;
       setNoteCount(noteCount + 1);
+      console.log(activeIndexList);
     },
     [params.pageNo]
   );
@@ -242,6 +249,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
       setNoteUdoItem(undefined);
+      console.log(activeIndexList)
     },
     [params.pageNo]
   );
@@ -387,6 +395,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     return color;
   }, []);
 
+  console.log(activeIndexList);
+
   return (
     <div>
       <Segment className="full">
@@ -500,13 +510,17 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                         className="cnt"
                         dangerouslySetInnerHTML={{
                           __html: getPolyglotText(
-                            `${subNoteList?.map(
-                              (f) =>
-                                f.index === index &&
-                                f.noteWithLectureList.results.length
-                            )}
-                            개`,
-                            'mypage-noteList-노트수'
+                            '{count}개',
+                            'mypage-noteList-노트수',
+                            {
+                              count: subNoteList
+                                ?.map(
+                                  (f) =>
+                                    f.index === index &&
+                                    f.noteWithLectureList.results.length
+                                )
+                                .toString(),
+                            }
                           ),
                         }}
                       />
@@ -648,15 +662,15 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                       subItem.note.cubeType === 'Audio') &&
                                     `${subItem.note.playTime}`}
                                   <span className="date">
-                                    {subItem.note.updateDate !== 0
-                                      ? moment(subItem.note.updateDate).format(
+                                    {subItem.note.modifiedTime !== 0
+                                      ? moment(subItem.note.modifiedTime).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 편집',
                                             'mypage-noteList-date편집'
                                           )
                                         )
-                                      : subItem.note.createDate &&
-                                        moment(subItem.note.createDate).format(
+                                      : subItem.note.registeredTime &&
+                                        moment(subItem.note.registeredTime).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 작성',
                                             'mypage-noteList-date작성2'

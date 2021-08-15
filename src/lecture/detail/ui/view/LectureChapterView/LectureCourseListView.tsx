@@ -33,8 +33,9 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
         <span
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              `총 <strong>${courseCount}개</strong>의 강의가 구성되어 있습니다.`,
-              'lecture-card-강의구성'
+              `총 <strong>{courseCount}개</strong>의 강의가 구성되어 있습니다.`,
+              'lecture-card-강의구성',
+              { courseCount: (courseCount && courseCount).toString() }
             ),
           }}
         />
@@ -55,7 +56,6 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
           viewType,
           pathname: '',
         };
-        console.log(cube.name, params);
 
         return (
           <div className="essential-wrap" key={cube.cubeId}>

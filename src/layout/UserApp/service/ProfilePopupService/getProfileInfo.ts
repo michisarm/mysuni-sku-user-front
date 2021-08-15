@@ -21,9 +21,9 @@ export async function getProfileInfo(
         ...profileInfo,
         followCount: followWithFollowingCount?.followerCount || 0,
         followingCount: followWithFollowingCount?.followingCount || 0,
-        photoImagePath: profileInfo.useGdiPhoto
-          ? profileInfo.gdiPhotoImagePath
-          : profileInfo.photoImagePath,
+        photoImagePath: profileInfo.photoImagePath.startsWith('/profile')
+          ? profileInfo.photoImagePath
+          : profileInfo.gdiPhotoImagePath,
       };
 
       setProfileInfoModel(parseProfileInfo);
