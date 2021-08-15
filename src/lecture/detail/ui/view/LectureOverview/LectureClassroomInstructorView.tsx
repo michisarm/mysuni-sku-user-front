@@ -5,6 +5,7 @@ import Image from '../../../../../shared/components/Image';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureClassroomInstructorViewProps {
   lectureInstructor: LectureInstructor;
@@ -25,7 +26,13 @@ export function LectureClassroomInstructorView(
         <h3 className="title-style">
           <Label className="onlytext bold size24">
             <Icon className="host" />
-            <span>{/*Tag*/}강사정보</span>
+            <span>
+              {/*Tag*/}
+              <PolyglotText
+                defaultString="강사정보"
+                id="cube-Contents-강사정보"
+              />
+            </span>
           </Label>
         </h3>
       </div>
