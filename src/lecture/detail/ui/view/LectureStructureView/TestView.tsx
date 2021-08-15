@@ -15,8 +15,11 @@ interface TestViewProps {
 
 function cannotAlert() {
   reactAlert({
-    title: getPolyglotText('Test 안내', 'Test-View-Test안내'),
-    message: getPolyglotText('학습 진행 후 Test 참여 가능합니다.', 'Test-View-참여안내'),
+    title: getPolyglotText('Test 안내', ''),
+    message: getPolyglotText(
+      '학습 진행 후 Test 참여 가능합니다.',
+      'Test-View-참여안내'
+    ),
   });
 }
 
@@ -39,10 +42,14 @@ const TestView: React.FC<TestViewProps> = function TestView({
           state === 'Completed' ? 'complete' : ''
         }`}
       >
-        <span><PolyglotText defaultString="cube 완료상태" id="Test-View-cube" /></span>
+        <span>
+          <PolyglotText defaultString="cube 완료상태" id="Test-View-cube" />
+        </span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title"><PolyglotText defaultString="Test" id="Test-View-Title" /></span>
+        <span className="copy-title">
+          <PolyglotText defaultString="Test" id="Test-View-Title" />
+        </span>
         <ul className="type-info">
           {/* <li>Test</li> */}
           {/* <li>{`${questionCount}문항`}</li> */}
