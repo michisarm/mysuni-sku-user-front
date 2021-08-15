@@ -27,7 +27,6 @@ interface Props {
 }
 
 function ProfilePopupView(props: Props) {
-  const profileInfo = useProfilePopupModel();
   const [isNickName, setIsNickName] = useState<boolean>();
   const [isSettingProfile, setIsSettingProfile] = useState<boolean>(true);
   const skProfileService = SkProfileService.instance;
@@ -36,11 +35,12 @@ function ProfilePopupView(props: Props) {
   const externalInstructor = localStorage.getItem('nara.externalInstructor');
   const instructorId = localStorage.getItem('nara.instructorId');
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
+  const profileInfo = useProfilePopupModel();
 
   useEffect(() => {
     getProfilePopup();
-    requestFollowersModal();
-    requestFollowingsModal();
+    // requestFollowersModal();
+    // requestFollowingsModal();
   }, []);
 
   useEffect(() => {
