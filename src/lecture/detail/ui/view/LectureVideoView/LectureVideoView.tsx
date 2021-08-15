@@ -472,7 +472,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                     paddingRight: isSticked ? 6 : 20,
                     paddingTop: isSticked ? 12 : 20,
                     paddingBottom: isSticked ? 12 : 16,
-                    backgroundColor: isSticked ? 'transparent' : 'black',
+                    backgroundColor: isSticked ? 'transparent' : 'transparent',
                   }}
                   id="panopto-embed-player-hover-caption-container"
                 >
