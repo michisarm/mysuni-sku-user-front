@@ -27,7 +27,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { toPath } from '../../../../detail/viewModel/LectureParams';
 import { InMyLectureModel } from '../../../../../myTraining/model';
-import { autorun } from 'mobx';
+import { autorun, isObservableArray } from 'mobx';
 import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
 import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
@@ -101,8 +101,9 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] =
-    useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -367,7 +368,7 @@ export default function CardView({
             </Label>
           )}
         </div>
-        {Array.isArray(langSupports) && (
+        {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
           <div className="g-lang-area">
             <Icon className="i-glb" />
             <div className="g-list">

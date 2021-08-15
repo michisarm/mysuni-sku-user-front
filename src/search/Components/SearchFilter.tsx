@@ -70,6 +70,36 @@ export enum FilterConditionName {
   LearningSchedule = '교육일정',
 }
 
+export function filterConditionNamePolyglot(s: string) {
+  if (s === '교육유형') {
+    return getPolyglotText('교육유형', '통검-필레팝-교육유형');
+  } else if (s === '컬리지') {
+    return getPolyglotText('컬리지', '통검-필레팝-컬리지');
+  } else if (s === '난이도') {
+    return getPolyglotText('난이도', '통검-필레팝-난이도');
+  } else if (s === '학습시간') {
+    return getPolyglotText('학습시간', '통검-필레팝-학습시간');
+  } else if (s === '교육기관') {
+    return getPolyglotText('교육기관', '통검-필레팝-교육기관');
+  } else if (s === '핵인싸') {
+    return getPolyglotText('핵인싸', '통검-필레팝-핵인싸');
+  } else if (s === 'Certification') {
+    return getPolyglotText('Certification', '통검-필레팝-자격증명');
+  } else if (s === '교육일정') {
+    return getPolyglotText('교육일정', '통검-필레팝-교육일정');
+  } else {
+    return '';
+  }
+}
+
+export const insiderInclude = getPolyglotText(
+  '핵인싸 포함',
+  '필터-핵인싸-포함'
+);
+export const insiderExclude = getPolyglotText(
+  '핵인싸 비포함',
+  '필터-핵인싸-비포함'
+);
 interface Options {
   key: string;
   text: string;
@@ -1083,7 +1113,7 @@ const SearchFilter: React.FC<Props> = ({
       <table>
         <tbody>
           <tr>
-            <th>{FilterConditionName.College}</th>
+            <th>{filterConditionNamePolyglot(FilterConditionName.College)}</th>
             <td>
               <Checkbox
                 className="base"
@@ -1095,7 +1125,9 @@ const SearchFilter: React.FC<Props> = ({
                 <Fragment key={`checkbox-college-${index}`}>
                   <Checkbox
                     className="base"
-                    name={FilterConditionName.College}
+                    name={filterConditionNamePolyglot(
+                      FilterConditionName.College
+                    )}
                     label={college.text}
                     value={college.value}
                     checked={filterCondition.all_college_name_query.includes(
@@ -1110,7 +1142,9 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.DifficultyLevel}</th>
+            <th>
+              {filterConditionNamePolyglot(FilterConditionName.DifficultyLevel)}
+            </th>
             <td>
               <Checkbox
                 className="base"
@@ -1125,7 +1159,9 @@ const SearchFilter: React.FC<Props> = ({
                   >
                     <Checkbox
                       className="base"
-                      name={FilterConditionName.DifficultyLevel}
+                      name={filterConditionNamePolyglot(
+                        FilterConditionName.DifficultyLevel
+                      )}
                       label={levels.text}
                       value={levels.value}
                       checked={filterCondition.difficulty_level_json_query.includes(
@@ -1141,7 +1177,9 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.LearningTime}</th>
+            <th>
+              {filterConditionNamePolyglot(FilterConditionName.LearningTime)}
+            </th>
             <td>
               <Checkbox
                 className="base"
@@ -1154,7 +1192,9 @@ const SearchFilter: React.FC<Props> = ({
                   <Fragment key={`checkbox-learningTime-${index}`}>
                     <Checkbox
                       className="base"
-                      name={FilterConditionName.LearningTime}
+                      name={filterConditionNamePolyglot(
+                        FilterConditionName.LearningTime
+                      )}
                       label={learningTime.text}
                       value={learningTime.value}
                       checked={filterCondition.learning_time_query.includes(
@@ -1174,7 +1214,7 @@ const SearchFilter: React.FC<Props> = ({
           </tr>
           <tr>
             <th>
-              {FilterConditionName.Organizer}
+              {filterConditionNamePolyglot(FilterConditionName.Organizer)}
               {/*확장버튼 추가*/}
               <button
                 type="button"
@@ -1198,7 +1238,9 @@ const SearchFilter: React.FC<Props> = ({
                   <Fragment key={`checkbox-organizer-${index}`}>
                     <Checkbox
                       className="base"
-                      name={FilterConditionName.Organizer}
+                      name={filterConditionNamePolyglot(
+                        FilterConditionName.Organizer
+                      )}
                       label={organizer.text}
                       value={organizer.value}
                       checked={filterCondition.organizer_query.includes(
@@ -1218,7 +1260,9 @@ const SearchFilter: React.FC<Props> = ({
                       <Checkbox
                         key={`checkbox-organizer-${index}`}
                         className="base"
-                        name={FilterConditionName.Organizer}
+                        name={filterConditionNamePolyglot(
+                          FilterConditionName.Organizer
+                        )}
                         label={organizer.text}
                         value={organizer.value}
                         checked={filterCondition.organizer_query.includes(
@@ -1232,7 +1276,9 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.LearningType}</th>
+            <th>
+              {filterConditionNamePolyglot(FilterConditionName.LearningType)}
+            </th>
             <td>
               <Checkbox
                 className="base"
@@ -1244,7 +1290,9 @@ const SearchFilter: React.FC<Props> = ({
                 <Fragment key={`checkbox-learningType-${index}`}>
                   <Checkbox
                     className="base"
-                    name={FilterConditionName.LearningType}
+                    name={filterConditionNamePolyglot(
+                      FilterConditionName.LearningType
+                    )}
                     label={learningType.text}
                     value={learningType.value}
                     checked={filterCondition.cube_type_query.includes(
@@ -1257,11 +1305,11 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.Required}</th>
+            <th>{filterConditionNamePolyglot(FilterConditionName.Required)}</th>
             <td>
               <Checkbox
                 className="base"
-                name={FilterConditionName.Required}
+                name={filterConditionNamePolyglot(FilterConditionName.Required)}
                 label={`${SELECT_ALL}`}
                 checked={
                   filterCondition.hasRequired && filterCondition.notRequired
@@ -1283,14 +1331,14 @@ const SearchFilter: React.FC<Props> = ({
                     setTags([
                       ...getTags()!.filter(
                         (c) =>
-                          c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
+                          c.text !== insiderInclude && c.text !== insiderExclude
                       ),
                       {
-                        key: '핵인사 포함',
-                        text: '핵인사 포함',
+                        key: insiderInclude,
+                        text: insiderInclude,
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter((d) => d.text !== '핵인사 포함')
+                            getTags()!.filter((d) => d.text !== insiderInclude)
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1299,11 +1347,11 @@ const SearchFilter: React.FC<Props> = ({
                         },
                       },
                       {
-                        key: '핵인사 비포함',
-                        text: '핵인사 비포함',
+                        key: insiderExclude,
+                        text: insiderExclude,
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter((d) => d.text !== '핵인사 비포함')
+                            getTags()!.filter((d) => d.text !== insiderExclude)
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1321,7 +1369,7 @@ const SearchFilter: React.FC<Props> = ({
                     setTags([
                       ...getTags()!.filter(
                         (c) =>
-                          c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
+                          c.text !== insiderInclude && c.text !== insiderExclude
                       ),
                     ]);
                   }
@@ -1329,7 +1377,7 @@ const SearchFilter: React.FC<Props> = ({
               />
               <Checkbox
                 className="base"
-                name={FilterConditionName.Required}
+                name={filterConditionNamePolyglot(FilterConditionName.Required)}
                 label={getPolyglotText('포함', '통검-필레팝-핵포함')}
                 checked={filterCondition.hasRequired === true}
                 onChange={() => {
@@ -1342,7 +1390,9 @@ const SearchFilter: React.FC<Props> = ({
                       ...mFilterCondition,
                       hasRequired: false,
                     });
-                    setTags(getTags()!.filter((c) => c.text !== '핵인사 포함'));
+                    setTags(
+                      getTags()!.filter((c) => c.text !== insiderInclude)
+                    );
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
@@ -1351,11 +1401,11 @@ const SearchFilter: React.FC<Props> = ({
                     setTags([
                       ...getTags()!,
                       {
-                        key: '핵인사 포함',
-                        text: '핵인사 포함',
+                        key: insiderInclude,
+                        text: insiderInclude,
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter((d) => d.text !== '핵인사 포함')
+                            getTags()!.filter((d) => d.text !== insiderInclude)
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1369,7 +1419,7 @@ const SearchFilter: React.FC<Props> = ({
               />
               <Checkbox
                 className="base"
-                name={FilterConditionName.Required}
+                name={filterConditionNamePolyglot(FilterConditionName.Required)}
                 label={getPolyglotText('비포함', '통검-필레팝-핵비포')}
                 checked={filterCondition.notRequired === true}
                 onChange={() => {
@@ -1383,7 +1433,7 @@ const SearchFilter: React.FC<Props> = ({
                       notRequired: false,
                     });
                     setTags(
-                      getTags()!.filter((c) => c.text !== '핵인사 비포함')
+                      getTags()!.filter((c) => c.text !== insiderExclude)
                     );
                   } else {
                     setFilterCondition({
@@ -1393,11 +1443,11 @@ const SearchFilter: React.FC<Props> = ({
                     setTags([
                       ...getTags()!,
                       {
-                        key: '핵인사 비포함',
-                        text: '핵인사 비포함',
+                        key: insiderExclude,
+                        text: insiderExclude,
                         removeMe: () => {
                           setTags(
-                            getTags()!.filter((d) => d.text !== '핵인사 비포함')
+                            getTags()!.filter((d) => d.text !== insiderExclude)
                           );
                           setFilterCondition({
                             ...getFilterCondition()!,
@@ -1412,11 +1462,15 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.Certification}</th>
+            <th>
+              {filterConditionNamePolyglot(FilterConditionName.Certification)}
+            </th>
             <td>
               <Checkbox
                 className="base"
-                name={FilterConditionName.Certification}
+                name={filterConditionNamePolyglot(
+                  FilterConditionName.Certification
+                )}
                 label={`${SELECT_ALL}`}
                 checked={filterCondition.stamp && filterCondition.badge}
                 onChange={() => {
@@ -1476,7 +1530,9 @@ const SearchFilter: React.FC<Props> = ({
               />
               <Checkbox
                 className="base"
-                name={FilterConditionName.Certification}
+                name={filterConditionNamePolyglot(
+                  FilterConditionName.Certification
+                )}
                 label="Stamp"
                 checked={filterCondition.stamp === true}
                 onChange={() => {
@@ -1514,7 +1570,9 @@ const SearchFilter: React.FC<Props> = ({
               />
               <Checkbox
                 className="base"
-                name={FilterConditionName.Certification}
+                name={filterConditionNamePolyglot(
+                  FilterConditionName.Certification
+                )}
                 label="Badge"
                 checked={filterCondition.badge === true}
                 onChange={() => {
@@ -1553,7 +1611,11 @@ const SearchFilter: React.FC<Props> = ({
             </td>
           </tr>
           <tr>
-            <th>{FilterConditionName.LearningSchedule}</th>
+            <th>
+              {filterConditionNamePolyglot(
+                FilterConditionName.LearningSchedule
+              )}
+            </th>
             <td>
               <div className="calendar-cell">
                 <div className="ui h40 calendar" id="rangeStart">

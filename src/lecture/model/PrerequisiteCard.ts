@@ -1,5 +1,7 @@
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+
 export interface PrerequisiteCard {
   prerequisiteCardId: string;
-  prerequisiteCardName: string;
+  prerequisiteCardName: PolyglotString;
   required: boolean;
 }

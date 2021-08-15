@@ -42,7 +42,10 @@ export function parsePolyglotString(
   const userLanguage = parseLanguage(
     SkProfileService.instance.skProfile.language
   );
-  if (!_.isEmpty(polyglotString[userLanguage])) {
+  if (
+    polyglotString[userLanguage] !== undefined &&
+    !_.isEmpty(polyglotString[userLanguage])
+  ) {
     return polyglotString[userLanguage] || '';
   }
   return (
@@ -54,15 +57,18 @@ export function parsePolyglotString(
 
 function parsePolyglotStringFromRaw(
   polyglotString: PolyglotString | null | undefined
-): string | undefined {
+): string | undefined | null {
   if (polyglotString === null || polyglotString === undefined) {
     return '';
   }
   const userLanguage = parseLanguageToRaw(
     SkProfileService.instance.skProfile.language
   );
-  if (!_.isEmpty(polyglotString[userLanguage])) {
+  if (
+    polyglotString[userLanguage] !== undefined &&
+    !_.isEmpty(polyglotString[userLanguage])
+  ) {
     return polyglotString[userLanguage] || '';
   }
-  return undefined;
+  return polyglotString.k;
 }
