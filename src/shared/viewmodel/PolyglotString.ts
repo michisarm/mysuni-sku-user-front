@@ -57,7 +57,7 @@ export function parsePolyglotString(
 
 function parsePolyglotStringFromRaw(
   polyglotString: PolyglotString | null | undefined
-): string | undefined {
+): string | undefined | null {
   if (polyglotString === null || polyglotString === undefined) {
     return '';
   }
@@ -70,5 +70,5 @@ function parsePolyglotStringFromRaw(
   ) {
     return polyglotString[userLanguage] || '';
   }
-  return undefined;
+  return polyglotString.k;
 }
