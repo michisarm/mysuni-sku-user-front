@@ -12,7 +12,6 @@ import {
   HeaderWrapperView,
   AdditionalToolsMyLearning,
 } from './MyLearningSummaryElementsView';
-import { ChannelModel } from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
