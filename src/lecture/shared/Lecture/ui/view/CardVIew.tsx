@@ -107,10 +107,15 @@ export default function CardView({
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
   const hoverTimer = useRef(0);
-  const parseName = parsePolyglotString(
-    name,
-    getDefaultLang(langSupports || [])
-  );
+  const parseName = useMemo<string>(() => {
+    if (langSupports !== undefined) {
+      const parsed = parsePolyglotString(name, getDefaultLang(langSupports));
+      return parsed;
+    } else {
+      const parsed = parsePolyglotString(name);
+      return parsed;
+    }
+  }, [name, langSupports]);
 
   useEffect(() => {
     return autorun(() => {
