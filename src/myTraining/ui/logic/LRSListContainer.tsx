@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCards } from '../../../lecture/recommend/api/recommendApi';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const CONTENT_TYPE_NAME = '추천과정';
 
@@ -93,7 +94,10 @@ function LearningContainer() {
             <NoSuchContentPanel
               message={
                 <div className="text">
-                  {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
+                  <PolyglotText
+                    defaultString="추천과정에 해당하는 학습 과정이 없습니다."
+                    id="LRS-추천과정-없음"
+                  />
                 </div>
               }
             />

@@ -18,6 +18,7 @@ import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
@@ -130,7 +131,11 @@ function RequiredCardListContainer({
     withFilter: boolean = false
   ) => {
     return (
-      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
+      (withFilter &&
+        getPolyglotText(
+          '필터 조건에 해당하는 결과가 없습니다.',
+          'mapg-msmp-검색x5'
+        )) ||
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
   };

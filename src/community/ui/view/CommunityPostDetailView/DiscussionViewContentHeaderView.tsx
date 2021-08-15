@@ -14,6 +14,7 @@ import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
 import { CommentList } from '@nara.drama/feedback';
 import { reactAlert } from '@nara.platform/accent';
 import { countByFeedbackId } from '../../../../lecture/detail/api/feedbackApi';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   postDetail: any;
@@ -73,9 +74,11 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
     const checkContentValue =
-      (postDetail?.content === '<p><br></p>' || postDetail?.content === "") ? true : false;
+      postDetail?.content === '<p><br></p>' || postDetail?.content === ''
+        ? true
+        : false;
     setContentCheck(checkContentValue);
-    setCount(postDetail.replyCount)
+    setCount(postDetail.replyCount);
   }, [postDetail]);
 
   useEffect(() => {
@@ -93,7 +96,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   }, [postDetail]);
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
+    depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
@@ -176,7 +179,11 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               />
               <h2>{postDetail.title}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{count}</strong>
+                <PolyglotText
+                  defaultString="전체 의견"
+                  id="discussion-content-전체의견"
+                />{' '}
+                <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">
@@ -245,7 +252,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                         alt=""
                         style={{ display: 'inline-block' }}
                       />
-                      관련 URL
+                      <PolyglotText
+                        defaultString="관련 URL"
+                        id="discussion-content-관련url"
+                      />
                     </p>
                     {postDetail &&
                       postDetail.relatedUrlList?.map((item: any) => (
@@ -267,7 +277,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                           <img
                             src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
                           />
-                          첨부파일
+                          <PolyglotText
+                            defaultString="첨부파일"
+                            id="discussion-content-첨부파일"
+                          />
                         </p>
                         <div className="board-down-title-right">
                           <button
@@ -275,7 +288,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                             onClick={() => zipFileDownload('select')}
                           >
                             <i aria-hidden="true" className="icon check icon" />
-                            선택 다운로드
+                            <PolyglotText
+                              defaultString="선택 다운로드"
+                              id="discussion-content-선택다운로드"
+                            />
                           </button>
                           <button
                             className="ui icon button left post list2"
@@ -284,7 +300,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                             <img
                               src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
                             />
-                            전체 다운로드
+                            <PolyglotText
+                              defaultString="전체 다운로드"
+                              id="discussion-content-전체다운로드"
+                            />
                           </button>
                         </div>
                       </div>

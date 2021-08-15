@@ -34,6 +34,7 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
   newLectureService?: NEWLectureService;
@@ -41,12 +42,9 @@ interface Props extends RouteComponentProps {
 }
 
 const NEWLearning: React.FC<Props> = function NEWLearning({
-  reviewService,
-  newLectureService,
   inMyLectureService,
   history,
 }) {
-  const CONTENT_TYPE_NAME = '신규과정';
   // const PAGE_SIZE = 8;
   // const { newLectures } = newLectureService!;
   // const [title, setTitle] = useState<string | null>('');
@@ -323,7 +321,10 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
         <NoSuchContentPanel
           message={
             <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
+              <PolyglotText
+                defaultString="신규과정에 해당하는 학습 과정이 없습니다."
+                id="뉴러닝-신규과정-없음"
+              />
             </div>
           }
         />
