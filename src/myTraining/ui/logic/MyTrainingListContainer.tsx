@@ -24,6 +24,7 @@ import { useScrollMove } from '../../useScrollMove';
 import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
 import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
@@ -206,7 +207,11 @@ function MyTrainingListContainer({
     withFilter: boolean = false
   ) => {
     return (
-      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
+      (withFilter &&
+        getPolyglotText(
+          '필터 조건에 해당하는 결과가 없습니다.',
+          'mapg-msmp-검색x4'
+        )) ||
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
   };

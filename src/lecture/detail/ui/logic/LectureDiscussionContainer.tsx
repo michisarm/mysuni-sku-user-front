@@ -18,6 +18,7 @@ import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackCont
 import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
 import { useParams } from 'react-router-dom';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -201,7 +202,11 @@ export default function LectureDiscussionContainer() {
               />
               <h2>{lectureDiscussion.name}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{count}</strong>
+                <PolyglotText
+                  defaultString="전체 의견"
+                  id="discussion-content-전체의견2"
+                />{' '}
+                <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">
@@ -268,7 +273,10 @@ export default function LectureDiscussionContainer() {
                         alt=""
                         style={{ display: 'inline-block' }}
                       />
-                      관련 URL
+                      <PolyglotText
+                        defaultString="관련 URL"
+                        id="discussion-content-관련URL2"
+                      />
                     </p>
                     {lectureFeedbackContent.relatedUrlList?.map((item: any) => (
                       <>
@@ -289,7 +297,10 @@ export default function LectureDiscussionContainer() {
                           <img
                             src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
                           />
-                          첨부파일
+                          <PolyglotText
+                            defaultString="첨부파일"
+                            id="discussion-content-첨부파일2"
+                          />
                         </p>
                         <div className="board-down-title-right">
                           <button
@@ -297,7 +308,10 @@ export default function LectureDiscussionContainer() {
                             onClick={() => zipFileDownload('select')}
                           >
                             <i aria-hidden="true" className="icon check icon" />
-                            선택 다운로드
+                            <PolyglotText
+                              defaultString="선택 다운로드"
+                              id="discussion-content-선택다운로드2"
+                            />
                           </button>
                           <button
                             className="ui icon button left post list2"
@@ -306,7 +320,10 @@ export default function LectureDiscussionContainer() {
                             <img
                               src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
                             />
-                            전체 다운로드
+                            <PolyglotText
+                              defaultString="전체 다운로드"
+                              id="discussion-content-전체다운로드2"
+                            />
                           </button>
                         </div>
                       </div>

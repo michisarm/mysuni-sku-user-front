@@ -90,7 +90,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
                 >
                   <PolyglotText
                     defaultString="해당 문항은 필수 항목 입니다."
-                    id="survey-설명-필수항목"
+                    id="survey-필수항목-alert5"
                   />
                 </span>
               </div>
