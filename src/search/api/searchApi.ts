@@ -95,7 +95,7 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 const FIND_CARD_COLUMNS =
-  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid';
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules';
 
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
@@ -175,6 +175,7 @@ function parseToken() {
   }
 }
 
+// check
 function testBlacklistAccessRuleForPaidLecture(
   card: SearchCard,
   userWorkspaces: UserWorkspace,
@@ -202,6 +203,10 @@ function testBlacklistAccessRuleForPaidLecture(
       return true;
     }
   }
+
+  // 여기에 권한 체크 추가
+  // SkProfileService.instance.skProfile.userGroupSequences
+  // card.use_whitelist_policy, card.access_rules
 
   return false;
 }
