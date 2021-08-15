@@ -41,8 +41,7 @@ export function ChannelCardsView(props: Props) {
           <span
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                `채널에서 {name}님께 추천하는
-                과정입니다.`,
+                `채널에서 {name}님께 추천하는 과정입니다.`,
                 '공통-ChannelCard-추천과정',
                 {
                   name: SkProfileService.instance.profileMemberName,
