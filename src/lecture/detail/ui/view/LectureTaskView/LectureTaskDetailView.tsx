@@ -195,7 +195,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
             reactAlert({
               title: getPolyglotText('안내', 'Collage-TaskPostViewDetail-안내'),
               message: getPolyglotText(
-                `게시글이 Pin ${message}`,
+                `게시글이 Pin {message}`,
                 'Collage-TaskPostViewDetail-게시글안내',
                 { message }
               ),
