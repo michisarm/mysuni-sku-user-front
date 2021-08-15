@@ -10,45 +10,45 @@ interface TestSingleChoiceViewProps {
   readOnly: boolean;
 }
 
-const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
-  question,
-  answer,
-  setAnswer,
-  readOnly,
-}) {
-  const maxLength = 100;
+const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> =
+  function TestSingleChoiceView({ question, answer, setAnswer, readOnly }) {
+    const maxLength = 100;
 
-  return (
-    <Form>
-      <Form.Field>
-        <div className="ui right-top-count input">
-          <span className="count">
-            <span className="now">
-              {answer && answer.length}
-              {!answer && '0'}
+    return (
+      <Form>
+        <Form.Field>
+          <div className="ui right-top-count input">
+            <span className="count">
+              <span className="now">
+                {answer && answer.length}
+                {!answer && '0'}
+              </span>
+              /<span className="max">{maxLength}</span>
             </span>
-            /<span className="max">{maxLength}</span>
-          </span>
-          <input
-            type="text"
-            placeholder={`답변을 입력해주세요. (최대 ${maxLength}자 입력 가능)`}
-            // placeholder={getPolyglotText(`답변을 입력해주세요. (최대 ${maxLength}자 입력 가능)`, 'Test-TestShortAnswer-답변입력', {{maxLength}})}
-            value={answer}
-            onChange={(e: any) => {
-              if (e.target.value.length <= maxLength) {
-                setAnswer(question.sequence, e.target.value);
-              }
-            }}
-            readOnly={readOnly}
-          />
-          <Icon className="clear link" />
-          <span className="validation">
-            You can enter up to {maxLength} characters.
-          </span>
-        </div>
-      </Form.Field>
-    </Form>
-  );
-};
+            <input
+              type="text"
+              // placeholder={`답변을 입력해주세요. (최대 ${maxLength}자 입력 가능)`}
+              placeholder={getPolyglotText(
+                '답변을 입력해주세요. (최대 {maxLength}자 입력 가능)',
+                'Test-TestShortAnswer-답변입력',
+                { maxLength: (maxLength && maxLength).toString() }
+              )}
+              value={answer}
+              onChange={(e: any) => {
+                if (e.target.value.length <= maxLength) {
+                  setAnswer(question.sequence, e.target.value);
+                }
+              }}
+              readOnly={readOnly}
+            />
+            <Icon className="clear link" />
+            <span className="validation">
+              You can enter up to {maxLength} characters.
+            </span>
+          </div>
+        </Form.Field>
+      </Form>
+    );
+  };
 
 export default TestSingleChoiceView;

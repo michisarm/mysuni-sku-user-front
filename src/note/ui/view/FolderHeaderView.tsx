@@ -471,8 +471,13 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> =
                   className="tit_cnt"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      `총 <strong>${noteList.results.length}개의 학습과정</strong>`,
-                      'mypage-folder-학습과정수'
+                      `총 <strong>{count}개의 학습과정</strong>`,
+                      'mypage-folder-학습과정수',
+                      {
+                        count: (
+                          noteList.results.length && noteList.results.length
+                        ).toString(),
+                      }
                     ),
                   }}
                 />
@@ -480,8 +485,9 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> =
                   className="tit_cnt"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      `총 <strong>${folderNoteCount || 0}개의 Note</strong>`,
-                      'mypage-folder-노트수'
+                      `총 <strong>{count}개의 Note</strong>`,
+                      'mypage-folder-노트수',
+                      { count: (folderNoteCount || 0).toString() }
                     ),
                   }}
                 />
