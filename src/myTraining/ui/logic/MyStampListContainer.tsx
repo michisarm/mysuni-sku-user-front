@@ -8,7 +8,9 @@ import ReactGA from 'react-ga';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../model/NoSuchContentPanelMessages';
 import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
 import MyStampListView from '../view/MyStampListView';
@@ -141,7 +143,7 @@ function MyStampListContainer({
           '필터 조건에 해당하는 결과가 없습니다.',
           'mapg-msmp-검색x'
         )) ||
-      NoSuchContentPanelMessages.getMessageByConentType(contentType)
+      nosuchMessagesPolyglot(contentType)
     );
   };
 
