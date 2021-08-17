@@ -4,7 +4,9 @@ import { Segment } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { AplService } from '../stores';
-import NoSuchContentPanelMessages from '../ui/model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../ui/model/NoSuchContentPanelMessages';
 import LineHeaderContainerV2 from '../ui/logic/LineHeaderContainerV2';
 import { SeeMoreButton } from '../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../shared';
@@ -27,9 +29,7 @@ function PersonalCompletedListContainer() {
     aplCount: { all: aplTableCount },
   } = AplService.instance;
 
-  const noSuchMessage = NoSuchContentPanelMessages.getMessageByConentType(
-    params.tab
-  );
+  const noSuchMessage = nosuchMessagesPolyglot(params.tab);
 
   const seeMoreVisible = aplTableCount > aplTableViews.length;
   return (

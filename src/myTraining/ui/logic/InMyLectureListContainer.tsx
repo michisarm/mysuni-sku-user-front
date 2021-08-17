@@ -11,7 +11,9 @@ import FilterBoxContainer from './FilterBoxContainer';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { Direction } from '../../model/Direction';
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import InMyLectureListView from '../view/InMyLectureListVIew';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
@@ -138,7 +140,7 @@ function InMyLectureListContainer({
           '필터 조건에 해당하는 결과가 없습니다.',
           'mapg-msmp-검색x3'
         )) ||
-      NoSuchContentPanelMessages.getMessageByConentType(contentType)
+      nosuchMessagesPolyglot(contentType)
     );
   };
 
