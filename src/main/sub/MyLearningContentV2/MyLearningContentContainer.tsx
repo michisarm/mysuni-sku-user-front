@@ -47,8 +47,6 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
     }
   }, [inMyLectureService, memName.length, skProfile.name, skProfileService]);
 
-  console.log(skProfile);
-
   return (
     <>
       {cardBundles?.map((cardBundle, i) => {

@@ -20,6 +20,7 @@ import { InMyLectureService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   pageService?: PageService;
@@ -169,7 +170,9 @@ class SharedListInnerContainer extends React.Component<Props, States> {
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      feedbackIds = lectureOffsetList.results.map(
+        (lecture) => lecture.reviewId
+      );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 
@@ -308,10 +311,16 @@ class SharedListInnerContainer extends React.Component<Props, States> {
                   }
                   onAction={() => {
                     reactAlert({
-                      title: '알림',
+                      title: getPolyglotText('알림', '신규학습-신규목록-알림'),
                       message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
+                        ? getPolyglotText(
+                            '본 과정이 관심목록에서 제외되었습니다.',
+                            '신규학습-신규목록-관심제외'
+                          )
+                        : getPolyglotText(
+                            '본 과정이 관심목록에 추가되었습니다.',
+                            '신규학습-신규목록-관심추가'
+                          ),
                     });
                     this.onToggleBookmarkLecture(inMyLecture || lecture);
                   }}

@@ -101,9 +101,8 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -361,36 +360,25 @@ export default function CardView({
         <div className="foot-area">{renderBottom()}</div>
       </div>
       <div className="hover-content">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div className="title-area">
-            {mainCategory && (
-              <Label className={getColor(collegeId)}>
-                {getCollgeName(collegeId)}
-              </Label>
-            )}
-          </div>
-          {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
-            <div
-              className="g-lang-area"
-              style={{ marginLeft: 'auto', marginTop: '0px' }}
-            >
-              <Icon className="i-glb" />
-              <div className="g-list">
-                {langSupports.map((langSupport) => (
-                  <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
-                    {parseLanguge(langSupport.lang)}
-                  </span>
-                ))}
-              </div>
+        {/*<div className="title-area">*/}
+        {/*  {mainCategory && (*/}
+        {/*    <Label className={getColor(collegeId)}>*/}
+        {/*      {getCollgeName(collegeId)}*/}
+        {/*    </Label>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+        {(Array.isArray(langSupports) || isObservableArray(langSupports)) && (
+          <div className="g-lang-area">
+            <Icon className="i-glb" />
+            <div className="g-list">
+              {langSupports.map((langSupport) => (
+                // <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
+                <span className="on">{parseLanguge(langSupport.lang)}</span>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
         <p
           className="text-area"
           dangerouslySetInnerHTML={{

@@ -10,6 +10,7 @@ import {
 } from '../../store/LectureOverviewStore';
 import { getLectureParams } from '../../store/LectureParamsStore';
 import LectureCubeSummary from '../../viewModel/LectureOverview/LectureCubeSummary';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 type Value = LectureCubeSummary | undefined;
 
@@ -28,8 +29,11 @@ export function toggleCubeBookmark() {
       addInMyLecture(inMyLectureCdo).then(() => {
         InMyLectureService.instance.findAllInMyLectures();
         reactAlert({
-          title: '알림',
-          message: '본 과정이 관심목록에 추가되었습니다.',
+          title: getPolyglotText('알림', '신규학습-신규목록-알림'),
+          message: getPolyglotText(
+            '본 과정이 관심목록에 추가되었습니다.',
+            '신규학습-신규목록-관심추가'
+          ),
         });
       });
     }
@@ -37,8 +41,11 @@ export function toggleCubeBookmark() {
     removeInMyLecture(imMyLecture.id).then(() => {
       InMyLectureService.instance.findAllInMyLectures();
       reactAlert({
-        title: '알림',
-        message: '본 과정이 관심목록에서 제외되었습니다.',
+        title: getPolyglotText('알림', '신규학습-신규목록-알림'),
+        message: getPolyglotText(
+          '본 과정이 관심목록에서 제외되었습니다.',
+          '신규학습-신규목록-관심제외'
+        ),
       });
     });
   }
@@ -58,7 +65,7 @@ export function useLectureCubeSummary(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureCubeSummary(next => {
+    return onLectureCubeSummary((next) => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);

@@ -58,7 +58,7 @@ function MyPageHeaderContainer({
     totalLectureTime;
 
   useEffect(() => {
-    badgeService!.findAllBadgeCount();
+    // badgeService!.findAllBadgeCount();
     myTrainingService!.countMyTrainingsWithStamp();
   }, []);
 

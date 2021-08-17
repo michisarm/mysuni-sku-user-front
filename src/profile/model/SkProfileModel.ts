@@ -35,6 +35,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   language: string = 'Korean';
+  userGroupSequences: { sequences: number[] } = { sequences: [] };
 
   constructor(skProfile?: SkProfileModel) {
     if (skProfile) {
@@ -74,6 +75,9 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get photoFilePath() {
+    if (this.useGdiPhoto === true) {
+      return `/profile/photo${this.gdiPhotoImagePath}`;
+    }
     if (
       this.photoImagePath === undefined ||
       this.photoImagePath === null ||
@@ -81,11 +85,7 @@ class SkProfileModel implements DramaEntity {
     ) {
       return defaultProfileImg;
     }
-
-    const useCustomPhoto = this.photoImagePath.startsWith('/profile');
-    return useCustomPhoto === true
-      ? this.photoImagePath
-      : `/profile/photo${this.gdiPhotoImagePath}`;
+    return this.photoImagePath;
   }
 
   @computed
@@ -129,6 +129,7 @@ decorate(SkProfileModel, {
   companyCode: observable,
   language: observable,
   departmentCode: observable,
+  userGroupSequences: observable,
 });
 
 export default SkProfileModel;

@@ -7,7 +7,7 @@ export function requestMainPagePopupFirst() {
 
   getMainPagePopupFirst().then((result) => {
     if (mainModal == 'HIDE') {
-      result.open = false;
+      // result.open = false;
     }
 
     setMainPagePopupItem({
