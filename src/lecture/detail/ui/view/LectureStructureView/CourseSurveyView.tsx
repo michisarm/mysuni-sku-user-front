@@ -15,8 +15,11 @@ interface SurveyViewProps {
 
 function cannotAlert() {
   reactAlert({
-    title: getPolyglotText('Survey 안내', 'Survey안내'),
-    message: getPolyglotText('학습 진행 후 Survey 참여 가능합니다.', '참여안내'),
+    title: getPolyglotText('Survey 안내', 'Survey-CouseView-Survey안내'),
+    message: getPolyglotText(
+      '학습 진행 후 Survey 참여 가능합니다.',
+      'Survey-CouseView-참여안내'
+    ),
   });
 }
 
@@ -39,7 +42,12 @@ const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
           state === 'Completed' ? 'complete' : ''
         }`}
       >
-        <span><PolyglotText defaultString="cube 완료상태" id="Survey-CouseView-cube" /></span>
+        <span>
+          <PolyglotText
+            defaultString="cube 완료상태"
+            id="Survey-CouseView-cube"
+          />
+        </span>
       </span>
       <span className="copy-holder">
         <span className="copy-title">

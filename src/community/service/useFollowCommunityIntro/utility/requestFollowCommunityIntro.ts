@@ -1,13 +1,15 @@
 import moment from 'moment';
 import {
-  followPostList, followList, followModalAdd, followModalDelete, followersModal
+  followPostList,
+  followList,
+  followModalAdd,
+  followModalDelete,
+  followersModal,
 } from '../../../api/communityApi';
-import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
 import {
   setFollowCommunityIntro,
   getFollowCommunityIntro,
-  onFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
 
 // import {
@@ -17,13 +19,12 @@ import {
 
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
-import FollowModalItem from '../../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
+
 // import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 
-const ONE_DAY = 24 * 60 * 60 * 1000
-const ONE_HOUR = 60 * 60 * 1000
-const TWO_DAY = ONE_DAY * 2
-
+const ONE_DAY = 24 * 60 * 60 * 1000;
+const ONE_HOUR = 60 * 60 * 1000;
+const TWO_DAY = ONE_DAY * 2;
 
 function getTimeString(createdTime: number): string {
   const timeStamp = Date.now() - createdTime;
@@ -31,26 +32,30 @@ function getTimeString(createdTime: number): string {
     return '';
   }
   if (timeStamp < ONE_HOUR) {
-    return `${Math.floor(timeStamp / 1000 / 60)}분 전`
+    return `${Math.floor(timeStamp / 1000 / 60)}분 전`;
   }
   if (timeStamp < ONE_DAY) {
-    return `${Math.floor(timeStamp / 1000 / 60 / 60)}시간 전`
+    return `${Math.floor(timeStamp / 1000 / 60 / 60)}시간 전`;
   }
   if (timeStamp < TWO_DAY) {
-    return '1일 전'
+    return '1일 전';
   }
-  return moment(createdTime).format('YYYY.MM.DD')
+  return moment(createdTime).format('YYYY.MM.DD');
 }
 
-export function requestFollowCommunityList(offset: number = 0, limit: number = 2, nickName: string = "") {
-  followList(offset, limit, nickName).then(communities => {
+export function requestFollowCommunityList(
+  offset: number = 0,
+  limit: number = 2,
+  nickName: string = ''
+) {
+  followList(offset, limit, nickName).then((communities) => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset: 0
+      postsOffset: 0,
     };
 
     if (communities === undefined) {
@@ -62,7 +67,7 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 2
       });
     } else {
       const next: FollowCommunityItem[] = [];
-      communities.results.map(followPostList => {
+      communities.results.map((followPostList) => {
         next.push(followPostList);
       });
       setFollowCommunityIntro({
@@ -75,15 +80,19 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 2
   });
 }
 
-export function requestAppendFollowCommunityList(offset: number = 0, limit: number = 2, nickName: string = "") {
-  followList(offset, limit, nickName).then(communities => {
+export function requestAppendFollowCommunityList(
+  offset: number = 0,
+  limit: number = 2,
+  nickName: string = ''
+) {
+  followList(offset, limit, nickName).then((communities) => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset: 0
+      postsOffset: 0,
     };
 
     if (communities === undefined) {
@@ -95,7 +104,7 @@ export function requestAppendFollowCommunityList(offset: number = 0, limit: numb
       });
     } else {
       const next: FollowCommunityItem[] = [...followCommunityIntro.communities];
-      communities.results.map(followPostList => {
+      communities.results.map((followPostList) => {
         next.push(followPostList);
       });
       setFollowCommunityIntro({
@@ -108,17 +117,20 @@ export function requestAppendFollowCommunityList(offset: number = 0, limit: numb
   });
 }
 
-
 // list 검색부분 별도
-export function requestFollowSearchList(offset: number = 0, limit: number = 5, nickName: string = "") {
-  followList(offset, limit, nickName).then(communities => {
+export function requestFollowSearchList(
+  offset: number = 0,
+  limit: number = 5,
+  nickName: string = ''
+) {
+  followList(offset, limit, nickName).then((communities) => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset: 0
+      postsOffset: 0,
     };
 
     if (communities === undefined) {
@@ -130,7 +142,7 @@ export function requestFollowSearchList(offset: number = 0, limit: number = 5, n
       });
     } else {
       const next: FollowCommunityItem[] = [];
-      communities.results.map(followPostList => {
+      communities.results.map((followPostList) => {
         next.push(followPostList);
       });
       setFollowCommunityIntro({
@@ -144,7 +156,21 @@ export function requestFollowSearchList(offset: number = 0, limit: number = 5, n
 }
 
 function postToItem(post: Post): PostItem {
-  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg, bookmarked, likeCount, replyCount } = post;
+  const {
+    postId,
+    communityId,
+    menuId,
+    title,
+    html,
+    createdTime,
+    communityName,
+    creatorName,
+    nickName,
+    profileImg,
+    bookmarked,
+    likeCount,
+    replyCount,
+  } = post;
   return {
     communityId,
     menuId,
@@ -161,22 +187,25 @@ function postToItem(post: Post): PostItem {
   };
 }
 
-export function requestFollowCommunityPostList(offset: number = 0, limit: number = 5) {
-  followPostList(offset, limit).then(posts => {
+export function requestFollowCommunityPostList(
+  offset: number = 0,
+  limit: number = 5
+) {
+  followPostList(offset, limit).then((posts) => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       communitiesOffset: 0,
       postsTotalCount: 0,
-      postsOffset: 0
+      postsOffset: 0,
     };
     if (posts === undefined) {
       setFollowCommunityIntro({
         ...followCommunityIntro,
         posts: [],
         postsTotalCount: 0,
-        postsOffset: 0
+        postsOffset: 0,
       });
     } else {
       const nextList = [
@@ -189,8 +218,6 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
         postsTotalCount: posts.totalCount,
         postsOffset: nextList.length,
       });
-
     }
   });
 }
-

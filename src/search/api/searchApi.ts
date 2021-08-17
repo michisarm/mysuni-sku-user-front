@@ -15,11 +15,11 @@ import {
 import CheckboxOptions from '../model/CheckBoxOption';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
 import { SearchExpert } from '../model/SearchExpert';
-import { findMyUserWorkspaceCache } from '../../lecture/detail/api/approvalApi';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
 import { setSearchUI, getSearchUI } from '../model/SearchUI';
+import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -95,7 +95,7 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 const FIND_CARD_COLUMNS =
-  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid';
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules';
 
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
@@ -175,34 +175,87 @@ function parseToken() {
   }
 }
 
+// check
 function testBlacklistAccessRuleForPaidLecture(
   card: SearchCard,
   userWorkspaces: UserWorkspace,
   token: Token
 ) {
-  if (
-    userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences ===
-      undefined ||
-    !Array.isArray(
-      userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences
-    )
-  ) {
-    return true;
+  // 여기에 권한 체크 추가
+  // SkProfileService.instance.skProfile.userGroupSequences
+  // card.use_whitelist_policy, card.access_rules
+  // ex)
+  // userGroupSequences:[] = [0, 4, 10, 16, 75]
+  // access_rules:[string] = ["____1%","__1%"]
+  // 위의 결과는 맵핑
+  const accessRulesArr: string[] = JSON.parse(card.access_rules);
+  const userGroupSequences: number[] = Array.from(
+    SkProfileService.instance.skProfile.userGroupSequences.sequences
+  ); // 1이 있는 자리 위치(0부터)를 표기한 데이터
+  if (card.id === 'CARD-135y') {
+    debugger;
   }
+  const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
+    const accessRule = c;
+    if (card.use_whitelist_policy) {
+      return (
+        r ||
+        (accessRule.split('').some((d, i) => {
+          if (userGroupSequences.includes(i)) {
+            return true;
+          }
+          return false;
+        }) &&
+          !accessRule.split('').some((d, i) => {
+            if (d !== '1') {
+              return false;
+            }
+            if (!userGroupSequences.includes(i) && d === '1') {
+              return true;
+            }
+            return false;
+          }))
+      );
+    } else {
+      return (
+        r ||
+        accessRule.split('').some((d, i) => {
+          if (d !== '1') {
+            return true;
+          }
+          if (!userGroupSequences.includes(i) && d === '1') {
+            return true;
+          }
+          return false;
+        })
+      );
+    }
+  }, false);
 
-  if (card.paid !== 'true') {
-    return true;
-  }
-
-  const groupSequences =
-    userWorkspaces.blacklistAccessRuleForPaidLecture.groupSequences;
-  for (let i = 0; i < groupSequences.length; i++) {
-    const index = groupSequences[i];
-    if (token.userGroup[index] !== '1') {
+  if (whiteListPolicyResult) {
+    if (
+      userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences ===
+        undefined ||
+      !Array.isArray(
+        userWorkspaces?.blacklistAccessRuleForPaidLecture?.groupSequences
+      )
+    ) {
       return true;
     }
-  }
 
+    if (card.paid !== 'true') {
+      return true;
+    }
+
+    const groupSequences =
+      userWorkspaces.blacklistAccessRuleForPaidLecture.groupSequences;
+    for (let i = 0; i < groupSequences.length; i++) {
+      const index = groupSequences[i];
+      if (token.userGroup[index] !== '1') {
+        return true;
+      }
+    }
+  }
   return false;
 }
 

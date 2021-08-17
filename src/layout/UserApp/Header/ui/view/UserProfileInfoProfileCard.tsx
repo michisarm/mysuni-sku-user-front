@@ -1,18 +1,12 @@
 /* eslint-disable  */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Image } from 'semantic-ui-react';
-import {
-  getProfileInfo,
-  getProfileCount,
-} from '../../../service/ProfilePopupService/getProfileInfo';
+import { getProfileInfo } from '../../../service/ProfilePopupService/getProfileInfo';
 import {
   useProfileInfoModel,
   setProfileInfoModel,
 } from '../../../store/ProfileInfoStore';
-import {
-  useProfileInfoBadgesModel,
-  getProfileInfoBadgesModel,
-} from '../../../store/ProfileInfoBadgeStore';
+
 import {
   useProfileInfoCommunityModel,
   setProfileInfoCommunityModel,
@@ -23,26 +17,20 @@ import {
 } from '../../../store/ProfileInfoPostStore';
 import { getProfileInfoCommunities } from '../../../service/ProfilePopupService/getProfileInfoCommunities';
 import { getProfileInfoPost } from '../../../service/ProfilePopupService/getProfileInfoPost';
-import {
-  getProfileInfoBadge,
-  getProfileAllInfoBadge,
-} from '../../../service/ProfilePopupService/getProfileInfoBadge';
+import { getProfileAllInfoBadge } from '../../../service/ProfilePopupService/getProfileInfoBadge';
 import moment from 'moment';
 import { getFollow } from '../../../service/ProfilePopupService/getFollow';
 import { useFollowModel } from '../../../store/FollowStore';
-import {
-  followMember,
-  unfollowMember,
-  findAllFollow,
-} from '../../../api/ProfileInfoAPI';
+import { followMember, unfollowMember } from '../../../api/ProfileInfoAPI';
 import { patronInfo } from '@nara.platform/dock';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
-import ProfileImagePath from '../../../../../../src/shared/components/Image/ProfileImagePath';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { observer } from 'mobx-react';
+import { SkProfileService } from 'profile/stores';
 
 interface Props {
   open: boolean;
@@ -192,18 +180,6 @@ function UserProfileinfoProfileCard(props: Props) {
     return tagHtml;
   }
 
-  // const getFollowYN = useCallback(() => {
-  //   followData && followData.ids.map(f => {
-  //     if (f === props.memberId) {
-  //       setFollowClassName('unfollowing');
-  //       setIsFollow('Unfollow');
-  //     } else {
-  //       setFollowClassName('following');
-  //       setIsFollow('Follow');
-  //     }
-  //   })
-  // }, [followData])
-
   function onClickFollow() {
     const count = profileInfo?.followCount || 0;
     if (isFollow === 'Unfollow') {
@@ -324,17 +300,7 @@ function UserProfileinfoProfileCard(props: Props) {
           <div
             className="belt"
             dangerouslySetInnerHTML={{ __html: getTagHtml() }}
-          >
-            {/* <span># 일요일은요리사</span>
-            <span># 다이어트</span>
-            <span># 돈까스</span>
-            <span># 밀가루귀신</span>
-            <span># 개발자</span>
-            <span># 맛있는녀석들</span>
-            <span># 심야식당</span>
-            <span># 건강한돼지</span>
-            <span># 아기자기</span> */}
-          </div>
+          ></div>
         </div>
         <div className="close-area">
           <Button onClick={() => props.setOpen(!props.open)}>
@@ -346,4 +312,4 @@ function UserProfileinfoProfileCard(props: Props) {
   );
 }
 
-export default UserProfileinfoProfileCard;
+export default observer(UserProfileinfoProfileCard);

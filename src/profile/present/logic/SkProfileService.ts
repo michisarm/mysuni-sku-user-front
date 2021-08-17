@@ -200,6 +200,12 @@ class SkProfileService {
   }
 
   @action
+  modifyProfileNickName(nickname: string) {
+    //
+    this.skProfile = _.set(this.skProfile, 'nickname', nickname);
+  }
+
+  @action
   setStudySummaryProp(name: string, value: any) {
     this.studySummary = _.set(this.studySummary, name, value);
   }

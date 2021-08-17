@@ -58,7 +58,7 @@ function MyPageHeaderContainer({
     totalLectureTime;
 
   useEffect(() => {
-    badgeService!.findAllBadgeCount();
+    // badgeService!.findAllBadgeCount();
     myTrainingService!.countMyTrainingsWithStamp();
   }, []);
 
@@ -77,10 +77,6 @@ function MyPageHeaderContainer({
   }, []);
 
   return (
-    // 요청사항으로 관심 Channel 주석처리
-    // <ContentHeader
-    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
-    // >
     <ContentHeader
       dataArea={
         window.location.pathname.includes('/my-page/')

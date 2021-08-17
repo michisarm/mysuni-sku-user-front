@@ -40,158 +40,177 @@ function hashLink(hash: string) {
   }
 }
 
-const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = function LectureCourseContentView({
-  lectureDescription,
-  lectureSubcategory,
-  lectureTags,
-  lectureInstructor,
-  lecturePrecourse,
-  lectureBadge,
-  lectureComment,
-  lectureRelations,
-  lectureFile,
-}) {
-  const [activatedTab, setActivatedTab] = useState<string>('overview');
-  const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
-    setActivatedTab('overview');
-  }, []);
-  const instructorHashClick = useCallback(() => {
-    hashLink('lms-instructor-Info');
-    setActivatedTab('instructor');
-  }, []);
-  const badgeHashClick = useCallback(() => {
-    hashLink('lms-related-badge');
-    setActivatedTab('badge');
-  }, []);
-  const relatedHashClick = useCallback(() => {
-    hashLink('lms-related-process');
-    setActivatedTab('related');
-  }, []);
+const LectureCourseContentView: React.FC<LectureCourseContentViewProps> =
+  function LectureCourseContentView({
+    lectureDescription,
+    lectureSubcategory,
+    lectureTags,
+    lectureInstructor,
+    lecturePrecourse,
+    lectureBadge,
+    lectureComment,
+    lectureRelations,
+    lectureFile,
+  }) {
+    const [activatedTab, setActivatedTab] = useState<string>('overview');
+    const overviewHashClick = useCallback(() => {
+      hashLink('lms-overview');
+      setActivatedTab('overview');
+    }, []);
+    const instructorHashClick = useCallback(() => {
+      hashLink('lms-instructor-Info');
+      setActivatedTab('instructor');
+    }, []);
+    const badgeHashClick = useCallback(() => {
+      hashLink('lms-related-badge');
+      setActivatedTab('badge');
+    }, []);
+    const relatedHashClick = useCallback(() => {
+      hashLink('lms-related-process');
+      setActivatedTab('related');
+    }, []);
 
-  const commentHashClick = useCallback(() => {
-    // hashLink('lms-comment');
-    setActivatedTab('comment');
-  }, []);
+    const commentHashClick = useCallback(() => {
+      // hashLink('lms-comment');
+      setActivatedTab('comment');
+    }, []);
 
-  return (
-    <>
-      {lecturePrecourse && lecturePrecourse.prerequisiteCards.length > 0 && (
-        <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
-      )}
-      <div className="lms-sticky-menu">
-        <div className="lms-fixed-inner" id="lms-overview">
-          <a
-            onClick={overviewHashClick}
-            className={activatedTab === 'overview' ? 'lms-act' : ''}
-            data-area={Area.CARD_TAB}
-            data-action={Action.CLICK}
-            data-action-name="CARD TAB 클릭::Overview"
-          >
-            <PolyglotText defaultString="Overview" id="Course-ContentsView-Overview" />
-          </a>
-          {lectureInstructor &&
-            Array.isArray(lectureInstructor.instructors) &&
-            lectureInstructor.instructors.length > 0 && (
-              <a
-                onClick={instructorHashClick}
-                className={activatedTab === 'instructor' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
-                data-action={Action.CLICK}
-                data-action-name="CARD TAB 클릭::강사정보"
-              >
-                <PolyglotText defaultString="강사정보" id="Course-ContentsView-강사정보" />
-              </a>
-            )}
-          {lectureBadge &&
-            Array.isArray(lectureBadge.badges) &&
-            lectureBadge.badges.length > 0 && (
-              <a
-                onClick={badgeHashClick}
-                className={activatedTab === 'badge' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
-                data-action={Action.CLICK}
-                data-action-name="CARD TAB 클릭::관련 Badge"
-              >
-                <PolyglotText defaultString="관련 Badge" id="Course-ContentsView-관련 Badge" />
-              </a>
-            )}
-          {lectureRelations &&
-            Array.isArray(lectureRelations.cards) &&
-            lectureRelations.cards.length > 0 && (
-              <a
-                onClick={relatedHashClick}
-                className={activatedTab === 'related' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
-                data-action={Action.CLICK}
-                data-action-name="CARD TAB 클릭::관련과정"
-              >
-                <PolyglotText defaultString="관련과정" id="Course-ContentsView-관련과정" />
-              </a>
-            )}
-          <a
-            onClick={commentHashClick}
-            className={activatedTab === 'comment' ? 'lms-act' : ''}
-            data-area={Area.CARD_TAB}
-            data-action={Action.CLICK}
-            data-action-name="CARD TAB 클릭::Comments"
-          >
-            <i className="lms-comment-icon" />
-            <PolyglotText defaultString="Comments" id="Course-ContentsView-Comments" />
-            <span className="count">
-              {lectureComment !== undefined && lectureComment.commentsCount > 0
-                ? `+${lectureComment.commentsCount}`
-                : ''}
-            </span>
-          </a>
-        </div>
-      </div>
-      {activatedTab !== 'comment' && (
-        <>
-          {lectureDescription && (
-            <LectureDescriptionView
-              htmlContent={lectureDescription.description}
-            />
-          )}
-          <div className="badge-detail" data-area={Area.CARD_TAG}>
-            {lectureSubcategory && (
-              <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
-            )}
-            {lectureFile && <LectureFileView lectureFile={lectureFile} />}
-            {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+    return (
+      <>
+        {lecturePrecourse && lecturePrecourse.prerequisiteCards.length > 0 && (
+          <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
+        )}
+        <div className="lms-sticky-menu">
+          <div className="lms-fixed-inner" id="lms-overview">
+            <a
+              onClick={overviewHashClick}
+              className={activatedTab === 'overview' ? 'lms-act' : ''}
+              data-area={Area.CARD_TAB}
+              data-action={Action.CLICK}
+              data-action-name="CARD TAB 클릭::Overview"
+            >
+              <PolyglotText
+                defaultString="Overview"
+                id="Course-ContentsView-Overview"
+              />
+            </a>
+            {lectureInstructor &&
+              Array.isArray(lectureInstructor.instructors) &&
+              lectureInstructor.instructors.length > 0 && (
+                <a
+                  onClick={instructorHashClick}
+                  className={activatedTab === 'instructor' ? 'lms-act' : ''}
+                  data-area={Area.CARD_TAB}
+                  data-action={Action.CLICK}
+                  data-action-name="CARD TAB 클릭::강사정보"
+                >
+                  <PolyglotText
+                    defaultString="강사정보"
+                    id="Course-ContentsView-강사정보"
+                  />
+                </a>
+              )}
+            {lectureBadge &&
+              Array.isArray(lectureBadge.badges) &&
+              lectureBadge.badges.length > 0 && (
+                <a
+                  onClick={badgeHashClick}
+                  className={activatedTab === 'badge' ? 'lms-act' : ''}
+                  data-area={Area.CARD_TAB}
+                  data-action={Action.CLICK}
+                  data-action-name="CARD TAB 클릭::관련 Badge"
+                >
+                  <PolyglotText
+                    defaultString="관련 Badge"
+                    id="Course-ContentsView-관련 Badge"
+                  />
+                </a>
+              )}
+            {lectureRelations &&
+              Array.isArray(lectureRelations.cards) &&
+              lectureRelations.cards.length > 0 && (
+                <a
+                  onClick={relatedHashClick}
+                  className={activatedTab === 'related' ? 'lms-act' : ''}
+                  data-area={Area.CARD_TAB}
+                  data-action={Action.CLICK}
+                  data-action-name="CARD TAB 클릭::관련과정"
+                >
+                  <PolyglotText
+                    defaultString="관련과정"
+                    id="Course-ContentsView-관련과정"
+                  />
+                </a>
+              )}
+            <a
+              onClick={commentHashClick}
+              className={activatedTab === 'comment' ? 'lms-act' : ''}
+              data-area={Area.CARD_TAB}
+              data-action={Action.CLICK}
+              data-action-name="CARD TAB 클릭::Comments"
+            >
+              <i className="lms-comment-icon" />
+              <PolyglotText
+                defaultString="Comments"
+                id="Course-ContentsView-Comments"
+              />
+              <span className="count">
+                {lectureComment !== undefined &&
+                lectureComment.commentsCount > 0
+                  ? `+${lectureComment.commentsCount}`
+                  : ''}
+              </span>
+            </a>
           </div>
-          {lectureInstructor &&
-            Array.isArray(lectureInstructor.instructors) &&
-            lectureInstructor.instructors.length > 0 && (
-              <div
-                className="badge-detail"
-                id="lms-instructor-Info"
-                data-area={Area.CARD_EXPERT}
-              >
-                <div className="ov-paragraph">
-                  {lectureInstructor && (
-                    <LectureInstructorView
-                      lectureInstructor={lectureInstructor}
-                    />
-                  )}
+        </div>
+        {activatedTab !== 'comment' && (
+          <>
+            {lectureDescription && (
+              <LectureDescriptionView
+                htmlContent={lectureDescription.description}
+              />
+            )}
+            <div className="badge-detail" data-area={Area.CARD_TAG}>
+              {lectureSubcategory && (
+                <LectureSubcategoryView
+                  lectureSubcategory={lectureSubcategory}
+                />
+              )}
+              {lectureFile && <LectureFileView lectureFile={lectureFile} />}
+              {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+            </div>
+            {lectureInstructor &&
+              Array.isArray(lectureInstructor.instructors) &&
+              lectureInstructor.instructors.length > 0 && (
+                <div
+                  className="badge-detail"
+                  id="lms-instructor-Info"
+                  data-area={Area.CARD_EXPERT}
+                >
+                  <div className="ov-paragraph">
+                    {lectureInstructor && (
+                      <LectureInstructorView
+                        lectureInstructor={lectureInstructor}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          {lectureBadge &&
-            Array.isArray(lectureBadge.badges) &&
-            lectureBadge.badges.length > 0 && (
-              <LectureBadgeView lectureBadge={lectureBadge} />
-            )}
-          {lectureRelations &&
-            Array.isArray(lectureRelations.cards) &&
-            lectureRelations.cards.length > 0 && (
-              <LectureRelationsView lectureRelations={lectureRelations} />
-            )}
-        </>
-      )}
-      {activatedTab === 'comment' && <LectureCommentContainer />}
-    </>
-  );
-};
+              )}
+            {lectureBadge &&
+              Array.isArray(lectureBadge.badges) &&
+              lectureBadge.badges.length > 0 && (
+                <LectureBadgeView lectureBadge={lectureBadge} />
+              )}
+            {lectureRelations &&
+              Array.isArray(lectureRelations.cards) &&
+              lectureRelations.cards.length > 0 && (
+                <LectureRelationsView lectureRelations={lectureRelations} />
+              )}
+          </>
+        )}
+        {activatedTab === 'comment' && <LectureCommentContainer />}
+      </>
+    );
+  };
 
 export default LectureCourseContentView;

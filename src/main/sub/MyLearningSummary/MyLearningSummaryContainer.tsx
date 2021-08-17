@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Button, Icon } from 'semantic-ui-react';
 import { SkProfileService } from 'profile/stores';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
@@ -12,7 +12,6 @@ import {
   HeaderWrapperView,
   AdditionalToolsMyLearning,
 } from './MyLearningSummaryElementsView';
-import { ChannelModel } from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
@@ -45,7 +44,6 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -117,12 +115,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     myLearningSummaryService!.findMyLearningSummaryByYear(currentYear);
     myLearningSummaryService!.findLectureTimeSummary();
-    badgeService!.findAllBadgeCount();
+    // badgeService!.findAllBadgeCount();
   }
 
   async requestMenuAuth() {
     const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
+    const foundProfile: SkProfileModel =
+      await skProfileService!.findSkProfile();
     if (foundProfile) {
       menuControlAuthService!.findMenuControlAuth();
     }
@@ -184,10 +183,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, additionalUserInfo } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const {
-      personalBoardInprogressCount,
-      personalBoardCompletedCount,
-    } = myTrainingService!;
+    const { personalBoardInprogressCount, personalBoardCompletedCount } =
+      myTrainingService!;
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
@@ -231,7 +228,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           <div className="ui profile inline">
             <div className="pic s60">
               <Image
-                src={skProfile.photoFilePath || profileImg}
+                src={skProfile.photoFilePath || defaultProfileImg}
                 alt="프로필사진"
               />
             </div>

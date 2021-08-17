@@ -10,13 +10,18 @@ interface WorkSpace {
 }
 
 export function isCollegeManager() {
-  const workspace: WorkSpace = JSON.parse(
-    localStorage.getItem('nara.workspaces') || ''
-  );
+  try {
+    const workspace: WorkSpace = JSON.parse(
+      localStorage.getItem('nara.workspaces') || ''
+    );
 
-  const isCollegeManager = workspace.cineroomWorkspaces
-    .map((cineroom) => cineroom)
-    .some((cineroom) => cineroom.roles.includes('CollegeManager'));
+    const isCollegeManager = workspace.cineroomWorkspaces
+      .map((cineroom) => cineroom)
+      .some((cineroom) => cineroom.roles.includes('CollegeManager'));
 
-  return isCollegeManager;
+    return isCollegeManager;
+  } catch (error) {
+    //
+  }
+  return false;
 }

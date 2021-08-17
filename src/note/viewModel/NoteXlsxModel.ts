@@ -56,8 +56,8 @@ export function convertNoteToNoteXlsxModel(
     Cube명: parsePolyglotString(noteWithLecture.lectureRom.cubeName),
     학습유형: noteWithLecture.note.cubeType,
     Playtime: noteWithLecture.note.playTime,
-    작성일자: moment(noteWithLecture.note.createDate).format('YYYY-MM-DD'),
-    상태: noteWithLecture.note.updateDate !== 0 ? '편집' : '작성',
+    작성일자: moment(noteWithLecture.note.registeredTime).format('YYYY-MM-DD'),
+    상태: noteWithLecture.note.modifiedTime !== 0 ? '편집' : '작성',
     내용: noteWithLecture.note.content,
   };
 }

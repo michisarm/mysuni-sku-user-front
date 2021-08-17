@@ -21,14 +21,7 @@ import { BadgeLevel } from '../../model/BadgeLevel';
 
 @autobind
 class BadgeService {
-  //
   static instance: BadgeService;
-
-  // private badgeApi: BadgeApi;
-
-  // constructor(badgeApi: BadgeApi) {
-  //   this.badgeApi = badgeApi;
-  // }
 
   @observable
   _badge?: Badge;
@@ -129,16 +122,8 @@ class BadgeService {
   }
 
   @action
-  async findAllChallengeBadges(
-    myBadgeRdo: MyBadgeRdo,
-    fromMain: boolean = false
-  ) {
+  async findAllChallengeBadges(myBadgeRdo: MyBadgeRdo) {
     const offsetElementList = await findBadgesByBadgeIssueState(myBadgeRdo);
-
-    // // use session storage (사용할 거면 풀 것) : by JSM
-    // if (fromMain) {
-    //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
-    // }
     if (
       offsetElementList &&
       offsetElementList.results &&
@@ -259,48 +244,6 @@ class BadgeService {
   async cancelRequestIssue(badgeId: string): Promise<boolean> {
     return cancelRequestIssue(badgeId);
   }
-
-  /////////////////////////////////////////////////////
-  // @observable
-  // _challengingCount: number = 0;
-
-  // @observable
-  // _earnedCount: number = 0;
-
-  // // 수동뱃지 발급 요청
-  // @action
-  // async requestManualIssued(badgeStudentId: string, issueState: string) {
-  //   //
-  //   const response = await this.badgeApi.requestManualIssued(
-  //     badgeStudentId,
-  //     issueState
-  //   );
-  //   return response;
-  // }
-
-  // // 수동뱃지 발급 요청취소
-  // @action
-  // async cancelManualIssued(badgeStudentId: string) {
-  //   //
-  //   const response = await this.badgeApi.cancelManualIssued(badgeStudentId);
-  //   return response;
-  // }
-
-  // // 자동뱃지 발급 요청
-  // @action
-  // async requestAutoIssued(List: any[]) {
-  //   //
-  //   const response: boolean = await this.badgeApi.requestAutoIssued(List);
-
-  //   return response;
-  // }
-
-  // // 획득뱃지 개수
-  // @action
-  // async earnedBadgeCount(issueState: string) {
-  //   //
-  //   const response = await this.badgeApi.earnedBadgeCount(issueState);
-  // }
 }
 
 Object.defineProperty(BadgeService, 'instance', {

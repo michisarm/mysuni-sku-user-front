@@ -25,8 +25,6 @@ export async function getProfilePopup(): Promise<void> {
       name,
       companyName,
       photoFilePath,
-      gdiPhotoImagePath,
-      useGdiPhoto,
       backgroundImagePath,
       nickname,
       displayNicknameFirst,
@@ -37,7 +35,7 @@ export async function getProfilePopup(): Promise<void> {
     profileItem.id = id;
     profileItem.name = name;
     profileItem.company = companyName;
-    profileItem.profileImg = useGdiPhoto ? gdiPhotoImagePath : photoFilePath;
+    profileItem.profileImg = photoFilePath;
     profileItem.profileBgImg = backgroundImagePath;
     profileItem.nickname = nickname;
     profileItem.displayNicknameFirst = displayNicknameFirst;

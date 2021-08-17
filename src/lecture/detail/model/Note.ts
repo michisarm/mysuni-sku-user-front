@@ -20,5 +20,5 @@ interface noteItem {
     keyString: string;
   };
   playTime: string;
-  updateDate: number;
+  modifiedTime: number;
 }

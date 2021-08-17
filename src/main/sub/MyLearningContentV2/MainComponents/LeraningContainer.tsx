@@ -15,6 +15,7 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -131,10 +132,18 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
       ) : (
         <NoSuchContentPanel
           message={
-            <div className="text">
-              {parsePolyglotString(cardBundle.displayText)}에 해당하는 학습
-              과정이 없습니다.
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `{bundleName}에 해당하는 학습 과정이 없습니다.`,
+                  'home-bundleName-title',
+                  {
+                    bundleName: parsePolyglotString(cardBundle.displayText),
+                  }
+                ),
+              }}
+            />
           }
         />
       )}

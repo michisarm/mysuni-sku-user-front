@@ -19,8 +19,12 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
-import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  parseLanguage,
+} from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
+import _ from 'lodash';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -80,13 +84,16 @@ class CategoryMenuPanelView extends Component<Props> {
           (favoriteId) => favoriteId !== channelId
         );
         params.nameValues[0].value = JSON.stringify(filteredFavorite);
-        skProfileService!.modifyStudySummary(params);
+        skProfileService!
+          .modifyStudySummary(params)
+          .then(() => skProfileService!.findStudySummary());
       } else {
         const nextFavorites = [...prevFavorites, channelId];
         params.nameValues[0].value = JSON.stringify(nextFavorites);
-        skProfileService!.modifyStudySummary(params);
+        skProfileService!
+          .modifyStudySummary(params)
+          .then(() => skProfileService!.findStudySummary());
       }
-      skProfileService!.findStudySummary();
     }
   }
 
@@ -98,7 +105,6 @@ class CategoryMenuPanelView extends Component<Props> {
       channels,
       actions,
       banner,
-      test,
       onActiveCollege,
       onRouteChannel,
       handleCategoryOpen,
@@ -189,62 +195,6 @@ class CategoryMenuPanelView extends Component<Props> {
                       <i className="arr-r-gray" />
                     </button>
                   </div>
-                  {/* 원복 이전내용 주석처리 */}
-                  {/* <div className="category-body">
-                {Array.isArray(channels) &&
-                  channels.map((channel, index) => (
-                    <Fragment key={index}>
-                      <div className="category-row">
-                        <span className="check-type2">
-                          <label htmlFor={channel.id}>
-                            <input type="checkbox"
-                              id={channel.id}
-                              name={channel.id}
-                              checked={this.categoryCheck(channel.id)}
-                              onChange={(e)=> {
-                                this.favoriteChannel(e, channel);
-                              }}
-                              key={index}
-                            />
-                            <span className="check-type2-marker"/>
-                          </label>
-                          <a
-                            className="check-type2-text"
-                            onClick={e => {
-                              this.onClickChannelActionLog(channel.name);
-                              onRouteChannel(e, channel);
-                            }}
-                          >{channel.name}<strong> ({channel.count})</strong>
-                          </a>
-                        </span>
-                        <span className="check-type2">
-                          <label htmlFor={channel.id}>
-                            <input type="checkbox"
-                              id={channel.id}
-                              name={channel.id}
-                              checked={this.categoryCheck(channel.id)}
-                              onChange={(e)=> {
-                                this.favoriteChannel(e, channel);
-                              }}
-                              key={index}
-                            />
-                            <span className="check-type2-marker"/>
-                          </label>
-                          <a
-                            className="check-type2-text"
-                            onClick={e => {
-                              this.onClickChannelActionLog(channel.name);
-                              onRouteChannel(e, channel);
-                            }}
-                          >{channel.name}<strong> ({channel.count})</strong>
-                          </a>
-                        </span>
-                      </div>
-
-                    </Fragment>
-                  ))
-                }
-              </div> */}
                   <div
                     className="category-body"
                     data-area={Area.HEADER_CATEGORY}
@@ -347,68 +297,111 @@ class CategoryMenuPanelView extends Component<Props> {
                         data-area={Area.HEADER_BANNER}
                       >
                         {banner.collegeBannerContents[0].visible === 1 &&
-                          banner.collegeBannerContents[0].useLink === 0 && (
-                            <span className="banner-holder">
-                              <img
-                                src={`${parsePolyglotString(
-                                  banner.collegeBannerContents[0].imageUrl
-                                )}`}
-                                onClick={(e) =>
-                                  gaClickEvent(`${activeCollege.name}`, 1)
-                                }
-                                alt=""
-                              />
-                            </span>
-                          )}
-                        {banner.collegeBannerContents[0].visible === 1 &&
-                          banner.collegeBannerContents[0].useLink === 1 && (
-                            <span className="banner-holder">
-                              {!/^(http|https)/.test(
-                                originSelfPath(
-                                  parsePolyglotString(
-                                    banner.collegeBannerContents[0].linkUrl
-                                  )
-                                )
-                              ) ? (
-                                <Link
-                                  to={originSelfPath(
-                                    parsePolyglotString(
-                                      banner.collegeBannerContents[0].linkUrl
-                                    )
-                                  )}
-                                  onClick={() => {
-                                    handleCategoryOpen(false);
-                                    gaClickEvent(`${activeCollege.name}`, 1);
-                                  }}
-                                >
+                          !_.isEmpty(
+                            parsePolyglotString(
+                              banner.collegeBannerContents[0].imageUrl,
+                              parseLanguage(
+                                SkProfileService.instance.skProfile.language
+                              )
+                            )
+                          ) && (
+                            <>
+                              {banner.collegeBannerContents[0].useLink ===
+                                0 && (
+                                <span className="banner-holder">
                                   <img
                                     src={`${parsePolyglotString(
-                                      banner.collegeBannerContents[0].imageUrl
-                                    )}`}
-                                    alt=""
-                                  />
-                                </Link>
-                              ) : (
-                                <a
-                                  href={encodeURI(
-                                    parsePolyglotString(
-                                      banner.collegeBannerContents[0].linkUrl
-                                    )
-                                  )}
-                                >
-                                  <img
-                                    src={`${parsePolyglotString(
-                                      banner.collegeBannerContents[0].imageUrl
+                                      banner.collegeBannerContents[0].imageUrl,
+                                      parseLanguage(
+                                        SkProfileService.instance.skProfile
+                                          .language
+                                      )
                                     )}`}
                                     onClick={(e) =>
                                       gaClickEvent(`${activeCollege.name}`, 1)
                                     }
                                     alt=""
                                   />
-                                </a>
+                                </span>
                               )}
-                            </span>
+                              {banner.collegeBannerContents[0].useLink ===
+                                1 && (
+                                <span className="banner-holder">
+                                  {!/^(http|https)/.test(
+                                    originSelfPath(
+                                      parsePolyglotString(
+                                        banner.collegeBannerContents[0].linkUrl
+                                      )
+                                    )
+                                  ) ? (
+                                    <Link
+                                      to={originSelfPath(
+                                        parsePolyglotString(
+                                          banner.collegeBannerContents[0]
+                                            .linkUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )
+                                      )}
+                                      onClick={() => {
+                                        handleCategoryOpen(false);
+                                        gaClickEvent(
+                                          `${activeCollege.name}`,
+                                          1
+                                        );
+                                      }}
+                                    >
+                                      <img
+                                        src={`${parsePolyglotString(
+                                          banner.collegeBannerContents[0]
+                                            .imageUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )}`}
+                                        alt=""
+                                      />
+                                    </Link>
+                                  ) : (
+                                    <a
+                                      href={encodeURI(
+                                        parsePolyglotString(
+                                          banner.collegeBannerContents[0]
+                                            .linkUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )
+                                      )}
+                                    >
+                                      <img
+                                        src={`${parsePolyglotString(
+                                          banner.collegeBannerContents[0]
+                                            .imageUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )}`}
+                                        onClick={(e) =>
+                                          gaClickEvent(
+                                            `${activeCollege.name}`,
+                                            1
+                                          )
+                                        }
+                                        alt=""
+                                      />
+                                    </a>
+                                  )}
+                                </span>
+                              )}
+                            </>
                           )}
+
                         {banner.collegeBannerContents[0].visible === 0 && (
                           <span className="banner-holder">
                             <span
@@ -420,69 +413,114 @@ class CategoryMenuPanelView extends Component<Props> {
                             />
                           </span>
                         )}
-
                         {banner?.collegeBannerContents[1].visible === 1 &&
-                          banner.collegeBannerContents[1].useLink === 0 && (
-                            <span className="banner-holder">
-                              <img
-                                src={`${parsePolyglotString(
-                                  banner.collegeBannerContents[1].imageUrl
-                                )}`}
-                                onClick={(e) =>
-                                  gaClickEvent(`${activeCollege.name}`, 2)
-                                }
-                                alt=""
-                              />
-                            </span>
-                          )}
-                        {banner?.collegeBannerContents[1].visible === 1 &&
-                          banner.collegeBannerContents[1].useLink === 1 && (
-                            <span className="banner-holder">
-                              {!/^(http|https)/.test(
-                                originSelfPath(
-                                  parsePolyglotString(
-                                    banner.collegeBannerContents[0].linkUrl
-                                  )
-                                )
-                              ) ? (
-                                <Link
-                                  to={originSelfPath(
-                                    parsePolyglotString(
-                                      banner.collegeBannerContents[1].linkUrl
-                                    )
-                                  )}
-                                  onClick={() => {
-                                    handleCategoryOpen(false);
-                                    gaClickEvent(`${activeCollege.name}`, 2);
-                                  }}
-                                >
+                          !_.isEmpty(
+                            parsePolyglotString(
+                              banner.collegeBannerContents[1].imageUrl,
+                              parseLanguage(
+                                SkProfileService.instance.skProfile.language
+                              )
+                            )
+                          ) && (
+                            <>
+                              {banner.collegeBannerContents[1].useLink ===
+                                0 && (
+                                <span className="banner-holder">
                                   <img
                                     src={`${parsePolyglotString(
-                                      banner.collegeBannerContents[1].imageUrl
-                                    )}`}
-                                    alt=""
-                                  />
-                                </Link>
-                              ) : (
-                                <a
-                                  href={encodeURI(
-                                    parsePolyglotString(
-                                      banner.collegeBannerContents[1].linkUrl
-                                    )
-                                  )}
-                                >
-                                  <img
-                                    src={`${parsePolyglotString(
-                                      banner.collegeBannerContents[1].imageUrl
+                                      banner.collegeBannerContents[1].imageUrl,
+                                      parseLanguage(
+                                        SkProfileService.instance.skProfile
+                                          .language
+                                      )
                                     )}`}
                                     onClick={(e) =>
                                       gaClickEvent(`${activeCollege.name}`, 2)
                                     }
                                     alt=""
                                   />
-                                </a>
+                                </span>
                               )}
-                            </span>
+                              {banner.collegeBannerContents[1].useLink ===
+                                1 && (
+                                <span className="banner-holder">
+                                  {!/^(http|https)/.test(
+                                    originSelfPath(
+                                      parsePolyglotString(
+                                        banner.collegeBannerContents[0].linkUrl,
+                                        parseLanguage(
+                                          SkProfileService.instance.skProfile
+                                            .language
+                                        )
+                                      )
+                                    )
+                                  ) ? (
+                                    <Link
+                                      to={originSelfPath(
+                                        parsePolyglotString(
+                                          banner.collegeBannerContents[1]
+                                            .linkUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )
+                                      )}
+                                      onClick={() => {
+                                        handleCategoryOpen(false);
+                                        gaClickEvent(
+                                          `${activeCollege.name}`,
+                                          2
+                                        );
+                                      }}
+                                    >
+                                      <img
+                                        src={`${parsePolyglotString(
+                                          banner.collegeBannerContents[1]
+                                            .imageUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )}`}
+                                        alt=""
+                                      />
+                                    </Link>
+                                  ) : (
+                                    <a
+                                      href={encodeURI(
+                                        parsePolyglotString(
+                                          banner.collegeBannerContents[1]
+                                            .linkUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )
+                                      )}
+                                    >
+                                      <img
+                                        src={`${parsePolyglotString(
+                                          banner.collegeBannerContents[1]
+                                            .imageUrl,
+                                          parseLanguage(
+                                            SkProfileService.instance.skProfile
+                                              .language
+                                          )
+                                        )}`}
+                                        onClick={(e) =>
+                                          gaClickEvent(
+                                            `${activeCollege.name}`,
+                                            2
+                                          )
+                                        }
+                                        alt=""
+                                      />
+                                    </a>
+                                  )}
+                                </span>
+                              )}
+                            </>
                           )}
                         {banner?.collegeBannerContents[1].visible === 0 && (
                           <span className="banner-holder">
@@ -513,63 +551,96 @@ class CategoryMenuPanelView extends Component<Props> {
                         />
                       )}
                       {banner.collegeBannerContents[0].visible === 1 &&
-                        banner.collegeBannerContents[0].useLink === 0 && (
-                          <img
-                            src={`${parsePolyglotString(
-                              banner.collegeBannerContents[0].imageUrl
-                            )}`}
-                            onClick={(e) =>
-                              gaClickEvent(`${activeCollege.name}`, 1)
-                            }
-                            alt=""
-                          />
-                        )}
-                      {banner.collegeBannerContents[0].visible === 1 &&
-                        banner.collegeBannerContents[0].useLink === 1 && (
+                        !parsePolyglotString(
+                          banner.collegeBannerContents[0].imageUrl,
+                          parseLanguage(
+                            SkProfileService.instance.skProfile.language
+                          )
+                        ) && (
                           <>
-                            {!/^(http|https)/.test(
-                              originSelfPath(
-                                parsePolyglotString(
-                                  banner.collegeBannerContents[0].linkUrl
-                                )
-                              )
-                            ) ? (
-                              <Link
-                                to={originSelfPath(
-                                  parsePolyglotString(
-                                    banner.collegeBannerContents[0].linkUrl
+                            {banner.collegeBannerContents[0].useLink === 0 && (
+                              <img
+                                src={`${parsePolyglotString(
+                                  banner.collegeBannerContents[0].imageUrl,
+                                  parseLanguage(
+                                    SkProfileService.instance.skProfile.language
                                   )
-                                )}
-                                onClick={() => {
-                                  handleCategoryOpen(false);
-                                  gaClickEvent(`${activeCollege.name}`, 1);
-                                }}
-                              >
-                                <img
-                                  src={`${parsePolyglotString(
-                                    banner.collegeBannerContents[0].imageUrl
-                                  )}`}
-                                  alt=""
-                                />
-                              </Link>
-                            ) : (
-                              <a
-                                href={encodeURI(
-                                  parsePolyglotString(
-                                    banner.collegeBannerContents[0].linkUrl
+                                )}`}
+                                onClick={(e) =>
+                                  gaClickEvent(`${activeCollege.name}`, 1)
+                                }
+                                alt=""
+                              />
+                            )}
+                            {banner.collegeBannerContents[0].useLink === 1 && (
+                              <>
+                                {!/^(http|https)/.test(
+                                  originSelfPath(
+                                    parsePolyglotString(
+                                      banner.collegeBannerContents[0].linkUrl,
+                                      parseLanguage(
+                                        SkProfileService.instance.skProfile
+                                          .language
+                                      )
+                                    )
                                   )
+                                ) ? (
+                                  <Link
+                                    to={originSelfPath(
+                                      parsePolyglotString(
+                                        banner.collegeBannerContents[0].linkUrl,
+                                        parseLanguage(
+                                          SkProfileService.instance.skProfile
+                                            .language
+                                        )
+                                      )
+                                    )}
+                                    onClick={() => {
+                                      handleCategoryOpen(false);
+                                      gaClickEvent(`${activeCollege.name}`, 1);
+                                    }}
+                                  >
+                                    <img
+                                      src={`${parsePolyglotString(
+                                        banner.collegeBannerContents[0]
+                                          .imageUrl,
+                                        parseLanguage(
+                                          SkProfileService.instance.skProfile
+                                            .language
+                                        )
+                                      )}`}
+                                      alt=""
+                                    />
+                                  </Link>
+                                ) : (
+                                  <a
+                                    href={encodeURI(
+                                      parsePolyglotString(
+                                        banner.collegeBannerContents[0].linkUrl,
+                                        parseLanguage(
+                                          SkProfileService.instance.skProfile
+                                            .language
+                                        )
+                                      )
+                                    )}
+                                  >
+                                    <img
+                                      src={`${parsePolyglotString(
+                                        banner.collegeBannerContents[0]
+                                          .imageUrl,
+                                        parseLanguage(
+                                          SkProfileService.instance.skProfile
+                                            .language
+                                        )
+                                      )}`}
+                                      onClick={(e) =>
+                                        gaClickEvent(`${activeCollege.name}`, 1)
+                                      }
+                                      alt=""
+                                    />
+                                  </a>
                                 )}
-                              >
-                                <img
-                                  src={`${parsePolyglotString(
-                                    banner.collegeBannerContents[0].imageUrl
-                                  )}`}
-                                  onClick={(e) =>
-                                    gaClickEvent(`${activeCollege.name}`, 1)
-                                  }
-                                  alt=""
-                                />
-                              </a>
+                              </>
                             )}
                           </>
                         )}

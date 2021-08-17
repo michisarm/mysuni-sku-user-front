@@ -34,19 +34,31 @@ function MyTrainingHeaderContainer({
   const { skProfile } = skProfileService!;
   const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
   const { myStampCount } = myTrainingService!;
-  const { allBadgeCount: { issuedCount } } = badgeService!;
+  const {
+    allBadgeCount: { issuedCount },
+  } = badgeService!;
 
   const history = useHistory();
   const currentYear = moment().year();
 
-  const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0;
-  const totalLectureTime = lectureTimeSummary && lectureTimeSummary.totalLectureTime || 0;
+  const sumOfCurrentYearLectureTime =
+    (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
+  const totalLectureTime =
+    (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
-  const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime;
-  const totalAccrueLearningTime = myLearningSummary.totalSuniLearningTime + myLearningSummary.totalMyCompanyLearningTime + myLearningSummary.totalAplAllowTime + totalLectureTime;
+  const totalLearningTime =
+    myLearningSummary.suniLearningTime +
+    myLearningSummary.myCompanyLearningTime +
+    myLearningSummary.aplAllowTime +
+    sumOfCurrentYearLectureTime;
+  const totalAccrueLearningTime =
+    myLearningSummary.totalSuniLearningTime +
+    myLearningSummary.totalMyCompanyLearningTime +
+    myLearningSummary.totalAplAllowTime +
+    totalLectureTime;
 
   useEffect(() => {
-    badgeService!.findAllBadgeCount();
+    // badgeService!.findAllBadgeCount();
     myTrainingService!.countMyTrainingsWithStamp();
   }, []);
 
@@ -67,15 +79,15 @@ function MyTrainingHeaderContainer({
   return (
     <ContentHeader type="Learning" dataArea={Area.LEARNING_INFO}>
       <ContentHeader.Cell inner className="personal-inner">
-          <ContentHeader.ProfileItem
-            myPageActive={true}
-            imageEditable={false}
-            image={skProfile.photoFilePath || profileImg}
-            name={skProfile.profileViewName}
-            company={parsePolyglotString(skProfile.companyName)}
-            department={parsePolyglotString(skProfile.departmentName)}
-            type="Learning"
-          />
+        <ContentHeader.ProfileItem
+          myPageActive={true}
+          imageEditable={false}
+          image={skProfile.photoFilePath || profileImg}
+          name={skProfile.profileViewName}
+          company={parsePolyglotString(skProfile.companyName)}
+          department={parsePolyglotString(skProfile.departmentName)}
+          type="Learning"
+        />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
@@ -90,28 +102,28 @@ function MyTrainingHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {totalLearningTime !== 0 &&
-          (
-            <ContentHeader.LearningTimeItem
-              minute={totalLearningTime}
-              year={currentYear}
-              accrueMinute={totalAccrueLearningTime}
-            />
-          ) ||
-          (
-            <ContentHeader.WaitingItem
-              year={currentYear}
-              onClickRecommend={onClickRecommend}
-            />
-          )}
+        {(totalLearningTime !== 0 && (
+          <ContentHeader.LearningTimeItem
+            minute={totalLearningTime}
+            year={currentYear}
+            accrueMinute={totalAccrueLearningTime}
+          />
+        )) || (
+          <ContentHeader.WaitingItem
+            year={currentYear}
+            onClickRecommend={onClickRecommend}
+          />
+        )}
       </ContentHeader.Cell>
     </ContentHeader>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'myTraining.myLearningSummaryService',
-  'myTraining.myTrainingService',
-  'badge.badgeService'
-))(observer(MyTrainingHeaderContainer));
+export default inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'myTraining.myLearningSummaryService',
+    'myTraining.myTrainingService',
+    'badge.badgeService'
+  )
+)(observer(MyTrainingHeaderContainer));

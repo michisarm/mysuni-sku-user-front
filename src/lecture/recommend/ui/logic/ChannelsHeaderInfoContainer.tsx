@@ -40,7 +40,7 @@ function ChannelsHeaderInfoContainer(props: Props) {
 
   return (
     <>
-      {ChannelItem && ChannelItem[1] && popularChannel && (
+      {/* {ChannelItem && ChannelItem[1] && popularChannel && (
         <div className="recommend-info">
           <div className="personal-channel-list">
             <h3>
@@ -89,7 +89,7 @@ function ChannelsHeaderInfoContainer(props: Props) {
             )}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* <BadgeLearningTimeView/><br/>
     <LearningTimeDetailView/><br/>

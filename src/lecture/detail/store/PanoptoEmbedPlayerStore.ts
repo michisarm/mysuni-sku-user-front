@@ -12,7 +12,7 @@ export interface PanoptoEmbedPlayerState {
   playbackRate: number;
   hasCaptions: boolean;
   captionTracks: string[];
-  selectedCaptionTrack: string;
+  selectedCaptionTrack: number;
   watchLogStart: number;
 }
 
@@ -28,7 +28,7 @@ export function getEmptyPanoptoEmbedPlayerState(): PanoptoEmbedPlayerState {
     playbackRate: 0,
     hasCaptions: false,
     captionTracks: [],
-    selectedCaptionTrack: '',
+    selectedCaptionTrack: -1,
     watchLogStart: 0,
   };
 }

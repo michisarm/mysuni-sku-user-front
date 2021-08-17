@@ -7,7 +7,10 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
 import DashBoardSentenceContainer from '../DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 import Image from '../../../../shared/components/Image';
-import { getPolyglotText, PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   image: string;
@@ -72,8 +75,11 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
         </div>
         {/* </div> */}
         <div className="text-info">
-          <div className="name"
-            dangerouslySetInnerHTML={{__html: getPolyglotText('{name}님,', 'Create-mifa-님', {name})}}
+          <div
+            className="name"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText('{name}님,', 'Create-mifa-님', { name }),
+            }}
           />
           <div className="part">
             {type === 'Recommend' && (

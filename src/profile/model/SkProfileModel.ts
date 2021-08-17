@@ -8,21 +8,16 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 class SkProfileModel implements DramaEntity {
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
 
-  // member: EmployeeModel = new EmployeeModel();
-  // memberType: MemberType = MemberType.SkMember;
   memberLocale: MemberLocaleModel = new MemberLocaleModel();
   pisAgreement: PisAgreementModel = new PisAgreementModel();
   signedDate: string = '';
-  // passwordAuthenticated: boolean = false;
-  // studySummaryConfigured: boolean = false;
-
-  // photoType: string = '0'; //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
   photoImagePath: string = ''; //mySUNI 로부터 사용자가 등록한 증명사진 이미지 주소
   gdiPhotoImagePath: string = ''; // gdi를 통해 업데이트한 이미지 주소값
   useGdiPhoto: boolean = false;
@@ -30,8 +25,6 @@ class SkProfileModel implements DramaEntity {
 
   nickname: string = ''; // 닉네임
   selfIntroduction: string = ''; // 자기소개
-  // followerCount: number = 0; // 팔로워 숫자
-  // followingCount: number = 0; // 팔로잉 숫자
   displayNicknameFirst: boolean = false; // 닉네임/실명 여부 값(false: 실명, true: 닉네임)
   departmentName: PolyglotString = { ko: '', en: '', zh: '' };
   departmentCode: string = '';
@@ -42,6 +35,7 @@ class SkProfileModel implements DramaEntity {
   companyName: PolyglotString = { ko: '', en: '', zh: '' };
   companyCode: string = '';
   language: string = 'Korean';
+  userGroupSequences: { sequences: number[] } = { sequences: [] };
 
   constructor(skProfile?: SkProfileModel) {
     if (skProfile) {
@@ -81,13 +75,17 @@ class SkProfileModel implements DramaEntity {
 
   @computed
   get photoFilePath() {
-    let photoImageFilePath: string = '';
-
-    if (this.photoImagePath && this.photoImagePath !== '') {
-      photoImageFilePath = ProfileImagePath(this.photoImagePath);
+    if (this.useGdiPhoto === true) {
+      return `/profile/photo${this.gdiPhotoImagePath}`;
     }
-
-    return photoImageFilePath;
+    if (
+      this.photoImagePath === undefined ||
+      this.photoImagePath === null ||
+      this.photoImagePath === ''
+    ) {
+      return defaultProfileImg;
+    }
+    return this.photoImagePath;
   }
 
   @computed
@@ -115,19 +113,12 @@ class SkProfileModel implements DramaEntity {
 decorate(SkProfileModel, {
   id: observable,
   entityVersion: observable,
-  // member: observable,
-  // memberType: observable,
   memberLocale: observable,
   pisAgreement: observable,
   signedDate: observable,
-  // passwordAuthenticated: observable,
-  // studySummaryConfigured: observable,
-  // photoType: observable,
   photoImagePath: observable,
   backgroundImagePath: observable,
   selfIntroduction: observable,
-  // followerCount: observable,
-  // followingCount: observable,
   nickname: observable,
   displayNicknameFirst: observable,
   name: observable,
@@ -138,6 +129,7 @@ decorate(SkProfileModel, {
   companyCode: observable,
   language: observable,
   departmentCode: observable,
+  userGroupSequences: observable,
 });
 
 export default SkProfileModel;
