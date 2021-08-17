@@ -180,7 +180,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
     return (
       <>
         <div className="transcript-box" id="tanscript-scroll">
-          <div className="transcript-top">
+          <div className="transcript-top trans-lang">
             <Select
               placeholder={getPolyglotText(
                 '분류를 선택해주세요',
@@ -194,21 +194,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
               }}
             />
             <div>
-              <Popup
-                trigger={<Button icon="tooltip" />}
-                style={style}
-                position="bottom center"
-                wide
-              >
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: getPolyglotText(
-                      `현재 선택된 언어의 Transcript를 <br /> txt 파일로 다운로드 받으실 수 있습니다.`,
-                      'cube-Contents-다운로드'
-                    ),
-                  }}
-                />
-              </Popup>
               <button
                 className="ui icon button left post delete-kr"
                 onClick={() => {
@@ -234,6 +219,21 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
                   id="cube-Contents-Download"
                 />
               </button>
+              <Popup
+                trigger={<Button icon="tooltip" />}
+                style={style}
+                position="bottom center"
+                wide
+              >
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `현재 선택된 언어의 Transcript를 <br /> txt 파일로 다운로드 받으실 수 있습니다.`,
+                      'cube-Contents-다운로드'
+                    ),
+                  }}
+                />
+              </Popup>
             </div>
           </div>
           {transcriptList?.length > 0 ? (
