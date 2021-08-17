@@ -265,7 +265,7 @@ function ProfilePopupView(props: Props) {
             </div>
           </div>
           <div className="tag-info-area">
-            {!isSettingProfile && (
+            {isSettingProfile && (
               // 프로필설정이 안되어있는 경우
               <Button
                 className="btn-setting"
@@ -287,7 +287,7 @@ function ProfilePopupView(props: Props) {
                   className="tool-tip-box"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      `프로필을 설정해서 <br />자유롭게 활동해 보세요!`,
+                      '프로필을 설정해서 <br />자유롭게 활동해 보세요!',
                       'mypage-popupview-설명'
                     ),
                   }}
