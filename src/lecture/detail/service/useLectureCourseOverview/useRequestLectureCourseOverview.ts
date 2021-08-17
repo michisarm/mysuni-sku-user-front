@@ -31,19 +31,51 @@ import { requestLectureCardTags } from '../useLectureTags/utility/requestLecture
 export function useRequestLectureCardOverview() {
   const { cardId } = useParams<LectureParams>();
 
+  // useEffect(() => {
+  //   if (cardId !== undefined) {
+  //     requestLectureCardComment(cardId);
+  //     requestLectureCardDescription(cardId);
+  //     requestLectureCardFile(cardId);
+  //     requestLectureCardInstructor(cardId);
+  //     requestLectureCardPrecourse(cardId);
+  //     requestLectureCardRelations(cardId);
+  //     requestLectureCardReview(cardId);
+  //     requestLectureCardSubcategory(cardId);
+  //     requestLectureCardSummary(cardId);
+  //     requestLectureCardTags(cardId);
+  //   }
+  //
+  //   return () => {
+  //     setLectureComment();
+  //     setLectureDescription();
+  //     setLectureFile();
+  //     setLectureInstructor();
+  //     setLecturePrecourse();
+  //     setLectureRelations();
+  //     setLectureReview();
+  //     setLectureSubcategory();
+  //     setLectureCardSummary();
+  //     setLectureTags();
+  //   };
+  // }, [cardId]);
+
   useEffect(() => {
-    if (cardId !== undefined) {
-      requestLectureCardComment(cardId);
-      requestLectureCardDescription(cardId);
-      requestLectureCardFile(cardId);
-      requestLectureCardInstructor(cardId);
-      requestLectureCardPrecourse(cardId);
-      requestLectureCardRelations(cardId);
-      requestLectureCardReview(cardId);
-      requestLectureCardSubcategory(cardId);
-      requestLectureCardSummary(cardId);
-      requestLectureCardTags(cardId);
-    }
+    const setData = async function (cardId: string) {
+      if (cardId !== undefined) {
+        requestLectureCardComment(cardId);
+        await requestLectureCardDescription(cardId);
+        requestLectureCardFile(cardId);
+        requestLectureCardInstructor(cardId);
+        requestLectureCardPrecourse(cardId);
+        requestLectureCardRelations(cardId);
+        requestLectureCardSubcategory(cardId);
+        requestLectureCardReview(cardId);
+        requestLectureCardSummary(cardId);
+        requestLectureCardTags(cardId);
+      }
+    };
+
+    setData(cardId);
 
     return () => {
       setLectureComment();
