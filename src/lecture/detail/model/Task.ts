@@ -6,7 +6,7 @@ export default interface TaskItem {
   writer: string;
   patronKey: PatronKey;
   readCount: number;
-  time: number;
+  registeredTime: number;
   commentFeedbackId: string;
   boardId: string;
   replies: [];

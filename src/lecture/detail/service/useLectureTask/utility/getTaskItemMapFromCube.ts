@@ -83,7 +83,7 @@ async function getTaskItem(
                 task.patronKey.keyString !== ''
             ){
               patronKeys.push(task.patronKey.keyString);
-            } 
+            }
           });
 
           const writerProfile = await SkProfileApi.instance.findProfiles(patronKeys);
@@ -91,7 +91,7 @@ async function getTaskItem(
 
             // 실명 닉네임 여부에 따른 이름 설정
             let nickName = '';
-            if(writerProfile && 
+            if(writerProfile &&
                 writerProfile.length > 0 &&
                 task.patronKey &&
                 task.patronKey.keyString !== ''
@@ -100,7 +100,7 @@ async function getTaskItem(
                 if (m.id === task.patronKey.keyString) {
                   if(m.nickName){
                     nickName = m.nickName
-                  } 
+                  }
                   return true
                 }
               })
@@ -112,7 +112,7 @@ async function getTaskItem(
               readCount: task.readCount,
               title: task.title,
               writer: nickName || task.writer,
-              time: task.time,
+              registeredTime: task.registeredTime,
               child: false,
               count: 0,
               commentFeedbackId: task.commentFeedbackId,
@@ -139,7 +139,7 @@ async function getTaskItem(
                   task.patronKey.keyString !== ''
               ){
                 childPatronKeys.push(task.patronKey.keyString);
-              } 
+              }
             });
 
             const childWriterProfile = await SkProfileApi.instance.findProfiles(childPatronKeys);
@@ -151,7 +151,7 @@ async function getTaskItem(
 
               // 실명 닉네임 여부에 따른 이름 설정
               let childNickName = '';
-              if(childWriterProfile && 
+              if(childWriterProfile &&
                 childWriterProfile.length > 0 &&
                   child.patronKey &&
                   child.patronKey.keyString !== ''
@@ -160,7 +160,7 @@ async function getTaskItem(
                   if (m.id === child.patronKey.keyString) {
                     if(m.nickName){
                       childNickName = m.nickName
-                    } 
+                    }
                     return true
                   }
                 })
