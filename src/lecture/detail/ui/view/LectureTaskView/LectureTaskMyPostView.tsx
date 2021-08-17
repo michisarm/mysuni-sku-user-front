@@ -19,7 +19,6 @@ interface LectureTaskMyPostViewProps {
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   let childElement = null;
-
   if (task.childItems) {
     childElement = task.childItems.map((child, index) => {
       return (
@@ -37,7 +36,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
             <span className="writer">{child.writer}</span>
             <span className="view">{child.readCount}</span>
             <span className="date">
-              {task.time && moment(task.time).format('YYYY.MM.DD')}
+              {task.registeredTime && moment(task.registeredTime).format('YYYY.MM.DD')}
             </span>
           </a>
         </div>
@@ -64,7 +63,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
               {' '}<PolyglotText defaultString="읽음" id="Collage-TaskMyPostView-ReadCount" />
             </span>
             <span className="date">
-              {task.time && moment(task.time).format('YYYY.MM.DD')}
+              {task.registeredTime && moment(task.registeredTime).format('YYYY.MM.DD')}
             </span>
           </a>
         </div>
