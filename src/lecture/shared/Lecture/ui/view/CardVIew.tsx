@@ -101,9 +101,8 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);

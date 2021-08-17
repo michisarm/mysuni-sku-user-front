@@ -24,6 +24,7 @@ import {
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
   notieService?: NotieService;
@@ -392,10 +393,19 @@ class MyLearningContentContainer extends Component<Props, State> {
                     }
                     onAction={() => {
                       reactAlert({
-                        title: '알림',
+                        title: getPolyglotText(
+                          '알림',
+                          '신규학습-신규목록-알림'
+                        ),
                         message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
+                          ? getPolyglotText(
+                              '본 과정이 관심목록에서 제외되었습니다.',
+                              '신규학습-신규목록-관심제외'
+                            )
+                          : getPolyglotText(
+                              '본 과정이 관심목록에 추가되었습니다.',
+                              '신규학습-신규목록-관심추가'
+                            ),
                       });
                       this.onActionLecture(inMyLecture || learning);
                     }}
