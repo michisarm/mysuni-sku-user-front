@@ -101,8 +101,9 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] =
-    useState<Map<string, InMyLectureModel>>();
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -373,7 +374,7 @@ export default function CardView({
             <div className="g-list">
               {langSupports.map((langSupport) => (
                 // <span className={`${langSupport.defaultLang ? 'on' : ''}`}>
-                <span className="on">{parseLanguge(langSupport.lang)}</span>
+                <span>{parseLanguge(langSupport.lang)}</span>
               ))}
             </div>
           </div>
