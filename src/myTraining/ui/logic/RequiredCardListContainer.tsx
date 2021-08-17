@@ -9,7 +9,9 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../model/NoSuchContentPanelMessages';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import RequiredCardListView from '../view/RequiredCardListView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
@@ -136,7 +138,7 @@ function RequiredCardListContainer({
           '필터 조건에 해당하는 결과가 없습니다.',
           'mapg-msmp-검색x5'
         )) ||
-      NoSuchContentPanelMessages.getMessageByConentType(contentType)
+      nosuchMessagesPolyglot(contentType)
     );
   };
 

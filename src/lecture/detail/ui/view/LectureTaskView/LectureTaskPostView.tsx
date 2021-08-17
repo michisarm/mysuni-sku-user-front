@@ -43,7 +43,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
             <span className="writer">{child.writer}</span>
             <span className="view">{child.readCount}</span>
             <span className="date">
-              {task.time && moment(task.time).format('YYYY.MM.DD')}
+              {task.registeredTime && moment(task.registeredTime).format('YYYY.MM.DD')}
             </span>
           </a>
         </div>
@@ -72,7 +72,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
                 {task.readCount}{' '}<PolyglotText defaultString="읽음" id="Collage-Task-읽음" />
               </span>
               <span className="date">
-                {task.time && moment(task.time).format('YYYY.MM.DD')}
+                {task.registeredTime && moment(task.registeredTime).format('YYYY.MM.DD')}
               </span>
             </a>
         )}

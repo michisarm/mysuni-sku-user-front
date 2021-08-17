@@ -14,7 +14,9 @@ import { NoSuchContentPanel } from 'shared';
 import { MyApprovalRouteParams } from '../model/MyApprovalRouteParams';
 import { PersonalLearningListView } from './PersonalLearningListView';
 import routePaths from '../routePaths';
-import NoSuchContentPanelMessages from '../ui/model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../ui/model/NoSuchContentPanelMessages';
 import MyLearningListHeaderView from '../ui/view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../ui/view/table/MyLearningListTemplate';
 import { onClickItem } from './personalLearningList.events';
@@ -101,7 +103,7 @@ function PersonalLearningListContainer() {
     history.replace(routePaths.currentPage(getPageNo()));
   }, []);
 
-  const message = NoSuchContentPanelMessages.getMessageByConentType(params.tab);
+  const message = nosuchMessagesPolyglot(params.tab);
 
   return (
     <div className="confirm-list-wrap">

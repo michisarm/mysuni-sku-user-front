@@ -25,8 +25,6 @@ export interface OnProgressEventHandler {
   ): void;
 }
 
-function initializeHoverCaptionButton() {}
-
 function createPanoptoEmbedPlayer() {
   let intervalId: any = 0;
   let embedApi: any | undefined;
@@ -371,10 +369,10 @@ export function parseCaptionTracks(captionTracks?: string[]): string[] {
       } else if (c.includes('English')) {
         r[i] = 'English';
       } else if (c.includes('기본값')) {
-        if (captionTracks.some((d) => d.includes('Korean'))) {
-          r[i] = 'English';
-        } else {
+        if (captionTracks.some((d) => d.includes('English'))) {
           r[i] = 'Korean';
+        } else {
+          r[i] = 'English';
         }
       }
     });

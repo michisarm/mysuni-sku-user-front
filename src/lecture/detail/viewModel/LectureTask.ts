@@ -21,7 +21,7 @@ export interface LectureTaskItem {
   readCount: number;
   title: string;
   writer: string;
-  time: number;
+  registeredTime: number;
   child: boolean;
   count: number;
   childItems: LectureTaskChildItem[];

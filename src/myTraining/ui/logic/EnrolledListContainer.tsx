@@ -13,7 +13,9 @@ import { Segment } from 'semantic-ui-react';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import NoSuchContentPanelMessages, {
+  nosuchMessagesPolyglot,
+} from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
@@ -206,7 +208,7 @@ function EnrolledListContainer({
           '필터 조건에 해당하는 결과가 없습니다.',
           'mapg-msmp-검색x2'
         )) ||
-      NoSuchContentPanelMessages.getMessageByConentType(contentType)
+      nosuchMessagesPolyglot(contentType)
     );
   };
 
