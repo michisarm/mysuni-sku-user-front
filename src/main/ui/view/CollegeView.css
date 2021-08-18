@@ -1,0 +1,37 @@
+#root section.content .tab-menu-inner.sub.English .ui.attached.tabular.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.English
+  .ui.attached.tabular.menu
+  .item {
+  display: table-cell;
+  padding: 0 1.15rem;
+  height: 3.5rem;
+}
+
+.tab-menu-inner.sub.English .ai-background {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line_ENG.png)
+    no-repeat !important;
+}
+
+#root section.content .tab-menu-inner.sub.Chinese .ui.attached.tabular.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.Chinese
+  .ui.attached.tabular.menu
+  .item {
+  display: table-cell;
+  padding: 0 1.15rem;
+  height: 3.5rem;
+}
+
+.tab-menu-inner.sub.Chinese .ai-background {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line_CHN.png)
+    no-repeat !important;
+}
