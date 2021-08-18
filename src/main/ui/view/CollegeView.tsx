@@ -13,7 +13,10 @@ import CollegeInnerTabAi, {
   CollegeInnerEnTabAi,
   CollegeInnerZhTabAi,
 } from './CollegeInnerTabAi';
-import CollegeInnerTabDt from './CollegeInnerTabDt';
+import CollegeInnerTabDt, {
+  CollegeInnerEnTabDt,
+  CollegeInnerZhTabDt,
+} from './CollegeInnerTabDt';
 import { Area } from 'tracker/model';
 import { SkProfileService } from '../../../profile/stores';
 
@@ -3370,14 +3373,13 @@ const EnPanes = [
           <div className="college-cont-title dt">
             <div className="belt sub">
               <div className="label">DT College</div>
-              <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
+              <div className="strong">
+                &quot;The group's deep change comes from our hands!&quot;
+              </div>
               <div className="normal">
-                Digital Skill을 장착하고 고객과 업을 이해하여,
-                <br />
-                SK Deep Change를 맨 앞에서 이끌어 나가실 구성원들을 위한
-                과정들이,
-                <br />
-                여기 DT College에 마련되어 있습니다.
+                DT College offers courses for members who will lead the
+                forefront of SK Deep Change by equipping themselves with digital
+                skills and understanding the customers and the business.
               </div>
               <div className="panopto sub">
                 <Image src={`${PUBLIC_URL}/images/all/Dt-banner.png`} alt="" />
@@ -3387,7 +3389,7 @@ const EnPanes = [
 
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
-              <CollegeInnerTabDt />
+              <CollegeInnerEnTabDt />
             </div>
           </div>
         </div>
@@ -3398,61 +3400,70 @@ const EnPanes = [
     menuItem: 'Happiness',
     render: () => (
       <Tab.Pane>
-        <div
-          className="ui attached tab full segment active"
-          data-tab="colleges3"
-        >
-          <div className="college-cont-title happiness">
-            <div className="belt">
-              <div className="label">행복 College</div>
-              <div className="strong">SK 구성원 전체의 행복을 키워갑니다.</div>
-              <div className="normal">
-                행복에 대한 기본 개념과 SK경영철학의 이해를 기반으로 직장을
-                포함한 삶 전반에서
-                <br />
-                행복을 증진할 수 있는 역량을 배양하고 실천함으로써, SK 구성원
-                전체의 행복 추구에
-                <br />
-                실질적으로 기여하는 것을 목표로 합니다.
-              </div>
-              <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy-banner.png`}
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_01.png`}
-                  alt=""
-                />
+        <div className="ui bottom attached segment active tab">
+          <div
+            className="ui attached tab full segment active"
+            data-tab="colleges3"
+          >
+            <div className="college-cont-title happiness">
+              <div className="belt">
+                <div className="label">Happiness College</div>
+                <div className="strong">
+                  For the happiness of all SK members!
+                </div>
+                <div className="normal">
+                  Happiness College aims to contribute substantially to the
+                  pursuit of happiness of
+                  <br />
+                  all SK members by cultivating and putting into practice the
+                  capacity to promote
+                  <br />
+                  happiness throughout life, including the workplace, on the
+                  basis of understanding
+                  <br />
+                  the foundational concept of happiness and the SK management
+                  philosophy.
+                </div>
+                <div className="panopto sub">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy-banner.png"
+                    alt="하트이미지"
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_02.png`}
-                  alt=""
-                />
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_01_ENG.png"
+                    alt="이렇게 행복을 만들어 가세요."
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="college-cont-map pbtom">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_03.png`}
-                  alt=""
-                />
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_ENG.png"
+                    alt="행복 Badge"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map pbtom">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_ENG.png"
+                    alt="행복 컬리지 커리큘럼"
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -3472,46 +3483,60 @@ const EnPanes = [
             <div className="belt sub">
               <div className="label">SV College</div>
               <div className="strong">
-                내일[Tomorrow+My Work]을 위한 SV, <br />
-                기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
+                SV for Tomorrow[Tomorrow+My Work],
+                <br /> this is the Place where You become Competent in Achieving
+                Sustainability in the Corporation and Society!
               </div>
               <div className="normal">
-                Deep Change의 방향을 제시하는 ‘사회적 가치’ <br />
-                이해관계자들의 Painpoint를 공감하고 해결하는 역량을 함께
-                키워봅시다!
+                Let's develop together the ability to empathize and resolve the
+                pain points of stakeholders, which is the 'social value' that
+                presents the direction of Deep Change
               </div>
               <ul className="tag-wrap">
-                <li># 사회문제</li>
+                <li># Social Issues </li>
                 <li># ESG</li>
                 <li># SV Biz</li>
-                <li># SV 측정</li>
+                <li># SV Measurement</li>
               </ul>
               <div className="panopto sub">
-                <Image src={`${PUBLIC_URL}/images/all/sv-banner.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv-banner.png"
+                  alt="Social Value"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_01.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_01_ENG.png"
+                  alt="학습 FLOW"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_02.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_02_ENG.png"
+                  alt="채널"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map pbtom">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_03.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_03_ENG.png"
+                  alt="전체커리큘럼"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
@@ -3529,88 +3554,90 @@ const EnPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">혁신디자인 College</div>
-              <div className="strong">고객을 이해하고 혁신을 디자인하라!</div>
+              <div className="label">Innovative Design College</div>
+              <div className="strong">
+                Understand the Customers and Innovate Design!
+              </div>
               <div className="normal">
-                고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의{' '}
-                <br />
-                문제를 해결하며, 끊임없이 일하는 방식을 혁신하는데 필요한 <br />
-                구성원 및 조직의 혁신 디자인 역량 향상을 도와드립니다.
+                Business that Starts from Customers We are here to help the
+                learners be equipped with enhanced and innovative design
+                capabilities necessary to seek ideas, solve customers’ problems
+                with integrated thinking, and innovate ways of working
+                relentlessly.
               </div>
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
-
           <div className="college-cont-map sub2">
             <div className="belt inno">
               <div className="belt">
                 <div className="text-left-box">
                   <p className="p_link inno">
-                    각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                    Click each badge and course to go to the corresponding page.
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <Link
-                    to="/lecture/college/CLG00005/channels/pages/1"
+                  <a
                     className="item-button"
+                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
                   >
-                    <Image
-                      style={{ display: 'inline' }}
-                      src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
+                      className="ui image"
+                      style={{ display: 'inline' }}
                     />
-                    과정 바로가기
-                  </Link>
+                    Go to Courses
+                  </a>
                 </div>
               </div>
               <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/design_con_01.png`}
-                  alt=""
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/design_con_01_ENG.png"
+                  alt="이렇게 활용해 보세요"
+                  className="ui image"
                 />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
                 <h1 className="inno-title">
-                  “ <strong>통합적 사고</strong>에 기반한{' '}
-                  <strong>고객중심</strong> 문제해결,{' '}
-                  <strong>일하는 방식</strong> 혁신 ”
+                  “Customer-centered problem solving and innovation in the way
+                  we work based on integrated thinking”
                 </h1>
                 <div className="inno-top-btn">
-                  <span>개설예정</span>
+                  <span>Available Soon</span>
                 </div>
                 <div className="inno-wrap">
-                  <Image
-                    src={`${PUBLIC_URL}/images/all/inno-level.png`}
-                    alt=""
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/inno-level_ENG.png"
+                    alt="세로제목"
+                    className="ui image"
                   />
-
                   <div className="inno-item fi-item">
-                    <h3># 디자인씽킹</h3>
-
+                    <h3># Design Thinking</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              디자인씽킹 <br />
-                              코칭 스킬
-                            </Link>
+                            <a href="#none">
+                              Coaching Skills
+                              <br />
+                              for Design Thinking
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -3625,82 +3652,85 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-2/cube/CUBE-3/view/ClassRoomLecture">
-                              디자인씽킹 <br />
+                            <a href="#none">
+                              Design Thinking
+                              <br />
                               Project
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-6xo/view">
-                              디자인씽킹
+                            <a href="#none">
+                              Design Thinking
                               <br />
                               Team W/S
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-ag7/view">
-                              디자인씽킹 <br />
+                            <a href="#none">
+                              Design Thinking
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-7pk/view">
-                              디자인씽킹 Self <br />
-                              실습 (SV사례)
-                            </Link>
+                            <a href="#none">
+                              Design Thinking Self-Practice (SV Cases)
+                            </a>
                           </td>
                         </tbody>
                       </table>
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              서비스 디자인 <br />
+                            <a href="#none">
+                              Service Design
+                              <br />
                               Intensive
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8cr/view">
-                              From Ideas to <br />
+                            <a href="#none">
+                              From Ideas to
+                              <br />
                               Action - IDEO
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8ct/view">
-                              Human-Centered <br />
+                            <a href="#none">
+                              Human-Centered
+                              <br />
                               Service Design - IDEO
-                            </Link>
+                            </a>
                           </td>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz - Self 실습
-                            </Link>
+                            <a href="#none">
+                              Being Customer-Centered in Technology Business -
+                              Self-Practice
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-7pb/view">
-                              디자인씽킹 사례 <br />
-                              (SV)보며 익히기
-                            </Link>
+                            <a href="#none">
+                              Learning Through Design Thinking Cases (SV)
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-13c/view">
-                              디자인씽킹 - <br />
+                            <a href="#none">
+                              Design Thinking -<br />
                               Linkedin
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-aac/view">
-                              Hello Design <br />
+                            <a href="#none">
+                              Hello Design
+                              <br />
                               Thinking - IDEO
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -3708,76 +3738,63 @@ const EnPanes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz 고민하기
-                            </Link>
+                            <a href="#none">
+                              Being Customer-Centered in Technology Thinking
+                              about Business
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-86m/view">
-                              디자인 사고 연습
-                            </Link>
+                            <a href="#none">Design Thinking Practice</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/card/CARD-1f0/view">
-                              처음 만나는 <br />
-                              디자인씽킹
-                            </Link>
+                            <a href="#none">
+                              First Encounter <br />
+                              with Design Thinking
+                            </a>
                           </td>
                         </tbody>
                       </table>
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-6f3/view">
-                              창의적 <br />
-                              IDEA 발상법
-                            </Link>
+                            <a href="#none">
+                              How to Come Up With a Creative Idea
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-1ew/view">
-                              Biz. Ideation
-                              <br /> 첫걸음
-                            </Link>
+                            <a href="#none">Business Ideation First Step</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
-
                   <div className="inno-item">
-                    <h3># 로지컬씽킹</h3>
+                    <h3># Logical Thinking</h3>
                     <div className="logical-box">
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.2)
-                            </Link>
+                            <a href="#none">
+                              Learning How to Work Like a Consultant (Lv.2)
+                            </a>
                           </li>
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.1)
-                            </Link>
+                            <a href="#none">
+                              Learning How to Work Like a Consultant (Lv.1)
+                            </a>
                           </li>
                         </ul>
                       </div>
                     </div>
                   </div>
-
                   <div className="inno-item">
-                    <h3># 고객알기</h3>
+                    <h3># Knowing the Customers</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
@@ -3793,215 +3810,185 @@ const EnPanes = [
                           <td></td>
                           <td></td>
                           <td>
-                            <Link to="/lecture/card/CARD-8cs/view">
-                              Insights for <br />
-                              Innovation - IDEO
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5js/view">
-                              고객 Research <br />
-                              방법
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5j8/view">
-                              고객 Needs <br />
-                              Finding
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td className="two">
-                            <Link to="/lecture/card/CARD-1f4/view">
-                              고객 <br />
-                              Need란?
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="inno-item">
-                    <h3># 워킹백워드</h3>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7j3/cube/CUBE-a2j/view/ClassRoomLecture">
-                              워킹백워드 <br />
-                              Project
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7pa/view">
-                              워킹백워드 <br />
-                              Workshop_online
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5mq/view">
-                              워킹백워드 <br />
-                              Tools
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td className="two">
-                            <Link to="/lecture/card/CARD-1es/view">
-                              처음 만나는 <br />
-                              워킹백워드
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="inno-item orange">
-                    <h3># 애자일</h3>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <Link to="/community/COMMUNITY-1n">
-                              애자일 코치 <br />
-                              Meetup
-                            </Link>
-                          </td>
-                          <td className="dashed-or">
-                            <Link to="#" onClick={emptyAlert}>
-                              애자일 코치 <br />
-                              양성 과정
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
-                              애자일 Project
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-8j1/view">
-                              애자일 리더십 <br />
-                              Workshop
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-53b/cube/CUBE-7id/view/ClassRoomLecture">
-                              애자일 Project
+                            <a href="#none">
+                              Insights for
                               <br />
-                              Management <br />
-                              W/S
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7dd/view">
-                              애자일 <br />
-                              Workshop
-                            </Link>
+                              Innovation - IDEO
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
+                          <td></td>
                           <td>
-                            <Link to="/lecture/card/CARD-13d/view">
-                              Agile Management <br />- Linkedin
-                            </Link>
+                            <a href="#none">How to Do Customer Research</a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-5c4/view">
-                              애자일 방법론 <br />- Linkedin
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-6zk/view">
-                              SK 네트웍스 구매팀 <br />
-                              애자일 사례
-                            </Link>
+                            <a href="#none">
+                              고객 Needs
+                              <br />
+                              Finding
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-7np/view">
-                              애자일 방법론 기초
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-84k/view">
-                              애자일 에센셜
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-52y/view">
-                              처음 만나는 애자일
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-1ev/view">
-                              Why 애자일
-                            </Link>
+                          <td className="two">
+                            <a href="#none">What is a Customer Need?</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
-
+                  <div className="inno-item">
+                    <h3># Working Backwards</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Workshop_online
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Tools
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">First Time: Working Backwards</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div className="inno-item orange">
-                    <h3># 오픈콜라보</h3>
+                    <h3># Agile</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Agile Coach Meetup</a>
+                          </td>
+                          <td className="dashed-or">
+                            <a href="#none">Agile Coach Training Course</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Agile Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">Agile Leadership Workshop</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Project
+                              <br />
+                              Management
+                              <br />
+                              W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Agile Management
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Methodology
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              SK Network Purchasing Team Agile Case
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small">
+                            <a href="#none">Agile Methodology Basics</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Agile Essentials</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">First Time: Agile</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Why Agile</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># Open Collaboration</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
@@ -4016,123 +4003,104 @@ const EnPanes = [
                           <td></td>
                           <td></td>
                           <td className="dashed-or">
-                            <Link to="#" onClick={emptyAlert}>
-                              오픈 이노베이션 <br />
+                            <a href="#none">
+                              Open Innovation
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-69v/view">
-                              퓨처캐스팅 <br />
-                              Workshop
-                            </Link>
+                            <a href="#none">Future Casting Workshop</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-1et/view">
-                              Futurecasting
-                            </Link>
+                            <a href="#none">Futurecasting</a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-1ez/view">
-                              All about <br />
-                              오픈 이노베이션
-                            </Link>
+                            <a href="#none">
+                              All about
+                              <br />
+                              Open Innovation
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-7lo/view">
-                              Creative Collabo <br />
+                            <a href="#none">
+                              Creative Collabo
+                              <br />
                               Skills - Linkedin
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/card/CARD-1eu/view">
+                            <a href="#none">
                               Open
                               <br />
                               Collaboration
                               <br />
                               Tips
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
-
                 <div className="inno-bottom-wrap">
                   <div className="inno-bottom con01">
                     <ul>
                       <li>
-                        <Link to="/lecture/card/CARD-1f3/view">
-                          Deep Change와
-                          <br />
-                          Design 이해
-                        </Link>
+                        <a href="#none">Deep Change and Design</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-1f2/view">
-                          고객 이해의 중요성 <br />
-                          Remind!
-                        </Link>
+                        <a href="#none">
+                          The Importance of Customer Understanding, Remind!
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-139/view">
-                          YouTube <br />
-                          디자인 사고 이해
-                        </Link>
+                        <a href="#none">
+                          Understanding YouTube's Design Thinking
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6om/view">
-                          혁신의 비법
-                        </Link>
+                        <a href="#none">How to be Innovative</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-1er/view">
+                        <a href="#none">
                           Leading with
                           <br />
                           Innovation
-                        </Link>
+                        </a>
                       </li>
                     </ul>
-                    <h3># Deep Change와 Design</h3>
+                    <h3># Deep Change and Design</h3>
                   </div>
-
                   <div className="inno-bottom con02">
                     <ul>
                       <li>
-                        <Link to="/lecture/college/CLG00005/channel/CHN0000q">
-                          Trend &#38; Insight <br />
+                        <a href="#none">
+                          Trend &amp; Insight
+                          <br />
                           Report
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-5p3/view">
-                          도약을 위한 <br />
-                          미래 디자인
-                        </Link>
+                        <a href="#none">Future Design to Lead Forward</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-502/view">
-                          효율적으로 <br />
-                          일하는 Tip
-                        </Link>
+                        <a href="#none">Tips for Efficient Working</a>
                       </li>
                     </ul>
-                    <h3># 혁신 트렌드와 인사이트</h3>
+                    <h3># Innovation Trend and Insight</h3>
                   </div>
                 </div>
               </div>
@@ -4153,79 +4121,72 @@ const EnPanes = [
           <div className="college-cont-title global">
             <div className="belt sub">
               <div className="label">Global College</div>
-              <div className="strong">Globalization을 위한 새로운 시작</div>
+              <div className="strong">A New Start for Globalization</div>
               <div className="normal">
-                글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이
-                바뀌어도
+                Global College aims to foster "Global Managers" who can develop
+                a "Global Pers-
                 <br />
-                성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
-                합니다.
+                pective" that can read the trends of global business and produce
+                results even
                 <br />
-                이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
-                길러내고자 합니다.
+                when the environment changes. The college also hopes to train
+                the human capital
+                <br />
+                that is required for the globalization of the SK Group.
               </div>
               <ul className="tag-wrap">
-                <li># Geopolitics & Biz</li>
+                <li># Geopolitics &amp; Biz</li>
                 <li># Managing Global Biz</li>
-                <li># 지역 전문가</li>
+                <li># Area Experts</li>
                 <li># Glopedia</li>
                 <li># Global Leader's Table</li>
               </ul>
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
-
-          {/* <div className="college-cont-map">
-                <div className="belt">
-                    <div className="label">지역전문가 커리큘럼</div>
-                    <div className="map">
-                        <Image src={curriculumn1}></Image>
-                    </div>
-                </div>
-            </div> */}
-
           <div className="college-cont-map">
             <div className="belt global flex mb50">
               <div className="text-left-box">
                 <p className="p_link global">
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                  Click each badge and course to go to the corresponding page.
                 </p>
               </div>
               <div className="text-right-box">
                 <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                  href="/suni-main/lecture/college/CLG00006/channels/pages/1"
                   className="item-button"
                 >
                   <img
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
                   />
-                  과정 바로가기
+                  Go to Courses
                 </a>
               </div>
             </div>
-
             <div className="belt global">
               <div className="label">
-                Geopolitics & Biz / Managing Global Biz. 커리큘럼
+                Geopolitics &amp; Biz. / Managing Global Biz. Curriculum
               </div>
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-top.svg`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-top.svg"
+                alt="H:Geopolitics&Biz/ ManagingGlobalBiz"
                 className="global-top-img"
               />
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-left.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-eng.png"
+                alt="V:Advanced/Intermediate/Basic"
                 className="global-left-img"
               />
               <div className="global-belt-wrap">
@@ -4234,46 +4195,44 @@ const EnPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit140">
                         <div className="curriculum-link-box">
-                          <strong>Biz. Impact 분석</strong>
-                          <Link to="#" onClick={emptyAlert}>
+                          <strong>Business Impact Analysis</strong>
+                          <a href="#none">
                             <span>Geopolitical Scenario Planning</span>
-                          </Link>
+                          </a>
                         </div>
                       </div>
-
                       <div className="global-curriculum-box box-heit220">
                         <div className="curriculum-link-box">
-                          <strong>산업/통상에 미치는 영향</strong>
+                          <strong>Impact on Industry/Commerce</strong>
                           <div className="link-wrap">
-                            <Link to="/lecture/card/CARD-12nx/view">
+                            <a href="#none">
                               <span>
-                                Geo. & Biz.
+                                Geo. &amp; Biz.
                                 <br />
                                 Nexus
                               </span>
-                            </Link>
+                            </a>
                             <div className="link-colum-box">
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-197/Course/C-LECTURE-13i">
+                              <a href="#none">
                                 <span>
-                                  미-중 Tech 경쟁 Ch.2
+                                  US-China Tech Competition Ch.2
                                   <br />
-                                  (입장 및 대응 방향)
+                                  (Positions and Direction of Response)
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s2/Course/C-LECTURE-nq">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  미-중 Tech 경쟁 Ch.1
+                                  US-China Tech Competition Ch.1
                                   <br />
-                                  (법률적/제도적 환경 변화)
+                                  (Changes in Legal/Institutional Environment)
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <div className="global-curriculum-wrap wrap2">
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit370">
@@ -4281,20 +4240,20 @@ const EnPanes = [
                           <strong>Global Financial Story</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box">
-                              <Link to="#" onClick={emptyAlert}>
+                              <a href="#none">
                                 <span>
-                                  Global Financial Story
+                                  Global Financial Story Case
                                   <br />
-                                  케이스 스터디
+                                  Studies
                                 </span>
-                              </Link>
-                              <Link to="/lecture/card/CARD-12ts/view">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  Global Financial Story의
+                                  Understanding Global
                                   <br />
-                                  이해
+                                  Financial Story
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -4308,27 +4267,27 @@ const EnPanes = [
                           <strong>Diversity Inclusion</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box sty2">
-                              <Link to="#" onClick={emptyAlert}>
+                              <a href="#none">
                                 <span>
-                                  글로벌 멤버들과
+                                  Working Together With Global
                                   <br />
-                                  함께 일하기
+                                  Members
                                 </span>
-                              </Link>
-                              <Link to="#" onClick={emptyAlert}>
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  Diversity
+                                  Understanding Diversity
                                   <br />
-                                  Inclusion의 이해
+                                  Inclusion
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy">
+                              </a>
+                              <a href="#none">
                                 <span>
                                   Diversity
                                   <br />
                                   Awareness
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -4336,7 +4295,6 @@ const EnPanes = [
                     </div>
                   </div>
                 </div>
-                {/* //global-belt */}
                 <div className="global-belt flex">
                   <div className="global-curriculum-wrap wrap3">
                     <div className="global-component">
@@ -4344,7 +4302,7 @@ const EnPanes = [
                         <div className="curriculum-link-box">
                           <strong>Why Geopolitics?</strong>
                           <div className="link-wrap big-colum">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8ba/lecture-card/LECTURE-CARD-638">
+                            <a href="#none">
                               <span>
                                 How to manage
                                 <br />
@@ -4352,14 +4310,14 @@ const EnPanes = [
                                 <br />
                                 Uncertainties?
                               </span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8b8/lecture-card/LECTURE-CARD-637">
+                            </a>
+                            <a href="#none">
                               <span>
                                 Why Geopolitics for
                                 <br />
                                 Business?
                               </span>
-                            </Link>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -4369,37 +4327,37 @@ const EnPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box">
                         <div className="curriculum-link-box">
-                          <strong>지정학적 변화 동향</strong>
+                          <strong>Recent Geopolitical Change</strong>
                           <div className="link-wrap big-colum">
                             <div className="link-colum-box">
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1dc/Course/C-LECTURE-16q">
+                              <a href="#none">
                                 <span>
-                                  바이든 시대,
+                                  Changes in the International
                                   <br />
-                                  국제정세 변화
+                                  Situation in the Era of Biden
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-me/Course/C-LECTURE-im">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  Status Quo and Essence of the
                                   <br />
-                                  본질 Series 3
+                                  International Situation - Series 3
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l9/Course/C-LECTURE-i1">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  Status Quo and Essence of the
                                   <br />
-                                  본질 Series 2
+                                  International Situation - Series 2
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  Status Quo and Essence of the
                                   <br />
-                                  본질 Series 1
+                                  International Situation - Series 1
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -4410,80 +4368,74 @@ const EnPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit380">
                         <div className="curriculum-link-box">
-                          <strong>Global Communication Skill & Attitude</strong>
+                          <strong>
+                            Global Communication Skill &amp; Attitude
+                          </strong>
                           <div className="link-wrap type2">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-xz/Course/C-LECTURE-tq">
-                              <span>글로벌 비즈니스 매너</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-18/Course/C-LECTURE-x">
-                              <span>글로벌 Biz.네트워킹</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-i3/Program/P-LECTURE-r">
-                              <span>Biz.이메일</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kw/Program/P-LECTURE-s">
-                              <span>Biz.미팅</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l3/Program/P-LECTURE-u">
-                              <span>프리젠테이션</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l1/Program/P-LECTURE-t">
-                              <span>Biz.협상</span>
-                            </Link>
+                            <a href="#none">
+                              <span>Global Business Manner</span>
+                            </a>
+                            <a href="#none">
+                              <span>Global Biz Networking</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz E-mail</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz Meeting</span>
+                            </a>
+                            <a href="#none">
+                              <span>Presentation</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz Negotiations</span>
+                            </a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="global-link-bottom">
-                    <Link to="/lecture/college/CLG00006/channel/CHN0000v">
+                    <a href="#none">
                       <span>
                         <strong>Global Leader’s Table</strong>
                         <br />
-                        (Global Guru들이 들려주는 비즈니스 통찰)
+                        (Business insights from global gurus)
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* <div className="college-cont-map">
-                <div className="belt">
-                    <div className="label">지역전문가 커리큘럼</div>
-                    <div className="map">
-                        <Image src={curriculumn2}></Image>
-                    </div>
-                </div>
-            </div> */}
-
           <div className="college-cont-map">
             <div className="belt global">
-              <div className="label">지역전문가 커리큘럼</div>
+              <div className="label">Local Expert Curriculum</div>
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-location-top.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
               <div className="global-belt-wrap section2">
                 <div>
-                  <Link to="about" onClick={emptyAlert}>
-                    <span>Post 주재원</span>
-                  </Link>
-                  <Link to="about" onClick={emptyAlert}>
-                    <span>법인장</span>
-                  </Link>
-                  <Link to="/lecture/card/CARD-86s/view">
+                  <a href="#none">
+                    <span>Post-Expat</span>
+                  </a>
+                  <a href="#none">
+                    <span>President of Corporation</span>
+                  </a>
+                  <a href="#none">
                     <span>
                       Local Experience
                       <br />
-                      (현채인, 주재원)
+                      (Host-Country Nationals, Expatriates)
                     </span>
-                  </Link>
+                  </a>
                 </div>
                 <table>
                   <colgroup>
@@ -4495,21 +4447,21 @@ const EnPanes = [
                     <col width="169px" />
                   </colgroup>
                   <thead>
-                    <th></th>
+                    <th />
                     <th>
-                      <span>중국</span>
+                      <span>China</span>
                     </th>
                     <th>
-                      <span>미국</span>
+                      <span>US</span>
                     </th>
                     <th>
-                      <span>베트남</span>
+                      <span>Vietnam</span>
                     </th>
                     <th>
-                      <span>헝가리</span>
+                      <span>Hungary</span>
                     </th>
                     <th>
-                      <span>폴란드</span>
+                      <span>Poland</span>
                     </th>
                   </thead>
                   <tbody>
@@ -4518,137 +4470,147 @@ const EnPanes = [
                         <span>Networking</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-hj/Course/C-LECTURE-ek">
-                          중국 GR 기초
-                        </Link>
+                        <a href="#none">Basics of Chinese GR</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kz/Course/C-LECTURE-hs">
+                        <a href="#none">
                           Networking with
                           <br />
                           Americans
-                        </Link>
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks">
-                          주재원이 알아야 할<br />
-                          베트남, 베트남인
-                        </Link>
+                        <a href="#none">
+                          What Expats Need to Know About Vietnam
+                          <br />
+                          and the Vietnamese
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-8kg/view">
-                          주재원이 알아야 할<br />
-                          헝가리, 헝가리인
-                        </Link>
+                        <a href="#none">
+                          What Expats Need to Know About Hungary
+                          <br />
+                          and the Hungarian
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-60u/view">
-                          주재원이 알아야 할<br />
-                          폴란드, 폴란드인
-                        </Link>
+                        <a href="#none">
+                          What Expats Need to Know About Poland
+                          <br />
+                          and the Polish
+                        </a>
                       </td>
                     </tr>
                     <tr>
                       <th>
-                        <span>Biz 법률</span>
+                        <span>Business Law</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iz/Course/C-LECTURE-fv">
-                          중국 Biz. 법률 기초
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100">
-                          미국 Biz. 법률 기초
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/card/CARD-74q/view">
-                          베트남 Biz. 법률
+                        <a href="#none">
+                          Biz in China
                           <br />
-                          기초
-                        </Link>
+                          Basics of Law
+                        </a>
                       </td>
                       <td>
-                        <Link to="#" onClick={emptyAlert}>
-                          헝가리 Biz. 법률
+                        <a href="#none">
+                          Biz in the U.S.
                           <br />
-                          기초
-                        </Link>
+                          Basics of Law
+                        </a>
                       </td>
                       <td>
-                        <Link to="#" onClick={emptyAlert}>
-                          폴란드 Biz. 법률
+                        <a href="#none">
+                          Biz in Vietnam
                           <br />
-                          기초
-                        </Link>
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Hungary
+                          <br />
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Poland
+                          <br />
+                          Basics of Law
+                        </a>{' '}
                       </td>
                     </tr>
                     <tr>
                       <th>
-                        <span>세무/회계</span>
+                        <span>Tax/Accounting</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j0/Course/C-LECTURE-fw">
-                          중국 세무/회계 기초
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-yw/Course/C-LECTURE-uh">
-                          미국 세무/회계 기초
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j9/Course/C-LECTURE-g5">
-                          베트남 세무/회계
+                        <a href="#none">
+                          Basics of Tax/
                           <br />
-                          기초
-                        </Link>
+                          Accounting in China
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-r9/Course/C-LECTURE-n2">
-                          헝가리 세무/회계
+                        <a href="#none">
+                          Basics of Tax/
                           <br />
-                          기초
-                        </Link>
+                          Accounting in the US
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s3/Course/C-LECTURE-nr">
-                          폴란드 세무/회계
+                        <a href="#none">
+                          Basics of Tax/
                           <br />
-                          기초
-                        </Link>
+                          Accounting in Vietnam
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in Hungary
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in Poland
+                        </a>
                       </td>
                     </tr>
                     <tr>
                       <th>
-                        <span>경제동향</span>
+                        <span>Economic Trend</span>
                       </th>
-                      <td className="bg-none">
-                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
-                      </td>
-                      <td className="bg-none">
-                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
+                      <td className="bg-none"></td>
+                      <td className="bg-none"></td>
+                      <td>
+                        <a href="#none">
+                          Economic Trends of
+                          <br />
+                          Vietnam, and
+                          <br />
+                          Strategies for Entering
+                          <br />
+                          Vietnamese Market
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr">
-                          베트남 경제동향
-                          <br />및 진출전략
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-199/Course/C-LECTURE-13j">
-                          헝가리 Biz.
+                        <a href="#none">
+                          Biz in Hungary
                           <br />
                           Landscape
-                        </Link>
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-mi/Course/C-LECTURE-iq">
-                          폴란드 Biz.
+                        <a href="#none">
+                          Biz in Poland
                           <br />
                           Landscape
-                        </Link>
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -4665,59 +4627,39 @@ const EnPanes = [
                   <tbody>
                     <tr>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-jq/Course/C-LECTURE-gm">
-                          중국
-                        </Link>
+                        <a href="#none">China</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k6/Course/C-LECTURE-gz">
-                          미국
-                        </Link>
+                        <a href="#none">US</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kx/Course/C-LECTURE-hr">
-                          베트남
-                        </Link>
+                        <a href="#none">Vietnam</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">
-                          헝가리
-                        </Link>
+                        <a href="#none">Hungary</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">
-                          폴란드
-                        </Link>
+                        <a href="#none">Poland</a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-acm/view">중동</Link>
+                        <a href="#none">Middle East</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <Link to="/lecture/card/CARD-12n5/view">
-                          인도네시아
-                        </Link>
+                        <a href="#none">Indonesia</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">
-                          인도
-                        </Link>
+                        <a href="#none">India</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1a7/Course/C-LECTURE-14h">
-                          CIS
-                        </Link>
+                        <a href="#none">CIS</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-lb/Course/C-LECTURE-hx">
-                          북한
-                        </Link>
+                        <a href="#none">North Korea</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l7/Course/C-LECTURE-hv">
-                          일본
-                        </Link>
+                        <a href="#none">Japan</a>
                       </td>
                     </tr>
                   </tbody>
@@ -4730,26 +4672,22 @@ const EnPanes = [
                   <tbody>
                     <tr>
                       <td>
-                        <Link to="/lecture/college/CLG00006/channel/CHN0006q">
-                          중국 Issue &amp; Trend
-                        </Link>
+                        <a href="#none">Issues and Trends in China</a>
                       </td>
                       <td>
-                        <Link to="/lecture/college/CLG00006/channel/CHN00056">
-                          베트남 Issue &amp; Trend
-                        </Link>
+                        <a href="#none">Issues and Trends in Vietnam</a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
                 <div className="global-link-bottom">
-                  <Link to="/lecture/college/CLG00006/channel/CHN0000u">
+                  <a href="#none">
                     <span>
                       <strong>Glopedia</strong>
                       <br />
-                      (Global 경험을 축적하고 공유하는 커뮤니티)
+                      (Community that accumulates and shares global experiences)
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -4769,16 +4707,19 @@ const EnPanes = [
           <div className="college-cont-title leadership">
             <div className="belt sub">
               <div className="label">Leadership College</div>
-              <div className="strong">Deep Change Leader로 성장!</div>
+              <div className="strong">Grow into a Deep Change leader!</div>
               <div className="normal">
-                개인별 리더십 진단과 맞춤형 역량 개발 가이드를 지원하고
+                Leadership College helps all members grow into Deep Change
+                leaders who can
                 <br />
-                최신 컨텐츠와 효과적인 학습 환경을 제공하여, 모든 구성원이
-                스스로를 성장시키고,
+                self-grow, promote change in others, and innovate the company
+                (BM, an
                 <br />
-                다른 사람의 변화를 촉진하며, 회사(BM,조직)를 혁신하는
+                organization) by providing individual leadership diagnoses,
+                customized capacity
                 <br />
-                Deep Change Leader로 성장하도록 돕습니다.
+                development guides, the latest content, and an effective
+                learning environment.
               </div>
               <ul className="tag-wrap">
                 <li># Leading Myself</li>
@@ -4787,53 +4728,54 @@ const EnPanes = [
                 <li># Leadership Clinic</li>
                 <li># Deep Change Leadership</li>
               </ul>
-
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
 
-          <div className="college-cont-map">
+          <div className="college-cont-map leadership">
             <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link ">
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                  Click each badge and course to go to the corresponding page.
                 </p>
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00007/channels/pages/1"
+                <a
                   className="item-button"
+                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
                 >
-                  <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
+                    className="ui image"
                     style={{ display: 'inline-block' }}
                   />
-                  과정 바로가기
-                </Link>
+                  Go to Courses
+                </a>
               </div>
             </div>
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">Full Curriculum</div>
               <div className="map">
                 <div className="ai-top-btn leaderShip">
                   <span className="ai-btn01 leader">VoD</span>
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
-                <Image
-                  src={`${PUBLIC_URL}/images/all/leadership-level.png`}
-                  alt=""
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  alt="세로:Advanced/Intermediate/Basic"
+                  className="ui image"
                   style={{ float: 'left' }}
                 />
                 <div className="link_wrapper leadership">
@@ -4843,322 +4785,224 @@ const EnPanes = [
                       <ul>
                         <li className="margin_25">
                           <div className="badge_box1 left">
-                            <Link
-                              to="/certification/badge/badge-detail/BADGE-38"
-                              className="card-badge-link"
-                            >
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`}
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-3.png"
                                 alt=""
+                                className="ui image"
                               />
-                            </Link>
+                            </a>
                           </div>
-                          <Link to="/lecture/card/CARD-9l6/view">
+                          <a href="#none">
                             Leader as Coach
                             <br />
                             Advanced P/G
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                               alt=""
+                              className="ui image"
                             />
                           </div>
-                          <Link to="#" onClick={emptyAlert}>
+                          <a href="#none">
                             Organization
                             <br />
                             Transformation
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Link
-                              to="/certification/badge/badge-detail/BADGE-37"
-                              className="card-badge-link"
-                            >
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                                 alt=""
+                                className="ui image"
                               />
-                            </Link>
+                            </a>
                           </div>
-                          <Link to="/lecture/card/CARD-acn/view">
-                            Leader as Coach P/G
-                          </Link>
+                          <a href="#none">Leader as Coach P/G</a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                               alt=""
+                              className="ui image"
                             />
                           </div>
-                          <Link to="#" onClick={emptyAlert}>
+                          <a href="#none">
                             Leadership
                             <br />
                             Transformation
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-729/view"
-                            className="leader_blue"
-                          >
-                            진정성이 이끄는 리더의 길
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            The Leader’s Way Driven by Sincerity
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-69m/view"
-                            className="leader_blue"
-                          >
-                            Deep Change &#38; 리더십?- 목적 기반의
+                          <a className="leader_blue" href="#none">
+                            Deep Change &amp; Leadership? - Guide to
                             <br />
-                            딥체인지 실천 가이드
-                          </Link>
+                            Practicing Purpose-based Deep Change
+                          </a>
                         </li>
                       </ul>
                     </div>
-
                     <div className="leadership_list bottom">
                       <ul>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-5uk/view"
-                            className="leader_blue"
-                          >
-                            딥체인지와 기업문화 혁신
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            Deep Change and Innovating the Corporate Culture
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-6y9/view"
-                            className="leader_blue"
-                          >
-                            영화로 만나는
+                          <a className="leader_blue" href="#none">
+                            Deep Change Leadership Seen
                             <br />
-                            Deep Change Leadership
-                          </Link>
+                            in Movies
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-1gt/view"
-                            className="leader_blue"
-                          >
-                            Deep Change Leadership 이해
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            Understanding Deep Change
+                            <br />
+                            Leadership
+                          </a>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  {/* //leadership_box bg1 */}
                   <div className="leadership_box bg2">
                     <h3>Leadership Foundation</h3>
                     <ul>
-                      <li
-                        className="leader_boxwrap margin_sm"
-                        onClick={emptyAlert}
-                      >
+                      <li className="leader_boxwrap margin_sm">
                         <p className="non-link">
                           Global Leadership
                           <br />
                           Acceleration P/G
                         </p>
-                        <Link to="#" onClick={emptyAlert}>
-                          Remote Performance Mgmt.
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Impactful Conversation
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Drives for Engagement
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Leveraging Conflict
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          EQ Leadership
-                        </Link>
+                        <a href="#none">Remote Performance Mgmt.</a>
+                        <a href="#none">Impactful Conversation</a>
+                        <a href="#none">Drives for Engagement</a>
+                        <a href="#none">Leveraging Conflict</a>
+                        <a href="#none">EQ Leadership</a>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
-                          <Link
-                            to="/certification/badge/badge-detail/BADGE-36"
-                            className="card-badge-link"
-                          >
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`}
+                          <a className="card-badge-link" href="#none">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-1.png"
                               alt=""
+                              className="ui image"
                             />
-                          </Link>
+                          </a>
                         </div>
                         <p className="non-link">Leadership Essentials</p>
-                        <Link
-                          to="/lecture/card/CARD-6ch/view"
-                          className="bg_blue"
-                        >
-                          전략적 사고
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-5xc/view"
-                          className="bg_blue"
-                        >
+                        <a className="bg_blue" href="#none">
+                          Strategic Thinking
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Remote Leadership
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-71i/view"
-                          className="bg_blue"
-                        >
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Coaching Leadership
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-71h/view"
-                          className="bg_blue"
-                        >
-                          리더의 스토리텔링
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-7fj/view"
-                          className="bg_blue"
-                        >
-                          스마트한 리더의 위임
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-8yh/view"
-                          className="bg_blue"
-                        >
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Leader’s Storytelling
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          The Dignity of a Smart Leader
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Motivation Designer
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-ack/view"
-                          className="leader_blue"
-                        >
-                          갈등의 재발견
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          Rediscovering Conflict
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-1gq/view"
-                          className="leader_blue"
-                        >
+                        <a className="leader_blue" href="#none">
                           Leadership Self-Assessment
-                        </Link>
+                        </a>
                       </li>
                     </ul>
                   </div>
-
                   <div className="leadership_box bg3">
                     <h3>Leadership Clinic</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
                         <p className="non-link">Leadership Pain Points</p>
-                        <Link
-                          to="/lecture/card/CARD-1fg/view"
-                          className="bg_blue"
-                        >
-                          자기성장
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fj/view"
-                          className="bg_blue"
-                        >
+                        <a className="bg_blue" href="#none">
+                          Self-growth
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Performance
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fi/view"
-                          className="bg_blue"
-                        >
-                          시너지/협업
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fh/view"
-                          className="bg_blue"
-                        >
-                          건강한 조직 운영
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fk/view"
-                          className="bg_blue"
-                        >
-                          구성원 육성
-                        </Link>
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Synergy/Collaboration
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Operating a Healthy Organization
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Fostering Community Members
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-65j/view"
-                          className="leader_blue"
-                        >
-                          리더의 세계 Ⅰ, Ⅱ
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          The World of the Leader Ⅰ, Ⅱ
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-5id/view"
-                          className="leader_blue"
-                        >
-                          1on1 미팅
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          One-on-One Meeting
+                        </a>
                       </li>
                     </ul>
                   </div>
-
                   <div className="leadership_box bg4">
                     <h3>Leadership Insight Cafe</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
-                        <p className="non-link">리더십, 인문학에 길을 묻다</p>
-                        <Link
-                          to="/lecture/card/CARD-5xh/view"
-                          className="bg_blue"
-                        >
-                          카르마 &#38; 다르마
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-8r6/view"
-                          className="bg_blue"
-                        >
-                          고난의 시대에 미래를 보는 리더십
-                        </Link>
+                        <p className="non-link">
+                          Leadership, Finding its Way in Humanities
+                        </p>
+                        <a className="bg_blue" href="#none">
+                          Karma &amp; Dharma
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Leadership That Looks at the Future in Difficult Times
+                        </a>
                       </li>
                       <li className="leader_boxwrap col-blue">
                         <p className="non-link">
-                          심리학으로 풀어보는 리더십 Talk
+                          Leadership Talk Portrayed in Psychology
                         </p>
-                        <Link
-                          to="/lecture/card/CARD-59v/view"
-                          className="bg_blue"
-                        >
-                          I. 변화의 시작
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-5pr/view"
-                          className="bg_blue"
-                        >
-                          II. 이런 고민 있나요?
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-671/view"
-                          className="bg_blue"
-                        >
-                          III. 리더라서 고민이다
-                        </Link>
+                        <a className="bg_blue" href="#none">
+                          I. Start of Change
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          II. Can't Sleep Thinking About These?
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          III. I Worry Because I’m a Leader
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-7kq/view"
-                          className="leader_blue"
-                        >
-                          세대 이해 – 86, X, MZ
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          Understanding Generations - 86, X, MZ
+                        </a>
                       </li>
                     </ul>
                   </div>
                 </div>
-                {/* //link_wrapper */}
               </div>
             </div>
           </div>
@@ -6656,24 +6500,24 @@ const ZhPanes = [
           <div className="college-cont-title dt">
             <div className="belt sub">
               <div className="label">DT College</div>
-              <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
+              <div className="strong">“小组的Deep Change在我们手中!”</div>
               <div className="normal">
-                Digital Skill을 장착하고 고객과 업을 이해하여,
+                掌握Digital Skill，了解客户和行业，为引领SK Deep Change的成员在
                 <br />
-                SK Deep Change를 맨 앞에서 이끌어 나가실 구성원들을 위한
-                과정들이,
-                <br />
-                여기 DT College에 마련되어 있습니다.
+                DT College开设的课程。
               </div>
               <div className="panopto sub">
-                <Image src={`${PUBLIC_URL}/images/all/Dt-banner.png`} alt="" />
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/Dt-banner.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
 
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
-              <CollegeInnerTabDt />
+              <CollegeInnerZhTabDt />
             </div>
           </div>
         </div>
@@ -6684,61 +6528,60 @@ const ZhPanes = [
     menuItem: '幸福',
     render: () => (
       <Tab.Pane>
-        <div
-          className="ui attached tab full segment active"
-          data-tab="colleges3"
-        >
-          <div className="college-cont-title happiness">
-            <div className="belt">
-              <div className="label">행복 College</div>
-              <div className="strong">SK 구성원 전체의 행복을 키워갑니다.</div>
-              <div className="normal">
-                행복에 대한 기본 개념과 SK경영철학의 이해를 기반으로 직장을
-                포함한 삶 전반에서
-                <br />
-                행복을 증진할 수 있는 역량을 배양하고 실천함으로써, SK 구성원
-                전체의 행복 추구에
-                <br />
-                실질적으로 기여하는 것을 목표로 합니다.
-              </div>
-              <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy-banner.png`}
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_01.png`}
-                  alt=""
-                />
+        <div className="ui bottom attached segment active tab">
+          <div
+            className="ui attached tab full segment active"
+            data-tab="colleges3"
+          >
+            <div className="college-cont-title happiness">
+              <div className="belt">
+                <div className="label">幸福 College</div>
+                <div className="strong">为了SK全体成员的幸福!</div>
+                <div className="normal">
+                  基于对幸福的基本概念和SK经营哲学的理解，培养和实践包括工作在内的全部人
+                  <br />
+                  生中增进幸福的力量，把投身SK全体成员的幸福追求为目标。
+                </div>
+                <div className="panopto sub">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy-banner.png"
+                    alt="하트이미지"
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_02.png`}
-                  alt=""
-                />
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_01_CHN.png"
+                    alt="이렇게 행복을 만들어 가세요."
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="college-cont-map pbtom">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_03.png`}
-                  alt=""
-                />
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_CHN.png"
+                    alt="행복 Badge"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map pbtom">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_CHN.png"
+                    alt="행복 컬리지 커리큘럼"
+                    className="ui image"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -6758,46 +6601,58 @@ const ZhPanes = [
             <div className="belt sub">
               <div className="label">SV College</div>
               <div className="strong">
-                내일[Tomorrow+My Work]을 위한 SV, <br />
-                기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
+                为了明天的[Tomorrow+My
+                Work]SV，为实现企业与社会的可持续发展，培养必备能力的地方！
               </div>
               <div className="normal">
-                Deep Change의 방향을 제시하는 ‘사회적 가치’ <br />
-                이해관계자들의 Painpoint를 공감하고 해결하는 역량을 함께
-                키워봅시다!
+                为Deep
+                Change指明方向的“社会价值”利益相关者，理解他们的痛点，培养解决问题的能力！
               </div>
               <ul className="tag-wrap">
-                <li># 사회문제</li>
+                <li># 社会问题</li>
                 <li># ESG</li>
                 <li># SV Biz</li>
-                <li># SV 측정</li>
+                <li># SV测量</li>
               </ul>
               <div className="panopto sub">
-                <Image src={`${PUBLIC_URL}/images/all/sv-banner.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv-banner.png"
+                  alt="Social Value"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_01.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_01_CHN.png"
+                  alt="학습 FLOW"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_02.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_02_CHN.png"
+                  alt="채널"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map pbtom">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/sv_con_03.png`} alt="" />
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_03_CHN.png"
+                  alt="전체커리큘럼"
+                  className="ui image"
+                />
               </div>
             </div>
           </div>
@@ -6815,88 +6670,81 @@ const ZhPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">혁신디자인 College</div>
-              <div className="strong">고객을 이해하고 혁신을 디자인하라!</div>
+              <div className="label">创新设计 College</div>
+              <div className="strong">理解客户，设计创新！</div>
               <div className="normal">
-                고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의{' '}
+                挖掘从客户角度出发的Biz.Idea，以综合思维解决客户问题，不断创新工作方式所
                 <br />
-                문제를 해결하며, 끊임없이 일하는 방식을 혁신하는데 필요한 <br />
-                구성원 및 조직의 혁신 디자인 역량 향상을 도와드립니다.
+                需的成员及组织创新设计能力提升。
               </div>
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
-
           <div className="college-cont-map sub2">
             <div className="belt inno">
               <div className="belt">
                 <div className="text-left-box">
                   <p className="p_link inno">
-                    각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                    点击各Badge与课程，即可进入到相应页面。
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <Link
-                    to="/lecture/college/CLG00005/channels/pages/1"
+                  <a
                     className="item-button"
+                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
                   >
-                    <Image
-                      style={{ display: 'inline' }}
-                      src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
+                      className="ui image"
+                      style={{ display: 'inline' }}
                     />
-                    과정 바로가기
-                  </Link>
+                    直接进入课程
+                  </a>
                 </div>
               </div>
               <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/design_con_01.png`}
-                  alt=""
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/design_con_01_CHN.png"
+                  alt="课程使用指南"
+                  className="ui image"
                 />
               </div>
             </div>
           </div>
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
                 <h1 className="inno-title">
-                  “ <strong>통합적 사고</strong>에 기반한{' '}
-                  <strong>고객중심</strong> 문제해결,{' '}
-                  <strong>일하는 방식</strong> 혁신 ”
+                  “基于综合思维，以客户为中心解决问题，创新工作方式。”
                 </h1>
                 <div className="inno-top-btn">
-                  <span>개설예정</span>
+                  <span>即将开设</span>
                 </div>
                 <div className="inno-wrap">
-                  <Image
-                    src={`${PUBLIC_URL}/images/all/inno-level.png`}
-                    alt=""
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/inno-level_CHN.png"
+                    alt="세로제목"
+                    className="ui image"
                   />
-
                   <div className="inno-item fi-item">
-                    <h3># 디자인씽킹</h3>
-
+                    <h3># 设计思维</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              디자인씽킹 <br />
-                              코칭 스킬
-                            </Link>
+                            <a href="#none">设计思维指导技巧</a>
                           </td>
                         </tbody>
                       </table>
@@ -6911,82 +6759,89 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-2/cube/CUBE-3/view/ClassRoomLecture">
-                              디자인씽킹 <br />
+                            <a href="#none">
+                              设计思维
+                              <br />
                               Project
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-6xo/view">
-                              디자인씽킹
+                            <a href="#none">
+                              设计思维
                               <br />
                               Team W/S
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-ag7/view">
-                              디자인씽킹 <br />
+                            <a href="#none">
+                              设计思维
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-7pk/view">
-                              디자인씽킹 Self <br />
-                              실습 (SV사례)
-                            </Link>
+                            <a href="#none">设计思维Self实习（SV案例）</a>
                           </td>
                         </tbody>
                       </table>
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              서비스 디자인 <br />
+                            <a href="#none">
+                              服务设计
+                              <br />
                               Intensive
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8cr/view">
-                              From Ideas to <br />
+                            <a href="#none">
+                              From Ideas to
+                              <br />
                               Action - IDEO
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8ct/view">
-                              Human-Centered <br />
-                              Service Design - IDEO
-                            </Link>
+                            <a href="#none">
+                              Human-Centered
+                              <br />
+                              Service Design - <br />
+                              IDEO
+                            </a>
                           </td>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz - Self 실습
-                            </Link>
+                            <a href="#none">
+                              在技术中以客
+                              <br />
+                              户为中心进行
+                              <br />
+                              Biz-Self实习
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-7pb/view">
-                              디자인씽킹 사례 <br />
-                              (SV)보며 익히기
-                            </Link>
+                            <a href="#none">
+                              通过了解设计思维
+                              <br />
+                              案例（SV）学习
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-13c/view">
-                              디자인씽킹 - <br />
+                            <a href="#none">
+                              设计思维 -<br />
                               Linkedin
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-aac/view">
-                              Hello Design <br />
+                            <a href="#none">
+                              Hello Design
+                              <br />
                               Thinking - IDEO
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -6994,76 +6849,67 @@ const ZhPanes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz 고민하기
-                            </Link>
+                            <a href="#none">
+                              在技术中以客户为
+                              <br />
+                              中心思考Biz
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-86m/view">
-                              디자인 사고 연습
-                            </Link>
+                            <a href="#none">设计思维练习</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/card/CARD-1f0/view">
-                              처음 만나는 <br />
-                              디자인씽킹
-                            </Link>
+                            <a href="#none">
+                              第一次接触的设
+                              <br />
+                              计思维
+                            </a>
                           </td>
                         </tbody>
                       </table>
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-6f3/view">
-                              창의적 <br />
-                              IDEA 발상법
-                            </Link>
+                            <a href="#none">创意IDEA思维发散法</a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-1ew/view">
-                              Biz. Ideation
-                              <br /> 첫걸음
-                            </Link>
+                            <a href="#none">Biz.Ideation的第一步</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
-
                   <div className="inno-item">
-                    <h3># 로지컬씽킹</h3>
+                    <h3># 逻辑思维</h3>
                     <div className="logical-box">
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.2)
-                            </Link>
+                            <a href="#none">
+                              熟悉咨询师的工
+                              <br />
+                              作技巧（Lv.2）
+                            </a>
                           </li>
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.1)
-                            </Link>
+                            <a href="#none">
+                              熟悉咨询师的工作
+                              <br />
+                              技巧（Lv.1）
+                            </a>
                           </li>
                         </ul>
                       </div>
                     </div>
                   </div>
-
                   <div className="inno-item">
-                    <h3># 고객알기</h3>
+                    <h3># 了解客户</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
@@ -7079,215 +6925,199 @@ const ZhPanes = [
                           <td></td>
                           <td></td>
                           <td>
-                            <Link to="/lecture/card/CARD-8cs/view">
-                              Insights for <br />
-                              Innovation - IDEO
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5js/view">
-                              고객 Research <br />
-                              방법
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5j8/view">
-                              고객 Needs <br />
-                              Finding
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td className="two">
-                            <Link to="/lecture/card/CARD-1f4/view">
-                              고객 <br />
-                              Need란?
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="inno-item">
-                    <h3># 워킹백워드</h3>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7j3/cube/CUBE-a2j/view/ClassRoomLecture">
-                              워킹백워드 <br />
-                              Project
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7pa/view">
-                              워킹백워드 <br />
-                              Workshop_online
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5mq/view">
-                              워킹백워드 <br />
-                              Tools
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td className="two">
-                            <Link to="/lecture/card/CARD-1es/view">
-                              처음 만나는 <br />
-                              워킹백워드
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="inno-item orange">
-                    <h3># 애자일</h3>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <Link to="/community/COMMUNITY-1n">
-                              애자일 코치 <br />
-                              Meetup
-                            </Link>
-                          </td>
-                          <td className="dashed-or">
-                            <Link to="#" onClick={emptyAlert}>
-                              애자일 코치 <br />
-                              양성 과정
-                            </Link>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
-                              애자일 Project
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-8j1/view">
-                              애자일 리더십 <br />
-                              Workshop
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-53b/cube/CUBE-7id/view/ClassRoomLecture">
-                              애자일 Project
+                            <a href="#none">
+                              Insights for
                               <br />
-                              Management <br />
-                              W/S
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7dd/view">
-                              애자일 <br />
-                              Workshop
-                            </Link>
+                              Innovation - IDEO
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
+                          <td></td>
                           <td>
-                            <Link to="/lecture/card/CARD-13d/view">
-                              Agile Management <br />- Linkedin
-                            </Link>
+                            <a href="#none">客户 Research方法</a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-5c4/view">
-                              애자일 방법론 <br />- Linkedin
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-6zk/view">
-                              SK 네트웍스 구매팀 <br />
-                              애자일 사례
-                            </Link>
+                            <a href="#none">
+                              客户 Needs
+                              <br />
+                              Finding
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-7np/view">
-                              애자일 방법론 기초
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-84k/view">
-                              애자일 에센셜
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-52y/view">
-                              처음 만나는 애자일
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-1ev/view">
-                              Why 애자일
-                            </Link>
+                          <td className="two">
+                            <a href="#none">客户Need是？</a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
-
+                  <div className="inno-item">
+                    <h3># 逆向工作</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Workshop_online
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Tools
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              第一次接触的
+                              <br />
+                              设计思维
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div className="inno-item orange">
-                    <h3># 오픈콜라보</h3>
+                    <h3># 敏捷</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              敏捷训练
+                              <br />
+                              Meetup
+                            </a>
+                          </td>
+                          <td className="dashed-or">
+                            <a href="#none">敏捷训练课程</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">敏捷 Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷领导力
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷 Project
+                              <br />
+                              Management
+                              <br />
+                              W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Agile Management
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷方法论
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              SK Networks采购
+                              <br />
+                              部门敏捷案例
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small">
+                            <a href="#none">敏捷方法论基础</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">敏捷Essential</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">第一次接触的敏捷</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Why 敏捷</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># 开放式合作</h3>
                     <div className="inno-li">
                       <table>
                         <tbody>
@@ -7302,123 +7132,112 @@ const ZhPanes = [
                           <td></td>
                           <td></td>
                           <td className="dashed-or">
-                            <Link to="#" onClick={emptyAlert}>
-                              오픈 이노베이션 <br />
+                            <a href="#none">
+                              开放式创新
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-69v/view">
-                              퓨처캐스팅 <br />
+                            <a href="#none">
+                              创造未来
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/card/CARD-1et/view">
-                              Futurecasting
-                            </Link>
+                            <a href="#none">Futurecasting</a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-1ez/view">
-                              All about <br />
-                              오픈 이노베이션
-                            </Link>
+                            <a href="#none">
+                              All about
+                              <br />
+                              开放式创新
+                            </a>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-7lo/view">
-                              Creative Collabo <br />
+                            <a href="#none">
+                              Creative Collabo
+                              <br />
                               Skills - Linkedin
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
-
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/card/CARD-1eu/view">
+                            <a href="#none">
                               Open
                               <br />
                               Collaboration
                               <br />
                               Tips
-                            </Link>
+                            </a>
                           </td>
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
-
                 <div className="inno-bottom-wrap">
                   <div className="inno-bottom con01">
                     <ul>
                       <li>
-                        <Link to="/lecture/card/CARD-1f3/view">
-                          Deep Change와
+                        <a href="#none">
+                          Deep Change
                           <br />
-                          Design 이해
-                        </Link>
+                          和Design理解
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-1f2/view">
-                          고객 이해의 중요성 <br />
-                          Remind!
-                        </Link>
+                        <a href="#none">理解客户的重要性，Remind！</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-139/view">
-                          YouTube <br />
-                          디자인 사고 이해
-                        </Link>
+                        <a href="#none">
+                          YouTube
+                          <br />
+                          设计思维的理解
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6om/view">
-                          혁신의 비법
-                        </Link>
+                        <a href="#none">创新秘诀</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-1er/view">
+                        <a href="#none">
                           Leading with
                           <br />
                           Innovation
-                        </Link>
+                        </a>
                       </li>
                     </ul>
-                    <h3># Deep Change와 Design</h3>
+                    <h3># Deep Change与Design</h3>
                   </div>
-
                   <div className="inno-bottom con02">
                     <ul>
                       <li>
-                        <Link to="/lecture/college/CLG00005/channel/CHN0000q">
-                          Trend &#38; Insight <br />
+                        <a href="#none">
+                          Trend &amp; Insight
+                          <br />
                           Report
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-5p3/view">
-                          도약을 위한 <br />
-                          미래 디자인
-                        </Link>
+                        <a href="#none">为实现突破设计未来</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-502/view">
-                          효율적으로 <br />
-                          일하는 Tip
-                        </Link>
+                        <a href="#none">高效工作的Tip</a>
                       </li>
                     </ul>
-                    <h3># 혁신 트렌드와 인사이트</h3>
+                    <h3># 创新趋势和洞察</h3>
                   </div>
                 </div>
               </div>
@@ -7439,53 +7258,40 @@ const ZhPanes = [
           <div className="college-cont-title global">
             <div className="belt sub">
               <div className="label">Global College</div>
-              <div className="strong">Globalization을 위한 새로운 시작</div>
+              <div className="strong">基于Globalization的新开始</div>
               <div className="normal">
-                글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이
-                바뀌어도
+                目标是培养能够解读全球商业格局的“Global Perspective”
                 <br />
-                성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
-                합니다.
+                培养即使环境改变也能取得成果的“Global Manager”。
                 <br />
-                이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
-                길러내고자 합니다.
+                通过这些培养SK集团的Globalization所需要的Human Capital。
               </div>
               <ul className="tag-wrap">
-                <li># Geopolitics & Biz</li>
+                <li># Geopolitics &amp; Biz</li>
                 <li># Managing Global Biz</li>
-                <li># 지역 전문가</li>
+                <li># 地区专家</li>
                 <li># Glopedia</li>
                 <li># Global Leader's Table</li>
               </ul>
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
-
-          {/* <div className="college-cont-map">
-                <div className="belt">
-                    <div className="label">지역전문가 커리큘럼</div>
-                    <div className="map">
-                        <Image src={curriculumn1}></Image>
-                    </div>
-                </div>
-            </div> */}
-
           <div className="college-cont-map">
             <div className="belt global flex mb50">
               <div className="text-left-box">
                 <p className="p_link global">
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                  点击各Badge与课程，即可进入到相应页面。
                 </p>
               </div>
               <div className="text-right-box">
@@ -7494,24 +7300,25 @@ const ZhPanes = [
                   className="item-button"
                 >
                   <img
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
                   />
-                  과정 바로가기
+                  直接进入课程
                 </a>
               </div>
             </div>
-
             <div className="belt global">
               <div className="label">
-                Geopolitics & Biz / Managing Global Biz. 커리큘럼
+                Geopolitics & Biz./Managing Global Biz.课程
               </div>
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-top.svg`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-top.svg"
+                alt="Horizontal:Geopolitics&Biz/ ManagingGlobalBiz"
                 className="global-top-img"
               />
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-left.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-left-chn.png"
+                alt="vertical:Advanced/Intermediate/Basic "
                 className="global-left-img"
               />
               <div className="global-belt-wrap">
@@ -7520,46 +7327,44 @@ const ZhPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit140">
                         <div className="curriculum-link-box">
-                          <strong>Biz. Impact 분석</strong>
-                          <Link to="#" onClick={emptyAlert}>
+                          <strong>Biz.Impact分析</strong>
+                          <a href="#none">
                             <span>Geopolitical Scenario Planning</span>
-                          </Link>
+                          </a>
                         </div>
                       </div>
-
                       <div className="global-curriculum-box box-heit220">
                         <div className="curriculum-link-box">
-                          <strong>산업/통상에 미치는 영향</strong>
+                          <strong>对产业/贸易产生的影响</strong>
                           <div className="link-wrap">
-                            <Link to="/lecture/card/CARD-12nx/view">
+                            <a href="#none">
                               <span>
-                                Geo. & Biz.
+                                Geo. &amp; Biz.
                                 <br />
                                 Nexus
                               </span>
-                            </Link>
+                            </a>
                             <div className="link-colum-box">
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-197/Course/C-LECTURE-13i">
+                              <a href="#none">
                                 <span>
-                                  미-중 Tech 경쟁 Ch.2
+                                  中美Tech竞争Ch.2
                                   <br />
-                                  (입장 및 대응 방향)
+                                  （立场与应对方向）
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s2/Course/C-LECTURE-nq">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  미-중 Tech 경쟁 Ch.1
+                                  中美Tech竞争Ch.1
                                   <br />
-                                  (법률적/제도적 환경 변화)
+                                  （法律/制度环境变化）
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <div className="global-curriculum-wrap wrap2">
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit370">
@@ -7567,20 +7372,20 @@ const ZhPanes = [
                           <strong>Global Financial Story</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box">
-                              <Link to="#" onClick={emptyAlert}>
+                              <a href="#none">
                                 <span>
                                   Global Financial Story
                                   <br />
-                                  케이스 스터디
+                                  案例学习
                                 </span>
-                              </Link>
-                              <Link to="/lecture/card/CARD-12ts/view">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  Global Financial Story의
+                                  Global Financial Story的
                                   <br />
-                                  이해
+                                  理解
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -7594,27 +7399,23 @@ const ZhPanes = [
                           <strong>Diversity Inclusion</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box sty2">
-                              <Link to="#" onClick={emptyAlert}>
+                              <a href="#none">
+                                <span>与全球成员共事</span>
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  글로벌 멤버들과
+                                  理解
                                   <br />
-                                  함께 일하기
+                                  Diversity Inclusion
                                 </span>
-                              </Link>
-                              <Link to="#" onClick={emptyAlert}>
-                                <span>
-                                  Diversity
-                                  <br />
-                                  Inclusion의 이해
-                                </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy">
+                              </a>
+                              <a href="#none">
                                 <span>
                                   Diversity
                                   <br />
                                   Awareness
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -7622,7 +7423,6 @@ const ZhPanes = [
                     </div>
                   </div>
                 </div>
-                {/* //global-belt */}
                 <div className="global-belt flex">
                   <div className="global-curriculum-wrap wrap3">
                     <div className="global-component">
@@ -7630,7 +7430,7 @@ const ZhPanes = [
                         <div className="curriculum-link-box">
                           <strong>Why Geopolitics?</strong>
                           <div className="link-wrap big-colum">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8ba/lecture-card/LECTURE-CARD-638">
+                            <a href="#none">
                               <span>
                                 How to manage
                                 <br />
@@ -7638,14 +7438,14 @@ const ZhPanes = [
                                 <br />
                                 Uncertainties?
                               </span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8b8/lecture-card/LECTURE-CARD-637">
+                            </a>
+                            <a href="#none">
                               <span>
                                 Why Geopolitics for
                                 <br />
                                 Business?
                               </span>
-                            </Link>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -7655,37 +7455,37 @@ const ZhPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box">
                         <div className="curriculum-link-box">
-                          <strong>지정학적 변화 동향</strong>
+                          <strong>地缘政治学变化动向</strong>
                           <div className="link-wrap big-colum">
                             <div className="link-colum-box">
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1dc/Course/C-LECTURE-16q">
+                              <a href="#none">
                                 <span>
-                                  바이든 시대,
+                                  拜登时代，
                                   <br />
-                                  국제정세 변화
+                                  国际形势的变化
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-me/Course/C-LECTURE-im">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  国际形势的现象与本质
                                   <br />
-                                  본질 Series 3
+                                  Series 3
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l9/Course/C-LECTURE-i1">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  国际形势的现象与本质
                                   <br />
-                                  본질 Series 2
+                                  Series 2
                                 </span>
-                              </Link>
-                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl">
+                              </a>
+                              <a href="#none">
                                 <span>
-                                  국제정세 현상과
+                                  国际形势的现象与本质
                                   <br />
-                                  본질 Series 1
+                                  Series 1
                                 </span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -7696,80 +7496,74 @@ const ZhPanes = [
                     <div className="global-component">
                       <div className="global-curriculum-box box-heit380">
                         <div className="curriculum-link-box">
-                          <strong>Global Communication Skill & Attitude</strong>
+                          <strong>
+                            Global Communication Skill &amp; Attitude
+                          </strong>
                           <div className="link-wrap type2">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-xz/Course/C-LECTURE-tq">
-                              <span>글로벌 비즈니스 매너</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-18/Course/C-LECTURE-x">
-                              <span>글로벌 Biz.네트워킹</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-i3/Program/P-LECTURE-r">
-                              <span>Biz.이메일</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kw/Program/P-LECTURE-s">
-                              <span>Biz.미팅</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l3/Program/P-LECTURE-u">
-                              <span>프리젠테이션</span>
-                            </Link>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l1/Program/P-LECTURE-t">
-                              <span>Biz.협상</span>
-                            </Link>
+                            <a href="#none">
+                              <span>全球商务礼仪</span>
+                            </a>
+                            <a href="#none">
+                              <span>全球Biz. Networking</span>
+                            </a>
+                            <a href="#none">
+                              <span>商务邮件</span>
+                            </a>
+                            <a href="#none">
+                              <span>商务会议</span>
+                            </a>
+                            <a href="#none">
+                              <span>Presentation</span>
+                            </a>
+                            <a href="#none">
+                              <span>商业谈判</span>
+                            </a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="global-link-bottom">
-                    <Link to="/lecture/college/CLG00006/channel/CHN0000v">
+                    <a href="#none">
                       <span>
                         <strong>Global Leader’s Table</strong>
                         <br />
-                        (Global Guru들이 들려주는 비즈니스 통찰)
+                        (Global Guru们讲述的商业洞察)
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* <div className="college-cont-map">
-                <div className="belt">
-                    <div className="label">지역전문가 커리큘럼</div>
-                    <div className="map">
-                        <Image src={curriculumn2}></Image>
-                    </div>
-                </div>
-            </div> */}
-
           <div className="college-cont-map">
             <div className="belt global">
-              <div className="label">지역전문가 커리큘럼</div>
+              <div className="label">地域专家课程</div>
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-location-top.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
               <div className="global-belt-wrap section2">
                 <div>
-                  <Link to="about" onClick={emptyAlert}>
-                    <span>Post 주재원</span>
-                  </Link>
-                  <Link to="about" onClick={emptyAlert}>
-                    <span>법인장</span>
-                  </Link>
-                  <Link to="/lecture/card/CARD-86s/view">
+                  <a href="#none">
+                    <span>Post驻在员</span>
+                  </a>
+                  <a href="#none">
+                    <span>法人长</span>
+                  </a>
+                  <a href="#none">
                     <span>
                       Local Experience
                       <br />
-                      (현채인, 주재원)
+                      (当地员工，驻在员)
                     </span>
-                  </Link>
+                  </a>
                 </div>
                 <table>
                   <colgroup>
@@ -7783,19 +7577,19 @@ const ZhPanes = [
                   <thead>
                     <th></th>
                     <th>
-                      <span>중국</span>
+                      <span>中国</span>
                     </th>
                     <th>
-                      <span>미국</span>
+                      <span>美国</span>
                     </th>
                     <th>
-                      <span>베트남</span>
+                      <span>越南</span>
                     </th>
                     <th>
-                      <span>헝가리</span>
+                      <span>匈牙利</span>
                     </th>
                     <th>
-                      <span>폴란드</span>
+                      <span>波兰</span>
                     </th>
                   </thead>
                   <tbody>
@@ -7804,137 +7598,115 @@ const ZhPanes = [
                         <span>Networking</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-hj/Course/C-LECTURE-ek">
-                          중국 GR 기초
-                        </Link>
+                        <a href="#none">中国GR基础</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kz/Course/C-LECTURE-hs">
+                        <a href="#none">
                           Networking with
                           <br />
                           Americans
-                        </Link>
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks">
-                          주재원이 알아야 할<br />
-                          베트남, 베트남인
-                        </Link>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          越南、越南人
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-8kg/view">
-                          주재원이 알아야 할<br />
-                          헝가리, 헝가리인
-                        </Link>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          匈牙利、匈牙利人
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-60u/view">
-                          주재원이 알아야 할<br />
-                          폴란드, 폴란드인
-                        </Link>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          波兰、波兰人
+                        </a>
                       </td>
                     </tr>
                     <tr>
                       <th>
-                        <span>Biz 법률</span>
+                        <span>Biz法律</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iz/Course/C-LECTURE-fv">
-                          중국 Biz. 법률 기초
-                        </Link>
+                        <a href="#none">中国Biz.法律基础</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100">
-                          미국 Biz. 법률 기초
-                        </Link>
+                        <a href="#none">美国Biz.法律基础</a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-74q/view">
-                          베트남 Biz. 법률
-                          <br />
-                          기초
-                        </Link>
+                        <a href="#none">越南Biz.法律基础</a>
                       </td>
                       <td>
-                        <Link to="#" onClick={emptyAlert}>
-                          헝가리 Biz. 법률
-                          <br />
-                          기초
-                        </Link>
+                        <a href="#none">匈牙利Biz.法律基础</a>
                       </td>
                       <td>
-                        <Link to="#" onClick={emptyAlert}>
-                          폴란드 Biz. 법률
-                          <br />
-                          기초
-                        </Link>
+                        <a href="#none">波兰Biz.法律基础</a>{' '}
                       </td>
                     </tr>
                     <tr>
                       <th>
-                        <span>세무/회계</span>
+                        <span>税务/会计</span>
                       </th>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j0/Course/C-LECTURE-fw">
-                          중국 세무/회계 기초
-                        </Link>
+                        <a href="#none">中国税务/会计基础</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-yw/Course/C-LECTURE-uh">
-                          미국 세무/회계 기초
-                        </Link>
+                        <a href="#none">美国税务/会计基础</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j9/Course/C-LECTURE-g5">
-                          베트남 세무/회계
+                        <a href="#none">
+                          越南税务/会计
                           <br />
-                          기초
-                        </Link>
+                          基础
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-r9/Course/C-LECTURE-n2">
-                          헝가리 세무/회계
+                        <a href="#none">
+                          匈牙利税务/会计
                           <br />
-                          기초
-                        </Link>
+                          基础
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s3/Course/C-LECTURE-nr">
-                          폴란드 세무/회계
+                        <a href="#none">
+                          波兰税务/会计
                           <br />
-                          기초
-                        </Link>
+                          基础
+                        </a>
                       </td>
                     </tr>
                     <tr>
                       <th>
                         <span>경제동향</span>
                       </th>
-                      <td className="bg-none">
-                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
-                      </td>
-                      <td className="bg-none">
-                        {/* <Link to='#' onClick={emptyAlert}></Link> */}
+                      <td className="bg-none"></td>
+                      <td className="bg-none"></td>
+                      <td>
+                        <a href="#none">
+                          越南经济动向与市场
+                          <br />
+                          进入战略
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr">
-                          베트남 경제동향
-                          <br />및 진출전략
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-199/Course/C-LECTURE-13j">
-                          헝가리 Biz.
+                        <a href="#none">
+                          匈牙利Biz.
                           <br />
                           Landscape
-                        </Link>
+                        </a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-mi/Course/C-LECTURE-iq">
-                          폴란드 Biz.
+                        <a href="#none">
+                          波兰Biz.
                           <br />
                           Landscape
-                        </Link>
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -7951,59 +7723,39 @@ const ZhPanes = [
                   <tbody>
                     <tr>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-jq/Course/C-LECTURE-gm">
-                          중국
-                        </Link>
+                        <a href="#none">中国</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k6/Course/C-LECTURE-gz">
-                          미국
-                        </Link>
+                        <a href="#none">美国</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kx/Course/C-LECTURE-hr">
-                          베트남
-                        </Link>
+                        <a href="#none">越南</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">
-                          헝가리
-                        </Link>
+                        <a href="#none">匈牙利</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">
-                          폴란드
-                        </Link>
+                        <a href="#none">波兰</a>
                       </td>
                       <td>
-                        <Link to="/lecture/card/CARD-acm/view">중동</Link>
+                        <a href="#none">中东</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <Link to="/lecture/card/CARD-12n5/view">
-                          인도네시아
-                        </Link>
+                        <a href="#none">印尼</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">
-                          인도
-                        </Link>
+                        <a href="#none">印度</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1a7/Course/C-LECTURE-14h">
-                          CIS
-                        </Link>
+                        <a href="#none">CIS</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-lb/Course/C-LECTURE-hx">
-                          북한
-                        </Link>
+                        <a href="#none">朝鲜</a>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l7/Course/C-LECTURE-hv">
-                          일본
-                        </Link>
+                        <a href="#none">日本</a>
                       </td>
                     </tr>
                   </tbody>
@@ -8016,26 +7768,22 @@ const ZhPanes = [
                   <tbody>
                     <tr>
                       <td>
-                        <Link to="/lecture/college/CLG00006/channel/CHN0006q">
-                          중국 Issue &amp; Trend
-                        </Link>
+                        <a href="#none">中国 Issue &amp; Trend</a>
                       </td>
                       <td>
-                        <Link to="/lecture/college/CLG00006/channel/CHN00056">
-                          베트남 Issue &amp; Trend
-                        </Link>
+                        <a href="#none">越南 Issue &amp; Trend</a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
                 <div className="global-link-bottom">
-                  <Link to="/lecture/college/CLG00006/channel/CHN0000u">
+                  <a href="#none">
                     <span>
                       <strong>Glopedia</strong>
                       <br />
-                      (Global 경험을 축적하고 공유하는 커뮤니티)
+                      (积累并共享Global经验的社区)
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -8055,16 +7803,14 @@ const ZhPanes = [
           <div className="college-cont-title leadership">
             <div className="belt sub">
               <div className="label">Leadership College</div>
-              <div className="strong">Deep Change Leader로 성장!</div>
+              <div className="strong">成长为Deep Change Leader！</div>
               <div className="normal">
-                개인별 리더십 진단과 맞춤형 역량 개발 가이드를 지원하고
+                支持个人领导能力诊断和定制型力量开发指南，提供最新内容和有效的学习环境，
                 <br />
-                최신 컨텐츠와 효과적인 학습 환경을 제공하여, 모든 구성원이
-                스스로를 성장시키고,
+                帮助所有成员自我成长、带动变化他人、改革公司（BM、组织）的Deep
+                Change
                 <br />
-                다른 사람의 변화를 촉진하며, 회사(BM,조직)를 혁신하는
-                <br />
-                Deep Change Leader로 성장하도록 돕습니다.
+                Leader。
               </div>
               <ul className="tag-wrap">
                 <li># Leading Myself</li>
@@ -8073,53 +7819,54 @@ const ZhPanes = [
                 <li># Leadership Clinic</li>
                 <li># Deep Change Leadership</li>
               </ul>
-
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
+                  allow="autoplay"
                   style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
-                  allow="autoplay"
-                />
+                ></iframe>
               </div>
             </div>
           </div>
 
-          <div className="college-cont-map">
+          <div className="college-cont-map leadership">
             <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link ">
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                  点击各Badge与课程，即可进入到相应页面。
                 </p>
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00007/channels/pages/1"
+                <a
                   className="item-button"
+                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
                 >
-                  <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
+                    className="ui image"
                     style={{ display: 'inline-block' }}
                   />
-                  과정 바로가기
-                </Link>
+                  直接进入课程
+                </a>
               </div>
             </div>
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">全部课程</div>
               <div className="map">
                 <div className="ai-top-btn leaderShip">
                   <span className="ai-btn01 leader">VoD</span>
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
-                <Image
-                  src={`${PUBLIC_URL}/images/all/leadership-level.png`}
-                  alt=""
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  alt="세로:Advanced/Intermediate/Basic"
+                  className="ui image"
                   style={{ float: 'left' }}
                 />
                 <div className="link_wrapper leadership">
@@ -8129,322 +7876,218 @@ const ZhPanes = [
                       <ul>
                         <li className="margin_25">
                           <div className="badge_box1 left">
-                            <Link
-                              to="/certification/badge/badge-detail/BADGE-38"
-                              className="card-badge-link"
-                            >
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`}
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-3.png"
                                 alt=""
+                                className="ui image"
                               />
-                            </Link>
+                            </a>
                           </div>
-                          <Link to="/lecture/card/CARD-9l6/view">
+                          <a href="#none">
                             Leader as Coach
                             <br />
                             Advanced P/G
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                               alt=""
+                              className="ui image"
                             />
                           </div>
-                          <Link to="#" onClick={emptyAlert}>
+                          <a href="#none">
                             Organization
                             <br />
                             Transformation
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Link
-                              to="/certification/badge/badge-detail/BADGE-37"
-                              className="card-badge-link"
-                            >
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                                 alt=""
+                                className="ui image"
                               />
-                            </Link>
+                            </a>
                           </div>
-                          <Link to="/lecture/card/CARD-acn/view">
-                            Leader as Coach P/G
-                          </Link>
+                          <a href="#none">Leader as Coach P/G</a>
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`}
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
                               alt=""
+                              className="ui image"
                             />
                           </div>
-                          <Link to="#" onClick={emptyAlert}>
+                          <a href="#none">
                             Leadership
                             <br />
                             Transformation
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-729/view"
-                            className="leader_blue"
-                          >
-                            진정성이 이끄는 리더의 길
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            真诚主导的领导者之路
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-69m/view"
-                            className="leader_blue"
-                          >
-                            Deep Change &#38; 리더십?- 목적 기반의
+                          <a className="leader_blue" href="#none">
+                            Deep Change & 领导力？-基于目标的
                             <br />
-                            딥체인지 실천 가이드
-                          </Link>
+                            深度变革实践指南
+                          </a>
                         </li>
                       </ul>
                     </div>
-
                     <div className="leadership_list bottom">
                       <ul>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-5uk/view"
-                            className="leader_blue"
-                          >
-                            딥체인지와 기업문화 혁신
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            深度变革与企业文化创新
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-6y9/view"
-                            className="leader_blue"
-                          >
-                            영화로 만나는
+                          <a className="leader_blue" href="#none">
+                            通过电影看
                             <br />
                             Deep Change Leadership
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            to="/lecture/card/CARD-1gt/view"
-                            className="leader_blue"
-                          >
-                            Deep Change Leadership 이해
-                          </Link>
+                          <a className="leader_blue" href="#none">
+                            Deep Change leadership理解
+                          </a>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  {/* //leadership_box bg1 */}
                   <div className="leadership_box bg2">
                     <h3>Leadership Foundation</h3>
                     <ul>
-                      <li
-                        className="leader_boxwrap margin_sm"
-                        onClick={emptyAlert}
-                      >
+                      <li className="leader_boxwrap margin_sm">
                         <p className="non-link">
                           Global Leadership
                           <br />
                           Acceleration P/G
                         </p>
-                        <Link to="#" onClick={emptyAlert}>
-                          Remote Performance Mgmt.
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Impactful Conversation
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Drives for Engagement
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          Leveraging Conflict
-                        </Link>
-                        <Link to="#" onClick={emptyAlert}>
-                          EQ Leadership
-                        </Link>
+                        <a href="#none">Remote Performance Mgmt.</a>
+                        <a href="#none">Impactful Conversation</a>
+                        <a href="#none">Drives for Engagement</a>
+                        <a href="#none">Leveraging Conflict</a>
+                        <a href="#none">EQ Leadership</a>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
-                          <Link
-                            to="/certification/badge/badge-detail/BADGE-36"
-                            className="card-badge-link"
-                          >
-                            <Image
-                              src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`}
+                          <a className="card-badge-link" href="#none">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-1.png"
                               alt=""
+                              className="ui image"
                             />
-                          </Link>
+                          </a>
                         </div>
                         <p className="non-link">Leadership Essentials</p>
-                        <Link
-                          to="/lecture/card/CARD-6ch/view"
-                          className="bg_blue"
-                        >
-                          전략적 사고
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-5xc/view"
-                          className="bg_blue"
-                        >
+                        <a className="bg_blue" href="#none">
+                          战略性思维
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Remote Leadership
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-71i/view"
-                          className="bg_blue"
-                        >
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Coaching Leadership
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-71h/view"
-                          className="bg_blue"
-                        >
-                          리더의 스토리텔링
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-7fj/view"
-                          className="bg_blue"
-                        >
-                          스마트한 리더의 위임
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-8yh/view"
-                          className="bg_blue"
-                        >
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          领导者的story telling
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          明智领导者的委任
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Motivation Designer
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-ack/view"
-                          className="leader_blue"
-                        >
-                          갈등의 재발견
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          重新发现冲突
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-1gq/view"
-                          className="leader_blue"
-                        >
+                        <a className="leader_blue" href="#none">
                           Leadership Self-Assessment
-                        </Link>
+                        </a>
                       </li>
                     </ul>
                   </div>
-
                   <div className="leadership_box bg3">
                     <h3>Leadership Clinic</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
                         <p className="non-link">Leadership Pain Points</p>
-                        <Link
-                          to="/lecture/card/CARD-1fg/view"
-                          className="bg_blue"
-                        >
-                          자기성장
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fj/view"
-                          className="bg_blue"
-                        >
+                        <a className="bg_blue" href="#none">
+                          自我成长
+                        </a>
+                        <a className="bg_blue" href="#none">
                           Performance
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fi/view"
-                          className="bg_blue"
-                        >
-                          시너지/협업
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fh/view"
-                          className="bg_blue"
-                        >
-                          건강한 조직 운영
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-1fk/view"
-                          className="bg_blue"
-                        >
-                          구성원 육성
-                        </Link>
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          互助/协作
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          健康的组织运营
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          成员培养
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-65j/view"
-                          className="leader_blue"
-                        >
-                          리더의 세계 Ⅰ, Ⅱ
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          领导者的世界Ⅰ, Ⅱ
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-5id/view"
-                          className="leader_blue"
-                        >
-                          1on1 미팅
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          一对一会议
+                        </a>
                       </li>
                     </ul>
                   </div>
-
                   <div className="leadership_box bg4">
                     <h3>Leadership Insight Cafe</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
-                        <p className="non-link">리더십, 인문학에 길을 묻다</p>
-                        <Link
-                          to="/lecture/card/CARD-5xh/view"
-                          className="bg_blue"
-                        >
-                          카르마 &#38; 다르마
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-8r6/view"
-                          className="bg_blue"
-                        >
-                          고난의 시대에 미래를 보는 리더십
-                        </Link>
+                        <p className="non-link">领导力，从人文学寻找答案。</p>
+                        <a className="bg_blue" href="#none">
+                          Karma &amp; Dharma
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          苦难时代，看向未来的领导力
+                        </a>
                       </li>
                       <li className="leader_boxwrap col-blue">
-                        <p className="non-link">
-                          심리학으로 풀어보는 리더십 Talk
-                        </p>
-                        <Link
-                          to="/lecture/card/CARD-59v/view"
-                          className="bg_blue"
-                        >
-                          I. 변화의 시작
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-5pr/view"
-                          className="bg_blue"
-                        >
-                          II. 이런 고민 있나요?
-                        </Link>
-                        <Link
-                          to="/lecture/card/CARD-671/view"
-                          className="bg_blue"
-                        >
-                          III. 리더라서 고민이다
-                        </Link>
+                        <p className="non-link">用心理学解析的领导能力Talk</p>
+                        <a className="bg_blue" href="#none">
+                          I. 变化的开始
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          II. 你有这样的苦恼吗？
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          III. 领导者的苦恼
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          to="/lecture/card/CARD-7kq/view"
-                          className="leader_blue"
-                        >
-                          세대 이해 – 86, X, MZ
-                        </Link>
+                        <a className="leader_blue" href="#none">
+                          代际理解-86、X、MZ一代
+                        </a>
                       </li>
                     </ul>
                   </div>
                 </div>
-                {/* //link_wrapper */}
               </div>
             </div>
           </div>

@@ -35,3 +35,43 @@
   background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line_CHN.png)
     no-repeat !important;
 }
+
+#root section.content .tab-menu-inner.sub.English .sub-tab-menu.dt .ui.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.English
+  .sub-tab-menu.dt
+  .ui.menu
+  .item {
+  display: table-cell;
+  height: 5rem !important;
+  padding: 1.25rem 1.07rem !important;
+}
+
+#root section.content .tab-menu-inner.sub.English .dt-background {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line02_ENG.png)
+    no-repeat !important;
+}
+
+#root section.content .tab-menu-inner.sub.Chinese .sub-tab-menu.dt .ui.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.Chinese
+  .sub-tab-menu.dt
+  .ui.menu
+  .item {
+  display: table-cell;
+  height: 5rem !important;
+  padding: 1.25rem 1.07rem !important;
+}
+
+#root section.content .tab-menu-inner.sub.Chinese .dt-background {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line02_CHN.png)
+    no-repeat !important;
+}
