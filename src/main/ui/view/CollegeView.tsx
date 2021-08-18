@@ -1542,7 +1542,7 @@ const koPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/leadership-level.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -2957,7 +2957,7 @@ const koPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/bm-level-line.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
@@ -4834,7 +4834,7 @@ const EnPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/leadership-level.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -5178,15 +5178,22 @@ const EnPanes = [
             <div className="belt sub">
               <div className="label">Management College</div>
               <div className="strong">
-                Deep Change를 위해 내가 하는 일은 어떻게 바뀌어야 할까요?
+                How Should I Change My Work for Deep Change?
                 <br />
-                어떻게 성장할 수 있을까요?
+                How Can I Improve Myself?
               </div>
               <div className="normal">
-                Management College는 Deep Change를 위한 Biz. 실행 역량 제고를
-                위해 6개 Function Group, 1개 Competency 영역의 직무 역량 학습을
-                제공합니다. Function Group별 지식/전문성 뿐 아니라 여러
-                Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다.
+                Management College conducts business to achieve Deep Change. It
+                offers professional
+                <br />
+                lessons in 6 function groups and one competency area to
+                reinforce the learners’ initiative.
+                <br />
+                Currently, the plan is the allowance of combining different
+                functions (instead of just
+                <br />
+                knowledge and expertise of each function group) to ensure mixed
+                and integrated skill sets.
               </div>
               <div className="panopto sub">
                 <iframe
@@ -5221,14 +5228,18 @@ const EnPanes = [
         >
           <div className="college-cont-title semicond">
             <div className="belt sub">
-              <div className="label">미래 반도체 College</div>
-              <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
+              <div className="label">Future Semiconductor College</div>
+              <div className="strong">
+                Semiconductors, opening eyes that see the future.
+              </div>
               <div className="normal">
-                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{' '}
+                The college helps all SK members not only enhance their
+                knowledge of semicon-
                 <br />
-                반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
-                할 수 <br />
-                있도록 도와드립니다.
+                ductors that will be helpful to themselves, but also assess the
+                nature of the semi- <br />
+                conductor industry and predict the world that future
+                technologies will open up.
               </div>
               <div className="panopto sub">
                 <iframe
@@ -5243,13 +5254,13 @@ const EnPanes = [
                 />
               </div>
               <ul className="tag-wrap">
-                <li># 반도체 역사</li>
-                <li># 반도체 산업 전망</li>
-                <li># 반도체 용어</li>
-                <li># 반도체 기술 이론</li>
-                <li># 반도체 종류</li>
-                <li># 미래 기술</li>
-                <li># 반도체 Ecosystem</li>
+                <li># Semiconductor History</li>
+                <li># Prospect of the Semiconductor Industry</li>
+                <li># Semiconductor Terminology</li>
+                <li># Semiconductor Technology Theories</li>
+                <li># Semiconductor Types</li>
+                <li># Future Technology</li>
+                <li># Semiconductor Ecosystem</li>
               </ul>
             </div>
           </div>
@@ -5257,9 +5268,9 @@ const EnPanes = [
           <div className="college-cont-map pbtom">
             <div className="belt fu">
               <div className="text-left-box">
-                <p className="p_link ">
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-                </p>
+                {/* <p className="p_link ">
+                  Click each badge and course to go to the corresponding page.
+                </p> */}
               </div>
               <div className="text-right-box">
                 <Link
@@ -5271,13 +5282,13 @@ const EnPanes = [
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                   />
-                  과정 바로가기
+                  Go to Courses
                 </Link>
               </div>
             </div>
 
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">Full Curriculum</div>
               <div className="semi-topBackground" />
               <div className="map">
                 <div className="semi-background">
@@ -5286,14 +5297,19 @@ const EnPanes = [
                       <div className="semi_chan">
                         <div className="semi_txt">
                           <h3>
-                            AI Manufacturing <br />
+                            AI Manufacturing
+                            <br />
                             Professional
                           </h3>
                           <p>
-                            반도체 Engineering + AI/DT접목, <br />
-                            제조 IT시스템 최적화 역량 확보로
-                            <br /> AI manufacturing 전문가로 <br />
-                            Continuous 성장 지원
+                            Semiconductor Engineering combined with AI/DT,
+                            <br />
+                            Securing the competency optimized for manufacturing
+                            IT system
+                            <br />
+                            to become an AI manufacturing expert,
+                            <br />
+                            we support your continuous improvement
                           </p>
                         </div>
                       </div>
@@ -5304,7 +5320,9 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 FAB 생산 운영 전문가']}`}
                               >
-                                반도체 FAB 생산 운영 전문가
+                                Semiconductor FAB Production
+                                <br />
+                                and Operations Expert
                               </Link>
                             </li>
                             <li className="dashed">
@@ -5313,7 +5331,7 @@ const EnPanes = [
                                 alt=""
                               />
                               <Link to="#" onClick={emptyAlert}>
-                                Smart SCM 전문가
+                                Smart SCM Expert
                               </Link>
                             </li>
                           </ul>
@@ -5322,7 +5340,9 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 FAB 최적화 전문가']}`}
                               >
-                                반도체 FAB 최적화 전문가
+                                Semiconductor FAB
+                                <br />
+                                Optimization Expert
                               </Link>
                             </li>
                             <li className="dashed">
@@ -5341,29 +5361,33 @@ const EnPanes = [
                       <div className="semi_badge">
                         <h4>AI Manufacturing Professional</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★ ★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증내용</dt>
+                          <dt>About the Certification</dt>
                           <dd>
-                            AI 활용한 반도체 수요예측, 최적의 생산계획 및 의사결
-                            정 역량을 내재화한 전문가
+                            Expert in Predicting Semiconductor
+                            <br />
+                            Demands using AI, Planning Optimized
+                            <br />
+                            Productions, and Decision Making.
                           </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>Requirements</dt>
                           <dd>
-                            Course 이수 / Project
-                            <br /> 수행 및 pass
+                            Requirements and Projects for Passing
+                            <br />
+                            the Course
                           </dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
+                          To be Opened
                         </button>
                       </div>
                     </div>
@@ -5377,10 +5401,14 @@ const EnPanes = [
                             Tech Insight
                           </h3>
                           <p>
-                            미래 반도체 응용 분야별
-                            <br />폭 넓은 이해 및 New Biz 창출 위한
+                            “Future Business and Technology
                             <br />
-                            ‘미래 Biz/Tech 탐색의 장’
+                            Exploration Site”to raise understanding and create
+                            new business opportunities
+                            <br />
+                            in each field the future semiconductor
+                            <br />
+                            can be applied.
                           </p>
                         </div>
                       </div>
@@ -5391,7 +5419,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['AI반도체 - Next Tech Trend']}`}
                               >
-                                AI반도체
+                                AI Semiconductor
                                 <br />
                                 <span>Next Tech Trend</span>
                               </Link>
@@ -5400,7 +5428,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['자동차 반도체, 기회와 도전']}`}
                               >
-                                자동차 반도체, 기회와 도전
+                                Car Semiconductor, Opportunities and Challenges
                               </Link>
                             </li>
                             <li>
@@ -5426,8 +5454,13 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['양자 컴퓨팅과 양자 암호 기술의 현재와 미래']}`}
                               >
-                                양자 컴퓨팅과 양자 암호 <br />
-                                기술의 현재와 미래
+                                The Present and Future of
+                                <br />
+                                Quantum Computing and
+                                <br />
+                                Quantum Cryptography
+                                <br />
+                                Technologies
                               </Link>
                             </li>
                           </ul>
@@ -5445,9 +5478,11 @@ const EnPanes = [
                             Fundamental
                           </h3>
                           <p>
-                            Smart factory의 기본개념 및 <br />
-                            구성요소, 실제 반도체 FAB <br />
-                            자동화 System 이해
+                            Smart Factory’s Basic Concept and
+                            <br />
+                            Components, Understanding Actual
+                            <br />
+                            FAB Automation System
                           </p>
                         </div>
                       </div>
@@ -5458,25 +5493,29 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['Smart Factory구현을 위한 제조 시스템 이해와 의사결정']}`}
                               >
-                                Smart Factory 구현을 위한 <br />
-                                제조 시스템 이해와 의사결정
+                                Decision Making and Under-
+                                <br />
+                                standing the Production System
+                                <br />
+                                to Actualize Smart Factory
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Smart Factory 시스템의 연결과 지능화']}`}
                               >
-                                Smart Factory <br />
-                                시스템의 연결과 지능화
+                                Connection and Intellectuali-
+                                <br />
+                                zation of Smart Factory System
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['AI 알고리즘 기반 반도체 Factory']}`}
                               >
-                                AI 알고리즘 기반
+                                AI Algorithm-Based
                                 <br />
-                                반도체 Factory
+                                Semiconductor Factory
                               </Link>
                             </li>
                           </ul>
@@ -5485,22 +5524,27 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['Smart Factory의 구성요소와 사례']}`}
                               >
-                                Smart Factory의 <br />
-                                구성요소와 사례
+                                Components and Cases of
+                                <br />
+                                Smart Factory
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['첨단 기술과 제조의 만남']}`}
                               >
-                                첨단 기술과 제조의 만남
+                                Advanced Technology
+                                <br />
+                                Meets Production
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 FAB 자동화 이해']}`}
                               >
-                                반도체 FAB 자동화 이해
+                                Understanding Semiconductor
+                                <br />
+                                FAB Automation
                               </Link>
                             </li>
                           </ul>
@@ -5509,31 +5553,29 @@ const EnPanes = [
                       <div className="semi_badge">
                         <h4>Smart factory Fundamental</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증내용</dt>
+                          <dt>About the Certification</dt>
                           <dd>
-                            Smart Factory의 기본
+                            Basic Concepts of Smart Factory and
                             <br />
-                            개념과 AI 기반 반도체 제조
+                            Understanding the AI-based Semi-
                             <br />
-                            IT시스템 이해
+                            conductor Production IT System
                           </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
-                          <dd>
-                            Course 이수 / Test 및<br /> 실습과제 수행
-                          </dd>
+                          <dt>Requirements</dt>
+                          <dd>Take the course / Test and Perform Tasks</dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
+                          To be Opened
                         </button>
                       </div>
                     </div>
@@ -5544,14 +5586,22 @@ const EnPanes = [
                       <div className="semi_chan">
                         <div className="semi_txt">
                           <h3>
-                            반도체 소재 <br />
+                            Semiconductor Materials
+                            <br />
                             Fundamental
                           </h3>
                           <p>
-                            반도체 소재의 물성 이해 및 개발에
+                            Comprehensive learning on the basic
                             <br />
-                            필요한 기초 이론과 반도체 공정 응용을 <br />
-                            포괄적으로 학습
+                            theories and the application of
+                            <br />
+                            semiconductor processing is nece-
+                            <br />
+                            ssary to understand and develop
+                            <br />
+                            properties of semiconductor
+                            <br />
+                            materials.
                           </p>
                         </div>
                       </div>
@@ -5560,35 +5610,39 @@ const EnPanes = [
                           <ul>
                             <li>
                               <Link to={`${semiconductorLinks['첨단 소재']}`}>
-                                첨단 소재
+                                Advanced Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Lithography 공정 및 소재']}`}
                               >
-                                Lithography 공정 및 소재
+                                Lithography Process and
+                                <br />
+                                Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Metallization 공정 및 소재']}`}
                               >
-                                Metallization 공정 및 소재
+                                Metallization Process and
+                                <br />
+                                Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Solar Cell 소자 및 소재']}`}
                               >
-                                Solar Cell 소자 및 소재
+                                Solar Cell Device and Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Thin Film 공정 및 소재']}`}
                               >
-                                Thin Film 공정 및 소재
+                                Thin Film Process and Material
                               </Link>
                             </li>
                           </ul>
@@ -5597,61 +5651,63 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['Image Sensor 소자 및 소재']}`}
                               >
-                                Image Sensor 소자 및 소재
+                                Image Sensor Device and
+                                <br />
+                                material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Etching 공정 및 소재']}`}
                               >
-                                Etching 공정 및 소재
+                                Etching Process and Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['화합물 반도체 소자 및 소재']}`}
                               >
-                                화합물 반도체 소자 및 소재
+                                Compound Semiconductor
+                                <br />
+                                Device and Material
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['Doping 공정 및 소재']}`}
                               >
-                                Doping 공정 및 소재
+                                Doping Process and Material
                               </Link>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz02 biz03">
-                        <h4>반도체 소재 Fundamental</h4>
+                        <h4>Semiconductor Materials Fundamental</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
+                          <dt>About the Certification</dt>
                           <dd>
-                            반도체 공정 / 소자별 핵심
-                            <br />
-                            소재 연계 역량
+                            Semiconductor Processing / Capacity to Connect Core
+                            Materials per Device
                           </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>Requirements</dt>
                           <dd>
-                            Course 이수 / Test 및<br />
-                            과제 수행
+                            Take the course / Test and
+                            <br />
+                            Perform Tasks
                           </dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
-                        </button>
+                        <button type="button">To be Opened</button>
                       </div>
                     </div>
                   </div>
@@ -5661,13 +5717,18 @@ const EnPanes = [
                       <div className="semi_chan">
                         <div className="semi_txt">
                           <h3>
-                            AI 반도체 <br />
+                            AI Semiconductor
+                            <br />
                             Fundamental
                           </h3>
                           <p>
-                            인공지능(AI)을 처리하는 AI <br />
-                            하드웨어의 종류, 동작 원리와 <br />
-                            HW개발에 필요한 기본개념 이해
+                            Understanding the basic concepts to
+                            <br />
+                            HW development, the motion
+                            <br />
+                            principle, the kinds of AI hardware
+                            <br />
+                            necessary to process AI
                           </p>
                         </div>
                       </div>
@@ -5679,14 +5740,16 @@ const EnPanes = [
                                 to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
                               >
                                 [Computer System] <br />
-                                <span>컴퓨터 동작의 이해</span>
+                                <span>
+                                  Understanding the Motion of Computers
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Model']}`}
                               >
-                                [AI HW 개론]
+                                [AI HW 101]
                                 <br />
                                 <span>AI Model</span>
                               </Link>
@@ -5695,15 +5758,15 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 이해] DNN HW 가속기 아키텍처']}`}
                               >
-                                [AI HW 이해] <br />
-                                <span> DNN HW 가속기 아키텍쳐</span>
+                                [AI HW 101] <br />
+                                <span> DNN HW Accelerator Architecture </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] Fundamentals']}`}
                               >
-                                [HW 개발] <br />
+                                [HW Development] <br />
                                 <span>Fundamentals</span>
                               </Link>
                             </li>
@@ -5718,7 +5781,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] SoC 설계 Flow']}`}
                               >
-                                SoC 설계 Flow
+                                SoC Design Flow
                               </Link>
                             </li>
                           </ul>
@@ -5727,7 +5790,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Hardware']}`}
                               >
-                                [AI HW 개론] <br />
+                                [AI HW 101] <br />
                                 <span>AI Hardware</span>
                               </Link>
                             </li>
@@ -5735,7 +5798,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Platform']}`}
                               >
-                                [AI HW 개론] <br />
+                                [AI HW 101] <br />
                                 <span>AI Platform</span>
                               </Link>
                             </li>
@@ -5743,16 +5806,20 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 이해] DNN 알고리즘 및 워크로드 특성']}`}
                               >
-                                [AI HW 이해]
+                                [Understanding AI HW]
                                 <br />
-                                <span>DNN 알고리즘 및 워크로드 특성</span>
+                                <span>
+                                  Characteristics of DNN Algorithm
+                                  <br />
+                                  and Workload
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] Analog Design']}`}
                               >
-                                [HW 개발]
+                                [HW Development]
                                 <br />
                                 <span>Analog Design</span>
                               </Link>
@@ -5768,7 +5835,7 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] SoC 설계 사례 - Mobile Computing']}`}
                               >
-                                SoC 설계 사례 <br />
+                                SoC Design Case <br />
                                 <span>Mobile Computing</span>
                               </Link>
                             </li>
@@ -5782,10 +5849,12 @@ const EnPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan conHeight03">
                         <div className="semi_txt">
-                          <h3>반도체 Tech Essential</h3>
+                          <h3>Semiconductor Tech Essential</h3>
                           <p>
-                            非 이공계 구성원도 쉽게 이해할 수<br />
-                            있는 반도체 용어와 기술 이해
+                            Understanding semiconductor terminologies and
+                            technologies that
+                            <br />
+                            even non-technical members can easily grasp
                           </p>
                         </div>
                       </div>
@@ -5796,27 +5865,41 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['한방에 이해하는 꿀잼 반도체']}`}
                               >
-                                <strong>핵인싸</strong>
-                                한방에 이해하는 <br />
-                                꿀잼 반도체
+                                <strong className="ts_style">
+                                  <img
+                                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/tag-trend-tag-eng.svg"
+                                    alt="Trend-setter"
+                                  />
+                                </strong>
+                                Easy Peasy Lemon Squeezy <br />
+                                Semiconductors
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 What - 반도체 Tech 지식백과']}`}
                               >
-                                반도체 What
+                                What Is Semiconductor?
                                 <br />
-                                <span>반도체 Tech 지식백과</span>
+                                <span>
+                                  Semiconductor Tech
+                                  <br />
+                                  Encyclopedia
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다']}`}
                               >
-                                [CEO특강_SK하이닉스 이석희 사장]
+                                [CEO Talks: President Lee, Seok-
                                 <br />
-                                <span>반도체, 미래를 열다</span>
+                                hee of SK Hynix]
+                                <br />
+                                <span>
+                                  Semiconductors, Opening a<br />
+                                  Future
+                                </span>
                               </Link>
                             </li>
                           </ul>
@@ -5825,39 +5908,49 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['슬기로운 IT생활 - 전자기기의 구조와 동작원리']}`}
                               >
-                                슬기로운 IT 생활 <br />
-                                <span>전자기기의 구조와 동작원리</span>
+                                Smart IT Life
+                                <br />
+                                <span>
+                                  Structure and Principle of
+                                  <br />
+                                  Electronic Device
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 제대로 이해하기 - 기본편']}`}
                               >
-                                반도체 제대로 이해하기 <br />
-                                (기본편)
+                                Understanding Semiconductor
+                                <br />
+                                Right (Basic)
                               </Link>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge">
-                        <h4>반도체 Tech Essential</h4>
+                        <h4>Semiconductor Tech Essential</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
-                          <dd>반도체 Tech 핵심개념 및 기술용어 습득</dd>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Acquire core concepts and terminologies in
+                            semiconductor technology
+                          </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>Requirements</dt>
                           <dd>
-                            4개 Course 이수 / Badge 종합 Test 통과 (80점 이상)
+                            Finished 4 Courses / Passed the badge comprehensive
+                            test (Scored 80 and above)
                           </dd>
                         </dl>
                         <Link
@@ -5865,7 +5958,7 @@ const EnPanes = [
                           to="/certification/badge/badge-detail/BADGE-3y"
                           style={{ fontWeight: 'bold' }}
                         >
-                          도전하기
+                          Take the Challenge
                         </Link>
                       </div>
                     </div>
@@ -5875,11 +5968,12 @@ const EnPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>반도체 Biz Essential</h3>
+                          <h3>Semiconductor Business Essentials</h3>
                           <p>
-                            반도체 Ecosystem과 향후 <br />
-                            반도체 산업 변화를 이해하는데 <br />
-                            필요한 기본 지식과 Insight 제공
+                            Provides the basic knowledge and insight <br />
+                            necessary to understand the semiconductor ecosystem
+                            and <br />
+                            future changes in the semiconductor industry
                           </p>
                         </div>
                       </div>
@@ -5890,10 +5984,13 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News로 본 반도체 - 다가온 미래, Big Data 시대의 경쟁력 강화']}`}
                               >
-                                [News로 본 반도체]
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
                                 <br />
                                 <span>
-                                  다가온 미래, Big Data시대의 경쟁력 강화
+                                  Near Future, Increasing Competitiveness in the
+                                  Age of Big Data
                                 </span>
                               </Link>
                             </li>
@@ -5901,9 +5998,15 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News로 본 반도체 - 반도체 제품 분류별 시장 분석과 AI 반도체']}`}
                               >
-                                [News로 본 반도체] <br />
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
                                 <span>
-                                  반도체 제품 분류별 시장 분석과 AI반도체
+                                  AI Semiconductor and Analyzing
+                                  <br />
+                                  the Market According to the Various
+                                  <br />
+                                  Semiconductors Available on the Market
                                 </span>
                               </Link>
                             </li>
@@ -5911,19 +6014,32 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News로 본 반도체 - 반도체의 미래와 우리의 준비']}`}
                               >
-                                [News로 본 반도체]
+                                [Semiconductors Portrayed in the News]
                                 <br />
-                                <strong>핵인싸</strong>
-                                <span>반도체의 미래와 우리의 준비</span>
+                                <strong>
+                                  <img
+                                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/tag-trend-tag-eng.svg"
+                                    alt="Trend-setter"
+                                  />
+                                </strong>
+                                <span>
+                                  The Future of Semiconductor,
+                                  <br />
+                                  and How We Should Prepare
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 Industry 이해 Part2. 무모한 도전에서 챔피언이 된 삼성전자']}`}
                               >
-                                [반도체 Industry 이해 Part2] <br />
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part2]
                                 <span>
-                                  무모한 도전에서 챔피언이 된 삼성전자
+                                  Samsung Electronics,
+                                  <br />
+                                  The Reckless Champion
                                 </span>
                               </Link>
                             </li>
@@ -5931,10 +6047,15 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 Industry 이해 Part4. 펩리스와 파운드리- 거대한 IDM 사이의 기회와 전략']}`}
                               >
-                                [반도체 Industry 이해 Part4] <br />
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part4]
                                 <span>
-                                  펩리스와 파운드리 - 거대한 IDM사이의 <br />
-                                  기회와 전략
+                                  Fabless and Foundry
+                                  <br />
+                                  - Opportunities and Strategies between
+                                  <br />
+                                  Gigantic IDM
                                 </span>
                               </Link>
                             </li>
@@ -5942,9 +6063,13 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News 심층분석 - 미국의 대중 제재와 반도체 시장의 변화']}`}
                               >
-                                News 심층 분석 <br />
+                                News In-depth Analysis <br />
                                 <span>
-                                  미국의 대중 제재와 반도체 시장의 변화
+                                  United State’s Sanctions against China
+                                  <br />
+                                  and the Change in Semiconductor
+                                  <br />
+                                  Market
                                 </span>
                               </Link>
                             </li>
@@ -5954,8 +6079,9 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News로 본 반도체 - Data Centric World']}`}
                               >
-                                [News로 본 반도체]
+                                [Semiconductors Portrayed in the
                                 <br />
+                                News]
                                 <span>Data Centric World</span>
                               </Link>
                             </li>
@@ -5963,19 +6089,31 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['News로 본 반도체 - 반도체 Value Chain In-depth 분석']}`}
                               >
-                                [News로 본 반도체]
+                                [Semiconductors Portrayed in the
                                 <br />
-                                <span>반도체 Value Chain In-depth 분석</span>
+                                News]
+                                <br />
+                                <span>
+                                  Semiconductor Value Chain
+                                  <br />
+                                  In-depth Analysis
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 Industry 이해 Part1. 반도체 산업의 기본 개념과 시장 경쟁구도']}`}
                               >
-                                [반도체 Industry 이해 Part1]
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part 1]
                                 <br />
                                 <span>
-                                  반도체 산업의 기본 개념과 시장 경쟁구도
+                                  Basic Concept of
+                                  <br />
+                                  Semiconductor Industry and Market
+                                  <br />
+                                  Competition
                                 </span>
                               </Link>
                             </li>
@@ -5983,21 +6121,31 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 Industry 이해 Part3. CPU의 강자 인텔의 과거 현재 미래']}`}
                               >
-                                [반도체 Industry 이해 Part3]
+                                [Understanding the Semiconductor
                                 <br />
-                                <span>CPU의 강자 인텔의 과거 현재 미래</span>
+                                Industry Part 3]
+                                <br />
+                                <span>
+                                  The Past, Present,
+                                  <br />
+                                  and Future of CPU Powerhouse, Intel
+                                </span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 Industry 이해 Part5. 무한 경쟁시대의 미래 전망 - 반도체 기업들의 도전과 과제']}`}
                               >
-                                [반도체 Industry 이해 Part5]
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part 5]
                                 <br />
                                 <span>
-                                  무한 경쟁시대의 미래전망 - 반도체 기업들의{' '}
+                                  Future Prospects in the
                                   <br />
-                                  도전과 과제
+                                  Age of Infinite Competition- Challenges
+                                  <br />
+                                  and Tasks of Semiconductor Companies
                                 </span>
                               </Link>
                             </li>
@@ -6005,36 +6153,42 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['Covid-19이 반도체 Supply Chain에 미치는 영향']}`}
                               >
-                                Covid-19이 반도체 Supply Chain에 <br />
-                                미치는 영향
+                                The Effects of COVID-19 to the Supply
+                                <br />
+                                Chain of Semiconductor
                               </Link>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz">
-                        <h4>반도체 Biz Essential</h4>
+                        <h4>Semiconductor Business Essentials</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
+                          <dt>About the Certification</dt>
                           <dd>
-                            반도체 산업 이해와 분석에 필요한 기본지식 확보
+                            Acquire basic knowledge necessary to
+                            <br />
+                            understanding and analyzing
+                            <br />
+                            semiconductor industry
                           </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>Requirements</dt>
                           <dd>
-                            10개 Course 이수 /<br />
-                            Badge 종합 Test 통과
+                            Finished 10 Courses / Passed the badge
                             <br />
-                            (80점 이상)
+                            comprehensive test(Scored 80 and
+                            <br />
+                            above)
                           </dd>
                         </dl>
                         <Link
@@ -6042,7 +6196,7 @@ const EnPanes = [
                           style={{ fontWeight: 'bold' }}
                           to="/certification/badge/badge-detail/BADGE-3x"
                         >
-                          도전하기
+                          Take the Challenge
                         </Link>
                       </div>
                     </div>
@@ -6052,11 +6206,13 @@ const EnPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan conHeight02">
                         <div className="semi_txt">
-                          <h3>반도체 Introduction</h3>
+                          <h3>Introduction to Semiconductors</h3>
                           <p>
-                            재미있고 흥미로운 Story로, <br />
-                            반도체 학습을 처음 시작하는 <br />
-                            구성원들을 위한 과정
+                            Course with fun and interesting stories
+                            <br />
+                            for members who are new to learning
+                            <br />
+                            about semiconductors
                           </p>
                         </div>
                       </div>
@@ -6067,9 +6223,15 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래']}`}
                               >
-                                반쓸신잡 <br />
+                                The Dictionary of Useful Semi-
+                                <br />
+                                conductors
                                 <span>
-                                  반도체 산업의 과거, 현재 그리고 미래
+                                  The Past, Present,
+                                  <br />
+                                  and Future of Semiconductor
+                                  <br />
+                                  Industry
                                 </span>
                               </Link>
                             </li>
@@ -6079,8 +6241,13 @@ const EnPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 클라쓰 - Keyword로 알아보는 반도체의 품격']}`}
                               >
-                                반도체 클라쓰 <br />
-                                <span>Keyword로 알아보는 반도체 품격</span>
+                                Semiconductor Class
+                                <br />
+                                <span>
+                                  Semiconductors with class,
+                                  <br />
+                                  learned with keywords
+                                </span>
                               </Link>
                             </li>
                           </ul>
@@ -6108,19 +6275,24 @@ const EnPanes = [
             <div className="belt sub">
               <div className="label">Environment College</div>
               <div className="strong">
-                에너지솔루션 College에서 진화한 “Environment College”
+                The “Environment College,” the evolved version of Energy
+                Solution College
               </div>
               <div className="normal">
-                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
-                제고하고,
+                The aim is to raise awareness of the importance of the
+                environment and of the new
                 <br />
-                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을
-                학습하여,
+                world the environment businesses make and equip learners with
+                professional
                 <br />
-                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고
-                있습니다.
+                knowledge essential to carbon neutrality, resource circulation,
+                energy solution, etc.
                 <br />
-                환경 사업의 성공을 위한 우리의 도전, Green Start!
+                It also aims to take a step one by one towards the “Green Deep
+                Change.”
+                <br />
+                We challenge ourselves to the success of environmental
+                businesses - Green Start!
               </div>
 
               <div className="panopto sub">
@@ -6132,14 +6304,32 @@ const EnPanes = [
               </div>
             </div>
           </div>
-          <div className="college-cont-map energe">
-            <div className="belt">
-              <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
-                  alt=""
-                  style={{ display: 'inline-block' }}
-                />
+          <div className="college-cont-map energy">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link">Click each badge and course to go to the corresponding page.</p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    style={{ display: 'inline' }}
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                  />
+                  Go to Courses
+                </Link>
+              </div>
+              <div className="belt">
+                <div className="map">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-eng.png"
+                    alt=""
+                    style={{ display: 'inline-block' }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -6148,7 +6338,7 @@ const EnPanes = [
               <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02-eng.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -6172,12 +6362,15 @@ const EnPanes = [
               <div className="label">BM Design &#38; Storytelling College</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
-                BM Design 전문가 양성 및 Biz Financial Story Design/ Telling
-                역량 강화를 적극 지원함으로써 <br />
-                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+                We are committed to actively support the cause of raising BM
+                design experts and enhancing BM design and storytelling
+                capacities in business and finance.
+                <br />
+                By doing so, we hope to contribute to bringing about the Deep
+                Change outcomes in our group and subsidiaries.
               </div>
               <ul className="tag-wrap">
-                <li># BM혁신</li>
+                <li># BM Innovation</li>
                 <li># Sustainable BM</li>
                 <li># BM Design</li>
                 <li># Portfolio Management</li>
@@ -6197,9 +6390,9 @@ const EnPanes = [
           <div className="college-cont-map">
             <div className="belt fu">
               <div className="text-left-box">
-                <p className="p_link" style={{ color: '#bd38a5' }}>
+                {/* <p className="p_link" style={{ color: '#bd38a5' }}>
                   각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-                </p>
+                </p> */}
               </div>
               <div className="text-right-box">
                 <Link
@@ -6211,35 +6404,23 @@ const EnPanes = [
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
-                  과정 바로가기
+                  Go to Courses
                 </Link>
               </div>
             </div>
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/bmd_con_01.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/img-co-11-1-eng.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
 
           <div className="college-cont-map">
-            {/* <div className="belt fu">
-              <div className="text-left-box">
-                <p className="p_link" style={{color: '#bd38a5'}}>각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
-              </div>
-              <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00020/channels/pages/1"
-                  className="item-button"
-                >
-                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
-                  과정 바로가기
-                </Link>
-              </div>
-            </div> */}
-
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">Full Curriculum</div>
               <div className="bm-top-btn">
                 <span className="bm-btn01">On-Line</span>
                 <span className="bm-btn02">Blended</span>
@@ -6247,9 +6428,9 @@ const EnPanes = [
               </div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/bm-level-line.png`}
+                  src={`${PUBLIC_URL}/images/all/bm-level-line-eng.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
@@ -6259,25 +6440,29 @@ const EnPanes = [
                           BM Design @ Work
                         </Link>
                       </h3>
-                      <p>( 사전 Becoming BM Designer 과정 이수 필수 )</p>
+                      <p>( Prerequisite course: Becoming a BM Designer )</p>
                       <ul className="list_flex">
                         <li>
                           <Link to="/lecture/card/CARD-a9s/view">
-                            BM Design 실습 <br />
-                            (4주)
+                            BM Design Practice
+                            <br />
+                            (4 weeks)
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-abv/view">
-                            디커플링 Workshop <br />
-                            (2일)
+                            Decoupling Workshop
+                            <br />
+                            (2 days)
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-abt/view">
-                            환경∙에너지 <br />
-                            BM Design 실습 <br />
-                            (4주)
+                            Environment∙Energy
+                            <br />
+                            BM Design Practice
+                            <br />
+                            (4 weeks)
                           </Link>
                         </li>
                       </ul>
@@ -6292,7 +6477,7 @@ const EnPanes = [
                         <ul className="list_bm bg_white">
                           <li>
                             <Link to="/lecture/card/CARD-abm/cube/CUBE-crs/view/ClassRoomLecture">
-                              CEO 1:1 과정
+                              CEO 1:1 Course
                             </Link>
                           </li>
                           <li>
@@ -6310,7 +6495,7 @@ const EnPanes = [
                           </li>
                           <li>
                             <Link to="/lecture/card/CARD-abp/cube/CUBE-crv/view/ClassRoomLecture">
-                              FS 전문가 심포지엄
+                              FS Expert Symposium
                             </Link>
                           </li>
                         </ul>
@@ -6328,19 +6513,21 @@ const EnPanes = [
                       <ul className="list_flex md">
                         <li>
                           <Link to="/lecture/card/CARD-8c9/view">
-                            Ⅰ. As-Is BM <br />
+                            Ⅰ. As-Is BM
+                            <br />
                             Sustainability
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-a8f/view">
-                            Ⅱ. BM 환경 분석
+                            Ⅱ. BM Environment Analysis
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-8cb/view">
-                            Ⅲ. 신규 BM <br />
-                            발굴 전략
+                            Ⅲ. Strategy for
+                            <br />
+                            DiscoveringNew BM
                           </Link>
                         </li>
                       </ul>
@@ -6363,7 +6550,8 @@ const EnPanes = [
                           </li>
                           <li>
                             <Link to="/lecture/card/CARD-a1w/view">
-                              Ⅲ. 대상 선정 &#38; <br />
+                              Ⅲ. Target Selection &amp;
+                              <br />
                               Deal Structuring
                             </Link>
                           </li>
@@ -6379,8 +6567,9 @@ const EnPanes = [
                           </li>
                           <li>
                             <Link to="#" onClick={emptyAlert}>
-                              [심화I] Deal Structuring <br />
-                              &#38; Financing
+                              [AdvancedI] Deal Structuring
+                              <br />
+                              &amp; Financing
                             </Link>
                           </li>
                         </ul>
@@ -6407,7 +6596,7 @@ const EnPanes = [
                           </li>
                           <li>
                             <Link to="/lecture/card/CARD-a23/view">
-                              [심화Ⅱ] Legal
+                              [AdvancedⅡ] Legal
                             </Link>
                           </li>
                         </ul>
@@ -6423,8 +6612,9 @@ const EnPanes = [
                         <ul className="list_bm">
                           <li>
                             <Link to="#" onClick={emptyAlert}>
-                              Financial Storytelling <br />
-                              글로벌 사례 연구
+                              Global Case Studies of
+                              <br />
+                              Financial Storytelling
                             </Link>
                           </li>
                           <li>
@@ -6437,7 +6627,7 @@ const EnPanes = [
                         <ul className="list_bm">
                           <li>
                             <Link to="#" onClick={emptyAlert}>
-                              6R 관점 Stakeholder 이해
+                              Understanding the 6R Perspectives Stakeholder
                             </Link>
                           </li>
                         </ul>
@@ -6455,20 +6645,23 @@ const EnPanes = [
                       <ul className="list_flex md">
                         <li>
                           <Link to="/lecture/card/CARD-a8e/view">
-                            Ⅰ.Sustainable BM <br />
-                            혁신 중요성
+                            Ⅰ.Sustainable BM
+                            <br />
+                            The Importance of Innovation
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-a8g/view">
-                            Ⅱ. BM Framework <br />
-                            &#38; SK BM 혁신 노력
+                            Ⅱ. BM Framework
+                            <br />
+                            &amp; SK BM Innovation Efforts
                           </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-a8h/view">
-                            Ⅲ. BM / Deep Change <br />
-                            Design과 실행
+                            Ⅲ. BM / Deep Change
+                            <br />
+                            Design and Execution
                           </Link>
                         </li>
                       </ul>
@@ -6482,7 +6675,9 @@ const EnPanes = [
                       <ul className="list_flex md">
                         <li>
                           <Link to="#" onClick={emptyAlert}>
-                            Financial Story 이해
+                            Understanding
+                            <br />
+                            Financial Story
                           </Link>
                         </li>
                         <li>
@@ -6492,8 +6687,9 @@ const EnPanes = [
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-abr/cube/CUBE-crx/view/Video">
-                            투자자 관점에서 본 <br />
-                            Financial Story
+                            Financial Story from the
+                            <br />
+                            Investor’s Point of View
                           </Link>
                         </li>
                       </ul>
@@ -6523,25 +6719,30 @@ const EnPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK아카데미 College</div>
+              <div className="label">SK Academy College</div>
               <div className="strong">
-                “나무를 키우듯, 인재를 키워온 SK인재육성의 산실”
+                “The cradle of SK talent nurturing that has raised talented{' '}
+                <br />
+                employees like trees”
               </div>
               <div className="normal">
-                SK아카데미는 SKMS/Values 전파를 통해 SK 기업문화의 토대를
-                강화하고, <br />
-                체계적인 육성 Pipeline에 따라 미래 경영자와 Biz. 전문가를
-                육성합니다.
+                SK Academy reinforces the foundation of SK corporate culture
+                through the
+                <br />
+                spread of SKMS/Values,and nurtures future managers and business
+                experts in
+                <br />
+                line with the systematic nurturing pipeline.
               </div>
               <ul className="tag-wrap">
-                <li># 신입사원</li>
-                <li># 영입구성원</li>
-                <li># 신임팀장</li>
-                <li># 신임임원</li>
-                <li># 영입임원</li>
+                <li># New Employees</li>
+                <li># Recruited Members</li>
+                <li># New Team Leaders</li>
+                <li># New Executives</li>
+                <li># Recruited Executives</li>
                 <li># HLP</li>
-                <li># 여성리더</li>
-                <li># 역량 School</li>
+                <li># Female Leaders</li>
+                <li># Capacity School</li>
                 <li># HR Conference</li>
                 <li># Global HR Seminar</li>
               </ul>
@@ -6549,9 +6750,12 @@ const EnPanes = [
           </div>
           <div className="college-cont-map skacademy">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">Full Curriculum</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co10.svg`} alt="" />
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co10_ENG.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -6560,42 +6764,42 @@ const EnPanes = [
             <div className="belt">
               <div className="label chip5">SKMS / SK Values</div>
               <div className="strong">
-                신입/영입구성원 대상 SKMS/핵심가치 전파와 신임팀장의 행복경영
-                실천을 위한 역할 정립
+                Spread SKMS/core values to new/recruited members and establish
+                the roles of new team leaders to practice happiness management
               </div>
               <ul className="tag-wrap">
-                <li># 신입사원</li>
-                <li># 영입구성원</li>
-                <li># 신임팀장</li>
-                <li># 신임임원</li>
-                <li># 영입임원</li>
-                <li># SKMS 강사양성</li>
+                <li># New Recruits</li>
+                <li># Recruited Members</li>
+                <li># New Team Leaders</li>
+                <li># New Executives</li>
+                <li># Recruited Executives</li>
+                <li># Nurturing SKMS Instructors</li>
               </ul>
-              <div className="label chip6">미래경영자 육성</div>
+              <div className="label chip6">Nurturing Future Managers</div>
               <div className="strong">
-                SK Leadership Pipeline 및 Assessment와 연계한 체계적인
-                미래경영자 육성
+                Systematic nurturing of future managers in connection with SK
+                leadership pipeline and assessment
               </div>
               <ul className="tag-wrap">
                 <li># HLP</li>
-                <li># 여성리더</li>
+                <li># Female Leaders</li>
               </ul>
-              <div className="label chip7">역량 School</div>
+              <div className="label chip7">Capacity School</div>
               <div className="strong">
-                mySUNI의 Management College와 연계, 그룹 공통 직무 및 Biz.
-                전문역량 강화
+                Strengthening business specialty capacity in common job duties
+                of the group in connection with the mySUNI Management College
               </div>
               <ul className="tag-wrap">
-                <li># 전략 Intermediate/Advanced</li>
-                <li># 마케팅 Intermediate/Advanced</li>
-                <li># 재무 Intermediate/Advanced</li>
+                <li># Strategy Intermediate/Advanced</li>
+                <li># Marketing Intermediate/Advanced</li>
+                <li># Finance Intermediate/Advanced</li>
                 <li># HR Intermediate/Advanced</li>
-                <li># 구매 Intermediate/Advanced</li>
-                <li># 법무</li>
-                <li># IP(지식재산)</li>
-                <li># M&A</li>
-                <li># 사업개발</li>
-                <li># 협상</li>
+                <li># Purchasing Intermediate/Advanced</li>
+                <li># Legal</li>
+                <li># IP(Intellectual Property)</li>
+                <li># M&amp;A</li>
+                <li># Business Development</li>
+                <li># Negotiation</li>
                 <li># Biz. Contract</li>
                 <li># HR Analytics</li>
                 <li># HR Conference</li>
@@ -8120,7 +8324,7 @@ const ZhPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/leadership-level.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -8464,15 +8668,15 @@ const ZhPanes = [
             <div className="belt sub">
               <div className="label">Management College</div>
               <div className="strong">
-                Deep Change를 위해 내가 하는 일은 어떻게 바뀌어야 할까요?
+                为实现Deep Change，如何改变工作方式呢？
                 <br />
-                어떻게 성장할 수 있을까요?
+                如何才能成长呢？
               </div>
               <div className="normal">
-                Management College는 Deep Change를 위한 Biz. 실행 역량 제고를
-                위해 6개 Function Group, 1개 Competency 영역의 직무 역량 학습을
-                제공합니다. Function Group별 지식/전문성 뿐 아니라 여러
-                Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다.
+                Management College为实现Deep
+                Change，提高Biz.执行能力，涵盖6个Function
+                Group，1个Competency领域的职务能力学习内容。除了各个Function
+                Group的知识/专业性，还结合各Function，企划融合/整合能力培养课程。
               </div>
               <div className="panopto sub">
                 <iframe
@@ -9535,7 +9739,7 @@ const ZhPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/bm-level-line.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ cssFloat: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
