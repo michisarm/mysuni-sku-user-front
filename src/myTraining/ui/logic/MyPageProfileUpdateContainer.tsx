@@ -495,7 +495,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     <Table.Cell>
                       {(!isExternalInstructor() && (
                         <Input
-                          placeholder={`닉네임을 입력해주세요 (20자까지 입력 가능)`}
+                          placeholder={getPolyglotText(
+                            '닉네임을 입력해주세요 (20자까지 입력 가능)',
+                            'mypage-프로필설정-닉네임입력'
+                          )}
                           onChange={(e) => this.handleNickNameChange(e)}
                           value={
                             changeNickName ? nickNameTemp : skProfile.nickname
