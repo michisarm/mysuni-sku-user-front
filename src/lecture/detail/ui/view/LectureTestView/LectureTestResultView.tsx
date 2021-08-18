@@ -77,7 +77,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                           <span className="blind">ai</span>
                         </i>
                         <PolyglotText
-                          defaultString="Test Information"
+                          defaultString="Test"
                           id="Test-TestResult-Information1"
                         />
                       </div>
@@ -135,21 +135,21 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                         defaultString="합격기준"
                         id="Test-TestResult-총점"
                       />{' '}
+                      {/*<strong>*/}
+                      {/*  {testItem.preSuccessPoint || testItem.successPoint}*/}
+                      {/*  <PolyglotText*/}
+                      {/*    defaultString="점"*/}
+                      {/*    id="Test-TestResult-점"*/}
+                      {/*  />*/}
+                      {/*</strong>*/}
+                      {/*<span>/</span>*/}
                       <strong>
-                        {testItem.preSuccessPoint || testItem.successPoint}
-                        <PolyglotText
-                          defaultString="점"
-                          id="Test-TestResult-점"
-                        />
+                        {testItem.preTotalPoint || testItem.totalPoint}
                       </strong>
-                      <span>/</span>
                       <PolyglotText
-                        defaultString="총점"
-                        id="Test-TestResult-총점"
-                      />{' '}
-                      <strong>
-                        {testItem.preTotalPoint || testItem.totalPoint}점
-                      </strong>
+                        defaultString="점 이상"
+                        id="Test-TestResult-PassingPoint"
+                      />
                     </p>
                   </div>
                 </div>
@@ -251,7 +251,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                           </span>
                         </i>
                         <PolyglotText
-                          defaultString="Test Information"
+                          defaultString="Test"
                           id="Test-TestResult-Information2"
                         />
                       </div>
@@ -305,23 +305,23 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                         defaultString="합격기준"
                         id="Test-TestResult-합격기준2"
                       />
-                      <strong>
-                        {testItem.successPoint}
-                        <PolyglotText
-                          defaultString="점"
-                          id="Test-TestResult-점"
-                        />
-                      </strong>
-                      <span>/</span>
-                      <PolyglotText
-                        defaultString="총점"
-                        id="Test-TestResult-총점"
-                      />{' '}
+                      {/*<strong>*/}
+                      {/*  {testItem.successPoint}*/}
+                      {/*  <PolyglotText*/}
+                      {/*    defaultString="점"*/}
+                      {/*    id="Test-TestResult-점"*/}
+                      {/*  />*/}
+                      {/*</strong>*/}
+                      {/*<span>/</span>*/}
+                      {/*<PolyglotText*/}
+                      {/*  defaultString="총점"*/}
+                      {/*  id="Test-TestResult-총점"*/}
+                      {/*/>{' '}*/}
                       <strong>
                         {testItem.totalPoint}
                         <PolyglotText
-                          defaultString="점"
-                          id="Test-TestResult-점"
+                          defaultString="점 이상"
+                          id="Test-TestResult-PassingPoint"
                         />
                       </strong>
                     </p>
@@ -376,7 +376,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                           </span>
                         </i>
                         <PolyglotText
-                          defaultString="Test Information"
+                          defaultString="Test"
                           id="Test-TestResult-Information"
                         />
                       </div>
