@@ -20,7 +20,6 @@ export async function requestDashBoardSentence(count?: number) {
           ? [...item.chineseTexts]
           : [];
       }
-      console.log(dashboardSentence);
 
       setDashBoardSentenceItem({
         dashboardSentence,

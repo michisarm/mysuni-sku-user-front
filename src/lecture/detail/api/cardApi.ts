@@ -17,6 +17,7 @@ import { ExtraTaskType } from '../../model/ExtraTaskType';
 import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
+import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 
 const BASE_URL = '/api/lecture';
 
@@ -278,3 +279,9 @@ function findMigCardIdMapping(lectureId: String) {
 }
 
 export const [findMigCardIdMappingCache] = createCacheApi(findMigCardIdMapping);
+
+export function findChannelAndCardCount(language: string) {
+  const url = `${BASE_URL}/cards/channelAndCardCount?language=${language}`;
+  const axios = getAxios();
+  return axios.get<ChannelAndCardCountRom[]>(url).then(AxiosReturn);
+}
