@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-
-import { Button, Icon, Popup } from 'semantic-ui-react';
+import { Button, Popup } from 'semantic-ui-react';
 import { IdName } from 'shared/model';
 import { FavoriteChannelChangeModal } from 'shared';
-import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { CollegeLectureCountService } from 'lecture/stores';
@@ -15,7 +13,6 @@ import mainRoutePaths from 'main/routePaths';
 import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 import { CollegeService } from 'college/stores';
-
 import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
@@ -23,12 +20,7 @@ import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
 
-interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService;
-  collegeLectureCountService?: CollegeLectureCountService;
-  lectureCountService?: LectureCountService;
-  collegeService?: CollegeService;
-}
+interface Props extends RouteComponentProps {}
 
 interface State {
   categoryOpen: boolean;
@@ -36,18 +28,9 @@ interface State {
   banner?: CollegeBanner;
 }
 
-@inject(
-  mobxHelper.injectFrom(
-    'profile.skProfileService',
-    'lecture.collegeLectureCountService',
-    'lecture.lectureCountService',
-    'college.collegeService'
-  )
-)
 @reactAutobind
 @observer
 class CategoryMenuContainer extends Component<Props, State> {
-  //
   modal: any = React.createRef();
 
   state = {
@@ -56,70 +39,32 @@ class CategoryMenuContainer extends Component<Props, State> {
     banner: undefined,
   };
 
-  async findCollegeLectureCount() {
-    //
-    const { collegeLectureCountService } = this.props;
-
-    // collegeLectureCountService?.collegeLectureCounts.length > 0
-    // const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
-    // if (collegeLectureCounts.length > 0) {
-    //   this.onActiveCollege({}, collegeLectureCounts[0]);
-    // }
-
-    const category = sessionStorage.getItem('category');
-    if (
-      category !== null &&
-      collegeLectureCountService!.collegeLectureCounts.length > 0
-    ) {
-      const collegeLectureCounts = JSON.parse(category);
-      if (collegeLectureCounts.length > 0) {
-        this.onActiveCollege({}, collegeLectureCounts[0]);
-      }
-    } else {
-      const collegeLectureCounts =
-        await collegeLectureCountService!.findCollegeLectureCounts();
-      if (collegeLectureCounts.length > 0) {
-        this.onActiveCollege({}, collegeLectureCounts[0]);
-      }
-    }
-  }
-
-  findStudySummary() {
-    const { skProfileService } = this.props;
-
-    skProfileService!.findStudySummary();
-  }
-
   onOpen() {
-    //
-    this.findCollegeLectureCount();
-    this.findStudySummary();
+    SkProfileService.instance.findStudySummary();
+    const { categoryColleges } = CollegeLectureCountService.instance;
+    this.onActiveCollege({}, categoryColleges[0]);
     this.setState({ categoryOpen: true });
   }
 
   onClose() {
-    //
     this.setState({ categoryOpen: false });
   }
 
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
-    //
-    const { collegeLectureCountService, collegeService } = this.props;
     let bannerData: CollegeBanner | undefined;
-    collegeService!.getBanner().then((result) => {
-      if (result) {
-        result.map((item) => {
-          if (item.collegeId === college.id) {
-            bannerData = item;
-          }
-        });
+    const { banner } = CollegeService.instance;
+
+    banner.map((item) => {
+      if (item.collegeId === college.id) {
+        bannerData = item;
       }
-      this.setState({
-        activeCollege: college,
-        banner: bannerData,
-      });
     });
-    collegeLectureCountService!.setChannelCounts(
+    this.setState({
+      activeCollege: college,
+      banner: bannerData,
+    });
+
+    CollegeLectureCountService.instance.setChannelCounts(
       college.channels.map((c) => ({
         id: c.id,
         name: parsePolyglotString(c.name, getDefaultLang(c.langSupports)),
@@ -128,15 +73,14 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onClickChannel(e: any, channel?: IdName) {
-    //
     const { activeCollege } = this.state;
-    const { history, lectureCountService } = this.props;
+    const { history } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
     if (!channel) {
-      lectureCountService!.setCategoryType('CollegeLectures');
+      LectureCountService.instance.setCategoryType('CollegeLectures');
       history.push(lectureRoutePaths.collegeLectures(active.id));
     } else if (active.id && channel.id) {
-      lectureCountService!.setCategoryType('ChannelsLectures');
+      LectureCountService.instance.setCategoryType('ChannelsLectures');
       history.push(lectureRoutePaths.channelLectures(active.id, channel.id));
     }
     this.setState({
@@ -151,12 +95,9 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onConfirmFavorite() {
-    //
     const { location, history } = this.props;
     const { pathname } = location;
-
-    this.findStudySummary();
-
+    SkProfileService.instance.findStudySummary();
     if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
       history.replace(mainRoutePaths.main());
     } else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
@@ -165,7 +106,6 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onClickActionLog(text: string) {
-    // react-ga event
     ReactGA.event({
       category: 'Category-Button',
       action: 'Click',
@@ -180,7 +120,6 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   renderMenuActions() {
-    //
     return (
       <>
         <Button
@@ -198,12 +137,10 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   render() {
-    //
-    const { skProfileService, collegeLectureCountService, collegeService } =
-      this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
-
-    const { additionalUserInfo } = skProfileService!;
+    const { categoryColleges, channelCounts } =
+      CollegeLectureCountService.instance;
+    const { additionalUserInfo } = SkProfileService.instance;
     const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();
 
@@ -230,9 +167,9 @@ class CategoryMenuContainer extends Component<Props, State> {
               {activeCollege && (
                 <>
                   <CategoryMenuPanelView
-                    colleges={collegeLectureCountService!.collegeLectureCounts}
+                    colleges={categoryColleges}
                     activeCollege={activeCollege}
-                    channels={collegeLectureCountService!.channelCounts}
+                    channels={channelCounts}
                     favorites={channels}
                     actions={this.renderMenuActions()}
                     onActiveCollege={this.onActiveCollege}
