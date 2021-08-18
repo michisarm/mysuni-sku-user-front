@@ -126,7 +126,14 @@ function ProfilePopupView(props: Props) {
         <div className="profile-contents-area">
           <div className="profile-wrapper">
             <div className="bg-wrapper">
-              {<ProfileImage src={skProfile.backgroundImagePath && skProfile.bgFilePath || DefaultBgImg} />}
+              {
+                <ProfileImage
+                  src={
+                    (skProfile.backgroundImagePath && skProfile.bgFilePath) ||
+                    DefaultBgImg
+                  }
+                />
+              }
               <div className="profile-info-wrapper">
                 <div className="profile-info-area">
                   <div className="header-bttn-area">
@@ -185,7 +192,12 @@ function ProfilePopupView(props: Props) {
                   </div>
 
                   <div className="image-area">
-                    <ProfileImage src={skProfile.photoImagePath && skProfile.photoFilePath || DefaultImg} />
+                    <ProfileImage
+                      src={
+                        (skProfile.photoImagePath && skProfile.photoFilePath) ||
+                        DefaultImg
+                      }
+                    />
                   </div>
                   <div className="profile-info ">
                     <span className="prof-tit">
@@ -287,7 +299,7 @@ function ProfilePopupView(props: Props) {
                   className="tool-tip-box"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      `프로필을 설정해서 <br />자유롭게 활동해 보세요!`,
+                      '프로필을 설정해서 <br />자유롭게 활동해 보세요!',
                       'mypage-popupview-설명'
                     ),
                   }}

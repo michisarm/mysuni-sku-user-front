@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -7,10 +7,7 @@ import { IdName } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 
 import ReactGA from 'react-ga';
-import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
-import { StudySummaryModel } from 'profile/model';
-import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
 import { originSelfPath } from 'tracker-react/utils';
@@ -28,7 +25,6 @@ import _ from 'lodash';
 
 interface Props {
   skProfileService?: SkProfileService;
-  collegeService?: CollegeService;
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
   channels?: IdName[];
@@ -551,10 +547,12 @@ class CategoryMenuPanelView extends Component<Props> {
                         />
                       )}
                       {banner.collegeBannerContents[0].visible === 1 &&
-                        !parsePolyglotString(
-                          banner.collegeBannerContents[0].imageUrl,
-                          parseLanguage(
-                            SkProfileService.instance.skProfile.language
+                        !_.isEmpty(
+                          parsePolyglotString(
+                            banner.collegeBannerContents[0].imageUrl,
+                            parseLanguage(
+                              SkProfileService.instance.skProfile.language
+                            )
                           )
                         ) && (
                           <>
