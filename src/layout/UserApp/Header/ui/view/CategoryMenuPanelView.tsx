@@ -547,10 +547,12 @@ class CategoryMenuPanelView extends Component<Props> {
                         />
                       )}
                       {banner.collegeBannerContents[0].visible === 1 &&
-                        !parsePolyglotString(
-                          banner.collegeBannerContents[0].imageUrl,
-                          parseLanguage(
-                            SkProfileService.instance.skProfile.language
+                        !_.isEmpty(
+                          parsePolyglotString(
+                            banner.collegeBannerContents[0].imageUrl,
+                            parseLanguage(
+                              SkProfileService.instance.skProfile.language
+                            )
                           )
                         ) && (
                           <>
