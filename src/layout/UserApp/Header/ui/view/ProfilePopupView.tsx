@@ -265,7 +265,7 @@ function ProfilePopupView(props: Props) {
             </div>
           </div>
           <div className="tag-info-area">
-            {isSettingProfile && (
+            {!isSettingProfile && (
               // 프로필설정이 안되어있는 경우
               <Button
                 className="btn-setting"
