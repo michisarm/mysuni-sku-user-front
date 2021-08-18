@@ -61,16 +61,10 @@ export async function requestAplApprover() {
 export async function requestAplCreateColleges() {
   const collegeLectureCountService = CollegeLectureCountService.instance;
   if (window.navigator.onLine) {
-    const category = sessionStorage.getItem('category');
-    if (category !== null && category.length > 0) {
-      const collegeLectureCounts = JSON.parse(category);
+    const collegeLectureCounts =
+      await collegeLectureCountService.findCollegeLectureCounts();
+    if (collegeLectureCounts.length > 0) {
       parseCollegeOptions(collegeLectureCounts);
-    } else {
-      const collegeLectureCounts =
-        await collegeLectureCountService.findCollegeLectureCounts();
-      if (collegeLectureCounts.length > 0) {
-        parseCollegeOptions(collegeLectureCounts);
-      }
     }
   }
 }
