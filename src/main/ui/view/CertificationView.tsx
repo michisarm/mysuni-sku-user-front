@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, Segment } from 'semantic-ui-react';
-import introductionCertification2 from '../../../style/media/introduction-certification2.png';
+import introductionCertification2 from '../../../style/media/introduction-certification-210819.png';
 import certification from '../../../style/media/certification.png';
 import { Area } from 'tracker/model';
 import { SkProfileService } from '../../../profile/stores';
