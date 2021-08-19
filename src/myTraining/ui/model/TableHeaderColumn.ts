@@ -125,7 +125,7 @@ const TableHeaderColumn = {
     { key: 1, text: 'Collage' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
-    { key: 4, text: '차수' },
+    // { key: 4, text: '차수' },
     { key: 5, text: 'Level' },
     {
       key: 6,
