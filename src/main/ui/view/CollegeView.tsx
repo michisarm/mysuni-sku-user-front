@@ -8,10 +8,22 @@ import { reactAlert } from '@nara.platform/accent';
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
-import CollegeInnerTabView from './CollegeInnerTabView';
-import CollegeInnerTabAi from './CollegeInnerTabAi';
-import CollegeInnerTabDt from './CollegeInnerTabDt';
+import CollegeInnerTabView, {
+  CollegeInnerEnTabView,
+  CollegeInnerZhTabView,
+} from './CollegeInnerTabView';
+import CollegeInnerTabAi, {
+  CollegeInnerEnTabAi,
+  CollegeInnerZhTabAi,
+} from './CollegeInnerTabAi';
+import CollegeInnerTabDt, {
+  CollegeInnerEnTabDt,
+  CollegeInnerZhTabDt,
+} from './CollegeInnerTabDt';
 import { Area } from 'tracker/model';
+import { SkProfileService } from '../../../profile/stores';
+
+import './CollegeView.css';
 
 const emptyAlert = (e: any) => {
   e.preventDefault();
@@ -21,16 +33,9 @@ const emptyAlert = (e: any) => {
   });
 };
 
-function pageMove(path: string) {
-  // const history = useHistory();
-  // history.push(path);
-  alert(1);
-  return <Tab.Pane attached={false}></Tab.Pane>;
-}
-
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-const panes = [
+const koPanes = [
   {
     menuItem: 'AI',
     render: () => (
@@ -860,20 +865,19 @@ const panes = [
           data-tab="colleges6"
         >
           <div className="college-cont-title global">
-
             <div className="belt sub">
               <div className="label">Global College</div>
               <div className="strong">Globalization을 위한 새로운 시작</div>
               <div className="normal">
                 글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이
                 바뀌어도
-                        <br />
-                        성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
-                        합니다.
-                        <br />
-                        이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
-                        길러내고자 합니다.
-                    </div>
+                <br />
+                성과를 만들어 낼 수 있는 ‘Global Manager’를 키우는 것을 목표로
+                합니다.
+                <br />
+                이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을
+                길러내고자 합니다.
+              </div>
               <ul className="tag-wrap">
                 <li># Geopolitics & Biz</li>
                 <li># Managing Global Biz</li>
@@ -906,23 +910,38 @@ const panes = [
             </div> */}
 
           <div className="college-cont-map">
-
             <div className="belt global flex mb50">
               <div className="text-left-box">
-                <p className="p_link global">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+                <p className="p_link global">
+                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                </p>
               </div>
               <div className="text-right-box">
-                <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1" className="item-button">
-                  <img src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
-                      과정 바로가기
-                    </a>
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                  className="item-button"
+                >
+                  <img
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                  />
+                  과정 바로가기
+                </a>
               </div>
             </div>
 
             <div className="belt global">
-              <div className="label">Geopolitics & Biz / Managing Global Biz. 커리큘럼</div>
-              <img src={`${PUBLIC_URL}/images/all/global-college-top.svg`} className='global-top-img' />
-              <img src={`${PUBLIC_URL}/images/all/global-college-left.png`} className='global-left-img' />
+              <div className="label">
+                Geopolitics & Biz / Managing Global Biz. 커리큘럼
+              </div>
+              <img
+                src={`${PUBLIC_URL}/images/all/global-college-top.svg`}
+                className="global-top-img"
+              />
+              <img
+                src={`${PUBLIC_URL}/images/all/global-college-left.png`}
+                className="global-left-img"
+              />
               <div className="global-belt-wrap">
                 <div className="global-belt flex">
                   <div className="global-curriculum-wrap">
@@ -930,7 +949,7 @@ const panes = [
                       <div className="global-curriculum-box box-heit140">
                         <div className="curriculum-link-box">
                           <strong>Biz. Impact 분석</strong>
-                          <Link to='#' onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             <span>Geopolitical Scenario Planning</span>
                           </Link>
                         </div>
@@ -940,15 +959,27 @@ const panes = [
                         <div className="curriculum-link-box">
                           <strong>산업/통상에 미치는 영향</strong>
                           <div className="link-wrap">
-                            <Link to='/lecture/card/CARD-12nx/view'>
-                              <span>Geo. & Biz.<br />Nexus</span>
+                            <Link to="/lecture/card/CARD-12nx/view">
+                              <span>
+                                Geo. & Biz.
+                                <br />
+                                Nexus
+                              </span>
                             </Link>
                             <div className="link-colum-box">
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-197/Course/C-LECTURE-13i'>
-                                <span>미-중 Tech 경쟁 Ch.2<br />(입장 및 대응 방향)</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-197/Course/C-LECTURE-13i">
+                                <span>
+                                  미-중 Tech 경쟁 Ch.2
+                                  <br />
+                                  (입장 및 대응 방향)
+                                </span>
                               </Link>
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s2/Course/C-LECTURE-nq'>
-                                <span>미-중 Tech 경쟁 Ch.1<br />(법률적/제도적 환경 변화)</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s2/Course/C-LECTURE-nq">
+                                <span>
+                                  미-중 Tech 경쟁 Ch.1
+                                  <br />
+                                  (법률적/제도적 환경 변화)
+                                </span>
                               </Link>
                             </div>
                           </div>
@@ -964,11 +995,19 @@ const panes = [
                           <strong>Global Financial Story</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box">
-                              <Link to='#' onClick={emptyAlert}>
-                                <span>Global Financial Story<br />케이스 스터디</span>
+                              <Link to="#" onClick={emptyAlert}>
+                                <span>
+                                  Global Financial Story
+                                  <br />
+                                  케이스 스터디
+                                </span>
                               </Link>
-                              <Link to='/lecture/card/CARD-12ts/view'>
-                                <span>Global Financial Story의<br />이해</span>
+                              <Link to="/lecture/card/CARD-12ts/view">
+                                <span>
+                                  Global Financial Story의
+                                  <br />
+                                  이해
+                                </span>
                               </Link>
                             </div>
                           </div>
@@ -983,14 +1022,26 @@ const panes = [
                           <strong>Diversity Inclusion</strong>
                           <div className="link-wrap">
                             <div className="link-colum-box sty2">
-                              <Link to='#' onClick={emptyAlert}>
-                                <span>글로벌 멤버들과<br />함께 일하기</span>
+                              <Link to="#" onClick={emptyAlert}>
+                                <span>
+                                  글로벌 멤버들과
+                                  <br />
+                                  함께 일하기
+                                </span>
                               </Link>
-                              <Link to='#' onClick={emptyAlert}>
-                                <span>Diversity<br />Inclusion의 이해</span>
+                              <Link to="#" onClick={emptyAlert}>
+                                <span>
+                                  Diversity
+                                  <br />
+                                  Inclusion의 이해
+                                </span>
                               </Link>
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy'>
-                                <span>Diversity<br />Awareness</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k4/Course/C-LECTURE-gy">
+                                <span>
+                                  Diversity
+                                  <br />
+                                  Awareness
+                                </span>
                               </Link>
                             </div>
                           </div>
@@ -1007,11 +1058,21 @@ const panes = [
                         <div className="curriculum-link-box">
                           <strong>Why Geopolitics?</strong>
                           <div className="link-wrap big-colum">
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8ba/lecture-card/LECTURE-CARD-638'>
-                              <span>How to manage<br />Geopolitical<br />Uncertainties?</span>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8ba/lecture-card/LECTURE-CARD-638">
+                              <span>
+                                How to manage
+                                <br />
+                                Geopolitical
+                                <br />
+                                Uncertainties?
+                              </span>
                             </Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8b8/lecture-card/LECTURE-CARD-637'>
-                              <span>Why Geopolitics for<br />Business?</span>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-8b8/lecture-card/LECTURE-CARD-637">
+                              <span>
+                                Why Geopolitics for
+                                <br />
+                                Business?
+                              </span>
                             </Link>
                           </div>
                         </div>
@@ -1025,17 +1086,33 @@ const panes = [
                           <strong>지정학적 변화 동향</strong>
                           <div className="link-wrap big-colum">
                             <div className="link-colum-box">
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1dc/Course/C-LECTURE-16q'>
-                                <span>바이든 시대,<br />국제정세 변화</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1dc/Course/C-LECTURE-16q">
+                                <span>
+                                  바이든 시대,
+                                  <br />
+                                  국제정세 변화
+                                </span>
                               </Link>
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-me/Course/C-LECTURE-im'>
-                                <span>국제정세 현상과<br />본질 Series 3</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-me/Course/C-LECTURE-im">
+                                <span>
+                                  국제정세 현상과
+                                  <br />
+                                  본질 Series 3
+                                </span>
                               </Link>
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l9/Course/C-LECTURE-i1'>
-                                <span>국제정세 현상과<br />본질 Series 2</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l9/Course/C-LECTURE-i1">
+                                <span>
+                                  국제정세 현상과
+                                  <br />
+                                  본질 Series 2
+                                </span>
                               </Link>
-                              <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl'>
-                                <span>국제정세 현상과<br />본질 Series 1</span>
+                              <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl">
+                                <span>
+                                  국제정세 현상과
+                                  <br />
+                                  본질 Series 1
+                                </span>
                               </Link>
                             </div>
                           </div>
@@ -1049,23 +1126,36 @@ const panes = [
                         <div className="curriculum-link-box">
                           <strong>Global Communication Skill & Attitude</strong>
                           <div className="link-wrap type2">
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-xz/Course/C-LECTURE-tq'><span>글로벌 비즈니스 매너</span></Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-18/Course/C-LECTURE-x'><span>글로벌 Biz.네트워킹</span></Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-i3/Program/P-LECTURE-r'><span>Biz.이메일</span></Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kw/Program/P-LECTURE-s'><span>Biz.미팅</span></Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l3/Program/P-LECTURE-u'><span>프리젠테이션</span></Link>
-                            <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l1/Program/P-LECTURE-t'><span>Biz.협상</span></Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-xz/Course/C-LECTURE-tq">
+                              <span>글로벌 비즈니스 매너</span>
+                            </Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-18/Course/C-LECTURE-x">
+                              <span>글로벌 Biz.네트워킹</span>
+                            </Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-i3/Program/P-LECTURE-r">
+                              <span>Biz.이메일</span>
+                            </Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kw/Program/P-LECTURE-s">
+                              <span>Biz.미팅</span>
+                            </Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l3/Program/P-LECTURE-u">
+                              <span>프리젠테이션</span>
+                            </Link>
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l1/Program/P-LECTURE-t">
+                              <span>Biz.협상</span>
+                            </Link>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="global-link-bottom">
-                    <Link to='/lecture/college/CLG00006/channel/CHN0000v'>
+                    <Link to="/lecture/college/CLG00006/channel/CHN0000v">
                       <span>
-                        <strong>Global Leader’s Table</strong><br />
-                              (Global Guru들이 들려주는 비즈니스 통찰)
-                            </span>
+                        <strong>Global Leader’s Table</strong>
+                        <br />
+                        (Global Guru들이 들려주는 비즈니스 통찰)
+                      </span>
                     </Link>
                   </div>
                 </div>
@@ -1085,22 +1175,38 @@ const panes = [
           <div className="college-cont-map">
             <div className="belt global">
               <div className="label">지역전문가 커리큘럼</div>
-              <img src={`${PUBLIC_URL}/images/all/global-college-location-top.png`} className='global-top-img2' />
-              <img src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`} className='global-left-img2' />
+              <img
+                src={`${PUBLIC_URL}/images/all/global-college-location-top.png`}
+                className="global-top-img2"
+              />
+              <img
+                src={`${PUBLIC_URL}/images/all/global-college-location-contents.png`}
+                className="global-left-img2"
+              />
               <div className="global-belt-wrap section2">
                 <div>
-                  <Link to='about' onClick={emptyAlert}><span>Post 주재원</span></Link>
-                  <Link to='about' onClick={emptyAlert}><span>법인장</span></Link>
-                  <Link to='/lecture/card/CARD-86s/view'><span>Local Experience<br />(현채인, 주재원)</span></Link>
+                  <Link to="about" onClick={emptyAlert}>
+                    <span>Post 주재원</span>
+                  </Link>
+                  <Link to="about" onClick={emptyAlert}>
+                    <span>법인장</span>
+                  </Link>
+                  <Link to="/lecture/card/CARD-86s/view">
+                    <span>
+                      Local Experience
+                      <br />
+                      (현채인, 주재원)
+                    </span>
+                  </Link>
                 </div>
                 <table>
                   <colgroup>
-                    <col width='169px' />
-                    <col width='169px' />
-                    <col width='169px' />
-                    <col width='169px' />
-                    <col width='169px' />
-                    <col width='169px' />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
                   </colgroup>
                   <thead>
                     <th></th>
@@ -1126,19 +1232,34 @@ const panes = [
                         <span>Networking</span>
                       </th>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-hj/Course/C-LECTURE-ek'>중국 GR 기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-hj/Course/C-LECTURE-ek">
+                          중국 GR 기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kz/Course/C-LECTURE-hs'>Networking with<br />Americans</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kz/Course/C-LECTURE-hs">
+                          Networking with
+                          <br />
+                          Americans
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks'>주재원이 알아야 할<br />베트남, 베트남인</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-or/Course/C-LECTURE-ks">
+                          주재원이 알아야 할<br />
+                          베트남, 베트남인
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/card/CARD-8kg/view'>주재원이 알아야 할<br />헝가리, 헝가리인</Link>
+                        <Link to="/lecture/card/CARD-8kg/view">
+                          주재원이 알아야 할<br />
+                          헝가리, 헝가리인
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/card/CARD-60u/view'>주재원이 알아야 할<br />폴란드, 폴란드인</Link>
+                        <Link to="/lecture/card/CARD-60u/view">
+                          주재원이 알아야 할<br />
+                          폴란드, 폴란드인
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -1146,19 +1267,35 @@ const panes = [
                         <span>Biz 법률</span>
                       </th>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iz/Course/C-LECTURE-fv'>중국 Biz. 법률 기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iz/Course/C-LECTURE-fv">
+                          중국 Biz. 법률 기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100'>미국 Biz. 법률 기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-15e/Course/C-LECTURE-100">
+                          미국 Biz. 법률 기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/card/CARD-74q/view'>베트남 Biz. 법률<br />기초</Link>
+                        <Link to="/lecture/card/CARD-74q/view">
+                          베트남 Biz. 법률
+                          <br />
+                          기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='#' onClick={emptyAlert}>헝가리 Biz. 법률<br />기초</Link>
+                        <Link to="#" onClick={emptyAlert}>
+                          헝가리 Biz. 법률
+                          <br />
+                          기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='#' onClick={emptyAlert}>폴란드 Biz. 법률<br />기초</Link>
+                        <Link to="#" onClick={emptyAlert}>
+                          폴란드 Biz. 법률
+                          <br />
+                          기초
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -1166,39 +1303,66 @@ const panes = [
                         <span>세무/회계</span>
                       </th>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j0/Course/C-LECTURE-fw'>중국 세무/회계 기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j0/Course/C-LECTURE-fw">
+                          중국 세무/회계 기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-yw/Course/C-LECTURE-uh'>미국 세무/회계 기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-yw/Course/C-LECTURE-uh">
+                          미국 세무/회계 기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j9/Course/C-LECTURE-g5'>베트남 세무/회계<br />기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-j9/Course/C-LECTURE-g5">
+                          베트남 세무/회계
+                          <br />
+                          기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-r9/Course/C-LECTURE-n2'>헝가리 세무/회계<br />기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-r9/Course/C-LECTURE-n2">
+                          헝가리 세무/회계
+                          <br />
+                          기초
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s3/Course/C-LECTURE-nr'>폴란드 세무/회계<br />기초</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-s3/Course/C-LECTURE-nr">
+                          폴란드 세무/회계
+                          <br />
+                          기초
+                        </Link>
                       </td>
                     </tr>
                     <tr>
                       <th>
                         <span>경제동향</span>
                       </th>
-                      <td className='bg-none'>
+                      <td className="bg-none">
                         {/* <Link to='#' onClick={emptyAlert}></Link> */}
                       </td>
-                      <td className='bg-none'>
+                      <td className="bg-none">
                         {/* <Link to='#' onClick={emptyAlert}></Link> */}
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr'>베트남 경제동향<br />및 진출전략</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-iu/Course/C-LECTURE-fr">
+                          베트남 경제동향
+                          <br />및 진출전략
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-199/Course/C-LECTURE-13j'>헝가리 Biz.<br />Landscape</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-199/Course/C-LECTURE-13j">
+                          헝가리 Biz.
+                          <br />
+                          Landscape
+                        </Link>
                       </td>
                       <td>
-                        <Link to='/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-mi/Course/C-LECTURE-iq'>폴란드 Biz.<br />Landscape</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-mi/Course/C-LECTURE-iq">
+                          폴란드 Biz.
+                          <br />
+                          Landscape
+                        </Link>
                       </td>
                     </tr>
                   </tbody>
@@ -1215,19 +1379,29 @@ const panes = [
                   <tbody>
                     <tr>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-jq/Course/C-LECTURE-gm">중국</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-jq/Course/C-LECTURE-gm">
+                          중국
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k6/Course/C-LECTURE-gz">미국</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-k6/Course/C-LECTURE-gz">
+                          미국
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kx/Course/C-LECTURE-hr">베트남</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-kx/Course/C-LECTURE-hr">
+                          베트남
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">헝가리</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-c0r/lecture-card/LECTURE-CARD-9mb">
+                          헝가리
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">폴란드</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/cube/CUBE-al8/lecture-card/LECTURE-CARD-8aq">
+                          폴란드
+                        </Link>
                       </td>
                       <td>
                         <Link to="/lecture/card/CARD-acm/view">중동</Link>
@@ -1235,19 +1409,29 @@ const panes = [
                     </tr>
                     <tr>
                       <td>
-                        <Link to="/lecture/card/CARD-12n5/view">인도네시아</Link>
+                        <Link to="/lecture/card/CARD-12n5/view">
+                          인도네시아
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">인도</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1bb/Course/C-LECTURE-152">
+                          인도
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1a7/Course/C-LECTURE-14h">CIS</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-1a7/Course/C-LECTURE-14h">
+                          CIS
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-lb/Course/C-LECTURE-hx">북한</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-lb/Course/C-LECTURE-hx">
+                          북한
+                        </Link>
                       </td>
                       <td>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l7/Course/C-LECTURE-hv">일본</Link>
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-l7/Course/C-LECTURE-hv">
+                          일본
+                        </Link>
                       </td>
                     </tr>
                   </tbody>
@@ -1259,17 +1443,26 @@ const panes = [
                   </colgroup>
                   <tbody>
                     <tr>
-                      <td><Link to="/lecture/college/CLG00006/channel/CHN0006q">중국 Issue &amp; Trend</Link></td>
-                      <td><Link to="/lecture/college/CLG00006/channel/CHN00056">베트남 Issue &amp; Trend</Link></td>
+                      <td>
+                        <Link to="/lecture/college/CLG00006/channel/CHN0006q">
+                          중국 Issue &amp; Trend
+                        </Link>
+                      </td>
+                      <td>
+                        <Link to="/lecture/college/CLG00006/channel/CHN00056">
+                          베트남 Issue &amp; Trend
+                        </Link>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
                 <div className="global-link-bottom">
-                  <Link to='/lecture/college/CLG00006/channel/CHN0000u'>
+                  <Link to="/lecture/college/CLG00006/channel/CHN0000u">
                     <span>
-                      <strong>Glopedia</strong><br />
-                          (Global 경험을 축적하고 공유하는 커뮤니티)
-                        </span>
+                      <strong>Glopedia</strong>
+                      <br />
+                      (Global 경험을 축적하고 공유하는 커뮤니티)
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -1355,7 +1548,7 @@ const panes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/leadership-level.png`}
                   alt=""
-                  style={{ float: 'left' }}
+                  style={{ flot: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -2627,15 +2820,20 @@ const panes = [
         >
           <div className="college-cont-title energy">
             <div className="belt sub">
-
               <div className="label">Environment College</div>
               <div className="strong">
                 에너지솔루션 College에서 진화한 “Environment College”
               </div>
               <div className="normal">
-                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을 제고하고,<br />
-                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을 학습하여,<br />
-                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고 있습니다.<br />
+                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
+                제고하고,
+                <br />
+                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을
+                학습하여,
+                <br />
+                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고
+                있습니다.
+                <br />
                 환경 사업의 성공을 위한 우리의 도전, Green Start!
               </div>
 
@@ -3125,7 +3323,6149 @@ const panes = [
   },
 ];
 
-interface Props extends RouteComponentProps { }
+const EnPanes = [
+  {
+    menuItem: 'AI',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges1"
+        >
+          <div className="college-cont-title ai">
+            <div className="belt sub">
+              <div className="label">AI College</div>
+              <div className="strong">
+                From an AI outsider to an AI insider!
+              </div>
+              <div className="normal">
+                AI College provides opportunities to cultivate practical AI
+                capacity to be used
+                <br />
+                every industry and job, and grow into an AI technology expert
+                based on the foundational knowledge that all SK members need to
+                know.
+              </div>
+              <div className="panopto sub">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/Ai-banner.png"
+                  alt=""
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerEnTabAi />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'DT',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges2"
+        >
+          <div className="college-cont-title dt">
+            <div className="belt sub">
+              <div className="label">DT College</div>
+              <div className="strong">
+                &quot;The group's deep change comes from our hands!&quot;
+              </div>
+              <div className="normal">
+                DT College offers courses for members who will lead the
+                forefront of SK Deep Change by equipping themselves with digital
+                skills and understanding the customers and the business.
+              </div>
+              <div className="panopto sub">
+                <Image src={`${PUBLIC_URL}/images/all/Dt-banner.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerEnTabDt />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Happiness',
+    render: () => (
+      <Tab.Pane>
+        <div className="ui bottom attached segment active tab">
+          <div
+            className="ui attached tab full segment active"
+            data-tab="colleges3"
+          >
+            <div className="college-cont-title happiness">
+              <div className="belt">
+                <div className="label">Happiness College</div>
+                <div className="strong">
+                  For the happiness of all SK members!
+                </div>
+                <div className="normal">
+                  Happiness College aims to contribute substantially to the
+                  pursuit of happiness of
+                  <br />
+                  all SK members by cultivating and putting into practice the
+                  capacity to promote
+                  <br />
+                  happiness throughout life, including the workplace, on the
+                  basis of understanding
+                  <br />
+                  the foundational concept of happiness and the SK management
+                  philosophy.
+                </div>
+                <div className="panopto sub">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy-banner.png"
+                    alt="하트이미지"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_01_ENG.png"
+                    alt="이렇게 행복을 만들어 가세요."
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_ENG.png"
+                    alt="행복 Badge"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map pbtom">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_ENG.png"
+                    alt="행복 컬리지 커리큘럼"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'SV',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges4"
+        >
+          <div className="college-cont-title sv">
+            <div className="belt sub">
+              <div className="label">SV College</div>
+              <div className="strong">
+                SV for Tomorrow[Tomorrow+My Work],
+                <br /> this is the Place where You become Competent in Achieving
+                Sustainability in the Corporation and Society!
+              </div>
+              <div className="normal">
+                Let's develop together the ability to empathize and resolve the
+                pain points of stakeholders, which is the 'social value' that
+                presents the direction of Deep Change
+              </div>
+              <ul className="tag-wrap">
+                <li># Social Issues </li>
+                <li># ESG</li>
+                <li># SV Biz</li>
+                <li># SV Measurement</li>
+              </ul>
+              <div className="panopto sub">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv-banner.png"
+                  alt="Social Value"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_01_ENG.png"
+                  alt="학습 FLOW"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_02_ENG.png"
+                  alt="채널"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map pbtom">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_03_ENG.png"
+                  alt="전체커리큘럼"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Designing Innovation',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges5"
+        >
+          <div className="college-cont-title design">
+            <div className="belt sub">
+              <div className="label">Innovative Design College</div>
+              <div className="strong">
+                Understand the Customers and Innovate Design!
+              </div>
+              <div className="normal">
+                Business that Starts from Customers We are here to help the
+                learners be equipped with enhanced and innovative design
+                capabilities necessary to seek ideas, solve customers’ problems
+                with integrated thinking, and innovate ways of working
+                relentlessly.
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map sub2">
+            <div className="belt inno">
+              <div className="belt">
+                <div className="text-left-box">
+                  <p className="p_link inno">
+                    Click each badge and course to go to the corresponding page.
+                  </p>
+                </div>
+                <div className="text-right-box">
+                  <a
+                    className="item-button"
+                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
+                  >
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                      alt=""
+                      className="ui image"
+                      style={{ display: 'inline' }}
+                    />
+                    Go to Courses
+                  </a>
+                </div>
+              </div>
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/design_con_01_ENG.png"
+                  alt="이렇게 활용해 보세요"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <h1 className="inno-title">
+                  “Customer-centered problem solving and innovation in the way
+                  we work based on integrated thinking”
+                </h1>
+                <div className="inno-top-btn">
+                  <span>Available Soon</span>
+                </div>
+                <div className="inno-wrap">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/inno-level_ENG.png"
+                    alt="세로제목"
+                    className="ui image"
+                  />
+                  <div className="inno-item fi-item">
+                    <h3># Design Thinking</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two dashed">
+                            <a href="#none">
+                              Coaching Skills
+                              <br />
+                              for Design Thinking
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Design Thinking
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Design Thinking
+                              <br />
+                              Team W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Design Thinking
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Design Thinking Self-Practice (SV Cases)
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td className="dashed">
+                            <a href="#none">
+                              Service Design
+                              <br />
+                              Intensive
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              From Ideas to
+                              <br />
+                              Action - IDEO
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Human-Centered
+                              <br />
+                              Service Design - IDEO
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              Being Customer-Centered in Technology Business -
+                              Self-Practice
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Learning Through Design Thinking Cases (SV)
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Design Thinking -<br />
+                              Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Hello Design
+                              <br />
+                              Thinking - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td className="dashed">
+                            <a href="#none">
+                              Being Customer-Centered in Technology Thinking
+                              about Business
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">Design Thinking Practice</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              First Encounter <br />
+                              with Design Thinking
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              How to Come Up With a Creative Idea
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">Business Ideation First Step</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># Logical Thinking</h3>
+                    <div className="logical-box">
+                      <div className="logical-list tab01">
+                        <ul>
+                          <li>
+                            <a href="#none">
+                              Learning How to Work Like a Consultant (Lv.2)
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Learning How to Work Like a Consultant (Lv.1)
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># Knowing the Customers</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Insights for
+                              <br />
+                              Innovation - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
+                            <a href="#none">How to Do Customer Research</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              고객 Needs
+                              <br />
+                              Finding
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">What is a Customer Need?</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># Working Backwards</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Workshop_online
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Working Backwards
+                              <br />
+                              Tools
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">First Time: Working Backwards</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># Agile</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Agile Coach Meetup</a>
+                          </td>
+                          <td className="dashed-or">
+                            <a href="#none">Agile Coach Training Course</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Agile Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">Agile Leadership Workshop</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Project
+                              <br />
+                              Management
+                              <br />
+                              W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Agile Management
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Methodology
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              SK Network Purchasing Team Agile Case
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small">
+                            <a href="#none">Agile Methodology Basics</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Agile Essentials</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">First Time: Agile</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Why Agile</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># Open Collaboration</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td className="dashed-or">
+                            <a href="#none">
+                              Open Innovation
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">Future Casting Workshop</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Futurecasting</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              All about
+                              <br />
+                              Open Innovation
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Creative Collabo
+                              <br />
+                              Skills - Linkedin
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              Open
+                              <br />
+                              Collaboration
+                              <br />
+                              Tips
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div className="inno-bottom-wrap">
+                  <div className="inno-bottom con01">
+                    <ul>
+                      <li>
+                        <a href="#none">Deep Change and Design</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          The Importance of Customer Understanding, Remind!
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Understanding YouTube's Design Thinking
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">How to be Innovative</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Leading with
+                          <br />
+                          Innovation
+                        </a>
+                      </li>
+                    </ul>
+                    <h3># Deep Change and Design</h3>
+                  </div>
+                  <div className="inno-bottom con02">
+                    <ul>
+                      <li>
+                        <a href="#none">
+                          Trend &amp; Insight
+                          <br />
+                          Report
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">Future Design to Lead Forward</a>
+                      </li>
+                      <li>
+                        <a href="#none">Tips for Efficient Working</a>
+                      </li>
+                    </ul>
+                    <h3># Innovation Trend and Insight</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Global',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges6"
+        >
+          <div className="college-cont-title global">
+            <div className="belt sub">
+              <div className="label">Global College</div>
+              <div className="strong">A New Start for Globalization</div>
+              <div className="normal">
+                Global College aims to foster "Global Managers" who can develop
+                a "Global Pers-
+                <br />
+                pective" that can read the trends of global business and produce
+                results even
+                <br />
+                when the environment changes. The college also hopes to train
+                the human capital
+                <br />
+                that is required for the globalization of the SK Group.
+              </div>
+              <ul className="tag-wrap">
+                <li># Geopolitics &amp; Biz</li>
+                <li># Managing Global Biz</li>
+                <li># Area Experts</li>
+                <li># Glopedia</li>
+                <li># Global Leader's Table</li>
+              </ul>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt global flex mb50">
+              <div className="text-left-box">
+                <p className="p_link global">
+                  Click each badge and course to go to the corresponding page.
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="/suni-main/lecture/college/CLG00006/channels/pages/1"
+                  className="item-button"
+                >
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                  />
+                  Go to Courses
+                </a>
+              </div>
+            </div>
+            <div className="belt global">
+              <div className="label">
+                Geopolitics &amp; Biz. / Managing Global Biz. Curriculum
+              </div>
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-top.svg"
+                alt="H:Geopolitics&Biz/ ManagingGlobalBiz"
+                className="global-top-img"
+              />
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-eng.png"
+                alt="V:Advanced/Intermediate/Basic"
+                className="global-left-img"
+              />
+              <div className="global-belt-wrap">
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit140">
+                        <div className="curriculum-link-box">
+                          <strong>Business Impact Analysis</strong>
+                          <a href="#none">
+                            <span>Geopolitical Scenario Planning</span>
+                          </a>
+                        </div>
+                      </div>
+                      <div className="global-curriculum-box box-heit220">
+                        <div className="curriculum-link-box">
+                          <strong>Impact on Industry/Commerce</strong>
+                          <div className="link-wrap">
+                            <a href="#none">
+                              <span>
+                                Geo. &amp; Biz.
+                                <br />
+                                Nexus
+                              </span>
+                            </a>
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  US-China Tech Competition Ch.2
+                                  <br />
+                                  (Positions and Direction of Response)
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  US-China Tech Competition Ch.1
+                                  <br />
+                                  (Changes in Legal/Institutional Environment)
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Global Financial Story</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  Global Financial Story Case
+                                  <br />
+                                  Studies
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Understanding Global
+                                  <br />
+                                  Financial Story
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Diversity Inclusion</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box sty2">
+                              <a href="#none">
+                                <span>
+                                  Working Together With Global
+                                  <br />
+                                  Members
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Understanding Diversity
+                                  <br />
+                                  Inclusion
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Diversity
+                                  <br />
+                                  Awareness
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap wrap3">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>Why Geopolitics?</strong>
+                          <div className="link-wrap big-colum">
+                            <a href="#none">
+                              <span>
+                                How to manage
+                                <br />
+                                Geopolitical
+                                <br />
+                                Uncertainties?
+                              </span>
+                            </a>
+                            <a href="#none">
+                              <span>
+                                Why Geopolitics for
+                                <br />
+                                Business?
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap3 left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box">
+                        <div className="curriculum-link-box">
+                          <strong>Recent Geopolitical Change</strong>
+                          <div className="link-wrap big-colum">
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  Changes in the International
+                                  <br />
+                                  Situation in the Era of Biden
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Status Quo and Essence of the
+                                  <br />
+                                  International Situation - Series 3
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Status Quo and Essence of the
+                                  <br />
+                                  International Situation - Series 2
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Status Quo and Essence of the
+                                  <br />
+                                  International Situation - Series 1
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>
+                            Global Communication Skill &amp; Attitude
+                          </strong>
+                          <div className="link-wrap type2">
+                            <a href="#none">
+                              <span>Global Business Manner</span>
+                            </a>
+                            <a href="#none">
+                              <span>Global Biz Networking</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz E-mail</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz Meeting</span>
+                            </a>
+                            <a href="#none">
+                              <span>Presentation</span>
+                            </a>
+                            <a href="#none">
+                              <span>Biz Negotiations</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-link-bottom">
+                    <a href="#none">
+                      <span>
+                        <strong>Global Leader’s Table</strong>
+                        <br />
+                        (Business insights from global gurus)
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt global">
+              <div className="label">Local Expert Curriculum</div>
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                alt="가로 : 지역전문가"
+                className="global-top-img2"
+              />
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                alt="세로 : LocalLeadership/지역전문가/국가의이해"
+                className="global-left-img2"
+              />
+              <div className="global-belt-wrap section2">
+                <div>
+                  <a href="#none">
+                    <span>Post-Expat</span>
+                  </a>
+                  <a href="#none">
+                    <span>President of Corporation</span>
+                  </a>
+                  <a href="#none">
+                    <span>
+                      Local Experience
+                      <br />
+                      (Host-Country Nationals, Expatriates)
+                    </span>
+                  </a>
+                </div>
+                <table>
+                  <colgroup>
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                  </colgroup>
+                  <thead>
+                    <th />
+                    <th>
+                      <span>China</span>
+                    </th>
+                    <th>
+                      <span>US</span>
+                    </th>
+                    <th>
+                      <span>Vietnam</span>
+                    </th>
+                    <th>
+                      <span>Hungary</span>
+                    </th>
+                    <th>
+                      <span>Poland</span>
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>
+                        <span>Networking</span>
+                      </th>
+                      <td>
+                        <a href="#none">Basics of Chinese GR</a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Networking with
+                          <br />
+                          Americans
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          What Expats Need to Know About Vietnam
+                          <br />
+                          and the Vietnamese
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          What Expats Need to Know About Hungary
+                          <br />
+                          and the Hungarian
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          What Expats Need to Know About Poland
+                          <br />
+                          and the Polish
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>Business Law</span>
+                      </th>
+                      <td>
+                        <a href="#none">
+                          Biz in China
+                          <br />
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in the U.S.
+                          <br />
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Vietnam
+                          <br />
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Hungary
+                          <br />
+                          Basics of Law
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Poland
+                          <br />
+                          Basics of Law
+                        </a>{' '}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>Tax/Accounting</span>
+                      </th>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in China
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in the US
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in Vietnam
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in Hungary
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Basics of Tax/
+                          <br />
+                          Accounting in Poland
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>Economic Trend</span>
+                      </th>
+                      <td className="bg-none"></td>
+                      <td className="bg-none"></td>
+                      <td>
+                        <a href="#none">
+                          Economic Trends of
+                          <br />
+                          Vietnam, and
+                          <br />
+                          Strategies for Entering
+                          <br />
+                          Vietnamese Market
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Hungary
+                          <br />
+                          Landscape
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Biz in Poland
+                          <br />
+                          Landscape
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a href="#none">China</a>
+                      </td>
+                      <td>
+                        <a href="#none">US</a>
+                      </td>
+                      <td>
+                        <a href="#none">Vietnam</a>
+                      </td>
+                      <td>
+                        <a href="#none">Hungary</a>
+                      </td>
+                      <td>
+                        <a href="#none">Poland</a>
+                      </td>
+                      <td>
+                        <a href="#none">Middle East</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#none">Indonesia</a>
+                      </td>
+                      <td>
+                        <a href="#none">India</a>
+                      </td>
+                      <td>
+                        <a href="#none">CIS</a>
+                      </td>
+                      <td>
+                        <a href="#none">North Korea</a>
+                      </td>
+                      <td>
+                        <a href="#none">Japan</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="528px" />
+                    <col width="528px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a href="#none">Issues and Trends in China</a>
+                      </td>
+                      <td>
+                        <a href="#none">Issues and Trends in Vietnam</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="global-link-bottom">
+                  <a href="#none">
+                    <span>
+                      <strong>Glopedia</strong>
+                      <br />
+                      (Community that accumulates and shares global experiences)
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Leadership',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges7"
+        >
+          <div className="college-cont-title leadership">
+            <div className="belt sub">
+              <div className="label">Leadership College</div>
+              <div className="strong">Grow into a Deep Change leader!</div>
+              <div className="normal">
+                Leadership College helps all members grow into Deep Change
+                leaders who can
+                <br />
+                self-grow, promote change in others, and innovate the company
+                (BM, an
+                <br />
+                organization) by providing individual leadership diagnoses,
+                customized capacity
+                <br />
+                development guides, the latest content, and an effective
+                learning environment.
+              </div>
+              <ul className="tag-wrap">
+                <li># Leading Myself</li>
+                <li># Leading People</li>
+                <li># Leading Business</li>
+                <li># Leadership Clinic</li>
+                <li># Deep Change Leadership</li>
+              </ul>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map leadership">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">
+                  Click each badge and course to go to the corresponding page.
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  className="item-button"
+                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
+                >
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                    className="ui image"
+                    style={{ display: 'inline-block' }}
+                  />
+                  Go to Courses
+                </a>
+              </div>
+            </div>
+            <div className="belt">
+              <div className="label">Full Curriculum</div>
+              <div className="map">
+                <div className="ai-top-btn leaderShip">
+                  <span className="ai-btn01 leader">VoD</span>
+                  <span className="ai-btn02 leader sub">Non-VoD</span>
+                </div>
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  alt="세로:Advanced/Intermediate/Basic"
+                  className="ui image"
+                  style={{ float: 'left' }}
+                />
+                <div className="link_wrapper leadership">
+                  <div className="leadership_box bg1">
+                    <h3>Deep change Leadership</h3>
+                    <div className="leadership_list">
+                      <ul>
+                        <li className="margin_25">
+                          <div className="badge_box1 left">
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-3.png"
+                                alt=""
+                                className="ui image"
+                              />
+                            </a>
+                          </div>
+                          <a href="#none">
+                            Leader as Coach
+                            <br />
+                            Advanced P/G
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </div>
+                          <a href="#none">
+                            Organization
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                                alt=""
+                                className="ui image"
+                              />
+                            </a>
+                          </div>
+                          <a href="#none">Leader as Coach P/G</a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </div>
+                          <a href="#none">
+                            Leadership
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            The Leader’s Way Driven by Sincerity
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Deep Change &amp; Leadership? - Guide to
+                            <br />
+                            Practicing Purpose-based Deep Change
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="leadership_list bottom">
+                      <ul>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Deep Change and Innovating the Corporate Culture
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Deep Change Leadership Seen
+                            <br />
+                            in Movies
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Understanding Deep Change
+                            <br />
+                            Leadership
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="leadership_box bg2">
+                    <h3>Leadership Foundation</h3>
+                    <ul>
+                      <li className="leader_boxwrap margin_sm">
+                        <p className="non-link">
+                          Global Leadership
+                          <br />
+                          Acceleration P/G
+                        </p>
+                        <a href="#none">Remote Performance Mgmt.</a>
+                        <a href="#none">Impactful Conversation</a>
+                        <a href="#none">Drives for Engagement</a>
+                        <a href="#none">Leveraging Conflict</a>
+                        <a href="#none">EQ Leadership</a>
+                      </li>
+                      <li className="leader_boxwrap col-blue margin_sm">
+                        <div className="badge_box1 left">
+                          <a className="card-badge-link" href="#none">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-1.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </a>
+                        </div>
+                        <p className="non-link">Leadership Essentials</p>
+                        <a className="bg_blue" href="#none">
+                          Strategic Thinking
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Remote Leadership
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Coaching Leadership
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Leader’s Storytelling
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          The Dignity of a Smart Leader
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Motivation Designer
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          Rediscovering Conflict
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          Leadership Self-Assessment
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="leadership_box bg3">
+                    <h3>Leadership Clinic</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">Leadership Pain Points</p>
+                        <a className="bg_blue" href="#none">
+                          Self-growth
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Performance
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Synergy/Collaboration
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Operating a Healthy Organization
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Fostering Community Members
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          The World of the Leader Ⅰ, Ⅱ
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          One-on-One Meeting
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="leadership_box bg4">
+                    <h3>Leadership Insight Cafe</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">
+                          Leadership, Finding its Way in Humanities
+                        </p>
+                        <a className="bg_blue" href="#none">
+                          Karma &amp; Dharma
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Leadership That Looks at the Future in Difficult Times
+                        </a>
+                      </li>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">
+                          Leadership Talk Portrayed in Psychology
+                        </p>
+                        <a className="bg_blue" href="#none">
+                          I. Start of Change
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          II. Can't Sleep Thinking About These?
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          III. I Worry Because I’m a Leader
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          Understanding Generations - 86, X, MZ
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Management',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title management">
+            <div className="belt sub">
+              <div className="label">Management College</div>
+              <div className="strong">
+                How Should I Change My Work for Deep Change?
+                <br />
+                How Can I Improve Myself?
+              </div>
+              <div className="normal">
+                Management College conducts business to achieve Deep Change. It
+                offers professional
+                <br />
+                lessons in 6 function groups and one competency area to
+                reinforce the learners’ initiative.
+                <br />
+                Currently, the plan is the allowance of combining different
+                functions (instead of just
+                <br />
+                knowledge and expertise of each function group) to ensure mixed
+                and integrated skill sets.
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerEnTabView />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Future Semiconductors',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges9"
+        >
+          <div className="college-cont-title semicond">
+            <div className="belt sub">
+              <div className="label">Future Semiconductor College</div>
+              <div className="strong">
+                Semiconductors, opening eyes that see the future.
+              </div>
+              <div className="normal">
+                The college helps all SK members not only enhance their
+                knowledge of semicon-
+                <br />
+                ductors that will be helpful to themselves, but also assess the
+                nature of the semi- <br />
+                conductor industry and predict the world that future
+                technologies will open up.
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
+              <ul className="tag-wrap">
+                <li># Semiconductor History</li>
+                <li># Prospect of the Semiconductor Industry</li>
+                <li># Semiconductor Terminology</li>
+                <li># Semiconductor Technology Theories</li>
+                <li># Semiconductor Types</li>
+                <li># Future Technology</li>
+                <li># Semiconductor Ecosystem</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="college-cont-map pbtom">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link ">
+                  Click each badge and course to go to the corresponding page.
+                </p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    style={{ display: 'inline' }}
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                  />
+                  Go to Courses
+                </Link>
+              </div>
+            </div>
+
+            <div className="belt">
+              <div className="label">Full Curriculum</div>
+              <div className="semi-topBackground" />
+              <div className="map">
+                <div className="semi-background">
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            AI Manufacturing
+                            <br />
+                            Professional
+                          </h3>
+                          <p>
+                            Semiconductor Engineering combined with AI/DT,
+                            <br />
+                            Securing the competency optimized for manufacturing
+                            IT system
+                            <br />
+                            to become an AI manufacturing expert,
+                            <br />
+                            we support your continuous improvement
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Semiconductor FAB Production
+                                <br />
+                                and Operations Expert
+                              </a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                alt=""
+                              />
+                              <a href="#none">Smart SCM Expert</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Semiconductor FAB
+                                <br />
+                                Optimization Expert
+                              </a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                alt=""
+                              />
+                              <a href="#none">
+                                AI manufacturing <br />
+                                Project (PBL)
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>AI Manufacturing Professional</h4>
+                        <dl>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Expert in Predicting Semiconductor
+                            <br />
+                            Demands using AI, Planning Optimized
+                            <br />
+                            Productions, and Decision Making.
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>Requirements</dt>
+                          <dd>
+                            Requirements and Projects for Passing
+                            <br />
+                            the Course
+                          </dd>
+                        </dl>
+                        <button type="button" onClick={emptyAlert}>
+                          To be Opened
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            Hot emerging <br />
+                            Tech Insight
+                          </h3>
+                          <p>
+                            “Future Business and Technology
+                            <br />
+                            Exploration Site”to raise understanding and create
+                            new business opportunities
+                            <br />
+                            in each field the future semiconductor
+                            <br />
+                            can be applied.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                AI Semiconductor
+                                <br />
+                                <span>Next Tech Trend</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Car Semiconductor, Opportunities and Challenges
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Next Generation Semiconductor
+                                <br />
+                                Packaging Technology
+                              </a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Neuromorphic Computing <br />
+                                <span>Challenges and Opportunities</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                The Present and Future of
+                                <br />
+                                Quantum Computing and
+                                <br />
+                                Quantum Cryptography
+                                <br />
+                                Technologies
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight01">
+                        <div className="semi_txt">
+                          <h3>
+                            Smart factory <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            Smart Factory’s Basic Concept and
+                            <br />
+                            Components, Understanding Actual
+                            <br />
+                            FAB Automation System
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle pad">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Decision Making and Under-
+                                <br />
+                                standing the Production System
+                                <br />
+                                to Actualize Smart Factory
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Connection and Intellectuali-
+                                <br />
+                                zation of Smart Factory System
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                AI Algorithm-Based
+                                <br />
+                                Semiconductor Factory
+                              </a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Components and Cases of
+                                <br />
+                                Smart Factory
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Advanced Technology
+                                <br />
+                                Meets Production
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Understanding Semiconductor
+                                <br />
+                                FAB Automation
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>Smart factory Fundamental</h4>
+                        <dl>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Basic Concepts of Smart Factory and
+                            <br />
+                            Understanding the AI-based Semi-
+                            <br />
+                            conductor Production IT System
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>Requirements</dt>
+                          <dd>Take the course / Test and Perform Tasks</dd>
+                        </dl>
+                        <button type="button" onClick={emptyAlert}>
+                          To be Opened
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            Semiconductor Materials
+                            <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            Comprehensive learning on the basic
+                            <br />
+                            theories and the application of
+                            <br />
+                            semiconductor processing is nece-
+                            <br />
+                            ssary to understand and develop
+                            <br />
+                            properties of semiconductor
+                            <br />
+                            materials.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul>
+                            <li>
+                              <a href="#none">Advanced Material</a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Lithography Process and
+                                <br />
+                                Material
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Metallization Process and
+                                <br />
+                                Material
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">Solar Cell Device and Material</a>
+                            </li>
+                            <li>
+                              <a href="#none">Thin Film Process and Material</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Image Sensor Device and
+                                <br />
+                                material
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">Etching Process and Material</a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Compound Semiconductor
+                                <br />
+                                Device and Material
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">Doping Process and Material</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge biz02 biz03">
+                        <h4>Semiconductor Materials Fundamental</h4>
+                        <dl>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Semiconductor Processing / Capacity to Connect Core
+                            Materials per Device
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>Requirements</dt>
+                          <dd>
+                            Take the course / Test and
+                            <br />
+                            Perform Tasks
+                          </dd>
+                        </dl>
+                        <button type="button">To be Opened</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            AI Semiconductor
+                            <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            Understanding the basic concepts to
+                            <br />
+                            HW development, the motion
+                            <br />
+                            principle, the kinds of AI hardware
+                            <br />
+                            necessary to process AI
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                [Computer System] <br />
+                                <span>
+                                  Understanding the Motion of Computers
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [AI HW 101]
+                                <br />
+                                <span>AI Model</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [AI HW 101] <br />
+                                <span> DNN HW Accelerator Architecture </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [HW Development] <br />
+                                <span>Fundamentals</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">CPU Micro-Architecture</a>
+                            </li>
+                            <li>
+                              <a href="#none">SoC Design Flow</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                [AI HW 101] <br />
+                                <span>AI Hardware</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [AI HW 101] <br />
+                                <span>AI Platform</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding AI HW]
+                                <br />
+                                <span>
+                                  Characteristics of DNN Algorithm
+                                  <br />
+                                  and Workload
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [HW Development]
+                                <br />
+                                <span>Analog Design</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">Digital Design</a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                SoC Design Case <br />
+                                <span>Mobile Computing</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight03">
+                        <div className="semi_txt">
+                          <h3>Semiconductor Tech Essential</h3>
+                          <p>
+                            Understanding semiconductor terminologies and
+                            technologies that
+                            <br />
+                            even non-technical members can easily grasp
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-mid">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                <strong className="ts_style">
+                                  <img
+                                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/tag-trend-tag-eng.svg"
+                                    alt="Trend-setter"
+                                  />
+                                </strong>
+                                Easy Peasy Lemon Squeezy <br />
+                                Semiconductors
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                What Is Semiconductor?
+                                <br />
+                                <span>
+                                  Semiconductor Tech
+                                  <br />
+                                  Encyclopedia
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [CEO Talks: President Lee, Seok-
+                                <br />
+                                hee of SK Hynix]
+                                <br />
+                                <span>
+                                  Semiconductors, Opening a<br />
+                                  Future
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Smart IT Life
+                                <br />
+                                <span>
+                                  Structure and Principle of
+                                  <br />
+                                  Electronic Device
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                Understanding Semiconductor
+                                <br />
+                                Right (Basic)
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>Semiconductor Tech Essential</h4>
+                        <dl>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★</dd>
+                        </dl>
+                        <dl>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Acquire core concepts and terminologies in
+                            semiconductor technology
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>Requirements</dt>
+                          <dd>
+                            Finished 4 Courses / Passed the badge comprehensive
+                            test (Scored 80 and above)
+                          </dd>
+                        </dl>
+                        <a href="#none">Take the Challenge</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>Semiconductor Business Essentials</h3>
+                          <p>
+                            Provides the basic knowledge and insight <br />
+                            necessary to understand the semiconductor ecosystem
+                            and <br />
+                            future changes in the semiconductor industry
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul className="sm">
+                            <li>
+                              <a href="#none">
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
+                                <br />
+                                <span>
+                                  Near Future, Increasing Competitiveness in the
+                                  Age of Big Data
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
+                                <span>
+                                  AI Semiconductor and Analyzing
+                                  <br />
+                                  the Market According to the Various
+                                  <br />
+                                  Semiconductors Available on the Market
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Semiconductors Portrayed in the News]
+                                <br />
+                                <strong className="ts_style">
+                                  <img
+                                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/tag-trend-tag-eng.svg"
+                                    alt="Trend-setter"
+                                  />
+                                </strong>
+                                <span>
+                                  The Future of Semiconductor,
+                                  <br />
+                                  and How We Should Prepare
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part2]
+                                <span>
+                                  Samsung Electronics,
+                                  <br />
+                                  The Reckless Champion
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part4]
+                                <span>
+                                  Fabless and Foundry
+                                  <br />
+                                  - Opportunities and Strategies between
+                                  <br />
+                                  Gigantic IDM
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                News In-depth Analysis <br />
+                                <span>
+                                  United State’s Sanctions against China
+                                  <br />
+                                  and the Change in Semiconductor
+                                  <br />
+                                  Market
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                          <ul className="sm">
+                            <li>
+                              <a href="#none">
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
+                                <span>Data Centric World</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Semiconductors Portrayed in the
+                                <br />
+                                News]
+                                <br />
+                                <span>
+                                  Semiconductor Value Chain
+                                  <br />
+                                  In-depth Analysis
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part 1]
+                                <br />
+                                <span>
+                                  Basic Concept of
+                                  <br />
+                                  Semiconductor Industry and Market
+                                  <br />
+                                  Competition
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part 3]
+                                <br />
+                                <span>
+                                  The Past, Present,
+                                  <br />
+                                  and Future of CPU Powerhouse, Intel
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [Understanding the Semiconductor
+                                <br />
+                                Industry Part 5]
+                                <br />
+                                <span>
+                                  Future Prospects in the
+                                  <br />
+                                  Age of Infinite Competition- Challenges
+                                  <br />
+                                  and Tasks of Semiconductor Companies
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                The Effects of COVID-19 to the Supply
+                                <br />
+                                Chain of Semiconductor
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge h441">
+                        <h4>Semiconductor Business Essentials</h4>
+                        <dl>
+                          <dt>Badge Types</dt>
+                          <dd>Future Business</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★</dd>
+                        </dl>
+                        <dl>
+                          <dt>About the Certification</dt>
+                          <dd>
+                            Acquire basic knowledge necessary to
+                            <br />
+                            understanding and analyzing
+                            <br />
+                            semiconductor industry
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>Requirements</dt>
+                          <dd>
+                            Finished 10 Courses / Passed the badge
+                            <br />
+                            comprehensive test(Scored 80 and
+                            <br />
+                            above)
+                          </dd>
+                        </dl>
+                        <a
+                          className="cha_btn"
+                          href="#none"
+                          style={{ fontWeight: 'bold' }}
+                        >
+                          Take the Challenge
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight02">
+                        <div className="semi_txt">
+                          <h3>Introduction to Semiconductors</h3>
+                          <p>
+                            Course with fun and interesting stories
+                            <br />
+                            for members who are new to learning
+                            <br />
+                            about semiconductors
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                The Dictionary of Useful Semi-
+                                <br />
+                                conductors
+                                <span>
+                                  The Past, Present,
+                                  <br />
+                                  and Future of Semiconductor
+                                  <br />
+                                  Industry
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">
+                                Semiconductor Class
+                                <br />
+                                <span>
+                                  Semiconductors with class,
+                                  <br />
+                                  learned with keywords
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Environment',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges11"
+        >
+          <div className="college-cont-title energy">
+            <div className="belt sub">
+              <div className="label">Environment College</div>
+              <div className="strong">
+                The “Environment College,” the evolved version of Energy
+                Solution College
+              </div>
+              <div className="normal">
+                The aim is to raise awareness of the importance of the
+                environment and of the new
+                <br />
+                world the environment businesses make and equip learners with
+                professional
+                <br />
+                knowledge essential to carbon neutrality, resource circulation,
+                energy solution, etc.
+                <br />
+                It also aims to take a step one by one towards the “Green Deep
+                Change.”
+                <br />
+                We challenge ourselves to the success of environmental
+                businesses - Green Start!
+              </div>
+
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/envir-player.png`}
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map energy">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link">Click each badge and course to go to the corresponding page.</p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    style={{ display: 'inline' }}
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                  />
+                  Go to Courses
+                </Link>
+              </div>
+              <div className="belt">
+                <div className="map">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-eng.png"
+                    alt=""
+                    style={{ display: 'inline-block' }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map energe">
+            <div className="belt">
+              <div className="label energy">Environment College Curriculum</div>
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02-eng.png"
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'BM Design & Storytelling',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title bmd">
+            <div className="belt sub">
+              <div className="label">BM Design &#38; Storytelling College</div>
+              <div className="strong">Ideate and Accelerate Deep Change!</div>
+              <div className="normal">
+                We are committed to actively support the cause of raising BM
+                design experts and enhancing BM design and storytelling
+                capacities in business and finance.
+                <br />
+                By doing so, we hope to contribute to bringing about the Deep
+                Change outcomes in our group and subsidiaries.
+              </div>
+              <ul className="tag-wrap">
+                <li># BM Innovation</li>
+                <li># Sustainable BM</li>
+                <li># BM Design</li>
+                <li># Portfolio Management</li>
+                <li># Financial Story</li>
+                <li># Storytelling</li>
+                <li># Stakeholder</li>
+              </ul>
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link" style={{ color: '#bd38a5' }}>
+                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                </p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00020/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                    style={{ display: 'inline-block' }}
+                  />
+                  Go to Courses
+                </Link>
+              </div>
+            </div>
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/img-co-11-1-eng.png`}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">Full Curriculum</div>
+              <div className="bm-top-btn">
+                <span className="bm-btn01">On-Line</span>
+                <span className="bm-btn02">Blended</span>
+                <span className="bm-btn03">Off-Line</span>
+              </div>
+              <div className="map">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/bm-level-line-eng.png`}
+                  alt=""
+                  style={{ float: 'left' }}
+                />
+                <div className="bm-wrap">
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN00081">
+                          BM Design @ Work
+                        </Link>
+                      </h3>
+                      <p>( Prerequisite course: Becoming a BM Designer )</p>
+                      <ul className="list_flex">
+                        <li>
+                          <Link to="/lecture/card/CARD-a9s/view">
+                            BM Design Practice
+                            <br />
+                            (4 weeks)
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-abv/view">
+                            Decoupling Workshop
+                            <br />
+                            (2 days)
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-abt/view">
+                            Environment∙Energy
+                            <br />
+                            BM Design Practice
+                            <br />
+                            (4 weeks)
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box bg_type02">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN0007o">
+                          Storytelling @ Work
+                        </Link>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <Link to="/lecture/card/CARD-abm/cube/CUBE-crs/view/ClassRoomLecture">
+                              CEO 1:1 Course
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-abo/cube/CUBE-cru/view/ClassRoomLecture">
+                              6R Storytelling Workshop
+                            </Link>
+                          </li>
+                        </ul>
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <Link to="/lecture/card/CARD-abn/cube/CUBE-crt/view/ClassRoomLecture">
+                              Leader Storytelling <br />
+                              Workshop
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-abp/cube/CUBE-crv/view/ClassRoomLecture">
+                              FS Expert Symposium
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN00083">
+                          Becoming BM Designer
+                        </Link>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <Link to="/lecture/card/CARD-8c9/view">
+                            Ⅰ. As-Is BM
+                            <br />
+                            Sustainability
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-a8f/view">
+                            Ⅱ. BM Environment Analysis
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-8cb/view">
+                            Ⅲ. Strategy for
+                            <br />
+                            DiscoveringNew BM
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN0007n">
+                          M&#38;A Design
+                        </Link>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <Link to="/lecture/card/CARD-a1p/view">
+                              Ⅰ. M&#38;A Overview
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a1w/view">
+                              Ⅲ. Target Selection &amp;
+                              <br />
+                              Deal Structuring
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a1y/view">
+                              Ⅴ. Valuation
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a20/view">
+                              Ⅶ. Legal
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="#" onClick={emptyAlert}>
+                              [AdvancedI] Deal Structuring
+                              <br />
+                              &amp; Financing
+                            </Link>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <Link to="/lecture/card/CARD-a22/view">
+                              Ⅱ. M&#38;A Strategy
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a1x/view">
+                              Ⅳ. Due Diligence
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a1z/view">
+                              Ⅵ. Negotiation
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a21/view">
+                              Ⅷ. PMI &#38; Value-up
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a23/view">
+                              [AdvancedⅡ] Legal
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="bm-bg-box line_type01 height100">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN0007p">
+                          Becoming Storyteller
+                        </Link>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <Link to="#" onClick={emptyAlert}>
+                              Global Case Studies of
+                              <br />
+                              Financial Storytelling
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-ac8/view">
+                              [Focus] Financial <br />
+                              Society Partnership
+                            </Link>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <Link to="#" onClick={emptyAlert}>
+                              Understanding the 6R Perspectives Stakeholder
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN00082">
+                          BM Design Take-off
+                        </Link>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <Link to="/lecture/card/CARD-a8e/view">
+                            Ⅰ.Sustainable BM
+                            <br />
+                            The Importance of Innovation
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-a8g/view">
+                            Ⅱ. BM Framework
+                            <br />
+                            &amp; SK BM Innovation Efforts
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-a8h/view">
+                            Ⅲ. BM / Deep Change
+                            <br />
+                            Design and Execution
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN00084">
+                          Defining Storytelling
+                        </Link>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <Link to="#" onClick={emptyAlert}>
+                            Understanding
+                            <br />
+                            Financial Story
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-6z1/view">
+                            Financial Acumen
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/lecture/card/CARD-abr/cube/CUBE-crx/view/Video">
+                            Financial Story from the
+                            <br />
+                            Investor’s Point of View
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'SK Academy',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges10"
+        >
+          <div className="college-cont-title skacademy">
+            <div className="belt">
+              <div className="img">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/player-area.svg`}
+                  alt=""
+                />
+              </div>
+              <div className="label">SK Academy College</div>
+              <div className="strong">
+                “The cradle of SK talent nurturing that has raised talented{' '}
+                <br />
+                employees like trees”
+              </div>
+              <div className="normal">
+                SK Academy reinforces the foundation of SK corporate culture
+                through the
+                <br />
+                spread of SKMS/Values,and nurtures future managers and business
+                experts in
+                <br />
+                line with the systematic nurturing pipeline.
+              </div>
+              <ul className="tag-wrap">
+                <li># New Employees</li>
+                <li># Recruited Members</li>
+                <li># New Team Leaders</li>
+                <li># New Executives</li>
+                <li># Recruited Executives</li>
+                <li># HLP</li>
+                <li># Female Leaders</li>
+                <li># Capacity School</li>
+                <li># HR Conference</li>
+                <li># Global HR Seminar</li>
+              </ul>
+            </div>
+          </div>
+          <div className="college-cont-map skacademy">
+            <div className="belt">
+              <div className="label">Full Curriculum</div>
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co10_ENG.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-tag skacademy">
+            <div className="belt">
+              <div className="label chip5">SKMS / SK Values</div>
+              <div className="strong">
+                Spread SKMS/core values to new/recruited members and establish
+                the roles of new team leaders to practice happiness management
+              </div>
+              <ul className="tag-wrap">
+                <li># New Recruits</li>
+                <li># Recruited Members</li>
+                <li># New Team Leaders</li>
+                <li># New Executives</li>
+                <li># Recruited Executives</li>
+                <li># Nurturing SKMS Instructors</li>
+              </ul>
+              <div className="label chip6">Nurturing Future Managers</div>
+              <div className="strong">
+                Systematic nurturing of future managers in connection with SK
+                leadership pipeline and assessment
+              </div>
+              <ul className="tag-wrap">
+                <li># HLP</li>
+                <li># Female Leaders</li>
+              </ul>
+              <div className="label chip7">Capacity School</div>
+              <div className="strong">
+                Strengthening business specialty capacity in common job duties
+                of the group in connection with the mySUNI Management College
+              </div>
+              <ul className="tag-wrap">
+                <li># Strategy Intermediate/Advanced</li>
+                <li># Marketing Intermediate/Advanced</li>
+                <li># Finance Intermediate/Advanced</li>
+                <li># HR Intermediate/Advanced</li>
+                <li># Purchasing Intermediate/Advanced</li>
+                <li># Legal</li>
+                <li># IP(Intellectual Property)</li>
+                <li># M&amp;A</li>
+                <li># Business Development</li>
+                <li># Negotiation</li>
+                <li># Biz. Contract</li>
+                <li># HR Analytics</li>
+                <li># HR Conference</li>
+                <li># Global HR Seminar</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+];
+
+const ZhPanes = [
+  {
+    menuItem: 'AI',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges1"
+        >
+          <div className="college-cont-title ai">
+            <div className="belt sub">
+              <div className="label">AI College</div>
+              <div className="strong">
+                从AI局外人（Outsider）到AI达人（Insider)!
+              </div>
+              <div className="normal">
+                AI
+                College以所有SK成员都要了解的基础知识为基础，培养成员们在各产业和职务
+                <br />
+                能够灵活应用AI的实操力量，提供可以成长为AI技术专家的机会。
+              </div>
+              <div className="panopto sub">
+                <Image src={`${PUBLIC_URL}/images/all/Ai-banner.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerZhTabAi />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'DT',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges2"
+        >
+          <div className="college-cont-title dt">
+            <div className="belt sub">
+              <div className="label">DT College</div>
+              <div className="strong">“小组的Deep Change在我们手中!”</div>
+              <div className="normal">
+                掌握Digital Skill，了解客户和行业，为引领SK Deep Change的成员在
+                <br />
+                DT College开设的课程。
+              </div>
+              <div className="panopto sub">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/Dt-banner.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerZhTabDt />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: '幸福',
+    render: () => (
+      <Tab.Pane>
+        <div className="ui bottom attached segment active tab">
+          <div
+            className="ui attached tab full segment active"
+            data-tab="colleges3"
+          >
+            <div className="college-cont-title happiness">
+              <div className="belt">
+                <div className="label">幸福 College</div>
+                <div className="strong">为了SK全体成员的幸福!</div>
+                <div className="normal">
+                  基于对幸福的基本概念和SK经营哲学的理解，培养和实践包括工作在内的全部人
+                  <br />
+                  生中增进幸福的力量，把投身SK全体成员的幸福追求为目标。
+                </div>
+                <div className="panopto sub">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy-banner.png"
+                    alt="하트이미지"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_01_CHN.png"
+                    alt="이렇게 행복을 만들어 가세요."
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_CHN.png"
+                    alt="행복 Badge"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="college-cont-map pbtom">
+              <div className="belt">
+                <div className="map">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_CHN.png"
+                    alt="행복 컬리지 커리큘럼"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'SV',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges4"
+        >
+          <div className="college-cont-title sv">
+            <div className="belt sub">
+              <div className="label">SV College</div>
+              <div className="strong">
+                为了明天的[Tomorrow+My
+                Work]SV，为实现企业与社会的可持续发展，培养必备能力的地方！
+              </div>
+              <div className="normal">
+                为Deep
+                Change指明方向的“社会价值”利益相关者，理解他们的痛点，培养解决问题的能力！
+              </div>
+              <ul className="tag-wrap">
+                <li># 社会问题</li>
+                <li># ESG</li>
+                <li># SV Biz</li>
+                <li># SV测量</li>
+              </ul>
+              <div className="panopto sub">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv-banner.png"
+                  alt="Social Value"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_01_CHN.png"
+                  alt="학습 FLOW"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_02_CHN.png"
+                  alt="채널"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map pbtom">
+            <div className="belt">
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/sv_con_03_CHN.png"
+                  alt="전체커리큘럼"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: '创新设计',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges5"
+        >
+          <div className="college-cont-title design">
+            <div className="belt sub">
+              <div className="label">创新设计 College</div>
+              <div className="strong">理解客户，设计创新！</div>
+              <div className="normal">
+                挖掘从客户角度出发的Biz.Idea，以综合思维解决客户问题，不断创新工作方式所
+                <br />
+                需的成员及组织创新设计能力提升。
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map sub2">
+            <div className="belt inno">
+              <div className="belt">
+                <div className="text-left-box">
+                  <p className="p_link inno">
+                    点击各Badge与课程，即可进入到相应页面。
+                  </p>
+                </div>
+                <div className="text-right-box">
+                  <a
+                    className="item-button"
+                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
+                  >
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                      alt=""
+                      className="ui image"
+                      style={{ display: 'inline' }}
+                    />
+                    直接进入课程
+                  </a>
+                </div>
+              </div>
+              <div className="map">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/design_con_01_CHN.png"
+                  alt="课程使用指南"
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <h1 className="inno-title">
+                  “基于综合思维，以客户为中心解决问题，创新工作方式。”
+                </h1>
+                <div className="inno-top-btn">
+                  <span>即将开设</span>
+                </div>
+                <div className="inno-wrap">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/inno-level_CHN.png"
+                    alt="세로제목"
+                    className="ui image"
+                  />
+                  <div className="inno-item fi-item">
+                    <h3># 设计思维</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two dashed">
+                            <a href="#none">设计思维指导技巧</a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              设计思维
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              设计思维
+                              <br />
+                              Team W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              设计思维
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">设计思维Self实习（SV案例）</a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td className="dashed">
+                            <a href="#none">
+                              服务设计
+                              <br />
+                              Intensive
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              From Ideas to
+                              <br />
+                              Action - IDEO
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Human-Centered
+                              <br />
+                              Service Design - <br />
+                              IDEO
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              在技术中以客
+                              <br />
+                              户为中心进行
+                              <br />
+                              Biz-Self实习
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              通过了解设计思维
+                              <br />
+                              案例（SV）学习
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              设计思维 -<br />
+                              Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Hello Design
+                              <br />
+                              Thinking - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td className="dashed">
+                            <a href="#none">
+                              在技术中以客户为
+                              <br />
+                              中心思考Biz
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">设计思维练习</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              第一次接触的设
+                              <br />
+                              计思维
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">创意IDEA思维发散法</a>
+                          </td>
+                          <td>
+                            <a href="#none">Biz.Ideation的第一步</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># 逻辑思维</h3>
+                    <div className="logical-box">
+                      <div className="logical-list tab01">
+                        <ul>
+                          <li>
+                            <a href="#none">
+                              熟悉咨询师的工
+                              <br />
+                              作技巧（Lv.2）
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              熟悉咨询师的工作
+                              <br />
+                              技巧（Lv.1）
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># 了解客户</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Insights for
+                              <br />
+                              Innovation - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
+                            <a href="#none">客户 Research方法</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              客户 Needs
+                              <br />
+                              Finding
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">客户Need是？</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item">
+                    <h3># 逆向工作</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Workshop_online
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="#none">
+                              逆向工作
+                              <br />
+                              Tools
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              第一次接触的
+                              <br />
+                              设计思维
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># 敏捷</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              敏捷训练
+                              <br />
+                              Meetup
+                            </a>
+                          </td>
+                          <td className="dashed-or">
+                            <a href="#none">敏捷训练课程</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">敏捷 Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷领导力
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷 Project
+                              <br />
+                              Management
+                              <br />
+                              W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Agile Management
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷方法论
+                              <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              SK Networks采购
+                              <br />
+                              部门敏捷案例
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small">
+                            <a href="#none">敏捷方法论基础</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">敏捷Essential</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">第一次接触的敏捷</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Why 敏捷</a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="inno-item orange">
+                    <h3># 开放式合作</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td className="dashed-or">
+                            <a href="#none">
+                              开放式创新
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              创造未来
+                              <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Futurecasting</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              All about
+                              <br />
+                              开放式创新
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Creative Collabo
+                              <br />
+                              Skills - Linkedin
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="#none">
+                              Open
+                              <br />
+                              Collaboration
+                              <br />
+                              Tips
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div className="inno-bottom-wrap">
+                  <div className="inno-bottom con01">
+                    <ul>
+                      <li>
+                        <a href="#none">
+                          Deep Change
+                          <br />
+                          和Design理解
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">理解客户的重要性，Remind！</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          YouTube
+                          <br />
+                          设计思维的理解
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">创新秘诀</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Leading with
+                          <br />
+                          Innovation
+                        </a>
+                      </li>
+                    </ul>
+                    <h3># Deep Change与Design</h3>
+                  </div>
+                  <div className="inno-bottom con02">
+                    <ul>
+                      <li>
+                        <a href="#none">
+                          Trend &amp; Insight
+                          <br />
+                          Report
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">为实现突破设计未来</a>
+                      </li>
+                      <li>
+                        <a href="#none">高效工作的Tip</a>
+                      </li>
+                    </ul>
+                    <h3># 创新趋势和洞察</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Global',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges6"
+        >
+          <div className="college-cont-title global">
+            <div className="belt sub">
+              <div className="label">Global College</div>
+              <div className="strong">基于Globalization的新开始</div>
+              <div className="normal">
+                目标是培养能够解读全球商业格局的“Global Perspective”
+                <br />
+                培养即使环境改变也能取得成果的“Global Manager”。
+                <br />
+                通过这些培养SK集团的Globalization所需要的Human Capital。
+              </div>
+              <ul className="tag-wrap">
+                <li># Geopolitics &amp; Biz</li>
+                <li># Managing Global Biz</li>
+                <li># 地区专家</li>
+                <li># Glopedia</li>
+                <li># Global Leader's Table</li>
+              </ul>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt global flex mb50">
+              <div className="text-left-box">
+                <p className="p_link global">
+                  点击各Badge与课程，即可进入到相应页面。
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                  className="item-button"
+                >
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                  />
+                  直接进入课程
+                </a>
+              </div>
+            </div>
+            <div className="belt global">
+              <div className="label">
+                Geopolitics & Biz./Managing Global Biz.课程
+              </div>
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-top.svg"
+                alt="Horizontal:Geopolitics&Biz/ ManagingGlobalBiz"
+                className="global-top-img"
+              />
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-left-chn.png"
+                alt="vertical:Advanced/Intermediate/Basic "
+                className="global-left-img"
+              />
+              <div className="global-belt-wrap">
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit140">
+                        <div className="curriculum-link-box">
+                          <strong>Biz.Impact分析</strong>
+                          <a href="#none">
+                            <span>Geopolitical Scenario Planning</span>
+                          </a>
+                        </div>
+                      </div>
+                      <div className="global-curriculum-box box-heit220">
+                        <div className="curriculum-link-box">
+                          <strong>对产业/贸易产生的影响</strong>
+                          <div className="link-wrap">
+                            <a href="#none">
+                              <span>
+                                Geo. &amp; Biz.
+                                <br />
+                                Nexus
+                              </span>
+                            </a>
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  中美Tech竞争Ch.2
+                                  <br />
+                                  （立场与应对方向）
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  中美Tech竞争Ch.1
+                                  <br />
+                                  （法律/制度环境变化）
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Global Financial Story</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  Global Financial Story
+                                  <br />
+                                  案例学习
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Global Financial Story的
+                                  <br />
+                                  理解
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap2">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit370">
+                        <div className="curriculum-link-box">
+                          <strong>Diversity Inclusion</strong>
+                          <div className="link-wrap">
+                            <div className="link-colum-box sty2">
+                              <a href="#none">
+                                <span>与全球成员共事</span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  理解
+                                  <br />
+                                  Diversity Inclusion
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  Diversity
+                                  <br />
+                                  Awareness
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="global-belt flex">
+                  <div className="global-curriculum-wrap wrap3">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>Why Geopolitics?</strong>
+                          <div className="link-wrap big-colum">
+                            <a href="#none">
+                              <span>
+                                How to manage
+                                <br />
+                                Geopolitical
+                                <br />
+                                Uncertainties?
+                              </span>
+                            </a>
+                            <a href="#none">
+                              <span>
+                                Why Geopolitics for
+                                <br />
+                                Business?
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap wrap3 left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box">
+                        <div className="curriculum-link-box">
+                          <strong>地缘政治学变化动向</strong>
+                          <div className="link-wrap big-colum">
+                            <div className="link-colum-box">
+                              <a href="#none">
+                                <span>
+                                  拜登时代，
+                                  <br />
+                                  国际形势的变化
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  国际形势的现象与本质
+                                  <br />
+                                  Series 3
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  国际形势的现象与本质
+                                  <br />
+                                  Series 2
+                                </span>
+                              </a>
+                              <a href="#none">
+                                <span>
+                                  国际形势的现象与本质
+                                  <br />
+                                  Series 1
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-curriculum-wrap left-mg10">
+                    <div className="global-component">
+                      <div className="global-curriculum-box box-heit380">
+                        <div className="curriculum-link-box">
+                          <strong>
+                            Global Communication Skill &amp; Attitude
+                          </strong>
+                          <div className="link-wrap type2">
+                            <a href="#none">
+                              <span>全球商务礼仪</span>
+                            </a>
+                            <a href="#none">
+                              <span>全球Biz. Networking</span>
+                            </a>
+                            <a href="#none">
+                              <span>商务邮件</span>
+                            </a>
+                            <a href="#none">
+                              <span>商务会议</span>
+                            </a>
+                            <a href="#none">
+                              <span>Presentation</span>
+                            </a>
+                            <a href="#none">
+                              <span>商业谈判</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="global-link-bottom">
+                    <a href="#none">
+                      <span>
+                        <strong>Global Leader’s Table</strong>
+                        <br />
+                        (Global Guru们讲述的商业洞察)
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt global">
+              <div className="label">地域专家课程</div>
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                alt="가로 : 지역전문가"
+                className="global-top-img2"
+              />
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                alt="세로 : LocalLeadership/지역전문가/국가의이해"
+                className="global-left-img2"
+              />
+              <div className="global-belt-wrap section2">
+                <div>
+                  <a href="#none">
+                    <span>Post驻在员</span>
+                  </a>
+                  <a href="#none">
+                    <span>法人长</span>
+                  </a>
+                  <a href="#none">
+                    <span>
+                      Local Experience
+                      <br />
+                      (当地员工，驻在员)
+                    </span>
+                  </a>
+                </div>
+                <table>
+                  <colgroup>
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                  </colgroup>
+                  <thead>
+                    <th></th>
+                    <th>
+                      <span>中国</span>
+                    </th>
+                    <th>
+                      <span>美国</span>
+                    </th>
+                    <th>
+                      <span>越南</span>
+                    </th>
+                    <th>
+                      <span>匈牙利</span>
+                    </th>
+                    <th>
+                      <span>波兰</span>
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>
+                        <span>Networking</span>
+                      </th>
+                      <td>
+                        <a href="#none">中国GR基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          Networking with
+                          <br />
+                          Americans
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          越南、越南人
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          匈牙利、匈牙利人
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          驻在员需要了解的
+                          <br />
+                          波兰、波兰人
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>Biz法律</span>
+                      </th>
+                      <td>
+                        <a href="#none">中国Biz.法律基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">美国Biz.法律基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">越南Biz.法律基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">匈牙利Biz.法律基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">波兰Biz.法律基础</a>{' '}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>税务/会计</span>
+                      </th>
+                      <td>
+                        <a href="#none">中国税务/会计基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">美国税务/会计基础</a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          越南税务/会计
+                          <br />
+                          基础
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          匈牙利税务/会计
+                          <br />
+                          基础
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          波兰税务/会计
+                          <br />
+                          基础
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <span>경제동향</span>
+                      </th>
+                      <td className="bg-none"></td>
+                      <td className="bg-none"></td>
+                      <td>
+                        <a href="#none">
+                          越南经济动向与市场
+                          <br />
+                          进入战略
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          匈牙利Biz.
+                          <br />
+                          Landscape
+                        </a>
+                      </td>
+                      <td>
+                        <a href="#none">
+                          波兰Biz.
+                          <br />
+                          Landscape
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                    <col width="169px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a href="#none">中国</a>
+                      </td>
+                      <td>
+                        <a href="#none">美国</a>
+                      </td>
+                      <td>
+                        <a href="#none">越南</a>
+                      </td>
+                      <td>
+                        <a href="#none">匈牙利</a>
+                      </td>
+                      <td>
+                        <a href="#none">波兰</a>
+                      </td>
+                      <td>
+                        <a href="#none">中东</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#none">印尼</a>
+                      </td>
+                      <td>
+                        <a href="#none">印度</a>
+                      </td>
+                      <td>
+                        <a href="#none">CIS</a>
+                      </td>
+                      <td>
+                        <a href="#none">朝鲜</a>
+                      </td>
+                      <td>
+                        <a href="#none">日本</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <colgroup>
+                    <col width="528px" />
+                    <col width="528px" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a href="#none">中国 Issue &amp; Trend</a>
+                      </td>
+                      <td>
+                        <a href="#none">越南 Issue &amp; Trend</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="global-link-bottom">
+                  <a href="#none">
+                    <span>
+                      <strong>Glopedia</strong>
+                      <br />
+                      (积累并共享Global经验的社区)
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Leadership',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges7"
+        >
+          <div className="college-cont-title leadership">
+            <div className="belt sub">
+              <div className="label">Leadership College</div>
+              <div className="strong">成长为Deep Change Leader！</div>
+              <div className="normal">
+                支持个人领导能力诊断和定制型力量开发指南，提供最新内容和有效的学习环境，
+                <br />
+                帮助所有成员自我成长、带动变化他人、改革公司（BM、组织）的Deep
+                Change
+                <br />
+                Leader。
+              </div>
+              <ul className="tag-wrap">
+                <li># Leading Myself</li>
+                <li># Leading People</li>
+                <li># Leading Business</li>
+                <li># Leadership Clinic</li>
+                <li># Deep Change Leadership</li>
+              </ul>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&amp;ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map leadership">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">
+                  点击各Badge与课程，即可进入到相应页面。
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  className="item-button"
+                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
+                >
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    alt=""
+                    className="ui image"
+                    style={{ display: 'inline-block' }}
+                  />
+                  直接进入课程
+                </a>
+              </div>
+            </div>
+            <div className="belt">
+              <div className="label">全部课程</div>
+              <div className="map">
+                <div className="ai-top-btn leaderShip">
+                  <span className="ai-btn01 leader">VoD</span>
+                  <span className="ai-btn02 leader sub">Non-VoD</span>
+                </div>
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  alt="세로:Advanced/Intermediate/Basic"
+                  className="ui image"
+                  style={{ float: 'left' }}
+                />
+                <div className="link_wrapper leadership">
+                  <div className="leadership_box bg1">
+                    <h3>Deep change Leadership</h3>
+                    <div className="leadership_list">
+                      <ul>
+                        <li className="margin_25">
+                          <div className="badge_box1 left">
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-3.png"
+                                alt=""
+                                className="ui image"
+                              />
+                            </a>
+                          </div>
+                          <a href="#none">
+                            Leader as Coach
+                            <br />
+                            Advanced P/G
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </div>
+                          <a href="#none">
+                            Organization
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <a className="card-badge-link" href="#none">
+                              <img
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                                alt=""
+                                className="ui image"
+                              />
+                            </a>
+                          </div>
+                          <a href="#none">Leader as Coach P/G</a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-2.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </div>
+                          <a href="#none">
+                            Leadership
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            真诚主导的领导者之路
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Deep Change & 领导力？-基于目标的
+                            <br />
+                            深度变革实践指南
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="leadership_list bottom">
+                      <ul>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            深度变革与企业文化创新
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            通过电影看
+                            <br />
+                            Deep Change Leadership
+                          </a>
+                        </li>
+                        <li>
+                          <a className="leader_blue" href="#none">
+                            Deep Change leadership理解
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="leadership_box bg2">
+                    <h3>Leadership Foundation</h3>
+                    <ul>
+                      <li className="leader_boxwrap margin_sm">
+                        <p className="non-link">
+                          Global Leadership
+                          <br />
+                          Acceleration P/G
+                        </p>
+                        <a href="#none">Remote Performance Mgmt.</a>
+                        <a href="#none">Impactful Conversation</a>
+                        <a href="#none">Drives for Engagement</a>
+                        <a href="#none">Leveraging Conflict</a>
+                        <a href="#none">EQ Leadership</a>
+                      </li>
+                      <li className="leader_boxwrap col-blue margin_sm">
+                        <div className="badge_box1 left">
+                          <a className="card-badge-link" href="#none">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-card-badge-lv-1.png"
+                              alt=""
+                              className="ui image"
+                            />
+                          </a>
+                        </div>
+                        <p className="non-link">Leadership Essentials</p>
+                        <a className="bg_blue" href="#none">
+                          战略性思维
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Remote Leadership
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Coaching Leadership
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          领导者的story telling
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          明智领导者的委任
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Motivation Designer
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          重新发现冲突
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          Leadership Self-Assessment
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="leadership_box bg3">
+                    <h3>Leadership Clinic</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">Leadership Pain Points</p>
+                        <a className="bg_blue" href="#none">
+                          自我成长
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          Performance
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          互助/协作
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          健康的组织运营
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          成员培养
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          领导者的世界Ⅰ, Ⅱ
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          一对一会议
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="leadership_box bg4">
+                    <h3>Leadership Insight Cafe</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">领导力，从人文学寻找答案。</p>
+                        <a className="bg_blue" href="#none">
+                          Karma &amp; Dharma
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          苦难时代，看向未来的领导力
+                        </a>
+                      </li>
+                      <li className="leader_boxwrap col-blue">
+                        <p className="non-link">用心理学解析的领导能力Talk</p>
+                        <a className="bg_blue" href="#none">
+                          I. 变化的开始
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          II. 你有这样的苦恼吗？
+                        </a>
+                        <a className="bg_blue" href="#none">
+                          III. 领导者的苦恼
+                        </a>
+                      </li>
+                      <li>
+                        <a className="leader_blue" href="#none">
+                          代际理解-86、X、MZ一代
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Management',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title management">
+            <div className="belt sub">
+              <div className="label">Management College</div>
+              <div className="strong">
+                为实现Deep Change，如何改变工作方式呢？
+                <br />
+                如何才能成长呢？
+              </div>
+              <div className="normal">
+                Management College为实现Deep
+                Change，提高Biz.执行能力，涵盖6个Function
+                Group，1个Competency领域的职务能力学习内容。除了各个Function
+                Group的知识/专业性，还结合各Function，企划融合/整合能力培养课程。
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerZhTabView />
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: '未来半导体',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges9"
+        >
+          <div className="college-cont-title semicond">
+            <div className="belt sub">
+              <div className="label">未来半导体College</div>
+              <div className="strong">半导体，开始展望未来。</div>
+              <div className="normal">
+                不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质， 并
+                <br />
+                展望由未来技术开启的世界。
+              </div>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
+              <ul className="tag-wrap">
+                <li># 半导体历史</li>
+                <li># 半导体产业展望</li>
+                <li># 半导体术语</li>
+                <li># 半导体技术理论</li>
+                <li># 半导体种类</li>
+                <li># 未来技术</li>
+                <li># 半导体Ecosystem</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="college-cont-map pbtom">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link ">
+                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+                </p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    style={{ display: 'inline' }}
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                  />
+                  直接进入课程
+                </Link>
+              </div>
+            </div>
+
+            <div className="belt">
+              <div className="label">全部课程</div>
+              <div className="semi-topBackground" />
+              <div className="map">
+                <div className="semi-background">
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            AI Manufacturing
+                            <br />
+                            Professional
+                          </h3>
+                          <p>
+                            半导体Engineering+AI/DT融合，
+                            <br />
+                            具备制造IT系统最优化能力，
+                            <br />
+                            AI manufacturing专家,
+                            <br />
+                            Contiunous成长支持
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <a href="#none">半导体FAB生产运营专家</a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`}
+                                alt=""
+                                className="ui image"
+                              />
+                              <a href="#none">Smart SCM专家</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">半导体FAB最优化专家</a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                alt=""
+                              />
+                              <a href="#none">
+                                AI manufacturing
+                                <br />
+                                Project (PBL)
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>AI Manufacturing Professional</h4>
+                        <dl>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>认证内容</dt>
+                          <dd>
+                            具备运用AI预测半导体需
+                            <br />
+                            求、最佳生产计划及决策
+                            <br />
+                            能力的专家
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成Course/Project
+                            <br />
+                            执行及pass
+                          </dd>
+                        </dl>
+                        <button type="button">预计OPEN</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            Hot emerging <br />
+                            Tech Insight
+                          </h3>
+                          <p>
+                            “广泛理解各类未来半导体应用领域，
+                            <br />
+                            为创造New Biz的
+                            <br />
+                            ‘未来Biz/Tech探索之窗’”
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul>
+                            <li>
+                              <a>
+                                AI半导体
+                                <br />
+                                <span>Next Tech Trend</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a>汽车半导体，机会与挑战</a>
+                            </li>
+                            <li>
+                              <a>
+                                Next Generation Semiconductor
+                                <br />
+                                Packaging Technology
+                              </a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a>
+                                Neuromorphic Computing <br />
+                                <span>Challenges and Opportunities</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a>
+                                量子计算与量子密码
+                                <br />
+                                技术的现在与未来
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight01">
+                        <div className="semi_txt">
+                          <h3>
+                            Smart factory <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            Smart factory的基本概念及
+                            <br />
+                            组成因素，实际半导体FAB
+                            <br />
+                            自动化System的理解
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle pad">
+                          <ul>
+                            <li>
+                              <a>
+                                打造Smart Factory，
+                                <br />
+                                对制造系统的理解与决策。
+                              </a>
+                            </li>
+                            <li>
+                              <a>
+                                Smart Factory
+                                <br />
+                                系统的相连与智能化
+                              </a>
+                            </li>
+                            <li>
+                              <a>基于AI算法的半导体Factory</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a>
+                                Smart Factory的
+                                <br />
+                                组成因素案例
+                              </a>
+                            </li>
+                            <li>
+                              <a>尖端技术与制造的相遇</a>
+                            </li>
+                            <li>
+                              <a>半导体FAB自动化理解</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>Smart factory Fundamental</h4>
+                        <dl>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>认证内容</dt>
+                          <dd>
+                            Smart Factory的基本概念与
+                            <br />
+                            基于AI的半导体制造
+                            <br />
+                            IT系统理解
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>完成Course / Test及实习课题</dd>
+                        </dl>
+                        <button type="button" onClick={emptyAlert}>
+                          预计OPEN
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            半导体材料 <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            半导体材料的物理性质理解，
+                            <br />
+                            学习开发所需基础理论和半导体工艺 <br />
+                            应用
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul>
+                            <li>
+                              <a href="#none">尖端材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Lithography工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Metallization工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Solar Cell元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Thin Film工艺与材料</a>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <a href="#none">Image Sensor元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Etching工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">化合物半导体元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Doping工艺与材料</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge biz02 biz03">
+                        <h4>半导体材料Fundamental</h4>
+                        <dl>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
+                        </dl>
+                        <dl>
+                          <dt>认证内容</dt>
+                          <dd>
+                            半导体工艺/各元件核心
+                            <br />
+                            材料连接能力
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成Course/
+                            <br />
+                            Test及实习课题
+                          </dd>
+                        </dl>
+                        <button type="button">预计OPEN</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>
+                            AI半导体
+                            <br />
+                            Fundamental
+                          </h3>
+                          <p>
+                            处理人工智能(AI)的AI
+                            <br />
+                            硬件类型，运作原理和
+                            <br />
+                            HW开发所需基本概念理解
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
+                              >
+                                [Computer System] <br />
+                                <span>计算机运作理解</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[AI HW 개론] AI Model']}`}
+                              >
+                                [AI Hw 概论]
+                                <br />
+                                <span>AI Model</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[AI HW 이해] DNN HW 가속기 아키텍처']}`}
+                              >
+                                [AI Hw 理解] <br />
+                                <span> DNN HW加速器结构</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] Fundamentals']}`}
+                              >
+                                [Hw 开发] <br />
+                                <span>Fundamentals</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] CPU Micro-Architecture']}`}
+                              >
+                                CPU Micro-Architecture
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] SoC 설계 Flow']}`}
+                              >
+                                SoC设计Flow
+                              </Link>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[AI HW 개론] AI Hardware']}`}
+                              >
+                                [AI Hw 概论] <br />
+                                <span>AI Hardware</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[AI HW 개론] AI Platform']}`}
+                              >
+                                [AI Hw 概论] <br />
+                                <span>AI Platform</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[AI HW 이해] DNN 알고리즘 및 워크로드 특성']}`}
+                              >
+                                [AI Hw 理解]
+                                <br />
+                                <span>DNN算法与工作负载特点</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] Analog Design']}`}
+                              >
+                                [HW 开发]
+                                <br />
+                                <span>Analog Design</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] Digital Design']}`}
+                              >
+                                Digital Design
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[HW 개발] SoC 설계 사례 - Mobile Computing']}`}
+                              >
+                                SoC设计案例 <br />
+                                <span>Mobile Computing</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight03">
+                        <div className="semi_txt">
+                          <h3>半导体Tech Essential</h3>
+                          <p>
+                            非理工科成员也能轻易理解的半
+                            <br />
+                            导体术语和技术理解
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-mid">
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['한방에 이해하는 꿀잼 반도체']}`}
+                              >
+                                <strong>人气</strong>
+                                轻松理解的 <br />
+                                有趣半导体
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['반도체 What - 반도체 Tech 지식백과']}`}
+                              >
+                                半导体What
+                                <br />
+                                <span>半导体 Tech.知识百科</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다']}`}
+                              >
+                                [CEO特讲_SK海力士李锡熙CEO]
+                                <br />
+                                <span>半导体，开启未来</span>
+                              </Link>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['슬기로운 IT생활 - 전자기기의 구조와 동작원리']}`}
+                              >
+                                智慧的IT生活 <br />
+                                <span>电子产品的构造和运作原理</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['반도체 제대로 이해하기 - 기본편']}`}
+                              >
+                                正确理解半导体 <br />
+                                (基础篇)
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge">
+                        <h4>半导体Tech Essential</h4>
+                        <dl>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★</dd>
+                        </dl>
+                        <dl>
+                          <dt>认证内容</dt>
+                          <dd>
+                            半导体Tech核心概念与术
+                            <br />
+                            语学习
+                          </dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成4个Course/通过Badge
+                            <br />
+                            综合Test（80分以上）
+                          </dd>
+                        </dl>
+                        <a
+                          className="cha_btn"
+                          href="#none"
+                          style={{ fontWeight: 'bold' }}
+                        >
+                          挑战
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan">
+                        <div className="semi_txt">
+                          <h3>半导体Biz Essential</h3>
+                          <p>
+                            提供理解半导体Ecosystem和未来半
+                            <br />
+                            导体产业变化所必需的基础知识和
+                            <br />
+                            Insight
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle ver-top">
+                          <ul className="sm">
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <span>未来，大数据时代的竞争力提升</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <span>
+                                  半导体各产品类型的市场分析与AI半导体
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <strong>人气</strong>
+                                <span>半导体的未来与我们的准备</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [半导体Industry理解 Part2]
+                                <br />
+                                <span>在无限竞争中成为龙头的三星电子</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [半导体Industry理解 Part4]
+                                <br />
+                                <span>
+                                  Fabless和Foundry——在大型IDM之间的
+                                  <br />
+                                  机遇和战略
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                News深度分析
+                                <br />
+                                <span>美国大众制裁与半导体市场的变化</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="semi_badge biz">
+                        <h4>半导体Biz Essential</h4>
+                        <dl>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
+                        </dl>
+                        <dl>
+                          <dt>Level</dt>
+                          <dd>★</dd>
+                        </dl>
+                        <dl>
+                          <dt>认证内容</dt>
+                          <dd>具备半导体产业理解与分析所需的基础知识</dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成10个Course /<br />
+                            通过Badge
+                            <br />
+                            综合Test（80分以上）
+                          </dd>
+                        </dl>
+                        <a
+                          className="cha_btn"
+                          href="#none"
+                          style={{ fontWeight: 'bold' }}
+                        >
+                          挑战
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="semi_wrap">
+                    <div className="semi_belt">
+                      <div className="semi_chan conHeight02">
+                        <div className="semi_txt">
+                          <h3>半导体Introduction</h3>
+                          <p>
+                            以有趣的Story为初次开始学习的成员
+                            <br />
+                            们准备的半导体学习课程
+                          </p>
+                        </div>
+                      </div>
+                      <div className="semi_course">
+                        <div className="semi_course_middle">
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래']}`}
+                              >
+                                有用的半导体知识 <br />
+                                <span>半导体产业的过去、现在和未来</span>
+                              </Link>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <Link
+                                to={`${semiconductorLinks['반도체 클라쓰 - Keyword로 알아보는 반도체의 품격']}`}
+                              >
+                                半导体 CLASS <br />
+                                <span>用Keyword理解的半导体格调</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Environment',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges11"
+        >
+          <div className="college-cont-title energy">
+            <div className="belt sub">
+              <div className="label">Environment College</div>
+              <div className="strong">
+                从能源解决方案College进化的 “Environment College”
+              </div>
+              <div className="normal">
+                环境事业创造的全新世界，提高环境重要性的认知，学习碳中和、氢气、资源循
+                <br />
+                环、能源解决方案等所需专业知识，一步步走向Green Deep Change。
+                <br />
+                为在环境事业中获得成功我们要做的挑战——Green Start！
+              </div>
+
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/envir-player.png`}
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map energy">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link">
+                  点击各Badge与课程，即可进入到相应页面。
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  className="item-button"
+                  href="/suni-main/lecture/college/CLG0001c/channels/pages/1"
+                >
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/images/icon-course-book.png"
+                    alt=""
+                    className="ui image"
+                    style={{ display: 'inline-block' }}
+                  />
+                  直接进入课程
+                </a>
+              </div>
+            </div>
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-chn.png"
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map energe">
+            <div className="belt">
+              <div className="label energy">Environment College Curriculum</div>
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images//envir-con-02-chn.png"
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'BM Design & Storytelling',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title bmd">
+            <div className="belt sub">
+              <div className="label">BM Design &#38; Storytelling College</div>
+              <div className="strong">Ideate and Accelerate Deep Change!</div>
+              <div className="normal">
+                积极进行BM Design专家培养及Biz Financial Story
+                Design/Telling能力提升，
+                <br />
+                为集团/相关公司创造Deep Change成果做出贡献。
+              </div>
+              <ul className="tag-wrap">
+                <li># BM创新</li>
+                <li># Sustainable BM</li>
+                <li># BM Design</li>
+                <li># Portfolio Management</li>
+                <li># Financial Story</li>
+                <li># Storytelling</li>
+                <li># Stakeholder</li>
+              </ul>
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                {/* <p className="p_link" style={{ color: '#bd38a5' }}>
+                  点击各Badge与课程，即可进入到相应页面。
+                </p> */}
+              </div>
+              <div className="text-right-box">
+                <Link
+                  to="/lecture/college/CLG00020/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                    style={{ display: 'inline-block' }}
+                  />
+                  直接进入课程
+                </Link>
+              </div>
+            </div>
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co-11-1-chn.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">全部课程</div>
+              <div className="bm-top-btn">
+                <span className="bm-btn01">On-Line</span>
+                <span className="bm-btn02">Blended</span>
+                <span className="bm-btn03">Off-Line</span>
+              </div>
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/bm-level-line-chn.png"
+                  alt="세로: 전문가,코치 레벨3/ 심화과정 레벨2/ 기본과정 레벨1"
+                  style={{ float: 'left' }}
+                />
+                <div className="bm-wrap">
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <a href="#none">BM Design @ Work</a>
+                      </h3>
+                      <p>( 需先完成Becoming BM Designer课程 )</p>
+                      <ul className="list_flex">
+                        <li>
+                          <a href="#none">
+                            BM Design实习
+                            <br />
+                            （4周）
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            脱钩Workshop
+                            <br />
+                            (2日)
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            环境·能源
+                            <br />
+                            BM Design实习
+                            <br />
+                            (4周)
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box bg_type02">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN0007o">
+                          Storytelling @ Work
+                        </Link>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <a href="#none">CEO 1:1课程</a>
+                          </li>
+                          <li>
+                            <a href="#none">6R Storytelling Workshop</a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <a href="#none">
+                              Leader Storytelling
+                              <br />
+                              Workshop
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">FS专家研讨会</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <Link to="/lecture/college/CLG00020/channel/CHN00083">
+                          Becoming BM Designer
+                        </Link>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="#none">
+                            Ⅰ. As-Is BM
+                            <br />
+                            Sustainability
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">Ⅱ. BM环境分析</a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            Ⅲ. 新BM
+                            <br />
+                            挖掘战略
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <ul className="list_bm">
+                      <li>
+                        <a href="#none">Ⅰ. M&amp;A Overview</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅲ. 对象选择 &amp;
+                          <br />
+                          Deal Structuring
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅴ. Valuation</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅶ. Legal</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          [深化Ⅰ] Deal Structuring
+                          <br />
+                          &amp; Financing
+                        </a>
+                      </li>
+                    </ul>
+                    <ul className="list_bm">
+                      <li>
+                        <a href="#none">Ⅱ. M&amp;A Strategy</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅳ. Due Diligence</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅵ. Negotiation</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅷ. PMI &amp; Value-up</a>
+                      </li>
+                      <li>
+                        <a href="#none">[深化Ⅱ] Legal</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bm-bg-box line_type01 height100">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN0007p">
+                        Becoming Storyteller
+                      </Link>
+                    </h3>
+                    <div className="bm-flex">
+                      <ul className="list_bm">
+                        <li>
+                          <a href="#none">
+                            Financial Storytelling
+                            <br />
+                            全球案例研究
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            [Focus] Financial
+                            <br />
+                            Society Partnership
+                          </a>
+                        </li>
+                      </ul>
+                      <ul className="list_bm">
+                        <li>
+                          <a href="#none">从6R角度理解Stakeholder</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bm-flex">
+                  <div className="bm-bg-box line_type01">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN00082">
+                        BM Design Take-off
+                      </Link>
+                    </h3>
+                    <ul className="list_flex md">
+                      <li>
+                        <a href="#none">
+                          Ⅰ.Sustainable BM
+                          <br />
+                          创新的重要性
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅱ. BM Framework
+                          <br />
+                          &amp; SK BM创新努力
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅲ. BM / Deep Change
+                          <br />
+                          Design与实行
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bm-bg-box line_type01">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN00084">
+                        Defining Storytelling
+                      </Link>
+                    </h3>
+                    <ul className="list_flex md">
+                      <li>
+                        <a href="#none">Financial Story的理解</a>
+                      </li>
+                      <li>
+                        <a href="#none">Financial Acumen</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          从投资人角度看
+                          <br />
+                          Financial Story
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'SK Academy',
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges10"
+        >
+          <div className="college-cont-title skacademy">
+            <div className="belt">
+              <div className="img">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/player-area.svg`}
+                  alt=""
+                />
+              </div>
+              <div className="label">SK Academy College</div>
+              <div className="strong">
+                “如培育树木般培养人才、SK人才培养的摇篮”
+              </div>
+              <div className="normal">
+                SK Academy通过传播SKMS（SK Management System)/Values，
+                <br />
+                强化SK企业文化的基础，根据系统的培养Pipeline，培养未来经营者与Biz.专家。
+              </div>
+              <ul className="tag-wrap">
+                <li># 新员工</li>
+                <li># 邀请成员</li>
+                <li># 新任组长</li>
+                <li># 新任管理人员</li>
+                <li># 邀请管理人员</li>
+                <li># HLP</li>
+                <li># 女性领导</li>
+                <li># 力量 School</li>
+                <li># HR Conference</li>
+                <li># Global HR Seminar</li>
+              </ul>
+            </div>
+          </div>
+          <div className="college-cont-map skacademy">
+            <div className="belt">
+              <div className="label">全部课程</div>
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co10_CHN.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-tag skacademy">
+            <div className="belt">
+              <div className="label chip5">SKMS / SK Values</div>
+              <div className="strong">
+                新/邀请成员对象
+                SKMS/为核心价值传播和新任组长的幸福经营实践而进行的角色确立
+              </div>
+              <ul className="tag-wrap">
+                <li># 新员工</li>
+                <li># 邀请成员</li>
+                <li># 新任组长</li>
+                <li># 新任管理人员</li>
+                <li># 邀请管理人员</li>
+                <li># SKMS讲师培养</li>
+              </ul>
+              <div className="label chip6">未来经营者培养</div>
+              <div className="strong">
+                与SK Leadership Pipeline和Assessment相关联的未来经营者系统培养
+              </div>
+              <ul className="tag-wrap">
+                <li># HLP</li>
+                <li># 女性领导</li>
+              </ul>
+              <div className="label chip7">力量 School</div>
+              <div className="strong">
+                与mySUNI的Management
+                College相关联，强化集团通用职务和Biz.强化专业力量
+              </div>
+              <ul className="tag-wrap">
+                <li># 战略 Intermediate/Advanced</li>
+                <li># 营销 Intermediate/Advanced</li>
+                <li># 财务 Intermediate/Advanced</li>
+                <li># HR Intermediate/Advanced</li>
+                <li># 采购 Intermediate/Advanced</li>
+                <li># 法务</li>
+                <li># IP(知识产权)</li>
+                <li># M&amp;A</li>
+                <li># 事业开发</li>
+                <li># 协商</li>
+                <li># Biz. Contract</li>
+                <li># HR Analytics</li>
+                <li># HR Conference</li>
+                <li># Global HR Seminar</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+];
+
+interface Props extends RouteComponentProps {}
 
 interface State {
   activeIndex: number;
@@ -3137,6 +9477,19 @@ class CollegeView extends Component<Props, State> {
     activeIndex: 0,
   };
 
+  panes: any[] = koPanes;
+
+  constructor(props: Props) {
+    super(props);
+
+    if (SkProfileService.instance.skProfile.language === 'English') {
+      this.panes = EnPanes;
+    }
+    if (SkProfileService.instance.skProfile.language === 'Chinese') {
+      this.panes = ZhPanes;
+    }
+  }
+
   componentDidMount() {
     //
     this.setActiveTab();
@@ -3144,7 +9497,7 @@ class CollegeView extends Component<Props, State> {
     if (
       window.location.search === '?subTab=BM%20Design&Storytelling' ||
       window.location.search ===
-      '?subTab=BM%2520Design%2520%2526%2520Storytelling'
+        '?subTab=BM%2520Design%2520%2526%2520Storytelling'
     ) {
       this.setState({ activeIndex: 10 });
     }
@@ -3163,7 +9516,9 @@ class CollegeView extends Component<Props, State> {
     const subTab = queryParams.subTab as string;
 
     if (subTab) {
-      const activeIndex = panes.findIndex(pane => pane.menuItem === subTab);
+      const activeIndex = this.panes.findIndex(
+        (pane) => pane.menuItem === subTab
+      );
 
       if (activeIndex >= 0) {
         this.setState({ activeIndex });
@@ -3174,7 +9529,7 @@ class CollegeView extends Component<Props, State> {
   onTabChange(e: any, { activeIndex }: any) {
     //
     this.props.history.push(
-      routePaths.introductionCollege(panes[activeIndex].menuItem)
+      routePaths.introductionCollege(this.panes[activeIndex].menuItem)
     );
   }
 
@@ -3191,8 +9546,8 @@ class CollegeView extends Component<Props, State> {
           }}
         />
         <Tab
-          className="tab-menu-inner sub"
-          panes={panes}
+          className={`tab-menu-inner sub ${SkProfileService.instance.skProfile.language}`}
+          panes={this.panes}
           activeIndex={activeIndex}
           onTabChange={this.onTabChange}
         />
