@@ -1958,6 +1958,885 @@ const CollegeInnerTabView = () => {
     },
   ];
 
+  const panesZh = [
+    {
+      menuItem: 'Management College介绍',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channels/pages/1"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="belt">
+            <div className="belt_wrapper">
+              <div className="belt sub">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-01-ing-01-chn.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="belt college-mana-text">
+            <p>
+              <strong>考虑到个人的职务、水平和关心事项，</strong>
+              通过自主学习自身需要的Online Contents、On-Off综合或Offline W/S，
+              <br />
+              采用Discussion、内外部Case Study、Practice共享等
+              <strong>实操导向型学习方式。 </strong>
+              尤其是，我们计划不仅提供与外部Top
+              Expert的经验共享，还有SK管理层/专家的Instight经验共享的Exclusive
+              Contents。
+            </p>
+            <p className="p_link">点击各Badge，即可进入到相应页面。</p>
+          </div>
+
+          <div className="college-cont-map sub wrap01">
+            <div className="belt">
+              <Image
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-01-ing-02-chn.png"
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="college-cont-map sub pbtom">
+            <div className="belt">
+              <div className="label sub">
+                Management College Badge体系
+                <span>（截止21年2月，未来计划不断扩张）</span>
+              </div>
+
+              <div className="manage-main-wrap">
+                <div className="manage-main-table con01">
+                  <div className="manage-main-tit tit02">
+                    <h3>
+                      <strong>Level 1</strong>(Essential)
+                    </h3>
+                  </div>
+                  <div className="manage-badge-main">
+                    <p>
+                      为加强相应领域能力提供的基础（Foundation）课程，
+                      <br />
+                      旨在学习执行职务中领导者/成员必须了解的基本知识。
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="manage-main-wrap">
+                <div className="manage-main-table con01">
+                  <div className="manage-main-tit tit02">
+                    <h3>
+                      <strong>Level 2</strong>(Advanced)
+                    </h3>
+                  </div>
+                  <div className="manage-badge-main">
+                    <p>学习对象为具有5年以上相应职务经验的领导者/成员。</p>
+                    <p className="badge-descrip">
+                      <strong>学习现场所需的专业知识/knowhow。</strong>
+                    </p>
+                    <p className="badge-descrip">
+                      <strong>
+                        通过workshop等与专家和同事、成员互动，提高职务专业性。
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="chart_belt">
+                <div className="chart-left">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-chart.png"
+                    alt=""
+                  />
+                </div>
+                <div className="chart-right">
+                  <table style={{ borderCollapse: 'separate' }}>
+                    <tbody>
+                      <tr>
+                        <td colSpan={2}>ㅤ</td>
+                        <td className="badge-texts">
+                          <Link to="" onClick={emptyAlert}>
+                            数字融合
+                            <br />
+                            营销
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-30">
+                            组织Design
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="" onClick={emptyAlert}>
+                            采购
+                            <br />
+                            Advanced
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="" onClick={emptyAlert}>
+                            公司法
+                          </Link>
+                          <br />
+                          /<br />
+                          <Link to="/certification/badge/badge-detail/BADGE-4d">
+                            公平交易法
+                          </Link>
+                        </td>
+                        <td>ㅤ</td>
+                      </tr>
+                      <tr>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-46">
+                            Strategy
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-49">
+                            财务
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-4c">
+                            品牌
+                            <br />
+                            Essentials
+                          </Link>
+                          <br />
+                          /<br />
+                          <Link to="/certification/badge/badge-detail/BADGE-4a">
+                            营销
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-4b">
+                            HR
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-4g">
+                            采购
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts">
+                          <Link to="/certification/badge/badge-detail/BADGE-4e">
+                            IP Mindset
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                        <td className="badge-texts grey">
+                          <Link to="/certification/badge/badge-detail/BADGE-4f">
+                            谈判
+                            <br />
+                            Essentials
+                          </Link>
+                          <br />
+                          /<br />
+                          <Link to="/certification/badge/badge-detail/BADGE-44">
+                            Measurement
+                            <br />
+                            Essentials
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="badge-texts-sm">企业经营/战略</td>
+                        <td className="badge-texts-sm">财务/会计</td>
+                        <td className="badge-texts-sm">营销/Brand</td>
+                        <td className="badge-texts-sm">HR/组织设计</td>
+                        <td className="badge-texts-sm">SCM/Operation</td>
+                        <td className="badge-texts-sm">法务/IP</td>
+                        <td className="badge-texts-sm grey">Competency</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: '企业经营/战略',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00014"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>企业经营/战略</strong>
+            <div>
+              <ul>
+                <li>
+                  除各个职务Essential/深化Contents以外，还涵盖有关近来Deep
+                  Change的热门培训课程。
+                </li>
+                <li>
+                  借此不仅可以让想要职务成员具备系统化知识，还能加强战略性思维能力(Way
+                  of Thinking)。
+                </li>
+              </ul>
+              {/* <p className="p_link">
+                点击各Badge与课程，即可进入到相应页面。
+              </p> */}
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt=""
+                className="manage_cate"
+              />
+
+              {/* 컬리지 콘텐츠 전체 틀 */}
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <Image
+                      src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                      alt=""
+                    />
+                    <p>
+                      方法论/ <br />
+                      应用学习
+                    </p>
+                  </div>
+                  <Image src={`${PUBLIC_URL}/images/all/ing-12.png`} alt="" />
+                </div>
+
+                <div className="combined-topic">
+                  <div className="con_wrap sub03 ing_con01">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>AI/DT &#38; Strategy</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-1ha/view">
+                          <ul>
+                            <li>基于AI/DT的Deep Change战略</li>
+                            <li>- AI/DT战略的基本概念</li>
+                            <li>- AI/DT战略制定Process</li>
+                            <li>- 基于AI的DT战略意义</li>
+                            <li>- 重构AI/DT战略假设</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub02 ing_con02">
+                    <Image
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-02-ing-02-chn.png"
+                      alt=""
+                    />
+                  </div>
+
+                  <div className="con_wrap sub03 ing_con01">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>ESG &#38; Strategy</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-1h9/view">
+                          <ul>
+                            <li>基于SV的Deep Change战略</li>
+                            <li>- SV战略制定Process</li>
+                            <li>- 有关创造SV的讨论</li>
+                            <li>- SV创造内化方案</li>
+                            <li>- 在战略中融合SV</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub02 ing_con02">
+                    <Image
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-02-ing-03-chn.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 컬리지 콘텐츠 전체 틀 */}
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <Image
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                      alt=""
+                    />
+                    <p>概念理解</p>
+                  </div>
+                  <div className="con_wrap sub02">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-46">
+                        Strategy Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-9m5/view">
+                          <ul className="height_fixed">
+                            <li>战略101：欢迎，第一次接触战略吧？</li>
+                            <li>- 战略是什么？</li>
+                            <li>- 战略经营Process</li>
+                            <li>- 战略制定及执行</li>
+                            <li>- Strategy in SK</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a2s/view">
+                          <ul className="height_fixed">
+                            <li>All about Portfolio Strategy</li>
+                            <li>- Portfolio Mgmt의 Option</li>
+                            <li>- M&amp;A/JV</li>
+                            <li>- Separation/Divestiture</li>
+                            <li>- SK M&amp;A History &amp; Case</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a4f/view">
+                          <ul className="sub height_fixed">
+                            <li>战略制定的开始，战略环境分析</li>
+                            <li>- 外部环境分析 Tool &amp; Framework</li>
+                            <li>- 内部环境分析 Tool &amp; Framework</li>
+                            <li>- 经营环境分析实战Tip</li>
+                          </ul>
+                        </Link>
+                        <ul className="ul_img_none height_fixed">
+                          <li className="pd0">
+                            <Image
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-02-ing-05-chn.png"
+                              alt=""
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="combined-topic">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-02-ing-04-chn.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: '财务/会计',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0005w"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>财务/会计</strong>
+            <div>
+              <ul>
+                <li>
+                  旨在提高Finance/会计/税务领域的职务专业性，通过理论、SK内部Practice及Case分享，满足成员们的各种学习需求。
+                </li>
+                <li>
+                  由公司内部专家带领sk
+                  practice/Case挖掘与分享、扩大Workshop/Community活动，促进成员之间的知识分享，提高SK成员的Deep
+                  Change执行力。
+                </li>
+              </ul>
+              {/* <p className="p_link">
+                点击各Badge与课程，即可进入到相应页面。              
+              </p> */}
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt=""
+                className="manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <h2>Finance</h2>
+                  <h2>会计</h2>
+                  <h2>税务</h2>
+                </div>
+
+                <div className="combined-topic">
+                  <h2>Finance/会计/税务+a</h2>
+                </div>
+
+                <div className="ing_contents">
+                  <div className="level_icon">
+                    <Image
+                      src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                      alt=""
+                    />
+                    <p>
+                      方法论/ <br />
+                      应用学习
+                    </p>
+                  </div>
+                  <Image src={`${PUBLIC_URL}/images/all/ing-05.png`} alt="" />
+                </div>
+
+                <div className="fundamental-topic float-left">
+                  <div className="con_wrap sub02">
+                    <div className="level_icon">
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/lv-01.png`}
+                        alt=""
+                      />
+                      <p>概念理解</p>
+                    </div>
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-49">
+                        财务Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <Link to="/lecture/card/CARD-a4o/view">
+                              财务管理101
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a4j/view">
+                              企业价值是什么？如何评估？
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <Link to="/lecture/card/CARD-a65/view">
+                              好想了解内部会计管理制度
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a4x/view">
+                              第一次接触的成本/管理会计
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a4r/view">
+                              一点点简单按各个会计科目进行
+                              <br />
+                              会计处理
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-a2x/view">
+                              Fun-Fun会计
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="con_sub_box">
+                        <ul className="ul_one">
+                          <li>
+                            <Link to="/lecture/card/CARD-a6f/view">
+                              税务会计实务第一步
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <Link to="/lecture/card/CARD-6qg/view">
+                          组织设计的方向
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6b6/cube/CUBE-8ut/view/Video">
+                          组织设计Tip：Smart Design
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6m0/cube/CUBE-952/view/Video">
+                          组织设计有效性测量
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: '市场/品牌',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00018"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>市场/品牌</strong>
+            <div>
+              <ul>
+                <li>
+                  学习在企业将产品或服务销售给客户的过程中所创造的各种Value和相关“营销”，
+                  <br />
+                  还有区别于竞争公司/产品的无形资产、公司价值的象征——“品牌”，
+                  <br />
+                  提高相应职务SK成员的
+                  <strong>Deep Change执行力。</strong>
+                </li>
+              </ul>
+              <p className="p_link">点击各Badge与课程，即可进入到相应页面。</p>
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src={`${PUBLIC_URL}/images/all/enter-category.png`}
+                alt=""
+                className="manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <Image
+                      src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                      alt=""
+                    />
+                    <p>
+                      방법론/ <br />
+                      적용학습
+                    </p>
+                  </div>
+                  <Image src={`${PUBLIC_URL}/images/all/ing-06.png`} alt="" />
+                </div>
+                <div className="combined-topic">
+                  <div className="con_wrap sub03">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>디지털 융합 마케팅</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul>
+                          <li>디지털 고객 Data 마케팅</li>
+                          <li>
+                            <Link to="/lecture/card/CARD-9es/view">
+                              - Marketing DT Trend
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-9oj/view">
+                              - 데이터 기반 고객 분석
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-9oe/view">
+                              - 퍼포먼스 마케팅 분석
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-9fl/view">
+                              - 디지털 채널 경쟁력 분석
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-14l/view">
+                              - Global Digital Marketing Trends
+                            </Link>
+                          </li>
+                        </ul>
+
+                        <ul>
+                          <li>디지털마케팅 사례</li>
+                          <li>
+                            <Link to="/lecture/card/CARD-6mg/view">
+                              - Mastercard의 DT 성공전략
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-14j/view">
+                              - 디지털마케팅 Trend &#38; Case
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/lecture/card/CARD-9f7/view">
+                              - SK의 고객 Data 기반 Deep Change
+                            </Link>
+                          </li>
+                        </ul>
+
+                        <Link to="#" onClick={emptyAlert}>
+                          <ul>
+                            <li>AI 마케팅</li>
+                            <li>1. Reach : AI 로 고객을 유인하라</li>
+                            <li>2. ACT : 고객 지갑을 열게 하는 AI</li>
+                            <li>3. Convert : AI 로 단골 고객 만들기</li>
+                            <li>4. Engage : AI 기반 고객 예측</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="legal-wrap flex">
+                <div className="combined-topic">
+                  <div className="level_icon">
+                    <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                    <p>개념 이해</p>
+                  </div>
+                  <div className="con_wrap sub02">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4a">
+                        마케팅 Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul onClick={emptyAlert}>
+                          <li>
+                            <Link to="#">마케팅 Framework &#38; Tool</Link>
+                          </li>
+                          <li>
+                            <Link to="#">- 마케팅 환경 분석</Link>
+                          </li>
+                          <li>
+                            <Link to="#">- 마케팅 전략 수립</Link>
+                          </li>
+                          <li>
+                            <Link to="#">- 마케팅 실행 전술</Link>
+                          </li>
+                        </ul>
+                        <Link to="/lecture/card/CARD-a4g/view">
+                          <ul>
+                            <li>Global 마케팅 사례분석</li>
+                            <li>- Fedex Case : 나의 고객은 누구인가</li>
+                            <li>- Ebay Case : 왕의 귀환</li>
+                            <li>- Starbucks Case : 나무에서 떨어지다</li>
+                            <li>- Exxon Mobil Case : 영원한 것은 없다</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9ok/view">
+                          <ul>
+                            <li>키워드로 배우는 마케팅 101</li>
+                            <li>- Marketing Principles / 패러다임의 이동</li>
+                            <li>- Smart Marketing VS Silly Marketing</li>
+                            <li>- 마케팅의 3W</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-9ou/view">
+                          <ul>
+                            <li>사례로 배우는 B2B 마케팅 101</li>
+                            <li>- B2B 마케팅 개요</li>
+                            <li>- B2BC 마케팅 전략 수립 및 실행</li>
+                            <li>- B2B 시장의 디지털마케팅 커뮤니케이션</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-9op/view">
+                          <ul>
+                            <li>사례로 배우는 상품기획 101</li>
+                            <li>- 제품과 서비스</li>
+                            <li>- 제품 포트폴리오 비교</li>
+                            <li>- 제품 혁신전략 및 수명주기</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub02">
+                    {/* 콘텐츠 리스트 */}
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4c">
+                        브랜드 Essentials{' '}
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a06/view">
+                          <ul>
+                            <li>Brand What &#38; Why?</li>
+                            <li>- 브랜드의 중요성</li>
+                            <li>- Brand vs. Branding</li>
+                            <li>- 브랜드의 정의와 브랜드 Elements</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a08/view">
+                          <ul>
+                            <li>Source of Brand Equity</li>
+                            <li>- Brand Equity Pyramid와 Brand Awareness</li>
+                            <li>- Brand Association</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a0a/view">
+                          <ul>
+                            <li>전략적 브랜드 관리의 Key insight</li>
+                            <li>- 브랜드 관리에 대한 흔한 착각</li>
+                            <li>- Value : 브랜드 관리의 핵심 개념</li>
+                            <li>- Value Innovation</li>
+                            <li>- Holistic Branding &#38; HCEM</li>
+                            <li>- 브랜드 관리의 전략적 Framework</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a0b/view">
+                          <ul>
+                            <li>Brand Identify System</li>
+                            <li>- BIS의 기본요소</li>
+                            <li>- Brand Personality</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a0c/view">
+                          <ul>
+                            <li>
+                              (효과적 브랜드 관리를 위한) 소비자 행동의 이해
+                            </li>
+                            <li>- 소비자 정보처리와 기억</li>
+                            <li>- 소비단계별 고객욕구</li>
+                            <li>- 제품과 고객욕구의 연결</li>
+                            <li>- 소비자 조사 방법론</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a0d/view">
+                          <ul>
+                            <li>브랜드 Communication</li>
+                            <li>- Brand Comm.의 역할과 중요성</li>
+                            <li>- 환경 변화와 Brand Comm.의 변화</li>
+                            <li>- New IMC 전략</li>
+                            <li>- 브랜드 Comm. 전략수립 모델</li>
+                            <li>- Creative 전략</li>
+                            <li>- Media Creative 전략</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a0e/view">
+                          <ul>
+                            <li>DT시대 고객경험 브랜드전략</li>
+                            <li>- DT 시대, Lifestyle의 변화</li>
+                            <li>- 브랜드 전략에서의 Digital Native</li>
+                            <li>- SV 혹은 진정성 브랜드 전략</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a0g/view">
+                          <ul>
+                            <li>Brand Architecture 디자인</li>
+                            <li>- 브랜드 아키텍쳐 : What &#38; Why?</li>
+                            <li>- Brand Hierarchy 이해 및 분석</li>
+                            <li>- Key Decisions</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'HR/组织设计',
+      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    },
+    {
+      menuItem: 'SCM/Operation',
+      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    },
+    {
+      menuItem: '法务/IP',
+      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    },
+    {
+      menuItem: 'Competency',
+      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    },
+  ];
+
   return (
     <Tab
       menu={{ attached: false, tabular: false }}

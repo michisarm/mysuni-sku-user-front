@@ -1545,7 +1545,7 @@ const koPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/leadership-level.png`}
                   alt=""
-                  // style={{ cssFloat: 'left' }}
+                  style={{ flot: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -2960,7 +2960,7 @@ const koPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/bm-level-line.png`}
                   alt=""
-                  // style={{ cssFloat: 'left' }}
+                  style={{ float: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
@@ -4776,7 +4776,7 @@ const EnPanes = [
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
-                  // style={{ cssFloat: 'left' }}
+                  style={{ float: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -6274,7 +6274,7 @@ const EnPanes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/bm-level-line-eng.png`}
                   alt=""
-                  // style={{ cssFloat: 'left' }}
+                  style={{ float: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
@@ -8071,7 +8071,7 @@ const ZhPanes = [
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
-                  // style={{ cssFloat: 'left' }} 해당 style은 없는 style 이란 에러가 떠서 일단 주석 처리
+                  style={{ float: 'left' }}
                 />
                 <div className="link_wrapper leadership">
                   <div className="leadership_box bg1">
@@ -8357,8 +8357,9 @@ const ZhPanes = [
               <div className="label">未来半导体College</div>
               <div className="strong">半导体，开始展望未来。</div>
               <div className="normal">
-                  不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质，
-                  并<br/>展望由未来技术开启的世界。
+                不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质， 并
+                <br />
+                展望由未来技术开启的世界。
               </div>
               <div className="panopto sub">
                 <iframe
@@ -8415,28 +8416,52 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>AI Manufacturing<br/>Professional</h3>
-                          <p>半导体Engineering+AI/DT融合，<br/>具备制造IT系统最优化能力，<br/>AI manufacturing专家,<br/>Contiunous成长支持</p>
+                          <h3>
+                            AI Manufacturing
+                            <br />
+                            Professional
+                          </h3>
+                          <p>
+                            半导体Engineering+AI/DT融合，
+                            <br />
+                            具备制造IT系统最优化能力，
+                            <br />
+                            AI manufacturing专家,
+                            <br />
+                            Contiunous成长支持
+                          </p>
                         </div>
                       </div>
                       <div className="semi_course">
                         <div className="semi_course_middle">
                           <ul>
-                            <li><a href="#none">半导体FAB生产运营专家</a></li>
+                            <li>
+                              <a href="#none">半导体FAB生产运营专家</a>
+                            </li>
                             <li className="dashed">
-                                <Image src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`} alt="" className="ui image"/>
-                                <a href="#none">Smart SCM专家</a>
-                            </li> 
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`}
+                                alt=""
+                                className="ui image"
+                              />
+                              <a href="#none">Smart SCM专家</a>
+                            </li>
                           </ul>
                           <ul>
-                            <li><a href="#none">半导体FAB最优化专家</a></li>
-                              <li className="dashed">
-                                <Image
-                                  src={`${PUBLIC_URL}/images/badge-open-blue.png`}
-                                  alt=""
-                                />
-                                <a href="#none">AI manufacturing<br/>Project (PBL)</a>
-                              </li>
+                            <li>
+                              <a href="#none">半导体FAB最优化专家</a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                alt=""
+                              />
+                              <a href="#none">
+                                AI manufacturing
+                                <br />
+                                Project (PBL)
+                              </a>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -8447,21 +8472,28 @@ const ZhPanes = [
                           <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                            <dt>Level</dt>
-                            <dd>★ ★ ★</dd>
+                          <dt>Level</dt>
+                          <dd>★ ★ ★</dd>
                         </dl>
                         <dl>
-                            <dt>认证内容</dt>
-                            <dd>具备运用AI预测半导体需<br/>求、最佳生产计划及决策<br/>能力的专家</dd>
+                          <dt>认证内容</dt>
+                          <dd>
+                            具备运用AI预测半导体需
+                            <br />
+                            求、最佳生产计划及决策
+                            <br />
+                            能力的专家
+                          </dd>
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
                           <dd>
-                            完成Course/Project<br/>
+                            完成Course/Project
+                            <br />
                             执行及pass
                           </dd>
                         </dl>
-                          <button type="button">预计OPEN</button>
+                        <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
@@ -8474,7 +8506,11 @@ const ZhPanes = [
                             Tech Insight
                           </h3>
                           <p>
-                          “广泛理解各类未来半导体应用领域，<br/>为创造New Biz的<br/>‘未来Biz/Tech探索之窗’”
+                            “广泛理解各类未来半导体应用领域，
+                            <br />
+                            为创造New Biz的
+                            <br />
+                            ‘未来Biz/Tech探索之窗’”
                           </p>
                         </div>
                       </div>
@@ -8489,9 +8525,7 @@ const ZhPanes = [
                               </a>
                             </li>
                             <li>
-                              <a>
-                                汽车半导体，机会与挑战
-                              </a>
+                              <a>汽车半导体，机会与挑战</a>
                             </li>
                             <li>
                               <a>
@@ -8510,7 +8544,9 @@ const ZhPanes = [
                             </li>
                             <li>
                               <a>
-                                量子计算与量子密码<br/>技术的现在与未来
+                                量子计算与量子密码
+                                <br />
+                                技术的现在与未来
                               </a>
                             </li>
                           </ul>
@@ -8528,7 +8564,11 @@ const ZhPanes = [
                             Fundamental
                           </h3>
                           <p>
-                            Smart factory的基本概念及<br/>组成因素，实际半导体FAB<br/>自动化System的理解
+                            Smart factory的基本概念及
+                            <br />
+                            组成因素，实际半导体FAB
+                            <br />
+                            自动化System的理解
                           </p>
                         </div>
                       </div>
@@ -8537,36 +8577,35 @@ const ZhPanes = [
                           <ul>
                             <li>
                               <a>
-                                打造Smart Factory，<br/>对制造系统的理解与决策。
+                                打造Smart Factory，
+                                <br />
+                                对制造系统的理解与决策。
                               </a>
                             </li>
                             <li>
                               <a>
-                                Smart Factory<br/>系统的相连与智能化
+                                Smart Factory
+                                <br />
+                                系统的相连与智能化
                               </a>
                             </li>
                             <li>
-                              <a>
-                                基于AI算法的半导体Factory
-                              </a>
+                              <a>基于AI算法的半导体Factory</a>
                             </li>
                           </ul>
                           <ul>
                             <li>
                               <a>
-                                Smart Factory的<br/>
+                                Smart Factory的
+                                <br />
                                 组成因素案例
                               </a>
                             </li>
                             <li>
-                              <a>
-                                尖端技术与制造的相遇
-                              </a>
+                              <a>尖端技术与制造的相遇</a>
                             </li>
                             <li>
-                              <a>
-                                半导体FAB自动化理解
-                              </a>
+                              <a>半导体FAB自动化理解</a>
                             </li>
                           </ul>
                         </div>
@@ -8593,9 +8632,7 @@ const ZhPanes = [
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
-                          <dd>
-                            完成Course / Test及实习课题
-                          </dd>
+                          <dd>完成Course / Test及实习课题</dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
                           预计OPEN
@@ -8623,37 +8660,63 @@ const ZhPanes = [
                       <div className="semi_course">
                         <div className="semi_course_middle ver-top">
                           <ul>
-                            <li><a href="#none">尖端材料</a></li>
-                            <li><a href="#none">Lithography工艺与材料</a></li>
-                            <li><a href="#none">Metallization工艺与材料</a></li>
-                            <li><a href="#none">Solar Cell元件与材料</a></li>
-                            <li><a href="#none">Thin Film工艺与材料</a></li>
+                            <li>
+                              <a href="#none">尖端材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Lithography工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Metallization工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Solar Cell元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Thin Film工艺与材料</a>
+                            </li>
                           </ul>
                           <ul>
-                            <li><a href="#none">Image Sensor元件与材料</a></li>
-                            <li><a href="#none">Etching工艺与材料</a></li>
-                            <li><a href="#none">化合物半导体元件与材料</a></li>
-                            <li><a href="#none">Doping工艺与材料</a></li>
+                            <li>
+                              <a href="#none">Image Sensor元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Etching工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">化合物半导体元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Doping工艺与材料</a>
+                            </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz02 biz03">
                         <h4>半导体材料Fundamental</h4>
                         <dl>
-                            <dt>Badge类型</dt>
-                            <dd>未来Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                            <dt>Level</dt>
-                            <dd>★ ★</dd>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
                         </dl>
                         <dl>
-                            <dt>认证内容</dt>
-                            <dd>半导体工艺/各元件核心<br/>材料连接能力</dd>
+                          <dt>认证内容</dt>
+                          <dd>
+                            半导体工艺/各元件核心
+                            <br />
+                            材料连接能力
+                          </dd>
                         </dl>
                         <dl>
-                            <dt>获得条件</dt>
-                            <dd>完成Course/<br/>Test及实习课题</dd>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成Course/
+                            <br />
+                            Test及实习课题
+                          </dd>
                         </dl>
                         <button type="button">预计OPEN</button>
                       </div>
@@ -8664,9 +8727,17 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>AI半导体<br/>Fundamental</h3>
+                          <h3>
+                            AI半导体
+                            <br />
+                            Fundamental
+                          </h3>
                           <p>
-                            处理人工智能(AI)的AI<br/>硬件类型，运作原理和<br/>HW开发所需基本概念理解
+                            处理人工智能(AI)的AI
+                            <br />
+                            硬件类型，运作原理和
+                            <br />
+                            HW开发所需基本概念理解
                           </p>
                         </div>
                       </div>
@@ -8676,16 +8747,16 @@ const ZhPanes = [
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
-                              >₩
-                                [Computer System] <br />
-                                <span>컴퓨터 동작의 이해</span>
+                              >
+                                ₩ [Computer System] <br />
+                                <span>计算机运作理解</span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Model']}`}
                               >
-                                [AI HW 개론]
+                                [AI Hw 概论]
                                 <br />
                                 <span>AI Model</span>
                               </Link>
@@ -8694,15 +8765,15 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 이해] DNN HW 가속기 아키텍처']}`}
                               >
-                                [AI HW 이해] <br />
-                                <span> DNN HW 가속기 아키텍쳐</span>
+                                [AI Hw 理解] <br />
+                                <span> DNN HW加速器结构</span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] Fundamentals']}`}
                               >
-                                [HW 개발] <br />
+                                [Hw 开发] <br />
                                 <span>Fundamentals</span>
                               </Link>
                             </li>
@@ -8717,7 +8788,7 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] SoC 설계 Flow']}`}
                               >
-                                SoC 설계 Flow
+                                SoC设计Flow
                               </Link>
                             </li>
                           </ul>
@@ -8726,7 +8797,7 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Hardware']}`}
                               >
-                                [AI HW 개론] <br />
+                                [AI Hw 概论] <br />
                                 <span>AI Hardware</span>
                               </Link>
                             </li>
@@ -8734,7 +8805,7 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 개론] AI Platform']}`}
                               >
-                                [AI HW 개론] <br />
+                                [AI Hw 概论] <br />
                                 <span>AI Platform</span>
                               </Link>
                             </li>
@@ -8742,16 +8813,16 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[AI HW 이해] DNN 알고리즘 및 워크로드 특성']}`}
                               >
-                                [AI HW 이해]
+                                [AI Hw 理解]
                                 <br />
-                                <span>DNN 알고리즘 및 워크로드 특성</span>
+                                <span>DNN算法与工作负载特点</span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] Analog Design']}`}
                               >
-                                [HW 개발]
+                                [HW 开发]
                                 <br />
                                 <span>Analog Design</span>
                               </Link>
@@ -8767,7 +8838,7 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[HW 개발] SoC 설계 사례 - Mobile Computing']}`}
                               >
-                                SoC 설계 사례 <br />
+                                SoC设计案例 <br />
                                 <span>Mobile Computing</span>
                               </Link>
                             </li>
@@ -8781,10 +8852,11 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan conHeight03">
                         <div className="semi_txt">
-                          <h3>반도체 Tech Essential</h3>
+                          <h3>半导体Tech Essential</h3>
                           <p>
-                            非 이공계 구성원도 쉽게 이해할 수<br />
-                            있는 반도체 용어와 기술 이해
+                            非理工科成员也能轻易理解的半
+                            <br />
+                            导体术语和技术理解
                           </p>
                         </div>
                       </div>
@@ -8795,27 +8867,27 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['한방에 이해하는 꿀잼 반도체']}`}
                               >
-                                <strong>핵인싸</strong>
-                                한방에 이해하는 <br />
-                                꿀잼 반도체
+                                <strong>人气</strong>
+                                轻松理解的 <br />
+                                有趣半导体
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 What - 반도체 Tech 지식백과']}`}
                               >
-                                반도체 What
+                                半导体What
                                 <br />
-                                <span>반도체 Tech 지식백과</span>
+                                <span>半导体 Tech.知识百科</span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다']}`}
                               >
-                                [CEO특강_SK하이닉스 이석희 사장]
+                                [CEO特讲_SK海力士李锡熙CEO]
                                 <br />
-                                <span>반도체, 미래를 열다</span>
+                                <span>半导体，开启未来</span>
                               </Link>
                             </li>
                           </ul>
@@ -8824,48 +8896,54 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['슬기로운 IT생활 - 전자기기의 구조와 동작원리']}`}
                               >
-                                슬기로운 IT 생활 <br />
-                                <span>전자기기의 구조와 동작원리</span>
+                                智慧的IT生活 <br />
+                                <span>电子产品的构造和运作原理</span>
                               </Link>
                             </li>
                             <li>
                               <Link
                                 to={`${semiconductorLinks['반도체 제대로 이해하기 - 기본편']}`}
                               >
-                                반도체 제대로 이해하기 <br />
-                                (기본편)
+                                正确理解半导体 <br />
+                                (基础篇)
                               </Link>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge">
-                        <h4>반도체 Tech Essential</h4>
+                        <h4>半导体Tech Essential</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
-                          <dd>반도체 Tech 핵심개념 및 기술용어 습득</dd>
-                        </dl>
-                        <dl>
-                          <dt>획득 요건</dt>
+                          <dt>认证内容</dt>
                           <dd>
-                            4개 Course 이수 / Badge 종합 Test 통과 (80점 이상)
+                            半导体Tech核心概念与术
+                            <br />
+                            语学习
                           </dd>
                         </dl>
-                        <Link
+                        <dl>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成4个Course/通过Badge
+                            <br />
+                            综合Test（80分以上）
+                          </dd>
+                        </dl>
+                        <a
                           className="cha_btn"
-                          to="/certification/badge/badge-detail/BADGE-3y"
+                          href="#none"
                           style={{ fontWeight: 'bold' }}
                         >
-                          도전하기
-                        </Link>
+                          挑战
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -8874,11 +8952,13 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>반도체 Biz Essential</h3>
+                          <h3>半导体Biz Essential</h3>
                           <p>
-                            반도체 Ecosystem과 향후 <br />
-                            반도체 산업 변화를 이해하는데 <br />
-                            필요한 기본 지식과 Insight 제공
+                            提供理解半导体Ecosystem和未来半
+                            <br />
+                            导体产业变化所必需的基础知识和
+                            <br />
+                            Insight
                           </p>
                         </div>
                       </div>
@@ -8886,163 +8966,87 @@ const ZhPanes = [
                         <div className="semi_course_middle ver-top">
                           <ul className="sm">
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['News로 본 반도체 - 다가온 미래, Big Data 시대의 경쟁력 강화']}`}
-                              >
-                                [News로 본 반도체]
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <span>未来，大数据时代的竞争力提升</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
                                 <br />
                                 <span>
-                                  다가온 미래, Big Data시대의 경쟁력 강화
+                                  半导体各产品类型的市场分析与AI半导体
                                 </span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['News로 본 반도체 - 반도체 제품 분류별 시장 분석과 AI 반도체']}`}
-                              >
-                                [News로 본 반도체] <br />
-                                <span>
-                                  반도체 제품 분류별 시장 분석과 AI반도체
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['News로 본 반도체 - 반도체의 미래와 우리의 준비']}`}
-                              >
-                                [News로 본 반도체]
+                              <a href="#none">
+                                [从News了解半导体]
                                 <br />
-                                <strong>핵인싸</strong>
-                                <span>반도체의 미래와 우리의 준비</span>
-                              </Link>
+                                <strong>人气</strong>
+                                <span>半导体的未来与我们的准备</span>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 Industry 이해 Part2. 무모한 도전에서 챔피언이 된 삼성전자']}`}
-                              >
-                                [반도체 Industry 이해 Part2] <br />
-                                <span>
-                                  무모한 도전에서 챔피언이 된 삼성전자
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 Industry 이해 Part4. 펩리스와 파운드리- 거대한 IDM 사이의 기회와 전략']}`}
-                              >
-                                [반도체 Industry 이해 Part4] <br />
-                                <span>
-                                  펩리스와 파운드리 - 거대한 IDM사이의 <br />
-                                  기회와 전략
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['News 심층분석 - 미국의 대중 제재와 반도체 시장의 변화']}`}
-                              >
-                                News 심층 분석 <br />
-                                <span>
-                                  미국의 대중 제재와 반도체 시장의 변화
-                                </span>
-                              </Link>
-                            </li>
-                          </ul>
-                          <ul className="sm">
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['News로 본 반도체 - Data Centric World']}`}
-                              >
-                                [News로 본 반도체]
+                              <a href="#none">
+                                [半导体Industry理解 Part2]
                                 <br />
-                                <span>Data Centric World</span>
-                              </Link>
+                                <span>在无限竞争中成为龙头的三星电子</span>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['News로 본 반도체 - 반도체 Value Chain In-depth 분석']}`}
-                              >
-                                [News로 본 반도체]
-                                <br />
-                                <span>반도체 Value Chain In-depth 분석</span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 Industry 이해 Part1. 반도체 산업의 기본 개념과 시장 경쟁구도']}`}
-                              >
-                                [반도체 Industry 이해 Part1]
+                              <a href="#none">
+                                [半导体Industry理解 Part4]
                                 <br />
                                 <span>
-                                  반도체 산업의 기본 개념과 시장 경쟁구도
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 Industry 이해 Part3. CPU의 강자 인텔의 과거 현재 미래']}`}
-                              >
-                                [반도체 Industry 이해 Part3]
-                                <br />
-                                <span>CPU의 강자 인텔의 과거 현재 미래</span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 Industry 이해 Part5. 무한 경쟁시대의 미래 전망 - 반도체 기업들의 도전과 과제']}`}
-                              >
-                                [반도체 Industry 이해 Part5]
-                                <br />
-                                <span>
-                                  무한 경쟁시대의 미래전망 - 반도체 기업들의{' '}
+                                  Fabless和Foundry——在大型IDM之间的
                                   <br />
-                                  도전과 과제
+                                  机遇和战略
                                 </span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Covid-19이 반도체 Supply Chain에 미치는 영향']}`}
-                              >
-                                Covid-19이 반도체 Supply Chain에 <br />
-                                미치는 영향
-                              </Link>
+                              <a href="#none">
+                                News深度分析
+                                <br />
+                                <span>美国大众制裁与半导体市场的变化</span>
+                              </a>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz">
-                        <h4>반도체 Biz Essential</h4>
+                        <h4>半导体Biz Essential</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
-                          <dd>
-                            반도체 산업 이해와 분석에 필요한 기본지식 확보
-                          </dd>
+                          <dt>认证内容</dt>
+                          <dd>具备半导体产业理解与分析所需的基础知识</dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>获得条件</dt>
                           <dd>
-                            10개 Course 이수 /<br />
-                            Badge 종합 Test 통과
+                            完成10个Course /<br />
+                            通过Badge
                             <br />
-                            (80점 이상)
+                            综合Test（80分以上）
                           </dd>
                         </dl>
-                        <Link
+                        <a
                           className="cha_btn"
+                          href="#none"
                           style={{ fontWeight: 'bold' }}
-                          to="/certification/badge/badge-detail/BADGE-3x"
                         >
-                          도전하기
-                        </Link>
+                          挑战
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -9051,11 +9055,11 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan conHeight02">
                         <div className="semi_txt">
-                          <h3>반도체 Introduction</h3>
+                          <h3>半导体Introduction</h3>
                           <p>
-                            재미있고 흥미로운 Story로, <br />
-                            반도체 학습을 처음 시작하는 <br />
-                            구성원들을 위한 과정
+                            以有趣的Story为初次开始学习的成员
+                            <br />
+                            们准备的半导体学习课程
                           </p>
                         </div>
                       </div>
@@ -9066,10 +9070,8 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래']}`}
                               >
-                                반쓸신잡 <br />
-                                <span>
-                                  반도체 산업의 과거, 현재 그리고 미래
-                                </span>
+                                有用的半导体知识 <br />
+                                <span>半导体产业的过去、现在和未来</span>
                               </Link>
                             </li>
                           </ul>
@@ -9078,8 +9080,8 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['반도체 클라쓰 - Keyword로 알아보는 반도체의 품격']}`}
                               >
-                                반도체 클라쓰 <br />
-                                <span>Keyword로 알아보는 반도체 품격</span>
+                                半导体 CLASS <br />
+                                <span>用Keyword理解的半导体格调</span>
                               </Link>
                             </li>
                           </ul>
@@ -9107,19 +9109,14 @@ const ZhPanes = [
             <div className="belt sub">
               <div className="label">Environment College</div>
               <div className="strong">
-                에너지솔루션 College에서 진화한 “Environment College”
+                从能源解决方案College进化的 “Environment College”
               </div>
               <div className="normal">
-                환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
-                제고하고,
+                环境事业创造的全新世界，提高环境重要性的认知，学习碳中和、氢气、资源循
                 <br />
-                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을
-                학습하여,
+                环、能源解决方案等所需专业知识，一步步走向Green Deep Change。
                 <br />
-                Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고
-                있습니다.
-                <br />
-                환경 사업의 성공을 위한 우리의 도전, Green Start!
+                为在环境事业中获得成功我们要做的挑战——Green Start！
               </div>
 
               <div className="panopto sub">
@@ -9131,11 +9128,32 @@ const ZhPanes = [
               </div>
             </div>
           </div>
-          <div className="college-cont-map energe">
+          <div className="college-cont-map energy">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link">
+                  点击各Badge与课程，即可进入到相应页面。
+                </p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  className="item-button"
+                  href="/suni-main/lecture/college/CLG0001c/channels/pages/1"
+                >
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/images/icon-course-book.png"
+                    alt=""
+                    className="ui image"
+                    style={{ display: 'inline-block' }}
+                  />
+                  直接进入课程
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-chn.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -9147,7 +9165,7 @@ const ZhPanes = [
               <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images//envir-con-02-chn.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -9171,12 +9189,13 @@ const ZhPanes = [
               <div className="label">BM Design &#38; Storytelling College</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
-                BM Design 전문가 양성 및 Biz Financial Story Design/ Telling
-                역량 강화를 적극 지원함으로써 <br />
-                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+                积极进行BM Design专家培养及Biz Financial Story
+                Design/Telling能力提升，
+                <br />
+                为集团/相关公司创造Deep Change成果做出贡献。
               </div>
               <ul className="tag-wrap">
-                <li># BM혁신</li>
+                <li># BM创新</li>
                 <li># Sustainable BM</li>
                 <li># BM Design</li>
                 <li># Portfolio Management</li>
@@ -9196,9 +9215,9 @@ const ZhPanes = [
           <div className="college-cont-map">
             <div className="belt fu">
               <div className="text-left-box">
-                <p className="p_link" style={{ color: '#bd38a5' }}>
-                  각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-                </p>
+                {/* <p className="p_link" style={{ color: '#bd38a5' }}>
+                  点击各Badge与课程，即可进入到相应页面。
+                </p> */}
               </div>
               <div className="text-right-box">
                 <Link
@@ -9210,35 +9229,23 @@ const ZhPanes = [
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
-                  과정 바로가기
+                  直接进入课程
                 </Link>
               </div>
             </div>
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/bmd_con_01.png`} alt="" />
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co-11-1-chn.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
 
           <div className="college-cont-map">
-            {/* <div className="belt fu">
-              <div className="text-left-box">
-                <p className="p_link" style={{color: '#bd38a5'}}>각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
-              </div>
-              <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00020/channels/pages/1"
-                  className="item-button"
-                >
-                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
-                  과정 바로가기
-                </Link>
-              </div>
-            </div> */}
-
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">全部课程</div>
               <div className="bm-top-btn">
                 <span className="bm-btn01">On-Line</span>
                 <span className="bm-btn02">Blended</span>
@@ -9246,38 +9253,40 @@ const ZhPanes = [
               </div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/bm-level-line.png`}
-                  alt=""
-                  // style={{ cssFloat: 'left' }}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/bm-level-line-chn.png"
+                  alt="세로: 전문가,코치 레벨3/ 심화과정 레벨2/ 기본과정 레벨1"
+                  style={{ float: 'left' }}
                 />
                 <div className="bm-wrap">
                   <div className="bm-flex">
                     <div className="bm-bg-box bg_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00081">
-                          BM Design @ Work
-                        </Link>
+                        <a href="#none">BM Design @ Work</a>
                       </h3>
-                      <p>( 사전 Becoming BM Designer 과정 이수 필수 )</p>
+                      <p>( 需先完成Becoming BM Designer课程 )</p>
                       <ul className="list_flex">
                         <li>
-                          <Link to="/lecture/card/CARD-a9s/view">
-                            BM Design 실습 <br />
-                            (4주)
-                          </Link>
+                          <a href="#none">
+                            BM Design实习
+                            <br />
+                            （4周）
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-abv/view">
-                            디커플링 Workshop <br />
-                            (2일)
-                          </Link>
+                          <a href="#none">
+                            脱钩Workshop
+                            <br />
+                            (2日)
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-abt/view">
-                            환경∙에너지 <br />
-                            BM Design 실습 <br />
-                            (4주)
-                          </Link>
+                          <a href="#none">
+                            环境·能源
+                            <br />
+                            BM Design实习
+                            <br />
+                            (4周)
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -9290,27 +9299,22 @@ const ZhPanes = [
                       <div className="bm-flex">
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/card/CARD-abm/cube/CUBE-crs/view/ClassRoomLecture">
-                              CEO 1:1 과정
-                            </Link>
+                            <a href="#none">CEO 1:1课程</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-abo/cube/CUBE-cru/view/ClassRoomLecture">
-                              6R Storytelling Workshop
-                            </Link>
+                            <a href="#none">6R Storytelling Workshop</a>
                           </li>
                         </ul>
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/card/CARD-abn/cube/CUBE-crt/view/ClassRoomLecture">
-                              Leader Storytelling <br />
+                            <a href="#none">
+                              Leader Storytelling
+                              <br />
                               Workshop
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-abp/cube/CUBE-crv/view/ClassRoomLecture">
-                              FS 전문가 심포지엄
-                            </Link>
+                            <a href="#none">FS专家研讨会</a>
                           </li>
                         </ul>
                       </div>
@@ -9326,177 +9330,154 @@ const ZhPanes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="/lecture/card/CARD-8c9/view">
-                            Ⅰ. As-Is BM <br />
+                          <a href="#none">
+                            Ⅰ. As-Is BM
+                            <br />
                             Sustainability
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-a8f/view">
-                            Ⅱ. BM 환경 분석
-                          </Link>
+                          <a href="#none">Ⅱ. BM环境分析</a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-8cb/view">
-                            Ⅲ. 신규 BM <br />
-                            발굴 전략
-                          </Link>
+                          <a href="#none">
+                            Ⅲ. 新BM
+                            <br />
+                            挖掘战略
+                          </a>
                         </li>
                       </ul>
                     </div>
                   </div>
 
                   <div className="bm-flex">
-                    <div className="bm-bg-box line_type01">
-                      <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007n">
-                          M&#38;A Design
-                        </Link>
-                      </h3>
-                      <div className="bm-flex">
-                        <ul className="list_bm">
-                          <li>
-                            <Link to="/lecture/card/CARD-a1p/view">
-                              Ⅰ. M&#38;A Overview
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a1w/view">
-                              Ⅲ. 대상 선정 &#38; <br />
-                              Deal Structuring
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a1y/view">
-                              Ⅴ. Valuation
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a20/view">
-                              Ⅶ. Legal
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              [심화I] Deal Structuring <br />
-                              &#38; Financing
-                            </Link>
-                          </li>
-                        </ul>
-                        <ul className="list_bm">
-                          <li>
-                            <Link to="/lecture/card/CARD-a22/view">
-                              Ⅱ. M&#38;A Strategy
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a1x/view">
-                              Ⅳ. Due Diligence
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a1z/view">
-                              Ⅵ. Negotiation
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a21/view">
-                              Ⅷ. PMI &#38; Value-up
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-a23/view">
-                              [심화Ⅱ] Legal
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="bm-bg-box line_type01 height100">
-                      <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007p">
-                          Becoming Storyteller
-                        </Link>
-                      </h3>
-                      <div className="bm-flex">
-                        <ul className="list_bm">
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              Financial Storytelling <br />
-                              글로벌 사례 연구
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/lecture/card/CARD-ac8/view">
-                              [Focus] Financial <br />
-                              Society Partnership
-                            </Link>
-                          </li>
-                        </ul>
-                        <ul className="list_bm">
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              6R 관점 Stakeholder 이해
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
+                    <ul className="list_bm">
+                      <li>
+                        <a href="#none">Ⅰ. M&amp;A Overview</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅲ. 对象选择 &amp;
+                          <br />
+                          Deal Structuring
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅴ. Valuation</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅶ. Legal</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          [深化Ⅰ] Deal Structuring
+                          <br />
+                          &amp; Financing
+                        </a>
+                      </li>
+                    </ul>
+                    <ul className="list_bm">
+                      <li>
+                        <a href="#none">Ⅱ. M&amp;A Strategy</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅳ. Due Diligence</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅵ. Negotiation</a>
+                      </li>
+                      <li>
+                        <a href="#none">Ⅷ. PMI &amp; Value-up</a>
+                      </li>
+                      <li>
+                        <a href="#none">[深化Ⅱ] Legal</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bm-bg-box line_type01 height100">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN0007p">
+                        Becoming Storyteller
+                      </Link>
+                    </h3>
+                    <div className="bm-flex">
+                      <ul className="list_bm">
+                        <li>
+                          <a href="#none">
+                            Financial Storytelling
+                            <br />
+                            全球案例研究
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            [Focus] Financial
+                            <br />
+                            Society Partnership
+                          </a>
+                        </li>
+                      </ul>
+                      <ul className="list_bm">
+                        <li>
+                          <a href="#none">从6R角度理解Stakeholder</a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
+                </div>
 
-                  <div className="bm-flex">
-                    <div className="bm-bg-box line_type01">
-                      <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00082">
-                          BM Design Take-off
-                        </Link>
-                      </h3>
-                      <ul className="list_flex md">
-                        <li>
-                          <Link to="/lecture/card/CARD-a8e/view">
-                            Ⅰ.Sustainable BM <br />
-                            혁신 중요성
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/lecture/card/CARD-a8g/view">
-                            Ⅱ. BM Framework <br />
-                            &#38; SK BM 혁신 노력
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/lecture/card/CARD-a8h/view">
-                            Ⅲ. BM / Deep Change <br />
-                            Design과 실행
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="bm-bg-box line_type01">
-                      <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00084">
-                          Defining Storytelling
-                        </Link>
-                      </h3>
-                      <ul className="list_flex md">
-                        <li>
-                          <Link to="#" onClick={emptyAlert}>
-                            Financial Story 이해
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/lecture/card/CARD-6z1/view">
-                            Financial Acumen
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/lecture/card/CARD-abr/cube/CUBE-crx/view/Video">
-                            투자자 관점에서 본 <br />
-                            Financial Story
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                <div className="bm-flex">
+                  <div className="bm-bg-box line_type01">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN00082">
+                        BM Design Take-off
+                      </Link>
+                    </h3>
+                    <ul className="list_flex md">
+                      <li>
+                        <a href="#none">
+                          Ⅰ.Sustainable BM
+                          <br />
+                          创新的重要性
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅱ. BM Framework
+                          <br />
+                          &amp; SK BM创新努力
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Ⅲ. BM / Deep Change
+                          <br />
+                          Design与实行
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bm-bg-box line_type01">
+                    <h3>
+                      <Link to="/lecture/college/CLG00020/channel/CHN00084">
+                        Defining Storytelling
+                      </Link>
+                    </h3>
+                    <ul className="list_flex md">
+                      <li>
+                        <a href="#none">Financial Story的理解</a>
+                      </li>
+                      <li>
+                        <a href="#none">Financial Acumen</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          从投资人角度看
+                          <br />
+                          Financial Story
+                        </a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -9522,25 +9503,24 @@ const ZhPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK아카데미 College</div>
+              <div className="label">SK Academy College</div>
               <div className="strong">
-                “나무를 키우듯, 인재를 키워온 SK인재육성의 산실”
+                “如培育树木般培养人才、SK人才培养的摇篮”
               </div>
               <div className="normal">
-                SK아카데미는 SKMS/Values 전파를 통해 SK 기업문화의 토대를
-                강화하고, <br />
-                체계적인 육성 Pipeline에 따라 미래 경영자와 Biz. 전문가를
-                육성합니다.
+                SK Academy通过传播SKMS（SK Management System)/Values，
+                <br />
+                强化SK企业文化的基础，根据系统的培养Pipeline，培养未来经营者与Biz.专家。
               </div>
               <ul className="tag-wrap">
-                <li># 신입사원</li>
-                <li># 영입구성원</li>
-                <li># 신임팀장</li>
-                <li># 신임임원</li>
-                <li># 영입임원</li>
+                <li># 新员工</li>
+                <li># 邀请成员</li>
+                <li># 新任组长</li>
+                <li># 新任管理人员</li>
+                <li># 邀请管理人员</li>
                 <li># HLP</li>
-                <li># 여성리더</li>
-                <li># 역량 School</li>
+                <li># 女性领导</li>
+                <li># 力量 School</li>
                 <li># HR Conference</li>
                 <li># Global HR Seminar</li>
               </ul>
@@ -9548,9 +9528,12 @@ const ZhPanes = [
           </div>
           <div className="college-cont-map skacademy">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">全部课程</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co10.svg`} alt="" />
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co10_CHN.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -9559,42 +9542,41 @@ const ZhPanes = [
             <div className="belt">
               <div className="label chip5">SKMS / SK Values</div>
               <div className="strong">
-                신입/영입구성원 대상 SKMS/핵심가치 전파와 신임팀장의 행복경영
-                실천을 위한 역할 정립
+                新/邀请成员对象
+                SKMS/为核心价值传播和新任组长的幸福经营实践而进行的角色确立
               </div>
               <ul className="tag-wrap">
-                <li># 신입사원</li>
-                <li># 영입구성원</li>
-                <li># 신임팀장</li>
-                <li># 신임임원</li>
-                <li># 영입임원</li>
-                <li># SKMS 강사양성</li>
+                <li># 新员工</li>
+                <li># 邀请成员</li>
+                <li># 新任组长</li>
+                <li># 新任管理人员</li>
+                <li># 邀请管理人员</li>
+                <li># SKMS讲师培养</li>
               </ul>
-              <div className="label chip6">미래경영자 육성</div>
+              <div className="label chip6">未来经营者培养</div>
               <div className="strong">
-                SK Leadership Pipeline 및 Assessment와 연계한 체계적인
-                미래경영자 육성
+                与SK Leadership Pipeline和Assessment相关联的未来经营者系统培养
               </div>
               <ul className="tag-wrap">
                 <li># HLP</li>
-                <li># 여성리더</li>
+                <li># 女性领导</li>
               </ul>
-              <div className="label chip7">역량 School</div>
+              <div className="label chip7">力量 School</div>
               <div className="strong">
-                mySUNI의 Management College와 연계, 그룹 공통 직무 및 Biz.
-                전문역량 강화
+                与mySUNI的Management
+                College相关联，强化集团通用职务和Biz.强化专业力量
               </div>
               <ul className="tag-wrap">
-                <li># 전략 Intermediate/Advanced</li>
-                <li># 마케팅 Intermediate/Advanced</li>
-                <li># 재무 Intermediate/Advanced</li>
+                <li># 战略 Intermediate/Advanced</li>
+                <li># 营销 Intermediate/Advanced</li>
+                <li># 财务 Intermediate/Advanced</li>
                 <li># HR Intermediate/Advanced</li>
-                <li># 구매 Intermediate/Advanced</li>
-                <li># 법무</li>
-                <li># IP(지식재산)</li>
-                <li># M&A</li>
-                <li># 사업개발</li>
-                <li># 협상</li>
+                <li># 采购 Intermediate/Advanced</li>
+                <li># 法务</li>
+                <li># IP(知识产权)</li>
+                <li># M&amp;A</li>
+                <li># 事业开发</li>
+                <li># 协商</li>
                 <li># Biz. Contract</li>
                 <li># HR Analytics</li>
                 <li># HR Conference</li>
