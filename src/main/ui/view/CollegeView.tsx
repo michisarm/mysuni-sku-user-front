@@ -6007,7 +6007,7 @@ const EnPanes = [
                           </ul>
                         </div>
                       </div>
-                      <div className="semi_badge biz">
+                      <div className="semi_badge h441">
                         <h4>Semiconductor Business Essentials</h4>
                         <dl>
                           <dt>Badge Types</dt>
