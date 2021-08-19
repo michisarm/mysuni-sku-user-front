@@ -144,7 +144,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                       {/*</strong>*/}
                       {/*<span>/</span>*/}
                       <strong>
-                        {testItem.preTotalPoint || testItem.totalPoint}
+                        {testItem.preSuccessPoint || testItem.preSuccessPoint}
                       </strong>
                       <PolyglotText
                         defaultString=" 점 이상"
@@ -318,7 +318,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                       {/*  id="Test-TestResult-총점"*/}
                       {/*/>{' '}*/}
                       <strong>
-                        {testItem.totalPoint}
+                        {testItem.successPoint}
                         <PolyglotText
                           defaultString=" 점 이상"
                           id="Test-TestResult-PassingPoint"
