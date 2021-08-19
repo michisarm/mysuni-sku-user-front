@@ -3587,7 +3587,7 @@ const EnPanes = [
               <div className="belt">
                 <div className="text-left-box">
                   <p className="p_link inno">
-                    Click each badge and course to go to the corresponding page.
+                    {/* Click each badge and course to go to the corresponding page. */}
                   </p>
                 </div>
                 <div className="text-right-box">
@@ -4162,7 +4162,7 @@ const EnPanes = [
             <div className="belt global flex mb50">
               <div className="text-left-box">
                 <p className="p_link global">
-                  Click each badge and course to go to the corresponding page.
+                  {/* Click each badge and course to go to the corresponding page. */}
                 </p>
               </div>
               <div className="text-right-box">
@@ -4750,7 +4750,7 @@ const EnPanes = [
             <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link ">
-                  Click each badge and course to go to the corresponding page.
+                  {/* Click each badge and course to go to the corresponding page. */}
                 </p>
               </div>
               <div className="text-right-box">
@@ -6026,7 +6026,9 @@ const EnPanes = [
           <div className="college-cont-map energy">
             <div className="belt fu">
               <div className="text-left-box">
-                {/* <p className="p_link">Click each badge and course to go to the corresponding page.</p> */}
+                <p className="p_link">
+                  {/* Click each badge and course to go to the corresponding page. */}
+                  </p>
               </div>
               <div className="text-right-box">
                 <Link
@@ -6775,7 +6777,7 @@ const ZhPanes = [
               <div className="belt">
                 <div className="text-left-box">
                   <p className="p_link inno">
-                    点击各Badge与课程，即可进入到相应页面。
+                    {/* 点击各Badge与课程，即可进入到相应页面。 */}
                   </p>
                 </div>
                 <div className="text-right-box">
@@ -7370,7 +7372,7 @@ const ZhPanes = [
             <div className="belt global flex mb50">
               <div className="text-left-box">
                 <p className="p_link global">
-                  点击各Badge与课程，即可进入到相应页面。
+                  {/* 点击各Badge与课程，即可进入到相应页面。 */}
                 </p>
               </div>
               <div className="text-right-box">
@@ -7917,7 +7919,7 @@ const ZhPanes = [
             <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link ">
-                  点击各Badge与课程，即可进入到相应页面。
+                  {/* 点击各Badge与课程，即可进入到相应页面。 */}
                 </p>
               </div>
               <div className="text-right-box">
@@ -8963,7 +8965,7 @@ const ZhPanes = [
             <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link">
-                  点击各Badge与课程，即可进入到相应页面。
+                  {/* 点击各Badge与课程，即可进入到相应页面。 */}
                 </p>
               </div>
               <div className="text-right-box">
@@ -9046,9 +9048,9 @@ const ZhPanes = [
           <div className="college-cont-map">
             <div className="belt fu">
               <div className="text-left-box">
-                {/* <p className="p_link" style={{ color: '#bd38a5' }}>
-                  点击各Badge与课程，即可进入到相应页面。
-                </p> */}
+                <p className="p_link" style={{ color: '#bd38a5' }}>
+                  {/* 点击各Badge与课程，即可进入到相应页面。 */}
+                </p>
               </div>
               <div className="text-right-box">
                 <Link

@@ -1318,7 +1318,7 @@ export const CollegeInnerEnTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1518,7 +1518,7 @@ export const CollegeInnerEnTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1688,7 +1688,7 @@ export const CollegeInnerEnTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1850,7 +1850,7 @@ export const CollegeInnerEnTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1997,7 +1997,7 @@ export const CollegeInnerEnTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -2369,7 +2369,7 @@ export const CollegeInnerZhTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -2538,7 +2538,7 @@ export const CollegeInnerZhTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -2688,7 +2688,7 @@ export const CollegeInnerZhTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -2833,7 +2833,7 @@ export const CollegeInnerZhTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -2967,7 +2967,7 @@ export const CollegeInnerZhTabDt = () => {
                 </li>
               </ul>
               <p className="p_link dt">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>

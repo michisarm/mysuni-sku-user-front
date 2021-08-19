@@ -927,7 +927,7 @@ export const CollegeInnerEnTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1094,7 +1094,7 @@ export const CollegeInnerEnTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1277,7 +1277,7 @@ export const CollegeInnerEnTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -1643,7 +1643,7 @@ export const CollegeInnerZhTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -1779,7 +1779,7 @@ export const CollegeInnerZhTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
@@ -1933,7 +1933,7 @@ export const CollegeInnerZhTabAi = () => {
                 </li>
               </ul>
               <p className="p_link ai">
-                点击各Badge与课程，即可进入到相应页面。
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
               </p>
             </div>
           </div>
