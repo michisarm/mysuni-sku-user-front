@@ -8354,14 +8354,11 @@ const ZhPanes = [
         >
           <div className="college-cont-title semicond">
             <div className="belt sub">
-              <div className="label">미래 반도체 College</div>
-              <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
+              <div className="label">未来半导体College</div>
+              <div className="strong">半导体，开始展望未来。</div>
               <div className="normal">
-                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{' '}
-                <br />
-                반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
-                할 수 <br />
-                있도록 도와드립니다.
+                  不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质，
+                  并<br/>展望由未来技术开启的世界。
               </div>
               <div className="panopto sub">
                 <iframe
@@ -8376,13 +8373,13 @@ const ZhPanes = [
                 />
               </div>
               <ul className="tag-wrap">
-                <li># 반도체 역사</li>
-                <li># 반도체 산업 전망</li>
-                <li># 반도체 용어</li>
-                <li># 반도체 기술 이론</li>
-                <li># 반도체 종류</li>
-                <li># 미래 기술</li>
-                <li># 반도체 Ecosystem</li>
+                <li># 半导体历史</li>
+                <li># 半导体产业展望</li>
+                <li># 半导体术语</li>
+                <li># 半导体技术理论</li>
+                <li># 半导体种类</li>
+                <li># 未来技术</li>
+                <li># 半导体Ecosystem</li>
               </ul>
             </div>
           </div>
@@ -8390,9 +8387,9 @@ const ZhPanes = [
           <div className="college-cont-map pbtom">
             <div className="belt fu">
               <div className="text-left-box">
-                <p className="p_link ">
+                {/* <p className="p_link ">
                   각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-                </p>
+                </p> */}
               </div>
               <div className="text-right-box">
                 <Link
@@ -8404,13 +8401,13 @@ const ZhPanes = [
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                   />
-                  과정 바로가기
+                  直接进入课程
                 </Link>
               </div>
             </div>
 
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">全部课程</div>
               <div className="semi-topBackground" />
               <div className="map">
                 <div className="semi-background">
@@ -8418,86 +8415,53 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>
-                            AI Manufacturing <br />
-                            Professional
-                          </h3>
-                          <p>
-                            반도체 Engineering + AI/DT접목, <br />
-                            제조 IT시스템 최적화 역량 확보로
-                            <br /> AI manufacturing 전문가로 <br />
-                            Continuous 성장 지원
-                          </p>
+                          <h3>AI Manufacturing<br/>Professional</h3>
+                          <p>半导体Engineering+AI/DT融合，<br/>具备制造IT系统最优化能力，<br/>AI manufacturing专家,<br/>Contiunous成长支持</p>
                         </div>
                       </div>
                       <div className="semi_course">
                         <div className="semi_course_middle">
                           <ul>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 FAB 생산 운영 전문가']}`}
-                              >
-                                반도체 FAB 생산 운영 전문가
-                              </Link>
-                            </li>
+                            <li><a href="#none">半导体FAB生产运营专家</a></li>
                             <li className="dashed">
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
-                                alt=""
-                              />
-                              <Link to="#" onClick={emptyAlert}>
-                                Smart SCM 전문가
-                              </Link>
-                            </li>
+                                <Image src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`} alt="" className="ui image"/>
+                                <a href="#none">Smart SCM专家</a>
+                            </li> 
                           </ul>
                           <ul>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 FAB 최적화 전문가']}`}
-                              >
-                                반도체 FAB 최적화 전문가
-                              </Link>
-                            </li>
-                            <li className="dashed">
-                              <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
-                                alt=""
-                              />
-                              <Link to="#" onClick={emptyAlert}>
-                                AI manufacturing <br />
-                                Project (PBL)
-                              </Link>
-                            </li>
+                            <li><a href="#none">半导体FAB最优化专家</a></li>
+                              <li className="dashed">
+                                <Image
+                                  src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                  alt=""
+                                />
+                                <a href="#none">AI manufacturing<br/>Project (PBL)</a>
+                              </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge">
                         <h4>AI Manufacturing Professional</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                          <dt>Level</dt>
-                          <dd>★ ★ ★</dd>
+                            <dt>Level</dt>
+                            <dd>★ ★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증내용</dt>
+                            <dt>认证内容</dt>
+                            <dd>具备运用AI预测半导体需<br/>求、最佳生产计划及决策<br/>能力的专家</dd>
+                        </dl>
+                        <dl>
+                          <dt>获得条件</dt>
                           <dd>
-                            AI 활용한 반도체 수요예측, 최적의 생산계획 및 의사결
-                            정 역량을 내재화한 전문가
+                            完成Course/Project<br/>
+                            执行及pass
                           </dd>
                         </dl>
-                        <dl>
-                          <dt>획득 요건</dt>
-                          <dd>
-                            Course 이수 / Project
-                            <br /> 수행 및 pass
-                          </dd>
-                        </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
-                        </button>
+                          <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
@@ -8510,10 +8474,7 @@ const ZhPanes = [
                             Tech Insight
                           </h3>
                           <p>
-                            미래 반도체 응용 분야별
-                            <br />폭 넓은 이해 및 New Biz 창출 위한
-                            <br />
-                            ‘미래 Biz/Tech 탐색의 장’
+                          “广泛理解各类未来半导体应用领域，<br/>为创造New Biz的<br/>‘未来Biz/Tech探索之窗’”
                           </p>
                         </div>
                       </div>
@@ -8521,47 +8482,36 @@ const ZhPanes = [
                         <div className="semi_course_middle ver-top">
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['AI반도체 - Next Tech Trend']}`}
-                              >
-                                AI반도체
+                              <a>
+                                AI半导体
                                 <br />
                                 <span>Next Tech Trend</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['자동차 반도체, 기회와 도전']}`}
-                              >
-                                자동차 반도체, 기회와 도전
-                              </Link>
+                              <a>
+                                汽车半导体，机会与挑战
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Next Generation Semiconductor Packaging Technology']}`}
-                              >
+                              <a>
                                 Next Generation Semiconductor
                                 <br />
                                 Packaging Technology
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Neuromorphic Computing : Challenges and Opportunities']}`}
-                              >
+                              <a>
                                 Neuromorphic Computing <br />
                                 <span>Challenges and Opportunities</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['양자 컴퓨팅과 양자 암호 기술의 현재와 미래']}`}
-                              >
-                                양자 컴퓨팅과 양자 암호 <br />
-                                기술의 현재와 미래
-                              </Link>
+                              <a>
+                                量子计算与量子密码<br/>技术的现在与未来
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -8578,9 +8528,7 @@ const ZhPanes = [
                             Fundamental
                           </h3>
                           <p>
-                            Smart factory의 기본개념 및 <br />
-                            구성요소, 실제 반도체 FAB <br />
-                            자동화 System 이해
+                            Smart factory的基本概念及<br/>组成因素，实际半导体FAB<br/>自动化System的理解
                           </p>
                         </div>
                       </div>
@@ -8588,53 +8536,37 @@ const ZhPanes = [
                         <div className="semi_course_middle pad">
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Smart Factory구현을 위한 제조 시스템 이해와 의사결정']}`}
-                              >
-                                Smart Factory 구현을 위한 <br />
-                                제조 시스템 이해와 의사결정
-                              </Link>
+                              <a>
+                                打造Smart Factory，<br/>对制造系统的理解与决策。
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Smart Factory 시스템의 연결과 지능화']}`}
-                              >
-                                Smart Factory <br />
-                                시스템의 연결과 지능화
-                              </Link>
+                              <a>
+                                Smart Factory<br/>系统的相连与智能化
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['AI 알고리즘 기반 반도체 Factory']}`}
-                              >
-                                AI 알고리즘 기반
-                                <br />
-                                반도체 Factory
-                              </Link>
+                              <a>
+                                基于AI算法的半导体Factory
+                              </a>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['Smart Factory의 구성요소와 사례']}`}
-                              >
-                                Smart Factory의 <br />
-                                구성요소와 사례
-                              </Link>
+                              <a>
+                                Smart Factory的<br/>
+                                组成因素案例
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['첨단 기술과 제조의 만남']}`}
-                              >
-                                첨단 기술과 제조의 만남
-                              </Link>
+                              <a>
+                                尖端技术与制造的相遇
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 FAB 자동화 이해']}`}
-                              >
-                                반도체 FAB 자동화 이해
-                              </Link>
+                              <a>
+                                半导体FAB自动化理解
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -8642,31 +8574,31 @@ const ZhPanes = [
                       <div className="semi_badge">
                         <h4>Smart factory Fundamental</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
                           <dt>Level</dt>
                           <dd>★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증내용</dt>
+                          <dt>认证内容</dt>
                           <dd>
-                            Smart Factory의 기본
+                            Smart Factory的基本概念与
                             <br />
-                            개념과 AI 기반 반도체 제조
+                            基于AI的半导体制造
                             <br />
-                            IT시스템 이해
+                            IT系统理解
                           </dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
+                          <dt>获得条件</dt>
                           <dd>
-                            Course 이수 / Test 및<br /> 실습과제 수행
+                            完成Course / Test及实习课题
                           </dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
+                          预计OPEN
                         </button>
                       </div>
                     </div>
@@ -8677,114 +8609,53 @@ const ZhPanes = [
                       <div className="semi_chan">
                         <div className="semi_txt">
                           <h3>
-                            반도체 소재 <br />
+                            半导体材料 <br />
                             Fundamental
                           </h3>
                           <p>
-                            반도체 소재의 물성 이해 및 개발에
+                            半导体材料的物理性质理解，
                             <br />
-                            필요한 기초 이론과 반도체 공정 응용을 <br />
-                            포괄적으로 학습
+                            学习开发所需基础理论和半导体工艺 <br />
+                            应用
                           </p>
                         </div>
                       </div>
                       <div className="semi_course">
                         <div className="semi_course_middle ver-top">
                           <ul>
-                            <li>
-                              <Link to={`${semiconductorLinks['첨단 소재']}`}>
-                                첨단 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Lithography 공정 및 소재']}`}
-                              >
-                                Lithography 공정 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Metallization 공정 및 소재']}`}
-                              >
-                                Metallization 공정 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Solar Cell 소자 및 소재']}`}
-                              >
-                                Solar Cell 소자 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Thin Film 공정 및 소재']}`}
-                              >
-                                Thin Film 공정 및 소재
-                              </Link>
-                            </li>
+                            <li><a href="#none">尖端材料</a></li>
+                            <li><a href="#none">Lithography工艺与材料</a></li>
+                            <li><a href="#none">Metallization工艺与材料</a></li>
+                            <li><a href="#none">Solar Cell元件与材料</a></li>
+                            <li><a href="#none">Thin Film工艺与材料</a></li>
                           </ul>
                           <ul>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Image Sensor 소자 및 소재']}`}
-                              >
-                                Image Sensor 소자 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Etching 공정 및 소재']}`}
-                              >
-                                Etching 공정 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['화합물 반도체 소자 및 소재']}`}
-                              >
-                                화합물 반도체 소자 및 소재
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={`${semiconductorLinks['Doping 공정 및 소재']}`}
-                              >
-                                Doping 공정 및 소재
-                              </Link>
-                            </li>
+                            <li><a href="#none">Image Sensor元件与材料</a></li>
+                            <li><a href="#none">Etching工艺与材料</a></li>
+                            <li><a href="#none">化合物半导体元件与材料</a></li>
+                            <li><a href="#none">Doping工艺与材料</a></li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz02 biz03">
-                        <h4>반도체 소재 Fundamental</h4>
+                        <h4>半导体材料Fundamental</h4>
                         <dl>
-                          <dt>Badge 유형</dt>
-                          <dd>미래Biz</dd>
+                            <dt>Badge类型</dt>
+                            <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                          <dt>Level</dt>
-                          <dd>★ ★</dd>
+                            <dt>Level</dt>
+                            <dd>★ ★</dd>
                         </dl>
                         <dl>
-                          <dt>인증 내용</dt>
-                          <dd>
-                            반도체 공정 / 소자별 핵심
-                            <br />
-                            소재 연계 역량
-                          </dd>
+                            <dt>认证内容</dt>
+                            <dd>半导体工艺/各元件核心<br/>材料连接能力</dd>
                         </dl>
                         <dl>
-                          <dt>획득 요건</dt>
-                          <dd>
-                            Course 이수 / Test 및<br />
-                            과제 수행
-                          </dd>
+                            <dt>获得条件</dt>
+                            <dd>完成Course/<br/>Test及实习课题</dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          OPEN 예정
-                        </button>
+                        <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
@@ -8793,14 +8664,9 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>
-                            AI 반도체 <br />
-                            Fundamental
-                          </h3>
+                          <h3>AI半导体<br/>Fundamental</h3>
                           <p>
-                            인공지능(AI)을 처리하는 AI <br />
-                            하드웨어의 종류, 동작 원리와 <br />
-                            HW개발에 필요한 기본개념 이해
+                            处理人工智能(AI)的AI<br/>硬件类型，运作原理和<br/>HW开发所需基本概念理解
                           </p>
                         </div>
                       </div>
@@ -8810,7 +8676,7 @@ const ZhPanes = [
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
-                              >
+                              >₩
                                 [Computer System] <br />
                                 <span>컴퓨터 동작의 이해</span>
                               </Link>
