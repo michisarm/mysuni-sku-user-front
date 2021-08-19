@@ -2228,9 +2228,9 @@ export const CollegeInnerZhTabView = () => {
                   of Thinking)。
                 </li>
               </ul>
-              {/* <p className="p_link">
-                点击各Badge与课程，即可进入到相应页面。
-              </p> */}
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
             </div>
           </div>
 
@@ -2412,9 +2412,9 @@ export const CollegeInnerZhTabView = () => {
                   Change执行力。
                 </li>
               </ul>
-              {/* <p className="p_link">
-                点击各Badge与课程，即可进入到相应页面。              
-              </p> */}
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。               */}
+              </p>
             </div>
           </div>
 
@@ -2553,7 +2553,9 @@ export const CollegeInnerZhTabView = () => {
                   <strong>Deep Change执行力。</strong>
                 </li>
               </ul>
-              <p className="p_link">点击各Badge与课程，即可进入到相应页面。</p>
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
             </div>
           </div>
 
@@ -2822,9 +2824,9 @@ export const CollegeInnerZhTabView = () => {
                   组织设计Function中学习内容包括（1）组织设计核心概念/原则，Practical方法论；（2）Silo消除/成员幸福/新事业推进等组织设计层面的现实思考问题。
                 </li>
               </ul>
-              {/* <p className="p_link">
-              点击各Badge与课程，即可进入到相应页面。
-              </p> */}
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
             </div>
           </div>
 
@@ -4118,7 +4120,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -4324,7 +4326,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -4488,7 +4490,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -4804,7 +4806,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -5090,7 +5092,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -5425,7 +5427,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
@@ -5854,7 +5856,7 @@ export const CollegeInnerEnTabView = () => {
                 </li>
               </ul>
               <p className="p_link">
-                Click each badge and course to go to the corresponding page.
+                {/* Click each badge and course to go to the corresponding page. */}
               </p>
             </div>
           </div>
