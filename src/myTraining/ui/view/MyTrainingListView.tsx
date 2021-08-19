@@ -139,6 +139,7 @@ function MyTrainingListView({
               </a>
             </Table.Cell>
             <Table.Cell>{learningType || '-'} </Table.Cell>
+            {/*<Table.Cell>{myTraining.round} </Table.Cell>*/}
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>{formattedLearningTime}</Table.Cell>
             <Table.Cell>
