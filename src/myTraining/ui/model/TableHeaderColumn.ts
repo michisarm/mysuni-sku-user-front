@@ -47,6 +47,8 @@ export function inProgressPolyglot(s: string) {
     return getPolyglotText('취소/미이수일', 'learning-취소미이수-취소dt');
   } else if (s === '승인자 E-mail') {
     return getPolyglotText('승인자 E-mail', 'learning-개인학습-h이메일');
+  } else if (s === '차수') {
+    return getPolyglotText('차수', 'learning-학습예정-hdround');
   } else {
     return s;
   }
@@ -125,7 +127,7 @@ const TableHeaderColumn = {
     { key: 1, text: 'Collage' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
-    // { key: 4, text: '차수' },
+    { key: 4, text: '차수' },
     { key: 5, text: 'Level' },
     {
       key: 6,
