@@ -75,3 +75,47 @@
   background: url(https://image.mysuni.sk.com/suni-asset/public/introduction/images/level-line02_CHN.png)
     no-repeat !important;
 }
+
+#root
+  section.content
+  .tab-menu-inner.sub.English
+  .sub-tab-menu.management1
+  .ui.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.English
+  .sub-tab-menu.management1
+  .ui.menu
+  .item {
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 20px !important;
+  font-size: 14px !important;
+  letter-spacing: -0.42px !important;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.Chinese
+  .sub-tab-menu.management1
+  .ui.menu {
+  display: table;
+}
+
+#root
+  section.content
+  .tab-menu-inner.sub.Chinese
+  .sub-tab-menu.management1
+  .ui.menu
+  .item {
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 20px !important;
+  font-size: 14px !important;
+  letter-spacing: -0.42px !important;
+}

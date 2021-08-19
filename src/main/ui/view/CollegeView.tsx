@@ -8,7 +8,9 @@ import { reactAlert } from '@nara.platform/accent';
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
-import CollegeInnerTabView from './CollegeInnerTabView';
+import CollegeInnerTabView, {
+  CollegeInnerEnTabView,
+} from './CollegeInnerTabView';
 import CollegeInnerTabAi, {
   CollegeInnerEnTabAi,
   CollegeInnerZhTabAi,
@@ -5055,7 +5057,7 @@ const EnPanes = [
           </div>
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
-              <CollegeInnerTabView />
+              <CollegeInnerEnTabView />
             </div>
           </div>
         </div>
@@ -8748,7 +8750,7 @@ const ZhPanes = [
                               <Link
                                 to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
                               >
-                                ₩ [Computer System] <br />
+                                [Computer System] <br />
                                 <span>计算机运作理解</span>
                               </Link>
                             </li>
