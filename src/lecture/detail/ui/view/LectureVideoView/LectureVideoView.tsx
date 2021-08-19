@@ -508,7 +508,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                     textAlign: 'right',
                   }}
                 >
-                  자막언어
+                  <PolyglotText
+                    defaultString="자막언어"
+                    id="비디오-뷰-자막언어"
+                  />
                 </div>
                 <div
                   style={{ height: 4 }}
@@ -536,7 +539,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                   }}
                   className="video-container-children"
                 >
-                  사용 안함
+                  <PolyglotText
+                    defaultString="사용 안함"
+                    id="비디오-뷰-사용안함"
+                  />
                 </div>
                 {captions.map((c) => {
                   return (
