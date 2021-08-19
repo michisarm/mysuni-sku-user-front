@@ -10,6 +10,7 @@ import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import CollegeInnerTabView, {
   CollegeInnerEnTabView,
+  CollegeInnerZhTabView,
 } from './CollegeInnerTabView';
 import CollegeInnerTabAi, {
   CollegeInnerEnTabAi,
@@ -8211,7 +8212,7 @@ const ZhPanes = [
           </div>
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
-              <CollegeInnerTabView />
+              <CollegeInnerZhTabView />
             </div>
           </div>
         </div>

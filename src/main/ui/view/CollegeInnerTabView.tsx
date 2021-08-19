@@ -1958,7 +1958,23 @@ const CollegeInnerTabView = () => {
     },
   ];
 
-  const panesZh = [
+  return (
+    <Tab
+      menu={{ attached: false, tabular: false }}
+      panes={panes}
+      className="sub-tab-menu"
+    />
+  );
+};
+
+export const CollegeInnerZhTabView = () => {
+  const history = useHistory();
+
+  const pageMove = (path: string) => {
+    history.push(path);
+  };
+
+  const panes = [
     {
       menuItem: 'Management College介绍',
       render: () => (
@@ -2582,8 +2598,8 @@ const CollegeInnerTabView = () => {
                       alt=""
                     />
                     <p>
-                      방법론/ <br />
-                      적용학습
+                      方法论/ <br />
+                      应用学习
                     </p>
                   </div>
                   <Image src={`${PUBLIC_URL}/images/all/ing-06.png`} alt="" />
@@ -2591,64 +2607,50 @@ const CollegeInnerTabView = () => {
                 <div className="combined-topic">
                   <div className="con_wrap sub03">
                     {/* 콘텐츠 리스트 */}
-                    <h3>디지털 융합 마케팅</h3>
+                    <h3>数字融合营销</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
                         <ul>
-                          <li>디지털 고객 Data 마케팅</li>
+                          <li>数字客户Data营销</li>
                           <li>
-                            <Link to="/lecture/card/CARD-9es/view">
-                              - Marketing DT Trend
-                            </Link>
+                            <a href="#none">- Marketing DT Trend</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-9oj/view">
-                              - 데이터 기반 고객 분석
-                            </Link>
+                            <a href="#none">- 基于数据分析客户</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-9oe/view">
-                              - 퍼포먼스 마케팅 분석
-                            </Link>
+                            <a href="#none">- 绩效营销分析</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-9fl/view">
-                              - 디지털 채널 경쟁력 분석
-                            </Link>
+                            <a href="#none">- 数字渠道竞争力分析</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-14l/view">
+                            <a href="#none">
                               - Global Digital Marketing Trends
-                            </Link>
+                            </a>
                           </li>
                         </ul>
 
                         <ul>
-                          <li>디지털마케팅 사례</li>
+                          <li>数字营销案例</li>
                           <li>
-                            <Link to="/lecture/card/CARD-6mg/view">
-                              - Mastercard의 DT 성공전략
-                            </Link>
+                            <a href="#none">- Mastercard的DT成功战略</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-14j/view">
-                              - 디지털마케팅 Trend &#38; Case
-                            </Link>
+                            <a href="#none">- 数字营销 Trend &amp; Case</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-9f7/view">
-                              - SK의 고객 Data 기반 Deep Change
-                            </Link>
+                            <a href="#none">- SK基于客户Data的Deep Change</a>
                           </li>
                         </ul>
 
                         <Link to="#" onClick={emptyAlert}>
                           <ul>
-                            <li>AI 마케팅</li>
-                            <li>1. Reach : AI 로 고객을 유인하라</li>
-                            <li>2. ACT : 고객 지갑을 열게 하는 AI</li>
-                            <li>3. Convert : AI 로 단골 고객 만들기</li>
-                            <li>4. Engage : AI 기반 고객 예측</li>
+                            <li>AI营销</li>
+                            <li>1. Reach：用AI吸引客户</li>
+                            <li>2. ACT：让客户慷慨解囊的AI</li>
+                            <li>3. Convert：用AI形成忠诚客户</li>
+                            <li>4. Engage：基于AI预测客户</li>
                           </ul>
                         </Link>
                       </div>
@@ -2661,64 +2663,64 @@ const CollegeInnerTabView = () => {
                 <div className="combined-topic">
                   <div className="level_icon">
                     <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
-                    <p>개념 이해</p>
+                    <p>概念理解</p>
                   </div>
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
                       <Link to="/certification/badge/badge-detail/BADGE-4a">
-                        마케팅 Essentials
+                        营销 Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
                         <ul onClick={emptyAlert}>
                           <li>
-                            <Link to="#">마케팅 Framework &#38; Tool</Link>
+                            <Link to="#">营销 Framework &#38; Tool</Link>
                           </li>
                           <li>
-                            <Link to="#">- 마케팅 환경 분석</Link>
+                            <Link to="#">- 营销环境分析</Link>
                           </li>
                           <li>
-                            <Link to="#">- 마케팅 전략 수립</Link>
+                            <Link to="#">- 营销战略制定</Link>
                           </li>
                           <li>
-                            <Link to="#">- 마케팅 실행 전술</Link>
+                            <Link to="#">- 营销执行战术</Link>
                           </li>
                         </ul>
                         <Link to="/lecture/card/CARD-a4g/view">
                           <ul>
-                            <li>Global 마케팅 사례분석</li>
-                            <li>- Fedex Case : 나의 고객은 누구인가</li>
-                            <li>- Ebay Case : 왕의 귀환</li>
-                            <li>- Starbucks Case : 나무에서 떨어지다</li>
-                            <li>- Exxon Mobil Case : 영원한 것은 없다</li>
+                            <li>Global营销案例分析</li>
+                            <li>- Fedex Case : 我的客户是谁？</li>
+                            <li>- Ebay Case : 王者归来</li>
+                            <li>- Starbucks Case : 从树上掉落</li>
+                            <li>- Exxon Mobil Case : “永恒”是不存在的</li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-9ok/view">
                           <ul>
-                            <li>키워드로 배우는 마케팅 101</li>
-                            <li>- Marketing Principles / 패러다임의 이동</li>
+                            <li>用关键词学习营销101</li>
+                            <li>- Marketing Principles / 模式移动</li>
                             <li>- Smart Marketing VS Silly Marketing</li>
-                            <li>- 마케팅의 3W</li>
+                            <li>- 营销的3W</li>
                           </ul>
                         </Link>
 
                         <Link to="/lecture/card/CARD-9ou/view">
                           <ul>
-                            <li>사례로 배우는 B2B 마케팅 101</li>
-                            <li>- B2B 마케팅 개요</li>
-                            <li>- B2BC 마케팅 전략 수립 및 실행</li>
-                            <li>- B2B 시장의 디지털마케팅 커뮤니케이션</li>
+                            <li>通过案例学习的B2B营销101</li>
+                            <li>- B2B营销概要</li>
+                            <li>- B2BC营销战略制定与执行</li>
+                            <li>- B2B市场的数字营销沟通</li>
                           </ul>
                         </Link>
 
                         <Link to="/lecture/card/CARD-9op/view">
                           <ul>
-                            <li>사례로 배우는 상품기획 101</li>
-                            <li>- 제품과 서비스</li>
-                            <li>- 제품 포트폴리오 비교</li>
-                            <li>- 제품 혁신전략 및 수명주기</li>
+                            <li>通过案例学习的产品策划101</li>
+                            <li>- 产品与服务</li>
+                            <li>- 产品组合比较</li>
+                            <li>- 产品创新战略与生命周期</li>
                           </ul>
                         </Link>
                       </div>
@@ -2731,7 +2733,7 @@ const CollegeInnerTabView = () => {
                     {/* 콘텐츠 리스트 */}
                     <h3>
                       <Link to="/certification/badge/badge-detail/BADGE-4c">
-                        브랜드 Essentials{' '}
+                        品牌Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
@@ -2739,9 +2741,9 @@ const CollegeInnerTabView = () => {
                         <Link to="/lecture/card/CARD-a06/view">
                           <ul>
                             <li>Brand What &#38; Why?</li>
-                            <li>- 브랜드의 중요성</li>
+                            <li>- 品牌的重要性</li>
                             <li>- Brand vs. Branding</li>
-                            <li>- 브랜드의 정의와 브랜드 Elements</li>
+                            <li>- 品牌的定义与品牌Elements</li>
                           </ul>
                         </Link>
 
@@ -2754,58 +2756,56 @@ const CollegeInnerTabView = () => {
                         </Link>
                         <Link to="/lecture/card/CARD-a0a/view">
                           <ul>
-                            <li>전략적 브랜드 관리의 Key insight</li>
-                            <li>- 브랜드 관리에 대한 흔한 착각</li>
-                            <li>- Value : 브랜드 관리의 핵심 개념</li>
+                            <li>战略品牌管理的Key Insight </li>
+                            <li>- 品牌管理中常见的错觉</li>
+                            <li>- Value : 品牌管理的核心概念</li>
                             <li>- Value Innovation</li>
-                            <li>- Holistic Branding &#38; HCEM</li>
-                            <li>- 브랜드 관리의 전략적 Framework</li>
+                            <li>- Holistic Branding &amp; HCEM</li>
+                            <li>- 品牌管理的战略性Framework</li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-a0b/view">
                           <ul>
                             <li>Brand Identify System</li>
-                            <li>- BIS의 기본요소</li>
+                            <li>- -BIS的基本要素</li>
                             <li>- Brand Personality</li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-a0c/view">
                           <ul>
-                            <li>
-                              (효과적 브랜드 관리를 위한) 소비자 행동의 이해
-                            </li>
-                            <li>- 소비자 정보처리와 기억</li>
-                            <li>- 소비단계별 고객욕구</li>
-                            <li>- 제품과 고객욕구의 연결</li>
-                            <li>- 소비자 조사 방법론</li>
+                            <li>（为有效管理品牌）理解消费者行为</li>
+                            <li>- 消费者信息处理与记忆</li>
+                            <li>- 各个消费阶段的客户需求</li>
+                            <li>- 产品与客户需求的连接</li>
+                            <li>- 消费者调查方法论</li>
                           </ul>
                         </Link>
                       </div>
                       <div className="con_sub_box">
                         <Link to="/lecture/card/CARD-a0d/view">
                           <ul>
-                            <li>브랜드 Communication</li>
-                            <li>- Brand Comm.의 역할과 중요성</li>
-                            <li>- 환경 변화와 Brand Comm.의 변화</li>
-                            <li>- New IMC 전략</li>
-                            <li>- 브랜드 Comm. 전략수립 모델</li>
-                            <li>- Creative 전략</li>
-                            <li>- Media Creative 전략</li>
+                            <li>品牌Communication</li>
+                            <li>- Brand Comm.的作用与重要性</li>
+                            <li>- 环境变化与Brand Comm.的变化</li>
+                            <li>- New IMC战略</li>
+                            <li>- 品牌Comm.战略制定模型</li>
+                            <li>- Creative战略</li>
+                            <li>- Media Creative战略</li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-a0e/view">
                           <ul>
-                            <li>DT시대 고객경험 브랜드전략</li>
-                            <li>- DT 시대, Lifestyle의 변화</li>
-                            <li>- 브랜드 전략에서의 Digital Native</li>
-                            <li>- SV 혹은 진정성 브랜드 전략</li>
+                            <li>DT时代客户体验品牌战略</li>
+                            <li>- DT时代，Lifestyle的变化</li>
+                            <li>- 品牌战略中的Digital Native</li>
+                            <li>- SV或真诚的品牌战略</li>
                           </ul>
                         </Link>
                         <Link to="/lecture/card/CARD-a0g/view">
                           <ul>
-                            <li>Brand Architecture 디자인</li>
-                            <li>- 브랜드 아키텍쳐 : What &#38; Why?</li>
-                            <li>- Brand Hierarchy 이해 및 분석</li>
+                            <li>Brand Architecture设计</li>
+                            <li>- 品牌架构 : What &amp; Why?</li>
+                            <li>- Brand Hierarchy理解与分析</li>
                             <li>- Key Decisions</li>
                           </ul>
                         </Link>
@@ -2821,19 +2821,1039 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: 'HR/组织设计',
-      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00013"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>HR/组织设计</strong>
+            <div>
+              <ul>
+                <li>
+                  HR
+                  Function中提供系统化学习内容，包括（1）基于HR实务的基础理解及方法论、Practice；（2）应对未来技术变化的HR
+                  Tech相关知识等，旨在提高HR负责人的业务执行力与Insight。
+                </li>
+                <li>
+                  组织设计Function中学习内容包括（1）组织设计核心概念/原则，Practical方法论；（2）Silo消除/成员幸福/新事业推进等组织设计层面的现实思考问题。
+                </li>
+              </ul>
+              {/* <p className="p_link">
+              点击各Badge与课程，即可进入到相应页面。
+              </p> */}
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src={`${PUBLIC_URL}/images/all/enter-category.png`}
+                alt=""
+                className="manage_cate"
+              />
+
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <h3>HR</h3>
+                  <h3>组织设计</h3>
+                  <div className="depth">
+                    <div className="con_wrap sub02 ing">
+                      <div className="level_icon">
+                        <Image
+                          src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                          alt=""
+                        />
+                        <p>
+                          方法论/ <br />
+                          应用学习
+                        </p>
+                      </div>
+                      <Image
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-05-img-01-chn.png"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <div className="depth">
+                    <div className="con_wrap sub01 depth">
+                      <h3>
+                        <Link to="/certification/badge/badge-detail/BADGE-30">
+                          组织Design
+                        </Link>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <Link to="/lecture/card/CARD-83u/view">
+                            <ul>
+                              <li>组织设计Workshop</li>
+                              <li>1. 组织设计Workshop</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-83p/view">
+                            <ul>
+                              <li>组织设计方法论</li>
+                              <li>1. 组织设计方法论 : Star Model</li>
+                              <li>2. 组织设计实务Approach</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-83o/view">
+                            <ul>
+                              <li>组织Self-Design</li>
+                              <li>1. 组织Self-Design : Why &#38; What</li>
+                              <li>2. 组织Self-Design 案例</li>
+                            </ul>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <Link to="/lecture/card/CARD-83t/view">
+                          组织设计实务Approach (中长期)
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-9aq/cube/CUBE-bt7/view/Video">
+                          两手抓组织设计理解
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6pt/cube/CUBE-98w/view/Video">
+                          未来Tech.企业的组织设计案例
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6ra/view">
+                          敏捷组织转型案例
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6r9/view">
+                          SV导向组织设计方案
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-qk/cube/CUBE-xg/view/Video">
+                          Org. Culture &#38; Leader
+                        </Link>
+                      </li>
+                    </ul>
+                    <Image
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-05-img-02-chn.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div className="combined-topic">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-05-img-03-chn.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+
+              <div className="legal-wrap">
+                <div className="fundamental-topic float-left">
+                  <div className="level_icon">
+                    <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                    <p>概念理解</p>
+                  </div>
+                  <div className="depth">
+                    <div className="con_wrap sub02 depth">
+                      <h3>
+                        <Link to="/certification/badge/badge-detail/BADGE-4b">
+                          HR Essentials
+                        </Link>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <Link to="/lecture/card/CARD-a6x/view">
+                            <ul>
+                              <li>人才获取</li>
+                              <li>1. 人力计划！为什么需要？</li>
+                              <li>2. 仔细确认招聘流程</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-a6y/view">
+                            <ul>
+                              <li>职务管理</li>
+                              <li>1. 职务是什么？</li>
+                              <li>2. 为什么需要职务分析和职务评价？</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-a72/view">
+                            <ul>
+                              <li>奖励</li>
+                              <li>1. 为进行奖励制度，必须要做的事</li>
+                              <li>2. 奖励制度如何变化？</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-a71/view">
+                            <ul>
+                              <li>绩效管理</li>
+                              <li>1. 绩效管理与评价，非做不可吗？</li>
+                              <li>2. 绩效管理流程核心概要！</li>
+                            </ul>
+                          </Link>
+
+                          <Link to="/lecture/card/CARD-a73/view">
+                            <ul>
+                              <li>Global HR</li>
+                              <li>1. 透彻理解驻在员制度</li>
+                              <li>2. 必须要了解的Global Staff管理</li>
+                            </ul>
+                          </Link>
+                          <Link to="/lecture/card/CARD-a74/view">
+                            <ul>
+                              <li>劳资关系</li>
+                              <li>1. 理解个体劳动关系</li>
+                              <li>2. 非正式员工制度的理解</li>
+                            </ul>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="depth">
+                    <div className="con_wrap sub02 depth">
+                      <h3>
+                        <Link to="/certification/badge/badge-detail/BADGE-30">
+                          조직 Design
+                        </Link>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <Link to="/lecture/card/CARD-83v/view">
+                            <ul>
+                              <li>组织设计的基本原则与案例</li>
+                              <li>1. 组织设计的基本原则</li>
+                              <li>2. 组织设计 New Trend</li>
+                              <li>3. 企业案例（MS，SKHY）</li>
+                            </ul>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <Link to="/lecture/card/CARD-6qg/view">
+                          组织设计的方向
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6b6/cube/CUBE-8ut/view/Video">
+                          组织设计Tip：Smart Design
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/lecture/card/CARD-6m0/cube/CUBE-952/view/Video">
+                          组织设计有效性测量
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
     },
     {
       menuItem: 'SCM/Operation',
-      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0007m"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>SCM/Operation</strong>
+            <div>
+              <ul>
+                <li>
+                  学习为了给客户及时并以低廉价格提供产品和差异化服务，提升经营活动效率的“供应链管理”，以提高相应职务的SK成员的Deep
+                  Change执行力。
+                </li>
+              </ul>
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src={`${PUBLIC_URL}/images/all/enter-category.png`}
+                alt=""
+                className="manage_cate"
+              />
+
+              {/* 컬리지 콘텐츠 전체 틀 */}
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub01">
+                    <div className="level_icon">
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                        alt=""
+                      />
+
+                      <p>
+                        方法论/ <br />
+                        应用学习
+                      </p>
+                    </div>
+                    <h3>采购Advanced</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-9qk/view">
+                          <ul>
+                            <li>为让企业成功的战略性采购</li>
+                            <li>- 企业战略与企业竞争力理解</li>
+                            <li>- 与企业战略一致的采购战略</li>
+                            <li>- 企业的成功与采购的作用</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qj/view">
+                          <ul>
+                            <li>战略性供应商管理</li>
+                            <li>- 管理供应商的两种方法 - 合作与竞争</li>
+                            <li>- 供应商培养与成果共享制</li>
+                            <li>- SRM &amp; 棋盘博弈采购法的理解</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qi/view">
+                          <ul>
+                            <li>采购与其他部门的合作与联系</li>
+                            <li>- 开发与采购的联系 - 开发采购</li>
+                            <li>- 其他部门与采购的联系</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-9qh/view">
+                          <ul>
+                            <li>成功的采购谈判</li>
+                            <li>- 谈判是什么？</li>
+                            <li>- 意见针锋相对，如何解决？</li>
+                            <li>- 谈判陷入胶着，如何达成共识？</li>
+                            <li>- 做大蛋糕的谈判，如何做到？</li>
+                            <li>- 没有目标和战略就去谈判？必败无疑！</li>
+                            <li>- 如何说服完全不为所动的对方？</li>
+                            <li>- 决定谈判能力的最重要的因素？</li>
+                            <li>- 如何在谈判中取得比预期更好的成果？</li>
+                            <li>- 说服对方最强的武器是？</li>
+                            <li>- 如何与垄断性甲方供应商谈判？</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Image src={`${PUBLIC_URL}/images/all/ing-04.png`} alt="" />
+
+                  <div className="con_wrap sub02">
+                    <div className="level_icon">
+                      <Image
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-img-01-chn.png"
+                        alt=""
+                      />
+                      <p>概念理解</p>
+                    </div>
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4g">
+                        采购Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-9qt/view">
+                          <ul>
+                            <li>我是真正的采购者吗？采购的本质</li>
+                            <li>- 对采购业务的理解</li>
+                            <li>- 理解采购业务的5R</li>
+                            <li>- 采购业务的核心</li>
+                            <li>- 发展变化的采购管理</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qp/view">
+                          <ul>
+                            <li>
+                              不知道就会惹出麻烦的采购合同/采购相关法律理解
+                            </li>
+                            <li>- 采购业务中需遵守的道德</li>
+                            <li>- 对采购合同的理解</li>
+                            <li>- 转包法与共赢合作法</li>
+                            <li>- 转包价格，必知事项</li>
+                            <li>- 禁止要求提供技术材料，要注意的是？</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qr/view">
+                          <ul>
+                            <li>我在采购什么？采购品类的理解与管理</li>
+                            <li>- 采购品类的分类与管理</li>
+                            <li>- 根据采购品类需采取的材料管理战略</li>
+                            <li>- 对服务/外包品类的理解</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qn/view">
+                          <ul>
+                            <li>切不可大意，采购风险管理</li>
+                            <li>- Intro : tylenol风险管理</li>
+                            <li>- 采购风险管理及采购连续性计划</li>
+                            <li>- 采购材料价格变动风险管理</li>
+                            <li>- 疫情时代与采购风险管理</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qm/view">
+                          <ul>
+                            <li>数字采购创新</li>
+                            <li>- 对数字创新的核心理解</li>
+                            <li>- 数字采购创新方案</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-9qs/view">
+                          <ul>
+                            <li>理解与运用采购业务流程</li>
+                            <li>- 理解与应用采购业务流程</li>
+                            <li>- 供应商探索与评估</li>
+                            <li>- RFP、RFQ制作方法与注意事项</li>
+                            <li>- 投标步骤管理与评估</li>
+                            <li>- 供应商选择及签合同</li>
+                            <li>- 对PO制作的理解</li>
+                            <li>- 合同签署后的采购活动</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qo/view">
+                          <ul>
+                            <li>
+                              越了解越赚钱，为采购者量身打造的财务/会计/物流
+                            </li>
+                            <li>- 账户注册管理</li>
+                            <li>- Incoterms 2020理解与应用</li>
+                            <li>- 供应商信用和财务分析</li>
+                            <li>- 贸易保险/进口保险实务</li>
+                            <li>- 进口通关、关税与附加税</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9qq/view">
+                          <ul>
+                            <li>采购成本管理</li>
+                            <li>- 采购成本战略意义</li>
+                            <li>- 价格分析即价格适当性判断</li>
+                            <li>- 成本分析的意义与成本分析方法</li>
+                            <li>- 理解TCO ( Total Cost of Ownership ) </li>
+                            <li>- 运用TCO ( Total Cost of Ownership )</li>
+                            <li>- 目标成本及价值分析</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-9ql/view">
+                          <ul>
+                            <li>企业的社会价值与采购</li>
+                            <li>- 采购与ESG、SV实践 (1)</li>
+                            <li>- 采购与ESG、SV实践 (2)</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <Image src={`${PUBLIC_URL}/images/all/ing-07.png`} alt="" />
+                </div>
+                <div className="combined-topic">
+                  <Image src={`${PUBLIC_URL}/images/all/ing-08.png`} alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
     },
     {
       menuItem: '法务/IP',
-      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0007l"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>法务/IP</strong>
+            <div>
+              <ul>
+                <li>
+                  法务/ip
+                  Function涵盖内容包括提前预防、解决企业活动中出现的Legal
+                  Risk的“法务”；在新的事业或已有事业中提高专利竞争力的“IP”。借此令相应职务的SK成员提高Deep
+                  Change执行力。
+                </li>
+              </ul>
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src={`${PUBLIC_URL}/images/all/enter-category.png`}
+                alt=""
+                className="manage_cate"
+              />
+
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub01">
+                    <div className="level_icon">
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/enter-lv-02.png`}
+                        alt=""
+                      />
+                      <p>
+                        方法论/ <br />
+                        应用学习
+                      </p>
+                    </div>
+                    {/* 콘텐츠 리스트 */}
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4d">
+                        公平交易法
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5y/cube/CUBE-cb3/view/Video">
+                          <ul>
+                            <li>公平交易法 Overview</li>
+                            <li>- 理解公平交易法与正常方向</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5x/view">
+                          <ul>
+                            <li>不正当支持、谋取私利</li>
+                            <li>- 理解不正当支持/谋取私利</li>
+                            <li>- 理解不正当支持的法理和案例研究</li>
+                            <li>- 公平交易委员会近期管制动向与审判案例研究</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5w/view">
+                          <ul>
+                            <li>不公平交易与不正当标示广告</li>
+                            <li>- 理解不公平交易行为</li>
+                            <li>- 不公平交易行为重要法理/案例研究</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5v/view">
+                          <ul>
+                            <li>集中压制经济力</li>
+                            <li>- 理解公平交易法中的企业集团管制</li>
+                            <li>- 公平交易委员会近期管制案例介绍及启发</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5u/view">
+                          <ul>
+                            <li>企业合并的限制</li>
+                            <li>- M&amp;A, 企业合并需要申报吗？</li>
+                            <li>- 何种情况下企业合并会被管制？</li>
+                            <li>- 混合合并为何会成问题？</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a5t/view">
+                          <ul>
+                            <li>滥用市场支配地位的行为</li>
+                            <li>- 理解滥用市场支配地位的行为</li>
+                            <li>- 主要法理与案例研究</li>
+                            <li>- 同意决定案例研究</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5s/view">
+                          <ul>
+                            <li>不正当共同行为</li>
+                            <li>- 了解不正当共同行为</li>
+                            <li>- 不正当共同行为案例研究</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5r/view">
+                          <ul>
+                            <li>转包法</li>
+                            <li>- 了解转包法</li>
+                            <li>- 转包法主要法理与案例研究</li>
+                            <li>- 要求提供技术材料及挪用行为</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="con_wrap sub01">
+                    <h3>专利管理</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="" onClick={emptyAlert}>
+                          <ul>
+                            <li>韩国申请制度与法律</li>
+                            <li>- 专利性需求</li>
+                            <li>- 专利申请</li>
+                            <li>- 专利审核</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="" onClick={emptyAlert}>
+                          <ul>
+                            <li>韩国申请实务</li>
+                            <li>- 制作专利明细表</li>
+                            <li>- 专利审核应对</li>
+                            <li>- 韩国审判应对</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="" onClick={emptyAlert}>
+                          <ul>
+                            <li>专利运用与买入</li>
+                            <li>- 专利运用概要</li>
+                            <li>- 专利收益化与IP fund的理解</li>
+                            <li>- 专利与事业化战略</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5e/view">
+                          <ul>
+                            <li>M&amp;A与IP Transaction</li>
+                            <li>- M&amp;A与IP问题</li>
+                            <li>- 各个问题的研讨事项</li>
+                            <li>- 其他研讨事项</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="con_wrap sub01">
+                    <h3>专利纠纷</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5d/view">
+                          <ul>
+                            <li>韩国专利纠纷实务</li>
+                            <li>- 理解专利审判制度</li>
+                            <li>- 无效审判</li>
+                            <li>- 证据保存实务</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5c/view">
+                          <ul>
+                            <li>美国专利纠纷Key Points</li>
+                            <li>- Discovery阶段</li>
+                            <li>- Trial(Jury /Bench Trial)</li>
+                            <li>- ITC诉讼</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5b/view">
+                          <ul>
+                            <li>专利谈判及许可</li>
+                            <li>- 专利Claim阶段</li>
+                            <li>- 专利技术谈判</li>
+                            <li>- Royality谈判</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-img-01-chn.png"
+                    alt=""
+                  />
+
+                  <div className="con_wrap sub02">
+                    <div className="level_icon">
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/lv-01.png`}
+                        alt=""
+                      />
+                      <p>概念理解</p>
+                    </div>
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4e">
+                        IP Mind-Set Essential
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5q/view">
+                          <ul>
+                            <li>知识产权101</li>
+                            <li>- 知识产权的概念与类型</li>
+                            <li>- 专利制度a to z</li>
+                            <li>- 商标制度a to z</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5n/view">
+                          <ul>
+                            <li>AI专利</li>
+                            <li>- AI专利动向</li>
+                            <li>- AI专利起草方法</li>
+                            <li>- AI专利Case Study</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5p/view">
+                          <ul>
+                            <li>研发与知识产权</li>
+                            <li>- R&amp;D中专利开发的必要性</li>
+                            <li>- 前瞻性技术调查及搜索</li>
+                            <li>- 发明申报起草指南</li>
+                          </ul>
+                        </Link>
+
+                        <Link to="/lecture/card/CARD-a5m/view">
+                          <ul>
+                            <li>专利纠纷概论</li>
+                            <li>- 专利纠纷的类型</li>
+                            <li>- 专利纠纷的主要案例</li>
+                            <li>- 韩国专利诉讼制度</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5o/view">
+                          <ul>
+                            <li>职务发明</li>
+                            <li>- 职务发明的理解</li>
+                            <li>- 职务发明的权利归属关系</li>
+                            <li>- 奖励制度与发明奖励案例</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a5l/view">
+                          <ul>
+                            <li>纠纷应对文件管理</li>
+                            <li>- 文件管理政策</li>
+                            <li>- 长期化文件管理</li>
+                            <li>- 产生纠纷时的文件管理</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="con_wrap sub02">
+                    <h3>开源Essentials</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5k/view">
+                          <ul>
+                            <li>开源的前瞻性发展</li>
+                            <li>- 开源的出现背景</li>
+                            <li>- 开源的模式转换和成长契机</li>
+                            <li>- 封闭企业的牵制引发的开源成长痛</li>
+                          </ul>
+                        </Link>
+                        <Link to="/lecture/card/CARD-a5i/view">
+                          <ul>
+                            <li>开源许可</li>
+                            <li>- 开源的定义与两面性</li>
+                            <li>- GPI、BSD类许可的特点和义务事项</li>
+                            <li>- 软件公开范围</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a5j/view">
+                          <ul>
+                            <li>Software, Copyright &amp; License</li>
+                            <li>- 软件著作权的主要争论点</li>
+                            <li>- 软件知识产权和BM</li>
+                            <li>- 软件许可类型和主要内容</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-img-02-chn.png"
+                    alt=""
+                  />
+                </div>
+                <div className="combined-topic">
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-img-03-chn.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
     },
     {
       menuItem: 'Competency',
-      render: () => <Tab.Pane attached={false}></Tab.Pane>,
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0001a"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                直接进入课程
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>
+              Competency <br />
+              (Working Smart)
+            </strong>
+            <div>
+              <ul>
+                <li>
+                  不论职务领域，提供所有成员都需要具备的共同能力学习内容。
+                  <br />
+                  按照各个Role Level，为顺利执行工作，通过学习Communication
+                  Skill, Problem Solving, Measurement, Negotiation, Decision
+                  Making &amp; Risk
+                  Management等学习课程，学习如何获得更好的工作成果、如何实现Smart
+                  Working、提高Deep Change执行力，并打下坚实基础。
+                </li>
+              </ul>
+              <p className="p_link">
+                {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              </p>
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <Image
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-08-img-01-chn.png"
+                alt=""
+              />
+              <div className="legal-wrap flex sub">
+                <div className="fundamental-topic width50">
+                  <div className="con_wrap sub01">
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-44">
+                        Measurement Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-8l7/view">
+                          <ul>
+                            <li>Customer Measure &amp; Analytics</li>
+                            <li>- 客户测量的基本概念</li>
+                            <li>- Customer Value概念与测量</li>
+                            <li>- 客户测量指标的运用和局限性</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-8ic/view">
+                          <ul>
+                            <li>幸福地图的理解</li>
+                            <li>- 幸福地图是？</li>
+                            <li>- 幸福地图构建Process</li>
+                            <li>- 幸福测量主要问题与解决方案</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-50f/view">
+                          <ul>
+                            <li>对SV测量的理解</li>
+                            <li>- SV测量原则与体系</li>
+                            <li>- SV测量案例与成果</li>
+                            <li>- SV测量问题与扩散</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-74b/view">
+                          <ul>
+                            <li>Deep Change的起点——测量</li>
+                            <li>- 经营现场中的测量</li>
+                            <li>- 人类的动机、行动测量</li>
+                            <li>- 社会现象/问题测量</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="combined-topic width50">
+                  <div className="con_wrap sub01">
+                    <h3>
+                      <Link to="/certification/badge/badge-detail/BADGE-4f">
+                        Negotiaion Essentials
+                      </Link>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a2c/view">
+                          <ul>
+                            <li>Negotiation的意义与必要性</li>
+                            <li>- Intro into Negotiation</li>
+                            <li>- Business综合领域，Negotiation</li>
+                            <li>- Essential Course Framework Guide</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a6z/view">
+                          <ul>
+                            <li>[谈判准备战略] 12种谈判技巧</li>
+                            <li>- 设定目标</li>
+                            <li>- 准备自己的BATNA</li>
+                            <li>- 记住这不是最后的谈判</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <Link to="/lecture/card/CARD-a2g/view">
+                          <ul>
+                            <li>谈判Essence Reading</li>
+                            <li>- Getting to Yes</li>
+                            <li>- FBI行动心理学</li>
+                            <li>- 谈判杠杆</li>
+                          </ul>
+                        </Link>
+                      </div>
+                      <div className="con_sub_box flex">
+                        <Link to="/lecture/card/CARD-a2f/view">
+                          <ul className="height100">
+                            <li>谈判 Essential Wrap up</li>
+                            <li>- 谈判 Essential Wrap up</li>
+                          </ul>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="legal-wrap flex sub">
+                <div className="fundamental-topic width50">
+                  <div className="con_wrap sub02">
+                    <h3>Communication</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <a href="#none">Excel实务Master 1~8</a>
+                          </li>
+                          <li>
+                            <a href="#none">搜也搜不到的必知Excel函数</a>
+                          </li>
+                          <li>
+                            <a href="#none">部长说我的企划案是垃圾</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              韩国人在英文邮件中常犯的错误 上、下
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">路过的组长都会回头看的PPT设计</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="combined-topic width50">
+                  <div className="con_wrap sub02">
+                    <h3>Problem Solving</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <Link to="/lecture/card/CARD-14y/view">
+                              用10种关键词学习创意思考力
+                            </Link>
+                          </li>
+                          <li>战略性问题解决技巧（预计4月开设）</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
     },
   ];
 
@@ -2841,7 +3861,7 @@ const CollegeInnerTabView = () => {
     <Tab
       menu={{ attached: false, tabular: false }}
       panes={panes}
-      className="sub-tab-menu"
+      className="sub-tab-menu management1"
     />
   );
 };
@@ -4912,7 +5932,10 @@ export const CollegeInnerEnTabView = () => {
                 className="ui image"
               />
               <div className="legal-wrap flex sub">
-                <div className="fundamental-topic width50">
+                <div
+                  className="fundamental-topic width50"
+                  style={{ marginRight: '10px' }}
+                >
                   <div className="con_wrap sub01">
                     <h3>
                       <a href="#none">Measurement Essentials</a>
@@ -5028,7 +6051,10 @@ export const CollegeInnerEnTabView = () => {
                 </div>
               </div>
               <div className="legal-wrap flex sub">
-                <div className="fundamental-topic width50">
+                <div
+                  className="fundamental-topic width50"
+                  style={{ marginRight: '10px' }}
+                >
                   <div className="con_wrap sub02">
                     <h3>Communication</h3>
                     <div className="con_box">
