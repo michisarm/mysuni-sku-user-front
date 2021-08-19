@@ -249,7 +249,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 </div>
               </>
             )}
-            <div className="ui editor-wrap">
+            <div className="ui editor-wrap" style={{ width: '100%' }}>
               <Editor reportId={lectureReport?.reportId} />
             </div>
           </Form.Field>
