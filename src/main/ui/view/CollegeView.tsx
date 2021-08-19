@@ -8620,102 +8620,72 @@ const ZhPanes = [
                         <div className="semi_course_middle">
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
-                              >
+                              <a href="#none">
                                 [Computer System] <br />
                                 <span>计算机运作理解</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[AI HW 개론] AI Model']}`}
-                              >
+                              <a href="#none">
                                 [AI Hw 概论]
                                 <br />
                                 <span>AI Model</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[AI HW 이해] DNN HW 가속기 아키텍처']}`}
-                              >
+                              <a href="#none">
                                 [AI Hw 理解] <br />
                                 <span> DNN HW加速器结构</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] Fundamentals']}`}
-                              >
+                              <a href="#none">
                                 [Hw 开发] <br />
                                 <span>Fundamentals</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] CPU Micro-Architecture']}`}
-                              >
-                                CPU Micro-Architecture
-                              </Link>
+                              <a href="#none">CPU Micro-Architecture</a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] SoC 설계 Flow']}`}
-                              >
-                                SoC设计Flow
-                              </Link>
+                              <a href="#none">SoC设计Flow</a>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[AI HW 개론] AI Hardware']}`}
-                              >
+                              <a href="#none">
                                 [AI Hw 概论] <br />
                                 <span>AI Hardware</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[AI HW 개론] AI Platform']}`}
-                              >
+                              <a href="#none">
                                 [AI Hw 概论] <br />
                                 <span>AI Platform</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[AI HW 이해] DNN 알고리즘 및 워크로드 특성']}`}
-                              >
+                              <a href="#none">
                                 [AI Hw 理解]
                                 <br />
                                 <span>DNN算法与工作负载特点</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] Analog Design']}`}
-                              >
+                              <a href="#none">
                                 [HW 开发]
                                 <br />
                                 <span>Analog Design</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] Digital Design']}`}
-                              >
-                                Digital Design
-                              </Link>
+                              <a href="#none">Digital Design</a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[HW 개발] SoC 설계 사례 - Mobile Computing']}`}
-                              >
+                              <a href="#none">
                                 SoC设计案例 <br />
                                 <span>Mobile Computing</span>
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -8739,49 +8709,39 @@ const ZhPanes = [
                         <div className="semi_course_middle ver-mid">
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['한방에 이해하는 꿀잼 반도체']}`}
-                              >
+                              <a href="#none">
                                 <strong>人气</strong>
                                 轻松理解的 <br />
                                 有趣半导体
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 What - 반도체 Tech 지식백과']}`}
-                              >
+                              <a href="#none">
                                 半导体What
                                 <br />
                                 <span>半导体 Tech.知识百科</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다']}`}
-                              >
+                              <a href="#none">
                                 [CEO特讲_SK海力士李锡熙CEO]
                                 <br />
                                 <span>半导体，开启未来</span>
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['슬기로운 IT생활 - 전자기기의 구조와 동작원리']}`}
-                              >
+                              <a href="#none">
                                 智慧的IT生活 <br />
                                 <span>电子产品的构造和运作原理</span>
-                              </Link>
+                              </a>
                             </li>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 제대로 이해하기 - 기본편']}`}
-                              >
+                              <a href="#none">
                                 正确理解半导体 <br />
                                 (基础篇)
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -8942,22 +8902,18 @@ const ZhPanes = [
                         <div className="semi_course_middle">
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래']}`}
-                              >
+                              <a href="#none">
                                 有用的半导体知识 <br />
                                 <span>半导体产业的过去、现在和未来</span>
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <Link
-                                to={`${semiconductorLinks['반도체 클라쓰 - Keyword로 알아보는 반도체의 품격']}`}
-                              >
+                              <a href="#none">
                                 半导体 CLASS <br />
                                 <span>用Keyword理解的半导体格调</span>
-                              </Link>
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -9011,18 +8967,18 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
+                <Link
                   className="item-button"
-                  href="/suni-main/lecture/college/CLG0001c/channels/pages/1"
+                  to="/lecture/college/CLG00019/channels/pages/1"
                 >
                   <Image
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
                     className="ui image"
                     style={{ display: 'inline-block' }}
                   />
                   直接进入课程
-                </a>
+                </Link>
               </div>
             </div>
             <div className="belt">
@@ -9167,9 +9123,7 @@ const ZhPanes = [
                     </div>
                     <div className="bm-bg-box bg_type02">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007o">
-                          Storytelling @ Work
-                        </Link>
+                        <a href="#none">Storytelling @ Work</a>
                       </h3>
                       <div className="bm-flex">
                         <ul className="list_bm bg_white">
@@ -9199,9 +9153,7 @@ const ZhPanes = [
                   <div className="bm-flex">
                     <div className="bm-bg-box bg_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00083">
-                          Becoming BM Designer
-                        </Link>
+                        <a href="#none">Becoming BM Designer</a>
                       </h3>
                       <ul className="list_flex md">
                         <li>
@@ -9271,9 +9223,7 @@ const ZhPanes = [
                   </div>
                   <div className="bm-bg-box line_type01 height100">
                     <h3>
-                      <Link to="/lecture/college/CLG00020/channel/CHN0007p">
-                        Becoming Storyteller
-                      </Link>
+                      <a href="#none">Becoming Storyteller</a>
                     </h3>
                     <div className="bm-flex">
                       <ul className="list_bm">
@@ -9304,9 +9254,7 @@ const ZhPanes = [
                 <div className="bm-flex">
                   <div className="bm-bg-box line_type01">
                     <h3>
-                      <Link to="/lecture/college/CLG00020/channel/CHN00082">
-                        BM Design Take-off
-                      </Link>
+                      <a href="#none">BM Design Take-off</a>
                     </h3>
                     <ul className="list_flex md">
                       <li>
@@ -9334,9 +9282,7 @@ const ZhPanes = [
                   </div>
                   <div className="bm-bg-box line_type01">
                     <h3>
-                      <Link to="/lecture/college/CLG00020/channel/CHN00084">
-                        Defining Storytelling
-                      </Link>
+                      <a href="#none">Defining Storytelling</a>
                     </h3>
                     <ul className="list_flex md">
                       <li>

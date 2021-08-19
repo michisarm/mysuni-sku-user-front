@@ -2086,99 +2086,95 @@ export const CollegeInnerZhTabView = () => {
                       <tr>
                         <td colSpan={2}>ㅤ</td>
                         <td className="badge-texts">
-                          <Link to="" onClick={emptyAlert}>
+                          <a href="#none" onClick={emptyAlert}>
                             数字融合
                             <br />
                             营销
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-30">
-                            组织Design
-                          </Link>
+                          <a href="#none">组织Design</a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="" onClick={emptyAlert}>
+                          <a href="#none" onClick={emptyAlert}>
                             采购
                             <br />
                             Advanced
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="" onClick={emptyAlert}>
+                          <a href="#none" onClick={emptyAlert}>
                             公司法
-                          </Link>
+                          </a>
                           <br />
                           /<br />
-                          <Link to="/certification/badge/badge-detail/BADGE-4d">
-                            公平交易法
-                          </Link>
+                          <a href="#none">公平交易法</a>
                         </td>
                         <td>ㅤ</td>
                       </tr>
                       <tr>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-46">
+                          <a href="#none">
                             Strategy
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-49">
+                          <a href="#none">
                             财务
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-4c">
+                          <a href="#none">
                             品牌
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                           <br />
                           /<br />
-                          <Link to="/certification/badge/badge-detail/BADGE-4a">
+                          <a href="#none">
                             营销
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-4b">
+                          <a href="#none">
                             HR
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-4g">
+                          <a href="#none">
                             采购
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="/certification/badge/badge-detail/BADGE-4e">
+                          <a href="#none">
                             IP Mindset
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                         <td className="badge-texts grey">
-                          <Link to="/certification/badge/badge-detail/BADGE-4f">
+                          <a href="#none">
                             谈判
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                           <br />
                           /<br />
-                          <Link to="/certification/badge/badge-detail/BADGE-44">
+                          <a href="#none">
                             Measurement
                             <br />
                             Essentials
-                          </Link>
+                          </a>
                         </td>
                       </tr>
                       <tr>
@@ -2268,7 +2264,7 @@ export const CollegeInnerZhTabView = () => {
                     <h3>AI/DT &#38; Strategy</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-1ha/view">
+                        <a href="#none">
                           <ul>
                             <li>基于AI/DT的Deep Change战略</li>
                             <li>- AI/DT战略的基本概念</li>
@@ -2276,7 +2272,7 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 基于AI的DT战略意义</li>
                             <li>- 重构AI/DT战略假设</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2292,7 +2288,7 @@ export const CollegeInnerZhTabView = () => {
                     <h3>ESG &#38; Strategy</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-1h9/view">
+                        <a href="#none">
                           <ul>
                             <li>基于SV的Deep Change战略</li>
                             <li>- SV战略制定Process</li>
@@ -2300,7 +2296,7 @@ export const CollegeInnerZhTabView = () => {
                             <li>- SV创造内化方案</li>
                             <li>- 在战略中融合SV</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2326,13 +2322,11 @@ export const CollegeInnerZhTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-46">
-                        Strategy Essentials
-                      </Link>
+                      <a href="#none">Strategy Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-9m5/view">
+                        <a href="#none">
                           <ul className="height_fixed">
                             <li>战略101：欢迎，第一次接触战略吧？</li>
                             <li>- 战略是什么？</li>
@@ -2340,8 +2334,8 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 战略制定及执行</li>
                             <li>- Strategy in SK</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a2s/view">
+                        </a>
+                        <a href="#none">
                           <ul className="height_fixed">
                             <li>All about Portfolio Strategy</li>
                             <li>- Portfolio Mgmt의 Option</li>
@@ -2349,17 +2343,17 @@ export const CollegeInnerZhTabView = () => {
                             <li>- Separation/Divestiture</li>
                             <li>- SK M&amp;A History &amp; Case</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a4f/view">
+                        <a href="#none">
                           <ul className="sub height_fixed">
                             <li>战略制定的开始，战略环境分析</li>
                             <li>- 外部环境分析 Tool &amp; Framework</li>
                             <li>- 内部环境分析 Tool &amp; Framework</li>
                             <li>- 经营环境分析实战Tip</li>
                           </ul>
-                        </Link>
+                        </a>
                         <ul className="ul_img_none height_fixed">
                           <li className="pd0">
                             <Image
@@ -2466,76 +2460,56 @@ export const CollegeInnerZhTabView = () => {
                       <p>概念理解</p>
                     </div>
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-49">
-                        财务Essentials
-                      </Link>
+                      <a href="#none">财务Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="/lecture/card/CARD-a4o/view">
-                              财务管理101
-                            </Link>
+                            <a href="#none">财务管理101</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a4j/view">
-                              企业价值是什么？如何评估？
-                            </Link>
+                            <a href="#none">企业价值是什么？如何评估？</a>
                           </li>
                         </ul>
                       </div>
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="/lecture/card/CARD-a65/view">
-                              好想了解内部会计管理制度
-                            </Link>
+                            <a href="#none">好想了解内部会计管理制度</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a4x/view">
-                              第一次接触的成本/管理会计
-                            </Link>
+                            <a href="#none">第一次接触的成本/管理会计</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a4r/view">
+                            <a href="#none">
                               一点点简单按各个会计科目进行
                               <br />
                               会计处理
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a2x/view">
-                              Fun-Fun会计
-                            </Link>
+                            <a href="#none">Fun-Fun会计</a>
                           </li>
                         </ul>
                       </div>
                       <div className="con_sub_box">
                         <ul className="ul_one">
                           <li>
-                            <Link to="/lecture/card/CARD-a6f/view">
-                              税务会计实务第一步
-                            </Link>
+                            <a href="#none">税务会计实务第一步</a>
                           </li>
                         </ul>
                       </div>
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="/lecture/card/CARD-6qg/view">
-                          组织设计的方向
-                        </Link>
+                        <a href="#none">组织设计的方向</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6b6/cube/CUBE-8ut/view/Video">
-                          组织设计Tip：Smart Design
-                        </Link>
+                        <a href="#none">组织设计Tip：Smart Design</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6m0/cube/CUBE-952/view/Video">
-                          组织设计有效性测量
-                        </Link>
+                        <a href="#none">组织设计有效性测量</a>
                       </li>
                     </ul>
                   </div>
@@ -2644,7 +2618,7 @@ export const CollegeInnerZhTabView = () => {
                           </li>
                         </ul>
 
-                        <Link to="#" onClick={emptyAlert}>
+                        <a href="#none" onClick={emptyAlert}>
                           <ul>
                             <li>AI营销</li>
                             <li>1. Reach：用AI吸引客户</li>
@@ -2652,7 +2626,7 @@ export const CollegeInnerZhTabView = () => {
                             <li>3. Convert：用AI形成忠诚客户</li>
                             <li>4. Engage：基于AI预测客户</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2668,27 +2642,25 @@ export const CollegeInnerZhTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4a">
-                        营销 Essentials
-                      </Link>
+                      <a href="#none">营销 Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
                         <ul onClick={emptyAlert}>
                           <li>
-                            <Link to="#">营销 Framework &#38; Tool</Link>
+                            <a href="#none">营销 Framework &#38; Tool</a>
                           </li>
                           <li>
-                            <Link to="#">- 营销环境分析</Link>
+                            <a href="#none">- 营销环境分析</a>
                           </li>
                           <li>
-                            <Link to="#">- 营销战略制定</Link>
+                            <a href="#none">- 营销战略制定</a>
                           </li>
                           <li>
-                            <Link to="#">- 营销执行战术</Link>
+                            <a href="#none">- 营销执行战术</a>
                           </li>
                         </ul>
-                        <Link to="/lecture/card/CARD-a4g/view">
+                        <a href="#none">
                           <ul>
                             <li>Global营销案例分析</li>
                             <li>- Fedex Case : 我的客户是谁？</li>
@@ -2696,33 +2668,33 @@ export const CollegeInnerZhTabView = () => {
                             <li>- Starbucks Case : 从树上掉落</li>
                             <li>- Exxon Mobil Case : “永恒”是不存在的</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9ok/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>用关键词学习营销101</li>
                             <li>- Marketing Principles / 模式移动</li>
                             <li>- Smart Marketing VS Silly Marketing</li>
                             <li>- 营销的3W</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-9ou/view">
+                        <a href="#none">
                           <ul>
                             <li>通过案例学习的B2B营销101</li>
                             <li>- B2B营销概要</li>
                             <li>- B2BC营销战略制定与执行</li>
                             <li>- B2B市场的数字营销沟通</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-9op/view">
+                        <a href="#none">
                           <ul>
                             <li>通过案例学习的产品策划101</li>
                             <li>- 产品与服务</li>
                             <li>- 产品组合比较</li>
                             <li>- 产品创新战略与生命周期</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2732,29 +2704,27 @@ export const CollegeInnerZhTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4c">
-                        品牌Essentials
-                      </Link>
+                      <a href="#none">品牌Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a06/view">
+                        <a href="#none">
                           <ul>
                             <li>Brand What &#38; Why?</li>
                             <li>- 品牌的重要性</li>
                             <li>- Brand vs. Branding</li>
                             <li>- 品牌的定义与品牌Elements</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a08/view">
+                        <a href="#none">
                           <ul>
                             <li>Source of Brand Equity</li>
                             <li>- Brand Equity Pyramid와 Brand Awareness</li>
                             <li>- Brand Association</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a0a/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>战略品牌管理的Key Insight </li>
                             <li>- 品牌管理中常见的错觉</li>
@@ -2763,15 +2733,15 @@ export const CollegeInnerZhTabView = () => {
                             <li>- Holistic Branding &amp; HCEM</li>
                             <li>- 品牌管理的战略性Framework</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a0b/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>Brand Identify System</li>
                             <li>- -BIS的基本要素</li>
                             <li>- Brand Personality</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a0c/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>（为有效管理品牌）理解消费者行为</li>
                             <li>- 消费者信息处理与记忆</li>
@@ -2779,10 +2749,10 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 产品与客户需求的连接</li>
                             <li>- 消费者调查方法论</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a0d/view">
+                        <a href="#none">
                           <ul>
                             <li>品牌Communication</li>
                             <li>- Brand Comm.的作用与重要性</li>
@@ -2792,23 +2762,23 @@ export const CollegeInnerZhTabView = () => {
                             <li>- Creative战略</li>
                             <li>- Media Creative战略</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a0e/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>DT时代客户体验品牌战略</li>
                             <li>- DT时代，Lifestyle的变化</li>
                             <li>- 品牌战略中的Digital Native</li>
                             <li>- SV或真诚的品牌战略</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a0g/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>Brand Architecture设计</li>
                             <li>- 品牌架构 : What &amp; Why?</li>
                             <li>- Brand Hierarchy理解与分析</li>
                             <li>- Key Decisions</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2892,65 +2862,51 @@ export const CollegeInnerZhTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub01 depth">
                       <h3>
-                        <Link to="/certification/badge/badge-detail/BADGE-30">
-                          组织Design
-                        </Link>
+                        <a href="#none">组织Design</a>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="/lecture/card/CARD-83u/view">
+                          <a href="#none">
                             <ul>
                               <li>组织设计Workshop</li>
                               <li>1. 组织设计Workshop</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-83p/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>组织设计方法论</li>
                               <li>1. 组织设计方法论 : Star Model</li>
                               <li>2. 组织设计实务Approach</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-83o/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>组织Self-Design</li>
                               <li>1. 组织Self-Design : Why &#38; What</li>
                               <li>2. 组织Self-Design 案例</li>
                             </ul>
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="/lecture/card/CARD-83t/view">
-                          组织设计实务Approach (中长期)
-                        </Link>
+                        <a href="#none">组织设计实务Approach (中长期)</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-9aq/cube/CUBE-bt7/view/Video">
-                          两手抓组织设计理解
-                        </Link>
+                        <a href="#none">两手抓组织设计理解</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6pt/cube/CUBE-98w/view/Video">
-                          未来Tech.企业的组织设计案例
-                        </Link>
+                        <a href="#none">未来Tech.企业的组织设计案例</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6ra/view">
-                          敏捷组织转型案例
-                        </Link>
+                        <a href="#none">敏捷组织转型案例</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6r9/view">
-                          SV导向组织设计方案
-                        </Link>
+                        <a href="#none">SV导向组织设计方案</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-qk/cube/CUBE-xg/view/Video">
-                          Org. Culture &#38; Leader
-                        </Link>
+                        <a href="#none">Org. Culture &#38; Leader</a>
                       </li>
                     </ul>
                     <Image
@@ -2976,55 +2932,53 @@ export const CollegeInnerZhTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub02 depth">
                       <h3>
-                        <Link to="/certification/badge/badge-detail/BADGE-4b">
-                          HR Essentials
-                        </Link>
+                        <a href="#none">HR Essentials</a>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="/lecture/card/CARD-a6x/view">
+                          <a href="#none">
                             <ul>
                               <li>人才获取</li>
                               <li>1. 人力计划！为什么需要？</li>
                               <li>2. 仔细确认招聘流程</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-a6y/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>职务管理</li>
                               <li>1. 职务是什么？</li>
                               <li>2. 为什么需要职务分析和职务评价？</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-a72/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>奖励</li>
                               <li>1. 为进行奖励制度，必须要做的事</li>
                               <li>2. 奖励制度如何变化？</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-a71/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>绩效管理</li>
                               <li>1. 绩效管理与评价，非做不可吗？</li>
                               <li>2. 绩效管理流程核心概要！</li>
                             </ul>
-                          </Link>
+                          </a>
 
-                          <Link to="/lecture/card/CARD-a73/view">
+                          <a href="#none">
                             <ul>
                               <li>Global HR</li>
                               <li>1. 透彻理解驻在员制度</li>
                               <li>2. 必须要了解的Global Staff管理</li>
                             </ul>
-                          </Link>
-                          <Link to="/lecture/card/CARD-a74/view">
+                          </a>
+                          <a href="#none">
                             <ul>
                               <li>劳资关系</li>
                               <li>1. 理解个体劳动关系</li>
                               <li>2. 非正式员工制度的理解</li>
                             </ul>
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -3033,38 +2987,30 @@ export const CollegeInnerZhTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub02 depth">
                       <h3>
-                        <Link to="/certification/badge/badge-detail/BADGE-30">
-                          조직 Design
-                        </Link>
+                        <a href="#none">조직 Design</a>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="/lecture/card/CARD-83v/view">
+                          <a href="#none">
                             <ul>
                               <li>组织设计的基本原则与案例</li>
                               <li>1. 组织设计的基本原则</li>
                               <li>2. 组织设计 New Trend</li>
                               <li>3. 企业案例（MS，SKHY）</li>
                             </ul>
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="/lecture/card/CARD-6qg/view">
-                          组织设计的方向
-                        </Link>
+                        <a href="#none">组织设计的方向</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6b6/cube/CUBE-8ut/view/Video">
-                          组织设计Tip：Smart Design
-                        </Link>
+                        <a href="#none">组织设计Tip：Smart Design</a>
                       </li>
                       <li>
-                        <Link to="/lecture/card/CARD-6m0/cube/CUBE-952/view/Video">
-                          组织设计有效性测量
-                        </Link>
+                        <a href="#none">组织设计有效性测量</a>
                       </li>
                     </ul>
                   </div>
@@ -3136,32 +3082,32 @@ export const CollegeInnerZhTabView = () => {
                     <h3>采购Advanced</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-9qk/view">
+                        <a href="#none">
                           <ul>
                             <li>为让企业成功的战略性采购</li>
                             <li>- 企业战略与企业竞争力理解</li>
                             <li>- 与企业战略一致的采购战略</li>
                             <li>- 企业的成功与采购的作用</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qj/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>战略性供应商管理</li>
                             <li>- 管理供应商的两种方法 - 合作与竞争</li>
                             <li>- 供应商培养与成果共享制</li>
                             <li>- SRM &amp; 棋盘博弈采购法的理解</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qi/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>采购与其他部门的合作与联系</li>
                             <li>- 开发与采购的联系 - 开发采购</li>
                             <li>- 其他部门与采购的联系</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-9qh/view">
+                        <a href="#none">
                           <ul>
                             <li>成功的采购谈判</li>
                             <li>- 谈判是什么？</li>
@@ -3175,7 +3121,7 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 说服对方最强的武器是？</li>
                             <li>- 如何与垄断性甲方供应商谈判？</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3191,13 +3137,11 @@ export const CollegeInnerZhTabView = () => {
                       <p>概念理解</p>
                     </div>
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4g">
-                        采购Essentials
-                      </Link>
+                      <a href="#none">采购Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-9qt/view">
+                        <a href="#none">
                           <ul>
                             <li>我是真正的采购者吗？采购的本质</li>
                             <li>- 对采购业务的理解</li>
@@ -3205,8 +3149,8 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 采购业务的核心</li>
                             <li>- 发展变化的采购管理</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qp/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>
                               不知道就会惹出麻烦的采购合同/采购相关法律理解
@@ -3217,16 +3161,16 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 转包价格，必知事项</li>
                             <li>- 禁止要求提供技术材料，要注意的是？</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qr/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>我在采购什么？采购品类的理解与管理</li>
                             <li>- 采购品类的分类与管理</li>
                             <li>- 根据采购品类需采取的材料管理战略</li>
                             <li>- 对服务/外包品类的理解</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qn/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>切不可大意，采购风险管理</li>
                             <li>- Intro : tylenol风险管理</li>
@@ -3234,17 +3178,17 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 采购材料价格变动风险管理</li>
                             <li>- 疫情时代与采购风险管理</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qm/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>数字采购创新</li>
                             <li>- 对数字创新的核心理解</li>
                             <li>- 数字采购创新方案</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-9qs/view">
+                        <a href="#none">
                           <ul>
                             <li>理解与运用采购业务流程</li>
                             <li>- 理解与应用采购业务流程</li>
@@ -3255,8 +3199,8 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 对PO制作的理解</li>
                             <li>- 合同签署后的采购活动</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qo/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>
                               越了解越赚钱，为采购者量身打造的财务/会计/物流
@@ -3267,8 +3211,8 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 贸易保险/进口保险实务</li>
                             <li>- 进口通关、关税与附加税</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9qq/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>采购成本管理</li>
                             <li>- 采购成本战略意义</li>
@@ -3278,14 +3222,14 @@ export const CollegeInnerZhTabView = () => {
                             <li>- 运用TCO ( Total Cost of Ownership )</li>
                             <li>- 目标成本及价值分析</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-9ql/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>企业的社会价值与采购</li>
                             <li>- 采购与ESG、SV实践 (1)</li>
                             <li>- 采购与ESG、SV实践 (2)</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3360,78 +3304,76 @@ export const CollegeInnerZhTabView = () => {
                     </div>
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4d">
-                        公平交易法
-                      </Link>
+                      <a href="#none">公平交易法</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5y/cube/CUBE-cb3/view/Video">
+                        <a href="#none">
                           <ul>
                             <li>公平交易法 Overview</li>
                             <li>- 理解公平交易法与正常方向</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5x/view">
+                        <a href="#none">
                           <ul>
                             <li>不正当支持、谋取私利</li>
                             <li>- 理解不正当支持/谋取私利</li>
                             <li>- 理解不正当支持的法理和案例研究</li>
                             <li>- 公平交易委员会近期管制动向与审判案例研究</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5w/view">
+                        <a href="#none">
                           <ul>
                             <li>不公平交易与不正当标示广告</li>
                             <li>- 理解不公平交易行为</li>
                             <li>- 不公平交易行为重要法理/案例研究</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5v/view">
+                        <a href="#none">
                           <ul>
                             <li>集中压制经济力</li>
                             <li>- 理解公平交易法中的企业集团管制</li>
                             <li>- 公平交易委员会近期管制案例介绍及启发</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5u/view">
+                        <a href="#none">
                           <ul>
                             <li>企业合并的限制</li>
                             <li>- M&amp;A, 企业合并需要申报吗？</li>
                             <li>- 何种情况下企业合并会被管制？</li>
                             <li>- 混合合并为何会成问题？</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a5t/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>滥用市场支配地位的行为</li>
                             <li>- 理解滥用市场支配地位的行为</li>
                             <li>- 主要法理与案例研究</li>
                             <li>- 同意决定案例研究</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5s/view">
+                        <a href="#none">
                           <ul>
                             <li>不正当共同行为</li>
                             <li>- 了解不正当共同行为</li>
                             <li>- 不正当共同行为案例研究</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5r/view">
+                        <a href="#none">
                           <ul>
                             <li>转包法</li>
                             <li>- 了解转包法</li>
                             <li>- 转包法主要法理与案例研究</li>
                             <li>- 要求提供技术材料及挪用行为</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3440,44 +3382,44 @@ export const CollegeInnerZhTabView = () => {
                     <h3>专利管理</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="" onClick={emptyAlert}>
+                        <a href="#none" onClick={emptyAlert}>
                           <ul>
                             <li>韩国申请制度与法律</li>
                             <li>- 专利性需求</li>
                             <li>- 专利申请</li>
                             <li>- 专利审核</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="" onClick={emptyAlert}>
+                        <a href="#none" onClick={emptyAlert}>
                           <ul>
                             <li>韩国申请实务</li>
                             <li>- 制作专利明细表</li>
                             <li>- 专利审核应对</li>
                             <li>- 韩国审判应对</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="" onClick={emptyAlert}>
+                        <a href="#none" onClick={emptyAlert}>
                           <ul>
                             <li>专利运用与买入</li>
                             <li>- 专利运用概要</li>
                             <li>- 专利收益化与IP fund的理解</li>
                             <li>- 专利与事业化战略</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5e/view">
+                        <a href="#none">
                           <ul>
                             <li>M&amp;A与IP Transaction</li>
                             <li>- M&amp;A与IP问题</li>
                             <li>- 各个问题的研讨事项</li>
                             <li>- 其他研讨事项</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3486,34 +3428,34 @@ export const CollegeInnerZhTabView = () => {
                     <h3>专利纠纷</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5d/view">
+                        <a href="#none">
                           <ul>
                             <li>韩国专利纠纷实务</li>
                             <li>- 理解专利审判制度</li>
                             <li>- 无效审判</li>
                             <li>- 证据保存实务</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5c/view">
+                        <a href="#none">
                           <ul>
                             <li>美国专利纠纷Key Points</li>
                             <li>- Discovery阶段</li>
                             <li>- Trial(Jury /Bench Trial)</li>
                             <li>- ITC诉讼</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5b/view">
+                        <a href="#none">
                           <ul>
                             <li>专利谈判及许可</li>
                             <li>- 专利Claim阶段</li>
                             <li>- 专利技术谈判</li>
                             <li>- Royality谈判</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3532,66 +3474,64 @@ export const CollegeInnerZhTabView = () => {
                       <p>概念理解</p>
                     </div>
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4e">
-                        IP Mind-Set Essential
-                      </Link>
+                      <a href="#none">IP Mind-Set Essential</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5q/view">
+                        <a href="#none">
                           <ul>
                             <li>知识产权101</li>
                             <li>- 知识产权的概念与类型</li>
                             <li>- 专利制度a to z</li>
                             <li>- 商标制度a to z</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5n/view">
+                        <a href="#none">
                           <ul>
                             <li>AI专利</li>
                             <li>- AI专利动向</li>
                             <li>- AI专利起草方法</li>
                             <li>- AI专利Case Study</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5p/view">
+                        <a href="#none">
                           <ul>
                             <li>研发与知识产权</li>
                             <li>- R&amp;D中专利开发的必要性</li>
                             <li>- 前瞻性技术调查及搜索</li>
                             <li>- 发明申报起草指南</li>
                           </ul>
-                        </Link>
+                        </a>
 
-                        <Link to="/lecture/card/CARD-a5m/view">
+                        <a href="#none">
                           <ul>
                             <li>专利纠纷概论</li>
                             <li>- 专利纠纷的类型</li>
                             <li>- 专利纠纷的主要案例</li>
                             <li>- 韩国专利诉讼制度</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5o/view">
+                        <a href="#none">
                           <ul>
                             <li>职务发明</li>
                             <li>- 职务发明的理解</li>
                             <li>- 职务发明的权利归属关系</li>
                             <li>- 奖励制度与发明奖励案例</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a5l/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>纠纷应对文件管理</li>
                             <li>- 文件管理政策</li>
                             <li>- 长期化文件管理</li>
                             <li>- 产生纠纷时的文件管理</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3600,32 +3540,32 @@ export const CollegeInnerZhTabView = () => {
                     <h3>开源Essentials</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5k/view">
+                        <a href="#none">
                           <ul>
                             <li>开源的前瞻性发展</li>
                             <li>- 开源的出现背景</li>
                             <li>- 开源的模式转换和成长契机</li>
                             <li>- 封闭企业的牵制引发的开源成长痛</li>
                           </ul>
-                        </Link>
-                        <Link to="/lecture/card/CARD-a5i/view">
+                        </a>
+                        <a href="#none">
                           <ul>
                             <li>开源许可</li>
                             <li>- 开源的定义与两面性</li>
                             <li>- GPI、BSD类许可的特点和义务事项</li>
                             <li>- 软件公开范围</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a5j/view">
+                        <a href="#none">
                           <ul>
                             <li>Software, Copyright &amp; License</li>
                             <li>- 软件著作权的主要争论点</li>
                             <li>- 软件知识产权和BM</li>
                             <li>- 软件许可类型和主要内容</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3700,52 +3640,50 @@ export const CollegeInnerZhTabView = () => {
                 <div className="fundamental-topic width50">
                   <div className="con_wrap sub01">
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-44">
-                        Measurement Essentials
-                      </Link>
+                      <a href="#none">Measurement Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-8l7/view">
+                        <a href="#none">
                           <ul>
                             <li>Customer Measure &amp; Analytics</li>
                             <li>- 客户测量的基本概念</li>
                             <li>- Customer Value概念与测量</li>
                             <li>- 客户测量指标的运用和局限性</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-8ic/view">
+                        <a href="#none">
                           <ul>
                             <li>幸福地图的理解</li>
                             <li>- 幸福地图是？</li>
                             <li>- 幸福地图构建Process</li>
                             <li>- 幸福测量主要问题与解决方案</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-50f/view">
+                        <a href="#none">
                           <ul>
                             <li>对SV测量的理解</li>
                             <li>- SV测量原则与体系</li>
                             <li>- SV测量案例与成果</li>
                             <li>- SV测量问题与扩散</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-74b/view">
+                        <a href="#none">
                           <ul>
                             <li>Deep Change的起点——测量</li>
                             <li>- 经营现场中的测量</li>
                             <li>- 人类的动机、行动测量</li>
                             <li>- 社会现象/问题测量</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3753,50 +3691,48 @@ export const CollegeInnerZhTabView = () => {
                 <div className="combined-topic width50">
                   <div className="con_wrap sub01">
                     <h3>
-                      <Link to="/certification/badge/badge-detail/BADGE-4f">
-                        Negotiaion Essentials
-                      </Link>
+                      <a href="#none">Negotiaion Essentials</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a2c/view">
+                        <a href="#none">
                           <ul>
                             <li>Negotiation的意义与必要性</li>
                             <li>- Intro into Negotiation</li>
                             <li>- Business综合领域，Negotiation</li>
                             <li>- Essential Course Framework Guide</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a6z/view">
+                        <a href="#none">
                           <ul>
                             <li>[谈判准备战略] 12种谈判技巧</li>
                             <li>- 设定目标</li>
                             <li>- 准备自己的BATNA</li>
                             <li>- 记住这不是最后的谈判</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="/lecture/card/CARD-a2g/view">
+                        <a href="#none">
                           <ul>
                             <li>谈判Essence Reading</li>
                             <li>- Getting to Yes</li>
                             <li>- FBI行动心理学</li>
                             <li>- 谈判杠杆</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                       <div className="con_sub_box flex">
-                        <Link to="/lecture/card/CARD-a2f/view">
+                        <a href="#none">
                           <ul className="height100">
                             <li>谈判 Essential Wrap up</li>
                             <li>- 谈判 Essential Wrap up</li>
                           </ul>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -3839,9 +3775,7 @@ export const CollegeInnerZhTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="/lecture/card/CARD-14y/view">
-                              用10种关键词学习创意思考力
-                            </Link>
+                            <a href="#none">用10种关键词学习创意思考力</a>
                           </li>
                           <li>战略性问题解决技巧（预计4月开设）</li>
                         </ul>
