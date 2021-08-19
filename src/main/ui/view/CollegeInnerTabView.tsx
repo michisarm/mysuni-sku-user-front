@@ -1966,4 +1966,2261 @@ const CollegeInnerTabView = () => {
     />
   );
 };
+
+export const CollegeInnerEnTabView = () => {
+  const history = useHistory();
+
+  const pageMove = (path: string) => {
+    history.push(path);
+  };
+
+  const panes = [
+    {
+      menuItem: (
+        <Menu.Item>
+          Introduction of
+          <br />
+          Management College
+        </Menu.Item>
+      ),
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channels/pages/1"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="belt">
+            <div className="belt_wrapper">
+              <div className="belt sub">
+                <img
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-con-01-eng.png"
+                  alt=""
+                  className="ui image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="belt college-mana-text">
+            <p>
+              <strong>
+                Learners can opt to take online content in consideration of
+                their work, level, andinterest in a manner they find suitable,
+                either
+                <br />
+                online and offline or offline W/S. They are exposed to practical
+                and down-to-earth learning methods that take various forms,
+                <br />
+                such as discussions, inside and outside case studies, and
+                practices.
+              </strong>
+              <br />
+              In particular, SK-exclusive contents are lined up for production,
+              which feature the insights and experiences of not only the
+              external top
+              <br />
+              experts but also the SK leaders and experts.
+            </p>
+            <p className="p_link">
+              Click each badge to go to the corresponding page.
+            </p>
+          </div>
+          <div className="college-cont-map sub wrap01">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/in-02-01-c-08-main-eng.png"
+                alt="Management College 체계도"
+                className="ui image"
+              />
+            </div>
+          </div>
+          <div className="college-cont-map sub pbtom">
+            <div className="belt">
+              <div className="label sub">
+                Management College Badge System
+                <span>
+                  (Scheduled to continuously expand, as of February 2021)
+                </span>
+              </div>
+              <div className="manage-main-wrap">
+                <div className="manage-main-table con01">
+                  <div className="manage-main-tit tit02">
+                    <h3>
+                      <strong>Level 1</strong>(Essential)
+                    </h3>
+                  </div>
+                  <div className="manage-badge-main">
+                    <p>
+                      This is a foundational course to reinforce this particular
+                      area,
+                      <br />
+                      and it aims to equip leaders and members with the basic
+                      knowledge they must know in their works.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="manage-main-wrap">
+                <div className="manage-main-table con01">
+                  <div className="manage-main-tit tit02">
+                    <h3>
+                      <strong>Level 2</strong>(Advanced)
+                    </h3>
+                  </div>
+                  <div className="manage-badge-main">
+                    <p>
+                      It targets the leaders and members who have more than five
+                      years of experience in the job.
+                    </p>
+                    <p className="badge-descrip">
+                      <strong>
+                        Learning Professional Knowledges and Know-hows Needed in
+                        Offices
+                      </strong>
+                    </p>
+                    <p className="badge-descrip">
+                      <strong>
+                        The goal is to increase professionalism by fostering
+                        mutual cooperation and engagement between experts
+                        andemployees through workshops and other related
+                        activities.
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="chart_belt">
+                <div className="chart-left">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-chart.png"
+                    alt="세로:레벨2/ 레벨1"
+                    className="ui image"
+                  />
+                </div>
+                <div className="chart-right">
+                  <table style={{ borderCollapse: 'separate' }}>
+                    <tbody>
+                      <tr>
+                        <td colSpan={2} />
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Digital-fused
+                            <br />
+                            Marketing
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">Organizational Design</a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Purchasing
+                            <br />
+                            Advanced
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">Corporate Law</a>
+                          <br />/<br />
+                          <a href="#none">Fair Trade Act</a>
+                        </td>
+                        <td />
+                      </tr>
+                      <tr>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Strategy
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Finance
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Brand
+                            <br />
+                            Essentials
+                          </a>
+                          <br />/<br />
+                          <a href="#none">
+                            Marketing
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            HR
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            Purchasing
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts">
+                          <a href="#none">
+                            IP Mindset
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                        <td className="badge-texts grey">
+                          <a href="#none">
+                            Negotiation
+                            <br />
+                            Essentials
+                          </a>
+                          <br />/<br />
+                          <a href="#none">
+                            Measurement
+                            <br />
+                            Essentials
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="badge-texts-sm">
+                          Corporate
+                          <br />
+                          Management
+                          <br />
+                          /Strategy
+                        </td>
+                        <td className="badge-texts-sm">
+                          Finance
+                          <br />
+                          /Accounting
+                        </td>
+                        <td className="badge-texts-sm">
+                          Marketing
+                          <br />
+                          /Brand
+                        </td>
+                        <td className="badge-texts-sm">
+                          HR/
+                          <br />
+                          Organizational
+                          <br />
+                          Design
+                        </td>
+                        <td className="badge-texts-sm">SCM/Operation</td>
+                        <td className="badge-texts-sm">Legal/IP</td>
+                        <td className="badge-texts-sm grey">Competency</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: (
+        <Menu.Item>
+          Corporate
+          <br />
+          Management/Strategy
+        </Menu.Item>
+      ),
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00014"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>
+              Corporate
+              <br />
+              Management
+              <br />
+              /Strategy
+            </strong>
+            <div>
+              <ul>
+                <li>
+                  It not only offers essential and in-depth contents for each
+                  job, but also lessons that reflect Deep Change.
+                </li>
+                <li>
+                  Through this, the goal is to systematize knowledge and
+                  reinforce a strategic way of thinking among the employees.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+
+          <div className="college-link-box">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt="가로:FundamentalTopic/CombindedTopic"
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                      alt="levle2"
+                      className="ui image"
+                    />
+                    <p>
+                      Methodology/
+                      <br />
+                      Applied Learning
+                    </p>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-01-eng.png"
+                    alt="후속코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+                <div className="combined-topic">
+                  <div className="con_wrap sub03 ing_con01">
+                    <h3>AI/DT &amp; Strategy</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>AI/DT-based Deep Change Strategy</li>
+                            <li>- Basic Concept of AI/DT Strategy</li>
+                            <li>- Process of Establishing AI/DT Strategy</li>
+                            <li>- Strategic Meaning of AI-based DT</li>
+                            <li>
+                              - Restructuring the AI/DT Strategic Theories
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub02 ing_con02">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-02-eng.png"
+                      alt="후속코스를 기획중입니다"
+                      className="ui image"
+                    />
+                  </div>
+                  <div className="con_wrap sub03 ing_con01">
+                    <h3>ESG &amp; Strategy</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>SV-based Deep Change Strategy</li>
+                            <li>- SV Strategy Planning Process</li>
+                            <li>- Discussion on SV Creation</li>
+                            <li>- How to Internalize the SV Creation</li>
+                            <li>- Applying SV in Strategy</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub02 ing_con02">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-03-eng.png"
+                      alt="후속코스를 기획중입니다"
+                      className="ui image"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                      alt="level1"
+                      className="ui image"
+                    />
+                    <p>
+                      Understanding
+                      <br />
+                      Concepts
+                    </p>
+                  </div>
+                  <div className="con_wrap sub02">
+                    <h3>
+                      <a href="#none">Strategy Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul className="height_fixed">
+                            <li>Strategy 101: Welcome, New to Strategy?</li>
+                            <li>- What Is Strategy?</li>
+                            <li>- Strategic Management Process</li>
+                            <li>- Planning and Implementing a Strategy</li>
+                            <li>- Strategy in SK</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul className="height_fixed">
+                            <li>All about Portfolio Strategy</li>
+                            <li>- Portfolio Mgmt Options</li>
+                            <li>- M&amp;A/JV</li>
+                            <li>- Separation/Divestiture</li>
+                            <li>- SK M&amp;A History &amp; Case</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul className="sub height_fixed">
+                            <li>
+                              The Start of the Strategy Planning, Business
+                              Environment Analysis
+                            </li>
+                            <li>
+                              - External Environment Analysis, Tool &amp;
+                              Framework
+                            </li>
+                            <li>
+                              - Internal Environment Analysis, Tool &amp;
+                              Framework
+                            </li>
+                            <li>
+                              - In-practice Tips for Management Environment
+                              Analysis
+                            </li>
+                          </ul>
+                        </a>
+                        <ul className="ul_img_none height_fixed">
+                          <li className="pd0">
+                            <img
+                              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-04-eng.png"
+                              alt="후속코스를 기획중입니다"
+                              className="ui image"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="combined-topic">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-16.png"
+                    alt="후속코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Finance/Accounting',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0005w"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>Finance/Accounting</strong>
+            <div>
+              <ul>
+                <li>
+                  This content aims to enhance your professional skills in
+                  finance/ accounting/ tax and meet your various learning needs
+                  by providing related theories and SK practices and cases.
+                </li>
+                <li>
+                  The aim is to increase the capabilities of Deep Chance among
+                  SK members by discovering and sharing SK practices and cases
+                  of experts and sharing lessons learned to others at workshops
+                  and communities.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+          <div className="college-link-box">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt=""
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic topic_flex">
+                  <h2>Finance</h2>
+                  <h2>Accounting</h2>
+                  <h2>Tax</h2>
+                </div>
+                <div className="combined-topic">
+                  <h2>Finance/ Accounting/ Tax+a</h2>
+                </div>
+                <div className="ing_contents">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                      alt="레벨2"
+                      className="ui image"
+                    />
+                    <p>
+                      Methodology
+                      <br />
+                      /Applied Learning
+                    </p>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-03-ing-01-eng.png"
+                    alt="후속코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+                <div className="fundamental-topic float-left">
+                  <div className="con_wrap sub02">
+                    <div className="level_icon">
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                        alt="레벨1"
+                        className="ui image"
+                      />
+                      <p>
+                        Understanding
+                        <br />
+                        Concepts
+                      </p>
+                    </div>
+                    <h3>
+                      <a href="#none">Finance Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <a href="#none">Finance Management 101</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              What is Corporate Value and How is it Evaluated?
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <a href="#none">
+                              Teach me, Internal Accounting Control System
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              First Time: Cost/ Management Accounting
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Accounting per Account Titles, Easy and One by One
+                            </a>
+                          </li>
+                          <li>
+                            {' '}
+                            <a href="#none">Fun-Fun Accounting</a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="con_sub_box">
+                        <ul className="ul_one">
+                          <li>
+                            <a href="#none">
+                              First Step to Tax and Accounting in Real Life
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <a href="#none">Organizational Design Guide</a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Organizational Design Tip: Smart Design
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Measuring Organizational Design Effectiveness
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Marketing/Brand',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00018"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>Marketing/Brand</strong>
+            <div>
+              <ul>
+                <li>
+                  This content systematically deals with various values that are
+                  created in the process of distributing goods and services to
+                  the customers and the &quot;marketing&quot; related to those
+                  values,
+                  <br />
+                  as well as with &quot;brand,&quot; the intangible asset that
+                  symbolizes a corporation&apos;s values that are
+                  distinguishable from competitors and their goods.
+                  <br /> It aims to equip SK members with{' '}
+                  <strong>the drive to practice Deep Change</strong> in their
+                  respective jobs.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+          <div className="college-link-box market_style">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt="가로:Fundamental Topic/Combindes Topic"
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                      alt="v:lv2 Methodology Applied Learning, lv1 Understanding Concepts"
+                      className="ui image"
+                    />
+                    <p>
+                      Methodology
+                      <br />
+                      /Applied Learning
+                    </p>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-04-ing-01-eng.png"
+                    alt="후속 코스를 기획 중입니다"
+                    className="ui image"
+                  />
+                </div>
+                <div className="combined-topic">
+                  <div className="con_wrap sub03">
+                    <h3>Digital-fused Marketing</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul>
+                          <li>Digital Customer Data Marketing</li>
+                          <li>
+                            <a href="#none">- Marketing DT Trend</a>
+                          </li>
+                          <li>
+                            <a href="#none">- Data-based Customer Analysis</a>
+                          </li>
+                          <li>
+                            <a href="#none">- Performance Marketing Analysis</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              - Analyzing the Digital Channel Competitiveness
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              - Global Digital Marketing Trends
+                            </a>
+                          </li>
+                        </ul>
+                        <ul>
+                          <li>Digital Marketing Cases</li>
+                          <li>
+                            <a href="#none">
+                              - Mastercard’s DT Success Strategy
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              - Digital Marketing Trend &amp; Cases
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              - SK’ s Customer-data-based Deep Change
+                            </a>
+                          </li>
+                        </ul>
+                        <a href="#none">
+                          <ul>
+                            <li>AI Marketing</li>
+                            <li>1. Reach : Lure Customers Using AI</li>
+                            <li>2. ACT : AI that Leads Customers to Spend</li>
+                            <li>3. Convert : Making Regular Customers by AI</li>
+                            <li>4. Engage : AI-based Customer Prediction</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="legal-wrap flex">
+                <div className="combined-topic">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                      alt=""
+                      className="ui image"
+                    />
+                    <p>
+                      Understanding
+                      <br />
+                      Concepts
+                    </p>
+                  </div>
+                  <div className="con_wrap sub02">
+                    <h3>
+                      <a href="#none">Marketing Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul>
+                          <li>
+                            <a href="#none">Marketing Framework &amp; Tool</a>
+                          </li>
+                          <li>
+                            <a href="#none">- Marketing Environment Analysis</a>
+                          </li>
+                          <li>
+                            <a href="#none">- Marketing Strategy Planning</a>
+                          </li>
+                          <li>
+                            <a href="#none">- Marketing Execution Tactics</a>
+                          </li>
+                        </ul>
+                        <a href="#none">
+                          <ul>
+                            <li>Global Marketing Case Analysis</li>
+                            <li>- Fedex Case : Who’s My Customer</li>
+                            <li>- Ebay Case : The Return of the King</li>
+                            <li>- Starbucks Case : Falling from a Tree</li>
+                            <li>- Exxon Mobil Case : Nothing Lasts Forever</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Learning by Keywords, Marketing 101</li>
+                            <li>- Marketing Principles / Paradigm Shift</li>
+                            <li>- Smart Marketing VS Silly Marketing</li>
+                            <li>- 3Ws of Marketing</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Learning about B2B Marketing by Examples</li>
+                            <li>- B2B Marketing Outline</li>
+                            <li>
+                              - Implementing and Executing the B2BC Marketing
+                              Strategy
+                            </li>
+                            <li>
+                              - Digital Marketing Communication of the B2B
+                              Market
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Learning about Products Planning by Examples
+                            </li>
+                            <li>- Goods and Service</li>
+                            <li>- Comparing Goods Portfolios</li>
+                            <li>
+                              - Innovation Strategy and Life Cycle of Goods
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub02">
+                    <h3>
+                      <a href="#none">Brand Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Brand What &amp; Why?</li>
+                            <li>- Importance of Brand</li>
+                            <li>- Brand vs. Branding</li>
+                            <li>- Definition of Brand and Brand Elements</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Source of Brand Equity</li>
+                            <li>- Brand Equity Pyramid and Brand Awareness</li>
+                            <li>- Brand Association</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Key Insights to Strategic Brand Management</li>
+                            <li>- Common Misconceptions in Brand Management</li>
+                            <li>- Value : Key Concept of Brand Management</li>
+                            <li>- Value Innovation</li>
+                            <li>- Holistic Branding &amp; HCEM</li>
+                            <li>- Strategic Framework of Brand Management</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Brand Identify System</li>
+                            <li>- Basic Components of BIS</li>
+                            <li>- Brand Personality</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Understanding Consumer Behavior(for Effective
+                              Brand Management)
+                            </li>
+                            <li>- Consumer Data-Processing and Memory</li>
+                            <li>- Customer Needs in Each Consumption Stages</li>
+                            <li>- Connecting the Goods and Customer Needs</li>
+                            <li>- Consumer Survey Methodology</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Brand Communication</li>
+                            <li>
+                              - The Role and Importance of Brand Communication
+                            </li>
+                            <li>
+                              - Environmental Change and Change in Brand
+                              <br />
+                              Communication
+                            </li>
+                            <li>- New IMC Strategy</li>
+                            <li>- Brand Comm. Strategy Establishment Model</li>
+                            <li>- Creative Strategy</li>
+                            <li>- Media Creative Strategy</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>DT Age Customer Experience Brand Strategy</li>
+                            <li>- DT Age, Change of Lifestyle</li>
+                            <li>- Digital Native in Brand Strategy</li>
+                            <li>- SV or Authenticity Brand Strategy</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Brand Architecture Design</li>
+                            <li>- Brand Architecture : What &amp; Why?</li>
+                            <li>
+                              - Understanding and Analyzing Brand Hierarchy
+                            </li>
+                            <li>- Key Decisions</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: (
+        <Menu.Item>
+          HR/Organizational
+          <br />
+          Structure
+        </Menu.Item>
+      ),
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN00013"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>HR/Organizational Structure</strong>
+            <div>
+              <ul>
+                <li>
+                  HR Function offers a systematic content to expand and enhance
+                  HR workers’ capabilities and insights by providing them (1)
+                  basic understanding, methodology, and practices that are based
+                  on real HR works and <br />
+                  (2) related HR technology knowledge following the changes in
+                  future technology.
+                </li>
+                <li>
+                  The organizational design function offers the following: (1)
+                  Practical methodologies and core concepts and principles of
+                  organizational design (2) and solutions to realistic concerns
+                  such as organizational silos, employee happiness, and hurdles
+                  present in new projects.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+          <div className="college-link-box hr_style">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt="가로:Fundamental Topic/ Combined Topic"
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <h3>HR</h3>
+                  <h3>Organizational Design</h3>
+                  <div className="depth">
+                    <div className="con_wrap sub02 ing">
+                      <div className="level_icon">
+                        <img
+                          src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                          alt="v: lv2 Methodology Applied Learning"
+                          className="ui image"
+                        />
+                        <p>
+                          Methodology
+                          <br />
+                          /Applied Learning
+                        </p>
+                      </div>
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-05-ing-01-eng.png"
+                        alt="후속 코스를 기획중입니다"
+                        className="ui image"
+                      />
+                    </div>
+                  </div>
+                  <div className="depth">
+                    <div className="con_wrap sub01 depth">
+                      <h3>
+                        <a href="#none">Organizational Design</a>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <a href="#none">
+                            <ul>
+                              <li>Organizational Design Workshop</li>
+                              <li>1. Organizational Design Workshop</li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Organizational Design Methodology</li>
+                              <li>
+                                1. Organizational Design Methodology : Star
+                                Model
+                              </li>
+                              <li>2. Organizational Design Work Approach</li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Organizational Self-Design</li>
+                              <li>
+                                1. Organization Self-Design : Why &amp; What
+                              </li>
+                              <li>2. Organizational Self-Design Case</li>
+                            </ul>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <a href="#none">
+                          Organizational Design Work Approach (Mid-term)
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Understanding Ambidexterous Organizational Design
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Future Technology Corporation’s Organizational Design
+                          Cases
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          How the Company Became an Agile Organization
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          SV-oriented Organizational Design Measure
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">Org. Culture &amp; Leader</a>
+                      </li>
+                    </ul>
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-ing-10-eng.png"
+                      alt="후속 코스를 기획중입니다"
+                      className="ui image"
+                    />
+                  </div>
+                </div>
+                <div className="combined-topic">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-05-ing-03-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+              <div className="legal-wrap">
+                <div className="fundamental-topic float-left">
+                  <div className="level_icon">
+                    <img
+                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                      alt="세로: 레벨1 개념이해"
+                      className="ui image"
+                    />
+                    <p>
+                      Understanding
+                      <br />
+                      Concepts
+                    </p>
+                  </div>
+                  <div className="depth">
+                    <div className="con_wrap sub02 depth">
+                      <h3>
+                        <a href="#none">HR Essentials</a>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <a href="#none">
+                            <ul>
+                              <li>Securing Workforce</li>
+                              <li>
+                                1. Personnel Planning! Why Should you Do it?
+                              </li>
+                              <li>2. Checking the Hiring Process in Detail</li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Job Management</li>
+                              <li>1. What is a job?</li>
+                              <li>
+                                2. Why are Job Analysis and Job Evaluation
+                                <br />
+                                Necessary?
+                              </li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Rewards</li>
+                              <li>
+                                1. Things You Must Know for Operating
+                                Compensation
+                              </li>
+                              <li>
+                                2. Compensation System, How did it Change?
+                              </li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Performance Management</li>
+                              <li>
+                                1. Performance Management and Evaluation, Is It
+                                Really Necessary?
+                              </li>
+                              <li>
+                                2. Core Summary of Performance Management
+                                Process!
+                              </li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Global HR</li>
+                              <li>1. Understanding Expat System Properly</li>
+                              <li>2. Must-know Global Staff Management</li>
+                            </ul>
+                          </a>
+                          <a href="#none">
+                            <ul>
+                              <li>Labor and Management Relations</li>
+                              <li>
+                                1. Understanding the Individual Employment
+                                Relations
+                              </li>
+                              <li>
+                                2. Understanding the Contractual Hiring System
+                              </li>
+                            </ul>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="depth">
+                    <div className="con_wrap sub02 depth">
+                      <h3>
+                        <a href="#none">Organizational Design</a>
+                      </h3>
+                      <div className="con_box">
+                        <div className="con_sub_box">
+                          <a href="#none">
+                            <ul>
+                              <li>
+                                Basic Principles and Cases of Organizational
+                                Design
+                              </li>
+                              <li>
+                                1. Basic Principles of Organizational Design
+                              </li>
+                              <li>2. New Trend in Organizational Design</li>
+                              <li>3. Corporate Case (MS, SKHY)</li>
+                            </ul>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="sub_ul">
+                      <li>
+                        <a href="#none">Organizational Design Guide </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Organizational Design Tip: Smart Design
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#none">
+                          Measuring Organizational Design Effectiveness
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'SCM/Operation',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0007m"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>SCM/Operation</strong>
+            <div>
+              <ul>
+                <li>
+                  By dealing with the “supply chain management” that makes the
+                  management activities efficient, which are necessary to
+                  providing exceptional service and goods to our customers at an
+                  affordable price and at the right time, this content enables
+                  SK members to take more initiative in Deep Change in their
+                  respective works.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+
+          <div className="college-link-box scm_style">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt="가로:Fundamental Topic/ Combined Topic"
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub01">
+                    <div className="level_icon">
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                        alt="세로:레벨2 방법론, 적용학습"
+                        className="ui image"
+                      />
+                      <p>
+                        Methodology
+                        <br />
+                        /Applied Learning
+                      </p>
+                    </div>
+                    <h3>Purchasing Advanced</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Strategic Purchase for Corporate Success</li>
+                            <li>
+                              - Understanding Corporate Strategy and Corporate
+                              Competitiveness
+                            </li>
+                            <li>
+                              - Corporate Strategy and Consistent Purchasing
+                              Strategy
+                            </li>
+                            <li>
+                              - Success of Corporations and the Role of
+                              Purchasing
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Strategic Supplier Management</li>
+                            <li>
+                              - Two Ways to Deal with the Supplier - Cooperation
+                              and Competition
+                            </li>
+                            <li>
+                              - Nurturing and Benefit Sharing with the Suppliers
+                            </li>
+                            <li>
+                              - Understanding SRM and the Purchasing Chessboard
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Cooperation and Connection with Purchasing and
+                              other Departments
+                            </li>
+                            <li>
+                              - Associating Development and Purchasing -
+                              Development Purchase
+                            </li>
+                            <li>
+                              - Purchasing and its Connection with other
+                              Departments
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Successful Purchasing Negotiation</li>
+                            <li>- What is Negotiation?</li>
+                            <li>
+                              - How to Find Solutions when Negotiations Get
+                              Stuck
+                            </li>
+                            <li>- Negotiation Stalemate, How to Break it?</li>
+                            <li>
+                              - How to Increase the Size of Pies in Negotiation?
+                            </li>
+                            <li>
+                              - Going to Negotiate Without a Goal and Strategy?
+                              It&apos;s Bound to Fail!
+                            </li>
+                            <li>
+                              - How to Convince a Person Unmoved by my
+                              Arguments?
+                            </li>
+                            <li>
+                              - What’s Most Important in Determining the
+                              Bargaining Power?
+                            </li>
+                            <li>- How to End Up with More in Negotiations</li>
+                            <li>
+                              - What’s the Best Tool in Convincing Others?
+                            </li>
+                            <li>
+                              - How to Deal with Monopolizing and Power-tripping
+                              Suppliers
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-ing-01-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                  <div className="con_wrap sub02">
+                    <div className="level_icon">
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                        alt="세로: 레벨1 개념이해"
+                        className="ui image"
+                      />
+                      <p>
+                        Understanding
+                        <br />
+                        Concepts
+                      </p>
+                    </div>
+                    <h3>
+                      <a href="#none">Purchasing Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Am I a True Buyer, The Fundamentals of Purchasing
+                            </li>
+                            <li>- Understanding Purchasing</li>
+                            <li>- Understanding the 5R in Purchasing</li>
+                            <li>- Core of Purchasing</li>
+                            <li>
+                              - Developing and Changing Purchase Management
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Understanding the Purchasing Contracts and other
+                              Laws You Must Know
+                            </li>
+                            <li>- Moral Obligations in Purchasing</li>
+                            <li>- Understanding Purchasing Contract</li>
+                            <li>
+                              - Subcontracting Law and the Law on Win-Win
+                              Partnership
+                            </li>
+                            <li>- Must Knows in Subcontract Fee</li>
+                            <li>
+                              - Ban on Requesting to Share Data on Technology,
+                              What to Look Out For
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              What am I Purchasing? Understanding and Managing
+                              Purchasing Goods
+                            </li>
+                            <li>
+                              - Classification and Management of Purchasing
+                              Goods
+                            </li>
+                            <li>
+                              - Material Management Strategy Following the Item
+                              Classification
+                            </li>
+                            <li>- Understanding Service / Service Goods</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Never Let Your Guard Down, Risk Management in
+                              Purchasing
+                            </li>
+                            <li>- Intro: Risk Management of Tylenol</li>
+                            <li>
+                              - Purchasing Risk Management and Procurement
+                              Sustainability Plan
+                            </li>
+                            <li>
+                              - Risk Managing the Fluctuating Price of
+                              Purchasing Materials
+                            </li>
+                            <li>
+                              - The Age of Pandemic and Purchase Risk Management
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Digital Purchasing Innovation</li>
+                            <li>- Core Understanding of Digital Innovation</li>
+                            <li>- Innovative Measures on Digital Marketing</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Understanding and Using Purchasing Work Process
+                            </li>
+                            <li>
+                              - Understanding and Applying the Purchasing Work
+                              Process
+                            </li>
+                            <li>- Searching and Evaluating the Supplier</li>
+                            <li>
+                              - Guide to Writing the RFP and RFQ and Things to
+                              Avoid
+                            </li>
+                            <li>- Managing and Evaluating Bidding Process</li>
+                            <li>- Selecting and Contracting the Supplier</li>
+                            <li>- Understanding PO Placement</li>
+                            <li>- Procurement Activity after Contract</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Know More Earn More, Finance, Accounting, and
+                              Distribution for Buyers
+                            </li>
+                            <li>- Managing Account Registration</li>
+                            <li>- Understanding and Applying Incoterms 2020</li>
+                            <li>
+                              - Supplier Credibility and Financial Analysis
+                            </li>
+                            <li>
+                              - Practical Lessons on Trade Insurance/ Import
+                              Insurance
+                            </li>
+                            <li>- Import Clearance, Duty and Surtax</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Purchasing Cost Management</li>
+                            <li>- Strategic Meaning of Purchasing Cost</li>
+                            <li>
+                              - Price Analysis and Price Adequacy Evaluation
+                            </li>
+                            <li>- Meaning and Method of Cost Analysis</li>
+                            <li>
+                              - Understanding Total Cost of Ownership (TCO)
+                            </li>
+                            <li>- Applying Total Cost of Ownership (TCO)</li>
+                            <li>- Target Cost and Value Analysis</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Social Value and Purchase of Corporation</li>
+                            <li>- Purchasing and ESG/SV Practice (1)</li>
+                            <li>- Purchasing and ESG/SV Practice (2)</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-ing-02-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+                <div className="combined-topic">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-ing-03-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Legal/IP',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0007l"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>Legal/IP</strong>
+            <div>
+              <ul>
+                <li>
+                  In this function, it deals with the legal that solves problems
+                  and prevents any legal risks before the fact in the corporate
+                  setting and with IP matters that raise the patent
+                  competitiveness of the company in already existing projects or
+                  new ones. This content provides systematic lessons to the SK
+                  members on ways to increase their Deep Change drive in their
+                  works.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+          <div className="college-link-box leg_style">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-category.png"
+                alt="가로:Fundamental Topic/ Combined Topic"
+                className="ui image manage_cate"
+              />
+              <div className="legal-wrap">
+                <div className="fundamental-topic">
+                  <div className="con_wrap sub01">
+                    <div className="level_icon">
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/enter-lv-02.png"
+                        alt="세로:레벨2 방법론, 적용학습"
+                        className="ui image"
+                      />
+                      <p>
+                        Methodology/
+                        <br />
+                        Applied Learning
+                      </p>
+                    </div>
+                    <h3>
+                      <a href="#none">Monopoly Regulation and Fair Trade Act</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Monopoly Regulation and Fair Trade Act Overview
+                            </li>
+                            <li>
+                              - Understanding Monopoly Regulation and Fair Trade
+                              Act and its Direction
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Unfair Support, Personal Gain</li>
+                            <li>
+                              - Understanding Wrongful Support / Illegal
+                              Profit-taking
+                            </li>
+                            <li>
+                              - Legal Principles and Case Study on Wrongful
+                              Support
+                            </li>
+                            <li>
+                              - Recent Regulation Trends by KFTC and Study on
+                              KFTC’s Decisions
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Unfair Trade and Injustice Indication and
+                              Advertisement
+                            </li>
+                            <li>- Understanding Unfair Trade Practices</li>
+                            <li>
+                              - Important Legal Principles / Case Study on
+                              Unfair Trade Practices
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Deterring the Concentration of Economic Power
+                            </li>
+                            <li>
+                              - Understanding the Corporate Regulations under
+                              the Monopoly Regulation and Fair Trade Act
+                            </li>
+                            <li>
+                              - Recent Cases by KFTC and their Implications
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>The Limits of M&amp;A</li>
+                            <li>- Must We Report M&amp;A?</li>
+                            <li>
+                              - When does Business Consolidation get Regulated?
+                            </li>
+                            <li>
+                              - How Does Conglomerate Merger Become a Problem?
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Market-dominating and Power-abusing Behaviors
+                            </li>
+                            <li>
+                              - Understanding the Market-dominating and
+                              Power-abusing Behaviors
+                            </li>
+                            <li>- Study on Main Principles of Law and Cases</li>
+                            <li>
+                              - Study on Companies’ Proposed Correction Schemes
+                              against Antitrust Charges
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Unfair Common Practice</li>
+                            <li>- Understanding Unfair Common Practices</li>
+                            <li>- Case Study on Unfair Common Practices</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Subcontracting Act</li>
+                            <li>- What Is Subcontracting Act?</li>
+                            <li>
+                              - Main Legal Principles and Case Studies on the
+                              Law on Subcontracting
+                            </li>
+                            <li>
+                              - Request and Usefulness of the Request to Share
+                              Data on Technology
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub01">
+                    <h3>Patent Management</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Patent Application System and Law in Korea</li>
+                            <li>- Patent Requirements History</li>
+                            <li>- Patent Application</li>
+                            <li>- Patent Examination</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Applying for Patent in Korea</li>
+                            <li>- Writing Statements in Korean</li>
+                            <li>- Responding to Screenings in Korea</li>
+                            <li>- Responding to Trials in Korea</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Patent Use and Purchase</li>
+                            <li>- Summary of Patent Utilization</li>
+                            <li>- Understanding Patent Profit and IP Fund</li>
+                            <li>- Patent and Business Strategy</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>M&amp;A and IP Transaction</li>
+                            <li>- M&amp;A and IP Transaction Issues</li>
+                            <li>- Things to Watch Out by Each Issue</li>
+                            <li>- Other Review Points</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub01">
+                    <h3>Patent Dispute</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Patent Dispute in Korea</li>
+                            <li>- Understanding Patent Trial System</li>
+                            <li>- Invalidation Trial</li>
+                            <li>
+                              - Practical Lessons on Evidence Preservation
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Key Points in U.S. Patent Dispute</li>
+                            <li>- Discovery Phase</li>
+                            <li>- Trial(Jury /Bench Trial)</li>
+                            <li>- ITC Lawsuit</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Patent Negotiation and License</li>
+                            <li>- Stages of Patent Claim</li>
+                            <li>- Negotiating Patent Technology</li>
+                            <li>- Royality Negotiation</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-ing-01-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                  <div className="con_wrap sub02 b-sz">
+                    <div className="level_icon">
+                      <img
+                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/lv-01.png"
+                        alt="세로: 레벨1 개념이해"
+                        className="ui image"
+                      />
+                      <p>
+                        Understanding
+                        <br />
+                        Concepts
+                      </p>
+                    </div>
+                    <h3>
+                      <a href="#none">IP Mind-Set Essential</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Intellectual Property 101</li>
+                            <li>
+                              - Concept and Kinds of Intellectual Property
+                            </li>
+                            <li>- A to Z of Patent System</li>
+                            <li>- A to Z of Trademark System</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>AI Patent</li>
+                            <li>- AI Patent Trends</li>
+                            <li>- AI Patenting</li>
+                            <li>- AI Patent Case Study</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Research Development and Intellectual Property
+                            </li>
+                            <li>
+                              - Necessity of Patent Development in R&amp;D
+                            </li>
+                            <li>- Prior Art Search</li>
+                            <li>- Guide to Writing Invention Disclosures</li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Patent Dispute Introduction</li>
+                            <li>- Types of Patent Disputes</li>
+                            <li>- Key Cases of Patent Disputes</li>
+                            <li>- Korea Patent Litigation System</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Job Invention</li>
+                            <li>
+                              - Understanding Employee
+                              <br />
+                              Invention
+                            </li>
+                            <li>
+                              - The Relationship of Appropriation
+                              <br />
+                              of Rights in Employee Invention
+                            </li>
+                            <li>
+                              - Cases on Compensation System
+                              <br />
+                              and Invention Compensation
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              Managing Documents on
+                              <br />
+                              Dispute Response
+                            </li>
+                            <li>- Document Management Policy</li>
+                            <li>- Managing Daily Documents</li>
+                            <li>- Document Management in Case of Conflict</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="con_wrap sub02">
+                    <h3>Open Source Essentials</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Open Source Linear Development</li>
+                            <li>
+                              - Background Behind the Advent of Open Source
+                            </li>
+                            <li>
+                              - Paradigm Shift and Growth Momentum of Open
+                              Source
+                            </li>
+                            <li>
+                              - Open Source’s Growing Pains following the
+                              Sanctions on Closed Corporations
+                            </li>
+                          </ul>
+                        </a>
+                        <a href="#none">
+                          <ul>
+                            <li>Open Source License</li>
+                            <li>
+                              - Definition and Double-sidedness of Open Source
+                            </li>
+                            <li>
+                              - Characteristics and Requirements of GPI and BSD
+                              Licenses
+                            </li>
+                            <li>- Software Public Scope</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Software, Copyright &amp; License</li>
+                            <li>- Main Issues behind Software Copyrights</li>
+                            <li>- Intellectual Property and BM of Software</li>
+                            <li>
+                              - Types of Software License and Their Key Content
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-ing-02-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+                <div className="combined-topic">
+                  <img
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-07-ing-03-eng.png"
+                    alt="후속 코스를 기획중입니다"
+                    className="ui image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Competency',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <div className="belt">
+            <div className="text-right-box">
+              <Link
+                to="/lecture/college/CLG00008/channel/CHN0001a"
+                className="item-button"
+              >
+                <Image
+                  style={{ display: 'inline' }}
+                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  alt=""
+                />
+                Go to Courses
+              </Link>
+            </div>
+          </div>
+
+          <div className="college-sub-txt">
+            <strong>
+              Competency
+              <br />
+              (Working Smart)
+            </strong>
+            <div>
+              <ul>
+                <li>
+                  Provides content on common competencies all employees need,
+                  regardless of their job areas. <br />
+                  This course is needed to successfully execute your job
+                  according to your role level (Communication Skill, Problem
+                  Solving, Measurement, Negotiation, Decision Making &amp; Risk
+                  Management). Strengthen your foundations to perform better,
+                  work well for smart working, and enhance your Deep Change
+                  execution ability.
+                </li>
+              </ul>
+              <p className="p_link">
+                Click each badge and course to go to the corresponding page.
+              </p>
+            </div>
+          </div>
+          <div className="college-link-box comp_style">
+            <div className="belt">
+              <img
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-08-ing-01-eng.png"
+                alt=""
+                className="ui image"
+              />
+              <div className="legal-wrap flex sub">
+                <div className="fundamental-topic width50">
+                  <div className="con_wrap sub01">
+                    <h3>
+                      <a href="#none">Measurement Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Customer Measure &amp; Analytics</li>
+                            <li>- Basic Concept of Customer Measurement</li>
+                            <li>- Concept and Measurement of Customer Value</li>
+                            <li>
+                              - The Usage and Limits of Customer Measurement
+                              Index
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Understanding the Happiness Map</li>
+                            <li>- What is a Happiness Map?</li>
+                            <li>- Happiness Map Construction Process</li>
+                            <li>
+                              - Main Issues and Solutions in Happiness
+                              Measurement
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Understanding of SV Measurement</li>
+                            <li>- Principle and System of SV Measurement</li>
+                            <li>
+                              - Cases and Accomplishments of SV Measurement
+                            </li>
+                            <li>- Issues and Expansion of SV Measurement</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>The Beginning of Deep Change, Measurement</li>
+                            <li>- Measurement in the Management Field</li>
+                            <li>- Human Motives, Behavior Measurement</li>
+                            <li>- Social Phenomenon / Problem Measurement</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="combined-topic width50">
+                  <div className="con_wrap sub01">
+                    <h3>
+                      <a href="#none">Negotiaion Essentials</a>
+                    </h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Negotiation, its Meaning and Necessity</li>
+                            <li>- Intro into Negotiation</li>
+                            <li>- Comprehensive Business Area, Negotiation</li>
+                            <li>- Essential Course Framework Guide</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>
+                              [Negotiation Preparation Strategy]
+                              <br />
+                              12 Negotiation Skills
+                            </li>
+                            <li>- Set a Goal</li>
+                            <li>- Secure your own BATNA</li>
+                            <li>
+                              - Remember That This is Not your Last Negotiation
+                            </li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <a href="#none">
+                          <ul>
+                            <li>Negotiation Essence Reading</li>
+                            <li>- Getting to Yes</li>
+                            <li>- FBI Behavioral Psychology</li>
+                            <li>- Negotiation Leverage</li>
+                          </ul>
+                        </a>
+                      </div>
+                      <div className="con_sub_box flex">
+                        <a href="#none">
+                          <ul className="height100">
+                            <li>Negotiation Essential Wrap Up</li>
+                            <li>- Negotiation Essential Wrap Up</li>
+                          </ul>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="legal-wrap flex sub">
+                <div className="fundamental-topic width50">
+                  <div className="con_wrap sub02">
+                    <h3>Communication</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <a href="#none">Excel Practice: Master 1 ~ 8</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Essential Excel Functions that Hardly Show Up on
+                              Searches
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              The Department Manager Told My Plan was Garbage
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Common Mistakes Koreans Make in Email Writing Part
+                              1 and 2
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Powerpoint Slides that Make your Team Manager Look
+                              Back
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="combined-topic width50">
+                  <div className="con_wrap sub02">
+                    <h3>Problem Solving</h3>
+                    <div className="con_box">
+                      <div className="con_sub_box">
+                        <ul className="ul_style">
+                          <li>
+                            <a href="#none">
+                              Learning about Creative Thinking with 10 Keywords
+                            </a>
+                          </li>
+                          <li>
+                            Strategic Problem Solving Skills (To be Available in
+                            April)
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tab.Pane>
+      ),
+    },
+  ];
+
+  return (
+    <Tab
+      menu={{ attached: false, tabular: false }}
+      panes={panes}
+      className="sub-tab-menu management1"
+    />
+  );
+};
+
 export default CollegeInnerTabView;

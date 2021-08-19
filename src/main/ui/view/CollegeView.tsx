@@ -8,7 +8,9 @@ import { reactAlert } from '@nara.platform/accent';
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
-import CollegeInnerTabView from './CollegeInnerTabView';
+import CollegeInnerTabView, {
+  CollegeInnerEnTabView,
+} from './CollegeInnerTabView';
 import CollegeInnerTabAi, {
   CollegeInnerEnTabAi,
   CollegeInnerZhTabAi,
@@ -5055,7 +5057,7 @@ const EnPanes = [
           </div>
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
-              <CollegeInnerTabView />
+              <CollegeInnerEnTabView />
             </div>
           </div>
         </div>
@@ -8357,8 +8359,9 @@ const ZhPanes = [
               <div className="label">未来半导体College</div>
               <div className="strong">半导体，开始展望未来。</div>
               <div className="normal">
-                  不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质，
-                  并<br/>展望由未来技术开启的世界。
+                不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质， 并
+                <br />
+                展望由未来技术开启的世界。
               </div>
               <div className="panopto sub">
                 <iframe
@@ -8415,28 +8418,52 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>AI Manufacturing<br/>Professional</h3>
-                          <p>半导体Engineering+AI/DT融合，<br/>具备制造IT系统最优化能力，<br/>AI manufacturing专家,<br/>Contiunous成长支持</p>
+                          <h3>
+                            AI Manufacturing
+                            <br />
+                            Professional
+                          </h3>
+                          <p>
+                            半导体Engineering+AI/DT融合，
+                            <br />
+                            具备制造IT系统最优化能力，
+                            <br />
+                            AI manufacturing专家,
+                            <br />
+                            Contiunous成长支持
+                          </p>
                         </div>
                       </div>
                       <div className="semi_course">
                         <div className="semi_course_middle">
                           <ul>
-                            <li><a href="#none">半导体FAB生产运营专家</a></li>
+                            <li>
+                              <a href="#none">半导体FAB生产运营专家</a>
+                            </li>
                             <li className="dashed">
-                                <Image src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`} alt="" className="ui image"/>
-                                <a href="#none">Smart SCM专家</a>
-                            </li> 
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`}
+                                alt=""
+                                className="ui image"
+                              />
+                              <a href="#none">Smart SCM专家</a>
+                            </li>
                           </ul>
                           <ul>
-                            <li><a href="#none">半导体FAB最优化专家</a></li>
-                              <li className="dashed">
-                                <Image
-                                  src={`${PUBLIC_URL}/images/badge-open-blue.png`}
-                                  alt=""
-                                />
-                                <a href="#none">AI manufacturing<br/>Project (PBL)</a>
-                              </li>
+                            <li>
+                              <a href="#none">半导体FAB最优化专家</a>
+                            </li>
+                            <li className="dashed">
+                              <Image
+                                src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                alt=""
+                              />
+                              <a href="#none">
+                                AI manufacturing
+                                <br />
+                                Project (PBL)
+                              </a>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -8447,21 +8474,28 @@ const ZhPanes = [
                           <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                            <dt>Level</dt>
-                            <dd>★ ★ ★</dd>
+                          <dt>Level</dt>
+                          <dd>★ ★ ★</dd>
                         </dl>
                         <dl>
-                            <dt>认证内容</dt>
-                            <dd>具备运用AI预测半导体需<br/>求、最佳生产计划及决策<br/>能力的专家</dd>
+                          <dt>认证内容</dt>
+                          <dd>
+                            具备运用AI预测半导体需
+                            <br />
+                            求、最佳生产计划及决策
+                            <br />
+                            能力的专家
+                          </dd>
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
                           <dd>
-                            完成Course/Project<br/>
+                            完成Course/Project
+                            <br />
                             执行及pass
                           </dd>
                         </dl>
-                          <button type="button">预计OPEN</button>
+                        <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
@@ -8474,7 +8508,11 @@ const ZhPanes = [
                             Tech Insight
                           </h3>
                           <p>
-                          “广泛理解各类未来半导体应用领域，<br/>为创造New Biz的<br/>‘未来Biz/Tech探索之窗’”
+                            “广泛理解各类未来半导体应用领域，
+                            <br />
+                            为创造New Biz的
+                            <br />
+                            ‘未来Biz/Tech探索之窗’”
                           </p>
                         </div>
                       </div>
@@ -8489,9 +8527,7 @@ const ZhPanes = [
                               </a>
                             </li>
                             <li>
-                              <a>
-                                汽车半导体，机会与挑战
-                              </a>
+                              <a>汽车半导体，机会与挑战</a>
                             </li>
                             <li>
                               <a>
@@ -8510,7 +8546,9 @@ const ZhPanes = [
                             </li>
                             <li>
                               <a>
-                                量子计算与量子密码<br/>技术的现在与未来
+                                量子计算与量子密码
+                                <br />
+                                技术的现在与未来
                               </a>
                             </li>
                           </ul>
@@ -8528,7 +8566,11 @@ const ZhPanes = [
                             Fundamental
                           </h3>
                           <p>
-                            Smart factory的基本概念及<br/>组成因素，实际半导体FAB<br/>自动化System的理解
+                            Smart factory的基本概念及
+                            <br />
+                            组成因素，实际半导体FAB
+                            <br />
+                            自动化System的理解
                           </p>
                         </div>
                       </div>
@@ -8537,36 +8579,35 @@ const ZhPanes = [
                           <ul>
                             <li>
                               <a>
-                                打造Smart Factory，<br/>对制造系统的理解与决策。
+                                打造Smart Factory，
+                                <br />
+                                对制造系统的理解与决策。
                               </a>
                             </li>
                             <li>
                               <a>
-                                Smart Factory<br/>系统的相连与智能化
+                                Smart Factory
+                                <br />
+                                系统的相连与智能化
                               </a>
                             </li>
                             <li>
-                              <a>
-                                基于AI算法的半导体Factory
-                              </a>
+                              <a>基于AI算法的半导体Factory</a>
                             </li>
                           </ul>
                           <ul>
                             <li>
                               <a>
-                                Smart Factory的<br/>
+                                Smart Factory的
+                                <br />
                                 组成因素案例
                               </a>
                             </li>
                             <li>
-                              <a>
-                                尖端技术与制造的相遇
-                              </a>
+                              <a>尖端技术与制造的相遇</a>
                             </li>
                             <li>
-                              <a>
-                                半导体FAB自动化理解
-                              </a>
+                              <a>半导体FAB自动化理解</a>
                             </li>
                           </ul>
                         </div>
@@ -8593,9 +8634,7 @@ const ZhPanes = [
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
-                          <dd>
-                            完成Course / Test及实习课题
-                          </dd>
+                          <dd>完成Course / Test及实习课题</dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
                           预计OPEN
@@ -8623,37 +8662,63 @@ const ZhPanes = [
                       <div className="semi_course">
                         <div className="semi_course_middle ver-top">
                           <ul>
-                            <li><a href="#none">尖端材料</a></li>
-                            <li><a href="#none">Lithography工艺与材料</a></li>
-                            <li><a href="#none">Metallization工艺与材料</a></li>
-                            <li><a href="#none">Solar Cell元件与材料</a></li>
-                            <li><a href="#none">Thin Film工艺与材料</a></li>
+                            <li>
+                              <a href="#none">尖端材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Lithography工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Metallization工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Solar Cell元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Thin Film工艺与材料</a>
+                            </li>
                           </ul>
                           <ul>
-                            <li><a href="#none">Image Sensor元件与材料</a></li>
-                            <li><a href="#none">Etching工艺与材料</a></li>
-                            <li><a href="#none">化合物半导体元件与材料</a></li>
-                            <li><a href="#none">Doping工艺与材料</a></li>
+                            <li>
+                              <a href="#none">Image Sensor元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Etching工艺与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">化合物半导体元件与材料</a>
+                            </li>
+                            <li>
+                              <a href="#none">Doping工艺与材料</a>
+                            </li>
                           </ul>
                         </div>
                       </div>
                       <div className="semi_badge biz02 biz03">
                         <h4>半导体材料Fundamental</h4>
                         <dl>
-                            <dt>Badge类型</dt>
-                            <dd>未来Biz</dd>
+                          <dt>Badge类型</dt>
+                          <dd>未来Biz</dd>
                         </dl>
                         <dl>
-                            <dt>Level</dt>
-                            <dd>★ ★</dd>
+                          <dt>Level</dt>
+                          <dd>★ ★</dd>
                         </dl>
                         <dl>
-                            <dt>认证内容</dt>
-                            <dd>半导体工艺/各元件核心<br/>材料连接能力</dd>
+                          <dt>认证内容</dt>
+                          <dd>
+                            半导体工艺/各元件核心
+                            <br />
+                            材料连接能力
+                          </dd>
                         </dl>
                         <dl>
-                            <dt>获得条件</dt>
-                            <dd>完成Course/<br/>Test及实习课题</dd>
+                          <dt>获得条件</dt>
+                          <dd>
+                            完成Course/
+                            <br />
+                            Test及实习课题
+                          </dd>
                         </dl>
                         <button type="button">预计OPEN</button>
                       </div>
@@ -8664,9 +8729,17 @@ const ZhPanes = [
                     <div className="semi_belt">
                       <div className="semi_chan">
                         <div className="semi_txt">
-                          <h3>AI半导体<br/>Fundamental</h3>
+                          <h3>
+                            AI半导体
+                            <br />
+                            Fundamental
+                          </h3>
                           <p>
-                            处理人工智能(AI)的AI<br/>硬件类型，运作原理和<br/>HW开发所需基本概念理解
+                            处理人工智能(AI)的AI
+                            <br />
+                            硬件类型，运作原理和
+                            <br />
+                            HW开发所需基本概念理解
                           </p>
                         </div>
                       </div>
@@ -8676,8 +8749,8 @@ const ZhPanes = [
                             <li>
                               <Link
                                 to={`${semiconductorLinks['[Computing System 이해] 컴퓨터 동작의 이해']}`}
-                              >₩
-                                [Computer System] <br />
+                              >
+                                ₩ [Computer System] <br />
                                 <span>컴퓨터 동작의 이해</span>
                               </Link>
                             </li>
