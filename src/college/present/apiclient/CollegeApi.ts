@@ -87,7 +87,7 @@ export default class CollegeApi {
       .then((response) => (response && response.data) || null);
   }
 
-  getBanner() {
+  findCollegeBanners() {
     return axios
       .get<CollegeBanner[]>(this.URLCollege + `/banner`)
       .then((response) => (response && response.data) || null);

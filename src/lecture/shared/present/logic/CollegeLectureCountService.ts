@@ -5,10 +5,7 @@ import {
   observable,
   runInAction,
 } from 'mobx';
-import { autobind, CachingFetch, IdName } from '@nara.platform/accent';
-
-import { IdNameCount } from 'shared/model';
-import LectureFlowApi from '../apiclient/LectureFlowApi';
+import { autobind, IdName } from '@nara.platform/accent';
 import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
 import { findAvailableColleges } from '../../../../college/api/collegeApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
@@ -16,33 +13,29 @@ import { getDefaultLang } from '../../../model/LangSupport';
 
 @autobind
 class CollegeLectureCountService {
-  //
   static instance: CollegeLectureCountService;
 
-  private lectureFlowApi: LectureFlowApi;
+  @observable
+  private _collegeLectureCounts: CollegeLectureCountRdo[] = [];
 
   @observable
-  _collegeLectureCounts: CollegeLectureCountRdo[] = [];
-
-  collegeLectureCountsCachingFetch: CachingFetch = new CachingFetch();
+  private _channelCounts: IdName[] = [];
 
   @observable
-  _channelCounts: IdName[] = [];
-
-  constructor(lectureFlowApi: LectureFlowApi) {
-    this.lectureFlowApi = lectureFlowApi;
-  }
+  private _categoryColleges: CollegeLectureCountRdo[] = [];
 
   @computed
   get collegeLectureCounts() {
-    //
     return (this._collegeLectureCounts as IObservableArray).peek();
   }
 
   @computed
   get channelCounts() {
-    console.log('channelCounts', this._channelCounts);
     return (this._channelCounts as IObservableArray).peek();
+  }
+
+  @computed get categoryColleges() {
+    return this._categoryColleges;
   }
 
   @computed
@@ -68,35 +61,41 @@ class CollegeLectureCountService {
 
   @action
   clearAll() {
-    //
     runInAction(() => (this._collegeLectureCounts = []));
     runInAction(() => (this._channelCounts = []));
   }
-
-  // CollegeLectureCounts ----------------------------------------------------------------------------------------------
 
   @action
   async findCollegeLectureCounts() {
     const collegeLectureCounts = await findAvailableColleges();
     if (collegeLectureCounts !== undefined) {
-      sessionStorage.setItem('category', JSON.stringify(collegeLectureCounts));
       runInAction(() => (this._collegeLectureCounts = collegeLectureCounts));
     }
     return this.collegeLectureCounts;
   }
 
-  // ChannelCounts -----------------------------------------------------------------------------------------------------
+  @action setCollegeLectureCounts(
+    collegeLectureCounts: CollegeLectureCountRdo[]
+  ) {
+    this._collegeLectureCounts = collegeLectureCounts;
+  }
 
   @action
-  async setChannelCounts(channelsCounts: IdName[]) {
-    //
+  setChannelCounts(channelsCounts: IdName[]) {
     runInAction(() => (this._channelCounts = channelsCounts));
     return channelsCounts;
   }
+
+  @action
+  setCategoryColleges(categoryColleges: CollegeLectureCountRdo[]) {
+    this._categoryColleges = categoryColleges;
+  }
 }
 
-CollegeLectureCountService.instance = new CollegeLectureCountService(
-  LectureFlowApi.instance
-);
-
 export default CollegeLectureCountService;
+
+Object.defineProperty(CollegeLectureCountService, 'instance', {
+  value: new CollegeLectureCountService(),
+  writable: false,
+  configurable: false,
+});

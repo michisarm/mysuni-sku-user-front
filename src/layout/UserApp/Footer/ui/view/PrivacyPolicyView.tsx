@@ -2982,17 +2982,7 @@ export default class PrivacyPolicyView extends Component<Props> {
                           <td>
                             <PolyglotText
                               id="Privacy-2020Y1M17D-text35"
-                              defaultString="SK 그룹 계열회사 (자세한 내역은"
-                            />
-                            <a href="http://sk.co.kr" target="_blank">
-                              <PolyglotText
-                                id="Privacy-2020Y1M17D-text36"
-                                defaultString="http://sk.co.kr"
-                              />
-                            </a>
-                            <PolyglotText
-                              id="Privacy-2020Y1M17D-text37"
-                              defaultString="에서 확인 가능)"
+                              defaultString="SK 그룹 계열회사 (자세한 내역은 http://sk.co.kr 에서 확인 가능)"
                             />
                           </td>
                           <td>

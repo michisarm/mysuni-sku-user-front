@@ -261,7 +261,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
       </div>
 
       <Segment className="full">
-        {/* 노트 검색 */}
+        {/* 노트 검색 김민준-번역필요 */}
         <div className="search_box">
           <Table>
             <Table.Body>

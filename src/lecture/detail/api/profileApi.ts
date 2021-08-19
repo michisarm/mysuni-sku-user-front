@@ -20,7 +20,9 @@ export function generationEncryptKey(
   cubeId: string,
   cardId: string
 ): Promise<String | void> {
-  const url = `${BASE_URL}/encryptKey?cubeId=${cubeId}&cardId=${cardId}`;
+  // 0818 긴급 배포로 api 수정, 이후 다시 원복 예정
+  // const url = `${BASE_URL}/encryptKey?cubeId=${cubeId}&cardId=${cardId}`;
+  const url = '/api/encryption/encryptionKey';
   return axiosApi.get<String>(url).then((response) => {
     return response && (response as unknown) != '' ? response.data : undefined;
   });
@@ -60,5 +62,7 @@ export function findMyUserWorkspace() {
   return axios.get<UserWorkspace>(url).then(AxiosReturn);
 }
 
-export const [findMyUserWorkspaceCache, clearFindMyUserWorkspaceCache] =
-  createCacheApi(findMyUserWorkspace);
+export const [
+  findMyUserWorkspaceCache,
+  clearFindMyUserWorkspaceCache,
+] = createCacheApi(findMyUserWorkspace);

@@ -166,6 +166,7 @@ class MyBadgeModal extends Component<Props, States> {
           trigger={
             <div className="button-area">
               <Button className="fix line">
+                {/* 김민준 - 번역 추가 필요 */}
                 <PolyglotText
                   id="Certification-mybadgemodal-인증서보기"
                   defaultString="인증서 보기"

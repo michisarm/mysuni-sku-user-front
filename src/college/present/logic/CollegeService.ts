@@ -318,8 +318,8 @@ export default class CollegeService {
   }
 
   @action
-  async getBanner() {
-    const banner = await this.collegeApi.getBanner();
+  async findCollegeBanners() {
+    const banner = await this.collegeApi.findCollegeBanners();
     if (banner) return runInAction(() => (this.banner = banner));
   }
 }
