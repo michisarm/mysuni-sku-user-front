@@ -2017,7 +2017,7 @@ export const CollegeInnerZhTabView = () => {
               Expert的经验共享，还有SK管理层/专家的Instight经验共享的Exclusive
               Contents。
             </p>
-            <p className="p_link">点击各Badge，即可进入到相应页面。</p>
+            <p className="p_link">{/* 点击各Badge，即可进入到相应页面。 */}</p>
           </div>
 
           <div className="college-cont-map sub wrap01">
@@ -3869,7 +3869,7 @@ export const CollegeInnerEnTabView = () => {
               experts but also the SK leaders and experts.
             </p>
             <p className="p_link">
-              Click each badge to go to the corresponding page.
+              {/* Click each badge to go to the corresponding page. */}
             </p>
           </div>
           <div className="college-cont-map sub wrap01">

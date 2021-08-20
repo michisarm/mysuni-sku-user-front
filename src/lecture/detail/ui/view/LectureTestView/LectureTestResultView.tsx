@@ -131,10 +131,10 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                       />
                     </h3>
                     <p>
-                      <PolyglotText
-                        defaultString="합격기준"
-                        id="Test-TestResult-총점"
-                      />{' '}
+                      {/*<PolyglotText*/}
+                      {/*  defaultString="합격기준"*/}
+                      {/*  id="Test-TestResult-총점"*/}
+                      {/*/>{' '}*/}
                       {/*<strong>*/}
                       {/*  {testItem.preSuccessPoint || testItem.successPoint}*/}
                       {/*  <PolyglotText*/}
@@ -144,7 +144,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                       {/*</strong>*/}
                       {/*<span>/</span>*/}
                       <strong>
-                        {testItem.preSuccessPoint || testItem.preSuccessPoint}
+                        {testItem.preSuccessPoint || testItem.successPoint}
                       </strong>
                       <PolyglotText
                         defaultString=" 점 이상"
