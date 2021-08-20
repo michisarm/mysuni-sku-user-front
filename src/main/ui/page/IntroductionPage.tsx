@@ -124,7 +124,11 @@ class UserMainPage extends Component<Props> {
 
     return (
       <ContentLayout
-        className="bg-white introduction"
+        className={`bg-white introduction ${
+          SkProfileService.instance.skProfile.language === 'English'
+            ? 'eng'
+            : ''
+        }`}
         breadcrumb={[
           { text: 'Introduction' },
           {
