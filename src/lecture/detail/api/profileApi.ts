@@ -22,7 +22,7 @@ export function generationEncryptKey(
 ): Promise<String | void> {
   // 0818 긴급 배포로 api 수정, 이후 다시 원복 예정
   // const url = `${BASE_URL}/encryptKey?cubeId=${cubeId}&cardId=${cardId}`;
-  const url = '/api/encryption/encryptionKey';
+  const url = `/api/user/encryption/encryptionKey?cubeId=${cubeId}&cardId=${cardId}`;
   return axiosApi.get<String>(url).then((response) => {
     return response && (response as unknown) != '' ? response.data : undefined;
   });
