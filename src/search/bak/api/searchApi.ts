@@ -1,28 +1,24 @@
 import { axiosApi } from '@nara.platform/accent';
 import jwt_decode from 'jwt-decode';
 import moment from 'moment';
-import { SkProfileService } from '../../profile/stores';
-import { Workspace } from '../../shared/api/Axios';
-import { AxiosReturn } from '../../shared/api/AxiosReturn';
-import { CardCategory } from '../../shared/model/CardCategory';
-import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege';
+import { SkProfileService } from '../../../profile/stores';
+import { Workspace } from '../../../shared/api/Axios';
+import { AxiosReturn } from '../../../shared/api/AxiosReturn';
+import { CardCategory } from '../../../shared/model/CardCategory';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import {
   getCollegeOptions,
   getCubeTypeOptions,
   getFilterCondition,
   getOrganizerOptions,
-  setSearchUI,
-  getSearchUI,
-} from '../search.services';
-import {
-  CheckboxOptions,
-  SearchCard,
-  SearchCardCategory,
-  SearchExpert,
-} from '../search.models';
-import { UserWorkspace } from '../../approval/models/UserWorkspace';
+} from '../Components/SearchFilter';
+import CheckboxOptions from '../model/CheckBoxOption';
+import { SearchCard, SearchCardCategory } from '../model/SearchCard';
+import { SearchExpert } from '../model/SearchExpert';
+import { UserWorkspace } from '../../../approval/models/UserWorkspace';
 import _ from 'lodash';
-import { Token } from '../../shared/model/Token';
+import { Token } from '../../../shared/model/Token';
+import { setSearchUI, getSearchUI } from '../model/SearchUI';
 import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;

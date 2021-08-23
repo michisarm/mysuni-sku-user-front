@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Icon, Card, Segment, Button } from 'semantic-ui-react';
 import ExpertCards from '../Components/ExpertCards';
-import CommentsSort from 'search/Components/CommentsSort';
+import CommentsSort from '../Components/CommentsSort';
 import { useExpert } from '../Components/SearchFilter';
 import { Area } from 'tracker/model';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';

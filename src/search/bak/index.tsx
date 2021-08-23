@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Tutorial from '../tutorial';
+import Tutorial from '../../tutorial';
 import './style.css';
 
 // internal Components
@@ -31,7 +31,7 @@ const SearchComponent: React.FC = () => {
 
   return (
     <>
-      <section className="content">
+      <section className="content searchTotal">
         <HeaderArea />
         {/* <AllView /> */}
         {searchUI?.isLoading === true && <LoadingView />}

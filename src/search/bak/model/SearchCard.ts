@@ -1,6 +1,6 @@
-import { DifficultyLevel } from '../../lecture/model/DifficultyLevel';
-import CardType from '../../lecture/shared/model/CardType';
-import { Category } from '../../shared/model/Category';
+import { DifficultyLevel } from '../../../lecture/model/DifficultyLevel';
+import CardType from '../../../lecture/shared/model/CardType';
+import { Category } from '../../../shared/model/Category';
 
 export interface SearchCardCategory extends Category {
   mainCategory: number;

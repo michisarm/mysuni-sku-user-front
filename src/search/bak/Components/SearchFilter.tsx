@@ -13,12 +13,12 @@ import {
   QueryOptions,
   findPreCard,
 } from '../api/searchApi';
-import { createStore } from '../../community/store/Store';
+import { createStore } from '../../../community/store/Store';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
-import { getCollgeName } from '../../shared/service/useCollege/useRequestCollege';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { SearchCard, SearchCardCategory } from '../model/SearchCard';
-import { CardCategory } from '../../shared/model/CardCategory';
+import { CardCategory } from '../../../shared/model/CardCategory';
 import { SearchExpert } from '../model/SearchExpert';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
