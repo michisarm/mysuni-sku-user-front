@@ -6028,7 +6028,7 @@ const EnPanes = [
               <div className="text-left-box">
                 <p className="p_link">
                   {/* Click each badge and course to go to the corresponding page. */}
-                  </p>
+                </p>
               </div>
               <div className="text-right-box">
                 <Link
@@ -8852,8 +8852,55 @@ const ZhPanes = [
                               </a>
                             </li>
                           </ul>
+                          <ul className="sm">
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <span>Data Centric World</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [从News了解半导体]
+                                <br />
+                                <span>半导体Value Chain In-depth分析</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [半导体Industry理解 Part1]
+                                <br />
+                                <span>半导体产业的基本概念和市场竞争格局</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [半导体Industry理解 Part3]
+                                <br />
+                                <span>CPU强者英特尔的过去、现在和未来</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                [半导体Industry理解 Part5]
+                                <br />
+                                <span>
+                                  无限竞争时代的未来展望-
+                                  <br />
+                                  半导体企业的挑战与课题
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#none">
+                                新冠疫情对半导体供应链带来的影响
+                              </a>
+                            </li>
+                          </ul>
                         </div>
                       </div>
+
                       <div className="semi_badge biz">
                         <h4>半导体Biz Essential</h4>
                         <dl>

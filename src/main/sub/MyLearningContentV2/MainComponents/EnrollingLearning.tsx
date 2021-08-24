@@ -35,6 +35,26 @@ function EnrollingLearning() {
     const enrollingCardList = await findEnrollingCardList(
       LectureFilterRdoModel.enrLectures(8, 0, false)
     );
+
+    const endCard: EnrollingCardList[] = [];
+    const cardList: EnrollingCardList[] = [];
+
+    // 정원 마감인 경우 맨 뒤로 보내기
+    enrollingCardList?.results.forEach((enrollingCardList) => {
+      if (
+        enrollingCardList.upcomingClassroomInfo &&
+        enrollingCardList.upcomingClassroomInfo.studentCount >=
+          enrollingCardList.upcomingClassroomInfo.capacity
+      ) {
+        endCard.push(enrollingCardList);
+      } else {
+        cardList.push(enrollingCardList);
+      }
+    });
+
+    cardList.push(...endCard);
+    enrollingCardList.results = cardList;
+
     setIsLoading(false);
     setCardList(enrollingCardList.results);
   };
