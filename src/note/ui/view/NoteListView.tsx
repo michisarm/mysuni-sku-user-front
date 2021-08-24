@@ -400,8 +400,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     return color;
   }, []);
 
-  console.log(activeIndexList);
-
   return (
     <div>
       <Segment className="full">
