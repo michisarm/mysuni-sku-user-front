@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from 'moment';
 
 export interface SearchBox {
   content?: string;
@@ -24,13 +24,10 @@ export function getEmptySearchBox(): SearchBox {
     channelId: '',
     createStartDate: moment()
       .startOf('day')
-      .subtract(6, 'd')
+      .subtract(1, 'months')
       .toDate()
       .getTime(),
-    createEndDate: moment()
-      .endOf('day')
-      .toDate()
-      .getTime(),
+    createEndDate: moment().endOf('day').toDate().getTime(),
   };
 }
 
