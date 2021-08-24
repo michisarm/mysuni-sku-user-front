@@ -127,9 +127,6 @@ export function findPreCard(text_idx: string) {
         s = s.replace(/\\\\\"/gi, '\\"');
         try {
           const result = JSON.parse(s) as SearchResult<SearchCard>;
-          //let result2 = result.result.rows.map((row) => {
-          //  row.name
-          //});
           return result;
         } catch (error) {
           return undefined;
@@ -415,7 +412,7 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)

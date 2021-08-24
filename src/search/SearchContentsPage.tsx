@@ -2,17 +2,34 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getQueryId } from './search.events';
 import { SearchParam } from './search.models';
+import {
+  useDisplayCard,
+  useExpert,
+  useSearchBadgeList,
+  useSearchCommunityList,
+} from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
 import { SearchContentsResultInstructorView } from './views/SearchContentsResultInstructorView';
 import { SearchContentsResultLectureView } from './views/SearchContentsResultLectureView';
 import { SearchContentsResultSideView } from './views/SearchContentsResultSideView';
+import { SearchNoDataView } from './views/SearchNoDataView';
 
 export function SearchContentsPage() {
   //
   const params = useParams<SearchParam>();
 
   const queryId = getQueryId();
+
+  const cards = useDisplayCard();
+  const badges = useSearchBadgeList();
+  const communities = useSearchCommunityList();
+  const experts = useExpert();
+  const totalCount =
+    (cards?.length || 0) +
+    (badges?.length || 0) +
+    (communities?.length || 0) +
+    (experts?.length || 0);
 
   return (
     <>
@@ -21,46 +38,91 @@ export function SearchContentsPage() {
 
         <div className="result_list rContents">
           <div className="inner">
-            {/* NoData */}
-            {/*<p className="ttl_txt">
-              <strong className="search_keyword">‘{queryId}’</strong>에 대한
-              검색결과가 없습니다.
-            </p>
+            {totalCount < 1 && <SearchNoDataView />}
 
-            <div className="result_nodata">
-              <p>검색어의 철자가 정확한지 확인해 보세요.</p>
-              <p>
-                검색어의 단어 수를 줄이거나, 더욱 일반적인 단어로 검색해 보세요.
-              </p>
-              <p>키워드에 있는 특수문자를 뺀 후에 검색해 보세요.</p>
-              <p>검색 옵션을 변경한 후 다시 검색해 보세요.</p>
-            </div>
-            */}
-            
-            <p className="ttl_txt">
-              <strong className="search_keyword">{queryId}</strong>에 대한
-              검색결과는 총 <strong>39건</strong>입니다.
-            </p>
-
-            {params && params.searchType === 'lecture' && (
-              <SearchContentsResultLectureView />
-            )}
-            {params && params.searchType === 'badge' && (
-              <SearchContentsResultBadgeView />
-            )}
-            {params && params.searchType === 'community' && (
-              <SearchContentsResultCommunityView />
-            )}
-            {params && params.searchType === 'instructor' && (
-              <SearchContentsResultInstructorView />
-            )}
-
-            {(params === undefined || params.searchType === undefined) && (
+            {totalCount >= 1 && (
               <>
-                <SearchContentsResultLectureView />
-                <SearchContentsResultBadgeView />
-                <SearchContentsResultCommunityView />
-                <SearchContentsResultInstructorView />
+                {params && params.searchType === 'lecture' && (
+                  <>
+                    {(cards?.length || 0) < 1 && <SearchNoDataView />}
+                    {(cards?.length || 0) >= 1 && (
+                      <>
+                        <p className="ttl_txt">
+                          <strong className="search_keyword">{queryId}</strong>
+                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
+                          입니다.
+                        </p>
+                        <SearchContentsResultLectureView />
+                      </>
+                    )}
+                  </>
+                )}
+                {params && params.searchType === 'badge' && (
+                  <>
+                    {(badges?.length || 0) < 1 && <SearchNoDataView />}
+                    {(badges?.length || 0) >= 1 && (
+                      <>
+                        <p className="ttl_txt">
+                          <strong className="search_keyword">{queryId}</strong>
+                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
+                          입니다.
+                        </p>
+                        <SearchContentsResultBadgeView />
+                      </>
+                    )}
+                  </>
+                )}
+                {params && params.searchType === 'community' && (
+                  <>
+                    {(communities?.length || 0) < 1 && <SearchNoDataView />}
+                    {(communities?.length || 0) >= 1 && (
+                      <>
+                        <p className="ttl_txt">
+                          <strong className="search_keyword">{queryId}</strong>
+                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
+                          입니다.
+                        </p>
+                        <SearchContentsResultCommunityView />
+                      </>
+                    )}
+                  </>
+                )}
+                {params && params.searchType === 'instructor' && (
+                  <>
+                    {(experts?.length || 0) < 1 && <SearchNoDataView />}
+                    {(experts?.length || 0) >= 1 && (
+                      <>
+                        <p className="ttl_txt">
+                          <strong className="search_keyword">{queryId}</strong>
+                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
+                          입니다.
+                        </p>
+                        <SearchContentsResultInstructorView />
+                      </>
+                    )}
+                  </>
+                )}
+
+                {(params === undefined || params.searchType === undefined) && (
+                  <>
+                    <p className="ttl_txt">
+                      <strong className="search_keyword">{queryId}</strong>에
+                      대한 검색결과는 총 <strong>{totalCount}건</strong>입니다.
+                    </p>
+                    {(cards?.length || 0) >= 1 && (
+                      <SearchContentsResultLectureView />
+                    )}
+                    {(badges?.length || 0) >= 1 && (
+                      <SearchContentsResultBadgeView />
+                    )}
+                    {(communities?.length || 0) >= 1 && (
+                      <SearchContentsResultCommunityView />
+                    )}
+                    {(experts?.length || 0) >= 1 && (
+                      <SearchContentsResultInstructorView />
+                    )}
+                  </>
+                )}
               </>
             )}
           </div>

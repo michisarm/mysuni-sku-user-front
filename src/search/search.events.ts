@@ -582,6 +582,10 @@ export async function search(searchValue: string, searchType?: string) {
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
+  if (title === null || title === undefined) {
+    return '';
+  }
+
   const keyword = getQueryId();
   const regEx = new RegExp(keyword, 'gi');
   const htmlTitle = title.replace(
@@ -593,9 +597,12 @@ export function getTitleHtmlSearchKeyword(title: string) {
 }
 
 export function getTagsHtml(tags: string) {
+  if (tags === null || tags === undefined) {
+    return '';
+  }
+
   const regEx = new RegExp(',', 'gi');
-  const htmlTags =
-    '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
+  const htmlTags = '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
 
   return htmlTags;
 }

@@ -207,6 +207,8 @@ export interface SearchExpert {
   name: string;
   photo_id: string;
   position: string;
+  lectureField: string;
+  career: string;
 }
 //  // 필터
 

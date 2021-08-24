@@ -145,8 +145,18 @@ export function SearchContentsResultSideView() {
                   name="badgeOptions"
                   label="포함"
                   value="badgeInclude"
-                  checked={badgeOptionState === 'badgeInclude'}
-                  onChange={handleBadgeOptionStateChange}
+                  checked={filterCondition.badge === true}
+                  onChange={() => {
+                    const mFilterCondition = getFilterCondition();
+                    if (mFilterCondition === undefined) {
+                      return;
+                    }
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      badge: true,
+                    });
+                    search(queryId, params && params.searchType);
+                  }}
                 />
               </li>
               <li>
@@ -154,8 +164,18 @@ export function SearchContentsResultSideView() {
                   name="badgeOptions"
                   label="미포함"
                   value="badgeNotInclude"
-                  checked={badgeOptionState === 'badgeNotInclude'}
-                  onChange={handleBadgeOptionStateChange}
+                  checked={filterCondition.badge !== true}
+                  onChange={() => {
+                    const mFilterCondition = getFilterCondition();
+                    if (mFilterCondition === undefined) {
+                      return;
+                    }
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      badge: false,
+                    });
+                    search(queryId, params && params.searchType);
+                  }}
                 />
               </li>
             </ul>

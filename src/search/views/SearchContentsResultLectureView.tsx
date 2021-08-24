@@ -84,7 +84,7 @@ export function SearchContentsResultLectureView() {
                 {parsePolyglotString(
                   JSON.parse(card.tags),
                   getDefaultLang(card.langSupport)
-                ) !== null && (
+                ) !== '' && (
                   <div className="tagbox">
                     <strong>태그</strong>
                     <span
