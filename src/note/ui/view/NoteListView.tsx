@@ -103,11 +103,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     // setSubNoteList([]);
     setActiveIndexList([...activeIndexList]);
 
-    noteList && noteList.results.forEach(async (m, index) => {
-      if(activeIndexList.some((target) => target === index)) {
-        await searchNoteByCubeId(index, m.lectureRom.cubeId, m.lectureRom.cardId);
-      }
-    })
+    noteList &&
+      noteList.results.forEach(async (m, index) => {
+        if (activeIndexList.some((target) => target === index)) {
+          await searchNoteByCubeId(
+            index,
+            m.lectureRom.cubeId,
+            m.lectureRom.cardId
+          );
+        }
+      });
   }, [noteList]);
 
   const selectFolder = useCallback((folder: Folder) => {
@@ -249,7 +254,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
       setNoteUdoItem(undefined);
-      console.log(activeIndexList)
+      console.log(activeIndexList);
     },
     [params.pageNo]
   );
@@ -395,8 +400,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     return color;
   }, []);
 
-  console.log(activeIndexList);
-
   return (
     <div>
       <Segment className="full">
@@ -514,10 +517,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             'mypage-noteList-노트수',
                             {
                               count: subNoteList
-                                ?.map(
-                                  (f) =>
-                                    f.index === index &&
-                                    f.noteWithLectureList.results.length
+                                .filter((f) => f.index === index)
+                                .map(
+                                  (f) => f.noteWithLectureList.results.length
                                 )
                                 .toString(),
                             }
@@ -663,14 +665,18 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                     `${subItem.note.playTime}`}
                                   <span className="date">
                                     {subItem.note.modifiedTime !== 0
-                                      ? moment(subItem.note.modifiedTime).format(
+                                      ? moment(
+                                          subItem.note.modifiedTime
+                                        ).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 편집',
                                             'mypage-noteList-date편집'
                                           )
                                         )
                                       : subItem.note.registeredTime &&
-                                        moment(subItem.note.registeredTime).format(
+                                        moment(
+                                          subItem.note.registeredTime
+                                        ).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 작성',
                                             'mypage-noteList-date작성2'
