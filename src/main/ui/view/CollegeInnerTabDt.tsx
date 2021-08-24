@@ -1326,7 +1326,7 @@ export const CollegeInnerEnTabDt = () => {
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
-                <h3>Tech & Biz Talk (Future Tech Forum)</h3>
+                <h3>Tech & Biz Talk <br />(Future Tech Forum)</h3>
                 <div className="ai_box">
                   <h4>
                     Hosted by Professor Jeong, Jae-seung, various lecturers and

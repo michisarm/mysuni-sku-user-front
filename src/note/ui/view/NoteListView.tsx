@@ -103,11 +103,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     // setSubNoteList([]);
     setActiveIndexList([...activeIndexList]);
 
-    noteList && noteList.results.forEach(async (m, index) => {
-      if(activeIndexList.some((target) => target === index)) {
-        await searchNoteByCubeId(index, m.lectureRom.cubeId, m.lectureRom.cardId);
-      }
-    })
+    noteList &&
+      noteList.results.forEach(async (m, index) => {
+        if (activeIndexList.some((target) => target === index)) {
+          await searchNoteByCubeId(
+            index,
+            m.lectureRom.cubeId,
+            m.lectureRom.cardId
+          );
+        }
+      });
   }, [noteList]);
 
   const selectFolder = useCallback((folder: Folder) => {
@@ -249,7 +254,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
       setNoteUdoItem(undefined);
-      console.log(activeIndexList)
+      console.log(activeIndexList);
     },
     [params.pageNo]
   );
@@ -500,7 +505,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                   {/* <NoteContent1 /> */}
                   <div className="note_content">
                     <div className="note_content_total">
-                      <strong className="txt">
+                      {/* <strong className="txt">
                         <PolyglotText
                           id="mypage-noteList-작성노트"
                           defaultString="작성한 노트"
@@ -523,8 +528,25 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             }
                           ),
                         }}
+                      /> */}
+                      <div
+                        className="note_content_total"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            '<strong className="txt">작성한 노트</strong><span className="cnt"> {count}개</span>',
+                            'mypage-noteList-작성노트',
+                            {
+                              count: subNoteList
+                                ?.map(
+                                  (f) =>
+                                    f.index === index &&
+                                    f.noteWithLectureList.results.length
+                                )
+                                .toString(),
+                            }
+                          ),
+                        }}
                       />
-
                       {/* 노트 작성 시작하게되면 폰트 색상 및 아이콘 변경이 있습니다.  active 클래스 추가될 경우 폰트 색상(회색--> 청록색 ) 변경됩니다 */}
                       <Button
                         className="btn_write"
@@ -663,14 +685,18 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                     `${subItem.note.playTime}`}
                                   <span className="date">
                                     {subItem.note.modifiedTime !== 0
-                                      ? moment(subItem.note.modifiedTime).format(
+                                      ? moment(
+                                          subItem.note.modifiedTime
+                                        ).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 편집',
                                             'mypage-noteList-date편집'
                                           )
                                         )
                                       : subItem.note.registeredTime &&
-                                        moment(subItem.note.registeredTime).format(
+                                        moment(
+                                          subItem.note.registeredTime
+                                        ).format(
                                           getPolyglotText(
                                             'YYYY년 MM월 DD일 작성',
                                             'mypage-noteList-date작성2'
