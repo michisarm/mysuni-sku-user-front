@@ -1,10 +1,19 @@
 import { reactAlert } from '@nara.platform/accent';
+import { getDefaultLang } from 'lecture/model/LangSupport';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { filterCard, findCard, findExpert, findPreCard } from './api/searchApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  filterCard,
+  findBadges,
+  findCard,
+  findCommunities,
+  findExpert,
+  findPreCard,
+} from './api/searchApi';
 import {
   Options,
   SearchCard,
@@ -23,6 +32,8 @@ import {
   setExpert,
   setFilterCondition,
   setOrganizerOptions,
+  setSearchBadgeList,
+  setSearchCommunityList,
 } from './search.services';
 
 export function getQueryId(): string {
@@ -108,7 +119,12 @@ export function settingSearchFilter({
               (query) =>
                 query !== undefined &&
                 query !== null &&
-                c.name.toLowerCase().includes(query.toLowerCase())
+                parsePolyglotString(
+                  JSON.parse(c.name),
+                  getDefaultLang(c.langSupport)
+                )
+                  .toLowerCase()
+                  .includes(query.toLowerCase())
             )
           ) {
             displayCard.push(c);
@@ -243,7 +259,12 @@ export function settingSearchFilter({
               (query) =>
                 query !== undefined &&
                 query !== null &&
-                c.name.toLowerCase().includes(query.toLowerCase())
+                parsePolyglotString(
+                  JSON.parse(c.name),
+                  getDefaultLang(c.langSupport)
+                )
+                  .toLowerCase()
+                  .includes(query.toLowerCase())
             )
           ) {
             displayCard.push(c);
@@ -539,10 +560,42 @@ export async function search(searchValue: string, searchType?: string) {
     }
   });
 
+  setSearchBadgeList([]);
+  setSearchCommunityList([]);
+  await findBadges(searchValue).then((response) => {
+    if (response) {
+      setSearchBadgeList(response.results);
+    }
+  });
+  await findCommunities(searchValue).then((response) => {
+    if (response) {
+      setSearchCommunityList(response.results);
+    }
+  });
+
   const history = getCurrentHistory();
   if (searchType === undefined) {
     history?.push(`/search?query=${decodedSearchValue}`);
   } else {
     history?.push(`/search/${searchType}?query=${decodedSearchValue}`);
   }
+}
+
+export function getTitleHtmlSearchKeyword(title: string) {
+  const keyword = getQueryId();
+  const regEx = new RegExp(keyword, 'gi');
+  const htmlTitle = title.replace(
+    regEx,
+    `<strong class="search_keyword">${keyword}</strong>`
+  );
+
+  return htmlTitle;
+}
+
+export function getTagsHtml(tags: string) {
+  const regEx = new RegExp(',', 'gi');
+  const htmlTags =
+    '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
+
+  return htmlTags;
 }

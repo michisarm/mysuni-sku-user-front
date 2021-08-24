@@ -16,8 +16,10 @@ import {
 } from '../search.services';
 import {
   CheckboxOptions,
+  SearchBadge,
   SearchCard,
   SearchCardCategory,
+  SearchCommunity,
   SearchExpert,
 } from '../search.models';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
@@ -27,6 +29,8 @@ import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
+const BADGE_URL = '/api/badge';
+const COMMUNITY_URL = '/api/community';
 const workspaces: { cineroomWorkspaces?: Workspace[] } =
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
@@ -99,7 +103,7 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 const FIND_CARD_COLUMNS =
-  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules';
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules,tags';
 
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
@@ -123,6 +127,9 @@ export function findPreCard(text_idx: string) {
         s = s.replace(/\\\\\"/gi, '\\"');
         try {
           const result = JSON.parse(s) as SearchResult<SearchCard>;
+          //let result2 = result.result.rows.map((row) => {
+          //  row.name
+          //});
           return result;
         } catch (error) {
           return undefined;
@@ -139,7 +146,7 @@ export function findCard(text_idx: string) {
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}%23%23pre`
   );
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
@@ -712,3 +719,21 @@ export function makeQuery(
 }
 
 //where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')
+
+export function findBadges(text_idx: string) {
+  const url = encodeURI(
+    `${BADGE_URL}/badges/admin?startDate=1566486000000&endDate=1629730799999&cineroomId=&categoryId=&type=&level=&issueAutomatically=&additionalRequirementsNeeded=&name=${text_idx}&registrantName=&state=&groupSequences=&displayCategory=false&limit=20&offset=0`
+  );
+  return axiosApi
+    .get<{ results: SearchBadge[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}
+
+export function findCommunities(text_idx: string) {
+  const url = encodeURI(
+    `${COMMUNITY_URL}/communities/communityView/admin?startDate=1566572400000&endDate=1629730799999&name=${text_idx}&creatorName=&managerName=&offset=0&limit=20&searchFilter=&type=&field=&visible=&userGroupSequences=`
+  );
+  return axiosApi
+    .get<{ results: SearchCommunity[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}

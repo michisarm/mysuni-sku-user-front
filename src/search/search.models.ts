@@ -1,7 +1,10 @@
+import { BadgeLevel } from 'certification/model/BadgeLevel';
 import { DifficultyLevel } from 'lecture/model/DifficultyLevel';
+import { LangSupport } from 'lecture/model/LangSupport';
 import CardType from 'lecture/shared/model/CardType';
 import { Category } from 'shared/model/Category';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface SearchParam {
   searchType: string;
@@ -193,6 +196,8 @@ export interface SearchCard {
   cube_types: string; //
   cube_organizer_names: string; //
   paid: string;
+  langSupport: LangSupport[];
+  tags: string;
 }
 
 export interface SearchExpert {
@@ -208,8 +213,8 @@ export interface SearchExpert {
 // 결과 목록
 export interface SearchLecture {
   id: string;
-  title: string;
-  contents: string;
+  name: string;
+  simple_description: string;
   college: string;
   channel: string;
   tag: string;
@@ -218,20 +223,21 @@ export interface SearchLecture {
 export interface SearchBadge {
   id: string;
   title: string;
-  contents: string;
+  description: PolyglotString;
 
   // badge를 그리는데 필요한 항목
-  name: string;
-  level: string;
+  name: PolyglotString;
+  level: BadgeLevel;
   iconUrl: string;
   categoryId: string;
   tag: string;
+  langSupport: LangSupport[];
 }
 
 export interface SearchCommunity {
-  id: string;
-  title: string;
-  contents: string;
+  communityId: string;
+  name: string;
+  description: string;
 }
 
 export interface SearchInstructor {

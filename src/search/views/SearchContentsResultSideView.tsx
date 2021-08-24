@@ -84,47 +84,51 @@ export function SearchContentsResultSideView() {
   return (
     <>
       <div className="result_category">
-        <Accordion>
-          <Accordion.Title
-            active={activeIndex === 0}
-            index={0}
-            onClick={handleClick}
-          >
-            {filterConditionNamePolyglot(FilterConditionName.College)}
-            <Icon name="angle down" />
-          </Accordion.Title>
-          <Accordion.Content active={activeIndex === 0}>
-            <ul>
-              {collegeOptions.map((college, index) => {
-                if (index < collegeLimit) {
-                  return (
-                    <li>
-                      <Checkbox
-                        label={college.value}
-                        value={college.value}
-                        checked={filterCondition.all_college_name_query.includes(
-                          college.value
-                        )}
-                        onChange={() => {
-                          toggle_all_college_name_query(college.value);
-                          search(queryId, params && params.searchType);
-                        }}
-                      />
-                      <span>({college.count})</span>
-                    </li>
-                  );
-                }
-              })}
-            </ul>
-            {collegeOptions.length > 5 && collegeLimit < 999 && (
-              <Button className="btn_more" onClick={() => setCollegeLimit(999)}>
-                더보기
-                <Icon color="grey" name="angle down" />
-              </Button>
-            )}
-          </Accordion.Content>
-        </Accordion>
-
+        {collegeOptions && collegeOptions.length > 0 && (
+          <Accordion>
+            <Accordion.Title
+              active={activeIndex === 0}
+              index={0}
+              onClick={handleClick}
+            >
+              {filterConditionNamePolyglot(FilterConditionName.College)}
+              <Icon name="angle down" />
+            </Accordion.Title>
+            <Accordion.Content active={activeIndex === 0}>
+              <ul>
+                {collegeOptions.map((college, index) => {
+                  if (index < collegeLimit) {
+                    return (
+                      <li>
+                        <Checkbox
+                          label={college.value}
+                          value={college.value}
+                          checked={filterCondition.all_college_name_query.includes(
+                            college.value
+                          )}
+                          onChange={() => {
+                            toggle_all_college_name_query(college.value);
+                            search(queryId, params && params.searchType);
+                          }}
+                        />
+                        <span>({college.count})</span>
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+              {collegeOptions.length > 5 && collegeLimit < 999 && (
+                <Button
+                  className="btn_more"
+                  onClick={() => setCollegeLimit(999)}
+                >
+                  더보기
+                  <Icon color="grey" name="angle down" />
+                </Button>
+              )}
+            </Accordion.Content>
+          </Accordion>
+        )}
         <Accordion>
           <Accordion.Title
             active={activeIndex === 1}
@@ -255,48 +259,50 @@ export function SearchContentsResultSideView() {
           </Accordion.Content>
         </Accordion>
 
-        <Accordion>
-          <Accordion.Title
-            active={activeIndex === 4}
-            index={4}
-            onClick={handleClick}
-          >
-            {filterConditionNamePolyglot(FilterConditionName.LearningType)}
-            <Icon name="angle down" />
-          </Accordion.Title>
-          <Accordion.Content active={activeIndex === 4}>
-            <ul>
-              {cubeTypeOptions.map((learningType, index) => {
-                if (index < cubeTypeLimit) {
-                  return (
-                    <li>
-                      <Checkbox
-                        label={learningType.value}
-                        value={learningType.value}
-                        checked={filterCondition.cube_type_query.includes(
-                          learningType.value
-                        )}
-                        onChange={() =>
-                          toggle_cube_type_query(learningType.value)
-                        }
-                      />
-                      <span>({learningType.count})</span>
-                    </li>
-                  );
-                }
-              })}
-            </ul>
-            {cubeTypeOptions.length > 5 && cubeTypeLimit < 999 && (
-              <Button
-                className="btn_more"
-                onClick={() => setCubeTypeLimit(999)}
-              >
-                더보기
-                <Icon color="grey" name="angle down" />
-              </Button>
-            )}
-          </Accordion.Content>
-        </Accordion>
+        {cubeTypeOptions && cubeTypeOptions.length > 0 && (
+          <Accordion>
+            <Accordion.Title
+              active={activeIndex === 4}
+              index={4}
+              onClick={handleClick}
+            >
+              {filterConditionNamePolyglot(FilterConditionName.LearningType)}
+              <Icon name="angle down" />
+            </Accordion.Title>
+            <Accordion.Content active={activeIndex === 4}>
+              <ul>
+                {cubeTypeOptions.map((learningType, index) => {
+                  if (index < cubeTypeLimit) {
+                    return (
+                      <li>
+                        <Checkbox
+                          label={learningType.value}
+                          value={learningType.value}
+                          checked={filterCondition.cube_type_query.includes(
+                            learningType.value
+                          )}
+                          onChange={() =>
+                            toggle_cube_type_query(learningType.value)
+                          }
+                        />
+                        <span>({learningType.count})</span>
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+              {cubeTypeOptions.length > 5 && cubeTypeLimit < 999 && (
+                <Button
+                  className="btn_more"
+                  onClick={() => setCubeTypeLimit(999)}
+                >
+                  더보기
+                  <Icon color="grey" name="angle down" />
+                </Button>
+              )}
+            </Accordion.Content>
+          </Accordion>
+        )}
 
         <Accordion>
           <Accordion.Title

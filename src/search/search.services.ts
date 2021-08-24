@@ -72,30 +72,30 @@ export const [setExpert, onExpert, getExpert, useExpert] =
 
 // 결과 목록
 export const [
-  useSearchLectureList,
   setSearchLectureList,
-  getSearchLectureList,
   onSearchLectureList,
-] = createStore<SearchLecture[]>();
+  getSearchLectureList,
+  useSearchLectureList,
+] = createStore<SearchLecture[]>([]);
 
 export const [
-  useSearchBadgeList,
   setSearchBadgeList,
-  getSearchBadgeList,
   onSearchBadgeList,
-] = createStore<SearchBadge[]>();
+  getSearchBadgeList,
+  useSearchBadgeList,
+] = createStore<SearchBadge[]>([]);
 
 export const [
-  useSearchCommunityList,
   setSearchCommunityList,
-  getSearchCommunityList,
   onSearchCommunityList,
-] = createStore<SearchCommunity[]>();
+  getSearchCommunityList,
+  useSearchCommunityList,
+] = createStore<SearchCommunity[]>([]);
 
 export const [
-  useSearchInstructorList,
   setSearchInstructorList,
-  getSearchInstructorList,
   onSearchInstructorList,
-] = createStore<SearchInstructor[]>();
+  getSearchInstructorList,
+  useSearchInstructorList,
+] = createStore<SearchInstructor[]>([]);
 //  // 결과 목록
