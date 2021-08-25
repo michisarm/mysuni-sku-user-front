@@ -32,12 +32,12 @@ const CollegeInnerTabDt = () => {
   const { search } = useLocation();
   const subTabAI = decodeURI(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 
@@ -1172,14 +1172,13 @@ export const CollegeInnerEnTabDt = () => {
     }
   };
 
-  console.log(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 
@@ -2288,12 +2287,12 @@ export const CollegeInnerZhTabDt = () => {
   const { search } = useLocation();
   const subTabAI = decodeURI(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 

@@ -32,12 +32,12 @@ const CollegeInnerTabView = () => {
   const { search } = useLocation();
   const subTabAI = decodeURI(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 
@@ -2011,7 +2011,6 @@ export const CollegeInnerZhTabView = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onTabChange = (e: any, { activeIndex }: any) => {
-    
     setActiveIndex(activeIndex);
     history.push(
       routePaths.introductionCollegeManagement(panes[activeIndex].key)
@@ -2021,12 +2020,12 @@ export const CollegeInnerZhTabView = () => {
   const { search } = useLocation();
   const subTabAI = decodeURI(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 
@@ -3903,12 +3902,12 @@ export const CollegeInnerEnTabView = () => {
   const { search } = useLocation();
   const subTabAI = decodeURI(search);
   const indexSetter = () => {
-    if (search) {
-      const activeIndex =
-        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-      if (activeIndex >= 0) {
-        setActiveIndex(activeIndex);
-      }
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
     }
   };
 
