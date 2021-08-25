@@ -67,9 +67,10 @@ class ApprovalProcessModal extends Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', [...selectedList]);
 
-    const responseData = await approvalCubeService!.studentRequestOpen(
-      studentRequest
-    );
+    // 미사용
+    // const responseData = await approvalCubeService!.studentRequestOpen(
+    //   studentRequest
+    // );
     // const { error, message } = responseData;
 
     // if (error) {
