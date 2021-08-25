@@ -141,15 +141,16 @@ export default class ApprovalCubeService {
     return null;
   }
 
-  async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    //
-    return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
-  }
-
-  async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-    //
-    return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
-  }
+  // 미사용
+  // async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
+  //   //
+  //   return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
+  // }
+  //
+  // async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+  //   //
+  //   return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
+  // }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
@@ -162,23 +163,21 @@ export default class ApprovalCubeService {
     endDate: number = 9999999999999
   ) {
     //
-    const approvalCubeOffsetList =
-      await this.approvalCubeApi.findApprovalCubesForSearch(
-        ApprovalCubeRdoModel.new(
-          offset,
-          limit,
-          orderBy,
-          proposalState,
-          lectureCardId,
-          endDate
-        )
-      );
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      ApprovalCubeRdoModel.new(
+        offset,
+        limit,
+        orderBy,
+        proposalState,
+        lectureCardId,
+        endDate
+      )
+    );
 
     runInAction(() => {
-      this.approvalCubeOffsetList.results =
-        this.approvalCubeOffsetList.results.concat(
-          approvalCubeOffsetList.results
-        );
+      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(
+        approvalCubeOffsetList.results
+      );
       this.approvalCubeOffsetList.totalCount =
         approvalCubeOffsetList.totalCount;
     });
@@ -237,8 +236,9 @@ export default class ApprovalCubeService {
     }
     approvalCubeRdo.limit = 999999999;
 
-    const approvalCubeOffsetList =
-      await this.approvalCubeApi.findApprovalCubesForSearch(approvalCubeRdo);
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      approvalCubeRdo
+    );
 
     runInAction(() => {
       this.approvalCubesExcelWrite = this.approvalCubesExcelWrite.concat(

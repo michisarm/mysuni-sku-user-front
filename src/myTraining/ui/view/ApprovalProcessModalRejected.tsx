@@ -78,9 +78,10 @@ class ApprovalProcessModalRejected extends Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', [...selectedList]);
 
-    const responseData = await approvalCubeService!.studentRequestReject(
-      studentRequest
-    );
+    // 미사용
+    // const responseData = await approvalCubeService!.studentRequestReject(
+    //   studentRequest
+    // );
     //const { error, message } = responseData;
     //
     // if (error) {
