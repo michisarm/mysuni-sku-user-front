@@ -1,6 +1,11 @@
 import React from 'react';
 import { Tab } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import {
+  useSearchPopular1MList,
+  useSearchPopular1YList,
+  useSearchPopular6MList,
+} from 'search/search.services';
 
 interface Props {
   onClickSearch: (searchValue: string) => void;
@@ -8,90 +13,27 @@ interface Props {
 
 export function SearchHeaderFieldPopularView(props: Props) {
   //
+  const populars1M = useSearchPopular1MList();
+  const populars6M = useSearchPopular6MList();
+  const populars1Y = useSearchPopular1YList();
+
   const panes = [
     {
       menuItem: '1개월',
       render: () => (
         <Tab.Pane>
           <ol>
-            <li>
-              <span className="o_num">1</span>
-              <a href="javascript:void(0);" onClick={() => props.onClickSearch('AI')}>
-                <span className="p_word ellipsis">AI</span>
-              </a>
-            </li>
-            <li>
-              <span className="o_num">2</span>
-              <a href="javascript:void(0);" onClick={() => props.onClickSearch('인공지능')}>
-                <span className="p_word ellipsis">인공지능</span>
-              </a>
-            </li>
-            <li>
-              <span className="o_num">3</span>
-              <a
-                href="javascript:void(0);"
-                onClick={() =>
-                  props.onClickSearch(
-                    '디지털 트랜스포메이션트랜스포메이션트랜스포메이션트랜스포메이션'
-                  )
-                }
-              >
-                <span className="p_word ellipsis">
-                  디지털
-                  트랜스포메이션트랜스포메이션트랜스포메이션트랜스포메이션
-                </span>
-              </a>
-            </li>
-            <li>
-              <span className="o_num">4</span>
-              <a
-                href="javascript:void(0);"
-                onClick={() => props.onClickSearch('Digital Transformation')}
-              >
-                <span className="p_word ellipsis">Digital Transformation</span>
-              </a>
-            </li>
-            <li>
-              <span className="o_num">5</span>
-              <a
-                href="javascript:void(0);"
-                onClick={() => props.onClickSearch('행복의 비결')}
-              >
-                <span className="p_word ellipsis">행복의 비결</span>
-              </a>
-            </li>
-            <li>
-              <span className="o_num">6</span>
-              <Link to="/">
-                <span className="p_word ellipsis">SV</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">7</span>
-              <Link to="/">
-                <span className="p_word ellipsis">
-                  파이썬파이썬파이썬파이썬파이썬파이썬파이썬파이썬파이썬파이썬파이썬
-                </span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">8</span>
-              <Link to="/">
-                <span className="p_word ellipsis">Hello, Python</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">9</span>
-              <Link to="/">
-                <span className="p_word ellipsis">공정무역</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">10</span>
-              <Link to="/">
-                <span className="p_word ellipsis">DT</span>
-              </Link>
-            </li>
+            {populars1M?.map((popular, index) => (
+              <li key={`popular-1M-${index}`}>
+                <span className="o_num">{index + 1}</span>
+                <a
+                  href="javascript:void(0);"
+                  onClick={() => props.onClickSearch(popular)}
+                >
+                  <span className="p_word ellipsis">{popular}</span>
+                </a>
+              </li>
+            ))}
           </ol>
         </Tab.Pane>
       ),
@@ -101,70 +43,17 @@ export function SearchHeaderFieldPopularView(props: Props) {
       render: () => (
         <Tab.Pane>
           <ol>
-            <li>
-              <span className="o_num">1</span>
-              <Link to="/">
-                <span className="p_word ellipsis">
-                  인공지능인공지능인공지능인공지능인공지능인공지능인공지능인공지능인공지능
-                </span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">2</span>
-              <Link to="/">
-                <span className="p_word ellipsis">파이썬</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">3</span>
-              <Link to="/">
-                <span className="p_word ellipsis">디지털 트랜스포메이션</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">4</span>
-              <Link to="/">
-                <span className="p_word ellipsis">Digital Transformation</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">5</span>
-              <Link to="/">
-                <span className="p_word ellipsis">행복의 비결</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">6</span>
-              <Link to="/">
-                <span className="p_word ellipsis">
-                  SVSVSVSVSVSVSVSVSVSVSVSVSVSVSVSVSVSVSVSV
-                </span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">7</span>
-              <Link to="/">
-                <span className="p_word ellipsis">AI</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">8</span>
-              <Link to="/">
-                <span className="p_word ellipsis">Hello, Python</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">9</span>
-              <Link to="/">
-                <span className="p_word ellipsis">공정무역</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">10</span>
-              <Link to="/">
-                <span className="p_word ellipsis">DT</span>
-              </Link>
-            </li>
+            {populars6M?.map((popular, index) => (
+              <li key={`popular-6M-${index}`}>
+                <span className="o_num">{index + 1}</span>
+                <a
+                  href="javascript:void(0);"
+                  onClick={() => props.onClickSearch(popular)}
+                >
+                  <span className="p_word ellipsis">{popular}</span>
+                </a>
+              </li>
+            ))}
           </ol>
         </Tab.Pane>
       ),
@@ -174,66 +63,17 @@ export function SearchHeaderFieldPopularView(props: Props) {
       render: () => (
         <Tab.Pane>
           <ol>
-            <li>
-              <span className="o_num">1</span>
-              <Link to="/">
-                <span className="p_word ellipsis">공정무역</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">2</span>
-              <Link to="/">
-                <span className="p_word ellipsis">파이썬</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">3</span>
-              <Link to="/">
-                <span className="p_word ellipsis">디지털 트랜스포메이션</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">4</span>
-              <Link to="/">
-                <span className="p_word ellipsis">Digital Transformation</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">5</span>
-              <Link to="/">
-                <span className="p_word ellipsis">행복의 비결</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">6</span>
-              <Link to="/">
-                <span className="p_word ellipsis">SV</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">7</span>
-              <Link to="/">
-                <span className="p_word ellipsis">AI</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">8</span>
-              <Link to="/">
-                <span className="p_word ellipsis">Hi, Python</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">9</span>
-              <Link to="/">
-                <span className="p_word ellipsis">인공지능</span>
-              </Link>
-            </li>
-            <li>
-              <span className="o_num">10</span>
-              <Link to="/">
-                <span className="p_word ellipsis">DT</span>
-              </Link>
-            </li>
+            {populars1Y?.map((popular, index) => (
+              <li key={`popular-1Y-${index}`}>
+                <span className="o_num">{index + 1}</span>
+                <a
+                  href="javascript:void(0);"
+                  onClick={() => props.onClickSearch(popular)}
+                >
+                  <span className="p_word ellipsis">{popular}</span>
+                </a>
+              </li>
+            ))}
           </ol>
         </Tab.Pane>
       ),

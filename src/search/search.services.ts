@@ -99,3 +99,30 @@ export const [
   useSearchInstructorList,
 ] = createStore<SearchInstructor[]>([]);
 //  // 결과 목록
+
+// 최근검색어
+export const [
+  setSearchRecentList,
+  onSearchRecentList,
+  getSearchRecentList,
+  useSearchRecentList,
+] = createStore<string[]>([]);
+// 인기검색어
+export const [
+  setSearchPopular1MList,
+  onSearchPopular1MList,
+  getSearchPopular1MList,
+  useSearchPopular1MList,
+] = createStore<string[]>([]);
+export const [
+  setSearchPopular6MList,
+  onSearchPopular6MList,
+  getSearchPopular6MList,
+  useSearchPopular6MList,
+] = createStore<string[]>([]);
+export const [
+  setSearchPopular1YList,
+  onSearchPopular1YList,
+  getSearchPopular1YList,
+  useSearchPopular1YList,
+] = createStore<string[]>([]);

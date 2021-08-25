@@ -62,7 +62,12 @@ export function SearchContentsResultInstructorView() {
                             __html: getTitleHtmlSearchKeyword(expert.name),
                           }}
                         />
-                        <span className="ellipsis">{expert.position}</span>
+                        <span
+                          className="ellipsis"
+                          dangerouslySetInnerHTML={{
+                            __html: getTitleHtmlSearchKeyword(expert.position),
+                          }}
+                        />
                       </div>
                     </Link>
                     <dl className="search_detail flex">

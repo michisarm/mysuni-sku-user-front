@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { SearchParam } from 'search/search.models';
 import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
-import { useSearchBadgeList } from 'search/search.services';
+import { getSearchBadgeList } from 'search/search.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 
@@ -16,7 +16,7 @@ export function SearchContentsResultBadgeView() {
   const params = useParams<SearchParam>();
   const queryId = getQueryId();
 
-  const badges = useSearchBadgeList();
+  const badges = getSearchBadgeList();
   console.log('badge', badges);
   return (
     <>
