@@ -1,8 +1,20 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Image, Tab } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Link,
+  useHistory,
+  withRouter,
+  useParams,
+  useLocation,
+} from 'react-router-dom';
+import { Image, Tab, MenuItem } from 'semantic-ui-react';
+import routePaths from 'main/routePaths';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+interface tapName {
+  tab: string;
+  subTabAI: string;
+}
 
 const CollegeInnerTabAi = () => {
   const history = useHistory();
@@ -11,9 +23,33 @@ const CollegeInnerTabAi = () => {
     history.push(path);
   };
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    setActiveIndex(activeIndex);
+    history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    if (search) {
+      const activeIndex =
+        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      if (activeIndex >= 0) {
+        setActiveIndex(activeIndex);
+      }
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
+
   const panes = [
     {
       menuItem: 'AI College 소개',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -158,6 +194,7 @@ const CollegeInnerTabAi = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         pageMove('/certification/badge/badge-detail/BADGE-2t');
         return <Tab.Pane attached={false} />;
@@ -165,6 +202,7 @@ const CollegeInnerTabAi = () => {
     },
     {
       menuItem: 'AI Biz. Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -330,6 +368,7 @@ const CollegeInnerTabAi = () => {
     },
     {
       menuItem: 'AI Trend Watch',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -515,6 +554,7 @@ const CollegeInnerTabAi = () => {
     },
     {
       menuItem: 'AI Technologies',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -720,6 +760,7 @@ const CollegeInnerTabAi = () => {
     },
     {
       menuItem: 'ML Engineer Track',
+      key: 'tab5',
       render: () => {
         pageMove('/certification/badge/badge-detail/BADGE-3i');
         return <Tab.Pane attached={false} />;
@@ -732,6 +773,8 @@ const CollegeInnerTabAi = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu ai"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
@@ -739,9 +782,42 @@ const CollegeInnerTabAi = () => {
 export const CollegeInnerEnTabAi = () => {
   const history = useHistory();
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    if (activeIndex === 1 || activeIndex === 5) {
+      reactAlert({
+        title: 'No permission',
+        message:
+          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. Please use Q&A for related inquiries.',
+      });
+    } else {
+      setActiveIndex(activeIndex);
+      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+    }
+  };
+
+  const indexSetter = () => {
+    if (search) {
+      const activeIndex =
+        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      if (activeIndex >= 0) {
+        setActiveIndex(activeIndex);
+      }
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
+
   const panes = [
     {
       menuItem: 'Introduction of AI College',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -886,12 +962,14 @@ export const CollegeInnerEnTabAi = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
     },
     {
       menuItem: 'AI Biz. Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1059,6 +1137,7 @@ export const CollegeInnerEnTabAi = () => {
     },
     {
       menuItem: 'AI Trend Watch',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1247,6 +1326,7 @@ export const CollegeInnerEnTabAi = () => {
     },
     {
       menuItem: 'AI Technologies',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1453,6 +1533,7 @@ export const CollegeInnerEnTabAi = () => {
     },
     {
       menuItem: 'ML Engineer Track',
+      key: 'tab5',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
@@ -1464,6 +1545,8 @@ export const CollegeInnerEnTabAi = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu ai"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
@@ -1471,9 +1554,41 @@ export const CollegeInnerEnTabAi = () => {
 export const CollegeInnerZhTabAi = () => {
   const history = useHistory();
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    if (activeIndex === 1 || activeIndex === 5) {
+      reactAlert({
+        title: '没有权限',
+        message:
+          '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。 相关咨询请使用Q&A。',
+      });
+    } else {
+      setActiveIndex(activeIndex);
+      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+    }
+  };
+
+  const indexSetter = () => {
+    if (search) {
+      const activeIndex =
+        panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      if (activeIndex >= 0) {
+        setActiveIndex(activeIndex);
+      }
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
   const panes = [
     {
       menuItem: 'AI College介绍',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1606,12 +1721,14 @@ export const CollegeInnerZhTabAi = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
     },
     {
       menuItem: 'AI Biz. Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1748,6 +1865,7 @@ export const CollegeInnerZhTabAi = () => {
     },
     {
       menuItem: 'AI Trend Watch',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1904,6 +2022,7 @@ export const CollegeInnerZhTabAi = () => {
     },
     {
       menuItem: 'AI Technologies',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2075,6 +2194,7 @@ export const CollegeInnerZhTabAi = () => {
     },
     {
       menuItem: 'ML Engineer Track',
+      key: 'tab5',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
@@ -2086,8 +2206,9 @@ export const CollegeInnerZhTabAi = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu ai"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
-
-export default CollegeInnerTabAi;
+export default withRouter(CollegeInnerTabAi);

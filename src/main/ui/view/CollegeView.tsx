@@ -4415,12 +4415,12 @@ const EnPanes = [
             <div className="belt global">
               <div className="label">Local Expert Curriculum</div>
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top-ENG.png"
                 alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents-ENG.png"
                 alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
@@ -4776,7 +4776,7 @@ const EnPanes = [
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
                 <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level-ENG.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
                   style={{ float: 'left' }}
@@ -5172,8 +5172,9 @@ const EnPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-ENG.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">Smart SCM Expert</a>
                             </li>
@@ -5188,8 +5189,9 @@ const EnPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-ENG.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">
                                 AI manufacturing <br />
@@ -6149,7 +6151,7 @@ const EnPanes = [
               </div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/bm-level-line-eng.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/bm-level-line-eng.png"
                   alt=""
                   style={{ float: 'left' }}
                 />
@@ -6450,7 +6452,7 @@ const EnPanes = [
                 SK Academy reinforces the foundation of SK corporate culture
                 through the
                 <br />
-                spread of SKMS/Values,and nurtures future managers and business
+                spread of SKMS/Values, and nurtures future managers and business
                 experts in
                 <br />
                 line with the systematic nurturing pipeline.
@@ -7621,12 +7623,12 @@ const ZhPanes = [
             <div className="belt global">
               <div className="label">地域专家课程</div>
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top-CHN.png"
                 alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents-CHN.png"
                 alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
@@ -7764,7 +7766,7 @@ const ZhPanes = [
                     </tr>
                     <tr>
                       <th>
-                        <span>경제동향</span>
+                        <span>经济动向</span>
                       </th>
                       <td className="bg-none"></td>
                       <td className="bg-none"></td>
@@ -7945,7 +7947,7 @@ const ZhPanes = [
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
                 <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level-CHN.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
                   style={{ float: 'left' }}
@@ -8256,6 +8258,7 @@ const ZhPanes = [
                 <li># 半导体术语</li>
                 <li># 半导体技术理论</li>
                 <li># 半导体种类</li>
+                <br />
                 <li># 未来技术</li>
                 <li># 半导体Ecosystem</li>
               </ul>
@@ -8317,7 +8320,7 @@ const ZhPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-chn.png"
                                 alt=""
                                 className="ui image"
                               />
@@ -8330,8 +8333,9 @@ const ZhPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-chn.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">
                                 AI manufacturing
@@ -8913,7 +8917,11 @@ const ZhPanes = [
                         </dl>
                         <dl>
                           <dt>认证内容</dt>
-                          <dd>具备半导体产业理解与分析所需的基础知识</dd>
+                          <dd>
+                            具备半导体产业理解与分
+                            <br />
+                            析所需的基础知识
+                          </dd>
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
@@ -9225,77 +9233,83 @@ const ZhPanes = [
                       </ul>
                     </div>
                   </div>
-
                   <div className="bm-flex">
-                    <ul className="list_bm">
-                      <li>
-                        <a href="#none">Ⅰ. M&amp;A Overview</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅲ. 对象选择 &amp;
-                          <br />
-                          Deal Structuring
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅴ. Valuation</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅶ. Legal</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          [深化Ⅰ] Deal Structuring
-                          <br />
-                          &amp; Financing
-                        </a>
-                      </li>
-                    </ul>
-                    <ul className="list_bm">
-                      <li>
-                        <a href="#none">Ⅱ. M&amp;A Strategy</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅳ. Due Diligence</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅵ. Negotiation</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅷ. PMI &amp; Value-up</a>
-                      </li>
-                      <li>
-                        <a href="#none">[深化Ⅱ] Legal</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bm-bg-box line_type01 height100">
-                    <h3>
-                      <a href="#none">Becoming Storyteller</a>
-                    </h3>
-                    <div className="bm-flex">
-                      <ul className="list_bm">
-                        <li>
-                          <a href="#none">
-                            Financial Storytelling
-                            <br />
-                            全球案例研究
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#none">
-                            [Focus] Financial
-                            <br />
-                            Society Partnership
-                          </a>
-                        </li>
-                      </ul>
-                      <ul className="list_bm">
-                        <li>
-                          <a href="#none">从6R角度理解Stakeholder</a>
-                        </li>
-                      </ul>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">M&#38;A Design</a>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">Ⅰ. M&amp;A Overview</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Ⅲ. 对象选择 &amp;
+                              <br />
+                              Deal Structuring
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅴ. Valuation</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅶ. Legal</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              [深化Ⅰ] Deal Structuring
+                              <br />
+                              &amp; Financing
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">Ⅱ. M&amp;A Strategy</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅳ. Due Diligence</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅵ. Negotiation</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅷ. PMI &amp; Value-up</a>
+                          </li>
+                          <li>
+                            <a href="#none">[深化Ⅱ] Legal</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="bm-bg-box line_type01 height100">
+                      <h3>
+                        <a href="#none">Becoming Storyteller</a>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">
+                              Financial Storytelling
+                              <br />
+                              全球案例研究
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              [Focus] Financial
+                              <br />
+                              Society Partnership
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">从6R角度理解Stakeholder</a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -9511,8 +9525,8 @@ class CollegeView extends Component<Props, State> {
     const subTab = queryParams.subTab as string;
 
     if (subTab) {
-      const activeIndex = this.panes.findIndex(
-        (pane) => pane.menuItem === subTab
+      const activeIndex = this.panes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
       );
 
       if (activeIndex >= 0) {
@@ -9523,6 +9537,7 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
+
     this.props.history.push(
       routePaths.introductionCollege(this.panes[activeIndex].menuItem)
     );
