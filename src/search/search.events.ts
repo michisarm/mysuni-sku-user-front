@@ -587,11 +587,25 @@ export function getTitleHtmlSearchKeyword(title: string) {
   }
 
   const keyword = getQueryId();
-  const regEx = new RegExp(keyword, 'gi');
-  const htmlTitle = title.replace(
-    regEx,
-    `<strong class="search_keyword">${keyword}</strong>`
-  );
+
+  let htmlTitle = title;
+  if (keyword.indexOf(' ') > -1) {
+    const keywords = keyword.split(' ');
+    keywords.map((item) => {
+      htmlTitle = htmlTitle.replace(
+        new RegExp(item, 'gi'),
+        `<strong class="search_keyword">${item}</strong>`
+      );
+    });
+  }
+
+  htmlTitle = htmlTitle
+    .replace(
+      new RegExp(keyword, 'gi'),
+      `<strong class="search_keyword">${keyword}</strong>`
+    )
+    .replace(new RegExp('<b>', 'gi'), '<strong class="search_keyword">')
+    .replace(new RegExp('</b>', 'gi'), '</strong>');
 
   return htmlTitle;
 }

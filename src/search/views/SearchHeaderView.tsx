@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
 import { Link, useParams } from 'react-router-dom';
 import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 import { SearchParam } from 'search/search.models';
 import { getQueryId, search } from 'search/search.events';
+import classNames from 'classnames';
 
 export function SearchHeaderView() {
   //
   const [activeItem, setActiveItem] = useState<string>('');
+  const [focus, setFocus] = useState<boolean>(false);
+  const [write, setWrite] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const queryId = getQueryId();
 
@@ -23,12 +27,73 @@ export function SearchHeaderView() {
     } else {
       setActiveItem('all');
     }
+    handleClose();
+    setWrite(getQueryId());
   }, [params]);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
       <div className="top_search_area">
-        <SearchHeaderFieldView />
+        <div className="search_area">
+          <div className="search_inner">
+            {/* 검색어 입력필드 */}
+            <div className="field">
+              <div className="search_input">
+                <Popup
+                  on="click"
+                  postion="bottom center"
+                  className="history_popup navi_popup"
+                  open={isOpen}
+                  onOpen={handleOpen}
+                  onClose={handleClose}
+                  trigger={
+                    <div
+                      className={classNames('search show_text', {
+                        focus: 'focus',
+                        write: 'write',
+                        on: isOpen === true, //input이 popup에 맞춰서 모양이 변경됨
+                      })}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="검색어를 입력하세요."
+                        value={write}
+                        onClick={() => setFocus(true)}
+                        onChange={(e) => setWrite(e.target.value)}
+                        onKeyDown={(e: any) => {
+                          if (e.key === 'Enter') {
+                            handleClose();
+                            search(write);
+                          }
+                        }}
+                      />
+                      <Icon
+                        className="clear link"
+                        onClick={() => setWrite('')}
+                      />
+                      {/* <Icon className="search_i"/> */}
+                      <Button className="btn_sch">
+                        <Icon className="search_i" />
+                      </Button>
+                    </div>
+                  }
+                >
+                  <Popup.Content>
+                    <SearchHeaderFieldView />
+                  </Popup.Content>
+                </Popup>
+              </div>
+            </div>
+            <Checkbox className="again_chk" label="결과 내 재검색" />
+          </div>
+        </div>
 
         <div className="relative_box">
           <dl>

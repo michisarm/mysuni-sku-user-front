@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { reactAutobind, mobxHelper, deleteCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
@@ -16,11 +16,14 @@ import {
   isExternalInstructor,
   isInternalInstructor,
 } from '../../../../../shared/helper/findUserRole';
-import { Button, Popup } from 'semantic-ui-react';
+import { Button, Icon, Input, Popup } from 'semantic-ui-react';
 import ProfilePopupView from '../view/ProfilePopupView';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 import { isCollegeManager } from 'shared/helper/isCollegeManager';
+import classNames from 'classnames';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+import { SearchHeaderFieldView } from 'search/views/SearchHeaderFieldView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -31,6 +34,8 @@ interface State {
   balloonShowClass: string;
   menuAuth: PageElement[];
   isOpen: boolean;
+  isSearchOpen: boolean;
+  write: string;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
@@ -43,6 +48,8 @@ class ProfileContainer extends Component<Props, State> {
     balloonShowClass: '',
     menuAuth: [],
     isOpen: false,
+    isSearchOpen: false,
+    write: '',
   };
 
   componentDidMount() {
@@ -151,16 +158,90 @@ class ProfileContainer extends Component<Props, State> {
     const isExternal = isExternalInstructor();
     const isInstructor = isExternalInstructor() || isInternalInstructor();
     const baseUrl = `${window.location.protocol}//${window.location.host}/suni-instructor`;
-    const { isOpen } = this.state;
+    const { isOpen, isSearchOpen } = this.state;
 
     const setOpen = () => {
       //this.profileButtonRef.current.click();
       this.setState({ isOpen: !isOpen });
       document.getElementById('btnProFile')?.click();
     };
+    const setSearchOpen = () => {
+      setWrite('');
+      this.setState({ isSearchOpen: !isSearchOpen });
+      document.getElementById('btnSearchPopup')?.click();
+    };
+    const setWrite = (searchValue: string) => {
+      this.setState({ write: searchValue });
+    };
+
+    const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
       <div className="g-info g-info2 g-ab2">
+        {!isExternal && (
+          <>
+            <Popup
+              className="popup_gsearch type_b"
+              trigger={
+                <Button className="btn_gsearch" id="btnSearchPopup">
+                  <img
+                    src={`${PUBLIC_URL}/images/all/icon-gnb-search-36-px.png`}
+                    className="btn_search b_search"
+                    alt="검색버튼"
+                  />
+                </Button>
+              }
+              position="bottom right"
+              on="click"
+              //open={isOpen}
+              onOpen={setSearchOpen}
+            >
+              <Popup.Header className="gsearch_header">
+                <strong className="h_tit">검색</strong>
+                <div className="close_wrapper">
+                  <Button className="close" Icon onClick={setSearchOpen} />
+                </div>
+              </Popup.Header>
+              <Popup.Content>
+                <div className="gsearch_inner">
+                  <div className="search_input">
+                    {/* 검색어 입력필드 */}
+                    <div
+                      className={classNames('search show_text', {
+                        focus: 'focus',
+                        write: 'write',
+                        on: isOpen === true, //input이 popup에 맞춰서 모양이 변경됨
+                      })}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="검색어를 입력하세요."
+                        value={this.state.write}
+                        onChange={(e) => setWrite(e.target.value)}
+                        onKeyDown={(e: any) => {
+                          if (e.key === 'Enter') {
+                            setSearchOpen();
+                            const history = getCurrentHistory();
+                            history?.push(`/search?query=${this.state.write}`);
+                          }
+                        }}
+                      />
+                      <Icon
+                        className="clear link"
+                        onClick={() => setWrite('')}
+                      />
+                      {/* <Icon className="search_i"/> */}
+                      <Button className="btn_sch">
+                        <Icon className="search_i" />
+                      </Button>
+                    </div>
+                  </div>
+                  <SearchHeaderFieldView callback={setSearchOpen} />
+                </div>
+              </Popup.Content>
+            </Popup>
+          </>
+        )}
         {isCollegeManager() && <LanguageSelectPopupView />}
         {!isExternal && (
           <HeaderAlarmView

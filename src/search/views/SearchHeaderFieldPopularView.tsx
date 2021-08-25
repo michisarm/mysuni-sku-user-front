@@ -1,9 +1,12 @@
 import React from 'react';
 import { Tab } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { search } from 'search/search.events';
 
-export function SearchHeaderFieldPopularView() {
+interface Props {
+  onClickSearch: (searchValue: string) => void;
+}
+
+export function SearchHeaderFieldPopularView(props: Props) {
   //
   const panes = [
     {
@@ -13,13 +16,13 @@ export function SearchHeaderFieldPopularView() {
           <ol>
             <li>
               <span className="o_num">1</span>
-              <a href="javascript:void(0);" onClick={() => search('AI')}>
+              <a href="javascript:void(0);" onClick={() => props.onClickSearch('AI')}>
                 <span className="p_word ellipsis">AI</span>
               </a>
             </li>
             <li>
               <span className="o_num">2</span>
-              <a href="javascript:void(0);" onClick={() => search('인공지능')}>
+              <a href="javascript:void(0);" onClick={() => props.onClickSearch('인공지능')}>
                 <span className="p_word ellipsis">인공지능</span>
               </a>
             </li>
@@ -28,7 +31,7 @@ export function SearchHeaderFieldPopularView() {
               <a
                 href="javascript:void(0);"
                 onClick={() =>
-                  search(
+                  props.onClickSearch(
                     '디지털 트랜스포메이션트랜스포메이션트랜스포메이션트랜스포메이션'
                   )
                 }
@@ -43,7 +46,7 @@ export function SearchHeaderFieldPopularView() {
               <span className="o_num">4</span>
               <a
                 href="javascript:void(0);"
-                onClick={() => search('Digital Transformation')}
+                onClick={() => props.onClickSearch('Digital Transformation')}
               >
                 <span className="p_word ellipsis">Digital Transformation</span>
               </a>
@@ -52,7 +55,7 @@ export function SearchHeaderFieldPopularView() {
               <span className="o_num">5</span>
               <a
                 href="javascript:void(0);"
-                onClick={() => search('행복의 비결')}
+                onClick={() => props.onClickSearch('행복의 비결')}
               >
                 <span className="p_word ellipsis">행복의 비결</span>
               </a>
