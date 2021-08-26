@@ -1,29 +1,32 @@
 import { axiosApi } from '@nara.platform/accent';
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import { findCardListCache } from '../../detail/api/cardApi';
+import { findCardsWithoutLearningExperience } from '../../detail/api/cardApi';
 import { Recommendation } from '../model/Recommendation';
 import { RecommendationViewModel } from '../viewmodel/RecommendationViewModel';
+import { RecommendationType } from '../model/RecommendationType';
 
 //대쉬보드 문구
 export function getRecentlyStudyChannel() {
   return axiosApi
     .get<any>(`/api/mytraining/mytraining/mytrainings/channel`)
-    .then(response => {
+    .then((response) => {
       return response && response.data;
     });
 }
 
-export async function findRecommendationCards(limit?: number) {
+export async function findRecommendationCards() {
   const axios = getAxios();
-  const recommendationUrl = '/api/recommendation/cards';
+  const recommendationUrl = '/api/lrs/cardRecommendation/cards';
+  const contentsBasedType: RecommendationType = 'ContentsBased';
   const recommendation = await axios
-    .get<Recommendation>(recommendationUrl, { params: { limit } })
+    .get<Recommendation>(recommendationUrl, {
+      params: { Type: contentsBasedType },
+    })
     .then(AxiosReturn);
   if (recommendation !== undefined) {
-    const { created, recTitle } = recommendation;
+    const { recTitle } = recommendation;
     const recommendationViewModel: RecommendationViewModel = {
-      created,
       recTitle,
       cards: [],
     };
@@ -32,7 +35,7 @@ export async function findRecommendationCards(limit?: number) {
       recommendation.cards.length > 0
     ) {
       const cardIds = recommendation.cards.join();
-      const cards = await findCardListCache(cardIds);
+      const cards = await findCardsWithoutLearningExperience(cardIds);
       if (cards !== undefined) {
         return { ...recommendationViewModel, cards };
       }

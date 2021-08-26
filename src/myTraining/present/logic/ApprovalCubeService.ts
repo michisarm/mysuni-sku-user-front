@@ -2,13 +2,11 @@ import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { LangStrings, ProposalState } from '../../../shared/model';
+import { ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 @autobind
 export default class ApprovalCubeService {
@@ -163,21 +161,23 @@ export default class ApprovalCubeService {
     endDate: number = 9999999999999
   ) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
-      ApprovalCubeRdoModel.new(
-        offset,
-        limit,
-        orderBy,
-        proposalState,
-        lectureCardId,
-        endDate
-      )
-    );
+    const approvalCubeOffsetList =
+      await this.approvalCubeApi.findApprovalCubesForSearch(
+        ApprovalCubeRdoModel.new(
+          offset,
+          limit,
+          orderBy,
+          proposalState,
+          lectureCardId,
+          endDate
+        )
+      );
 
     runInAction(() => {
-      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(
-        approvalCubeOffsetList.results
-      );
+      this.approvalCubeOffsetList.results =
+        this.approvalCubeOffsetList.results.concat(
+          approvalCubeOffsetList.results
+        );
       this.approvalCubeOffsetList.totalCount =
         approvalCubeOffsetList.totalCount;
     });
@@ -236,9 +236,8 @@ export default class ApprovalCubeService {
     }
     approvalCubeRdo.limit = 999999999;
 
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
-      approvalCubeRdo
-    );
+    const approvalCubeOffsetList =
+      await this.approvalCubeApi.findApprovalCubesForSearch(approvalCubeRdo);
 
     runInAction(() => {
       this.approvalCubesExcelWrite = this.approvalCubesExcelWrite.concat(

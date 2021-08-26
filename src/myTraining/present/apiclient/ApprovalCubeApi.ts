@@ -19,7 +19,6 @@ export default class ApprovalCubeApi {
       : '';
 
   lectureApprovalURL = '/api/lecture/studentApproval';
-  // baseUrl = this.devUrl + '/api/lecture/studentApproval';
   lectureStudentURL = '/api/lecture/students';
   cubeApprovalURL = '/api/cube/studentApprovals';
 

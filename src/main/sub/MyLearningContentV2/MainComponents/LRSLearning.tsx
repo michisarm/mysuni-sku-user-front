@@ -15,8 +15,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
-
-const PAGE_SIZE = 8;
+import { takeTwoOfEachCollege } from 'lecture/model/CardWithCardRealtedCount';
 
 function getTitle(
   profileMemberName: string,
@@ -49,9 +48,13 @@ const LRSLearning: React.FC<Props> = (Props) => {
   const [viewModel, setViewModel] = useState<RecommendationViewModel>();
 
   useEffect(() => {
-    findRecommendationCards(PAGE_SIZE).then((next) => {
+    findRecommendationCards().then((next) => {
       if (next !== undefined) {
-        setViewModel(next);
+        const sortedCards = takeTwoOfEachCollege(next.cards);
+        setViewModel({
+          ...next,
+          cards: sortedCards,
+        });
       }
     });
   }, []);

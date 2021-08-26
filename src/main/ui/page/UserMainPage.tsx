@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { ContentLayout } from '../../../shared';
-import MainModals from '../../sub/MainModals/TutorialModalViewV3';
 import MyLearningSummaryContainer from '../../sub/MyLearningSummary/MyLearningSummaryContainer';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MainPagePopupContainer from '../../sub/MainPagePopup/ui/logic/MainPagePopupContainer';
