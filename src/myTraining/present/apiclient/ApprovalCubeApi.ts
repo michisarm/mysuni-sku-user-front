@@ -35,7 +35,7 @@ export default class ApprovalCubeApi {
     );
 
     offsetElementList.results = offsetElementList.results.map(
-      result => new ApprovalCubeModel(result)
+      (result) => new ApprovalCubeModel(result)
     );
     return offsetElementList;
   }
@@ -69,14 +69,14 @@ export default class ApprovalCubeApi {
 
     return axios
       .get<ApprovalCubeModel[]>(this.lectureApprovalURL + `/excel`, { params })
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findPersonalCube(personalCubeId: string) {
     //
     return axios
       .get<ApprovalCubeModel>(this.lectureApprovalURL + `/${personalCubeId}`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findApprovalCube(studentId: string) {
@@ -85,35 +85,36 @@ export default class ApprovalCubeApi {
       .get<ApprovalCubeDetailModel>(
         this.cubeApprovalURL + `/${studentId}/detail`
       )
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findLectureApprovalSelect() {
     return axios
       .get<IdName[]>(this.cubeApprovalURL + '/targetCubes')
       .then(
-        response =>
+        (response) =>
           (response && Array.isArray(response.data) && response.data) || []
       );
   }
 
-  studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    return axios
-      .put<ApprovedResponse>(
-        this.lectureStudentURL + '/accept',
-        studentRequestCdo
-      )
-      .then(response => (response && response.data) || null);
-  }
-
-  studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-    return axios
-      .put<ApprovedResponse>(
-        this.lectureStudentURL + '/reject',
-        studentRequestCdo
-      )
-      .then(response => (response && response.data) || null);
-  }
+  // 미사용
+  // studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
+  //   return axios
+  //     .put<ApprovedResponse>(
+  //       this.lectureStudentURL + '/accept',
+  //       studentRequestCdo
+  //     )
+  //     .then(response => (response && response.data) || null);
+  // }
+  //
+  // studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+  //   return axios
+  //     .put<ApprovedResponse>(
+  //       this.lectureStudentURL + '/reject',
+  //       studentRequestCdo
+  //     )
+  //     .then(response => (response && response.data) || null);
+  // }
 }
 
 Object.defineProperty(ApprovalCubeApi, 'instance', {
