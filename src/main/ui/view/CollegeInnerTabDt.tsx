@@ -5,6 +5,7 @@ import { reactAlert } from '@nara.platform/accent';
 import routePaths from 'main/routePaths';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
+import queryString from 'query-string';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -26,14 +27,15 @@ const CollegeInnerTabDt = () => {
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     setActiveIndex(activeIndex);
-    history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+    history.push(routePaths.introductionCollegeDT(panes[activeIndex].menuItem));
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -43,7 +45,7 @@ const CollegeInnerTabDt = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -1156,8 +1158,8 @@ export const CollegeInnerEnTabDt = () => {
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 7) {
@@ -1168,13 +1170,15 @@ export const CollegeInnerEnTabDt = () => {
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeDT(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -1184,7 +1188,7 @@ export const CollegeInnerEnTabDt = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -2280,15 +2284,18 @@ export const CollegeInnerZhTabDt = () => {
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeDT(panes[activeIndex].menuItem)
+      );
     }
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -2298,7 +2305,7 @@ export const CollegeInnerZhTabDt = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
   const panes = [
     {
       menuItem: 'DT College介绍',

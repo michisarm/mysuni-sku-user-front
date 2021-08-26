@@ -7,11 +7,11 @@ const routePaths = {
     `/introduction/${tab}${queryParams || ''}`,
 
   introductionAITab: (queryParams?: string) =>
-    `/introduction/College?subTab=AI/${queryParams || ''}`,
+    `/introduction/College?subTab=AI&innerTab=${queryParams || ''}`,
   introductionDTTab: (queryParams?: string) =>
-    `/introduction/College?subTab=DT/${queryParams || ''}`,
+    `/introduction/College?subTab=DT&innerTab=${queryParams || ''}`,
   introductionManagementTab: (queryParams?: string) =>
-    `/introduction/College?subTab=Management/${queryParams || ''}`,
+    `/introduction/College?subTab=Management&innerTab=${queryParams || ''}`,
 
   introductionMySuni: () => routePaths.introductionTab('MySuni'),
 

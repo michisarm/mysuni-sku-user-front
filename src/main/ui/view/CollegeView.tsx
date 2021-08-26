@@ -9514,6 +9514,7 @@ class CollegeView extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     //
+
     if (prevProps.location.key !== this.props.location.key) {
       this.setActiveTab();
     }
@@ -9529,15 +9530,61 @@ class CollegeView extends Component<Props, State> {
         subTab.includes(pane.menuItem)
       );
 
+      const krIndex = koPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
+      const enIndex = EnPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
+      const zhIndex = ZhPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
       if (activeIndex >= 0) {
         this.setState({ activeIndex });
+      } else if (activeIndex === -1) {
+        if (SkProfileService.instance.skProfile.language === 'English') {
+          if (zhIndex >= 0) {
+            this.setState({ activeIndex: zhIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[zhIndex].menuItem)
+            );
+          } else if (krIndex >= 0) {
+            this.setState({ activeIndex: krIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[krIndex].menuItem)
+            );
+          }
+        } else if (SkProfileService.instance.skProfile.language === 'Chinese') {
+          if (enIndex >= 0) {
+            this.setState({ activeIndex: enIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[enIndex].menuItem)
+            );
+          } else if (krIndex >= 0) {
+            this.setState({ activeIndex: krIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[krIndex].menuItem)
+            );
+          }
+        } else if (SkProfileService.instance.skProfile.language === 'Korean') {
+          if (zhIndex >= 0) {
+            this.setState({ activeIndex: zhIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[zhIndex].menuItem)
+            );
+          } else if (enIndex >= 0) {
+            this.setState({ activeIndex: enIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[enIndex].menuItem)
+            );
+          }
+        }
       }
     }
   }
 
   onTabChange(e: any, { activeIndex }: any) {
     //
-
     this.props.history.push(
       routePaths.introductionCollege(this.panes[activeIndex].menuItem)
     );

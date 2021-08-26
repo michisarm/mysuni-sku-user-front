@@ -9,6 +9,7 @@ import {
 import { Image, Tab, MenuItem } from 'semantic-ui-react';
 import routePaths from 'main/routePaths';
 import { reactAlert } from '@nara.platform/accent';
+import queryString from 'query-string';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 interface tapName {
@@ -27,14 +28,15 @@ const CollegeInnerTabAi = () => {
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     setActiveIndex(activeIndex);
-    history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+    history.push(routePaths.introductionCollegeAI(panes[activeIndex].menuItem));
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -44,7 +46,7 @@ const CollegeInnerTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -784,8 +786,8 @@ export const CollegeInnerEnTabAi = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 5) {
@@ -796,13 +798,15 @@ export const CollegeInnerEnTabAi = () => {
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeAI(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -812,7 +816,7 @@ export const CollegeInnerEnTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -1556,8 +1560,8 @@ export const CollegeInnerZhTabAi = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 5) {
@@ -1568,13 +1572,15 @@ export const CollegeInnerZhTabAi = () => {
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeAI(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -1584,7 +1590,7 @@ export const CollegeInnerZhTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
   const panes = [
     {
       menuItem: 'AI College介绍',
