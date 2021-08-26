@@ -114,9 +114,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', newSelectedList);
 
-    const responseData = await approvalCubeService!.studentRequestOpen(
-      studentRequest
-    );
+    // 미사용
+    // const responseData = await approvalCubeService!.studentRequestOpen(
+    //   studentRequest
+    // );
     // const { error, message } = responseData;
 
     // if (error) {
@@ -178,9 +179,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', newSelectedList);
 
-    const responseData = await approvalCubeService!.studentRequestReject(
-      studentRequest
-    );
+    // 미사용
+    // const responseData = await approvalCubeService!.studentRequestReject(
+    //   studentRequest
+    // );
     // const { error, message } = responseData;
 
     // if (error) {

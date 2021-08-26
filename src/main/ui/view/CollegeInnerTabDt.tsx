@@ -1,7 +1,10 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory, useLocation, withRouter } from 'react-router-dom';
 import { Image, Menu, Label, Tab } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
+import routePaths from 'main/routePaths';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -19,10 +22,33 @@ const CollegeInnerTabDt = () => {
   const pageMove = (path: string) => {
     history.push(path);
   };
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    setActiveIndex(activeIndex);
+    history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
 
   const panes = [
     {
       menuItem: 'DT College 소개',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -172,6 +198,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         pageMove('/certification/badge/badge-detail/BADGE-2t');
         return <Tab.Pane attached={false} />;
@@ -179,6 +206,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'DT Biz. & Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -399,6 +427,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'DT Technologies',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -575,6 +604,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'Data Engineer Track',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -739,6 +769,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'Cloud Engineer Track',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -889,6 +920,7 @@ const CollegeInnerTabDt = () => {
     },
     {
       menuItem: 'Data Analyst Track',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1102,6 +1134,7 @@ const CollegeInnerTabDt = () => {
 
     {
       menuItem: 'CDS Track',
+      key: 'tab7',
       render: () => {
         pageMove('/certification/badge/badge-detail/BADGE-2v');
         return <Tab.Pane attached={false} />;
@@ -1113,18 +1146,50 @@ const CollegeInnerTabDt = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu dt"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
 
 export const CollegeInnerEnTabDt = () => {
+  const history = useHistory();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    if (activeIndex === 1 || activeIndex === 7) {
+      reactAlert({
+        title: 'No permission',
+        message:
+          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. Please use Q&A for related inquiries.',
+      });
+    } else {
+      setActiveIndex(activeIndex);
+      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+    }
+  };
+
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
+
   const panes = [
     {
-      menuItem: (
-        <Menu.Item>
-          Introduction of <br /> DT College
-        </Menu.Item>
-      ),
+      menuItem: 'Introduction of \n DT College',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1277,12 +1342,14 @@ export const CollegeInnerEnTabDt = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
     },
     {
       menuItem: 'DT Biz. & Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1326,7 +1393,10 @@ export const CollegeInnerEnTabDt = () => {
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
-                <h3>Tech & Biz Talk <br />(Future Tech Forum)</h3>
+                <h3>
+                  Tech & Biz Talk <br />
+                  (Future Tech Forum)
+                </h3>
                 <div className="ai_box">
                   <h4>
                     Hosted by Professor Jeong, Jae-seung, various lecturers and
@@ -1489,6 +1559,7 @@ export const CollegeInnerEnTabDt = () => {
     },
     {
       menuItem: 'DT Technologies',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1525,7 +1596,11 @@ export const CollegeInnerEnTabDt = () => {
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
-                <h3>Programming Basics (Python, R)</h3>
+                <h3>
+                  Programming Basics
+                  <br />
+                  (Python, R)
+                </h3>
                 <div className="ai_box">
                   <h4>
                     This content offers lessons on Python/R that are necessary
@@ -1654,6 +1729,7 @@ export const CollegeInnerEnTabDt = () => {
     },
     {
       menuItem: 'Data Engineer Track',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1815,6 +1891,7 @@ export const CollegeInnerEnTabDt = () => {
     },
     {
       menuItem: 'Cloud Engineer Track',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1964,6 +2041,7 @@ export const CollegeInnerEnTabDt = () => {
     },
     {
       menuItem: 'Data Analyst Track',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2172,6 +2250,7 @@ export const CollegeInnerEnTabDt = () => {
 
     {
       menuItem: 'CDS Track',
+      key: 'tab7',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
@@ -2182,14 +2261,48 @@ export const CollegeInnerEnTabDt = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu dt"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
 
 export const CollegeInnerZhTabDt = () => {
+  const history = useHistory();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    if (activeIndex === 1 || activeIndex === 7) {
+      reactAlert({
+        title: '没有权限',
+        message:
+          '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。 相关咨询请使用Q&A。',
+      });
+    } else {
+      setActiveIndex(activeIndex);
+      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+    }
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
   const panes = [
     {
-      menuItem: <Menu.Item>DT College介绍</Menu.Item>,
+      menuItem: 'DT College介绍',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2332,12 +2445,14 @@ export const CollegeInnerZhTabDt = () => {
     },
     {
       menuItem: 'AI/DT Literacy',
+      key: 'tab1',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
     },
     {
       menuItem: 'DT Biz. & Implementation',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2509,6 +2624,7 @@ export const CollegeInnerZhTabDt = () => {
     },
     {
       menuItem: 'DT Technologies',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2655,6 +2771,7 @@ export const CollegeInnerZhTabDt = () => {
     },
     {
       menuItem: 'Data Engineer Track',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2801,6 +2918,7 @@ export const CollegeInnerZhTabDt = () => {
     },
     {
       menuItem: 'Cloud Engineer Track',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2935,6 +3053,7 @@ export const CollegeInnerZhTabDt = () => {
     },
     {
       menuItem: 'Data Analyst Track',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -3119,6 +3238,7 @@ export const CollegeInnerZhTabDt = () => {
 
     {
       menuItem: 'CDS Track',
+      key: 'tab7',
       render: () => {
         return <Tab.Pane attached={false} />;
       },
@@ -3129,8 +3249,10 @@ export const CollegeInnerZhTabDt = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu dt"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
 
-export default CollegeInnerTabDt;
+export default withRouter(CollegeInnerTabDt);

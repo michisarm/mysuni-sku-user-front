@@ -96,23 +96,24 @@ export default class ApprovalCubeApi {
       );
   }
 
-  studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    return axios
-      .put<ApprovedResponse>(
-        this.lectureStudentURL + '/accept',
-        studentRequestCdo
-      )
-      .then((response) => (response && response.data) || null);
-  }
-
-  studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-    return axios
-      .put<ApprovedResponse>(
-        this.lectureStudentURL + '/reject',
-        studentRequestCdo
-      )
-      .then((response) => (response && response.data) || null);
-  }
+  // 미사용
+  // studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
+  //   return axios
+  //     .put<ApprovedResponse>(
+  //       this.lectureStudentURL + '/accept',
+  //       studentRequestCdo
+  //     )
+  //     .then(response => (response && response.data) || null);
+  // }
+  //
+  // studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+  //   return axios
+  //     .put<ApprovedResponse>(
+  //       this.lectureStudentURL + '/reject',
+  //       studentRequestCdo
+  //     )
+  //     .then(response => (response && response.data) || null);
+  // }
 }
 
 Object.defineProperty(ApprovalCubeApi, 'instance', {

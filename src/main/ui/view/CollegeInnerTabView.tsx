@@ -1,10 +1,11 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Image, Menu, Label, Tab } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
+import routePaths from 'main/routePaths';
+import { SkProfileService } from 'profile/stores';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
-
 const emptyAlert = (e: any) => {
   e.preventDefault();
   reactAlert({
@@ -19,10 +20,35 @@ const CollegeInnerTabView = () => {
   const pageMove = (path: string) => {
     history.push(path);
   };
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    setActiveIndex(activeIndex);
+    history.push(
+      routePaths.introductionCollegeManagement(panes[activeIndex].key)
+    );
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search]);
 
   const panes = [
     {
       menuItem: 'Management College 소개',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -272,6 +298,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: '기업 경영/전략',
+      key: 'tab1',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -446,6 +473,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: '재무/회계',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -608,6 +636,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: '마케팅/브랜드',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -902,6 +931,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: 'HR/조직 설계',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1162,6 +1192,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: 'SCM/Operation',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1404,6 +1435,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: '법무/IP',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1743,6 +1775,7 @@ const CollegeInnerTabView = () => {
     },
     {
       menuItem: 'Competency',
+      key: 'tab7',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -1963,6 +1996,8 @@ const CollegeInnerTabView = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
@@ -1973,10 +2008,34 @@ export const CollegeInnerZhTabView = () => {
   const pageMove = (path: string) => {
     history.push(path);
   };
+  const [activeIndex, setActiveIndex] = useState(0);
 
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    setActiveIndex(activeIndex);
+    history.push(
+      routePaths.introductionCollegeManagement(panes[activeIndex].key)
+    );
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search, SkProfileService.instance.skProfile.language]);
   const panes = [
     {
       menuItem: 'Management College介绍',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2197,6 +2256,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: '企业经营/战略',
+      key: 'tab1',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2254,8 +2314,11 @@ export const CollegeInnerZhTabView = () => {
                       方法论/ <br />
                       应用学习
                     </p>
-                  </div>
-                  <Image src={`${PUBLIC_URL}/images/all/ing-12.png`} alt="" />
+                  </div>{' '}
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-12-CHN.png"
+                    alt=""
+                  />
                 </div>
 
                 <div className="combined-topic">
@@ -2381,6 +2444,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: '财务/会计',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2447,7 +2511,10 @@ export const CollegeInnerZhTabView = () => {
                       应用学习
                     </p>
                   </div>
-                  <Image src={`${PUBLIC_URL}/images/all/ing-05.png`} alt="" />
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-05-CHN.png"
+                    alt=""
+                  />
                 </div>
 
                 <div className="fundamental-topic float-left">
@@ -2522,6 +2589,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: '市场/品牌',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -2578,7 +2646,10 @@ export const CollegeInnerZhTabView = () => {
                       应用学习
                     </p>
                   </div>
-                  <Image src={`${PUBLIC_URL}/images/all/ing-06.png`} alt="" />
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-06-CHN.png"
+                    alt=""
+                  />
                 </div>
                 <div className="combined-topic">
                   <div className="con_wrap sub03">
@@ -2793,6 +2864,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: 'HR/组织设计',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -3025,6 +3097,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: 'SCM/Operation',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -3128,14 +3201,13 @@ export const CollegeInnerZhTabView = () => {
                     </div>
                   </div>
 
-                  <Image src={`${PUBLIC_URL}/images/all/ing-04.png`} alt="" />
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-img-01-chn.png"
+                    alt=""
+                  />
 
                   <div className="con_wrap sub02">
                     <div className="level_icon">
-                      <Image
-                        src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-img-01-chn.png"
-                        alt=""
-                      />
                       <p>概念理解</p>
                     </div>
                     <h3>
@@ -3235,10 +3307,16 @@ export const CollegeInnerZhTabView = () => {
                       </div>
                     </div>
                   </div>
-                  <Image src={`${PUBLIC_URL}/images/all/ing-07.png`} alt="" />
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-07-CHN.png"
+                    alt=""
+                  />
                 </div>
                 <div className="combined-topic">
-                  <Image src={`${PUBLIC_URL}/images/all/ing-08.png`} alt="" />
+                  <Image
+                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-08-CHN.png"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -3248,6 +3326,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: '法务/IP',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -3591,6 +3670,7 @@ export const CollegeInnerZhTabView = () => {
     },
     {
       menuItem: 'Competency',
+      key: 'tab7',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -3797,7 +3877,9 @@ export const CollegeInnerZhTabView = () => {
     <Tab
       menu={{ attached: false, tabular: false }}
       panes={panes}
-      className="sub-tab-menu management1"
+      className="sub-tab-menu"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
@@ -3808,16 +3890,35 @@ export const CollegeInnerEnTabView = () => {
   const pageMove = (path: string) => {
     history.push(path);
   };
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onTabChange = (e: any, { activeIndex }: any) => {
+    setActiveIndex(activeIndex);
+    history.push(
+      routePaths.introductionCollegeManagement(panes[activeIndex].key)
+    );
+  };
+
+  const { search } = useLocation();
+  const subTabAI = decodeURI(search);
+  const indexSetter = () => {
+    const activeIndex =
+      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    indexSetter();
+  }, [search, SkProfileService.instance.skProfile.language]);
 
   const panes = [
     {
-      menuItem: (
-        <Menu.Item>
-          Introduction of
-          <br />
-          Management College
-        </Menu.Item>
-      ),
+      menuItem: 'Introduction of \n Management College',
+      key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -4075,13 +4176,8 @@ export const CollegeInnerEnTabView = () => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item>
-          Corporate
-          <br />
-          Management/Strategy
-        </Menu.Item>
-      ),
+      menuItem: 'Corporate \n Management/Strategy',
+      key: 'tab1',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -4291,6 +4387,7 @@ export const CollegeInnerEnTabView = () => {
     },
     {
       menuItem: 'Finance/Accounting',
+      key: 'tab2',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -4453,6 +4550,7 @@ export const CollegeInnerEnTabView = () => {
     },
     {
       menuItem: 'Marketing/Brand',
+      key: 'tab3',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -4760,13 +4858,8 @@ export const CollegeInnerEnTabView = () => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item>
-          HR/Organizational
-          <br />
-          Structure
-        </Menu.Item>
-      ),
+      menuItem: 'HR/Organizational \n Structure',
+      key: 'tab4',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -5060,6 +5153,7 @@ export const CollegeInnerEnTabView = () => {
     },
     {
       menuItem: 'SCM/Operation',
+      key: 'tab5',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -5394,6 +5488,7 @@ export const CollegeInnerEnTabView = () => {
     },
     {
       menuItem: 'Legal/IP',
+      key: 'tab6',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -5818,6 +5913,7 @@ export const CollegeInnerEnTabView = () => {
     },
     {
       menuItem: 'Competency',
+      key: 'tab7',
       render: () => (
         <Tab.Pane attached={false}>
           <div className="belt">
@@ -6060,6 +6156,8 @@ export const CollegeInnerEnTabView = () => {
       menu={{ attached: false, tabular: false }}
       panes={panes}
       className="sub-tab-menu management1"
+      activeIndex={activeIndex}
+      onTabChange={onTabChange}
     />
   );
 };
