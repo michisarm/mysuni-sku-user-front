@@ -14,14 +14,13 @@ export function takeTwoOfEachCollege(
   const result: CardWithCardRealtedCount[] = [];
   const temp: CardWithCardRealtedCount[] = [];
 
-  console.log('takeTwoOfEachCollege');
-
   cardWithCardRealtedCounts.forEach((c) => {
-    const collegeId = getMainCategory(c.card.categories)?.collegeId || '';
-    console.log('mainCollegeId :: ', collegeId);
-    const collegeCount = collegeCountMap.get(collegeId);
+    if (result.length === 8) {
+      return;
+    }
 
-    console.log('collegeCount :: ', collegeCount);
+    const collegeId = getMainCategory(c.card.categories)?.collegeId || '';
+    const collegeCount = collegeCountMap.get(collegeId);
 
     if (collegeCount === undefined) {
       collegeCountMap.set(collegeId, 1);
@@ -33,9 +32,6 @@ export function takeTwoOfEachCollege(
       result.push(c);
     }
   });
-
-  console.log('result :: ', result);
-  console.log('temp :: ', temp);
 
   if (result.length < 8) {
     const addCount = 8 - result.length;
