@@ -195,7 +195,8 @@ function testBlacklistAccessRuleForPaidLecture(
   // ex)
   // userGroupSequences:[] = [0, 4, 10, 16, 75]
   // access_rules:[string] = ["____1%","__1%"]
-  // 위의 결과는 맵핑
+  // 위의 결과는 access_rules[0] 중 1의 자리가 4인데 userGroupSequences에 있으므로 맵핑
+  // access_rule이 "_1__1%"이면 userGroupSequence로 1,4를 모두 가지고 있어야 함
   const accessRulesArr: string[] = JSON.parse(card.access_rules);
   const userGroupSequences: number[] = Array.from(
     SkProfileService.instance.skProfile.userGroupSequences.sequences
@@ -203,6 +204,7 @@ function testBlacklistAccessRuleForPaidLecture(
   const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
     const accessRule = c;
     if (card.use_whitelist_policy) {
+      // 하나라도 있으면 true 모두 없어야 false
       return (
         r ||
         (accessRule.split('').some((d, i) => {
@@ -223,17 +225,25 @@ function testBlacklistAccessRuleForPaidLecture(
           }))
       );
     } else {
-      return (
+      // 하나라도 있으면 fasle 모두 없어야 true
+      return !(
         r ||
-        accessRule.split('').some((d, i) => {
-          if (d !== '1') {
-            return true;
-          }
-          if (!userGroupSequences.includes(i) && d === '1') {
+        (accessRule.split('').some((d, i) => {
+          if (userGroupSequences.includes(i)) {
+            // userGroupSequence에 accessRule index가 있는지
             return true;
           }
           return false;
-        })
+        }) &&
+          !accessRule.split('').some((d, i) => {
+            if (d !== '1') {
+              return false;
+            }
+            if (!userGroupSequences.includes(i) && d === '1') {
+              return true;
+            }
+            return false;
+          }))
       );
     }
   }, false);

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getQueryId, search, searchData } from './search.events';
+import { getQueryId, searchData } from './search.events';
 import { SearchParam } from './search.models';
 import {
   getSearchInSearchInfo,
@@ -26,7 +26,6 @@ export function SearchContentsPage() {
   }, [queryId]);
 
   const cards = useDisplayCard();
-  console.log('displayCards', cards);
   const badges = useSearchBadgeList();
   const communities = useSearchCommunityList();
   const experts = useExpert();

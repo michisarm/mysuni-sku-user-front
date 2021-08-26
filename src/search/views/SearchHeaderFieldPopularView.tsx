@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tab } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import {
   useSearchPopular1MList,
   useSearchPopular1YList,

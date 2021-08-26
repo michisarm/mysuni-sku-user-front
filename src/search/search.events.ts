@@ -1,7 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -14,23 +12,14 @@ import {
   findExpert,
   findPreCard,
 } from './api/searchApi';
-import {
-  Options,
-  SearchCard,
-  SearchCardCategory,
-  SearchParam,
-} from './search.models';
+import { Options, SearchCard, SearchCardCategory } from './search.models';
 import {
   getCard,
-  getDisplayCard,
   getAllowedCard,
-  getExpert,
   getExpertOri,
   getFilterCondition,
   getQueryOptions,
-  getSearchBadgeList,
   getSearchBadgeOriList,
-  getSearchCommunityList,
   getSearchCommunityOriList,
   getSearchInSearchInfo,
   InitialConditions,
@@ -83,7 +72,6 @@ export function filterClearAll() {
 }
 
 export function searchCardFilterData(decodedSearchValue: string) {
-  console.log('searchCardFilterData');
   setCard([]); // search에서 넘어온 원본 검색 data
   setAllowedCard([]); // 권한을 거친 data(필터를 선택하지 않은 data)
   setDisplayCard([]); // 화면에 노출할 data(필터를 선택하고 결과내재검색한 data)
@@ -450,7 +438,6 @@ export async function search(searchValue: string, searchType?: string) {
   }
 
   const searchInSearchInfo = getSearchInSearchInfo();
-  console.log('searchInSearchInfo', searchInSearchInfo);
   if (searchInSearchInfo?.checkSearchInSearch) {
     searchInSearchData(decodedSearchValue);
   } else {
@@ -470,7 +457,6 @@ export async function search(searchValue: string, searchType?: string) {
 }
 
 export async function searchData(searchValue: string, searchType?: string) {
-  console.log('searchData');
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')

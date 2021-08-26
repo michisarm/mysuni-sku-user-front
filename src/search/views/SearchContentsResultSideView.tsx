@@ -5,7 +5,6 @@ import {
   filterClearAll,
   filterClickSearch,
   getQueryId,
-  search,
   settingSearchFilter,
   toggle_all_college_name_query,
   toggle_cube_type_query,
@@ -16,9 +15,7 @@ import { SearchParam, CheckboxOptions } from 'search/search.models';
 import {
   getDisplayCard,
   getFilterCondition,
-  getSearchInSearchInfo,
   setFilterCondition,
-  setSearchInSearchInfo,
   useCollegeOptions,
   useCubeTypeOptions,
   useFilterCondition,

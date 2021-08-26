@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, Icon, Input, Popup } from 'semantic-ui-react';
-import classNames from 'classnames';
+import React from 'react';
+import { Button, Icon } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
-import { getQueryId, search } from 'search/search.events';
+import { search } from 'search/search.events';
 import {
   setSearchRecentList,
   useSearchRecentList,

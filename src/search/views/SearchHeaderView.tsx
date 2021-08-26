@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 import { SearchParam } from 'search/search.models';
 import { getQueryId, search } from 'search/search.events';
@@ -75,10 +75,10 @@ export function SearchHeaderView() {
               <div className="search_input">
                 <Popup
                   on="click"
-                  postion="bottom center"
+                  postion="left bottom"
                   className="history_popup navi_popup"
-                  open={isOpen}
                   positionFixed
+                  open={isOpen}
                   onOpen={handleOpen}
                   onClose={handleClose}
                   trigger={
@@ -87,8 +87,15 @@ export function SearchHeaderView() {
                         focus: 'focus',
                         write: 'write',
                         on: isOpen === true, //input이 popup에 맞춰서 모양이 변경됨
+                        research:
+                          searchInSearchInfo?.checkSearchInSearch === true, //결과내 재검색 체크박스 클릭시, reseach 클래스 추가 .re_text display제어
                       })}
                     >
+                      <div className="re_text">
+                        <span className="ellipsis">
+                          {searchInSearchInfo?.parentSearchValue}
+                        </span>
+                      </div>
                       <Input
                         type="text"
                         placeholder="검색어를 입력하세요."

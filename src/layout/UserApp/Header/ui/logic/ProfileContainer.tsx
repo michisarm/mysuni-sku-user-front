@@ -24,6 +24,7 @@ import { isCollegeManager } from 'shared/helper/isCollegeManager';
 import classNames from 'classnames';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { SearchHeaderFieldView } from 'search/views/SearchHeaderFieldView';
+import { setSearchInSearchInfo } from 'search/search.services';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -169,6 +170,11 @@ class ProfileContainer extends Component<Props, State> {
       setWrite('');
       this.setState({ isSearchOpen: !isSearchOpen });
       document.getElementById('btnSearchPopup')?.click();
+      setSearchInSearchInfo({
+        checkSearchInSearch: false,
+        parentSearchValue: '',
+        searchValue: '',
+      }); // 초기화
     };
     const setWrite = (searchValue: string) => {
       this.setState({ write: searchValue });
