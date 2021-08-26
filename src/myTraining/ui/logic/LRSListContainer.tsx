@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Segment } from 'semantic-ui-react';
 import { Lecture } from 'lecture';
 import { NoSuchContentPanel } from 'shared';
-import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
@@ -27,7 +26,7 @@ function getTitle(viewModel?: RecommendationViewModel) {
   }
 }
 
-function LearningContainer() {
+function LRSListContainer() {
   const [viewModel, setViewModel] = useState<RecommendationViewModel>();
 
   useEffect(() => {
@@ -108,4 +107,4 @@ function LearningContainer() {
   );
 }
 
-export default LearningContainer;
+export default LRSListContainer;

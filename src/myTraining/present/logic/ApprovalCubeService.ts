@@ -2,13 +2,11 @@ import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { LangStrings, ProposalState } from '../../../shared/model';
+import { ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 
 @autobind
 export default class ApprovalCubeService {
@@ -142,12 +140,10 @@ export default class ApprovalCubeService {
   }
 
   async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    //
     return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
   }
 
   async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-    //
     return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
   }
 

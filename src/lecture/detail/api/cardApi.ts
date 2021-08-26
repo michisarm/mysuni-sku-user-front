@@ -285,3 +285,11 @@ export function findChannelAndCardCount(language: string) {
   const axios = getAxios();
   return axios.get<ChannelAndCardCountRom[]>(url).then(AxiosReturn);
 }
+
+export function findCardsWithoutLearningExperience(cardIds: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findCards/withoutLearningExperience`;
+  return axios
+    .get<CardWithCardRealtedCount[]>(url, { params: { ids: cardIds } })
+    .then(AxiosReturn);
+}
