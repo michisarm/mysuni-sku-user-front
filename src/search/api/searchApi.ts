@@ -144,7 +144,7 @@ export function findCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
     `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}%23%23pre`
-  ); // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다.
+  ); // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -200,9 +200,6 @@ function testBlacklistAccessRuleForPaidLecture(
   const userGroupSequences: number[] = Array.from(
     SkProfileService.instance.skProfile.userGroupSequences.sequences
   ); // 1이 있는 자리 위치(0부터)를 표기한 데이터
-  if (card.id === 'CARD-135y') {
-    debugger;
-  }
   const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
     const accessRule = c;
     if (card.use_whitelist_policy) {

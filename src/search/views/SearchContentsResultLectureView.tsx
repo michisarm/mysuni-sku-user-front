@@ -7,7 +7,7 @@ import {
   getTitleHtmlSearchKeyword,
 } from 'search/search.events';
 import { SearchParam } from 'search/search.models';
-import { useDisplayCard } from 'search/search.services';
+import { getDisplayCard } from 'search/search.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export function SearchContentsResultLectureView() {
@@ -23,7 +23,7 @@ export function SearchContentsResultLectureView() {
     }
   }, [params]);
 
-  const cards = useDisplayCard();
+  const cards = getDisplayCard();
   console.log('cards', cards);
 
   return (

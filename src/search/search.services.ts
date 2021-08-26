@@ -69,6 +69,10 @@ export const [setDisplayCard, onDisplayCard, getDisplayCard, useDisplayCard] =
   createStore<SearchCard[]>();
 export const [setExpert, onExpert, getExpert, useExpert] =
   createStore<SearchExpert[]>();
+export const [setAllowedCard, onAllowedCard, getAllowedCard, useAllowedCard] =
+  createStore<SearchCard[]>();
+export const [setExpertOri, onExpertOri, getExpertOri, useExpertOri] =
+  createStore<SearchExpert[]>();
 
 // 결과 목록
 export const [
@@ -90,6 +94,20 @@ export const [
   onSearchCommunityList,
   getSearchCommunityList,
   useSearchCommunityList,
+] = createStore<SearchCommunity[]>([]);
+
+export const [
+  setSearchBadgeOriList,
+  onSearchBadgeOriList,
+  getSearchBadgeOriList,
+  useSearchBadgeOriList,
+] = createStore<SearchBadge[]>([]);
+
+export const [
+  setSearchCommunityOriList,
+  onSearchCommunityOriList,
+  getSearchCommunityOriList,
+  useSearchCommunityOriList,
 ] = createStore<SearchCommunity[]>([]);
 
 export const [
@@ -126,3 +144,16 @@ export const [
   getSearchPopular1YList,
   useSearchPopular1YList,
 ] = createStore<string[]>([]);
+
+// 결과내재검색
+const InitialSearchInSearchInfo = {
+  checkSearchInSearch: false,
+  parentSearchValue: '',
+  searchValue: '',
+};
+export const [
+  setSearchInSearchInfo,
+  onSearchInSearchInfo,
+  getSearchInSearchInfo,
+  useSearchInSearchInfo,
+] = createStore(InitialSearchInSearchInfo);

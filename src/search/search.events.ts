@@ -22,22 +22,34 @@ import {
 } from './search.models';
 import {
   getCard,
+  getDisplayCard,
+  getAllowedCard,
+  getExpert,
+  getExpertOri,
   getFilterCondition,
   getQueryOptions,
+  getSearchBadgeList,
+  getSearchBadgeOriList,
+  getSearchCommunityList,
+  getSearchCommunityOriList,
+  getSearchInSearchInfo,
   InitialConditions,
   setCard,
   setCollegeOptions,
   setCubeTypeOptions,
   setDisplayCard,
+  setAllowedCard,
   setExpert,
+  setExpertOri,
   setFilterCondition,
   setOrganizerOptions,
   setSearchBadgeList,
+  setSearchBadgeOriList,
   setSearchCommunityList,
+  setSearchCommunityOriList,
 } from './search.services';
 
 export function getQueryId(): string {
-  // 기존 로직
   const queryId: string = window.location.search.slice(
     window.location.search.indexOf('=') + 1,
     window.location.search.length
@@ -70,35 +82,11 @@ export function filterClearAll() {
   setFilterCondition(InitialConditions);
 }
 
-interface Props {
-  isOnFilter?: boolean;
-  searchValue: string;
-  closeOnFilter?: () => void;
-}
-export function settingSearchFilter({
-  isOnFilter,
-  searchValue,
-  closeOnFilter,
-}: Props) {
-  setCard([]);
-  setDisplayCard([]);
-  const decodedSearchValue = searchValue
-    .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
-    .replace(/%/g, ' ');
-  if (decodedSearchValue === '') {
-    return;
-  }
-  if (decodedSearchValue.replace(/ /g, '').length < 2) {
-    reactAlert({
-      title: getPolyglotText('검색', '통검-필레팝얼-검색2'),
-      message: getPolyglotText(
-        '두 글자 이상 입력 후 검색하셔야 합니다.',
-        '통검-필레팝얼-두글자2'
-      ),
-    });
-    return;
-  }
+export function searchCardFilterData(decodedSearchValue: string) {
+  console.log('searchCardFilterData');
+  setCard([]); // search에서 넘어온 원본 검색 data
+  setAllowedCard([]); // 권한을 거친 data(필터를 선택하지 않은 data)
+  setDisplayCard([]); // 화면에 노출할 data(필터를 선택하고 결과내재검색한 data)
   findPreCard(decodedSearchValue).then((searchResult) => {
     if (searchResult === undefined) {
       setCollegeOptions([]);
@@ -140,106 +128,9 @@ export function settingSearchFilter({
       });
     setCard(displayCard);
     setDisplayCard([...displayCard]);
-    const collegeOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { categories },
-        } = c;
-        const category = (JSON.parse(categories) as SearchCardCategory[]).find(
-          (d) => d.mainCategory === 1
-        );
-        if (category !== undefined) {
-          const a = r.find((d) => d.key === category.collegeId);
-          if (a !== undefined) {
-            a.count = (a.count || 0) + 1;
-            a.text = `${a.value}(${a.count})`;
-          } else {
-            r.push({
-              key: category.collegeId,
-              value: getCollgeName(category.collegeId),
-              text: `${getCollgeName(category.collegeId)}(1)`,
-              count: 1,
-            });
-          }
-        }
-      } catch {
-        //
-      }
-
-      return r;
-    }, []);
-    setCollegeOptions(collegeOptions);
-
-    const organizerOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { cube_organizer_names },
-        } = c;
-        (JSON.parse(cube_organizer_names) as string[]).forEach((organizer) => {
-          const a = r.find((d) => d.key === organizer);
-          if (a !== undefined) {
-            a.count = (a.count || 0) + 1;
-            a.text = `${a.value}(${a.count})`;
-          } else {
-            r.push({
-              key: organizer,
-              value: organizer,
-              text: `${organizer}(1)`,
-              count: 1,
-            });
-          }
-        });
-      } catch {
-        //
-      }
-
-      return r;
-    }, []);
-    setOrganizerOptions(organizerOptions);
-
-    const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { cube_types },
-        } = c;
-        (JSON.parse(cube_types) as string[])
-          .reduce<string[]>((r, c) => {
-            if (!r.includes(c)) {
-              r.push(c);
-            }
-            return r;
-          }, [])
-          .forEach((cube) => {
-            const a = r.find((d) => d.key === cube);
-            if (a !== undefined) {
-              a.count = (a.count || 0) + 1;
-              a.text = `${a.value}(${a.count})`;
-            } else {
-              r.push({
-                key: cube,
-                value: cube,
-                text: `${cube}(1)`,
-                count: 1,
-              });
-            }
-          });
-      } catch {
-        //
-      }
-
-      return r;
-    }, []);
-    setCubeTypeOptions(cubeTypeOptions);
-    search(decodedSearchValue);
   });
 
-  findCard(decodedSearchValue).then((searchResult) => {
+  findCard(decodedSearchValue).then(async (searchResult) => {
     if (searchResult === undefined) {
       setCollegeOptions([]);
       setOrganizerOptions([]);
@@ -280,104 +171,113 @@ export function settingSearchFilter({
       });
     setCard(displayCard);
     setDisplayCard([...displayCard]);
-    const collegeOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { categories },
-        } = c;
-        const category = (JSON.parse(categories) as SearchCardCategory[]).find(
-          (d) => d.mainCategory === 1
-        );
-        if (category !== undefined) {
-          const a = r.find((d) => d.key === category.collegeId);
-          if (a !== undefined) {
-            a.count = (a.count || 0) + 1;
-            a.text = `${a.value}(${a.count})`;
-          } else {
-            r.push({
-              key: category.collegeId,
-              value: getCollgeName(category.collegeId),
-              text: `${getCollgeName(category.collegeId)}(1)`,
-              count: 1,
-            });
-          }
+
+    const cards = await filterCard(getCard());
+    setAllowedCard(cards);
+    setDisplayCard(cards);
+  });
+}
+
+export function settingSearchFilter(searchValue: string) {
+  const decodedSearchValue = searchValue
+    .replace(/'/g, ' ')
+    .replace(/&/g, ' ')
+    .replace(/%/g, ' ');
+  if (decodedSearchValue === '') {
+    return;
+  }
+
+  const searchResult = getAllowedCard();
+  if (searchResult === undefined) {
+    setCollegeOptions([]);
+    setOrganizerOptions([]);
+    setCubeTypeOptions([]);
+    return;
+  }
+  const collegeOptions: Options[] = searchResult.reduce<Options[]>((r, c) => {
+    try {
+      const categories = c.categories;
+      const category = (JSON.parse(categories) as SearchCardCategory[]).find(
+        (d) => d.mainCategory === 1
+      );
+      if (category !== undefined) {
+        const a = r.find((d) => d.key === category.collegeId);
+        if (a !== undefined) {
+          a.count = (a.count || 0) + 1;
+          a.text = `${a.value}(${a.count})`;
+        } else {
+          r.push({
+            key: category.collegeId,
+            value: getCollgeName(category.collegeId),
+            text: `${getCollgeName(category.collegeId)}(1)`,
+            count: 1,
+          });
         }
-      } catch {
-        //
       }
+    } catch {
+      //
+    }
 
-      return r;
-    }, []);
-    setCollegeOptions(collegeOptions);
+    return r;
+  }, []);
+  setCollegeOptions(collegeOptions);
 
-    const organizerOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { cube_organizer_names },
-        } = c;
-        (JSON.parse(cube_organizer_names) as string[]).forEach((organizer) => {
-          const a = r.find((d) => d.key === organizer);
+  const organizerOptions: Options[] = searchResult.reduce<Options[]>((r, c) => {
+    try {
+      const cube_organizer_names = c.cube_organizer_names;
+      (JSON.parse(cube_organizer_names) as string[]).forEach((organizer) => {
+        const a = r.find((d) => d.key === organizer);
+        if (a !== undefined) {
+          a.count = (a.count || 0) + 1;
+          a.text = `${a.value}(${a.count})`;
+        } else {
+          r.push({
+            key: organizer,
+            value: organizer,
+            text: `${organizer}(1)`,
+            count: 1,
+          });
+        }
+      });
+    } catch {
+      //
+    }
+
+    return r;
+  }, []);
+  setOrganizerOptions(organizerOptions);
+
+  const cubeTypeOptions: Options[] = searchResult.reduce<Options[]>((r, c) => {
+    try {
+      const cube_types = c.cube_types;
+      (JSON.parse(cube_types) as string[])
+        .reduce<string[]>((r, c) => {
+          if (!r.includes(c)) {
+            r.push(c);
+          }
+          return r;
+        }, [])
+        .forEach((cube) => {
+          const a = r.find((d) => d.key === cube);
           if (a !== undefined) {
             a.count = (a.count || 0) + 1;
             a.text = `${a.value}(${a.count})`;
           } else {
             r.push({
-              key: organizer,
-              value: organizer,
-              text: `${organizer}(1)`,
+              key: cube,
+              value: cube,
+              text: `${cube}(1)`,
               count: 1,
             });
           }
         });
-      } catch {
-        //
-      }
+    } catch {
+      //
+    }
 
-      return r;
-    }, []);
-    setOrganizerOptions(organizerOptions);
-
-    const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
-      Options[]
-    >((r, c) => {
-      try {
-        const {
-          fields: { cube_types },
-        } = c;
-        (JSON.parse(cube_types) as string[])
-          .reduce<string[]>((r, c) => {
-            if (!r.includes(c)) {
-              r.push(c);
-            }
-            return r;
-          }, [])
-          .forEach((cube) => {
-            const a = r.find((d) => d.key === cube);
-            if (a !== undefined) {
-              a.count = (a.count || 0) + 1;
-              a.text = `${a.value}(${a.count})`;
-            } else {
-              r.push({
-                key: cube,
-                value: cube,
-                text: `${cube}(1)`,
-                count: 1,
-              });
-            }
-          });
-      } catch {
-        //
-      }
-
-      return r;
-    }, []);
-    setCubeTypeOptions(cubeTypeOptions);
-    search(decodedSearchValue);
-  });
+    return r;
+  }, []);
+  setCubeTypeOptions(cubeTypeOptions);
 
   return () => {
     setFilterCondition({ ...InitialConditions });
@@ -536,9 +436,6 @@ export async function search(searchValue: string, searchType?: string) {
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
     .replace(/%/g, ' ');
-  if (decodedSearchValue === '') {
-    return;
-  }
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
       title: getPolyglotText('검색', '통검-필레팝얼-검색'),
@@ -550,13 +447,48 @@ export async function search(searchValue: string, searchType?: string) {
     return;
   }
 
-  setDisplayCard(await filterCard(getCard()));
-  //closeOnFilter && closeOnFilter();
+  const searchInSearchInfo = getSearchInSearchInfo();
+  if (searchInSearchInfo?.checkSearchInSearch) {
+    searchInSearchData(decodedSearchValue);
+  } else {
+    const queryId = getQueryId();
+    if (queryId === decodedSearchValue) {
+      // 동일한 검색어로 검색할경우 SearchPage에서 감지하지 못하므로 여기서 조회
+      searchData(decodedSearchValue);
+    } else {
+      const history = getCurrentHistory();
+      if (searchType === undefined) {
+        history?.push(`/search?query=${decodedSearchValue}`); // SearchPage에서 searchData()를 조회
+      } else {
+        history?.push(`/search/${searchType}?query=${decodedSearchValue}`); // SearchPage에서 searchData()를 조회
+      }
+    }
+  }
+}
+
+export async function searchData(searchValue: string, searchType?: string) {
+  console.log('searchData');
+  const decodedSearchValue = searchValue
+    .replace(/'/g, ' ')
+    .replace(/&/g, ' ')
+    .replace(/%/g, ' ');
+
+  if (decodedSearchValue === '') {
+    return;
+  }
+
+  filterClearAll();
+
+  searchCardFilterData(decodedSearchValue);
+
   await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {
-      setExpert(response.result.rows.map((c) => c.fields));
+      const experts = response.result.rows.map((c) => c.fields);
+      setExpert(experts);
+      setExpertOri(experts);
     } else {
       setExpert();
+      setExpertOri();
     }
   });
 
@@ -565,20 +497,60 @@ export async function search(searchValue: string, searchType?: string) {
   await findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
+      setSearchBadgeOriList(response.results);
     }
   });
   await findCommunities(searchValue).then((response) => {
     if (response) {
       setSearchCommunityList(response.results);
+      setSearchCommunityOriList(response.results);
     }
   });
+}
 
-  const history = getCurrentHistory();
-  if (searchType === undefined) {
-    history?.push(`/search?query=${decodedSearchValue}`);
-  } else {
-    history?.push(`/search/${searchType}?query=${decodedSearchValue}`);
-  }
+export async function searchInSearchData(
+  searchValue: string,
+  searchType?: string
+) {
+  const decodedSearchValue = searchValue
+    .replace(/'/g, ' ')
+    .replace(/&/g, ' ')
+    .replace(/%/g, ' ');
+
+  const cards = getAllowedCard();
+  const newCards = cards?.filter(
+    (ele) =>
+      ele.name.indexOf(decodedSearchValue) > -1 ||
+      ele.simple_description.indexOf(decodedSearchValue) > -1
+  );
+  setCard(cards);
+  setAllowedCard(newCards);
+  setDisplayCard(newCards);
+  const experts = getExpertOri();
+  const newExperts = experts?.filter(
+    (ele) =>
+      ele.name.indexOf(decodedSearchValue) > -1 ||
+      ele.position.indexOf(decodedSearchValue) > -1
+  );
+  setExpert(newExperts);
+  const badges = getSearchBadgeOriList();
+  const newBadges = badges?.filter(
+    (ele) =>
+      JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1 ||
+      JSON.stringify(ele.description).indexOf(decodedSearchValue) > -1
+  );
+  setSearchBadgeList(newBadges);
+  const communities = getSearchCommunityOriList();
+  const newCommunities = communities?.filter(
+    (ele) =>
+      JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1 ||
+      JSON.stringify(ele.description).indexOf(decodedSearchValue) > -1
+  );
+  setSearchCommunityList(newCommunities);
+}
+export async function filterClickSearch() {
+  const cards = await filterCard(getAllowedCard());
+  setDisplayCard(cards);
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
@@ -586,7 +558,11 @@ export function getTitleHtmlSearchKeyword(title: string) {
     return '';
   }
 
-  const keyword = getQueryId();
+  let keyword = getQueryId();
+  const searchInSearchInfo = getSearchInSearchInfo();
+  if (searchInSearchInfo?.checkSearchInSearch) {
+    keyword = searchInSearchInfo.searchValue;
+  }
 
   let htmlTitle = title;
   if (keyword.indexOf(' ') > -1) {
@@ -619,4 +595,7 @@ export function getTagsHtml(tags: string) {
   const htmlTags = '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
 
   return htmlTags;
+}
+function setDisplayOriCard(cards: SearchCard[] | undefined) {
+  throw new Error('Function not implemented.');
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   filterClearAll,
+  filterClickSearch,
   getQueryId,
   search,
   settingSearchFilter,
@@ -13,8 +14,11 @@ import {
 } from 'search/search.events';
 import { SearchParam, CheckboxOptions } from 'search/search.models';
 import {
+  getDisplayCard,
   getFilterCondition,
+  getSearchInSearchInfo,
   setFilterCondition,
+  setSearchInSearchInfo,
   useCollegeOptions,
   useCubeTypeOptions,
   useFilterCondition,
@@ -26,8 +30,6 @@ import { CalendarView } from './CalendarView';
 export function SearchContentsResultSideView() {
   //
   const [activeIndex, setActiveIndex] = useState<Number>(0);
-  const [badgeOptionState, setBadgeOptionState] = useState<string>('');
-  const [periodOptionState, setPeriodOptionState] = useState<string>('');
   const [collegeLimit, setCollegeLimit] = useState<Number>(5);
   const [cubeTypeLimit, setCubeTypeLimit] = useState<Number>(5);
 
@@ -38,25 +40,18 @@ export function SearchContentsResultSideView() {
     setActiveIndex(newIndex);
   };
 
-  const handleBadgeOptionStateChange = (e: any, value: any) => {
-    setBadgeOptionState(value.value);
-  };
-
-  const handlePeriodOptionStateChange = (e: any, value: any) => {
-    setPeriodOptionState(value.value);
+  const onClickFilterSearch = () => {
+    filterClickSearch();
   };
 
   const params = useParams<SearchParam>();
   const queryId = getQueryId();
+  const card = getDisplayCard();
   useEffect(() => {
-    settingSearchFilter({
-      isOnFilter: undefined,
-      searchValue: queryId,
-      closeOnFilter: undefined,
-    });
+    settingSearchFilter(queryId);
     setCollegeLimit(5);
     setCubeTypeLimit(5);
-  }, [queryId]);
+  }, [card]);
 
   const filterCondition = useFilterCondition();
   const collegeOptions = useCollegeOptions();
@@ -108,7 +103,7 @@ export function SearchContentsResultSideView() {
                           )}
                           onChange={() => {
                             toggle_all_college_name_query(college.value);
-                            search(queryId, params && params.searchType);
+                            onClickFilterSearch();
                           }}
                         />
                         <span>({college.count})</span>
@@ -155,7 +150,7 @@ export function SearchContentsResultSideView() {
                       ...mFilterCondition,
                       badge: true,
                     });
-                    search(queryId, params && params.searchType);
+                    onClickFilterSearch();
                   }}
                 />
               </li>
@@ -174,7 +169,7 @@ export function SearchContentsResultSideView() {
                       ...mFilterCondition,
                       badge: false,
                     });
-                    search(queryId, params && params.searchType);
+                    onClickFilterSearch();
                   }}
                 />
               </li>
@@ -215,6 +210,7 @@ export function SearchContentsResultSideView() {
                       ...mFilterCondition,
                       applying: true,
                     });
+                    onClickFilterSearch();
                   }}
                 />
               </li>
@@ -237,7 +233,7 @@ export function SearchContentsResultSideView() {
                       ...mFilterCondition,
                       applying: false,
                     });
-                    search(queryId, params && params.searchType);
+                    onClickFilterSearch();
                   }}
                 />
                 <CalendarView filterCondition={filterCondition} />
@@ -268,7 +264,7 @@ export function SearchContentsResultSideView() {
                       )}
                       onChange={() => {
                         toggle_difficulty_level_json_query(levels.value);
-                        search(queryId, params && params.searchType);
+                        onClickFilterSearch();
                       }}
                     />
                     <span />
@@ -301,9 +297,10 @@ export function SearchContentsResultSideView() {
                           checked={filterCondition.cube_type_query.includes(
                             learningType.value
                           )}
-                          onChange={() =>
-                            toggle_cube_type_query(learningType.value)
-                          }
+                          onChange={() => {
+                            toggle_cube_type_query(learningType.value);
+                            onClickFilterSearch();
+                          }}
                         />
                         <span>({learningType.count})</span>
                       </li>
@@ -344,12 +341,13 @@ export function SearchContentsResultSideView() {
                       checked={filterCondition.learning_time_query.includes(
                         learningTime.value
                       )}
-                      onChange={() =>
+                      onChange={() => {
                         toggle_learning_time_query(
                           learningTime.text,
                           learningTime.value
-                        )
-                      }
+                        );
+                        onClickFilterSearch();
+                      }}
                     />
                   </li>
                 )
@@ -362,7 +360,7 @@ export function SearchContentsResultSideView() {
           className="btn_reset"
           onClick={() => {
             filterClearAll();
-            search(queryId, params && params.searchType);
+            onClickFilterSearch();
           }}
         >
           <Icon name="undo" />

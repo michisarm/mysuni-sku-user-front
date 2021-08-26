@@ -1,20 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Menu } from 'semantic-ui-react';
-import { Link, useParams } from 'react-router-dom';
-import { SearchHeaderFieldView } from './SearchHeaderFieldView';
-import { SearchParam } from 'search/search.models';
-import { getQueryId, search } from 'search/search.events';
+import React from 'react';
+import { getQueryId } from 'search/search.events';
+import { getSearchInSearchInfo } from 'search/search.services';
 
 export function SearchNoDataView() {
   //
 
   const queryId = getQueryId();
+  const searchInSearchInfo = getSearchInSearchInfo();
 
   return (
     <>
       <p className="ttl_txt">
-        <strong className="search_keyword">‘{queryId}’</strong>에 대한
-        검색결과가 없습니다.
+        {searchInSearchInfo?.checkSearchInSearch && (
+          <>
+            {searchInSearchInfo.parentSearchValue} 중{' '}
+            <strong className="search_keyword">
+              ‘{searchInSearchInfo.searchValue}’
+            </strong>
+            에 대한 검색결과가 없습니다.
+          </>
+        )}
+        {!searchInSearchInfo?.checkSearchInSearch && (
+          <>
+            <strong className="search_keyword">‘{queryId}’</strong>에 대한
+            검색결과가 없습니다.
+          </>
+        )}
       </p>
 
       <div className="result_nodata">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
 import { SearchParam } from 'search/search.models';
-import { useExpert } from 'search/search.services';
+import { getExpert } from 'search/search.services';
 import Image from 'shared/components/Image';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
@@ -21,7 +21,7 @@ export function SearchContentsResultInstructorView() {
     }
   }, [params]);
 
-  const experts = useExpert();
+  const experts = getExpert();
   console.log('experts', experts);
 
   return (

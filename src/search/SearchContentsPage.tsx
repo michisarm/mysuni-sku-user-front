@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getQueryId } from './search.events';
+import { getQueryId, search, searchData } from './search.events';
 import { SearchParam } from './search.models';
 import {
+  getSearchInSearchInfo,
   useDisplayCard,
   useExpert,
   useSearchBadgeList,
@@ -20,8 +21,12 @@ export function SearchContentsPage() {
   const params = useParams<SearchParam>();
 
   const queryId = getQueryId();
+  useEffect(() => {
+    searchData(queryId);
+  }, [queryId]);
 
   const cards = useDisplayCard();
+  console.log('displayCards', cards);
   const badges = useSearchBadgeList();
   const communities = useSearchCommunityList();
   const experts = useExpert();
@@ -30,6 +35,32 @@ export function SearchContentsPage() {
     (badges?.length || 0) +
     (communities?.length || 0) +
     (experts?.length || 0);
+
+  const HeaderTotalCountTitle = () => {
+    const searchInSearchInfo = getSearchInSearchInfo();
+
+    return (
+      <p className="ttl_txt">
+        {searchInSearchInfo?.checkSearchInSearch && (
+          <>
+            {searchInSearchInfo.parentSearchValue} 중{' '}
+            <strong className="search_keyword">
+              {searchInSearchInfo.searchValue}
+            </strong>
+            에 대한 검색결과는 총 <strong>{totalCount}건</strong>
+            입니다.
+          </>
+        )}
+        {!searchInSearchInfo?.checkSearchInSearch && (
+          <>
+            <strong className="search_keyword">{queryId}</strong>에 대한
+            검색결과는 총 <strong>{totalCount}건</strong>
+            입니다.
+          </>
+        )}
+      </p>
+    );
+  };
 
   return (
     <>
@@ -47,11 +78,7 @@ export function SearchContentsPage() {
                     {(cards?.length || 0) < 1 && <SearchNoDataView />}
                     {(cards?.length || 0) >= 1 && (
                       <>
-                        <p className="ttl_txt">
-                          <strong className="search_keyword">{queryId}</strong>
-                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
-                          입니다.
-                        </p>
+                        <HeaderTotalCountTitle />
                         <SearchContentsResultLectureView />
                       </>
                     )}
@@ -62,11 +89,7 @@ export function SearchContentsPage() {
                     {(badges?.length || 0) < 1 && <SearchNoDataView />}
                     {(badges?.length || 0) >= 1 && (
                       <>
-                        <p className="ttl_txt">
-                          <strong className="search_keyword">{queryId}</strong>
-                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
-                          입니다.
-                        </p>
+                        <HeaderTotalCountTitle />
                         <SearchContentsResultBadgeView />
                       </>
                     )}
@@ -77,11 +100,7 @@ export function SearchContentsPage() {
                     {(communities?.length || 0) < 1 && <SearchNoDataView />}
                     {(communities?.length || 0) >= 1 && (
                       <>
-                        <p className="ttl_txt">
-                          <strong className="search_keyword">{queryId}</strong>
-                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
-                          입니다.
-                        </p>
+                        <HeaderTotalCountTitle />
                         <SearchContentsResultCommunityView />
                       </>
                     )}
@@ -92,11 +111,7 @@ export function SearchContentsPage() {
                     {(experts?.length || 0) < 1 && <SearchNoDataView />}
                     {(experts?.length || 0) >= 1 && (
                       <>
-                        <p className="ttl_txt">
-                          <strong className="search_keyword">{queryId}</strong>
-                          에 대한 검색결과는 총 <strong>{totalCount}건</strong>
-                          입니다.
-                        </p>
+                        <HeaderTotalCountTitle />
                         <SearchContentsResultInstructorView />
                       </>
                     )}
@@ -105,10 +120,7 @@ export function SearchContentsPage() {
 
                 {(params === undefined || params.searchType === undefined) && (
                   <>
-                    <p className="ttl_txt">
-                      <strong className="search_keyword">{queryId}</strong>에
-                      대한 검색결과는 총 <strong>{totalCount}건</strong>입니다.
-                    </p>
+                    <HeaderTotalCountTitle />
                     {(cards?.length || 0) >= 1 && (
                       <SearchContentsResultLectureView />
                     )}

@@ -5,6 +5,11 @@ import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 import { SearchParam } from 'search/search.models';
 import { getQueryId, search } from 'search/search.events';
 import classNames from 'classnames';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+import {
+  setSearchInSearchInfo,
+  useSearchInSearchInfo,
+} from 'search/search.services';
 
 export function SearchHeaderView() {
   //
@@ -14,13 +19,19 @@ export function SearchHeaderView() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const queryId = getQueryId();
+  const searchInSearchInfo = useSearchInSearchInfo();
 
-  const handleItemClick = (e: any, { name }: any) => {
-    search(queryId, name === 'all' ? undefined : name);
+  const handleMenuClick = (e: any, { name }: any) => {
+    //search(queryId, name === 'all' ? undefined : name);
+    const history = getCurrentHistory();
+    if (name === 'all') {
+      history?.push(`/search?query=${queryId}`);
+    } else {
+      history?.push(`/search/${name}?query=${queryId}`);
+    }
   };
 
   const params = useParams<SearchParam>();
-
   useEffect(() => {
     if (params !== undefined && params.searchType !== undefined) {
       setActiveItem(params.searchType);
@@ -28,7 +39,12 @@ export function SearchHeaderView() {
       setActiveItem('all');
     }
     handleClose();
-    setWrite(getQueryId());
+
+    if (searchInSearchInfo?.checkSearchInSearch) {
+      setWrite(searchInSearchInfo.searchValue);
+    } else {
+      setWrite(getQueryId());
+    }
   }, [params]);
 
   const handleOpen = () => {
@@ -66,7 +82,15 @@ export function SearchHeaderView() {
                         placeholder="검색어를 입력하세요."
                         value={write}
                         onClick={() => setFocus(true)}
-                        onChange={(e) => setWrite(e.target.value)}
+                        onChange={(e) => {
+                          setWrite(e.target.value);
+                          setSearchInSearchInfo({
+                            checkSearchInSearch:
+                              searchInSearchInfo?.checkSearchInSearch || false,
+                            parentSearchValue: queryId,
+                            searchValue: e.target.value,
+                          });
+                        }}
                         onKeyDown={(e: any) => {
                           if (e.key === 'Enter') {
                             handleClose();
@@ -91,7 +115,21 @@ export function SearchHeaderView() {
                 </Popup>
               </div>
             </div>
-            <Checkbox className="again_chk" label="결과 내 재검색" />
+            <Checkbox
+              className="again_chk"
+              label="결과 내 재검색"
+              checked={searchInSearchInfo?.checkSearchInSearch}
+              onClick={() => {
+                if (searchInSearchInfo?.checkSearchInSearch) {
+                  setWrite('');
+                }
+                setSearchInSearchInfo({
+                  checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+                  parentSearchValue: queryId,
+                  searchValue: write,
+                });
+              }}
+            />
           </div>
         </div>
 
@@ -185,35 +223,35 @@ export function SearchHeaderView() {
           <Menu.Item
             name="all"
             active={activeItem === 'all'}
-            onClick={handleItemClick}
+            onClick={handleMenuClick}
           >
             전체
           </Menu.Item>
           <Menu.Item
             name="lecture"
             active={activeItem === 'lecture'}
-            onClick={handleItemClick}
+            onClick={handleMenuClick}
           >
             과정
           </Menu.Item>
           <Menu.Item
             name="badge"
             active={activeItem === 'badge'}
-            onClick={handleItemClick}
+            onClick={handleMenuClick}
           >
             Badge
           </Menu.Item>
           <Menu.Item
             name="community"
             active={activeItem === 'community'}
-            onClick={handleItemClick}
+            onClick={handleMenuClick}
           >
             Community
           </Menu.Item>
           <Menu.Item
             name="instructor"
             active={activeItem === 'instructor'}
-            onClick={handleItemClick}
+            onClick={handleMenuClick}
           >
             강사
           </Menu.Item>

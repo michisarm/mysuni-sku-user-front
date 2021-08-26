@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
 import { SearchParam } from 'search/search.models';
-import { useSearchCommunityList } from 'search/search.services';
+import { getSearchCommunityList } from 'search/search.services';
 
 export function SearchContentsResultCommunityView() {
   //
@@ -17,7 +17,7 @@ export function SearchContentsResultCommunityView() {
     }
   }, [params]);
 
-  const communities = useSearchCommunityList();
+  const communities = getSearchCommunityList();
   console.log('community', communities);
   return (
     <>
