@@ -53,6 +53,17 @@ export function SearchHeaderView() {
   const handleClose = () => {
     setIsOpen(false);
   };
+  const searchSetting = (searchValue?: string) => {
+    if (searchValue !== undefined) {
+      setWrite(searchValue);
+      setSearchInSearchInfo({
+        checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
+        parentSearchValue: queryId,
+        searchValue,
+      });
+    }
+    handleClose();
+  };
 
   return (
     <>
@@ -67,6 +78,7 @@ export function SearchHeaderView() {
                   postion="bottom center"
                   className="history_popup navi_popup"
                   open={isOpen}
+                  positionFixed
                   onOpen={handleOpen}
                   onClose={handleClose}
                   trigger={
@@ -110,7 +122,7 @@ export function SearchHeaderView() {
                   }
                 >
                   <Popup.Content>
-                    <SearchHeaderFieldView />
+                    <SearchHeaderFieldView callback={searchSetting} />
                   </Popup.Content>
                 </Popup>
               </div>
@@ -143,7 +155,10 @@ export function SearchHeaderView() {
                 <li>
                   <a
                     href="javascript:void(0);"
-                    onClick={() => search('데이터 길라잡이')}
+                    onClick={() => {
+                      searchSetting('데이터 길라잡이');
+                      search('데이터 길라잡이');
+                    }}
                   >
                     데이터 길라잡이
                   </a>
@@ -151,7 +166,10 @@ export function SearchHeaderView() {
                 <li>
                   <a
                     href="javascript:void(0);"
-                    onClick={() => search('데이터 분석')}
+                    onClick={() => {
+                      searchSetting('데이터 분석');
+                      search('데이터 분석');
+                    }}
                   >
                     데이터 분석
                   </a>
@@ -159,7 +177,10 @@ export function SearchHeaderView() {
                 <li>
                   <a
                     href="javascript:void(0);"
-                    onClick={() => search('데이터 뽀개기')}
+                    onClick={() => {
+                      searchSetting('데이터 뽀개기');
+                      search('데이터 뽀개기');
+                    }}
                   >
                     데이터 뽀개기
                   </a>

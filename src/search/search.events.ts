@@ -127,6 +127,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
         }
       });
     setCard(displayCard);
+    setAllowedCard(displayCard);
     setDisplayCard([...displayCard]);
   });
 
@@ -170,6 +171,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
         }
       });
     setCard(displayCard);
+    setAllowedCard(displayCard);
     setDisplayCard([...displayCard]);
 
     const cards = await filterCard(getCard());
@@ -448,19 +450,20 @@ export async function search(searchValue: string, searchType?: string) {
   }
 
   const searchInSearchInfo = getSearchInSearchInfo();
+  console.log('searchInSearchInfo', searchInSearchInfo);
   if (searchInSearchInfo?.checkSearchInSearch) {
     searchInSearchData(decodedSearchValue);
   } else {
     const queryId = getQueryId();
     if (queryId === decodedSearchValue) {
-      // 동일한 검색어로 검색할경우 SearchPage에서 감지하지 못하므로 여기서 조회
+      // 동일한 검색어로 검색할경우 SearchContentsPage에서 감지하지 못하므로 여기서 조회
       searchData(decodedSearchValue);
     } else {
       const history = getCurrentHistory();
       if (searchType === undefined) {
-        history?.push(`/search?query=${decodedSearchValue}`); // SearchPage에서 searchData()를 조회
+        history?.push(`/search?query=${decodedSearchValue}`); // SearchContentsPage에서 searchData()를 조회
       } else {
-        history?.push(`/search/${searchType}?query=${decodedSearchValue}`); // SearchPage에서 searchData()를 조회
+        history?.push(`/search/${searchType}?query=${decodedSearchValue}`); // SearchContentsPage에서 searchData()를 조회
       }
     }
   }
@@ -558,13 +561,18 @@ export function getTitleHtmlSearchKeyword(title: string) {
     return '';
   }
 
+  let htmlTitle = title;
+
   let keyword = getQueryId();
   const searchInSearchInfo = getSearchInSearchInfo();
   if (searchInSearchInfo?.checkSearchInSearch) {
     keyword = searchInSearchInfo.searchValue;
+  } else {
+    htmlTitle = htmlTitle
+      .replace(new RegExp('<b>', 'gi'), '<strong class="search_keyword">')
+      .replace(new RegExp('</b>', 'gi'), '</strong>');
   }
 
-  let htmlTitle = title;
   if (keyword.indexOf(' ') > -1) {
     const keywords = keyword.split(' ');
     keywords.map((item) => {
@@ -575,13 +583,10 @@ export function getTitleHtmlSearchKeyword(title: string) {
     });
   }
 
-  htmlTitle = htmlTitle
-    .replace(
-      new RegExp(keyword, 'gi'),
-      `<strong class="search_keyword">${keyword}</strong>`
-    )
-    .replace(new RegExp('<b>', 'gi'), '<strong class="search_keyword">')
-    .replace(new RegExp('</b>', 'gi'), '</strong>');
+  htmlTitle = htmlTitle.replace(
+    new RegExp(keyword, 'gi'),
+    `<strong class="search_keyword">${keyword}</strong>`
+  );
 
   return htmlTitle;
 }
@@ -595,7 +600,4 @@ export function getTagsHtml(tags: string) {
   const htmlTags = '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
 
   return htmlTags;
-}
-function setDisplayOriCard(cards: SearchCard[] | undefined) {
-  throw new Error('Function not implemented.');
 }

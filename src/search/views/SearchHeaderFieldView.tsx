@@ -10,7 +10,7 @@ import {
 } from 'search/search.services';
 
 interface Props {
-  callback?: () => void;
+  callback?: (searchValue?: string) => void;
 }
 
 export function SearchHeaderFieldView(props: Props) {
@@ -20,7 +20,7 @@ export function SearchHeaderFieldView(props: Props) {
 
   const onClickSearch = (searchValue: string) => {
     if (props.callback !== undefined) {
-      props.callback();
+      props.callback(searchValue);
     }
     search(searchValue);
   };
