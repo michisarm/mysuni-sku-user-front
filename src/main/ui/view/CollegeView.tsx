@@ -5066,7 +5066,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'Future Semiconductors',
+    menuItem: 'Future Semiconductor',
     render: () => (
       <Tab.Pane>
         <div
@@ -9372,7 +9372,7 @@ const ZhPanes = [
     ),
   },
   {
-    menuItem: 'SK Academy',
+    menuItem: 'SK学院',
     render: () => (
       <Tab.Pane>
         <div
@@ -9387,7 +9387,7 @@ const ZhPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK Academy College</div>
+              <div className="label">SK学院 College</div>
               <div className="strong">
                 “如培育树木般培养人才、SK人才培养的摇篮”
               </div>

@@ -34,12 +34,16 @@ const CollegeInnerTabDt = () => {
   const subTab = (queryParams.innerTab as string) || '';
 
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 
@@ -1177,12 +1181,16 @@ export const CollegeInnerEnTabDt = () => {
   };
 
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 
@@ -2294,12 +2302,16 @@ export const CollegeInnerZhTabDt = () => {
   const subTab = (queryParams.innerTab as string) || '';
 
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 

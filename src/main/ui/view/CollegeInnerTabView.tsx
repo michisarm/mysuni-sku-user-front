@@ -4033,7 +4033,7 @@ const panesEn = [
     ),
   },
   {
-    menuItem: 'Corporate \n Management/Strategy',
+    menuItem: 'Corporate Management/Strategy',
     key: 'tab1',
     render: () => (
       <Tab.Pane attached={false}>
