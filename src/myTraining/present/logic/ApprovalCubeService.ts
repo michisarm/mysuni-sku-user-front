@@ -139,16 +139,15 @@ export default class ApprovalCubeService {
     return null;
   }
 
-  // 미사용
-  // async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-  //   //
-  //   return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
-  // }
-  //
-  // async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-  //   //
-  //   return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
-  // }
+  async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
+    //
+    return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
+  }
+
+  async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+    //
+    return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
+  }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
