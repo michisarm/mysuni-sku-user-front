@@ -794,7 +794,7 @@ export const CollegeInnerEnTabAi = () => {
       reactAlert({
         title: 'No permission',
         message:
-          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. Please use Q&A for related inquiries.',
+          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. ',
       });
     } else {
       setActiveIndex(activeIndex);
@@ -1567,8 +1567,7 @@ export const CollegeInnerZhTabAi = () => {
     if (activeIndex === 1 || activeIndex === 5) {
       reactAlert({
         title: '没有权限',
-        message:
-          '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。 相关咨询请使用Q&A。',
+        message: '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。',
       });
     } else {
       setActiveIndex(activeIndex);
