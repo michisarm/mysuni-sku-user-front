@@ -163,7 +163,7 @@ class ProfileContainer extends Component<Props, State> {
 
     return (
       <div className="g-info g-info2 g-ab2">
-        {isCollegeManager() && <LanguageSelectPopupView />}
+        <LanguageSelectPopupView />
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}

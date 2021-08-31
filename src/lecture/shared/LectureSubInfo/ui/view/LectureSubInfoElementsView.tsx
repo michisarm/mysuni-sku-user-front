@@ -8,6 +8,7 @@ import Action from '../../model/Action';
 import Class from '../../model/Class';
 import Operator from '../../model/Operator';
 import { Level, State, StateNameType } from '../../model';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface RequiredProp {
   required?: boolean;
@@ -48,7 +49,7 @@ export const Buttons = ({
       {subActions &&
         subActions.length > 0 &&
         subActions.map(
-          subAction =>
+          (subAction) =>
             (subAction.subType === 'Documents' ||
               subAction.subType === 'Video' ||
               subAction.subType === 'WebPage' ||
@@ -244,7 +245,7 @@ export class FootButtons extends React.Component<FootButtonsProp> {
             trigger={
               <Button icon className="img-icon" onClick={onBookmark}>
                 <Icon className="bookmark2" />
-                <span className="blind">북마크</span>
+                <span className="blind">Book Mark</span>
               </Button>
             }
           />
@@ -256,7 +257,7 @@ export class FootButtons extends React.Component<FootButtonsProp> {
             trigger={
               <Button icon className="img-icon" onClick={onRemove}>
                 <Icon className="remove3" />
-                <span className="blind">제거</span>
+                <span className="blind">Delete</span>
               </Button>
             }
           />
@@ -276,11 +277,17 @@ export class FootButtons extends React.Component<FootButtonsProp> {
                 textarea.setSelectionRange(0, 9999);
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+                reactAlert({
+                  title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+                  message: getPolyglotText(
+                    'URL이 복사되었습니다.',
+                    'mypage-유저모달-url'
+                  ),
+                });
               }}
             >
               <Icon className="share2" />
-              <span className="blind">공유</span>
+              <span className="blind">Share</span>
             </Button>
           }
         />
@@ -298,7 +305,7 @@ export const Survey = ({ onSurvey }: SurveyProp) => {
   if (!onSurvey) return null;
   return (
     <Button className="surv" onClick={onSurvey}>
-      <span>설문하기</span>
+      <span>Survey</span>
       <Icon className="ar-survay" />
     </Button>
   );
