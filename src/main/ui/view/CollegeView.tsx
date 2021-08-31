@@ -3557,7 +3557,7 @@ const EnPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">Innovative Design College</div>
+              <div className="label">Innovation & Design College</div>
               <div className="strong">
                 Understand the Customers and Innovate Design!
               </div>

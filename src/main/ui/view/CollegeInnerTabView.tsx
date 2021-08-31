@@ -3214,7 +3214,7 @@ const panesZh = [
               </div>
               <div className="combined-topic">
                 <Image
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ing-08-CHN.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-06-img-03-chn.png"
                   alt=""
                 />
               </div>
