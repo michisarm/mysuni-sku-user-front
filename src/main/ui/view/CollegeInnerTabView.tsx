@@ -1947,17 +1947,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channels/pages/1"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -2168,17 +2165,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00014"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -2356,17 +2350,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0005w"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -2498,17 +2489,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00018"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -2771,17 +2759,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00013"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -3004,17 +2989,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0007m"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -3231,17 +3213,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0007l"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -3571,17 +3550,14 @@ const panesZh = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0001a"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               直接进入课程
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -3777,17 +3753,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channels/pages/1"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -4035,17 +4008,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00014"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -4243,17 +4213,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0005w"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -4406,17 +4373,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00018"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -4703,17 +4667,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN00013"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -4992,17 +4953,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0007m"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -5315,17 +5273,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0007l"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -5725,17 +5680,14 @@ const panesEn = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <Link
-              to="/lecture/college/CLG00008/channel/CHN0001a"
-              className="item-button"
-            >
+            <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
                 src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                 alt=""
               />
               Go to Courses
-            </Link>
+            </a>
           </div>
         </div>
 

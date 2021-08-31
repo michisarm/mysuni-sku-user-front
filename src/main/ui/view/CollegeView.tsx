@@ -3591,10 +3591,7 @@ const EnPanes = [
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <a
-                    className="item-button"
-                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
-                  >
+                  <a className="item-button" href="#none">
                     <img
                       src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
@@ -4166,10 +4163,7 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="/suni-main/lecture/college/CLG00006/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -4754,10 +4748,7 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  className="item-button"
-                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
-                >
+                <a className="item-button" href="#none">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -6030,7 +6021,7 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a href="#none">
+                <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
@@ -6112,7 +6103,7 @@ const EnPanes = [
                 </p> */}
               </div>
               <div className="text-right-box">
-                <a href="#none">
+                <a href="#none" className="item-button">
                   <Image
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
@@ -6734,10 +6725,7 @@ const ZhPanes = [
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <a
-                    className="item-button"
-                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
-                  >
+                  <a className="item-button" href="#none">
                     <img
                       src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
@@ -7329,10 +7317,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -7876,10 +7861,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  className="item-button"
-                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
-                >
+                <a className="item-button" href="#none">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -8224,7 +8206,7 @@ const ZhPanes = [
                 </p> */}
               </div>
               <div className="text-right-box">
-                <a href="#none">
+                <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
@@ -8972,7 +8954,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a href="#none">
+                <a href="#none" className="item-button">
                   <Image
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -9053,7 +9035,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a href="#none">
+                <a href="#none" className="item-button">
                   <Image
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""

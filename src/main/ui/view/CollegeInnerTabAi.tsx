@@ -826,17 +826,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -978,17 +975,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00002"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1146,17 +1140,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN0006i"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1335,17 +1326,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00003"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
           {/* 컬리지 텍스트 */}
@@ -1598,17 +1586,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1738,17 +1723,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00002"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1875,17 +1857,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN0006i"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2032,17 +2011,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00003"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
           {/* 컬리지 텍스트 */}

@@ -1206,17 +1206,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
           <div className="belt">
@@ -1366,17 +1363,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0006o"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1576,17 +1570,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000d"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1746,17 +1737,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00009"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1908,17 +1896,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000a"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2058,17 +2043,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00008"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2325,17 +2307,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2475,17 +2454,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0006o"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2647,17 +2623,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000d"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2794,17 +2767,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00009"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2941,17 +2911,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000a"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -3076,17 +3043,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00008"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
