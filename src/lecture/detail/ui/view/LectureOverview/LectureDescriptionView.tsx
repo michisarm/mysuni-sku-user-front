@@ -45,7 +45,7 @@ function LectureDescriptionView({
         }
       }
     }
-  }, [descriptionOpen]);
+  }, [descriptionOpen, showMoreButton]);
   return (
     <div
       className={`${
@@ -57,7 +57,6 @@ function LectureDescriptionView({
         className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
         ref={textContainerRef}
-        style={{ maxHeight: '12rem' }}
       />
       {showMoreButton === true && (
         <Button
