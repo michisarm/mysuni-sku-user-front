@@ -127,7 +127,7 @@ export function findPreCard(text_idx: string) {
     });
 }
 
-export function findCard(text_idx: string) {
+export function findCard(text_idx: string, pre: string) {
   const transactionId = Date.now();
   setSearchUI({
     isLoading: true,
@@ -135,8 +135,10 @@ export function findCard(text_idx: string) {
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}%23%23pre`
-  );
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
+  ).replace('##', '%23%23');
+
+  console.log('url', url);
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -192,9 +194,6 @@ function testBlacklistAccessRuleForPaidLecture(
   const userGroupSequences: number[] = Array.from(
     SkProfileService.instance.skProfile.userGroupSequences.sequences
   ); // 1이 있는 자리 위치(0부터)를 표기한 데이터
-  if (card.id === 'CARD-135y') {
-    debugger;
-  }
   const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
     const accessRule = c;
     if (card.use_whitelist_policy) {
