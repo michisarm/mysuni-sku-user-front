@@ -6134,7 +6134,7 @@ const EnPanes = [
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-1-eng.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co-11-1-eng.png"
                   alt=""
                 />
               </div>

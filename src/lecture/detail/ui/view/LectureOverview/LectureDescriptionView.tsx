@@ -57,6 +57,7 @@ function LectureDescriptionView({
         className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
         ref={textContainerRef}
+        style={{ maxHeight: '12rem' }}
       />
       {showMoreButton === true && (
         <Button
@@ -64,7 +65,9 @@ function LectureDescriptionView({
           className={classNames('right btn-blue fn-more-toggle')}
           onClick={toggleMore}
         >
-          {descriptionOpen === true ? getPolyglotText('hide', 'cube-Description-hide') : getPolyglotText('more', 'cube-Description-more')}{' '}
+          {descriptionOpen === true
+            ? getPolyglotText('hide', 'cube-Description-hide')
+            : getPolyglotText('more', 'cube-Description-more')}{' '}
           <Icon
             className={classNames({
               more2: descriptionOpen !== true,

@@ -1034,10 +1034,6 @@ const panes = [
                   </ul>
                   <Image src={`${PUBLIC_URL}/images/all/ing-10.png`} alt="" />
                 </div>
-                <Image src={`${PUBLIC_URL}/images/all/ing-07.png`} alt="" />
-              </div>
-              <div className="combined-topic">
-                <Image src={`${PUBLIC_URL}/images/all/ing-08.png`} alt="" />
               </div>
 
               <div className="combined-topic">
