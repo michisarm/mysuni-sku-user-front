@@ -9312,56 +9312,55 @@ const ZhPanes = [
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="bm-flex">
-                  <div className="bm-bg-box line_type01">
-                    <h3>
-                      <a href="#none">BM Design Take-off</a>
-                    </h3>
-                    <ul className="list_flex md">
-                      <li>
-                        <a href="#none">
-                          Ⅰ.Sustainable BM
-                          <br />
-                          创新的重要性
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅱ. BM Framework
-                          <br />
-                          &amp; SK BM创新努力
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅲ. BM / Deep Change
-                          <br />
-                          Design与实行
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bm-bg-box line_type01">
-                    <h3>
-                      <a href="#none">Defining Storytelling</a>
-                    </h3>
-                    <ul className="list_flex md">
-                      <li>
-                        <a href="#none">Financial Story的理解</a>
-                      </li>
-                      <li>
-                        <a href="#none">Financial Acumen</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          从投资人角度看
-                          <br />
-                          Financial Story
-                        </a>
-                      </li>
-                    </ul>
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">BM Design Take-off</a>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="#none">
+                            Ⅰ.Sustainable BM
+                            <br />
+                            创新的重要性
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            Ⅱ. BM Framework
+                            <br />
+                            &amp; SK BM创新努力
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            Ⅲ. BM / Deep Change
+                            <br />
+                            Design与实行
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">Defining Storytelling</a>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="#none">Financial Story的理解</a>
+                        </li>
+                        <li>
+                          <a href="#none">Financial Acumen</a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            从投资人角度看
+                            <br />
+                            Financial Story
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
