@@ -468,7 +468,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 id="panopto-embed-player-hover-container"
                 style={{
                   right: isSticked ? 129 : 154,
-                  bottom: isSticked ? 3 : 17,
+                  bottom: isSticked ? 3 : 12,
                   position: 'absolute',
                 }}
               >
