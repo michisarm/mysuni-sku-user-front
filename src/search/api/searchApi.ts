@@ -100,7 +100,7 @@ const FIND_CARD_COLUMNS =
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx}'+allword+and+${permitedCineroomsQuery}&t=${Date.now()}&default-hilite=off`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
   );
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
@@ -135,7 +135,7 @@ export function findCard(text_idx: string, pre: string) {
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
   ).replace('##', '%23%23');
 
   console.log('url', url);
