@@ -377,7 +377,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
       textarea.setSelectionRange(0, 9999);
       document.execCommand('copy');
       document.body.removeChild(textarea);
-      reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+      reactAlert({
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText(
+          'URL이 복사되었습니다.',
+          'mypage-유저모달-url'
+        ),
+      });
     }
 
     const clickNewTab = () => {

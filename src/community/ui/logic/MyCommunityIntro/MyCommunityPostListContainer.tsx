@@ -19,6 +19,7 @@ import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
 import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -28,7 +29,10 @@ function copyUrl(url: string) {
   textarea.setSelectionRange(0, 9999);
   document.execCommand('copy');
   document.body.removeChild(textarea);
-  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  reactAlert({
+    title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+    message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
+  });
 }
 
 async function bookmark(postId: string) {
@@ -40,7 +44,7 @@ async function bookmark(postId: string) {
     }
     setMyCommunityIntro({
       ...myCommunityIntro,
-      posts: myCommunityIntro.posts.map(c => {
+      posts: myCommunityIntro.posts.map((c) => {
         if (c.postId !== postId) {
           return c;
         }
@@ -58,7 +62,7 @@ async function unbookmark(postId: string) {
   }
   setMyCommunityIntro({
     ...myCommunityIntro,
-    posts: myCommunityIntro.posts.map(c => {
+    posts: myCommunityIntro.posts.map((c) => {
       if (c.postId !== postId) {
         return c;
       }
@@ -73,7 +77,7 @@ const Contents: React.FC<any> = function Contents({ postId }) {
   useEffect(() => {
     const postDetail = getPostDetailInPreview(postId);
     if (postDetail !== undefined) {
-      postDetail.then(result => {
+      postDetail.then((result) => {
         setDetail(result.html);
       });
     }
@@ -172,12 +176,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar
                 src={
                   profileImage === undefined ||
-                    profileImage === null ||
-                    profileImage === '' ||
-                    type === 'ANONYMOUS'
+                  profileImage === null ||
+                  profileImage === '' ||
+                  type === 'ANONYMOUS'
                     ? DefaultImg
-                    // : `/files/community/${profileImage}`
-                    : ProfileImagePath(profileImage)
+                    : // : `/files/community/${profileImage}`
+                      ProfileImagePath(profileImage)
                 }
               />
               <Comment.Content>
@@ -192,8 +196,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                       {type === 'ANONYMOUS' ? '익명' : nickName || profileId}
                     </span>
                     <span className="date">{createdTime}</span>
-                    <span className="like">좋아요{' '}<strong>{likeCount}</strong></span>
-                    <span className="comt">댓글수{' '}<strong>{replyCount}</strong></span>
+                    <span className="like">
+                      좋아요 <strong>{likeCount}</strong>
+                    </span>
+                    <span className="comt">
+                      댓글수 <strong>{replyCount}</strong>
+                    </span>
                   </div>
                   {/* <Button>+ View more</Button> */}
                 </Comment.Text>
@@ -259,19 +267,24 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                 )}
                 <div className="text-right">
                   {!more && (
-                    <button className="ui icon button right more-bttn" onClick={viewMore}>
+                    <button
+                      className="ui icon button right more-bttn"
+                      onClick={viewMore}
+                    >
                       <i aria-hidden="true" className="drop_down icon" />
                     </button>
                   )}
                   {more && (
-                    <button className="ui icon button right more-bttn" onClick={hideMore}>
+                    <button
+                      className="ui icon button right more-bttn"
+                      onClick={hideMore}
+                    >
                       <i aria-hidden="true" className="drop_down up icon" />
                     </button>
                   )}
                 </div>
               </div>
               {more && contentsView()}
-
             </div>
           </Comment.Group>
         </div>
@@ -311,33 +324,33 @@ function MyCommunityPostListContainer() {
           <Loadingpanel loading={isLoading} />
         </Segment>
       ) : (
-          <>
-            {myCommunityIntro !== undefined &&
-              myCommunityIntro.posts.map(postItem => (
-                <PostItemView key={postItem.postId} {...postItem} />
-              ))}
-            <div className="more-comments community-side">
-              {myCommunityIntro.postsTotalCount >
-                myCommunityIntro.postsOffset && (
-                  <Button
-                    icon
-                    className="left moreview"
-                    onClick={requestAppendMyCommunityPostList}
-                  >
-                    <Icon className="moreview" /> list more
-                  </Button>
-                )}
-              {myCommunityIntro.postsTotalCount <=
-                myCommunityIntro.postsOffset && (
-                  <Button
-                    icon
-                    className="left moreview"
-                    style={{ cursor: 'default' }}
-                  />
-                )}
-            </div>
-          </>
-        )}
+        <>
+          {myCommunityIntro !== undefined &&
+            myCommunityIntro.posts.map((postItem) => (
+              <PostItemView key={postItem.postId} {...postItem} />
+            ))}
+          <div className="more-comments community-side">
+            {myCommunityIntro.postsTotalCount >
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendMyCommunityPostList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            )}
+            {myCommunityIntro.postsTotalCount <=
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                style={{ cursor: 'default' }}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
