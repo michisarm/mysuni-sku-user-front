@@ -11,9 +11,9 @@ import { initializeBody } from './shared/helper/bodyHelper';
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
-// 2021-08-30
+// 2021-08-31
 import './style/css/2.88bea98c.chunk.css';
-import './style/css/main.986d304e.chunk.css';
+import './style/css/main.bd7e7114.chunk.css';
 import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
 
 initializeBody();

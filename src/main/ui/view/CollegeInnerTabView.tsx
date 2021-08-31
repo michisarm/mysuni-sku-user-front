@@ -2967,7 +2967,7 @@ const panesZh = [
                 <div className="depth">
                   <div className="con_wrap sub02 depth">
                     <h3>
-                      <a href="#none">조직 Design</a>
+                      <a href="#none">组织Design</a>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
