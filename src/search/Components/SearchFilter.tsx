@@ -1,5 +1,11 @@
 /* eslint-disable dot-notation */
-import React, { useState, useEffect, Fragment, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  useCallback,
+  useRef,
+} from 'react';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
@@ -741,6 +747,7 @@ const SearchFilter: React.FC<Props> = ({
   searchValue,
   closeOnFilter,
 }) => {
+  const preRef = useRef<string>('pre');
   useEffect(() => {
     setCard([]);
     setDisplayCard([]);
@@ -898,7 +905,7 @@ const SearchFilter: React.FC<Props> = ({
       search(decodedSearchValue);
     });
 
-    findCard(decodedSearchValue).then((searchResult) => {
+    findCard(decodedSearchValue, preRef.current).then((searchResult) => {
       if (searchResult === undefined) {
         setCollegeOptions([]);
         setOrganizerOptions([]);
@@ -1044,6 +1051,7 @@ const SearchFilter: React.FC<Props> = ({
       setCubeTypeOptions([]);
       setCard();
       setExpert();
+      preRef.current = searchValue;
     };
   }, [searchValue]);
 
