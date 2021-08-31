@@ -21,7 +21,6 @@ import ProfilePopupView from '../view/ProfilePopupView';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 import { isCollegeManager } from 'shared/helper/isCollegeManager';
-import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -165,7 +164,7 @@ class ProfileContainer extends Component<Props, State> {
     return (
       <div className="g-info g-info2 g-ab2">
         {isCollegeManager() && <LanguageSelectPopupView />}
-        {!isExternal && !findForeignerUser() && (
+        {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
             myNotieNoReadMentionCount={myNotieNoReadMentionCount}
