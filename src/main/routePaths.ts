@@ -22,6 +22,8 @@ const routePaths = {
         ? `?subTab=${
             subTab === 'BM Design & Storytelling'
               ? 'BM%20Design%20%26%20Storytelling'
+              : subTab === 'Innovation & Design'
+              ? 'Innovation%20%26%20Design'
               : encodeURI(subTab)
           }`
         : ''

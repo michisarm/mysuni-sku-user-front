@@ -3548,7 +3548,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'Designing Innovation',
+    menuItem: 'Innovation & Design',
     render: () => (
       <Tab.Pane>
         <div
@@ -9508,6 +9508,8 @@ class CollegeView extends Component<Props, State> {
         '?subTab=BM%2520Design%2520%2526%2520Storytelling'
     ) {
       this.setState({ activeIndex: 10 });
+    } else if (window.location.search === '?subTab=Innovation%20&%20Design') {
+      this.setState({ activeIndex: 4 });
     }
   }
 

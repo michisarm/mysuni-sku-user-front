@@ -82,7 +82,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     } else {
       linkUrl =
         college.name.en === 'Innovation & Design'
-          ? mainRoutePaths.introductionCollege('Designing Innovation')
+          ? mainRoutePaths.introductionCollege('Innovation & Design')
           : mainRoutePaths.introductionCollege(
               parsePolyglotString(
                 college.name,
