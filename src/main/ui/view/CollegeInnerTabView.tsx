@@ -2049,7 +2049,7 @@ const panesZh = [
                     <tr>
                       <td colSpan={2}>ㅤ</td>
                       <td className="badge-texts">
-                        <a href="#none" onClick={emptyAlert}>
+                        <a href="#none">
                           数字融合
                           <br />
                           营销
@@ -2059,16 +2059,14 @@ const panesZh = [
                         <a href="#none">组织Design</a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#none" onClick={emptyAlert}>
+                        <a href="#none">
                           采购
                           <br />
                           Advanced
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#none" onClick={emptyAlert}>
-                          公司法
-                        </a>
+                        <a href="#none">公司法</a>
                         <br />
                         /<br />
                         <a href="#none">公平交易法</a>
@@ -2581,7 +2579,7 @@ const panesZh = [
                         </li>
                       </ul>
 
-                      <a href="#none" onClick={emptyAlert}>
+                      <a href="#none">
                         <ul>
                           <li>AI营销</li>
                           <li>1. Reach：用AI吸引客户</li>
@@ -2609,7 +2607,7 @@ const panesZh = [
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <ul onClick={emptyAlert}>
+                      <ul>
                         <li>
                           <a href="#none">营销 Framework &#38; Tool</a>
                         </li>
@@ -3341,7 +3339,7 @@ const panesZh = [
                   <h3>专利管理</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="#none" onClick={emptyAlert}>
+                      <a href="#none">
                         <ul>
                           <li>韩国申请制度与法律</li>
                           <li>- 专利性需求</li>
@@ -3351,7 +3349,7 @@ const panesZh = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="#none" onClick={emptyAlert}>
+                      <a href="#none">
                         <ul>
                           <li>韩国申请实务</li>
                           <li>- 制作专利明细表</li>
@@ -3361,7 +3359,7 @@ const panesZh = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="#none" onClick={emptyAlert}>
+                      <a href="#none">
                         <ul>
                           <li>专利运用与买入</li>
                           <li>- 专利运用概要</li>

@@ -5217,9 +5217,7 @@ const EnPanes = [
                             the Course
                           </dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          To be Opened
-                        </button>
+                        <button type="button">To be Opened</button>
                       </div>
                     </div>
                   </div>
@@ -5383,9 +5381,7 @@ const EnPanes = [
                           <dt>Requirements</dt>
                           <dd>Take the course / Test and Perform Tasks</dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          To be Opened
-                        </button>
+                        <button type="button">To be Opened</button>
                       </div>
                     </div>
                   </div>
@@ -6249,7 +6245,7 @@ const EnPanes = [
                             <a href="#none">Ⅶ. Legal</a>
                           </li>
                           <li>
-                            <a href="#none" onClick={emptyAlert}>
+                            <a href="#none">
                               [AdvancedI] Deal Structuring
                               <br />
                               &amp; Financing
@@ -6282,7 +6278,7 @@ const EnPanes = [
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <a href="#none" onClick={emptyAlert}>
+                            <a href="#none">
                               Global Case Studies of
                               <br />
                               Financial Storytelling
@@ -6297,7 +6293,7 @@ const EnPanes = [
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <a href="#none" onClick={emptyAlert}>
+                            <a href="#none">
                               Understanding the 6R Perspectives Stakeholder
                             </a>
                           </li>
@@ -6341,7 +6337,7 @@ const EnPanes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <a href="#none" onClick={emptyAlert}>
+                          <a href="#none">
                             Understanding
                             <br />
                             Financial Story
@@ -8445,9 +8441,7 @@ const ZhPanes = [
                           <dt>获得条件</dt>
                           <dd>完成Course / Test及实习课题</dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          预计OPEN
-                        </button>
+                        <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
