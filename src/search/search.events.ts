@@ -1,5 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -36,6 +37,8 @@ import {
   setSearchBadgeOriList,
   setSearchCommunityList,
   setSearchCommunityOriList,
+  getPreRef,
+  setPreRef,
 } from './search.services';
 
 export function getQueryId(): string {
@@ -119,7 +122,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
     setDisplayCard([...displayCard]);
   });
 
-  findCard(decodedSearchValue).then(async (searchResult) => {
+  findCard(decodedSearchValue, getPreRef() || '').then(async (searchResult) => {
     if (searchResult === undefined) {
       setCollegeOptions([]);
       setOrganizerOptions([]);
@@ -469,6 +472,7 @@ export async function searchData(searchValue: string, searchType?: string) {
   filterClearAll();
 
   searchCardFilterData(decodedSearchValue);
+  setPreRef(searchValue);
 
   await findExpert(decodedSearchValue).then((response) => {
     if (response && response.result && response.result.rows) {

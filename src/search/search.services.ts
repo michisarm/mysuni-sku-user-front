@@ -74,6 +74,8 @@ export const [setAllowedCard, onAllowedCard, getAllowedCard, useAllowedCard] =
 export const [setExpertOri, onExpertOri, getExpertOri, useExpertOri] =
   createStore<SearchExpert[]>();
 
+export const [setPreRef, onPreRef, getPreRef, usePreRef] =
+  createStore<string>('pre');
 // 결과 목록
 export const [
   setSearchLectureList,

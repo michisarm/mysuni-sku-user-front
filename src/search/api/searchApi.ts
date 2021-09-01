@@ -11,18 +11,26 @@ import {
   getCubeTypeOptions,
   getFilterCondition,
   getOrganizerOptions,
-} from '../Components/SearchFilter';
-import CheckboxOptions from '../model/CheckBoxOption';
-import { SearchCard, SearchCardCategory } from '../model/SearchCard';
-import { SearchExpert } from '../model/SearchExpert';
+  setSearchUI,
+  getSearchUI,
+} from '../search.services';
+import {
+  CheckboxOptions,
+  SearchBadge,
+  SearchCard,
+  SearchCardCategory,
+  SearchCommunity,
+  SearchExpert,
+} from '../search.models';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
-import { setSearchUI, getSearchUI } from '../model/SearchUI';
 import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
+const BADGE_URL = '/api/badge';
+const COMMUNITY_URL = '/api/community';
 const workspaces: { cineroomWorkspaces?: Workspace[] } =
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
@@ -189,21 +197,21 @@ function testBlacklistAccessRuleForPaidLecture(
   // ex)
   // userGroupSequences:[] = [0, 4, 10, 16, 75]
   // access_rules:[string] = ["____1%","__1%"]
-  // 위의 결과는 맵핑
+  // 위의 결과는 맵핑 access_rules[0] 중 1의 자리가 4인데 userGroupSequences에 있으므로 맵핑
+  // access_rule이 "_1__1%"이면 userGroupSequence로 1,4를 모두 가지고 있어야 함
   const accessRulesArr: string[] = JSON.parse(card.access_rules);
   const userGroupSequences: number[] = Array.from(
     SkProfileService.instance.skProfile.userGroupSequences.sequences
   ); // 1이 있는 자리 위치(0부터)를 표기한 데이터
-  if (card.id === 'CARD-135y') {
-    debugger;
-  }
   const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
     const accessRule = c;
     if (card.use_whitelist_policy) {
+      // 하나라도 있으면 true 모두 없어야 false
       return (
         r ||
         (accessRule.split('').some((d, i) => {
           if (userGroupSequences.includes(i)) {
+            // userGroupSequence에 accessRule index가 있는지
             return true;
           }
           return false;
@@ -219,11 +227,18 @@ function testBlacklistAccessRuleForPaidLecture(
           }))
       );
     } else {
+      // 하나라도 있으면 fasle 모두 없어야 true
       return (
-        r ||
         accessRule.split('').some((d, i) => {
-          if (d !== '1') {
+          if (userGroupSequences.includes(i)) {
+            // userGroupSequence에 accessRule index가 있는지
             return true;
+          }
+          return false;
+        }) &&
+        !accessRule.split('').some((d, i) => {
+          if (d !== '1') {
+            return false;
           }
           if (!userGroupSequences.includes(i) && d === '1') {
             return true;
@@ -405,7 +420,7 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)
@@ -709,3 +724,21 @@ export function makeQuery(
 }
 
 //where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')
+
+export function findBadges(text_idx: string) {
+  const url = encodeURI(
+    `${BADGE_URL}/badges/admin?startDate=1566486000000&endDate=1629730799999&cineroomId=&categoryId=&type=&level=&issueAutomatically=&additionalRequirementsNeeded=&name=${text_idx}&registrantName=&state=&groupSequences=&displayCategory=false&limit=20&offset=0`
+  );
+  return axiosApi
+    .get<{ results: SearchBadge[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}
+
+export function findCommunities(text_idx: string) {
+  const url = encodeURI(
+    `${COMMUNITY_URL}/communities/communityView/admin?startDate=1566572400000&endDate=1629730799999&name=${text_idx}&creatorName=&managerName=&offset=0&limit=20&searchFilter=&type=&field=&visible=&userGroupSequences=`
+  );
+  return axiosApi
+    .get<{ results: SearchCommunity[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}
