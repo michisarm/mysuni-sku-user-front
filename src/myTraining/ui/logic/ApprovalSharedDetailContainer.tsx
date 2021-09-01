@@ -113,11 +113,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
       new IdNameApproval({ id: email, name })
     );
     this.onChangeStudentRequestCdoProps('studentIds', newSelectedList);
-
-    // 미사용
-    // const responseData = await approvalCubeService!.studentRequestOpen(
-    //   studentRequest
-    // );
+    await approvalCubeService!.studentRequestOpen(studentRequest);
     // const { error, message } = responseData;
 
     // if (error) {
@@ -179,11 +175,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', newSelectedList);
 
-    // 미사용
-    // const responseData = await approvalCubeService!.studentRequestReject(
-    //   studentRequest
-    // );
-    // const { error, message } = responseData;
+    await approvalCubeService!.studentRequestReject(studentRequest);
 
     // if (error) {
     //   if (message) {

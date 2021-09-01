@@ -276,6 +276,18 @@ export const getPathKey = (path: string, param: string) => {
   }
 };
 
+export const getKoreaName = (name: any) => {
+  return (name = name.ko
+    ? name.ko
+    : name.en
+    ? name.en
+    : name.zh
+    ? name.zh
+    : name
+    ? name
+    : '');
+};
+
 // localstorage cached 처리
 const getFieldName = async (id: string, type: string) => {
   let name;
@@ -330,7 +342,12 @@ const getFieldName = async (id: string, type: string) => {
           type = '추천과정';
           break;
       }
-      name = type + '::' + cardBundle?.displayText;
+      if (cardBundle) {
+        const text = await getKoreaName(cardBundle.displayText);
+        name = type + '::' + text;
+      } else {
+        name = type + '::';
+      }
     } else if (type === FieldType.Chapter) {
       const ids = id.split(',');
       if (ids && ids?.[0] && ids?.[1]) {
@@ -352,16 +369,7 @@ const getFieldName = async (id: string, type: string) => {
       }
     }
     if (name) {
-      // default ko 없을시 ko, en, zh 순으로 다른 언어 1개만 선택
-      name = name.ko
-        ? name.ko
-        : name.en
-        ? name.en
-        : name.zh
-        ? name.zh
-        : name
-        ? name
-        : '';
+      name = getKoreaName(name);
     }
     if (lsTest() && name) {
       let tempObj;

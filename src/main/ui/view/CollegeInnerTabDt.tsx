@@ -5,6 +5,7 @@ import { reactAlert } from '@nara.platform/accent';
 import routePaths from 'main/routePaths';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
+import queryString from 'query-string';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -26,24 +27,29 @@ const CollegeInnerTabDt = () => {
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     setActiveIndex(activeIndex);
-    history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+    history.push(routePaths.introductionCollegeDT(panes[activeIndex].menuItem));
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -1156,35 +1162,41 @@ export const CollegeInnerEnTabDt = () => {
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 7) {
       reactAlert({
         title: 'No permission',
         message:
-          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. Please use Q&A for related inquiries.',
+          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. ',
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeDT(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -1194,17 +1206,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
           <div className="belt">
@@ -1354,17 +1363,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0006o"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1564,17 +1570,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000d"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1734,17 +1737,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00009"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1896,17 +1896,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000a"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2046,17 +2043,14 @@ export const CollegeInnerEnTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00008"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2275,30 +2269,36 @@ export const CollegeInnerZhTabDt = () => {
     if (activeIndex === 1 || activeIndex === 7) {
       reactAlert({
         title: '没有权限',
-        message:
-          '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。 相关咨询请使用Q&A。',
+        message: '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。',
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeDT(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeDT(panes[activeIndex].menuItem)
+      );
     }
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
-    const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
-    if (activeIndex > 0) {
-      setActiveIndex(activeIndex);
+    if (subTab === 'DT Biz. ') {
+      setActiveIndex(2);
     } else {
-      setActiveIndex(0);
+      const activeIndex =
+        panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex);
+      } else {
+        setActiveIndex(0);
+      }
     }
   };
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
   const panes = [
     {
       menuItem: 'DT College介绍',
@@ -2307,17 +2307,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2457,17 +2454,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0006o"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2629,17 +2623,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000d"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2776,17 +2767,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00009"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2923,17 +2911,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN0000a"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -3058,17 +3043,14 @@ export const CollegeInnerZhTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00002/channel/CHN00008"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 

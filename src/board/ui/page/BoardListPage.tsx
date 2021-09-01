@@ -10,6 +10,7 @@ import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 interface Props extends RouteComponentProps<RouteParams> {}
 
@@ -28,13 +29,8 @@ enum ContentType {
 export class BoardListPage extends React.Component<Props> {
   //
   getTabs() {
-    //
-    return [
-      {
-        name: ContentType.Notice,
-        item: ContentType.Notice,
-        render: () => <NoticeTabContainer />,
-      },
+    const isForeignerUser = findForeignerUser();
+    const TabItem = [
       {
         name: ContentType.FAQ,
         item: ContentType.FAQ,
@@ -46,6 +42,18 @@ export class BoardListPage extends React.Component<Props> {
         render: () => <QnaTabContainer />,
       },
     ] as TabItemModel[];
+
+    if (isForeignerUser) {
+      return TabItem;
+    } else {
+      TabItem.unshift({
+        name: ContentType.Notice,
+        item: ContentType.Notice,
+        render: () => <NoticeTabContainer />,
+      });
+    }
+
+    return TabItem;
   }
 
   onChangeTab(tab: TabItemModel): string {

@@ -9,6 +9,7 @@ import {
 import { Image, Tab, MenuItem } from 'semantic-ui-react';
 import routePaths from 'main/routePaths';
 import { reactAlert } from '@nara.platform/accent';
+import queryString from 'query-string';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 interface tapName {
@@ -27,14 +28,15 @@ const CollegeInnerTabAi = () => {
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     setActiveIndex(activeIndex);
-    history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+    history.push(routePaths.introductionCollegeAI(panes[activeIndex].menuItem));
   };
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
+
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -44,7 +46,7 @@ const CollegeInnerTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -784,25 +786,27 @@ export const CollegeInnerEnTabAi = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 5) {
       reactAlert({
         title: 'No permission',
         message:
-          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. Please use Q&A for related inquiries.',
+          'This content is not ready for service yet. I will open it later after consulting with the person in charge of each company. ',
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeAI(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -812,7 +816,7 @@ export const CollegeInnerEnTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
 
   const panes = [
     {
@@ -822,17 +826,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -974,17 +975,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00002"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1142,17 +1140,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN0006i"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1331,17 +1326,14 @@ export const CollegeInnerEnTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00003"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 Go to Courses
-              </Link>
+              </a>
             </div>
           </div>
           {/* 컬리지 텍스트 */}
@@ -1556,25 +1548,26 @@ export const CollegeInnerZhTabAi = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { search } = useLocation();
-  const subTabAI = decodeURI(search);
+  const queryParams = queryString.parse(window.location.search);
+  const subTab = (queryParams.innerTab as string) || '';
 
   const onTabChange = (e: any, { activeIndex }: any) => {
     if (activeIndex === 1 || activeIndex === 5) {
       reactAlert({
         title: '没有权限',
-        message:
-          '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。 相关咨询请使用Q&A。',
+        message: '本版内容还没有准备好服务。 与各公司负责人协商后，秋后开放。',
       });
     } else {
       setActiveIndex(activeIndex);
-      history.push(routePaths.introductionCollegeAI(panes[activeIndex].key));
+      history.push(
+        routePaths.introductionCollegeAI(panes[activeIndex].menuItem)
+      );
     }
   };
 
   const indexSetter = () => {
     const activeIndex =
-      panes.findIndex((pane) => subTabAI.includes(pane.key)) || 0;
+      panes.findIndex((pane) => subTab.includes(pane.menuItem)) || 0;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex);
     } else {
@@ -1584,7 +1577,7 @@ export const CollegeInnerZhTabAi = () => {
 
   useEffect(() => {
     indexSetter();
-  }, [search]);
+  }, [queryParams]);
   const panes = [
     {
       menuItem: 'AI College介绍',
@@ -1593,17 +1586,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channels/pages/1"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1733,17 +1723,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00002"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -1870,17 +1857,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN0006i"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -2027,17 +2011,14 @@ export const CollegeInnerZhTabAi = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link
-                to="/lecture/college/CLG00001/channel/CHN00003"
-                className="item-button"
-              >
+              <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
                   src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                   alt=""
                 />
                 直接进入课程
-              </Link>
+              </a>
             </div>
           </div>
           {/* 컬리지 텍스트 */}

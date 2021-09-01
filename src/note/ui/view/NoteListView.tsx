@@ -534,10 +534,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             'mypage-noteList-작성노트',
                             {
                               count: subNoteList
-                                ?.map(
-                                  (f) =>
-                                    f.index === index &&
-                                    f.noteWithLectureList.results.length
+                                ?.filter((f) => f.index === index)
+                                .map(
+                                  (f) => f.noteWithLectureList.results.length
                                 )
                                 .toString(),
                             }
