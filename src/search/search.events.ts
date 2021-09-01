@@ -13,7 +13,7 @@ import {
   findExpert,
   findPreCard,
 } from './api/searchApi';
-import { Options, SearchCard, SearchCardCategory } from './search.models';
+import { CheckboxOptions, Options, SearchCard, SearchCardCategory } from './search.models';
 import {
   getCard,
   getAllowedCard,
@@ -39,6 +39,8 @@ import {
   setSearchCommunityOriList,
   getPreRef,
   setPreRef,
+  getCollegeOptions,
+  getCubeTypeOptions,
 } from './search.services';
 
 export function getQueryId(): string {
@@ -288,7 +290,6 @@ export function settingSearchFilter(searchValue: string) {
 export function toggle_all_college_name_query(value: string) {
   const filterCondition = getFilterCondition();
   const queryOptions = getQueryOptions();
-  //const tags = getTags();
   if (filterCondition === undefined || queryOptions === undefined) {
     return;
   }
@@ -308,6 +309,33 @@ export function toggle_all_college_name_query(value: string) {
         ...filterCondition.all_college_name_query,
         value,
       ],
+    });
+  }
+}
+export function toggle_all_all_college_name_query() {
+  const filterCondition = getFilterCondition();
+  const queryOptions = getQueryOptions();
+  const collegeOptions = getCollegeOptions();
+  if (
+    filterCondition === undefined ||
+    queryOptions === undefined ||
+    collegeOptions === undefined
+  ) {
+    return;
+  }
+
+  const all_all_college_name_condition =
+    filterCondition.all_college_name_query.length === collegeOptions.length;
+
+  if (all_all_college_name_condition) {
+    setFilterCondition({
+      ...filterCondition,
+      all_college_name_query: [],
+    });
+  } else {
+    setFilterCondition({
+      ...filterCondition,
+      all_college_name_query: collegeOptions.map(({ value }) => value),
     });
   }
 }
@@ -351,6 +379,32 @@ export function toggle_difficulty_level_json_query(value: string) {
     };
   }
 }
+export function toggle_all_difficulty_level_query() {
+  const filterCondition = getFilterCondition();
+  const queryOptions = getQueryOptions();
+  if (
+    filterCondition === undefined ||
+    queryOptions === undefined
+  ) {
+    return;
+  }
+  const all_difficulty_level_condition =
+    filterCondition.difficulty_level_json_query.length ===
+    CheckboxOptions.difficulty_level_json_query.length;
+
+  if (all_difficulty_level_condition) {
+    setFilterCondition({
+      ...filterCondition,
+      difficulty_level_json_query: [],
+    });
+  } else {
+    setFilterCondition({
+      ...filterCondition,
+      difficulty_level_json_query:
+        CheckboxOptions.difficulty_level_json_query.map(({ value }) => value),
+    });
+  }
+}
 
 export function toggle_cube_type_query(value: string) {
   const filterCondition = getFilterCondition();
@@ -386,6 +440,32 @@ export function toggle_cube_type_query(value: string) {
     };
   }
 }
+export function toggle_all_cube_type_query() {
+  const filterCondition = getFilterCondition();
+  const queryOptions = getQueryOptions();
+  const cubeTypeOptions = getCubeTypeOptions();
+  if (
+    filterCondition === undefined ||
+    queryOptions === undefined ||
+    cubeTypeOptions === undefined
+  ) {
+    return;
+  }
+  const all_cube_type_condition =
+    filterCondition.cube_type_query.length === cubeTypeOptions.length;
+
+  if (all_cube_type_condition) {
+    setFilterCondition({
+      ...filterCondition,
+      cube_type_query: [],
+    });
+  } else {
+    setFilterCondition({
+      ...filterCondition,
+      cube_type_query: cubeTypeOptions.map(({ value }) => value),
+    });
+  }
+}
 
 export function toggle_learning_time_query(text: string, value: string) {
   const filterCondition = getFilterCondition();
@@ -419,6 +499,33 @@ export function toggle_learning_time_query(text: string, value: string) {
         ),
       });
     };
+  }
+}
+export function toggle_all_learning_time_query() {
+  const filterCondition = getFilterCondition();
+  const queryOptions = getQueryOptions();
+  if (
+    filterCondition === undefined ||
+    queryOptions === undefined
+  ) {
+    return;
+  }
+  const all_learning_time_condition =
+    filterCondition.learning_time_query.length ===
+    CheckboxOptions.learning_time_query.length;
+
+  if (all_learning_time_condition) {
+    setFilterCondition({
+      ...filterCondition,
+      learning_time_query: [],
+    });
+  } else {
+    setFilterCondition({
+      ...filterCondition,
+      learning_time_query: CheckboxOptions.learning_time_query.map(
+        ({ value }) => value
+      ),
+    });
   }
 }
 //  // 필터 선택 값 만들기

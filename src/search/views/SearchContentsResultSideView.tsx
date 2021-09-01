@@ -7,12 +7,17 @@ import {
   getQueryId,
   settingSearchFilter,
   toggle_all_college_name_query,
+  toggle_all_all_college_name_query,
   toggle_cube_type_query,
   toggle_difficulty_level_json_query,
   toggle_learning_time_query,
+  toggle_all_difficulty_level_query,
+  toggle_all_cube_type_query,
+  toggle_all_learning_time_query,
 } from 'search/search.events';
 import { SearchParam, CheckboxOptions } from 'search/search.models';
 import {
+  getAllowedCard,
   getDisplayCard,
   getFilterCondition,
   setFilterCondition,
@@ -26,9 +31,14 @@ import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {
   //
+  const initialConditionLimit = 4;
   const [activeIndex, setActiveIndex] = useState<Number>(0);
-  const [collegeLimit, setCollegeLimit] = useState<Number>(5);
-  const [cubeTypeLimit, setCubeTypeLimit] = useState<Number>(5);
+  const [collegeLimit, setCollegeLimit] = useState<Number>(
+    initialConditionLimit
+  );
+  const [cubeTypeLimit, setCubeTypeLimit] = useState<Number>(
+    initialConditionLimit
+  );
 
   const handleClick = (e: any, titleProps: any) => {
     const { index } = titleProps;
@@ -43,11 +53,12 @@ export function SearchContentsResultSideView() {
 
   const params = useParams<SearchParam>();
   const queryId = getQueryId();
+  const allowedCard = getAllowedCard();
   const card = getDisplayCard();
   useEffect(() => {
     settingSearchFilter(queryId);
-    setCollegeLimit(5);
-    setCubeTypeLimit(5);
+    setCollegeLimit(initialConditionLimit);
+    setCubeTypeLimit(initialConditionLimit);
   }, [card]);
 
   const filterCondition = useFilterCondition();
@@ -62,6 +73,24 @@ export function SearchContentsResultSideView() {
     return null;
   }
 
+  const all_all_college_name_condition =
+    filterCondition.all_college_name_query.length !== 0 &&
+    filterCondition.all_college_name_query.length === collegeOptions.length;
+
+  const all_difficulty_level_condition =
+    filterCondition.difficulty_level_json_query.length !== 0 &&
+    filterCondition.difficulty_level_json_query.length ===
+      CheckboxOptions.difficulty_level_json_query.length;
+
+  const all_cube_type_condition =
+    filterCondition.cube_type_query.length !== 0 &&
+    filterCondition.cube_type_query.length === cubeTypeOptions.length;
+
+  const all_learning_time_condition =
+    filterCondition.learning_time_query.length !== 0 &&
+    filterCondition.learning_time_query.length ===
+      CheckboxOptions.learning_time_query.length;
+
   enum FilterConditionName {
     College = '컬리지',
     LearningType = '교육유형',
@@ -72,6 +101,7 @@ export function SearchContentsResultSideView() {
     Certification = 'Certification',
     LearningSchedule = '교육일정',
   }
+  const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 
   return (
     <>
@@ -88,6 +118,17 @@ export function SearchContentsResultSideView() {
             </Accordion.Title>
             <Accordion.Content active={activeIndex === 0}>
               <ul>
+                <li>
+                  <Checkbox
+                    label={`${SELECT_ALL}`}
+                    checked={all_all_college_name_condition}
+                    onChange={() => {
+                      toggle_all_all_college_name_query();
+                      onClickFilterSearch();
+                    }}
+                  />
+                  <span>({allowedCard?.length})</span>
+                </li>
                 {collegeOptions.map((college, index) => {
                   if (index < collegeLimit) {
                     return (
@@ -109,15 +150,16 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {collegeOptions.length > 5 && collegeLimit < 999 && (
-                <Button
-                  className="btn_more"
-                  onClick={() => setCollegeLimit(999)}
-                >
-                  더보기
-                  <Icon color="grey" name="angle down" />
-                </Button>
-              )}
+              {collegeOptions.length > initialConditionLimit &&
+                collegeLimit < 999 && (
+                  <Button
+                    className="btn_more"
+                    onClick={() => setCollegeLimit(999)}
+                  >
+                    더보기
+                    <Icon color="grey" name="angle down" />
+                  </Button>
+                )}
             </Accordion.Content>
           </Accordion>
         )}
@@ -250,6 +292,16 @@ export function SearchContentsResultSideView() {
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 3}>
             <ul>
+              <li>
+                <Checkbox
+                  label={`${SELECT_ALL}`}
+                  checked={all_difficulty_level_condition}
+                  onChange={() => {
+                    toggle_all_difficulty_level_query();
+                    onClickFilterSearch();
+                  }}
+                />
+              </li>
               {CheckboxOptions.difficulty_level_json_query.map(
                 (levels, index) => (
                   <li>
@@ -284,6 +336,16 @@ export function SearchContentsResultSideView() {
             </Accordion.Title>
             <Accordion.Content active={activeIndex === 4}>
               <ul>
+                <li>
+                  <Checkbox
+                    label={`${SELECT_ALL}`}
+                    checked={all_cube_type_condition}
+                    onChange={() => {
+                      toggle_all_cube_type_query();
+                      onClickFilterSearch();
+                    }}
+                  />
+                </li>
                 {cubeTypeOptions.map((learningType, index) => {
                   if (index < cubeTypeLimit) {
                     return (
@@ -305,15 +367,16 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {cubeTypeOptions.length > 5 && cubeTypeLimit < 999 && (
-                <Button
-                  className="btn_more"
-                  onClick={() => setCubeTypeLimit(999)}
-                >
-                  더보기
-                  <Icon color="grey" name="angle down" />
-                </Button>
-              )}
+              {cubeTypeOptions.length > initialConditionLimit &&
+                cubeTypeLimit < 999 && (
+                  <Button
+                    className="btn_more"
+                    onClick={() => setCubeTypeLimit(999)}
+                  >
+                    더보기
+                    <Icon color="grey" name="angle down" />
+                  </Button>
+                )}
             </Accordion.Content>
           </Accordion>
         )}
@@ -329,6 +392,16 @@ export function SearchContentsResultSideView() {
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 5}>
             <ul>
+              <li>
+                <Checkbox
+                  label={`${SELECT_ALL}`}
+                  checked={all_learning_time_condition}
+                  onChange={() => {
+                    toggle_all_learning_time_query();
+                    onClickFilterSearch();
+                  }}
+                />
+              </li>
               {CheckboxOptions.learning_time_query.map(
                 (learningTime, index) => (
                   <li>

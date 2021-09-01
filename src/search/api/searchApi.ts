@@ -727,7 +727,7 @@ export function makeQuery(
 
 export function findBadges(text_idx: string) {
   const url = encodeURI(
-    `${BADGE_URL}/badges/admin?startDate=1566486000000&endDate=1629730799999&cineroomId=&categoryId=&type=&level=&issueAutomatically=&additionalRequirementsNeeded=&name=${text_idx}&registrantName=&state=&groupSequences=&displayCategory=false&limit=20&offset=0`
+    `${BADGE_URL}/badges/search?keyword=${text_idx}&limit=999&offset=0&sort=`
   );
   return axiosApi
     .get<{ results: SearchBadge[]; totalCount: number }>(url)
@@ -736,7 +736,7 @@ export function findBadges(text_idx: string) {
 
 export function findCommunities(text_idx: string) {
   const url = encodeURI(
-    `${COMMUNITY_URL}/communities/communityView/admin?startDate=1566572400000&endDate=1629730799999&name=${text_idx}&creatorName=&managerName=&offset=0&limit=20&searchFilter=&type=&field=&visible=&userGroupSequences=`
+    `${COMMUNITY_URL}/communities/communityView/search?keyword=${text_idx}&limit=999&offset=0&sort=`
   );
   return axiosApi
     .get<{ results: SearchCommunity[]; totalCount: number }>(url)
