@@ -1,4 +1,4 @@
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, StorageModel } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
@@ -12,8 +12,15 @@ import {
   findCommunities,
   findExpert,
   findPreCard,
+  searchRankins,
+  searchSuggest,
 } from './api/searchApi';
-import { CheckboxOptions, Options, SearchCard, SearchCardCategory } from './search.models';
+import {
+  CheckboxOptions,
+  Options,
+  SearchCard,
+  SearchCardCategory,
+} from './search.models';
 import {
   getCard,
   getAllowedCard,
@@ -41,6 +48,7 @@ import {
   setPreRef,
   getCollegeOptions,
   getCubeTypeOptions,
+  setSearchRecentList,
 } from './search.services';
 
 export function getQueryId(): string {
@@ -382,10 +390,7 @@ export function toggle_difficulty_level_json_query(value: string) {
 export function toggle_all_difficulty_level_query() {
   const filterCondition = getFilterCondition();
   const queryOptions = getQueryOptions();
-  if (
-    filterCondition === undefined ||
-    queryOptions === undefined
-  ) {
+  if (filterCondition === undefined || queryOptions === undefined) {
     return;
   }
   const all_difficulty_level_condition =
@@ -504,10 +509,7 @@ export function toggle_learning_time_query(text: string, value: string) {
 export function toggle_all_learning_time_query() {
   const filterCondition = getFilterCondition();
   const queryOptions = getQueryOptions();
-  if (
-    filterCondition === undefined ||
-    queryOptions === undefined
-  ) {
+  if (filterCondition === undefined || queryOptions === undefined) {
     return;
   }
   const all_learning_time_condition =
@@ -606,6 +608,21 @@ export async function searchData(searchValue: string, searchType?: string) {
       setSearchCommunityOriList(response.results);
     }
   });
+
+  const searchRecents =
+    JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
+  searchRecents.unshift(searchValue);
+  const newSearchRecents = searchRecents.filter(
+    (element: string, index: number) => {
+      return searchRecents.indexOf(element) === index;
+    }
+  );
+  if (newSearchRecents.length > 5) {
+    newSearchRecents.length = 5;
+  }
+  new StorageModel('localStorage', 'searchRecents').save(newSearchRecents);
+  //localStorage.setItem('searchRecents', newSearchRecents);
+  setSearchRecentList(newSearchRecents);
 }
 
 export async function searchInSearchData(
@@ -697,4 +714,13 @@ export function getTagsHtml(tags: string) {
   const htmlTags = '<span>' + tags.replace(regEx, `,</span><span>`) + '</span>';
 
   return htmlTags;
+}
+
+export function searchPopularList() {
+  searchRankins();
+}
+
+export function searchRelatedList() {
+  const keyword = getQueryId();
+  searchSuggest(keyword);
 }

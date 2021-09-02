@@ -3,12 +3,13 @@ import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 import { SearchParam } from 'search/search.models';
-import { getQueryId, search } from 'search/search.events';
+import { getQueryId, search, searchRelatedList } from 'search/search.events';
 import classNames from 'classnames';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import {
   setSearchInSearchInfo,
   useSearchInSearchInfo,
+  useSearchRelatedList,
 } from 'search/search.services';
 
 export function SearchHeaderView() {
@@ -20,6 +21,7 @@ export function SearchHeaderView() {
 
   const queryId = getQueryId();
   const searchInSearchInfo = useSearchInSearchInfo();
+  const relatedList = useSearchRelatedList();
 
   const handleMenuClick = (e: any, { name }: any) => {
     //search(queryId, name === 'all' ? undefined : name);
@@ -45,6 +47,7 @@ export function SearchHeaderView() {
     } else {
       setWrite(getQueryId());
     }
+    searchRelatedList();
   }, [params]);
 
   const handleOpen = () => {
@@ -152,98 +155,32 @@ export function SearchHeaderView() {
           </div>
         </div>
 
-        <div className="relative_box">
-          <dl>
-            <dt>
-              <strong>연관 검색어</strong>
-            </dt>
-            <dd>
-              <ul>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => {
-                      searchSetting('데이터 길라잡이');
-                      search('데이터 길라잡이');
-                    }}
-                  >
-                    데이터 길라잡이
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => {
-                      searchSetting('데이터 분석');
-                      search('데이터 분석');
-                    }}
-                  >
-                    데이터 분석
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => {
-                      searchSetting('데이터 뽀개기');
-                      search('데이터 뽀개기');
-                    }}
-                  >
-                    데이터 뽀개기
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('데이터 시각화 청각화그리고 다각화')}
-                  >
-                    데이터 시각화 청각화그리고 다각화
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('데이터 통계와분석을 한꺼번에')}
-                  >
-                    데이터 통계와분석을 한꺼번에
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('데이터 마케팅')}
-                  >
-                    데이터 마케팅
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('데이터 광고')}
-                  >
-                    데이터 광고
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('Data 기반 Deep Change')}
-                  >
-                    Data 기반 Deep Change
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => search('데이터 통계 분석')}
-                  >
-                    데이터 통계 분석
-                  </a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-        </div>
+        {relatedList && relatedList.length > 0 && (
+          <div className="relative_box">
+            <dl>
+              <dt>
+                <strong>연관 검색어</strong>
+              </dt>
+              <dd>
+                <ul>
+                  {relatedList?.map((related) => (
+                    <li>
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => {
+                          searchSetting(related);
+                          search(related);
+                        }}
+                      >
+                        {related}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </dl>
+          </div>
+        )}
       </div>
 
       <div className="tab_search_inner">

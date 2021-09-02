@@ -185,7 +185,7 @@ class ProfileContainer extends Component<Props, State> {
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
-      <div className="g-info g-info2 g-ab2">
+      <div className="g-info g-info2 g-ab3">
         {!isExternal && (
           <>
             <Popup

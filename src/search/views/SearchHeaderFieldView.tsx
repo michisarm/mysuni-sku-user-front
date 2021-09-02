@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
-import { search } from 'search/search.events';
+import { search, searchPopularList } from 'search/search.events';
 import {
   setSearchRecentList,
   useSearchRecentList,
 } from 'search/search.services';
+import { StorageModel } from '@nara.platform/accent';
 
 interface Props {
   callback?: (searchValue?: string) => void;
@@ -23,16 +24,32 @@ export function SearchHeaderFieldView(props: Props) {
     }
     search(searchValue);
   };
+
+  // 최근검색어
   const searchRecents = useSearchRecentList();
+  if (searchRecents === undefined) {
+    const storageSearchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
+    setSearchRecentList(storageSearchRecents);
+  }
   const onClickRemove = (searchValue: string) => {
     const newSearchRecents = searchRecents?.filter(
       (ele) => ele !== searchValue
     );
+    new StorageModel('localStorage', 'searchRecents').save(
+      newSearchRecents || []
+    );
     setSearchRecentList(newSearchRecents);
   };
   const allClear = () => {
+    new StorageModel('localStorage', 'searchRecents').save([]);
     setSearchRecentList([]);
   };
+
+  // 인기검색어
+  useEffect(() => {
+    searchPopularList();
+  }, []);
 
   return (
     <>

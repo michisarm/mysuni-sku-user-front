@@ -10,13 +10,6 @@ import {
 export function SearchHeaderPage() {
   //
 
-  setSearchRecentList([
-    'AI 인공지능 뽀개기',
-    'ai 인공',
-    '데이터 사이언스',
-    '데이터',
-    '파이썬',
-  ]);
   setSearchPopular1MList([
     'AI',
     '인공지능',

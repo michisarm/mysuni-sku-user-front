@@ -146,6 +146,13 @@ export const [
   getSearchPopular1YList,
   useSearchPopular1YList,
 ] = createStore<string[]>([]);
+// 연관검색어
+export const [
+  setSearchRelatedList,
+  onSearchRelatedList,
+  getSearchRelatedList,
+  useSearchRelatedList,
+] = createStore<string[]>([]);
 
 // 결과내재검색
 const InitialSearchInSearchInfo = {
