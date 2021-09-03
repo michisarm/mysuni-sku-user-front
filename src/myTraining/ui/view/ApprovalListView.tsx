@@ -112,8 +112,12 @@ class ApprovalListView extends React.Component<Props, States> {
   }
 
   render() {
-    const { approvalCubeService, totalCount, handleClickCubeRow, searchState } =
-      this.props;
+    const {
+      approvalCubeService,
+      totalCount,
+      handleClickCubeRow,
+      searchState,
+    } = this.props;
     const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
     const { results: approvalCubes } = approvalCubeOffsetList;
     const { cubeAll } = this.state;
@@ -326,7 +330,7 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.learningStartDate}
+                        ({cube.round}){cube.learningStartDate}
                         <br />~ {cube.learningEndDate}
                       </span>
                     </a>
