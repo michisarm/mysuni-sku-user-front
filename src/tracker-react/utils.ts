@@ -111,6 +111,9 @@ export function getElementsByClassName(node: HTMLElement, classname: string) {
 }
 
 export function originSelfPath(url: string) {
+  if (url.match('/suni-community')) {
+    return url;
+  }
   if (/^(http|https)\:\/\/mysuni.sk.com\/suni-main\//.test(url)) {
     url = url.replace(RegExp.$1 + '://mysuni.sk.com/suni-main', '');
   } else if (/^(http:|https:)\/\/ma.university.sk.com\/suni-main\//.test(url)) {
