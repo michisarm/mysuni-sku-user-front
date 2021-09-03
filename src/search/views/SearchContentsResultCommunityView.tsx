@@ -23,7 +23,9 @@ export function SearchContentsResultCommunityView() {
     <>
       <div className="result">
         <div className="result_title">
-          <strong>Community (3)</strong>
+          <strong>
+            Community ({(communities && communities.length) || 0})
+          </strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link
               to={`/search/community?query=${queryId}`}

@@ -3,7 +3,7 @@ import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 import { SearchParam } from 'search/search.models';
-import { getQueryId, search, searchRelatedList } from 'search/search.events';
+import { getQueryId, search } from 'search/search.events';
 import classNames from 'classnames';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import {
@@ -47,7 +47,6 @@ export function SearchHeaderView() {
     } else {
       setWrite(getQueryId());
     }
-    searchRelatedList();
   }, [params]);
 
   const handleOpen = () => {
@@ -142,7 +141,7 @@ export function SearchHeaderView() {
               label="결과 내 재검색"
               checked={searchInSearchInfo?.checkSearchInSearch}
               onClick={() => {
-                if (searchInSearchInfo?.checkSearchInSearch) {
+                if (!searchInSearchInfo?.checkSearchInSearch) {
                   setWrite('');
                 }
                 setSearchInSearchInfo({
@@ -163,7 +162,7 @@ export function SearchHeaderView() {
               </dt>
               <dd>
                 <ul>
-                  {relatedList?.map((related) => (
+                  {relatedList.map((related: string) => (
                     <li>
                       <a
                         href="javascript:void(0);"

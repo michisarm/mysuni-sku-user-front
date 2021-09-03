@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tab } from 'semantic-ui-react';
 import {
   useSearchPopular1MList,
   useSearchPopular1YList,
   useSearchPopular6MList,
 } from 'search/search.services';
+import { searchPopularList } from 'search/search.events';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   onClickSearch: (searchValue: string) => void;
@@ -12,6 +14,13 @@ interface Props {
 
 export function SearchHeaderFieldPopularView(props: Props) {
   //
+  const param = useParams();
+
+  // 인기검색어
+  useEffect(() => {
+    searchPopularList();
+  }, [param]);
+
   const populars1M = useSearchPopular1MList();
   const populars6M = useSearchPopular6MList();
   const populars1Y = useSearchPopular1YList();

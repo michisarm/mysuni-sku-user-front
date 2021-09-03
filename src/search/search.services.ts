@@ -11,6 +11,7 @@ import {
   Options,
   SearchCard,
   SearchExpert,
+  SearchSuggestion,
 } from './search.models';
 
 export const [setSearchUI, onSearchUI, getSearchUI, useSearchUI] =

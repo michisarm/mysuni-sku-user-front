@@ -1,10 +1,14 @@
 import BadgeStyle from 'certification/ui/model/BadgeStyle';
 import BadgeSize from 'certification/ui/model/BadgeSize';
 import BadgeView from 'certification/ui/view/BadgeView';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { SearchParam } from 'search/search.models';
-import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
+import {
+  getQueryId,
+  getTextFromHtml,
+  getTitleHtmlSearchKeyword,
+} from 'search/search.events';
 import { getSearchBadgeList } from 'search/search.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
@@ -16,13 +20,19 @@ export function SearchContentsResultBadgeView() {
   const params = useParams<SearchParam>();
   const queryId = getQueryId();
 
+  useEffect(() => {
+    if (params && params.searchType === 'badge') {
+      setBadgeLimit(999);
+    }
+  }, [params]);
+
   const badges = getSearchBadgeList();
   console.log('badge', badges);
   return (
     <>
       <div className="result">
         <div className="result_title">
-          <strong>Badge (4)</strong>
+          <strong>Badge ({(badges && badges.length) || 0})</strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link to={`/search/badge?query=${queryId}`} className="link_more">
               + 더보기
@@ -68,9 +78,11 @@ export function SearchContentsResultBadgeView() {
                           }}
                         />
                         <p>
-                          {parsePolyglotString(
-                            badge.description,
-                            getDefaultLang(badge.langSupport)
+                          {getTextFromHtml(
+                            parsePolyglotString(
+                              badge.description,
+                              getDefaultLang(badge.langSupport)
+                            )
                           )}
                         </p>
                       </div>

@@ -49,6 +49,10 @@ import {
   getCollegeOptions,
   getCubeTypeOptions,
   setSearchRecentList,
+  setSearchRelatedList,
+  setSearchPopular1MList,
+  setSearchPopular6MList,
+  setSearchPopular1YList,
 } from './search.services';
 
 export function getQueryId(): string {
@@ -596,19 +600,20 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   setSearchBadgeList([]);
   setSearchCommunityList([]);
-  await findBadges(searchValue).then((response) => {
+  findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
       setSearchBadgeOriList(response.results);
     }
   });
-  await findCommunities(searchValue).then((response) => {
+  findCommunities(searchValue).then((response) => {
     if (response) {
       setSearchCommunityList(response.results);
       setSearchCommunityOriList(response.results);
     }
   });
 
+  // 최근검색어
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   searchRecents.unshift(searchValue);
@@ -623,6 +628,25 @@ export async function searchData(searchValue: string, searchType?: string) {
   new StorageModel('localStorage', 'searchRecents').save(newSearchRecents);
   //localStorage.setItem('searchRecents', newSearchRecents);
   setSearchRecentList(newSearchRecents);
+
+  // 연관검색어
+  searchSuggest(searchValue).then((response) => {
+    if (response) {
+      const suggestions: string[] = [];
+      response.suggestions.map((s2) => {
+        s2.map((s1) => {
+          if (s1[0] !== searchValue && !suggestions.includes(s1[0])) {
+            // 중복제거
+            suggestions.push(s1[0]);
+          }
+        });
+      });
+      if (suggestions.length > 10) {
+        suggestions.length = 10;
+      }
+      setSearchRelatedList(suggestions);
+    }
+  });
 }
 
 export async function searchInSearchData(
@@ -716,11 +740,32 @@ export function getTagsHtml(tags: string) {
   return htmlTags;
 }
 
-export function searchPopularList() {
-  searchRankins();
+export function getTextFromHtml(html: string) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return div.textContent;
 }
 
-export function searchRelatedList() {
-  const keyword = getQueryId();
-  searchSuggest(keyword);
+export function searchPopularList() {
+  searchRankins(0).then((response) => {
+    const popularList: string[] = [];
+    response?.map((rank) => {
+      popularList.push(rank[0]);
+    });
+    setSearchPopular1MList(popularList);
+  });
+  searchRankins(1).then((response) => {
+    const popularList: string[] = [];
+    response?.map((rank) => {
+      popularList.push(rank[0]);
+    });
+    setSearchPopular6MList(popularList);
+  });
+  searchRankins(2).then((response) => {
+    const popularList: string[] = [];
+    response?.map((rank) => {
+      popularList.push(rank[0]);
+    });
+    setSearchPopular1YList(popularList);
+  });
 }

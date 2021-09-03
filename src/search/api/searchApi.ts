@@ -21,6 +21,7 @@ import {
   SearchCardCategory,
   SearchCommunity,
   SearchExpert,
+  SearchSuggestion,
 } from '../search.models';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
@@ -29,8 +30,8 @@ import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
-const RANKINS_URL = 'https://mysuni.sk.com/search/api/rangkins'; // 인기검색어
-const SUGGEST_URL = 'https://mysuni.sk.com/search/api/suggest'; // 연관검색어
+const RANKINS_URL = 'https://mysuni.sk.com/search/api/rankings'; // 인기검색어
+const SUGGEST_URL = 'https://mysuni.sk.com/search/api/suggestion'; // 연관검색어
 const BADGE_URL = '/api/badge';
 const COMMUNITY_URL = '/api/community';
 const workspaces: { cineroomWorkspaces?: Workspace[] } =
@@ -746,12 +747,14 @@ export function findCommunities(text_idx: string) {
 }
 
 // 인기검색어
-export function searchRankins() {
-  const url = encodeURI(`${RANKINS_URL}?domain_no=0&max_count=10`);
-  return axiosApi.get<{ results: [] }>(url).then(AxiosReturn);
+export function searchRankins(domainNo: number) {
+  const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
+  return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
 // 연관검색어
 export function searchSuggest(text_idx: string) {
-  const url = encodeURI(`${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`);
-  return axiosApi.get<{ results: [] }>(url).then(AxiosReturn);
+  const url = encodeURI(
+    `${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`
+  );
+  return axiosApi.get<SearchSuggestion>(url).then(AxiosReturn);
 }

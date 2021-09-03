@@ -250,4 +250,9 @@ export interface SearchInstructor {
   lectureField: string;
   career: string;
 }
+
+export interface SearchSuggestion {
+  seed: string;
+  suggestions: Array<Array<string[]>>;
+}
 //  // 결과 목록

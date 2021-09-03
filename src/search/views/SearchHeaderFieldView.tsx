@@ -46,11 +46,6 @@ export function SearchHeaderFieldView(props: Props) {
     setSearchRecentList([]);
   };
 
-  // 인기검색어
-  useEffect(() => {
-    searchPopularList();
-  }, []);
-
   return (
     <>
       {/* 최근검색어 */}

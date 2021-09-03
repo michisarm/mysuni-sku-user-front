@@ -51,7 +51,13 @@ export function SearchContentsResultInstructorView() {
                       className="flex"
                     >
                       <Image
-                        src={expert.photo_id || profileImg}
+                        src={
+                          expert.photo_id === ''
+                            ? profileImg
+                            : expert.photo_id.startsWith('http')
+                            ? expert.photo_id
+                            : `https://mysuni.sk.com${expert.photo_id}`
+                        }
                         alt="강사이미지"
                         className="t_thumb"
                       />
