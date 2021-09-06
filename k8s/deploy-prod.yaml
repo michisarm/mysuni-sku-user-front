@@ -41,11 +41,11 @@ spec:
           timeoutSeconds: 3
         resources:
           requests:
-            cpu: "2.5"
-            memory: "5Gi"
+            cpu: "300m"
+            memory: "256mi"
           limits:
-            cpu: "2.5"
-            memory: "5Gi"
+            cpu: "300m"
+            memory: "256mi"
         volumeMounts:
           - name: user-front-persistent-storage
             mountPath: /usr/share/nginx/html/profile

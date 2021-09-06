@@ -34,13 +34,13 @@ spec:
         ports:
         - containerPort: 80
         imagePullPolicy: Always
-#        resources:
-#          requests:
-#            cpu: "2.5"
-#            memory: "5Gi"
-#          limits:
-#            cpu: "2.5"
-#            memory: "5Gi"
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "256mi"
+          limits:
+            cpu: "300m"
+            memory: "256mi"
         livenessProbe:
           failureThreshold: 20
           httpGet:
