@@ -7,7 +7,7 @@ export class ApprovalCubeXlsxModel {
   차수: number = 1;
   신청상태: string = '';
   신청현황: string = '';
-  '(차수)교육기간': string = '';
+  '교육기간': string = '';
   신청일자: string | number = '';
   '인당 교육금액': string = '';
 }

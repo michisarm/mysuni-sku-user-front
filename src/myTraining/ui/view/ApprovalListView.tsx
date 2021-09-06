@@ -111,6 +111,24 @@ class ApprovalListView extends React.Component<Props, States> {
     return iconOrderBy === currentOrderBy ? 'blue' : 'grey';
   }
 
+  getProposalStateString(proposalState: string) {
+    //
+    if (proposalState === 'Submitted') {
+      return (
+        <PolyglotText
+          id="승인관리-개학승인-요청상태"
+          defaultString="승인요청"
+        />
+      );
+    } else if (proposalState === 'Canceled') {
+      return <PolyglotText id="승인관리-개학승인-취소" defaultString="취소" />;
+    } else if (proposalState === 'Rejected') {
+      return <PolyglotText id="승인관리-개학승인-반려" defaultString="반려" />;
+    } else if (proposalState === 'Approved') {
+      return <PolyglotText id="승인관리-개학승인-승인" defaultString="승인" />;
+    }
+  }
+
   render() {
     const {
       approvalCubeService,
@@ -218,12 +236,18 @@ class ApprovalListView extends React.Component<Props, States> {
                   />
                 </Button>
               </Table.HeaderCell>
+              <Table.HeaderCell className="cell pay">
+                <PolyglotText
+                  id="승인관리-유료과정-목록8"
+                  defaultString="상태"
+                />
+              </Table.HeaderCell>
               <Table.HeaderCell className="cell date">
                 {approvalDateName}
               </Table.HeaderCell>
               <Table.HeaderCell className="cell pay">
                 <PolyglotText
-                  id="승인관리-유료과정-목록8"
+                  id="승인관리-유료과정-목록9"
                   defaultString="인당 교육금액"
                 />
                 <Button
@@ -329,6 +353,16 @@ class ApprovalListView extends React.Component<Props, States> {
                       <span className="ellipsis">
                         {cube.learningStartDate}
                         <br />~ {cube.learningEndDate}
+                      </span>
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell
+                    onClick={() => handleClickCubeRow(cube.studentId)}
+                    className="cell status"
+                  >
+                    <a>
+                      <span className="ellipsis">
+                        {this.getProposalStateString(cube.proposalState)}
                       </span>
                     </a>
                   </Table.Cell>

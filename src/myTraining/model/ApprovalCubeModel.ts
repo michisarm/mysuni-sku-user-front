@@ -180,7 +180,7 @@ export class ApprovalCubeModel implements DramaEntity {
         approvalCube.proposalState
       ),
       신청현황: approvalCube.approvedStudentCount + '/' + approvalCube.capacity,
-      '(차수)교육기간':
+      교육기간:
         approvalCube.learningStartDate + '~' + approvalCube.learningEndDate,
       신청일자:
         approvalCube.registeredTime &&
