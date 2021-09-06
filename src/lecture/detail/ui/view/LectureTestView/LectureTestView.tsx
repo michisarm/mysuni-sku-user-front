@@ -123,11 +123,11 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         testStatus === 'FAIL'
       ) {
         openView('result');
-        setUseTestResultView(true);
       } else {
         openView('intro');
       }
     }, [params, testStudentItem, lectureStructureItem]);
+
     /*
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
