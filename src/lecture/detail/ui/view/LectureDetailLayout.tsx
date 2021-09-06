@@ -14,12 +14,7 @@ import {
   setLectureNoteWriteState,
   useLectureNoteTab,
 } from '../../store/LectureNoteStore';
-import {
-  loadPlayVideo,
-  playVideo,
-  seekTo,
-} from '../../service/PanoptoEmbedPlayer';
-import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+import { loadPlayVideo, seekTo } from '@sku/skuniv-ui-video-player';
 import {
   getPolyglotText,
   PolyglotText,

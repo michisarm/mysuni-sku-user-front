@@ -19,14 +19,11 @@ import VideoQuizContainer from '../../../../../quiz/ui/logic/VideoQuizContainer'
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import {
   clearPanoptoEmbedPlayer,
-  initializePanoptoEmbedPlayer,
   pauseVideo,
   PlayerState,
   playVideo,
-  parseCaptionTracks,
-  disableCaptions,
-  enableCaptions,
-} from '../../../service/PanoptoEmbedPlayer';
+  VideoContainer,
+} from '@sku/skuniv-ui-video-player';
 import LectureState from '../../../viewModel/LectureState';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCubeDetailCache } from '../../../api/cubeApi';
@@ -39,7 +36,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import { usePanoptoEmbedPlayerState } from 'lecture/detail/store/PanoptoEmbedPlayerStore';
+import { SkProfileService } from 'profile/stores';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -60,8 +57,6 @@ interface NameValue {
   value: number;
 }
 
-let hoverMouseMovedTimeout = 0;
-
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
 const LectureVideoView: React.FC<LectureVideoViewProps> =
   function LectureVideoView({
@@ -77,6 +72,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
   }) {
     const params = useParams<LectureParams>();
     const lectureMedia = useLectureMedia();
+    const [videoContainerProps, setVideoContainerProps] = useState<
+      | {
+          panoptoSessionId: string;
+          directConnectionName?: string;
+          targetSamlInstanceName?: string;
+        }
+      | undefined
+    >(undefined);
     useEffect(() => {
       if (params.cubeId !== undefined) {
         findCubeDetailCache(params.cubeId).then((cubeDetail) => {
@@ -106,12 +109,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 media.mediaContents.internalMedias[0].directConnectionName;
               const targetSamlInstanceName =
                 media.mediaContents.internalMedias[0].targetSamlInstanceName;
-              initializePanoptoEmbedPlayer(
+              setVideoContainerProps({
                 panoptoSessionId,
                 directConnectionName,
                 targetSamlInstanceName,
-                serverName
-              );
+              });
             }
           }
         });
@@ -186,7 +188,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
         setQuizquizCurrentTime(matchesQuizTime);
       }
 
-      const learningState = lectureState.student?.learningState;
       const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
 
       if (pathnameChangeCheck && playerState === PlayerState.Playing) {
@@ -227,7 +228,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
           });
         } else if (quizCurrentTime !== matchesQuizTime) {
           setPauseVideoSticky(false);
-          closeFullScreen();
           setQuizPop(true);
           pauseVideo();
         }
@@ -285,88 +285,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
       // setQuizCurrentIndex(quizCurrentIndex + 1);
     }, [quizPop, quizCurrentIndex]);
 
-    const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
-
-    const [playerHovered, setPlayerHovered] = useState<boolean>(false);
-    const [captionSelectorVisible, setCaptionSelectorVisible] =
-      useState<boolean>(false);
-
-    const hoverControllerVisible = useMemo<boolean>(() => {
-      if (panoptoEmbedPlayerState?.isVideoReadied === true) {
-        if (
-          panoptoEmbedPlayerState.playerState === 2 ||
-          panoptoEmbedPlayerState.playerState === 0
-        ) {
-          return true;
-        }
-        if (panoptoEmbedPlayerState.playerState === 1 && playerHovered) {
-          return true;
-        }
-      }
-      return false;
-    }, [panoptoEmbedPlayerState, playerHovered]);
-
-    const videoControllerMouseOver = useCallback(() => {
-      setPlayerHovered(true);
-      clearTimeout(hoverMouseMovedTimeout);
-      hoverMouseMovedTimeout = setTimeout(() => {
-        setPlayerHovered(false);
-        setCaptionSelectorVisible(false);
-      }, 5000) as any;
-    }, []);
-
-    const captions = useMemo<NameValue[]>(() => {
-      const r: NameValue[] = [];
-      const parsedCaptionTracks = parseCaptionTracks(
-        panoptoEmbedPlayerState?.captionTracks
-      );
-      if (parsedCaptionTracks.includes('Korean')) {
-        r.push({
-          name: '한국어',
-          value: parsedCaptionTracks.findIndex((c) => c === 'Korean'),
-        });
-      }
-      if (parsedCaptionTracks.includes('TraditionalChinese')) {
-        r.push({
-          name: '中文(繁体)',
-          value: parsedCaptionTracks.findIndex(
-            (c) => c === 'TraditionalChinese'
-          ),
-        });
-      }
-      if (parsedCaptionTracks.includes('SimplifiedChinese')) {
-        r.push({
-          name: '中文(简体)',
-          value: parsedCaptionTracks.findIndex(
-            (c) => c === 'SimplifiedChinese'
-          ),
-        });
-      }
-      if (parsedCaptionTracks.includes('English')) {
-        r.push({
-          name: 'English',
-          value: parsedCaptionTracks.findIndex((c) => c === 'English'),
-        });
-      }
-      return r;
-    }, [panoptoEmbedPlayerState?.captionTracks]);
-
     const onScrollTop = () => {
       window.scrollTo(0, 124);
       setPauseVideoSticky(false);
-    };
-
-    const closeFullScreen = () => {
-      if (
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement
-      ) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
     };
 
     function copyUrl() {
@@ -413,176 +334,83 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
         ref={getStickyPosition}
       >
         <div className="lms-video-sticky">
-          <div
-            className="video-container"
-            onMouseOver={videoControllerMouseOver}
-            onMouseOut={(e) => {
-              if (
-                e.relatedTarget ===
-                window.document.getElementById(
-                  'panopto-embed-player-hover-container'
-                )
-              ) {
-                return;
+          {videoContainerProps !== undefined && (
+            <VideoContainer
+              language={SkProfileService.instance.skProfile.language}
+              panoptoSessionId={videoContainerProps.panoptoSessionId}
+              directConnectionName={videoContainerProps.directConnectionName}
+              targetSamlInstanceName={
+                videoContainerProps.targetSamlInstanceName
               }
-              if (
-                e.relatedTarget ===
-                window.document.getElementById(
-                  'panopto-embed-player-hover-caption-container'
-                )
-              ) {
-                return;
-              }
-              if (
-                e.relatedTarget ===
-                window.document.getElementById(
-                  'panopto-embed-player-hover-caption-button'
-                )
-              ) {
-                return;
-              }
-              if (
-                e.relatedTarget ===
-                window.document.getElementById(
-                  'panopto-embed-player-caption-selector-container'
-                )
-              ) {
-                return;
-              }
-              if (
-                Array.from(
-                  window.document.getElementsByClassName(
-                    'video-container-children'
-                  )
-                ).includes(e.relatedTarget as any)
-              ) {
-                return;
-              }
-              setPlayerHovered(false);
-              setCaptionSelectorVisible(false);
-            }}
-          >
-            <div id="panopto-embed-player" />
-            {hoverControllerVisible && !isSticked && (
-              <div
-                id="panopto-embed-player-hover-container"
-                style={{
-                  right: isSticked ? 129 : 154,
-                  bottom: isSticked ? 3 : 12,
-                  position: 'absolute',
-                }}
-              >
-                <div
-                  style={{
-                    paddingLeft: isSticked ? 6 : 20,
-                    paddingRight: isSticked ? 6 : 20,
-                    paddingTop: isSticked ? 12 : 20,
-                    paddingBottom: isSticked ? 12 : 16,
-                    backgroundColor: isSticked ? 'transparent' : 'transparent',
-                  }}
-                  id="panopto-embed-player-hover-caption-container"
-                >
-                  <Image
-                    onClick={() =>
-                      setCaptionSelectorVisible(!captionSelectorVisible)
-                    }
-                    id="panopto-embed-player-hover-caption-button"
-                    style={{ width: 16, height: 16, cursor: 'pointer' }}
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-vod-global.png`}
-                  />
-                </div>
-              </div>
-            )}
-            {captionSelectorVisible && hoverControllerVisible && (
-              <div
-                id="panopto-embed-player-caption-selector-container"
-                style={{
-                  right: 114,
-                  bottom: 66,
-                  position: 'absolute',
-                  backgroundColor: 'black',
-                  width: 96,
-                  padding: 4,
-                }}
-              >
-                <div
-                  className="video-container-children"
-                  style={{
-                    padding: 2,
-                    color: 'white',
-                    fontSize: 12,
-                    textAlign: 'right',
-                  }}
-                >
-                  <PolyglotText
-                    defaultString="자막언어"
-                    id="비디오-뷰-자막언어"
-                  />
-                </div>
-                <div
-                  style={{ height: 4 }}
-                  className="video-container-children"
+            >
+              <>
+                <VideoQuizContainer
+                  quizPop={quizPop}
+                  quizCurrentIndex={quizCurrentIndex}
+                  onCompletedQuiz={onCompletedQuiz}
                 />
-                <div
-                  onClick={() => {
-                    disableCaptions();
-                    setCaptionSelectorVisible(false);
-                  }}
-                  style={{
-                    padding: 2,
-                    color:
-                      panoptoEmbedPlayerState?.selectedCaptionTrack === -1
-                        ? 'black'
-                        : 'rgba(255, 255, 255, 0.8)',
-                    backgroundColor:
-                      panoptoEmbedPlayerState?.selectedCaptionTrack === -1
-                        ? 'white'
-                        : 'black',
-                    fontWeight: 600,
-                    fontSize: 14,
-                    textAlign: 'right',
-                    cursor: 'pointer',
-                  }}
-                  className="video-container-children"
-                >
-                  <PolyglotText
-                    defaultString="사용 안함"
-                    id="비디오-뷰-사용안함"
-                  />
-                </div>
-                {captions.map((c) => {
-                  return (
-                    <div
-                      key={c.value}
-                      onClick={() => {
-                        enableCaptions(c.value);
-                        setCaptionSelectorVisible(false);
-                      }}
-                      style={{
-                        padding: 2,
-                        color:
-                          panoptoEmbedPlayerState?.selectedCaptionTrack ===
-                          c.value
-                            ? 'black'
-                            : 'rgba(255, 255, 255, 0.8)',
-                        backgroundColor:
-                          panoptoEmbedPlayerState?.selectedCaptionTrack ===
-                          c.value
-                            ? 'white'
-                            : 'black',
-                        fontWeight: 600,
-                        fontSize: 14,
-                        textAlign: 'right',
-                        cursor: 'pointer',
-                      }}
-                      className="video-container-children"
-                    >
-                      {c.name}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                {pauseVideoSticky && (
+                  <div className="video-overlay-small art">
+                    <button onClick={onScrollTop} type="button">
+                      <span className="copy">
+                        <PolyglotText
+                          defaultString="퀴즈풀고 이어보기"
+                          id="Collage-Video-퀴즈풀기"
+                        />
+                      </span>
+                    </button>
+                  </div>
+                )}
+                {nextContentsView &&
+                  nextContent?.path !== undefined &&
+                  lectureState.student?.learningState === 'Passed' && (
+                    <>
+                      <div
+                        id="video-overlay"
+                        className="video-overlay"
+                        onClick={() => nextContents(nextContent?.path)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="video-overlay-btn">
+                          <button>
+                            <img src={playerBtn} />
+                          </button>
+                        </div>
+                        <div className="video-overlay-text">
+                          <p>
+                            <PolyglotText
+                              defaultString="다음 학습 이어하기"
+                              id="Collage-Video-이어하기"
+                            />
+                          </p>
+                          <h3>
+                            {nextContent &&
+                              (nextContent as LectureStructureCubeItem).name}
+                          </h3>
+                        </div>
+                      </div>
+                      <div
+                        className="video-overlay-small"
+                        onClick={() => nextContents(nextContent?.path)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <button>
+                          <img src={playerBtn} />
+                        </button>
+                        <span className="copy">
+                          <PolyglotText
+                            defaultString="다음 학습 이어하기"
+                            id="Collage-Video-이어하기"
+                          />
+                        </span>
+                      </div>
+                    </>
+                  )}
+              </>
+            </VideoContainer>
+          )}
+          {/* <div className="video-container">
+            <div id="panopto-embed-player" />
             <VideoQuizContainer
               quizPop={quizPop}
               quizCurrentIndex={quizCurrentIndex}
@@ -600,7 +428,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 </button>
               </div>
             )}
-            {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
             {nextContentsView &&
               nextContent?.path !== undefined &&
               lectureState.student?.learningState === 'Passed' && (
@@ -646,7 +473,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                   </div>
                 </>
               )}
-          </div>
+          </div> */}
           <div className="sticky-video-content">
             <div className="header">{cubeName}</div>
             <div className="time-check">
