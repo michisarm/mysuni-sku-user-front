@@ -55,7 +55,7 @@ class CategoryMenuContainer extends Component<Props, State> {
     const { banner } = CollegeService.instance;
 
     banner.map((item) => {
-      if (item.collegeId === college.id) {
+      if (college.id && item.collegeId === college.id) {
         bannerData = { ...item };
       }
     });
@@ -138,10 +138,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     const { categoryOpen, activeCollege, banner } = this.state;
-    const {
-      categoryColleges,
-      channelCounts,
-    } = CollegeLectureCountService.instance;
+    const { categoryColleges, channelCounts } =
+      CollegeLectureCountService.instance;
     const { additionalUserInfo } = SkProfileService.instance;
     const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();

@@ -123,6 +123,25 @@ export function originSelfPath(url: string) {
   return url;
 }
 
+export function parsingPath(url: string) {
+  // 절대 주소 반환
+  if (/^(http|https)/.test(url)) {
+    return url;
+  }
+
+  // 상대 주소 비교
+  if (
+    /^\/suni-community/.test(url) ||
+    /^\/suni-instructor/.test(url) ||
+    /^\/suni-main/.test(url) ||
+    /^\/suni-asset/.test(url)
+  ) {
+    return url;
+  } else {
+    return '/suni-main' + url;
+  }
+}
+
 export function utf8_to_b64(str: string) {
   return window.btoa(unescape(encodeURIComponent(str)));
 }
