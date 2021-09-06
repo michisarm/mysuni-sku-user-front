@@ -113,10 +113,10 @@ export function getElementsByClassName(node: HTMLElement, classname: string) {
 export function originSelfPath(url: string) {
   if (/^(http|https)\:\/\/mysuni.sk.com\/suni-main\//.test(url)) {
     url = url.replace(RegExp.$1 + '://mysuni.sk.com/suni-main', '');
-  } else if (/^(http:|https:)\/\/ma.university.sk.com\/suni-main\//.test(url)) {
-    url = url.replace(RegExp.$1 + '://ma.university.sk.com/suni-main', '');
-  } else if (/^(http:|https:)\/\/muniversity.sk.com\/suni-main\//.test(url)) {
-    url = url.replace(RegExp.$1 + '://university.sk.com/suni-main', '');
+  } else if (/^(http:|https:)\/\/ma.mysuni.sk.com\/suni-main\//.test(url)) {
+    url = url.replace(RegExp.$1 + '://ma.mysuni.sk.com/suni-main', '');
+  } else if (/^(http:|https:)\/\/stg.mysuni.sk.com\/suni-main\//.test(url)) {
+    url = url.replace(RegExp.$1 + '://stg.mysuni.sk.com/suni-main', '');
   } else if (url.includes(window.location.origin)) {
     url = url.replace(window.location.origin, '');
   }
