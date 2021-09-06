@@ -33,7 +33,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="신청자"
                   />
                 </dt>
-                <dd>{parsePolyglotString(approvalCube.studentName)}</dd>
+                <dd>{approvalCube.studentName}</dd>
               </dl>
               <dl className="in">
                 <dt>
@@ -89,14 +89,12 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                         <Table.HeaderCell>
                           <PolyglotText
                             id="승인관리-개학승인-교육기간"
-                            defaultString="(차수)교육기간"
+                            defaultString="교육기간"
                           />
                         </Table.HeaderCell>
                         <Table.Cell>
-                          {`(${approvalCube.round})
-                          ${approvalCube.learningStartDate}
-                           ~
-                          ${approvalCube.learningEndDate}`}
+                          {approvalCube.learningStartDate} ~
+                          {approvalCube.learningEndDate}
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>

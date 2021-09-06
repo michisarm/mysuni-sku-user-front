@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import AplService from '../../present/logic/AplService';
-import { AplApprovalType } from '../../model/AplApprovalType';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import {
   handleCancel,
@@ -18,8 +17,9 @@ import {
   requestAplCreateColleges,
 } from './aplCreateForm.services';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
-import { CompanyApproverService } from 'approval/stores';
+import { MenuControlAuthService } from 'approval/stores';
 import AplCreateFormView from './AplCreateFormView';
+import { LectureApproverType } from '../../../approval/company/model/LectureApproverType';
 
 @observer
 @reactAutobind
@@ -39,10 +39,11 @@ class AplCreateFormContainer extends React.Component {
     const aplService = AplService.instance;
     const { apl, changeAplProps } = aplService;
     const { focusInputRefs } = AplCreateFocusService.instance;
-    const { originCompanyApprover } = CompanyApproverService.instance;
+    const { menuControlAuth } = MenuControlAuthService.instance;
 
     const approvalShow =
-      originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
+      menuControlAuth.lectureApproval.aplApproverType ===
+      LectureApproverType.TEAM_LEADER;
 
     return (
       <Segment className="full">

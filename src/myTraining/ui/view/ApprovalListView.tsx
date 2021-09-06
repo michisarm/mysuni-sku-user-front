@@ -111,13 +111,27 @@ class ApprovalListView extends React.Component<Props, States> {
     return iconOrderBy === currentOrderBy ? 'blue' : 'grey';
   }
 
+  getProposalStateString(proposalState: string) {
+    //
+    if (proposalState === 'Submitted') {
+      return (
+        <PolyglotText
+          id="승인관리-개학승인-요청상태"
+          defaultString="승인요청"
+        />
+      );
+    } else if (proposalState === 'Canceled') {
+      return <PolyglotText id="승인관리-개학승인-취소" defaultString="취소" />;
+    } else if (proposalState === 'Rejected') {
+      return <PolyglotText id="승인관리-개학승인-반려" defaultString="반려" />;
+    } else if (proposalState === 'Approved') {
+      return <PolyglotText id="승인관리-개학승인-승인" defaultString="승인" />;
+    }
+  }
+
   render() {
-    const {
-      approvalCubeService,
-      totalCount,
-      handleClickCubeRow,
-      searchState,
-    } = this.props;
+    const { approvalCubeService, totalCount, handleClickCubeRow, searchState } =
+      this.props;
     const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
     const { results: approvalCubes } = approvalCubeOffsetList;
     const { cubeAll } = this.state;
@@ -143,10 +157,7 @@ class ApprovalListView extends React.Component<Props, States> {
         '승인관리-유료과정-승인일자'
       );
     } else {
-      approvalNameVal = getPolyglotText(
-        '신청일자',
-        '승인관리-유료과정-신청일자'
-      );
+      approvalNameVal = getPolyglotText('일자', '승인관리-유료과정-일자');
     }
 
     const approvalDateName = approvalNameVal;
@@ -207,7 +218,7 @@ class ApprovalListView extends React.Component<Props, States> {
               <Table.HeaderCell className="cell term">
                 <PolyglotText
                   id="승인관리-유료과정-목록7"
-                  defaultString="(차수)교육기간"
+                  defaultString="교육기간"
                 />
                 <Button
                   icon
@@ -221,12 +232,18 @@ class ApprovalListView extends React.Component<Props, States> {
                   />
                 </Button>
               </Table.HeaderCell>
+              <Table.HeaderCell className="cell pay">
+                <PolyglotText
+                  id="승인관리-유료과정-목록8"
+                  defaultString="상태"
+                />
+              </Table.HeaderCell>
               <Table.HeaderCell className="cell date">
                 {approvalDateName}
               </Table.HeaderCell>
               <Table.HeaderCell className="cell pay">
                 <PolyglotText
-                  id="승인관리-유료과정-목록8"
+                  id="승인관리-유료과정-목록9"
                   defaultString="인당 교육금액"
                 />
                 <Button
@@ -281,9 +298,7 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell name"
                   >
                     <a>
-                      <span className="ellipsis">
-                        {parsePolyglotString(cube.studentName)}
-                      </span>
+                      <span className="ellipsis">{cube.studentName}</span>
                     </a>
                   </Table.Cell>
                   <Table.Cell
@@ -330,8 +345,18 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        ({cube.round}){cube.learningStartDate}
+                        {cube.learningStartDate}
                         <br />~ {cube.learningEndDate}
+                      </span>
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell
+                    onClick={() => handleClickCubeRow(cube.studentId)}
+                    className="cell status"
+                  >
+                    <a>
+                      <span className="ellipsis">
+                        {this.getProposalStateString(cube.proposalState)}
                       </span>
                     </a>
                   </Table.Cell>
@@ -341,8 +366,8 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.creationTime &&
-                          moment(cube.creationTime).format('YYYY.MM.DD')}
+                        {cube.registeredTime &&
+                          moment(cube.registeredTime).format('YYYY.MM.DD')}
                       </span>
                     </a>
                   </Table.Cell>
