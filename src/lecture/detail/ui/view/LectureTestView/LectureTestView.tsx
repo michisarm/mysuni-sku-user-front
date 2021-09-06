@@ -126,8 +126,6 @@ const LectureTestView: React.FC<LectureTestViewProps> =
       } else {
         openView('intro');
       }
-
-      console.log('testStatus::' + testStatus);
     }, [params, testStudentItem, lectureStructureItem]);
     /*
   useEffect(() => {
