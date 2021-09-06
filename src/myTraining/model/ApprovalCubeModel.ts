@@ -44,7 +44,7 @@ export class ApprovalCubeModel implements DramaEntity {
   contents: CubeContentsModel = new CubeContentsModel();
   cubeIntro: IdName = new IdName();
   tags: string[] = [];
-  creationTime: number = 0;
+  registeredTime: number = 0;
 
   openRequests: OpenRequest[] = [];
 
@@ -183,8 +183,8 @@ export class ApprovalCubeModel implements DramaEntity {
       '(차수)교육기간':
         approvalCube.learningStartDate + '~' + approvalCube.learningEndDate,
       신청일자:
-        approvalCube.creationTime &&
-        moment(approvalCube.creationTime).format('YYYY.MM.DD'),
+        approvalCube.registeredTime &&
+        moment(approvalCube.registeredTime).format('YYYY.MM.DD'),
       '인당 교육금액': numeral(approvalCube.chargeAmount).format('0,0'),
     };
   }
@@ -208,7 +208,7 @@ decorate(ApprovalCubeModel, {
   searchFilter: observable,
   subsidiaries: observable,
   requiredSubsidiaries: observable,
-  creationTime: observable,
+  registeredTime: observable,
   openRequests: observable,
   required: observable,
 

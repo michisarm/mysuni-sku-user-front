@@ -143,10 +143,7 @@ class ApprovalListView extends React.Component<Props, States> {
         '승인관리-유료과정-승인일자'
       );
     } else {
-      approvalNameVal = getPolyglotText(
-        '신청일자',
-        '승인관리-유료과정-신청일자'
-      );
+      approvalNameVal = getPolyglotText('일자', '승인관리-유료과정-일자');
     }
 
     const approvalDateName = approvalNameVal;
@@ -207,7 +204,7 @@ class ApprovalListView extends React.Component<Props, States> {
               <Table.HeaderCell className="cell term">
                 <PolyglotText
                   id="승인관리-유료과정-목록7"
-                  defaultString="(차수)교육기간"
+                  defaultString="교육기간"
                 />
                 <Button
                   icon
@@ -330,7 +327,7 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        ({cube.round}){cube.learningStartDate}
+                        {cube.learningStartDate}
                         <br />~ {cube.learningEndDate}
                       </span>
                     </a>
@@ -341,8 +338,8 @@ class ApprovalListView extends React.Component<Props, States> {
                   >
                     <a>
                       <span className="ellipsis">
-                        {cube.creationTime &&
-                          moment(cube.creationTime).format('YYYY.MM.DD')}
+                        {cube.registeredTime &&
+                          moment(cube.registeredTime).format('YYYY.MM.DD')}
                       </span>
                     </a>
                   </Table.Cell>
