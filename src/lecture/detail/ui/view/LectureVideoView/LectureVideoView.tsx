@@ -342,6 +342,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
               targetSamlInstanceName={
                 videoContainerProps.targetSamlInstanceName
               }
+              captionText={getPolyglotText('자막언어', '비디오-뷰-자막언어')}
+              disableCaptionText={getPolyglotText(
+                '사용 안함',
+                '비디오-뷰-사용안함'
+              )}
             >
               <>
                 <VideoQuizContainer
