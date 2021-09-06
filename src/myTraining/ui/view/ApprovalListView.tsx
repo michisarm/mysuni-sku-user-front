@@ -130,12 +130,8 @@ class ApprovalListView extends React.Component<Props, States> {
   }
 
   render() {
-    const {
-      approvalCubeService,
-      totalCount,
-      handleClickCubeRow,
-      searchState,
-    } = this.props;
+    const { approvalCubeService, totalCount, handleClickCubeRow, searchState } =
+      this.props;
     const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
     const { results: approvalCubes } = approvalCubeOffsetList;
     const { cubeAll } = this.state;
@@ -302,9 +298,7 @@ class ApprovalListView extends React.Component<Props, States> {
                     className="cell name"
                   >
                     <a>
-                      <span className="ellipsis">
-                        {parsePolyglotString(cube.studentName)}
-                      </span>
+                      <span className="ellipsis">{cube.studentName}</span>
                     </a>
                   </Table.Cell>
                   <Table.Cell
