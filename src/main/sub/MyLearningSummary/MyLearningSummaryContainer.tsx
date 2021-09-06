@@ -86,7 +86,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   componentDidMount(): void {
     this.init();
-    requestAttendEvent();
+    //requestAttendEvent();
     onLearningObjectivesItem(
       (next) => this.setState({ learningObjectives: next }),
       'MyLearningSummaryContainer'
