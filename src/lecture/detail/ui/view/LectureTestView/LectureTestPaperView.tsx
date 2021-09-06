@@ -143,12 +143,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> =
                 setTimeout(() => {
                   updateCardLectureStructure(cardId).then(() => {
                     getTestStudentItemMapFromCourse(params); // student 재호출
-                    getTestAnswerItemMapFromExam(
-                      testItem.questions,
-                      params
-                    ).then(() => {
-                      openView('result');
-                    }); // answer 재호출
+                    getTestAnswerItemMapFromExam(testItem.questions, params); // answer 재호출
+                    openView('result');
                   });
                 }, 1000);
               });
