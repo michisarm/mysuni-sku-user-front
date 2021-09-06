@@ -12,7 +12,7 @@ import {
   findCommunities,
   findExpert,
   findPreCard,
-  searchRankins,
+  searchRankinsCache,
   searchSuggest,
 } from './api/searchApi';
 import {
@@ -747,21 +747,21 @@ export function getTextFromHtml(html: string) {
 }
 
 export function searchPopularList() {
-  searchRankins(0).then((response) => {
+  searchRankinsCache(0).then((response) => {
     const popularList: string[] = [];
     response?.map((rank) => {
       popularList.push(rank[0]);
     });
     setSearchPopular1MList(popularList);
   });
-  searchRankins(1).then((response) => {
+  searchRankinsCache(1).then((response) => {
     const popularList: string[] = [];
     response?.map((rank) => {
       popularList.push(rank[0]);
     });
     setSearchPopular6MList(popularList);
   });
-  searchRankins(2).then((response) => {
+  searchRankinsCache(2).then((response) => {
     const popularList: string[] = [];
     response?.map((rank) => {
       popularList.push(rank[0]);

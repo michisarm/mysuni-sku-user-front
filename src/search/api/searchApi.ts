@@ -27,6 +27,7 @@ import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
 import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
+import { createCacheApi } from 'lecture/detail/api/cacheableApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
@@ -747,10 +748,15 @@ export function findCommunities(text_idx: string) {
 }
 
 // 인기검색어
-export function searchRankins(domainNo: number) {
+function searchRankins(domainNo: number) {
   const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
   return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
+const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
+  searchRankins
+);
+export { searchRankinsCache, clearSearchRankinsCache };
+
 // 연관검색어
 export function searchSuggest(text_idx: string) {
   const url = encodeURI(
