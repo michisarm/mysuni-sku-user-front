@@ -12,8 +12,8 @@ import {
   addOnProgressEventHandler,
   createOnProgressEventHandler,
   PlayerState,
-} from '../../service/PanoptoEmbedPlayer';
-import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+} from '@sku/skuniv-ui-video-player';
+import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { useLectureState } from '../../store/LectureStateStore';
 import {
   callConfirmProgress,
@@ -63,7 +63,7 @@ function LectureVideoContainer() {
       createOnProgressEventHandler(
         callVideoNearEnded,
         (lastActionTime, state, didAction) => {
-          const { duration, currentTime, playerState } = state;
+          const { duration = 0, currentTime = 0, playerState } = state;
           return (
             playerState === PlayerState.Playing &&
             currentTime + 10 > duration &&
@@ -283,9 +283,8 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
-    boolean
-  >(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
+    useState<boolean>(false);
 
   const isExpiredContent = useMemo(() => {
     if (

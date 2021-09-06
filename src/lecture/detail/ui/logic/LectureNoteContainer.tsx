@@ -25,8 +25,8 @@ import { requestLectureNoteModify } from '../../service/useLectureNote/useLectur
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import LectureNotePopupContainer from './LectureNotePopupContainer';
 import { getAudioEmbedApi } from '../../store/AudioEmbedStore';
-import { getPanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
-import { playVideo, seekTo } from '../../service/PanoptoEmbedPlayer';
+import { getPanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
+import { playVideo, seekTo } from '@sku/skuniv-ui-video-player';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { isMobile } from 'react-device-detect';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
