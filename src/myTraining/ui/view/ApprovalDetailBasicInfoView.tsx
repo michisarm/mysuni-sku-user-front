@@ -33,7 +33,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="신청자"
                   />
                 </dt>
-                <dd>{parsePolyglotString(approvalCube.studentName)}</dd>
+                <dd>{approvalCube.studentName}</dd>
               </dl>
               <dl className="in">
                 <dt>
