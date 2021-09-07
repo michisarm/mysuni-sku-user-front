@@ -18,7 +18,10 @@ import {
 } from '../../../../../shared/helper/findUserRole';
 import { Button, Icon, Input, Popup } from 'semantic-ui-react';
 import ProfilePopupView from '../view/ProfilePopupView';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 import { isCollegeManager } from 'shared/helper/isCollegeManager';
 import classNames from 'classnames';
@@ -223,7 +226,10 @@ class ProfileContainer extends Component<Props, State> {
                     >
                       <Input
                         type="text"
-                        placeholder="검색어를 입력하세요."
+                        placeholder={getPolyglotText(
+                          '검색어를 입력하세요.',
+                          'cmm-cfl-검색어'
+                        )}
                         value={this.state.write}
                         onChange={(e) => setWrite(e.target.value)}
                         onKeyDown={(e: any) => {
