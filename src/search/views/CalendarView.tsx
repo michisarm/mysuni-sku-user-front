@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
-import { getQueryId, search } from 'search/search.events';
+import { getQueryId } from 'search/search.events';
 import { FilterCondition, SearchParam } from 'search/search.models';
 import { getFilterCondition, setFilterCondition } from 'search/search.services';
 import { Button, Image } from 'semantic-ui-react';
@@ -10,9 +10,10 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface CalendarViewProps {
   filterCondition: FilterCondition;
+  search: () => void;
 }
 
-export function CalendarView({ filterCondition }: CalendarViewProps) {
+export function CalendarView({ filterCondition, search }: CalendarViewProps) {
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
   const params = useParams<SearchParam>();
@@ -70,10 +71,7 @@ export function CalendarView({ filterCondition }: CalendarViewProps) {
           </Button>
         )}
         {!filterCondition.applying && (
-          <Button
-            className="btn_dateP"
-            onClick={() => search(queryId, params && params.searchType)}
-          >
+          <Button className="btn_dateP" onClick={search}>
             <Image
               src={`${PUBLIC_URL}/images/all/search-smallbox-act.png`}
               alt="검색버튼"

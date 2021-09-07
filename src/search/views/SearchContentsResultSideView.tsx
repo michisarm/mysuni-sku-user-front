@@ -62,7 +62,7 @@ export function SearchContentsResultSideView() {
     settingSearchFilter(queryId);
     setCollegeLimit(initialConditionLimit);
     setCubeTypeLimit(initialConditionLimit);
-  }, [card]);
+  }, [allowedCard]);
 
   const filterCondition = useFilterCondition();
   const collegeOptions = useCollegeOptions();
@@ -278,7 +278,10 @@ export function SearchContentsResultSideView() {
                     onClickFilterSearch();
                   }}
                 />
-                <CalendarView filterCondition={filterCondition} />
+                <CalendarView
+                  filterCondition={filterCondition}
+                  search={onClickFilterSearch}
+                />
               </li>
             </ul>
           </Accordion.Content>
