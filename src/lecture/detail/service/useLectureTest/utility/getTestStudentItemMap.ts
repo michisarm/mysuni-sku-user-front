@@ -22,7 +22,7 @@ export async function getTestStudentItemMapFromCourse(
     learningState: student.learningState,
     studentScore: student.studentScore,
     //examId: student.studentScore.examId,
-    paperId: student.studentScore.paperId,
+    paperId: student.studentScore?.paperId || '',
   };
   setLectureTestStudentItem(lectureTestStudentItem);
 }
@@ -39,7 +39,7 @@ export async function getTestStudentItemMapFromCube(
     return;
   }
   let student: Student | undefined;
-  students.cubeStudents?.forEach(cubeStudent => {
+  students.cubeStudents?.forEach((cubeStudent) => {
     if (cubeStudent.lectureId === params.cubeId) {
       student = cubeStudent;
     }

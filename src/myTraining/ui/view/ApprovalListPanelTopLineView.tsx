@@ -138,6 +138,14 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
             <div className="right-area">
               <Radio
                 className="base"
+                label={getPolyglotText('전체', '승인관리-유료과정-전체2')}
+                name="radioGroup"
+                value=""
+                checked={searchState === ''}
+                onChange={this.handleSearchProposalStateChange}
+              />
+              <Radio
+                className="base"
                 label={getPolyglotText('승인요청', '승인관리-유료과정-승요')}
                 name="radioGroup"
                 value="Submitted"

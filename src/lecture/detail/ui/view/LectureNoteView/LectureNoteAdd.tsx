@@ -11,7 +11,7 @@ import {
   setLectureNoteTab,
   setLectureNoteWriteState,
 } from '../../../store/LectureNoteStore';
-import { getPanoptoEmbedPlayerState } from '../../../store/PanoptoEmbedPlayerStore';
+import { getPanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { LectureNoteItem } from '../../../viewModel/LectureNote';
 
 interface Props {

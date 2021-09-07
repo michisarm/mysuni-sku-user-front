@@ -1,4 +1,4 @@
-import { computed, decorate, observable } from 'mobx';
+import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import moment from 'moment';
@@ -10,7 +10,6 @@ import {
   CubeState,
   IconBoxModel,
   IdName,
-  LangStrings,
   SearchFilterType,
 } from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
@@ -44,7 +43,7 @@ export class ApprovalCubeModel implements DramaEntity {
   contents: CubeContentsModel = new CubeContentsModel();
   cubeIntro: IdName = new IdName();
   tags: string[] = [];
-  creationTime: number = 0;
+  registeredTime: number = 0;
 
   openRequests: OpenRequest[] = [];
 
@@ -54,7 +53,7 @@ export class ApprovalCubeModel implements DramaEntity {
   studentId: string = '';
   rollBookId: string = '';
   classroomId: string = '';
-  studentName: PolyglotString | null = null;
+  studentName: string = '';
   studentDepartmentNames: PolyglotString | null = null;
   cubeName: PolyglotString | null = null;
 
@@ -172,7 +171,7 @@ export class ApprovalCubeModel implements DramaEntity {
     //
     return {
       No: index + 1,
-      신청자: parsePolyglotString(approvalCube.studentName),
+      신청자: approvalCube.studentName,
       조직: parsePolyglotString(approvalCube.studentDepartmentNames),
       과정명: parsePolyglotString(approvalCube.cubeName),
       차수: approvalCube.round,
@@ -180,11 +179,11 @@ export class ApprovalCubeModel implements DramaEntity {
         approvalCube.proposalState
       ),
       신청현황: approvalCube.approvedStudentCount + '/' + approvalCube.capacity,
-      '(차수)교육기간':
+      교육기간:
         approvalCube.learningStartDate + '~' + approvalCube.learningEndDate,
-      신청일자:
-        approvalCube.creationTime &&
-        moment(approvalCube.creationTime).format('YYYY.MM.DD'),
+      일자:
+        approvalCube.registeredTime &&
+        moment(approvalCube.registeredTime).format('YYYY.MM.DD'),
       '인당 교육금액': numeral(approvalCube.chargeAmount).format('0,0'),
     };
   }
@@ -194,7 +193,6 @@ decorate(ApprovalCubeModel, {
   id: observable,
   entityVersion: observable,
   patronKey: observable,
-
   personalCubeId: observable,
   name: observable,
   creator: observable,
@@ -208,29 +206,25 @@ decorate(ApprovalCubeModel, {
   searchFilter: observable,
   subsidiaries: observable,
   requiredSubsidiaries: observable,
-  creationTime: observable,
+  registeredTime: observable,
   openRequests: observable,
   required: observable,
-
   studentId: observable,
   rollBookId: observable,
   classroomId: observable,
   studentName: observable,
   studentDepartmentNames: observable,
   cubeName: observable,
-
   round: observable,
   approvedStudentCount: observable,
   capacity: observable,
   remark: observable,
-
   freeOfCharge: observable,
   operation: observable,
   enrolling: observable,
   cubeId: observable,
   cubeType: observable,
   proposalState: observable,
-
   learningStartDate: observable,
   learningEndDate: observable,
   chargeAmount: observable,

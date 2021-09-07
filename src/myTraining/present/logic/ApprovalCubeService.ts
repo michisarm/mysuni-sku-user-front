@@ -7,6 +7,7 @@ import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 @autobind
 export default class ApprovalCubeService {
@@ -110,7 +111,9 @@ export default class ApprovalCubeService {
       const approvalCube = new ApprovalCubeModel();
       approvalCube.studentId = approvalCubeDetail.student.id;
       if (approvalCubeDetail.userIdentity.name !== undefined) {
-        approvalCube.studentName = approvalCubeDetail.userIdentity.name;
+        approvalCube.studentName = parsePolyglotString(
+          approvalCubeDetail.userIdentity.name
+        );
       }
       if (approvalCubeDetail.userIdentity.departmentName !== undefined) {
         approvalCube.studentDepartmentNames =
