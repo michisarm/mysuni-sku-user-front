@@ -169,7 +169,7 @@ export function SearchContentsResultSideView() {
             index={1}
             onClick={handleClick}
           >
-            뱃지
+            Badge
             <Icon name="angle down" />
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 1}>

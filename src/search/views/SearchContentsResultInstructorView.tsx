@@ -4,6 +4,7 @@ import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
 import { SearchParam } from 'search/search.models';
 import { getExpert } from 'search/search.services';
 import Image from 'shared/components/Image';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 export function SearchContentsResultInstructorView() {
@@ -22,13 +23,14 @@ export function SearchContentsResultInstructorView() {
   }, [params]);
 
   const experts = getExpert();
-  console.log('experts', experts);
-
   return (
     <>
       <div className="result">
         <div className="result_title">
-          <strong>강사 ({experts?.length || 0})</strong>
+          <strong>
+            <PolyglotText id="통검-전학강-강사" defaultString="강사" /> (
+            {experts?.length || 0})
+          </strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link
               to={`/search/instructor?query=${queryId}`}

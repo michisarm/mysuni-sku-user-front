@@ -24,8 +24,6 @@ export function SearchContentsResultLectureView() {
   }, [params]);
 
   const cards = getDisplayCard();
-  console.log('cards', cards);
-
   return (
     <>
       <div className="result">

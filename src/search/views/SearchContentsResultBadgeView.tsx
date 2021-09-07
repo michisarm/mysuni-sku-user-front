@@ -27,7 +27,6 @@ export function SearchContentsResultBadgeView() {
   }, [params]);
 
   const badges = getSearchBadgeList();
-  console.log('badge', badges);
   return (
     <>
       <div className="result">

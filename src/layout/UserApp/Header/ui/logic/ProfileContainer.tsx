@@ -151,10 +151,8 @@ class ProfileContainer extends Component<Props, State> {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const {
-      myNotieMentions,
-      myNotieNoReadMentionCount,
-    } = NotieService.instance;
+    const { myNotieMentions, myNotieNoReadMentionCount } =
+      NotieService.instance;
     // const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
@@ -205,7 +203,9 @@ class ProfileContainer extends Component<Props, State> {
               onOpen={setSearchOpen}
             >
               <Popup.Header className="gsearch_header">
-                <strong className="h_tit">검색</strong>
+                <strong className="h_tit">
+                  <PolyglotText id="통검-필레팝얼-검색" defaultString="검색" />
+                </strong>
                 <div className="close_wrapper">
                   <Button className="close" Icon onClick={setSearchOpen} />
                 </div>
