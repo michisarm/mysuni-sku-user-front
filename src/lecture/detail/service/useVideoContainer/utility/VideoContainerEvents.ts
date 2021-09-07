@@ -11,13 +11,14 @@ import {
 } from '../../../api/cardApi';
 import { registerWatchLog } from '../../../api/mWatchlogApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
-import { PanoptoEmbedPlayerState } from '../../../store/PanoptoEmbedPlayerStore';
+import { PanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { confirmProgress } from '../../useLectureMedia/utility/confirmProgress';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
 export async function fetchAllModelsForStorage() {
-  const inProgressTableViews = await MyTrainingService.instance.findAllInProgressStorage();
+  const inProgressTableViews =
+    await MyTrainingService.instance.findAllInProgressStorage();
   if (inProgressTableViews && inProgressTableViews.length) {
     sessionStorage.setItem(
       'inProgressTableViews',
@@ -25,7 +26,8 @@ export async function fetchAllModelsForStorage() {
     );
   }
 
-  const completedTableViews = await MyTrainingService.instance.findAllCompletedStorage();
+  const completedTableViews =
+    await MyTrainingService.instance.findAllCompletedStorage();
   if (completedTableViews && completedTableViews.length) {
     sessionStorage.setItem(
       'completedTableViews',
@@ -41,7 +43,11 @@ export function callRegisterWatchLog(
   if (params?.cubeId === undefined) {
     return;
   }
-  const { watchLogStart, currentTime, playbackRate } = panoptoEmbedPlayerState;
+  const {
+    watchLogStart,
+    currentTime = 0,
+    playbackRate = 0,
+  } = panoptoEmbedPlayerState;
   const { cubeId } = params;
   const end = currentTime;
   const start =

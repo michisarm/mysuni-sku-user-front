@@ -14,6 +14,7 @@ interface Props {
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
   render() {
     const { approvalCube } = this.props;
+
     return (
       <>
         {approvalCube && (
@@ -32,7 +33,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                     defaultString="신청자"
                   />
                 </dt>
-                <dd>{parsePolyglotString(approvalCube.studentName)}</dd>
+                <dd>{approvalCube.studentName}</dd>
               </dl>
               <dl className="in">
                 <dt>
@@ -88,12 +89,12 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                         <Table.HeaderCell>
                           <PolyglotText
                             id="승인관리-개학승인-교육기간"
-                            defaultString="(차수)교육기간"
+                            defaultString="교육기간"
                           />
                         </Table.HeaderCell>
                         <Table.Cell>
-                          {approvalCube.enrolling.learningPeriod.startDate} ~{' '}
-                          {approvalCube.enrolling.learningPeriod.endDate}
+                          {approvalCube.learningStartDate} ~
+                          {approvalCube.learningEndDate}
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>

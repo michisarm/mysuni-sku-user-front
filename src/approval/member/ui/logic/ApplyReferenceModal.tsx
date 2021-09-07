@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Button, Modal, Table } from 'semantic-ui-react';
 import { MemberViewModel } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
@@ -7,11 +7,11 @@ import { SkProfileService } from 'profile/stores';
 import ManagerListModalContainer from './ManagerListModalContainer';
 import SkProfileModel from '../../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../department/model/DepartmentModel';
-import { CompanyApproverModel } from '../../../company/model/CompanyApproverModel';
 import {
+  CompanyApproverService,
   DepartmentService,
   MemberService,
-  CompanyApproverService,
+  MenuControlAuthService,
 } from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 import { Classroom } from '../../../../lecture/detail/viewModel/LectureClassroom';
@@ -20,11 +20,13 @@ import {
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { LectureApproverType } from '../../../company/model/LectureApproverType';
 
 interface Props {
   skProfileService?: SkProfileService;
   memberService?: MemberService;
   companyApproverService?: CompanyApproverService;
+  menuControlAuthService?: MenuControlAuthService;
   departmentService?: DepartmentService;
   trigger?: React.ReactNode;
   handleOk: (member: MemberViewModel) => void;
@@ -36,6 +38,7 @@ interface Props {
   mobxHelper.injectFrom(
     'approval.memberService',
     'approval.companyApproverService',
+    'approval.menuControlAuthService',
     'approval.departmentService',
     'profile.skProfileService'
   )
@@ -60,6 +63,7 @@ class ApplyReferenceModal extends React.Component<Props> {
       departmentService,
       memberService,
       companyApproverService,
+      menuControlAuthService,
     } = this.props;
     skProfileService!
       .findSkProfile()
@@ -72,6 +76,7 @@ class ApplyReferenceModal extends React.Component<Props> {
       .then((department: DepartmentModel) =>
         memberService!.findApprovalMemberByEmployeeId(department.managerId)
       )
+      .then(() => menuControlAuthService!.findMenuControlAuth())
       .then(() => companyApproverService!.findCompanyApprover());
   }
 
@@ -140,9 +145,15 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   render() {
     const { open } = this.state;
-    const { trigger, memberService, companyApproverService } = this.props;
+    const {
+      trigger,
+      memberService,
+      menuControlAuthService,
+      companyApproverService,
+    } = this.props;
     const { approvalMember } = memberService!;
-    const { companyApprover, originCompanyApprover } = companyApproverService!;
+    const { companyApprover } = companyApproverService!;
+    const { menuControlAuth } = menuControlAuthService!;
 
     // 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
     const memId = approvalMember ? approvalMember.id : '';
@@ -151,7 +162,10 @@ class ApplyReferenceModal extends React.Component<Props> {
     // 리더 승인 일 경우
     let approverTypeVal = '';
     // 승인자 변경하기 활성, 비활성처리
-    if (companyApprover.approverType === 'Leader_Approve') {
+    if (
+      menuControlAuth.lectureApproval.courseApproverType ===
+      LectureApproverType.TEAM_LEADER
+    ) {
       approverTypeVal = getPolyglotText(
         '본 과정의 승인은 학습자 본인의 리더(부서장)가 진행합니다. 승인요청 받을 리더정보를 확인 후 필요 시 변경해 주시길 바랍니다.',
         'CollageState-ClassroomModalRefer-리더'
@@ -162,9 +176,11 @@ class ApplyReferenceModal extends React.Component<Props> {
         'CollageState-ClassroomModalRefer-HR담당자'
       );
     }
-    // 승인자 변경하기 활성, 비활성처리 (최조 승인자의 approverType에 따름)
+
+    //승인자 변경하기 활성, 비활성처리 (최조 승인자의 approverType에 따름)
     const approvalShow =
-      originCompanyApprover.approverType === 'Leader_Approve';
+      menuControlAuth.lectureApproval.courseApproverType ===
+      LectureApproverType.TEAM_LEADER;
 
     // 승인자 설정 문구 Leader_Approve 일 경우 만 보인다.
     const approverTypeStr = approverTypeVal;
