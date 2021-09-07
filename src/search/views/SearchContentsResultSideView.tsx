@@ -180,7 +180,7 @@ export function SearchContentsResultSideView() {
               <li>
                 <Radio
                   name="badgeOptions"
-                  label="포함"
+                  label={getPolyglotText('포함', '통검-필레팝-핵포함')}
                   value="badgeInclude"
                   checked={filterCondition.badge === true}
                   onChange={() => {
@@ -199,7 +199,7 @@ export function SearchContentsResultSideView() {
               <li>
                 <Radio
                   name="badgeOptions"
-                  label="미포함"
+                  label={getPolyglotText('비포함', '통검-필레팝-핵비포')}
                   value="badgeNotInclude"
                   checked={filterCondition.badge !== true}
                   onChange={() => {

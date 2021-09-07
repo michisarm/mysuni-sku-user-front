@@ -424,7 +424,7 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career,introduction&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)
@@ -752,9 +752,8 @@ function searchRankins(domainNo: number) {
   const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
   return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
-const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
-  searchRankins
-);
+const [searchRankinsCache, clearSearchRankinsCache] =
+  createCacheApi(searchRankins);
 export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어
