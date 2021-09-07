@@ -11,6 +11,7 @@ import {
   useSearchInSearchInfo,
   useSearchRelatedList,
 } from 'search/search.services';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function SearchHeaderView() {
   //
@@ -217,7 +218,7 @@ export function SearchHeaderView() {
             active={activeItem === 'instructor'}
             onClick={handleMenuClick}
           >
-            강사
+            <PolyglotText id="통검-전학강-강사" defaultString="강사" />
           </Menu.Item>
         </Menu>
       </div>
