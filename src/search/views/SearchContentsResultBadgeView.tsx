@@ -46,23 +46,18 @@ export function SearchContentsResultBadgeView() {
                 if (index < badgeLimit) {
                   return (
                     <li>
-                      <a
-                        href={`/certification/badge/badge-detail/${badge.id}`}
-                        className="badge-box"
-                      >
-                        <BadgeView
-                          id={badge.id}
-                          name={parsePolyglotString(
-                            badge.name,
-                            getDefaultLang(badge.langSupport)
-                          )}
-                          level={badge.level}
-                          iconUrl={badge.iconUrl}
-                          categoryId={badge.categoryId}
-                          badgeStyle={BadgeStyle.List}
-                          badgeSize={BadgeSize.Small}
-                        />
-                      </a>
+                      <BadgeView
+                        id={badge.id}
+                        name={parsePolyglotString(
+                          badge.name,
+                          getDefaultLang(badge.langSupport)
+                        )}
+                        level={badge.level}
+                        iconUrl={badge.iconUrl}
+                        categoryId={badge.categoryId}
+                        badgeStyle={BadgeStyle.List}
+                        badgeSize={BadgeSize.Small}
+                      />
                       {/*뱃지 네임은 뱃지목록에서만 노출*/}
                       <div className="badge-name">
                         {/* <span>{badgeTitle}</span> */}
