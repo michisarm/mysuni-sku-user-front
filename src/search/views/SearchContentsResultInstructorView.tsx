@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getQueryId, getTitleHtmlSearchKeyword } from 'search/search.events';
-import { SearchParam } from 'search/search.models';
-import { getExpert } from 'search/search.services';
-import Image from 'shared/components/Image';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import {
+  getQueryId,
+  getTitleHtmlSearchKeyword,
+} from '../../search/search.events';
+import { SearchParam } from '../../search/search.models';
+import { getExpert } from '../../search/search.services';
+import Image from '../../shared/components/Image';
+import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
+//import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 export function SearchContentsResultInstructorView() {
   //
@@ -55,7 +58,7 @@ export function SearchContentsResultInstructorView() {
                       <Image
                         src={
                           expert.photo_id === ''
-                            ? profileImg
+                            ? 'style/../../public/images/all/img-profile-56-px.png'
                             : expert.photo_id.startsWith('http')
                             ? expert.photo_id
                             : `https://mysuni.sk.com${expert.photo_id}`

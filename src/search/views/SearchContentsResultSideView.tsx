@@ -1,4 +1,4 @@
-import { filterConditionNamePolyglot } from 'myTraining/model/FilterConditionName';
+import { filterConditionNamePolyglot } from '../../myTraining/model/FilterConditionName';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -14,8 +14,8 @@ import {
   toggle_all_difficulty_level_query,
   toggle_all_cube_type_query,
   toggle_all_learning_time_query,
-} from 'search/search.events';
-import { SearchParam, CheckboxOptions } from 'search/search.models';
+} from '../../search/search.events';
+import { SearchParam, CheckboxOptions } from '../../search/search.models';
 import {
   getAllowedCard,
   getDisplayCard,
@@ -24,9 +24,12 @@ import {
   useCollegeOptions,
   useCubeTypeOptions,
   useFilterCondition,
-} from 'search/search.services';
+} from '../../search/search.services';
 import { Accordion, Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../shared/ui/logic/PolyglotText';
 import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {

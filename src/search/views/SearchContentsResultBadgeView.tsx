@@ -1,17 +1,17 @@
-import BadgeStyle from 'certification/ui/model/BadgeStyle';
-import BadgeSize from 'certification/ui/model/BadgeSize';
-import BadgeView from 'certification/ui/view/BadgeView';
+import BadgeStyle from '../../certification/ui/model/BadgeStyle';
+import BadgeSize from '../../certification/ui/model/BadgeSize';
+import BadgeView from '../../certification/ui/view/BadgeView';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { SearchParam } from 'search/search.models';
+import { SearchParam } from '../../search/search.models';
 import {
   getQueryId,
   getTextFromHtml,
   getTitleHtmlSearchKeyword,
-} from 'search/search.events';
-import { getSearchBadgeList } from 'search/search.services';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from 'lecture/model/LangSupport';
+} from '../../search/search.events';
+import { getSearchBadgeList } from '../../search/search.services';
+import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../lecture/model/LangSupport';
 
 export function SearchContentsResultBadgeView() {
   //
