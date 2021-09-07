@@ -62,7 +62,7 @@ export function SearchContentsResultSideView() {
     settingSearchFilter(queryId);
     setCollegeLimit(initialConditionLimit);
     setCubeTypeLimit(initialConditionLimit);
-  }, [card]);
+  }, [allowedCard]);
 
   const filterCondition = useFilterCondition();
   const collegeOptions = useCollegeOptions();
@@ -180,7 +180,7 @@ export function SearchContentsResultSideView() {
               <li>
                 <Radio
                   name="badgeOptions"
-                  label="포함"
+                  label={getPolyglotText('포함', '통검-필레팝-핵포함')}
                   value="badgeInclude"
                   checked={filterCondition.badge === true}
                   onChange={() => {
@@ -199,7 +199,7 @@ export function SearchContentsResultSideView() {
               <li>
                 <Radio
                   name="badgeOptions"
-                  label="미포함"
+                  label={getPolyglotText('비포함', '통검-필레팝-핵비포')}
                   value="badgeNotInclude"
                   checked={filterCondition.badge !== true}
                   onChange={() => {
@@ -278,7 +278,10 @@ export function SearchContentsResultSideView() {
                     onClickFilterSearch();
                   }}
                 />
-                <CalendarView filterCondition={filterCondition} />
+                <CalendarView
+                  filterCondition={filterCondition}
+                  search={onClickFilterSearch}
+                />
               </li>
             </ul>
           </Accordion.Content>

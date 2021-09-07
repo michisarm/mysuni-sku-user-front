@@ -11,7 +11,10 @@ import {
   useSearchInSearchInfo,
   useSearchRelatedList,
 } from '../../search/search.services';
-import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../shared/ui/logic/PolyglotText';
 
 export function SearchHeaderView() {
   //
@@ -101,7 +104,10 @@ export function SearchHeaderView() {
                       </div>
                       <Input
                         type="text"
-                        placeholder="검색어를 입력하세요."
+                        placeholder={getPolyglotText(
+                          '검색어를 입력하세요.',
+                          'cmm-cfl-검색어'
+                        )}
                         value={write}
                         onClick={() => setFocus(true)}
                         onChange={(e) => {
@@ -190,7 +196,7 @@ export function SearchHeaderView() {
             active={activeItem === 'all'}
             onClick={handleMenuClick}
           >
-            전체
+            <PolyglotText id="cmm-cfl-전체" defaultString="전체" />
           </Menu.Item>
           <Menu.Item
             name="lecture"

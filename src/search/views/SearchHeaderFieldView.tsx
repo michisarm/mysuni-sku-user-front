@@ -52,9 +52,11 @@ export function SearchHeaderFieldView(props: Props) {
       <div className="w_area recent_list">
         <div className="w_header">
           <strong className="w_tit">최근 검색어</strong>
-          <Button className="all_dt" onClick={allClear}>
-            전체 삭제
-          </Button>
+          {searchRecents && searchRecents.length > 0 && (
+            <Button className="all_dt" onClick={allClear}>
+              전체 삭제
+            </Button>
+          )}
         </div>
         <div className="w_contents">
           {(searchRecents?.length || 0) < 1 && (

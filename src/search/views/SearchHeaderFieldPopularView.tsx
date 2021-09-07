@@ -7,6 +7,7 @@ import {
 } from 'search/search.services';
 import { searchPopularList } from 'search/search.events';
 import { useParams } from 'react-router-dom';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   onClickSearch: (searchValue: string) => void;
@@ -27,7 +28,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
 
   const panes = [
     {
-      menuItem: '1개월',
+      menuItem: getPolyglotText('1개월', 'home-PersonalBoard-CompanyPopular1M'),
       render: () => (
         <Tab.Pane>
           <ol>

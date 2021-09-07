@@ -8,7 +8,7 @@ import { SearchParam } from '../../search/search.models';
 import { getExpert } from '../../search/search.services';
 import Image from '../../shared/components/Image';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
-//import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 export function SearchContentsResultInstructorView() {
   //
@@ -58,7 +58,7 @@ export function SearchContentsResultInstructorView() {
                       <Image
                         src={
                           expert.photo_id === ''
-                            ? 'style/../../public/images/all/img-profile-56-px.png'
+                            ? profileImg
                             : expert.photo_id.startsWith('http')
                             ? expert.photo_id
                             : `https://mysuni.sk.com${expert.photo_id}`
@@ -94,11 +94,16 @@ export function SearchContentsResultInstructorView() {
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
                           __html: getTitleHtmlSearchKeyword(
-                            expert.lectureField
+                            expert.introduction
                           ),
                         }}
                       />
-                      <dt>주요 경력</dt>
+                      <dt>
+                        <PolyglotText
+                          id="통검-강사소개-주요경력"
+                          defaultString="주요 경력"
+                        />
+                      </dt>
                       <dd
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
