@@ -45,7 +45,7 @@ function LectureDescriptionView({
         }
       }
     }
-  }, [descriptionOpen]);
+  }, [descriptionOpen, showMoreButton]);
   return (
     <div
       className={`${
@@ -64,7 +64,9 @@ function LectureDescriptionView({
           className={classNames('right btn-blue fn-more-toggle')}
           onClick={toggleMore}
         >
-          {descriptionOpen === true ? getPolyglotText('hide', 'cube-Description-hide') : getPolyglotText('more', 'cube-Description-more')}{' '}
+          {descriptionOpen === true
+            ? getPolyglotText('hide', 'cube-Description-hide')
+            : getPolyglotText('more', 'cube-Description-more')}{' '}
           <Icon
             className={classNames({
               more2: descriptionOpen !== true,

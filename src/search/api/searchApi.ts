@@ -11,18 +11,30 @@ import {
   getCubeTypeOptions,
   getFilterCondition,
   getOrganizerOptions,
-} from '../Components/SearchFilter';
-import CheckboxOptions from '../model/CheckBoxOption';
-import { SearchCard, SearchCardCategory } from '../model/SearchCard';
-import { SearchExpert } from '../model/SearchExpert';
+  setSearchUI,
+  getSearchUI,
+} from '../search.services';
+import {
+  CheckboxOptions,
+  SearchBadge,
+  SearchCard,
+  SearchCardCategory,
+  SearchCommunity,
+  SearchExpert,
+  SearchSuggestion,
+} from '../search.models';
 import { UserWorkspace } from '../../approval/models/UserWorkspace';
 import _ from 'lodash';
 import { Token } from '../../shared/model/Token';
-import { setSearchUI, getSearchUI } from '../model/SearchUI';
 import { findMyUserWorkspaceCache } from 'lecture/detail/api/profileApi';
+import { createCacheApi } from 'lecture/detail/api/cacheableApi';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
+const RANKINS_URL = 'https://mysuni.sk.com/search/api/rankings'; // 인기검색어
+const SUGGEST_URL = 'https://mysuni.sk.com/search/api/suggestion'; // 연관검색어
+const BADGE_URL = '/api/badge';
+const COMMUNITY_URL = '/api/community';
 const workspaces: { cineroomWorkspaces?: Workspace[] } =
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
@@ -95,7 +107,7 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 }
 
 const FIND_CARD_COLUMNS =
-  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules';
+  'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules,tags';
 
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
@@ -127,7 +139,7 @@ export function findPreCard(text_idx: string) {
     });
 }
 
-export function findCard(text_idx: string) {
+export function findCard(text_idx: string, pre: string) {
   const transactionId = Date.now();
   setSearchUI({
     isLoading: true,
@@ -135,8 +147,10 @@ export function findCard(text_idx: string) {
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
-  );
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
+  ).replace('##', '%23%23'); // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
+
+  console.log('url', url);
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -187,21 +201,21 @@ function testBlacklistAccessRuleForPaidLecture(
   // ex)
   // userGroupSequences:[] = [0, 4, 10, 16, 75]
   // access_rules:[string] = ["____1%","__1%"]
-  // 위의 결과는 맵핑
+  // 위의 결과는 맵핑 access_rules[0] 중 1의 자리가 4인데 userGroupSequences에 있으므로 맵핑
+  // access_rule이 "_1__1%"이면 userGroupSequence로 1,4를 모두 가지고 있어야 함
   const accessRulesArr: string[] = JSON.parse(card.access_rules);
   const userGroupSequences: number[] = Array.from(
     SkProfileService.instance.skProfile.userGroupSequences.sequences
   ); // 1이 있는 자리 위치(0부터)를 표기한 데이터
-  if (card.id === 'CARD-135y') {
-    debugger;
-  }
   const whiteListPolicyResult = accessRulesArr.reduce<boolean>((r, c) => {
     const accessRule = c;
     if (card.use_whitelist_policy) {
+      // 하나라도 있으면 true 모두 없어야 false
       return (
         r ||
         (accessRule.split('').some((d, i) => {
           if (userGroupSequences.includes(i)) {
+            // userGroupSequence에 accessRule index가 있는지
             return true;
           }
           return false;
@@ -217,11 +231,18 @@ function testBlacklistAccessRuleForPaidLecture(
           }))
       );
     } else {
+      // 하나라도 있으면 fasle 모두 없어야 true
       return (
-        r ||
         accessRule.split('').some((d, i) => {
-          if (d !== '1') {
+          if (userGroupSequences.includes(i)) {
+            // userGroupSequence에 accessRule index가 있는지
             return true;
+          }
+          return false;
+        }) &&
+        !accessRule.split('').some((d, i) => {
+          if (d !== '1') {
+            return false;
           }
           if (!userGroupSequences.includes(i) && d === '1') {
             return true;
@@ -403,7 +424,7 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)
@@ -707,3 +728,39 @@ export function makeQuery(
 }
 
 //where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')
+
+export function findBadges(text_idx: string) {
+  const url = encodeURI(
+    `${BADGE_URL}/badges/search?keyword=${text_idx}&limit=999&offset=0&sort=`
+  );
+  return axiosApi
+    .get<{ results: SearchBadge[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}
+
+export function findCommunities(text_idx: string) {
+  const url = encodeURI(
+    `${COMMUNITY_URL}/communities/communityView/search?keyword=${text_idx}&limit=999&offset=0&sort=`
+  );
+  return axiosApi
+    .get<{ results: SearchCommunity[]; totalCount: number }>(url)
+    .then(AxiosReturn);
+}
+
+// 인기검색어
+function searchRankins(domainNo: number) {
+  const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
+  return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
+}
+const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
+  searchRankins
+);
+export { searchRankinsCache, clearSearchRankinsCache };
+
+// 연관검색어
+export function searchSuggest(text_idx: string) {
+  const url = encodeURI(
+    `${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`
+  );
+  return axiosApi.get<SearchSuggestion>(url).then(AxiosReturn);
+}

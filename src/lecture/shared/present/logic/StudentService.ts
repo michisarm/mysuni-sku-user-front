@@ -1,4 +1,10 @@
-import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  IObservableArray,
+  observable,
+  runInAction,
+} from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { LearningState } from 'shared/model';
 import _ from 'lodash';
@@ -13,7 +19,6 @@ import StudentCubeModel from '../../../model/StudentCubeModel';
 import LectureStudentRdoModel from '../../../model/LectureStudentRdoModel';
 import StudentHideUdo from '../../../model/StudentHideUdo';
 import { hideStudent } from '../../../../certification/api/CardStudentApi';
-
 
 @autobind
 class StudentService {
@@ -44,7 +49,6 @@ class StudentService {
     }
 
     if (this._studentInfo && this._studentInfo.course) {
-
       this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
         if (courseInfo && !lecture) {
           courseInfo.lectures.map((info: StudentModel) => {
@@ -98,7 +102,7 @@ class StudentService {
   @computed
   get studentCounts() {
     const studentCounts: StudentCountRdoModel[] = [];
-    this.studentCountMap.forEach(value => studentCounts.push(value));
+    this.studentCountMap.forEach((value) => studentCounts.push(value));
     return studentCounts;
   }
 
@@ -106,10 +110,16 @@ class StudentService {
   get studentJoins(): StudentJoinRdoModel[] {
     //
     const studentJoins = this._studentJoins as IObservableArray;
-    return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
+    return studentJoins
+      .peek()
+      .filter((studentJoin: StudentJoinRdoModel) => studentJoin.join)
+      .sort(this.compare);
   }
 
-  compare(studentJoin1: StudentJoinRdoModel, studentJoin2: StudentJoinRdoModel) {
+  compare(
+    studentJoin1: StudentJoinRdoModel,
+    studentJoin2: StudentJoinRdoModel
+  ) {
     if (studentJoin1.updateTime < studentJoin2.updateTime) return 1;
     return -1;
   }
@@ -128,27 +138,40 @@ class StudentService {
   async getStudentForVideo(lectureCardId: string): Promise<StudentModel> {
     //
     let student: StudentModel = new StudentModel();
-    const studentJoinsForVideo = await this.findIsJsonStudentForVideo(lectureCardId);
+    const studentJoinsForVideo = await this.findIsJsonStudentForVideo(
+      lectureCardId
+    );
 
     if (studentJoinsForVideo && studentJoinsForVideo.length) {
       studentJoinsForVideo.sort(this.compare);
       const studentJoin = studentJoinsForVideo[0];
       student = await this.findStudentForVideo(studentJoin!.studentId);
-
     } else this.clearForVideo();
 
     return student;
   }
 
   @action
-  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[], preLectureCardIds: string[]) {
+  async setStudentInfo(
+    serviceId: string,
+    lectureCardIds: string[],
+    courseLectureIds: string[],
+    preLectureCardIds: string[]
+  ) {
     //
-    const lectureStudentRdo = new LectureStudentRdoModel({ serviceId, lectureCardIds, courseLectureIds, preLectureCardIds });
+    const lectureStudentRdo = new LectureStudentRdoModel({
+      serviceId,
+      lectureCardIds,
+      courseLectureIds,
+      preLectureCardIds,
+    });
 
     this._studentInfo = null;
 
     // const studentInfo = await this.studentFlowApi.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds, preLectureCardIds);
-    const studentInfo = await this.studentFlowApi.getLectureStudentView2(lectureStudentRdo);
+    const studentInfo = await this.studentFlowApi.getLectureStudentView2(
+      lectureStudentRdo
+    );
 
     if (studentInfo) {
       return runInAction(() => {
@@ -171,10 +194,6 @@ class StudentService {
 
   studentMarkComplete(rollBookId: string) {
     return this.studentApi.studentMarkComplete(rollBookId);
-  }
-
-  removeStudent(rollBookId: string) {
-    return this.studentApi.removeStudent(rollBookId);
   }
 
   modifyLearningState(studentId: string, learningState: LearningState) {
@@ -240,16 +259,28 @@ class StudentService {
     //
     const studentCountRdo = await this.studentApi.findStudentCount(rollBookId);
 
-    runInAction(() => this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo)));
+    runInAction(() =>
+      this.studentCountMap.set(
+        rollBookId,
+        new StudentCountRdoModel(studentCountRdo)
+      )
+    );
     return studentCountRdo;
   }
 
   @action
   async findIsJsonStudent(lectureCardId: string) {
     //
-    const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
+    const studentJoinRdos = await this.studentApi.findIsJsonStudent(
+      lectureCardId
+    );
 
-    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    runInAction(
+      () =>
+        (this._studentJoins = studentJoinRdos.map(
+          (studentJoinRdo) => new StudentJoinRdoModel(studentJoinRdo)
+        ))
+    );
     return studentJoinRdos;
   }
 
@@ -258,9 +289,16 @@ class StudentService {
    */
   async findIsJsonStudentForVideo(lectureCardId: string) {
     //
-    const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
+    const studentJoinRdos = await this.studentApi.findIsJsonStudent(
+      lectureCardId
+    );
 
-    runInAction(() => this._studentJoinsForVideo = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    runInAction(
+      () =>
+        (this._studentJoinsForVideo = studentJoinRdos.map(
+          (studentJoinRdo) => new StudentJoinRdoModel(studentJoinRdo)
+        ))
+    );
 
     return studentJoinRdos;
   }
@@ -268,9 +306,16 @@ class StudentService {
   @action
   async findIsJsonStudentByCube(lectureCardId: string) {
     //
-    const studentJoinRdos = await this.studentApi.findIsJsonStudentByCube(lectureCardId);
+    const studentJoinRdos = await this.studentApi.findIsJsonStudentByCube(
+      lectureCardId
+    );
 
-    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    runInAction(
+      () =>
+        (this._studentJoins = studentJoinRdos.map(
+          (studentJoinRdo) => new StudentJoinRdoModel(studentJoinRdo)
+        ))
+    );
     return studentJoinRdos;
   }
 
@@ -303,8 +348,6 @@ class StudentService {
   ////////////////////////////////////// 개편 //////////////////////////////////////
 }
 
-
-
 // StudentService.instance = new StudentService(StudentApi.instance);
 
 export default StudentService;
@@ -312,5 +355,5 @@ export default StudentService;
 Object.defineProperty(StudentService, 'instance', {
   value: new StudentService(StudentApi.instance, StudentFlowApi.instance),
   writable: false,
-  configurable: false
+  configurable: false,
 });

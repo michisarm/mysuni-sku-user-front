@@ -70,7 +70,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     const { skProfileService, collegeLectureCountService } = this.props;
     const { additionalUserInfo } = skProfileService!;
 
-    const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges: CollegeLectureCountRdo[] =
+      await collegeLectureCountService!.findCollegeLectureCounts();
     const collegeData = await findAllCollegeCache();
 
     // 필수 관심채널 필터링
@@ -164,10 +165,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = this.props.collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      this.props.collegeLectureCountService!;
     const { selectedCollege, favorites, favoriteCompanyChannels } = this.state;
 
     return (
@@ -175,7 +174,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         <h3 className="title-filter">
           <PolyglotText
             defaultString="관심분야 선택"
-            id="college-favorite-제목"
+            id="college-favorite-관심분야선택"
           />
         </h3>
         <div className="filter-wrap">

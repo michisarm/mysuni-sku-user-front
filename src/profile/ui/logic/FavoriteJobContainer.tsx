@@ -92,9 +92,19 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   setJobGroup() {
     const { jobGroups } = this.props.jobGroupService!;
     const jobGroupSelect: { key: number; value: string; text: string }[] = [];
+    const selectText = {
+      ko: '선택해주세요',
+      en: 'Please select one',
+      zh: '请选择',
+    };
+    const etcText = { ko: '기타', en: 'Others', zh: '其他' };
 
     if (jobGroups) {
-      jobGroupSelect.push({ key: 0, value: '', text: '선택해주세요' });
+      jobGroupSelect.push({
+        key: 0,
+        value: '',
+        text: parsePolyglotString(selectText),
+      });
       jobGroups.map((jobGroup, index) => {
         jobGroupSelect.push({
           key: index + 1,
@@ -105,7 +115,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       jobGroupSelect.push({
         key: jobGroups.length + 1,
         value: 'etc',
-        text: '기타',
+        text: parsePolyglotString(etcText),
       });
     }
     return jobGroupSelect;

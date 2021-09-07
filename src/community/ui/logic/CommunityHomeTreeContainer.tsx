@@ -28,6 +28,7 @@ import { Area } from 'tracker/model';
 import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { findCommunityProfile } from '../../api/profileApi';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -41,8 +42,8 @@ interface ApprovedProps {
   lastPostTime: number;
 }
 
-const MenuItemView: React.FC<CommunityMenu &
-  MenuItemViewProps> = function MenuItemView({
+const MenuItemView: React.FC<CommunityMenu & MenuItemViewProps> =
+  function MenuItemView({
     type,
     name,
     communityId,
@@ -103,7 +104,7 @@ const MenuItemView: React.FC<CommunityMenu &
             <ul>
               {subMenus
                 .sort((a, b) => a.order - b.order)
-                .map(menu => (
+                .map((menu) => (
                   <SubMenuItemView key={menu.menuId} {...menu} />
                 ))}
             </ul>
@@ -125,14 +126,16 @@ const MenuItemView: React.FC<CommunityMenu &
           <Link to={`/community/${communityId}/${path}/${menuId}`}>
             <img src={icon} />
             {name}{' '}
-            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+            {addNewBadge(lastPostTime) && (
+              <span className="new-label">NEW</span>
+            )}
           </Link>
         </li>
         {subMenus.length > 0 && (
           <ul>
             {subMenus
               .sort((a, b) => a.order - b.order)
-              .map(menu => (
+              .map((menu) => (
                 <SubMenuItemView key={menu.menuId} {...menu} />
               ))}
           </ul>
@@ -141,8 +144,8 @@ const MenuItemView: React.FC<CommunityMenu &
     );
   };
 
-const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
-  ApprovedProps> = function MenuItemView({
+const ReadonlyMenuItemView: React.FC<MenuItemViewProps & ApprovedProps> =
+  function MenuItemView({
     type,
     name,
     icon,
@@ -217,14 +220,16 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
           <button onClick={Alert}>
             <img src={nextIcon} />
             {name}{' '}
-            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+            {addNewBadge(lastPostTime) && (
+              <span className="new-label">NEW</span>
+            )}
           </button>
         </li>
         {subMenus.length > 0 && (
           <ul>
             {subMenus
               .sort((a, b) => a.order - b.order)
-              .map(menu => (
+              .map((menu) => (
                 <ReadonlySubMenuItemView
                   key={menu.menuId}
                   type={menu.type}
@@ -528,7 +533,7 @@ function CommunityHomeTreeContainer() {
     const currentUrl = window.location.toString();
     const url = `${currentUrl.split('/community/')[0]}/community/${
       communtyHome.community.communityId
-      }`;
+    }`;
     const textarea = document.createElement('textarea');
     textarea.value = url;
     document.body.appendChild(textarea);
@@ -536,7 +541,10 @@ function CommunityHomeTreeContainer() {
     textarea.setSelectionRange(0, 9999);
     document.execCommand('copy');
     document.body.removeChild(textarea);
-    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+      message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
+    });
   }, [communtyHome?.community?.communityId]);
   if (communtyHome === undefined || communtyHome.community === undefined) {
     return null;
@@ -583,7 +591,7 @@ function CommunityHomeTreeContainer() {
   }
 
   function onClickManagerName(params: any) {
-    findCommunityProfile(params.managerId).then(result => {
+    findCommunityProfile(params.managerId).then((result) => {
       setProfileInfo({
         id: result!.id,
         profileImg: result!.profileImg,
@@ -649,18 +657,18 @@ function CommunityHomeTreeContainer() {
                   </Link>
                 </li>
                 {communtyHome?.community &&
-                  deleteAllPostMenu(
-                    communtyHome?.community.communityId
-                  ) ? null : (
-                    <ReadonlyMenuItemView
-                      type="NOTICE"
-                      name="전체글"
-                      icon={boardIcon}
-                      approved={communtyHome.community?.approved}
-                      subMenus={[]}
-                      lastPostTime={0}
-                    />
-                  )}
+                deleteAllPostMenu(
+                  communtyHome?.community.communityId
+                ) ? null : (
+                  <ReadonlyMenuItemView
+                    type="NOTICE"
+                    name="전체글"
+                    icon={boardIcon}
+                    approved={communtyHome.community?.approved}
+                    subMenus={[]}
+                    lastPostTime={0}
+                  />
+                )}
                 <ReadonlyMenuItemView
                   type="NOTICE"
                   name="공지사항"
@@ -670,14 +678,14 @@ function CommunityHomeTreeContainer() {
                   lastPostTime={lastNoticePostTime}
                 />
                 {communtyHome.menus
-                  .filter(c => c.parentId === null)
+                  .filter((c) => c.parentId === null)
                   .sort((a, b) => a.order - b.order)
-                  .map(menu => (
+                  .map((menu) => (
                     <ReadonlyMenuItemView
                       key={menu.menuId}
                       {...menu}
                       subMenus={communtyHome.menus.filter(
-                        c => c.parentId === menu.id
+                        (c) => c.parentId === menu.id
                       )}
                       approved={communtyHome.community?.approved}
                     />
@@ -694,13 +702,18 @@ function CommunityHomeTreeContainer() {
                   </Link>
                 </li>
                 {communtyHome?.community &&
-                  deleteAllPostMenu(
-                    communtyHome?.community.communityId
-                  ) ? null : (
-                    <li onClick={() => gaEvent('all')}>
-                      <Link to={`/community/${communtyHome.community.communityId}/all`}><img src={boardIcon} />전체글</Link>
-                    </li>
-                  )}
+                deleteAllPostMenu(
+                  communtyHome?.community.communityId
+                ) ? null : (
+                  <li onClick={() => gaEvent('all')}>
+                    <Link
+                      to={`/community/${communtyHome.community.communityId}/all`}
+                    >
+                      <img src={boardIcon} />
+                      전체글
+                    </Link>
+                  </li>
+                )}
                 <li onClick={() => gaEvent('notic')}>
                   <Link
                     to={`/community/${communtyHome.community.communityId}/notice`}
@@ -713,15 +726,15 @@ function CommunityHomeTreeContainer() {
                   </Link>
                 </li>
                 {communtyHome.menus
-                  .filter(c => c.parentId === null)
+                  .filter((c) => c.parentId === null)
                   .sort((a, b) => a.order - b.order)
-                  .map(menu => {
+                  .map((menu) => {
                     return (
                       <MenuItemView
                         key={menu.menuId}
                         {...menu}
                         subMenus={communtyHome.menus.filter(
-                          c => c.parentId === menu.id
+                          (c) => c.parentId === menu.id
                         )}
                       />
                     );

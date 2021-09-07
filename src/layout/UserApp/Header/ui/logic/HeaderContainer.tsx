@@ -156,7 +156,7 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
           {/* <CategoryMenuContainer /> */}
-          {!isExternal && (
+          {/*!isExternal && (
             <SearchBarView
               value={searchValue}
               focused={focused}
@@ -167,7 +167,7 @@ class HeaderContainer extends Component<Props, State> {
               onClear={this.onClickClearSearch}
               getPolyglotText={getPolyglotText}
             />
-          )}
+          )*/}
 
           <ProfileContainer />
         </>

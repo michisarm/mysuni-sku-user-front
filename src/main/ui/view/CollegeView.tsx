@@ -3548,7 +3548,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'Designing Innovation',
+    menuItem: 'Innovation & Design',
     render: () => (
       <Tab.Pane>
         <div
@@ -3557,7 +3557,7 @@ const EnPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">Innovative Design College</div>
+              <div className="label">Innovation & Design College</div>
               <div className="strong">
                 Understand the Customers and Innovate Design!
               </div>
@@ -3591,10 +3591,7 @@ const EnPanes = [
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <a
-                    className="item-button"
-                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
-                  >
+                  <a className="item-button" href="#none">
                     <img
                       src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
@@ -4166,10 +4163,7 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="/suni-main/lecture/college/CLG00006/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -4415,12 +4409,12 @@ const EnPanes = [
             <div className="belt global">
               <div className="label">Local Expert Curriculum</div>
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top-ENG.png"
                 alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents-ENG.png"
                 alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
@@ -4754,10 +4748,7 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  className="item-button"
-                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
-                >
+                <a className="item-button" href="#none">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -4776,7 +4767,7 @@ const EnPanes = [
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
                 <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level-ENG.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
                   style={{ float: 'left' }}
@@ -5066,7 +5057,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'Future Semiconductors',
+    menuItem: 'Future Semiconductor',
     render: () => (
       <Tab.Pane>
         <div
@@ -5120,17 +5111,14 @@ const EnPanes = [
                 </p> */}
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00019/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                   />
                   Go to Courses
-                </Link>
+                </a>
               </div>
             </div>
 
@@ -5172,8 +5160,9 @@ const EnPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-ENG.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">Smart SCM Expert</a>
                             </li>
@@ -5188,8 +5177,9 @@ const EnPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-ENG.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">
                                 AI manufacturing <br />
@@ -5227,9 +5217,7 @@ const EnPanes = [
                             the Course
                           </dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          To be Opened
-                        </button>
+                        <button type="button">To be Opened</button>
                       </div>
                     </div>
                   </div>
@@ -5393,9 +5381,7 @@ const EnPanes = [
                           <dt>Requirements</dt>
                           <dd>Take the course / Test and Perform Tasks</dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          To be Opened
-                        </button>
+                        <button type="button">To be Opened</button>
                       </div>
                     </div>
                   </div>
@@ -6031,17 +6017,14 @@ const EnPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00019/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
                   />
                   Go to Courses
-                </Link>
+                </a>
               </div>
               <div className="belt">
                 <div className="map">
@@ -6116,23 +6099,20 @@ const EnPanes = [
                 </p> */}
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00020/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
                   Go to Courses
-                </Link>
+                </a>
               </div>
             </div>
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-1-eng.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co-11-1-eng.png"
                   alt=""
                 />
               </div>
@@ -6149,7 +6129,7 @@ const EnPanes = [
               </div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/bm-level-line-eng.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/bm-level-line-eng.png"
                   alt=""
                   style={{ float: 'left' }}
                 />
@@ -6157,67 +6137,57 @@ const EnPanes = [
                   <div className="bm-flex">
                     <div className="bm-bg-box bg_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00081">
-                          BM Design @ Work
-                        </Link>
+                        <a href="#none">BM Design @ Work</a>
                       </h3>
                       <p>( Prerequisite course: Becoming a BM Designer )</p>
                       <ul className="list_flex">
                         <li>
-                          <Link to="/lecture/card/CARD-a9s/view">
+                          <a href="#none">
                             BM Design Practice
                             <br />
                             (4 weeks)
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-abv/view">
+                          <a href="#none">
                             Decoupling Workshop
                             <br />
                             (2 days)
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-abt/view">
+                          <a href="#none">
                             Environment∙Energy
                             <br />
                             BM Design Practice
                             <br />
                             (4 weeks)
-                          </Link>
+                          </a>
                         </li>
                       </ul>
                     </div>
                     <div className="bm-bg-box bg_type02">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007o">
-                          Storytelling @ Work
-                        </Link>
+                        <a href="#none">Storytelling @ Work</a>
                       </h3>
                       <div className="bm-flex">
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/card/CARD-abm/cube/CUBE-crs/view/ClassRoomLecture">
-                              CEO 1:1 Course
-                            </Link>
+                            <a href="#none">CEO 1:1 Course</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-abo/cube/CUBE-cru/view/ClassRoomLecture">
-                              6R Storytelling Workshop
-                            </Link>
+                            <a href="#none">6R Storytelling Workshop</a>
                           </li>
                         </ul>
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/card/CARD-abn/cube/CUBE-crt/view/ClassRoomLecture">
+                            <a href="#none">
                               Leader Storytelling <br />
                               Workshop
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-abp/cube/CUBE-crv/view/ClassRoomLecture">
-                              FS Expert Symposium
-                            </Link>
+                            <a href="#none">FS Expert Symposium</a>
                           </li>
                         </ul>
                       </div>
@@ -6227,29 +6197,25 @@ const EnPanes = [
                   <div className="bm-flex">
                     <div className="bm-bg-box bg_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00083">
-                          Becoming BM Designer
-                        </Link>
+                        <a href="#none">Becoming BM Designer</a>
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="/lecture/card/CARD-8c9/view">
+                          <a href="#none">
                             Ⅰ. As-Is BM
                             <br />
                             Sustainability
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-a8f/view">
-                            Ⅱ. BM Environment Analysis
-                          </Link>
+                          <a href="#none">Ⅱ. BM Environment Analysis</a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-8cb/view">
+                          <a href="#none">
                             Ⅲ. Strategy for
                             <br />
                             DiscoveringNew BM
-                          </Link>
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -6258,98 +6224,78 @@ const EnPanes = [
                   <div className="bm-flex">
                     <div className="bm-bg-box line_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007n">
-                          M&#38;A Design
-                        </Link>
+                        <a href="#none">M&#38;A Design</a>
                       </h3>
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <Link to="/lecture/card/CARD-a1p/view">
-                              Ⅰ. M&#38;A Overview
-                            </Link>
+                            <a href="#none">Ⅰ. M&#38;A Overview</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a1w/view">
+                            <a href="#none">
                               Ⅲ. Target Selection &amp;
                               <br />
                               Deal Structuring
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a1y/view">
-                              Ⅴ. Valuation
-                            </Link>
+                            <a href="#none">Ⅴ. Valuation</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a20/view">
-                              Ⅶ. Legal
-                            </Link>
+                            <a href="#none">Ⅶ. Legal</a>
                           </li>
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
+                            <a href="#none">
                               [AdvancedI] Deal Structuring
                               <br />
                               &amp; Financing
-                            </Link>
+                            </a>
                           </li>
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <Link to="/lecture/card/CARD-a22/view">
-                              Ⅱ. M&#38;A Strategy
-                            </Link>
+                            <a href="#none">Ⅱ. M&#38;A Strategy</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a1x/view">
-                              Ⅳ. Due Diligence
-                            </Link>
+                            <a href="#none">Ⅳ. Due Diligence</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a1z/view">
-                              Ⅵ. Negotiation
-                            </Link>
+                            <a href="#none">Ⅵ. Negotiation</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a21/view">
-                              Ⅷ. PMI &#38; Value-up
-                            </Link>
+                            <a href="#none">Ⅷ. PMI &#38; Value-up</a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-a23/view">
-                              [AdvancedⅡ] Legal
-                            </Link>
+                            <a href="#none">[AdvancedⅡ] Legal</a>
                           </li>
                         </ul>
                       </div>
                     </div>
                     <div className="bm-bg-box line_type01 height100">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN0007p">
-                          Becoming Storyteller
-                        </Link>
+                        <a href="#none">Becoming Storyteller</a>
                       </h3>
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
+                            <a href="#none">
                               Global Case Studies of
                               <br />
                               Financial Storytelling
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link to="/lecture/card/CARD-ac8/view">
+                            <a href="#none">
                               [Focus] Financial <br />
                               Society Partnership
-                            </Link>
+                            </a>
                           </li>
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <Link to="#" onClick={emptyAlert}>
+                            <a href="#none">
                               Understanding the 6R Perspectives Stakeholder
-                            </Link>
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -6359,59 +6305,53 @@ const EnPanes = [
                   <div className="bm-flex">
                     <div className="bm-bg-box line_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00082">
-                          BM Design Take-off
-                        </Link>
+                        <a href="#none">BM Design Take-off</a>
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="/lecture/card/CARD-a8e/view">
+                          <a href="#none">
                             Ⅰ.Sustainable BM
                             <br />
                             The Importance of Innovation
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-a8g/view">
+                          <a href="#none">
                             Ⅱ. BM Framework
                             <br />
                             &amp; SK BM Innovation Efforts
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-a8h/view">
+                          <a href="#none">
                             Ⅲ. BM / Deep Change
                             <br />
                             Design and Execution
-                          </Link>
+                          </a>
                         </li>
                       </ul>
                     </div>
                     <div className="bm-bg-box line_type01">
                       <h3>
-                        <Link to="/lecture/college/CLG00020/channel/CHN00084">
-                          Defining Storytelling
-                        </Link>
+                        <a href="#none">Defining Storytelling</a>
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="#" onClick={emptyAlert}>
+                          <a href="#none">
                             Understanding
                             <br />
                             Financial Story
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-6z1/view">
-                            Financial Acumen
-                          </Link>
+                          <a href="#none">Financial Acumen</a>
                         </li>
                         <li>
-                          <Link to="/lecture/card/CARD-abr/cube/CUBE-crx/view/Video">
+                          <a href="#none">
                             Financial Story from the
                             <br />
                             Investor’s Point of View
-                          </Link>
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -6450,7 +6390,7 @@ const EnPanes = [
                 SK Academy reinforces the foundation of SK corporate culture
                 through the
                 <br />
-                spread of SKMS/Values,and nurtures future managers and business
+                spread of SKMS/Values, and nurtures future managers and business
                 experts in
                 <br />
                 line with the systematic nurturing pipeline.
@@ -6781,10 +6721,7 @@ const ZhPanes = [
                   </p>
                 </div>
                 <div className="text-right-box">
-                  <a
-                    className="item-button"
-                    href="/suni-main/lecture/college/CLG00005/channels/pages/1"
-                  >
+                  <a className="item-button" href="#none">
                     <img
                       src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                       alt=""
@@ -7376,10 +7313,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -7621,12 +7555,12 @@ const ZhPanes = [
             <div className="belt global">
               <div className="label">地域专家课程</div>
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-top-CHN.png"
                 alt="가로 : 지역전문가"
                 className="global-top-img2"
               />
               <img
-                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents.png"
+                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/global-college-location-contents-CHN.png"
                 alt="세로 : LocalLeadership/지역전문가/국가의이해"
                 className="global-left-img2"
               />
@@ -7764,7 +7698,7 @@ const ZhPanes = [
                     </tr>
                     <tr>
                       <th>
-                        <span>경제동향</span>
+                        <span>经济动向</span>
                       </th>
                       <td className="bg-none"></td>
                       <td className="bg-none"></td>
@@ -7923,10 +7857,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  className="item-button"
-                  href="/suni-main/lecture/college/CLG00007/channels/pages/1"
-                >
+                <a className="item-button" href="#none">
                   <img
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -7945,7 +7876,7 @@ const ZhPanes = [
                   <span className="ai-btn02 leader sub">Non-VoD</span>
                 </div>
                 <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/leadership-level-CHN.png"
                   alt="세로:Advanced/Intermediate/Basic"
                   className="ui image"
                   style={{ float: 'left' }}
@@ -8256,6 +8187,7 @@ const ZhPanes = [
                 <li># 半导体术语</li>
                 <li># 半导体技术理论</li>
                 <li># 半导体种类</li>
+                <br />
                 <li># 未来技术</li>
                 <li># 半导体Ecosystem</li>
               </ul>
@@ -8270,17 +8202,14 @@ const ZhPanes = [
                 </p> */}
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00019/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                   />
                   直接进入课程
-                </Link>
+                </a>
               </div>
             </div>
 
@@ -8317,7 +8246,7 @@ const ZhPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/badge-open-blue-chn.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-chn.png"
                                 alt=""
                                 className="ui image"
                               />
@@ -8330,8 +8259,9 @@ const ZhPanes = [
                             </li>
                             <li className="dashed">
                               <Image
-                                src={`${PUBLIC_URL}/images/badge-open-blue.png`}
+                                src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/badge-open-blue-chn.png"
                                 alt=""
+                                className="ui image"
                               />
                               <a href="#none">
                                 AI manufacturing
@@ -8511,9 +8441,7 @@ const ZhPanes = [
                           <dt>获得条件</dt>
                           <dd>完成Course / Test及实习课题</dd>
                         </dl>
-                        <button type="button" onClick={emptyAlert}>
-                          预计OPEN
-                        </button>
+                        <button type="button">预计OPEN</button>
                       </div>
                     </div>
                   </div>
@@ -8913,7 +8841,11 @@ const ZhPanes = [
                         </dl>
                         <dl>
                           <dt>认证内容</dt>
-                          <dd>具备半导体产业理解与分析所需的基础知识</dd>
+                          <dd>
+                            具备半导体产业理解与分
+                            <br />
+                            析所需的基础知识
+                          </dd>
                         </dl>
                         <dl>
                           <dt>获得条件</dt>
@@ -9016,10 +8948,7 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <Link
-                  className="item-button"
-                  to="/lecture/college/CLG00019/channels/pages/1"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
                     alt=""
@@ -9027,7 +8956,7 @@ const ZhPanes = [
                     style={{ display: 'inline-block' }}
                   />
                   直接进入课程
-                </Link>
+                </a>
               </div>
             </div>
             <div className="belt">
@@ -9100,17 +9029,14 @@ const ZhPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <Link
-                  to="/lecture/college/CLG00020/channels/pages/1"
-                  className="item-button"
-                >
+                <a href="#none" className="item-button">
                   <Image
                     src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
                   直接进入课程
-                </Link>
+                </a>
               </div>
             </div>
             <div className="belt">
@@ -9225,129 +9151,134 @@ const ZhPanes = [
                       </ul>
                     </div>
                   </div>
-
                   <div className="bm-flex">
-                    <ul className="list_bm">
-                      <li>
-                        <a href="#none">Ⅰ. M&amp;A Overview</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅲ. 对象选择 &amp;
-                          <br />
-                          Deal Structuring
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅴ. Valuation</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅶ. Legal</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          [深化Ⅰ] Deal Structuring
-                          <br />
-                          &amp; Financing
-                        </a>
-                      </li>
-                    </ul>
-                    <ul className="list_bm">
-                      <li>
-                        <a href="#none">Ⅱ. M&amp;A Strategy</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅳ. Due Diligence</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅵ. Negotiation</a>
-                      </li>
-                      <li>
-                        <a href="#none">Ⅷ. PMI &amp; Value-up</a>
-                      </li>
-                      <li>
-                        <a href="#none">[深化Ⅱ] Legal</a>
-                      </li>
-                    </ul>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">M&#38;A Design</a>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">Ⅰ. M&amp;A Overview</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              Ⅲ. 对象选择 &amp;
+                              <br />
+                              Deal Structuring
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅴ. Valuation</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅶ. Legal</a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              [深化Ⅰ] Deal Structuring
+                              <br />
+                              &amp; Financing
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">Ⅱ. M&amp;A Strategy</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅳ. Due Diligence</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅵ. Negotiation</a>
+                          </li>
+                          <li>
+                            <a href="#none">Ⅷ. PMI &amp; Value-up</a>
+                          </li>
+                          <li>
+                            <a href="#none">[深化Ⅱ] Legal</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="bm-bg-box line_type01 height100">
+                      <h3>
+                        <a href="#none">Becoming Storyteller</a>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">
+                              Financial Storytelling
+                              <br />
+                              全球案例研究
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#none">
+                              [Focus] Financial
+                              <br />
+                              Society Partnership
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="#none">从6R角度理解Stakeholder</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                  <div className="bm-bg-box line_type01 height100">
-                    <h3>
-                      <a href="#none">Becoming Storyteller</a>
-                    </h3>
-                    <div className="bm-flex">
-                      <ul className="list_bm">
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">BM Design Take-off</a>
+                      </h3>
+                      <ul className="list_flex md">
                         <li>
                           <a href="#none">
-                            Financial Storytelling
+                            Ⅰ.Sustainable BM
                             <br />
-                            全球案例研究
+                            创新的重要性
                           </a>
                         </li>
                         <li>
                           <a href="#none">
-                            [Focus] Financial
+                            Ⅱ. BM Framework
                             <br />
-                            Society Partnership
+                            &amp; SK BM创新努力
                           </a>
                         </li>
-                      </ul>
-                      <ul className="list_bm">
                         <li>
-                          <a href="#none">从6R角度理解Stakeholder</a>
+                          <a href="#none">
+                            Ⅲ. BM / Deep Change
+                            <br />
+                            Design与实行
+                          </a>
                         </li>
                       </ul>
                     </div>
-                  </div>
-                </div>
-
-                <div className="bm-flex">
-                  <div className="bm-bg-box line_type01">
-                    <h3>
-                      <a href="#none">BM Design Take-off</a>
-                    </h3>
-                    <ul className="list_flex md">
-                      <li>
-                        <a href="#none">
-                          Ⅰ.Sustainable BM
-                          <br />
-                          创新的重要性
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅱ. BM Framework
-                          <br />
-                          &amp; SK BM创新努力
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          Ⅲ. BM / Deep Change
-                          <br />
-                          Design与实行
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bm-bg-box line_type01">
-                    <h3>
-                      <a href="#none">Defining Storytelling</a>
-                    </h3>
-                    <ul className="list_flex md">
-                      <li>
-                        <a href="#none">Financial Story的理解</a>
-                      </li>
-                      <li>
-                        <a href="#none">Financial Acumen</a>
-                      </li>
-                      <li>
-                        <a href="#none">
-                          从投资人角度看
-                          <br />
-                          Financial Story
-                        </a>
-                      </li>
-                    </ul>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="#none">Defining Storytelling</a>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="#none">Financial Story的理解</a>
+                        </li>
+                        <li>
+                          <a href="#none">Financial Acumen</a>
+                        </li>
+                        <li>
+                          <a href="#none">
+                            从投资人角度看
+                            <br />
+                            Financial Story
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -9358,7 +9289,7 @@ const ZhPanes = [
     ),
   },
   {
-    menuItem: 'SK Academy',
+    menuItem: 'SK学院',
     render: () => (
       <Tab.Pane>
         <div
@@ -9373,7 +9304,7 @@ const ZhPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK Academy College</div>
+              <div className="label">SK学院 College</div>
               <div className="strong">
                 “如培育树木般培养人才、SK人才培养的摇篮”
               </div>
@@ -9495,11 +9426,14 @@ class CollegeView extends Component<Props, State> {
         '?subTab=BM%2520Design%2520%2526%2520Storytelling'
     ) {
       this.setState({ activeIndex: 10 });
+    } else if (window.location.search === '?subTab=Innovation%20&%20Design') {
+      this.setState({ activeIndex: 4 });
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     //
+
     if (prevProps.location.key !== this.props.location.key) {
       this.setActiveTab();
     }
@@ -9511,12 +9445,59 @@ class CollegeView extends Component<Props, State> {
     const subTab = queryParams.subTab as string;
 
     if (subTab) {
-      const activeIndex = this.panes.findIndex(
-        (pane) => pane.menuItem === subTab
+      const activeIndex = this.panes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
       );
 
+      const krIndex = koPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
+      const enIndex = EnPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
+      const zhIndex = ZhPanes.findIndex((pane) =>
+        subTab.includes(pane.menuItem)
+      );
       if (activeIndex >= 0) {
         this.setState({ activeIndex });
+      } else if (activeIndex === -1) {
+        if (SkProfileService.instance.skProfile.language === 'English') {
+          if (zhIndex >= 0) {
+            this.setState({ activeIndex: zhIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[zhIndex].menuItem)
+            );
+          } else if (krIndex >= 0) {
+            this.setState({ activeIndex: krIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[krIndex].menuItem)
+            );
+          }
+        } else if (SkProfileService.instance.skProfile.language === 'Chinese') {
+          if (enIndex >= 0) {
+            this.setState({ activeIndex: enIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[enIndex].menuItem)
+            );
+          } else if (krIndex >= 0) {
+            this.setState({ activeIndex: krIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[krIndex].menuItem)
+            );
+          }
+        } else if (SkProfileService.instance.skProfile.language === 'Korean') {
+          if (zhIndex >= 0) {
+            this.setState({ activeIndex: zhIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[zhIndex].menuItem)
+            );
+          } else if (enIndex >= 0) {
+            this.setState({ activeIndex: enIndex });
+            this.props.history.push(
+              routePaths.introductionCollege(this.panes[enIndex].menuItem)
+            );
+          }
+        }
       }
     }
   }

@@ -42,6 +42,7 @@ import ReactGA from 'react-ga';
 import ProfileImagePath from '../../../../../src/shared/components/Image/ProfileImagePath';
 import { getPostDetailInPreview } from '../../../service/useCommunityPostCreate/utility/getPostDetail';
 import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
@@ -400,7 +401,10 @@ function copyUrl(url: string) {
   textarea.setSelectionRange(0, 9999);
   document.execCommand('copy');
   document.body.removeChild(textarea);
-  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  reactAlert({
+    title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+    message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
+  });
 }
 
 async function bookmark(postId: string) {

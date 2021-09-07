@@ -27,6 +27,7 @@ import { useCommunityHome } from '../../store/CommunityHomeStore';
 import { useCommunityProfileBookmark } from '../../store/CommunityProfileBookmarkStore';
 import { registerBookmark, removeBookmark } from '../../api/communityApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -361,7 +362,10 @@ function CommunityPostDetailContainer() {
     textarea.setSelectionRange(0, 9999);
     document.execCommand('copy');
     document.body.removeChild(textarea);
-    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+    reactAlert({
+      title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+      message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
+    });
   };
 
   const shareUrl = useCallback(() => {

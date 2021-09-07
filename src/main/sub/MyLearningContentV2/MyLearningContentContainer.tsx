@@ -12,8 +12,8 @@ import EnrollingLearning from './MainComponents/EnrollingLearning';
 import RQDLearning from './MainComponents/RQDLearning';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
-import LRSLearning from './MainComponents/LRSLearning';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import LRSLearning from './MainComponents/LRSLearning';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;

@@ -1,39 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
-import { SearchView } from './ui/view/SearchView';
+import React, { useEffect, useRef } from 'react';
+import { Segment, Sticky } from 'semantic-ui-react';
 
-export default function SearchPage() {
-  const { search } = useLocation();
-  const [text_idx, setTextIdx] = useState<string>();
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { useSearchUI, setSearchUI } from './search.services';
+import { SearchContentsPage } from './SearchContentsPage';
+import { SearchHeaderPage } from './SearchHeaderPage';
+
+function LoadingView() {
+  return (
+    <div className="loading">
+      <div className="spin">
+        <div className="path" />
+      </div>
+      <p>
+        <PolyglotText
+          id="통검-필레팝-로딩뷰"
+          defaultString="mySUNI가 열심히 검색중입니다. 잠시만 기다려주세요."
+        />
+      </p>
+    </div>
+  );
+}
+
+export function SearchPage() {
+  const contextRef = useRef<HTMLDivElement>(null);
+
+  const searchUI = useSearchUI();
   useEffect(() => {
-    const queryId: string = search.slice(
-      search.indexOf('=') + 1,
-      search.length
-    );
-    if (queryId.endsWith('%')) {
-      let decodedQueryId = queryId;
-      while (decodedQueryId.endsWith('%')) {
-        decodedQueryId = decodedQueryId.substring(0, decodedQueryId.length - 1);
-      }
-      if (decodedQueryId.includes('%%')) {
-        while (decodedQueryId.includes('%%')) {
-          decodedQueryId = decodedQueryId.replace(/%%/, '%25%');
-        }
-        setTextIdx(decodeURI(decodedQueryId));
-        return;
-      }
-      setTextIdx(decodeURI(decodedQueryId));
-      return;
-    }
-    if (queryId.includes('%%')) {
-      let decodedQueryId = queryId;
-      while (decodedQueryId.includes('%%')) {
-        decodedQueryId = decodedQueryId.replace(/%%/, '%25%');
-      }
-      setTextIdx(decodeURI(decodedQueryId));
-      return;
-    }
-    setTextIdx(decodeURI(queryId));
-  }, [search]);
-  return <>{text_idx !== undefined && <SearchView text_idx={text_idx} />}</>;
+    return setSearchUI;
+  }, []);
+
+  return (
+    <>
+      <section className="content searchTotal">
+        <div ref={contextRef}>
+          <Sticky context={contextRef} className="tab-menu offset0">
+            <SearchHeaderPage />
+          </Sticky>
+
+          <Segment attached="bottom">
+            <SearchContentsPage />
+          </Segment>
+        </div>
+
+        {searchUI?.isLoading === true && <LoadingView />}
+      </section>
+    </>
+  );
 }

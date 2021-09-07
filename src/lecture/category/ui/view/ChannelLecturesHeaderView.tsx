@@ -38,18 +38,59 @@ class CategoryLecturesHeaderView extends Component<Props> {
   render() {
     const { channel, college } = this.props;
     const displayCurriculum = includes(VISIBLE_COLLEGE_IDS, college.collegeId);
-    const linkUrl =
-      parsePolyglotString(
-        channel.name,
-        getDefaultLang(channel.langSupports)
-      ) === 'AI/DT Literacy'
-        ? '/certification/badge/badge-detail/BADGE-2t'
-        : mainRoutePaths.introductionCollege(
-            parsePolyglotString(
-              channel.name,
-              getDefaultLang(channel.langSupports)
-            )
-          );
+
+    let linkUrl = '';
+    if (college.name.ko === 'AI') {
+      linkUrl =
+        parsePolyglotString(
+          channel.name,
+          getDefaultLang(channel.langSupports)
+        ) === 'AI/DT Literacy'
+          ? '/certification/badge/badge-detail/BADGE-2t'
+          : mainRoutePaths.introductionCollegeAI(
+              parsePolyglotString(
+                channel.name,
+                getDefaultLang(channel.langSupports)
+              )
+            );
+    } else if (college.name.ko === 'DT') {
+      linkUrl =
+        parsePolyglotString(
+          channel.name,
+          getDefaultLang(channel.langSupports)
+        ) === 'DT Biz.& Implementation'
+          ? mainRoutePaths.introductionCollegeDT('DT Biz. & Implementation')
+          : mainRoutePaths.introductionCollegeDT(
+              parsePolyglotString(
+                channel.name,
+                getDefaultLang(channel.langSupports)
+              )
+            );
+    } else if (college.name.ko === 'Management') {
+      linkUrl =
+        parsePolyglotString(
+          channel.name,
+          getDefaultLang(channel.langSupports)
+        ) === '营销/品牌'
+          ? mainRoutePaths.introductionCollegeManagement('市场/品牌')
+          : mainRoutePaths.introductionCollegeManagement(
+              parsePolyglotString(
+                channel.name,
+                getDefaultLang(channel.langSupports)
+              )
+            );
+    } else {
+      linkUrl =
+        college.name.en === 'Innovation & Design'
+          ? mainRoutePaths.introductionCollege('Innovation & Design')
+          : mainRoutePaths.introductionCollege(
+              parsePolyglotString(
+                college.name,
+                getDefaultLang(college.langSupports)
+              )
+            );
+    }
+    console.log(college.name.ko);
     return (
       <>
         <div className="white-title">

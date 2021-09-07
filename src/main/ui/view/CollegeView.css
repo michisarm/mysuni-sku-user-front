@@ -90,7 +90,7 @@
   .sub-tab-menu.management1
   .ui.menu
   .item {
-  display: inline-flex !important;
+  display: table-cell;
   justify-content: center !important;
   align-items: center !important;
   padding: 0 20px !important;

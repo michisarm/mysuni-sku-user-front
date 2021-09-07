@@ -368,7 +368,7 @@ export function parseCaptionTracks(captionTracks?: string[]): string[] {
         r[i] = 'Korean';
       } else if (c.includes('English')) {
         r[i] = 'English';
-      } else if (c.includes('기본값')) {
+      } else {
         if (captionTracks.some((d) => d.includes('English'))) {
           r[i] = 'Korean';
         } else {
