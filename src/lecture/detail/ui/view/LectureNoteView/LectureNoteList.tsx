@@ -7,15 +7,11 @@ import {
   setLectureNoteTab,
   setLectureNoteWriteState,
 } from '../../../store/LectureNoteStore';
-import {
-  playVideo,
-  seekTo,
-  stopVideo,
-} from '../../../service/PanoptoEmbedPlayer';
+import { playVideo, seekTo } from '@sku/skuniv-ui-video-player';
 import { LectureNote, noteItem } from '../../../viewModel/LectureNote';
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
-import { getPanoptoEmbedPlayerState } from '../../../store/PanoptoEmbedPlayerStore';
+import { getPanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { getAudioEmbedApi } from '../../../store/AudioEmbedStore';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 

@@ -43,7 +43,10 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         if (lectureStructureItem?.can !== true) {
           reactAlert({
             title: getPolyglotText('알림', 'cube-Description-알림'),
-            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
+            message: getPolyglotText(
+              '학습 완료 후 Test 제출이 가능합니다.',
+              'Test-TestIntro-제출'
+            ),
           });
           return;
         }
@@ -56,7 +59,10 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         ) {
           reactAlert({
             title: getPolyglotText('알림', 'cube-Description-알림'),
-            message: getPolyglotText('학습 완료 후 Test 제출이 가능합니다.', 'Test-TestIntro-제출'),
+            message: getPolyglotText(
+              '학습 완료 후 Test 제출이 가능합니다.',
+              'Test-TestIntro-제출'
+            ),
           });
           return;
         }
@@ -121,6 +127,7 @@ const LectureTestView: React.FC<LectureTestViewProps> =
         openView('intro');
       }
     }, [params, testStudentItem, lectureStructureItem]);
+
     /*
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;

@@ -21,10 +21,10 @@ function AplCreateApproverView({
     managerModal.onShow(true);
   };
 
-  console.log(
-    'apl.approver ',
-    parsePolyglotString(apl.approvalUserIdentity?.name)
-  );
+  // console.log(
+  //   'apl.approver ',
+  //   parsePolyglotString(apl.approvalUserIdentity?.name)
+  // );
 
   return (
     <Form.Field>

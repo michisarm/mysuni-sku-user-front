@@ -113,14 +113,33 @@ export function getElementsByClassName(node: HTMLElement, classname: string) {
 export function originSelfPath(url: string) {
   if (/^(http|https)\:\/\/mysuni.sk.com\/suni-main\//.test(url)) {
     url = url.replace(RegExp.$1 + '://mysuni.sk.com/suni-main', '');
-  } else if (/^(http:|https:)\/\/ma.university.sk.com\/suni-main\//.test(url)) {
-    url = url.replace(RegExp.$1 + '://ma.university.sk.com/suni-main', '');
-  } else if (/^(http:|https:)\/\/muniversity.sk.com\/suni-main\//.test(url)) {
-    url = url.replace(RegExp.$1 + '://university.sk.com/suni-main', '');
+  } else if (/^(http:|https:)\/\/ma.mysuni.sk.com\/suni-main\//.test(url)) {
+    url = url.replace(RegExp.$1 + '://ma.mysuni.sk.com/suni-main', '');
+  } else if (/^(http:|https:)\/\/stg.mysuni.sk.com\/suni-main\//.test(url)) {
+    url = url.replace(RegExp.$1 + '://stg.mysuni.sk.com/suni-main', '');
   } else if (url.includes(window.location.origin)) {
     url = url.replace(window.location.origin, '');
   }
   return url;
+}
+
+export function parsingPath(url: string) {
+  // 절대 주소 반환
+  if (/^(http|https)/.test(url)) {
+    return url;
+  }
+
+  // 상대 주소 비교
+  if (
+    /^\/suni-community/.test(url) ||
+    /^\/suni-instructor/.test(url) ||
+    /^\/suni-main/.test(url) ||
+    /^\/suni-asset/.test(url)
+  ) {
+    return url;
+  } else {
+    return '/suni-main' + url;
+  }
 }
 
 export function utf8_to_b64(str: string) {

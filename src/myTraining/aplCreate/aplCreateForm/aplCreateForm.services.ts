@@ -3,6 +3,7 @@ import {
   CompanyApproverService,
   DepartmentService,
   MemberService,
+  MenuControlAuthService,
 } from 'approval/stores';
 import { CollegeService } from 'college/stores';
 import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
@@ -24,6 +25,7 @@ export async function requestAplApprover() {
   const departmentService = DepartmentService.instance;
   const memberService = MemberService.instance;
   const companyApproverService = CompanyApproverService.instance;
+  const menuControlAuthService = MenuControlAuthService.instance;
 
   skProfileService
     .findSkProfile()
@@ -55,14 +57,16 @@ export async function requestAplApprover() {
         'approvalUserIdentity.departmentName',
         companyAplApprover.departmentName
       );
+    })
+    .then(() => {
+      menuControlAuthService.findMenuControlAuth();
     });
 }
 
 export async function requestAplCreateColleges() {
   const collegeLectureCountService = CollegeLectureCountService.instance;
   if (window.navigator.onLine) {
-    const collegeLectureCounts =
-      await collegeLectureCountService.findCollegeLectureCounts();
+    const collegeLectureCounts = await collegeLectureCountService.findCollegeLectureCounts();
     if (collegeLectureCounts.length > 0) {
       parseCollegeOptions(collegeLectureCounts);
     }
