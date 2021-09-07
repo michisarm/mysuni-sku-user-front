@@ -177,8 +177,16 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
       value: 'all',
       text: getPolyglotText('전체', 'mypage-note-전체5'),
     },
-    { key: 'name', value: 'name', text: '과정명' },
-    { key: 'content', value: 'content', text: 'Note 내용' },
+    {
+      key: 'name',
+      value: 'name',
+      text: getPolyglotText('과정명', 'mypage-note-과정명'),
+    },
+    {
+      key: 'content',
+      value: 'content',
+      text: getPolyglotText('Note 내용', 'mypage-note-노트내용'),
+    },
   ];
 
   const handleSubmitClick = useCallback(async () => {

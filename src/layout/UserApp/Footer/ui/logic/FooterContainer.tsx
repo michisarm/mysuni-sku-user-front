@@ -9,6 +9,7 @@ import FooterView from '../view/FooterView';
 import ReactGA from 'react-ga';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 @reactAutobind
 class FooterContainer extends Component {
@@ -36,13 +37,15 @@ class FooterContainer extends Component {
                 id="home-ftr-바로가1"
               />
             </NavLink>
-            <NavLink
-              to={boardRoutePaths.supportNotice()}
-              className="item"
-              onClick={() => onClick('Notice')}
-            >
-              <PolyglotText defaultString="Notice" id="home-ftr-바로가2" />
-            </NavLink>
+            {!findForeignerUser() && (
+              <NavLink
+                to={boardRoutePaths.supportNotice()}
+                className="item"
+                onClick={() => onClick('Notice')}
+              >
+                <PolyglotText defaultString="Notice" id="home-ftr-바로가2" />
+              </NavLink>
+            )}
             <NavLink
               to={boardRoutePaths.supportFAQ()}
               className="item"

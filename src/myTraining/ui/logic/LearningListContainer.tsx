@@ -21,6 +21,7 @@ import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MatchPrams {
   type: string;
@@ -133,9 +134,18 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       </div>
       <Segment className="full">
         <div className="sort-reult">
-          <div className="section-count">
-            총 <span>{cardList.length}개</span>의 리스트가 있습니다.
-          </div>
+          <div
+            className="section-count"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                ' 총 <span>{totalCount}개</span>의 리스트가 있습니다.',
+                'learning-학보드-게시물총수',
+                {
+                  totalCount: (cardList.length || 0).toString(),
+                }
+              ),
+            }}
+          />
 
           {contentType == ContentType.Enrolling && (
             <div className="comments-sort">

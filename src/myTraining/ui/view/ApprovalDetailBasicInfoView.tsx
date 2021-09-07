@@ -14,6 +14,7 @@ interface Props {
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
   render() {
     const { approvalCube } = this.props;
+
     return (
       <>
         {approvalCube && (
@@ -92,8 +93,10 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                           />
                         </Table.HeaderCell>
                         <Table.Cell>
-                          {approvalCube.enrolling.learningPeriod.startDate} ~{' '}
-                          {approvalCube.enrolling.learningPeriod.endDate}
+                          {`(${approvalCube.round})
+                          ${approvalCube.learningStartDate}
+                           ~
+                          ${approvalCube.learningEndDate}`}
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>

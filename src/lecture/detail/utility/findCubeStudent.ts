@@ -7,13 +7,13 @@ export function findCubeStudent(
   if (!Array.isArray(cubeStudents) || cubeStudents.length === 0) {
     return undefined;
   }
-  const students = cubeStudents.filter(c => c.lectureId === cubeId);
+  const students = cubeStudents.filter((c) => c.lectureId === cubeId);
   if (students === undefined) {
     return undefined;
   }
   if (students.length === 0) {
     return students[0];
   }
-  const student = students.sort((a, b) => b.updateTime - a.updateTime)[0];
+  const student = students.sort((a, b) => b.modifiedTime - a.modifiedTime)[0];
   return student;
 }

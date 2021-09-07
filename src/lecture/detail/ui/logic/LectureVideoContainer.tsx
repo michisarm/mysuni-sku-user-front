@@ -132,8 +132,11 @@ function LectureVideoContainer() {
         ) {
           setSurveyAlerted(true);
           reactAlert({
-            title: getPolyglotText('안내', 'Collage-Video-안내'),
-            message: getPolyglotText('Survey 설문 참여를 해주세요.', 'Collage-Video-Survey'),
+            title: getPolyglotText('Survey', 'Collage-Video-안내'),
+            message: getPolyglotText(
+              'Survey에 참여해주세요.',
+              'Collage-Video-Survey'
+            ),
             onClose: () => {
               if (course?.survey?.path !== undefined) {
                 history.push(course.survey.path);
@@ -185,8 +188,10 @@ function LectureVideoContainer() {
         if (!res || (res === 'false' && res !== preliveLectureId)) {
           reactAlert({
             title: getPolyglotText('알림', 'Collage-Video-알림'),
-            message:
-              getPolyglotText('현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.', 'Collage-Video-기존학습'),
+            message: getPolyglotText(
+              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+              'Collage-Video-기존학습'
+            ),
           });
         }
       }
@@ -278,8 +283,9 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
-    useState<boolean>(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
+    boolean
+  >(false);
 
   const isExpiredContent = useMemo(() => {
     if (

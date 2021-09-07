@@ -128,6 +128,10 @@ class UserMainPage extends Component<Props> {
           SkProfileService.instance.skProfile.language === 'English'
             ? 'eng'
             : ''
+        }${
+          SkProfileService.instance.skProfile.language === 'Chinese'
+            ? 'chn'
+            : ''
         }`}
         breadcrumb={[
           { text: 'Introduction' },
@@ -152,7 +156,14 @@ class UserMainPage extends Component<Props> {
             <>
               {paramsTab === 'Certification' && (
                 <NavLink to={certificationRoutePaths.badge()}>
-                  <div className="item-button">Certification 바로가기</div>
+                  <div className="item-button">
+                    {SkProfileService.instance.skProfile.language === 'English'
+                      ? 'Go to Certification'
+                      : SkProfileService.instance.skProfile.language ===
+                        'Chinese'
+                      ? '进入Certification'
+                      : 'Certification 바로가기'}
+                  </div>
                 </NavLink>
               )}
             </>

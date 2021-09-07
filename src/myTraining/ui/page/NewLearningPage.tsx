@@ -25,7 +25,6 @@ function NewLearningPage() {
   const [cardType, setCardType] = useState<String>('');
   const [dataArea, setDataArea] = useState<Area | undefined>(undefined);
   const { type } = useParams<Params>();
-  console.log(useParams());
   const contentType = type as ContentType;
 
   const getDisplayName = async () => {

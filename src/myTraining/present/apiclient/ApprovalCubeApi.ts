@@ -19,7 +19,6 @@ export default class ApprovalCubeApi {
       : '';
 
   lectureApprovalURL = '/api/lecture/studentApproval';
-  // baseUrl = this.devUrl + '/api/lecture/studentApproval';
   lectureStudentURL = '/api/lecture/students';
   cubeApprovalURL = '/api/cube/studentApprovals';
 
@@ -35,7 +34,7 @@ export default class ApprovalCubeApi {
     );
 
     offsetElementList.results = offsetElementList.results.map(
-      result => new ApprovalCubeModel(result)
+      (result) => new ApprovalCubeModel(result)
     );
     return offsetElementList;
   }
@@ -69,14 +68,14 @@ export default class ApprovalCubeApi {
 
     return axios
       .get<ApprovalCubeModel[]>(this.lectureApprovalURL + `/excel`, { params })
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findPersonalCube(personalCubeId: string) {
     //
     return axios
       .get<ApprovalCubeModel>(this.lectureApprovalURL + `/${personalCubeId}`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findApprovalCube(studentId: string) {
@@ -85,14 +84,14 @@ export default class ApprovalCubeApi {
       .get<ApprovalCubeDetailModel>(
         this.cubeApprovalURL + `/${studentId}/detail`
       )
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findLectureApprovalSelect() {
     return axios
       .get<IdName[]>(this.cubeApprovalURL + '/targetCubes')
       .then(
-        response =>
+        (response) =>
           (response && Array.isArray(response.data) && response.data) || []
       );
   }
@@ -103,7 +102,7 @@ export default class ApprovalCubeApi {
         this.lectureStudentURL + '/accept',
         studentRequestCdo
       )
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
@@ -112,7 +111,7 @@ export default class ApprovalCubeApi {
         this.lectureStudentURL + '/reject',
         studentRequestCdo
       )
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 }
 

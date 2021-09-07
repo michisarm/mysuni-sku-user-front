@@ -36,7 +36,8 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
     if (defaultSearchType && defaultSearchType === 'years') {
       onSetSearchYear(1);
     } else {
-      onSetSearchWeek(1);
+      // onSetSearchWeek(1);
+      onSetSearchMon(1);
     }
     createTime && createTime > 0 && setStartDate(moment(createTime));
   }, [createTime]);
