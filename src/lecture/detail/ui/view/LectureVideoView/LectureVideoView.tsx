@@ -72,14 +72,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
   }) {
     const params = useParams<LectureParams>();
     const lectureMedia = useLectureMedia();
-    const [videoContainerProps, setVideoContainerProps] = useState<
-      | {
-          panoptoSessionId: string;
-          directConnectionName?: string;
-          targetSamlInstanceName?: string;
-        }
-      | undefined
-    >(undefined);
+    const [videoContainerProps, setVideoContainerProps] =
+      useState<
+        | {
+            panoptoSessionId: string;
+            directConnectionName?: string;
+            targetSamlInstanceName?: string;
+          }
+        | undefined
+      >(undefined);
     useEffect(() => {
       if (params.cubeId !== undefined) {
         findCubeDetailCache(params.cubeId).then((cubeDetail) => {
@@ -330,7 +331,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
             ? 'video-fixed-holder lms-video-fixed'
             : 'video-fixed-holder'
         }
-        style={{ height: '700px' }}
         ref={getStickyPosition}
       >
         <div className="lms-video-sticky">
