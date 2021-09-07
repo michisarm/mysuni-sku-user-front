@@ -30,17 +30,17 @@ spec:
                       - "user"
       containers:
       - name: user-front
-        image: dev03/user:0.0.1
+        image: sk-university-dev-registry.cloudzcp.io/sk-university/user-front:dev-2273
         ports:
         - containerPort: 80
         imagePullPolicy: Always
         resources:
           requests:
             cpu: "300m"
-            memory: "256mi"
+            memory: "256Mi"
           limits:
             cpu: "300m"
-            memory: "256mi"
+            memory: "256Mi"
         livenessProbe:
           failureThreshold: 20
           httpGet:

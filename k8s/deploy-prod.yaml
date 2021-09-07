@@ -42,10 +42,10 @@ spec:
         resources:
           requests:
             cpu: "300m"
-            memory: "256mi"
+            memory: "256Mi"
           limits:
             cpu: "300m"
-            memory: "256mi"
+            memory: "256Mi"
         volumeMounts:
           - name: user-front-persistent-storage
             mountPath: /usr/share/nginx/html/profile
