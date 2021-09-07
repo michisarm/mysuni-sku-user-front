@@ -60,8 +60,10 @@ export async function handleSave(mode: string) {
       </>
     );
     confirmSaveCheck(aplMessageList);
-    const { aplCreateFocus, setAplCreateFocus } =
-      AplCreateFocusService.instance;
+    const {
+      aplCreateFocus,
+      setAplCreateFocus,
+    } = AplCreateFocusService.instance;
     setAplCreateFocus({
       ...aplCreateFocus,
       objStr: '교육종료일자',
@@ -72,8 +74,10 @@ export async function handleSave(mode: string) {
   }
 
   if (aplObject === 'success') {
-    const { aplCreateFocus, setAplCreateFocus } =
-      AplCreateFocusService.instance;
+    const {
+      aplCreateFocus,
+      setAplCreateFocus,
+    } = AplCreateFocusService.instance;
     setAplCreateFocus({
       ...aplCreateFocus,
       objStr: '',
@@ -195,12 +199,15 @@ export function onResetFocusControl() {
 
 export function onClickManagerListOk(approvalMember: ApprovalMemberModel) {
   const aplService = AplService.instance;
-  aplService.changeAplProps('approvalId', approvalMember.id);
-  aplService.changeAplProps('approvalEmail', approvalMember.email);
-  aplService.changeAplProps('approvalName', approvalMember.name);
-  aplService.changeAplProps('approvalCompany', approvalMember.companyName);
+  aplService.changeAplProps('approvalUserIdentity.id', approvalMember.id);
+  aplService.changeAplProps('approvalUserIdentity.email', approvalMember.email);
+  aplService.changeAplProps('approvalUserIdentity.name', approvalMember.name);
   aplService.changeAplProps(
-    'approvalDepartment',
+    'approvalUserIdentity.companyName',
+    approvalMember.companyName
+  );
+  aplService.changeAplProps(
+    'approvalUserIdentity.departmentName',
     approvalMember.departmentName
   );
 }

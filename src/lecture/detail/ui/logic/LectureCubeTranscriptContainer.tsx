@@ -8,8 +8,8 @@ import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
 import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/LectureCubeSummary';
-import { PlayerState, seekTo } from '../../service/PanoptoEmbedPlayer';
-import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+import { PlayerState, seekTo } from '@sku/skuniv-ui-video-player';
+import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 const style = {
