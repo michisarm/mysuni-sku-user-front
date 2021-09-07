@@ -18,7 +18,6 @@ export function SearchContentsResultCommunityView() {
   }, [params]);
 
   const communities = getSearchCommunityList();
-  console.log('community', communities);
   return (
     <>
       <div className="result">
