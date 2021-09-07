@@ -1,17 +1,17 @@
-import BadgeStyle from 'certification/ui/model/BadgeStyle';
-import BadgeSize from 'certification/ui/model/BadgeSize';
-import BadgeView from 'certification/ui/view/BadgeView';
+import BadgeStyle from '../../certification/ui/model/BadgeStyle';
+import BadgeSize from '../../certification/ui/model/BadgeSize';
+import BadgeView from '../../certification/ui/view/BadgeView';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { SearchParam } from 'search/search.models';
+import { SearchParam } from '../../search/search.models';
 import {
   getQueryId,
   getTextFromHtml,
   getTitleHtmlSearchKeyword,
-} from 'search/search.events';
-import { getSearchBadgeList } from 'search/search.services';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from 'lecture/model/LangSupport';
+} from '../../search/search.events';
+import { getSearchBadgeList } from '../../search/search.services';
+import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../lecture/model/LangSupport';
 
 export function SearchContentsResultBadgeView() {
   //
@@ -46,23 +46,18 @@ export function SearchContentsResultBadgeView() {
                 if (index < badgeLimit) {
                   return (
                     <li>
-                      <a
-                        href={`/certification/badge/badge-detail/${badge.id}`}
-                        className="badge-box"
-                      >
-                        <BadgeView
-                          id={badge.id}
-                          name={parsePolyglotString(
-                            badge.name,
-                            getDefaultLang(badge.langSupport)
-                          )}
-                          level={badge.level}
-                          iconUrl={badge.iconUrl}
-                          categoryId={badge.categoryId}
-                          badgeStyle={BadgeStyle.List}
-                          badgeSize={BadgeSize.Small}
-                        />
-                      </a>
+                      <BadgeView
+                        id={badge.id}
+                        name={parsePolyglotString(
+                          badge.name,
+                          getDefaultLang(badge.langSupport)
+                        )}
+                        level={badge.level}
+                        iconUrl={badge.iconUrl}
+                        categoryId={badge.categoryId}
+                        badgeStyle={BadgeStyle.List}
+                        badgeSize={BadgeSize.Small}
+                      />
                       {/*뱃지 네임은 뱃지목록에서만 노출*/}
                       <div className="badge-name">
                         {/* <span>{badgeTitle}</span> */}
