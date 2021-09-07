@@ -350,6 +350,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
             >
               <>
                 <VideoQuizContainer
+                  isSticked={isSticked}
                   quizPop={quizPop}
                   quizCurrentIndex={quizCurrentIndex}
                   onCompletedQuiz={onCompletedQuiz}
