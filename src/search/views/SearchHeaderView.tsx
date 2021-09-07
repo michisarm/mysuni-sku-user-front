@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { SearchHeaderFieldView } from './SearchHeaderFieldView';
-import { SearchParam } from 'search/search.models';
-import { getQueryId, search } from 'search/search.events';
+import { SearchParam } from '../../search/search.models';
+import { getQueryId, search } from '../../search/search.events';
 import classNames from 'classnames';
-import { getCurrentHistory } from 'shared/store/HistoryStore';
+import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import {
   setSearchInSearchInfo,
   useSearchInSearchInfo,
   useSearchRelatedList,
-} from 'search/search.services';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+} from '../../search/search.services';
+import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 
 export function SearchHeaderView() {
   //

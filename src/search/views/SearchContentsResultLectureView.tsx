@@ -1,14 +1,14 @@
-import { getDefaultLang } from 'lecture/model/LangSupport';
+import { getDefaultLang } from '../../lecture/model/LangSupport';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   getQueryId,
   getTagsHtml,
   getTitleHtmlSearchKeyword,
-} from 'search/search.events';
-import { SearchParam } from 'search/search.models';
-import { getDisplayCard } from 'search/search.services';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+} from '../../search/search.events';
+import { SearchParam } from '../../search/search.models';
+import { getDisplayCard } from '../../search/search.services';
+import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
 
 export function SearchContentsResultLectureView() {
   //
