@@ -12,6 +12,7 @@ import {
 import { getSearchBadgeList } from '../../search/search.services';
 import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../lecture/model/LangSupport';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function SearchContentsResultBadgeView() {
   //
@@ -31,10 +32,13 @@ export function SearchContentsResultBadgeView() {
     <>
       <div className="result">
         <div className="result_title">
-          <strong>Badge ({(badges && badges.length) || 0})</strong>
+          <strong>
+            <PolyglotText id="통검-필레팝-뱃지" defaultString="Badge" /> (
+            {(badges && badges.length) || 0})
+          </strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link to={`/search/badge?query=${queryId}`} className="link_more">
-              + 더보기
+              + <PolyglotText id="통검-필레팝-더보기" defaultString="더보기" />
             </Link>
           )}
         </div>

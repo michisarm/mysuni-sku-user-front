@@ -9,6 +9,7 @@ import {
 import { SearchParam } from '../../search/search.models';
 import { getDisplayCard } from '../../search/search.services';
 import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function SearchContentsResultLectureView() {
   //
@@ -28,10 +29,14 @@ export function SearchContentsResultLectureView() {
     <>
       <div className="result">
         <div className="result_title">
-          <strong>과정 ({(cards && cards.length) || 0})</strong>
+          <strong>
+            <PolyglotText id="통검-요약정보-과정탭" defaultString="과정" /> (
+            {(cards && cards.length) || 0})
+          </strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link to={`/search/lecture?query=${queryId}`} className="link_more">
-              + 더보기
+              +
+              <PolyglotText id="통검-필레팝-더보기" defaultString="더보기" />
             </Link>
           )}
         </div>
@@ -84,8 +89,13 @@ export function SearchContentsResultLectureView() {
                   getDefaultLang(card.langSupport)
                 ) !== '' && (
                   <div className="tagbox">
-                    <strong>태그</strong>
-                    <span
+                    <strong>
+                      <PolyglotText
+                        id="Course-Contents-태그"
+                        defaultString="태그"
+                      />
+                    </strong>
+                    <div
                       dangerouslySetInnerHTML={{
                         __html: getTagsHtml(
                           parsePolyglotString(

@@ -39,7 +39,7 @@ export function SearchContentsResultInstructorView() {
               to={`/search/instructor?query=${queryId}`}
               className="link_more"
             >
-              + 더보기
+              + <PolyglotText id="통검-필레팝-더보기" defaultString="더보기" />
             </Link>
           )}
         </div>
@@ -82,14 +82,24 @@ export function SearchContentsResultInstructorView() {
                       </div>
                     </Link>
                     <dl className="search_detail flex">
-                      <dt><PolyglotText id="통검-강사소개-소속기관" defaultString="소속 기관" /></dt>
+                      <dt>
+                        <PolyglotText
+                          id="통검-강사소개-소속기관"
+                          defaultString="소속 기관"
+                        />
+                      </dt>
                       <dd
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
                           __html: getTitleHtmlSearchKeyword(expert.department),
                         }}
                       />
-                      <dt><PolyglotText id="통검-강사소개-강의분야" defaultString="강의 분야" /></dt>
+                      <dt>
+                        <PolyglotText
+                          id="통검-강사소개-강의분야"
+                          defaultString="강의 분야"
+                        />
+                      </dt>
                       <dd
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
