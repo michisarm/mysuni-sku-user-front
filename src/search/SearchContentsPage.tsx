@@ -1,6 +1,8 @@
+import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getQueryId, searchData } from './search.events';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getQueryId, searchData, initSearchData } from './search.events';
 import { SearchParam } from './search.models';
 import {
   getSearchInSearchInfo,
@@ -22,6 +24,25 @@ export function SearchContentsPage() {
 
   const queryId = getQueryId();
   useEffect(() => {
+    initSearchData();
+
+    const decodedSearchValue = queryId
+      .replace(/'/g, ' ')
+      .replace(/&/g, ' ')
+      .replace(/%/g, ' ');
+    if (decodedSearchValue === '') {
+      return;
+    }
+    if (decodedSearchValue.replace(/ /g, '').length < 2) {
+      reactAlert({
+        title: getPolyglotText('검색', '통검-필레팝얼-검색2'),
+        message: getPolyglotText(
+          '두 글자 이상 입력 후 검색하셔야 합니다.',
+          '통검-필레팝얼-두글자2'
+        ),
+      });
+      return;
+    }
     searchData(queryId);
   }, [queryId]);
 
@@ -39,25 +60,39 @@ export function SearchContentsPage() {
     const searchInSearchInfo = getSearchInSearchInfo();
 
     return (
-      <p className="ttl_txt">
+      <>
         {searchInSearchInfo?.checkSearchInSearch && (
-          <>
-            {searchInSearchInfo.parentSearchValue} 중{' '}
-            <strong className="search_keyword">
-              {searchInSearchInfo.searchValue}
-            </strong>
-            에 대한 검색결과는 총 <strong>{totalCount}건</strong>
-            입니다.
-          </>
+          <p
+            className="ttl_txt"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '{value} 중 <strong className="search_keyword">{value2}</strong>에 대한 검색결과는 총 <strong>{value3}건</strong> 입니다.',
+                '통검-요약정보-결과내검색타이틀',
+                {
+                  value: searchInSearchInfo.parentSearchValue,
+                  value2: searchInSearchInfo.searchValue,
+                  value3: totalCount.toString(),
+                }
+              ),
+            }}
+          />
         )}
         {!searchInSearchInfo?.checkSearchInSearch && (
-          <>
-            <strong className="search_keyword">{queryId}</strong>에 대한
-            검색결과는 총 <strong>{totalCount}건</strong>
-            입니다.
-          </>
+          <p
+            className="ttl_txt"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '<strong className="search_keyword">{value}</strong>에 대한 검색결과는 총 <strong>{value2}건</strong>입니다.',
+                '통검-요약정보-타이틀2',
+                {
+                  value: queryId,
+                  value2: totalCount.toString(),
+                }
+              ),
+            }}
+          />
         )}
-      </p>
+      </>
     );
   };
 
