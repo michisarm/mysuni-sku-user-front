@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   getQueryId,
   getTitleHtmlSearchKeyword,
@@ -26,14 +27,15 @@ export function SearchContentsResultCommunityView() {
       <div className="result">
         <div className="result_title">
           <strong>
-            Community ({(communities && communities.length) || 0})
+            <PolyglotText id="cmm-prfr-커뮤" defaultString="Community" /> (
+            {(communities && communities.length) || 0})
           </strong>
           {(params === undefined || params.searchType === undefined) && (
             <Link
               to={`/search/community?query=${queryId}`}
               className="link_more"
             >
-              + 더보기
+              + <PolyglotText id="통검-필레팝-더보기" defaultString="더보기" />
             </Link>
           )}
         </div>
