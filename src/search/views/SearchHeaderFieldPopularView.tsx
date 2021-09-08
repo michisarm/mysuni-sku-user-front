@@ -48,7 +48,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
       ),
     },
     {
-      menuItem: '6개월',
+      menuItem: getPolyglotText('6개월', '통검-필레팝-6개월'),
       render: () => (
         <Tab.Pane>
           <ol>
@@ -68,7 +68,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
       ),
     },
     {
-      menuItem: '1년',
+      menuItem: getPolyglotText('1년', '통검-필레팝-1년'),
       render: () => (
         <Tab.Pane>
           <ol>

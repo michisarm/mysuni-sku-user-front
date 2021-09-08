@@ -24,6 +24,7 @@ import {
   useCollegeOptions,
   useCubeTypeOptions,
   useFilterCondition,
+  getSearchUI,
 } from '../../search/search.services';
 import { Accordion, Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
 import {
@@ -106,6 +107,8 @@ export function SearchContentsResultSideView() {
   }
   const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 
+  const searchUI = getSearchUI();
+
   return (
     <>
       <div className="result_category">
@@ -129,6 +132,7 @@ export function SearchContentsResultSideView() {
                       toggle_all_all_college_name_query();
                       onClickFilterSearch();
                     }}
+                    readOnly={searchUI?.isLoading}
                   />
                   <span>({allowedCard?.length})</span>
                 </li>
@@ -146,6 +150,7 @@ export function SearchContentsResultSideView() {
                             toggle_all_college_name_query(college.value);
                             onClickFilterSearch();
                           }}
+                          readOnly={searchUI?.isLoading}
                         />
                         <span>({college.count})</span>
                       </li>
@@ -159,7 +164,10 @@ export function SearchContentsResultSideView() {
                     className="btn_more"
                     onClick={() => setCollegeLimit(999)}
                   >
-                    더보기
+                    <PolyglotText
+                      id="통검-필레팝-더보기"
+                      defaultString="더보기"
+                    />
                     <Icon color="grey" name="angle down" />
                   </Button>
                 )}
@@ -194,6 +202,7 @@ export function SearchContentsResultSideView() {
                     });
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
               </li>
               <li>
@@ -213,6 +222,7 @@ export function SearchContentsResultSideView() {
                     });
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
               </li>
             </ul>
@@ -244,22 +254,19 @@ export function SearchContentsResultSideView() {
                     if (mFilterCondition === undefined) {
                       return;
                     }
-                    const text = getPolyglotText(
-                      '수강신청 가능 학습만 보기',
-                      '통검-필레팝-날짜옵션'
-                    );
                     setFilterCondition({
                       ...mFilterCondition,
                       applying: true,
                     });
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
               </li>
               <li>
                 <Radio
                   name="periodOptions"
-                  label="직접입력"
+                  label={getPolyglotText('직접입력', '통검-필레팝-직접입력')}
                   value="false"
                   checked={!filterCondition.applying}
                   onChange={() => {
@@ -267,16 +274,13 @@ export function SearchContentsResultSideView() {
                     if (mFilterCondition === undefined) {
                       return;
                     }
-                    const text = getPolyglotText(
-                      '수강신청 가능 학습만 보기',
-                      '통검-필레팝-날짜옵션'
-                    );
                     setFilterCondition({
                       ...mFilterCondition,
                       applying: false,
                     });
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
                 <CalendarView
                   filterCondition={filterCondition}
@@ -306,6 +310,7 @@ export function SearchContentsResultSideView() {
                     toggle_all_difficulty_level_query();
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
               </li>
               {CheckboxOptions.difficulty_level_json_query.map(
@@ -321,6 +326,7 @@ export function SearchContentsResultSideView() {
                         toggle_difficulty_level_json_query(levels.value);
                         onClickFilterSearch();
                       }}
+                      readOnly={searchUI?.isLoading}
                     />
                     <span />
                   </li>
@@ -350,6 +356,7 @@ export function SearchContentsResultSideView() {
                       toggle_all_cube_type_query();
                       onClickFilterSearch();
                     }}
+                    readOnly={searchUI?.isLoading}
                   />
                 </li>
                 {cubeTypeOptions.map((learningType, index) => {
@@ -366,6 +373,7 @@ export function SearchContentsResultSideView() {
                             toggle_cube_type_query(learningType.value);
                             onClickFilterSearch();
                           }}
+                          readOnly={searchUI?.isLoading}
                         />
                         <span>({learningType.count})</span>
                       </li>
@@ -379,7 +387,10 @@ export function SearchContentsResultSideView() {
                     className="btn_more"
                     onClick={() => setCubeTypeLimit(999)}
                   >
-                    더보기
+                    <PolyglotText
+                      id="통검-필레팝-더보기"
+                      defaultString="더보기"
+                    />
                     <Icon color="grey" name="angle down" />
                   </Button>
                 )}
@@ -406,6 +417,7 @@ export function SearchContentsResultSideView() {
                     toggle_all_learning_time_query();
                     onClickFilterSearch();
                   }}
+                  readOnly={searchUI?.isLoading}
                 />
               </li>
               {CheckboxOptions.learning_time_query.map(
@@ -424,6 +436,7 @@ export function SearchContentsResultSideView() {
                         );
                         onClickFilterSearch();
                       }}
+                      readOnly={searchUI?.isLoading}
                     />
                   </li>
                 )

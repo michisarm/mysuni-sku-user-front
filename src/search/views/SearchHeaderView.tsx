@@ -145,7 +145,10 @@ export function SearchHeaderView() {
             </div>
             <Checkbox
               className="again_chk"
-              label="결과 내 재검색"
+              label={getPolyglotText(
+                '결과 내 재검색',
+                '통검-필레팝-재검색'
+              )}
               checked={searchInSearchInfo?.checkSearchInSearch}
               onClick={() => {
                 if (!searchInSearchInfo?.checkSearchInSearch) {
@@ -165,7 +168,7 @@ export function SearchHeaderView() {
           <div className="relative_box">
             <dl>
               <dt>
-                <strong>연관 검색어</strong>
+                <strong><PolyglotText id="통검-필레팝-연관검색어" defaultString="연관 검색어" /></strong>
               </dt>
               <dd>
                 <ul>
@@ -203,21 +206,21 @@ export function SearchHeaderView() {
             active={activeItem === 'lecture'}
             onClick={handleMenuClick}
           >
-            과정
+            <PolyglotText id="통검-요약정보-과정탭" defaultString="과정" />
           </Menu.Item>
           <Menu.Item
             name="badge"
             active={activeItem === 'badge'}
             onClick={handleMenuClick}
           >
-            Badge
+            <PolyglotText id="통검-필레팝-뱃지" defaultString="Badge" />
           </Menu.Item>
           <Menu.Item
             name="community"
             active={activeItem === 'community'}
             onClick={handleMenuClick}
           >
-            Community
+            <PolyglotText id="cmm-prfr-커뮤" defaultString="Community" />
           </Menu.Item>
           <Menu.Item
             name="instructor"
