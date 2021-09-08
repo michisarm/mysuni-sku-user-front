@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
 import { originSelfPath, parsingPath } from 'tracker-react/utils';
+import { getKoreaName } from 'tracker/present/logic/common';
 import {
   getPolyglotText,
   PolyglotText,
@@ -143,7 +144,9 @@ class CategoryMenuPanelView extends Component<Props> {
                       }}
                       data-area={Area.HEADER_CATEGORYLIST}
                       data-action={Action.CLICK}
-                      data-action-name={`CATEGORY 목록 클릭::${college.name}`}
+                      data-action-name={`CATEGORY 목록 클릭::${getKoreaName(
+                        college.name
+                      )}`}
                     >
                       {parsePolyglotString(
                         college.name,

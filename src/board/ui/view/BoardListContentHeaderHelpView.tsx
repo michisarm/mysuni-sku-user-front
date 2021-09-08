@@ -8,6 +8,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 
 interface Props {
   faqTotalCount: number;
@@ -40,7 +41,7 @@ class BoardListContentHeaderHelpView extends React.Component<Props> {
                   className="ellipsis"
                   onClick={() => routeToFaqDetail(faqPost.postId)}
                 >
-                  {faqPost.title}
+                  {parsePolyglotString(faqPost.title)}
                 </span>
               </a>
             ))) ||
