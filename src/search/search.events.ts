@@ -55,6 +55,21 @@ import {
   setSearchPopular1YList,
 } from './search.services';
 
+export function initSearchData() {
+  filterClearAll();
+  setCollegeOptions([]);
+  setOrganizerOptions([]);
+  setCubeTypeOptions([]);
+  setCard([]);
+  setAllowedCard([]);
+  setDisplayCard([]);
+  setExpert();
+  setExpertOri();
+  setSearchBadgeList([]);
+  setSearchCommunityList([]);
+  setSearchRelatedList([]);
+}
+
 export function getQueryId(): string {
   const queryId: string = window.location.search.slice(
     window.location.search.indexOf('=') + 1,
