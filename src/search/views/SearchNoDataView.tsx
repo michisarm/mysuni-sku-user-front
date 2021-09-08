@@ -19,7 +19,7 @@ export function SearchNoDataView() {
           className="ttl_txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{value} 중 <strong className="search_keyword"> ‘{value2}’</strong>에 대한 검색결과가 없습니다.',
+              '{value} 중 <strong class="search_keyword"> ‘{value2}’</strong>에 대한 검색결과가 없습니다.',
               '통검-요약정보-결과내검색없음',
               {
                 value: searchInSearchInfo.parentSearchValue,
@@ -34,7 +34,7 @@ export function SearchNoDataView() {
           className="ttl_txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '<strong className="search_keyword">‘{value}’</strong>에 대한 검색결과가 없습니다.',
+              '<strong class="search_keyword">‘{value}’</strong>에 대한 검색결과가 없습니다.',
               '통검-요약정보-결과없음',
               { value: queryId }
             ),
