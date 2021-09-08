@@ -66,7 +66,7 @@ export function SearchContentsPage() {
             className="ttl_txt"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                '{value} 중 <strong className="search_keyword">{value2}</strong>에 대한 검색결과는 총 <strong>{value3}건</strong> 입니다.',
+                '{value} 중 <strong class="search_keyword">{value2}</strong>에 대한 검색결과는 총 <strong>{value3}건</strong> 입니다.',
                 '통검-요약정보-결과내검색타이틀',
                 {
                   value: searchInSearchInfo.parentSearchValue,
@@ -82,7 +82,7 @@ export function SearchContentsPage() {
             className="ttl_txt"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                '<strong className="search_keyword">{value}</strong>에 대한 검색결과는 총 <strong>{value2}건</strong>입니다.',
+                '<strong class="search_keyword">{value}</strong>에 대한 검색결과는 총 <strong>{value2}건</strong>입니다.',
                 '통검-요약정보-타이틀2',
                 {
                   value: queryId,
