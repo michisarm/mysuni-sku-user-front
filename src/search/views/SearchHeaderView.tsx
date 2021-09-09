@@ -83,7 +83,7 @@ export function SearchHeaderView() {
                   on="click"
                   postion="left bottom"
                   className="history_popup navi_popup"
-                  positionFixed
+                  positionfixed
                   open={isOpen}
                   onOpen={handleOpen}
                   onClose={handleClose}
@@ -145,10 +145,7 @@ export function SearchHeaderView() {
             </div>
             <Checkbox
               className="again_chk"
-              label={getPolyglotText(
-                '결과 내 재검색',
-                '통검-필레팝-재검색'
-              )}
+              label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
               checked={searchInSearchInfo?.checkSearchInSearch}
               onClick={() => {
                 if (!searchInSearchInfo?.checkSearchInSearch) {
@@ -168,14 +165,19 @@ export function SearchHeaderView() {
           <div className="relative_box">
             <dl>
               <dt>
-                <strong><PolyglotText id="통검-필레팝-연관검색어" defaultString="연관 검색어" /></strong>
+                <strong>
+                  <PolyglotText
+                    id="통검-필레팝-연관검색어"
+                    defaultString="연관 검색어"
+                  />
+                </strong>
               </dt>
               <dd>
                 <ul>
-                  {relatedList.map((related: string) => (
-                    <li>
+                  {relatedList.map((related: string, index) => (
+                    <li key={`related_${index}`}>
                       <a
-                        href="javascript:void(0);"
+                        href="void(0)"
                         onClick={() => {
                           searchSetting(related);
                           search(related);

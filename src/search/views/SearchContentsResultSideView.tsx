@@ -139,7 +139,7 @@ export function SearchContentsResultSideView() {
                 {collegeOptions.map((college, index) => {
                   if (index < collegeLimit) {
                     return (
-                      <li>
+                      <li key={`chkOpt_college_${index}`}>
                         <Checkbox
                           label={college.value}
                           value={college.value}
@@ -315,7 +315,7 @@ export function SearchContentsResultSideView() {
               </li>
               {CheckboxOptions.difficulty_level_json_query.map(
                 (levels, index) => (
-                  <li>
+                  <li key={`chkOpt_difficulty_level_${index}`}>
                     <Checkbox
                       label={levels.text}
                       value={levels.value}
@@ -362,7 +362,7 @@ export function SearchContentsResultSideView() {
                 {cubeTypeOptions.map((learningType, index) => {
                   if (index < cubeTypeLimit) {
                     return (
-                      <li>
+                      <li key={`chkOpt_cube_type_${index}`}>
                         <Checkbox
                           label={learningType.value}
                           value={learningType.value}
@@ -422,7 +422,7 @@ export function SearchContentsResultSideView() {
               </li>
               {CheckboxOptions.learning_time_query.map(
                 (learningTime, index) => (
-                  <li>
+                  <li key={`chkOpt_learning_time_${index}`}>
                     <Checkbox
                       label={learningTime.text}
                       value={learningTime.value}

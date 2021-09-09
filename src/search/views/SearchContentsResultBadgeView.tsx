@@ -49,7 +49,7 @@ export function SearchContentsResultBadgeView() {
               {badges?.map((badge, index) => {
                 if (index < badgeLimit) {
                   return (
-                    <li>
+                    <li key={`result_badge_${index}`}>
                       <BadgeView
                         id={badge.id}
                         name={parsePolyglotString(

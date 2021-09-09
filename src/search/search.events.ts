@@ -676,8 +676,14 @@ export async function searchInSearchData(
   const cards = getAllowedCard();
   const newCards = cards?.filter(
     (ele) =>
-      ele.name.indexOf(decodedSearchValue) > -1 ||
-      ele.simple_description.indexOf(decodedSearchValue) > -1
+      parsePolyglotString(
+        JSON.parse(ele.name),
+        getDefaultLang(ele.langSupport)
+      ).indexOf(decodedSearchValue) > -1 ||
+      parsePolyglotString(
+        JSON.parse(ele.simple_description),
+        getDefaultLang(ele.langSupport)
+      ).indexOf(decodedSearchValue) > -1
   );
   setCard(cards);
   setAllowedCard(newCards);

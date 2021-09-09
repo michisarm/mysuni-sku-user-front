@@ -44,7 +44,7 @@ export function SearchContentsResultLectureView() {
         {cards?.map((card, index) => {
           if (index < lectureLimit) {
             return (
-              <div className="result_contents">
+              <div className="result_contents" key={`result_card_${index}`}>
                 <div className="sortbox">
                   <span>
                     {parsePolyglotString(

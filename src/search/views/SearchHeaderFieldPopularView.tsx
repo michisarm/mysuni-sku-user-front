@@ -35,10 +35,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
             {populars1M?.map((popular, index) => (
               <li key={`popular-1M-${index}`}>
                 <span className="o_num">{index + 1}</span>
-                <a
-                  href="javascript:void(0);"
-                  onClick={() => props.onClickSearch(popular)}
-                >
+                <a href="void(0)" onClick={() => props.onClickSearch(popular)}>
                   <span className="p_word ellipsis">{popular}</span>
                 </a>
               </li>
@@ -55,10 +52,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
             {populars6M?.map((popular, index) => (
               <li key={`popular-6M-${index}`}>
                 <span className="o_num">{index + 1}</span>
-                <a
-                  href="javascript:void(0);"
-                  onClick={() => props.onClickSearch(popular)}
-                >
+                <a href="void(0)" onClick={() => props.onClickSearch(popular)}>
                   <span className="p_word ellipsis">{popular}</span>
                 </a>
               </li>
@@ -75,10 +69,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
             {populars1Y?.map((popular, index) => (
               <li key={`popular-1Y-${index}`}>
                 <span className="o_num">{index + 1}</span>
-                <a
-                  href="javascript:void(0);"
-                  onClick={() => props.onClickSearch(popular)}
-                >
+                <a href="void(0)" onClick={() => props.onClickSearch(popular)}>
                   <span className="p_word ellipsis">{popular}</span>
                 </a>
               </li>

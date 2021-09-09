@@ -47,83 +47,81 @@ export function SearchContentsResultInstructorView() {
         {experts?.map((expert, index) => {
           if (index < expertLimit) {
             return (
-              <>
-                {/* 컨텐츠 */}
-                <div className="result_contents w50">
-                  <div className="teacherbox">
-                    <Link
-                      to={`/expert/instructor/${expert.id}/Introduce`}
-                      className="flex"
-                    >
-                      <Image
-                        src={
-                          expert.photo_id === ''
-                            ? profileImg
-                            : expert.photo_id.startsWith('http')
-                            ? expert.photo_id
-                            : `https://mysuni.sk.com${expert.photo_id}`
-                        }
-                        alt="강사이미지"
-                        className="t_thumb"
-                      />
-                      <div className="t_name">
-                        <strong
-                          className="ellipsis"
-                          dangerouslySetInnerHTML={{
-                            __html: getTitleHtmlSearchKeyword(expert.name),
-                          }}
-                        />
-                        <span
-                          className="ellipsis"
-                          dangerouslySetInnerHTML={{
-                            __html: getTitleHtmlSearchKeyword(expert.position),
-                          }}
-                        />
-                      </div>
-                    </Link>
-                    <dl className="search_detail flex">
-                      <dt>
-                        <PolyglotText
-                          id="통검-강사소개-소속기관"
-                          defaultString="소속 기관"
-                        />
-                      </dt>
-                      <dd
+              <div
+                className="result_contents w50"
+                key={`result_expert_${index}`}
+              >
+                <div className="teacherbox">
+                  <Link
+                    to={`/expert/instructor/${expert.id}/Introduce`}
+                    className="flex"
+                  >
+                    <Image
+                      src={
+                        expert.photo_id === ''
+                          ? profileImg
+                          : expert.photo_id.startsWith('http')
+                          ? expert.photo_id
+                          : `https://mysuni.sk.com${expert.photo_id}`
+                      }
+                      alt="강사이미지"
+                      className="t_thumb"
+                    />
+                    <div className="t_name">
+                      <strong
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
-                          __html: getTitleHtmlSearchKeyword(expert.department),
+                          __html: getTitleHtmlSearchKeyword(expert.name),
                         }}
                       />
-                      <dt>
-                        <PolyglotText
-                          id="통검-강사소개-강의분야"
-                          defaultString="강의 분야"
-                        />
-                      </dt>
-                      <dd
+                      <span
                         className="ellipsis"
                         dangerouslySetInnerHTML={{
-                          __html: getTitleHtmlSearchKeyword(
-                            expert.introduction
-                          ),
+                          __html: getTitleHtmlSearchKeyword(expert.position),
                         }}
                       />
-                      <dt>
-                        <PolyglotText
-                          id="통검-강사소개-주요경력"
-                          defaultString="주요 경력"
-                        />
-                      </dt>
-                      <dd
-                        className="ellipsis"
-                        dangerouslySetInnerHTML={{
-                          __html: getTitleHtmlSearchKeyword(expert.career),
-                        }}
+                    </div>
+                  </Link>
+                  <dl className="search_detail flex">
+                    <dt>
+                      <PolyglotText
+                        id="통검-강사소개-소속기관"
+                        defaultString="소속 기관"
                       />
-                    </dl>
-                  </div>
+                    </dt>
+                    <dd
+                      className="ellipsis"
+                      dangerouslySetInnerHTML={{
+                        __html: getTitleHtmlSearchKeyword(expert.department),
+                      }}
+                    />
+                    <dt>
+                      <PolyglotText
+                        id="통검-강사소개-강의분야"
+                        defaultString="강의 분야"
+                      />
+                    </dt>
+                    <dd
+                      className="ellipsis"
+                      dangerouslySetInnerHTML={{
+                        __html: getTitleHtmlSearchKeyword(expert.introduction),
+                      }}
+                    />
+                    <dt>
+                      <PolyglotText
+                        id="통검-강사소개-주요경력"
+                        defaultString="주요 경력"
+                      />
+                    </dt>
+                    <dd
+                      className="ellipsis"
+                      dangerouslySetInnerHTML={{
+                        __html: getTitleHtmlSearchKeyword(expert.career),
+                      }}
+                    />
+                  </dl>
                 </div>
-              </>
+              </div>
             );
           }
         })}
