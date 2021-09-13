@@ -43,7 +43,10 @@ export function SearchContentsResultCommunityView() {
         {communities?.map((community, index) => {
           if (index < communityLimit) {
             return (
-              <div className="result_contents">
+              <div
+                className="result_contents"
+                key={`result_community_${index}`}
+              >
                 <div className="search_title">
                   <a
                     href="javascript:void(0);"
