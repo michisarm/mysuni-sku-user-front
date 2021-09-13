@@ -1,30 +1,61 @@
 import { getDefaultLang } from '../../lecture/model/LangSupport';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   getQueryId,
   getTagsHtml,
   getTitleHtmlSearchKeyword,
 } from '../../search/search.events';
-import { SearchParam } from '../../search/search.models';
+import { SearchCard, SearchParam } from '../../search/search.models';
 import { getDisplayCard } from '../../search/search.services';
 import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Pagination, PaginationProps } from 'semantic-ui-react';
 
 export function SearchContentsResultLectureView() {
   //
   const [lectureLimit, setLectureLimit] = useState<Number>(5);
+  const [pageNo, setPageNo] = useState<string>('1');
+  const [pagingCards, setPagingCards] = useState<SearchCard[]>([]);
+  const pageLimit = 10;
 
   const params = useParams<SearchParam>();
   const queryId = getQueryId();
 
+  const cards = getDisplayCard();
+
   useEffect(() => {
+    setPagingCards(cards?.slice(0, pageLimit) || []);
     if (params && params.searchType === 'lecture') {
       setLectureLimit(999);
     }
-  }, [params]);
+  }, [params, cards]);
 
-  const cards = getDisplayCard();
+  const onChangePage = useCallback(
+    (_: React.MouseEvent, data: PaginationProps) => {
+      const currentPageNo = String(pageNo);
+      const nextPageNo = String(data.activePage || 1);
+
+      setPageNo(nextPageNo);
+      setPagingCards(
+        cards?.slice(
+          (Number(nextPageNo) - 1) * pageLimit,
+          (Number(nextPageNo) - 1) * pageLimit + pageLimit
+        ) || []
+      );
+    },
+    [cards]
+  );
+
+  const getTotalPage = useCallback((totalCount: number, limit: number) => {
+    let totalPageCount = Math.ceil(totalCount / limit);
+    if (totalCount % limit < 0) {
+      totalPageCount++;
+    }
+
+    return totalPageCount;
+  }, []);
+
   return (
     <>
       <div className="result">
@@ -41,7 +72,7 @@ export function SearchContentsResultLectureView() {
           )}
         </div>
 
-        {cards?.map((card, index) => {
+        {pagingCards?.map((card, index) => {
           if (index < lectureLimit) {
             return (
               <div className="result_contents" key={`result_card_${index}`}>
@@ -111,6 +142,17 @@ export function SearchContentsResultLectureView() {
             );
           }
         })}
+        {(cards?.length || 0) > 10 && lectureLimit > 5 && (
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={pageNo}
+              totalPages={getTotalPage(cards?.length || 0, 10)}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={onChangePage}
+            />
+          </div>
+        )}
       </div>
     </>
   );
