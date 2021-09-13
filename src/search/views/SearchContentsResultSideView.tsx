@@ -35,7 +35,7 @@ import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {
   //
-  const initialConditionLimit = 4;
+  const initialConditionLimit = 5;
   const [activeIndex, setActiveIndex] = useState<Number>(0);
   const [collegeLimit, setCollegeLimit] = useState<Number>(
     initialConditionLimit
@@ -96,7 +96,7 @@ export function SearchContentsResultSideView() {
       CheckboxOptions.learning_time_query.length;
 
   enum FilterConditionName {
-    College = '컬리지',
+    College = 'College',
     LearningType = '교육유형',
     DifficultyLevel = '난이도',
     LearningTime = '학습시간',
@@ -124,7 +124,7 @@ export function SearchContentsResultSideView() {
             </Accordion.Title>
             <Accordion.Content active={activeIndex === 0}>
               <ul>
-                <li>
+                {/*<li>
                   <Checkbox
                     label={`${SELECT_ALL}`}
                     checked={all_all_college_name_condition}
@@ -135,7 +135,7 @@ export function SearchContentsResultSideView() {
                     readOnly={searchUI?.isLoading}
                   />
                   <span>({allowedCard?.length})</span>
-                </li>
+                  </li>*/}
                 {collegeOptions.map((college, index) => {
                   if (index < collegeLimit) {
                     return (
@@ -302,7 +302,7 @@ export function SearchContentsResultSideView() {
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 3}>
             <ul>
-              <li>
+              {/*<li>
                 <Checkbox
                   label={`${SELECT_ALL}`}
                   checked={all_difficulty_level_condition}
@@ -312,7 +312,7 @@ export function SearchContentsResultSideView() {
                   }}
                   readOnly={searchUI?.isLoading}
                 />
-              </li>
+                </li>*/}
               {CheckboxOptions.difficulty_level_json_query.map(
                 (levels, index) => (
                   <li key={`chkOpt_difficulty_level_${index}`}>
@@ -348,7 +348,7 @@ export function SearchContentsResultSideView() {
             </Accordion.Title>
             <Accordion.Content active={activeIndex === 4}>
               <ul>
-                <li>
+                {/*<li>
                   <Checkbox
                     label={`${SELECT_ALL}`}
                     checked={all_cube_type_condition}
@@ -358,7 +358,7 @@ export function SearchContentsResultSideView() {
                     }}
                     readOnly={searchUI?.isLoading}
                   />
-                </li>
+                  </li>*/}
                 {cubeTypeOptions.map((learningType, index) => {
                   if (index < cubeTypeLimit) {
                     return (
@@ -409,7 +409,7 @@ export function SearchContentsResultSideView() {
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 5}>
             <ul>
-              <li>
+              {/*<li>
                 <Checkbox
                   label={`${SELECT_ALL}`}
                   checked={all_learning_time_condition}
@@ -419,7 +419,7 @@ export function SearchContentsResultSideView() {
                   }}
                   readOnly={searchUI?.isLoading}
                 />
-              </li>
+                </li>*/}
               {CheckboxOptions.learning_time_query.map(
                 (learningTime, index) => (
                   <li key={`chkOpt_learning_time_${index}`}>

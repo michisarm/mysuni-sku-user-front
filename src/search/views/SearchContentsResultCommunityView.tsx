@@ -49,7 +49,7 @@ export function SearchContentsResultCommunityView() {
               >
                 <div className="search_title">
                   <a
-                    href="void(0)"
+                    href="javascript:void(0);"
                     onClick={() => {
                       window.open(
                         `${window.location.origin}/suni-community/community/${community.communityId}`,

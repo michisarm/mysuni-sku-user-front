@@ -7,6 +7,8 @@ import { getQueryId, search } from '../../search/search.events';
 import classNames from 'classnames';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import {
+  getMenuAuth,
+  setMenuAuth,
   setSearchInSearchInfo,
   useSearchInSearchInfo,
   useSearchRelatedList,
@@ -15,6 +17,8 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../shared/ui/logic/PolyglotText';
+import { PageElement } from 'lecture/shared/model/PageElement';
+import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
 
 export function SearchHeaderView() {
   //
@@ -71,6 +75,17 @@ export function SearchHeaderView() {
     handleClose();
   };
 
+  //const isExternal = isExternalInstructor();
+
+  useEffect(() => {
+    //const axios = getAxios();
+    const fetchMenu = async () => {
+      const response = await findAvailablePageElements();
+      setMenuAuth(response);
+    };
+    fetchMenu();
+  }, []);
+
   return (
     <>
       <div className="top_search_area">
@@ -83,7 +98,7 @@ export function SearchHeaderView() {
                   on="click"
                   postion="left bottom"
                   className="history_popup navi_popup"
-                  positionfixed
+                  positionfixed="true"
                   open={isOpen}
                   onOpen={handleOpen}
                   onClose={handleClose}
@@ -177,7 +192,7 @@ export function SearchHeaderView() {
                   {relatedList.map((related: string, index) => (
                     <li key={`related_${index}`}>
                       <a
-                        href="void(0)"
+                        href="javascript:void(0);"
                         onClick={() => {
                           searchSetting(related);
                           search(related);
@@ -217,13 +232,19 @@ export function SearchHeaderView() {
           >
             <PolyglotText id="통검-필레팝-뱃지" defaultString="Badge" />
           </Menu.Item>
-          <Menu.Item
-            name="community"
-            active={activeItem === 'community'}
-            onClick={handleMenuClick}
-          >
-            <PolyglotText id="cmm-prfr-커뮤" defaultString="Community" />
-          </Menu.Item>
+          {getMenuAuth()?.some(
+            (pagemElement) =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Community'
+          ) && (
+            <Menu.Item
+              name="community"
+              active={activeItem === 'community'}
+              onClick={handleMenuClick}
+            >
+              <PolyglotText id="cmm-prfr-커뮤" defaultString="Community" />
+            </Menu.Item>
+          )}
           <Menu.Item
             name="instructor"
             active={activeItem === 'instructor'}

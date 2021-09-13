@@ -1,4 +1,5 @@
 //import { createStore } from './store/createStore';
+import { PageElement } from 'lecture/shared/model/PageElement';
 import { createStore } from 'shared/store/Store';
 import { getEmptyQueryOptions, QueryOptions } from './api/searchApi';
 import {
@@ -167,3 +168,7 @@ export const [
   getSearchInSearchInfo,
   useSearchInSearchInfo,
 ] = createStore(InitialSearchInSearchInfo);
+
+export const [setMenuAuth, onMenuAuth, getMenuAuth, useMenuAuth] = createStore<
+  PageElement[]
+>([]);

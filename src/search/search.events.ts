@@ -53,6 +53,7 @@ import {
   setSearchPopular1MList,
   setSearchPopular6MList,
   setSearchPopular1YList,
+  getMenuAuth,
 } from './search.services';
 
 export function initSearchData() {
@@ -621,12 +622,20 @@ export async function searchData(searchValue: string, searchType?: string) {
       setSearchBadgeOriList(response.results);
     }
   });
-  findCommunities(searchValue).then((response) => {
-    if (response) {
-      setSearchCommunityList(response.results);
-      setSearchCommunityOriList(response.results);
-    }
-  });
+
+  if (
+    getMenuAuth()?.some(
+      (pagemElement) =>
+        pagemElement.position === 'TopMenu' && pagemElement.type === 'Community'
+    )
+  ) {
+    findCommunities(searchValue).then((response) => {
+      if (response) {
+        setSearchCommunityList(response.results);
+        setSearchCommunityOriList(response.results);
+      }
+    });
+  }
 
   // 최근검색어
   const searchRecents =

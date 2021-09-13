@@ -75,14 +75,14 @@ export function SearchContentsResultBadgeView() {
                             ),
                           }}
                         />
-                        <p>
+                        {/*<p>
                           {getTextFromHtml(
                             parsePolyglotString(
                               badge.description,
                               getDefaultLang(badge.langSupport)
                             )
                           )}
-                        </p>
+                            </p>*/}
                       </div>
                     </li>
                   );
