@@ -9,7 +9,7 @@ import BoardListContentHeaderContainer from '../logic/BoardListContentHeaderCont
 import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import QnaManagementContainer from '../logic/QnaManagementContainer';
 import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 interface Props extends RouteComponentProps<RouteParams> {}
@@ -22,6 +22,14 @@ enum ContentType {
   Notice = 'Notice',
   FAQ = 'FAQ',
   QnA = 'Q&A',
+  QnAMgt = 'Q&AMgt',
+}
+
+enum ContentName {
+  Notice = 'Notice',
+  FAQ = 'FAQ',
+  QnA = '나의 이용문의',
+  QnAMgt = 'Q&A 관리',
 }
 
 @observer
@@ -33,13 +41,18 @@ export class BoardListPage extends React.Component<Props> {
     const TabItem = [
       {
         name: ContentType.FAQ,
-        item: ContentType.FAQ,
+        item: ContentName.FAQ,
         render: () => <FaqTabContainer />,
       },
       {
         name: ContentType.QnA,
-        item: ContentType.QnA,
+        item: ContentName.QnA,
         render: () => <QnaTabContainer />,
+      },
+      {
+        name: ContentType.QnAMgt,
+        item: ContentName.QnAMgt,
+        render: () => <QnaManagementContainer />,
       },
     ] as TabItemModel[];
 
@@ -48,7 +61,7 @@ export class BoardListPage extends React.Component<Props> {
     } else {
       TabItem.unshift({
         name: ContentType.Notice,
-        item: ContentType.Notice,
+        item: ContentName.Notice,
         render: () => <NoticeTabContainer />,
       });
     }
