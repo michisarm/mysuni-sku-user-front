@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import React from 'react';
+import {
+  mobxHelper,
+  reactAutobind,
+  ReactComponent,
+} from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import classNames from 'classnames';
 import moment from 'moment';
 import { CommentService } from '@nara.drama/feedback';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { Icon, Input, Segment } from 'semantic-ui-react';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
@@ -16,81 +20,79 @@ import {
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { SharedService } from '../../../shared/stores';
+import Pagination from '../../../shared/components/Pagination';
+import NoticeListView from '../view/NoticeListView';
+import SubActions from '../../../shared/components/SubActions';
 
-interface Props extends RouteComponentProps {
-  commentService?: CommentService;
-  postService?: PostService;
-}
+interface Props extends RouteComponentProps {}
 
 interface State {
   offset: number;
   feedbackIds: string[];
   isLoading: boolean;
+  keyword: string;
 }
 
-@inject(mobxHelper.injectFrom('shared.commentService', 'board.postService'))
+interface Injected {
+  commentService: CommentService;
+  postService: PostService;
+  sharedService: SharedService;
+}
+
+@inject(
+  mobxHelper.injectFrom(
+    'shared.commentService',
+    'shared.sharedService',
+    'board.postService'
+  )
+)
 @observer
 @reactAutobind
-class NoticeListContainer extends Component<Props, State> {
+class NoticeListContainer extends ReactComponent<Props, State, Injected> {
   //
-  BOARD_ID = 'NTC';
-  PINNED_SIZE = 5;
-  PAGE_SIZE = 10;
+  paginationKey = 'Notice';
   state = {
     offset: 0,
     feedbackIds: [],
     isLoading: false,
+    keyword: '',
   };
 
   constructor(props: Props) {
     //
     super(props);
-    this.props.postService!.clearPosts();
+    this.injected.postService!.clearPosts();
   }
 
   componentDidMount() {
     //
-    this.findNoticePinnedPosts();
+    this.findNoticePosts();
   }
 
-  async findNoticePinnedPosts() {
-    //
-    this.setState({ isLoading: true });
-
-    const postService = this.props.postService!;
-    const pinnedPosts = await postService.findPostsByBoardIdAndPinned(
-      this.BOARD_ID,
-      0,
-      this.PINNED_SIZE
-    );
-    const feedbackIds = pinnedPosts.results.map(
-      (post) => post.commentFeedbackId
-    );
-
-    this.setState({ feedbackIds }, () => {
-      //
-      let count = pinnedPosts.totalCount;
-      if (count > 5) {
-        count = 5;
-      }
-      this.findNoticePosts(10 - count);
-    });
-  }
-
-  async findNoticePosts(offset: number) {
+  async findNoticePosts() {
     //
     // this.setState({ isLoading: true });
-    const postService = this.props.postService!;
-    const commentService = this.props.commentService!;
-    const posts = await postService.findNoticePosts(0, offset);
+    const { postService, commentService, sharedService } = this.injected;
+    let pageModel = sharedService.getPageModel(this.paginationKey);
+
+    if (pageModel.limit === 20) {
+      sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+      pageModel = sharedService.getPageModel(this.paginationKey);
+    }
+
+    const posts = await postService.findNoticePosts(
+      pageModel,
+      this.state.keyword
+    );
     let feedbackIds = [...this.state.feedbackIds];
 
     feedbackIds = feedbackIds.concat(
       posts.results.map((post: PostModel) => post.commentFeedbackId)
     );
 
-    this.setState({ offset: offset + this.PAGE_SIZE });
-    commentService!.countByFeedbackIds(feedbackIds);
+    sharedService.setCount(this.paginationKey, posts.totalCount);
+    commentService.countByFeedbackIds(feedbackIds);
     this.setState({ isLoading: false });
   }
 
@@ -109,7 +111,7 @@ class NoticeListContainer extends Component<Props, State> {
 
   renderPostRow(post: PostModel, index: number, pinned: boolean = false) {
     //
-    const { commentCountMap } = this.props.commentService!;
+    const { commentCountMap } = this.injected.commentService!;
     const count = commentCountMap.get(post.commentFeedbackId) || 0;
 
     /* 김민준 - 중요 표시 */
@@ -150,11 +152,11 @@ class NoticeListContainer extends Component<Props, State> {
 
   render() {
     //
-    const { postService } = this.props;
-    const { offset, isLoading } = this.state;
+    const { postService, sharedService } = this.injected;
+    const { isLoading, keyword } = this.state;
     const pinnedPosts = postService!.pinnedPosts.results;
     const posts = postService!.posts.results;
-    const postTotalCount = postService!.posts.totalCount;
+    const { startNo } = sharedService.getPageModel(this.paginationKey);
 
     return (
       <>
@@ -174,38 +176,50 @@ class NoticeListContainer extends Component<Props, State> {
               <Loadingpanel loading={isLoading} />
             </Segment>
           </div>
-        ) : pinnedPosts.length === 0 && posts.length === 0 ? (
-          <NoSuchContentPanel
-            message={getPolyglotText(
-              '등록된 Notice가 없습니다.',
-              'support-noti-목록없음'
-            )}
-          />
         ) : (
-          <div className="support-list-wrap">
-            <div className="su-list notice">
-              {pinnedPosts.map((pinnedPost, index) =>
-                this.renderPostRow(pinnedPost, index, true)
-              )}
-              {posts.map((post, index) => this.renderPostRow(post, index))}
-            </div>
+          <>
+            <Pagination
+              name={this.paginationKey}
+              onChange={this.findNoticePosts}
+            >
+              <SubActions>
+                <SubActions.Left>
+                  <SubActions.Count>
+                    {postService.posts.totalCount}
+                  </SubActions.Count>
+                </SubActions.Left>
+                <SubActions.Right>
+                  <Input
+                    icon={
+                      <Icon
+                        name="search"
+                        inverted
+                        circular
+                        link
+                        onClick={this.findNoticePosts}
+                      />
+                    }
+                    value={keyword}
+                    onChange={(event, data) =>
+                      this.setState({ keyword: data.value })
+                    }
+                    onKeyDown={(e: any) => {
+                      if (e.key === 'Enter') {
+                        this.findNoticePosts();
+                      }
+                    }}
+                  />
+                </SubActions.Right>
+              </SubActions>
+              <NoticeListView
+                posts={posts}
+                startNo={startNo}
+                onClickPost={this.onClickPost}
+              />
 
-            {(pinnedPosts.length > 0 || posts.length > 0) &&
-              posts.length < postTotalCount && (
-                <div
-                  className="more-comments"
-                  onClick={() => this.findNoticePosts(offset)}
-                >
-                  <Button icon className="left moreview">
-                    <Icon className="moreview" />
-                    <PolyglotText
-                      id="support-noti-더보기"
-                      defaultString="list more"
-                    />
-                  </Button>
-                </div>
-              )}
-          </div>
+              <Pagination.Navigator />
+            </Pagination>
+          </>
         )}
       </>
     );

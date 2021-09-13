@@ -22,6 +22,8 @@ export { default as InputWrapper } from './components/InputWrapper';
 export { default as Tab, TabItemModel } from './components/Tab';
 export { default as ListPanelTopLine } from './components/ListPanelTopLine';
 export { default as FavoriteChannelChangeModal } from './components/FavoriteChannelChangeModal';
+export { default as Pagination } from './components/Pagination';
+export { default as SubActions } from './components/SubActions';
 
 // Deprecated
 export { default as AlertWin } from './ui/logic/AlertWin';
