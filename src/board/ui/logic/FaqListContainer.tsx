@@ -25,6 +25,8 @@ interface State {
   offset: number;
   categoryIndex: number;
   isLoading: boolean;
+  searchKey: string;
+  focus: boolean;
 }
 
 @inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
@@ -36,11 +38,28 @@ class FaqListContainer extends React.Component<Props, State> {
     offset: 0,
     categoryIndex: 0,
     isLoading: false,
+    searchKey: '',
+    focus: false,
   };
 
   componentDidMount() {
     //
     this.findFaqCategoris();
+  }
+
+  onChangeSearchKey(event : any) {
+    //
+    this.setState({
+      searchKey: event.target.value,
+    });
+  }
+
+  onClickInput() {
+    this.setState({ focus: true });
+  }
+
+  onBlurInput() {
+    this.setState({ focus: false });
   }
 
   async findFaqCategoris() {
@@ -125,6 +144,18 @@ class FaqListContainer extends React.Component<Props, State> {
     this.findFaqPosts(categorys[categoryIndex].categoryId, offset);
   }
 
+  onClearSearchKey(e: any) {
+    //
+    this.setState({ searchKey: '' });
+    this.onSearch(e);
+  }
+
+  onSearch(e: any) {
+    //
+    const { searchKey } = this.state;
+
+  }
+
   renderPostRow(post: PostModel, index: number) {
     return (
       <a
@@ -152,7 +183,7 @@ class FaqListContainer extends React.Component<Props, State> {
     //
     const { categorys } = this.props.categoryService!;
     const { posts } = this.props.postService!;
-    const { categoryIndex, isLoading } = this.state;
+    const { categoryIndex, isLoading, searchKey, focus } = this.state;
     const result = posts.results;
     const totalCount = posts.totalCount;
 
@@ -209,6 +240,25 @@ class FaqListContainer extends React.Component<Props, State> {
                       onChange={this.onChangeCategory}
                     />
                   ))}
+              </div>
+              <div className="row head">
+                <div className="cell v-middle">
+                  <div className="right">
+                    <div className={classNames('ui h30 search input', { focus, write: searchKey })}>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchKey}
+                        onChange={this.onChangeSearchKey}
+                        // onKeyPress={this.onKeyPressInput}
+                        onClick={this.onClickInput}
+                        onBlur={this.onBlurInput}
+                      />
+                      <Icon className="clear link" onClick={this.onClearSearchKey} />
+                      <Icon className="search link" onClick={this.onSearch} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="su-list faq">
