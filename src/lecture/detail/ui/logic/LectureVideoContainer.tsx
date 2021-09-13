@@ -118,7 +118,7 @@ function LectureVideoContainer() {
       return;
     }
     if (
-      panoptoEmbedPlayerState.playerState === PlayerState.Paused ||
+      // panoptoEmbedPlayerState.playerState === PlayerState.Paused ||
       panoptoEmbedPlayerState.playerState === PlayerState.Ended
     ) {
       if (
