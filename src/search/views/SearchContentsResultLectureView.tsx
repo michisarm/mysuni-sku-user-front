@@ -80,13 +80,13 @@ export function SearchContentsResultLectureView() {
                   <span>
                     {parsePolyglotString(
                       JSON.parse(JSON.parse(card.categories)[0].collegeName),
-                      getDefaultLang(card.langSupport)
+                      getDefaultLang(JSON.parse(card.lang_supports))
                     )}
                   </span>
                   <span>
                     {parsePolyglotString(
                       JSON.parse(JSON.parse(card.categories)[0].channelName),
-                      getDefaultLang(card.langSupport)
+                      getDefaultLang(JSON.parse(card.lang_supports))
                     )}
                   </span>
                 </div>
@@ -97,7 +97,7 @@ export function SearchContentsResultLectureView() {
                         __html: getTitleHtmlSearchKeyword(
                           parsePolyglotString(
                             JSON.parse(card.name),
-                            getDefaultLang(card.langSupport)
+                            getDefaultLang(JSON.parse(card.lang_supports))
                           )
                         ),
                       }}
@@ -109,7 +109,7 @@ export function SearchContentsResultLectureView() {
                       __html: getTitleHtmlSearchKeyword(
                         parsePolyglotString(
                           JSON.parse(card.simple_description),
-                          getDefaultLang(card.langSupport)
+                          getDefaultLang(JSON.parse(card.lang_supports))
                         )
                       ),
                     }}
@@ -117,7 +117,7 @@ export function SearchContentsResultLectureView() {
                 </div>
                 {parsePolyglotString(
                   JSON.parse(card.tags),
-                  getDefaultLang(card.langSupport)
+                  getDefaultLang(JSON.parse(card.lang_supports))
                 ) !== '' && (
                   <div className="tagbox">
                     <strong>
@@ -131,7 +131,7 @@ export function SearchContentsResultLectureView() {
                         __html: getTagsHtml(
                           parsePolyglotString(
                             JSON.parse(card.tags),
-                            getDefaultLang(card.langSupport)
+                            getDefaultLang(JSON.parse(card.lang_supports))
                           )
                         ),
                       }}

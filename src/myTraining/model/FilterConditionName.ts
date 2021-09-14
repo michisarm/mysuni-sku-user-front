@@ -17,6 +17,8 @@ export function filterConditionNamePolyglot(s: string) {
     return getPolyglotText('Certification', '통검-필레팝-자격증명');
   } else if (s === '교육일정') {
     return getPolyglotText('교육일정', '통검-필레팝-교육일정');
+  } else if (s === '지원언어') {
+    return getPolyglotText('지원언어', '통검-필레팝-지원언어');
   } else {
     return '';
   }

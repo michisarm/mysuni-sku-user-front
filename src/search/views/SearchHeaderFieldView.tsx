@@ -60,8 +60,10 @@ export function SearchHeaderFieldView(props: Props) {
           </strong>
           {searchRecents && searchRecents.length > 0 && (
             <Button className="all_dt" onClick={allClear}>
-              {/*<PolyglotText id="통검-필레팝-전체삭제" defaultString="전체 삭제" />*/}
-              x
+              <PolyglotText
+                id="통검-필레팝-전체삭제"
+                defaultString="전체 삭제"
+              />
             </Button>
           )}
         </div>
