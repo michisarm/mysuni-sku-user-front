@@ -29,6 +29,7 @@ export interface FilterCondition {
   learning_start_date_str: Date | null; // 교육일정 startDate
   learning_end_date_str: Date | null; // 교육일정 endDate
   applying: boolean; // 수강신청 가능 학습
+  support_lang_json_query: string[]; // 지원언어
 }
 export interface Options {
   key: string;
@@ -164,6 +165,24 @@ export const CheckboxOptions = {
       value: 'Rejected',
     },
   ],
+
+  support_lang_json_query: [
+    {
+      key: 0,
+      text: getPolyglotText('한국어', '통검-필레팝-한국어'),
+      value: 'Korean',
+    },
+    {
+      key: 1,
+      text: getPolyglotText('중국어', '통검-필레팝-중국어'),
+      value: 'Chinese',
+    },
+    {
+      key: 2,
+      text: getPolyglotText('영어', '통검-필레팝-영어'),
+      value: 'English',
+    },
+  ],
 };
 
 export interface SearchCardCategory extends Category {
@@ -196,7 +215,7 @@ export interface SearchCard {
   cube_types: string; //
   cube_organizer_names: string; //
   paid: string;
-  langSupport: LangSupport[];
+  lang_supports: string;
   tags: string;
 }
 

@@ -130,7 +130,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
                 query !== null &&
                 parsePolyglotString(
                   JSON.parse(c.name),
-                  getDefaultLang(c.langSupport)
+                  getDefaultLang(JSON.parse(c.lang_supports))
                 )
                   .toLowerCase()
                   .includes(query.toLowerCase())
@@ -174,7 +174,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
                 query !== null &&
                 parsePolyglotString(
                   JSON.parse(c.name),
-                  getDefaultLang(c.langSupport)
+                  getDefaultLang(JSON.parse(c.lang_supports))
                 )
                   .toLowerCase()
                   .includes(query.toLowerCase())
@@ -550,6 +550,34 @@ export function toggle_all_learning_time_query() {
     });
   }
 }
+
+export function toggle_support_lang_json_query(value: string) {
+  const filterCondition = getFilterCondition();
+  const queryOptions = getQueryOptions();
+  if (filterCondition === undefined || queryOptions === undefined) {
+    return;
+  }
+  const exist = filterCondition.support_lang_json_query.some(
+    (c) => c === value
+  );
+
+  if (exist) {
+    setFilterCondition({
+      ...filterCondition,
+      support_lang_json_query: filterCondition.support_lang_json_query.filter(
+        (c) => c !== value
+      ),
+    });
+  } else {
+    setFilterCondition({
+      ...filterCondition,
+      support_lang_json_query: [
+        ...filterCondition.support_lang_json_query,
+        value,
+      ],
+    });
+  }
+}
 //  // 필터 선택 값 만들기
 //  // 필터
 
@@ -687,11 +715,11 @@ export async function searchInSearchData(
     (ele) =>
       parsePolyglotString(
         JSON.parse(ele.name),
-        getDefaultLang(ele.langSupport)
+        getDefaultLang(JSON.parse(ele.lang_supports))
       ).indexOf(decodedSearchValue) > -1 ||
       parsePolyglotString(
         JSON.parse(ele.simple_description),
-        getDefaultLang(ele.langSupport)
+        getDefaultLang(JSON.parse(ele.lang_supports))
       ).indexOf(decodedSearchValue) > -1
   );
   setCard(cards);

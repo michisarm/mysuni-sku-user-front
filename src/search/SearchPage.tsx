@@ -78,6 +78,23 @@ export function SearchPage() {
         value: 'type5',
       },
     ];
+    CheckboxOptions.support_lang_json_query = [
+      {
+        key: 0,
+        text: getPolyglotText('한국어', '통검-필레팝-한국어'),
+        value: 'Korean',
+      },
+      {
+        key: 1,
+        text: getPolyglotText('중국어', '통검-필레팝-중국어'),
+        value: 'Chinese',
+      },
+      {
+        key: 2,
+        text: getPolyglotText('영어', '통검-필레팝-영어'),
+        value: 'English',
+      },
+    ];
 
     return setSearchUI;
   }, []);

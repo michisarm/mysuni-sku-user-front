@@ -14,6 +14,7 @@ import {
   toggle_all_difficulty_level_query,
   toggle_all_cube_type_query,
   toggle_all_learning_time_query,
+  toggle_support_lang_json_query,
 } from '../../search/search.events';
 import { SearchParam, CheckboxOptions } from '../../search/search.models';
 import {
@@ -104,6 +105,7 @@ export function SearchContentsResultSideView() {
     Required = '핵인싸',
     Certification = 'Certification',
     LearningSchedule = '교육일정',
+    SupportLanguage = '지원언어',
   }
   const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 
@@ -122,7 +124,23 @@ export function SearchContentsResultSideView() {
               {filterConditionNamePolyglot(FilterConditionName.College)}
               <Icon name="angle down" />
             </Accordion.Title>
-            <Accordion.Content active={activeIndex === 0}>
+            <Accordion.Content active={activeIndex === 0} className="sty2">
+              <Button
+                className="deselect"
+                onClick={() => {
+                  setFilterCondition({
+                    ...filterCondition,
+                    all_college_name_query: [],
+                  });
+                  onClickFilterSearch();
+                }}
+              >
+                <Icon className="close-grey" />
+                <PolyglotText
+                  id="통검-필레팝-선택해제"
+                  defaultString="선택 해제"
+                />
+              </Button>
               <ul>
                 {/*<li>
                   <Checkbox
@@ -180,7 +198,7 @@ export function SearchContentsResultSideView() {
             index={1}
             onClick={handleClick}
           >
-            Badge
+            <PolyglotText id="통검-필레팝-뱃지" defaultString="Badge" />
             <Icon name="angle down" />
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 1}>
@@ -192,12 +210,8 @@ export function SearchContentsResultSideView() {
                   value="badgeInclude"
                   checked={filterCondition.badge === true}
                   onChange={() => {
-                    const mFilterCondition = getFilterCondition();
-                    if (mFilterCondition === undefined) {
-                      return;
-                    }
                     setFilterCondition({
-                      ...mFilterCondition,
+                      ...filterCondition,
                       badge: true,
                     });
                     onClickFilterSearch();
@@ -212,12 +226,8 @@ export function SearchContentsResultSideView() {
                   value="badgeNotInclude"
                   checked={filterCondition.badge !== true}
                   onChange={() => {
-                    const mFilterCondition = getFilterCondition();
-                    if (mFilterCondition === undefined) {
-                      return;
-                    }
                     setFilterCondition({
-                      ...mFilterCondition,
+                      ...filterCondition,
                       badge: false,
                     });
                     onClickFilterSearch();
@@ -250,12 +260,8 @@ export function SearchContentsResultSideView() {
                   value="true"
                   checked={filterCondition.applying}
                   onChange={() => {
-                    const mFilterCondition = getFilterCondition();
-                    if (mFilterCondition === undefined) {
-                      return;
-                    }
                     setFilterCondition({
-                      ...mFilterCondition,
+                      ...filterCondition,
                       applying: true,
                     });
                     onClickFilterSearch();
@@ -270,12 +276,8 @@ export function SearchContentsResultSideView() {
                   value="false"
                   checked={!filterCondition.applying}
                   onChange={() => {
-                    const mFilterCondition = getFilterCondition();
-                    if (mFilterCondition === undefined) {
-                      return;
-                    }
                     setFilterCondition({
-                      ...mFilterCondition,
+                      ...filterCondition,
                       applying: false,
                     });
                     onClickFilterSearch();
@@ -300,7 +302,23 @@ export function SearchContentsResultSideView() {
             {filterConditionNamePolyglot(FilterConditionName.DifficultyLevel)}
             <Icon name="angle down" />
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 3}>
+          <Accordion.Content active={activeIndex === 3} className="sty2">
+            <Button
+              className="deselect"
+              onClick={() => {
+                setFilterCondition({
+                  ...filterCondition,
+                  difficulty_level_json_query: [],
+                });
+                onClickFilterSearch();
+              }}
+            >
+              <Icon className="close-grey" />
+              <PolyglotText
+                id="통검-필레팝-선택해제"
+                defaultString="선택 해제"
+              />
+            </Button>
             <ul>
               {/*<li>
                 <Checkbox
@@ -346,7 +364,23 @@ export function SearchContentsResultSideView() {
               {filterConditionNamePolyglot(FilterConditionName.LearningType)}
               <Icon name="angle down" />
             </Accordion.Title>
-            <Accordion.Content active={activeIndex === 4}>
+            <Accordion.Content active={activeIndex === 4} className="sty2">
+              <Button
+                className="deselect"
+                onClick={() => {
+                  setFilterCondition({
+                    ...filterCondition,
+                    cube_type_query: [],
+                  });
+                  onClickFilterSearch();
+                }}
+              >
+                <Icon className="close-grey" />
+                <PolyglotText
+                  id="통검-필레팝-선택해제"
+                  defaultString="선택 해제"
+                />
+              </Button>
               <ul>
                 {/*<li>
                   <Checkbox
@@ -407,7 +441,23 @@ export function SearchContentsResultSideView() {
             {filterConditionNamePolyglot(FilterConditionName.LearningTime)}
             <Icon name="angle down" />
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 5}>
+          <Accordion.Content active={activeIndex === 5} className="sty2">
+            <Button
+              className="deselect"
+              onClick={() => {
+                setFilterCondition({
+                  ...filterCondition,
+                  learning_time_query: [],
+                });
+                onClickFilterSearch();
+              }}
+            >
+              <Icon className="close-grey" />
+              <PolyglotText
+                id="통검-필레팝-선택해제"
+                defaultString="선택 해제"
+              />
+            </Button>
             <ul>
               {/*<li>
                 <Checkbox
@@ -441,6 +491,54 @@ export function SearchContentsResultSideView() {
                   </li>
                 )
               )}
+            </ul>
+          </Accordion.Content>
+        </Accordion>
+
+        <Accordion>
+          <Accordion.Title
+            active={activeIndex === 6}
+            index={6}
+            onClick={handleClick}
+          >
+            {filterConditionNamePolyglot(FilterConditionName.SupportLanguage)}
+            <Icon name="angle down" />
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 6} className="sty2">
+            <Button
+              className="deselect"
+              onClick={() => {
+                setFilterCondition({
+                  ...filterCondition,
+                  support_lang_json_query: [],
+                });
+                onClickFilterSearch();
+              }}
+            >
+              <Icon className="close-grey" />
+              <PolyglotText
+                id="통검-필레팝-선택해제"
+                defaultString="선택 해제"
+              />
+            </Button>
+            <ul>
+              {CheckboxOptions.support_lang_json_query.map((lang, index) => (
+                <li key={`chkOpt_support_lang_${index}`}>
+                  <Checkbox
+                    label={lang.text}
+                    value={lang.value}
+                    checked={filterCondition.support_lang_json_query.includes(
+                      lang.value
+                    )}
+                    onChange={() => {
+                      toggle_support_lang_json_query(lang.value);
+                      onClickFilterSearch();
+                    }}
+                    readOnly={searchUI?.isLoading}
+                  />
+                  <span />
+                </li>
+              ))}
             </ul>
           </Accordion.Content>
         </Accordion>
