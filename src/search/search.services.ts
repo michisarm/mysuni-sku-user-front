@@ -32,6 +32,7 @@ export const InitialConditions: FilterCondition = {
   learning_start_date_str: null,
   learning_end_date_str: null,
   applying: false,
+  support_lang_json_query: [],
 };
 
 export const [

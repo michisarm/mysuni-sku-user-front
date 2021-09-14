@@ -30,12 +30,8 @@ export function CalendarView({ filterCondition, search }: CalendarViewProps) {
         <DatePicker
           selected={filterCondition.learning_start_date_str}
           onChange={(learning_start_date_str) => {
-            const mFilterCondition = getFilterCondition();
-            if (mFilterCondition === undefined) {
-              return;
-            }
             setFilterCondition({
-              ...mFilterCondition,
+              ...filterCondition,
               learning_start_date_str,
             });
           }}
@@ -48,12 +44,8 @@ export function CalendarView({ filterCondition, search }: CalendarViewProps) {
         <DatePicker
           selected={filterCondition.learning_end_date_str}
           onChange={(learning_end_date_str) => {
-            const mFilterCondition = getFilterCondition();
-            if (mFilterCondition === undefined) {
-              return;
-            }
             setFilterCondition({
-              ...mFilterCondition,
+              ...filterCondition,
               learning_end_date_str,
             });
           }}
