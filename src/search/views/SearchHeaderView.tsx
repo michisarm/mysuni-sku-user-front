@@ -19,6 +19,7 @@ import {
 } from '../../shared/ui/logic/PolyglotText';
 import { PageElement } from 'lecture/shared/model/PageElement';
 import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
+import { Area } from 'tracker/model';
 
 export function SearchHeaderView() {
   //
@@ -88,7 +89,7 @@ export function SearchHeaderView() {
 
   return (
     <>
-      <div className="top_search_area">
+      <div className="top_search_area" data-area={Area.SEARCH}>
         <div className="search_area">
           <div className="search_inner">
             {/* 검색어 입력필드 */}
@@ -152,7 +153,7 @@ export function SearchHeaderView() {
                     </div>
                   }
                 >
-                  <Popup.Content>
+                  <Popup.Content data-area={Area.SEARCH}>
                     <SearchHeaderFieldView callback={searchSetting} />
                   </Popup.Content>
                 </Popup>
