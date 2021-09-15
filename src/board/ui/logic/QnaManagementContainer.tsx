@@ -1,7 +1,11 @@
 import React from 'react';
 import { Radio } from 'semantic-ui-react';
-import { inject } from 'mobx-react';
-import { ReactComponent, mobxHelper } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
+import {
+  ReactComponent,
+  mobxHelper,
+  reactAutobind,
+} from '@nara.platform/accent';
 
 import SubActions from '../../../shared/components/SubActions';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
@@ -9,31 +13,80 @@ import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import SupportService from '../../present/logic/SupportService';
 import Pagination from '../../../shared/components/Pagination';
 import QnaManagementListView from '../view/QnaManagementListView';
+import { SharedService } from '../../../shared/stores';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {}
 
 interface State {
-  answered: string;
   isLoading: boolean;
+  state?: QnaState;
 }
 
 interface Injected {
   supportService: SupportService;
+  sharedService: SharedService;
 }
 
-@inject(mobxHelper.injectFrom('board.supportService'))
+@inject(mobxHelper.injectFrom('board.supportService', 'shared.sharedService'))
+@observer
+@reactAutobind
 class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
   //
   paginationKey = 'QnAManagement';
   state: State = {
-    answered: 'all',
     isLoading: false,
+    state: undefined,
   };
+
+  componentDidMount() {
+    //
+    this.init();
+  }
+
+  async init() {
+    //
+    const { supportService } = this.injected;
+
+    await supportService.findMainCategory();
+    this.findQnaMyOperator();
+  }
+
+  async findQnaMyOperator() {
+    //
+    const { supportService, sharedService } = this.injected;
+    let pageModel = sharedService.getPageModel(this.paginationKey);
+
+    if (pageModel.limit === 20) {
+      sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+      pageModel = sharedService.getPageModel(this.paginationKey);
+    }
+
+    const totalCount = await supportService.findQnaMyOperator(
+      pageModel,
+      this.state.state
+    );
+
+    sharedService.setCount(this.paginationKey, totalCount);
+  }
+
+  async onClickQnAStateRadio(state?: QnaState) {
+    //
+    const { sharedService } = this.injected;
+
+    // 상태 바뀌었을 시에 처음 페이지로 이동
+    sharedService.setPage(this.paginationKey, 1);
+
+    await this.setState({ state });
+    this.findQnaMyOperator();
+  }
 
   render() {
     //
-    const { supportService } = this.injected;
-    const { answered, isLoading } = this.state;
+    const { supportService, sharedService } = this.injected;
+    const { isLoading, state } = this.state;
+    const { qnas, categoriesMap } = supportService;
+    const { startNo } = sharedService.getPageModel(this.paginationKey);
 
     return (
       <>
@@ -49,36 +102,48 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
                     className="base"
                     label={getPolyglotText('모두 보기', 'support-qna-rall')}
                     name="radioGroup"
-                    value="all"
-                    checked={answered === 'all'}
-                    onChange={(e: any, data: any) => {}}
+                    value={undefined}
+                    checked={state === undefined}
+                    onChange={() => this.onClickQnAStateRadio(undefined)}
                   />
                   <Radio
                     className="base"
                     label={getPolyglotText('답변 완료', 'support-qna-rdn')}
                     name="radioGroup"
-                    value="true"
-                    checked={answered === 'true'}
-                    onChange={(e: any, data: any) => {}}
+                    value={QnaState.AnswerCompleted}
+                    checked={state === QnaState.AnswerCompleted}
+                    onChange={() =>
+                      this.onClickQnAStateRadio(QnaState.AnswerCompleted)
+                    }
                   />
                   <Radio
                     className="base"
                     label={getPolyglotText('답변 대기', 'support-qna-rwt')}
                     name="radioGroup"
-                    value="false"
-                    checked={answered === 'false'}
-                    onChange={(e: any, data: any) => {}}
+                    value={QnaState.AnswerWaiting}
+                    checked={state === QnaState.AnswerWaiting}
+                    onChange={() =>
+                      this.onClickQnAStateRadio(QnaState.AnswerWaiting)
+                    }
                   />
                 </div>
               </div>
             </SubActions.Right>
-
-            <Pagination name={this.paginationKey} onChange={() => {}}>
-              <QnaManagementListView />
-
-              <Pagination.Navigator />
-            </Pagination>
           </SubActions>
+
+          <Pagination
+            name={this.paginationKey}
+            onChange={this.findQnaMyOperator}
+          >
+            <QnaManagementListView
+              qnas={qnas}
+              startNo={startNo}
+              categoriesMap={categoriesMap}
+              onClickQnA={() => {}}
+            />
+
+            <Pagination.Navigator />
+          </Pagination>
         </div>
       </>
     );
