@@ -734,15 +734,15 @@ body.msie
 }
 
 /* loadingbar render 순서가 늦는 것 같다.. 안먹어.. 못씀 */
-.loading-bar {
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  height: 400;
-  box-shadow: '0 0 0 0';
-  border: 0;
-}
+/*.loading-bar {*/
+/*  padding-top: 0;*/
+/*  padding-bottom: 0;*/
+/*  padding-left: 0;*/
+/*  padding-right: 0;*/
+/*  height: 400;*/
+/*  box-shadow: '0 0 0 0';*/
+/*  border: 0;*/
+/*}*/
 
 /* .ui.segment.full
   .contents.overview
@@ -773,4 +773,129 @@ body.msie
 
 .detail.completion-terms {
   white-space: pre-wrap;
+}
+
+.ui.table.selectable tr:hover td {
+  cursor: pointer;
+}
+
+.list-info {
+  /*float: left;*/
+  margin-top: 3.3125rem;
+  color: #6c788f;
+  line-height: 2.15rem;
+  letter-spacing: -0.01875rem;
+}
+
+.list-info .small-border + span {
+  margin-left: 0.5rem;
+}
+
+.ui.form .list-info .fields,
+.list-info .fields {
+  margin-bottom: 0 !important;
+}
+
+.list-info span:not(.dash),
+.list-info span:first-child:not(.text) {
+  position: relative;
+  padding-left: 0.4rem;
+}
+
+.list-info span:not(.dash):before {
+  width: 3px;
+  height: 3px;
+  border-radius: 100%;
+  content: '';
+  position: absolute;
+  left: -5px;
+  background: #6c788f;
+  top: 45%;
+}
+
+.list-info .ui.dropdown span {
+  padding-left: 0 !important;
+}
+
+.list-info .ui.dropdown span:not(.dash):before {
+  display: none;
+}
+
+.list-info .dash {
+  color: #6c788f;
+  font-weight: normal;
+  font-size: 0.85rem;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.list-info strong {
+  font-weight: 700;
+  color: #ff664d;
+}
+
+.list-info button {
+  height: 2.135rem;
+  box-sizing: border-box;
+  color: #6c788f !important;
+  font-size: 0.925rem !important;
+  letter-spacing: -0.01625rem;
+  line-height: 1.5rem !important;
+  font-weight: 700;
+  /*border: 1px solid #6c788f !important;*/
+  border-radius: 0.25rem;
+  /*background: transparent !important;*/
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-left: 5px;
+}
+
+.list-info .primary {
+  color: #fff !important;
+}
+
+.ui.grid.list-info .row .column:last-child {
+  padding-right: 0;
+  margin-left: auto;
+}
+
+.ui.grid.list-info .row .column .right .button:last-child,
+.ui.grid.list-info .row .column .right .dropdown:last-child {
+  margin-right: 0;
+}
+
+.ui.pagination.menu {
+  width: auto !important;
+}
+
+.ui.pagination.menu .item {
+  outline: none;
+}
+
+.ui.pagination.menu {
+  box-shadow: none;
+  border: none;
+  background: none;
+}
+
+.ui.pagination.menu .item {
+  text-align: center;
+  border: 1px solid #3b4c80;
+  margin: 0 5px;
+  border-radius: 5px !important;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  display: block;
+  min-width: 2.35rem;
+  line-height: 1.15;
+  height: 35px;
+  padding: 0.5rem;
+}
+
+.ui.pagination.menu .active.item {
+  margin: 0 0.25rem;
+  background: #6c788f;
+  padding: 0 5px;
+  line-height: 2.5;
 }
