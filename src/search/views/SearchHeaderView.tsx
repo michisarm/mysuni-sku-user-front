@@ -147,7 +147,13 @@ export function SearchHeaderView() {
                         onClick={() => setWrite('')}
                       />
                       {/* <Icon className="search_i"/> */}
-                      <Button className="btn_sch">
+                      <Button
+                        className="btn_sch"
+                        onClick={() => {
+                          handleClose();
+                          search(write);
+                        }}
+                      >
                         <Icon className="search_i" />
                       </Button>
                     </div>

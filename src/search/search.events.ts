@@ -750,9 +750,7 @@ export async function searchInSearchData(
   setExpert(newExperts);
   const badges = getSearchBadgeOriList();
   const newBadges = badges?.filter(
-    (ele) =>
-      JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1 ||
-      JSON.stringify(ele.description).indexOf(decodedSearchValue) > -1
+    (ele) => JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1
   );
   setSearchBadgeList(newBadges);
   const communities = getSearchCommunityOriList();

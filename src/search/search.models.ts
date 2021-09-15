@@ -28,7 +28,7 @@ export interface FilterCondition {
   badge: boolean;
   learning_start_date_str: Date | null; // 교육일정 startDate
   learning_end_date_str: Date | null; // 교육일정 endDate
-  applying: boolean; // 수강신청 가능 학습
+  applying: boolean | null; // 수강신청 가능 학습
   support_lang_json_query: string[]; // 지원언어
 }
 export interface Options {

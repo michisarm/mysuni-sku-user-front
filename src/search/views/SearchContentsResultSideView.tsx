@@ -204,31 +204,13 @@ export function SearchContentsResultSideView() {
           <Accordion.Content active={activeIndex === 1}>
             <ul>
               <li>
-                <Radio
-                  name="badgeOptions"
+                <Checkbox
                   label={getPolyglotText('포함', '통검-필레팝-핵포함')}
-                  value="badgeInclude"
                   checked={filterCondition.badge === true}
                   onChange={() => {
                     setFilterCondition({
                       ...filterCondition,
-                      badge: true,
-                    });
-                    onClickFilterSearch();
-                  }}
-                  readOnly={searchUI?.isLoading}
-                />
-              </li>
-              <li>
-                <Radio
-                  name="badgeOptions"
-                  label={getPolyglotText('비포함', '통검-필레팝-핵비포')}
-                  value="badgeNotInclude"
-                  checked={filterCondition.badge !== true}
-                  onChange={() => {
-                    setFilterCondition({
-                      ...filterCondition,
-                      badge: false,
+                      badge: !filterCondition.badge,
                     });
                     onClickFilterSearch();
                   }}
@@ -248,7 +230,25 @@ export function SearchContentsResultSideView() {
             {filterConditionNamePolyglot(FilterConditionName.LearningSchedule)}
             <Icon name="angle down" />
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 2}>
+          <Accordion.Content active={activeIndex === 2} className="sty2">
+            <Button
+              className="deselect"
+              onClick={() => {
+                setFilterCondition({
+                  ...filterCondition,
+                  applying: null,
+                  learning_start_date_str: null,
+                  learning_end_date_str: null,
+                });
+                onClickFilterSearch();
+              }}
+            >
+              <Icon className="close-grey" />
+              <PolyglotText
+                id="통검-필레팝-선택해제"
+                defaultString="선택 해제"
+              />
+            </Button>
             <ul>
               <li>
                 <Radio
@@ -258,7 +258,7 @@ export function SearchContentsResultSideView() {
                     '통검-필레팝-날짜옵션'
                   )}
                   value="true"
-                  checked={filterCondition.applying}
+                  checked={filterCondition.applying === true}
                   onChange={() => {
                     setFilterCondition({
                       ...filterCondition,
@@ -274,7 +274,7 @@ export function SearchContentsResultSideView() {
                   name="periodOptions"
                   label={getPolyglotText('직접입력', '통검-필레팝-직접입력')}
                   value="false"
-                  checked={!filterCondition.applying}
+                  checked={filterCondition.applying === false}
                   onChange={() => {
                     setFilterCondition({
                       ...filterCondition,

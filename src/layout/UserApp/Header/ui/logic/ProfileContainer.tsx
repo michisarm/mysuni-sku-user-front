@@ -245,7 +245,14 @@ class ProfileContainer extends Component<Props, State> {
                         onClick={() => setWrite('')}
                       />
                       {/* <Icon className="search_i"/> */}
-                      <Button className="btn_sch">
+                      <Button
+                        className="btn_sch"
+                        onClick={() => {
+                          setSearchOpen();
+                          const history = getCurrentHistory();
+                          history?.push(`/search?query=${this.state.write}`);
+                        }}
+                      >
                         <Icon className="search_i" />
                       </Button>
                     </div>
