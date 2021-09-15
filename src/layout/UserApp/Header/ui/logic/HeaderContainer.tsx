@@ -67,7 +67,7 @@ class HeaderContainer extends Component<Props, State> {
           getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
-        area: Area.HEADER_SEARCH,
+        area: Area.SEARCH,
         actionType: ActionType.GENERAL,
         action: Action.SEARCH,
         actionName: '헤더검색::' + searchValue,
@@ -156,7 +156,7 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
           {/* <CategoryMenuContainer /> */}
-          {!isExternal && (
+          {/*!isExternal && (
             <SearchBarView
               value={searchValue}
               focused={focused}
@@ -167,7 +167,7 @@ class HeaderContainer extends Component<Props, State> {
               onClear={this.onClickClearSearch}
               getPolyglotText={getPolyglotText}
             />
-          )}
+          )*/}
 
           <ProfileContainer />
         </>
