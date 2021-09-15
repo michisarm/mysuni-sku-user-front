@@ -17,6 +17,7 @@ import { SearchContentsResultInstructorView } from './views/SearchContentsResult
 import { SearchContentsResultLectureView } from './views/SearchContentsResultLectureView';
 import { SearchContentsResultSideView } from './views/SearchContentsResultSideView';
 import { SearchNoDataView } from './views/SearchNoDataView';
+import { Area } from 'tracker/model';
 
 export function SearchContentsPage() {
   //
@@ -98,7 +99,7 @@ export function SearchContentsPage() {
 
   return (
     <>
-      <div className="tab_search_contents">
+      <div className="tab_search_contents" data-area={Area.SEARCH}>
         <SearchContentsResultSideView />
 
         <div className="result_list rContents">

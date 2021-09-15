@@ -1,4 +1,4 @@
-import { reactAlert, StorageModel } from '@nara.platform/accent';
+import { reactAlert, StorageModel, getCookie } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
@@ -55,6 +55,9 @@ import {
   setSearchPopular1YList,
   getMenuAuth,
 } from './search.services';
+import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
+import { ActionType, Action, Area } from 'tracker/model/ActionType';
 
 export function initSearchData() {
   filterClearAll();
@@ -614,6 +617,19 @@ export async function search(searchValue: string, searchType?: string) {
       }
     }
   }
+  // search track
+  debounceActionTrack({
+    email:
+      (window.sessionStorage.getItem('email') as string) ||
+      (window.localStorage.getItem('nara.email') as string) ||
+      getCookie('tryingLoginId'),
+    path: window.location.pathname,
+    search: window.location.search,
+    area: Area.SEARCH,
+    actionType: ActionType.GENERAL,
+    action: Action.SEARCH,
+    actionName: '검색::' + decodedSearchValue,
+  } as ActionTrackParam);
 }
 
 export async function searchData(searchValue: string, searchType?: string) {
