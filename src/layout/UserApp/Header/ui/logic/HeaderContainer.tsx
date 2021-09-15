@@ -67,7 +67,7 @@ class HeaderContainer extends Component<Props, State> {
           getCookie('tryingLoginId'),
         path: window.location.pathname,
         search: window.location.search,
-        area: Area.HEADER_SEARCH,
+        area: Area.SEARCH,
         actionType: ActionType.GENERAL,
         action: Action.SEARCH,
         actionName: '헤더검색::' + searchValue,

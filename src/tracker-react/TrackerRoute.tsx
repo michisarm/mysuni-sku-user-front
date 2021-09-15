@@ -50,7 +50,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
    */
 
   useEffect(() => {
-    return history.listen(location => {
+    return history.listen((location) => {
       const { key } = location;
       // 뒤로가기 앞으로가기 구분
       let historyAction = null;
@@ -62,9 +62,20 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           setLocationKeys(([_, ...keys]) => keys);
           historyAction = 'FORWARD';
         } else {
-          setLocationKeys(keys => [key, ...keys]);
+          setLocationKeys((keys) => [key, ...keys]);
           historyAction = 'BACK';
         }
+      }
+      // search history push시 event target 없음
+      if (
+        location.pathname.includes('/search') &&
+        valueRef.current.target === undefined
+      ) {
+        const area = 'SEARCH';
+        const areaElement = document.createElement('div');
+        areaElement.setAttribute('data-area', area);
+        valueRef.current.target = areaElement;
+        valueRef.current.area = area;
       }
 
       debounceHistory({
@@ -157,6 +168,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       data.target = areaElement;
       data.area = areaElement.dataset.area;
     }
+
     valueRef.current = data;
 
     if (areaElement instanceof HTMLElement) {

@@ -214,7 +214,7 @@ class ProfileContainer extends Component<Props, State> {
                 </div>
               </Popup.Header>
               <Popup.Content>
-                <div className="gsearch_inner">
+                <div className="gsearch_inner" data-area={Area.SEARCH}>
                   <div className="search_input">
                     {/* 검색어 입력필드 */}
                     <div
