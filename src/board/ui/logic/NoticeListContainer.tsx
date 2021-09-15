@@ -11,14 +11,11 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { CommentService } from '@nara.drama/feedback';
 import { Icon, Input, Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
+import { Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
 import routePaths from '../../routePaths';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../shared/ui/logic/PolyglotText';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { SharedService } from '../../../shared/stores';
 import Pagination from '../../../shared/components/Pagination';
@@ -160,67 +157,68 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
 
     return (
       <>
-        {isLoading ? (
-          <div className="support-list-wrap">
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-            </Segment>
-          </div>
-        ) : (
-          <>
-            <Pagination
-              name={this.paginationKey}
-              onChange={this.findNoticePosts}
-            >
-              <SubActions>
-                <SubActions.Left>
-                  <SubActions.Count>
-                    {postService.posts.totalCount}
-                  </SubActions.Count>
-                </SubActions.Left>
-                <SubActions.Right>
-                  <Input
-                    icon={
-                      <Icon
-                        name="search"
-                        inverted
-                        circular
-                        link
-                        onClick={this.findNoticePosts}
-                      />
-                    }
-                    value={keyword}
-                    onChange={(event, data) =>
-                      this.setState({ keyword: data.value })
-                    }
-                    onKeyDown={(e: any) => {
-                      if (e.key === 'Enter') {
-                        this.findNoticePosts();
-                      }
-                    }}
+        <div className="support-list-wrap">
+          <SubActions>
+            <SubActions.Left>
+              <SubActions.Count number={postService.posts.totalCount} />
+            </SubActions.Left>
+            <SubActions.Right>
+              <Input
+                icon={
+                  <Icon
+                    name="search"
+                    inverted
+                    circular
+                    link
+                    onClick={this.findNoticePosts}
                   />
-                </SubActions.Right>
-              </SubActions>
-              <NoticeListView
-                posts={posts}
-                startNo={startNo}
-                onClickPost={this.onClickPost}
+                }
+                value={keyword}
+                onChange={(event, data) =>
+                  this.setState({ keyword: data.value })
+                }
+                onKeyDown={(e: any) => {
+                  if (e.key === 'Enter') {
+                    this.findNoticePosts();
+                  }
+                }}
               />
+            </SubActions.Right>
+          </SubActions>
 
-              <Pagination.Navigator />
-            </Pagination>
-          </>
-        )}
+          {isLoading ? (
+            <div className="support-list-wrap">
+              <Segment
+                style={{
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  height: 400,
+                  boxShadow: '0 0 0 0',
+                  border: 0,
+                }}
+              >
+                <Loadingpanel loading={isLoading} />
+              </Segment>
+            </div>
+          ) : (
+            <>
+              <Pagination
+                name={this.paginationKey}
+                onChange={this.findNoticePosts}
+              >
+                <NoticeListView
+                  posts={posts}
+                  startNo={startNo}
+                  onClickPost={this.onClickPost}
+                />
+
+                <Pagination.Navigator />
+              </Pagination>
+            </>
+          )}
+        </div>
       </>
     );
   }
