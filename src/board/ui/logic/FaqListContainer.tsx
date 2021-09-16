@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import classNames from 'classnames';
-import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
+import { Accordion, Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
@@ -15,6 +15,9 @@ import {
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import FaqListAccordion from '../view/FaqListAccordion';
+import SelectType from '../../../personalcube/create/model/SelectOptions';
+import ReactQuill from 'react-quill';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -27,6 +30,7 @@ interface State {
   isLoading: boolean;
   searchKey: string;
   focus: boolean;
+  activeIndex: number;
 }
 
 @inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
@@ -40,6 +44,7 @@ class FaqListContainer extends React.Component<Props, State> {
     isLoading: false,
     searchKey: '',
     focus: false,
+    activeIndex: -1,
   };
 
   componentDidMount() {
@@ -130,9 +135,12 @@ class FaqListContainer extends React.Component<Props, State> {
     this.setCagetory(index, value);
   }
 
-  onClickPost(postId: string) {
+  onClickPost(index: number) {
     //
-    this.props.history.push(routePaths.supportFAQPost(postId));
+    // this.props.history.push(routePaths.supportFAQPost(postId));
+    const { activeIndex } = this.state;
+    const targetIndex = index === activeIndex ? -1 : index;
+    this.setState({ activeIndex: targetIndex })
   }
 
   onClickListMore() {
@@ -157,25 +165,43 @@ class FaqListContainer extends React.Component<Props, State> {
   }
 
   renderPostRow(post: PostModel, index: number) {
+    //
+    const { activeIndex } = this.state;
     return (
-      <a
-        key={index}
-        target="_blank"
-        className={classNames('row', { important: post.pinned })}
-        onClick={() => this.onClickPost(post.postId)}
-      >
-        <span className="cell title">
-          <span className="inner">
-            {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
-            <span className="ellipsis">
-              {parsePolyglotString(
-                post.title,
-                getDefaultLang(post.langSupports)
-              )}
-            </span>
-          </span>
-        </span>
-      </a>
+      // <a
+      //   key={index}
+      //   target="_blank"
+      //   className={classNames('row', { important: post.pinned })}
+      //   onClick={() => this.onClickPost(post.postId)}
+      // >
+      //   <span className="cell title">
+      //     <span className="inner">
+      //       {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
+      //       <span className="ellipsis">
+      //         {parsePolyglotString(
+      //           post.title,
+      //           getDefaultLang(post.langSupports)
+      //         )}
+      //       </span>
+      //     </span>
+      //   </span>
+      // </a>
+      <>
+        <Accordion.Title active={activeIndex === index} onClick={() => this.onClickPost(index)}>
+          <div className="faq-icon">Q.</div>
+          <div className="txt-wrap">
+            {post.title && parsePolyglotString(post.title)}
+          </div>
+          <Icon className="dropdown icon" />
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === index}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: post.contents && parsePolyglotString(post.contents.contents),
+            }}
+          />
+        </Accordion.Content>
+      </>
     );
   }
 
@@ -190,8 +216,8 @@ class FaqListContainer extends React.Component<Props, State> {
     return (
       <>
         {isLoading ? (
-          <div className="support-list-wrap">
-            <div className="list-top">
+          <div className="support-list-wrap faq">
+            <div className="cate-wrap">
               <div className="radio-wrap">
                 {categorys.length > 0 &&
                   categorys.map((category, index) => (
@@ -224,14 +250,14 @@ class FaqListContainer extends React.Component<Props, State> {
             </Segment>
           </div>
         ) : (
-          <div className="support-list-wrap">
-            <div className="list-top">
+          <div className="support-list-wrap faq">
+            <div className="cate-wrap">
               <div className="radio-wrap">
                 {categorys.length > 0 &&
                   categorys.map((category, index) => (
                     <Radio
                       key={index}
-                      className="base"
+                      className="ui radio checkbox base"
                       name="radioGroup"
                       index={index}
                       label={parsePolyglotString(category.name)}
@@ -241,27 +267,27 @@ class FaqListContainer extends React.Component<Props, State> {
                     />
                   ))}
               </div>
-              <div className="row head">
-                <div className="cell v-middle">
-                  <div className="right">
-                    <div className={classNames('ui h30 search input', { focus, write: searchKey })}>
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchKey}
-                        onChange={this.onChangeSearchKey}
-                        // onKeyPress={this.onKeyPressInput}
-                        onClick={this.onClickInput}
-                        onBlur={this.onBlurInput}
-                      />
-                      <Icon className="clear link" onClick={this.onClearSearchKey} />
-                      <Icon className="search link" onClick={this.onSearch} />
-                    </div>
-                  </div>
+            </div>
+            <div className="list-top">
+              <div className="list-top-left">
+                총 0개의 리스트가 있습니다.
+              </div>
+              <div className="list-top-right">
+                <div className="ui input s-search h38">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchKey}
+                    onChange={this.onChangeSearchKey}
+                    // onKeyPress={this.onKeyPressInput}
+                    onClick={this.onClickInput}
+                    onBlur={this.onBlurInput}
+                  />
+                  <Icon className="search-32" onClick={this.onSearch} />
                 </div>
               </div>
             </div>
-            <div className="su-list faq">
+            <div className="faq-list-wrap">
               {result.length === 0 ? (
                 <NoSuchContentPanel
                   message={getPolyglotText(
@@ -270,7 +296,16 @@ class FaqListContainer extends React.Component<Props, State> {
                   )}
                 />
               ) : (
-                result.map((post, index) => this.renderPostRow(post, index))
+                <Accordion styled>
+                  {
+                    result.map((post, index) => {
+                      return this.renderPostRow(post, index);
+                      // return (
+                      //   <FaqListAccordion />
+                      // )
+                    })
+                  }
+                </Accordion>
               )}
             </div>
 
