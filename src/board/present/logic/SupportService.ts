@@ -14,6 +14,9 @@ class SupportService {
   supportApi: SupportApi;
 
   @observable
+  qna: QnAModel = new QnAModel();
+
+  @observable
   qnas: QnAModel[] = [];
 
   @observable
@@ -58,6 +61,18 @@ class SupportService {
     });
 
     return qnas.totalCount;
+  }
+
+  @action
+  async findQnaById(qnaId: string) {
+    //
+    console.log(this.supportApi);
+
+    const qna = await this.supportApi.findQnaById(qnaId);
+
+    runInAction(() => {
+      this.qna = new QnAModel(qna);
+    });
   }
 }
 

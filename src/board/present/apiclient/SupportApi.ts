@@ -20,6 +20,13 @@ class SupportApi {
       );
   }
 
+  findQnaById(qnaId: string) {
+    //
+    return axios
+      .get<QnAModel>(this.URL + `/${qnaId}`)
+      .then((response) => (response && response.data) || new QnAModel());
+  }
+
   findMainCategoies() {
     //
     return axios

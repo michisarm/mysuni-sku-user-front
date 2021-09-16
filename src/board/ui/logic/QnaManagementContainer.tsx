@@ -1,6 +1,7 @@
 import React from 'react';
 import { Radio } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router';
 import {
   ReactComponent,
   mobxHelper,
@@ -15,8 +16,12 @@ import Pagination from '../../../shared/components/Pagination';
 import QnaManagementListView from '../view/QnaManagementListView';
 import { SharedService } from '../../../shared/stores';
 import { QnaState } from '../../model/vo/QnaState';
+import routePaths from '../../routePaths';
+import { withRouter } from 'react-router-dom';
 
-interface Props {}
+interface Param {}
+
+interface Props extends RouteComponentProps<Param> {}
 
 interface State {
   isLoading: boolean;
@@ -81,6 +86,11 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
     this.findQnaMyOperator();
   }
 
+  onClickQnA(qnaId: string) {
+    //
+    this.props.history.push(routePaths.supportQnAManagementPost(qnaId));
+  }
+
   render() {
     //
     const { supportService, sharedService } = this.injected;
@@ -139,7 +149,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
               qnas={qnas}
               startNo={startNo}
               categoriesMap={categoriesMap}
-              onClickQnA={() => {}}
+              onClickQnA={this.onClickQnA}
             />
 
             <Pagination.Navigator />
@@ -150,4 +160,4 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
   }
 }
 
-export default QnaManagementContainer;
+export default withRouter(QnaManagementContainer);

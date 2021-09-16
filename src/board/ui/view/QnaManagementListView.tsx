@@ -64,7 +64,11 @@ class QnaManagementListView extends React.Component<Props> {
           <Table.Body>
             {qnas && qnas.length > 0 ? (
               qnas.map((qna, index) => (
-                <Table.Row key={qna.question.id} textAlign="center">
+                <Table.Row
+                  key={qna.question.id}
+                  textAlign="center"
+                  onClick={() => onClickQnA(qna.question.id)}
+                >
                   <Table.Cell>{startNo - index}</Table.Cell>
                   <Table.Cell>{qna.question.requestChannel}</Table.Cell>
                   <Table.Cell>
