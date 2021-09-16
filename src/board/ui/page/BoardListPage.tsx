@@ -9,7 +9,7 @@ import BoardListContentHeaderContainer from '../logic/BoardListContentHeaderCont
 import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
-import QnaManagementContainer from '../logic/QnaManagementContainer';
+import QnaManagementTabContainer from '../logic/QnaManagementContainer';
 import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 interface Props extends RouteComponentProps<RouteParams> {}
@@ -52,7 +52,7 @@ export class BoardListPage extends React.Component<Props> {
       {
         name: ContentType.QnAMgt,
         item: ContentName.QnAMgt,
-        render: () => <QnaManagementContainer />,
+        render: () => <QnaManagementTabContainer />,
       },
     ] as TabItemModel[];
 
