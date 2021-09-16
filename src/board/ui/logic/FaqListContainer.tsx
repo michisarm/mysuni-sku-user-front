@@ -1,31 +1,25 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import classNames from 'classnames';
-import { Accordion, Button, Icon, Radio, Segment } from 'semantic-ui-react';
+import { Accordion, Icon, Radio, Segment } from 'semantic-ui-react';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
-import routePaths from '../../routePaths';
 import {
   getPolyglotText,
-  PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from 'lecture/model/LangSupport';
-import FaqListAccordion from '../view/FaqListAccordion';
-import SelectType from '../../../personalcube/create/model/SelectOptions';
-import ReactQuill from 'react-quill';
+import SharedService from '../../../shared/present/logic/SharedService';
+import Pagination from '../../../shared/components/Pagination';
 
 interface Props extends RouteComponentProps {
-  postService?: PostService;
-  categoryService?: CategoryService;
+
 }
 
 interface State {
-  offset: number;
+  // offset: number;
   categoryIndex: number;
   isLoading: boolean;
   searchKey: string;
@@ -33,13 +27,20 @@ interface State {
   activeIndex: number;
 }
 
-@inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
+interface Injected {
+  postService: PostService;
+  categoryService: CategoryService;
+  sharedService: SharedService;
+}
+
+@inject(mobxHelper.injectFrom('board.postService', 'board.categoryService','shared.sharedService'))
 @observer
 @reactAutobind
-class FaqListContainer extends React.Component<Props, State> {
+class FaqListContainer extends ReactComponent<Props, State, Injected> {
   //
+  paginationKey = 'FAQ';
   state = {
-    offset: 0,
+    // offset: 0,
     categoryIndex: 0,
     isLoading: false,
     searchKey: '',
@@ -71,8 +72,8 @@ class FaqListContainer extends React.Component<Props, State> {
     //
     this.setState({ isLoading: true });
 
-    const categoryService = this.props.categoryService!;
-    const postService = this.props.postService!;
+    const categoryService = this.injected.categoryService;
+    const postService = this.injected.postService;
 
     postService.clearPosts();
     await categoryService.findCategoriesByBoardId('FAQ');
@@ -94,32 +95,28 @@ class FaqListContainer extends React.Component<Props, State> {
       const { categoryIndex } = this.state;
       this.setCagetory(categoryIndex, post.category.id);
     } else {
-      this.findFaqPosts(categorys[0].categoryId, 10);
+      this.findFaqPosts(categorys[0].categoryId);
     }
   }
 
-  async findFaqPosts(categoryId: string, offset: number) {
+  async findFaqPosts(categoryId: string) {
     //
-    const postService = this.props.postService!;
+    const { sharedService, postService } = this.injected;
+    const pageModel = sharedService.getPageModel(this.paginationKey);
 
     postService.clearPosts();
 
-    let totalCount = 0;
     await postService
-      .findPostsByCategoryId(categoryId, 0, offset)
+      .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
       .then((res) => {
-        totalCount = res.totalCount;
+        sharedService.setCount(this.paginationKey, res.totalCount);
         this.setState({ isLoading: false });
       });
-
-    if (offset < totalCount) {
-      this.setState({ offset: offset + 10 });
-    }
   }
 
   setCagetory(index: number, categoryId: string) {
     //
-    const postService = this.props.postService!;
+    const postService = this.injected.postService;
     this.setState({ isLoading: true });
 
     this.setState({
@@ -127,12 +124,13 @@ class FaqListContainer extends React.Component<Props, State> {
     });
 
     postService.clearPosts();
-    this.findFaqPosts(categoryId, 10);
+    this.findFaqPosts(categoryId);
   }
 
   onChangeCategory(e: any, { index, value }: any) {
     //
     this.setCagetory(index, value);
+    this.setState({activeIndex: -1});
   }
 
   onClickPost(index: number) {
@@ -143,14 +141,14 @@ class FaqListContainer extends React.Component<Props, State> {
     this.setState({ activeIndex: targetIndex })
   }
 
-  onClickListMore() {
-    //
-    const { categorys } = this.props.categoryService!;
-    const { offset, categoryIndex } = this.state;
-    this.setState({ isLoading: true });
-
-    this.findFaqPosts(categorys[categoryIndex].categoryId, offset);
-  }
+  // onClickListMore() {
+  //   //
+  //   const { categorys } = this.injected.categoryService;
+  //   const { categoryIndex } = this.state;
+  //   this.setState({ isLoading: true });
+  //
+  //   this.findFaqPosts(categorys[categoryIndex].categoryId);
+  // }
 
   onClearSearchKey(e: any) {
     //
@@ -207,14 +205,15 @@ class FaqListContainer extends React.Component<Props, State> {
 
   render() {
     //
-    const { categorys } = this.props.categoryService!;
-    const { posts } = this.props.postService!;
+    const { categorys } = this.injected.categoryService;
+    const { posts } = this.injected.postService;
     const { categoryIndex, isLoading, searchKey, focus } = this.state;
     const result = posts.results;
     const totalCount = posts.totalCount;
 
     return (
       <>
+        <Pagination name={this.paginationKey} onChange={() => this.findFaqPosts(categorys[categoryIndex].categoryId)}>
         {isLoading ? (
           <div className="support-list-wrap faq">
             <div className="cate-wrap">
@@ -296,32 +295,32 @@ class FaqListContainer extends React.Component<Props, State> {
                   )}
                 />
               ) : (
-                <Accordion styled>
-                  {
-                    result.map((post, index) => {
-                      return this.renderPostRow(post, index);
-                      // return (
-                      //   <FaqListAccordion />
-                      // )
-                    })
-                  }
-                </Accordion>
+
+                  <Accordion styled>
+                    {
+                      result.map((post, index) => {
+                        return this.renderPostRow(post, index);
+                      })
+                    }
+                  </Accordion>
               )}
             </div>
 
-            {result.length > 0 && result.length < totalCount && (
-              <div className="more-comments" onClick={this.onClickListMore}>
-                <Button icon className="left moreview">
-                  <Icon className="moreview" />
-                  <PolyglotText
-                    id="support-FAQ-더보기"
-                    defaultString="list more"
-                  />
-                </Button>
-              </div>
-            )}
+            {/*{result.length > 0 && result.length < totalCount && (*/}
+            {/*  <div className="more-comments" onClick={this.onClickListMore}>*/}
+            {/*    <Button icon className="left moreview">*/}
+            {/*      <Icon className="moreview" />*/}
+            {/*      <PolyglotText*/}
+            {/*        id="support-FAQ-더보기"*/}
+            {/*        defaultString="list more"*/}
+            {/*      />*/}
+            {/*    </Button>*/}
+            {/*  </div>*/}
+            {/*)}*/}
           </div>
         )}
+          <Pagination.Navigator />
+        </Pagination>
       </>
     );
   }
