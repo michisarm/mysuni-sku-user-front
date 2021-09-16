@@ -36,7 +36,7 @@ const RANKINS_URL = 'https://mysuni.sk.com/search/api/rankings'; // 인기검색
 const SUGGEST_URL = 'https://mysuni.sk.com/search/api/suggestion'; // 연관검색어
 const BADGE_URL = '/api/badge';
 const COMMUNITY_URL = '/api/community';
-const workspaces: { cineroomWorkspaces?: Workspace[] } =
+const getWorkspaces = (): { cineroomWorkspaces?: Workspace[] } =>
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
 interface SearchResult<T> {
@@ -125,7 +125,7 @@ export function findPreCard(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -167,7 +167,7 @@ export function findCard(text_idx: string, pre: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -334,9 +334,9 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
       );
     }
     if (filterCondition.hasRequired === true) {
-      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+      if (Array.isArray(getWorkspaces().cineroomWorkspaces)) {
         displayCards = displayCards.filter((c) =>
-          workspaces.cineroomWorkspaces!.some((d) =>
+          getWorkspaces().cineroomWorkspaces!.some((d) =>
             c.required_cinerooms.includes(d.id)
           )
         );
@@ -395,10 +395,10 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
       });
     }
     if (filterCondition.notRequired === true) {
-      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+      if (Array.isArray(getWorkspaces().cineroomWorkspaces)) {
         displayCards = displayCards.filter(
           (c) =>
-            !workspaces.cineroomWorkspaces!.some((d) =>
+            !getWorkspaces().cineroomWorkspaces!.some((d) =>
               c.required_cinerooms.includes(d.id)
             )
         );
@@ -418,9 +418,10 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
     }
     if (filterCondition.support_lang_json_query.length > 0) {
       displayCards = displayCards.filter((c) => {
-        return (JSON.parse(c.lang_supports) as LangSupport[]).some(
-          (langSupport) =>
-            filterCondition.support_lang_json_query.includes(langSupport.lang)
+        return (JSON.parse(
+          c.lang_supports
+        ) as LangSupport[]).some((langSupport) =>
+          filterCondition.support_lang_json_query.includes(langSupport.lang)
         );
       });
     }
@@ -445,7 +446,7 @@ export function findExpert(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -485,8 +486,9 @@ export function getEmptyQueryOptions(): QueryOptions {
 }
 
 function makePermitedCineroomsQuery() {
-  if (Array.isArray(workspaces?.cineroomWorkspaces)) {
-    return `(${workspaces.cineroomWorkspaces
+  const workSpaces = getWorkspaces()?.cineroomWorkspaces;
+  if (Array.isArray(workSpaces)) {
+    return `(${workSpaces
       .map(({ id }) => `(permitted_cinerooms+IN+{${id}})`)
       .join('+or+')})`;
   }
@@ -761,8 +763,9 @@ function searchRankins(domainNo: number) {
   const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
   return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
-const [searchRankinsCache, clearSearchRankinsCache] =
-  createCacheApi(searchRankins);
+const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
+  searchRankins
+);
 export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어
