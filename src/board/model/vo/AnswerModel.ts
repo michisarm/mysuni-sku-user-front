@@ -1,4 +1,5 @@
 import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { decorate, observable } from 'mobx';
 
 export default class AnswerModel {
   //
@@ -25,3 +26,21 @@ export default class AnswerModel {
     }
   }
 }
+
+decorate(AnswerModel, {
+  content: observable,
+  depotId: observable,
+  id: observable,
+  memo: observable,
+  modifiedTime: observable,
+  modifier: observable,
+  modifierName: observable,
+  operatorMailSentTime: observable,
+  questionId: observable,
+  registeredTime: observable,
+  registrant: observable,
+  registrantName: observable,
+  satisfactionComment: observable,
+  satisfactionPoint: observable,
+  satisfactionRegisteredTime: observable,
+});
