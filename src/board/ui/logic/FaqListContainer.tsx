@@ -305,18 +305,6 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
                   </Accordion>
               )}
             </div>
-
-            {/*{result.length > 0 && result.length < totalCount && (*/}
-            {/*  <div className="more-comments" onClick={this.onClickListMore}>*/}
-            {/*    <Button icon className="left moreview">*/}
-            {/*      <Icon className="moreview" />*/}
-            {/*      <PolyglotText*/}
-            {/*        id="support-FAQ-더보기"*/}
-            {/*        defaultString="list more"*/}
-            {/*      />*/}
-            {/*    </Button>*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
         )}
           <Pagination.Navigator />
