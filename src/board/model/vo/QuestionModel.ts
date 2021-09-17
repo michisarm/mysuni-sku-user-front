@@ -1,5 +1,6 @@
 import { RequestChannel } from './RequestChannel';
 import { QnaState } from './QnaState';
+import { decorate, observable } from 'mobx';
 
 export default class QuestionModel {
   //
@@ -26,3 +27,20 @@ export default class QuestionModel {
     }
   }
 }
+
+decorate(QuestionModel, {
+  content: observable,
+  denizenId: observable,
+  depotId: observable,
+  id: observable,
+  mainCategoryId: observable,
+  modifiedTime: observable,
+  operatorIds: observable,
+  registeredTime: observable,
+  relatedCardId: observable,
+  relatedQuestionId: observable,
+  requestChannel: observable,
+  state: observable,
+  subCategoryId: observable,
+  title: observable,
+});
