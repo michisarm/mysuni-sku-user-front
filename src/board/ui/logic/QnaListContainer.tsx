@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
+import { Button, Icon, Radio, Segment, Table } from 'semantic-ui-react';
 import moment from 'moment';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
@@ -14,6 +14,7 @@ import {
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import QnaListView from '../view/QnaListView';
 
 interface Props extends RouteComponentProps {
   postService?: PostService;
@@ -85,65 +86,6 @@ class QnaListContainer extends React.Component<Props, State> {
   onClickPostAnswer(postId: string) {
     //
     this.props.history.push(routePaths.supportQnAAnswer(postId));
-  }
-
-  renderPostRow(post: PostModel, index: number) {
-    //
-    let answerElement = null;
-
-    // 김민준 IdName 타입
-
-    if (post.answered) {
-      answerElement = (
-        <a
-          target="_blank"
-          className="row reply"
-          onClick={() => this.onClickPostAnswer(post.postId)}
-        >
-          <span className="cell title">
-            <Icon className="reply16-b" />
-            <span className="blind">reply</span>
-            <span className="ellipsis">{post.answer.name}</span>
-          </span>
-          <span className="cell category" />
-          <span className="cell status" />
-          <span className="cell date">
-            {post.answeredAt && moment(post.answeredAt).format('YYYY.MM.DD')}
-          </span>
-        </a>
-      );
-    }
-
-    return (
-      <Fragment key={`post-${index}`}>
-        <a
-          target="_blank"
-          className="row"
-          onClick={() => this.onClickPost(post.postId)}
-        >
-          <span className="cell title">
-            <span className="inner">
-              <span className="ellipsis">
-                {parsePolyglotString(post.title)}
-              </span>
-            </span>
-          </span>
-          <span className="cell category">
-            {parsePolyglotString(post.category.name)}
-          </span>
-          <span className="cell status">
-            {post.answered
-              ? getPolyglotText('답변완료', 'support-qna-답변완료')
-              : getPolyglotText('답변대기', 'support-qna-답변대기')}
-          </span>
-          <span className="cell date">
-            {post.registeredTime &&
-              moment(post.registeredTime).format('YYYY.MM.DD')}
-          </span>
-        </a>
-        {answerElement}
-      </Fragment>
-    );
   }
 
   render() {
@@ -221,10 +163,10 @@ class QnaListContainer extends React.Component<Props, State> {
             />
           ) : (
             <>
-              <div className="su-list qna">
-                {posts.results.map((post, index) =>
-                  this.renderPostRow(post, index)
-                )}
+              <div className="qna-admin-list-wrap">
+                <QnaListView
+                  posts={posts.results}
+                />
               </div>
 
               {posts.results.length < posts.totalCount && (

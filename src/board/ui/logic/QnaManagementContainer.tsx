@@ -18,6 +18,8 @@ import { SharedService } from '../../../shared/stores';
 import { QnaState } from '../../model/vo/QnaState';
 import routePaths from '../../routePaths';
 import { withRouter } from 'react-router-dom';
+import { PostService } from '../../stores';
+import depot from '@nara.drama/depot';
 
 interface Param {}
 
@@ -53,7 +55,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
     //
     const { supportService } = this.injected;
 
-    await supportService.findMainCategory();
+    await supportService.findAllCategories();
     this.findQnaMyOperator();
   }
 

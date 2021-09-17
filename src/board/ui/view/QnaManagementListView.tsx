@@ -81,7 +81,7 @@ class QnaManagementListView extends React.Component<Props> {
                     {moment(qna.question.registeredTime).format('YYYY-MM-DD')}
                   </Table.Cell>
                   <Table.Cell>
-                    {parsePolyglotString(qna.questionerIdentity.name)}
+                    {parsePolyglotString(qna.inquirerIdentity.name)}
                   </Table.Cell>
                   <Table.Cell>
                     {parsePolyglotString(qna.answer.modifierName) || '미정'}

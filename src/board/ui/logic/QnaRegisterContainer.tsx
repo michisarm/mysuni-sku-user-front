@@ -21,6 +21,7 @@ import {
   PolyglotString,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import FaqListModal from './FaqListModal';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
@@ -187,10 +188,6 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     } = this.state;
     const questionType: any = [];
 
-    // categorys.map((data, index) => {
-    //   questionType.push({ key: index, value: data.categoryId, text: data.name });
-    // });
-
     const currentUrl = window.location.href;
 
     if (currentUrl.includes('cube') || currentUrl.includes('course')) {
@@ -218,9 +215,44 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     return (
       <>
-        <Segment className="full">
+        <Segment className="full qna-write-content">
           <div className="apl-form-wrap support">
             <Form>
+              <Form.Field>
+                <label>
+                  <span className="label-text">
+                    <PolyglotText
+                      id="support-QnaWrite-문의유형"
+                      defaultString="문의유형"
+                    />
+                  </span>
+                  <FaqListModal />
+                </label>
+                <div className="select-box">
+                  <Select
+                    placeholder={getPolyglotText(
+                      '분류를 선택해주세요',
+                      'support-QnaWrite-분류선택'
+                    )}
+                    className="trig-pop-faq"
+                    options={questionType}
+                    onChange={(e: any, data: any) =>
+                      this.onChangePostProps('category', data.value)
+                    }
+                  />
+                  <Select
+                    placeholder={getPolyglotText(
+                      '분류를 선택해주세요',
+                      'support-QnaWrite-분류선택'
+                    )}
+                    // className="ui selection dropdown"
+                    options={questionType}
+                    onChange={(e: any, data: any) =>
+                      this.onChangePostProps('category', data.value)
+                    }
+                  />
+                </div>
+              </Form.Field>
               <Form.Field>
                 <label>
                   <PolyglotText
@@ -240,7 +272,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       {(post &&
                         post.title &&
                         parsePolyglotString(post.title).length) ||
-                        0}
+                      0}
                     </span>
                     /<span className="max">100</span>
                   </span>
@@ -288,27 +320,6 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       defaultString="You can enter up to 100 characters."
                     />
                   </span>
-                </div>
-              </Form.Field>
-              <Form.Field>
-                <label>
-                  <PolyglotText
-                    id="support-QnaWrite-문의유형"
-                    defaultString="문의유형"
-                  />
-                </label>
-                <div className="select-box">
-                  <Select
-                    placeholder={getPolyglotText(
-                      '분류를 선택해주세요',
-                      'support-QnaWrite-분류선택'
-                    )}
-                    className="dropdown selection"
-                    options={questionType}
-                    onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', data.value)
-                    }
-                  />
                 </div>
               </Form.Field>
               <Form.Field>
@@ -381,7 +392,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     defaultString="첨부파일"
                   />
                 </label>
-                <Form>
+                {/*<Form>*/}
                   <div className="line-attach width-sm">
                     <div className="attach-inner">
                       <FileBox
@@ -412,20 +423,22 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       {/*</div>*/}
                     </div>
                   </div>
-                </Form>
+                {/*</Form>*/}
               </Form.Field>
               <div className="buttons">
                 <Button className="fix line" onClick={this.onClose}>
-                  <PolyglotText
-                    id="support-QnaWrite-닫기"
-                    defaultString="Close"
-                  />
+                  {/*<PolyglotText*/}
+                  {/*  id="support-QnaWrite-닫기"*/}
+                  {/*  defaultString="Close"*/}
+                  {/*/>*/}
+                  목록
                 </Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>
-                  <PolyglotText
-                    id="support-QnaWrite-제출"
-                    defaultString="Submit"
-                  />
+                  {/*<PolyglotText*/}
+                  {/*  id="support-QnaWrite-제출"*/}
+                  {/*  defaultString="Submit"*/}
+                  {/*/>*/}
+                  등록
                 </Button>
               </div>
             </Form>
