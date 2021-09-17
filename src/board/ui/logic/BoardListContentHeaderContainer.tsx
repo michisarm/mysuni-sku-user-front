@@ -79,7 +79,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           <div className="text">
             <PolyglotText
               id="support-spif-나의이용문의"
-              defaultString="mySUNI에 대한 궁금증을. 풀어드립니다"
+              defaultString="mySUNI에 대한 궁금증을 풀어드립니다."
             />
           </div>
         </>
