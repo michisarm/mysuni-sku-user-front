@@ -3,7 +3,7 @@ import {
   UserIdentity,
 } from '../../shared/model/UserIdentity';
 import AnswerModel from './vo/AnswerModel';
-import QuestionModel from './vo/QuestionModel';
+import QuestionModel from './QuestionModel';
 import LatestOperatorSentEmail from './sdo/LatestOperatorSentEmail';
 import { decorate, observable } from 'mobx';
 
