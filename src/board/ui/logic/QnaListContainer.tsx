@@ -60,7 +60,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
     const { qnaQueryModel } = supportService;
     const pageModel = sharedService.getPageModel(this.paginationKey);
 
-    const totalCount = await supportService.findQnaMyOperator(pageModel, qnaQueryModel.state);
+    const totalCount = await supportService.findQnaToMe(pageModel, qnaQueryModel.state);
     sharedService.setCount(this.paginationKey, totalCount);
 
     this.setState({ isLoading: false });
@@ -99,7 +99,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
     //
     const { offset, isLoading } = this.state;
     const { supportService, sharedService } = this.injected;
-    const { qnas, qnaQueryModel } = supportService;
+    const { questions, qnaQueryModel } = supportService;
     const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
@@ -172,7 +172,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
             >
               <Loadingpanel loading={isLoading} />
             </Segment>
-          ) : qnas.length === 0 ? (
+          ) : questions.length === 0 ? (
             <NoSuchContentPanel
               message={getPolyglotText(
                 '등록된 Q&A가 없습니다.',
@@ -185,7 +185,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   <QnaListView
                     getCategoryName={this.getCategoryName}
                     onClickPost={this.onClickPost}
-                    qnas={qnas}
+                    questions={questions}
                   />
               </div>
             </>

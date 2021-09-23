@@ -63,6 +63,8 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     await supportService.findAllCategories();
     const qna = await supportService.findQnaById(postId);
 
+    this.getFileIds();
+
     if (qna.answer.modifier) {
       await this.setFinalOperator(qna.answer.modifier);
     }
@@ -92,6 +94,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
 
   findFiles(type: string, fileBoxId: string) {
     const { filesMap } = this.state;
+    console.log(fileBoxId);
     depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
@@ -203,18 +206,22 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
             finalOperator={finalOperator}
             filesMap={filesMap}
           />
-          <div className="ui segment full">
-            <div className="content-admin-write">
-              <Form>
-                <QnaAnswerView
-                  qna={qna}
-                  filesMap={filesMap}
-                />
-                <QnaAnswerSatisfactionView qna={qna} />
-              </Form>
-            </div>
-          </div>
+          {
+            qna.answer.id && (
+              <div className="ui segment full">
+                <div className="content-admin-write">
+                  <Form>
 
+                    <QnaAnswerView
+                      qna={qna}
+                      filesMap={filesMap}
+                    />
+                    <QnaAnswerSatisfactionView qna={qna} />
+                  </Form>
+                </div>
+              </div>
+            ) || null
+          }
         <Segment className="full">
           <Container>
             <div className="actions bottom">
@@ -231,26 +238,6 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
                   />
                 </Button>
               )}
-
-              <Button
-                icon
-                className="left post delete"
-                onClick={() => this.deleteQnaDetail()}
-              >
-                <Icon className="del24" />{' '}
-                <PolyglotText
-                  id="support-QnaRead-삭제"
-                  defaultString="Delete"
-                />
-              </Button>
-              <Button
-                icon
-                className="left post list2"
-                onClick={this.onClickList}
-              >
-                <Icon className="list24" />{' '}
-                <PolyglotText id="support-QnaRead-목록" defaultString="List" />
-              </Button>
             </div>
 
             <ConfirmWin

@@ -6,13 +6,14 @@ import { PostModel } from '../../model';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
 import QnAModel from '../../model/QnAModel';
+import QuestionModel from '../../model/QuestionModel';
 
 interface Props {
   // posts: PostModel[];
   getCategoryName: (id: string) => string;
   onClickPost: (postId: string) => void;
 
-  qnas: QnAModel[];
+  questions: QuestionModel[];
 }
 
 @observer
@@ -22,7 +23,7 @@ class QnaListView extends ReactComponent<Props, {}> {
   render() {
     //
     const { getCategoryName, onClickPost } = this.props;
-    const { qnas } = this.props;
+    const { questions } = this.props;
 
     return(
       <Table selectable className="qna-admin-list">
@@ -46,11 +47,10 @@ class QnaListView extends ReactComponent<Props, {}> {
         </Table.Header>
         <Table.Body>
           {
-            qnas && qnas.length > 0 && qnas.map((qna, index) => {
-              const { question } = qna;
+            questions && questions.length > 0 && questions.map((question, index) => {
 
               return (
-                <Table.Row key={index} onClick={() => onClickPost(qna.question.id)}>
+                <Table.Row key={index} onClick={() => onClickPost(question.id)}>
                   <Table.Cell>NO</Table.Cell>
                   <Table.Cell>{question.requestChannel}</Table.Cell>
                   <Table.Cell>{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>

@@ -58,17 +58,21 @@ class BoardDetailContentHeaderView extends Component<Props> {
             <strong className="stat done">{qna.question.state}</strong>
           </div>
           <div className="user-info">
-            <span className="date">
-              <span>
-                {parsePolyglotString(finalOperator.operatorName)}
-              </span>
-              <span>
-                {finalOperator.email}
-              </span>
-              <span>
-                {time && moment(time).format('YYYY.MM.DD HH:mm')}
-              </span>
-            </span>
+            {
+              finalOperator && finalOperator.denizenId ? (
+                <span className="date">
+                  <span>
+                    {parsePolyglotString(finalOperator.operatorName)}
+                  </span>
+                  <span>
+                    {finalOperator.email}
+                  </span>
+                  <span>
+                    {time && moment(time).format('YYYY.MM.DD HH:mm')}
+                  </span>
+                </span>
+              ) : null
+            }
           </div>
           <div className="actions">
             {onClickModify && (
