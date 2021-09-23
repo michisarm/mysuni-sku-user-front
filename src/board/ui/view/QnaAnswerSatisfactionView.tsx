@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { ReactComponent } from '@nara.platform/accent';
-import { Table, Form, Input } from 'semantic-ui-react';
+import { Table, Form, Input, Button } from 'semantic-ui-react';
 import QnAModel from '../../model/QnAModel';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
+import moment from 'moment';
 
 interface Props {
   qna: QnAModel;
@@ -14,21 +16,23 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
     const { qna } = this.props;
 
     return (
-      <div className="content-inner">
-        <div className="post-view qna">
-          <div className="title">문의 답변 만족도 조사</div>
-          <Table>
+
+      <Form.Field>
+        <div className="admin-answer-top">
+          <strong>문의 답변 만족도 조사</strong>
+        </div>
+        <div className="form-table-wrapper">
+          <Table className="admin-answer-form">
             <colgroup>
               <col width="20%" />
               <col width="80%" />
             </colgroup>
             <Table.Body>
               <Table.Row>
-                <Table.Cell className="tb-header">
+                <Table.HeaderCell>
                   만족도 조사
-                </Table.Cell>
+                </Table.HeaderCell>
                 {
-
                 }
                 <Table.Cell>
                   {
@@ -39,19 +43,20 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.Cell className="tb-header">
-                 만족도 조사 의견
-                </Table.Cell>
+                <Table.HeaderCell>
+                  만족도 조사 의견
+                </Table.HeaderCell>
                 <Table.Cell>
                   {
                     qna.answer.satisfactionRegisteredTime &&
                     <p>{qna.answer.satisfactionComment}</p> ||
                     (
-                      <>
-                        <Form.Field
-                          control={Input}
-                        />
-                      </>
+                      <div className="svy-inpt">
+                        <Input>
+                          <input />
+                          <Button />
+                        </Input>
+                      </div>
                     )
                   }
                 </Table.Cell>
@@ -59,7 +64,7 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
             </Table.Body>
           </Table>
         </div>
-      </div>
+      </Form.Field>
     )
   }
 }

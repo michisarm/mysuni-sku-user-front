@@ -9,12 +9,14 @@ import { Checkbox, Radio, Table, TextArea } from 'semantic-ui-react';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
 import OperatorModel from '../../model/vo/OperatorModel';
+import QnaDetailHeader from './QnaDetailHeader';
 
 interface Props {
   getCategoryName: (id: string ) => string;
   onClickList: () => void;
 
   qna: QnAModel;
+  finalOperator: OperatorModel;
   filesMap: Map<string, any>;
 }
 
@@ -23,25 +25,21 @@ class QnaDetailView extends ReactComponent<Props, {}> {
   render() {
     //
     const { getCategoryName, onClickList } = this.props;
-    const { qna, filesMap } = this.props;
+    const { qna, finalOperator, filesMap } = this.props;
 
     return (
       <>
-        <div className="post-view qna">
-          <BoardDetailContentHeaderView
+        <div className="spt-answer-view">
+          <QnaDetailHeader
             deletable
             title={
               qna.question.title
             }
             time={qna.question.registeredTime}
-            subField={
-              <span className="category">
-                {`${getCategoryName(qna.question.mainCategoryId)} > ${getCategoryName(qna.question.subCategoryId)}`}
-              </span>
-            }
             onClickList={onClickList}
-            // onClickDelete={this.deleteQnaDetail}
-            // onClickModify={this.onClickModify}
+            getCategoryName={getCategoryName}
+            qna={qna}
+            finalOperator={finalOperator}
           />
 
           {qna.question.content && (

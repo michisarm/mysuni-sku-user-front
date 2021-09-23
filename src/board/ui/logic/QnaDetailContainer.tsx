@@ -7,7 +7,7 @@ import {
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Button, Container, Icon, Segment } from 'semantic-ui-react';
+import { Button, Container, Form, Icon, Segment } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 
 import { ConfirmWin } from 'shared';
@@ -21,6 +21,7 @@ import SupportService from '../../present/logic/SupportService';
 import QnaDetailView from '../view/QnaDetailView';
 import QnaAnswerView from '../view/QnaAnswerView';
 import QnaAnswerSatisfactionView from '../view/QnaAnswerSatisfactionView';
+import OperatorModel from '../../model/vo/OperatorModel';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
 }
@@ -60,7 +61,22 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
 
     await supportService.findAllCategories();
-    await supportService.findQnaById(postId);
+    const qna = await supportService.findQnaById(postId);
+
+    if (qna.answer.modifier) {
+      await this.setFinalOperator(qna.answer.modifier);
+    }
+  }
+
+  async setFinalOperator(id: string) {
+    //
+    const { supportService } = this.injected;
+
+    supportService
+      .findOperatorById(id)
+      .then((response) =>
+        supportService.setFinalOperator(response || new OperatorModel())
+      );
   }
 
   getFileIds() {
@@ -179,23 +195,26 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
 
     return (
       <>
-        <div className="post-view qna">
+        <div className="post-view qna qna-admin">
           <QnaDetailView
             getCategoryName={this.getCategoryName}
             onClickList={this.onClickList}
             qna={qna}
+            finalOperator={finalOperator}
             filesMap={filesMap}
           />
-          <div className="post-view qna">
-            <div className="content-area">
+          <div className="ui segment full">
+            <div className="content-admin-write">
+              <Form>
                 <QnaAnswerView
                   qna={qna}
                   filesMap={filesMap}
                 />
                 <QnaAnswerSatisfactionView qna={qna} />
+              </Form>
             </div>
           </div>
-        </div>
+
         <Segment className="full">
           <Container>
             <div className="actions bottom">
@@ -251,6 +270,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
             />
           </Container>
         </Segment>
+        </div>
       </>
     );
   }
