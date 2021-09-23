@@ -14,6 +14,7 @@ import QuestionQueryModel from '../../model/QuestionQueryModel';
 import SelectType from '../../../myTraining/model/SelectType';
 import QuestionSdo from '../../model/sdo/QuestionSdo';
 import QuestionModel from '../../model/QuestionModel';
+import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
 
 @autobind
 class SupportService {
@@ -144,6 +145,11 @@ class SupportService {
   async registerQuestion(questionSdo: QuestionSdo): Promise<string> {
     //
     return this.supportApi.registerQuestion(questionSdo);
+  }
+
+  async registerSatisfaction(questionId: string, satisfactionCdo: SatisfactionCdo): Promise<void> {
+    //
+    return this.supportApi.registerSatisfaction(questionId, satisfactionCdo);
   }
 
   @action

@@ -22,6 +22,7 @@ import QnaDetailView from '../view/QnaDetailView';
 import QnaAnswerView from '../view/QnaAnswerView';
 import QnaAnswerSatisfactionView from '../view/QnaAnswerSatisfactionView';
 import OperatorModel from '../../model/vo/OperatorModel';
+import QnAModel from '../../model/QnAModel';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
 }
@@ -189,6 +190,24 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     return supportService.getCategoryName(categoryId);
   }
 
+  onChangeQnaProps(name: string, value: any): void {
+    //
+    const { supportService } = this.injected;
+    console.log(name);
+    console.log(value);
+    supportService.changeQnaProps(name, value);
+    console.log(supportService.qna)
+  }
+
+  async onClickRegisterSatisfaction(): Promise<void> {
+    //
+    const { supportService } = this.injected;
+    const { qna } = supportService;
+
+    await supportService.registerSatisfaction(qna.question.id, QnAModel.asSatisfactionCdo(qna));
+    await this.init();
+  }
+
   render() {
     //
     const { confirmWinOpen, isEdit } = this.state;
@@ -216,7 +235,11 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
                       qna={qna}
                       filesMap={filesMap}
                     />
-                    <QnaAnswerSatisfactionView qna={qna} />
+                    <QnaAnswerSatisfactionView
+                      onChangeQnaProps={this.onChangeQnaProps}
+                      onClickRegisterSatisfaction={this.onClickRegisterSatisfaction}
+                      qna={qna}
+                    />
                   </Form>
                 </div>
               </div>

@@ -7,6 +7,7 @@ import QnaAnswerUdo from '../../model/vo/QnaAnswerUdo';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QuestionSdo from '../../model/sdo/QuestionSdo';
 import QuestionModel from '../../model/QuestionModel';
+import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
 
 class SupportApi {
   //
@@ -70,6 +71,11 @@ class SupportApi {
   registerQuestion(questionSdo: QuestionSdo): Promise<string> {
     //
     return axios.post(this.URL +  `/question`, questionSdo).then((response) => response && response.data || null)
+  }
+
+  registerSatisfaction(questionId: string, satisfactionCdo: SatisfactionCdo): Promise<void> {
+    //
+    return axios.put(this.URL + `/satisfaction/${questionId}`, satisfactionCdo).then((response) => response && response.data || null)
   }
 
   modifiedAnswer(answerId: string, qnaAnswerUdo: QnaAnswerUdo) {

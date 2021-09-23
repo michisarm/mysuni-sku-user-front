@@ -7,6 +7,7 @@ import QuestionModel from './QuestionModel';
 import LatestOperatorSentEmail from './sdo/LatestOperatorSentEmail';
 import { decorate, observable } from 'mobx';
 import QuestionSdo from './sdo/QuestionSdo';
+import SatisfactionCdo from './sdo/SatisfactionCdo';
 
 export default class QnAModel {
   answer: AnswerModel = new AnswerModel();
@@ -45,6 +46,15 @@ export default class QnAModel {
       content: question.content,
 
       depotId: question.depotId,
+    }
+  }
+
+  static asSatisfactionCdo(qna: QnAModel): SatisfactionCdo {
+    //
+    const { answer } = qna;
+    return {
+      point: answer.satisfactionPoint,
+      comment: answer.satisfactionComment
     }
   }
 }
