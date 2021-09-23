@@ -1,5 +1,5 @@
-import { RequestChannel } from './RequestChannel';
-import { QnaState } from './QnaState';
+import { RequestChannel } from './vo/RequestChannel';
+import { QnaState } from './vo/QnaState';
 import { decorate, observable } from 'mobx';
 
 export default class QuestionModel {

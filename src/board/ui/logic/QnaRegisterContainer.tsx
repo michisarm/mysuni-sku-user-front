@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
@@ -22,13 +22,14 @@ import {
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import FaqListModal from './FaqListModal';
+import SupportService from '../../present/logic/SupportService';
+import QnAModel from '../../model/QnAModel';
+import QuestionSdo from '../../model/sdo/QuestionSdo';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
   boardService?: BoardService;
-  categoryService?: CategoryService;
   skProfileService?: SkProfileService;
-  postService?: PostService;
 }
 
 interface States {
@@ -41,17 +42,20 @@ interface States {
   length: number;
 }
 
+interface Injected {
+  supportService: SupportService;
+}
+
 @inject(
   mobxHelper.injectFrom(
     'board.boardService',
-    'board.categoryService',
-    'board.postService',
+    'board.supportService',
     'profile.skProfileService'
   )
 )
 @observer
 @reactAutobind
-class QnaRegisterContainer extends React.Component<Props, States> {
+class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   //
   state = {
     alertWinOpen: false,
@@ -64,39 +68,47 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   };
 
   componentDidMount(): void {
-    const { postService, categoryService, skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    //const names = JSON.parse(patronInfo.getPatronName() || '') || '';
-    const { email } = skProfileService!.skProfile;
-    // postService.clearPost();
-    categoryService!.findCategoriesByBoardId('QNA').then(() => {
-      postService!.changePostProps('boardId', 'QNA');
-      const writerName: PolyglotString = {
-        en: skProfile.name.en,
-        ko: skProfile.name.ko,
-        zh: skProfile.name.zh,
-      };
-      postService!.changePostProps('writer.name', writerName);
-      postService!.changePostProps('writer.email', email);
-      const writerCompanyName: PolyglotString = {
-        en: skProfile.companyName.en,
-        ko: skProfile.companyName.ko,
-        zh: skProfile.companyName.zh,
-      };
-      postService!.changePostProps('writer.companyName', writerCompanyName);
-      postService!.changePostProps(
-        'writer.companyCode',
-        skProfile.companyCode
-        // skProfileService!.skProfile.companyName
-      );
-    });
+    // const { postService, categoryService, skProfileService } = this.props;
+    // const { skProfile } = skProfileService!;
+    // //const names = JSON.parse(patronInfo.getPatronName() || '') || '';
+    // const { email } = skProfileService!.skProfile;
+    // // postService.clearPost();
+    // categoryService!.findCategoriesByBoardId('QNA').then(() => {
+    //   postService!.changePostProps('boardId', 'QNA');
+    //   const writerName: PolyglotString = {
+    //     en: skProfile.name.en,
+    //     ko: skProfile.name.ko,
+    //     zh: skProfile.name.zh,
+    //   };
+    //   postService!.changePostProps('writer.name', writerName);
+    //   postService!.changePostProps('writer.email', email);
+    //   const writerCompanyName: PolyglotString = {
+    //     en: skProfile.companyName.en,
+    //     ko: skProfile.companyName.ko,
+    //     zh: skProfile.companyName.zh,
+    //   };
+    //   postService!.changePostProps('writer.companyName', writerCompanyName);
+    //   postService!.changePostProps(
+    //     'writer.companyCode',
+    //     skProfile.companyCode
+    //     // skProfileService!.skProfile.companyName
+    //   );
+    // });
+
+    //
+    this.init();
   }
 
-  componentWillUnmount(): void {
-    //
-    const { postService } = this.props;
-    postService!.clearPost();
+  async init() {
+    const { supportService } = this.injected;
+    await supportService.findAllCategories();
   }
+
+  // componentWillUnmount(): void {
+  //   //
+  //   const { postService } = this.props;
+  //   postService!.clearPost();
+  // }
 
   handleCloseAlertWin() {
     //
@@ -112,38 +124,45 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     });
   }
 
-  handleOKConfirmWin() {
+  async handleOKConfirmWin() {
     //
-    const { postService, history } = this.props;
-    const { post } = postService!;
-    const { params } = this.props.match;
+    // const { postService, history } = this.props;
+    // const { post } = postService!;
+    // const { params } = this.props.match;
+    //
+    // if (params.sourceType !== undefined && params.sourceId !== undefined) {
+    //   post.config.sourceType = params.sourceType;
+    //   post.config.sourceId = params.sourceId;
+    // }
+    //
+    // postService!
+    //   .registerPost(post)
+    //   .then((postId) =>
+    //     history.push(routePaths.supportQnAPost(postId as string))
+    //   );
+    // this.onClose();
+    //
+    // if (PostModel.isBlank(post) === 'success') {
+    //   this.setState({ confirmWinOpen: true });
+    // } else {
+    //   this.setState({
+    //     isBlankTarget: PostModel.isBlank(post),
+    //     alertWinOpen: true,
+    //   });
+    // }
 
-    if (params.sourceType !== undefined && params.sourceId !== undefined) {
-      post.config.sourceType = params.sourceType;
-      post.config.sourceId = params.sourceId;
-    }
+    //
+    const { supportService } = this.injected;
+    const { qna } = supportService;
 
-    postService!
-      .registerPost(post)
-      .then((postId) =>
-        history.push(routePaths.supportQnAPost(postId as string))
-      );
+    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna));
     this.onClose();
-
-    if (PostModel.isBlank(post) === 'success') {
-      this.setState({ confirmWinOpen: true });
-    } else {
-      this.setState({
-        isBlankTarget: PostModel.isBlank(post),
-        alertWinOpen: true,
-      });
-    }
   }
 
-  onChangePostProps(name: string, value: string | {}) {
+  onChangeQnAProps(name: string, value: any) {
     //
-    const { postService } = this.props;
-    postService!.changePostProps(name, value);
+    const { supportService } = this.injected;
+    supportService.changeQnaProps(name, value);
   }
 
   onClose() {
@@ -152,13 +171,14 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   onHandleSave() {
     //
-    const { post } = this.props.postService!;
+    const { supportService } = this.injected;
+    const { qna } = supportService;
 
-    if (PostModel.isBlank(post) === 'success') {
+    if (QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna)) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {
       this.setState({
-        isBlankTarget: PostModel.isBlank(post),
+        isBlankTarget: QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna)),
         alertWinOpen: true,
       });
     }
@@ -166,18 +186,21 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   getFileBoxIdForReference(fileBoxId: string) {
     //
-    const { postService } = this.props;
-    const { post } = postService!;
+    // const { postService } = this.props;
+    // const { post } = postService!;
+    //
+    // if (post.contents) {
+    //   postService!.changePostProps('contents.depotId', fileBoxId);
+    // }
 
-    if (post.contents) {
-      postService!.changePostProps('contents.depotId', fileBoxId);
-    }
+    const { supportService } = this.injected;
+    supportService.changeQnaProps('question.depotId', fileBoxId);
   }
 
   render() {
     //
-    const { categorys } = this.props.categoryService!;
-    const { post } = this.props.postService!;
+    // const { categorys } = this.props.categoryService!;
+    // const { post } = this.props.postService!;
     const {
       focus,
       write,
@@ -186,32 +209,36 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       isBlankTarget,
       confirmWinOpen,
     } = this.state;
-    const questionType: any = [];
+    // const questionType: any = [];
+    //
+    // const currentUrl = window.location.href;
+    //
+    // if (currentUrl.includes('cube') || currentUrl.includes('course')) {
+    //   categorys.map((data, index) => {
+    //     if (
+    //       (data && data.name ? parsePolyglotString(data && data.name) : '') ===
+    //       'Contents'
+    //     ) {
+    //       questionType.push({
+    //         key: index,
+    //         value: { id: data.categoryId, name: data.name },
+    //         text: parsePolyglotString(data.name),
+    //       });
+    //     }
+    //   });
+    // } else {
+    //   categorys.map((data, index) => {
+    //     questionType.push({
+    //       key: index,
+    //       value: { id: data.categoryId, name: data.name },
+    //       text: parsePolyglotString(data.name),
+    //     });
+    //   });
+    // }
 
-    const currentUrl = window.location.href;
-
-    if (currentUrl.includes('cube') || currentUrl.includes('course')) {
-      categorys.map((data, index) => {
-        if (
-          (data && data.name ? parsePolyglotString(data && data.name) : '') ===
-          'Contents'
-        ) {
-          questionType.push({
-            key: index,
-            value: { id: data.categoryId, name: data.name },
-            text: parsePolyglotString(data.name),
-          });
-        }
-      });
-    } else {
-      categorys.map((data, index) => {
-        questionType.push({
-          key: index,
-          value: { id: data.categoryId, name: data.name },
-          text: parsePolyglotString(data.name),
-        });
-      });
-    }
+    const { supportService } = this.injected;
+    const { getMainCategorySelect, getSubCategorySelect } = supportService;
+    const { qna } = supportService;
 
     return (
       <>
@@ -235,9 +262,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       'support-QnaWrite-분류선택'
                     )}
                     className="trig-pop-faq"
-                    options={questionType}
+                    options={getMainCategorySelect()}
                     onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', data.value)
+                      this.onChangeQnAProps('question.mainCategoryId', data.value)
                     }
                   />
                   <Select
@@ -246,9 +273,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       'support-QnaWrite-분류선택'
                     )}
                     // className="ui selection dropdown"
-                    options={questionType}
+                    options={getSubCategorySelect(qna.question.mainCategoryId)}
                     onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', data.value)
+                      this.onChangeQnAProps('question.subCategoryId', data.value)
                     }
                   />
                 </div>
@@ -269,10 +296,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 >
                   <span className="count">
                     <span className="now">
-                      {(post &&
-                        post.title &&
-                        parsePolyglotString(post.title).length) ||
-                      0}
+                      {qna.question.title.length}
                     </span>
                     /<span className="max">100</span>
                   </span>
@@ -285,7 +309,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
                     value={
-                      post && post.title ? parsePolyglotString(post.title) : ''
+                      qna.question.title
                     }
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
@@ -293,12 +317,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       } else {
                         const value = e.target.value;
                         this.setState({ write: value, fieldName: '' });
-                        const polyglotString: PolyglotString = {
-                          en: null,
-                          ko: value,
-                          zh: null,
-                        };
-                        this.onChangePostProps('title', polyglotString);
+                        this.onChangeQnAProps('question.title', value);
                       }
                     }}
                   />
@@ -306,12 +325,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     className="clear link"
                     onClick={(e: any) => {
                       this.setState({ write: '' });
-                      const polyglotString: PolyglotString = {
-                        en: null,
-                        ko: '',
-                        zh: null,
-                      };
-                      this.onChangePostProps('title', polyglotString);
+                      this.onChangeQnAProps('question.title', '');
                     }}
                   />
                   <span className="validation">
@@ -333,42 +347,26 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="ui form">
                     <div
                       className={classNames('ui right-top-count input', {
-                        error: this.state.fieldName === 'contents.contents',
+                        error: this.state.fieldName === 'question.content',
                       })}
                     >
                       {/* .error class 추가시 error ui 활성 */}
                       <span className="count">
-                        <span className="now">{this.state.length}</span>/
+                        <span className="now">{qna.question.content.length}</span>/
                         <span className="max">1000</span>
                       </span>
-                      {/*<Editor*/}
-                      {/*  post={post}*/}
-                      {/*  onChangeContentsProps={this.onChangerContentsProps}*/}
-                      {/*/>*/}
                       <textarea
-                        value={
-                          (post &&
-                            post.contents &&
-                            post.contents.contents &&
-                            parsePolyglotString(post.contents.contents)) ||
-                          ''
-                        }
+                        value={qna.question.content}
                         onChange={(e) => {
                           const value = e.target.value;
                           if (value.length > 1000) {
-                            this.setState({ fieldName: 'contents.contents' });
+                            this.setState({ fieldName: 'question.content' });
                           } else {
-                            const polyglotString: PolyglotString = {
-                              en: null,
-                              ko: value,
-                              zh: null,
-                            };
-                            this.onChangePostProps(
-                              'contents.contents',
-                              polyglotString
+                            this.onChangeQnAProps(
+                              'question.content',
+                              value
                             );
                             this.setState({
-                              length: value.length,
                               fieldName: '',
                             });
                           }
@@ -396,9 +394,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="line-attach width-sm">
                     <div className="attach-inner">
                       <FileBox
-                        id={
-                          (post && post.contents && post.contents.depotId) || ''
-                        }
+                        id={qna.question.depotId}
                         vaultKey={{
                           keyString: 'qna-sample',
                           patronType: PatronType.Audience,

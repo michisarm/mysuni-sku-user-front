@@ -6,10 +6,15 @@ import { QnaState } from '../../model/vo/QnaState';
 import PageModel from '../../../shared/components/Pagination/model/PageModel';
 import QnAOperatorRdo from '../../model/sdo/QnAOperatorRdo';
 import CategoryModel from '../../model/vo/CategoryModel';
-import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { parsePolyglotString, PolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { autobind } from '@nara.platform/accent';
 import QnaAnswerUdo from '../../model/vo/QnaAnswerUdo';
 import OperatorModel from '../../model/vo/OperatorModel';
+import QuestionQueryModel from '../../model/QuestionQueryModel';
+import SelectType from '../../../myTraining/model/SelectType';
+import QuestionSdo from '../../model/sdo/QuestionSdo';
+import QuestionModel from '../../model/QuestionModel';
+import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
 
 @autobind
 class SupportService {
@@ -19,10 +24,16 @@ class SupportService {
   supportApi: SupportApi;
 
   @observable
+  qnaQueryModel: QuestionQueryModel = new QuestionQueryModel();
+
+  @observable
   qna: QnAModel = new QnAModel();
 
   @observable
   qnas: QnAModel[] = [];
+
+  @observable
+  questions: QuestionModel[] = [];
 
   @observable
   finalOperator: OperatorModel = new OperatorModel();
@@ -41,6 +52,12 @@ class SupportService {
 
   constructor(supportApi: SupportApi) {
     this.supportApi = supportApi;
+  }
+
+  @action
+  changeQuestionQueryProps(name: string, value: any): void {
+    //
+    this.qnaQueryModel = _.set(this.qnaQueryModel, name, value);
   }
 
   @action
@@ -92,6 +109,20 @@ class SupportService {
   }
 
   @action
+  async findQnaToMe(pageModel: PageModel, state?: QnaState) {
+    //
+    const questions = await this.supportApi.findQnasToMe(
+      QnAOperatorRdo.asQnaOperatorRdo(pageModel, state)
+    );
+
+    runInAction(() => {
+      this.questions = questions.results.map((question) => new QuestionModel(question));
+    });
+
+    return questions.totalCount;
+  }
+
+  @action
   async findQnaById(qnaId: string) {
     //
     const qna = await this.supportApi.findQnaById(qnaId);
@@ -109,6 +140,16 @@ class SupportService {
     const operator = await this.supportApi.findOperatorById(id);
 
     return operator;
+  }
+
+  async registerQuestion(questionSdo: QuestionSdo): Promise<string> {
+    //
+    return this.supportApi.registerQuestion(questionSdo);
+  }
+
+  async registerSatisfaction(questionId: string, satisfactionCdo: SatisfactionCdo): Promise<void> {
+    //
+    return this.supportApi.registerSatisfaction(questionId, satisfactionCdo);
   }
 
   @action
@@ -136,6 +177,24 @@ class SupportService {
   changeQnaProps(name: string, value: any) {
     //
     this.qna = _.set(this.qna, name, value);
+  }
+
+  getCategoryName(categoryId: string): string {
+    return parsePolyglotString(this.categoriesMap.get(categoryId));
+  }
+
+  getMainCategorySelect() {
+    //
+    return this.categories.filter((category) => category.parentId === null).map((category, index) => {
+      return { key: index, value: category.id, text: parsePolyglotString(category.name)}
+    })
+  }
+
+  getSubCategorySelect(mainCategoryId: string) {
+    //
+    return this.categories.filter((category) => category.parentId !== null && category.parentId === mainCategoryId).map((category, index) => {
+      return { key: index, value: category.id, text: parsePolyglotString(category.name)}
+    })
   }
 }
 

@@ -18,8 +18,6 @@ import { SharedService } from '../../../shared/stores';
 import { QnaState } from '../../model/vo/QnaState';
 import routePaths from '../../routePaths';
 import { withRouter } from 'react-router-dom';
-import { PostService } from '../../stores';
-import depot from '@nara.drama/depot';
 
 interface Param {}
 
@@ -96,16 +94,16 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
   render() {
     //
     const { supportService, sharedService } = this.injected;
-    const { isLoading, state } = this.state;
+    const { state } = this.state;
     const { qnas, categoriesMap } = supportService;
-    const { startNo } = sharedService.getPageModel(this.paginationKey);
+    const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
       <>
         <div className="support-list-wrap">
           <SubActions>
             <SubActions.Left>
-              <SubActions.Count number={0} />
+              <SubActions.Count number={count} />
             </SubActions.Left>
             <SubActions.Right>
               <div className="list-top">
