@@ -2,30 +2,27 @@ import React, { Component } from 'react';
 import {
   reactAutobind,
   mobxHelper,
-  reactAlert,
-  reactConfirm,
+  reactConfirm, ReactComponent,
 } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
-import ReactQuill from 'react-quill';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 
 import { ConfirmWin } from 'shared';
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
-import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from 'lecture/model/LangSupport';
+import SupportService from '../../present/logic/SupportService';
+import QnaDetailView from '../view/QnaDetailView';
+import QnaAnswerView from '../view/QnaAnswerView';
+import QnaAnswerSatisfactionView from '../view/QnaAnswerSatisfactionView';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
-  postService?: PostService;
-  categoryService?: CategoryService;
 }
 
 interface States {
@@ -34,10 +31,14 @@ interface States {
   filesMap: Map<string, any>;
 }
 
-@inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
+interface Injected {
+  supportService: SupportService;
+}
+
+@inject(mobxHelper.injectFrom('board.supportService'))
 @observer
 @reactAutobind
-class QnaDetailContainer extends Component<Props, States> {
+class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
   //
   constructor(props: Props) {
     //
@@ -51,32 +52,22 @@ class QnaDetailContainer extends Component<Props, States> {
 
   componentDidMount() {
     //
-    const { postId } = this.props.match.params;
-    const { postService, categoryService } = this.props;
-
-    if (postService && categoryService) {
-      Promise.resolve()
-        .then(() => postService.findPostByPostId(postId))
-        .then(() => {
-          if (postService.post.category.id) {
-            categoryService.findCategoryByCategoryId(
-              postService.post.category.id
-            );
-          }
-        })
-        .then(() => this.getFileIds());
-    }
+    this.init();
   }
 
-  componentWillUnmount(): void {
-    const { postService } = this.props;
-    postService!.clearPost();
+  async init() {
+    const { postId } = this.props.match.params;
+    const { supportService } = this.injected;
+
+    await supportService.findAllCategories();
+    await supportService.findQnaById(postId);
   }
 
   getFileIds() {
     //
-    const { post } = this.props.postService || ({} as PostService);
-    const referenceFileBoxId = post && post.contents && post.contents.depotId;
+    const { supportService } = this.injected;
+    const { qna } = supportService;
+    const referenceFileBoxId = qna && qna.question && qna.question.depotId;
 
     Promise.resolve().then(() => {
       if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
@@ -101,18 +92,18 @@ class QnaDetailContainer extends Component<Props, States> {
 
   handleOKConfirmWin() {
     //
-    const { postService } = this.props;
+    const { supportService } = this.injected;
     const { postId } = this.props.match.params;
-    const { post } = this.props.postService || ({} as PostService);
-    Promise.resolve().then(() => {
-      post.deleted = true;
-      if (postService) {
-        postService.deletePost(postId, post).then(() => {
-          window.location.href =
-            process.env.PUBLIC_URL + routePaths.supportQnA();
-        });
-      }
-    });
+    const { qna } = supportService;
+    // Promise.resolve().then(() => {
+    //   post.deleted = true;
+    //   if (postService) {
+    //     postService.deletePost(postId, post).then(() => {
+    //       window.location.href =
+    //         process.env.PUBLIC_URL + routePaths.supportQnA();
+    //     });
+    //   }
+    // });
     //this.onClickList();
   }
 
@@ -154,12 +145,12 @@ class QnaDetailContainer extends Component<Props, States> {
 
   handleModifyOKConfirmWin() {
     //
-    const { postService } = this.props;
+    const { supportService } = this.injected;
     const { postId } = this.props.match.params;
-    const { post } = this.props.postService || ({} as PostService);
-    Promise.resolve().then(() => {
-      if (postService) postService.modifyPost(postId, post);
-    });
+    const { qna } = supportService;
+    // Promise.resolve().then(() => {
+    //   if (postService) postService.modifyPost(postId, post);
+    // });
     this.onClickList();
     this.setState({ isEdit: false });
   }
@@ -173,84 +164,37 @@ class QnaDetailContainer extends Component<Props, States> {
     this.props.history.push(routePaths.supportQnAModifyPost(postId));
   }
 
+  getCategoryName(categoryId: string): string {
+    //
+    const { supportService } = this.injected;
+    return supportService.getCategoryName(categoryId);
+  }
+
   render() {
     //
     const { confirmWinOpen, isEdit } = this.state;
-    const { post } = this.props.postService!;
-    const { category } = this.props.categoryService!;
+    const { supportService } = this.injected;
+    const { qna, finalOperator } = supportService
     const { filesMap } = this.state;
 
     return (
       <>
         <div className="post-view qna">
-          <BoardDetailContentHeaderView
-            deletable
-            title={
-              post.title
-                ? parsePolyglotString(
-                    post.title,
-                    getDefaultLang(post.langSupports)
-                  )
-                : ''
-            }
-            time={post.registeredTime}
-            subField={
-              <span className="category">
-                {parsePolyglotString(category.name)}
-              </span>
-            }
+          <QnaDetailView
+            getCategoryName={this.getCategoryName}
             onClickList={this.onClickList}
-            onClickDelete={this.deleteQnaDetail}
-            // onClickModify={this.onClickModify}
+            qna={qna}
+            filesMap={filesMap}
           />
-
-          {post.contents && (
+          <div className="post-view qna">
             <div className="content-area">
-              <div className="content-inner">
-                <ReactQuill
-                  theme="bubble"
-                  value={
-                    (post.contents.contents &&
-                      parsePolyglotString(post.contents.contents)) ||
-                    ''
-                  }
-                  readOnly
+                <QnaAnswerView
+                  qna={qna}
+                  filesMap={filesMap}
                 />
-                <div className="file">
-                  <span>
-                    <PolyglotText
-                      id="support-QnaRead-첨부파일"
-                      defaultString="첨부파일 :"
-                    />
-                  </span>
-                  <br />
-                  {(filesMap &&
-                    filesMap.get('reference') &&
-                    filesMap
-                      .get('reference')
-                      .map((foundedFile: DepotFileViewModel, index: number) => (
-                        <div>
-                          <a href="#" className="link" key={index}>
-                            <span
-                              className="ellipsis"
-                              onClick={(e) => {
-                                depot.downloadDepotFile(foundedFile.id);
-                                e.preventDefault();
-                              }}
-                            >
-                              {'    ' + foundedFile.name + '     '}
-                            </span>
-                            <br />
-                          </a>
-                          <br />
-                        </div>
-                      ))) ||
-                    ''}
-                </div>
-                <br />
-              </div>
+                <QnaAnswerSatisfactionView qna={qna} />
             </div>
-          )}
+          </div>
         </div>
         <Segment className="full">
           <Container>

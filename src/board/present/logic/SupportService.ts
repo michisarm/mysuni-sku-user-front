@@ -6,10 +6,11 @@ import { QnaState } from '../../model/vo/QnaState';
 import PageModel from '../../../shared/components/Pagination/model/PageModel';
 import QnAOperatorRdo from '../../model/sdo/QnAOperatorRdo';
 import CategoryModel from '../../model/vo/CategoryModel';
-import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { parsePolyglotString, PolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { autobind } from '@nara.platform/accent';
 import QnaAnswerUdo from '../../model/vo/QnaAnswerUdo';
 import OperatorModel from '../../model/vo/OperatorModel';
+import QuestionQueryModel from '../../model/QuestionQueryModel';
 
 @autobind
 class SupportService {
@@ -17,6 +18,9 @@ class SupportService {
   static instance: SupportService;
 
   supportApi: SupportApi;
+
+  @observable
+  qnaQueryModel: QuestionQueryModel = new QuestionQueryModel();
 
   @observable
   qna: QnAModel = new QnAModel();
@@ -41,6 +45,12 @@ class SupportService {
 
   constructor(supportApi: SupportApi) {
     this.supportApi = supportApi;
+  }
+
+  @action
+  changeQuestionQueryProps(name: string, value: any): void {
+    //
+    this.qnaQueryModel = _.set(this.qnaQueryModel, name, value);
   }
 
   @action
@@ -136,6 +146,10 @@ class SupportService {
   changeQnaProps(name: string, value: any) {
     //
     this.qna = _.set(this.qna, name, value);
+  }
+
+  getCategoryName(categoryId: string): string {
+    return parsePolyglotString(this.categoriesMap.get(categoryId));
   }
 }
 

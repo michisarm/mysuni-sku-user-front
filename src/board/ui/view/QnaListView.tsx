@@ -5,9 +5,14 @@ import { Table } from 'semantic-ui-react';
 import { PostModel } from '../../model';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
+import QnAModel from '../../model/QnAModel';
 
 interface Props {
-  posts: PostModel[];
+  // posts: PostModel[];
+  getCategoryName: (id: string) => string;
+  onClickPost: (postId: string) => void;
+
+  qnas: QnAModel[];
 }
 
 @observer
@@ -16,7 +21,8 @@ class QnaListView extends ReactComponent<Props, {}> {
   //
   render() {
     //
-    const { posts } = this.props;
+    const { getCategoryName, onClickPost } = this.props;
+    const { qnas } = this.props;
 
     return(
       <Table selectable className="qna-admin-list">
@@ -40,15 +46,17 @@ class QnaListView extends ReactComponent<Props, {}> {
         </Table.Header>
         <Table.Body>
           {
-            posts && posts.length > 0 && posts.map((post, index) => {
+            qnas && qnas.length > 0 && qnas.map((qna, index) => {
+              const { question } = qna;
+
               return (
-                <Table.Row>
+                <Table.Row key={index} onClick={() => onClickPost(qna.question.id)}>
                   <Table.Cell>NO</Table.Cell>
-                  <Table.Cell>접수채널</Table.Cell>
-                  <Table.Cell>{parsePolyglotString(post.category.name)}</Table.Cell>
-                  <Table.Cell>{parsePolyglotString(post.title)}</Table.Cell>
-                  <Table.Cell>{post.openState}</Table.Cell>
-                  <Table.Cell>{moment(post.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
+                  <Table.Cell>{question.requestChannel}</Table.Cell>
+                  <Table.Cell>{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
+                  <Table.Cell>{question.title}</Table.Cell>
+                  <Table.Cell>{question.state}</Table.Cell>
+                  <Table.Cell>{moment(question.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
               )
             })
