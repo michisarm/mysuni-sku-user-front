@@ -6,6 +6,7 @@ import PostApi from '../apiclient/PostApi';
 import { PostModel, PostContentsModel } from '../../model';
 import PageModel from '../../../shared/components/Pagination/model/PageModel';
 import NoticeRdo from '../../model/sdo/NoticeRdo';
+import SearchSdo from '../../model/sdo/SearchSdo';
 
 @autobind
 export default class PostService {
@@ -105,6 +106,18 @@ export default class PostService {
 
     runInAction(() => (this.posts = posts));
     return posts;
+  }
+
+  @action
+  async searchFaq(searchSdo: SearchSdo): Promise<OffsetElementList<PostModel>> {
+    //
+    const offsetElementList = await this.postApi.searchFaq(searchSdo);
+
+    runInAction(() => {
+      this.posts = offsetElementList;
+    })
+
+    return offsetElementList;
   }
 
   @action

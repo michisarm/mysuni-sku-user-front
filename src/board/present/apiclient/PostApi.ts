@@ -1,9 +1,10 @@
-import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
+import { axiosApi, axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import { apiHelper } from 'shared';
 import PostModel from '../../model/PostModel';
 import PostCdoModel from '../../model/PostCdoModel';
 import NoticeRdo from '../../model/sdo/NoticeRdo';
+import SearchSdo from '../../model/sdo/SearchSdo';
 
 class PostApi {
   //
@@ -170,6 +171,11 @@ class PostApi {
   modifyPost(postId: string, nameValues: NameValueList) {
     //
     return axios.put<void>(this.URL + `/${postId}`, nameValues);
+  }
+
+  searchFaq(searchSdo: SearchSdo): Promise<OffsetElementList<PostModel>> {
+    //
+    return axiosApi.get(this.URL + `/faq-posts/search`, { params: searchSdo} ).then((response) => response && response.data || null);
   }
 }
 
