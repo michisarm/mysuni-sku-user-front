@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Accordion, Icon, Radio, Segment } from 'semantic-ui-react';
+import { Accordion, Form, Icon, Input, Radio, Segment } from 'semantic-ui-react';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
@@ -13,6 +13,7 @@ import {
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import SharedService from '../../../shared/present/logic/SharedService';
 import Pagination from '../../../shared/components/Pagination';
+import SearchSdo from '../../model/sdo/SearchSdo';
 
 interface Props extends RouteComponentProps {
 
@@ -39,6 +40,7 @@ interface Injected {
 class FaqListContainer extends ReactComponent<Props, State, Injected> {
   //
   paginationKey = 'FAQ';
+  paginationSearchKey = 'FAQ_Search'
   state = {
     // offset: 0,
     categoryIndex: 0,
@@ -53,11 +55,17 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
     this.findFaqCategoris();
   }
 
-  onChangeSearchKey(event : any) {
+  onChangeSearchKey(event: any, data : any) {
     //
     this.setState({
-      searchKey: event.target.value,
+      searchKey: data.value,
     });
+  }
+
+  onKeyPressed(event: any) {
+    if(event.key === 'Enter') {
+      this.findFaqPosts('', this.state.searchKey);
+    }
   }
 
   onClickInput() {
@@ -99,24 +107,46 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
     }
   }
 
-  async findFaqPosts(categoryId: string) {
+  async findFaqPosts(categoryId: string, keyword?: string) {
     //
     const { sharedService, postService } = this.injected;
-    const pageModel = sharedService.getPageModel(this.paginationKey);
-
     postService.clearPosts();
 
-    await postService
-      .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
-      .then((res) => {
-        sharedService.setCount(this.paginationKey, res.totalCount);
+    this.setState({ isLoading: true });
+
+    if(keyword && keyword !== '') {
+      let pageModel = sharedService.getPageModel(this.paginationSearchKey);
+
+      if (pageModel.limit === 20) {
+        sharedService.setPageMap(this.paginationSearchKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationSearchKey);
+      }
+
+      await postService.searchFaq(SearchSdo.fromKeyword(keyword, pageModel.offset, 10)).then((res) => {
+        sharedService.setCount(this.paginationSearchKey, res.totalCount);
+        this.setState({ categoryIndex: -1 });
         this.setState({ isLoading: false });
       });
+    } else {
+      let pageModel = sharedService.getPageModel(this.paginationKey);
+
+      if (pageModel.limit === 20) {
+        sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationKey);
+      }
+      await postService
+        .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
+        .then((res) => {
+          sharedService.setCount(this.paginationKey, res.totalCount);
+          this.setState({ isLoading: false });
+        });
+    }
+
   }
 
   setCagetory(index: number, categoryId: string) {
     //
-    const postService = this.injected.postService;
+    const { postService, categoryService } = this.injected;
     this.setState({ isLoading: true });
 
     this.setState({
@@ -141,21 +171,6 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
     this.setState({ activeIndex: targetIndex })
   }
 
-  // onClickListMore() {
-  //   //
-  //   const { categorys } = this.injected.categoryService;
-  //   const { categoryIndex } = this.state;
-  //   this.setState({ isLoading: true });
-  //
-  //   this.findFaqPosts(categorys[categoryIndex].categoryId);
-  // }
-
-  onClearSearchKey(e: any) {
-    //
-    this.setState({ searchKey: '' });
-    this.onSearch(e);
-  }
-
   onSearch(e: any) {
     //
     const { searchKey } = this.state;
@@ -166,24 +181,6 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
     //
     const { activeIndex } = this.state;
     return (
-      // <a
-      //   key={index}
-      //   target="_blank"
-      //   className={classNames('row', { important: post.pinned })}
-      //   onClick={() => this.onClickPost(post.postId)}
-      // >
-      //   <span className="cell title">
-      //     <span className="inner">
-      //       {/* <span className="ellipsis">{post.title && parsePolyglotString(post.title)}</span> */}
-      //       <span className="ellipsis">
-      //         {parsePolyglotString(
-      //           post.title,
-      //           getDefaultLang(post.langSupports)
-      //         )}
-      //       </span>
-      //     </span>
-      //   </span>
-      // </a>
       <>
         <Accordion.Title active={activeIndex === index} onClick={() => this.onClickPost(index)}>
           <div className="faq-icon">Q.</div>
@@ -205,15 +202,17 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
 
   render() {
     //
-    const { categorys } = this.injected.categoryService;
-    const { posts } = this.injected.postService;
+    const { sharedService, categoryService, postService } = this.injected;
+    const { categorys } = categoryService;
+    const { posts } = postService;
     const { categoryIndex, isLoading, searchKey, focus } = this.state;
     const result = posts.results;
-    const totalCount = posts.totalCount;
+    const paginationKey = searchKey === '' ? this.paginationKey : this.paginationSearchKey;
+    const { count } = searchKey === '' ? sharedService.getPageModel(paginationKey) : sharedService.getPageModel(paginationKey);
 
     return (
       <>
-        <Pagination name={this.paginationKey} onChange={() => this.findFaqPosts(categorys[categoryIndex].categoryId)}>
+        <Pagination name={paginationKey} onChange={() => this.findFaqPosts(categorys[categoryIndex].categoryId, searchKey)}>
         {isLoading ? (
           <div className="support-list-wrap faq">
             <div className="cate-wrap">
@@ -269,16 +268,16 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
             </div>
             <div className="list-top">
               <div className="list-top-left">
-                총 0개의 리스트가 있습니다.
+                <p>{`총 ${count}개의 리스트가 있습니다.`}</p>
               </div>
               <div className="list-top-right">
                 <div className="ui input s-search h38">
-                  <input
+                  <Form.Field
+                    control={Input}
                     type="text"
                     placeholder="Search"
-                    value={searchKey}
-                    onChange={this.onChangeSearchKey}
-                    // onKeyPress={this.onKeyPressInput}
+                    onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
+                    onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}
                     onClick={this.onClickInput}
                     onBlur={this.onBlurInput}
                   />
@@ -305,9 +304,9 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
                   </Accordion>
               )}
             </div>
+            <Pagination.Navigator styled/>
           </div>
         )}
-          <Pagination.Navigator />
         </Pagination>
       </>
     );
