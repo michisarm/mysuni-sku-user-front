@@ -25,6 +25,7 @@ interface Props {
   answerFilesMap: Map<string, any>;
   changeQnaProps: (name: string, value: any) => void;
   getFileBoxIdForReference: (depotId: string) => void;
+  getStateToString: (state: QnaState) => string;
 }
 
 @observer
@@ -71,6 +72,7 @@ class QnaManagementAnswerView extends React.Component<Props> {
       getFileBoxIdForReference,
       finalOperator,
       emailOperator,
+      getStateToString,
     } = this.props;
 
     return (
@@ -236,7 +238,9 @@ class QnaManagementAnswerView extends React.Component<Props> {
                             {parsePolyglotString(finalOperator.department)}
                           </span>
                           <span>{finalOperator.email}</span>
-                          <strong>{qna.question.state}</strong>
+                          <strong>
+                            {getStateToString(qna.question.state)}
+                          </strong>
                           <span>
                             {moment(qna.answer.modifiedTime).format(
                               'YYYY.MM.DD'

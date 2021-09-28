@@ -217,6 +217,23 @@ class QnaManagementDetailContainer extends ReactComponent<
     }
   }
 
+  renderState(state: QnaState) {
+    //
+    let className = 'state wait';
+    let text = '';
+
+    if (state === QnaState.QuestionReceived) {
+      text = getPolyglotText('문의 접수', 'support-qna-문의접수');
+    } else if (state === QnaState.AnswerWaiting) {
+      text = getPolyglotText('답변 대기', 'support-qna-답변대기');
+    } else if (state === QnaState.AnswerCompleted) {
+      className = 'stat done';
+      text = getPolyglotText('답변 완료', 'support-qna-답변완료');
+    }
+
+    return <strong className={className}>{text}</strong>;
+  }
+
   render() {
     //
     const { supportService } = this.injected;
@@ -227,6 +244,7 @@ class QnaManagementDetailContainer extends ReactComponent<
       changeQnaProps,
       finalOperator,
       emailOperator,
+      getStateToString,
     } = supportService;
 
     return (
@@ -238,6 +256,7 @@ class QnaManagementDetailContainer extends ReactComponent<
             filesMap={filesMap}
             finalOperator={finalOperator}
             onClickList={this.onClickList}
+            renderState={this.renderState}
           />
 
           <Segment className="full">
@@ -252,6 +271,7 @@ class QnaManagementDetailContainer extends ReactComponent<
                     answerFilesMap={answerFilesMap}
                     changeQnaProps={changeQnaProps}
                     getFileBoxIdForReference={this.getFileBoxIdForReference}
+                    getStateToString={getStateToString}
                   />
                 </Form>
               </div>

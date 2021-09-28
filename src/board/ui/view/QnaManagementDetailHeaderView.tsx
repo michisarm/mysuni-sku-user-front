@@ -2,13 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   title: string;
   requestChannel: string;
   mainCategory: string;
   subCategory?: string;
-  state: string;
+  state: React.ReactNode;
 
   operatorName: string;
   departmentName: string;
@@ -47,7 +48,7 @@ class QnaManagementDetailHeaderView extends React.Component<Props> {
                   <span>{mainCategory}</span>
                   {subCategory != '' ? <span>{subCategory}</span> : ''}
                 </div>
-                <strong className="stat done">{state}</strong>
+                {state}
               </div>
               <div className="user-info">
                 <span className="date">

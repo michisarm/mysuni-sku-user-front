@@ -53,6 +53,11 @@ class NoticeListView extends React.Component<Props> {
                         <a onClick={() => onClickPost(post.postId)}>
                           {parsePolyglotString(post.title)}
                         </a>
+                        {post.commentCount > 0 && (
+                          <span className="reply">
+                            [<strong>{post.commentCount}</strong>]
+                          </span>
+                        )}
                       </div>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{post.readCount}</Table.Cell>

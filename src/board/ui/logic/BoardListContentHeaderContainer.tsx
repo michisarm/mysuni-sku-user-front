@@ -115,11 +115,13 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           <div className="title-area">
             <div className="line-wrap">{this.renderSupportTitle()}</div>
           </div>
-          <BoardListContentHeaderHelpView
-            faqTotalCount={faqPosts.totalCount}
-            faqPosts={faqPosts.results}
-            routeToFaqDetail={this.routeToFaqDetail}
-          />
+          <div className="tit-right-area">
+            <BoardListContentHeaderHelpView
+              faqTotalCount={faqPosts.totalCount}
+              faqPosts={faqPosts.results}
+              routeToFaqDetail={this.routeToFaqDetail}
+            />
+          </div>
         </div>
       </div>
     );

@@ -13,6 +13,7 @@ import {
 import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QnaManagementDetailHeaderView from './QnaManagementDetailHeaderView';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   qna: QnAModel;
@@ -20,6 +21,7 @@ interface Props {
   categoriesMap: Map<string, PolyglotString>;
   finalOperator: OperatorModel;
   onClickList: () => void;
+  renderState: (state: QnaState) => React.ReactNode;
 }
 
 @observer
@@ -34,6 +36,7 @@ class QnaManagementDetailView extends React.Component<Props> {
       categoriesMap,
       finalOperator,
       onClickList,
+      renderState,
     } = this.props;
 
     return (
@@ -47,7 +50,7 @@ class QnaManagementDetailView extends React.Component<Props> {
           subCategory={parsePolyglotString(
             categoriesMap.get(qna.question.subCategoryId)
           )}
-          state={qna.question.state}
+          state={renderState(qna.question.state)}
           operatorName={parsePolyglotString(finalOperator.operatorName)}
           departmentName={parsePolyglotString(finalOperator.department)}
           email={finalOperator.email}

@@ -8,19 +8,27 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from '../../../shared/viewmodel/PolyglotString';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   qnas: QnAModel[];
   startNo: number;
   categoriesMap: Map<string, PolyglotString>;
   onClickQnA: (qnaId: string) => void;
+  getStateToString: (state: QnaState) => string;
 }
 
 class QnaManagementListView extends React.Component<Props> {
   //
   render() {
     //
-    const { qnas, startNo, categoriesMap, onClickQnA } = this.props;
+    const {
+      qnas,
+      startNo,
+      categoriesMap,
+      onClickQnA,
+      getStateToString,
+    } = this.props;
 
     return (
       <>
@@ -72,7 +80,9 @@ class QnaManagementListView extends React.Component<Props> {
                   <Table.Cell>
                     {parsePolyglotString(qna.answer.modifierName) || '미정'}
                   </Table.Cell>
-                  <Table.Cell>{qna.question.state}</Table.Cell>
+                  <Table.Cell>
+                    {getStateToString(qna.question.state)}
+                  </Table.Cell>
                 </Table.Row>
               ))
             ) : (
