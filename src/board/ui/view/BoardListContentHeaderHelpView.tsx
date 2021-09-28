@@ -23,7 +23,7 @@ class BoardListContentHeaderHelpView extends React.Component<Props> {
     const { faqTotalCount, faqPosts, routeToFaqDetail } = this.props;
     //
     return (
-      <div className="tip-area">
+      <div className="inner">
         {/*<Label className="onlytext">*/}
         {/*  <Icon className="tip16" />*/}
         {/*  <span>*/}
@@ -50,19 +50,27 @@ class BoardListContentHeaderHelpView extends React.Component<Props> {
         {/*      'support-spif-목록없음'*/}
         {/*    )}*/}
         {/*</div>*/}
-        <div className="text">
-          <PolyglotText id="support-spif-상세설명" defaultString="Help Desk" />
-          <br />
-          <span className="dash" />
-          <PolyglotText
-            id="support-spif-time"
-            defaultString="평일 09:00 ~ 18:00 (주말 & 공휴일 제외)"
-          />
-          <br />
-          <PolyglotText
-            id="support-spif-telNemail"
-            defaultString="mysuni@mysuni.sk.com (확인 필요) | 02-6323-9002"
-          />
+        {/*<div className="text">*/}
+        {/*  <PolyglotText id="support-spif-상세설명" defaultString="Help Desk" />*/}
+        {/*  <br />*/}
+        {/*  <span className="dash" />*/}
+        {/*  <PolyglotText*/}
+        {/*    id="support-spif-time"*/}
+        {/*    defaultString="평일 09:00 ~ 18:00 (주말 & 공휴일 제외)"*/}
+        {/*  />*/}
+        {/*  <br />*/}
+        {/*  <PolyglotText*/}
+        {/*    id="support-spif-telNemail"*/}
+        {/*    defaultString="mysuni@mysuni.sk.com (확인 필요) | 02-6323-9002"*/}
+        {/*  />*/}
+        {/*</div>*/}
+        <span>Help Desk</span>
+        <div>
+          <p>평일 09:00 ~ 18:00 (주말 &amp; 공휴일 제외)</p>
+          <span>
+            <i aria-hidden="true" className="icon support-tel" />
+            02)6323-9002
+          </span>
         </div>
       </div>
     );
