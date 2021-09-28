@@ -215,7 +215,7 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
                   />
                 </div>
 
-                <Pagination.Navigator />
+                <Pagination.Navigator styled />
               </Pagination>
             </>
           )}
