@@ -158,22 +158,21 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
     return (
       <>
         <div className="support-list-wrap">
-          <SubActions>
-            <SubActions.Left>
-              <SubActions.Count number={postService.posts.totalCount} />
-            </SubActions.Left>
-            <SubActions.Right>
+          <div className="list-top">
+            <div className="list-top-left">
+              총 <strong>{postService.posts.totalCount}</strong>개의 리스트가
+              있습니다.
+            </div>
+            <div className="list-top-right">
               <Input
-                icon={
-                  <Icon
-                    name="search"
-                    inverted
-                    circular
-                    link
-                    onClick={this.findNoticePosts}
-                  />
-                }
+                // icon="icon search-32"
+                icon={{
+                  className: 'icon search-32',
+                  link: true,
+                }}
+                className="s-search h38"
                 value={keyword}
+                placeholder="검색어를 입력하세요."
                 onChange={(event, data) =>
                   this.setState({ keyword: data.value })
                 }
@@ -183,8 +182,8 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
                   }
                 }}
               />
-            </SubActions.Right>
-          </SubActions>
+            </div>
+          </div>
 
           {isLoading ? (
             <div className="support-list-wrap">
@@ -208,13 +207,15 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
                 name={this.paginationKey}
                 onChange={this.findNoticePosts}
               >
-                <NoticeListView
-                  posts={posts}
-                  startNo={startNo}
-                  onClickPost={this.onClickPost}
-                />
+                <div className="qna-admin-list-wrap">
+                  <NoticeListView
+                    posts={posts}
+                    startNo={startNo}
+                    onClickPost={this.onClickPost}
+                  />
+                </div>
 
-                <Pagination.Navigator />
+                <Pagination.Navigator styled />
               </Pagination>
             </>
           )}

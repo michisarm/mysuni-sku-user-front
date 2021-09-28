@@ -6,15 +6,18 @@ import { QnaState } from '../../model/vo/QnaState';
 import PageModel from '../../../shared/components/Pagination/model/PageModel';
 import QnAOperatorRdo from '../../model/sdo/QnAOperatorRdo';
 import CategoryModel from '../../model/vo/CategoryModel';
-import { parsePolyglotString, PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import {
+  parsePolyglotString,
+  PolyglotString,
+} from '../../../shared/viewmodel/PolyglotString';
 import { autobind } from '@nara.platform/accent';
 import QnaAnswerUdo from '../../model/vo/QnaAnswerUdo';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QuestionQueryModel from '../../model/QuestionQueryModel';
-import SelectType from '../../../myTraining/model/SelectType';
 import QuestionSdo from '../../model/sdo/QuestionSdo';
 import QuestionModel from '../../model/QuestionModel';
 import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 @autobind
 class SupportService {
@@ -116,7 +119,9 @@ class SupportService {
     );
 
     runInAction(() => {
-      this.questions = questions.results.map((question) => new QuestionModel(question));
+      this.questions = questions.results.map(
+        (question) => new QuestionModel(question)
+      );
     });
 
     return questions.totalCount;
@@ -147,7 +152,10 @@ class SupportService {
     return this.supportApi.registerQuestion(questionSdo);
   }
 
-  async registerSatisfaction(questionId: string, satisfactionCdo: SatisfactionCdo): Promise<void> {
+  async registerSatisfaction(
+    questionId: string,
+    satisfactionCdo: SatisfactionCdo
+  ): Promise<void> {
     //
     return this.supportApi.registerSatisfaction(questionId, satisfactionCdo);
   }
@@ -185,16 +193,44 @@ class SupportService {
 
   getMainCategorySelect() {
     //
-    return this.categories.filter((category) => category.parentId === null).map((category, index) => {
-      return { key: index, value: category.id, text: parsePolyglotString(category.name)}
-    })
+    return this.categories
+      .filter((category) => category.parentId === null)
+      .map((category, index) => {
+        return {
+          key: index,
+          value: category.id,
+          text: parsePolyglotString(category.name),
+        };
+      });
   }
 
   getSubCategorySelect(mainCategoryId: string) {
     //
-    return this.categories.filter((category) => category.parentId !== null && category.parentId === mainCategoryId).map((category, index) => {
-      return { key: index, value: category.id, text: parsePolyglotString(category.name)}
-    })
+    return this.categories
+      .filter(
+        (category) =>
+          category.parentId !== null && category.parentId === mainCategoryId
+      )
+      .map((category, index) => {
+        return {
+          key: index,
+          value: category.id,
+          text: parsePolyglotString(category.name),
+        };
+      });
+  }
+
+  getStateToString(state: QnaState): string {
+    //
+    if (state === QnaState.QuestionReceived) {
+      return getPolyglotText('문의 접수', 'support-qna-문의접수');
+    } else if (state === QnaState.AnswerWaiting) {
+      return getPolyglotText('답변 대기', 'support-qna-답변대기');
+    } else if (state === QnaState.AnswerCompleted) {
+      return getPolyglotText('답변 완료', 'support-qna-답변완료');
+    }
+
+    return '';
   }
 }
 
