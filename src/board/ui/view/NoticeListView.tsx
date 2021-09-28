@@ -20,7 +20,7 @@ class NoticeListView extends React.Component<Props> {
 
     return (
       <>
-        <Table celled selectable>
+        <Table className="qna-admin-list">
           <colgroup>
             <col width="2%" />
             <col />
@@ -44,17 +44,19 @@ class NoticeListView extends React.Component<Props> {
               posts.length !== 0 &&
               posts.map((post, index) => {
                 return (
-                  <Table.Row
-                    textAlign="center"
-                    key={post.postId}
-                    onClick={() => onClickPost(post.postId)}
-                  >
-                    <Table.Cell>{startNo - index}</Table.Cell>
-                    <Table.Cell textAlign="left">
-                      {parsePolyglotString(post.title)}
+                  <Table.Row key={post.postId}>
+                    <Table.Cell textAlign="center">
+                      {startNo - index}
                     </Table.Cell>
-                    <Table.Cell>{post.readCount}</Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell textAlign="left" className="title">
+                      <div className="tit_inner">
+                        <a onClick={() => onClickPost(post.postId)}>
+                          {parsePolyglotString(post.title)}
+                        </a>
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{post.readCount}</Table.Cell>
+                    <Table.Cell textAlign="center">
                       {moment(post.registeredTime).format('YYYY-MM-DD')}
                     </Table.Cell>
                   </Table.Row>

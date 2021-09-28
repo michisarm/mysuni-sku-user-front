@@ -101,56 +101,54 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
     return (
       <>
         <div className="support-list-wrap">
-          <SubActions>
-            <SubActions.Left>
-              <SubActions.Count number={count} />
-            </SubActions.Left>
-            <SubActions.Right>
-              <div className="list-top">
-                <div className="radio-wrap">
-                  <Radio
-                    className="base"
-                    label={getPolyglotText('모두 보기', 'support-qna-rall')}
-                    name="radioGroup"
-                    value={undefined}
-                    checked={state === undefined}
-                    onChange={() => this.onClickQnAStateRadio(undefined)}
-                  />
-                  <Radio
-                    className="base"
-                    label={getPolyglotText('답변 완료', 'support-qna-rdn')}
-                    name="radioGroup"
-                    value={QnaState.AnswerCompleted}
-                    checked={state === QnaState.AnswerCompleted}
-                    onChange={() =>
-                      this.onClickQnAStateRadio(QnaState.AnswerCompleted)
-                    }
-                  />
-                  <Radio
-                    className="base"
-                    label={getPolyglotText('답변 대기', 'support-qna-rwt')}
-                    name="radioGroup"
-                    value={QnaState.AnswerWaiting}
-                    checked={state === QnaState.AnswerWaiting}
-                    onChange={() =>
-                      this.onClickQnAStateRadio(QnaState.AnswerWaiting)
-                    }
-                  />
-                </div>
-              </div>
-            </SubActions.Right>
-          </SubActions>
+          <div className="list-top">
+            <div className="list-top-left">
+              총 {count}개의 리스트가 있습니다.
+            </div>
+            <div className="radio-wrap">
+              <Radio
+                className="base"
+                label={getPolyglotText('모두 보기', 'support-qna-rall')}
+                name="radioGroup"
+                value={undefined}
+                checked={state === undefined}
+                onChange={() => this.onClickQnAStateRadio(undefined)}
+              />
+              <Radio
+                className="base"
+                label={getPolyglotText('답변 완료', 'support-qna-rdn')}
+                name="radioGroup"
+                value={QnaState.AnswerCompleted}
+                checked={state === QnaState.AnswerCompleted}
+                onChange={() =>
+                  this.onClickQnAStateRadio(QnaState.AnswerCompleted)
+                }
+              />
+              <Radio
+                className="base"
+                label={getPolyglotText('답변 대기', 'support-qna-rwt')}
+                name="radioGroup"
+                value={QnaState.AnswerWaiting}
+                checked={state === QnaState.AnswerWaiting}
+                onChange={() =>
+                  this.onClickQnAStateRadio(QnaState.AnswerWaiting)
+                }
+              />
+            </div>
+          </div>
 
           <Pagination
             name={this.paginationKey}
             onChange={this.findQnaMyOperator}
           >
-            <QnaManagementListView
-              qnas={qnas}
-              startNo={startNo}
-              categoriesMap={categoriesMap}
-              onClickQnA={this.onClickQnA}
-            />
+            <div className="qna-admin-list-wrap">
+              <QnaManagementListView
+                qnas={qnas}
+                startNo={startNo}
+                categoriesMap={categoriesMap}
+                onClickQnA={this.onClickQnA}
+              />
+            </div>
 
             <Pagination.Navigator />
           </Pagination>

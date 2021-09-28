@@ -8,17 +8,35 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SupportService } from '../../stores';
 import QnaManagementDetailView from '../view/QnaManagementDetailView';
-import depot from '@nara.drama/depot';
+import depot, {
+  DepotFileViewModel,
+  FileBox,
+  ValidationType,
+} from '@nara.drama/depot';
 import { QnaState } from '../../model/vo/QnaState';
 import { initUserIdentity } from '../../../shared/model/UserIdentity';
-import { Button, Container, Icon, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Checkbox,
+  Container,
+  Form,
+  Icon,
+  Radio,
+  Segment,
+  Table,
+  TextArea,
+} from 'semantic-ui-react';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { AlertWin, ConfirmWin } from '../../../shared';
+import { AlertWin, ConfirmWin, depotHelper } from '../../../shared';
 import routePaths from '../../routePaths';
 import OperatorModel from '../../model/vo/OperatorModel';
+import { PatronType } from '@nara.platform/accent/src/snap/index';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import moment from 'moment';
+import QnaManagementAnswerView from '../view/QnaManagementAnswerView';
 
 interface Param {
   //
@@ -213,71 +231,72 @@ class QnaManagementDetailContainer extends ReactComponent<
 
     return (
       <>
-        <QnaManagementDetailView
-          qna={qna}
-          isUpdatable={isUpdatable}
-          categoriesMap={categoriesMap}
-          filesMap={filesMap}
-          answerFilesMap={answerFilesMap}
-          finalOperator={finalOperator}
-          emailOperator={emailOperator}
-          onClickList={this.onClickList}
-          getFileBoxIdForReference={this.getFileBoxIdForReference}
-          changeQnaProps={changeQnaProps}
-        />
-        <Segment className="full">
-          <Container>
-            <div className="actions bottom">
-              {!isUpdatable ? (
-                <Button
-                  icon
-                  className="left post edit"
-                  onClick={() => {
-                    changeQnaProps('question.state', QnaState.QuestionReceived);
-                    this.setState({ isUpdatable: true });
-                  }}
-                >
-                  <Icon className="edit24" />
-                  <PolyglotText
-                    id="support-QnaRead-수정"
-                    defaultString="Edit"
+        <div className="post-view qna qna-admin">
+          <QnaManagementDetailView
+            qna={qna}
+            categoriesMap={categoriesMap}
+            filesMap={filesMap}
+            finalOperator={finalOperator}
+            onClickList={this.onClickList}
+          />
+
+          <Segment className="full">
+            {qna.answer && (
+              <div className="content-admin-write">
+                <Form>
+                  <QnaManagementAnswerView
+                    isUpdatable={isUpdatable}
+                    qna={qna}
+                    finalOperator={finalOperator}
+                    emailOperator={emailOperator}
+                    answerFilesMap={answerFilesMap}
+                    changeQnaProps={changeQnaProps}
+                    getFileBoxIdForReference={this.getFileBoxIdForReference}
                   />
+                </Form>
+              </div>
+            )}
+            <div className="supt-bottom">
+              <div className="bttn-area">
+                <Button className="fix line" onClick={this.onClickList}>
+                  목록
                 </Button>
-              ) : (
-                <Button
-                  icon
-                  className="left post edit"
-                  onClick={this.onClickSave}
-                >
-                  <Icon className="edit24" />
-                  Save
-                </Button>
-              )}
-              <Button
-                icon
-                className="left post list2"
-                onClick={this.onClickList}
-              >
-                <Icon className="list24" />
-                <PolyglotText id="support-QnaRead-목록" defaultString="List" />
-              </Button>
+                {!isUpdatable ? (
+                  <Button
+                    className="fix bg"
+                    onClick={() => {
+                      changeQnaProps(
+                        'question.state',
+                        QnaState.QuestionReceived
+                      );
+                      this.setState({ isUpdatable: true });
+                    }}
+                  >
+                    수정
+                  </Button>
+                ) : (
+                  <Button className="fix bg" onClick={this.onClickSave}>
+                    등록
+                  </Button>
+                )}
+              </div>
             </div>
-          </Container>
-        </Segment>
-        <ConfirmWin
-          message={message}
-          open={open === 'confirm'}
-          handleClose={() => this.setState({ open: '' })}
-          handleOk={this.onSave}
-          title={getPolyglotText('등록 안내', 'support-QnaRead-등록안내')}
-          buttonYesName={getPolyglotText('OK', 'support-QnaRead-ok버튼')}
-          buttonNoName={getPolyglotText('Cancel', 'support-QnaRead-취소버튼')}
-        />
-        <AlertWin
-          message={message}
-          open={open === 'alert'}
-          handleClose={() => this.setState({ open: '' })}
-        />
+          </Segment>
+          <ConfirmWin
+            message={message}
+            open={open === 'confirm'}
+            handleClose={() => this.setState({ open: '' })}
+            handleOk={this.onSave}
+            title={getPolyglotText('등록 안내', 'support-QnaRead-등록안내')}
+            buttonYesName={getPolyglotText('OK', 'support-QnaRead-ok버튼')}
+            buttonNoName={getPolyglotText('Cancel', 'support-QnaRead-취소버튼')}
+          />
+          <AlertWin
+            message={message}
+            open={open === 'alert'}
+            handleClose={() => this.setState({ open: '' })}
+          />
+        </div>
       </>
     );
   }

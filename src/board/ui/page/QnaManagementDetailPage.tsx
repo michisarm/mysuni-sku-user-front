@@ -14,7 +14,7 @@ class QnaManagementDetailPage extends Component {
     //
     return (
       <ContentLayout
-        className="support"
+        className="support bg-white"
         breadcrumb={[{ text: 'Support' }, { text: 'QnA 관리' }]}
       >
         <div
