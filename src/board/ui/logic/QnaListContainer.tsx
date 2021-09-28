@@ -190,7 +190,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
               </div>
             </>
           )}
-            <Pagination.Navigator />
+            <Pagination.Navigator styled/>
           </Pagination>
         </div>
       </div>
