@@ -47,6 +47,9 @@ const emptyAlertSep = (e: any) => {
   });
 };
 
+const goToCommunity =(e: any)=>{
+  window.location.href="/suni-community/community/COMMUNITY-1n/home"
+}
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const koPanes = [
@@ -685,10 +688,10 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/suni-community/community/COMMUNITY-1n/home">
+                            <a onClick={goToCommunity}>
                               애자일 코치 <br />
                               Meetup
-                            </Link>
+                            </a>
                           </td>
                           <td className="dashed-or">
                             <Link to="#" onClick={emptyAlert}>
