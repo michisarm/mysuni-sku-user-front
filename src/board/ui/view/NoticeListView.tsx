@@ -22,10 +22,10 @@ class NoticeListView extends React.Component<Props> {
       <>
         <Table className="qna-admin-list">
           <colgroup>
-            <col width="2%" />
-            <col />
-            <col width="5%" />
-            <col width="12%" />
+            <col width="80px" />
+            <col width="500px" />
+            <col width="100px" />
+            <col width="100px" />
           </colgroup>
           <Table.Header>
             <Table.Row textAlign="center">
@@ -45,13 +45,13 @@ class NoticeListView extends React.Component<Props> {
               posts.map((post, index) => {
                 return (
                   <Table.Row key={post.postId}>
-                    <Table.Cell textAlign="center">
-                      {startNo - index}
-                    </Table.Cell>
-                    <Table.Cell textAlign="left" className="title">
+                    <Table.Cell>{startNo - index}</Table.Cell>
+                    <Table.Cell className="title">
                       <div className="tit_inner">
                         <a onClick={() => onClickPost(post.postId)}>
-                          {parsePolyglotString(post.title)}
+                          <span className="ellipsis">
+                            {parsePolyglotString(post.title)}
+                          </span>
                         </a>
                         {post.commentCount > 0 && (
                           <span className="reply">
@@ -60,15 +60,15 @@ class NoticeListView extends React.Component<Props> {
                         )}
                       </div>
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{post.readCount}</Table.Cell>
-                    <Table.Cell textAlign="center">
+                    <Table.Cell>{post.readCount}</Table.Cell>
+                    <Table.Cell>
                       {moment(post.registeredTime).format('YYYY-MM-DD')}
                     </Table.Cell>
                   </Table.Row>
                 );
               })) || (
               <Table.Row>
-                <Table.Cell textAlign="center" colSpan={4}>
+                <Table.Cell colSpan={4}>
                   <NoSuchContentPanel
                     message={getPolyglotText(
                       '등록된 Notice가 없습니다.',

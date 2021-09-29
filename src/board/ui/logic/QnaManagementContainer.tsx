@@ -103,7 +103,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
         <div className="support-list-wrap">
           <div className="list-top">
             <div className="list-top-left">
-              총 {count}개의 리스트가 있습니다.
+              총 <strong>{count}</strong>개의 리스트가 있습니다.
             </div>
             <div className="radio-wrap">
               <Radio

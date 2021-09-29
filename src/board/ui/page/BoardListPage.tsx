@@ -1,6 +1,10 @@
 import React from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import {
+  reactAutobind,
+  ReactComponent,
+  mobxHelper,
+} from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
@@ -11,11 +15,16 @@ import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
 import QnaManagementTabContainer from '../logic/QnaManagementContainer';
 import { findForeignerUser } from 'shared/helper/findForeignerUser';
+import SharedService from '../../../shared/present/logic/SharedService';
 
 interface Props extends RouteComponentProps<RouteParams> {}
 
 interface RouteParams {
   boardId: string;
+}
+
+interface Injected {
+  sharedService: SharedService;
 }
 
 enum ContentType {
@@ -29,12 +38,13 @@ enum ContentName {
   Notice = 'Notice',
   FAQ = 'FAQ',
   QnA = '나의 이용문의',
-  QnAMgt = 'Q&A 관리',
+  QnAMgt = '문의관리',
 }
 
+@inject(mobxHelper.injectFrom('shared.sharedService'))
 @observer
 @reactAutobind
-export class BoardListPage extends React.Component<Props> {
+export class BoardListPage extends ReactComponent<Props, {}, Injected> {
   //
   getTabs() {
     const isForeignerUser = findForeignerUser();
@@ -71,9 +81,34 @@ export class BoardListPage extends React.Component<Props> {
 
   onChangeTab(tab: TabItemModel): string {
     //
+    const paginationKeys = ['Notice', 'MyQnA', 'QnAManagement'];
+    const { setPage, getPageModel } = this.injected.sharedService;
+
+    paginationKeys.forEach((paginationKey) => {
+      getPageModel(paginationKey);
+      setPage(paginationKey, 1);
+    });
+
     this.props.history.push(routePaths.supportTab(tab.name));
 
     return routePaths.supportTab(tab.name);
+  }
+
+  getBreadCrumbString() {
+    //
+    const { boardId } = this.props.match.params;
+
+    if (boardId === ContentType.Notice) {
+      return 'Notice';
+    } else if (boardId === ContentType.FAQ) {
+      return 'FAQ';
+    } else if (boardId === ContentType.QnA) {
+      return 'Q&A';
+    } else if (boardId === ContentType.QnAMgt) {
+      return '문의관리';
+    }
+
+    return '';
   }
 
   render() {
