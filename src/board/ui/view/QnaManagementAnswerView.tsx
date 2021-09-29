@@ -253,7 +253,13 @@ class QnaManagementAnswerView extends React.Component<Props> {
                       <Table.HeaderCell>
                         <span>답변 내용</span>
                       </Table.HeaderCell>
-                      <Table.Cell>{qna.answer.content}</Table.Cell>
+                      <Table.Cell>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: qna.answer.content,
+                          }}
+                        />
+                      </Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
