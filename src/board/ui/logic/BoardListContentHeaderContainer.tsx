@@ -97,7 +97,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           <div className="text">
             <PolyglotText
               id="support-spif-QnaMgt타이틀"
-              defaultString="나의이용문의"
+              defaultString="문의에 대한 답변을 등록하실 수 있습니다."
             />
           </div>
         </>
