@@ -57,7 +57,7 @@ class QnaListView extends ReactComponent<Props, {}> {
                   <Table.Cell className="ctg">{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
                   <Table.Cell className="title">
                     <div className="tit inner">
-                      <a href="#" onClick={() => onClickPost(question.id)}>
+                      <a href="" onClick={() => onClickPost(question.id)}>
                         <span className="ellipsis">{question.title}</span>
                       </a>
                     </div>
