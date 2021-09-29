@@ -108,11 +108,6 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
           <Pagination name={this.paginationKey} onChange={this.findMyQnas}>
 
           <SubActions>
-            <SubActions.Left>
-              <SubActions.Left>
-                <SubActions.Count number={count} />
-              </SubActions.Left>
-            </SubActions.Left>
             <SubActions.Right>
               <div className="list-top">
                 <Button icon className="left post ask" onClick={this.onClickNewQna}>
@@ -126,7 +121,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                 <div className="radio-wrap">
                   <Radio
                     className="base"
-                    label={getPolyglotText('모두 보기', 'support-qna-rall')}
+                    label={getPolyglotText('전체', 'support-qna-rall')}
                     name="radioGroup"
                     value={undefined}
                     checked={qnaQueryModel.state === undefined}
@@ -186,6 +181,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                     getCategoryName={this.getCategoryName}
                     onClickPost={this.onClickPost}
                     questions={questions}
+                    startNo={startNo}
                   />
               </div>
             </>

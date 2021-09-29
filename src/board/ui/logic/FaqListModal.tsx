@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind, ReactComponent, mobxHelper } from '@nara.platform/accent';
-import { Accordion, Button, Icon, Modal, Radio, Segment } from 'semantic-ui-react';
-import FaqListContainer from './FaqListContainer';
+import { Accordion, Button, Form, Icon, Input, Modal, Radio, Segment } from 'semantic-ui-react';
 import { PostModel } from '../../model';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import PostService from '../../present/logic/PostService';
@@ -11,6 +10,7 @@ import SharedService from '../../../shared/present/logic/SharedService';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import Pagination from '../../../shared/components/Pagination';
+import SearchSdo from '../../model/sdo/SearchSdo';
 
 interface Props {
 
@@ -37,7 +37,7 @@ interface Injected {
 class FaqListModal extends ReactComponent<Props, State, Injected> {
   //
   paginationKey = 'FAQ-modal';
-
+  paginationSearchKey = 'FAQ-modal-Search'
   state = {
     open: false,
     categoryIndex: 0,
@@ -67,6 +67,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
 
     this.setState({
       categoryIndex: index,
+      searchKey: '',
     });
 
     postService.clearPosts();
@@ -104,19 +105,51 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     }
   }
 
-  async findFaqPosts(categoryId: string) {
+  async findFaqPosts(categoryId: string, keyword?: string) {
     //
+    // const { sharedService, postService } = this.injected;
+    // const pageModel = sharedService.getPageModel(this.paginationKey);
+    //
+    // postService.clearPosts();
+    //
+    // await postService
+    //   .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
+    //   .then((res) => {
+    //     sharedService.setCount(this.paginationKey, res.totalCount);
+    //     this.setState({ isLoading: false });
+    //   });
     const { sharedService, postService } = this.injected;
-    const pageModel = sharedService.getPageModel(this.paginationKey);
-
     postService.clearPosts();
 
-    await postService
-      .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
-      .then((res) => {
-        sharedService.setCount(this.paginationKey, res.totalCount);
+    this.setState({ isLoading: true });
+
+    if(keyword && keyword !== '') {
+      let pageModel = sharedService.getPageModel(this.paginationSearchKey);
+
+      if (pageModel.limit === 20) {
+        sharedService.setPageMap(this.paginationSearchKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationSearchKey);
+      }
+
+      await postService.searchFaq(SearchSdo.fromKeyword(keyword, pageModel.offset, 10)).then((res) => {
+        sharedService.setCount(this.paginationSearchKey, res.totalCount);
+        this.setState({ categoryIndex: -1 });
         this.setState({ isLoading: false });
       });
+    } else {
+      let pageModel = sharedService.getPageModel(this.paginationKey);
+
+      if (pageModel.limit === 20) {
+        sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationKey);
+      }
+      await postService
+        .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
+        .then((res) => {
+          sharedService.setCount(this.paginationKey, res.totalCount);
+          this.setState({ isLoading: false });
+        });
+    }
   }
 
   onClickPost(index: number) {
@@ -132,11 +165,17 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     this.setState({activeIndex: -1});
   }
 
-  onChangeSearchKey(event : any) {
+  onChangeSearchKey(event: any, data : any) {
     //
     this.setState({
-      searchKey: event.target.value,
+      searchKey: data.value,
     });
+  }
+
+  onKeyPressed(event: any) {
+    if(event.key === 'Enter') {
+      this.findFaqPosts('', this.state.searchKey);
+    }
   }
 
   onClickInput() {
@@ -178,10 +217,12 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
   render() {
     //
     const { categoryIndex, isLoading, open, searchKey } = this.state;
-    const { postService, categoryService } = this.injected;
+    const { postService, categoryService, sharedService } = this.injected;
     const { posts } = postService;
     const { categorys } = categoryService;
     const result = posts.results;
+    const paginationKey = searchKey === '' ? this.paginationKey : this.paginationSearchKey;
+    const { count } = searchKey === '' ? sharedService.getPageModel(paginationKey) : sharedService.getPageModel(paginationKey);
 
     return (
       <Modal
@@ -226,16 +267,17 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                       </div>
                       <div className="list-top">
                         <div className="list-top-left">
-                          총 0개의 리스트가 있습니다.
+                          총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.
                         </div>
                         <div className="list-top-right">
                           <div className="ui input s-search h38">
-                            <input
+                            <Form.Field
+                              control={Input}
                               type="text"
-                              placeholder="Search"
+                              placeholder="검색어를 입력하세요"
                               value={searchKey}
-                              onChange={this.onChangeSearchKey}
-                              // onKeyPress={this.onKeyPressInput}
+                              onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
+                              onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}
                               onClick={this.onClickInput}
                               onBlur={this.onBlurInput}
                             />
@@ -281,16 +323,17 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                       </div>
                       <div className="list-top">
                         <div className="list-top-left">
-                          총 0개의 리스트가 있습니다.
+                          총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.
                         </div>
                             <div className="list-top-right">
                               <div className="ui input s-search h38">
-                                <input
+                                <Form.Field
+                                  control={Input}
                                   type="text"
-                                  placeholder="Search"
+                                  placeholder="검색어를 입력하세요"
                                   value={searchKey}
-                                  onChange={this.onChangeSearchKey}
-                                  // onKeyPress={this.onKeyPressInput}
+                                  onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
+                                  onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}
                                   onClick={this.onClickInput}
                                   onBlur={this.onBlurInput}
                                 />
@@ -317,14 +360,14 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                           </Accordion>
                         )}
                       </div>
-                      <Pagination.Navigator />
+                      <Pagination.Navigator styled/>
                   </>
                 )
             }
           </Pagination>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={this.onClose}>Cancel</Button>
+          <Button className="w190 pop d" onClick={this.onClose}>Cancel</Button>
         </Modal.Actions>
       </Modal>
     )

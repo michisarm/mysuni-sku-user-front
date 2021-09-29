@@ -40,7 +40,7 @@ interface Injected {
 class FaqListContainer extends ReactComponent<Props, State, Injected> {
   //
   paginationKey = 'FAQ';
-  paginationSearchKey = 'FAQ_Search'
+  paginationSearchKey = 'FAQ-Search'
   state = {
     // offset: 0,
     categoryIndex: 0,
@@ -268,14 +268,15 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
             </div>
             <div className="list-top">
               <div className="list-top-left">
-                <p>{`총 ${count}개의 리스트가 있습니다.`}</p>
+                총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.
               </div>
               <div className="list-top-right">
                 <div className="ui input s-search h38">
                   <Form.Field
                     control={Input}
                     type="text"
-                    placeholder="Search"
+                    placeholder="검색어를 입력하세요"
+                    value={searchKey}
                     onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
                     onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}
                     onClick={this.onClickInput}
@@ -289,7 +290,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
               {result.length === 0 ? (
                 <NoSuchContentPanel
                   message={getPolyglotText(
-                    '등록된 FAQ가 없습니다.',
+                    '검색 결과가 없습니다.',
                     'support-FAQ-목록없음'
                   )}
                 />

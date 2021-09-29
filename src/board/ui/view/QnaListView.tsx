@@ -14,6 +14,7 @@ interface Props {
   onClickPost: (postId: string) => void;
 
   questions: QuestionModel[];
+  startNo: number;
 }
 
 @observer
@@ -23,7 +24,7 @@ class QnaListView extends ReactComponent<Props, {}> {
   render() {
     //
     const { getCategoryName, onClickPost } = this.props;
-    const { questions } = this.props;
+    const { questions, startNo } = this.props;
 
     return(
       <Table selectable className="qna-admin-list">
@@ -50,11 +51,18 @@ class QnaListView extends ReactComponent<Props, {}> {
             questions && questions.length > 0 && questions.map((question, index) => {
 
               return (
-                <Table.Row key={index} onClick={() => onClickPost(question.id)}>
-                  <Table.Cell>NO</Table.Cell>
+                <Table.Row key={index}>
+                  <Table.Cell>{startNo - index}</Table.Cell>
                   <Table.Cell>{question.requestChannel}</Table.Cell>
-                  <Table.Cell>{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
-                  <Table.Cell>{question.title}</Table.Cell>
+                  <Table.Cell className="ctg">{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
+                  <Table.Cell className="title">
+                    <div className="tit inner">
+                      <a href={`/board/support/qna-detail/${question.id}`}>
+                        <span className="ellipsis">{question.title}</span>
+                      </a>
+                    </div>
+                    {/*<span className="reply">{qu}</span>*/}
+                  </Table.Cell>
                   <Table.Cell>{question.state}</Table.Cell>
                   <Table.Cell>{moment(question.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
