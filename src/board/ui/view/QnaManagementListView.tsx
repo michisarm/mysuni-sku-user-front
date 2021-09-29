@@ -34,17 +34,17 @@ class QnaManagementListView extends React.Component<Props> {
       <>
         <Table className="qna-admin-list">
           <colgroup>
-            <col width="2%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
+            <col width="80px" />
+            <col width="100px" />
+            <col width="100px" />
+            <col width="500px" />
+            <col width="140px" />
+            <col width="100px" />
+            <col width="100px" />
+            <col width="100px" />
           </colgroup>
           <Table.Header>
-            <Table.Row textAlign="center">
+            <Table.Row>
               <Table.HeaderCell>No.</Table.HeaderCell>
               <Table.HeaderCell>접수채널</Table.HeaderCell>
               <Table.HeaderCell>카테고리</Table.HeaderCell>
@@ -61,24 +61,28 @@ class QnaManagementListView extends React.Component<Props> {
                 <Table.Row key={qna.question.id}>
                   <Table.Cell>{startNo - index}</Table.Cell>
                   <Table.Cell>{qna.question.requestChannel}</Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="ctg">
                     {parsePolyglotString(
                       categoriesMap.get(qna.question.mainCategoryId)
                     )}
                   </Table.Cell>
-                  <Table.Cell textAlign="left" className="title">
+                  <Table.Cell className="title">
                     <a onClick={() => onClickQnA(qna.question.id)}>
-                      {qna.question.title}
+                      <span className="ellipsis">{qna.question.title}</span>
                     </a>
                   </Table.Cell>
                   <Table.Cell>
                     {moment(qna.question.registeredTime).format('YYYY-MM-DD')}
                   </Table.Cell>
                   <Table.Cell>
-                    {parsePolyglotString(qna.inquirerIdentity.name)}
+                    <span className="ellipsis">
+                      {parsePolyglotString(qna.inquirerIdentity.name)}
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    {parsePolyglotString(qna.answer.modifierName) || '미정'}
+                    <span className="ellipsis">
+                      {parsePolyglotString(qna.answer.modifierName) || '미정'}
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
                     {getStateToString(qna.question.state)}
