@@ -68,34 +68,6 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   };
 
   componentDidMount(): void {
-    // const { postService, categoryService, skProfileService } = this.props;
-    // const { skProfile } = skProfileService!;
-    // //const names = JSON.parse(patronInfo.getPatronName() || '') || '';
-    // const { email } = skProfileService!.skProfile;
-    // // postService.clearPost();
-    // categoryService!.findCategoriesByBoardId('QNA').then(() => {
-    //   postService!.changePostProps('boardId', 'QNA');
-    //   const writerName: PolyglotString = {
-    //     en: skProfile.name.en,
-    //     ko: skProfile.name.ko,
-    //     zh: skProfile.name.zh,
-    //   };
-    //   postService!.changePostProps('writer.name', writerName);
-    //   postService!.changePostProps('writer.email', email);
-    //   const writerCompanyName: PolyglotString = {
-    //     en: skProfile.companyName.en,
-    //     ko: skProfile.companyName.ko,
-    //     zh: skProfile.companyName.zh,
-    //   };
-    //   postService!.changePostProps('writer.companyName', writerCompanyName);
-    //   postService!.changePostProps(
-    //     'writer.companyCode',
-    //     skProfile.companyCode
-    //     // skProfileService!.skProfile.companyName
-    //   );
-    // });
-
-    //
     this.init();
   }
 
@@ -126,36 +98,11 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
 
   async handleOKConfirmWin() {
     //
-    // const { postService, history } = this.props;
-    // const { post } = postService!;
-    // const { params } = this.props.match;
-    //
-    // if (params.sourceType !== undefined && params.sourceId !== undefined) {
-    //   post.config.sourceType = params.sourceType;
-    //   post.config.sourceId = params.sourceId;
-    // }
-    //
-    // postService!
-    //   .registerPost(post)
-    //   .then((postId) =>
-    //     history.push(routePaths.supportQnAPost(postId as string))
-    //   );
-    // this.onClose();
-    //
-    // if (PostModel.isBlank(post) === 'success') {
-    //   this.setState({ confirmWinOpen: true });
-    // } else {
-    //   this.setState({
-    //     isBlankTarget: PostModel.isBlank(post),
-    //     alertWinOpen: true,
-    //   });
-    // }
-
-    //
     const { supportService } = this.injected;
+    const { sourceId } = this.props.match.params;
     const { qna } = supportService;
 
-    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna));
+    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna, sourceId));
     this.onClose();
   }
 
@@ -173,12 +120,13 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     //
     const { supportService } = this.injected;
     const { qna } = supportService;
+    const { sourceId } = this.props.match.params;
 
-    if (QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna)) === 'success') {
+    if (QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {
       this.setState({
-        isBlankTarget: QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna)),
+        isBlankTarget: QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)),
         alertWinOpen: true,
       });
     }
@@ -199,8 +147,6 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
 
   render() {
     //
-    // const { categorys } = this.props.categoryService!;
-    // const { post } = this.props.postService!;
     const {
       focus,
       write,
@@ -209,32 +155,6 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
       isBlankTarget,
       confirmWinOpen,
     } = this.state;
-    // const questionType: any = [];
-    //
-    // const currentUrl = window.location.href;
-    //
-    // if (currentUrl.includes('cube') || currentUrl.includes('course')) {
-    //   categorys.map((data, index) => {
-    //     if (
-    //       (data && data.name ? parsePolyglotString(data && data.name) : '') ===
-    //       'Contents'
-    //     ) {
-    //       questionType.push({
-    //         key: index,
-    //         value: { id: data.categoryId, name: data.name },
-    //         text: parsePolyglotString(data.name),
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   categorys.map((data, index) => {
-    //     questionType.push({
-    //       key: index,
-    //       value: { id: data.categoryId, name: data.name },
-    //       text: parsePolyglotString(data.name),
-    //     });
-    //   });
-    // }
 
     const { supportService } = this.injected;
     const { getMainCategorySelect, getSubCategorySelect } = supportService;

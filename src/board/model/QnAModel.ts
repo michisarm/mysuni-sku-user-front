@@ -30,7 +30,7 @@ export default class QnAModel {
     }
   }
 
-  static asQuestionSdo(qna: QnAModel): QuestionSdo {
+  static asQuestionSdo(qna: QnAModel, cardId: string): QuestionSdo {
     //
     const { question } = qna;
     return {
@@ -39,7 +39,7 @@ export default class QnAModel {
       mainCategoryId: question.mainCategoryId,
       subCategoryId: question.subCategoryId,
 
-      relatedCardId: question.relatedCardId,
+      relatedCardId: cardId,
       relatedQuestionId: question.relatedQuestionId,
 
       title: question.title,
