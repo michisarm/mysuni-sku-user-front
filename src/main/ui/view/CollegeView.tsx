@@ -400,7 +400,7 @@ const koPanes = [
                             </Link>
                           </td>
                           <td>
-                            <Link to="/suni-main/search?query=%EC%8B%A4%EC%A0%84%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20topic">
+                            <Link to="/search?query=%EC%8B%A4%EC%A0%84%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20topic">
                               [실전 프로젝트]
                               <br />
                               고객중심 Biz 만들기
@@ -439,7 +439,7 @@ const koPanes = [
                         <tbody>
                           <td></td>
                           <td>
-                            <Link to="/suni-main/search?query=기술은%20있는데%20사업화가%20어렵다면?%20고객중심%20Biz%20만들기">
+                            <Link to="/search?query=기술은%20있는데%20사업화가%20어렵다면?%20고객중심%20Biz%20만들기">
                               기술은 있는데 사업화가 어렵다면?
                               <br />
                               고객중심 Biz 만들기!
@@ -512,7 +512,7 @@ const koPanes = [
                         <tbody>
                           <td></td>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-12s5/view">
+                            <Link to="/lecture/card/CARD-12s5/view">
                               컨설턴트의 일하는
                               <br />
                               스킬 익히기
@@ -521,7 +521,7 @@ const koPanes = [
                             </Link>
                           </td>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-12nd/view">
+                            <Link to="/lecture/card/CARD-12nd/view">
                               컨설턴트의 일하는
                               <br />
                               스킬 익히기
@@ -537,13 +537,13 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-13xc/view">
+                            <Link to="/lecture/card/CARD-13xc/view">
                               Logic & Play <br />
                               인도로 가는 길
                             </Link>
                           </td>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-13tz/view">
+                            <Link to="/lecture/card/CARD-13tz/view">
                               처음 만나는 로지컬씽킹
                             </Link>
                           </td>
@@ -582,7 +582,7 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-1311/view">
+                            <Link to="/lecture/card/CARD-1311/view">
                               공간 혁신과 그 변화에 대한 이야기
                             </Link>
                           </td>
@@ -680,6 +680,7 @@ const koPanes = [
 
                   <div className="inno-item orange">
                     <h3># 애자일</h3>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
@@ -702,7 +703,7 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-8j1/view">
+                            <Link to="/lecture/card/CARD-8j1/view">
                               애자일 리더십 (M3.0)
                               <br />
                               Workshop
@@ -714,7 +715,7 @@ const koPanes = [
                             </Link>
                           </td>
                           <td>
-                            <Link to="/suni-main/lecture/card/CARD-7dd/view">
+                            <Link to="/lecture/card/CARD-7dd/view">
                               애자일 Dive
                               <br /> Workshop
                             </Link>
@@ -734,7 +735,7 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td className="small small2">
-                            <Link to="/suni-main/lecture/card/CARD-13xj/view">
+                            <Link to="/lecture/card/CARD-13xj/view">
                               린스타트업
                             </Link>
                           </td>
@@ -749,17 +750,17 @@ const koPanes = [
                             </Link>
                           </td>
                           <td className="small small2">
-                            <Link to="/suni-main/lecture/card/CARD-afx/view">
+                            <Link to="/lecture/card/CARD-afx/view">
                               퍼스널 칸반
                             </Link>
                           </td>
                           <td className="small small2">
-                            <Link to="/suni-main/lecture/card/CARD-a2p/view">
+                            <Link to="/lecture/card/CARD-a2p/view">
                               카이젠 저니
                             </Link>
                           </td>
                           <td className="small small2">
-                            <Link to="/suni-main/lecture/card/CARD-5c4/view">
+                            <Link to="/lecture/card/CARD-5c4/view">
                               애자일 방법론
                               <br />- Linkedin
                             </Link>
@@ -768,27 +769,26 @@ const koPanes = [
                       </table>
                     </div>
 
-                    
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="small">
-                            <Link to="/suni-main/lecture/card/CARD-84k/view">
+                            <Link to="/lecture/card/CARD-84k/view">
                               애자일 에센셜
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/suni-main/lecture/card/CARD-13ul/view">
+                            <Link to="/lecture/card/CARD-13ul/view">
                               애자일 선언문
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/suni-main/lecture/card/CARD-52y/view">
+                            <Link to="/lecture/card/CARD-52y/view">
                               처음 만나는 애자일
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/suni-main/lecture/card/CARD-1ev/view">
+                            <Link to="/lecture/card/CARD-1ev/view">
                               Why 애자일
                             </Link>
                           </td>
