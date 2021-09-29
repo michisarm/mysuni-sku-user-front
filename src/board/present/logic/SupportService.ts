@@ -161,10 +161,10 @@ class SupportService {
   }
 
   @action
-  async modifiedAnswer(answerId: string) {
+  async modifiedAnswer(questionId: string) {
     //
     await this.supportApi.modifiedAnswer(
-      answerId,
+      questionId,
       QnaAnswerUdo.asQnaAnswerUdoByQnaModel(this.qna)
     );
   }
