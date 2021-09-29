@@ -32,6 +32,20 @@ const emptyAlert = (e: any) => {
     message: '준비 중입니다.',
   });
 };
+const emptyAlertOct = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '10월 중 오픈 예정',
+  });
+};
+const emptyAlertSep = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '9월 말 오픈 예정',
+  });
+};
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -385,10 +399,13 @@ const koPanes = [
                               Service Design - IDEO
                             </Link>
                           </td>
-                          <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz - Self 실습
+                          <td>
+                            <Link to="/suni-main/search?query=%EC%8B%A4%EC%A0%84%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20topic">
+                              [실전 프로젝트]
+                              <br />
+                              고객중심 Biz 만들기
+                              <br />
+                              Topic 1-4
                             </Link>
                           </td>
                         </tbody>
@@ -421,10 +438,13 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td></td>
-                          <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz 고민하기
+                          <td>
+                            <Link to="/suni-main/search?query=기술은%20있는데%20사업화가%20어렵다면?%20고객중심%20Biz%20만들기">
+                              기술은 있는데 사업화가 어렵다면?
+                              <br />
+                              고객중심 Biz 만들기!
+                              <br />
+                              1부 2부
                             </Link>
                           </td>
                           <td>
@@ -468,25 +488,67 @@ const koPanes = [
 
                   <div className="inno-item">
                     <h3># 로지컬씽킹</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.2)
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
+                            <Link to="/suni-main/lecture/card/CARD-12s5/view">
+                              컨설턴트의 일하는
+                              <br />
+                              스킬 익히기
+                              <br />
+                              2부. 프로젝트 관리 & 전략적 관점
                             </Link>
-                          </li>
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.1)
+                          </td>
+                          <td>
+                            <Link to="/suni-main/lecture/card/CARD-12nd/view">
+                              컨설턴트의 일하는
+                              <br />
+                              스킬 익히기
+                              <br />
+                              1부. 문제해결 방법론
                             </Link>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <Link to="/suni-main/lecture/card/CARD-13xc/view">
+                              Logic & Play <br />
+                              인도로 가는 길
+                            </Link>
+                          </td>
+                          <td>
+                            <Link to="/suni-main/lecture/card/CARD-13tz/view">
+                              처음 만나는 로지컬씽킹
+                            </Link>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
@@ -519,7 +581,12 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <Link to="/suni-main/lecture/card/CARD-1311/view">
+                              공간 혁신과 그 변화에 대한 이야기
+                            </Link>
+                          </td>
+
                           <td>
                             <Link to="/lecture/card/CARD-5js/view">
                               고객 Research <br />
@@ -617,7 +684,7 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/community/COMMUNITY-1n">
+                            <Link to="/suni-community/community/COMMUNITY-1n/home">
                               애자일 코치 <br />
                               Meetup
                             </Link>
@@ -635,28 +702,28 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
+                            <Link to="/suni-main/lecture/card/CARD-8j1/view">
+                              애자일 리더십 (M3.0)
+                              <br />
+                              Workshop
+                            </Link>
+                          </td>
+                          <td>
                             <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
                               애자일 Project
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8j1/view">
-                              애자일 리더십 <br />
-                              Workshop
+                            <Link to="/suni-main/lecture/card/CARD-7dd/view">
+                              애자일 Dive
+                              <br /> Workshop
                             </Link>
                           </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-53b/cube/CUBE-7id/view/ClassRoomLecture">
-                              애자일 Project
+                          <td className="dashed">
+                            <Link to="#" onClick={emptyAlertOct}>
+                              애자일 Practice
                               <br />
-                              Management <br />
-                              W/S
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-7dd/view">
-                              애자일 <br />
-                              Workshop
+                              (Self 실습)
                             </Link>
                           </td>
                         </tbody>
@@ -666,46 +733,62 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
-                            <Link to="/lecture/card/CARD-13d/view">
-                              Agile Management <br />- Linkedin
+                          <td className="small small2">
+                            <Link to="/suni-main/lecture/card/CARD-13xj/view">
+                              린스타트업
                             </Link>
                           </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-5c4/view">
-                              애자일 방법론 <br />- Linkedin
+                          <td className="small small2 dashed">
+                            <Link to="#" onClick={emptyAlertOct}>
+                              WoW! 애자일 트랜스포메이션
                             </Link>
                           </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-6zk/view">
-                              SK 네트웍스 구매팀 <br />
-                              애자일 사례
+                          <td className="small small2 dashed">
+                            <Link to="#" onClick={emptyAlertSep}>
+                              애자일과 스크럼
+                            </Link>
+                          </td>
+                          <td className="small small2">
+                            <Link to="/suni-main/lecture/card/CARD-afx/view">
+                              퍼스널 칸반
+                            </Link>
+                          </td>
+                          <td className="small small2">
+                            <Link to="/suni-main/lecture/card/CARD-a2p/view">
+                              카이젠 저니
+                            </Link>
+                          </td>
+                          <td className="small small2">
+                            <Link to="/suni-main/lecture/card/CARD-5c4/view">
+                              애자일 방법론
+                              <br />- Linkedin
                             </Link>
                           </td>
                         </tbody>
                       </table>
                     </div>
 
+                    
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="small">
-                            <Link to="/lecture/card/CARD-7np/view">
-                              애자일 방법론 기초
-                            </Link>
-                          </td>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-84k/view">
+                            <Link to="/suni-main/lecture/card/CARD-84k/view">
                               애자일 에센셜
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/lecture/card/CARD-52y/view">
+                            <Link to="/suni-main/lecture/card/CARD-13ul/view">
+                              애자일 선언문
+                            </Link>
+                          </td>
+                          <td className="small">
+                            <Link to="/suni-main/lecture/card/CARD-52y/view">
                               처음 만나는 애자일
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/lecture/card/CARD-1ev/view">
+                            <Link to="/suni-main/lecture/card/CARD-1ev/view">
                               Why 애자일
                             </Link>
                           </td>
