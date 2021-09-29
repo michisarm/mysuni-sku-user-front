@@ -6,21 +6,17 @@ import {
 } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-import classNames from 'classnames';
 import moment from 'moment';
+
 import { CommentService } from '@nara.drama/feedback';
-import { Icon, Input, Segment } from 'semantic-ui-react';
+import { Input, Segment } from 'semantic-ui-react';
 import { Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
 import routePaths from '../../routePaths';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { SharedService } from '../../../shared/stores';
 import Pagination from '../../../shared/components/Pagination';
 import NoticeListView from '../view/NoticeListView';
-import SubActions from '../../../shared/components/SubActions';
 
 interface Props extends RouteComponentProps {}
 
@@ -97,54 +93,15 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
     //
     return (
       time > 0 &&
-      new Date(time) > new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
+      moment(time).format('YYYYMMDD') ===
+        moment(new Date().getTime()).format('YYYYMMDD')
+      // new Date(time) > new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
     );
   }
 
   onClickPost(postId: string) {
     //
     this.props.history.push(routePaths.supportNoticePost(postId));
-  }
-
-  renderPostRow(post: PostModel, index: number, pinned: boolean = false) {
-    //
-    const { commentCountMap } = this.injected.commentService!;
-    const count = commentCountMap.get(post.commentFeedbackId) || 0;
-
-    /* 김민준 - 중요 표시 */
-    return (
-      <a
-        key={index}
-        target="_blank"
-        className={classNames({
-          row: true,
-          important: post.pinned,
-          new: this.isNewPost(post.registeredTime),
-        })}
-        onClick={() => this.onClickPost(post.postId)}
-      >
-        <span className="cell title">
-          <span className="inner">
-            <span className="ellipsis">
-              {post.title && parsePolyglotString(post.title)}
-            </span>
-            {count > 0 && (
-              <span className="rep-num">
-                [<strong>{count}</strong>]
-              </span>
-            )}
-          </span>
-        </span>
-        <span className="cell view">
-          {post.readCount}
-          <PolyglotText id="support-noti-조회수" defaultString="명 읽음" />
-        </span>
-        <span className="cell date">
-          {post.registeredTime &&
-            moment(post.registeredTime).format('YYYY.MM.DD')}
-        </span>
-      </a>
-    );
   }
 
   render() {
@@ -157,7 +114,7 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
 
     return (
       <>
-        <div className="support-list-wrap">
+        <div className="support-list-wrap notice">
           <div className="list-top">
             <div className="list-top-left">
               총 <strong>{postService.posts.totalCount}</strong>개의 리스트가
@@ -186,21 +143,19 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
           </div>
 
           {isLoading ? (
-            <div className="support-list-wrap">
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-              </Segment>
-            </div>
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+            </Segment>
           ) : (
             <>
               <Pagination
@@ -212,6 +167,7 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
                     posts={posts}
                     startNo={startNo}
                     onClickPost={this.onClickPost}
+                    isNewPost={this.isNewPost}
                   />
                 </div>
 
