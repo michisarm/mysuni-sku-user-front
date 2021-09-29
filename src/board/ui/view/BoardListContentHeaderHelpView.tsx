@@ -20,7 +20,6 @@ interface Props {
 @reactAutobind
 class BoardListContentHeaderHelpView extends React.Component<Props> {
   render() {
-    const { faqTotalCount, faqPosts, routeToFaqDetail } = this.props;
     //
     return (
       <div className="inner">

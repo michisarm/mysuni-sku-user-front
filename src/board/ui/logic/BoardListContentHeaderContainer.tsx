@@ -91,13 +91,13 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           <div className="title">
             <PolyglotText
               id="support-spif-QnaMgt타이틀"
-              defaultString="QnA 관리"
+              defaultString="문의관리"
             />
           </div>
           <div className="text">
             <PolyglotText
               id="support-spif-QnaMgt타이틀"
-              defaultString="나의이용문의"
+              defaultString="문의에 대한 답변을 등록하실 수 있습니다."
             />
           </div>
         </>
@@ -108,6 +108,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
   render() {
     //
     const { faqPosts } = this.props.postService!;
+    const { boardId } = this.props.match.params;
 
     return (
       <div className="main-info-area">
@@ -115,13 +116,15 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           <div className="title-area">
             <div className="line-wrap">{this.renderSupportTitle()}</div>
           </div>
-          <div className="tit-right-area">
-            <BoardListContentHeaderHelpView
-              faqTotalCount={faqPosts.totalCount}
-              faqPosts={faqPosts.results}
-              routeToFaqDetail={this.routeToFaqDetail}
-            />
-          </div>
+          {boardId !== 'Q&AMgt' && (
+            <div className="tit-right-area">
+              <BoardListContentHeaderHelpView
+                faqTotalCount={faqPosts.totalCount}
+                faqPosts={faqPosts.results}
+                routeToFaqDetail={this.routeToFaqDetail}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
