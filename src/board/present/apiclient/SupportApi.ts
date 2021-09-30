@@ -30,7 +30,9 @@ class SupportApi {
   findQnasToMe(qnAOperatorRdo: QnAOperatorRdo) {
     //
     return axios
-      .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, { params: qnAOperatorRdo })
+      .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
+        params: qnAOperatorRdo,
+      })
       .then(
         (response) =>
           (response && response.data) || { results: [], totalCount: 0 }
@@ -70,18 +72,25 @@ class SupportApi {
 
   registerQuestion(questionSdo: QuestionSdo): Promise<string> {
     //
-    return axios.post(this.URL +  `/question`, questionSdo).then((response) => response && response.data || null)
+    return axios
+      .post(this.URL + `/question`, questionSdo)
+      .then((response) => (response && response.data) || null);
   }
 
-  registerSatisfaction(questionId: string, satisfactionCdo: SatisfactionCdo): Promise<void> {
-    //
-    return axios.put(this.URL + `/satisfaction/${questionId}`, satisfactionCdo).then((response) => response && response.data || null)
-  }
-
-  modifiedAnswer(answerId: string, qnaAnswerUdo: QnaAnswerUdo) {
+  registerSatisfaction(
+    questionId: string,
+    satisfactionCdo: SatisfactionCdo
+  ): Promise<void> {
     //
     return axios
-      .put(this.URL + `/answer/${answerId}`, qnaAnswerUdo)
+      .put(this.URL + `/satisfaction/${questionId}`, satisfactionCdo)
+      .then((response) => (response && response.data) || null);
+  }
+
+  modifiedAnswer(questionId: string, qnaAnswerUdo: QnaAnswerUdo) {
+    //
+    return axios
+      .post(this.URL + `/answer/${questionId}`, qnaAnswerUdo)
       .then((response) => response && response.data);
   }
 }

@@ -188,7 +188,7 @@ class QnaManagementDetailContainer extends ReactComponent<
     //
     const { qna, modifiedAnswer } = this.injected.supportService;
 
-    modifiedAnswer(qna.answer.id).then(() => {
+    modifiedAnswer(qna.question.id).then(() => {
       this.reRenderQna().then(() => {
         this.setState({ open: '', isUpdatable: false });
       });

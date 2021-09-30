@@ -5,18 +5,20 @@ import { NoSuchContentPanel } from '../../../shared/components/NoSuchContentPane
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
+import classNames from 'classnames';
 
 interface Props {
   posts: PostModel[];
   startNo: number;
   onClickPost: (postId: string) => void;
+  isNewPost: (time: number) => boolean;
 }
 
 class NoticeListView extends React.Component<Props> {
   //
   render() {
     //
-    const { posts, startNo, onClickPost } = this.props;
+    const { posts, startNo, onClickPost, isNewPost } = this.props;
 
     return (
       <>
@@ -46,7 +48,11 @@ class NoticeListView extends React.Component<Props> {
                 return (
                   <Table.Row key={post.postId}>
                     <Table.Cell>{startNo - index}</Table.Cell>
-                    <Table.Cell className="title">
+                    <Table.Cell
+                      className={
+                        isNewPost(post.registeredTime) ? 'title new' : 'title'
+                      }
+                    >
                       <div className="tit_inner">
                         <a onClick={() => onClickPost(post.postId)}>
                           <span className="ellipsis">
@@ -62,7 +68,7 @@ class NoticeListView extends React.Component<Props> {
                     </Table.Cell>
                     <Table.Cell>{post.readCount}</Table.Cell>
                     <Table.Cell>
-                      {moment(post.registeredTime).format('YYYY-MM-DD')}
+                      {moment(post.registeredTime).format('YYYY.MM.DD')}
                     </Table.Cell>
                   </Table.Row>
                 );
