@@ -72,7 +72,7 @@ class QnaManagementListView extends React.Component<Props> {
                     </a>
                   </Table.Cell>
                   <Table.Cell>
-                    {moment(qna.question.registeredTime).format('YYYY-MM-DD')}
+                    {moment(qna.question.registeredTime).format('YYYY.MM.DD')}
                   </Table.Cell>
                   <Table.Cell>
                     <span className="ellipsis">
