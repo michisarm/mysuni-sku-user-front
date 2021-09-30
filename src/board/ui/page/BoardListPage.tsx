@@ -103,7 +103,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
     } else if (boardId === ContentType.FAQ) {
       return 'FAQ';
     } else if (boardId === ContentType.QnA) {
-      return 'Q&A';
+      return '나의 이용문의';
     } else if (boardId === ContentType.QnAMgt) {
       return '문의관리';
     }
@@ -121,7 +121,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
         breadcrumb={[
           { text: `Support` },
           {
-            text: `${params.boardId}`,
+            text: this.getBreadCrumbString(),
             path: routePaths.supportTab(params.boardId),
           },
         ]}
