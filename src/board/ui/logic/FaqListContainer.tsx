@@ -141,7 +141,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           this.setState({ isLoading: false });
         });
     }
-
+    this.setState({ activeIndex: -1 });
   }
 
   setCagetory(index: number, categoryId: string) {
@@ -169,12 +169,6 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
     const { activeIndex } = this.state;
     const targetIndex = index === activeIndex ? -1 : index;
     this.setState({ activeIndex: targetIndex })
-  }
-
-  onSearch(e: any) {
-    //
-    const { searchKey } = this.state;
-
   }
 
   renderPostRow(post: PostModel, index: number) {
@@ -282,7 +276,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
                     onClick={this.onClickInput}
                     onBlur={this.onBlurInput}
                   />
-                  <Icon className="search-32" onClick={this.onSearch} />
+                  <Icon className="search-32" onClick={() => this.findFaqPosts('', searchKey)} />
                 </div>
               </div>
             </div>

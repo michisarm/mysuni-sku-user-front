@@ -4,6 +4,7 @@ import { Table, Form } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import QnAModel from '../../model/QnAModel';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   qna: QnAModel;
@@ -35,7 +36,9 @@ class QnaAnswerView extends ReactComponent<Props> {
                       <Table.HeaderCell>
                         <span>답변 내용</span>
                       </Table.HeaderCell>
-                      <Table.Cell>{qna.answer.content}</Table.Cell>
+                      <Table.Cell>
+                        <div dangerouslySetInnerHTML={{ __html: qna.answer.content, }}/>
+                      </Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
