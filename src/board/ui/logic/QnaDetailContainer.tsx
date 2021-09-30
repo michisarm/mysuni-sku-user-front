@@ -31,7 +31,9 @@ interface States {
   isEdit: boolean;
   confirmWinOpen: boolean;
   alertWinOpen: boolean;
+  alertWinOpenSuccess: boolean;
   isBlankTarget: string;
+  successMessage: string;
   filesMap: Map<string, any>;
 }
 
@@ -51,7 +53,9 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
       isEdit: false,
       confirmWinOpen: false,
       alertWinOpen: false,
+      alertWinOpenSuccess: false,
       isBlankTarget: '',
+      successMessage: '',
       filesMap: new Map<string, any>(),
     };
   }
@@ -181,6 +185,11 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     this.setState({ alertWinOpen: false, isBlankTarget: ''});
   }
 
+  handleCloseAlertWinSuccess() {
+    //
+    this.setState({ alertWinOpenSuccess: false, successMessage: ''});
+  }
+
   onClickList() {
     this.props.history.push(routePaths.supportQnA());
   }
@@ -207,19 +216,20 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { qna } = supportService;
 
-    console.log(qna.answer.satisfactionPoint);
     if(qna.answer.satisfactionPoint === 0 || qna.answer.satisfactionPoint === null || qna.answer.satisfactionPoint === undefined) {
       this.setState({ alertWinOpen: true, isBlankTarget: '별점을 등록해주세요'});
       return;
     }
 
     await supportService.registerSatisfaction(qna.question.id, QnAModel.asSatisfactionCdo(qna));
+    this.setState({ alertWinOpenSuccess: true, successMessage: '만족도 조사에 참여해 주셔서 감사합니다.'});
+
     await this.init();
   }
 
   render() {
     //
-    const { confirmWinOpen, alertWinOpen, isBlankTarget, isEdit } = this.state;
+    const { confirmWinOpen, alertWinOpen, isBlankTarget, isEdit, alertWinOpenSuccess, successMessage } = this.state;
     const { supportService } = this.injected;
     const { qna, finalOperator } = supportService
     const { filesMap } = this.state;
@@ -272,9 +282,16 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
               )}
             </div>
             <AlertWin
+              title=""
               message={isBlankTarget}
               open={alertWinOpen}
               handleClose={this.handleCloseAlertWin}
+            />
+            <AlertWin
+              title=" "
+              message={successMessage}
+              open={alertWinOpenSuccess}
+              handleClose={this.handleCloseAlertWinSuccess}
             />
             <ConfirmWin
               message={getPolyglotText(
