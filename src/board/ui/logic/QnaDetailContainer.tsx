@@ -10,7 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Container, Form, Icon, Segment } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 
-import { ConfirmWin } from 'shared';
+import { AlertWin, ConfirmWin } from 'shared';
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
 import {
@@ -30,6 +30,10 @@ interface Props extends RouteComponentProps<{ postId: string }> {
 interface States {
   isEdit: boolean;
   confirmWinOpen: boolean;
+  alertWinOpen: boolean;
+  alertWinOpenSuccess: boolean;
+  isBlankTarget: string;
+  successMessage: string;
   filesMap: Map<string, any>;
 }
 
@@ -48,6 +52,10 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     this.state = {
       isEdit: false,
       confirmWinOpen: false,
+      alertWinOpen: false,
+      alertWinOpenSuccess: false,
+      isBlankTarget: '',
+      successMessage: '',
       filesMap: new Map<string, any>(),
     };
   }
@@ -168,11 +176,18 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { postId } = this.props.match.params;
     const { qna } = supportService;
-    // Promise.resolve().then(() => {
-    //   if (postService) postService.modifyPost(postId, post);
-    // });
     this.onClickList();
     this.setState({ isEdit: false });
+  }
+
+  handleCloseAlertWin() {
+    //
+    this.setState({ alertWinOpen: false, isBlankTarget: ''});
+  }
+
+  handleCloseAlertWinSuccess() {
+    //
+    this.setState({ alertWinOpenSuccess: false, successMessage: ''});
   }
 
   onClickList() {
@@ -193,10 +208,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
   onChangeQnaProps(name: string, value: any): void {
     //
     const { supportService } = this.injected;
-    console.log(name);
-    console.log(value);
     supportService.changeQnaProps(name, value);
-    console.log(supportService.qna)
   }
 
   async onClickRegisterSatisfaction(): Promise<void> {
@@ -204,13 +216,20 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { qna } = supportService;
 
+    if(qna.answer.satisfactionPoint === 0 || qna.answer.satisfactionPoint === null || qna.answer.satisfactionPoint === undefined) {
+      this.setState({ alertWinOpen: true, isBlankTarget: '별점을 등록해주세요'});
+      return;
+    }
+
     await supportService.registerSatisfaction(qna.question.id, QnAModel.asSatisfactionCdo(qna));
+    this.setState({ alertWinOpenSuccess: true, successMessage: '만족도 조사에 참여해 주셔서 감사합니다.'});
+
     await this.init();
   }
 
   render() {
     //
-    const { confirmWinOpen, isEdit } = this.state;
+    const { confirmWinOpen, alertWinOpen, isBlankTarget, isEdit, alertWinOpenSuccess, successMessage } = this.state;
     const { supportService } = this.injected;
     const { qna, finalOperator } = supportService
     const { filesMap } = this.state;
@@ -262,7 +281,18 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
                 </Button>
               )}
             </div>
-
+            <AlertWin
+              title=""
+              message={isBlankTarget}
+              open={alertWinOpen}
+              handleClose={this.handleCloseAlertWin}
+            />
+            <AlertWin
+              title=" "
+              message={successMessage}
+              open={alertWinOpenSuccess}
+              handleClose={this.handleCloseAlertWinSuccess}
+            />
             <ConfirmWin
               message={getPolyglotText(
                 '삭제 하시겠습니까?',

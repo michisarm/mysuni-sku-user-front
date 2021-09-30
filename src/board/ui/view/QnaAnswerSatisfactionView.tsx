@@ -36,7 +36,7 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
             <Table.Body>
               <Table.Row>
                 <Table.HeaderCell>
-                  만족도 조사
+                  <span className="impt">만족도 조사</span>
                 </Table.HeaderCell>
                 <Table.Cell>
                   {
