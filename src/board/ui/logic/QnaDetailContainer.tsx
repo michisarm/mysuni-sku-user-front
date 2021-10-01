@@ -23,6 +23,7 @@ import QnaAnswerView from '../view/QnaAnswerView';
 import QnaAnswerSatisfactionView from '../view/QnaAnswerSatisfactionView';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QnAModel from '../../model/QnAModel';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
 }
@@ -245,11 +246,10 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
             filesMap={filesMap}
           />
           {
-            qna.answer.id && (
+            qna.question.state === QnaState.AnswerCompleted && (
               <div className="ui segment full">
                 <div className="content-admin-write">
                   <Form>
-
                     <QnaAnswerView
                       qna={qna}
                       filesMap={filesMap}

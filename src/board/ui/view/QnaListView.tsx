@@ -30,16 +30,16 @@ class QnaListView extends ReactComponent<Props, {}> {
       <Table selectable className="qna-admin-list">
         <colgroup>
           <col width="80px" />
-          <col width="100px" />
+          {/*<col width="100px" />*/}
           <col width="200px" />
           <col width="500px" />
-          <col width="100px" />
-          <col width="100px" />
+          <col width="150px" />
+          <col width="150px" />
         </colgroup>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>No</Table.HeaderCell>
-            <Table.HeaderCell>접수 채널</Table.HeaderCell>
+            {/*<Table.HeaderCell>접수 채널</Table.HeaderCell>*/}
             <Table.HeaderCell>카테고리</Table.HeaderCell>
             <Table.HeaderCell>제목</Table.HeaderCell>
             <Table.HeaderCell>상태</Table.HeaderCell>
@@ -53,7 +53,7 @@ class QnaListView extends ReactComponent<Props, {}> {
               return (
                 <Table.Row key={index}>
                   <Table.Cell>{startNo - index}</Table.Cell>
-                  <Table.Cell>{question.requestChannel}</Table.Cell>
+                  {/*<Table.Cell>{question.requestChannel}</Table.Cell>*/}
                   <Table.Cell className="ctg">{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
                   <Table.Cell className="title">
                     <div className="tit inner">

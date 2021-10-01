@@ -46,7 +46,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
         <div className="title-inner">
           <div className="title">{title}</div>
           <div className="qna-navi">
-            <strong>{qna.question.requestChannel}</strong>
+            {/*<strong>{qna.question.requestChannel}</strong>*/}
             <div>
               <span>
               {`${getCategoryName(qna.question.mainCategoryId)}`}

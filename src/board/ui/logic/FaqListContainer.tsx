@@ -53,6 +53,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
   componentDidMount() {
     //
     this.findFaqCategoris();
+    this.findFaqPosts("");
   }
 
   onChangeSearchKey(event: any, data : any) {
@@ -79,32 +80,12 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
   async findFaqCategoris() {
     //
     this.setState({ isLoading: true });
-
     const categoryService = this.injected.categoryService;
     const postService = this.injected.postService;
 
     postService.clearPosts();
     await categoryService.findCategoriesByBoardId('FAQ');
-
-    const { categorys } = categoryService;
-
-    if (!categorys || categorys.length < 1) {
-      return;
-    }
-    const { post } = postService;
-
-    categorys.map((category, index) => {
-      if (category.categoryId === post.category.id) {
-        this.setState({ categoryIndex: index });
-      }
-    });
-
-    if (post.category.id) {
-      const { categoryIndex } = this.state;
-      this.setCagetory(categoryIndex, post.category.id);
-    } else {
-      this.findFaqPosts(categorys[0].categoryId);
-    }
+    this.setState({ isLoading: false, categoryIndex: -1 });
   }
 
   async findFaqPosts(categoryId: string, keyword?: string) {
@@ -125,8 +106,19 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
       await postService.searchFaq(SearchSdo.fromKeyword(keyword, pageModel.offset, 10)).then((res) => {
         sharedService.setCount(this.paginationSearchKey, res.totalCount);
         this.setState({ categoryIndex: -1 });
-        this.setState({ isLoading: false });
       });
+    } else if(categoryId == null || categoryId == '') {
+      let pageModel = sharedService.getPageModel(this.paginationKey);
+
+        if (pageModel.limit === 20) {
+          sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+          pageModel = sharedService.getPageModel(this.paginationKey);
+        }
+        await postService
+          .findPostsByBoardId("FAQ", pageModel.offset, 10)
+          .then((res) => {
+            sharedService.setCount(this.paginationKey, res.totalCount);
+          });
     } else {
       let pageModel = sharedService.getPageModel(this.paginationKey);
 
@@ -138,10 +130,9 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
         .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
         .then((res) => {
           sharedService.setCount(this.paginationKey, res.totalCount);
-          this.setState({ isLoading: false });
         });
     }
-    this.setState({ activeIndex: -1 });
+    this.setState({ activeIndex: -1, isLoading: false });
   }
 
   setCagetory(index: number, categoryId: string) {
@@ -184,6 +175,9 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           <Icon className="dropdown icon" />
         </Accordion.Title>
         <Accordion.Content active={activeIndex === index}>
+          {/*{*/}
+          {/*  post.contents && parsePolyglotString(post.contents.contents)*/}
+          {/*}*/}
           <div
             dangerouslySetInnerHTML={{
               __html: post.contents && parsePolyglotString(post.contents.contents),
@@ -192,6 +186,42 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
         </Accordion.Content>
       </>
     );
+  }
+
+  renderCategoryRadio() {
+    //
+    const { categoryIndex } = this.state;
+    const { categoryService } = this.injected;
+    const { categorys } = categoryService;
+
+    const categoryRadio = [];
+    categoryRadio.push(
+      <Radio
+        key="-1"
+        className="base"
+        name="radioGroup"
+        index={-1}
+        label="전체"
+        value=""
+        checked={categoryIndex === -1}
+        onChange={this.onChangeCategory}
+      />
+    )
+
+    categoryRadio.push(
+      categorys.map((category, index) => (
+      <Radio
+        key={index}
+        className="base"
+        name="radioGroup"
+        index={index}
+        label={parsePolyglotString(category.name)}
+        value={category.categoryId}
+        checked={categoryIndex === index}
+        onChange={this.onChangeCategory}
+      />
+    )))
+    return categoryRadio;
   }
 
   render() {
@@ -206,24 +236,12 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
 
     return (
       <>
-        <Pagination name={paginationKey} onChange={() => this.findFaqPosts(categorys[categoryIndex].categoryId, searchKey)}>
+        <Pagination name={paginationKey} onChange={() => this.findFaqPosts(categoryIndex != -1 ? categorys[categoryIndex].categoryId : '', searchKey)}>
         {isLoading ? (
           <div className="support-list-wrap faq">
             <div className="cate-wrap">
               <div className="radio-wrap">
-                {categorys.length > 0 &&
-                  categorys.map((category, index) => (
-                    <Radio
-                      key={index}
-                      className="base"
-                      name="radioGroup"
-                      index={index}
-                      label={parsePolyglotString(category.name)}
-                      value={category.categoryId}
-                      checked={categoryIndex === index}
-                      onChange={this.onChangeCategory}
-                    />
-                  ))}
+                {this.renderCategoryRadio()}
               </div>
             </div>
 
@@ -245,19 +263,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           <div className="support-list-wrap faq">
             <div className="cate-wrap">
               <div className="radio-wrap">
-                {categorys.length > 0 &&
-                  categorys.map((category, index) => (
-                    <Radio
-                      key={index}
-                      className="ui radio checkbox base"
-                      name="radioGroup"
-                      index={index}
-                      label={parsePolyglotString(category.name)}
-                      value={category.categoryId}
-                      checked={categoryIndex === index}
-                      onChange={this.onChangeCategory}
-                    />
-                  ))}
+                {this.renderCategoryRadio()}
               </div>
             </div>
             <div className="list-top">
