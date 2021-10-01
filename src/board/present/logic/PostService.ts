@@ -109,6 +109,18 @@ export default class PostService {
   }
 
   @action
+  async findAllPosts(offset: number, limit: number) {
+    //
+    const posts = await this.postApi.findAllPosts(
+      offset,
+      limit,
+    );
+
+    runInAction(() => (this.posts = posts));
+    return posts;
+  }
+
+  @action
   async searchFaq(searchSdo: SearchSdo): Promise<OffsetElementList<PostModel>> {
     //
     const offsetElementList = await this.postApi.searchFaq(searchSdo);

@@ -96,6 +96,18 @@ class PostApi {
       .then((response) => (response && response.data) || null);
   }
 
+  findAllPosts(offset: number, limit: number) {
+    //
+    return axios
+      .get<OffsetElementList<PostModel>>(this.URL + '/all', {
+        params: { limit, offset },
+      })
+      .then(
+        (response: any) =>
+          (response && response.data) || { results: [], totalCount: 0 }
+      );
+  }
+
   findPostsByCategoryIdAndAnswered(
     categoryId: string,
     answered: boolean,

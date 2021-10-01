@@ -61,18 +61,20 @@ class NavigatorContainer extends ReactComponent<Props, {}, Injected> {
     await sharedService.setPage(name, activePage);
   }
 
-  renderNumbers(num: number): ReactNode[] {
+  renderNumbers(totalNumber: number): ReactNode[] {
     //
     const { name } = this.context;
     const pageModel = this.injected.sharedService.getPageModel(name);
 
     const nodes: ReactNode[] = [];
 
-    for(let i = 0; i < num; i++) {
+    const startNo = totalNumber > 10 ? (Math.floor((pageModel.page > 1 ? pageModel.page -1  : pageModel.page) / 10))*10 : 0;
+    const endNo = totalNumber > 10 ? startNo + 10 : totalNumber;
+    for(let i = startNo; i < endNo; i++) {
       const style = pageModel.page === i+1 ? 'lms-num lms-on' : `lms-num`;
 
       nodes.push(
-        <a className={style} onClick={() =>this.onPageClick(i + 1)}>{i + 1}</a>
+        <a className={style} onClick={() =>this.onPageClick(i+1)}>{i+1}</a>
       )
     }
     return nodes;
