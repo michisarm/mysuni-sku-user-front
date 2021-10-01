@@ -115,7 +115,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           pageModel = sharedService.getPageModel(this.paginationKey);
         }
         await postService
-          .findPostsByBoardId("FAQ", pageModel.offset, 10)
+          .searchFaq(SearchSdo.fromKeyword("", pageModel.offset, 10))
           .then((res) => {
             sharedService.setCount(this.paginationKey, res.totalCount);
           });
@@ -175,14 +175,18 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           <Icon className="dropdown icon" />
         </Accordion.Title>
         <Accordion.Content active={activeIndex === index}>
-          {/*{*/}
-          {/*  post.contents && parsePolyglotString(post.contents.contents)*/}
-          {/*}*/}
-          <div
-            dangerouslySetInnerHTML={{
-              __html: post.contents && parsePolyglotString(post.contents.contents),
-            }}
-          />
+          {/*{parsePolyglotString(post.contents.contents)}*/}
+          1
+          2
+          3
+          {/*<p>*/}
+          {/*  {parsePolyglotString(post.contents.contents)}*/}
+          {/*</p>*/}
+          {/*<div*/}
+          {/*  dangerouslySetInnerHTML={{*/}
+          {/*    __html: post.contents && parsePolyglotString(post.contents.contents),*/}
+          {/*  }}*/}
+          {/*/>*/}
         </Accordion.Content>
       </>
     );

@@ -104,7 +104,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
 
     return (
       <div className="full">
-        <div className="support-list-wrap">
+        <div className="support-list-wrap user-qa">
           <Pagination name={this.paginationKey} onChange={this.findMyQnas}>
 
           <SubActions>
