@@ -175,18 +175,11 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
           <Icon className="dropdown icon" />
         </Accordion.Title>
         <Accordion.Content active={activeIndex === index}>
-          {/*{parsePolyglotString(post.contents.contents)}*/}
-          1
-          2
-          3
-          {/*<p>*/}
-          {/*  {parsePolyglotString(post.contents.contents)}*/}
-          {/*</p>*/}
-          {/*<div*/}
-          {/*  dangerouslySetInnerHTML={{*/}
-          {/*    __html: post.contents && parsePolyglotString(post.contents.contents),*/}
-          {/*  }}*/}
-          {/*/>*/}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: post.contents && parsePolyglotString(post.contents.contents),
+            }}
+          />
         </Accordion.Content>
       </>
     );

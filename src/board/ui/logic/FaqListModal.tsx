@@ -57,7 +57,12 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
 
   componentDidMount() {
     //
+    this.init();
+  }
+
+  init() {
     this.findFaqCategoris();
+    this.findFaqPosts("");
   }
 
   setCagetory(index: number, categoryId: string) {
@@ -77,47 +82,16 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
   async findFaqCategoris() {
     //
     this.setState({ isLoading: true });
-
     const categoryService = this.injected.categoryService;
     const postService = this.injected.postService;
 
     postService.clearPosts();
     await categoryService.findCategoriesByBoardId('FAQ');
-
-    const { categorys } = categoryService;
-
-    if (!categorys || categorys.length < 1) {
-      return;
-    }
-    const { post } = postService;
-
-    categorys.map((category, index) => {
-      if (category.categoryId === post.category.id) {
-        this.setState({ categoryIndex: index });
-      }
-    });
-
-    if (post.category.id) {
-      const { categoryIndex } = this.state;
-      this.setCagetory(categoryIndex, post.category.id);
-    } else {
-      this.findFaqPosts(categorys[0].categoryId);
-    }
+    this.setState({ isLoading: false, categoryIndex: -1 });
   }
 
   async findFaqPosts(categoryId: string, keyword?: string) {
     //
-    // const { sharedService, postService } = this.injected;
-    // const pageModel = sharedService.getPageModel(this.paginationKey);
-    //
-    // postService.clearPosts();
-    //
-    // await postService
-    //   .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
-    //   .then((res) => {
-    //     sharedService.setCount(this.paginationKey, res.totalCount);
-    //     this.setState({ isLoading: false });
-    //   });
     const { sharedService, postService } = this.injected;
     postService.clearPosts();
 
@@ -134,8 +108,19 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
       await postService.searchFaq(SearchSdo.fromKeyword(keyword, pageModel.offset, 10)).then((res) => {
         sharedService.setCount(this.paginationSearchKey, res.totalCount);
         this.setState({ categoryIndex: -1 });
-        this.setState({ isLoading: false });
       });
+    } else if(categoryId == null || categoryId == '') {
+      let pageModel = sharedService.getPageModel(this.paginationKey);
+
+      if (pageModel.limit === 20) {
+        sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationKey);
+      }
+      await postService
+        .searchFaq(SearchSdo.fromKeyword("", pageModel.offset, 10))
+        .then((res) => {
+          sharedService.setCount(this.paginationKey, res.totalCount);
+        });
     } else {
       let pageModel = sharedService.getPageModel(this.paginationKey);
 
@@ -147,9 +132,9 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
         .findPostsByCategoryId(categoryId,  pageModel.offset, 10)
         .then((res) => {
           sharedService.setCount(this.paginationKey, res.totalCount);
-          this.setState({ isLoading: false });
         });
     }
+    this.setState({ activeIndex: -1, isLoading: false });
   }
 
   onClickPost(index: number) {
@@ -214,6 +199,42 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     );
   }
 
+  renderCategoryRadio() {
+    //
+    const { categoryIndex } = this.state;
+    const { categoryService } = this.injected;
+    const { categorys } = categoryService;
+
+    const categoryRadio = [];
+    categoryRadio.push(
+      <Radio
+        key="-1"
+        className="base"
+        name="radioGroup"
+        index={-1}
+        label="전체"
+        value=""
+        checked={categoryIndex === -1}
+        onChange={this.onChangeCategory}
+      />
+    )
+
+    categoryRadio.push(
+      categorys.map((category, index) => (
+        <Radio
+          key={index}
+          className="base"
+          name="radioGroup"
+          index={index}
+          label={parsePolyglotString(category.name)}
+          value={category.categoryId}
+          checked={categoryIndex === index}
+          onChange={this.onChangeCategory}
+        />
+      )))
+    return categoryRadio;
+  }
+
   render() {
     //
     const { categoryIndex, isLoading, open, searchKey } = this.state;
@@ -236,13 +257,13 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
             혹시 이런 문의일까요?
           </Button>
         }
-        onMount={this.findFaqCategoris}
+        onMount={this.init}
       >
         <Modal.Header>
           자주 찾는 질문
         </Modal.Header>
         <Modal.Content className="faq-modal-cont-area">
-          <Pagination name={this.paginationKey} onChange={() => this.findFaqPosts(categorys[categoryIndex].categoryId)}>
+          <Pagination name={paginationKey} onChange={() => this.findFaqPosts(categoryIndex != -1 ? categorys[categoryIndex].categoryId : '', searchKey)}>
             {
               isLoading ?
                 (
@@ -250,19 +271,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                     <div className="support-list-wrap faq modal-faq-container">
                       <div className="cate-wrap">
                         <div className="radio-wrap">
-                          {categorys.length > 0 &&
-                          categorys.map((category, index) => (
-                            <Radio
-                              key={index}
-                              className="ui radio checkbox base"
-                              name="radioGroup"
-                              index={index}
-                              label={parsePolyglotString(category.name)}
-                              value={category.categoryId}
-                              checked={categoryIndex === index}
-                              onChange={this.onChangeCategory}
-                            />
-                          ))}
+                          {this.renderCategoryRadio()}
                         </div>
                       </div>
                       <div className="list-top">
@@ -306,19 +315,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                     <div className="support-list-wrap faq modal-faq-container">
                       <div className="cate-wrap">
                         <div className="radio-wrap">
-                          {categorys.length > 0 &&
-                          categorys.map((category, index) => (
-                            <Radio
-                              key={index}
-                              className="ui radio checkbox base"
-                              name="radioGroup"
-                              index={index}
-                              label={parsePolyglotString(category.name)}
-                              value={category.categoryId}
-                              checked={categoryIndex === index}
-                              onChange={this.onChangeCategory}
-                            />
-                          ))}
+                          {this.renderCategoryRadio()}
                         </div>
                       </div>
                       <div className="list-top">
