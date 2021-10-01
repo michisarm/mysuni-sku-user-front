@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 // 2021-09-29 19:11
 import './style/css/2.1ba1de7b.chunk.css';
-import './style/css/main.26713ef0.chunk.css;
+import './style/css/main.26713ef0.chunk.css';
 import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
 
 initializeBody();
