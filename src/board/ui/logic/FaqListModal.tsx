@@ -98,15 +98,15 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     this.setState({ isLoading: true });
 
     if(keyword && keyword !== '') {
-      let pageModel = sharedService.getPageModel(this.paginationSearchKey);
+      let pageModel = sharedService.getPageModel(this.paginationKey);
 
       if (pageModel.limit === 20) {
-        sharedService.setPageMap(this.paginationSearchKey, pageModel.offset, 10);
-        pageModel = sharedService.getPageModel(this.paginationSearchKey);
+        sharedService.setPageMap(this.paginationKey, pageModel.offset, 10);
+        pageModel = sharedService.getPageModel(this.paginationKey);
       }
 
       await postService.searchFaq(SearchSdo.fromKeyword(keyword, pageModel.offset, 10)).then((res) => {
-        sharedService.setCount(this.paginationSearchKey, res.totalCount);
+        sharedService.setCount(this.paginationKey, res.totalCount);
         this.setState({ categoryIndex: -1 });
       });
     } else if(categoryId == null || categoryId == '') {
@@ -146,6 +146,9 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
 
   onChangeCategory(e: any, { index, value }: any) {
     //
+    const { sharedService } = this.injected;
+
+    sharedService.setPageMap(this.paginationKey, 0, 10);
     this.setCagetory(index, value);
     this.setState({activeIndex: -1, searchKey: ''});
   }
@@ -159,6 +162,9 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
 
   onKeyPressed(event: any) {
     if(event.key === 'Enter') {
+      const { sharedService } = this.injected;
+      sharedService.setPageMap(this.paginationKey, 0, 10);
+
       this.findFaqPosts('', this.state.searchKey);
     }
   }
@@ -242,8 +248,8 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     const { posts } = postService;
     const { categorys } = categoryService;
     const result = posts.results;
-    const paginationKey = searchKey === '' ? this.paginationKey : this.paginationSearchKey;
-    const { count } = searchKey === '' ? sharedService.getPageModel(paginationKey) : sharedService.getPageModel(paginationKey);
+    const paginationKey = this.paginationKey;
+    const { count } = sharedService.getPageModel(paginationKey);
 
     return (
       <Modal
