@@ -52,7 +52,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
   }
 
   onClose() {
-    this.setState({ open: false });
+    this.setState({ open: false, searchKey: '' });
   }
 
   componentDidMount() {
@@ -147,7 +147,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
   onChangeCategory(e: any, { index, value }: any) {
     //
     this.setCagetory(index, value);
-    this.setState({activeIndex: -1});
+    this.setState({activeIndex: -1, searchKey: ''});
   }
 
   onChangeSearchKey(event: any, data : any) {

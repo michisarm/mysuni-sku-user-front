@@ -18,7 +18,7 @@ class QnaDetailPage extends Component {
         className="support"
         breadcrumb={[
           { text: 'Support' },
-          { text: 'Q&A' },
+          { text: '나의 이용문의' },
         ]}
       >
         <div

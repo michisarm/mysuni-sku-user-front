@@ -151,7 +151,7 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
   onChangeCategory(e: any, { index, value }: any) {
     //
     this.setCagetory(index, value);
-    this.setState({activeIndex: -1});
+    this.setState({activeIndex: -1, searchKey: ''});
   }
 
   onClickPost(index: number) {

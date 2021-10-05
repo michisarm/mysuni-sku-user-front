@@ -8,6 +8,7 @@ import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { getQuestionStateReactNode } from '../logic/QuestionStateHelper';
 
 interface Props {
   title: string;
@@ -55,7 +56,9 @@ class BoardDetailContentHeaderView extends Component<Props> {
                 {`${getCategoryName(qna.question.subCategoryId)}`}
               </span>
             </div>
-            <strong className="stat done">{qna.question.state}</strong>
+            <strong className="stat done">
+              {getQuestionStateReactNode(qna.question.state)}
+            </strong>
           </div>
           <div className="user-info">
             {
