@@ -14,6 +14,7 @@ import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QnaManagementDetailHeaderView from './QnaManagementDetailHeaderView';
 import { QnaState } from '../../model/vo/QnaState';
+import { RequestChannel } from '../../model/vo/RequestChannel';
 
 interface Props {
   qna: QnAModel;
@@ -22,6 +23,7 @@ interface Props {
   finalOperator: OperatorModel;
   onClickList: () => void;
   renderState: (state: QnaState) => React.ReactNode;
+  getChannelToString: (channel: RequestChannel) => string;
 }
 
 @observer
@@ -37,13 +39,14 @@ class QnaManagementDetailView extends React.Component<Props> {
       finalOperator,
       onClickList,
       renderState,
+      getChannelToString,
     } = this.props;
 
     return (
       <>
         <QnaManagementDetailHeaderView
           title={qna.question.title}
-          requestChannel={qna.question.requestChannel}
+          requestChannel={getChannelToString(qna.question.requestChannel)}
           mainCategory={parsePolyglotString(
             categoriesMap.get(qna.question.mainCategoryId)
           )}

@@ -18,6 +18,7 @@ import QuestionSdo from '../../model/sdo/QuestionSdo';
 import QuestionModel from '../../model/QuestionModel';
 import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { RequestChannel } from '../../model/vo/RequestChannel';
 
 @autobind
 class SupportService {
@@ -228,11 +229,26 @@ class SupportService {
   getStateToString(state: QnaState): string {
     //
     if (state === QnaState.QuestionReceived) {
-      return getPolyglotText('문의 접수', 'support-qna-문의접수');
+      return getPolyglotText('문의접수', 'support-qna-문의접수');
     } else if (state === QnaState.AnswerWaiting) {
-      return getPolyglotText('답변 대기', 'support-qna-답변대기');
+      return getPolyglotText('답변대기', 'support-qna-답변대기');
     } else if (state === QnaState.AnswerCompleted) {
-      return getPolyglotText('답변 완료', 'support-qna-답변완료');
+      return getPolyglotText('답변완료', 'support-qna-답변완료');
+    }
+
+    return '';
+  }
+
+  getChannelToString(requestChannel: RequestChannel): string {
+    //
+    if (requestChannel === RequestChannel.QnA) {
+      return getPolyglotText('mySUNI', 'support-qna-QNA');
+    } else if (requestChannel === RequestChannel.PHONE) {
+      return getPolyglotText('전화', 'support-qna-PHONE');
+    } else if (requestChannel === RequestChannel.MESSENGER) {
+      return getPolyglotText('메신저', 'support-qna-MESSENGER');
+    } else if (requestChannel === RequestChannel.EMAIL) {
+      return getPolyglotText('이메일', 'support-qna-EMAIL');
     }
 
     return '';
