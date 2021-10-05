@@ -65,6 +65,8 @@ class QnaManagementDetailContainer extends ReactComponent<
     const { qnaId } = this.props.match.params;
     const { supportService } = this.injected;
 
+    console.log(qnaId);
+
     await supportService.findAllCategories();
     const qna = await supportService.findQnaById(qnaId);
     this.getFileIds();
