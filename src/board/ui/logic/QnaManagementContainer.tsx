@@ -95,7 +95,12 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
     //
     const { supportService, sharedService } = this.injected;
     const { state } = this.state;
-    const { qnas, categoriesMap, getStateToString } = supportService;
+    const {
+      qnas,
+      categoriesMap,
+      getStateToString,
+      getChannelToString,
+    } = supportService;
     const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
@@ -148,6 +153,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
                 categoriesMap={categoriesMap}
                 onClickQnA={this.onClickQnA}
                 getStateToString={getStateToString}
+                getChannelToString={getChannelToString}
               />
             </div>
 

@@ -150,16 +150,16 @@ class QnaManagementAnswerView extends React.Component<Props> {
                         <div className="radio-bttn">
                           <Radio
                             name="radioGroup"
-                            label="문의대기"
+                            label="답변대기"
                             className="base"
-                            value={QnaState.QuestionReceived}
+                            value={QnaState.AnswerWaiting}
                             checked={
-                              qna.question.state === QnaState.QuestionReceived
+                              qna.question.state === QnaState.AnswerWaiting
                             }
                             onChange={() =>
                               changeQnaProps(
                                 'question.state',
-                                QnaState.QuestionReceived
+                                QnaState.AnswerWaiting
                               )
                             }
                           />

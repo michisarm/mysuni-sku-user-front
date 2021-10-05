@@ -1,41 +1,20 @@
 import React from 'react';
 import {
-  ReactComponent,
   mobxHelper,
   reactAutobind,
+  ReactComponent,
 } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SupportService } from '../../stores';
 import QnaManagementDetailView from '../view/QnaManagementDetailView';
-import depot, {
-  DepotFileViewModel,
-  FileBox,
-  ValidationType,
-} from '@nara.drama/depot';
+import depot from '@nara.drama/depot';
 import { QnaState } from '../../model/vo/QnaState';
-import { initUserIdentity } from '../../../shared/model/UserIdentity';
-import {
-  Button,
-  Checkbox,
-  Container,
-  Form,
-  Icon,
-  Radio,
-  Segment,
-  Table,
-  TextArea,
-} from 'semantic-ui-react';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../shared/ui/logic/PolyglotText';
-import { AlertWin, ConfirmWin, depotHelper } from '../../../shared';
+import { Button, Form, Segment } from 'semantic-ui-react';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { AlertWin, ConfirmWin } from '../../../shared';
 import routePaths from '../../routePaths';
 import OperatorModel from '../../model/vo/OperatorModel';
-import { PatronType } from '@nara.platform/accent/src/snap/index';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import moment from 'moment';
 import QnaManagementAnswerView from '../view/QnaManagementAnswerView';
 
 interface Param {
@@ -97,12 +76,8 @@ class QnaManagementDetailContainer extends ReactComponent<
       this.setSendEmailOperator(qna.latestOperatorSentEmail.receiver);
     }
 
-    if (qna.question.state !== QnaState.AnswerCompleted) {
+    if (qna.question.state === QnaState.AnswerWaiting) {
       this.setState({ isUpdatable: true });
-      supportService.changeQnaProps(
-        'question.state',
-        QnaState.QuestionReceived
-      );
     }
   }
 
@@ -219,19 +194,13 @@ class QnaManagementDetailContainer extends ReactComponent<
 
   renderState(state: QnaState) {
     //
-    let className = 'state wait';
-    let text = '';
+    const { getStateToString } = this.injected.supportService;
 
-    if (state === QnaState.QuestionReceived) {
-      text = getPolyglotText('문의 접수', 'support-qna-문의접수');
-    } else if (state === QnaState.AnswerWaiting) {
-      text = getPolyglotText('답변 대기', 'support-qna-답변대기');
-    } else if (state === QnaState.AnswerCompleted) {
-      className = 'stat done';
-      text = getPolyglotText('답변 완료', 'support-qna-답변완료');
-    }
-
-    return <strong className={className}>{text}</strong>;
+    return (
+      <strong className={QnaState.AnswerCompleted ? 'stat done' : 'stat wait'}>
+        {getStateToString(state)}
+      </strong>
+    );
   }
 
   render() {
@@ -245,6 +214,7 @@ class QnaManagementDetailContainer extends ReactComponent<
       finalOperator,
       emailOperator,
       getStateToString,
+      getChannelToString,
     } = supportService;
 
     return (
@@ -257,6 +227,7 @@ class QnaManagementDetailContainer extends ReactComponent<
             finalOperator={finalOperator}
             onClickList={this.onClickList}
             renderState={this.renderState}
+            getChannelToString={getChannelToString}
           />
 
           <Segment className="full">
@@ -285,10 +256,7 @@ class QnaManagementDetailContainer extends ReactComponent<
                   <Button
                     className="fix bg"
                     onClick={() => {
-                      changeQnaProps(
-                        'question.state',
-                        QnaState.QuestionReceived
-                      );
+                      changeQnaProps('question.state', QnaState.AnswerWaiting);
                       this.setState({ isUpdatable: true });
                     }}
                   >

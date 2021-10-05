@@ -9,6 +9,7 @@ import {
   PolyglotString,
 } from '../../../shared/viewmodel/PolyglotString';
 import { QnaState } from '../../model/vo/QnaState';
+import { RequestChannel } from '../../model/vo/RequestChannel';
 
 interface Props {
   qnas: QnAModel[];
@@ -16,6 +17,7 @@ interface Props {
   categoriesMap: Map<string, PolyglotString>;
   onClickQnA: (qnaId: string) => void;
   getStateToString: (state: QnaState) => string;
+  getChannelToString: (channel: RequestChannel) => string;
 }
 
 class QnaManagementListView extends React.Component<Props> {
@@ -28,6 +30,7 @@ class QnaManagementListView extends React.Component<Props> {
       categoriesMap,
       onClickQnA,
       getStateToString,
+      getChannelToString,
     } = this.props;
 
     return (
@@ -60,7 +63,9 @@ class QnaManagementListView extends React.Component<Props> {
               qnas.map((qna, index) => (
                 <Table.Row key={qna.question.id}>
                   <Table.Cell>{startNo - index}</Table.Cell>
-                  <Table.Cell>{qna.question.requestChannel}</Table.Cell>
+                  <Table.Cell>
+                    {getChannelToString(qna.question.requestChannel)}
+                  </Table.Cell>
                   <Table.Cell className="ctg">
                     {parsePolyglotString(
                       categoriesMap.get(qna.question.mainCategoryId)
