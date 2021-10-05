@@ -322,7 +322,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   />
                 </label>
                 {/*<Form>*/}
-                  <div className="line-attach width-sm">
+                  <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
                         id={qna.question.depotId}
@@ -342,12 +342,12 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                         ]}
                         onChange={this.getFileBoxIdForReference}
                       />
-                      {/*<div className="bottom">*/}
-                      {/*  <span className="text1"><Icon className="info16" />*/}
-                      {/*    <span className="blind">information</span>*/}
-                      {/*    문서 및 이미지 파일을 업로드 가능합니다.*/}
-                      {/*  </span>*/}
-                      {/*</div>*/}
+                      <div className="bottom">
+                        <span className="text1"><Icon className="info16" />
+                          {/*<span className="blind">information</span>*/}
+                          {/*문서 및 이미지 파일을 업로드 가능합니다.*/}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 {/*</Form>*/}
