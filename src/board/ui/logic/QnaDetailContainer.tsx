@@ -66,6 +66,10 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     this.init();
   }
 
+  componentWillUnmount() {
+    this.injected.supportService.clearQna();
+  }
+
   async init() {
     const { postId } = this.props.match.params;
     const { supportService } = this.injected;
