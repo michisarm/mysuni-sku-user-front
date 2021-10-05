@@ -32,7 +32,24 @@ const emptyAlert = (e: any) => {
     message: '준비 중입니다.',
   });
 };
+const emptyAlertOct = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '10월 중 오픈 예정',
+  });
+};
+const emptyAlertSep = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '9월 말 오픈 예정',
+  });
+};
 
+const goToCommunity = (e: any) => {
+  window.location.href = '/suni-community/community/COMMUNITY-1n/home';
+};
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const koPanes = [
@@ -385,10 +402,13 @@ const koPanes = [
                               Service Design - IDEO
                             </Link>
                           </td>
-                          <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz - Self 실습
+                          <td>
+                            <Link to="/search?query=%EC%8B%A4%EC%A0%84%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20topic">
+                              [실전 프로젝트]
+                              <br />
+                              고객중심 Biz 만들기
+                              <br />
+                              Topic 1-4
                             </Link>
                           </td>
                         </tbody>
@@ -421,10 +441,13 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td></td>
-                          <td className="dashed">
-                            <Link to="#" onClick={emptyAlert}>
-                              기술에서 고객 중심 <br />
-                              Biz 고민하기
+                          <td>
+                            <Link to="/search?query=기술은%20있는데%20사업화가%20어렵다면?%20고객중심%20Biz%20만들기">
+                              기술은 있는데 사업화가 어렵다면?
+                              <br />
+                              고객중심 Biz 만들기!
+                              <br />
+                              1부 2부
                             </Link>
                           </td>
                           <td>
@@ -468,25 +491,67 @@ const koPanes = [
 
                   <div className="inno-item">
                     <h3># 로지컬씽킹</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.2)
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
+                            <Link to="/lecture/card/CARD-12s5/view">
+                              컨설턴트의 일하는
+                              <br />
+                              스킬 익히기
+                              <br />
+                              2부. 프로젝트 관리 & 전략적 관점
                             </Link>
-                          </li>
-                          <li>
-                            <Link to="#" onClick={emptyAlert}>
-                              컨설턴트의 일하는 <br />
-                              스킬 익히기 <br />
-                              (Lv.1)
+                          </td>
+                          <td>
+                            <Link to="/lecture/card/CARD-12nd/view">
+                              컨설턴트의 일하는
+                              <br />
+                              스킬 익히기
+                              <br />
+                              1부. 문제해결 방법론
                             </Link>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <Link to="/lecture/card/CARD-13xc/view">
+                              Logic & Play <br />
+                              인도로 가는 길
+                            </Link>
+                          </td>
+                          <td>
+                            <Link to="/lecture/card/CARD-13tz/view">
+                              처음 만나는 로지컬씽킹
+                            </Link>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
@@ -519,7 +584,12 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <Link to="/lecture/card/CARD-1311/view">
+                              공간 혁신과 그 변화에 대한 이야기
+                            </Link>
+                          </td>
+
                           <td>
                             <Link to="/lecture/card/CARD-5js/view">
                               고객 Research <br />
@@ -613,14 +683,15 @@ const koPanes = [
 
                   <div className="inno-item orange">
                     <h3># 애자일</h3>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/community/COMMUNITY-1n">
+                            <a onClick={goToCommunity}>
                               애자일 코치 <br />
                               Meetup
-                            </Link>
+                            </a>
                           </td>
                           <td className="dashed-or">
                             <Link to="#" onClick={emptyAlert}>
@@ -635,28 +706,28 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
+                            <Link to="/lecture/card/CARD-8j1/view">
+                              애자일 리더십 (M3.0)
+                              <br />
+                              Workshop
+                            </Link>
+                          </td>
+                          <td>
                             <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
                               애자일 Project
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-8j1/view">
-                              애자일 리더십 <br />
-                              Workshop
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-53b/cube/CUBE-7id/view/ClassRoomLecture">
-                              애자일 Project
-                              <br />
-                              Management <br />
-                              W/S
-                            </Link>
-                          </td>
-                          <td>
                             <Link to="/lecture/card/CARD-7dd/view">
-                              애자일 <br />
-                              Workshop
+                              애자일 Dive
+                              <br /> Workshop
+                            </Link>
+                          </td>
+                          <td className="dashed">
+                            <Link to="#" onClick={emptyAlertOct}>
+                              애자일 Practice
+                              <br />
+                              (Self 실습)
                             </Link>
                           </td>
                         </tbody>
@@ -666,20 +737,35 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
-                            <Link to="/lecture/card/CARD-13d/view">
-                              Agile Management <br />- Linkedin
+                          <td className="small small2">
+                            <Link to="/lecture/card/CARD-13xj/view">
+                              린스타트업
                             </Link>
                           </td>
-                          <td>
+                          <td className="small small2 dashed">
+                            <Link to="#" onClick={emptyAlertOct}>
+                              WoW! 애자일 트랜스포메이션
+                            </Link>
+                          </td>
+                          <td className="small small2 dashed">
+                            <Link to="#" onClick={emptyAlertSep}>
+                              애자일과 스크럼
+                            </Link>
+                          </td>
+                          <td className="small small2">
+                            <Link to="/lecture/card/CARD-afx/view">
+                              퍼스널 칸반
+                            </Link>
+                          </td>
+                          <td className="small small2">
+                            <Link to="/lecture/card/CARD-a2p/view">
+                              카이젠 저니
+                            </Link>
+                          </td>
+                          <td className="small small2">
                             <Link to="/lecture/card/CARD-5c4/view">
-                              애자일 방법론 <br />- Linkedin
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-6zk/view">
-                              SK 네트웍스 구매팀 <br />
-                              애자일 사례
+                              애자일 방법론
+                              <br />- Linkedin
                             </Link>
                           </td>
                         </tbody>
@@ -689,14 +775,14 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small">
-                            <Link to="/lecture/card/CARD-7np/view">
-                              애자일 방법론 기초
-                            </Link>
-                          </td>
                           <td className="small">
                             <Link to="/lecture/card/CARD-84k/view">
                               애자일 에센셜
+                            </Link>
+                          </td>
+                          <td className="small">
+                            <Link to="/lecture/card/CARD-13ul/view">
+                              애자일 선언문
                             </Link>
                           </td>
                           <td className="small">
@@ -3702,10 +3788,11 @@ const EnPanes = [
                               Service Design - IDEO
                             </a>
                           </td>
-                          <td className="dashed">
+                          <td>
                             <a href="#none">
-                              Being Customer-Centered in Technology Business -
-                              Self-Practice
+                              [Actual Project] <br /> Creating a
+                              Customer-centered Biz, <br />
+                              Topic 1-4
                             </a>
                           </td>
                         </tbody>
@@ -3736,11 +3823,13 @@ const EnPanes = [
                       </table>
                       <table>
                         <tbody>
-                          <td></td>
-                          <td className="dashed">
+                          <td className="two">
                             <a href="#none">
-                              Being Customer-Centered in Technology Thinking
-                              about Business
+                              Got the Tech, but Having Difficulties Making It a
+                              Business?
+                              <br />
+                              Creating Customer-centered Biz! <br />
+                              Part 1 Part 2
                             </a>
                           </td>
                           <td>
@@ -3776,21 +3865,60 @@ const EnPanes = [
                   </div>
                   <div className="inno-item">
                     <h3># Logical Thinking</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td className="txt-small">
                             <a href="#none">
-                              Learning How to Work Like a Consultant (Lv.2)
+                              Learning the Skills of a Consultant Part 2:
+                              Project Management & Strategic Perspectives
                             </a>
-                          </li>
-                          <li>
+                          </td>
+                          <td className="txt-small">
                             <a href="#none">
-                              Learning How to Work Like a Consultant (Lv.1)
+                              Learning the Skills of a Consultant Part 1:
+                              Troubleshooting Methodology
                             </a>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Play & Logic <br />A Passage to India
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              First Encounter with Logical Thinking
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                   <div className="inno-item">
@@ -3822,13 +3950,18 @@ const EnPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              The Story of Space Innovation and the Change
+                              Thereof
+                            </a>
+                          </td>
                           <td>
                             <a href="#none">How to Do Customer Research</a>
                           </td>
                           <td>
                             <a href="#none">
-                              고객 Needs
+                              Customer Needs
                               <br />
                               Finding
                             </a>
@@ -3909,10 +4042,16 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <a href="#none">Agile Coach Meetup</a>
+                            <a href="#none">
+                              Agile Coach <br />
+                              Meetup
+                            </a>
                           </td>
                           <td className="dashed-or">
-                            <a href="#none">Agile Coach Training Course</a>
+                            <a href="#none">
+                              Agile Coach <br />
+                              Training Course
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -3921,64 +4060,71 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <a href="#none">Agile Project</a>
-                          </td>
-                          <td>
-                            <a href="#none">Agile Leadership Workshop</a>
-                          </td>
-                          <td>
                             <a href="#none">
-                              Agile Project
-                              <br />
-                              Management
-                              <br />
-                              W/S
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              Agile
+                              Agile Leadership(M3.0)
                               <br />
                               Workshop
                             </a>
                           </td>
+                          <td>
+                            <a href="#none">Agile Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Dive
+                              <br /> Workshop
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              Agile Practice
+                              <br />
+                              (Self-practice)
+                            </a>
+                          </td>
                         </tbody>
                       </table>
                     </div>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
-                            <a href="#none">
-                              Agile Management
-                              <br />- Linkedin
-                            </a>
+                          <td className="small small2">
+                            <a href="#none">Lean Startup</a>
                           </td>
-                          <td>
+                          <td className="small small2 dashed">
+                            <a href="#none">WoW! Agile Transformation</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">Agile and Scrum</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">Personal Kanban</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">Kaizen Journey</a>
+                          </td>
+                          <td className="small small2">
                             <a href="#none">
                               Agile Methodology
                               <br />- Linkedin
                             </a>
                           </td>
-                          <td>
-                            <a href="#none">
-                              SK Network Purchasing Team Agile Case
-                            </a>
-                          </td>
                         </tbody>
                       </table>
                     </div>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="small">
-                            <a href="#none">Agile Methodology Basics</a>
-                          </td>
-                          <td className="small">
                             <a href="#none">Agile Essentials</a>
                           </td>
                           <td className="small">
-                            <a href="#none">First Time: Agile</a>
+                            <a href="#none">The Manifesto for Agile</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">First Encounter with Agile</a>
                           </td>
                           <td className="small">
                             <a href="#none">Why Agile</a>
@@ -6826,13 +6972,11 @@ const ZhPanes = [
                               IDEO
                             </a>
                           </td>
-                          <td className="dashed">
+                          <td>
                             <a href="#none">
-                              在技术中以客
-                              <br />
-                              户为中心进行
-                              <br />
-                              Biz-Self实习
+                              [实战项目] <br />
+                              打造以顾客为中心的Biz <br />
+                              Topic 1-4
                             </a>
                           </td>
                         </tbody>
@@ -6866,11 +7010,13 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td></td>
-                          <td className="dashed">
+                          <td className="txt-small txt-break">
                             <a href="#none">
-                              在技术中以客户为
+                              拥有技术却无法加以商业化？
                               <br />
-                              中心思考Biz
+                              以顾客为中心的Biz！
+                              <br />
+                              第一部 第二部
                             </a>
                           </td>
                           <td>
@@ -6905,27 +7051,57 @@ const ZhPanes = [
                   </div>
                   <div className="inno-item">
                     <h3># 逻辑思维</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
                             <a href="#none">
-                              熟悉咨询师的工
-                              <br />
-                              作技巧（Lv.2）
+                              掌握顾问的业务水平_第二部 项目管理&战略观点
                             </a>
-                          </li>
-                          <li>
+                          </td>
+                          <td>
                             <a href="#none">
-                              熟悉咨询师的工作
-                              <br />
-                              技巧（Lv.1）
+                              掌握顾问的业务水平_第一部 问题解决方法论
                             </a>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Logic & Play印度之旅</a>
+                          </td>
+                          <td>
+                            <a href="#none">初次相逢的逻辑思考</a>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
+
                   <div className="inno-item">
                     <h3># 了解客户</h3>
                     <div className="inno-li">
@@ -6955,7 +7131,13 @@ const ZhPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              关于空间创新及其
+                              <br />
+                              变化的故事
+                            </a>
+                          </td>
                           <td>
                             <a href="#none">客户 Research方法</a>
                           </td>
@@ -7053,38 +7235,10 @@ const ZhPanes = [
                             </a>
                           </td>
                           <td className="dashed-or">
-                            <a href="#none">敏捷训练课程</a>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <a href="#none">敏捷 Project</a>
-                          </td>
-                          <td>
                             <a href="#none">
-                              敏捷领导力
+                              敏捷训练
                               <br />
-                              Workshop
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              敏捷 Project
-                              <br />
-                              Management
-                              <br />
-                              W/S
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              敏捷
-                              <br />
-                              Workshop
+                              课程
                             </a>
                           </td>
                         </tbody>
@@ -7095,23 +7249,55 @@ const ZhPanes = [
                         <tbody>
                           <td>
                             <a href="#none">
-                              Agile Management
-                              <br />- Linkedin
+                              敏捷领导力(M3.0)
+                              <br />
+                              Workshop
                             </a>
                           </td>
                           <td>
+                            <a href="#none">敏捷Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷Dive
+                              <br /> Workshop
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              敏捷Practice
+                              <br />
+                              (Self实习)
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small small2">
+                            <a href="#none">精益创业</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">WoW! 敏捷变身</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">敏捷与Scrum</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">个人看板管理</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">改善法日志</a>
+                          </td>
+                          <td className="small small2">
                             <a href="#none">
                               敏捷方法论
                               <br />- Linkedin
                             </a>
                           </td>
-                          <td>
-                            <a href="#none">
-                              SK Networks采购
-                              <br />
-                              部门敏捷案例
-                            </a>
-                          </td>
                         </tbody>
                       </table>
                     </div>
@@ -7119,16 +7305,16 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td className="small">
-                            <a href="#none">敏捷方法论基础</a>
+                            <a href="#none">敏捷Essential</a>
                           </td>
                           <td className="small">
-                            <a href="#none">敏捷Essential</a>
+                            <a href="#none">敏捷宣言</a>
                           </td>
                           <td className="small">
                             <a href="#none">第一次接触的敏捷</a>
                           </td>
                           <td className="small">
-                            <a href="#none">Why 敏捷</a>
+                            <a href="#none">Why敏捷？</a>
                           </td>
                         </tbody>
                       </table>
