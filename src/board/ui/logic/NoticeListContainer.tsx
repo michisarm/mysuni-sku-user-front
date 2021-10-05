@@ -9,7 +9,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { CommentService } from '@nara.drama/feedback';
-import { Input, Segment } from 'semantic-ui-react';
+import { Form, Icon, Input, Segment } from 'semantic-ui-react';
 import { Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
@@ -121,24 +121,27 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
               있습니다.
             </div>
             <div className="list-top-right">
-              <Input
-                // icon="icon search-32"
-                icon={{
-                  className: 'icon search-32',
-                  link: true,
-                }}
-                className="s-search h38"
-                value={keyword}
-                placeholder="검색어를 입력하세요."
-                onChange={(event, data) =>
-                  this.setState({ keyword: data.value })
-                }
-                onKeyDown={(e: any) => {
-                  if (e.key === 'Enter') {
-                    this.findNoticePosts();
+              <div className="ui input s-search h38">
+                <Form.Field
+                  control={Input}
+                  type="text"
+                  placeholder="검색어를 입력하세요"
+                  value={keyword}
+                  onChange={(event: any, data: any) =>
+                    this.setState({ keyword: data.value })
                   }
-                }}
-              />
+                  onKeyDown={(e: any) => {
+                    if (e.key === 'Enter') {
+                      this.findNoticePosts();
+                    }
+                  }}
+                />
+                <Icon
+                  link
+                  className="search-32"
+                  onClick={() => this.setState({ keyword })}
+                />
+              </div>
             </div>
           </div>
 
