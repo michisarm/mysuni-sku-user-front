@@ -21,4 +21,13 @@ export default class QnAOperatorRdo {
       state,
     };
   }
+
+  static asQnaOperatorRdoByStates(pageModel: PageModel, state?: QnaState[]) {
+    //
+    return {
+      offset: pageModel.offset,
+      limit: pageModel.limit,
+      state,
+    };
+  }
 }

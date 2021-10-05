@@ -5,10 +5,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel, Pagination, SubActions } from 'shared';
-import { CategoryService } from '../../stores';
 import routePaths from '../../routePaths';
 import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import QnaListView from '../view/QnaListView';
 import SupportService from '../../present/logic/SupportService';
 import { QnaState } from '../../model/vo/QnaState';
@@ -59,8 +57,14 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
     const { supportService, sharedService } = this.injected;
     const { qnaQueryModel } = supportService;
     const pageModel = sharedService.getPageModel(this.paginationKey);
-
-    const totalCount = await supportService.findQnaToMe(pageModel, qnaQueryModel.state);
+    let totalCount = 0;
+    if(qnaQueryModel.state === 'AnswerWaiting') {
+      totalCount = await supportService.findQnaToMe(pageModel, [QnaState.AnswerWaiting, QnaState.QuestionReceived]);
+    } else if (qnaQueryModel.state === 'AnswerCompleted'){
+      totalCount = await supportService.findQnaToMe(pageModel, [QnaState.AnswerCompleted]);
+    } else {
+      totalCount = await supportService.findQnaToMe(pageModel, qnaQueryModel.state);
+    }
     sharedService.setCount(this.paginationKey, totalCount);
 
     this.setState({ isLoading: false });

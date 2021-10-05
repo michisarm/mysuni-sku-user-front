@@ -8,6 +8,7 @@ import OperatorModel from '../../model/vo/OperatorModel';
 import QuestionSdo from '../../model/sdo/QuestionSdo';
 import QuestionModel from '../../model/QuestionModel';
 import SatisfactionCdo from '../../model/sdo/SatisfactionCdo';
+import { QnaState } from '../../model/vo/QnaState';
 
 class SupportApi {
   //
@@ -27,16 +28,32 @@ class SupportApi {
       );
   }
 
-  findQnasToMe(qnAOperatorRdo: QnAOperatorRdo) {
+  findQnasToMe(qnAOperatorRdo: QnAOperatorRdo, state?: QnaState| QnaState[] | undefined) {
     //
-    return axios
-      .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
-        params: qnAOperatorRdo,
-      })
-      .then(
-        (response) =>
-          (response && response.data) || { results: [], totalCount: 0 }
-      );
+    if(!state) {
+      return axios
+        .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
+          params: { offset: qnAOperatorRdo.offset, limit: qnAOperatorRdo.limit },
+        })
+        .then(
+          (response) =>
+            (response && response.data) || { results: [], totalCount: 0 }
+        );
+    } else {
+      return axios
+        .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
+          params: { offset: qnAOperatorRdo.offset, limit: qnAOperatorRdo.limit, state },
+          paramsSerializer: (paramObj) => {
+            const params = new URLSearchParams()
+            paramObj.state.forEach((param: any) => params.append('state', param));
+            return params.toString()
+          }
+        })
+        .then(
+          (response) =>
+            (response && response.data) || { results: [], totalCount: 0 }
+        );
+    }
   }
 
   findQnaById(qnaId: string) {
