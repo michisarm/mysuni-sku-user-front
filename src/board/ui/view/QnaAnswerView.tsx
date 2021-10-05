@@ -46,9 +46,9 @@ class QnaAnswerView extends ReactComponent<Props> {
                       </Table.HeaderCell>
                       <Table.Cell>
                         {(filesMap &&
-                          filesMap.get('reference') &&
+                          filesMap.get('answer') &&
                           filesMap
-                            .get('reference')
+                            .get('answer')
                             .map(
                               (
                                 foundedFile: DepotFileViewModel,

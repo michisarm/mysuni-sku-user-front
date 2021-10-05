@@ -100,15 +100,16 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { qna } = supportService;
     const referenceFileBoxId = qna && qna.question && qna.question.depotId;
+    const answerFileBoxId = qna && qna.answer && qna.answer.depotId;
 
     Promise.resolve().then(() => {
       if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
+      if (answerFileBoxId) this.findFiles('answer', answerFileBoxId);
     });
   }
 
   findFiles(type: string, fileBoxId: string) {
     const { filesMap } = this.state;
-    console.log(fileBoxId);
     depot.getDepotFiles(fileBoxId).then((files) => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
