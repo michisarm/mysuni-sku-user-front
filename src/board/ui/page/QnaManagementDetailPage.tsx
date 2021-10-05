@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { ContentLayout } from 'shared';
 import QnaDetailContainer from '../logic/QnaDetailContainer';
 import { Area } from 'tracker/model';
+import QnaManagementDetailContainer from '../logic/QnaManagementDetailContainer';
 
 @observer
 @reactAutobind
@@ -15,10 +16,10 @@ class QnaDetailPage extends Component {
     return (
       <ContentLayout
         className="support"
-        breadcrumb={[{ text: 'Support' }, { text: '나의 이용문의' }]}
+        breadcrumb={[{ text: 'Support' }, { text: '문의관리' }]}
       >
         <div className="post-view-wrap" data-area={Area.BOARD_QNA_CONTENT}>
-          <QnaDetailContainer />
+          <QnaManagementDetailContainer />
         </div>
       </ContentLayout>
     );
