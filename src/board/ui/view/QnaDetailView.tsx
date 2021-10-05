@@ -50,21 +50,23 @@ class QnaDetailView extends ReactComponent<Props, {}> {
                   value={qna.question.content}
                   readOnly
                 />
-                <div className="file">
+                {
+                  qna.question.depotId ? (
+                    <div className="file">
                   <span>
                     <PolyglotText
                       id="support-QnaRead-첨부파일"
                       defaultString="첨부파일 :"
                     />
                   </span>
-                  <br />
-                  {(filesMap &&
-                    filesMap.get('reference') &&
-                    filesMap
-                      .get('reference')
-                      .map((foundedFile: DepotFileViewModel, index: number) => (
-                        <div>
-                          <a href="#" className="link" key={index}>
+                      <br />
+                      {(filesMap &&
+                        filesMap.get('reference') &&
+                        filesMap
+                          .get('reference')
+                          .map((foundedFile: DepotFileViewModel, index: number) => (
+                            <div>
+                              <a href="#" className="link" key={index}>
                             <span
                               className="ellipsis"
                               onClick={(e) => {
@@ -74,13 +76,15 @@ class QnaDetailView extends ReactComponent<Props, {}> {
                             >
                               {'    ' + foundedFile.name + '     '}
                             </span>
-                            <br />
-                          </a>
-                          <br />
-                        </div>
-                      ))) ||
-                  ''}
-                </div>
+                                <br />
+                              </a>
+                              <br />
+                            </div>
+                          ))) ||
+                      ''}
+                    </div>
+                  ) : null
+                }
                 <br />
               </div>
             </div>
