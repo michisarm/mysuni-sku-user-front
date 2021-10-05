@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -16,15 +15,9 @@ class QnaDetailPage extends Component {
     return (
       <ContentLayout
         className="support"
-        breadcrumb={[
-          { text: 'Support' },
-          { text: 'Q&A' },
-        ]}
+        breadcrumb={[{ text: 'Support' }, { text: '나의 이용문의' }]}
       >
-        <div
-          className="post-view-wrap"
-          data-area={Area.BOARD_QNA_CONTENT}
-        >
+        <div className="post-view-wrap" data-area={Area.BOARD_QNA_CONTENT}>
           <QnaDetailContainer />
         </div>
       </ContentLayout>
