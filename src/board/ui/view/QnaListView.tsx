@@ -52,15 +52,15 @@ class QnaListView extends ReactComponent<Props, {}> {
             questions && questions.length > 0 && questions.map((question, index) => {
 
               return (
-                <Table.Row key={index}>
+                <Table.Row key={index} onClick={() => onClickPost(question.id)}>
                   <Table.Cell>{startNo - index}</Table.Cell>
                   {/*<Table.Cell>{question.requestChannel}</Table.Cell>*/}
                   <Table.Cell className="ctg">{`${getCategoryName(question.mainCategoryId)} > ${getCategoryName(question.subCategoryId)}`}</Table.Cell>
                   <Table.Cell className="title">
                     <div className="tit inner">
-                      <a href="#" onClick={() => onClickPost(question.id)}>
+                      {/*<a href="#" onClick={() => onClickPost(question.id)}>*/}
                         <span className="ellipsis">{question.title}</span>
-                      </a>
+                      {/*</a>*/}
                     </div>
                   </Table.Cell>
                   <Table.Cell>{getQuestionStateReactNode(question.state)}</Table.Cell>
