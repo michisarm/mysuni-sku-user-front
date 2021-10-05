@@ -259,11 +259,18 @@ export function SearchContentsResultSideView() {
                   )}
                   value="true"
                   checked={filterCondition.applying === true}
-                  onChange={() => {
-                    setFilterCondition({
-                      ...filterCondition,
-                      applying: true,
-                    });
+                  onClick={() => {
+                    if (filterCondition.applying === true) {
+                      setFilterCondition({
+                        ...filterCondition,
+                        applying: null,
+                      });
+                    } else {
+                      setFilterCondition({
+                        ...filterCondition,
+                        applying: true,
+                      });
+                    }
                     onClickFilterSearch();
                   }}
                   readOnly={searchUI?.isLoading}
@@ -275,11 +282,18 @@ export function SearchContentsResultSideView() {
                   label={getPolyglotText('직접입력', '통검-필레팝-직접입력')}
                   value="false"
                   checked={filterCondition.applying === false}
-                  onChange={() => {
-                    setFilterCondition({
-                      ...filterCondition,
-                      applying: false,
-                    });
+                  onClick={() => {
+                    if (filterCondition.applying === false) {
+                      setFilterCondition({
+                        ...filterCondition,
+                        applying: null,
+                      });
+                    } else {
+                      setFilterCondition({
+                        ...filterCondition,
+                        applying: false,
+                      });
+                    }
                     onClickFilterSearch();
                   }}
                   readOnly={searchUI?.isLoading}
