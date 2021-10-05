@@ -2,7 +2,6 @@ import React from 'react';
 import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
 
 import classNames from 'classnames';
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
@@ -10,17 +9,12 @@ import { depotHelper, AlertWin, ConfirmWin } from 'shared';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 
 import routePaths from '../../routePaths';
-import { PostModel } from '../../model';
-import { BoardService, CategoryService, PostService } from '../../stores';
+import { BoardService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import {
-  PolyglotString,
-  parsePolyglotString,
-} from 'shared/viewmodel/PolyglotString';
 import FaqListModal from './FaqListModal';
 import SupportService from '../../present/logic/SupportService';
 import QnAModel from '../../model/QnAModel';
@@ -35,6 +29,7 @@ interface Props
 interface States {
   alertWinOpen: boolean;
   confirmWinOpen: boolean;
+  confirmRouteWinOpen: boolean;
   isBlankTarget: string;
   focus: boolean;
   write: string;
@@ -60,6 +55,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   state = {
     alertWinOpen: false,
     confirmWinOpen: false,
+    confirmRouteWinOpen: false,
     isBlankTarget: '',
     focus: false,
     write: '',
@@ -73,6 +69,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
 
   async init() {
     const { supportService } = this.injected;
+    supportService.clearQna();
     await supportService.findAllCategories();
   }
 
@@ -96,6 +93,13 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     });
   }
 
+  handleCloseRouteConfirmWin() {
+    //
+    this.setState({
+      confirmRouteWinOpen: false,
+    });
+  }
+
   async handleOKConfirmWin() {
     //
     const { supportService } = this.injected;
@@ -106,6 +110,12 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     this.onClose();
   }
 
+  async handleOKRouteConfirmWin() {
+    //
+    this.setState({confirmRouteWinOpen: false});
+    this.props.history.push(routePaths.supportQnA());
+  }
+
   onChangeQnAProps(name: string, value: any) {
     //
     const { supportService } = this.injected;
@@ -113,7 +123,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   }
 
   onClose() {
-    this.props.history.push(routePaths.supportQnA());
+    this.setState({confirmRouteWinOpen: true});
   }
 
   onHandleSave() {
@@ -154,6 +164,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
       alertWinOpen,
       isBlankTarget,
       confirmWinOpen,
+      confirmRouteWinOpen,
     } = this.state;
 
     const { supportService } = this.injected;
@@ -376,6 +387,19 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
           buttonNoName={getPolyglotText('Cancel', 'support-QnaWrite-cancel')}
           handleClose={this.handleCloseConfirmWin}
           handleOk={this.handleOKConfirmWin}
+        />
+        {/* TODO:다국어처리 필요 */}
+        <ConfirmWin
+          message={getPolyglotText(
+            '목록으로 이동하시겠습니까? 작성한 내용이 저장되지 않습니다.',
+            'support-QnaWrite-목록mg'
+          )}
+          open={confirmRouteWinOpen}
+          title={getPolyglotText('안내', 'support-QnaWrite-목록tt')}
+          buttonYesName={getPolyglotText('OK', 'support-QnaWrite-ok')}
+          buttonNoName={getPolyglotText('Cancel', 'support-QnaWrite-cancel')}
+          handleClose={this.handleCloseRouteConfirmWin}
+          handleOk={this.handleOKRouteConfirmWin}
         />
       </>
     );
