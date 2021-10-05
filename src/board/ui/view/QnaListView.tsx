@@ -7,6 +7,7 @@ import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
 import QnAModel from '../../model/QnAModel';
 import QuestionModel from '../../model/QuestionModel';
+import { getQuestionStateReactNode } from '../logic/QuestionStateHelper';
 
 interface Props {
   // posts: PostModel[];
@@ -62,7 +63,7 @@ class QnaListView extends ReactComponent<Props, {}> {
                       </a>
                     </div>
                   </Table.Cell>
-                  <Table.Cell>{question.state}</Table.Cell>
+                  <Table.Cell>{getQuestionStateReactNode(question.state)}</Table.Cell>
                   <Table.Cell>{moment(question.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
               )

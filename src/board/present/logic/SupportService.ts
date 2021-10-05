@@ -187,6 +187,11 @@ class SupportService {
     this.qna = _.set(this.qna, name, value);
   }
 
+  @action
+  clearQna(): void {
+    this.qna = new QnAModel();
+  }
+
   getCategoryName(categoryId: string): string {
     return parsePolyglotString(this.categoriesMap.get(categoryId));
   }

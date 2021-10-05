@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 function getQuestionStateReactNode(state: QnaState) {
-  //
+  //TODO:다국어처리 필요
   if(QnaState.QuestionReceived === state) {
     return <PolyglotText id="QuestionSate.QuestionReceived" defaultString="답변대기" />
   } else if (QnaState.AnswerWaiting === state) {
@@ -15,3 +15,5 @@ function getQuestionStateReactNode(state: QnaState) {
     return <></>
   }
 }
+
+export { getQuestionStateReactNode }
