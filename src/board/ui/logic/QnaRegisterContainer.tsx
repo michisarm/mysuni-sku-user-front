@@ -2,11 +2,11 @@ import React from 'react';
 import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import depot, { FileBox, ValidationType, PatronType } from '@nara.drama/depot';
 
 import classNames from 'classnames';
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import { depotHelper, AlertWin, ConfirmWin } from 'shared';
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 
 import routePaths from '../../routePaths';
 import { BoardService } from '../../stores';
@@ -69,8 +69,8 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
 
   async init() {
     const { supportService } = this.injected;
-    supportService.clearQna();
     await supportService.findAllCategories();
+    supportService.clearQna();
   }
 
   // componentWillUnmount(): void {
@@ -123,6 +123,10 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   }
 
   onClose() {
+    this.setState({confirmWinOpen: false, confirmRouteWinOpen: false});
+  }
+
+  routeToQnAList() {
     this.setState({confirmRouteWinOpen: true});
   }
 
@@ -150,6 +154,9 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     // if (post.contents) {
     //   postService!.changePostProps('contents.depotId', fileBoxId);
     // }
+    if(!fileBoxId) {
+      depot.UNSAFE_clearLocalFileList();
+    }
 
     const { supportService } = this.injected;
     supportService.changeQnaProps('question.depotId', fileBoxId);
@@ -170,6 +177,9 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { getMainCategorySelect, getSubCategorySelect } = supportService;
     const { qna } = supportService;
+
+    console.log(qna);
+    console.log(qna.question.depotId);
 
     return (
       <>
@@ -322,7 +332,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   />
                 </label>
                 {/*<Form>*/}
-                  <div className="line-attach width-sm">
+                  <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
                         id={qna.question.depotId}
@@ -342,18 +352,18 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                         ]}
                         onChange={this.getFileBoxIdForReference}
                       />
-                      {/*<div className="bottom">*/}
-                      {/*  <span className="text1"><Icon className="info16" />*/}
-                      {/*    <span className="blind">information</span>*/}
-                      {/*    문서 및 이미지 파일을 업로드 가능합니다.*/}
-                      {/*  </span>*/}
-                      {/*</div>*/}
+                      <div className="bottom">
+                        {/*<span className="text1"><Icon className="info16" />*/}
+                          {/*<span className="blind">information</span>*/}
+                          {/*문서 및 이미지 파일을 업로드 가능합니다.*/}
+                        {/*</span>*/}
+                      </div>
                     </div>
                   </div>
                 {/*</Form>*/}
               </Form.Field>
               <div className="buttons">
-                <Button className="fix line" onClick={this.onClose}>
+                <Button className="fix line" onClick={this.routeToQnAList}>
                   {/*<PolyglotText*/}
                   {/*  id="support-QnaWrite-닫기"*/}
                   {/*  defaultString="Close"*/}

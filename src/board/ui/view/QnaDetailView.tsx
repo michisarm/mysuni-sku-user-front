@@ -1,13 +1,9 @@
 import * as React from 'react';
-import { PatronType, ReactComponent } from '@nara.platform/accent';
-import BoardDetailContentHeaderView from './BoardDetailContentHeaderView';
+import { ReactComponent } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import depot, { DepotFileViewModel, FileBox, ValidationType } from '@nara.drama/depot';
 import QnAModel from '../../model/QnAModel';
-import { Checkbox, Radio, Table, TextArea } from 'semantic-ui-react';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import moment from 'moment';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QnaDetailHeader from './QnaDetailHeader';
 

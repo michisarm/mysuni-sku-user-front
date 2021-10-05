@@ -4,7 +4,7 @@ import { decorate, observable } from 'mobx';
 
 export default class QuestionQueryModel extends QueryModel{
   //
-  state: QnaState | undefined = undefined;
+  state: QnaState | QnaState[] | undefined = undefined;
 }
 
 decorate(QuestionQueryModel, {

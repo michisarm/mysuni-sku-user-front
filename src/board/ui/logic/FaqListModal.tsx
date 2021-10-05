@@ -180,7 +180,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
     //
     const { activeIndex } = this.state;
     return (
-      <>
+      <React.Fragment key={index}>
         <Accordion.Title active={activeIndex === index} onClick={() => this.onClickPost(index)}>
           <div className="faq-icon">Q.</div>
           <div className="txt-wrap">
@@ -195,7 +195,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
             }}
           />
         </Accordion.Content>
-      </>
+      </React.Fragment>
     );
   }
 

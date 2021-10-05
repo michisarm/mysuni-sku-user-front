@@ -113,10 +113,10 @@ class SupportService {
   }
 
   @action
-  async findQnaToMe(pageModel: PageModel, state?: QnaState) {
+  async findQnaToMe(pageModel: PageModel, state?: QnaState | QnaState[] | undefined) {
     //
     const questions = await this.supportApi.findQnasToMe(
-      QnAOperatorRdo.asQnaOperatorRdo(pageModel, state)
+      QnAOperatorRdo.asQnaOperatorRdo(pageModel), state
     );
 
     runInAction(() => {
