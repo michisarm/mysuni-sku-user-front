@@ -4,7 +4,9 @@ import { OffsetElementList } from 'shared/model';
 import _ from 'lodash';
 import PostApi from '../apiclient/PostApi';
 import { PostModel, PostContentsModel } from '../../model';
-
+import PageModel from '../../../shared/components/Pagination/model/PageModel';
+import NoticeRdo from '../../model/sdo/NoticeRdo';
+import SearchSdo from '../../model/sdo/SearchSdo';
 
 @autobind
 export default class PostService {
@@ -26,11 +28,12 @@ export default class PostService {
   faqPosts: OffsetElementList<PostModel> = new OffsetElementList<PostModel>();
 
   @observable
-  pinnedPosts: OffsetElementList<PostModel> = new OffsetElementList<PostModel>();
+  pinnedPosts: OffsetElementList<PostModel> = new OffsetElementList<
+    PostModel
+  >();
 
   @observable
   postContents: PostContentsModel = new PostContentsModel();
-
 
   constructor(postApi: PostApi) {
     this.postApi = postApi;
@@ -52,7 +55,7 @@ export default class PostService {
   async findPostByPostId(postId: string) {
     //
     const post = await this.postApi.findPostByPostId(postId);
-    return runInAction(() => this.post = new PostModel(post));
+    return runInAction(() => (this.post = new PostModel(post)));
   }
 
   @action
@@ -85,22 +88,64 @@ export default class PostService {
   async findPostsByBoardId(boardId: string, offset: number, limit: number) {
     //
     const posts = await this.postApi.findPostsByBoardId(boardId, offset, limit);
-    return runInAction(() => this.posts = posts);
+    return runInAction(() => (this.posts = posts));
   }
 
   @action
-  async findPostsByCategoryId(categoryId: string, offset: number, limit: number) {
+  async findPostsByCategoryId(
+    categoryId: string,
+    offset: number,
+    limit: number
+  ) {
     //
-    const posts = await this.postApi.findPostsByCategoryId(categoryId, offset, limit);
+    const posts = await this.postApi.findPostsByCategoryId(
+      categoryId,
+      offset,
+      limit
+    );
 
-    runInAction(() => this.posts = posts);
+    runInAction(() => (this.posts = posts));
     return posts;
   }
 
   @action
-  async findPostsByCategoryIdAndDeleted(categoryId: string, deleted: boolean, offset: number, limit: number) {
+  async findAllPosts(offset: number, limit: number) {
     //
-    const posts = await this.postApi.findPostsByCategoryIdAndDeleted(categoryId, deleted, offset, limit);
+    const posts = await this.postApi.findAllPosts(
+      offset,
+      limit,
+    );
+
+    runInAction(() => (this.posts = posts));
+    return posts;
+  }
+
+  @action
+  async searchFaq(searchSdo: SearchSdo): Promise<OffsetElementList<PostModel>> {
+    //
+    const offsetElementList = await this.postApi.searchFaq(searchSdo);
+
+    runInAction(() => {
+      this.posts = offsetElementList;
+    })
+
+    return offsetElementList;
+  }
+
+  @action
+  async findPostsByCategoryIdAndDeleted(
+    categoryId: string,
+    deleted: boolean,
+    offset: number,
+    limit: number
+  ) {
+    //
+    const posts = await this.postApi.findPostsByCategoryIdAndDeleted(
+      categoryId,
+      deleted,
+      offset,
+      limit
+    );
     return runInAction(() => {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
@@ -113,9 +158,17 @@ export default class PostService {
   }
 
   @action
-  async findPostsByBoardIdAndPinned(boardId: string, offset: number, limit: number) {
+  async findPostsByBoardIdAndPinned(
+    boardId: string,
+    offset: number,
+    limit: number
+  ) {
     //
-    const pinnedPosts = await this.postApi.findPostsByBoardIdAndPinned(boardId, offset, limit);
+    const pinnedPosts = await this.postApi.findPostsByBoardIdAndPinned(
+      boardId,
+      offset,
+      limit
+    );
 
     runInAction(() => {
       this.pinnedPosts = pinnedPosts;
@@ -124,9 +177,11 @@ export default class PostService {
   }
 
   @action
-  async findNoticePosts(offset: number, limit: number) {
+  async findNoticePosts(pageModel: PageModel, keyword: string = '') {
     //
-    const posts = await this.postApi.findNoticePosts(offset, limit);
+    const posts = await this.postApi.findNoticePosts(
+      NoticeRdo.asNoticeRdo(keyword, pageModel)
+    );
     return runInAction(() => {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
@@ -139,9 +194,19 @@ export default class PostService {
   }
 
   @action
-  async findPostsByCategoryIdAndAnswered(categoryId: string, answered: boolean, offset: number, limit: number) {
+  async findPostsByCategoryIdAndAnswered(
+    categoryId: string,
+    answered: boolean,
+    offset: number,
+    limit: number
+  ) {
     //
-    const posts = await this.postApi.findPostsByCategoryIdAndAnswered(categoryId, answered, offset, limit);
+    const posts = await this.postApi.findPostsByCategoryIdAndAnswered(
+      categoryId,
+      answered,
+      offset,
+      limit
+    );
     return runInAction(() => {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
@@ -184,9 +249,17 @@ export default class PostService {
   }
 
   @action
-  async findQnaPostsByAnswered(answered: boolean, offset: number, limit: number) {
+  async findQnaPostsByAnswered(
+    answered: boolean,
+    offset: number,
+    limit: number
+  ) {
     //
-    const posts = await this.postApi.findQnaPostsByAnswered(answered, offset, limit);
+    const posts = await this.postApi.findQnaPostsByAnswered(
+      answered,
+      offset,
+      limit
+    );
     return runInAction(() => {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
@@ -199,9 +272,19 @@ export default class PostService {
   }
 
   @action
-  async findQnaPostsByCategoryIdAndAnswered(categoryId: string, answered: boolean, offset: number, limit: number) {
+  async findQnaPostsByCategoryIdAndAnswered(
+    categoryId: string,
+    answered: boolean,
+    offset: number,
+    limit: number
+  ) {
     //
-    const posts = await this.postApi.findQnaPostsByCategoryIdAndAnswered(categoryId, answered, offset, limit);
+    const posts = await this.postApi.findQnaPostsByCategoryIdAndAnswered(
+      categoryId,
+      answered,
+      offset,
+      limit
+    );
     return runInAction(() => {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
@@ -212,7 +295,6 @@ export default class PostService {
       return posts;
     });
   }
-
 }
 
 Object.defineProperty(PostService, 'instance', {

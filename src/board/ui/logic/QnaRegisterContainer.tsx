@@ -1,38 +1,35 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
+import depot, { FileBox, ValidationType, PatronType } from '@nara.drama/depot';
 
 import classNames from 'classnames';
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import { depotHelper, AlertWin, ConfirmWin } from 'shared';
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 
 import routePaths from '../../routePaths';
-import { PostModel } from '../../model';
-import { BoardService, CategoryService, PostService } from '../../stores';
+import { BoardService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import {
-  PolyglotString,
-  parsePolyglotString,
-} from 'shared/viewmodel/PolyglotString';
+import FaqListModal from './FaqListModal';
+import SupportService from '../../present/logic/SupportService';
+import QnAModel from '../../model/QnAModel';
+import QuestionSdo from '../../model/sdo/QuestionSdo';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
   boardService?: BoardService;
-  categoryService?: CategoryService;
   skProfileService?: SkProfileService;
-  postService?: PostService;
 }
 
 interface States {
   alertWinOpen: boolean;
   confirmWinOpen: boolean;
+  confirmRouteWinOpen: boolean;
   isBlankTarget: string;
   focus: boolean;
   write: string;
@@ -40,21 +37,25 @@ interface States {
   length: number;
 }
 
+interface Injected {
+  supportService: SupportService;
+}
+
 @inject(
   mobxHelper.injectFrom(
     'board.boardService',
-    'board.categoryService',
-    'board.postService',
+    'board.supportService',
     'profile.skProfileService'
   )
 )
 @observer
 @reactAutobind
-class QnaRegisterContainer extends React.Component<Props, States> {
+class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   //
   state = {
     alertWinOpen: false,
     confirmWinOpen: false,
+    confirmRouteWinOpen: false,
     isBlankTarget: '',
     focus: false,
     write: '',
@@ -63,39 +64,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   };
 
   componentDidMount(): void {
-    const { postService, categoryService, skProfileService } = this.props;
-    const { skProfile } = skProfileService!;
-    //const names = JSON.parse(patronInfo.getPatronName() || '') || '';
-    const { email } = skProfileService!.skProfile;
-    // postService.clearPost();
-    categoryService!.findCategoriesByBoardId('QNA').then(() => {
-      postService!.changePostProps('boardId', 'QNA');
-      const writerName: PolyglotString = {
-        en: skProfile.name.en,
-        ko: skProfile.name.ko,
-        zh: skProfile.name.zh,
-      };
-      postService!.changePostProps('writer.name', writerName);
-      postService!.changePostProps('writer.email', email);
-      const writerCompanyName: PolyglotString = {
-        en: skProfile.companyName.en,
-        ko: skProfile.companyName.ko,
-        zh: skProfile.companyName.zh,
-      };
-      postService!.changePostProps('writer.companyName', writerCompanyName);
-      postService!.changePostProps(
-        'writer.companyCode',
-        skProfile.companyCode
-        // skProfileService!.skProfile.companyName
-      );
-    });
+    this.init();
   }
 
-  componentWillUnmount(): void {
-    //
-    const { postService } = this.props;
-    postService!.clearPost();
+  async init() {
+    const { supportService } = this.injected;
+    await supportService.findAllCategories();
+    supportService.clearQna();
   }
+
+  // componentWillUnmount(): void {
+  //   //
+  //   const { postService } = this.props;
+  //   postService!.clearPost();
+  // }
 
   handleCloseAlertWin() {
     //
@@ -111,53 +93,55 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     });
   }
 
-  handleOKConfirmWin() {
+  handleCloseRouteConfirmWin() {
     //
-    const { postService, history } = this.props;
-    const { post } = postService!;
-    const { params } = this.props.match;
-
-    if (params.sourceType !== undefined && params.sourceId !== undefined) {
-      post.config.sourceType = params.sourceType;
-      post.config.sourceId = params.sourceId;
-    }
-
-    postService!
-      .registerPost(post)
-      .then((postId) =>
-        history.push(routePaths.supportQnAPost(postId as string))
-      );
-    this.onClose();
-
-    if (PostModel.isBlank(post) === 'success') {
-      this.setState({ confirmWinOpen: true });
-    } else {
-      this.setState({
-        isBlankTarget: PostModel.isBlank(post),
-        alertWinOpen: true,
-      });
-    }
+    this.setState({
+      confirmRouteWinOpen: false,
+    });
   }
 
-  onChangePostProps(name: string, value: string | {}) {
+  async handleOKConfirmWin() {
     //
-    const { postService } = this.props;
-    postService!.changePostProps(name, value);
+    const { supportService } = this.injected;
+    const { sourceId } = this.props.match.params;
+    const { qna } = supportService;
+
+    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna, sourceId));
+    this.props.history.push(routePaths.supportQnA());
+    this.onClose();
+  }
+
+  async handleOKRouteConfirmWin() {
+    //
+    this.setState({confirmRouteWinOpen: false});
+    this.props.history.push(routePaths.supportQnA());
+  }
+
+  onChangeQnAProps(name: string, value: any) {
+    //
+    const { supportService } = this.injected;
+    supportService.changeQnaProps(name, value);
   }
 
   onClose() {
-    this.props.history.push(routePaths.supportQnA());
+    this.setState({confirmWinOpen: false, confirmRouteWinOpen: false});
+  }
+
+  routeToQnAList() {
+    this.setState({confirmRouteWinOpen: true});
   }
 
   onHandleSave() {
     //
-    const { post } = this.props.postService!;
+    const { supportService } = this.injected;
+    const { qna } = supportService;
+    const { sourceId } = this.props.match.params;
 
-    if (PostModel.isBlank(post) === 'success') {
+    if (QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {
       this.setState({
-        isBlankTarget: PostModel.isBlank(post),
+        isBlankTarget: QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)),
         alertWinOpen: true,
       });
     }
@@ -165,18 +149,22 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   getFileBoxIdForReference(fileBoxId: string) {
     //
-    const { postService } = this.props;
-    const { post } = postService!;
-
-    if (post.contents) {
-      postService!.changePostProps('contents.depotId', fileBoxId);
+    // const { postService } = this.props;
+    // const { post } = postService!;
+    //
+    // if (post.contents) {
+    //   postService!.changePostProps('contents.depotId', fileBoxId);
+    // }
+    if(!fileBoxId) {
+      depot.UNSAFE_clearLocalFileList();
     }
+
+    const { supportService } = this.injected;
+    supportService.changeQnaProps('question.depotId', fileBoxId);
   }
 
   render() {
     //
-    const { categorys } = this.props.categoryService!;
-    const { post } = this.props.postService!;
     const {
       focus,
       write,
@@ -184,43 +172,56 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       alertWinOpen,
       isBlankTarget,
       confirmWinOpen,
+      confirmRouteWinOpen,
     } = this.state;
-    const questionType: any = [];
 
-    // categorys.map((data, index) => {
-    //   questionType.push({ key: index, value: data.categoryId, text: data.name });
-    // });
+    const { supportService } = this.injected;
+    const { getMainCategorySelect, getSubCategorySelect } = supportService;
+    const { qna } = supportService;
 
-    const currentUrl = window.location.href;
-
-    if (currentUrl.includes('cube') || currentUrl.includes('course')) {
-      categorys.map((data, index) => {
-        if (
-          (data && data.name ? parsePolyglotString(data && data.name) : '') ===
-          'Contents'
-        ) {
-          questionType.push({
-            key: index,
-            value: { id: data.categoryId, name: data.name },
-            text: parsePolyglotString(data.name),
-          });
-        }
-      });
-    } else {
-      categorys.map((data, index) => {
-        questionType.push({
-          key: index,
-          value: { id: data.categoryId, name: data.name },
-          text: parsePolyglotString(data.name),
-        });
-      });
-    }
+    console.log(qna);
+    console.log(qna.question.depotId);
 
     return (
       <>
-        <Segment className="full">
+        <Segment className="full qna-write-content">
           <div className="apl-form-wrap support">
             <Form>
+              <Form.Field>
+                <label>
+                  <span className="label-text">
+                    <PolyglotText
+                      id="support-QnaWrite-문의유형"
+                      defaultString="문의유형"
+                    />
+                  </span>
+                  <FaqListModal />
+                </label>
+                <div className="select-box">
+                  <Select
+                    placeholder={getPolyglotText(
+                      '분류를 선택해주세요',
+                      'support-QnaWrite-분류선택'
+                    )}
+                    className="trig-pop-faq"
+                    options={getMainCategorySelect()}
+                    onChange={(e: any, data: any) =>
+                      this.onChangeQnAProps('question.mainCategoryId', data.value)
+                    }
+                  />
+                  <Select
+                    placeholder={getPolyglotText(
+                      '분류를 선택해주세요',
+                      'support-QnaWrite-분류선택'
+                    )}
+                    // className="ui selection dropdown"
+                    options={getSubCategorySelect(qna.question.mainCategoryId)}
+                    onChange={(e: any, data: any) =>
+                      this.onChangeQnAProps('question.subCategoryId', data.value)
+                    }
+                  />
+                </div>
+              </Form.Field>
               <Form.Field>
                 <label>
                   <PolyglotText
@@ -237,10 +238,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 >
                   <span className="count">
                     <span className="now">
-                      {(post &&
-                        post.title &&
-                        parsePolyglotString(post.title).length) ||
-                        0}
+                      {qna.question.title.length}
                     </span>
                     /<span className="max">100</span>
                   </span>
@@ -253,7 +251,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
                     value={
-                      post && post.title ? parsePolyglotString(post.title) : ''
+                      qna.question.title
                     }
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
@@ -261,12 +259,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       } else {
                         const value = e.target.value;
                         this.setState({ write: value, fieldName: '' });
-                        const polyglotString: PolyglotString = {
-                          en: null,
-                          ko: value,
-                          zh: null,
-                        };
-                        this.onChangePostProps('title', polyglotString);
+                        this.onChangeQnAProps('question.title', value);
                       }
                     }}
                   />
@@ -274,12 +267,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     className="clear link"
                     onClick={(e: any) => {
                       this.setState({ write: '' });
-                      const polyglotString: PolyglotString = {
-                        en: null,
-                        ko: '',
-                        zh: null,
-                      };
-                      this.onChangePostProps('title', polyglotString);
+                      this.onChangeQnAProps('question.title', '');
                     }}
                   />
                   <span className="validation">
@@ -293,27 +281,6 @@ class QnaRegisterContainer extends React.Component<Props, States> {
               <Form.Field>
                 <label>
                   <PolyglotText
-                    id="support-QnaWrite-문의유형"
-                    defaultString="문의유형"
-                  />
-                </label>
-                <div className="select-box">
-                  <Select
-                    placeholder={getPolyglotText(
-                      '분류를 선택해주세요',
-                      'support-QnaWrite-분류선택'
-                    )}
-                    className="dropdown selection"
-                    options={questionType}
-                    onChange={(e: any, data: any) =>
-                      this.onChangePostProps('category', data.value)
-                    }
-                  />
-                </div>
-              </Form.Field>
-              <Form.Field>
-                <label>
-                  <PolyglotText
                     id="support-QnaWrite-내용"
                     defaultString="내용"
                   />
@@ -322,42 +289,26 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="ui form">
                     <div
                       className={classNames('ui right-top-count input', {
-                        error: this.state.fieldName === 'contents.contents',
+                        error: this.state.fieldName === 'question.content',
                       })}
                     >
                       {/* .error class 추가시 error ui 활성 */}
                       <span className="count">
-                        <span className="now">{this.state.length}</span>/
+                        <span className="now">{qna.question.content.length}</span>/
                         <span className="max">1000</span>
                       </span>
-                      {/*<Editor*/}
-                      {/*  post={post}*/}
-                      {/*  onChangeContentsProps={this.onChangerContentsProps}*/}
-                      {/*/>*/}
                       <textarea
-                        value={
-                          (post &&
-                            post.contents &&
-                            post.contents.contents &&
-                            parsePolyglotString(post.contents.contents)) ||
-                          ''
-                        }
+                        value={qna.question.content}
                         onChange={(e) => {
                           const value = e.target.value;
                           if (value.length > 1000) {
-                            this.setState({ fieldName: 'contents.contents' });
+                            this.setState({ fieldName: 'question.content' });
                           } else {
-                            const polyglotString: PolyglotString = {
-                              en: null,
-                              ko: value,
-                              zh: null,
-                            };
-                            this.onChangePostProps(
-                              'contents.contents',
-                              polyglotString
+                            this.onChangeQnAProps(
+                              'question.content',
+                              value
                             );
                             this.setState({
-                              length: value.length,
                               fieldName: '',
                             });
                           }
@@ -381,13 +332,11 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     defaultString="첨부파일"
                   />
                 </label>
-                <Form>
-                  <div className="line-attach width-sm">
+                {/*<Form>*/}
+                  <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
-                        id={
-                          (post && post.contents && post.contents.depotId) || ''
-                        }
+                        id={qna.question.depotId}
                         vaultKey={{
                           keyString: 'qna-sample',
                           patronType: PatronType.Audience,
@@ -404,28 +353,30 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                         ]}
                         onChange={this.getFileBoxIdForReference}
                       />
-                      {/*<div className="bottom">*/}
-                      {/*  <span className="text1"><Icon className="info16" />*/}
-                      {/*    <span className="blind">information</span>*/}
-                      {/*    문서 및 이미지 파일을 업로드 가능합니다.*/}
-                      {/*  </span>*/}
-                      {/*</div>*/}
+                      <div className="bottom">
+                        {/*<span className="text1"><Icon className="info16" />*/}
+                          {/*<span className="blind">information</span>*/}
+                          {/*문서 및 이미지 파일을 업로드 가능합니다.*/}
+                        {/*</span>*/}
+                      </div>
                     </div>
                   </div>
-                </Form>
+                {/*</Form>*/}
               </Form.Field>
               <div className="buttons">
-                <Button className="fix line" onClick={this.onClose}>
-                  <PolyglotText
-                    id="support-QnaWrite-닫기"
-                    defaultString="Close"
-                  />
+                <Button className="fix line" onClick={this.routeToQnAList}>
+                  {/*<PolyglotText*/}
+                  {/*  id="support-QnaWrite-닫기"*/}
+                  {/*  defaultString="Close"*/}
+                  {/*/>*/}
+                  목록
                 </Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>
-                  <PolyglotText
-                    id="support-QnaWrite-제출"
-                    defaultString="Submit"
-                  />
+                  {/*<PolyglotText*/}
+                  {/*  id="support-QnaWrite-제출"*/}
+                  {/*  defaultString="Submit"*/}
+                  {/*/>*/}
+                  등록
                 </Button>
               </div>
             </Form>
@@ -447,6 +398,19 @@ class QnaRegisterContainer extends React.Component<Props, States> {
           buttonNoName={getPolyglotText('Cancel', 'support-QnaWrite-cancel')}
           handleClose={this.handleCloseConfirmWin}
           handleOk={this.handleOKConfirmWin}
+        />
+        {/* TODO:다국어처리 필요 */}
+        <ConfirmWin
+          message={getPolyglotText(
+            '목록으로 이동하시겠습니까? 작성한 내용이 저장되지 않습니다.',
+            'support-QnaWrite-목록mg'
+          )}
+          open={confirmRouteWinOpen}
+          title={getPolyglotText('안내', 'support-QnaWrite-목록tt')}
+          buttonYesName={getPolyglotText('OK', 'support-QnaWrite-ok')}
+          buttonNoName={getPolyglotText('Cancel', 'support-QnaWrite-cancel')}
+          handleClose={this.handleCloseRouteConfirmWin}
+          handleOk={this.handleOKRouteConfirmWin}
         />
       </>
     );

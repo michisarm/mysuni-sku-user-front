@@ -38,6 +38,7 @@ class PostModel implements DomainEntity {
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
 
+  commentCount: number = 0;
   commentFeedbackId: string = '';
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
   langSupports: LangSupport[] = [];
@@ -156,6 +157,7 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
+  commentCount: observable,
   commentFeedbackId: observable,
   alarmInfo: observable,
 });
