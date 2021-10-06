@@ -6,7 +6,7 @@ import {
   getPolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
-import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainer';
+import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainerV2';
 
 const gotoUrl = (url: string) => {
   window.open(url);
