@@ -21,9 +21,10 @@ interface Props {
   filesMap: Map<string, any>;
   categoriesMap: Map<string, PolyglotString>;
   finalOperator: OperatorModel;
-  onClickList: () => void;
   renderState: (state: QnaState) => React.ReactNode;
   getChannelToString: (channel: RequestChannel) => string;
+  onClickList: () => void;
+  onClickDelete: () => void;
 }
 
 @observer
@@ -37,9 +38,10 @@ class QnaManagementDetailView extends React.Component<Props> {
       filesMap,
       categoriesMap,
       finalOperator,
-      onClickList,
       renderState,
       getChannelToString,
+      onClickList,
+      onClickDelete,
     } = this.props;
 
     return (
@@ -59,6 +61,7 @@ class QnaManagementDetailView extends React.Component<Props> {
           email={finalOperator.email}
           registeredTime={qna.question.registeredTime}
           onClickList={onClickList}
+          onClickDelete={onClickDelete}
         />
 
         {qna.question.content && (

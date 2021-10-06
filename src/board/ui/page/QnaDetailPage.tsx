@@ -15,7 +15,7 @@ class QnaDetailPage extends Component {
     //
     return (
       <ContentLayout
-        className="support"
+        className="support bg-white"
         breadcrumb={[
           { text: 'Support' },
           { text: '나의 이용문의' },
