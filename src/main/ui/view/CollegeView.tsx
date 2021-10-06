@@ -2936,7 +2936,7 @@ const koPanes = [
             <div className="belt">
               <div className="map">
                 <Image
-                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -2948,7 +2948,7 @@ const koPanes = [
               <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                 src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -3788,7 +3788,7 @@ const EnPanes = [
                               Service Design - IDEO
                             </a>
                           </td>
-                          <td>
+                          <td className="txt-small">
                             <a href="#none">
                               [Actual Project] <br /> Creating a
                               Customer-centered Biz, <br />
@@ -7076,7 +7076,7 @@ const ZhPanes = [
                           <td></td>
                           <td>
                             <a href="#none">
-                            掌握顾问的业务水平
+                              掌握顾问的业务水平
                               <br />
                               第二部
                               <br />
@@ -7411,7 +7411,11 @@ const ZhPanes = [
                         </a>
                       </li>
                       <li>
-                        <a href="#none">理解客户的重要性，<br />Remind！</a>
+                        <a href="#none">
+                          理解客户的重要性，
+                          <br />
+                          Remind！
+                        </a>
                       </li>
                       <li>
                         <a href="#none">
