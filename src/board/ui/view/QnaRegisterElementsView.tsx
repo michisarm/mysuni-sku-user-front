@@ -9,7 +9,7 @@ export const QnaRegisterContentHeaderView: FunctionComponent = () => (
         {/*  id="support-QnaWrite-타이틀"*/}
         {/*  defaultString="Ask a Question"*/}
         {/*/>*/}
-        나의 이용문의
+        1:1 문의
       </div>
       <div className="apl-notice">
         <PolyglotText
