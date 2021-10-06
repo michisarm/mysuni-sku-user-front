@@ -15,7 +15,7 @@ class QnaDetailPage extends Component {
     //
     return (
       <ContentLayout
-        className="support"
+        className="support bg-white"
         breadcrumb={[{ text: 'Support' }, { text: '문의관리' }]}
       >
         <div className="post-view-wrap" data-area={Area.BOARD_QNA_CONTENT}>
