@@ -5,10 +5,11 @@ export const QnaRegisterContentHeaderView: FunctionComponent = () => (
   <div className="add-personal-learning support">
     <div className="add-personal-learning-wrap">
       <div className="apl-tit">
-        <PolyglotText
-          id="support-QnaWrite-타이틀"
-          defaultString="Ask a Question"
-        />
+        {/*<PolyglotText*/}
+        {/*  id="support-QnaWrite-타이틀"*/}
+        {/*  defaultString="Ask a Question"*/}
+        {/*/>*/}
+        1:1 문의
       </div>
       <div className="apl-notice">
         <PolyglotText

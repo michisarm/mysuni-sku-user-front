@@ -3,8 +3,6 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Icon } from 'semantic-ui-react';
-
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardListContentHeaderHelpView from '../view/BoardListContentHeaderHelpView';
@@ -30,51 +28,103 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
     this.props.history.push(routePaths.supportFAQPost(postId));
   }
 
+  // TODO Title 번역 후에 맞는 ID로 수정
+  renderSupportTitle() {
+    //
+    const { boardId } = this.props.match.params;
+
+    if (boardId === 'Notice') {
+      //
+      return (
+        <>
+          <div className="title">
+            <PolyglotText
+              id="support-spif-Notice타이틀"
+              defaultString="Notice"
+            />
+          </div>
+          <div className="text">
+            <PolyglotText
+              id="support-spif-Notice타이틀"
+              defaultString="mySUNI의 신규 콘텐츠, 기능 추가, 이벤트 등 새로운 소식을 안내드립니다."
+            />
+          </div>
+        </>
+      );
+    } else if (boardId === 'FAQ') {
+      //
+      return (
+        <>
+          <div className="title">
+            <PolyglotText id="support-spif-FAQ타이틀" defaultString="FAQ" />
+          </div>
+          <div className="text">
+            <PolyglotText
+              id="support-spif-FAQ타이틀"
+              defaultString="mySUNI에 대한 자주 찾는 질문들을 확인하실 수 있습니다."
+            />
+          </div>
+        </>
+      );
+    } else if (boardId === 'Q&A') {
+      //
+      return (
+        <>
+          <div className="title">
+            <PolyglotText
+              id="support-spif-나의이용문의"
+              defaultString="1:1 문의"
+            />
+          </div>
+          <div className="text">
+            <PolyglotText
+              id="support-spif-나의이용문의"
+              defaultString="mySUNI에 대한 궁금증을 풀어드립니다."
+            />
+          </div>
+        </>
+      );
+    } else {
+      //
+      return (
+        <>
+          <div className="title">
+            <PolyglotText
+              id="support-spif-QnaMgt타이틀"
+              defaultString="문의관리"
+            />
+          </div>
+          <div className="text">
+            <PolyglotText
+              id="support-spif-QnaMgt타이틀"
+              defaultString="문의에 대한 답변을 등록하실 수 있습니다."
+            />
+          </div>
+        </>
+      );
+    }
+  }
+
   render() {
     //
     const { faqPosts } = this.props.postService!;
+    const { boardId } = this.props.match.params;
 
     return (
       <div className="main-info-area">
         <div className="support-info">
           <div className="title-area">
-            <div className="line-wrap">
-              <div className="title">
-                <PolyglotText
-                  id="support-spif-타이틀"
-                  defaultString="Support"
-                />
-              </div>
-              <div className="text">
-                <PolyglotText
-                  id="support-spif-상세궁금"
-                  defaultString="mySUNI에 대한 궁금증을 풀어드립니다."
-                />
-                <br />
-                <PolyglotText
-                  id="support-spif-상세설명"
-                  defaultString="Help Desk"
-                />
-                <span className="dash" />
-                <Icon className="supporttel16" />
-                <span className="blind">
-                  <PolyglotText
-                    id="support-spif-tel"
-                    defaultString="support tel"
-                  />
-                </span>
-                <PolyglotText
-                  id="support-spif-전화번호"
-                  defaultString="02-6323-9002"
-                />
-              </div>
-            </div>
+            <div className="line-wrap">{this.renderSupportTitle()}</div>
           </div>
-          <BoardListContentHeaderHelpView
-            faqTotalCount={faqPosts.totalCount}
-            faqPosts={faqPosts.results}
-            routeToFaqDetail={this.routeToFaqDetail}
-          />
+          {boardId !== 'Q&AMgt' && (
+            <div className="tit-right-area">
+              <BoardListContentHeaderHelpView
+                faqTotalCount={faqPosts.totalCount}
+                faqPosts={faqPosts.results}
+                routeToFaqDetail={this.routeToFaqDetail}
+              />
+            </div>
+          )}
         </div>
       </div>
     );

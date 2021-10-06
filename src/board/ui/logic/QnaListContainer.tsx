@@ -1,23 +1,18 @@
-import React, { Fragment } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import React from 'react';
+import { mobxHelper, reactAutobind, ReactComponent } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
-import moment from 'moment';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
-import { PostModel } from '../../model';
-import { CategoryService, PostService } from '../../stores';
+import { Loadingpanel, NoSuchContentPanel, Pagination, SubActions } from 'shared';
 import routePaths from '../../routePaths';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import QnaListView from '../view/QnaListView';
+import SupportService from '../../present/logic/SupportService';
+import { QnaState } from '../../model/vo/QnaState';
+import { SharedService } from '../../../shared/stores';
 
 interface Props extends RouteComponentProps {
-  postService?: PostService;
-  categoryService?: CategoryService;
 }
 
 interface State {
@@ -26,11 +21,18 @@ interface State {
   isLoading: boolean;
 }
 
-@inject(mobxHelper.injectFrom('board.categoryService', 'board.postService'))
+interface Injected {
+  sharedService: SharedService;
+  supportService: SupportService;
+}
+
+@inject(mobxHelper.injectFrom('shared.sharedService', 'board.supportService'))
 @observer
 @reactAutobind
-class QnaListContainer extends React.Component<Props, State> {
+class QnaListContainer extends ReactComponent<Props, State, Injected> {
   //
+  paginationKey = 'MyQnA';
+
   state = {
     offset: 0,
     answered: '',
@@ -40,35 +42,31 @@ class QnaListContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     //
     super(props);
-    props.postService!.clearPosts();
   }
 
   componentDidMount() {
     //
-    this.findQnaPosts('all', 10);
+    const { supportService } = this.injected;
+
+    this.findMyQnas(undefined);
+    supportService.findAllCategories();
   }
 
-  findQnaPosts(answered: any, offset: number) {
+  async findMyQnas(answered: any): Promise<void> {
     //
-    this.setState({ isLoading: true });
-    const postService = this.props.postService!;
-
-    if (answered === 'all' || !String(answered).length) {
-      postService.findQnaPosts(0, offset).then(() => {
-        this.setState({
-          answered,
-          offset: offset + 10,
-        });
-      });
+    const { supportService, sharedService } = this.injected;
+    const { qnaQueryModel } = supportService;
+    const pageModel = sharedService.getPageModel(this.paginationKey);
+    let totalCount = 0;
+    if(qnaQueryModel.state === 'AnswerWaiting') {
+      totalCount = await supportService.findQnaToMe(pageModel, [QnaState.AnswerWaiting, QnaState.QuestionReceived]);
+    } else if (qnaQueryModel.state === 'AnswerCompleted'){
+      totalCount = await supportService.findQnaToMe(pageModel, [QnaState.AnswerCompleted]);
     } else {
-      postService.clearPosts();
-      postService.findQnaPostsByAnswered(answered, 0, offset).then(() => {
-        this.setState({
-          answered,
-          offset: offset + 10,
-        });
-      });
+      totalCount = await supportService.findQnaToMe(pageModel, qnaQueryModel.state);
     }
+    sharedService.setCount(this.paginationKey, totalCount);
+
     this.setState({ isLoading: false });
   }
 
@@ -87,117 +85,78 @@ class QnaListContainer extends React.Component<Props, State> {
     this.props.history.push(routePaths.supportQnAAnswer(postId));
   }
 
-  renderPostRow(post: PostModel, index: number) {
+  getCategoryName(categoryId: string): string {
     //
-    let answerElement = null;
+    const { supportService } = this.injected;
+    return supportService.getCategoryName(categoryId);
+  }
 
-    // 김민준 IdName 타입
+  onChangeQuestionState(value: QnaState | undefined): void {
+    //
+    const { supportService } = this.injected;
+    supportService.changeQuestionQueryProps('state', value);
 
-    if (post.answered) {
-      answerElement = (
-        <a
-          target="_blank"
-          className="row reply"
-          onClick={() => this.onClickPostAnswer(post.postId)}
-        >
-          <span className="cell title">
-            <Icon className="reply16-b" />
-            <span className="blind">reply</span>
-            <span className="ellipsis">{post.answer.name}</span>
-          </span>
-          <span className="cell category" />
-          <span className="cell status" />
-          <span className="cell date">
-            {post.answeredAt && moment(post.answeredAt).format('YYYY.MM.DD')}
-          </span>
-        </a>
-      );
-    }
-
-    return (
-      <Fragment key={`post-${index}`}>
-        <a
-          target="_blank"
-          className="row"
-          onClick={() => this.onClickPost(post.postId)}
-        >
-          <span className="cell title">
-            <span className="inner">
-              <span className="ellipsis">
-                {parsePolyglotString(post.title)}
-              </span>
-            </span>
-          </span>
-          <span className="cell category">
-            {parsePolyglotString(post.category.name)}
-          </span>
-          <span className="cell status">
-            {post.answered
-              ? getPolyglotText('답변완료', 'support-qna-답변완료')
-              : getPolyglotText('답변대기', 'support-qna-답변대기')}
-          </span>
-          <span className="cell date">
-            {post.registeredTime &&
-              moment(post.registeredTime).format('YYYY.MM.DD')}
-          </span>
-        </a>
-        {answerElement}
-      </Fragment>
-    );
+    this.findMyQnas(supportService.qnaQueryModel.state);
   }
 
   render() {
     //
-    const { posts } = this.props.postService!;
-    const { offset, answered, isLoading } = this.state;
-    const result = posts.results;
-    const totalCount = posts.totalCount;
+    const { offset, isLoading } = this.state;
+    const { supportService, sharedService } = this.injected;
+    const { questions, qnaQueryModel } = supportService;
+    const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
       <div className="full">
-        <div className="support-list-wrap">
-          <div className="list-top">
-            <Button icon className="left post ask" onClick={this.onClickNewQna}>
-              <Icon className="ask24" />
-              &nbsp;&nbsp;{' '}
-              <PolyglotText
-                id="support-qna-질문"
-                defaultString="Ask a Question"
-              />
-            </Button>
-            <div className="radio-wrap">
-              <Radio
-                className="base"
-                label={getPolyglotText('모두 보기', 'support-qna-rall')}
-                name="radioGroup"
-                value="all"
-                checked={answered === 'all'}
-                onChange={(e: any, data: any) => {
-                  this.findQnaPosts(data.value, 10);
-                }}
-              />
-              <Radio
-                className="base"
-                label={getPolyglotText('답변 완료', 'support-qna-rdn')}
-                name="radioGroup"
-                value="true"
-                checked={answered === 'true'}
-                onChange={(e: any, data: any) => {
-                  this.findQnaPosts(data.value, 10);
-                }}
-              />
-              <Radio
-                className="base"
-                label={getPolyglotText('답변 대기', 'support-qna-rwt')}
-                name="radioGroup"
-                value="false"
-                checked={answered === 'false'}
-                onChange={(e: any, data: any) => {
-                  this.findQnaPosts(data.value, 10);
-                }}
-              />
-            </div>
-          </div>
+        <div className="support-list-wrap user-qa">
+          <Pagination name={this.paginationKey} onChange={this.findMyQnas}>
+
+          <SubActions>
+            <SubActions.Right>
+              <div className="list-top">
+                <Button icon className="left post ask" onClick={this.onClickNewQna}>
+                  <Icon className="ask24" />
+                  &nbsp;&nbsp;{' '}
+                  <PolyglotText
+                    id="support-qna-질문"
+                    defaultString="문의하기"
+                  />
+                </Button>
+                <div className="radio-wrap">
+                  <Radio
+                    className="base"
+                    label={getPolyglotText('전체', 'support-qna-rall')}
+                    name="radioGroup"
+                    value={undefined}
+                    checked={qnaQueryModel.state === undefined}
+                    onChange={(e: any, data: any) => {
+                      this.onChangeQuestionState(undefined);
+                    }}
+                  />
+                  <Radio
+                    className="base"
+                    label={getPolyglotText('답변 완료', 'support-qna-rdn')}
+                    name="radioGroup"
+                    value={QnaState.AnswerCompleted}
+                    checked={qnaQueryModel.state === QnaState.AnswerCompleted}
+                    onChange={(e: any, data: any) => {
+                      this.onChangeQuestionState(data.value);
+                    }}
+                  />
+                  <Radio
+                    className="base"
+                    label={getPolyglotText('답변 대기', 'support-qna-rwt')}
+                    name="radioGroup"
+                    value={QnaState.AnswerWaiting}
+                    checked={qnaQueryModel.state === QnaState.AnswerWaiting}
+                    onChange={(e: any, data: any) => {
+                      this.onChangeQuestionState(data.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </SubActions.Right>
+          </SubActions>
           {isLoading ? (
             <Segment
               style={{
@@ -212,7 +171,7 @@ class QnaListContainer extends React.Component<Props, State> {
             >
               <Loadingpanel loading={isLoading} />
             </Segment>
-          ) : result.length === 0 ? (
+          ) : questions.length === 0 ? (
             <NoSuchContentPanel
               message={getPolyglotText(
                 '등록된 Q&A가 없습니다.',
@@ -221,28 +180,18 @@ class QnaListContainer extends React.Component<Props, State> {
             />
           ) : (
             <>
-              <div className="su-list qna">
-                {posts.results.map((post, index) =>
-                  this.renderPostRow(post, index)
-                )}
+              <div className="qna-admin-list-wrap">
+                  <QnaListView
+                    getCategoryName={this.getCategoryName}
+                    onClickPost={this.onClickPost}
+                    questions={questions}
+                    startNo={startNo}
+                  />
               </div>
-
-              {posts.results.length < posts.totalCount && (
-                <div
-                  className="more-comments"
-                  onClick={() => this.findQnaPosts(answered, offset)}
-                >
-                  <Button icon className="left moreview">
-                    <Icon className="moreview" />
-                    <PolyglotText
-                      id="support-qna-더보기"
-                      defaultString="list more"
-                    />
-                  </Button>
-                </div>
-              )}
             </>
           )}
+            <Pagination.Navigator styled/>
+          </Pagination>
         </div>
       </div>
     );

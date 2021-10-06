@@ -1,0 +1,23 @@
+@Library('retort-lib') _
+def label = "jenkins-${UUID.randomUUID().toString()}"
+
+def ZCP_USERID='yswon'
+timestamps {
+    podTemplate(label:label,
+        serviceAccount: "zcp-system-sa-${ZCP_USERID}",
+        containers: [
+            containerTemplate(name: 'node', image: 'node:10.16.3', ttyEnabled: true, command: 'cat')
+        ],
+        volumes: [
+            persistentVolumeClaim(mountPath: '/root/.m2', claimName: 'zcp-jenkins-mvn-repo')
+        ]) {
+
+        node(label) {
+            stage('rm node_modules') {
+                container('node') {
+                    sh 'rm -Rf node_modules'
+                }
+            }
+        }
+    }
+}
