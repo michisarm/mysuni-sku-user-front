@@ -7411,7 +7411,7 @@ const ZhPanes = [
                         </a>
                       </li>
                       <li>
-                        <a href="#none">理解客户的重要性，Remind！</a>
+                        <a href="#none">理解客户的重要性，<br />Remind！</a>
                       </li>
                       <li>
                         <a href="#none">
