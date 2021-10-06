@@ -2936,7 +2936,7 @@ const koPanes = [
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
+                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -2948,7 +2948,7 @@ const koPanes = [
               <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
+                 src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
