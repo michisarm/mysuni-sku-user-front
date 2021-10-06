@@ -28,12 +28,18 @@ class SupportApi {
       );
   }
 
-  findQnasToMe(qnAOperatorRdo: QnAOperatorRdo, state?: QnaState| QnaState[] | undefined) {
+  findQnasToMe(
+    qnAOperatorRdo: QnAOperatorRdo,
+    state?: QnaState | QnaState[] | undefined
+  ) {
     //
-    if(!state) {
+    if (!state) {
       return axios
         .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
-          params: { offset: qnAOperatorRdo.offset, limit: qnAOperatorRdo.limit },
+          params: {
+            offset: qnAOperatorRdo.offset,
+            limit: qnAOperatorRdo.limit,
+          },
         })
         .then(
           (response) =>
@@ -42,12 +48,18 @@ class SupportApi {
     } else {
       return axios
         .get<OffsetElementList<QuestionModel>>(this.URL + `/my`, {
-          params: { offset: qnAOperatorRdo.offset, limit: qnAOperatorRdo.limit, state },
+          params: {
+            offset: qnAOperatorRdo.offset,
+            limit: qnAOperatorRdo.limit,
+            state,
+          },
           paramsSerializer: (paramObj) => {
-            const params = new URLSearchParams()
-            paramObj.state.forEach((param: any) => params.append('state', param));
-            return params.toString()
-          }
+            const params = new URLSearchParams();
+            paramObj.state.forEach((param: any) =>
+              params.append('state', param)
+            );
+            return params.toString();
+          },
         })
         .then(
           (response) =>
@@ -108,6 +120,13 @@ class SupportApi {
     //
     return axios
       .post(this.URL + `/answer/${questionId}`, qnaAnswerUdo)
+      .then((response) => response && response.data);
+  }
+
+  removeQuestion(questionId: string) {
+    //
+    return axios
+      .delete(this.URL + `/${questionId}`)
       .then((response) => response && response.data);
   }
 }

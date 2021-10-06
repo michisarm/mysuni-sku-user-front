@@ -30,8 +30,10 @@ interface State {
   filesMap: Map<string, any>;
   answerFilesMap: Map<string, any>;
   isUpdatable: boolean;
+  title: string;
   message: string;
   open: string;
+  isDelete: boolean;
 }
 
 interface Injected {
@@ -51,8 +53,10 @@ class QnaManagementDetailContainer extends ReactComponent<
     filesMap: new Map<string, any>(),
     answerFilesMap: new Map<string, any>(),
     isUpdatable: false,
+    title: '',
     message: '',
     open: '',
+    isDelete: false,
   };
 
   componentDidMount() {
@@ -64,8 +68,6 @@ class QnaManagementDetailContainer extends ReactComponent<
     //
     const { qnaId } = this.props.match.params;
     const { supportService } = this.injected;
-
-    console.log(qnaId);
 
     await supportService.findAllCategories();
     const qna = await supportService.findQnaById(qnaId);
@@ -154,11 +156,13 @@ class QnaManagementDetailContainer extends ReactComponent<
       return;
     }
 
+    const title = getPolyglotText('등록 안내', 'support-QnaRead-등록안내');
+
     const message = qna.checkMail
       ? '문의자에게 메일을 발송 하시겠습니까?'
       : '답변 정보를 등록 하시겠습니까?';
 
-    this.setState({ message, open: 'confirm' });
+    this.setState({ title, message, open: 'confirm', isDelete: false });
   }
 
   onSave() {
@@ -169,6 +173,24 @@ class QnaManagementDetailContainer extends ReactComponent<
       this.reRenderQna().then(() => {
         this.setState({ open: '', isUpdatable: false });
       });
+    });
+  }
+
+  onClickDelete() {
+    //
+    const title = getPolyglotText('삭제 안내', 'support-QnaRead-삭제안내');
+    const message = '문의을 삭제하시겠습니까?';
+
+    this.setState({ title, message, open: 'confirm', isDelete: true });
+  }
+
+  onDelete() {
+    //
+    const qnaId = this.props.match.params.qnaId;
+    const { removeQuestion } = this.injected.supportService;
+
+    removeQuestion(qnaId).then(() => {
+      this.onClickList();
     });
   }
 
@@ -208,7 +230,15 @@ class QnaManagementDetailContainer extends ReactComponent<
   render() {
     //
     const { supportService } = this.injected;
-    const { filesMap, isUpdatable, answerFilesMap, open, message } = this.state;
+    const {
+      filesMap,
+      isUpdatable,
+      answerFilesMap,
+      open,
+      message,
+      title,
+      isDelete,
+    } = this.state;
     const {
       qna,
       categoriesMap,
@@ -227,9 +257,10 @@ class QnaManagementDetailContainer extends ReactComponent<
             categoriesMap={categoriesMap}
             filesMap={filesMap}
             finalOperator={finalOperator}
-            onClickList={this.onClickList}
             renderState={this.renderState}
             getChannelToString={getChannelToString}
+            onClickList={this.onClickList}
+            onClickDelete={this.onClickDelete}
           />
 
           <Segment className="full">
@@ -276,8 +307,8 @@ class QnaManagementDetailContainer extends ReactComponent<
             message={message}
             open={open === 'confirm'}
             handleClose={() => this.setState({ open: '' })}
-            handleOk={this.onSave}
-            title={getPolyglotText('등록 안내', 'support-QnaRead-등록안내')}
+            handleOk={isDelete ? this.onDelete : this.onSave}
+            title={title}
             buttonYesName={getPolyglotText('OK', 'support-QnaRead-ok버튼')}
             buttonNoName={getPolyglotText('Cancel', 'support-QnaRead-취소버튼')}
           />

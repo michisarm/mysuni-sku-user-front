@@ -112,7 +112,7 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span className="impt">첨부 파일</span>
+                        <span>첨부 파일</span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div className="lg-attach add-discussion">

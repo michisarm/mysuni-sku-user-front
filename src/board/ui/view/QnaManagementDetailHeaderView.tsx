@@ -17,6 +17,7 @@ interface Props {
   registeredTime: number;
 
   onClickList: () => void;
+  onClickDelete: () => void;
 }
 
 class QnaManagementDetailHeaderView extends React.Component<Props> {
@@ -34,6 +35,7 @@ class QnaManagementDetailHeaderView extends React.Component<Props> {
       email,
       registeredTime,
       onClickList,
+      onClickDelete,
     } = this.props;
 
     return (
@@ -63,6 +65,14 @@ class QnaManagementDetailHeaderView extends React.Component<Props> {
               </div>
 
               <div className="actions">
+                <Button
+                  icon
+                  className="postset delete"
+                  onClick={() => onClickDelete()}
+                >
+                  <Icon name="delete" />
+                  Delete
+                </Button>
                 <Button
                   icon
                   className="left postset commu-list16"
