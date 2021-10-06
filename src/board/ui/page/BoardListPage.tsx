@@ -37,7 +37,7 @@ enum ContentType {
 enum ContentName {
   Notice = 'Notice',
   FAQ = 'FAQ',
-  QnA = '나의 이용문의',
+  QnA = '1:1 문의',
   QnAMgt = '문의관리',
 }
 
@@ -103,7 +103,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
     } else if (boardId === ContentType.FAQ) {
       return 'FAQ';
     } else if (boardId === ContentType.QnA) {
-      return '나의 이용문의';
+      return '1:1 문의';
     } else if (boardId === ContentType.QnAMgt) {
       return '문의관리';
     }
