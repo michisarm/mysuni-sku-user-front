@@ -11,11 +11,13 @@ import { initializeBody } from './shared/helper/bodyHelper';
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
-// 2021-10-01 17:00
+// 2021-10-06 14:00
 import './style/css/2.1ba1de7b.chunk.css';
-import './style/css/main.b4dd5c77.chunk.css';
+import './style/css/main.eddd47d7.chunk.css';
 import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
+import { repeatPolyfill } from './polyfill';
 
+repeatPolyfill();
 initializeBody();
 initializeI18nResource()
   .then(() => {

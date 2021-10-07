@@ -18,7 +18,7 @@ class HeaderWrapperView extends Component<Props> {
     return (
       <>
         {topBanner}
-        <section className="header lms g-ab" id="lms-header">
+        <section className="header lms searchT" id="lms-header">
           {mainNotice}
           <div className="group">
             <div className="cont-inner">{children}</div>

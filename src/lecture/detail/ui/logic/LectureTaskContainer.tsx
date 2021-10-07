@@ -87,10 +87,8 @@ function LectureTaskContainer() {
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   // 이수정보 관련
-  const [
-    cubeAutomaticCompletion,
-    setCubeAutomaticCompletion,
-  ] = useState<boolean>(false);
+  const [cubeAutomaticCompletion, setCubeAutomaticCompletion] =
+    useState<boolean>(false);
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
@@ -393,7 +391,7 @@ function LectureTaskContainer() {
                         `아래 공지된 <strong>과제를 수행하여 게시판에 {cubePostCount}건 등록</strong>해 주시고, 타 학습자가 등록한 게시글 중 관심이 가는 내용에 대해 <strong>댓글 {cubeCommentCount}건</strong> 작성해주시면 자동으로 이수 처리가 됩니다.`,
                         'Collage-Task-이수조건SubTitle1',
                         {
-                          cubePostCount: (cubePostCount > 1 && cubePostCount).toString(),
+                          cubePostCount: cubePostCount.toString(),
                           cubeCommentCount: cubeCommentCount.toString(),
                         }
                       ),
@@ -409,7 +407,7 @@ function LectureTaskContainer() {
                         `다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount}건 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`,
                         'Collage-Task-이수조건SubTitle2',
                         {
-                          cubePostCount: (cubePostCount > 1 && cubePostCount).toString(),
+                          cubePostCount: cubePostCount.toString(),
                         }
                       ),
                     }}

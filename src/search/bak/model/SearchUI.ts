@@ -1,4 +1,4 @@
-import { createStore } from '../../shared/store/Store';
+import { createStore } from '../../../shared/store/Store';
 
 export interface SearchUI {
   isLoading: boolean;

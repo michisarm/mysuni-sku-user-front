@@ -3,7 +3,7 @@ def label = "jenkins-${UUID.randomUUID().toString()}"
 
 def ZCP_USERID='yswon'
 def DOCKER_IMAGE='sk-university/user-front'
-def K8S_NAMESPACE='gdi-skuniv-app-dev'
+def K8S_NAMESPACE='gdi-skuniv-app-stg'
 def REPLICAS=1
 def podTemplateYaml = """
 apiVersion: v1
@@ -68,16 +68,16 @@ timestamps {
 
             stage('BUILD DOCKER IMAGE') {
                 container('docker') {
-                    dockerCmd.build tag: "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:dev-${BUILD_NUMBER}"
-                    dockerCmd.push registry: HARBOR_REGISTRY, imageName: DOCKER_IMAGE, imageVersion: "dev-${BUILD_NUMBER}", credentialsId: "HARBOR_CREDENTIALS"
+                    dockerCmd.build tag: "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:stg-${BUILD_NUMBER}"
+                    dockerCmd.push registry: HARBOR_REGISTRY, imageName: DOCKER_IMAGE, imageVersion: "stg-${BUILD_NUMBER}", credentialsId: "HARBOR_CREDENTIALS"
                 }
             }
 
             stage('DEPLOY') {
                 container('kubectl') {
                     kubeCmd.apply file: 'k8s/service.yaml', namespace: K8S_NAMESPACE
-                    yaml.update file: 'k8s/deploy-dev.yaml', update: ['.spec.template.spec.containers[0].image': "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:dev-${BUILD_NUMBER}"]
-                    kubeCmd.apply file: 'k8s/deploy-dev.yaml', wait: 300, recoverOnFail: false, namespace: K8S_NAMESPACE
+                    yaml.update file: 'k8s/deploy-stg.yaml', update: ['.spec.template.spec.containers[0].image': "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:stg-${BUILD_NUMBER}"]
+                    kubeCmd.apply file: 'k8s/deploy-stg.yaml', wait: 300, recoverOnFail: false, namespace: K8S_NAMESPACE
                 }
             }
         }

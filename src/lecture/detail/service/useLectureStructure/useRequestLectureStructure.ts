@@ -13,9 +13,9 @@ export function useRequestLectureStructure() {
     if (cardId !== undefined) {
       requestCardLectureStructure(cardId).catch(() => {
         reactAlert({
-          title: getPolyglotText('권한이 없습니다.', 'learning-권한-권한없음'),
+          title: getPolyglotText('권한 없음', 'learning-권한-권한없음'),
           message: getPolyglotText(
-            '본 콘텐츠는 아직 서비스 준비가 되지 않았습니다.<br/>각 사 담당자와 협의 후, 추후 오픈하겠습니다.<br/>관련 문의는 Q&A를 이용해주시기 바랍니다.',
+            '본 컨텐츠에 접근할 수 없습니다.<br/>보다 자세한 사항은 1:1 문의나 전화 상담(02-6323-9002)을 이용해 주세요.',
             'learning-권한-접근불가'
           ),
           onClose: () => {

@@ -57,26 +57,29 @@ export function FilterBoxView({
               }
               onChange={onCheckAll}
             />
-            {CheckboxOptions.learningTypes.map((learningType, index) => (
-              <Fragment key={`checkbox-learningType-${index}`}>
-                <Checkbox
-                  className="base"
-                  name={filterConditionNamePolyglot(
-                    FilterConditionName.LearningType
-                  )}
-                  label={`${
-                    learningType.text
-                  } (${totalFilterCount.getCountFromLearningType(
-                    learningType.text
-                  )})`}
-                  value={learningType.value}
-                  checked={conditions.learningTypes.includes(
-                    learningType.value
-                  )}
-                  onChange={onCheckOne}
-                />
-              </Fragment>
-            ))}
+            {CheckboxOptions.learningTypes.map(
+              (learningType, index) =>
+                learningType.text !== 'Community' && (
+                  <Fragment key={`checkbox-learningType-${index}`}>
+                    <Checkbox
+                      className="base"
+                      name={filterConditionNamePolyglot(
+                        FilterConditionName.LearningType
+                      )}
+                      label={`${
+                        learningType.text
+                      } (${totalFilterCount.getCountFromLearningType(
+                        learningType.text
+                      )})`}
+                      value={learningType.value}
+                      checked={conditions.learningTypes.includes(
+                        learningType.value
+                      )}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                )
+            )}
           </td>
         </tr>
         <tr>

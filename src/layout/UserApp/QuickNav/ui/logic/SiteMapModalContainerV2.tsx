@@ -273,7 +273,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           path: boardRoutePaths.supportFAQ(),
         },
         {
-          name: getPolyglotText('Q&A', 'home-사이트맵-중카41'),
+          name: getPolyglotText('1:1 문의', 'home-사이트맵-중카41'),
           path: boardRoutePaths.supportQnA(),
         },
       ],

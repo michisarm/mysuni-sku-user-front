@@ -1,3 +1,17 @@
+.inno-wrap .inno-item .inno-li table tbody td.small2 + td.small2 {
+  margin-top: 0.4rem;
+}
+.inno-wrap .inno-item .inno-li table tbody td.txt-small > a {
+  font-size: 0.688rem;
+}
+.inno-wrap .inno-item .inno-li table tbody td.txt-break > a {
+  word-break: break-all;
+}
+.inno-wrap .inno-item .inno-li table tbody td.small2-1,
+.inno-wrap .inno-item .inno-li table tbody td.small2-1 > a {
+  height: 63px;
+}
+
 #root section.content .tab-menu-inner.sub.English .ui.attached.tabular.menu {
   display: table;
 }
