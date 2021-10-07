@@ -3808,7 +3808,7 @@ const EnPanes = [
                         <tbody>
                           <td>
                             <a href="#none">
-                              Learning Through Design Thinking Cases (SV)
+                            Design Thinking<br/>Self-Practice<br/>(SV Cases)
                             </a>
                           </td>
                           <td>
@@ -6955,7 +6955,11 @@ const ZhPanes = [
                             </a>
                           </td>
                           <td>
-                            <a href="#none">设计思维Self实习（SV案例）</a>
+                            <a href="#none">
+                              设计思维Self实习
+                              <br />
+                            （SV案例）
+                            </a>
                           </td>
                         </tbody>
                       </table>
