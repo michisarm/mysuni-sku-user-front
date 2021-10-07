@@ -35,7 +35,7 @@ class QnaManagementListView extends React.Component<Props> {
 
     return (
       <>
-        <Table className="qna-admin-list">
+        <Table selectable className="qna-admin-list">
           <colgroup>
             <col width="80px" />
             <col width="100px" />
@@ -61,7 +61,10 @@ class QnaManagementListView extends React.Component<Props> {
           <Table.Body>
             {qnas && qnas.length > 0 ? (
               qnas.map((qna, index) => (
-                <Table.Row key={qna.question.id}>
+                <Table.Row
+                  key={qna.question.id}
+                  onClick={() => onClickQnA(qna.question.id)}
+                >
                   <Table.Cell>{startNo - index}</Table.Cell>
                   <Table.Cell>
                     {getChannelToString(qna.question.requestChannel)}
@@ -72,9 +75,7 @@ class QnaManagementListView extends React.Component<Props> {
                     )}
                   </Table.Cell>
                   <Table.Cell className="title">
-                    <a onClick={() => onClickQnA(qna.question.id)}>
-                      <span className="ellipsis">{qna.question.title}</span>
-                    </a>
+                    <span className="ellipsis">{qna.question.title}</span>
                   </Table.Cell>
                   <Table.Cell>
                     {moment(qna.question.registeredTime).format('YYYY.MM.DD')}
@@ -86,7 +87,9 @@ class QnaManagementListView extends React.Component<Props> {
                   </Table.Cell>
                   <Table.Cell>
                     <span className="ellipsis">
-                      {parsePolyglotString(qna.answer.modifierName) || '미정'}
+                      {qna.answer.content === ''
+                        ? '미정'
+                        : parsePolyglotString(qna.answer.modifierName)}
                     </span>
                   </Table.Cell>
                   <Table.Cell>
