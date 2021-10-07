@@ -6,7 +6,7 @@ import {
   getPolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
-import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainer';
+import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainerV2';
 
 const gotoUrl = (url: string) => {
   window.open(url);
@@ -19,29 +19,28 @@ class FooterContainer extends Component {
   render() {
     //
     const selectOptionsSite = [
-      { key: 0, value: '', text: 'Family Site' },
       {
-        key: 1,
+        key: 0,
         value: 'https://www.icheonforum.com/',
         text: getPolyglotText('이천포럼', 'home-family-이천포럼'),
       },
       {
-        key: 2,
+        key: 1,
         value: 'https://on.mysuni.com',
         text: getPolyglotText('mySUNI ON', 'home-family-mySUNION'),
       },
       {
-        key: 3,
+        key: 2,
         value: 'http://connect.mysuni.com',
         text: getPolyglotText('mySUNI Connect', 'home-family-Connect'),
       },
       {
-        key: 4,
+        key: 3,
         value: 'https://www.linkedin.com/learning/',
-        text: getPolyglotText('Linkedin Learning', 'home-family-Linkedin'),
+        text: getPolyglotText('LinkedIn Learning', 'home-family-Linkedin'),
       },
       {
-        key: 5,
+        key: 4,
         value: 'https://www.coursera.org/',
         text: getPolyglotText('Coursera', 'home-family-Coursera'),
       },
@@ -192,9 +191,7 @@ class FooterContainer extends Component {
                 placeholder="Family Site"
                 className="f-site"
                 options={selectOptionsSite}
-                onChange={(event: any, data: any) =>
-                  data.value && gotoUrl(data.value)
-                }
+                onChange={(event: any, data: any) => gotoUrl(data.value)}
               />
             </div>
           </div>

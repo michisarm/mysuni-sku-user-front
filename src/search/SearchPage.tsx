@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Segment, Sticky } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CheckboxOptions } from './search.models';
@@ -101,7 +102,7 @@ export function SearchPage() {
 
   return (
     <>
-      <section className="content searchTotal">
+      <ContentLayout className="searchTotal" breadcrumb={[{ text: 'Search' }]}>
         <div ref={contextRef}>
           <Sticky context={contextRef} className="tab-menu offset0">
             <SearchHeaderPage />
@@ -113,7 +114,7 @@ export function SearchPage() {
         </div>
 
         {searchUI?.isLoading === true && <LoadingView />}
-      </section>
+      </ContentLayout>
     </>
   );
 }

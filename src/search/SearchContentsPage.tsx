@@ -51,11 +51,22 @@ export function SearchContentsPage() {
   const badges = useSearchBadgeList();
   const communities = useSearchCommunityList();
   const experts = useExpert();
-  const totalCount =
+  let totalCount =
     (cards?.length || 0) +
     (badges?.length || 0) +
     (communities?.length || 0) +
     (experts?.length || 0);
+  if (params !== undefined) {
+    if (params.searchType === 'lecture') {
+      totalCount = cards?.length || 0;
+    } else if (params.searchType === 'badge') {
+      totalCount = badges?.length || 0;
+    } else if (params.searchType === 'community') {
+      totalCount = communities?.length || 0;
+    } else if (params.searchType === 'instructor') {
+      totalCount = experts?.length || 0;
+    }
+  }
 
   const HeaderTotalCountTitle = () => {
     const searchInSearchInfo = getSearchInSearchInfo();

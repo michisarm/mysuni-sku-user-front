@@ -20,7 +20,7 @@ export function CalendarView({ filterCondition, search }: CalendarViewProps) {
   const queryId = getQueryId();
 
   let calenderClassName = 'search_calender';
-  if (filterCondition.applying) {
+  if (filterCondition.applying !== false) {
     calenderClassName += ' disabled';
   }
   return (
@@ -53,7 +53,7 @@ export function CalendarView({ filterCondition, search }: CalendarViewProps) {
           placeholderText={getPolyglotText('종료일', '통검-필레팝-종료일')}
           minDate={filterCondition.learning_start_date_str}
         />
-        {filterCondition.applying && (
+        {filterCondition.applying !== false && (
           <Button className="btn_dateP">
             <Image
               src={`${PUBLIC_URL}/images/all/search-smallbox-dim.png`}
@@ -62,7 +62,7 @@ export function CalendarView({ filterCondition, search }: CalendarViewProps) {
             />
           </Button>
         )}
-        {!filterCondition.applying && (
+        {filterCondition.applying === false && (
           <Button className="btn_dateP" onClick={search}>
             <Image
               src={`${PUBLIC_URL}/images/all/search-smallbox-act.png`}

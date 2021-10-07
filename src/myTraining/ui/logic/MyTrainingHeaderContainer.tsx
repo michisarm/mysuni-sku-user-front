@@ -65,7 +65,7 @@ function MyTrainingHeaderContainer({
   useRequestLearningSummary();
 
   const onClickMyBadge = useCallback(() => {
-    history.push(badgePaths.badgeEarnedBadgeList());
+    history.push(myTrainingPaths.myPageEarnedBadgeList());
   }, []);
 
   const onClickMyStamp = useCallback(() => {

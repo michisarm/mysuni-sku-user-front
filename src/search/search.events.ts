@@ -12,6 +12,7 @@ import {
   findCommunities,
   findExpert,
   findPreCard,
+  findRelatedKeywordByKeyword,
   searchRankinsCache,
   searchSuggest,
 } from './api/searchApi';
@@ -698,23 +699,35 @@ export async function searchData(searchValue: string, searchType?: string) {
   setSearchRecentList(newSearchRecents);
 
   // 연관검색어
-  searchSuggest(searchValue).then((response) => {
-    if (response) {
-      const suggestions: string[] = [];
-      response.suggestions.map((s2) => {
-        s2.map((s1) => {
-          if (s1[0] !== searchValue && !suggestions.includes(s1[0])) {
-            // 중복제거
-            suggestions.push(s1[0]);
-          }
-        });
-      });
-      if (suggestions.length > 10) {
-        suggestions.length = 10;
+  const suggestions: string[] = [];
+
+  findRelatedKeywordByKeyword(searchValue)
+    .then((c) => {
+      if (c !== undefined) {
+        c.forEach((d) => suggestions.push(d));
       }
-      setSearchRelatedList(suggestions);
-    }
-  });
+    })
+    .finally(() =>
+      searchSuggest(searchValue)
+        .then((response) => {
+          if (response) {
+            response.suggestions.map((s2) => {
+              s2.map((s1) => {
+                if (s1[0] !== searchValue && !suggestions.includes(s1[0])) {
+                  // 중복제거
+                  suggestions.push(s1[0]);
+                }
+              });
+            });
+            if (suggestions.length > 10) {
+              suggestions.length = 10;
+            }
+          }
+        })
+        .finally(() => {
+          setSearchRelatedList(suggestions);
+        })
+    );
 }
 
 export async function searchInSearchData(
@@ -750,9 +763,7 @@ export async function searchInSearchData(
   setExpert(newExperts);
   const badges = getSearchBadgeOriList();
   const newBadges = badges?.filter(
-    (ele) =>
-      JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1 ||
-      JSON.stringify(ele.description).indexOf(decodedSearchValue) > -1
+    (ele) => JSON.stringify(ele.name).indexOf(decodedSearchValue) > -1
   );
   setSearchBadgeList(newBadges);
   const communities = getSearchCommunityOriList();

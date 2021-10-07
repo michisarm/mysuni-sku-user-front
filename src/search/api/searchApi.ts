@@ -34,9 +34,10 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
 const RANKINS_URL = 'https://mysuni.sk.com/search/api/rankings'; // 인기검색어
 const SUGGEST_URL = 'https://mysuni.sk.com/search/api/suggestion'; // 연관검색어
+const SEARCH_API_URL = '/api/search'; // Managed API
 const BADGE_URL = '/api/badge';
 const COMMUNITY_URL = '/api/community';
-const workspaces: { cineroomWorkspaces?: Workspace[] } =
+const getWorkspaces = (): { cineroomWorkspaces?: Workspace[] } =>
   JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
 interface SearchResult<T> {
@@ -334,9 +335,9 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
       );
     }
     if (filterCondition.hasRequired === true) {
-      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+      if (Array.isArray(getWorkspaces().cineroomWorkspaces)) {
         displayCards = displayCards.filter((c) =>
-          workspaces.cineroomWorkspaces!.some((d) =>
+          getWorkspaces().cineroomWorkspaces!.some((d) =>
             c.required_cinerooms.includes(d.id)
           )
         );
@@ -395,10 +396,10 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
       });
     }
     if (filterCondition.notRequired === true) {
-      if (Array.isArray(workspaces.cineroomWorkspaces)) {
+      if (Array.isArray(getWorkspaces().cineroomWorkspaces)) {
         displayCards = displayCards.filter(
           (c) =>
-            !workspaces.cineroomWorkspaces!.some((d) =>
+            !getWorkspaces().cineroomWorkspaces!.some((d) =>
               c.required_cinerooms.includes(d.id)
             )
         );
@@ -485,8 +486,9 @@ export function getEmptyQueryOptions(): QueryOptions {
 }
 
 function makePermitedCineroomsQuery() {
-  if (Array.isArray(workspaces?.cineroomWorkspaces)) {
-    return `(${workspaces.cineroomWorkspaces
+  const workSpaces = getWorkspaces()?.cineroomWorkspaces;
+  if (Array.isArray(workSpaces)) {
+    return `(${workSpaces
       .map(({ id }) => `(permitted_cinerooms+IN+{${id}})`)
       .join('+or+')})`;
   }
@@ -771,4 +773,9 @@ export function searchSuggest(text_idx: string) {
     `${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`
   );
   return axiosApi.get<SearchSuggestion>(url).then(AxiosReturn);
+}
+
+export function findRelatedKeywordByKeyword(keyword: string) {
+  const url = `${SEARCH_API_URL}/relatedKeyword/search`;
+  return axiosApi.get<string[]>(url, { params: { keyword } }).then(AxiosReturn);
 }

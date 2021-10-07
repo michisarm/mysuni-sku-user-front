@@ -47,9 +47,9 @@ const emptyAlertSep = (e: any) => {
   });
 };
 
-const goToCommunity =(e: any)=>{
-  window.location.href="/suni-community/community/COMMUNITY-1n/home"
-}
+const goToCommunity = (e: any) => {
+  window.location.href = '/suni-community/community/COMMUNITY-1n/home';
+};
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const koPanes = [
@@ -744,7 +744,7 @@ const koPanes = [
                           </td>
                           <td className="small small2 dashed">
                             <Link to="#" onClick={emptyAlertOct}>
-                              WoW! 애자일 트랜스포메이션
+                              WoW! 애자일 트랜스포메이션
                             </Link>
                           </td>
                           <td className="small small2 dashed">
@@ -2936,7 +2936,7 @@ const koPanes = [
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-01.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -2948,7 +2948,7 @@ const koPanes = [
               <div className="label energy">Environment College Curriculum</div>
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/envir-con-02.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02.png"
                   alt=""
                   style={{ display: 'inline-block' }}
                 />
@@ -3788,10 +3788,11 @@ const EnPanes = [
                               Service Design - IDEO
                             </a>
                           </td>
-                          <td className="dashed">
+                          <td className="txt-small">
                             <a href="#none">
-                              Being Customer-Centered in Technology Business -
-                              Self-Practice
+                              [Actual Project] <br /> Creating a
+                              Customer-centered Biz, <br />
+                              Topic 1-4
                             </a>
                           </td>
                         </tbody>
@@ -3822,11 +3823,13 @@ const EnPanes = [
                       </table>
                       <table>
                         <tbody>
-                          <td></td>
-                          <td className="dashed">
+                          <td className="two">
                             <a href="#none">
-                              Being Customer-Centered in Technology Thinking
-                              about Business
+                              Got the Tech, but Having Difficulties Making It a
+                              Business?
+                              <br />
+                              Creating Customer-centered Biz! <br />
+                              Part 1 Part 2
                             </a>
                           </td>
                           <td>
@@ -3862,21 +3865,60 @@ const EnPanes = [
                   </div>
                   <div className="inno-item">
                     <h3># Logical Thinking</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td className="txt-small">
                             <a href="#none">
-                              Learning How to Work Like a Consultant (Lv.2)
+                              Learning the Skills of a Consultant Part 2:
+                              Project Management & Strategic Perspectives
                             </a>
-                          </li>
-                          <li>
+                          </td>
+                          <td className="txt-small">
                             <a href="#none">
-                              Learning How to Work Like a Consultant (Lv.1)
+                              Learning the Skills of a Consultant Part 1:
+                              Troubleshooting Methodology
                             </a>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">
+                              Play & Logic <br />A Passage to India
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              First Encounter with Logical Thinking
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                   <div className="inno-item">
@@ -3908,13 +3950,18 @@ const EnPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              The Story of Space Innovation and the Change
+                              Thereof
+                            </a>
+                          </td>
                           <td>
                             <a href="#none">How to Do Customer Research</a>
                           </td>
                           <td>
                             <a href="#none">
-                              고객 Needs
+                              Customer Needs
                               <br />
                               Finding
                             </a>
@@ -3995,10 +4042,16 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <a href="#none">Agile Coach Meetup</a>
+                            <a href="#none">
+                              Agile Coach <br />
+                              Meetup
+                            </a>
                           </td>
                           <td className="dashed-or">
-                            <a href="#none">Agile Coach Training Course</a>
+                            <a href="#none">
+                              Agile Coach <br />
+                              Training Course
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -4007,64 +4060,71 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <a href="#none">Agile Project</a>
-                          </td>
-                          <td>
-                            <a href="#none">Agile Leadership Workshop</a>
-                          </td>
-                          <td>
                             <a href="#none">
-                              Agile Project
-                              <br />
-                              Management
-                              <br />
-                              W/S
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              Agile
+                              Agile Leadership(M3.0)
                               <br />
                               Workshop
                             </a>
                           </td>
+                          <td>
+                            <a href="#none">Agile Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              Agile Dive
+                              <br /> Workshop
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              Agile Practice
+                              <br />
+                              (Self-practice)
+                            </a>
+                          </td>
                         </tbody>
                       </table>
                     </div>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
-                            <a href="#none">
-                              Agile Management
-                              <br />- Linkedin
-                            </a>
+                          <td className="small small2">
+                            <a href="#none">Lean Startup</a>
                           </td>
-                          <td>
+                          <td className="small small2 dashed">
+                            <a href="#none">WoW! Agile Transformation</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">Agile and Scrum</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">Personal Kanban</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">Kaizen Journey</a>
+                          </td>
+                          <td className="small small2">
                             <a href="#none">
                               Agile Methodology
                               <br />- Linkedin
                             </a>
                           </td>
-                          <td>
-                            <a href="#none">
-                              SK Network Purchasing Team Agile Case
-                            </a>
-                          </td>
                         </tbody>
                       </table>
                     </div>
+
                     <div className="inno-li">
                       <table>
                         <tbody>
                           <td className="small">
-                            <a href="#none">Agile Methodology Basics</a>
-                          </td>
-                          <td className="small">
                             <a href="#none">Agile Essentials</a>
                           </td>
                           <td className="small">
-                            <a href="#none">First Time: Agile</a>
+                            <a href="#none">The Manifesto for Agile</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">First Encounter with Agile</a>
                           </td>
                           <td className="small">
                             <a href="#none">Why Agile</a>
@@ -6912,13 +6972,11 @@ const ZhPanes = [
                               IDEO
                             </a>
                           </td>
-                          <td className="dashed">
+                          <td>
                             <a href="#none">
-                              在技术中以客
-                              <br />
-                              户为中心进行
-                              <br />
-                              Biz-Self实习
+                              [实战项目] <br />
+                              打造以顾客为中心的Biz <br />
+                              Topic 1-4
                             </a>
                           </td>
                         </tbody>
@@ -6952,11 +7010,13 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td></td>
-                          <td className="dashed">
+                          <td className="txt-small txt-break">
                             <a href="#none">
-                              在技术中以客户为
+                              拥有技术却无法加以商业化？
                               <br />
-                              中心思考Biz
+                              以顾客为中心的Biz！
+                              <br />
+                              第一部 第二部
                             </a>
                           </td>
                           <td>
@@ -6991,27 +7051,65 @@ const ZhPanes = [
                   </div>
                   <div className="inno-item">
                     <h3># 逻辑思维</h3>
-                    <div className="logical-box">
-                      <div className="logical-list tab01">
-                        <ul>
-                          <li>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
                             <a href="#none">
-                              熟悉咨询师的工
+                              掌握顾问的业务水平
                               <br />
-                              作技巧（Lv.2）
+                              第二部
+                              <br />
+                              项目管理&战略观点
                             </a>
-                          </li>
-                          <li>
+                          </td>
+                          <td>
                             <a href="#none">
-                              熟悉咨询师的工作
+                              掌握顾问的业务水平
                               <br />
-                              技巧（Lv.1）
+                              第一部
+                              <br />
+                              问题解决方法论
                             </a>
-                          </li>
-                        </ul>
-                      </div>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="#none">Logic & Play印度之旅</a>
+                          </td>
+                          <td>
+                            <a href="#none">初次相逢的逻辑思考</a>
+                          </td>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
+
                   <div className="inno-item">
                     <h3># 了解客户</h3>
                     <div className="inno-li">
@@ -7041,7 +7139,13 @@ const ZhPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              关于空间创新及其
+                              <br />
+                              变化的故事
+                            </a>
+                          </td>
                           <td>
                             <a href="#none">客户 Research方法</a>
                           </td>
@@ -7139,38 +7243,10 @@ const ZhPanes = [
                             </a>
                           </td>
                           <td className="dashed-or">
-                            <a href="#none">敏捷训练课程</a>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="inno-li">
-                      <table>
-                        <tbody>
-                          <td>
-                            <a href="#none">敏捷 Project</a>
-                          </td>
-                          <td>
                             <a href="#none">
-                              敏捷领导力
+                              敏捷训练
                               <br />
-                              Workshop
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              敏捷 Project
-                              <br />
-                              Management
-                              <br />
-                              W/S
-                            </a>
-                          </td>
-                          <td>
-                            <a href="#none">
-                              敏捷
-                              <br />
-                              Workshop
+                              课程
                             </a>
                           </td>
                         </tbody>
@@ -7181,23 +7257,55 @@ const ZhPanes = [
                         <tbody>
                           <td>
                             <a href="#none">
-                              Agile Management
-                              <br />- Linkedin
+                              敏捷领导力(M3.0)
+                              <br />
+                              Workshop
                             </a>
                           </td>
                           <td>
+                            <a href="#none">敏捷Project</a>
+                          </td>
+                          <td>
+                            <a href="#none">
+                              敏捷Dive
+                              <br /> Workshop
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="#none">
+                              敏捷Practice
+                              <br />
+                              (Self实习)
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small small2">
+                            <a href="#none">精益创业</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">WoW! 敏捷变身</a>
+                          </td>
+                          <td className="small small2 dashed">
+                            <a href="#none">敏捷与Scrum</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">个人看板管理</a>
+                          </td>
+                          <td className="small small2">
+                            <a href="#none">改善法日志</a>
+                          </td>
+                          <td className="small small2">
                             <a href="#none">
                               敏捷方法论
                               <br />- Linkedin
                             </a>
                           </td>
-                          <td>
-                            <a href="#none">
-                              SK Networks采购
-                              <br />
-                              部门敏捷案例
-                            </a>
-                          </td>
                         </tbody>
                       </table>
                     </div>
@@ -7205,16 +7313,16 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td className="small">
-                            <a href="#none">敏捷方法论基础</a>
+                            <a href="#none">敏捷Essential</a>
                           </td>
                           <td className="small">
-                            <a href="#none">敏捷Essential</a>
+                            <a href="#none">敏捷宣言</a>
                           </td>
                           <td className="small">
                             <a href="#none">第一次接触的敏捷</a>
                           </td>
                           <td className="small">
-                            <a href="#none">Why 敏捷</a>
+                            <a href="#none">Why敏捷？</a>
                           </td>
                         </tbody>
                       </table>
@@ -7303,7 +7411,11 @@ const ZhPanes = [
                         </a>
                       </li>
                       <li>
-                        <a href="#none">理解客户的重要性，Remind！</a>
+                        <a href="#none">
+                          理解客户的重要性，
+                          <br />
+                          Remind！
+                        </a>
                       </li>
                       <li>
                         <a href="#none">

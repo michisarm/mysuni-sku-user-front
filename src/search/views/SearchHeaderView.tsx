@@ -17,12 +17,10 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../shared/ui/logic/PolyglotText';
-import { PageElement } from 'lecture/shared/model/PageElement';
 import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
 import { Area } from 'tracker/model';
 
 export function SearchHeaderView() {
-  //
   const [activeItem, setActiveItem] = useState<string>('');
   const [focus, setFocus] = useState<boolean>(false);
   const [write, setWrite] = useState<string>('');
@@ -58,9 +56,10 @@ export function SearchHeaderView() {
     }
   }, [params]);
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
   };
+
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -96,13 +95,10 @@ export function SearchHeaderView() {
             <div className="field">
               <div className="search_input">
                 <Popup
-                  on="click"
                   postion="left bottom"
                   className="history_popup navi_popup"
                   positionfixed="true"
                   open={isOpen}
-                  onOpen={handleOpen}
-                  onClose={handleClose}
                   trigger={
                     <div
                       className={classNames('search show_text', {
@@ -125,7 +121,10 @@ export function SearchHeaderView() {
                           'cmm-cfl-검색어'
                         )}
                         value={write}
-                        onClick={() => setFocus(true)}
+                        onClick={() => {
+                          setFocus(true);
+                          togglePopup();
+                        }}
                         onChange={(e) => {
                           setWrite(e.target.value);
                           setSearchInSearchInfo({
@@ -147,7 +146,13 @@ export function SearchHeaderView() {
                         onClick={() => setWrite('')}
                       />
                       {/* <Icon className="search_i"/> */}
-                      <Button className="btn_sch">
+                      <Button
+                        className="btn_sch"
+                        onClick={() => {
+                          handleClose();
+                          search(write);
+                        }}
+                      >
                         <Icon className="search_i" />
                       </Button>
                     </div>
