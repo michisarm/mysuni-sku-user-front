@@ -22,7 +22,7 @@ class NoticeListView extends React.Component<Props> {
 
     return (
       <>
-        <Table className="qna-admin-list">
+        <Table selectable className="qna-admin-list">
           <colgroup>
             <col width="80px" />
             <col width="500px" />
@@ -46,7 +46,10 @@ class NoticeListView extends React.Component<Props> {
               posts.length !== 0 &&
               posts.map((post, index) => {
                 return (
-                  <Table.Row key={post.postId}>
+                  <Table.Row
+                    key={post.postId}
+                    onClick={() => onClickPost(post.postId)}
+                  >
                     <Table.Cell>{startNo - index}</Table.Cell>
                     <Table.Cell
                       className={
@@ -54,7 +57,7 @@ class NoticeListView extends React.Component<Props> {
                       }
                     >
                       <div className="tit_inner">
-                        <a onClick={() => onClickPost(post.postId)}>
+                        <a>
                           <span className="ellipsis">
                             {parsePolyglotString(post.title)}
                           </span>
