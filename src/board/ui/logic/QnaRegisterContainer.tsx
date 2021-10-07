@@ -1,5 +1,9 @@
 import React from 'react';
-import { reactAutobind, mobxHelper, ReactComponent } from '@nara.platform/accent';
+import {
+  reactAutobind,
+  mobxHelper,
+  ReactComponent,
+} from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import depot, { FileBox, ValidationType, PatronType } from '@nara.drama/depot';
@@ -106,14 +110,16 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { sourceId } = this.props.match.params;
     const { qna } = supportService;
 
-    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna, sourceId));
+    await supportService.registerQuestion(
+      QnAModel.asQuestionSdo(qna, sourceId)
+    );
     this.props.history.push(routePaths.supportQnA());
     this.onClose();
   }
 
   async handleOKRouteConfirmWin() {
     //
-    this.setState({confirmRouteWinOpen: false});
+    this.setState({ confirmRouteWinOpen: false });
     this.props.history.push(routePaths.supportQnA());
   }
 
@@ -124,11 +130,11 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
   }
 
   onClose() {
-    this.setState({confirmWinOpen: false, confirmRouteWinOpen: false});
+    this.setState({ confirmWinOpen: false, confirmRouteWinOpen: false });
   }
 
   routeToQnAList() {
-    this.setState({confirmRouteWinOpen: true});
+    this.setState({ confirmRouteWinOpen: true });
   }
 
   onHandleSave() {
@@ -137,11 +143,15 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { qna } = supportService;
     const { sourceId } = this.props.match.params;
 
-    if (QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)) === 'success') {
+    if (
+      QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)) === 'success'
+    ) {
       this.setState({ confirmWinOpen: true });
     } else {
       this.setState({
-        isBlankTarget: QuestionSdo.isBlank(QnAModel.asQuestionSdo(qna, sourceId)),
+        isBlankTarget: QuestionSdo.isBlank(
+          QnAModel.asQuestionSdo(qna, sourceId)
+        ),
         alertWinOpen: true,
       });
     }
@@ -155,7 +165,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     // if (post.contents) {
     //   postService!.changePostProps('contents.depotId', fileBoxId);
     // }
-    if(!fileBoxId) {
+    if (!fileBoxId) {
       depot.UNSAFE_clearLocalFileList();
     }
 
@@ -178,9 +188,6 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     const { getMainCategorySelect, getSubCategorySelect } = supportService;
     const { qna } = supportService;
-
-    console.log(qna);
-    console.log(qna.question.depotId);
 
     return (
       <>
@@ -206,7 +213,10 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     className="trig-pop-faq"
                     options={getMainCategorySelect()}
                     onChange={(e: any, data: any) =>
-                      this.onChangeQnAProps('question.mainCategoryId', data.value)
+                      this.onChangeQnAProps(
+                        'question.mainCategoryId',
+                        data.value
+                      )
                     }
                   />
                   <Select
@@ -217,7 +227,10 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     // className="ui selection dropdown"
                     options={getSubCategorySelect(qna.question.mainCategoryId)}
                     onChange={(e: any, data: any) =>
-                      this.onChangeQnAProps('question.subCategoryId', data.value)
+                      this.onChangeQnAProps(
+                        'question.subCategoryId',
+                        data.value
+                      )
                     }
                   />
                 </div>
@@ -237,10 +250,8 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   })}
                 >
                   <span className="count">
-                    <span className="now">
-                      {qna.question.title.length}
-                    </span>
-                    /<span className="max">100</span>
+                    <span className="now">{qna.question.title.length}</span>/
+                    <span className="max">100</span>
                   </span>
                   <input
                     type="text"
@@ -250,9 +261,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     )}
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    value={
-                      qna.question.title
-                    }
+                    value={qna.question.title}
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
@@ -294,8 +303,10 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     >
                       {/* .error class 추가시 error ui 활성 */}
                       <span className="count">
-                        <span className="now">{qna.question.content.length}</span>/
-                        <span className="max">1000</span>
+                        <span className="now">
+                          {qna.question.content.length}
+                        </span>
+                        /<span className="max">1000</span>
                       </span>
                       <textarea
                         value={qna.question.content}
@@ -304,10 +315,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                           if (value.length > 1000) {
                             this.setState({ fieldName: 'question.content' });
                           } else {
-                            this.onChangeQnAProps(
-                              'question.content',
-                              value
-                            );
+                            this.onChangeQnAProps('question.content', value);
                             this.setState({
                               fieldName: '',
                             });
@@ -333,34 +341,34 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   />
                 </label>
                 {/*<Form>*/}
-                  <div className="lg-attach">
-                    <div className="attach-inner">
-                      <FileBox
-                        id={qna.question.depotId}
-                        vaultKey={{
-                          keyString: 'qna-sample',
-                          patronType: PatronType.Audience,
-                        }}
-                        patronKey={{
-                          keyString: 'qna-sample',
-                          patronType: PatronType.Audience,
-                        }}
-                        validations={[
-                          {
-                            type: ValidationType.Duplication,
-                            validator: depotHelper.duplicationValidator,
-                          },
-                        ]}
-                        onChange={this.getFileBoxIdForReference}
-                      />
-                      <div className="bottom">
-                        {/*<span className="text1"><Icon className="info16" />*/}
-                          {/*<span className="blind">information</span>*/}
-                          {/*문서 및 이미지 파일을 업로드 가능합니다.*/}
-                        {/*</span>*/}
-                      </div>
+                <div className="lg-attach">
+                  <div className="attach-inner">
+                    <FileBox
+                      id={qna.question.depotId}
+                      vaultKey={{
+                        keyString: 'qna-sample',
+                        patronType: PatronType.Audience,
+                      }}
+                      patronKey={{
+                        keyString: 'qna-sample',
+                        patronType: PatronType.Audience,
+                      }}
+                      validations={[
+                        {
+                          type: ValidationType.Duplication,
+                          validator: depotHelper.duplicationValidator,
+                        },
+                      ]}
+                      onChange={this.getFileBoxIdForReference}
+                    />
+                    <div className="bottom">
+                      {/*<span className="text1"><Icon className="info16" />*/}
+                      {/*<span className="blind">information</span>*/}
+                      {/*문서 및 이미지 파일을 업로드 가능합니다.*/}
+                      {/*</span>*/}
                     </div>
                   </div>
+                </div>
                 {/*</Form>*/}
               </Form.Field>
               <div className="buttons">
