@@ -110,11 +110,9 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { sourceId } = this.props.match.params;
     const { qna } = supportService;
 
-    await supportService.registerQuestion(
-      QnAModel.asQuestionSdo(qna, sourceId)
-    );
-    this.props.history.push(routePaths.supportQnA());
     this.onClose();
+    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna, sourceId));
+    this.props.history.push(routePaths.supportQnA());
   }
 
   async handleOKRouteConfirmWin() {
