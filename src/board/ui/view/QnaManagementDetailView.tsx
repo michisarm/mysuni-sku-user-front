@@ -20,7 +20,6 @@ interface Props {
   qna: QnAModel;
   filesMap: Map<string, any>;
   categoriesMap: Map<string, PolyglotString>;
-  finalOperator: OperatorModel;
   renderState: (state: QnaState) => React.ReactNode;
   getChannelToString: (channel: RequestChannel) => string;
   onClickList: () => void;
@@ -37,7 +36,6 @@ class QnaManagementDetailView extends React.Component<Props> {
       qna,
       filesMap,
       categoriesMap,
-      finalOperator,
       renderState,
       getChannelToString,
       onClickList,
