@@ -7378,7 +7378,7 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td className="small">
-                            <a href="#none">Futurecasting</a>
+                            <a href="#none">未来投射</a>
                           </td>
                           <td className="small">
                             <a href="#none">精益创业</a>
