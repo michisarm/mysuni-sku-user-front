@@ -809,7 +809,7 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="lecture/card/CARD-13zl/cube/CUBE-hqi/view/ClassRoomLecture">
+                            <Link to="/lecture/card/CARD-13zl/cube/CUBE-hqi/view/ClassRoomLecture">
                               오픈 이노베이션 <br />
                               Project
                             </Link>
