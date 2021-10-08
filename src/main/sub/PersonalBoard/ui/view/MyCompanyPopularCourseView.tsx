@@ -84,7 +84,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = (Props) => {
       ),
     },
     {
-      menuItem: getPolyglotText('1개월', 'home-PersonalBoard-CompanyPopular1M'),
+      menuItem: getPolyglotText('1개월', '통검-필레팝-6개월'),
       render: () => (
         <Tab.Pane>
           {popularCourseItem && (
