@@ -121,7 +121,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             border: 0,
           }}
         >
-          <Loadingpanel loading={isLoading} color="#eff0f1" />
+          <Loadingpanel loading={isLoading} color={isLoading ? "#eff0f1" : "#FFFFFF"} />
           {!isLoading && (
             <NoSuchContentPanel
               message={
