@@ -369,7 +369,7 @@ const koPanes = [
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/card/CARD-ag7/view">
+                            <Link to="/lecture/card/CARD-8x7/view">
                               디자인씽킹 <br />
                               Workshop
                             </Link>
@@ -427,7 +427,7 @@ const koPanes = [
                           <td>
                             <Link to="/lecture/card/CARD-13c/view">
                               디자인씽킹 - <br />
-                              Linkedin
+                              LinkedIn
                             </Link>
                           </td>
                           <td>
@@ -706,15 +706,15 @@ const koPanes = [
                       <table>
                         <tbody>
                           <td>
+                            <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
+                              애자일 Project
+                            </Link>
+                          </td>
+                          <td>
                             <Link to="/lecture/card/CARD-8j1/view">
                               애자일 리더십 (M3.0)
                               <br />
                               Workshop
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
-                              애자일 Project
                             </Link>
                           </td>
                           <td>
@@ -737,35 +737,30 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small small2">
-                            <Link to="/lecture/card/CARD-13xj/view">
-                              린스타트업
-                            </Link>
-                          </td>
-                          <td className="small small2 dashed">
+                          <td className="small small2-1 dashed">
                             <Link to="#" onClick={emptyAlertOct}>
                               WoW! 애자일 트랜스포메이션
                             </Link>
                           </td>
-                          <td className="small small2 dashed">
+                          <td className="small dashed">
                             <Link to="#" onClick={emptyAlertSep}>
                               애자일과 스크럼
                             </Link>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <Link to="/lecture/card/CARD-afx/view">
                               퍼스널 칸반
                             </Link>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <Link to="/lecture/card/CARD-a2p/view">
                               카이젠 저니
                             </Link>
                           </td>
-                          <td className="small small2">
+                          <td className="small small2-1">
                             <Link to="/lecture/card/CARD-5c4/view">
                               애자일 방법론
-                              <br />- Linkedin
+                              <br />- LinkedIn
                             </Link>
                           </td>
                         </tbody>
@@ -813,7 +808,12 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <Link to="/lecture/card/CARD-13zl/cube/CUBE-hqi/view/ClassRoomLecture">
+                              오픈 이노베이션 <br />
+                              Project
+                            </Link>
+                          </td>
                           <td></td>
                           <td className="dashed-or">
                             <Link to="#" onClick={emptyAlert}>
@@ -834,9 +834,14 @@ const koPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
+                          <td className="small">
                             <Link to="/lecture/card/CARD-1et/view">
-                              Futurecasting
+                              퓨처캐스팅
+                            </Link>
+                          </td>
+                          <td className="small">
+                            <Link to="/lecture/card/CARD-13xj/view">
+                              린스타트업
                             </Link>
                           </td>
                           <td>
@@ -848,7 +853,7 @@ const koPanes = [
                           <td>
                             <Link to="/lecture/card/CARD-7lo/view">
                               Creative Collabo <br />
-                              Skills - Linkedin
+                              Skills - LinkedIn
                             </Link>
                           </td>
                         </tbody>
@@ -3760,7 +3765,11 @@ const EnPanes = [
                           </td>
                           <td>
                             <a href="#none">
-                              Design Thinking Self-Practice (SV Cases)
+                              Design Thinking
+                              <br />
+                              Self-Practice
+                              <br />
+                              (SV Cases)
                             </a>
                           </td>
                         </tbody>
@@ -3809,7 +3818,7 @@ const EnPanes = [
                           <td>
                             <a href="#none">
                               Design Thinking -<br />
-                              Linkedin
+                              LinkedIn
                             </a>
                           </td>
                           <td>
@@ -4060,14 +4069,14 @@ const EnPanes = [
                       <table>
                         <tbody>
                           <td>
+                            <a href="#none">Agile Project</a>
+                          </td>
+                          <td>
                             <a href="#none">
                               Agile Leadership(M3.0)
                               <br />
                               Workshop
                             </a>
-                          </td>
-                          <td>
-                            <a href="#none">Agile Project</a>
                           </td>
                           <td>
                             <a href="#none">
@@ -4089,25 +4098,22 @@ const EnPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small small2">
-                            <a href="#none">Lean Startup</a>
-                          </td>
-                          <td className="small small2 dashed">
+                          <td className="small small2-1 dashed">
                             <a href="#none">WoW! Agile Transformation</a>
                           </td>
-                          <td className="small small2 dashed">
+                          <td className="small dashed">
                             <a href="#none">Agile and Scrum</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <a href="#none">Personal Kanban</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <a href="#none">Kaizen Journey</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small small2-1">
                             <a href="#none">
                               Agile Methodology
-                              <br />- Linkedin
+                              <br />- LinkedIn
                             </a>
                           </td>
                         </tbody>
@@ -4146,7 +4152,13 @@ const EnPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              Open Innovation
+                              <br />
+                              Project
+                            </a>
+                          </td>
                           <td></td>
                           <td className="dashed-or">
                             <a href="#none">
@@ -4164,8 +4176,11 @@ const EnPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
+                          <td className="small">
                             <a href="#none">Futurecasting</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">Lean Startup</a>
                           </td>
                           <td>
                             <a href="#none">
@@ -4178,7 +4193,7 @@ const EnPanes = [
                             <a href="#none">
                               Creative Collabo
                               <br />
-                              Skills - Linkedin
+                              Skills - LinkedIn
                             </a>
                           </td>
                         </tbody>
@@ -6944,7 +6959,11 @@ const ZhPanes = [
                             </a>
                           </td>
                           <td>
-                            <a href="#none">设计思维Self实习（SV案例）</a>
+                            <a href="#none">
+                              设计思维Self实习
+                              <br />
+                              （SV案例）
+                            </a>
                           </td>
                         </tbody>
                       </table>
@@ -6995,7 +7014,7 @@ const ZhPanes = [
                           <td>
                             <a href="#none">
                               设计思维 -<br />
-                              Linkedin
+                              LinkedIn
                             </a>
                           </td>
                           <td>
@@ -7256,14 +7275,14 @@ const ZhPanes = [
                       <table>
                         <tbody>
                           <td>
+                            <a href="#none">敏捷 Project</a>
+                          </td>
+                          <td>
                             <a href="#none">
                               敏捷领导力(M3.0)
                               <br />
                               Workshop
                             </a>
-                          </td>
-                          <td>
-                            <a href="#none">敏捷Project</a>
                           </td>
                           <td>
                             <a href="#none">
@@ -7285,25 +7304,22 @@ const ZhPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="small small2">
-                            <a href="#none">精益创业</a>
-                          </td>
-                          <td className="small small2 dashed">
+                          <td className="small small2-1 dashed">
                             <a href="#none">WoW! 敏捷变身</a>
                           </td>
-                          <td className="small small2 dashed">
+                          <td className="small dashed">
                             <a href="#none">敏捷与Scrum</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <a href="#none">个人看板管理</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small">
                             <a href="#none">改善法日志</a>
                           </td>
-                          <td className="small small2">
+                          <td className="small small2-1">
                             <a href="#none">
                               敏捷方法论
-                              <br />- Linkedin
+                              <br />- LinkedIn
                             </a>
                           </td>
                         </tbody>
@@ -7341,7 +7357,13 @@ const ZhPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td></td>
+                          <td>
+                            <a href="#none">
+                              开放式创新
+                              <br />
+                              Project
+                            </a>
+                          </td>
                           <td></td>
                           <td className="dashed-or">
                             <a href="#none">
@@ -7363,8 +7385,11 @@ const ZhPanes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td>
-                            <a href="#none">Futurecasting</a>
+                          <td className="small">
+                            <a href="#none">未来投射</a>
+                          </td>
+                          <td className="small">
+                            <a href="#none">精益创业</a>
                           </td>
                           <td>
                             <a href="#none">
@@ -7377,7 +7402,7 @@ const ZhPanes = [
                             <a href="#none">
                               Creative Collabo
                               <br />
-                              Skills - Linkedin
+                              Skills - LinkedIn
                             </a>
                           </td>
                         </tbody>

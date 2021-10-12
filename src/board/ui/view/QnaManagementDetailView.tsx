@@ -20,7 +20,6 @@ interface Props {
   qna: QnAModel;
   filesMap: Map<string, any>;
   categoriesMap: Map<string, PolyglotString>;
-  finalOperator: OperatorModel;
   renderState: (state: QnaState) => React.ReactNode;
   getChannelToString: (channel: RequestChannel) => string;
   onClickList: () => void;
@@ -37,7 +36,6 @@ class QnaManagementDetailView extends React.Component<Props> {
       qna,
       filesMap,
       categoriesMap,
-      finalOperator,
       renderState,
       getChannelToString,
       onClickList,
@@ -56,9 +54,11 @@ class QnaManagementDetailView extends React.Component<Props> {
             categoriesMap.get(qna.question.subCategoryId)
           )}
           state={renderState(qna.question.state)}
-          operatorName={parsePolyglotString(finalOperator.operatorName)}
-          departmentName={parsePolyglotString(finalOperator.department)}
-          email={finalOperator.email}
+          operatorName={parsePolyglotString(qna.inquirerIdentity.name)}
+          departmentName={parsePolyglotString(
+            qna.inquirerIdentity.departmentName
+          )}
+          email={qna.inquirerIdentity.email}
           registeredTime={qna.question.registeredTime}
           onClickList={onClickList}
           onClickDelete={onClickDelete}
@@ -72,37 +72,39 @@ class QnaManagementDetailView extends React.Component<Props> {
                 value={qna.question.content || ''}
                 readOnly
               />
-              <div className="file">
-                <span>
-                  <PolyglotText
-                    id="support-QnaRead-첨부파일"
-                    defaultString="첨부파일 :"
-                  />
-                </span>
-                <br />
-                {(filesMap &&
-                  filesMap.get('reference') &&
-                  filesMap
-                    .get('reference')
-                    .map((foundedFile: DepotFileViewModel, index: number) => (
-                      <div>
-                        <a href="#" className="link" key={index}>
-                          <span
-                            className="ellipsis"
-                            onClick={(e) => {
-                              depot.downloadDepotFile(foundedFile.id);
-                              e.preventDefault();
-                            }}
-                          >
-                            {'    ' + foundedFile.name + '     '}
-                          </span>
+              {qna.question.depotId && (
+                <div className="file">
+                  <span>
+                    <PolyglotText
+                      id="support-QnaRead-첨부파일"
+                      defaultString="첨부파일 :"
+                    />
+                  </span>
+                  <br />
+                  {(filesMap &&
+                    filesMap.get('reference') &&
+                    filesMap
+                      .get('reference')
+                      .map((foundedFile: DepotFileViewModel, index: number) => (
+                        <div>
+                          <a href="#" className="link" key={index}>
+                            <span
+                              className="ellipsis"
+                              onClick={(e) => {
+                                depot.downloadDepotFile(foundedFile.id);
+                                e.preventDefault();
+                              }}
+                            >
+                              {'    ' + foundedFile.name + '     '}
+                            </span>
+                            <br />
+                          </a>
                           <br />
-                        </a>
-                        <br />
-                      </div>
-                    ))) ||
-                  ''}
-              </div>
+                        </div>
+                      ))) ||
+                    ''}
+                </div>
+              )}
               <br />
             </div>
           </div>

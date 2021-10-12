@@ -256,7 +256,6 @@ class QnaManagementDetailContainer extends ReactComponent<
             qna={qna}
             categoriesMap={categoriesMap}
             filesMap={filesMap}
-            finalOperator={finalOperator}
             renderState={this.renderState}
             getChannelToString={getChannelToString}
             onClickList={this.onClickList}

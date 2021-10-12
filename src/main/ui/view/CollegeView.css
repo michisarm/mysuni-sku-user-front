@@ -8,6 +8,10 @@
 .inno-wrap .inno-item .inno-li table tbody td.txt-break > a {
   word-break: break-all;
 }
+.inno-wrap .inno-item .inno-li table tbody td.small2-1,
+.inno-wrap .inno-item .inno-li table tbody td.small2-1 > a {
+  height: 63px;
+}
 
 #root section.content .tab-menu-inner.sub.English .ui.attached.tabular.menu {
   display: table;

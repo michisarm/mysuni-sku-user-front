@@ -77,11 +77,11 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     supportService.clearQna();
   }
 
-  // componentWillUnmount(): void {
-  //   //
-  //   const { postService } = this.props;
-  //   postService!.clearPost();
-  // }
+  componentWillUnmount(): void {
+    //
+    const { supportService } = this.injected;
+    supportService.clearQna();
+  }
 
   handleCloseAlertWin() {
     //
@@ -157,16 +157,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
 
   getFileBoxIdForReference(fileBoxId: string) {
     //
-    // const { postService } = this.props;
-    // const { post } = postService!;
-    //
-    // if (post.contents) {
-    //   postService!.changePostProps('contents.depotId', fileBoxId);
-    // }
-    if (!fileBoxId) {
-      depot.UNSAFE_clearLocalFileList();
-    }
-
+    // if (!fileBoxId) {
     const { supportService } = this.injected;
     supportService.changeQnaProps('question.depotId', fileBoxId);
   }
@@ -342,7 +333,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                 <div className="lg-attach">
                   <div className="attach-inner">
                     <FileBox
-                      id={qna.question.depotId}
+                      id={qna && qna.question && qna.question.depotId || ''}
                       vaultKey={{
                         keyString: 'qna-sample',
                         patronType: PatronType.Audience,
