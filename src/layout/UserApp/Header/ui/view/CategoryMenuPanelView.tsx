@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { IdName } from 'shared/model';
+import { IdName, IdNameCount } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 
 import ReactGA from 'react-ga';
@@ -28,7 +28,7 @@ interface Props {
   skProfileService?: SkProfileService;
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
-  channels?: IdName[];
+  channels?: IdNameCount[];
   favorites?: string[];
   actions: React.ReactNode;
   banner?: CollegeBanner;
@@ -225,7 +225,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                       onRouteChannel(e, channel);
                                     }}
                                   >
-                                    {channel.name}
+                                    {`${channel.name} (${channel.count})`}
                                   </a>
                                 </span>
                                 <span className="check-type2">
@@ -251,7 +251,9 @@ class CategoryMenuPanelView extends Component<Props> {
                                       onRouteChannel(e, channels[index + 1]);
                                     }}
                                   >
-                                    {channels[index + 1].name}
+                                    {`${channels[index + 1].name} (${
+                                      channels[index + 1].count
+                                    })`}
                                   </a>
                                 </span>
                               </div>
