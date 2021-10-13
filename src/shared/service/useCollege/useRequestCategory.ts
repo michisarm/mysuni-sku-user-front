@@ -5,6 +5,7 @@ import { CollegeService } from 'college/stores';
 import { findAvailableColleges } from 'college/api/collegeApi';
 import { SkProfileService } from 'profile/stores';
 import { findChannelAndCardCount } from 'lecture/detail/api/cardApi';
+import { ChannelAndCardCountRom } from '../../../lecture/detail/model/ChannelAndCardCountRom';
 
 export function useRequestCategory() {
   useEffect(() => {
@@ -33,12 +34,25 @@ export async function requestCategory() {
     .flatMap((c) => c.channelCounts)
     .map((c) => c.id);
 
+  const targetChannelCountMap: Map<string, number> = new Map<string, number>();
+
+  channelAndCardCounts.forEach((c: ChannelAndCardCountRom) => {
+    c.channelCounts.forEach((channelCount) => {
+      targetChannelCountMap.set(channelCount.id, channelCount.count);
+    });
+  });
+
   const nextCategoryColleges = availableColleges
     .filter((college) => _.includes(targetCollegeIds, college.id))
     .map((college) => {
       const nextChannels = college.channels.filter((channel) =>
         _.includes(targetChannelIds, channel.id)
       );
+
+      nextChannels.forEach((nextChannel) => {
+        nextChannel.count = targetChannelCountMap.get(nextChannel.id) || 0;
+      });
+
       return {
         ...college,
         channels: nextChannels,
