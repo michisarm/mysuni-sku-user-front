@@ -34,7 +34,7 @@ class TableModal extends Component<Props, States> {
   }
 
   compare(classroom1: Classroom, classroom2: Classroom) {
-    if (classroom1.round > classroom2.round) return 1;
+    if (classroom1.round < classroom2.round) return 1;
     return -1;
   }
 

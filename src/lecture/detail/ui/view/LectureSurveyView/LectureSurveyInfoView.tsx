@@ -61,10 +61,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
   return (
     <>
-      <div
-        className="course-info-header"
-        data-area={Area.CUBE_HEADER}
-      >
+      <div className="course-info-header" data-area={Area.CUBE_HEADER}>
         <div className="survey-header">
           <div className="survey-header-left test_ing">
             <i className="icon testHeader02">
@@ -74,7 +71,10 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           </div>
           {lectureSurveyState !== undefined &&
             lectureSurveyState.state === 'Finish' && (
-              <div className="survey-header-right" style={{pointerEvents: 'none'}}>
+              <div
+                className="survey-header-right"
+                style={{ pointerEvents: 'none' }}
+              >
                 <button className="ui button free proceeding">참여완료</button>
               </div>
             )}
@@ -115,19 +115,21 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
               <h1 className="survey_done">참여완료</h1>
 
-              <div className="course-info-bottom">
-                <LectureSurveyResultModalView
-                  trigger={
-                    <button className="ui button free pop d">
-                      Survey결과 통계 보기
-                    </button>
-                  }
-                  lectureSurvey={lectureSurvey}
-                  lectureSurveyState={lectureSurveyState}
-                  currentMenu={currentMenu}
-                  lectureStructure={lectureStructure}
-                />
-              </div>
+              {lectureSurvey.userViewResult && (
+                <div className="course-info-bottom">
+                  <LectureSurveyResultModalView
+                    trigger={
+                      <button className="ui button free pop d">
+                        Survey결과 통계 보기
+                      </button>
+                    }
+                    lectureSurvey={lectureSurvey}
+                    lectureSurveyState={lectureSurveyState}
+                    currentMenu={currentMenu}
+                    lectureStructure={lectureStructure}
+                  />
+                </div>
+              )}
             </div>
           </>
         )}
