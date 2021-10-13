@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 // 2021-10-06 14:00
 import './style/css/2.1ba1de7b.chunk.css';
-import './style/css/main.eddd47d7.chunk.css';
+import './style/css/main.4860a582.chunk.css';
 import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
 import { repeatPolyfill } from './polyfill';
 
