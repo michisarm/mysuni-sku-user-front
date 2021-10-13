@@ -12,4 +12,5 @@ export default interface SurveyForm {
   questions: Question[];
   criterionList: CriterionModel[];
   langSupports: LangSupport[];
+  userViewResult: boolean;
 }

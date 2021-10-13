@@ -159,7 +159,7 @@ function parseCriterion(
         title: mTitle,
         no: mNo + 1,
         index,
-        names: names as unknown as LangStrings,
+        names: (names as unknown) as LangStrings,
         count,
       };
     }) || [];
@@ -349,6 +349,7 @@ async function parseSurveyForm(
     surveyItems,
     surveyId,
     surveyCaseId,
+    userViewResult: surveyForm.userViewResult,
   };
 }
 
@@ -387,7 +388,7 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: criteriaItem.names as unknown as LangStrings,
+                names: (criteriaItem.names as unknown) as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },
@@ -410,8 +411,8 @@ async function getCubeLectureSurveyState(
   }
   const studentJoins = await findIsJsonStudentByCube(serviceId);
   if (studentJoins.length > 0) {
-    const studentJoin: StudentJoin | null =
-      studentJoins.reduce<StudentJoin | null>((r, c) => {
+    const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
+      (r, c) => {
         if (r === null) {
           return c;
         }
@@ -419,7 +420,9 @@ async function getCubeLectureSurveyState(
           return c;
         }
         return r;
-      }, null);
+      },
+      null
+    );
     if (studentJoin !== null) {
       const lectureSurveyState = {
         state,
@@ -477,7 +480,7 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: criteriaItem.names as unknown as LangStrings,
+                names: (criteriaItem.names as unknown) as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },

@@ -43,4 +43,5 @@ export default interface LectureSurvey {
   surveyItems: LectureSurveyItem[];
   surveyId: string;
   surveyCaseId: string;
+  userViewResult: boolean;
 }
