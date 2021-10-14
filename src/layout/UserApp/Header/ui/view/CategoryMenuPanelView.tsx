@@ -282,7 +282,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                       onRouteChannel(e, channel);
                                     }}
                                   >
-                                    {channel.name}
+                                    {`${channel.name} (${channel.count})`}
                                   </a>
                                 </span>
                               </div>
