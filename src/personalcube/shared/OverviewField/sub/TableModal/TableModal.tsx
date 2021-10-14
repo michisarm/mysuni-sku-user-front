@@ -140,7 +140,7 @@ class TableModal extends Component<Props, States> {
               </Table.Header>
 
               <Table.Body>
-                {classrooms.sort(this.compare).map((classroom, index) => (
+                {[...classrooms].reverse().map((classroom, index) => (
                   <Table.Row key={`overview-table-row-${index}`}>
                     <Table.Cell>{classroom.round}</Table.Cell>
                     <Table.Cell>
