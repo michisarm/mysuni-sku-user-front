@@ -24,6 +24,7 @@ class CollegeLectureCountRdo {
     id: string;
     name: PolyglotString | null;
     langSupports: LangSupport[];
+    count: number;
   }[] = [];
 }
 

@@ -16,7 +16,7 @@ export async function updateLectureReview() {
     reviewSummary.average !== undefined
   ) {
     setLectureReview({
-      average: reviewSummary.average,
+      average: isNaN(reviewSummary.average) ? 0 : reviewSummary.average,
       id: reviewSummary.id,
       reviewerCount: reviewSummary.reviewerCount,
     });
