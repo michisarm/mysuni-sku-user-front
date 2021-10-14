@@ -68,7 +68,7 @@ class BoardListContentHeaderHelpView extends React.Component<Props> {
           <p>평일 09:00 ~ 18:00 (주말 &amp; 공휴일 제외)</p>
           <span>
             <i aria-hidden="true" className="icon support-tel" />
-            02)6323-9002
+            02) 6323-9002
           </span>
         </div>
       </div>
