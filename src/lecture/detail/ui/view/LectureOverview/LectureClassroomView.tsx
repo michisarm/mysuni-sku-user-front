@@ -70,7 +70,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> =
                 <col />
               </colgroup>
               <Table.Body>
-                {lectureClassroom.classrooms.map(
+                {[...lectureClassroom.classrooms].reverse().map(
                   ({
                     round,
                     instructor,
