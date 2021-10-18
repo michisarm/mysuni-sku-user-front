@@ -711,13 +711,8 @@ export async function searchData(searchValue: string, searchType?: string) {
       searchSuggest(searchValue)
         .then((response) => {
           if (response) {
-            response.suggestions.map((s2) => {
-              s2.map((s1) => {
-                if (s1[0] !== searchValue && !suggestions.includes(s1[0])) {
-                  // 중복제거
-                  suggestions.push(s1[0]);
-                }
-              });
+            response.forEach((s2) => {
+              suggestions.push(s2);
             });
             if (suggestions.length > 10) {
               suggestions.length = 10;
