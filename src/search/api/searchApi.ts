@@ -772,7 +772,7 @@ export function searchSuggest(text_idx: string) {
   const url = encodeURI(
     `${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`
   );
-  return axiosApi.get<SearchSuggestion>(url).then(AxiosReturn);
+  return axiosApi.get<string[]>(url).then(AxiosReturn);
 }
 
 export function findRelatedKeywordByKeyword(keyword: string) {
