@@ -3,7 +3,7 @@ import { AxiosReturn } from '../../../shared/api/AxiosReturn';
 import { CpPisAgreementModel } from '../../model/CpPisAgreementModel';
 import { PisAgreementSdo } from '../../model/PisAgreementSdo';
 
-const BASE_URL = '/api/instructor';
+const BASE_URL = '/api/user';
 
 export function registerPisAgreement(pisAgreementSdo: PisAgreementSdo) {
   const axios = getAxios();
