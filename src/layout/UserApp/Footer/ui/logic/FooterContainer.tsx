@@ -258,10 +258,10 @@ function FooterContainer() {
             </h2>
           </div>
           <div className="foot-copyright">
-            COPYRIGHT
+            Copyright
             <Icon className="copyright" />
-            <span className="blind">copyright sign</span>
-            mySUNI. ALL RIGHTS RESERVED.
+            <span className="blind">copyright sign</span>mySUNI. All Rights
+            Reserved.
           </div>
         </div>
       </div>
