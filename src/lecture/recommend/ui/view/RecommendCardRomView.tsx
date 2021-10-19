@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
@@ -11,14 +12,11 @@ import {
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
+import { DifficultyLevel } from 'personalcube/cubeintro/model';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
-  const {
-    channelId,
-    cardCount,
-    totalCardCount,
-    cardWithRelatedCountRoms,
-  } = props;
+  const { channelId, cardCount, totalCardCount, cardWithRelatedCountRoms } =
+    props;
 
   const isCardWithRelatedCountRoms =
     cardWithRelatedCountRoms === null || cardWithRelatedCountRoms.length < 0
@@ -79,12 +77,37 @@ export function RecommendCardRomView(props: RecommendCardRom) {
               return (
                 <li>
                   <div className="ui cards box-cards">
-                    <CardView
+                    {/* <CardView
                       key={card.id}
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
                       dataArea={Area.RECOMMEND_LIST}
+                    /> */}
+                    <LectureCardView
+                      cardId={card.id}
+                      cardName={card.name}
+                      // 체크 필요
+                      colleges={[]}
+                      learningTime={card.learningTime}
+                      additionalLearningTime={card.additionalLearningTime}
+                      thumbnailImagePath={card.thumbImagePath}
+                      mainCategory={card.mainCategory}
+                      passedStudentCount={cardRelatedCount.passedStudentCount}
+                      starCount={cardRelatedCount.starCount}
+                      simpleDescription={card.simpleDescription}
+                      cubeType={card.type}
+                      // 체크 필요
+                      inMylecture={[]}
+                      lectureDifficultyLevel={
+                        card.difficultyLevel || DifficultyLevel.Basic
+                      }
+                      // 체크 필요
+                      userLanguage="Korean"
+                      studentCount={cardRelatedCount.studentCount}
+                      permittedCinerooms={card.permittedCinerooms}
+                      langSupports={card.langSupports}
+                      useBookMark={true}
                     />
                   </div>
                 </li>
