@@ -36,6 +36,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   totalMyCompanyLearningTime: number = 0;
   totalAplAllowTime: number = 0;
   totalCompleteLectureCount: number = 0;
+  totalCollegeTime: number = 0;
 
   /* mySUNI 학습시간 */
   @computed get displayMySUNILearningTime(): number {
@@ -83,6 +84,7 @@ decorate(MyLearningSummaryModel, {
   totalMyCompanyLearningTime: observable,
   totalAplAllowTime: observable,
   totalCompleteLectureCount: observable,
+  totalCollegeTime: observable,
 });
 
 export default MyLearningSummaryModel;
