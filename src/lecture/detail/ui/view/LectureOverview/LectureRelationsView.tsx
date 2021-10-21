@@ -1,5 +1,5 @@
 import { patronInfo } from '@nara.platform/dock';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
@@ -11,9 +11,16 @@ import LectureRelations from '../../../viewModel/LectureOverview/LectureRelation
 import lectureRoutePaths from '../../../../routePaths';
 import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
-import { Area } from 'tracker/model';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { autorun } from 'mobx';
+import { InMyLectureService } from '../../../../../myTraining/stores';
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { SkProfileService } from '../../../../../profile/stores';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { getDefaultLang } from '../../../../model/LangSupport';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -85,6 +92,8 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
   lectureRelations,
 }) {
   const lectureSummary = useLectureCardSummary();
+  const userLanguage = SkProfileService.instance.skProfile.language;
+
   return (
     <div
       className="badge-detail border-none"
@@ -105,7 +114,13 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
             <h3 className="title-style">
               <Label className="onlytext bold size24">
                 <Icon className="before" />
-                <span>{/*Tag*/}<PolyglotText defaultString="관련과정" id="Course-Contents-관련과정" /></span>
+                <span>
+                  {/*Tag*/}
+                  <PolyglotText
+                    defaultString="관련과정"
+                    id="Course-Contents-관련과정"
+                  />
+                </span>
               </Label>
             </h3>
           </div>
@@ -116,12 +131,33 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
               return (
                 <li key={card.id}>
                   <div className="ui cards box-cards">
-                    <CardView
-                      cardId={card.id}
-                      {...card}
-                      {...cardRelatedCount}
-                      dataArea={Area.CARD_RELATION}
-                    />
+                    <>
+                      {/*<LectureCardView*/}
+                      {/*  cardId={card.id}*/}
+                      {/*  cardName={parsePolyglotString(card.name)}*/}
+                      {/*  learningTime={String(card.learningTime)}*/}
+                      {/*  thumbnailImagePath={card.thumbImagePath}*/}
+                      {/*  passedStudentCount={String(*/}
+                      {/*    cardRelatedCount.passedStudentCount*/}
+                      {/*  )}*/}
+                      {/*  starCount={String(cardRelatedCount.starCount)}*/}
+                      {/*  simpleDescription={parsePolyglotString(*/}
+                      {/*    card.simpleDescription*/}
+                      {/*  )}*/}
+                      {/*  studentCount={cardRelatedCount.studentCount}*/}
+                      {/*  userLanguage={userLanguage}*/}
+                      {/*  langSupports={card.langSupports}*/}
+                      {/*  dataArea={Area.CARD_RELATION}*/}
+                      {/*  collegeId={}*/}
+                      {/*  useBookMark*/}
+                      {/*/>*/}
+                      <CardView
+                        cardId={card.id}
+                        {...card}
+                        {...cardRelatedCount}
+                        dataArea={Area.CARD_RELATION}
+                      />
+                    </>
                   </div>
                 </li>
               );
