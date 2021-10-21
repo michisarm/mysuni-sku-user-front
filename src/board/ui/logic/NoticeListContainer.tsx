@@ -9,7 +9,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { CommentService } from '@nara.drama/feedback';
-import { Form, Icon, Input, Segment } from 'semantic-ui-react';
+import { Form, Icon, Input, Segment, Table } from 'semantic-ui-react';
 import { Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { PostService } from '../../stores';
@@ -17,6 +17,10 @@ import routePaths from '../../routePaths';
 import { SharedService } from '../../../shared/stores';
 import Pagination from '../../../shared/components/Pagination';
 import NoticeListView from '../view/NoticeListView';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {}
 
@@ -117,15 +121,26 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
         <div className="support-list-wrap notice">
           <div className="list-top">
             <div className="list-top-left">
-              총 <strong>{postService.posts.totalCount}</strong>개의 리스트가
-              있습니다.
+              <span
+                className="tit_cnt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `총 <strong>{count}</strong>개의 리스트가 있습니다.`,
+                    'support-common-목록수',
+                    { count: (postService.posts.totalCount || 0).toString() }
+                  ),
+                }}
+              />
             </div>
             <div className="list-top-right">
               <div className="ui input s-search h38">
                 <Form.Field
                   control={Input}
                   type="text"
-                  placeholder="검색어를 입력하세요"
+                  placeholder={getPolyglotText(
+                    '검색어를 입력하세요.',
+                    'support-notice-검색'
+                  )}
                   value={keyword}
                   onChange={(event: any, data: any) =>
                     this.setState({ keyword: data.value })

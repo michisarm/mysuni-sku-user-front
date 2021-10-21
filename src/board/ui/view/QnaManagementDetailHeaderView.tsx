@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   title: string;

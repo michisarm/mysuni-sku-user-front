@@ -239,11 +239,11 @@ class SupportService {
   getStateToString(state: QnaState): string {
     //
     if (state === QnaState.QuestionReceived) {
-      return getPolyglotText('문의접수', 'support-qna-문의접수');
+      return getPolyglotText('문의접수', 'support-common-문의접수');
     } else if (state === QnaState.AnswerWaiting) {
-      return getPolyglotText('답변대기', 'support-qna-답변대기');
+      return getPolyglotText('답변대기', 'support-common-답변대기');
     } else if (state === QnaState.AnswerCompleted) {
-      return getPolyglotText('답변완료', 'support-qna-답변완료');
+      return getPolyglotText('답변완료', 'support-common-답변완료');
     }
 
     return '';

@@ -16,6 +16,10 @@ import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { QnaState } from '../../model/vo/QnaState';
 import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   isUpdatable: boolean;
@@ -79,7 +83,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
       <>
         <Form.Field>
           <div className="admin-answer-top">
-            <strong>문의 답변</strong>
+            <strong>
+              <PolyglotText
+                id="support-qnamgt-문의답변"
+                defaultString="문의답변"
+              />
+            </strong>
           </div>
           <div className="form-table-wrapper">
             <Table className="admin-answer-form">
@@ -92,7 +101,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                   <>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span className="impt">답변 내용</span>
+                        <span className="impt">
+                          <PolyglotText
+                            id="support-qnamgt-답변내용"
+                            defaultString="답변 내용"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div className="write-form ui form">
@@ -112,7 +126,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>첨부 파일</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-첨부파일"
+                            defaultString="첨부 파일"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div className="lg-attach add-discussion">
@@ -144,13 +163,18 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span className="impt">처리 상태</span>
+                        <span className="impt">
+                          <PolyglotText
+                            id="support-qnamgt-처리상태2"
+                            defaultString="처리 상태"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div className="radio-bttn">
                           <Radio
                             name="radioGroup"
-                            label="답변대기"
+                            label={getStateToString(QnaState.AnswerWaiting)}
                             className="base"
                             value={QnaState.AnswerWaiting}
                             checked={
@@ -165,7 +189,7 @@ class QnaManagementAnswerView extends React.Component<Props> {
                           />
                           <Radio
                             name="radioGroup"
-                            label="답변완료"
+                            label={getStateToString(QnaState.AnswerCompleted)}
                             className="base"
                             value={QnaState.AnswerCompleted}
                             checked={
@@ -183,11 +207,19 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>메일 발송 여부</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-메일발송여부"
+                            defaultString="메일 발송 여부"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <Checkbox
-                          label="문의자에게 해당 내용을 메일로 발송합니다."
+                          label={getPolyglotText(
+                            '문의자에게 해당 내용을 메일로 발송합니다.',
+                            'support-qnamgt-메일발송여부label'
+                          )}
                           checked={qna.checkMail}
                           onChange={(e, data) =>
                             changeQnaProps('checkMail', data.checked)
@@ -197,22 +229,31 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>메모</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-메모"
+                            defaultString="메모"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <TextArea
                           value={qna.answer.memo}
                           className="memo-ipt"
-                          placeHolder="내용을 입력해주세요."
+                          placeHolder={getPolyglotText(
+                            '내용을 입력해주세요.',
+                            'support-qnamgt-메모-placeholder'
+                          )}
                           onChange={(e, data) => {
                             changeQnaProps('answer.memo', data.value);
                           }}
                         />
                         <p>
                           <i aria-hidden="true" className="icon info20" />
-                          답변 담당자와 Help Desk 부서가 서로 공유되는
-                          메모입니다. 문의자에게는 메모 내용이 공유되지
-                          않습니다.
+                          <PolyglotText
+                            defaultString="답변 담당자와 Help Desk 부서가 서로 공유되는 메모입니다. 문의자에게는 메모 내용이 공유되지 않습니다."
+                            id="support-qnamgt-메모설명"
+                          />
                         </p>
                       </Table.Cell>
                     </Table.Row>
@@ -220,7 +261,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                 ) : (
                   <>
                     <Table.Row>
-                      <Table.HeaderCell>담당자 정보</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        <PolyglotText
+                          defaultString="담당자 정보"
+                          id="support-qnamgt-담당자정보"
+                        />
+                      </Table.HeaderCell>
                       <Table.Cell>
                         <div>
                           <span>
@@ -251,7 +297,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>답변 내용</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-답변내용"
+                            defaultString="답변 내용"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div
@@ -263,7 +314,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>첨부 파일</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-첨부파일"
+                            defaultString="첨부 파일"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         {(answerFilesMap &&
@@ -297,7 +353,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>문의자 메일 발송</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-문의자메일발송여부"
+                            defaultString="문의자 메일 발송"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         {qna.latestOperatorSentEmail ? (
@@ -331,12 +392,27 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>만족도 조사 결과</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-만족도조사"
+                            defaultString="만족도 조사 결과"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>
                         {qna.answer.satisfactionPoint && (
                           <div>
-                            <strong>{`${qna.answer.satisfactionPoint} 점`}</strong>
+                            <strong>
+                              {getPolyglotText(
+                                `{count} 점`,
+                                'support-qnamgt-별점',
+                                {
+                                  count: (
+                                    qna.answer.satisfactionPoint || 0
+                                  ).toString(),
+                                }
+                              )}
+                            </strong>
                             <span>{qna.answer.satisfactionComment}</span>
                           </div>
                         )}
@@ -344,7 +420,12 @@ class QnaManagementAnswerView extends React.Component<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>메모</span>
+                        <span>
+                          <PolyglotText
+                            id="support-qnamgt-메모"
+                            defaultString="메모"
+                          />
+                        </span>
                       </Table.HeaderCell>
                       <Table.Cell>{qna.answer.memo}</Table.Cell>
                     </Table.Row>
