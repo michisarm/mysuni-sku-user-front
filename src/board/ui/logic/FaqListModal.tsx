@@ -287,7 +287,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                             dangerouslySetInnerHTML={{
                               __html: getPolyglotText(
                                 `총 <span>{count}</span>개의 리스트가 있습니다.`,
-                                'list-count',
+                                'support-common-목록수',
                                 {
                                   count: count.toString(),
                                 }
