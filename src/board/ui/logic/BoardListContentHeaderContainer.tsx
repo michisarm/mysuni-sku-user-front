@@ -45,7 +45,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           </div>
           <div className="text">
             <PolyglotText
-              id="support-spif-Notice타이틀"
+              id="support-notice-탭설명"
               defaultString="mySUNI의 신규 콘텐츠, 기능 추가, 이벤트 등 새로운 소식을 안내드립니다."
             />
           </div>
@@ -60,7 +60,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           </div>
           <div className="text">
             <PolyglotText
-              id="support-spif-FAQ타이틀"
+              id="support-faq-탭설명"
               defaultString="mySUNI에 대한 자주 찾는 질문들을 확인하실 수 있습니다."
             />
           </div>
@@ -78,7 +78,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
           </div>
           <div className="text">
             <PolyglotText
-              id="support-spif-나의이용문의"
+              id="support-qna-탭설명"
               defaultString="mySUNI에 대한 궁금증을 풀어드립니다."
             />
           </div>
@@ -89,14 +89,11 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
       return (
         <>
           <div className="title">
-            <PolyglotText
-              id="support-spif-QnaMgt타이틀"
-              defaultString="문의관리"
-            />
+            <PolyglotText id="support-qnamgt-탭명" defaultString="문의관리" />
           </div>
           <div className="text">
             <PolyglotText
-              id="support-spif-QnaMgt타이틀"
+              id="support-qnamgt-탭설명"
               defaultString="문의에 대한 답변을 등록하실 수 있습니다."
             />
           </div>
