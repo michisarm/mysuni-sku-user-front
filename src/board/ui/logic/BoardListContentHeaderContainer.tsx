@@ -71,10 +71,7 @@ export class BoardListContentHeaderContainer extends React.Component<Props> {
       return (
         <>
           <div className="title">
-            <PolyglotText
-              id="support-spif-나의이용문의"
-              defaultString="1:1 문의"
-            />
+            <PolyglotText id="support-qna-탭명" defaultString="1:1 문의" />
           </div>
           <div className="text">
             <PolyglotText

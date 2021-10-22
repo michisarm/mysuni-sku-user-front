@@ -57,7 +57,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
       },
       {
         name: ContentType.QnA,
-        item: ContentName.QnA,
+        item: getPolyglotText('1:1 문의', 'support-qna-탭명'),
         render: () => <QnaTabContainer />,
       },
       {
