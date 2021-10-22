@@ -9,11 +9,13 @@ import QnAModel from '../../model/QnAModel';
 import QuestionModel from '../../model/QuestionModel';
 import { getQuestionStateReactNode } from '../logic/QuestionStateHelper';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   // posts: PostModel[];
   getCategoryName: (id: string) => string;
   onClickPost: (postId: string) => void;
+  getStateToString: (state: QnaState) => string;
 
   questions: QuestionModel[];
   startNo: number;
@@ -25,7 +27,7 @@ class QnaListView extends ReactComponent<Props, {}> {
   //
   render() {
     //
-    const { getCategoryName, onClickPost } = this.props;
+    const { getCategoryName, onClickPost, getStateToString } = this.props;
     const { questions, startNo } = this.props;
 
     return(
@@ -64,7 +66,7 @@ class QnaListView extends ReactComponent<Props, {}> {
                       {/*</a>*/}
                     </div>
                   </Table.Cell>
-                  <Table.Cell>{getQuestionStateReactNode(question.state)}</Table.Cell>
+                  <Table.Cell>{getStateToString(question.state)}</Table.Cell>
                   <Table.Cell>{moment(question.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
               )

@@ -373,7 +373,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   {/*  id="support-QnaWrite-제출"*/}
                   {/*  defaultString="Submit"*/}
                   {/*/>*/}
-                  등록
+                  {getPolyglotText('등록', 'support-qnamgt-등록')}
                 </Button>
               </div>
             </Form>

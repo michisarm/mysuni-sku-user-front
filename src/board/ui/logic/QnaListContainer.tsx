@@ -103,7 +103,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
     //
     const { offset, isLoading } = this.state;
     const { supportService, sharedService } = this.injected;
-    const { questions, qnaQueryModel } = supportService;
+    const { questions, qnaQueryModel, getStateToString } = supportService;
     const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
@@ -184,6 +184,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   <QnaListView
                     getCategoryName={this.getCategoryName}
                     onClickPost={this.onClickPost}
+                    getStateToString={getStateToString}
                     questions={questions}
                     startNo={startNo}
                   />
