@@ -11,7 +11,6 @@ import {
   PolyglotString,
 } from '../../../shared/viewmodel/PolyglotString';
 import QnAModel from '../../model/QnAModel';
-import OperatorModel from '../../model/vo/OperatorModel';
 import QnaManagementDetailHeaderView from './QnaManagementDetailHeaderView';
 import { QnaState } from '../../model/vo/QnaState';
 import { RequestChannel } from '../../model/vo/RequestChannel';
@@ -75,10 +74,13 @@ class QnaManagementDetailView extends React.Component<Props> {
               {qna.question.depotId && (
                 <div className="file">
                   <span>
-                    <PolyglotText
-                      id="support-QnaRead-첨부파일"
-                      defaultString="첨부파일 :"
-                    />
+                    <>
+                      <PolyglotText
+                        id="support-qnamgt-첨부파일"
+                        defaultString="첨부파일"
+                      />
+                      {' :'}
+                    </>
                   </span>
                   <br />
                   {(filesMap &&

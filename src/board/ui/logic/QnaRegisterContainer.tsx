@@ -366,14 +366,14 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                   {/*  id="support-QnaWrite-닫기"*/}
                   {/*  defaultString="Close"*/}
                   {/*/>*/}
-                  목록
+                  {getPolyglotText('목록', 'support-qna-list-btn')}
                 </Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>
                   {/*<PolyglotText*/}
                   {/*  id="support-QnaWrite-제출"*/}
                   {/*  defaultString="Submit"*/}
                   {/*/>*/}
-                  등록
+                  {getPolyglotText('등록', 'support-qnamgt-등록')}
                 </Button>
               </div>
             </Form>

@@ -9,6 +9,7 @@ import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getQuestionStateReactNode } from '../logic/QuestionStateHelper';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   title: string;
@@ -19,6 +20,7 @@ interface Props {
   onClickModify?: (e: any) => void;
 
   getCategoryName: (categoryId: string) => string;
+  getStateToString: (state: QnaState) => string;
 
   qna: QnAModel;
   finalOperator: OperatorModel;
@@ -37,6 +39,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
       onClickList,
       onClickDelete,
       onClickModify,
+      getStateToString,
     } = this.props;
 
     const { getCategoryName } = this.props;
@@ -57,7 +60,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
               </span>
             </div>
             <strong className="stat done">
-              {getQuestionStateReactNode(qna.question.state)}
+              {getStateToString(qna.question.state)}
             </strong>
           </div>
           <div className="user-info">

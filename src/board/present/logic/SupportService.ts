@@ -239,11 +239,11 @@ class SupportService {
   getStateToString(state: QnaState): string {
     //
     if (state === QnaState.QuestionReceived) {
-      return getPolyglotText('문의접수', 'support-qna-문의접수');
+      return getPolyglotText('문의접수', 'support-common-문의접수');
     } else if (state === QnaState.AnswerWaiting) {
-      return getPolyglotText('답변대기', 'support-qna-답변대기');
+      return getPolyglotText('답변대기', 'support-common-답변대기');
     } else if (state === QnaState.AnswerCompleted) {
-      return getPolyglotText('답변완료', 'support-qna-답변완료');
+      return getPolyglotText('답변완료', 'support-common-답변완료');
     }
 
     return '';
@@ -252,13 +252,13 @@ class SupportService {
   getChannelToString(requestChannel: RequestChannel): string {
     //
     if (requestChannel === RequestChannel.QnA) {
-      return getPolyglotText('mySUNI', 'support-qna-QNA');
+      return getPolyglotText('mySUNI', 'support-common-mysuni');
     } else if (requestChannel === RequestChannel.PHONE) {
-      return getPolyglotText('전화', 'support-qna-PHONE');
+      return getPolyglotText('전화', 'support-common-전화');
     } else if (requestChannel === RequestChannel.MESSENGER) {
-      return getPolyglotText('메신저', 'support-qna-MESSENGER');
+      return getPolyglotText('메신저', 'support-common-메신저');
     } else if (requestChannel === RequestChannel.EMAIL) {
-      return getPolyglotText('이메일', 'support-qna-EMAIL');
+      return getPolyglotText('이메일', 'support-common-이메일');
     }
 
     return '';

@@ -152,15 +152,25 @@ class QnaManagementDetailContainer extends ReactComponent<
     const { qna } = this.injected.supportService;
 
     if (qna.answer.content === '') {
-      this.setState({ message: '필수 항목을 입력해주세요', open: 'alert' });
+      // this.setState({ message: '필수 항목을 입력해주세요', open: 'alert' });
+      this.setState({
+        message: getPolyglotText(
+          '필수 항목을 입력해주세요',
+          'support-common-필수항목'
+        ),
+        open: 'alert',
+      });
       return;
     }
 
     const title = getPolyglotText('등록 안내', 'support-QnaRead-등록안내');
 
     const message = qna.checkMail
-      ? '문의자에게 메일을 발송 하시겠습니까?'
-      : '답변 정보를 등록 하시겠습니까?';
+      ? getPolyglotText(
+          '문의자에게 메일을 발송 하시겠습니까?',
+          'support-qnamgt-메일발송mg'
+        )
+      : getPolyglotText('등록 하시겠습니까?', 'support-QnaRead-등록mg');
 
     this.setState({ title, message, open: 'confirm', isDelete: false });
   }
@@ -179,7 +189,10 @@ class QnaManagementDetailContainer extends ReactComponent<
   onClickDelete() {
     //
     const title = getPolyglotText('삭제 안내', 'support-QnaRead-삭제안내');
-    const message = '문의을 삭제하시겠습니까?';
+    const message = getPolyglotText(
+      '삭제 하시겠습니까?',
+      'support-QnaRead-삭제mg'
+    );
 
     this.setState({ title, message, open: 'confirm', isDelete: true });
   }
@@ -282,7 +295,7 @@ class QnaManagementDetailContainer extends ReactComponent<
             <div className="supt-bottom">
               <div className="bttn-area">
                 <Button className="fix line" onClick={this.onClickList}>
-                  목록
+                  {getPolyglotText('목록', 'support-qnamgt-목록')}
                 </Button>
                 {!isUpdatable ? (
                   <Button
@@ -292,11 +305,11 @@ class QnaManagementDetailContainer extends ReactComponent<
                       this.setState({ isUpdatable: true });
                     }}
                   >
-                    수정
+                    {getPolyglotText('수정', 'support-qnamgt-수정')}
                   </Button>
                 ) : (
                   <Button className="fix bg" onClick={this.onClickSave}>
-                    등록
+                    {getPolyglotText('등록', 'support-qnamgt-등록')}
                   </Button>
                 )}
               </div>

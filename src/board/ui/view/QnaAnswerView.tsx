@@ -4,7 +4,7 @@ import { Table, Form } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import QnAModel from '../../model/QnAModel';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   qna: QnAModel;
@@ -21,7 +21,7 @@ class QnaAnswerView extends ReactComponent<Props> {
       qna.answer && (
         <Form.Field>
           <div className="admin-answer-top">
-            <strong>문의 답변</strong>
+            <strong>{getPolyglotText('문의 답변', 'support-qna-detail-answer')}</strong>
           </div>
           <div className="form-table-wrapper">
             <Table className="admin-answer-form">
@@ -34,7 +34,7 @@ class QnaAnswerView extends ReactComponent<Props> {
                   <>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>답변 내용</span>
+                        <strong>{getPolyglotText('답변 내용', 'support-qna-detail-contents')}</strong>
                       </Table.HeaderCell>
                       <Table.Cell>
                         <div dangerouslySetInnerHTML={{ __html: qna.answer.content, }}/>
@@ -42,7 +42,10 @@ class QnaAnswerView extends ReactComponent<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>첨부 파일</span>
+                        <PolyglotText
+                          id="support-QnaWrite-첨부파일"
+                          defaultString="첨부파일"
+                        />
                       </Table.HeaderCell>
                       <Table.Cell>
                         {(filesMap &&
@@ -78,7 +81,7 @@ class QnaAnswerView extends ReactComponent<Props> {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell>
-                        <span>답변 일시</span>
+                        <span>{getPolyglotText('답변 일시', 'support-qna-detail-date')}</span>
                       </Table.HeaderCell>
                       <Table.Cell>{moment(qna.question.modifiedTime).format('YYYY.MM.DD')}</Table.Cell>
                     </Table.Row>
