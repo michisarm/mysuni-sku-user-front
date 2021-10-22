@@ -1,4 +1,5 @@
 import { RequestChannel } from '../vo/RequestChannel';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 export default class QuestionSdo {
   //
@@ -16,10 +17,10 @@ export default class QuestionSdo {
   depotId: string = '';
 
   static isBlank(post: QuestionSdo): string {
-    if (!post.title) return '제목';
-    if (!post.mainCategoryId) return '문의유형';
-    if (!post.subCategoryId) return '문의유형';
-    if (!post.content || !post.content) return '내용';
+    if (!post.title) return getPolyglotText('제목', 'support-QnaWrite-제목');
+    if (!post.mainCategoryId) return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
+    if (!post.subCategoryId) return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
+    if (!post.content || !post.content) return getPolyglotText('내용', 'support-QnaWrite-내용');;
     return 'success';
   }
 }
