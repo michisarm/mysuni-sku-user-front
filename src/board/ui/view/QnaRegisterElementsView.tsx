@@ -1,5 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 
 export const QnaRegisterContentHeaderView: FunctionComponent = () => (
   <div className="add-personal-learning support">
@@ -9,7 +12,7 @@ export const QnaRegisterContentHeaderView: FunctionComponent = () => (
         {/*  id="support-QnaWrite-타이틀"*/}
         {/*  defaultString="Ask a Question"*/}
         {/*/>*/}
-        1:1 문의
+        {getPolyglotText('1:1 문의', 'support-qna-탭명')}
       </div>
       <div className="apl-notice">
         <PolyglotText
