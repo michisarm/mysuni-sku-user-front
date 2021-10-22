@@ -16,6 +16,7 @@ import NoticeTabContainer from '../logic/NoticeListContainer';
 import QnaManagementTabContainer from '../logic/QnaManagementContainer';
 import { findForeignerUser } from 'shared/helper/findForeignerUser';
 import SharedService from '../../../shared/present/logic/SharedService';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<RouteParams> {}
 
@@ -61,7 +62,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
       },
       {
         name: ContentType.QnAMgt,
-        item: ContentName.QnAMgt,
+        item: getPolyglotText('문의관리', 'support-qnamgt-탭명'),
         render: () => <QnaManagementTabContainer />,
       },
     ] as TabItemModel[];
@@ -105,7 +106,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
     } else if (boardId === ContentType.QnA) {
       return '1:1 문의';
     } else if (boardId === ContentType.QnAMgt) {
-      return '문의관리';
+      return getPolyglotText('문의관리', 'support-qnamgt-탭명');
     }
 
     return '';

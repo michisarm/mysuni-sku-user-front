@@ -252,13 +252,13 @@ class SupportService {
   getChannelToString(requestChannel: RequestChannel): string {
     //
     if (requestChannel === RequestChannel.QnA) {
-      return getPolyglotText('mySUNI', 'support-qna-QNA');
+      return getPolyglotText('mySUNI', 'support-common-mysuni');
     } else if (requestChannel === RequestChannel.PHONE) {
-      return getPolyglotText('전화', 'support-qna-PHONE');
+      return getPolyglotText('전화', 'support-common-전화');
     } else if (requestChannel === RequestChannel.MESSENGER) {
-      return getPolyglotText('메신저', 'support-qna-MESSENGER');
+      return getPolyglotText('메신저', 'support-common-메신저');
     } else if (requestChannel === RequestChannel.EMAIL) {
-      return getPolyglotText('이메일', 'support-qna-EMAIL');
+      return getPolyglotText('이메일', 'support-common-이메일');
     }
 
     return '';
