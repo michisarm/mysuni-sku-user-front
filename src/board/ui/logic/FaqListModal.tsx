@@ -260,13 +260,13 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
         trigger={
           <Button className="faq-info">
             <Icon className="info20" />
-            혹시 이런 문의일까요?
+            {getPolyglotText('혹시 이런 문의일까요?', 'support-faq-modal-btn')}
           </Button>
         }
         onMount={this.init}
       >
         <Modal.Header>
-          자주 찾는 질문
+          {getPolyglotText('자주 찾는 질문', 'support-faq-modal-header')}
         </Modal.Header>
         <Modal.Content className="faq-modal-cont-area">
           <Pagination name={paginationKey} onChange={() => this.findFaqPosts(categoryIndex != -1 ? categorys[categoryIndex].categoryId : '', searchKey)}>
@@ -282,14 +282,25 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                       </div>
                       <div className="list-top">
                         <div className="list-top-left">
-                          총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.
+                          <div
+                            className="section-count"
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                `총 <span>{count}</span>개의 리스트가 있습니다.`,
+                                'list-count',
+                                {
+                                  count: count.toString(),
+                                }
+                              ),
+                            }}
+                          />
                         </div>
                         <div className="list-top-right">
                           <div className="ui input s-search h38">
                             <Form.Field
                               control={Input}
                               type="text"
-                              placeholder="검색어를 입력하세요"
+                              placeholder={getPolyglotText(`검색어를 입력하세요.`, 'support-faq-search-ph')}
                               value={searchKey}
                               onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
                               onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}
@@ -333,7 +344,7 @@ class FaqListModal extends ReactComponent<Props, State, Injected> {
                                 <Form.Field
                                   control={Input}
                                   type="text"
-                                  placeholder="검색어를 입력하세요"
+                                  placeholder={getPolyglotText(`검색어를 입력하세요.`, 'support-faq-search-ph')}
                                   value={searchKey}
                                   onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
                                   onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}

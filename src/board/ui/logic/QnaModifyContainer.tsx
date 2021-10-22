@@ -177,7 +177,10 @@ class QnaModifyContainer extends React.Component<Props, States> {
           <div className="apl-form-wrap support">
             <Form>
               <Form.Field>
-                <label>제목</label>
+                <PolyglotText
+                  id="support-QnaWrite-제목"
+                  defaultString="제목"
+                />
                 <div
                   className={classNames('ui right-top-count input', {
                     focus,
@@ -196,7 +199,10 @@ class QnaModifyContainer extends React.Component<Props, States> {
                   </span>
                   <input
                     type="text"
-                    placeholder="제목을 입력해주세요."
+                    placeholder={getPolyglotText(
+                      '제목을 입력해주세요.',
+                      'support-QnaWrite-제목입력'
+                    )}
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
                     value={

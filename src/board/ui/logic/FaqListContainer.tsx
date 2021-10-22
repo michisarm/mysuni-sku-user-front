@@ -270,14 +270,26 @@ class FaqListContainer extends ReactComponent<Props, State, Injected> {
             </div>
             <div className="list-top">
               <div className="list-top-left">
-                총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.
+                <div
+                  className="section-count"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `총 <span>{count}</span>개의 리스트가 있습니다.`,
+                      'list-count',
+                      {
+                        count: count.toString(),
+                      }
+                    ),
+                  }}
+                />
+                {/*총 <strong>{`${count}개`}</strong>의 리스트가 있습니다.*/}
               </div>
               <div className="list-top-right">
                 <div className="ui input s-search h38">
                   <Form.Field
                     control={Input}
                     type="text"
-                    placeholder="검색어를 입력하세요"
+                    placeholder={getPolyglotText(`검색어를 입력하세요.`, 'support-faq-search-ph')}
                     value={searchKey}
                     onChange={(e: any, data: any) => this.onChangeSearchKey(e, data)}
                     onKeyPress={(e: any, data: any) => this.onKeyPressed(e)}

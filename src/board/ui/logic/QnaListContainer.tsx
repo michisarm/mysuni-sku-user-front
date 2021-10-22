@@ -118,14 +118,14 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   <Icon className="ask24" />
                   &nbsp;&nbsp;{' '}
                   <PolyglotText
-                    id="support-qna-질문"
+                    id="support-qna-btn-inquiry"
                     defaultString="문의하기"
                   />
                 </Button>
                 <div className="radio-wrap">
                   <Radio
                     className="base"
-                    label={getPolyglotText('전체', 'support-qna-rall')}
+                    label={getPolyglotText('모두보기', 'support-qna-radio-all')}
                     name="radioGroup"
                     value={undefined}
                     checked={qnaQueryModel.state === undefined}
@@ -135,7 +135,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   />
                   <Radio
                     className="base"
-                    label={getPolyglotText('답변 완료', 'support-qna-rdn')}
+                    label={getPolyglotText('답변 완료', 'support-qna-radio-done')}
                     name="radioGroup"
                     value={QnaState.AnswerCompleted}
                     checked={qnaQueryModel.state === QnaState.AnswerCompleted}
@@ -145,7 +145,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   />
                   <Radio
                     className="base"
-                    label={getPolyglotText('답변 대기', 'support-qna-rwt')}
+                    label={getPolyglotText('답변 대기', 'support-qna-radio-wait')}
                     name="radioGroup"
                     value={QnaState.AnswerWaiting}
                     checked={qnaQueryModel.state === QnaState.AnswerWaiting}
