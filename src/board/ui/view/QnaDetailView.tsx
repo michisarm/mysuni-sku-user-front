@@ -6,10 +6,12 @@ import depot, { DepotFileViewModel, FileBox, ValidationType } from '@nara.drama/
 import QnAModel from '../../model/QnAModel';
 import OperatorModel from '../../model/vo/OperatorModel';
 import QnaDetailHeader from './QnaDetailHeader';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   getCategoryName: (id: string ) => string;
   onClickList: () => void;
+  getStateToString: (state: QnaState) => string;
 
   qna: QnAModel;
   finalOperator: OperatorModel;
@@ -20,7 +22,7 @@ class QnaDetailView extends ReactComponent<Props, {}> {
   //
   render() {
     //
-    const { getCategoryName, onClickList } = this.props;
+    const { getCategoryName, onClickList, getStateToString } = this.props;
     const { qna, finalOperator, filesMap } = this.props;
 
     return (
@@ -31,6 +33,7 @@ class QnaDetailView extends ReactComponent<Props, {}> {
             title={
               qna.question.title
             }
+            getStateToString={getStateToString}
             time={qna.question.registeredTime}
             onClickList={onClickList}
             getCategoryName={getCategoryName}

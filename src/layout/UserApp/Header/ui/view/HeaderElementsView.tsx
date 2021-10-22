@@ -94,6 +94,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 <PolyglotText defaultString="Recommend" id="home-gnb-mtr" />
               </NavLink>
             )}
+          {/* 메인의 Create 삭제 
           {menuAuth.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
@@ -107,7 +108,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               >
                 <PolyglotText defaultString="Create" id="home-gnb-mtc" />
               </NavLink>
-            )}
+            )} */}
           {menuAuth.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&

@@ -103,7 +103,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
     //
     const { offset, isLoading } = this.state;
     const { supportService, sharedService } = this.injected;
-    const { questions, qnaQueryModel } = supportService;
+    const { questions, qnaQueryModel, getStateToString } = supportService;
     const { startNo, count } = sharedService.getPageModel(this.paginationKey);
 
     return (
@@ -118,14 +118,14 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   <Icon className="ask24" />
                   &nbsp;&nbsp;{' '}
                   <PolyglotText
-                    id="support-qna-질문"
+                    id="support-qna-btn-inquiry"
                     defaultString="문의하기"
                   />
                 </Button>
                 <div className="radio-wrap">
                   <Radio
                     className="base"
-                    label={getPolyglotText('전체', 'support-qna-rall')}
+                    label={getPolyglotText('모두 보기', 'support-qna-rall')}
                     name="radioGroup"
                     value={undefined}
                     checked={qnaQueryModel.state === undefined}
@@ -184,6 +184,7 @@ class QnaListContainer extends ReactComponent<Props, State, Injected> {
                   <QnaListView
                     getCategoryName={this.getCategoryName}
                     onClickPost={this.onClickPost}
+                    getStateToString={getStateToString}
                     questions={questions}
                     startNo={startNo}
                   />

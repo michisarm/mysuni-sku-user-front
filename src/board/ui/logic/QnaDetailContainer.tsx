@@ -237,7 +237,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     //
     const { confirmWinOpen, alertWinOpen, isBlankTarget, isEdit, alertWinOpenSuccess, successMessage } = this.state;
     const { supportService } = this.injected;
-    const { qna, finalOperator } = supportService
+    const { qna, finalOperator, getStateToString } = supportService
     const { filesMap } = this.state;
 
     return (
@@ -246,6 +246,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
           <QnaDetailView
             getCategoryName={this.getCategoryName}
             onClickList={this.onClickList}
+            getStateToString={getStateToString}
             qna={qna}
             finalOperator={finalOperator}
             filesMap={filesMap}
