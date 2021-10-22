@@ -104,7 +104,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
     } else if (boardId === ContentType.FAQ) {
       return 'FAQ';
     } else if (boardId === ContentType.QnA) {
-      return '1:1 문의';
+      return getPolyglotText('1:1 문의', 'support-qna-탭명');
     } else if (boardId === ContentType.QnAMgt) {
       return getPolyglotText('문의관리', 'support-qnamgt-탭명');
     }
