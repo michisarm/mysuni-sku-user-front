@@ -18,9 +18,12 @@ export default class QuestionSdo {
 
   static isBlank(post: QuestionSdo): string {
     if (!post.title) return getPolyglotText('제목', 'support-QnaWrite-제목');
-    if (!post.mainCategoryId) return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
-    if (!post.subCategoryId) return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
-    if (!post.content || !post.content) return getPolyglotText('내용', 'support-QnaWrite-내용');;
+    if (!post.mainCategoryId)
+      return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
+    if (!post.subCategoryId)
+      return getPolyglotText('문의유형', 'support-QnaWrite-문의유형');
+    if (!post.content || !post.content)
+      return getPolyglotText('내용', 'support-QnaWrite-내용');
     return 'success';
   }
 }
