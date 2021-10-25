@@ -17,6 +17,7 @@ import {
   PolyglotText,
   getPolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import { SkProfileService } from '../../../../../profile/stores';
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode;
@@ -263,20 +264,32 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           <PolyglotText defaultString="Support" id="home-사이트맵-대카테9" />
         </span>
       ),
-      items: [
-        {
-          name: getPolyglotText('Notice', 'home-사이트맵-중카39'),
-          path: boardRoutePaths.supportNotice(),
-        },
-        {
-          name: getPolyglotText('FAQ', 'home-사이트맵-중카40'),
-          path: boardRoutePaths.supportFAQ(),
-        },
-        {
-          name: getPolyglotText('1:1 문의', 'home-사이트맵-중카41'),
-          path: boardRoutePaths.supportQnA(),
-        },
-      ],
+      items:
+        SkProfileService.instance.skProfile.language === 'Korean'
+          ? [
+              {
+                name: getPolyglotText('Notice', 'home-사이트맵-중카39'),
+                path: boardRoutePaths.supportNotice(),
+              },
+              {
+                name: getPolyglotText('FAQ', 'home-사이트맵-중카40'),
+                path: boardRoutePaths.supportFAQ(),
+              },
+              {
+                name: getPolyglotText('1:1 문의', 'home-사이트맵-중카41'),
+                path: boardRoutePaths.supportQnA(),
+              },
+            ]
+          : [
+              {
+                name: getPolyglotText('FAQ', 'home-사이트맵-중카40'),
+                path: boardRoutePaths.supportFAQ(),
+              },
+              {
+                name: getPolyglotText('1:1 문의', 'home-사이트맵-중카41'),
+                path: boardRoutePaths.supportQnA(),
+              },
+            ],
     },
   ];
 

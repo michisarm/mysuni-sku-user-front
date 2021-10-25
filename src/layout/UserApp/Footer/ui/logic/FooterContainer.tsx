@@ -9,6 +9,7 @@ import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
 import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainerV2';
 
 import './FooterContainer.css';
+import { SkProfileService } from '../../../../../profile/stores';
 
 function FooterContainer() {
   const [opened, setOpend] = useState(false);
@@ -90,7 +91,14 @@ function FooterContainer() {
             </dl>
             <dl className="foot-nav-item">
               <dt className="foot-nav-li tit">
-                <a className="item" href="/suni-main/board/support/Notice">
+                <a
+                  className="item"
+                  href={
+                    SkProfileService.instance.skProfile.language === 'Korean'
+                      ? '/suni-main/board/support/Notice'
+                      : '/suni-main/board/support/FAQ'
+                  }
+                >
                   <span>
                     <PolyglotText
                       defaultString="Help Center"
@@ -99,13 +107,18 @@ function FooterContainer() {
                   </span>
                 </a>
               </dt>
-              <dd className="foot-nav-li">
-                <a className="item" href="/suni-main/board/support/Notice">
-                  <span>
-                    <PolyglotText defaultString="Notice" id="home-ftr-Notice" />
-                  </span>
-                </a>
-              </dd>
+              {SkProfileService.instance.skProfile.language === 'Korean' && (
+                <dd className="foot-nav-li">
+                  <a className="item" href="/suni-main/board/support/Notice">
+                    <span>
+                      <PolyglotText
+                        defaultString="Notice"
+                        id="home-ftr-Notice"
+                      />
+                    </span>
+                  </a>
+                </dd>
+              )}
               <dd className="foot-nav-li">
                 <a className="item" href="/suni-main/board/support/FAQ">
                   <span>

@@ -11,3 +11,7 @@ export function findForeignerUser() {
 
   return isForeigner;
 }
+
+export function findForeignerUserFromLanguage() {
+  return SkProfileService.instance.skProfile.language !== 'Korean';
+}
