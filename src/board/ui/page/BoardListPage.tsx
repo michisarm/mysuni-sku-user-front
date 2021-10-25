@@ -14,7 +14,10 @@ import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
 import QnaManagementTabContainer from '../logic/QnaManagementContainer';
-import { findForeignerUser } from 'shared/helper/findForeignerUser';
+import {
+  findForeignerUser,
+  findForeignerUserFromLanguage,
+} from 'shared/helper/findForeignerUser';
 import SharedService from '../../../shared/present/logic/SharedService';
 import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
@@ -48,7 +51,7 @@ enum ContentName {
 export class BoardListPage extends ReactComponent<Props, {}, Injected> {
   //
   getTabs() {
-    const isForeignerUser = findForeignerUser();
+    const isForeignerUser = findForeignerUserFromLanguage();
     const TabItem = [
       {
         name: ContentType.FAQ,
