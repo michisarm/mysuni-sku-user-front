@@ -91,7 +91,14 @@ function FooterContainer() {
             </dl>
             <dl className="foot-nav-item">
               <dt className="foot-nav-li tit">
-                <a className="item" href="/suni-main/board/support/Notice">
+                <a
+                  className="item"
+                  href={
+                    SkProfileService.instance.skProfile.language === 'Korean'
+                      ? '/suni-main/board/support/Notice'
+                      : '/suni-main/board/support/FAQ'
+                  }
+                >
                   <span>
                     <PolyglotText
                       defaultString="Help Center"
