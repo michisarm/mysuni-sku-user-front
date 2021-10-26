@@ -14,6 +14,7 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import { getDefaultLang, LangSupport } from 'lecture/model/LangSupport';
 
 enum AnchorTargetType {
   self = '_self',
@@ -28,6 +29,7 @@ interface BannerProps {
   name: string;
   imageAlt: PolyglotString;
   imageUrl: PolyglotString;
+  langSupport: LangSupport[];
   onClickBanner: (
     targetUrl: string,
     target: string,
@@ -45,6 +47,7 @@ function RenderBanner(props: BannerProps) {
     name,
     target,
     targetUrl,
+    langSupport,
     onClickBanner,
   } = props;
 
@@ -61,8 +64,8 @@ function RenderBanner(props: BannerProps) {
           onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
           <Image
-            alt={parsePolyglotString(imageAlt)}
-            src={parsePolyglotString(imageUrl)}
+            alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
+            src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
           />
         </Link>
       ) : (
@@ -77,15 +80,15 @@ function RenderBanner(props: BannerProps) {
               onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
               <Image
-                alt={parsePolyglotString(imageAlt)}
-                src={parsePolyglotString(imageUrl)}
+                alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
+                src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
               />
             </a>
           ) : (
             <div className="ui image">
               <Image
-                alt={parsePolyglotString(imageAlt)}
-                src={parsePolyglotString(imageUrl)}
+                alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
+                src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
               />
             </div>
           )}

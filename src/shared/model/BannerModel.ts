@@ -1,3 +1,4 @@
+import { LangSupport } from 'lecture/model/LangSupport';
 import { decorate, observable } from 'mobx';
 
 class BannerModel {
@@ -22,6 +23,7 @@ class BannerModel {
     patronKey: {
       keyString: string;
     };
+    langSupport: LangSupport[];
     target: string;
     targetUrl: string;
     version: number;
