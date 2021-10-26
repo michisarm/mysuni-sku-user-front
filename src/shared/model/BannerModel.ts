@@ -23,7 +23,7 @@ class BannerModel {
     patronKey: {
       keyString: string;
     };
-    langSupport: LangSupport[];
+    langSupports: LangSupport[];
     target: string;
     targetUrl: string;
     version: number;

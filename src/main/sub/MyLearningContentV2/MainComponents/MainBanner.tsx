@@ -29,7 +29,7 @@ interface BannerProps {
   name: string;
   imageAlt: PolyglotString;
   imageUrl: PolyglotString;
-  langSupport: LangSupport[];
+  langSupports: LangSupport[];
   onClickBanner: (
     targetUrl: string,
     target: string,
@@ -47,7 +47,7 @@ function RenderBanner(props: BannerProps) {
     name,
     target,
     targetUrl,
-    langSupport,
+    langSupports,
     onClickBanner,
   } = props;
 
@@ -64,8 +64,8 @@ function RenderBanner(props: BannerProps) {
           onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
           <Image
-            alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
-            src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
+            alt={parsePolyglotString(imageAlt, getDefaultLang(langSupports))}
+            src={parsePolyglotString(imageUrl, getDefaultLang(langSupports))}
           />
         </Link>
       ) : (
@@ -80,15 +80,27 @@ function RenderBanner(props: BannerProps) {
               onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
               <Image
-                alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
-                src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
+                alt={parsePolyglotString(
+                  imageAlt,
+                  getDefaultLang(langSupports)
+                )}
+                src={parsePolyglotString(
+                  imageUrl,
+                  getDefaultLang(langSupports)
+                )}
               />
             </a>
           ) : (
             <div className="ui image">
               <Image
-                alt={parsePolyglotString(imageAlt, getDefaultLang(langSupport))}
-                src={parsePolyglotString(imageUrl, getDefaultLang(langSupport))}
+                alt={parsePolyglotString(
+                  imageAlt,
+                  getDefaultLang(langSupports)
+                )}
+                src={parsePolyglotString(
+                  imageUrl,
+                  getDefaultLang(langSupports)
+                )}
               />
             </div>
           )}
