@@ -1,9 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-  reactAutobind,
-  axiosApi,
-  StorageModel,
-} from '@nara.platform/accent';
+import { reactAutobind, axiosApi, StorageModel } from '@nara.platform/accent';
 import { Link } from 'react-router-dom';
 
 import { BreadcrumbValue } from '../../../index';
@@ -24,7 +20,7 @@ interface State {
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    id: 'myutopia@sk.com',
+    id: 'ss.park@sk.com',
   };
 
   onLogin() {
@@ -99,10 +95,7 @@ class BreadcrumbView extends Component<Props, State> {
     if (isLast) {
       if (value.path) {
         return (
-          <Link
-            to={value.path}
-            className="section active"
-          >
+          <Link to={value.path} className="section active">
             {value.text}
           </Link>
         );
@@ -111,10 +104,7 @@ class BreadcrumbView extends Component<Props, State> {
       }
     } else if (value.path) {
       return (
-        <Link
-          to={value.path}
-          className="section"
-        >
+        <Link to={value.path} className="section">
           {value.text}
         </Link>
       );
@@ -127,16 +117,10 @@ class BreadcrumbView extends Component<Props, State> {
     //
     const { values, supportPath } = this.props;
     return (
-      <div
-        className="breadcrumbs"
-        data-area={Area.HEADER_BREADCRUMBS}
-      >
+      <div className="breadcrumbs" data-area={Area.HEADER_BREADCRUMBS}>
         <div className="cont-inner">
           <div className="ui standard breadcrumb community-link">
-            <Link
-              to="/"
-              className="section"
-            >
+            <Link to="/" className="section">
               <PolyglotText defaultString="Home" id="learning-brc-dth1" />
             </Link>
 
@@ -157,7 +141,7 @@ class BreadcrumbView extends Component<Props, State> {
                   fontSize: 'small',
                 }}
                 value={this.state.id}
-                onChange={e => this.setState({ id: e.target.value })}
+                onChange={(e) => this.setState({ id: e.target.value })}
               />
               &nbsp;
               <button style={{ fontSize: 'small' }} onClick={this.onLogin}>
