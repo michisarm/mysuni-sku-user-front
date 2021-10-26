@@ -8,6 +8,7 @@ import {
 import { autobind } from '@nara.platform/accent';
 import BannerApi from '../apiclient/BannerApi';
 import BannerModel from '../../model/BannerModel';
+import { LangSupport } from 'lecture/model/LangSupport';
 
 @autobind
 class BannerService {
@@ -33,6 +34,7 @@ class BannerService {
     imageAlt: string; // 배너의 ALT 내용
     target: string; // _self, _blank, ...
     targetUrl: string; // 배너 클릭 시 이동될 주소
+    langSupport: LangSupport[];
     // isUse: string; // 사용 유무 0: 사용안함, 1: 사용
     // creatorId: string; // 생성자 이메일
     imageVersion: number; // 이미지 버전 0: base64, 1: url
@@ -82,11 +84,7 @@ class BannerService {
   async findLatestBannerBundles() {
     const bannerList = await this.bannerApi.findLatestBannerBundles();
 
-    if (
-      bannerList &&
-      bannerList.banners &&
-      bannerList.banners.length > 0
-    ) {
+    if (bannerList && bannerList.banners && bannerList.banners.length > 0) {
       runInAction(() => {
         this._bannerInfo = Object.assign(
           Object.create(Object.getPrototypeOf(bannerList)),
