@@ -34,7 +34,7 @@ class BannerService {
     imageAlt: string; // 배너의 ALT 내용
     target: string; // _self, _blank, ...
     targetUrl: string; // 배너 클릭 시 이동될 주소
-    langSupport: LangSupport[];
+    langSupports: LangSupport[];
     // isUse: string; // 사용 유무 0: 사용안함, 1: 사용
     // creatorId: string; // 생성자 이메일
     imageVersion: number; // 이미지 버전 0: base64, 1: url
