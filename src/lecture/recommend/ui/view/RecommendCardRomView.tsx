@@ -5,7 +5,7 @@ import { SkProfileService } from '../../../../profile/stores';
 import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { NoSuchContentPanel } from 'shared';
-import { Area } from 'tracker/model';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import {
   getPolyglotText,
@@ -13,8 +13,13 @@ import {
 } from '../../../../shared/ui/logic/PolyglotText';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { DifficultyLevel } from 'personalcube/cubeintro/model';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
+  //
+  const userLanguage = SkProfileService.instance.skProfile.language;
+
   const { channelId, cardCount, totalCardCount, cardWithRelatedCountRoms } =
     props;
 
@@ -86,28 +91,27 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                     /> */}
                     <LectureCardView
                       cardId={card.id}
-                      cardName={card.name}
-                      // 체크 필요
-                      colleges={[]}
-                      learningTime={card.learningTime}
-                      additionalLearningTime={card.additionalLearningTime}
+                      cardName={parsePolyglotString(card.name)}
+                      learningTime={card.learningTime.toString()}
                       thumbnailImagePath={card.thumbImagePath}
-                      mainCategory={card.mainCategory}
-                      passedStudentCount={cardRelatedCount.passedStudentCount}
-                      starCount={cardRelatedCount.starCount}
-                      simpleDescription={card.simpleDescription}
-                      cubeType={card.type}
-                      // 체크 필요
-                      inMylecture={[]}
-                      lectureDifficultyLevel={
+                      passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                      starCount={cardRelatedCount.starCount.toString()}
+                      simpleDescription={parsePolyglotString(card.simpleDescription)}
+                      difficultyLevel={
                         card.difficultyLevel || DifficultyLevel.Basic
                       }
-                      // 체크 필요
-                      userLanguage="Korean"
+                      userLanguage={userLanguage}
                       studentCount={cardRelatedCount.studentCount}
-                      permittedCinerooms={card.permittedCinerooms}
                       langSupports={card.langSupports}
                       useBookMark={true}
+                      // 체크 필요
+                      isRequiredLecture={
+                          card.permittedCinerooms
+                          ? isIncludeCineroomId(card.permittedCinerooms)
+                          : false
+                      }
+                      collegeId={card.mainCategory.collegeId}
+                      dataArea={Area.EXPERT_LECTURE}
                     />
                   </div>
                 </li>
