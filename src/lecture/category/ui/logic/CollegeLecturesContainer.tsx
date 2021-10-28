@@ -10,7 +10,6 @@ import {
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
 import { NewPageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel, CollegeModel } from 'college/model';
@@ -38,16 +37,16 @@ import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import {
-  getCollegeStore,
   onCollegeModelStore,
   useCollegeModelStore,
 } from '../../../../shared/store/CollegeStore';
-import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { parseLanguage, parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { SkProfileService } from '../../../../profile/stores';
 
 interface Props extends RouteComponentProps<RouteParams> {
   newPageService?: NewPageService;
@@ -444,6 +443,9 @@ class CollegeLecturesContainerInner extends Component<
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
     const { inMyLectureMap } = inMyLectureService!;
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
 
     return (
       <CategoryLecturesWrapperView
@@ -486,12 +488,31 @@ class CollegeLecturesContainerInner extends Component<
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map(({ card, cardRelatedCount }) => {
                 return (
-                  <CardView
-                    key={card.id}
+                  // <CardView
+                  //   key={card.id}
+                  //   cardId={card.id}
+                  //   {...card}
+                  //   {...cardRelatedCount}
+                  //   dataArea={Area.COLLEGE_CARD}
+                  // />
+                  <LectureCardView
                     cardId={card.id}
-                    {...card}
-                    {...cardRelatedCount}
-                    dataArea={Area.COLLEGE_CARD}
+                    cardName={parsePolyglotString(card.name)}
+                    learningTime={card.learningTime.toString()}
+                    passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                    starCount={cardRelatedCount.starCount.toString()}
+                    thumbnailImagePath={card.thumbImagePath}
+                    langSupports={card.langSupports}
+                    simpleDescription={parsePolyglotString(card.simpleDescription)}
+                    studentCount={cardRelatedCount.studentCount}
+                    //??
+                    isRequiredLecture={false}
+                    // upcomingClassroomInfo={}
+                    difficultyLevel={card.difficultyLevel}
+                    collegeId={college.id}
+                    userLanguage={userLanguage}
+                    useBookMark={false}
+                    dataArea={Area.EXPERT_LECTURE}
                   />
                 );
               })}

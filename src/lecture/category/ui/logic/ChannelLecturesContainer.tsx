@@ -10,7 +10,6 @@ import {
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
 import { PageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { CollegeService } from 'college/stores';
@@ -27,9 +26,10 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import { Area } from 'tracker/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { parseLanguage, parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -346,10 +346,14 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService, lectureService, reviewService, inMyLectureService } =
       this.props;
     const { sorting, collegeOrder, loading } = this.state;
+    const { collegeId } = this.props.match.params;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
     const { inMyLectureMap } = inMyLectureService!;
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
 
     return (
       <ChannelLecturesContentWrapperView
@@ -381,16 +385,35 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
               <Lecture.Group type={Lecture.GroupType.Box}>
                 {lectures.map(({ card, cardRelatedCount }, index) => {
                   return (
-                    <CardView
-                      key={`${card.id}+${index}`}
+                    // <CardView
+                    //   key={`${card.id}+${index}`}
+                    //   cardId={card.id}
+                    //   {...card}
+                    //   {...cardRelatedCount}
+                    //   dataArea={
+                    //     window.location.pathname.includes('/recommend')
+                    //       ? Area.RECOMMEND_CARD
+                    //       : Area.COLLEGE_CARD
+                    //   }
+                    // />
+                    <LectureCardView
                       cardId={card.id}
-                      {...card}
-                      {...cardRelatedCount}
-                      dataArea={
-                        window.location.pathname.includes('/recommend')
-                          ? Area.RECOMMEND_CARD
-                          : Area.COLLEGE_CARD
-                      }
+                      cardName={parsePolyglotString(card.name)}
+                      learningTime={card.learningTime.toString()}
+                      passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                      starCount={cardRelatedCount.starCount.toString()}
+                      thumbnailImagePath={card.thumbImagePath}
+                      langSupports={card.langSupports}
+                      simpleDescription={parsePolyglotString(card.simpleDescription)}
+                      studentCount={cardRelatedCount.studentCount}
+                      //??
+                      isRequiredLecture={false}
+                      // upcomingClassroomInfo={}
+                      difficultyLevel={card.difficultyLevel}
+                      collegeId={collegeId}
+                      userLanguage={userLanguage}
+                      useBookMark={false}
+                      dataArea={Area.EXPERT_LECTURE}
                     />
                   );
                 })}

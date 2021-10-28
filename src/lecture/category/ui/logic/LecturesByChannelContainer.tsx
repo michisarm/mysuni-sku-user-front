@@ -17,14 +17,21 @@ import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { parseLanguage, parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps<Params> {
   lectureService?: LectureService;
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
   channel: ChannelModel;
   onViewAll: (e: any, data: any) => void;
+}
+
+interface Params {
+  collegeId: string;
 }
 
 interface State {
@@ -167,9 +174,13 @@ class LecturesByChannelContainer extends Component<Props, State> {
   render() {
     //
     const { channel, reviewService, inMyLectureService } = this.props;
+    const { collegeId } = this.props.match.params;
     const { cardWithCardRealtedCounts, totalCount, isLoading } = this.state;
     const { ratingMap } = reviewService as ReviewService;
     const { inMyLectureMap } = inMyLectureService as InMyLectureService;
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
 
     return (
       <>
@@ -204,10 +215,29 @@ class LecturesByChannelContainer extends Component<Props, State> {
                 return (
                   <li key={card.id}>
                     <div className="ui cards box-cards">
-                      <CardView
+                      {/*<CardView*/}
+                      {/*  cardId={card.id}*/}
+                      {/*  {...card}*/}
+                      {/*  {...cardRelatedCount}*/}
+                      {/*/>*/}
+                      <LectureCardView
                         cardId={card.id}
-                        {...card}
-                        {...cardRelatedCount}
+                        cardName={parsePolyglotString(card.name)}
+                        learningTime={card.learningTime.toString()}
+                        passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                        starCount={cardRelatedCount.starCount.toString()}
+                        thumbnailImagePath={card.thumbImagePath}
+                        langSupports={card.langSupports}
+                        simpleDescription={parsePolyglotString(card.simpleDescription)}
+                        studentCount={cardRelatedCount.studentCount}
+                        //??
+                        isRequiredLecture={false}
+                        // upcomingClassroomInfo={}
+                        difficultyLevel={card.difficultyLevel}
+                        collegeId={collegeId}
+                        userLanguage={userLanguage}
+                        useBookMark={false}
+                        dataArea={Area.EXPERT_LECTURE}
                       />
                     </div>
                   </li>
