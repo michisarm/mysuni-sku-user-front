@@ -1,16 +1,14 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import Swiper from 'react-id-swiper';
+import Swiper, { ReactIdSwiperProps } from 'react-id-swiper';
 import { Segment, Image } from 'semantic-ui-react';
-
 
 @reactAutobind
 class BannerContainer extends Component {
   //
-  swiperProps = {
-    className: 'swiper-container',
+  swiperProps: ReactIdSwiperProps = {
+    // className: 'swiper-container',
     effect: 'fade',
     slidesPerView: 1,
     spaceBetween: 30,
@@ -27,7 +25,6 @@ class BannerContainer extends Component {
       <div className="middle-swiper">
         <Segment className="full">
           <div className="swiper-test swiper-section type2">
-
             <Swiper {...this.swiperProps}>
               <div className="swiper-slide">
                 <div
@@ -39,7 +36,10 @@ class BannerContainer extends Component {
                     color: '#fff',
                   }}
                 >
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/img-promotion.jpg`} alt="Promotion" />
+                  <Image
+                    src={`${process.env.PUBLIC_URL}/images/all/img-promotion.jpg`}
+                    alt="Promotion"
+                  />
                 </div>
               </div>
             </Swiper>
