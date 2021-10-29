@@ -119,7 +119,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             height: 400,
             boxShadow: '0 0 0 0',
             border: 0,
-            background: "#eff0f1",
+            background: '#eff0f1',
           }}
         >
           <Loadingpanel loading={isLoading} color="#eff0f1" />
