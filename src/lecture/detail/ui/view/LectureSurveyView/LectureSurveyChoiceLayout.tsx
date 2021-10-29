@@ -1,6 +1,7 @@
 import React from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { Image } from 'semantic-ui-react';
+import { SkProfileService } from 'profile/stores';
 
 const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> =
   function LectureSurveyChoiceLayout({
@@ -10,6 +11,13 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> =
     children,
     isRequired,
   }) {
+    let iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important.png`;
+    if (SkProfileService.instance.skProfile.language === 'English') {
+      iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important-2.png`;
+    }
+    if (SkProfileService.instance.skProfile.language === 'Chinese') {
+      iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important-3.png`;
+    }
     return (
       <div className="course-radio-survey">
         <p>
@@ -25,7 +33,7 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> =
                       marginLeft: '7px',
                       verticalAlign: 'text-bottom',
                     }}
-                    src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
+                    src={iconRequired}
                   />
                 </span>
               </span>

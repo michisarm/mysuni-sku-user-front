@@ -9,9 +9,14 @@ import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
 import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainerV2';
 
 import './FooterContainer.css';
+import { SkProfileService } from '../../../../../profile/stores';
+import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
+import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
+import { findSsoTypeCache } from 'lecture/detail/api/checkpointApi';
 
 function FooterContainer() {
   const [opened, setOpend] = useState(false);
+  const [linkedInDirectConnection, setLinkedInDirectConnection] = useState('');
   const familyRef = useRef<HTMLInputElement>(null);
 
   function familyToggle() {
@@ -30,6 +35,48 @@ function FooterContainer() {
       window.removeEventListener('click', handleClickOutside);
     };
   }, [familyRef, opened]);
+
+  useEffect(() => {
+    linkedInSetting();
+  }, []);
+
+  const linkedInSetting = async () => {
+    let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+    try {
+      contentsProviderSamls = await findContentsProviderSamlCache();
+    } catch (error) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    if (
+      !Array.isArray(contentsProviderSamls) ||
+      contentsProviderSamls.length === 0
+    ) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    const contentsProviderSaml = contentsProviderSamls.find(
+      (c) => c.contentsProviderId === 'PVD00010'
+    );
+    if (contentsProviderSaml === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    const loginUserSourceType = await findSsoTypeCache();
+    if (loginUserSourceType === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    const directConnection =
+      contentsProviderSaml.contentsProviderDirectConnections.find(
+        (c) => c.loginUserSourceType === loginUserSourceType
+      )?.directConnection;
+    if (directConnection === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    setLinkedInDirectConnection('&' + directConnection);
+  };
 
   return (
     <section className="footer footer2">
@@ -90,7 +137,14 @@ function FooterContainer() {
             </dl>
             <dl className="foot-nav-item">
               <dt className="foot-nav-li tit">
-                <a className="item" href="/suni-main/board/support/Notice">
+                <a
+                  className="item"
+                  href={
+                    SkProfileService.instance.skProfile.language === 'Korean'
+                      ? '/suni-main/board/support/Notice'
+                      : '/suni-main/board/support/FAQ'
+                  }
+                >
                   <span>
                     <PolyglotText
                       defaultString="Help Center"
@@ -99,13 +153,18 @@ function FooterContainer() {
                   </span>
                 </a>
               </dt>
-              <dd className="foot-nav-li">
-                <a className="item" href="/suni-main/board/support/Notice">
-                  <span>
-                    <PolyglotText defaultString="Notice" id="home-ftr-Notice" />
-                  </span>
-                </a>
-              </dd>
+              {SkProfileService.instance.skProfile.language === 'Korean' && (
+                <dd className="foot-nav-li">
+                  <a className="item" href="/suni-main/board/support/Notice">
+                    <span>
+                      <PolyglotText
+                        defaultString="Notice"
+                        id="home-ftr-Notice"
+                      />
+                    </span>
+                  </a>
+                </dd>
+              )}
               <dd className="foot-nav-li">
                 <a className="item" href="/suni-main/board/support/FAQ">
                   <span>
@@ -219,7 +278,7 @@ function FooterContainer() {
                     </li>
                     <li className="link-options">
                       <a
-                        href="https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning"
+                        href={`https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning${linkedInDirectConnection}`}
                         target="_blank"
                       >
                         <PolyglotText
@@ -258,10 +317,10 @@ function FooterContainer() {
             </h2>
           </div>
           <div className="foot-copyright">
-            COPYRIGHT
+            Copyright
             <Icon className="copyright" />
-            <span className="blind">copyright sign</span>
-            mySUNI. ALL RIGHTS RESERVED.
+            <span className="blind">copyright sign</span>mySUNI. All Rights
+            Reserved.
           </div>
         </div>
       </div>

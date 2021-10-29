@@ -223,12 +223,12 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     const { qna } = supportService;
 
     if(qna.answer.satisfactionPoint === 0 || qna.answer.satisfactionPoint === null || qna.answer.satisfactionPoint === undefined) {
-      this.setState({ alertWinOpen: true, isBlankTarget: '별점을 등록해주세요'});
+      this.setState({ alertWinOpen: true, isBlankTarget: getPolyglotText('별점을 등록해주세요', 'support-qna-satis-star')});
       return;
     }
 
     await supportService.registerSatisfaction(qna.question.id, QnAModel.asSatisfactionCdo(qna));
-    this.setState({ alertWinOpenSuccess: true, successMessage: '만족도 조사에 참여해 주셔서 감사합니다.'});
+    this.setState({ alertWinOpenSuccess: true, successMessage: getPolyglotText('만족도 조사에 참여해 주셔서 감사합니다.', 'support-qna-satis-thx')});
 
     await this.init();
   }
@@ -237,7 +237,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
     //
     const { confirmWinOpen, alertWinOpen, isBlankTarget, isEdit, alertWinOpenSuccess, successMessage } = this.state;
     const { supportService } = this.injected;
-    const { qna, finalOperator } = supportService
+    const { qna, finalOperator, getStateToString } = supportService
     const { filesMap } = this.state;
 
     return (
@@ -246,6 +246,7 @@ class QnaDetailContainer extends ReactComponent<Props, States, Injected> {
           <QnaDetailView
             getCategoryName={this.getCategoryName}
             onClickList={this.onClickList}
+            getStateToString={getStateToString}
             qna={qna}
             finalOperator={finalOperator}
             filesMap={filesMap}

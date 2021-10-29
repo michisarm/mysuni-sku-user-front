@@ -5,6 +5,7 @@ import QnAModel from '../../model/QnAModel';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { observer } from 'mobx-react';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   onChangeQnaProps: (name: string, value:any ) => void;
@@ -25,7 +26,7 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
 
       <Form.Field>
         <div className="admin-answer-top">
-          <strong>문의 답변 만족도 조사</strong>
+          <strong>{getPolyglotText('문의 답변 만족도 조사', 'support-qna-satis-header')}</strong>
         </div>
         <div className="form-table-wrapper">
           <Table className="admin-answer-form">
@@ -36,7 +37,7 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
             <Table.Body>
               <Table.Row>
                 <Table.HeaderCell>
-                  <span className="impt">만족도 조사</span>
+                  <span className="impt">{getPolyglotText('만족도 조사', 'support-qna-satis-survey')}</span>
                 </Table.HeaderCell>
                 <Table.Cell>
                   {
@@ -63,7 +64,7 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
               </Table.Row>
               <Table.Row>
                 <Table.HeaderCell>
-                  <span>만족도 조사 의견</span>
+                  <span>{getPolyglotText('만족도 조사 의견', 'support-qna-satis-comment')}</span>
                 </Table.HeaderCell>
                 <Table.Cell>
                   {
@@ -74,12 +75,12 @@ class QnaAnswerSatisfactionView extends ReactComponent<Props> {
                         <Form.Field
                           control={Input}
                           width={16}
-                          placeholder="문의 답변에 대한 만족도 의견을 자유롭게 남겨주세요."
+                          placeholder={getPolyglotText('문의 답변에 대한 만족도 의견을 자유롭게 남겨주세요.', 'support-qna-satis-ph')}
                           value={qna.answer.satisfactionComment}
                           onChange={(e: any, data: any) => onChangeQnaProps('answer.satisfactionComment', data.value)}
                         />
                         <Button className="bg" onClick={onClickRegisterSatisfaction}>
-                          등록
+                          {getPolyglotText('등록', 'support-qna-satis-register')}
                         </Button>
                       </div>
                     )

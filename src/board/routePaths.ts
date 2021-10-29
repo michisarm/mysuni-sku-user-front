@@ -1,8 +1,15 @@
+import { SkProfileService } from '../profile/stores';
+
 const routePaths = {
   supportTab: (boardId: 'Notice' | 'FAQ' | 'Q&A' | 'Q&AMgt' | string) =>
     `/board/support/${boardId}`,
 
-  supportNotice: () => routePaths.supportTab('Notice'),
+  supportNotice: () => {
+    if (SkProfileService.instance.skProfile.language !== 'Korean') {
+      return routePaths.supportTab('FAQ');
+    }
+    return routePaths.supportTab('Notice');
+  },
 
   supportFAQ: () => routePaths.supportTab('FAQ'),
 

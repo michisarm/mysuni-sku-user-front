@@ -8,11 +8,14 @@ import moment from 'moment';
 import QnAModel from '../../model/QnAModel';
 import QuestionModel from '../../model/QuestionModel';
 import { getQuestionStateReactNode } from '../logic/QuestionStateHelper';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { QnaState } from '../../model/vo/QnaState';
 
 interface Props {
   // posts: PostModel[];
   getCategoryName: (id: string) => string;
   onClickPost: (postId: string) => void;
+  getStateToString: (state: QnaState) => string;
 
   questions: QuestionModel[];
   startNo: number;
@@ -24,7 +27,7 @@ class QnaListView extends ReactComponent<Props, {}> {
   //
   render() {
     //
-    const { getCategoryName, onClickPost } = this.props;
+    const { getCategoryName, onClickPost, getStateToString } = this.props;
     const { questions, startNo } = this.props;
 
     return(
@@ -41,10 +44,10 @@ class QnaListView extends ReactComponent<Props, {}> {
           <Table.Row>
             <Table.HeaderCell>No</Table.HeaderCell>
             {/*<Table.HeaderCell>접수 채널</Table.HeaderCell>*/}
-            <Table.HeaderCell>카테고리</Table.HeaderCell>
-            <Table.HeaderCell>제목</Table.HeaderCell>
-            <Table.HeaderCell>상태</Table.HeaderCell>
-            <Table.HeaderCell>등록일자</Table.HeaderCell>
+            <Table.HeaderCell>{getPolyglotText('카테고리', 'support-qna-th-category')}</Table.HeaderCell>
+            <Table.HeaderCell>{getPolyglotText('제목', 'support-qna-th-title')}</Table.HeaderCell>
+            <Table.HeaderCell>{getPolyglotText('상태', 'support-qna-th-state')}</Table.HeaderCell>
+            <Table.HeaderCell>{getPolyglotText('등록일자', 'support-qna-th-date')}</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -63,7 +66,7 @@ class QnaListView extends ReactComponent<Props, {}> {
                       {/*</a>*/}
                     </div>
                   </Table.Cell>
-                  <Table.Cell>{getQuestionStateReactNode(question.state)}</Table.Cell>
+                  <Table.Cell>{getStateToString(question.state)}</Table.Cell>
                   <Table.Cell>{moment(question.registeredTime).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
               )

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { NoSuchContentPanel } from '../../../shared/components/NoSuchContentPanel';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 import QnAModel from '../../model/QnAModel';
 import moment from 'moment';
 import {
@@ -49,13 +52,48 @@ class QnaManagementListView extends React.Component<Props> {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>No.</Table.HeaderCell>
-              <Table.HeaderCell>접수채널</Table.HeaderCell>
-              <Table.HeaderCell>카테고리</Table.HeaderCell>
-              <Table.HeaderCell>문의제목</Table.HeaderCell>
-              <Table.HeaderCell>문의일자</Table.HeaderCell>
-              <Table.HeaderCell>문의자</Table.HeaderCell>
-              <Table.HeaderCell>담당자</Table.HeaderCell>
-              <Table.HeaderCell>처리상태</Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-접수채널"
+                  defaultString="접수채널"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-카테고리"
+                  defaultString="카테고리"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-문의제목"
+                  defaultString="문의제목"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-문의일자"
+                  defaultString="문의일자"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-문의자"
+                  defaultString="문의자"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-담당자"
+                  defaultString="담당자"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                <PolyglotText
+                  id="support-qnamgt-처리상태"
+                  defaultString="처리상태"
+                />
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>

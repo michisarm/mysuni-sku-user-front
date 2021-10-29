@@ -14,8 +14,12 @@ import QnaTabContainer from '../logic/QnaListContainer';
 import FaqTabContainer from '../logic/FaqListContainer';
 import NoticeTabContainer from '../logic/NoticeListContainer';
 import QnaManagementTabContainer from '../logic/QnaManagementContainer';
-import { findForeignerUser } from 'shared/helper/findForeignerUser';
+import {
+  findForeignerUser,
+  findForeignerUserFromLanguage,
+} from 'shared/helper/findForeignerUser';
 import SharedService from '../../../shared/present/logic/SharedService';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps<RouteParams> {}
 
@@ -47,7 +51,7 @@ enum ContentName {
 export class BoardListPage extends ReactComponent<Props, {}, Injected> {
   //
   getTabs() {
-    const isForeignerUser = findForeignerUser();
+    const isForeignerUser = findForeignerUserFromLanguage();
     const TabItem = [
       {
         name: ContentType.FAQ,
@@ -56,12 +60,12 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
       },
       {
         name: ContentType.QnA,
-        item: ContentName.QnA,
+        item: getPolyglotText('1:1 문의', 'support-qna-탭명'),
         render: () => <QnaTabContainer />,
       },
       {
         name: ContentType.QnAMgt,
-        item: ContentName.QnAMgt,
+        item: getPolyglotText('문의관리', 'support-qnamgt-탭명'),
         render: () => <QnaManagementTabContainer />,
       },
     ] as TabItemModel[];
@@ -103,9 +107,9 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
     } else if (boardId === ContentType.FAQ) {
       return 'FAQ';
     } else if (boardId === ContentType.QnA) {
-      return '1:1 문의';
+      return getPolyglotText('1:1 문의', 'support-qna-탭명');
     } else if (boardId === ContentType.QnAMgt) {
-      return '문의관리';
+      return getPolyglotText('문의관리', 'support-qnamgt-탭명');
     }
 
     return '';
@@ -119,7 +123,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: `Support`, path: routePaths.supportTab('Notice') },
+          { text: `Support`, path: routePaths.supportNotice() },
           {
             text: this.getBreadCrumbString(),
             path: routePaths.supportTab(params.boardId),

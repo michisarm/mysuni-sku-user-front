@@ -108,12 +108,21 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
         <div className="support-list-wrap">
           <div className="list-top">
             <div className="list-top-left">
-              총 <strong>{count}</strong>개의 리스트가 있습니다.
+              <span
+                className="tit_cnt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `총 <strong>{count}</strong>개의 리스트가 있습니다.`,
+                    'support-common-목록수',
+                    { count: (count || 0).toString() }
+                  ),
+                }}
+              />
             </div>
             <div className="radio-wrap">
               <Radio
                 className="base"
-                label={getPolyglotText('모두 보기', 'support-qna-rall')}
+                label={getPolyglotText('모두 보기', 'support-qnamgt-모두보기')}
                 name="radioGroup"
                 value={undefined}
                 checked={state === undefined}
@@ -121,7 +130,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
               />
               <Radio
                 className="base"
-                label={getPolyglotText('답변 완료', 'support-qna-rdn')}
+                label={getPolyglotText('답변 완료', 'support-qnamgt-답변완료')}
                 name="radioGroup"
                 value={QnaState.AnswerCompleted}
                 checked={state === QnaState.AnswerCompleted}
@@ -131,7 +140,7 @@ class QnaManagementContainer extends ReactComponent<Props, State, Injected> {
               />
               <Radio
                 className="base"
-                label={getPolyglotText('답변 대기', 'support-qna-rwt')}
+                label={getPolyglotText('답변 대기', 'support-qnamgt-답변대기')}
                 name="radioGroup"
                 value={QnaState.AnswerWaiting}
                 checked={state === QnaState.AnswerWaiting}

@@ -2,10 +2,12 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { PostModel } from '../../model';
 import { NoSuchContentPanel } from '../../../shared/components/NoSuchContentPanel';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
-import classNames from 'classnames';
 
 interface Props {
   posts: PostModel[];
@@ -32,12 +34,20 @@ class NoticeListView extends React.Component<Props> {
           <Table.Header>
             <Table.Row textAlign="center">
               <Table.HeaderCell className="title-header">No.</Table.HeaderCell>
-              <Table.HeaderCell className="title-header">제목</Table.HeaderCell>
               <Table.HeaderCell className="title-header">
-                조회수
+                <PolyglotText id="support-notice-제목" defaultString="제목" />
               </Table.HeaderCell>
               <Table.HeaderCell className="title-header">
-                등록일자
+                <PolyglotText
+                  id="support-notice-조회수"
+                  defaultString="조회수"
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="title-header">
+                <PolyglotText
+                  id="support-notice-등록일자"
+                  defaultString="등록일자"
+                />
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>

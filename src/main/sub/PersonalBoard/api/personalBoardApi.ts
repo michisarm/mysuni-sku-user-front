@@ -9,6 +9,7 @@ import { CountAttendance } from '../model/CountAttendance';
 import { MyCompanyPopularCourseItem } from '../model/LectureMyCompanyPopularCourse';
 import AttendEvent from '../viewModel/AttendEvent';
 import LearningObjectives from '../viewModel/LearningObjectives';
+import { findMyLearningSummaryByYearCache } from '../../../../myTraining/present/apiclient/MyLearningSummaryApi';
 
 // const badgeURl = '/api/badge'
 const flowURL = '/api/mytraining/summaries/flow';
@@ -43,9 +44,7 @@ export function getBadgeLearningCompanyAvg(companyCode: string) {
 
 export function findMyLearningSummaryYear() {
   const year = moment().format('YYYY');
-  return axiosApi
-    .get<any>(flowURL + `/${year}`)
-    .then((response) => response && response.data);
+  return findMyLearningSummaryByYearCache(year);
 }
 
 //우리회사인기코스

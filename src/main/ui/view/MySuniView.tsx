@@ -1,8 +1,15 @@
-import React, { Component } from 'react';
+import { findSsoTypeCache } from 'lecture/detail/api/checkpointApi';
+import React, { Component, useEffect, useState } from 'react';
+import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
+import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
 import { Area } from 'tracker/model';
 import { SkProfileService } from '../../../profile/stores';
 
-function KoView() {
+interface Props {
+  linkedInDirectConnection: string;
+}
+
+function KoView(props: Props) {
   return (
     <div data-area={Area.INTRODUCTION_MYSUNI}>
       <div className="common-intro case1">
@@ -152,7 +159,10 @@ function KoView() {
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/learning/" target="_blank">
+              <a
+                href={`https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning${props.linkedInDirectConnection}`}
+                target="_blank"
+              >
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/linked-in.png"
                   alt="링크드인"
@@ -311,7 +321,7 @@ function KoView() {
   );
 }
 
-function EnView() {
+function EnView(props: Props) {
   return (
     <div data-area={Area.INTRODUCTION_MYSUNI}>
       <div className="common-intro case1">
@@ -472,7 +482,10 @@ function EnView() {
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/learning/" target="_blank">
+              <a
+                href={`https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning${props.linkedInDirectConnection}`}
+                target="_blank"
+              >
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/linked-in.png"
                   alt="링크드인"
@@ -631,7 +644,7 @@ function EnView() {
   );
 }
 
-function ZhView() {
+function ZhView(props: Props) {
   return (
     <div data-area={Area.INTRODUCTION_MYSUNI}>
       <div className="common-intro case1">
@@ -777,7 +790,10 @@ function ZhView() {
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/learning/" target="_blank">
+              <a
+                href={`https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning${props.linkedInDirectConnection}`}
+                target="_blank"
+              >
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/linked-in.png"
                   alt="링크드인"
@@ -936,19 +952,60 @@ function ZhView() {
   );
 }
 
-class MySuniView extends Component {
+function MySuniView() {
   //
-  PUBLIC_URL = process.env.PUBLIC_URL;
 
-  render() {
-    if (SkProfileService.instance.skProfile.language === 'English') {
-      return <EnView />;
+  const [linkedInDirectConnection, setLinkedInDirectConnection] = useState('');
+
+  useEffect(() => {
+    linkedInSetting();
+  }, []);
+
+  const linkedInSetting = async () => {
+    let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+    try {
+      contentsProviderSamls = await findContentsProviderSamlCache();
+    } catch (error) {
+      setLinkedInDirectConnection('');
+      return;
     }
-    if (SkProfileService.instance.skProfile.language === 'Chinese') {
-      return <ZhView />;
+    if (
+      !Array.isArray(contentsProviderSamls) ||
+      contentsProviderSamls.length === 0
+    ) {
+      setLinkedInDirectConnection('');
+      return;
     }
-    return <KoView />;
+    const contentsProviderSaml = contentsProviderSamls.find(
+      (c) => c.contentsProviderId === 'PVD00010'
+    );
+    if (contentsProviderSaml === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    const loginUserSourceType = await findSsoTypeCache();
+    if (loginUserSourceType === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    const directConnection =
+      contentsProviderSaml.contentsProviderDirectConnections.find(
+        (c) => c.loginUserSourceType === loginUserSourceType
+      )?.directConnection;
+    if (directConnection === undefined) {
+      setLinkedInDirectConnection('');
+      return;
+    }
+    setLinkedInDirectConnection('&' + directConnection);
+  };
+
+  if (SkProfileService.instance.skProfile.language === 'English') {
+    return <EnView linkedInDirectConnection={linkedInDirectConnection} />;
   }
+  if (SkProfileService.instance.skProfile.language === 'Chinese') {
+    return <ZhView linkedInDirectConnection={linkedInDirectConnection} />;
+  }
+  return <KoView linkedInDirectConnection={linkedInDirectConnection} />;
 }
 
 export default MySuniView;
