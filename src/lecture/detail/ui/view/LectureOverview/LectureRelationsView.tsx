@@ -1,5 +1,5 @@
 import { patronInfo } from '@nara.platform/dock';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
@@ -9,18 +9,14 @@ import CardGroup, {
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
-import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { autorun } from 'mobx';
-import { InMyLectureService } from '../../../../../myTraining/stores';
-import { InMyLectureModel } from '../../../../../myTraining/model';
 import { SkProfileService } from '../../../../../profile/stores';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../../model/LangSupport';
+import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -131,33 +127,37 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
               return (
                 <li key={card.id}>
                   <div className="ui cards box-cards">
-                    <>
-                      {/*<LectureCardView*/}
-                      {/*  cardId={card.id}*/}
-                      {/*  cardName={parsePolyglotString(card.name)}*/}
-                      {/*  learningTime={String(card.learningTime)}*/}
-                      {/*  thumbnailImagePath={card.thumbImagePath}*/}
-                      {/*  passedStudentCount={String(*/}
-                      {/*    cardRelatedCount.passedStudentCount*/}
-                      {/*  )}*/}
-                      {/*  starCount={String(cardRelatedCount.starCount)}*/}
-                      {/*  simpleDescription={parsePolyglotString(*/}
-                      {/*    card.simpleDescription*/}
-                      {/*  )}*/}
-                      {/*  studentCount={cardRelatedCount.studentCount}*/}
-                      {/*  userLanguage={userLanguage}*/}
-                      {/*  langSupports={card.langSupports}*/}
-                      {/*  dataArea={Area.CARD_RELATION}*/}
-                      {/*  collegeId={}*/}
-                      {/*  useBookMark*/}
-                      {/*/>*/}
-                      <CardView
-                        cardId={card.id}
-                        {...card}
-                        {...cardRelatedCount}
-                        dataArea={Area.CARD_RELATION}
-                      />
-                    </>
+                    <LectureCardView
+                      cardId={card.id}
+                      cardName={parsePolyglotString(card.name)}
+                      learningTime={String(card.learningTime)}
+                      thumbnailImagePath={card.thumbImagePath}
+                      difficultyLevel={card.difficultyLevel}
+                      passedStudentCount={String(
+                        cardRelatedCount.passedStudentCount
+                      )}
+                      starCount={String(cardRelatedCount.starCount)}
+                      simpleDescription={parsePolyglotString(
+                        card.simpleDescription
+                      )}
+                      studentCount={cardRelatedCount.studentCount}
+                      userLanguage={userLanguage}
+                      langSupports={card.langSupports}
+                      collegeId={card.mainCategory.collegeId}
+                      isRequiredLecture={
+                        card.permittedCinerooms
+                          ? isIncludeCineroomId(card.permittedCinerooms)
+                          : false
+                      }
+                      dataArea={Area.CARD_RELATION}
+                      useBookMark
+                    />
+                    {/*<CardView*/}
+                    {/*  cardId={card.id}*/}
+                    {/*  {...card}*/}
+                    {/*  {...cardRelatedCount}*/}
+                    {/*  dataArea={Area.CARD_RELATION}*/}
+                    {/*/>*/}
                   </div>
                 </li>
               );
