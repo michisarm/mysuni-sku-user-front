@@ -12,11 +12,15 @@ import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { Area } from 'tracker/model';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
+import { SkProfileService } from '../../../../profile/stores';
 
 function EnrollingLearning() {
   const history = useHistory();
@@ -25,6 +29,7 @@ function EnrollingLearning() {
   const [title] = useState(
     getPolyglotText('수강 신청 과정 모아보기', 'home-Enrolling-Title')
   );
+  const userLanguage = SkProfileService.instance.skProfile.language;
 
   useEffect(() => {
     fetchEnrollingCardList();
@@ -73,8 +78,8 @@ function EnrollingLearning() {
   return (
     <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
       <div className="section-head">
-        {isLoading === true ||
-          (isLoading === false && cardList && cardList.length > 0 && (
+        {isLoading ||
+          (!isLoading && cardList && cardList.length > 0 && (
             <strong>{title}</strong>
           ))}
         <div className="right">
@@ -97,27 +102,54 @@ function EnrollingLearning() {
               return (
                 <li key={i}>
                   <CardGroup type={GroupType.Box}>
-                    <CardView
-                      cardId={item.card.id}
-                      permittedCinerooms={card.permittedCinerooms}
-                      learningTime={card.learningTime}
-                      additionalLearningTime={card.additionalLearningTime}
-                      thumbImagePath={card.thumbImagePath}
-                      mainCategory={card.mainCategory}
-                      name={card.name}
-                      stampCount={card.stampCount}
-                      simpleDescription={card.simpleDescription}
-                      type={card.type}
-                      starCount={cardRelatedCount.starCount}
-                      passedStudentCount={cardRelatedCount.passedStudentCount}
-                      studentCount={upcomingClassroomInfo.studentCount}
-                      remainingDayCount={
-                        upcomingClassroomInfo.remainingDayCount
-                      }
-                      capacity={upcomingClassroomInfo.capacity}
-                      dataArea={Area.MAIN_ENROLLING}
+                    <LectureCardView
+                      cardId={card.id}
+                      cardName={parsePolyglotString(card.name)}
+                      learningTime={String(card.learningTime)}
+                      thumbnailImagePath={card.thumbImagePath}
+                      difficultyLevel={card.difficultyLevel}
+                      passedStudentCount={String(
+                        cardRelatedCount.passedStudentCount
+                      )}
+                      starCount={String(cardRelatedCount.starCount)}
+                      simpleDescription={parsePolyglotString(
+                        card.simpleDescription
+                      )}
+                      studentCount={cardRelatedCount.studentCount}
+                      userLanguage={userLanguage}
                       langSupports={card.langSupports}
+                      collegeId={card.mainCategory.collegeId}
+                      isRequiredLecture={
+                        card.permittedCinerooms
+                          ? isIncludeCineroomId(card.permittedCinerooms)
+                          : false
+                      }
+                      upcomingClassroomInfo={upcomingClassroomInfo}
+                      dataArea={Area.MAIN_ENROLLING}
+                      useBookMark
                     />
+
+                    {/*<CardView*/}
+                    {/*  cardId={item.card.id}*/}
+                    {/*  permittedCinerooms={card.permittedCinerooms}*/}
+                    {/*  learningTime={card.learningTime}*/}
+                    {/*  additionalLearningTime={card.additionalLearningTime}*/}
+                    {/*  thumbImagePath={card.thumbImagePath}*/}
+                    {/*  mainCategory={card.mainCategory}*/}
+                    {/*  name={card.name}*/}
+                    {/*  stampCount={card.stampCount}*/}
+                    {/*  simpleDescription={card.simpleDescription}*/}
+                    {/*  type={card.type}*/}
+                    {/*  starCount={cardRelatedCount.starCount}*/}
+                    {/*  passedStudentCount={cardRelatedCount.passedStudentCount}*/}
+                    {/*  studentCount={upcomingClassroomInfo.studentCount}*/}
+                    {/*  remainingDayCount={*/}
+                    {/*    upcomingClassroomInfo.remainingDayCount*/}
+                    {/*  }*/}
+                    {/*  capacity={upcomingClassroomInfo.capacity}*/}
+                    {/*  dataArea={Area.MAIN_ENROLLING}*/}
+                    {/*  langSupports={card.langSupports}*/}
+                    {/*/>*/}
                   </CardGroup>
                 </li>
               );

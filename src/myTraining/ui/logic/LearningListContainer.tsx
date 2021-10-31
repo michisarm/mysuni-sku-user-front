@@ -1,27 +1,23 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Segment } from 'semantic-ui-react';
 import { Lecture } from 'lecture';
 import { NoSuchContentPanel } from 'shared';
-import { useRequestCollege } from 'shared/service/useCollege/useRequestCollege';
 import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { UpcomingClassroomInfo } from '../../../lecture/model/UpcomingClassroomInfo';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
-import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
-import CardGroup, {
-  GroupType,
-} from '../../../lecture/shared/Lecture/sub/CardGroup';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { find } from 'lodash';
 import { findEnrollingCardList } from '../../../lecture/detail/api/cardApi';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { SkProfileService } from '../../../profile/stores';
 
 interface MatchPrams {
   type: string;
@@ -39,6 +35,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   const [cardType, setCardType] = useState<String>();
   const [dataArea, setDataArea] = useState<Area>();
 
+  const userLanguage = SkProfileService.instance.skProfile.language;
   const onChangeViewType = (e: any, data: any, func?: any) => {
     setViewType(data.value);
   };
@@ -169,26 +166,52 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
               {cardList.map((item, i) => {
                 const { card, cardRelatedCount, upcomingClassroomInfo } = item;
                 return (
-                  <CardView
-                    key={item.card.id}
-                    cardId={item.card.id}
-                    permittedCinerooms={card.permittedCinerooms}
-                    learningTime={card.learningTime}
-                    additionalLearningTime={card.additionalLearningTime}
-                    thumbImagePath={card.thumbImagePath}
-                    mainCategory={card.mainCategory}
-                    name={card.name}
-                    stampCount={card.stampCount}
-                    simpleDescription={card.simpleDescription}
-                    type={card.type}
-                    passedStudentCount={cardRelatedCount.passedStudentCount}
-                    starCount={cardRelatedCount.starCount}
-                    capacity={upcomingClassroomInfo?.capacity}
-                    studentCount={upcomingClassroomInfo?.studentCount}
-                    remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
-                    dataArea={dataArea}
+                  <LectureCardView
+                    cardId={card.id}
+                    cardName={parsePolyglotString(card.name)}
+                    learningTime={String(card.learningTime)}
+                    thumbnailImagePath={card.thumbImagePath}
+                    difficultyLevel={card.difficultyLevel}
+                    passedStudentCount={String(
+                      cardRelatedCount.passedStudentCount
+                    )}
+                    starCount={String(cardRelatedCount.starCount)}
+                    simpleDescription={parsePolyglotString(
+                      card.simpleDescription
+                    )}
+                    studentCount={cardRelatedCount.studentCount}
+                    userLanguage={userLanguage}
                     langSupports={card.langSupports}
+                    collegeId={card.mainCategory.collegeId}
+                    isRequiredLecture={
+                      card.permittedCinerooms
+                        ? isIncludeCineroomId(card.permittedCinerooms)
+                        : false
+                    }
+                    upcomingClassroomInfo={upcomingClassroomInfo}
+                    dataArea={dataArea}
+                    useBookMark
                   />
+                  // <CardView
+                  //   key={item.card.id}
+                  //   cardId={item.card.id}
+                  //   permittedCinerooms={card.permittedCinerooms}
+                  //   learningTime={card.learningTime}
+                  //   additionalLearningTime={card.additionalLearningTime}
+                  //   thumbImagePath={card.thumbImagePath}
+                  //   mainCategory={card.mainCategory}
+                  //   name={card.name}
+                  //   stampCount={card.stampCount}
+                  //   simpleDescription={card.simpleDescription}
+                  //   type={card.type}
+                  //   passedStudentCount={cardRelatedCount.passedStudentCount}
+                  //   starCount={cardRelatedCount.starCount}
+                  //   capacity={upcomingClassroomInfo?.capacity}
+                  //   studentCount={upcomingClassroomInfo?.studentCount}
+                  //   remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
+                  //   dataArea={dataArea}
+                  //   langSupports={card.langSupports}
+                  // />
                 );
               })}
             </Lecture.Group>
