@@ -14,6 +14,10 @@ import 'react-quill/dist/quill.snow.css';
 import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
 import { repeatPolyfill } from './polyfill';
 
+// 2021-11-01 add css mj
+import 'style/css/2.1ba1de7b.chunk.css'
+import 'style/css/main.4860a582.chunk.css'
+
 repeatPolyfill();
 initializeBody();
 initializeI18nResource()
