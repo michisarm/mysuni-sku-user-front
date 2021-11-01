@@ -134,7 +134,7 @@ class UserMainPage extends Component<Props> {
             : ''
         }`}
         breadcrumb={[
-          { text: 'Introduction' },
+          { text: 'About Us' },
           {
             text:
               SkProfileService.instance.skProfile.language === 'English'
