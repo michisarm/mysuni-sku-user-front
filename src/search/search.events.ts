@@ -701,16 +701,17 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   // 연관검색어
   const suggestions: string[] = [];
-  const encodingSearchValue = encodeURI(searchValue);
-  findRelatedKeywordByKeyword(encodingSearchValue)
+  // const encodingSearchValue = encodeURI(searchValue);
+  findRelatedKeywordByKeyword(searchValue)
     .then((c) => {
       if (c !== undefined) {
         c.forEach((d) => suggestions.push(d));
       }
     })
     .finally(() =>
-      searchSuggest(encodingSearchValue)
+      searchSuggest(searchValue)
         .then((response) => {
+          console.log(response);
           if (response) {
             response.forEach((s2) => {
               suggestions.push(s2);
@@ -811,8 +812,11 @@ function escapeRegex(item: string, target: string): string {
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
   const regExpItem = item.replace(ESCAPE_REGEX, '');
   let replacedText;
-  if(item.match(ESCAPE_REGEX)) {
-    replacedText = target.replace(item, `<strong class="search_keyword">${item}</strong>`);
+  if (item.match(ESCAPE_REGEX)) {
+    replacedText = target.replace(
+      item,
+      `<strong class="search_keyword">${item}</strong>`
+    );
   } else {
     replacedText = target.replace(
       new RegExp(regExpItem, 'gi'),
