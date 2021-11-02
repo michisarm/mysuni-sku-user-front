@@ -18,6 +18,7 @@ import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
+import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 
 const BASE_URL = '/api/lecture';
 
@@ -140,6 +141,17 @@ export function findByRdo(cardRdo: CardRdo) {
   const url = `${BASE_URL}/cards/findCardWithRelatedCountByRdo`;
   return axios
     .get<OffsetElementList<CardWithCardRealtedCount>>(url, {
+      params: cardRdo,
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
+}
+
+export function findByQdo(cardRdo: CardRdo) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findCardForUserViewRdoByCardQdo`;
+  return axios
+    .get<OffsetElementList<UserLectureCard>>(url, {
       params: cardRdo,
       paramsSerializer,
     })

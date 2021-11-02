@@ -6,6 +6,7 @@ import { findAvailableColleges } from 'college/api/collegeApi';
 import { SkProfileService } from 'profile/stores';
 import { findChannelAndCardCount } from 'lecture/detail/api/cardApi';
 import { ChannelAndCardCountRom } from '../../../lecture/detail/model/ChannelAndCardCountRom';
+import { CollegeLectureCountRdo } from '../../../lecture/model';
 
 export function useRequestCategory() {
   useEffect(() => {
@@ -43,6 +44,7 @@ export async function requestCategory() {
   });
 
   const nextCategoryColleges = availableColleges
+    .map((college) => new CollegeLectureCountRdo(college))
     .filter((college) => _.includes(targetCollegeIds, college.id))
     .map((college) => {
       const nextChannels = college.channels.filter((channel) =>

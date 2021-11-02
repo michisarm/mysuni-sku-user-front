@@ -26,6 +26,21 @@ class CollegeLectureCountRdo {
     langSupports: LangSupport[];
     count: number;
   }[] = [];
+
+  @observable
+  channelIds: string[] = [];
+
+  constructor(collegeLectureCountRdo?: CollegeLectureCountRdo) {
+    if (collegeLectureCountRdo) {
+      const channels = collegeLectureCountRdo.channelIds.map((id) => {
+        return {
+          id,
+          count: 0,
+        };
+      });
+      Object.assign(this, { ...collegeLectureCountRdo, channels });
+    }
+  }
 }
 
 export default CollegeLectureCountRdo;
