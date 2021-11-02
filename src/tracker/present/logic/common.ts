@@ -106,7 +106,7 @@ export const getAuth = async () => {
 };
 
 export const getAbtestUserTargets = async () => {
-  let targets = '[]';
+  const targets = '[]';
   // try {
   //   await getUserTargets().then((data) => {
   //     if (data) {
