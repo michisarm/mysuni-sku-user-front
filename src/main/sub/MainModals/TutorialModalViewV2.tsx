@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Checkbox, Button, Image } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
-import Swiper, { ReactIdSwiperProps } from 'react-id-swiper';
+import Swiper from 'react-id-swiper';
 import classNames from 'classnames';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -51,7 +51,7 @@ const TutorialModalView = () => {
     setNoMoreModal(!noMoreModal);
   };
 
-  const params: ReactIdSwiperProps = {
+  const params = {
     loop: false,
     effect: 'fade',
     autoplay: {
@@ -65,11 +65,7 @@ const TutorialModalView = () => {
   };
 
   return (
-    <Modal
-      open={modalOpen}
-      className="base w1000 tutorials2 front scrolling"
-      style={{ position: 'relative' }}
-    >
+    <Modal open={modalOpen} className="base w1000 tutorials2 front scrolling" style={{'position':'relative'}} >
       <Modal.Header className="header2">
         <div className="right-btn">
           <Checkbox
@@ -87,7 +83,7 @@ const TutorialModalView = () => {
           <div className="cont-wrap">
             <div className="left">
               <div className="inner">
-                {TutorialSubMenu.map((menu) => (
+                {TutorialSubMenu.map(menu => (
                   <a
                     href="#"
                     key={menu.value}
@@ -95,10 +91,7 @@ const TutorialModalView = () => {
                       menu.value,
                       menu.value === activeMenu ? 'current' : ''
                     )}
-                    onClick={(e) => {
-                      onClickSubMenu(menu.value, e);
-                      e.preventDefault();
-                    }}
+                    onClick={e => { onClickSubMenu(menu.value, e); e.preventDefault(); }}
                   >
                     {menu.text}
                   </a>

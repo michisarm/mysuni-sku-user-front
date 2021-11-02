@@ -11,6 +11,8 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { SkProfileService } from 'profile/stores';
+// import * as htmlToImage from 'html-to-image';
+import { toJpeg } from 'html-to-image';
 import html2canvas from 'html2canvas';
 import ReactToPrint from 'react-to-print';
 import bg_mystamp from 'style/../../public/images/all/bg_mystamp.png';
