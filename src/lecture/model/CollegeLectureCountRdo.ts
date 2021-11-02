@@ -2,6 +2,7 @@ import { observable } from 'mobx';
 import { CollegeType } from 'college/model';
 import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
 import { LangSupport } from './LangSupport';
+import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 
 class CollegeLectureCountRdo {
   //
@@ -12,17 +13,15 @@ class CollegeLectureCountRdo {
   collegeType: CollegeType = CollegeType.University;
 
   @observable
-  name: PolyglotString | null = null;
-
-  langSupports: LangSupport[] = [];
+  name: string = '';
 
   @observable
-  description: string = '';
+  description: PolyglotString | null = null;
 
   @observable
   channels: {
     id: string;
-    name: PolyglotString | null;
+    name: string;
     langSupports: LangSupport[];
     count: number;
   }[] = [];
@@ -40,6 +39,19 @@ class CollegeLectureCountRdo {
       });
       Object.assign(this, { ...collegeLectureCountRdo, channels });
     }
+  }
+
+  static asCollegeLectureCountRdo(
+    rdo: CollegeLectureCountRdo
+  ): CollegeLectureCountRdo {
+    return {
+      id: rdo.id,
+      collegeType: rdo.collegeType,
+      description: rdo.description,
+      name: getCollgeName(rdo.id),
+      channels: rdo.channels,
+      channelIds: rdo.channelIds,
+    };
   }
 }
 

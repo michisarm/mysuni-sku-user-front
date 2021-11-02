@@ -284,8 +284,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     );
     const userLectureCards = lectureService._userLectureCards;
 
-    console.log(userLectureCards);
-
     this.setState((prevState) => ({
       lectures: [...prevState.lectures, ...userLectureCards],
     }));
@@ -451,8 +449,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     const userLanguage = parseLanguage(
       SkProfileService.instance.skProfile.language
     );
-
-    console.log(lectures);
 
     return (
       <CategoryLecturesWrapperView

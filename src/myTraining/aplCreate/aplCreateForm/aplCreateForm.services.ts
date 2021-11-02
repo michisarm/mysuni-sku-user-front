@@ -66,7 +66,8 @@ export async function requestAplApprover() {
 export async function requestAplCreateColleges() {
   const collegeLectureCountService = CollegeLectureCountService.instance;
   if (window.navigator.onLine) {
-    const collegeLectureCounts = await collegeLectureCountService.findCollegeLectureCounts();
+    const collegeLectureCounts =
+      await collegeLectureCountService.findCollegeLectureCounts();
     if (collegeLectureCounts.length > 0) {
       parseCollegeOptions(collegeLectureCounts);
     }
@@ -83,10 +84,7 @@ export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
         collegeOptions.push({
           key: String(index + 1),
           value: college.id,
-          text: parsePolyglotString(
-            college.name,
-            getDefaultLang(college.langSupports)
-          ),
+          text: college.name,
         });
       }
     });
