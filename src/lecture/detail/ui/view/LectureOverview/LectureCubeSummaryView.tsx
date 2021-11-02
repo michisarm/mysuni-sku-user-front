@@ -155,14 +155,16 @@ function getClassroom(classrooms: Classroom[]): Classroom | undefined {
   }
 }
 
-function parseUrl(url: string) {
+function filterUrl(url: string) {
+  // 주소에 http, https 가 붙는 경우만 return
   const isHttps = url.includes('https://');
+  const isHttp = url.includes('http://');
 
-  if (isHttps) {
+  if (isHttps || isHttp) {
     return trim(url);
   }
 
-  return trim(`https://${url}`);
+  return '';
 }
 
 function getLearningPeriod(classrooms: Classroom[]): string | undefined {
@@ -196,15 +198,7 @@ function getElearningLink(classrooms: Classroom[]): string {
     return '';
   }
 
-  return parseUrl(findClassRoom?.siteUrl);
-
-  // const classroom = getClassroom(classrooms);
-  // if (classroom !== undefined) {
-  //   return classroom.siteUrl;
-  // }
-  // url trim 으로 빈칸 제거
-  // e learning 이외에도 siteUrl 이 존재하면 학습하기 버튼 보이도록
-  // https 여부도 확인후 붙여주기
+  return filterUrl(findClassRoom.siteUrl);
 }
 
 function getDifficultyLevelIcon(difficultyLevel: DifficultyLevel) {
