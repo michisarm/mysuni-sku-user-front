@@ -701,15 +701,15 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   // 연관검색어
   const suggestions: string[] = [];
-
-  findRelatedKeywordByKeyword(searchValue)
+  const encodingSearchValue = encodeURI(searchValue);
+  findRelatedKeywordByKeyword(encodingSearchValue)
     .then((c) => {
       if (c !== undefined) {
         c.forEach((d) => suggestions.push(d));
       }
     })
     .finally(() =>
-      searchSuggest(searchValue)
+      searchSuggest(encodingSearchValue)
         .then((response) => {
           if (response) {
             response.forEach((s2) => {
