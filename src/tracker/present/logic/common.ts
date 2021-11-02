@@ -106,16 +106,16 @@ export const getAuth = async () => {
 };
 
 export const getAbtestUserTargets = async () => {
-  let targets = '';
-  try {
-    await getUserTargets().then((data) => {
-      if (data) {
-        targets = JSON.stringify(data);
-      }
-    });
-  } catch {
-    //
-  }
+  let targets = '[]';
+  // try {
+  //   await getUserTargets().then((data) => {
+  //     if (data) {
+  //       targets = JSON.stringify(data);
+  //     }
+  //   });
+  // } catch {
+  //   //
+  // }
   return targets;
 };
 
