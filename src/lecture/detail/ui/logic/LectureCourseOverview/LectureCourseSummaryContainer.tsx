@@ -22,7 +22,6 @@ function LectureCardSummaryContainer() {
   useEffect(() => {
     //const axios = getAxios();
     const fetchMenu = async () => {
-      console.log('????');
       const response = await findAvailablePageElements();
       setMenuAuth(response);
     };
