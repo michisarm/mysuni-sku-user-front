@@ -711,7 +711,6 @@ export async function searchData(searchValue: string, searchType?: string) {
     .finally(() =>
       searchSuggest(searchValue)
         .then((response) => {
-          console.log(response);
           if (response) {
             response.forEach((s2) => {
               suggestions.push(s2);
@@ -720,6 +719,9 @@ export async function searchData(searchValue: string, searchType?: string) {
               suggestions.length = 10;
             }
           }
+        })
+        .catch((error) => {
+          console.log(error);
         })
         .finally(() => {
           setSearchRelatedList(suggestions);
