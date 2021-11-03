@@ -97,8 +97,8 @@ function EnrollingLearning() {
       {(cardList && cardList.length > 0 && (
         <>
           <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
-            {cardList.map((item, i) => {
-              const { card, cardRelatedCount, upcomingClassroomInfo } = item;
+            {cardList.map((card, i) => {
+              console.log(card);
               return (
                 <li key={i}>
                   <CardGroup type={GroupType.Box}>
@@ -108,23 +108,17 @@ function EnrollingLearning() {
                       learningTime={String(card.learningTime)}
                       thumbnailImagePath={card.thumbImagePath}
                       difficultyLevel={card.difficultyLevel}
-                      passedStudentCount={String(
-                        cardRelatedCount.passedStudentCount
-                      )}
-                      starCount={String(cardRelatedCount.starCount)}
+                      passedStudentCount={String(card.passedStudentCount)}
+                      starCount={String(card.starCount)}
                       simpleDescription={parsePolyglotString(
                         card.simpleDescription
                       )}
-                      studentCount={cardRelatedCount.studentCount}
+                      studentCount={card.studentCount}
                       userLanguage={userLanguage}
                       langSupports={card.langSupports}
-                      collegeId={card.mainCategory.collegeId}
-                      isRequiredLecture={
-                        card.permittedCinerooms
-                          ? isIncludeCineroomId(card.permittedCinerooms)
-                          : false
-                      }
-                      upcomingClassroomInfo={upcomingClassroomInfo}
+                      collegeId={card.mainCollegeId}
+                      isRequiredLecture={card.required}
+                      upcomingClassroomInfo={card.upcomingClassroomInfo}
                       dataArea={Area.MAIN_ENROLLING}
                       useBookMark
                     />

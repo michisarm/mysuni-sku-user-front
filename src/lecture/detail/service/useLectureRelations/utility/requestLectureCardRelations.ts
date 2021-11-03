@@ -22,7 +22,7 @@ export async function requestLectureCardRelations(cardId: string) {
     cardContents: { relatedCards },
   } = cardWithContentsAndRelatedCountRom;
   if (Array.isArray(relatedCards) && relatedCards.length > 0) {
-    const joinedIds = relatedCards.map(c => c.relatedCardId).join();
+    const joinedIds = relatedCards.map((c) => c.relatedCardId).join();
 
     const lectureCardRelations = await parseLectureRelations(joinedIds);
     setLectureRelations(lectureCardRelations);

@@ -16,7 +16,10 @@ import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
-import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import {
+  Area,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../profile/stores';
 
 interface MatchPrams {
@@ -28,9 +31,7 @@ type CardListExtendsUpcomingClassRom = CardWithCardRealtedCount & {
 };
 
 function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
-  const [cardList, setCardList] = useState<CardListExtendsUpcomingClassRom[]>(
-    []
-  );
+  const [cardList, setCardList] = useState<UserLectureCard[]>([]);
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
   const [cardType, setCardType] = useState<String>();
   const [dataArea, setDataArea] = useState<Area>();
@@ -163,8 +164,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         <div className="section">
           {cardList.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {cardList.map((item, i) => {
-                const { card, cardRelatedCount, upcomingClassroomInfo } = item;
+              {cardList.map((card, i) => {
                 return (
                   <LectureCardView
                     cardId={card.id}
@@ -172,23 +172,17 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                     learningTime={String(card.learningTime)}
                     thumbnailImagePath={card.thumbImagePath}
                     difficultyLevel={card.difficultyLevel}
-                    passedStudentCount={String(
-                      cardRelatedCount.passedStudentCount
-                    )}
-                    starCount={String(cardRelatedCount.starCount)}
+                    passedStudentCount={String(card.passedStudentCount)}
+                    starCount={String(card.starCount)}
                     simpleDescription={parsePolyglotString(
                       card.simpleDescription
                     )}
-                    studentCount={cardRelatedCount.studentCount}
+                    studentCount={card.studentCount}
                     userLanguage={userLanguage}
                     langSupports={card.langSupports}
-                    collegeId={card.mainCategory.collegeId}
-                    isRequiredLecture={
-                      card.permittedCinerooms
-                        ? isIncludeCineroomId(card.permittedCinerooms)
-                        : false
-                    }
-                    upcomingClassroomInfo={upcomingClassroomInfo}
+                    collegeId={card.mainCollegeId}
+                    isRequiredLecture={card.required}
+                    upcomingClassroomInfo={card.upcomingClassroomInfo}
                     dataArea={dataArea}
                     useBookMark
                   />

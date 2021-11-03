@@ -38,6 +38,7 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
@@ -70,7 +71,7 @@ const POPLearning: React.FC<Props> = (Props) => {
     const joinedIds = ids && ids.join();
 
     return axios
-      .get<CardWithCardRealtedCount[]>(url, { params: { ids: joinedIds } })
+      .get<UserLectureCard[]>(url, { params: { ids: joinedIds } })
       .then((res) => res.data);
   };
 
@@ -280,8 +281,7 @@ const POPLearning: React.FC<Props> = (Props) => {
 
       {popCard?.cards && popCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {popCard.cards.map((item, i) => {
-            const { card, cardRelatedCount } = item;
+          {popCard.cards.map((card, i) => {
             const inMyLecture = getInMyLecture(card.id);
 
             return (

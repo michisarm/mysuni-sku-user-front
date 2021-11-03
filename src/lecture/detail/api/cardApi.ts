@@ -61,7 +61,7 @@ export function findCardList(cardIds: string) {
   const url = `${BASE_URL}/cards/findCards`;
 
   return axios
-    .get<CardWithCardRealtedCount[]>(url, { params: { ids: cardIds } })
+    .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
     .then(AxiosReturn);
 }
 

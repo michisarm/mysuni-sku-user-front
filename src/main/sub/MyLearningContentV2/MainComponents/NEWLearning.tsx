@@ -260,8 +260,7 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
       </div>
       {newCard?.cards && newCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {newCard.cards.map((item, i) => {
-            const { card, cardRelatedCount } = item;
+          {newCard.cards.map((card, i) => {
             const inMyLecture = getInMyLecture(card.id);
             // const inMyLecture = getInMyLecture("");
 
