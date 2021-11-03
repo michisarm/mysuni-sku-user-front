@@ -20,11 +20,11 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   //
   const userLanguage = SkProfileService.instance.skProfile.language;
 
-  const { channelId, cardCount, totalCardCount, cardWithRelatedCountRoms } =
+  const { channelId, cardCount, totalCardCount, cardWithRelatedCountRdos } =
     props;
 
   const isCardWithRelatedCountRoms =
-    cardWithRelatedCountRoms === null || cardWithRelatedCountRoms.length < 0
+    cardWithRelatedCountRdos == null || cardWithRelatedCountRdos.length < 0
       ? false
       : true;
 
@@ -78,45 +78,49 @@ export function RecommendCardRomView(props: RecommendCardRom) {
       <div className="scrolling" data-action-name={getChannelName(channelId)}>
         <ul className="belt">
           {isCardWithRelatedCountRoms ? (
-            cardWithRelatedCountRoms.map(({ card, cardRelatedCount }) => {
-              return (
-                <li>
-                  <div className="ui cards box-cards">
-                    {/* <CardView
+            cardWithRelatedCountRdos.map(
+              ({ card, cardRelatedCount }, index) => {
+                return (
+                  <li key={index}>
+                    <div className="ui cards box-cards">
+                      {/* <CardView
                       key={card.id}
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
                       dataArea={Area.RECOMMEND_LIST}
                     /> */}
-                    <LectureCardView
-                      cardId={card.id}
-                      cardName={parsePolyglotString(card.name)}
-                      learningTime={card.learningTime.toString()}
-                      thumbnailImagePath={card.thumbImagePath}
-                      passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                      starCount={cardRelatedCount.starCount.toString()}
-                      simpleDescription={parsePolyglotString(card.simpleDescription)}
-                      difficultyLevel={
-                        card.difficultyLevel || DifficultyLevel.Basic
-                      }
-                      userLanguage={userLanguage}
-                      studentCount={cardRelatedCount.studentCount}
-                      langSupports={card.langSupports}
-                      useBookMark={true}
-                      // 체크 필요
-                      isRequiredLecture={
+                      <LectureCardView
+                        cardId={card.id}
+                        cardName={parsePolyglotString(card.name)}
+                        learningTime={card.learningTime.toString()}
+                        thumbnailImagePath={card.thumbImagePath}
+                        passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                        starCount={cardRelatedCount.starCount.toString()}
+                        simpleDescription={parsePolyglotString(
+                          card.simpleDescription
+                        )}
+                        difficultyLevel={
+                          card.difficultyLevel || DifficultyLevel.Basic
+                        }
+                        userLanguage={userLanguage}
+                        studentCount={cardRelatedCount.studentCount}
+                        langSupports={card.langSupports}
+                        useBookMark={true}
+                        // 체크 필요
+                        isRequiredLecture={
                           card.permittedCinerooms
-                          ? isIncludeCineroomId(card.permittedCinerooms)
-                          : false
-                      }
-                      collegeId={card.mainCategory.collegeId}
-                      dataArea={Area.EXPERT_LECTURE}
-                    />
-                  </div>
-                </li>
-              );
-            })
+                            ? isIncludeCineroomId(card.permittedCinerooms)
+                            : false
+                        }
+                        collegeId={card.mainCategory.collegeId}
+                        dataArea={Area.EXPERT_LECTURE}
+                      />
+                    </div>
+                  </li>
+                );
+              }
+            )
           ) : (
             <NoSuchContentPanel
               message={`${getChannelName(channelId) || ''} ${getPolyglotText(

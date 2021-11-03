@@ -99,13 +99,13 @@ async function requestFindRecommendCards() {
             return {
               channelId: c.id,
               cardCount: r.results.length,
-              cardWithRelatedCountRoms: r.results,
+              cardWithRelatedCountRdos: r.results,
             };
           }
           return {
             channelId: c.id,
             cardCount: 0,
-            cardWithRelatedCountRoms: [],
+            cardWithRelatedCountRdos: [],
           };
         });
       });
@@ -195,8 +195,13 @@ function AllChannelsContainerView() {
   return (
     <div className="recommend-area">
       {Array.isArray(recommendCardRoms) &&
-        recommendCardRoms.map((c) => {
-          return <RecommendCardRomView key={c.channelId} {...c} />;
+        recommendCardRoms.map((recommendCardRom) => {
+          return (
+            <RecommendCardRomView
+              key={recommendCardRom.channelId}
+              {...recommendCardRom}
+            />
+          );
         })}
       <ListMoreView />
     </div>

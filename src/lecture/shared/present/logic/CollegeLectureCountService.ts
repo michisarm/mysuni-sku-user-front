@@ -42,7 +42,7 @@ class CollegeLectureCountService {
   get totalChannelCount() {
     let total = 0;
     this._collegeLectureCounts.map((college) => {
-      total += college.channels.length;
+      total += college.channelIds.length;
     });
     return total;
   }

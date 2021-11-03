@@ -4,5 +4,5 @@ export interface RecommendCardRom {
   cardCount: number;
   totalCardCount?: number;
   channelId: string;
-  cardWithRelatedCountRoms: CardWithCardRealtedCount[];
+  cardWithRelatedCountRdos: CardWithCardRealtedCount[];
 }
