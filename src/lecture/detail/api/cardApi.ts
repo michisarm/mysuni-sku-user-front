@@ -53,9 +53,7 @@ export function findCardFromCardBundle(
     recommendation: isRecommendation,
   };
 
-  return axios
-    .post<CardWithCardRealtedCount[]>(url, postBodyCdo)
-    .then(AxiosReturn);
+  return axios.post<UserLectureCard[]>(url, postBodyCdo).then(AxiosReturn);
 }
 
 export function findCardList(cardIds: string) {

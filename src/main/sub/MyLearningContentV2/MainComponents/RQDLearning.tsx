@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
@@ -9,30 +8,40 @@ import {
   findRequiredLearning,
   findCardFromCardBundle,
 } from '../../../../lecture/detail/api/cardApi';
-import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { Area } from 'tracker/model';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  CardProps,
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { parseLanguage } from '../../../../shared/viewmodel/PolyglotString';
+import { SkProfileService } from '../../../../profile/stores';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
 }
 
 const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
-  const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
-  const [title] = useState(getPolyglotText('Deep Change를 위한 권장과정', 'home-DeepChange-Title'));
+  const [cardList, setCardList] = useState<CardProps[]>([]);
+  const [title] = useState(
+    getPolyglotText('Deep Change를 위한 권장과정', 'home-DeepChange-Title')
+  );
 
   const fetchCardList = async () => {
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
     const cardIds = await findRequiredLearning();
 
     if (cardIds) {
       const cardList = await findCardFromCardBundle(cardIds, 8, false);
 
       if (cardList !== undefined) {
-        setCardList(cardList);
+        setCardList(parseUserLectureCards(cardList, userLanguage));
       }
     }
   };
@@ -70,25 +79,13 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
       </div>
       <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
         {cardList.map((item, i) => {
-          const { card, cardRelatedCount } = item;
           return (
             <li key={i}>
               <CardGroup type={GroupType.Box}>
-                <CardView
-                  cardId={item.card.id}
-                  permittedCinerooms={card.permittedCinerooms}
-                  learningTime={card.learningTime}
-                  additionalLearningTime={card.additionalLearningTime}
-                  thumbImagePath={card.thumbImagePath}
-                  mainCategory={card.mainCategory}
-                  name={card.name}
-                  stampCount={card.stampCount}
-                  simpleDescription={card.simpleDescription}
-                  type={card.type}
-                  passedStudentCount={cardRelatedCount.passedStudentCount}
-                  starCount={cardRelatedCount.starCount}
+                <LectureCardView
+                  {...item}
+                  useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
                   dataArea={Area.MAIN_REQUIRED}
-                  langSupports={card.langSupports}
                 />
               </CardGroup>
             </li>

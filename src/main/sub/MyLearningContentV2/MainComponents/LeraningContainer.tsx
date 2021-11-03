@@ -8,14 +8,21 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
 import { findCardFromCardBundle } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
-import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { Area } from 'tracker/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  CardProps,
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -27,10 +34,14 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   history,
 }) {
   const [dataArea, setDataArea] = useState<Area>();
-  const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const [cardList, setCardList] = useState<CardProps[]>([]);
   const isRecommend = cardBundle.type === 'Recommended';
 
   const fetchCardList = async () => {
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
+
     if (cardBundle.cardIds) {
       const cardList = await findCardFromCardBundle(
         cardBundle.cardIds,
@@ -39,7 +50,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
       );
 
       if (cardList !== undefined) {
-        setCardList(cardList);
+        setCardList(parseUserLectureCards(cardList, userLanguage));
       }
     }
   };
@@ -85,6 +96,8 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     return null;
   }
 
+  console.log(cardList);
+
   return (
     <ContentWrapper dataArea={dataArea}>
       <div className="section-head">
@@ -103,26 +116,13 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
           dataActionName={parsePolyglotString(cardBundle?.displayText)}
         >
           {cardList.map((item, i) => {
-            const { card, cardRelatedCount } = item;
-
             return (
               <li key={i}>
                 <CardGroup type={GroupType.Box}>
-                  <CardView
-                    cardId={item.card.id}
-                    permittedCinerooms={card.permittedCinerooms}
-                    learningTime={card.learningTime}
-                    additionalLearningTime={card.additionalLearningTime}
-                    thumbImagePath={card.thumbImagePath}
-                    mainCategory={card.mainCategory}
-                    name={card.name}
-                    stampCount={card.stampCount}
-                    simpleDescription={card.simpleDescription}
-                    type={card.type}
-                    passedStudentCount={cardRelatedCount.passedStudentCount}
-                    starCount={cardRelatedCount.starCount}
+                  <LectureCardView
+                    {...item}
+                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
                     dataArea={dataArea}
-                    langSupports={card.langSupports}
                   />
                 </CardGroup>
               </li>
