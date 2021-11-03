@@ -3,7 +3,7 @@ def label = "jenkins-${UUID.randomUUID().toString()}"
 
 def ZCP_USERID='yswon'
 def DOCKER_IMAGE='sk-university/user-front'
-def K8S_NAMESPACE='gdi-skuniv-app-stg'
+def K8S_NAMESPACE='gdi-skuniv-app-ma'
 def REPLICAS=1
 def podTemplateYaml = """
 apiVersion: v1

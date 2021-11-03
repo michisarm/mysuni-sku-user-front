@@ -70,7 +70,7 @@ spec:
       volumes:
         - name: user-front-persistent-storage
           persistentVolumeClaim:
-            claimName: nara-pvc-stg
+            claimName: nara-pvc-ma
         - hostPath:
             path: /usr/share/zoneinfo/Asia/Seoul
           name: timezone-config
