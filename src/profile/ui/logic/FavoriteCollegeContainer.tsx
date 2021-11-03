@@ -244,10 +244,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 onChange={() =>
                                   this.onSelectChannel({
                                     id: channel.id,
-                                    name: parsePolyglotString(
-                                      channel.name,
-                                      getDefaultLang(channel.langSupports)
-                                    ),
+                                    name: channel.name,
                                   })
                                 }
                               />
@@ -256,10 +253,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 data-offset="23"
                                 htmlFor={`checkbox_${index}`}
                               >
-                                {parsePolyglotString(
-                                  channel.name,
-                                  getDefaultLang(channel.langSupports)
-                                )}
+                                {channel.name}
                               </label>
                             </div>
                           </li>

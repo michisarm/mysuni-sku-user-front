@@ -78,10 +78,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                           onClick={() => onToggleCollege(college.id)}
                         >
                           <span className={`name ${this.color[index]}`}>
-                            {parsePolyglotString(
-                              college.name,
-                              getDefaultLang(college.langSupports)
-                            )}
+                            {college.name}
                           </span>
                           <Icon />
                         </Accordion.Title>
@@ -99,18 +96,8 @@ class FavoriteChannelChangeView extends Component<Props> {
                                   <li key={`channel-${index}`}>
                                     <Checkbox
                                       className="base"
-                                      label={
-                                        <label>
-                                          {parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          )}
-                                        </label>
-                                      }
-                                      name={parsePolyglotString(
-                                        channel.name,
-                                        getDefaultLang(channel.langSupports)
-                                      )}
+                                      label={<label>{channel.name}</label>}
+                                      name={channel.name}
                                       checked={this.isChecked(
                                         college.collegeType,
                                         channel.id

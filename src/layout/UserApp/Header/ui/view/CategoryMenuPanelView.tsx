@@ -116,6 +116,8 @@ class CategoryMenuPanelView extends Component<Props> {
       });
     };
 
+    console.log(colleges);
+
     return (
       <div className="layer lms-category">
         <div className="table-css">
@@ -131,29 +133,29 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
-                  {colleges.map((college) => (
-                    <button
-                      key={`category_${college.id}`}
-                      className={classNames('', {
-                        active:
-                          activeCollege && activeCollege.id === college.id,
-                        bm: college.id === 'CLG00020',
-                      })}
-                      onClick={(e) => {
-                        onActiveCollege(e, college);
-                      }}
-                      data-area={Area.HEADER_CATEGORYLIST}
-                      data-action={Action.CLICK}
-                      data-action-name={`CATEGORY 목록 클릭::${getKoreaName(
-                        college.name
-                      )}`}
-                    >
-                      {parsePolyglotString(
-                        college.name,
-                        getDefaultLang(college.langSupports)
-                      )}
-                    </button>
-                  ))}
+                  {colleges.map((college) => {
+                    console.log(college);
+                    return (
+                      <button
+                        key={`category_${college.id}`}
+                        className={classNames('', {
+                          active:
+                            activeCollege && activeCollege.id === college.id,
+                          bm: college.id === 'CLG00020',
+                        })}
+                        onClick={(e) => {
+                          onActiveCollege(e, college);
+                        }}
+                        data-area={Area.HEADER_CATEGORYLIST}
+                        data-action={Action.CLICK}
+                        data-action-name={`CATEGORY 목록 클릭::${getKoreaName(
+                          college.name
+                        )}`}
+                      >
+                        {college.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -165,10 +167,7 @@ class CategoryMenuPanelView extends Component<Props> {
                     data-area={Area.HEADER_CATEGORY}
                   >
                     <span className="category-title">
-                      {parsePolyglotString(
-                        activeCollege.name,
-                        getDefaultLang(activeCollege.langSupports)
-                      )}{' '}
+                      {activeCollege.name}{' '}
                       <PolyglotText defaultString="College" id="home-cipp-ch" />
                       {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
@@ -176,13 +175,8 @@ class CategoryMenuPanelView extends Component<Props> {
                       className="btn-category-all"
                       onClick={(e) => {
                         this.onClickChannelActionLog(
-                          `${parsePolyglotString(
-                            activeCollege.name,
-                            getDefaultLang(activeCollege.langSupports)
-                          )} ${getPolyglotText(
-                            '전체보기',
-                            'home-cipp-전체보기'
-                          )}`
+                          `${activeCollege.name}
+                          ${getPolyglotText('전체보기', 'home-cipp-전체보기')}`
                         );
                         onRouteChannel(e);
                       }}

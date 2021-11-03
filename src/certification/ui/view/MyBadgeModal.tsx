@@ -16,7 +16,6 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
-import { toJpeg, toBlob } from 'html-to-image';
 import ReactToPrint from 'react-to-print';
 import bg_mybadge from 'style/../../public/images/all/bg_mybadge.png';
 import { saveAs } from 'file-saver';
@@ -301,7 +300,7 @@ class MyBadgeModal extends Component<Props, States> {
                       {/* 인증서 영역 끝 */}
 
                       <div className="bottom-button">
-                        {/* <Button 
+                        {/* <Button
                           className="fix line"
                           onClick={this.onClickcertificatePrint}
                         >

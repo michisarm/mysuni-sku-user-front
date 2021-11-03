@@ -10,12 +10,15 @@ import {
   CachingFetch,
   axiosApi as axios,
 } from '@nara.platform/accent';
+import CollegeApi, {
+  findAllCollegeCache,
+  clearfindAllCollegeCache,
+} from '../../../college/present/apiclient/CollegeApi';
 
 import _ from 'lodash';
 import { IdNameList } from 'shared/model';
-import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
-import { CollegeModel } from '../../model/CollegeModel';
+import { CollegeModel } from '../../model';
 import ChannelModel from '../../model/ChannelModel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CollegeBanner } from '../../model/CollegeBanner';
@@ -66,6 +69,8 @@ export default class CollegeService {
   ) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
+
+    findAllCollegeCache();
   }
 
   @computed
@@ -140,6 +145,11 @@ export default class CollegeService {
   @action
   setCollege(college: CollegeModel) {
     this.college = college;
+  }
+
+  getCollegeById(id: string): CollegeModel | undefined {
+    //
+    return this.colleges.find((college) => college.id === id);
   }
 
   // Colleges ----------------------------------------------------------------------------------------------------------

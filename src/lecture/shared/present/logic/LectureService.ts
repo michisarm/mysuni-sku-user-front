@@ -24,7 +24,7 @@ import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import {
   findByRdo,
   countRequiredCards,
-  findCardsByRdo,
+  findCardsByRdo, findByQdo,
 } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
@@ -33,6 +33,8 @@ import { findCardStudentsByCardIds } from '../../../../certification/api/CardStu
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { CardProps, parseUserLectureCards, UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
 
 @autobind
 class LectureService {
@@ -49,6 +51,9 @@ class LectureService {
 
   @observable
   _lectures: CardWithCardRealtedCount[] = [];
+
+  @observable
+  _userLectureCards: CardProps[] = [];
 
   @observable
   _requiredLectures: LectureModel[] = [];
@@ -159,20 +164,21 @@ class LectureService {
   ) {
     //
     const response =
-      (await findByRdo({
+      (await findByQdo({
         collegeIds: collegeId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
+      })) || new OffsetElementList<UserLectureCard>();
 
     const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+      new OffsetElementList<UserLectureCard>(response);
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
+        (this._userLectureCards = this._userLectureCards.concat(
+          parseUserLectureCards(lectureOffsetElementList.results, userLanguage)
         ))
     );
     return lectureOffsetElementList;

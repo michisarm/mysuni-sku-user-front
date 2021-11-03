@@ -8,7 +8,9 @@ const BASE_URL = '/api/college';
 export function findAvailableColleges() {
   const axios = getAxios();
   const url = `${BASE_URL}/colleges/available`;
-  return axios.get<CollegeLectureCountRdo[]>(url).then(AxiosReturn);
+  return axios
+    .get<CollegeLectureCountRdo[]>(url)
+    .then((response) => (response && response.data) || null);
 }
 
 export function findJobDuty(): Promise<JobDuty[] | undefined> {

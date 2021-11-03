@@ -64,10 +64,11 @@ class CategoryMenuContainer extends Component<Props, State> {
       banner: bannerData,
     });
 
+    console.log(college);
     CollegeLectureCountService.instance.setChannelCounts(
       college.channels.map((c) => ({
         id: c.id,
-        name: parsePolyglotString(c.name, getDefaultLang(c.langSupports)),
+        name: c.name,
         count: c.count,
       }))
     );
@@ -139,10 +140,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     const { categoryOpen, activeCollege, banner } = this.state;
-    const {
-      categoryColleges,
-      channelCounts,
-    } = CollegeLectureCountService.instance;
+    const { categoryColleges, channelCounts } =
+      CollegeLectureCountService.instance;
     const { additionalUserInfo } = SkProfileService.instance;
     const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();

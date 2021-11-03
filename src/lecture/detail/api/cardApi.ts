@@ -18,6 +18,7 @@ import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
+import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 
 const BASE_URL = '/api/lecture';
 
@@ -52,9 +53,7 @@ export function findCardFromCardBundle(
     recommendation: isRecommendation,
   };
 
-  return axios
-    .post<CardWithCardRealtedCount[]>(url, postBodyCdo)
-    .then(AxiosReturn);
+  return axios.post<UserLectureCard[]>(url, postBodyCdo).then(AxiosReturn);
 }
 
 export function findCardList(cardIds: string) {
@@ -66,17 +65,16 @@ export function findCardList(cardIds: string) {
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] = createCacheApi(
-  findCardList
-);
+export const [findCardListCache, clearFindCardListCache] =
+  createCacheApi(findCardList);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findMyLatestLearningCards`;
 
   return axios
-    .get<CardWithCardRealtedCount[]>(url, { params: { count } })
-    .then(AxiosReturn);
+    .get<UserLectureCard[]>(url, { params: { count } })
+    .then((response) => (response && response.data) || []);
 }
 
 export function findCardWithLearningContentCounts(
@@ -130,16 +128,25 @@ function findRelatedCards(cardId: string) {
   return axios.get<Card[]>(url).then(AxiosReturn);
 }
 
-export const [
-  findRelatedCardsCache,
-  clearFindRelatedCardsCache,
-] = createCacheApi(findRelatedCards);
+export const [findRelatedCardsCache, clearFindRelatedCardsCache] =
+  createCacheApi(findRelatedCards);
 
 export function findByRdo(cardRdo: CardRdo) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findCardWithRelatedCountByRdo`;
   return axios
     .get<OffsetElementList<CardWithCardRealtedCount>>(url, {
+      params: cardRdo,
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
+}
+
+export function findByQdo(cardRdo: CardRdo) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findCardForUserViewRdoByCardQdo`;
+  return axios
+    .get<OffsetElementList<UserLectureCard>>(url, {
       params: cardRdo,
       paramsSerializer,
     })
@@ -198,9 +205,7 @@ export function cancelStudents(studentId: string) {
 export function markComplete(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/markComplete`;
-  return axios
-    .put<void>(url, { studentId })
-    .then(AxiosReturn);
+  return axios.put<void>(url, { studentId }).then(AxiosReturn);
 }
 
 export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
@@ -262,10 +267,8 @@ function findRecommendCards(channelLimit?: number, limit?: number) {
     .then(AxiosReturn);
 }
 
-export const [
-  findRecommendCardsCache,
-  clearFindRecommendCards,
-] = createCacheApi(findRecommendCards);
+export const [findRecommendCardsCache, clearFindRecommendCards] =
+  createCacheApi(findRecommendCards);
 
 export function registerHomework(
   studentId: string,
