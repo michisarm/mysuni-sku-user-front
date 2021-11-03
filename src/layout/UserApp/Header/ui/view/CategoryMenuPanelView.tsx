@@ -116,8 +116,6 @@ class CategoryMenuPanelView extends Component<Props> {
       });
     };
 
-    console.log(colleges);
-
     return (
       <div className="layer lms-category">
         <div className="table-css">
@@ -134,7 +132,6 @@ class CategoryMenuPanelView extends Component<Props> {
               <div className="select-area">
                 <div className="scrolling">
                   {colleges.map((college) => {
-                    console.log(college);
                     return (
                       <button
                         key={`category_${college.id}`}

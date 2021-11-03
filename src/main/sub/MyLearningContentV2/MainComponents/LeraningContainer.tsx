@@ -96,8 +96,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     return null;
   }
 
-  console.log(cardList);
-
   return (
     <ContentWrapper dataArea={dataArea}>
       <div className="section-head">

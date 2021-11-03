@@ -54,7 +54,7 @@ function RenderBanner(props: BannerProps) {
   const getTargetUrl = originSelfPath(targetUrl);
 
   return (
-    <div className="swiper-slide" key={`main-banner-${index}`}>
+    <div key={`main-banner-${index}`} className="swiper-slide">
       {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
         <Link
           className="ui image"
@@ -199,11 +199,13 @@ const MainBanner: React.FC<Props> = (Props) => {
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
       <Swiper {...params}>
         {banners.map((banner, index) => (
-          <RenderBanner
-            index={index}
-            onClickBanner={onClickBanner}
-            {...banner}
-          />
+          <React.Fragment key={banner.id}>
+            <RenderBanner
+              index={index}
+              onClickBanner={onClickBanner}
+              {...banner}
+            />
+          </React.Fragment>
         ))}
       </Swiper>
 

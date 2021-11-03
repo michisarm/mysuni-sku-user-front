@@ -1,8 +1,7 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   reactAutobind,
   mobxHelper,
-  reactAlert,
   ReactComponent,
 } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -41,7 +40,6 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import {
   onCollegeModelStore,
   useCollegeModelStore,
@@ -52,11 +50,7 @@ import {
   parsePolyglotString,
 } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
-import {
-  CardProps,
-  LectureCardView,
-  UserLectureCard,
-} from '@sku/skuniv-ui-lecture-card';
+import { CardProps, LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../../profile/stores';
 
@@ -491,13 +485,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((userLectureCard: CardProps, index) => {
                 return (
-                  // <CardView
-                  //   key={card.id}
-                  //   cardId={card.id}
-                  //   {...card}
-                  //   {...cardRelatedCount}
-                  //   dataArea={Area.COLLEGE_CARD}
-                  // />
                   <React.Fragment key={index}>
                     <LectureCardView
                       {...userLectureCard}
