@@ -17,4 +17,9 @@ export interface CardBundle {
   name: string;
   type: CardBundleType;
   updataeTime: number;
+
+  description: PolyglotString;
+  imageUrl: string;
+  learningTime: number;
+  likeFeedbackId: string;
 }
