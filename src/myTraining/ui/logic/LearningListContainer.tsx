@@ -15,7 +15,11 @@ import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  CardProps,
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
 import {
   Area,
   UserLectureCard,
@@ -31,7 +35,8 @@ type CardListExtendsUpcomingClassRom = CardWithCardRealtedCount & {
 };
 
 function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
-  const [cardList, setCardList] = useState<UserLectureCard[]>([]);
+  // const [cardList, setCardList] = useState<UserLectureCard[]>([]);
+  const [cardList, setCardList] = useState<CardProps[]>([]);
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
   const [cardType, setCardType] = useState<String>();
   const [dataArea, setDataArea] = useState<Area>();
@@ -64,7 +69,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       );
 
       if (cardList) {
-        setCardList(cardList.results);
+        setCardList(parseUserLectureCards(cardList.results, userLanguage));
       }
     } else {
       const cardBundles = await findAvailableCardBundles();
@@ -80,7 +85,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         const cardList = await findCardList(joinedIds);
 
         if (cardList) {
-          setCardList(cardList);
+          setCardList(parseUserLectureCards(cardList, userLanguage));
         }
       }
     }
@@ -166,26 +171,26 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
             <Lecture.Group type={Lecture.GroupType.Box}>
               {cardList.map((card, i) => {
                 return (
-                  <LectureCardView
-                    cardId={card.id}
-                    cardName={parsePolyglotString(card.name)}
-                    learningTime={String(card.learningTime)}
-                    thumbnailImagePath={card.thumbImagePath}
-                    difficultyLevel={card.difficultyLevel}
-                    passedStudentCount={String(card.passedStudentCount)}
-                    starCount={String(card.starCount)}
-                    simpleDescription={parsePolyglotString(
-                      card.simpleDescription
-                    )}
-                    studentCount={card.studentCount}
-                    userLanguage={userLanguage}
-                    langSupports={card.langSupports}
-                    collegeId={card.mainCollegeId}
-                    isRequiredLecture={card.required}
-                    upcomingClassroomInfo={card.upcomingClassroomInfo}
-                    dataArea={dataArea}
-                    useBookMark
-                  />
+                  // <LectureCardView
+                  //   cardId={card.id}
+                  //   cardName={parsePolyglotString(card.name)}
+                  //   learningTime={String(card.learningTime)}
+                  //   thumbnailImagePath={card.thumbImagePath}
+                  //   difficultyLevel={card.difficultyLevel}
+                  //   passedStudentCount={String(card.passedStudentCount)}
+                  //   starCount={String(card.starCount)}
+                  //   simpleDescription={parsePolyglotString(
+                  //     card.simpleDescription
+                  //   )}
+                  //   studentCount={card.studentCount}
+                  //   userLanguage={userLanguage}
+                  //   langSupports={card.langSupports}
+                  //   collegeId={card.mainCollegeId}
+                  //   isRequiredLecture={card.required}
+                  //   upcomingClassroomInfo={card.upcomingClassroomInfo}
+                  // />
+                  <LectureCardView {...card} useBookMark dataArea={dataArea} />
+
                   // <CardView
                   //   key={item.card.id}
                   //   cardId={item.card.id}

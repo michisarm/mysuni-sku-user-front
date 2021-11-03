@@ -12,7 +12,10 @@ import lectureRoutePaths from '../../../../routePaths';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../../../profile/stores';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
@@ -84,82 +87,90 @@ const LectureView: React.FC<LectureViewProps> = function LectureView({
   );
 };
 
-const LectureRelationsView: React.FC<LectureRelationsViewProps> =
-  function LectureRelationsView({ lectureRelations }) {
-    const lectureSummary = useLectureCardSummary();
-    const userLanguage = SkProfileService.instance.skProfile.language;
+const LectureRelationsView: React.FC<LectureRelationsViewProps> = function LectureRelationsView({
+  lectureRelations,
+}) {
+  const lectureSummary = useLectureCardSummary();
+  const userLanguage = SkProfileService.instance.skProfile.language;
 
-    return (
-      <div
-        className="badge-detail border-none"
-        id="lms-related-process"
-        data-area={Area.CARD_RELATION}
-        onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-          scrollHorizontalTrack({
-            e,
-            area: Area.CARD_RELATION,
-            scrollClassName: 'scrolling',
-            actionName: '카드상세 관련과정 스크롤',
-          })
-        }
-      >
-        <div className="ov-paragraph">
-          <div className="section-head">
-            <div className="title">
-              <h3 className="title-style">
-                <Label className="onlytext bold size24">
-                  <Icon className="before" />
-                  <span>
-                    {/*Tag*/}
-                    <PolyglotText
-                      defaultString="관련과정"
-                      id="Course-Contents-관련과정"
-                    />
-                  </span>
-                </Label>
-              </h3>
-            </div>
-          </div>
-          <div className="scrolling" data-action-name={lectureSummary?.name}>
-            <ul className="belt">
-              {lectureRelations.cards.map((card) => {
-                return (
-                  <li key={card.id}>
-                    <div className="ui cards box-cards">
-                      <LectureCardView
-                        cardId={card.id}
-                        cardName={parsePolyglotString(card.name)}
-                        learningTime={String(card.learningTime)}
-                        thumbnailImagePath={card.thumbImagePath}
-                        difficultyLevel={card.difficultyLevel}
-                        passedStudentCount={String(card.passedStudentCount)}
-                        starCount={String(card.starCount)}
-                        simpleDescription={parsePolyglotString(
-                          card.simpleDescription
-                        )}
-                        studentCount={card.studentCount}
-                        userLanguage={userLanguage}
-                        langSupports={card.langSupports}
-                        collegeId={card.mainCollegeId}
-                        isRequiredLecture={card.required}
-                        dataArea={Area.CARD_RELATION}
-                        useBookMark
-                      />
-                      {/*<CardView*/}
-                      {/*  cardId={card.id}*/}
-                      {/*  {...card}*/}
-                      {/*  {...cardRelatedCount}*/}
-                      {/*  dataArea={Area.CARD_RELATION}*/}
-                      {/*/>*/}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+  const cards = parseUserLectureCards(lectureRelations.cards, userLanguage);
+
+  return (
+    <div
+      className="badge-detail border-none"
+      id="lms-related-process"
+      data-area={Area.CARD_RELATION}
+      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
+        scrollHorizontalTrack({
+          e,
+          area: Area.CARD_RELATION,
+          scrollClassName: 'scrolling',
+          actionName: '카드상세 관련과정 스크롤',
+        })
+      }
+    >
+      <div className="ov-paragraph">
+        <div className="section-head">
+          <div className="title">
+            <h3 className="title-style">
+              <Label className="onlytext bold size24">
+                <Icon className="before" />
+                <span>
+                  {/*Tag*/}
+                  <PolyglotText
+                    defaultString="관련과정"
+                    id="Course-Contents-관련과정"
+                  />
+                </span>
+              </Label>
+            </h3>
           </div>
         </div>
+        <div className="scrolling" data-action-name={lectureSummary?.name}>
+          <ul className="belt">
+            {cards.map((card) => {
+              return (
+                <li key={card.cardId}>
+                  <div className="ui cards box-cards">
+                    {/*<LectureCardView*/}
+                    {/*  cardId={card.id}*/}
+                    {/*  cardName={parsePolyglotString(card.name)}*/}
+                    {/*  learningTime={String(card.learningTime)}*/}
+                    {/*  thumbnailImagePath={card.thumbImagePath}*/}
+                    {/*  difficultyLevel={card.difficultyLevel}*/}
+                    {/*  passedStudentCount={String(card.passedStudentCount)}*/}
+                    {/*  starCount={String(card.starCount)}*/}
+                    {/*  simpleDescription={parsePolyglotString(*/}
+                    {/*    card.simpleDescription*/}
+                    {/*  )}*/}
+                    {/*  studentCount={card.studentCount}*/}
+                    {/*  userLanguage={userLanguage}*/}
+                    {/*  langSupports={card.langSupports}*/}
+                    {/*  collegeId={card.mainCollegeId}*/}
+                    {/*  isRequiredLecture={card.required}*/}
+                    {/*  useBookMark*/}
+                    {/*/>*/}
+                    <LectureCardView
+                      {...card}
+                      useBookMark
+                      dataArea={Area.CARD_RELATION}
+                    />
+
+                    {/*<CardView*/}
+                    {/*  cardId={card.id}*/}
+                    {/*  {...card}*/}
+                    {/*  {...cardRelatedCount}*/}
+                    {/*  dataArea={Area.CARD_RELATION}*/}
+                    {/*/>*/}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default LectureRelationsView;

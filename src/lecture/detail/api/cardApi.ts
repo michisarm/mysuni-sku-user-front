@@ -58,15 +58,17 @@ export function findCardFromCardBundle(
 
 export function findCardList(cardIds: string) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/findCards`;
+  // const url = `${BASE_URL}/cards/findCards`;
+  const url = `${BASE_URL}/cards/findCardForUserViewRdos`;
 
   return axios
     .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] =
-  createCacheApi(findCardList);
+export const [findCardListCache, clearFindCardListCache] = createCacheApi(
+  findCardList
+);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
@@ -128,8 +130,10 @@ function findRelatedCards(cardId: string) {
   return axios.get<Card[]>(url).then(AxiosReturn);
 }
 
-export const [findRelatedCardsCache, clearFindRelatedCardsCache] =
-  createCacheApi(findRelatedCards);
+export const [
+  findRelatedCardsCache,
+  clearFindRelatedCardsCache,
+] = createCacheApi(findRelatedCards);
 
 export function findByRdo(cardRdo: CardRdo) {
   const axios = getAxios();
@@ -205,7 +209,9 @@ export function cancelStudents(studentId: string) {
 export function markComplete(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/markComplete`;
-  return axios.put<void>(url, { studentId }).then(AxiosReturn);
+  return axios
+    .put<void>(url, { studentId })
+    .then(AxiosReturn);
 }
 
 export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
@@ -267,8 +273,10 @@ function findRecommendCards(channelLimit?: number, limit?: number) {
     .then(AxiosReturn);
 }
 
-export const [findRecommendCardsCache, clearFindRecommendCards] =
-  createCacheApi(findRecommendCards);
+export const [
+  findRecommendCardsCache,
+  clearFindRecommendCards,
+] = createCacheApi(findRecommendCards);
 
 export function registerHomework(
   studentId: string,
