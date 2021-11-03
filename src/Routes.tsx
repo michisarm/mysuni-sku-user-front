@@ -24,6 +24,7 @@ const ProfileRoutes = lazy(() => import('./profile/Routes'));
 const PersonalCubeRoutes = lazy(() => import('./personalcube/Routes'));
 const LectureRoutes = lazy(() => import('./lecture/Routes'));
 const MyTrainingRoutes = lazy(() => import('./myTraining/Routes'));
+const HotTopicRoutes = lazy(() => import('./hotTopic/Routes'));
 const ApprovalRoutes = lazy(() => import('./approval/Routes'));
 const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
@@ -59,7 +60,8 @@ class Routes extends PureComponent {
 
         if (
           window.location.pathname !== '/suni-community/main/my-communities' &&
-          window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
+          window.location.pathname !==
+            '/suni-main/my-training/my-page/MyProfile'
         ) {
           window.location.href = '/suni-community/main/my-communities';
         }
@@ -102,6 +104,7 @@ class Routes extends PureComponent {
                           path="/my-training2"
                         // component={MyTrainingRoutes2}
                         /> */}
+                      <Route path="/hot-topic" component={HotTopicRoutes} />
                       <Route path="/approval" component={ApprovalRoutes} />
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />
