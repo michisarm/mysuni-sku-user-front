@@ -21,8 +21,8 @@ function LearningTimeDetailView(props: Props) {
   const { showApl } = props;
 
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
-  const lectureTimeSummary =
-    MyLearningSummaryService.instance._lectureTimeSummary;
+  const instructTimeSummary =
+    MyLearningSummaryService.instance._instructTimeSummary;
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
@@ -38,7 +38,7 @@ function LearningTimeDetailView(props: Props) {
         {
           label: '강의시간',
           // value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
-          value: lectureTimeSummary?.totalLectureTime || 0,
+          value: instructTimeSummary?.totalLectureTime || 0,
         },
         {
           label: '개인학습',
@@ -57,7 +57,7 @@ function LearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value: lectureTimeSummary?.totalLectureTime || 0,
+          value: instructTimeSummary?.totalLectureTime || 0,
         },
       ];
     }
@@ -191,8 +191,8 @@ function LearningTimeDetailView(props: Props) {
                       <div>
                         <strong>
                           {Math.floor(
-                            (lectureTimeSummary &&
-                              lectureTimeSummary?.totalLectureTime / 60) ||
+                            (instructTimeSummary &&
+                              instructTimeSummary.totalLectureTime / 60) ||
                               0
                           )}
                           <em>
@@ -204,8 +204,8 @@ function LearningTimeDetailView(props: Props) {
                         </strong>
                         <strong>
                           {Math.floor(
-                            (lectureTimeSummary &&
-                              lectureTimeSummary?.totalLectureTime % 60) ||
+                            (instructTimeSummary &&
+                              instructTimeSummary.totalLectureTime % 60) ||
                               0
                           )}
                           <em>

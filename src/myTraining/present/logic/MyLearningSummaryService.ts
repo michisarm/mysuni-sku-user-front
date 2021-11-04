@@ -1,12 +1,13 @@
-
 import { observable, action, runInAction, computed } from 'mobx';
 import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
-import { findMyLectureTimeSummary } from '../../../lecture/detail/api/cubeApi';
-
+import {
+  findMyLectureTimeSummary,
+  findMyInstructTimeSummary,
+} from '../../../lecture/detail/api/cubeApi';
 
 @autobind
 class MyLearningSummaryService {
@@ -24,8 +25,15 @@ class MyLearningSummaryService {
   @observable
   _lectureTimeSummary?: LectureTimeSummary;
 
+  @observable
+  _instructTimeSummary?: LectureTimeSummary;
+
   @computed get lectureTimeSummary() {
     return this._lectureTimeSummary;
+  }
+
+  @computed get instructTimeSummary() {
+    return this._instructTimeSummary;
   }
 
   @action async findLectureTimeSummary() {
@@ -33,6 +41,14 @@ class MyLearningSummaryService {
 
     runInAction(() => {
       this._lectureTimeSummary = foundLectureTimeSummary;
+    });
+  }
+
+  @action async findInstructTimeSummary() {
+    const foundLectureTimeSummary = await findMyInstructTimeSummary();
+
+    runInAction(() => {
+      this._instructTimeSummary = foundLectureTimeSummary;
     });
   }
 
@@ -49,16 +65,25 @@ class MyLearningSummaryService {
     //
     const fetched = this.myLearningSummaryCachingFetch.fetch(
       () => this.myLearningSummaryApi.findMyLearningSummary(),
-      (myLearningSummary) => runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary)),
+      (myLearningSummary) =>
+        runInAction(
+          () =>
+            (this.myLearningSummary = new MyLearningSummaryModel(
+              myLearningSummary
+            ))
+        )
     );
 
-    return fetched ? this.myLearningSummaryCachingFetch.inProgressFetching : this.myLearningSummary;
+    return fetched
+      ? this.myLearningSummaryCachingFetch.inProgressFetching
+      : this.myLearningSummary;
   }
 
   @action
   async findMyLearningSummaryYear(year: number) {
     //
-    const myLearningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+    const myLearningSummary =
+      await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
 
     return runInAction(() => {
       this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
@@ -68,20 +93,26 @@ class MyLearningSummaryService {
 
   @action
   async findMyLearningSummaryByYear(year: number) {
-    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
-    runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary));
+    const learningSummary =
+      await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
+    runInAction(
+      () =>
+        (this.myLearningSummary = new MyLearningSummaryModel(learningSummary))
+    );
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
 
   @action
   async findTotalMyLearningSummaryDash() {
-    const test = await this.myLearningSummaryApi.findTotalMyLearningSummary()
+    const test = await this.myLearningSummaryApi.findTotalMyLearningSummary();
     return runInAction(() => {
-      this.totalMyLearningSummaryDash = new MyLearningSummaryModel(test)
-    })
+      this.totalMyLearningSummaryDash = new MyLearningSummaryModel(test);
+    });
   }
 }
 
-MyLearningSummaryService.instance = new MyLearningSummaryService(MyLearningSummaryApi.instance);
+MyLearningSummaryService.instance = new MyLearningSummaryService(
+  MyLearningSummaryApi.instance
+);
 
 export default MyLearningSummaryService;
