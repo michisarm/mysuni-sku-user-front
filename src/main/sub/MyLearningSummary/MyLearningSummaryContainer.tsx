@@ -44,6 +44,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import Swiper from 'react-id-swiper';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -59,6 +60,19 @@ interface States {
   activeIndex: any;
   learningObjectives?: LearningObjectives;
 }
+
+const swiperProps = {
+  loop: true,
+  pagination: {
+    el: '.std-navi .swiper-pagination',
+    clickable: true,
+  },
+  navigation: {
+    prevEl: '.std-navi .swiper-button-prev',
+    nextEl: '.std-navi .swiper-button-next',
+  },
+  containerClass: 'std-slider-container',
+};
 
 @inject(
   mobxHelper.injectFrom(
@@ -240,6 +254,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               </h3>
               <DashBoardSentenceContainer />
             </div>
+            <LearningObjectivesContainer
+              openLearningObjectives={this.openLearningObjectives}
+            />
             <LearningObjectivesModalContainer
               open={learningObjectivesOpen}
               setOpen={(value, type?) => {
@@ -258,34 +275,65 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 return this.setState({ learningObjectivesOpen: value });
               }}
             />
-          </div>
-          <div className="ui profile inline">
-            <div className="pic s60">
-              <Image
-                src={skProfile.photoFilePath || defaultProfileImg}
-                alt="프로필사진"
-              />
+            <div className="personal-info-go">
+              <button className="ui icon button info-std">
+                <i aria-hidden="true" className="icon std" />
+                나의 학습현황 보기
+              </button>
             </div>
           </div>
-          <div className="main-gauge-box">
-            <BadgeLearningSummaryView
-              challengingCount={challengingCount}
-              issuedCount={issuedCount}
-            />
-            <LearningCompleteSummaryView
-              completeLectureCount={myLearningSummary.completeLectureCount}
-              personalBoardInprogressCount={personalBoardInprogressCount}
-              personalBoardCompletedCount={personalBoardCompletedCount}
-            />
-            <LearningTimeSummaryView
-              totalLearningTime={totalLearningTime}
-              totalAccrueLearningTime={totalAccruedLearningTime}
-              learningObjectives={learningObjectives}
-            />
+          <div className="main_right">
+            <div className="std-slider-wrap">
+              <div className="std-slider-inner cardSwiper">
+                <Swiper {...swiperProps}>
+                  <div className="swiper-slide">
+                    <a className="inner">
+                      <div className="over-img">
+                        <img src={undefined} className="ui image tmb" />
+                      </div>
+                      <div className="sl-info">
+                        <span className="sl-ct">혁신디자인</span>
+                        <strong className="sl-tit">
+                          사무 공간 혁신과 그 변화에 대한 이야기
+                        </strong>
+                      </div>
+                    </a>
+                  </div>
+                  <div className="swiper-slide">
+                    <a className="inner">
+                      <div className="over-img">
+                        <img src={undefined} className="ui image tmb" />
+                      </div>
+                      <div className="sl-info">
+                        <span className="sl-ct">SV</span>
+                        <strong className="sl-tit">
+                          내일[Tomorrow+My Work]을 위한 SV
+                        </strong>
+                      </div>
+                    </a>
+                  </div>
+                  <div className="swiper-slide">
+                    <a className="inner">
+                      <div className="over-img">
+                        <img src={undefined} className="ui image tmb" />
+                      </div>
+                      <div className="sl-info">
+                        <span className="sl-ct">Leadership</span>
+                        <strong className="sl-tit">
+                          Deep Change Leader로 성장!
+                        </strong>
+                      </div>
+                    </a>
+                  </div>
+                </Swiper>
+                <div className="std-navi">
+                  <div className="swiper-button-prev" />
+                  <div className="swiper-button-next" />
+                  <div className="swiper-pagination" />
+                </div>
+              </div>
+            </div>
           </div>
-          <LearningObjectivesContainer
-            openLearningObjectives={this.openLearningObjectives}
-          />
           {attendEventItem?.useYn === true && (
             <div className="main-event-btn2">
               <Button type="button" onClick={this.handlePopup}>
