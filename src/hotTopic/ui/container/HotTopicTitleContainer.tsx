@@ -7,7 +7,6 @@ import {
   useHotTopicLikeInfo,
 } from 'hotTopic/store/HotTopicStore';
 import React, { useEffect } from 'react';
-import { Segment, Sticky } from 'semantic-ui-react';
 import { HotTopicTitleView } from '../view/HotTopicTitleView';
 
 export function HotTopicTitleContainer() {

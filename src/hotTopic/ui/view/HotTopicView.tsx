@@ -3,6 +3,7 @@ import { HotTopicDetailViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import React, { useMemo } from 'react';
 import { Card, Icon, Label, Image } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   hotTopic: HotTopicDetailViewModel;
@@ -21,7 +22,7 @@ export function HotTopicView({ hotTopic }: Props) {
           <Image
             src={hotTopic.imageUrl}
             className="thumb-img"
-            alt="썸네일 이미지"
+            alt={hotTopic.displayText}
           />
         </div>
         <div className="card-inner">
@@ -31,9 +32,15 @@ export function HotTopicView({ hotTopic }: Props) {
           <div className="topic-info-wrap">
             <Label className="topic-info course">
               <Icon className="list" />
-              <span>
-                총 <strong>{hotTopic.cardIds.length}개</strong> 학습카드
-              </span>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '총 <strong>{value}개</strong> 학습카드',
+                    'hottopic-title-학습카드개수',
+                    { value: hotTopic.cardIds.length + '' || '0' }
+                  ),
+                }}
+              />
             </Label>
             <Label className="topic-info time">
               <span>{hourMinuteFormat}</span>

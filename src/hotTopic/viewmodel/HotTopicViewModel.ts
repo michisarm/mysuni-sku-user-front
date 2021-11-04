@@ -27,7 +27,7 @@ export interface HotTopicCardViewModel {
   name: string;
   simpleDescription: string;
   starCount: number;
-  studentCount: number;
+  passedStudentCount: number;
   thumbImagePath: string;
   thumbnailImagePath: string;
   type: CardType;

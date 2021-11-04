@@ -3,9 +3,8 @@ import {
   useHotTopicListViewModel,
 } from 'hotTopic/store/HotTopicStore';
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
 import { HotTopicCardView } from '../view/HotTopicCardView';
-import { HotTopicOtherListView } from '../view/HotTopicOtherListView';
+import { HotTopicOtherListContainer } from './HotTopicOtherListContainer';
 
 export function HotTopicCardListContainer() {
   const hotTopicDetail = useHotTopicDetailViewModel();
@@ -21,7 +20,9 @@ export function HotTopicCardListContainer() {
             ))}
           </div>
         </div>
-        {hotTopicList && hotTopicList.length > 0 && <HotTopicOtherListView />}
+        {hotTopicList && hotTopicList.length > 0 && (
+          <HotTopicOtherListContainer />
+        )}
       </div>
     </>
   );
