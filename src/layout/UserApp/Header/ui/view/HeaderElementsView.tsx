@@ -15,7 +15,11 @@ import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
+import { usePageElements } from '../../../../../shared/store/PageElementsStore';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -45,28 +49,19 @@ interface MenuViewProps {
 }
 
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
-  const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
+  const pageElements = usePageElements();
   const isExternal = isExternalInstructor();
-
-  useEffect(() => {
-    //const axios = getAxios();
-    const fetchMenu = async () => {
-      const response = await findAvailablePageElements();
-      setMenuAuth(response);
-    };
-    fetchMenu();
-  }, []);
 
   return (
     <>
-      {menuAuth.some(
+      {pageElements.some(
         (pagemElement) =>
           pagemElement.position === 'TopMenu' &&
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
       <div className="g-menu-area">
         <div className="ui nav menu" data-area={Area.HEADER_GNB}>
-          {menuAuth.some(
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Certification'
@@ -80,7 +75,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 <PolyglotText defaultString="Certification" id="home-gnb-mtf" />
               </NavLink>
             )}
-          {menuAuth.some(
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
@@ -95,20 +90,6 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
             </Link>
           )}
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Learning'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={myTrainingPaths.learning()}
-                className="item"
-                onClick={() => onClickMenu('Learning')}
-              >
-                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
-              </NavLink>
-            )}
         </div>
       </div>
     </>
@@ -116,45 +97,73 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  value: string;
-  focused?: boolean;
-  onSearch: () => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
-  onClear?: () => void;
-  getPolyglotText: (defaultValue: string, id: string) => string;
+  // value: string;
+  // focused?: boolean;
+  // onSearch: () => void;
+  // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  // onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
+  // onClear?: () => void;
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = ({
-  value,
-  focused,
-  onSearch,
-  onChange,
-  onBlur,
-  onClick,
-  onClear,
-  getPolyglotText,
-}) => (
-  <div className="g-search g-ab" data-area={Area.SEARCH}>
-    <div
-      className={classNames('ui h38 search input', {
-        focus: focused,
-        write: value,
-      })}
-      style={{ display: 'block' }}
-    >
+export const SearchBarView: React.FC<SearchBarViewProps> = (
+  {
+    // value,
+    // focused,
+    // onSearch,
+    // onChange,
+    // onBlur,
+    // onClick,
+    // onClear,
+    // getPolyglotText,
+  }
+) => (
+  <div className="g-search-header" data-area={Area.SEARCH}>
+    <div className="search_wrap">
       <input
         type="text"
         placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-        value={value}
-        onChange={onChange}
-        onClick={onClick}
-        onBlur={onBlur}
-        onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+        // value={value}
+        // onChange={onChange}
+        // onClick={onClick}
+        // onBlur={onBlur}
+        // onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+        className="ui input search_ipt"
       />
-      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
+    </div>
+    <div className="ui button b-search">
+      <i
+        aria-hidden="true"
+        className="icon search-grey"
+        //  onClick={onSearch}
+      />
     </div>
   </div>
 );
+
+export const LearningMenuView: React.FC<MenuViewProps> =
+  function LearningMenuView({ onClickMenu }) {
+    const pageElements = usePageElements();
+    const isExternal = isExternalInstructor();
+
+    return (
+      <>
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'TopMenu' &&
+            pagemElement.type === 'Learning'
+        ) &&
+          !isExternal && (
+            <div className="g-learn">
+              <NavLink
+                to={myTrainingPaths.learning()}
+                className="go-learn"
+                onClick={() => onClickMenu('Learning')}
+              >
+                <PolyglotText defaultString="My Learning" id="home-gnb-mtl" />
+              </NavLink>
+            </div>
+          )}
+      </>
+    );
+  };

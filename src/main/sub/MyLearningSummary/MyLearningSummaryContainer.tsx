@@ -225,6 +225,40 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     return (
       <>
         <HeaderWrapperView>
+          <div className="main_left">
+            <div className="personal-header-title">
+              <h3>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      '{profileViewName} 님',
+                      'home-Summary-님',
+                      { profileViewName: skProfile.profileViewName }
+                    ),
+                  }}
+                />
+              </h3>
+              <DashBoardSentenceContainer />
+            </div>
+            <LearningObjectivesModalContainer
+              open={learningObjectivesOpen}
+              setOpen={(value, type?) => {
+                if (type === undefined || type !== 'save') {
+                  requestLearningObjectives();
+                } else {
+                  reactAlert({
+                    title: '',
+                    // message: `목표 설정이 완료됐습니다.`,
+                    message: getPolyglotText(
+                      '목표 설정이 완료됐습니다.',
+                      'home-PersonalBoard-complete'
+                    ),
+                  });
+                }
+                return this.setState({ learningObjectivesOpen: value });
+              }}
+            />
+          </div>
           <div className="ui profile inline">
             <div className="pic s60">
               <Image
@@ -232,20 +266,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 alt="프로필사진"
               />
             </div>
-          </div>
-          <div className="personal-header-title">
-            <h3>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: getPolyglotText(
-                    '{profileViewName} 님',
-                    'home-Summary-님',
-                    { profileViewName: skProfile.profileViewName }
-                  ),
-                }}
-              />
-            </h3>
-            <DashBoardSentenceContainer />
           </div>
           <div className="main-gauge-box">
             <BadgeLearningSummaryView
@@ -380,24 +400,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
         </div>
-        <LearningObjectivesModalContainer
-          open={learningObjectivesOpen}
-          setOpen={(value, type?) => {
-            if (type === undefined || type !== 'save') {
-              requestLearningObjectives();
-            } else {
-              reactAlert({
-                title: '',
-                // message: `목표 설정이 완료됐습니다.`,
-                message: getPolyglotText(
-                  '목표 설정이 완료됐습니다.',
-                  'home-PersonalBoard-complete'
-                ),
-              });
-            }
-            return this.setState({ learningObjectivesOpen: value });
-          }}
-        />
         <AttendanceModalContainer
           open={attendanceOpen}
           setOpen={(value, type?) => {

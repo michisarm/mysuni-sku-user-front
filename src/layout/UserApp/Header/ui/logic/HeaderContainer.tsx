@@ -7,7 +7,12 @@ import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
-import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
+import {
+  LearningMenuView,
+  LogoView,
+  MenuView,
+  SearchBarView,
+} from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
@@ -155,6 +160,7 @@ class HeaderContainer extends Component<Props, State> {
         <>
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
+          <SearchBarView />
           {/* <CategoryMenuContainer /> */}
           {/*!isExternal && (
             <SearchBarView
@@ -169,7 +175,7 @@ class HeaderContainer extends Component<Props, State> {
             />
           )*/}
 
-          <ProfileContainer />
+          <ProfileContainer onClickMenu={this.onClickMenu} />
         </>
       </HeaderWrapperView>
     );

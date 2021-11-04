@@ -11,7 +11,7 @@ function UserMainPage() {
   }, []);
 
   return (
-    <ContentLayout className="main">
+    <ContentLayout className="main main-sty2">
       <div className="main-wrap personal-wrap">
         <MyLearningSummaryContainer />
         <MyLearningContentContainer />

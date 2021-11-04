@@ -48,12 +48,12 @@ export function LanguageSelectPopupView() {
       on="click"
       position="bottom right"
     >
-      <Popup.Header className="lang_header">
+      {/* <Popup.Header className="lang_header">
         <strong className="h_tit">Language</strong>
         <div className="close_wrapper">
           <Button className="close" Icon onClick={onClosePopup} />
         </div>
-      </Popup.Header>
+      </Popup.Header> */}
       <Popup.Content>
         <div className="lang_inner">
           <ul>

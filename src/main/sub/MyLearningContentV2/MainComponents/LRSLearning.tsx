@@ -6,7 +6,6 @@ import { Lecture } from 'lecture';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
-import { Area } from 'tracker/model';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCards } from '../../../../lecture/recommend/api/recommendApi';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
@@ -16,6 +15,12 @@ import {
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
 import { takeTwoOfEachCollege } from 'lecture/model/CardWithCardRealtedCount';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { SkProfileService } from '../../../../profile/stores';
 
 function getTitle(
   profileMemberName: string,
@@ -112,14 +117,16 @@ const LRSLearning: React.FC<Props> = (Props) => {
               : 'mySUNI의 추천 과정'
           }
         >
-          {cards.map(({ card, cardRelatedCount }) => (
+          {parseUserLectureCards(
+            cards,
+            SkProfileService.instance.skProfile.language
+          ).map((card) => (
             <li>
               <div className="ui cards box-cards">
-                <CardView
-                  key={card.id}
-                  cardId={card.id}
+                <LectureCardView
+                  key={card.cardId}
                   {...card}
-                  {...cardRelatedCount}
+                  useBookMark={true}
                   dataArea={Area.MAIN_RECOMMEND}
                 />
               </div>
