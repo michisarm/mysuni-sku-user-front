@@ -197,9 +197,10 @@ class HeaderContainer extends Component<Props, State> {
           )*/}
             <SearchHeaderFieldView />
 
-          <ProfileContainer onClickMenu={this.onClickMenu} />
-        </>
-      </HeaderWrapperView>
+            <ProfileContainer onClickMenu={this.onClickMenu} />
+          </>
+        </HeaderWrapperView>
+      </div>
     );
   }
 }
