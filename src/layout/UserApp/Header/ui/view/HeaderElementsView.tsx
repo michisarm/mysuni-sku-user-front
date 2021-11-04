@@ -64,51 +64,8 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
           pagemElement.position === 'TopMenu' &&
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
-      <div className="g-menu">
-        <div className="nav" data-area={Area.HEADER_GNB}>
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Learning'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={myTrainingPaths.learning()}
-                className="item"
-                onClick={() => onClickMenu('Learning')}
-              >
-                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
-              </NavLink>
-            )}
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Recommend'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={lecturePaths.recommend()}
-                className="item"
-                onClick={() => onClickMenu('Recommend')}
-              >
-                <PolyglotText defaultString="Recommend" id="home-gnb-mtr" />
-              </NavLink>
-            )}
-          {/* 메인의 Create 삭제 
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Create'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={personalCubePaths.create()}
-                className="item"
-                onClick={() => onClickMenu('Create')}
-              >
-                <PolyglotText defaultString="Create" id="home-gnb-mtc" />
-              </NavLink>
-            )} */}
+      <div className="g-menu-area">
+        <div className="ui nav menu" data-area={Area.HEADER_GNB}>
           {menuAuth.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
@@ -138,6 +95,20 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
             </Link>
           )}
+          {menuAuth.some(
+            (pagemElement) =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Learning'
+          ) &&
+            !isExternal && (
+              <NavLink
+                to={myTrainingPaths.learning()}
+                className="item"
+                onClick={() => onClickMenu('Learning')}
+              >
+                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
+              </NavLink>
+            )}
         </div>
       </div>
     </>

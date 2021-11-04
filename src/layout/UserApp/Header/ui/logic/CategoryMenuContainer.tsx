@@ -148,7 +148,7 @@ class CategoryMenuContainer extends Component<Props, State> {
 
     return (
       <>
-        <div className="g-menu-detail">
+        <div className="g-menu-category">
           {!isExternal && (
             <Popup
               trigger={

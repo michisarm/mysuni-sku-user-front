@@ -41,34 +41,32 @@ const NoticeView: React.FC<Props> = (Props) => {
   };
 
   return showNotice && notices.length > 0 ? (
-    <>
-      <section className="notice-bar visible" data-area={Area.HEADER_NOTICE}>
-        <div className="inner">
-          <div className="text">
-            <a
-              className="ellipsis"
-              onClick={() => onClickPost(notices[0].postId)}
-            >
-              {parsePolyglotString(
-                notices[0].title,
-                getDefaultLang(notices[0].langSupports)
-              )}
-            </a>
-          </div>
-          <div className="right">
-            <Checkbox
-              label={getPolyglotText('오늘 하루 보지 않기', 'home-nt-오늘닫기')}
-              className="black"
-              checked={hideToday}
-              onChange={handleChange}
-            />
-            <Button className="close2" onClick={handleClose}>
-              <span className="blind">close</span>
-            </Button>
-          </div>
+    <section className="notice-bar visible" data-area={Area.HEADER_NOTICE}>
+      <div className="inner">
+        <div className="text">
+          <a
+            className="ellipsis"
+            onClick={() => onClickPost(notices[0].postId)}
+          >
+            {parsePolyglotString(
+              notices[0].title,
+              getDefaultLang(notices[0].langSupports)
+            )}
+          </a>
         </div>
-      </section>
-    </>
+        <div className="right">
+          <Checkbox
+            label={getPolyglotText('오늘 하루 보지 않기', 'home-nt-오늘닫기')}
+            className="black"
+            checked={hideToday}
+            onChange={handleChange}
+          />
+          <Button className="close2" onClick={handleClose}>
+            <span className="blind">close</span>
+          </Button>
+        </div>
+      </div>
+    </section>
   ) : null;
 };
 
