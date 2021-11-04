@@ -15,7 +15,10 @@ import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -116,45 +119,46 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  value: string;
-  focused?: boolean;
-  onSearch: () => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
-  onClear?: () => void;
-  getPolyglotText: (defaultValue: string, id: string) => string;
+  // value: string;
+  // focused?: boolean;
+  // onSearch: () => void;
+  // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  // onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
+  // onClear?: () => void;
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = ({
-  value,
-  focused,
-  onSearch,
-  onChange,
-  onBlur,
-  onClick,
-  onClear,
-  getPolyglotText,
-}) => (
-  <div className="g-search g-ab" data-area={Area.SEARCH}>
-    <div
-      className={classNames('ui h38 search input', {
-        focus: focused,
-        write: value,
-      })}
-      style={{ display: 'block' }}
-    >
+export const SearchBarView: React.FC<SearchBarViewProps> = (
+  {
+    // value,
+    // focused,
+    // onSearch,
+    // onChange,
+    // onBlur,
+    // onClick,
+    // onClear,
+    // getPolyglotText,
+  }
+) => (
+  <div className="g-search-header" data-area={Area.SEARCH}>
+    <div className="search_wrap">
       <input
         type="text"
         placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-        value={value}
-        onChange={onChange}
-        onClick={onClick}
-        onBlur={onBlur}
-        onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+        // value={value}
+        // onChange={onChange}
+        // onClick={onClick}
+        // onBlur={onBlur}
+        // onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+        className="ui input search_ipt"
       />
-      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
+    </div>
+    <div className="ui button b-search">
+      <i
+        aria-hidden="true"
+        className="icon search-grey"
+        //  onClick={onSearch}
+      />
     </div>
   </div>
 );
