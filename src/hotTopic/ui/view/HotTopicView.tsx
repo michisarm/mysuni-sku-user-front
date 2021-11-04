@@ -1,7 +1,7 @@
 import { onClickHotTopic } from 'hotTopic/event/hotTopicEvent';
 import { HotTopicDetailViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import React, { useMemo } from 'react';
-import { Card, Icon, Label } from 'semantic-ui-react';
+import { Card, Icon, Label, Image } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 
 interface Props {
@@ -18,7 +18,11 @@ export function HotTopicView({ hotTopic }: Props) {
     <>
       <Card className="topic-item" onClick={() => onClickHotTopic(hotTopic.id)}>
         <div className="thumb-img-area">
-          {/*<Image src={CardThumbImg} className="thumb-img" alt="프로필 이미지" />*/}
+          <Image
+            src={hotTopic.imageUrl}
+            className="thumb-img"
+            alt="썸네일 이미지"
+          />
         </div>
         <div className="card-inner">
           <div className="topic-tit">
