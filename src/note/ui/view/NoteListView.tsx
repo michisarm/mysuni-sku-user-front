@@ -61,7 +61,7 @@ import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface NoteViewProps {
-  noteList: OffsetElementList<NoteWithLecture>;
+  noteList: OffsetElementList<Note>;
   searchBox: SearchBox;
   folder: Folder | undefined;
   colleges: CollegeModel[];
@@ -78,7 +78,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
   const [activeIndexList, setActiveIndexList] = useState<number[]>([-1]);
-  const [subNoteList, setSubNoteList] = useState<NoteWithLectureListItem[]>([]);
   const [noteCdoItem, setNoteCdoItem] = useState<NoteCdoItem>();
   const [noteUdoItem, setNoteUdoItem] = useState<NoteUdoItem>();
   const [folderOptions, setFolderOptions] = useState<
@@ -106,11 +105,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
     noteList &&
       noteList.results.forEach(async (m, index) => {
         if (activeIndexList.some((target) => target === index)) {
-          await searchNoteByCubeId(
-            index,
-            m.lectureRom.cubeId,
-            m.lectureRom.cardId
-          );
+          await searchNoteByCubeId(index, m.cubeId, m.cardId);
         }
       });
   }, [noteList]);
@@ -155,25 +150,15 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       });
 
       const noteList = await requestNoteList();
-      console.log(noteList);
-      noteList &&
-        setSubNoteList(
-          subNoteList
-            ?.filter((f) => {
-              if (f.index !== index) {
-                return f;
-              }
-            })
-            .concat([getNoteWithLectureListItem(index, noteList)])
-        );
+
       setNoteUdoItem(undefined);
       setNoteCdoItem(undefined);
     },
-    [subNoteList, searchBox]
+    [searchBox]
   );
 
   const writeNote = useCallback(
-    async (index: number, noteWithLecture: NoteWithLecture) => {
+    async (index: number, note: Note) => {
       if (noteCdoItem !== undefined || noteUdoItem !== undefined) {
         reactAlert({
           title: getPolyglotText('알림', 'mypage-noteList-알림1'),
@@ -185,76 +170,74 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
         return;
       }
 
-      setNoteCdoItem(
-        getNoteCdoItem(index, convertNoteToNoteCdo(noteWithLecture.note))
-      );
+      setNoteCdoItem(getNoteCdoItem(index, convertNoteToNoteCdo(note)));
     },
     [noteCdoItem, noteUdoItem]
   );
 
   const save = useCallback(
     async (noteCdo: NoteCdo, id: string, index: number) => {
-      console.log(activeIndexList);
-      if (noteCdo.content === null || noteCdo.content === '') {
-        reactAlert({
-          title: getPolyglotText('알림', 'mypage-noteList-알림2'),
-          message: getPolyglotText(
-            '노트 내용을 작성해주세요.',
-            'mypage-noteList-노트작성1'
-          ),
-        });
-        return;
-      }
-
-      // My Page에서 신규 저장 시 cubeType에 관계없이 기본 값 지정
-      noteCdo.playTime = '00:00:00';
-      if (
-        noteCdo.cubeType !== null &&
-        (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')
-      ) {
-        noteCdo.playTime = 'Note';
-      }
-
-      await saveNote(noteCdo, id);
-
-      params.pageNo === '2' && (await requestCubeListByFolderId());
-      params.pageNo === '1' && (await requestCubeList());
-
-      // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
-
-      setNoteCdoItem(undefined);
-      params.pageNo === '2' && (await requestNoteCountByFolderId());
-      // await requestNoteCount();
-      const noteCount = getNoteCount() || 0;
-      setNoteCount(noteCount + 1);
-      console.log(activeIndexList);
+      // console.log(activeIndexList);
+      // if (noteCdo.content === null || noteCdo.content === '') {
+      //   reactAlert({
+      //     title: getPolyglotText('알림', 'mypage-noteList-알림2'),
+      //     message: getPolyglotText(
+      //       '노트 내용을 작성해주세요.',
+      //       'mypage-noteList-노트작성1'
+      //     ),
+      //   });
+      //   return;
+      // }
+      //
+      // // My Page에서 신규 저장 시 cubeType에 관계없이 기본 값 지정
+      // noteCdo.playTime = '00:00:00';
+      // if (
+      //   noteCdo.cubeType !== null &&
+      //   (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')
+      // ) {
+      //   noteCdo.playTime = 'Note';
+      // }
+      //
+      // await saveNote(noteCdo, id);
+      //
+      // params.pageNo === '2' && (await requestCubeListByFolderId());
+      // params.pageNo === '1' && (await requestCubeList());
+      //
+      // // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
+      //
+      // setNoteCdoItem(undefined);
+      // params.pageNo === '2' && (await requestNoteCountByFolderId());
+      // // await requestNoteCount();
+      // const noteCount = getNoteCount() || 0;
+      // setNoteCount(noteCount + 1);
+      // console.log(activeIndexList);
     },
     [params.pageNo]
   );
 
   const update = useCallback(
     async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
-      if (noteUdo.content === null || noteUdo.content === '') {
-        reactAlert({
-          title: getPolyglotText('알림', 'mypage-noteList-알림3'),
-          message: getPolyglotText(
-            '노트 내용을 작성해주세요.',
-            'mypage-noteList-노트작성2'
-          ),
-        });
-        return;
-      }
-
-      noteUdo.playTime =
-        note.playTime.indexOf('Note ') === -1 ? note.playTime : 'Note';
-
-      await saveNote(undefined, id, noteUdo);
-      params.pageNo === '2' && (await requestCubeListByFolderId());
-      params.pageNo === '1' && (await requestCubeList());
-      // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
-
-      setNoteUdoItem(undefined);
-      console.log(activeIndexList);
+      // if (noteUdo.content === null || noteUdo.content === '') {
+      //   reactAlert({
+      //     title: getPolyglotText('알림', 'mypage-noteList-알림3'),
+      //     message: getPolyglotText(
+      //       '노트 내용을 작성해주세요.',
+      //       'mypage-noteList-노트작성2'
+      //     ),
+      //   });
+      //   return;
+      // }
+      //
+      // noteUdo.playTime =
+      //   note.playTime.indexOf('Note ') === -1 ? note.playTime : 'Note';
+      //
+      // await saveNote(undefined, id, noteUdo);
+      // params.pageNo === '2' && (await requestCubeListByFolderId());
+      // params.pageNo === '1' && (await requestCubeList());
+      // // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+      //
+      // setNoteUdoItem(undefined);
+      // console.log(activeIndexList);
     },
     [params.pageNo]
   );
@@ -409,26 +392,22 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
               {/* 노트 타이틀 */}
               <div className="note_title">
                 <div className="tit">
-                  <div
-                    className={`ui label ${getColor(
-                      item.lectureRom.collegeId
-                    )}`}
-                  >
+                  <div className={`ui label ${getColor(item.collegeId)}`}>
                     {collegeList &&
                       collegeList?.filter((f) => {
-                        if (f.id === item.lectureRom.collegeId) {
+                        if (f.id === item.collegeId) {
                           return f;
                         }
                       }).length > 0 &&
                       parsePolyglotString(
                         collegeList?.filter((f) => {
-                          if (f.id === item.lectureRom.collegeId) {
+                          if (f.id === item.collegeId) {
                             return f;
                           }
                         })[0].name,
                         getDefaultLang(
                           collegeList?.filter((f) => {
-                            if (f.id === item.lectureRom.collegeId) {
+                            if (f.id === item.collegeId) {
                               return f;
                             }
                           })[0].langSupports
@@ -436,13 +415,14 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                       )}
                   </div>
                   <strong className="header">
-                    {parsePolyglotString(item.lectureRom.cardName)}
+                    {parsePolyglotString(item.cardName)}
                   </strong>
                   <Link
                     className="time"
-                    to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}
+                    // to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}
+                    to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/Webpage`}
                   >
-                    <p>{parsePolyglotString(item.lectureRom.cubeName)}</p>
+                    <p>{parsePolyglotString(item.cubeName)}</p>
                   </Link>
                 </div>
 
@@ -453,11 +433,11 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                       'mypage-noteList-폴더미지정'
                     )}
                     options={folderOptions}
-                    value={item.note.folderId}
+                    value={item.folderId}
                     onChange={(e, data) =>
                       changeFolder(
-                        item.note.cardId,
-                        item.note.cubeId,
+                        item.cardId,
+                        item.cubeId,
                         data.value as string
                       )
                     }
@@ -475,11 +455,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                     if (
                       activeIndexList?.find((f) => f === index) === undefined
                     ) {
-                      searchNoteByCubeId(
-                        index,
-                        item.note.cubeId,
-                        item.note.cardId
-                      );
+                      searchNoteByCubeId(index, item.cubeId, item.cardId);
                     }
                     handleNote(e, title);
                   }}
@@ -533,12 +509,10 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             '<strong className="txt">작성한 노트</strong><span className="cnt"> {count}개</span>',
                             'mypage-noteList-작성노트',
                             {
-                              count: subNoteList
-                                ?.filter((f) => f.index === index)
-                                .map(
-                                  (f) => f.noteWithLectureList.results.length
-                                )
-                                .toString(),
+                              count:
+                                (item.noteContents &&
+                                  item.noteContents.length.toString()) ||
+                                '0',
                             }
                           ),
                         }}
@@ -572,14 +546,14 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             )}
                             value={noteCdoItem.noteCdo?.content}
                             onChange={(e, data) => {
-                              (data.value as string).length < 1001 &&
-                                setNoteCdoItem({
-                                  ...noteCdoItem,
-                                  noteCdo: {
-                                    ...noteCdoItem.noteCdo,
-                                    content: (data.value as string) || '',
-                                  },
-                                });
+                              // (data.value as string).length < 1001 &&
+                              //   setNoteCdoItem({
+                              //     ...noteCdoItem,
+                              //     noteCdo: {
+                              //       ...noteCdoItem.noteCdo,
+                              //       content: (data.value as string) || '',
+                              //     },
+                              //   });
                             }}
                           />
                         </Form>
@@ -598,7 +572,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             className="save"
                             onClick={(e, data) =>
                               noteCdoItem.noteCdo &&
-                              save(noteCdoItem.noteCdo, item.note.id, index)
+                              save(noteCdoItem.noteCdo, item.id, index)
                             }
                           >
                             <PolyglotText
@@ -615,192 +589,171 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                         </div>
                       </div>
                     )}
-                    {subNoteList &&
-                      subNoteList.map(
-                        (subNoteItem, subIndex) =>
-                          subNoteItem.index === index &&
-                          subNoteItem.noteWithLectureList.results.map(
-                            (subItem, subIndex) => (
-                              <div
-                                key={subIndex}
-                                className={`mynote ${
-                                  noteUdoItem?.index === subIndex &&
-                                  'mynote_write'
-                                }`}
-                              >
-                                <div className="note_info">
-                                  {subItem.note.playTime &&
-                                    subItem.note.playTime.indexOf('Note ') ===
-                                      -1 &&
-                                    (subItem.note.cubeType === 'Video' ||
-                                      subItem.note.cubeType === 'Audio') && (
-                                      <Link
-                                        className="time"
-                                        to={`/lecture/card/${subItem.note.cardId}/cube/${subItem.note.cubeId}/view/${subItem.note.cubeType}`}
-                                        onClick={(e) =>
-                                          submit(subItem.note.playTime)
-                                        }
-                                      >
-                                        <Icon>
-                                          <Image
-                                            src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
-                                          />
-                                        </Icon>
-                                        {subItem.note.playTime}
-                                        <Icon className="icongo">
-                                          <Image
-                                            src={`${PUBLIC_URL}/images/all/icon-go-a.svg`}
-                                          />
-                                        </Icon>
-                                      </Link>
-                                    )}
-                                  {(!subItem.note.playTime ||
-                                    subItem.note.playTime.indexOf('Note ') >
-                                      -1 ||
-                                    (subItem.note.cubeType !== 'Video' &&
-                                      subItem.note.cubeType !== 'Audio')) && (
-                                    <Icon>
-                                      <Image
-                                        src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
-                                        alt="노트이미지"
-                                      />
-                                    </Icon>
+                    {/*{subNoteList &&*/}
+                    {/*  subNoteList.map(*/}
+                    {item.noteContents &&
+                      item.noteContents.map((content, subIndex) => (
+                        <div
+                          key={subIndex}
+                          className={`mynote ${
+                            noteUdoItem?.index === subIndex && 'mynote_write'
+                          }`}
+                        >
+                          <div className="note_info">
+                            {content.playSecond &&
+                              // item.note.playTime.indexOf('Note ') === -1 &&
+                              (item.cubeType === 'Video' ||
+                                item.cubeType === 'Audio') && (
+                                <Link
+                                  className="time"
+                                  to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}
+                                  onClick={(e) =>
+                                    submit(
+                                      (content.playSecond &&
+                                        content.playSecond.toString()) ||
+                                        ''
+                                    )
+                                  }
+                                >
+                                  <Icon>
+                                    <Image
+                                      src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
+                                    />
+                                  </Icon>
+                                  {content.playSecond}
+                                  <Icon className="icongo">
+                                    <Image
+                                      src={`${PUBLIC_URL}/images/all/icon-go-a.svg`}
+                                    />
+                                  </Icon>
+                                </Link>
+                              )}
+                            {(!content.playSecond ||
+                              // subItem.note.playTime.indexOf('Note ') > -1 ||
+                              (item.cubeType !== 'Video' &&
+                                item.cubeType !== 'Audio')) && (
+                              <Icon>
+                                <Image
+                                  src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
+                                  alt="노트이미지"
+                                />
+                              </Icon>
+                            )}
+                            {(!content.playSecond ||
+                              (item.cubeType !== 'Video' &&
+                                item.cubeType !== 'Audio')) &&
+                              `Note ${
+                                (item.noteContents.length || 0) - subIndex
+                              }`}
+                            {content.playSecond &&
+                              // subItem.note.playTime.indexOf('Note ') > -1 &&
+                              (item.cubeType === 'Video' ||
+                                item.cubeType === 'Audio') &&
+                              `${content.playSecond}`}
+                            <span className="date">
+                              {content.modifiedTime !== 0
+                                ? moment(content.modifiedTime).format(
+                                    getPolyglotText(
+                                      'YYYY년 MM월 DD일 편집',
+                                      'mypage-noteList-date편집'
+                                    )
+                                  )
+                                : content.registeredTime &&
+                                  moment(content.registeredTime).format(
+                                    getPolyglotText(
+                                      'YYYY년 MM월 DD일 작성',
+                                      'mypage-noteList-date작성2'
+                                    )
                                   )}
-                                  {(!subItem.note.playTime ||
-                                    (subItem.note.cubeType !== 'Video' &&
-                                      subItem.note.cubeType !== 'Audio')) &&
-                                    `Note ${
-                                      subNoteItem.noteWithLectureList.results
-                                        .length - subIndex
-                                    }`}
-                                  {subItem.note.playTime &&
-                                    subItem.note.playTime.indexOf('Note ') >
-                                      -1 &&
-                                    (subItem.note.cubeType === 'Video' ||
-                                      subItem.note.cubeType === 'Audio') &&
-                                    `${subItem.note.playTime}`}
-                                  <span className="date">
-                                    {subItem.note.modifiedTime !== 0
-                                      ? moment(
-                                          subItem.note.modifiedTime
-                                        ).format(
-                                          getPolyglotText(
-                                            'YYYY년 MM월 DD일 편집',
-                                            'mypage-noteList-date편집'
-                                          )
-                                        )
-                                      : subItem.note.registeredTime &&
-                                        moment(
-                                          subItem.note.registeredTime
-                                        ).format(
-                                          getPolyglotText(
-                                            'YYYY년 MM월 DD일 작성',
-                                            'mypage-noteList-date작성2'
-                                          )
-                                        )}
-                                  </span>
-                                </div>
-                                {(noteUdoItem?.index !== subIndex ||
-                                  noteUdoItem?.cubeId !== item.note.cubeId) && (
-                                  <p
-                                    className="note"
-                                    onClick={(e) =>
-                                      updateForm(
-                                        subIndex,
-                                        subItem.note,
-                                        item.note.cubeId
+                            </span>
+                          </div>
+                          {(noteUdoItem?.index !== subIndex ||
+                            noteUdoItem?.cubeId !== item.cubeId) && (
+                            <p
+                              className="note"
+                              onClick={(e) =>
+                                updateForm(subIndex, item, item.cubeId)
+                              }
+                              dangerouslySetInnerHTML={{
+                                __html: `${getConvertEnter(content.content)}`,
+                              }}
+                            />
+                          )}
+
+                          {noteUdoItem &&
+                            noteUdoItem?.index === subIndex &&
+                            noteUdoItem?.cubeId === item.cubeId && (
+                              <>
+                                <Form>
+                                  <TextArea
+                                    placeholder={getPolyglotText(
+                                      'Note 내용을 입력해주세요.',
+                                      'mypage-noteList-내용입력2'
+                                    )}
+                                    value={noteUdoItem.noteUdo?.content}
+                                    onChange={(e, data) =>
+                                      (data.value as string).length < 1001 &&
+                                      setNoteUdoItem({
+                                        ...noteUdoItem,
+                                        noteUdo: {
+                                          ...noteUdoItem.noteUdo,
+                                          content: (data.value as string) || '',
+                                        },
+                                      })
+                                    }
+                                  />
+                                </Form>
+                                <div className="note_btn">
+                                  <Button
+                                    className="delete"
+                                    onClick={(e, data) =>
+                                      deleteNote(item.id, index, item)
+                                    }
+                                  >
+                                    <Image
+                                      src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`}
+                                    />
+                                  </Button>
+                                  <Button
+                                    className="cancel"
+                                    onClick={(e, data) =>
+                                      setNoteUdoItem(undefined)
+                                    }
+                                  >
+                                    <PolyglotText
+                                      id="mypage-noteList-취소2"
+                                      defaultString="취소"
+                                    />
+                                  </Button>
+                                  <Button
+                                    className="save"
+                                    onClick={(e, data) =>
+                                      noteUdoItem.noteUdo &&
+                                      update(
+                                        noteUdoItem.noteUdo,
+                                        item.id,
+                                        index,
+                                        item
                                       )
                                     }
-                                    dangerouslySetInnerHTML={{
-                                      __html: `${getConvertEnter(
-                                        subItem.note.content
-                                      )}`,
-                                    }}
-                                  />
-                                )}
-
-                                {noteUdoItem &&
-                                  noteUdoItem?.index === subIndex &&
-                                  noteUdoItem?.cubeId === item.note.cubeId && (
-                                    <>
-                                      <Form>
-                                        <TextArea
-                                          placeholder={getPolyglotText(
-                                            'Note 내용을 입력해주세요.',
-                                            'mypage-noteList-내용입력2'
-                                          )}
-                                          value={noteUdoItem.noteUdo?.content}
-                                          onChange={(e, data) =>
-                                            (data.value as string).length <
-                                              1001 &&
-                                            setNoteUdoItem({
-                                              ...noteUdoItem,
-                                              noteUdo: {
-                                                ...noteUdoItem.noteUdo,
-                                                content:
-                                                  (data.value as string) || '',
-                                              },
-                                            })
-                                          }
-                                        />
-                                      </Form>
-                                      <div className="note_btn">
-                                        <Button
-                                          className="delete"
-                                          onClick={(e, data) =>
-                                            deleteNote(
-                                              subItem.note.id,
-                                              index,
-                                              item.note
-                                            )
-                                          }
-                                        >
-                                          <Image
-                                            src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`}
-                                          />
-                                        </Button>
-                                        <Button
-                                          className="cancel"
-                                          onClick={(e, data) =>
-                                            setNoteUdoItem(undefined)
-                                          }
-                                        >
-                                          <PolyglotText
-                                            id="mypage-noteList-취소2"
-                                            defaultString="취소"
-                                          />
-                                        </Button>
-                                        <Button
-                                          className="save"
-                                          onClick={(e, data) =>
-                                            noteUdoItem.noteUdo &&
-                                            update(
-                                              noteUdoItem.noteUdo,
-                                              subItem.note.id,
-                                              index,
-                                              subItem.note
-                                            )
-                                          }
-                                        >
-                                          <PolyglotText
-                                            id="mypage-noteList-저장2"
-                                            defaultString="저장"
-                                          />
-                                        </Button>
-                                        <span className="txt_cnt">
-                                          <span className="txt_now">
-                                            {noteUdoItem.noteUdo?.content
-                                              ?.length || '0'}
-                                          </span>
-                                          /<span>1000</span>
-                                        </span>
-                                      </div>
-                                    </>
-                                  )}
-                              </div>
-                            )
-                          )
-                      )}
+                                  >
+                                    <PolyglotText
+                                      id="mypage-noteList-저장2"
+                                      defaultString="저장"
+                                    />
+                                  </Button>
+                                  <span className="txt_cnt">
+                                    <span className="txt_now">
+                                      {noteUdoItem.noteUdo?.content?.length ||
+                                        '0'}
+                                    </span>
+                                    /<span>1000</span>
+                                  </span>
+                                </div>
+                              </>
+                            )}
+                        </div>
+                      ))}
                   </div>
                 </Accordion.Content>
               </Accordion>
