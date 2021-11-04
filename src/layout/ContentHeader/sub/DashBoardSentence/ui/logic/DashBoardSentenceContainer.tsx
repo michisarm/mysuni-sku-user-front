@@ -33,6 +33,6 @@ function DashBoardSentenceContainer() {
     }
   }, [dashBoardSentence]);
 
-  return <p>{dashBoardTxt}</p>;
+  return <p className="ellipsis2">{dashBoardTxt}</p>;
 }
 export default DashBoardSentenceContainer;

@@ -11,6 +11,10 @@ import { SkProfileService } from 'profile/stores';
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCards } from '../../../lecture/recommend/api/recommendApi';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
 
 const CONTENT_TYPE_NAME = '추천과정';
 
@@ -75,28 +79,10 @@ function LRSListContainer() {
         <div className="section">
           {cards.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {cards.map((item, i) => {
-                const { card, cardRelatedCount } = item;
-
+              {parseUserLectureCards(cards).map((card, i) => {
                 return (
                   <li key={i}>
-                    <CardGroup type={GroupType.Box}>
-                      <CardView
-                        cardId={item.card.id}
-                        permittedCinerooms={card.permittedCinerooms}
-                        learningTime={card.learningTime}
-                        additionalLearningTime={card.additionalLearningTime}
-                        thumbImagePath={card.thumbImagePath}
-                        mainCategory={card.mainCategory}
-                        name={card.name}
-                        stampCount={card.stampCount}
-                        simpleDescription={card.simpleDescription}
-                        type={card.type}
-                        passedStudentCount={cardRelatedCount.passedStudentCount}
-                        starCount={cardRelatedCount.starCount}
-                        langSupports={card.langSupports}
-                      />
-                    </CardGroup>
+                    <LectureCardView {...card} useBookMark={true} />
                   </li>
                 );
               })}
