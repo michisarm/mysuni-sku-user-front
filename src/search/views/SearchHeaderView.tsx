@@ -159,10 +159,10 @@ export function SearchHeaderView() {
                     </div>
                   }
                 >
-                  {/*<Popup.Content data-area={Area.SEARCH}>*/}
-                  {/*<SearchHeaderFieldViewOld callback={searchSetting} />*/}
-                  <SearchHeaderFieldView />
-                  {/*</Popup.Content>*/}
+                  <Popup.Content data-area={Area.SEARCH}>
+                    {/*<SearchHeaderFieldViewOld callback={searchSetting} />*/}
+                    <SearchHeaderFieldView callback={searchSetting} />
+                  </Popup.Content>
                 </Popup>
               </div>
             </div>
