@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { getAxios } from 'shared/api/Axios';
-import { AxiosReturn } from 'shared/api/AxiosReturn';
 
 import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 
-import classNames from 'classnames';
-import lecturePaths from 'lecture/routePaths';
 import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
-import personalCubePaths from 'personalcube/routePaths';
-import communityPaths from 'community/routePaths';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
@@ -101,23 +95,21 @@ interface SearchBarViewProps {
   // focused?: boolean;
   // onSearch: () => void;
   // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
-  // onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   // onClear?: () => void;
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = (
-  {
-    // value,
-    // focused,
-    // onSearch,
-    // onChange,
-    // onBlur,
-    // onClick,
-    // onClear,
-    // getPolyglotText,
-  }
-) => (
+export const SearchBarView: React.FC<SearchBarViewProps> = ({
+  // value,
+  // focused,
+  // onSearch,
+  // onChange,
+  onBlur,
+  onClick,
+  // onClear,
+  // getPolyglotText,
+}) => (
   <div className="g-search-header" data-area={Area.SEARCH}>
     <div className="search_wrap">
       <input
@@ -125,7 +117,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = (
         placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
         // value={value}
         // onChange={onChange}
-        // onClick={onClick}
+        onClick={onClick}
         // onBlur={onBlur}
         // onKeyPress={(e) => e.key === 'Enter' && onSearch()}
         className="ui input search_ipt"

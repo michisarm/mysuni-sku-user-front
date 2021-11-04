@@ -55,7 +55,7 @@ class ProfileContainer extends Component<Props, State> {
     menuAuth: [],
     isOpen: false,
     isSearchOpen: false,
-    // write: '',
+    write: '',
   };
 
   componentDidMount() {
@@ -172,7 +172,7 @@ class ProfileContainer extends Component<Props, State> {
       document.getElementById('btnProFile')?.click();
     };
     const setSearchOpen = () => {
-      // setWrite('');
+      setWrite('');
       this.setState({ isSearchOpen: !isSearchOpen });
       document.getElementById('btnSearchPopup')?.click();
       setSearchInSearchInfo({
@@ -181,16 +181,15 @@ class ProfileContainer extends Component<Props, State> {
         searchValue: '',
       }); // 초기화
     };
-    // const setWrite = (searchValue: string) => {
-    //   this.setState({ write: searchValue });
-    // };
+    const setWrite = (searchValue: string) => {
+      this.setState({ write: searchValue });
+    };
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
-      <div className="g-info-new">
-        <LearningMenuView onClickMenu={this.props.onClickMenu} />
-        {/* {!isExternal && (
+      <div className="g-info g-info2 g-ab3">
+        {!isExternal && (
           <>
             <Popup
               className="popup_gsearch type_b"
@@ -205,6 +204,7 @@ class ProfileContainer extends Component<Props, State> {
               }
               position="bottom right"
               on="click"
+              //open={isOpen}
               onOpen={setSearchOpen}
             >
               <Popup.Header className="gsearch_header">
@@ -218,6 +218,7 @@ class ProfileContainer extends Component<Props, State> {
               <Popup.Content>
                 <div className="gsearch_inner" data-area={Area.SEARCH}>
                   <div className="search_input">
+                    {/* 검색어 입력필드 */}
                     <div
                       className={classNames('search show_text', {
                         focus: 'focus',
@@ -245,6 +246,7 @@ class ProfileContainer extends Component<Props, State> {
                         className="clear link"
                         onClick={() => setWrite('')}
                       />
+                      {/* <Icon className="search_i"/> */}
                       <Button
                         className="btn_sch"
                         onClick={() => {
