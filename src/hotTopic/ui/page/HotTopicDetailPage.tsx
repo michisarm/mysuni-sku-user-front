@@ -21,9 +21,9 @@ export function HotTopicDetailPage() {
       <Ref innerRef={contextRef}>
         <Segment className="full">
           <Sticky context={contextRef}>
-            <HotTopicTitleContainer />;
+            <HotTopicTitleContainer />
           </Sticky>
-          <HotTopicCardListContainer />;
+          <HotTopicCardListContainer />
         </Segment>
       </Ref>
     </section>

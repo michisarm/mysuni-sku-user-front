@@ -14,16 +14,14 @@ export function HotTopicCardListContainer() {
   return (
     <>
       <div className="topic-content">
-        <Segment className="full">
-          <div className="list-area">
-            <div className="topic-list-wrap">
-              {hotTopicDetail?.cards?.map((card) => (
-                <HotTopicCardView card={card} />
-              ))}
-            </div>
+        <div className="list-area">
+          <div className="topic-list-wrap">
+            {hotTopicDetail?.cards?.map((card) => (
+              <HotTopicCardView card={card} />
+            ))}
           </div>
-          {hotTopicList && hotTopicList.length > 0 && <HotTopicOtherListView />}
-        </Segment>
+        </div>
+        {hotTopicList && hotTopicList.length > 0 && <HotTopicOtherListView />}
       </div>
     </>
   );
