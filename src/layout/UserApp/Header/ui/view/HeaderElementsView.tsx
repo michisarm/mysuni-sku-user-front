@@ -19,6 +19,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import { usePageElements } from '../../../../../shared/store/PageElementsStore';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -48,28 +49,19 @@ interface MenuViewProps {
 }
 
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
-  const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
+  const pageElements = usePageElements();
   const isExternal = isExternalInstructor();
-
-  useEffect(() => {
-    //const axios = getAxios();
-    const fetchMenu = async () => {
-      const response = await findAvailablePageElements();
-      setMenuAuth(response);
-    };
-    fetchMenu();
-  }, []);
 
   return (
     <>
-      {menuAuth.some(
+      {pageElements.some(
         (pagemElement) =>
           pagemElement.position === 'TopMenu' &&
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
       <div className="g-menu-area">
         <div className="ui nav menu" data-area={Area.HEADER_GNB}>
-          {menuAuth.some(
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Certification'
@@ -83,7 +75,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 <PolyglotText defaultString="Certification" id="home-gnb-mtf" />
               </NavLink>
             )}
-          {menuAuth.some(
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
@@ -98,20 +90,6 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
             </Link>
           )}
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Learning'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={myTrainingPaths.learning()}
-                className="item"
-                onClick={() => onClickMenu('Learning')}
-              >
-                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
-              </NavLink>
-            )}
         </div>
       </div>
     </>
@@ -162,3 +140,30 @@ export const SearchBarView: React.FC<SearchBarViewProps> = (
     </div>
   </div>
 );
+
+export const LearningMenuView: React.FC<MenuViewProps> =
+  function LearningMenuView({ onClickMenu }) {
+    const pageElements = usePageElements();
+    const isExternal = isExternalInstructor();
+
+    return (
+      <>
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'TopMenu' &&
+            pagemElement.type === 'Learning'
+        ) &&
+          !isExternal && (
+            <div className="g-learn">
+              <NavLink
+                to={myTrainingPaths.learning()}
+                className="go-learn"
+                onClick={() => onClickMenu('Learning')}
+              >
+                <PolyglotText defaultString="My Learning" id="home-gnb-mtl" />
+              </NavLink>
+            </div>
+          )}
+      </>
+    );
+  };

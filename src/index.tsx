@@ -11,12 +11,12 @@ import { initializeBody } from './shared/helper/bodyHelper';
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
-import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
 import { repeatPolyfill } from './polyfill';
+import { beforeAppInitialize } from './beforeAppInitialize';
 
 repeatPolyfill();
 initializeBody();
-initializeI18nResource()
+beforeAppInitialize()
   .then(() => {
     ReactDOM.render(<App />, document.getElementById('root'));
   })

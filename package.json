@@ -65,6 +65,7 @@
     "xlsx": "latest"
   },
   "proxy": "https://ma.mysuni.sk.com",
+  "homepage": "https://mysuni.sk.com/suni-main/",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/file-saver": "^2.0.1",
