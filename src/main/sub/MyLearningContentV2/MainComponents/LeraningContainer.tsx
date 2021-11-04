@@ -64,7 +64,11 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 
     window.sessionStorage.setItem('from_main', 'TRUE');
 
-    history.push(`/my-training/new-learning/${id}/pages/1`);
+    if (type === 'HotTopic') {
+      history.push(`/hot-topic/${id}`);
+    } else {
+      history.push(`/my-training/new-learning/${id}/pages/1`);
+    }
 
     // react-ga event
     ReactGA.event({

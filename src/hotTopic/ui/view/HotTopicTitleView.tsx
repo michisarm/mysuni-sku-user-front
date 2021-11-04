@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { copyUrl } from 'hotTopic/event/hotTopicEvent';
 import { likeHotTopic, unlikeHotTopic } from 'hotTopic/event/hotTopicLikeEvent';
 import {
   HotTopicDetailViewModel,
@@ -52,7 +53,11 @@ export function HotTopicTitleView({ hotTopicDetail, hotTopicLikeInfo }: Props) {
               </Label>
             </>
           )}
-          <Label className="onlytext">
+          <Label
+            as="button"
+            className="onlytext"
+            onClick={() => copyUrl(hotTopicDetail.id)}
+          >
             <Icon className="share-comm line" />
             <span>공유하기</span>
           </Label>

@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
-import 'semantic-ui-less/semantic.less';
-import '@nara.drama/approval/lib/snap.css';
+// import 'semantic-ui-less/semantic.less';
+// import '@nara.drama/approval/lib/snap.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

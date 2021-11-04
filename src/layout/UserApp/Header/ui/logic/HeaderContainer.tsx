@@ -156,6 +156,7 @@ class HeaderContainer extends Component<Props, State> {
         <>
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
+          <SearchBarView />
           {/* <CategoryMenuContainer /> */}
           {/*!isExternal && (
             <SearchBarView
