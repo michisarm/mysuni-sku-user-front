@@ -28,6 +28,7 @@ import classNames from 'classnames';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { SearchHeaderFieldView } from 'search/views/SearchHeaderFieldView';
 import { setSearchInSearchInfo } from 'search/search.services';
+import { SearchHeaderFieldViewOld } from '../../../../../search/views/SearchHeaderFieldViewOld';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -257,7 +258,7 @@ class ProfileContainer extends Component<Props, State> {
                       </Button>
                     </div>
                   </div>
-                  <SearchHeaderFieldView callback={setSearchOpen} />
+                  <SearchHeaderFieldViewOld callback={setSearchOpen} />
                 </div>
               </Popup.Content>
             </Popup>

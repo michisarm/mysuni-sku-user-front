@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Input, Menu, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
-import { SearchHeaderFieldView } from './SearchHeaderFieldView';
+import { SearchHeaderFieldViewOld } from './SearchHeaderFieldViewOld';
 import { SearchParam } from '../../search/search.models';
 import { getQueryId, search } from '../../search/search.events';
 import classNames from 'classnames';
@@ -19,6 +19,7 @@ import {
 } from '../../shared/ui/logic/PolyglotText';
 import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
 import { Area } from 'tracker/model';
+import { SearchHeaderFieldView } from './SearchHeaderFieldView';
 
 export function SearchHeaderView() {
   const [activeItem, setActiveItem] = useState<string>('');
@@ -158,9 +159,10 @@ export function SearchHeaderView() {
                     </div>
                   }
                 >
-                  <Popup.Content data-area={Area.SEARCH}>
-                    <SearchHeaderFieldView callback={searchSetting} />
-                  </Popup.Content>
+                  {/*<Popup.Content data-area={Area.SEARCH}>*/}
+                  {/*<SearchHeaderFieldViewOld callback={searchSetting} />*/}
+                  <SearchHeaderFieldView />
+                  {/*</Popup.Content>*/}
                 </Popup>
               </div>
             </div>

@@ -17,6 +17,7 @@ import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
 
 interface Props extends RouteComponentProps {}
 
@@ -168,6 +169,7 @@ class HeaderContainer extends Component<Props, State> {
               getPolyglotText={getPolyglotText}
             />
           )*/}
+          <SearchHeaderFieldView />
 
           <ProfileContainer />
         </>

@@ -20,7 +20,7 @@ class HeaderWrapperView extends Component<Props> {
         {/* {topBanner} */}
         <section className="header main-sty2 lms-main" id="lms-header">
           {mainNotice}
-          <div className="group">
+          <div className="group off">
             <div className="cont-inner">{children}</div>
           </div>
 
