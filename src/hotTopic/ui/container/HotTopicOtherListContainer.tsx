@@ -1,13 +1,12 @@
-import { onClickHotTopic } from 'hotTopic/event/hotTopicEvent';
 import { useHotTopicListViewModel } from 'hotTopic/store/HotTopicStore';
-import { HotTopicDetailViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import { SkProfileService } from 'profile/stores';
 import React from 'react';
 import Swiper from 'react-id-swiper';
 import { Icon } from 'semantic-ui-react';
-import { HotTopicView } from './HotTopicView';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { HotTopicView } from '../view/HotTopicView';
 
-export function HotTopicOtherListView() {
+export function HotTopicOtherListContainer() {
   const hotTopicList = useHotTopicListViewModel();
   const swipeName = 'swiperOtherTopics';
   const topicGridSwiper = {
@@ -28,11 +27,16 @@ export function HotTopicOtherListView() {
       {hotTopicList && hotTopicList.length > 0 && (
         <div className="side-area">
           <div className="aside-inner">
-            <div className="aside-tit">
-              <strong>{SkProfileService.instance.profileMemberName} 님</strong>
-              <br />
-              다른 Hot Topic은 어떠세요?
-            </div>
+            <div
+              className="aside-tit"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '<strong>{name} 님</strong><br />다른 Hot Topic은 어떠세요?',
+                  'hottopic-title-다른ht',
+                  { name: SkProfileService.instance.profileMemberName }
+                ),
+              }}
+            />
             <div className="cardSwiper othertopicSwiper common-swiper1">
               <Swiper {...topicGridSwiper}>
                 {hotTopicList.map((hotTopic, index) => {

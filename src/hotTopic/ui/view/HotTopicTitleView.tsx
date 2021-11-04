@@ -8,6 +8,7 @@ import {
 import React, { useMemo } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   hotTopicDetail: HotTopicDetailViewModel;
@@ -31,9 +32,15 @@ export function HotTopicTitleView({ hotTopicDetail, hotTopicLikeInfo }: Props) {
         <div className="f-left">
           <Label className="onlytext">
             <Icon className="coreses" />
-            <span>
-              총 <strong>{hotTopicDetail.cards?.length || 0}개</strong> 학습카드
-            </span>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '총 <strong>{value}개</strong> 학습카드',
+                  'hottopic-title-학습카드개수',
+                  { value: hotTopicDetail.cards?.length + '' || '0' }
+                ),
+              }}
+            />
           </Label>
           <Label className="onlytext">
             <Icon className="time2" />
@@ -59,7 +66,12 @@ export function HotTopicTitleView({ hotTopicDetail, hotTopicLikeInfo }: Props) {
             onClick={() => copyUrl(hotTopicDetail.id)}
           >
             <Icon className="share-comm line" />
-            <span>공유하기</span>
+            <span>
+              <PolyglotText
+                defaultString="공유하기"
+                id="hottopic-title-공유하기"
+              />
+            </span>
           </Label>
         </div>
       </div>

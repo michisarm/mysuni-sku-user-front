@@ -1,4 +1,3 @@
-import { numberLiteralTypeAnnotation } from '@babel/types';
 import {
   setHotTopicDetailViewModel,
   setHotTopicListViewModel,
@@ -48,7 +47,7 @@ export async function requestHotTopic(id: string) {
           name: parsePolyglotString(card.name),
           simpleDescription: parsePolyglotString(card.simpleDescription),
           starCount: card.starCount,
-          studentCount: card.studentCount,
+          passedStudentCount: card.passedStudentCount,
           thumbImagePath: card.thumbImagePath,
           thumbnailImagePath: card.thumbnailImagePath,
           type: card.type,
