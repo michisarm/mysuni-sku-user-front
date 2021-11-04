@@ -43,8 +43,8 @@ export function MyTrainingLeftTabHeaderPanel(props: Props) {
 
   return (
     <>
-      {onClickDelete && deleteButton}
-      {onClickDownloadExcel && downloadButton}
+      {onClickDelete && deleteButton()}
+      {onClickDownloadExcel && downloadButton()}
       {children}
     </>
   );

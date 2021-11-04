@@ -13,13 +13,12 @@ import { NotieService } from 'notie/stores';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import routePaths from 'myTraining/routePaths';
 import MyTrainingTabItemView from './MyTrainingTabItemView';
-import MyTrainingListContainer from 'myTraining/ui/logic/MyTrainingListContainer';
-import InMyLectureListContainer from 'myTraining/ui/logic/InMyLectureListContainer';
-import RequiredCardListContainer from 'myTraining/ui/logic/RequiredCardListContainer';
-import EnrolledListContainer from 'myTraining/ui/logic/EnrolledListContainer';
-import PersonalCompletedListContainer from 'myTraining/personalLearning/PersonalCompletedListContainer';
+import ProgressPageContainer from 'myTraining/ui/logic/TabPage/ProgressPageContainer';
 import InMyListPageContainer from 'myTraining/ui/logic/TabPage/InMyListPageContainer';
 import { CountType } from 'myTraining/model/AplRdoModel';
+import RequiredListPageContainer from 'myTraining/ui/logic/TabPage/RequiredListPageContainer';
+import EnrolledListContainer from 'myTraining/ui/logic/EnrolledListContainer';
+import EnrolledListPageContainer from 'myTraining/ui/logic/TabPage/EnrolledListPageContainer';
 
 function MyTrainingTabContainer() {
   const params = useParams<MyTrainingRouteParams>();
@@ -50,8 +49,7 @@ function MyTrainingTabContainer() {
           count={inprogressCount}
         />
       ),
-      render: () => <></>,
-      //render: () => <MyTrainingListContainer />,
+      render: () => <ProgressPageContainer />,
     });
 
     tabItemList.push({
@@ -75,8 +73,8 @@ function MyTrainingTabContainer() {
           count={requiredLecturesCount}
         />
       ),
-      render: () => <></>,
-      //render: () => <RequiredCardListContainer />,
+      // render: () => <></>,
+      render: () => <RequiredListPageContainer />,
     });
 
     tabItemList.push({
@@ -87,8 +85,8 @@ function MyTrainingTabContainer() {
           count={myTrainingTableCount2}
         />
       ),
-      render: () => <></>,
-      //render: () => <EnrolledListContainer />,
+      // render: () => <></>,
+      render: () => <EnrolledListPageContainer />,
     });
 
     tabItemList.push({

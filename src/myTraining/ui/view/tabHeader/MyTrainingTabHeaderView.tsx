@@ -8,7 +8,7 @@ interface MyTrainingTabHeaderViewProps {
   totalCount: number;
 
   onClickDelete?: () => void;
-  downloadExcel?: () => void;
+  onClickDownloadExcel?: () => Promise<void>;
 
   filterOpotions?: {
     openFilter: boolean;
@@ -23,17 +23,20 @@ export function MyTrainingTabHeaderView({
   resultEmpty,
   totalCount,
   onClickDelete,
-  downloadExcel,
+  onClickDownloadExcel,
   filterOpotions,
 }: MyTrainingTabHeaderViewProps) {
   //
   return (
     <div className="top-guide-title">
       {!resultEmpty && totalCount > 0 && (
-        <MyTrainingTabHeaderTemplate className="left-wrap">
+        <MyTrainingTabHeaderTemplate
+          className="left-wrap"
+          applyDesign={(onClickDelete || onClickDownloadExcel) && true}
+        >
           <MyTrainingLeftTabHeaderPanel
             onClickDelete={onClickDelete}
-            onClickDownloadExcel={downloadExcel}
+            onClickDownloadExcel={onClickDownloadExcel}
           >
             {children}
           </MyTrainingLeftTabHeaderPanel>

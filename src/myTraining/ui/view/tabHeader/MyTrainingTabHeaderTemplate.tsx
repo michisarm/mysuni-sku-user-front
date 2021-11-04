@@ -7,14 +7,15 @@ import { MyContentType } from '../../model/MyContentType';
 import classNames from 'classnames';
 
 interface Props {
-  className: 'right-wrap' | 'left-wrap' | 'top-list' | null;
+  className: 'right-wrap' | 'left-wrap' | 'top-list' | undefined;
+  applyDesign?: boolean;
   children?: React.ReactNode;
 }
 
 export function MyTrainingTabHeaderTemplate(props: Props) {
-  const { className, children } = props;
+  const { className, applyDesign, children } = props;
 
-  if (className === 'right-wrap') {
+  if (className === 'right-wrap' || applyDesign) {
     return <div className={className}>{children}</div>;
   } else {
     return <>{children}</>;

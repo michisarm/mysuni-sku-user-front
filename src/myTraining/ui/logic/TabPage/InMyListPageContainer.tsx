@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { inject } from 'mobx-react';
-import { Icon, Table } from 'semantic-ui-react';
+import ReactGA from 'react-ga';
+import { Icon, Segment, Table } from 'semantic-ui-react';
 import InMyLectureService from '../../../present/logic/InMyLectureService';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
@@ -11,15 +12,11 @@ import FilterBoxContainer from '../FilterBoxContainer';
 import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import { useHistory, useParams } from 'react-router';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { setIsLoading } from 'shared/store/IsLoadingStore';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
-import { MyTrainingService } from 'myTraining/stores';
 import TableHeaderColumn, {
   inProgressPolyglot,
 } from 'myTraining/ui/model/TableHeaderColumn';
-import { nosuchMessagesPolyglot } from 'myTraining/ui/model/NoSuchContentPanelMessages';
-import { MyContentType } from 'myTraining/ui/model/MyContentType';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import { Order } from 'myTraining/model/Order';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
@@ -32,29 +29,30 @@ import {
   timeToHourMinutePaddingFormat,
 } from 'shared/helper/dateTimeHelper';
 import { stateNamePolytglot } from 'shared/model/LearningStateName';
+import { Loadingpanel, NoSuchContentPanel } from 'shared';
+import { SeeMoreButton } from 'lecture';
 
 interface InMyListPageContainerProps {
-  myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   filterBoxService?: FilterBoxService;
 }
 
 function InMyListPageContainer({
-  myTrainingService,
   inMyLectureService,
   filterBoxService,
 }: InMyListPageContainerProps) {
   //
-  const params = useParams<MyTrainingRouteParams>();
 
-  const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
+  // ------------------------------------------------- init -------------------------------------------------
+  const params = useParams<MyTrainingRouteParams>();
+  const contentType = params.tab;
+
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
+  const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollOnceMove } = useScrollMove();
 
-  const { myTrainingTableViews, selectedServiceIds, selectAll, clearAll } =
-    myTrainingService!;
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
   const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
     filterBoxService!;
@@ -62,21 +60,7 @@ function InMyListPageContainer({
   const history = useHistory();
   const { scrollSave } = useScrollMove();
 
-  const onViewDetail = (e: any, cardId: string) => {
-    e.preventDefault();
-
-    scrollSave();
-
-    const params: LectureParams = {
-      cardId,
-      viewType: 'view',
-      pathname: '',
-    };
-
-    history.push(toPath(params));
-  };
-
-  useRequestFilterCountView();
+  const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
   useEffect(() => {
     inMyLectureService!.clearAllTableViews();
@@ -93,12 +77,18 @@ function InMyListPageContainer({
     requestInMyLecturesWithPage({ offset: 0, limit });
   }, []);
 
-  useEffect(() => {
-    if (showResult) {
-      inMyLectureService!.setFilterRdoByConditions(conditions);
-      requestInMyLecturesByConditions();
-    }
-  }, [showResult]);
+  // ------------------------------------------------- header - filter -------------------------------------------------
+  useRequestFilterCountView();
+
+  const onClickOpenFilter = () => {
+    setOpenFilter(!openFilter);
+  };
+
+  const filterOptions = {
+    openFilter,
+    onClickOpen: onClickOpenFilter,
+    filterCount,
+  };
 
   const requestInMyLecturesByConditions = async () => {
     setIsLoading(true);
@@ -109,6 +99,16 @@ function InMyListPageContainer({
     history.replace('./1');
   };
 
+  useEffect(() => {
+    if (showResult) {
+      inMyLectureService!.setFilterRdoByConditions(conditions);
+      requestInMyLecturesByConditions();
+    }
+  }, [showResult]);
+
+  // ------------------------------------------------- table -------------------------------------------------
+
+  // table - change list
   const requestInMyLectures = async () => {
     setIsLoading(true);
     const isEmpty = await inMyLectureService!.findAllTableViews();
@@ -141,38 +141,23 @@ function InMyListPageContainer({
     setShowSeeMore(true);
   };
 
-  const onClickOpenFilter = () => {
-    setOpenFilter(!openFilter);
+  const onClickSeeMore = async () => {
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
+
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestInMyLecturesWithPage({ offset, limit });
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Learning');
+    }, 1000);
+
+    history.replace(`./${nextPageNo}`);
   };
 
-  const filterOptions = {
-    openFilter,
-    onClickOpen: onClickOpenFilter,
-    filterCount,
-  };
-
-  const onClickSort = useCallback((column: string, direction: Direction) => {
-    inMyLectureService!.sortTableViews(column, direction);
-  }, []);
-
-  const noSuchMessage = (
-    contentType: MyContentType,
-    withFilter: boolean = false
-  ) => {
-    return (
-      (withFilter &&
-        getPolyglotText(
-          '필터 조건에 해당하는 결과가 없습니다.',
-          'mapg-msmp-검색x3'
-        )) ||
-      nosuchMessagesPolyglot(contentType)
-    );
-  };
-
-  const headerColumns = TableHeaderColumn.getColumnsByContentType(
-    MyLearningContentType.InMyList
-  );
-
+  // table - sorting
   const initialOrders = headerColumns
     .filter((headerColumn) => headerColumn.icon === true)
     .map((headerColumn) => ({
@@ -182,19 +167,6 @@ function InMyListPageContainer({
 
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
-  const onCheckAll = useCallback(
-    (e: any, data: any) => {
-      if (myTrainingTableViews.length === selectedServiceIds.length) {
-        clearAll();
-        return;
-      }
-
-      selectAll();
-    },
-    [myTrainingTableViews, selectedServiceIds]
-  );
-
-  /* functions */
   const getDireciton = (column: string) => {
     return orders.filter((order) => order.column === column)[0].direction;
   };
@@ -211,6 +183,10 @@ function InMyListPageContainer({
       : '오름차순 정렬';
   };
 
+  const onClickSort = useCallback((column: string, direction: Direction) => {
+    inMyLectureService!.sortTableViews(column, direction);
+  }, []);
+
   const handleClickSort = useCallback(
     (column: string) => {
       const clickedOrder = orders.filter((order) => order.column === column)[0];
@@ -225,6 +201,21 @@ function InMyListPageContainer({
     },
     [orders, onClickSort]
   );
+
+  // ------------------------------------------------- contents -------------------------------------------------
+  const onViewDetail = (e: any, cardId: string) => {
+    e.preventDefault();
+
+    scrollSave();
+
+    const params: LectureParams = {
+      cardId,
+      viewType: 'view',
+      pathname: '',
+    };
+
+    history.push(toPath(params));
+  };
 
   return (
     <>
@@ -253,7 +244,7 @@ function InMyListPageContainer({
       )) || <div style={{ marginTop: 50 }} />}
       {inMyLectureTableViews && inMyLectureTableViews.length > 0 && (
         <>
-          {!resultEmpty && (
+          {(!resultEmpty && (
             <>
               <div className="mylearning-list-wrap">
                 <Table className="ml-02-03">
@@ -305,69 +296,91 @@ function InMyListPageContainer({
                         ))}
                     </Table.Row>
                   </Table.Header>
-                  <Table.Body>
-                    {inMyLectureTableViews &&
-                      inMyLectureTableViews.length > 0 &&
-                      inMyLectureTableViews.map((inMyLecture, index) => {
-                        const learningType =
-                          LearningTypeName[inMyLecture.cubeType];
-                        const collegeName = getCollgeName(
-                          inMyLecture.category.collegeId
-                        );
-                        const learningState =
-                          (inMyLecture.learningState &&
-                            LearningStateName[inMyLecture.learningState]) ||
-                          '-';
-                        const progressRate =
-                          (inMyLecture.learningState &&
-                            `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
-                          '-';
 
-                        return (
-                          <Table.Row key={`inMyLecture-list-${index}`}>
-                            <Table.Cell>
-                              {inMyLectureTableCount - index}
-                            </Table.Cell>
-                            <Table.Cell>{collegeName}</Table.Cell>
-                            <Table.Cell className="title">
-                              <a
-                                href="#"
-                                onClick={(e) =>
-                                  onViewDetail(e, inMyLecture.serviceId)
-                                }
+                  <Table.Body>
+                    {inMyLectureTableViews.map((inMyLecture, index) => {
+                      const learningType =
+                        LearningTypeName[inMyLecture.cubeType];
+                      const collegeName = getCollgeName(
+                        inMyLecture.category.collegeId
+                      );
+                      const learningState =
+                        (inMyLecture.learningState &&
+                          LearningStateName[inMyLecture.learningState]) ||
+                        '-';
+                      const progressRate =
+                        (inMyLecture.learningState &&
+                          `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
+                        '-';
+
+                      return (
+                        <Table.Row key={`inMyLecture-list-${index}`}>
+                          <Table.Cell>
+                            {inMyLectureTableCount - index}
+                          </Table.Cell>
+                          <Table.Cell>{collegeName}</Table.Cell>
+                          <Table.Cell className="title">
+                            <a
+                              href="#"
+                              onClick={(e) =>
+                                onViewDetail(e, inMyLecture.serviceId)
+                              }
+                            >
+                              <span
+                                className={`ellipsis ${
+                                  inMyLecture.useNote ? 'noteOn' : ''
+                                }`}
                               >
-                                <span
-                                  className={`ellipsis ${
-                                    inMyLecture.useNote ? 'noteOn' : ''
-                                  }`}
-                                >
-                                  {parsePolyglotString(inMyLecture.name)}
-                                </span>
-                              </a>
-                            </Table.Cell>
-                            <Table.Cell>{learningType || '-'} </Table.Cell>
-                            <Table.Cell>
-                              {inMyLecture.difficultyLevel || '-'}
-                            </Table.Cell>
-                            <Table.Cell>
-                              {timeToHourMinutePaddingFormat(
-                                inMyLecture.learningTime
-                              )}
-                            </Table.Cell>
-                            <Table.Cell>
-                              {convertTimeToDate(inMyLecture.lastStudyDate)}
-                            </Table.Cell>
-                            <Table.Cell>{progressRate}</Table.Cell>
-                            <Table.Cell>
-                              {stateNamePolytglot(learningState)}
-                            </Table.Cell>
-                          </Table.Row>
-                        );
-                      })}
+                                {parsePolyglotString(inMyLecture.name)}
+                              </span>
+                            </a>
+                          </Table.Cell>
+                          <Table.Cell>{learningType || '-'} </Table.Cell>
+                          <Table.Cell>
+                            {inMyLecture.difficultyLevel || '-'}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {timeToHourMinutePaddingFormat(
+                              inMyLecture.learningTime
+                            )}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {convertTimeToDate(inMyLecture.lastStudyDate)}
+                          </Table.Cell>
+                          <Table.Cell>{progressRate}</Table.Cell>
+                          <Table.Cell>
+                            {stateNamePolytglot(learningState)}
+                          </Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
                   </Table.Body>
                 </Table>
               </div>
+              {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
+          )) || (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+              {!isLoading && (
+                <NoSuchContentPanel
+                  message={getPolyglotText(
+                    '필터 조건에 해당하는 결과가 없습니다.',
+                    'mapg-msmp-검색x3'
+                  )}
+                />
+              )}
+            </Segment>
           )}
         </>
       )}
@@ -377,7 +390,6 @@ function InMyListPageContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'shared.filterBoxService'
   )
