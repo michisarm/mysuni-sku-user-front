@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { reactAutobind, getCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
-import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
 
 interface Props extends RouteComponentProps {}
 
@@ -35,6 +35,8 @@ class HeaderContainer extends Component<Props, State> {
   //
   static contextType = Context;
 
+  headerRef: React.RefObject<any> = createRef();
+
   supportPath = boardRoutePaths.supportNotice();
 
   state = {
@@ -42,10 +44,24 @@ class HeaderContainer extends Component<Props, State> {
     focused: false,
   };
 
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.location.key !== this.props.location.key) {
       this.initSearchValue();
+    }
+  }
+
+  componentWillUnmount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside(event: any) {
+    if (!this.headerRef.current?.contains(event.target)) {
+      this.setState({ focused: false });
     }
   }
 
@@ -146,23 +162,28 @@ class HeaderContainer extends Component<Props, State> {
     const isExternal = isExternalInstructor();
 
     return (
-      <HeaderWrapperView
-        breadcrumbs={
-          <BreadcrumbView
-            values={breadcrumb.values}
-            supportPath={this.supportPath}
-          />
-        }
-        // Notice
-        topBanner={<TopBannerContainer />}
-        mainNotice={<MainNotice />}
-      >
-        <>
-          <LogoView onClickMenu={this.onClickMenu} />
-          <MenuView onClickMenu={this.onClickMenu} />
-          <SearchBarView />
-          {/* <CategoryMenuContainer /> */}
-          {/*!isExternal && (
+      <div ref={this.headerRef}>
+        <HeaderWrapperView
+          breadcrumbs={
+            <BreadcrumbView
+              values={breadcrumb.values}
+              supportPath={this.supportPath}
+            />
+          }
+          // Notice
+          topBanner={<TopBannerContainer />}
+          mainNotice={<MainNotice />}
+          open={focused}
+        >
+          <>
+            <LogoView onClickMenu={this.onClickMenu} />
+            <MenuView onClickMenu={this.onClickMenu} />
+            <SearchBarView
+              onClick={this.onClickSearchInput}
+              onBlur={this.onBlurSearchInput}
+            />
+            {/* <CategoryMenuContainer /> */}
+            {/*!isExternal && (
             <SearchBarView
               value={searchValue}
               focused={focused}
@@ -174,10 +195,12 @@ class HeaderContainer extends Component<Props, State> {
               getPolyglotText={getPolyglotText}
             />
           )*/}
+            <SearchHeaderFieldView />
 
-          <ProfileContainer onClickMenu={this.onClickMenu} />
-        </>
-      </HeaderWrapperView>
+            <ProfileContainer onClickMenu={this.onClickMenu} />
+          </>
+        </HeaderWrapperView>
+      </div>
     );
   }
 }
