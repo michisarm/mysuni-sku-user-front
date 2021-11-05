@@ -19,6 +19,9 @@ import { CountType } from 'myTraining/model/AplRdoModel';
 import RequiredListPageContainer from 'myTraining/ui/logic/TabPage/RequiredListPageContainer';
 import EnrolledListContainer from 'myTraining/ui/logic/EnrolledListContainer';
 import EnrolledListPageContainer from 'myTraining/ui/logic/TabPage/EnrolledListPageContainer';
+import RetryListPageContainer from 'myTraining/ui/logic/TabPage/RetryListPageContainer';
+import PersonalCompletedListContainer from 'myTraining/personalLearning/PersonalCompletedListContainer';
+import CompletedListPageContainer from 'myTraining/ui/logic/TabPage/CompletedListPageContainer';
 
 function MyTrainingTabContainer() {
   const params = useParams<MyTrainingRouteParams>();
@@ -97,8 +100,7 @@ function MyTrainingTabContainer() {
           count={completedCount}
         />
       ),
-      render: () => <></>,
-      //render: () => <MyTrainingListContainer />,
+      render: () => <CompletedListPageContainer />,
     });
 
     if (menuControlAuth.useApl === true) {
@@ -111,8 +113,7 @@ function MyTrainingTabContainer() {
             count={personalCompletedCount}
           />
         ),
-        render: () => <></>,
-        //render: () => <PersonalCompletedListContainer />,
+        render: () => <PersonalCompletedListContainer />,
       });
     }
 
@@ -124,8 +125,7 @@ function MyTrainingTabContainer() {
           count={retryCount}
         />
       ),
-      render: () => <></>,
-      //render: () => <MyTrainingListContainer />,
+      render: () => <RetryListPageContainer />,
     });
 
     return tabItemList;
