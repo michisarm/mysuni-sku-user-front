@@ -53,8 +53,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
     const intervalTranscript: any = useRef<any>(null);
     const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
-    const [openAlertModal, setOpenAlertModal] = useState<boolean>(false);
-
     const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
 
     // 특정 위치로 재생 위치 이동
@@ -206,8 +204,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
           (lectureSummary?.name || 'transcript').concat('_', langText)
         );
       }
-
-      setOpenAlertModal(false);
     };
 
     return (
@@ -284,10 +280,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
             </span>
           )}
         </div>
-        <TranScriptAlertModalView
-          open={openAlertModal}
-          onClickOk={onClickOkInModal}
-        />
       </>
     );
   };
