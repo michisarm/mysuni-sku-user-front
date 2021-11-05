@@ -76,11 +76,10 @@ interface ApprovedViewProps {
   pathname: string;
   student: Student;
   lectureStructure: LectureStructure;
-  hookAction: () => void;
 }
 
 function ApprovedView(props: ApprovedViewProps) {
-  const { student, hookAction, lectureStructure, pathname } = props;
+  const { student, lectureStructure, pathname } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -102,7 +101,6 @@ function ApprovedView(props: ApprovedViewProps) {
     return PROGRESS;
   }, [lectureStructure]);
   const action = useCallback(async () => {
-    hookAction();
     const params = getLectureParams();
     if (params?.cubeId === undefined) {
       return;
@@ -161,47 +159,49 @@ interface LectureDocumentsStateViewProps {
   lectureStructure: LectureStructure;
 }
 
-const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> =
-  function LectureDocumentsStateView({
-    lectureState,
-    lectureWebpage,
-    lectureStructure,
-  }) {
-    const { student } = lectureState;
+const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> = function LectureDocumentsStateView({
+  lectureState,
+  lectureWebpage,
+  lectureStructure,
+}) {
+  const { student } = lectureState;
 
-    const [fileDonwloadPopShow, setFileDonwloadPopShow] =
-      useState<boolean>(false);
-    const closeFileDonwloadPop = useCallback(() => {
-      setFileDonwloadPopShow(false);
-    }, []);
+  const [fileDonwloadPopShow, setFileDonwloadPopShow] = useState<boolean>(
+    false
+  );
+  const closeFileDonwloadPop = useCallback(() => {
+    setFileDonwloadPopShow(false);
+  }, []);
 
-    const hookAction = useCallback(() => {
-      setFileDonwloadPopShow(true);
-    }, []);
+  const hookAction = useCallback(() => {
+    setFileDonwloadPopShow(true);
+  }, []);
 
-    const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-    return (
-      <>
-        {(student === undefined || student?.proposalState === 'Canceled') && (
-          <CanceledView hookAction={hookAction} />
-        )}
-        {student?.proposalState === 'Approved' && (
-          <ApprovedView
-            pathname={pathname}
-            hookAction={hookAction}
-            student={student}
-            lectureStructure={lectureStructure}
-          />
-        )}
-        {fileDonwloadPopShow && (
-          <FileDownloadPop
-            fileBoxIds={[lectureWebpage.fileBoxId]}
-            onClose={closeFileDonwloadPop}
-          />
-        )}
-      </>
-    );
-  };
+  return (
+    <>
+      {student?.proposalState === 'Approved' && (
+        <ApprovedView
+          pathname={pathname}
+          student={student}
+          lectureStructure={lectureStructure}
+        />
+      )}
+
+      {(student === undefined ||
+        student?.proposalState === 'Canceled' ||
+        student.learningState === 'Passed') && (
+        <CanceledView hookAction={hookAction} />
+      )}
+      {fileDonwloadPopShow && (
+        <FileDownloadPop
+          fileBoxIds={[lectureWebpage.fileBoxId]}
+          onClose={closeFileDonwloadPop}
+        />
+      )}
+    </>
+  );
+};
 
 export default LectureDocumentsStateView;
