@@ -16,10 +16,7 @@ import {
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
 import { completeLearning } from 'lecture/detail/service/useLectureState/utility/cubeStateActions';
-import {
-  getLectureState,
-  useLectureState,
-} from 'lecture/detail/store/LectureStateStore';
+import { getLectureState } from 'lecture/detail/store/LectureStateStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 interface LectureDocumentsViewProps {
@@ -53,6 +50,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     if (params?.cubeId === undefined) {
       return;
     }
+
     if (learningState !== 'Passed') {
       findCubeDetailCache(params?.cubeId).then((c) => {
         if (c !== undefined) {
@@ -171,7 +169,10 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     if (pageNumber === numPages - 1 && pdfUrl[0] === file.url) {
       const lectureState = getLectureState();
 
-      if (lectureState?.student?.learningState === 'Progress') {
+      if (
+        lectureState?.student === undefined ||
+        lectureState?.student?.learningState !== 'Passed'
+      ) {
         completeLearning();
       }
     }
