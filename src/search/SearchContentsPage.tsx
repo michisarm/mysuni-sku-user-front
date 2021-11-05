@@ -1,15 +1,22 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { getQueryId, searchData, initSearchData } from './search.events';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  getQueryId,
+  searchData,
+  initSearchData,
+  search,
+} from './search.events';
 import { SearchParam } from './search.models';
 import {
   getSearchInSearchInfo,
+  setSearchInSearchInfo,
   useDisplayCard,
   useExpert,
   useSearchBadgeList,
   useSearchCommunityList,
+  useSearchRelatedList,
 } from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
@@ -70,6 +77,24 @@ export function SearchContentsPage() {
 
   const HeaderTotalCountTitle = () => {
     const searchInSearchInfo = getSearchInSearchInfo();
+    const relatedList = useSearchRelatedList();
+    const [write, setWrite] = useState<string>('');
+
+    // const handleClose = () => {
+    //   setIsOpen(false);
+    // };
+
+    const searchSetting = (searchValue?: string) => {
+      if (searchValue !== undefined) {
+        setWrite(searchValue);
+        setSearchInSearchInfo({
+          checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
+          parentSearchValue: queryId,
+          searchValue,
+        });
+      }
+      // handleClose();
+    };
 
     return (
       <>
@@ -103,6 +128,38 @@ export function SearchContentsPage() {
               ),
             }}
           />
+        )}
+
+        {relatedList && relatedList.length > 0 && (
+          <div className="relative_box">
+            <dl>
+              <dt>
+                <strong>
+                  <PolyglotText
+                    id="통검-필레팝-연관검색어"
+                    defaultString="연관 검색어"
+                  />
+                </strong>
+              </dt>
+              <dd>
+                <ul>
+                  {relatedList.map((related: string, index) => (
+                    <li key={`related_${index}`}>
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => {
+                          searchSetting(related);
+                          search(related);
+                        }}
+                      >
+                        {related}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </dl>
+          </div>
         )}
       </>
     );

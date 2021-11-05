@@ -179,6 +179,9 @@ class HeaderContainer extends Component<Props, State> {
             <LogoView onClickMenu={this.onClickMenu} />
             <MenuView onClickMenu={this.onClickMenu} />
             <SearchBarView
+              onSearch={this.onSearch}
+              onChange={this.onChangeSearchInput}
+              onClear={this.onClickClearSearch}
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}
             />
@@ -195,8 +198,6 @@ class HeaderContainer extends Component<Props, State> {
               getPolyglotText={getPolyglotText}
             />
           )*/}
-            <SearchHeaderFieldView />
-
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>
         </HeaderWrapperView>

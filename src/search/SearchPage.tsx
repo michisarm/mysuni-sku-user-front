@@ -5,8 +5,8 @@ import { ContentLayout } from 'shared';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CheckboxOptions } from './search.models';
 import { useSearchUI, setSearchUI } from './search.services';
-import { SearchContentsPage } from './SearchContentsPage';
 import { SearchHeaderPage } from './SearchHeaderPage';
+import { SearchContentsPage } from './SearchContentsPage';
 
 function LoadingView() {
   return (

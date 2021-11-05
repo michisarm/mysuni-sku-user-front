@@ -1,5 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
 
 interface Props {
   breadcrumbs: React.ReactNode;
@@ -27,6 +28,7 @@ class HeaderWrapperView extends Component<Props> {
           {mainNotice}
           <div className={open ? 'group off' : 'group'}>
             <div className="cont-inner">{children}</div>
+            <SearchHeaderFieldView />
           </div>
 
           {breadcrumbs}

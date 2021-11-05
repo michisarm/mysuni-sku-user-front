@@ -14,6 +14,12 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { usePageElements } from '../../../../../shared/store/PageElementsStore';
+import {
+  setSearchInSearchInfo,
+  useSearchInSearchInfo,
+} from '../../../../../search/search.services';
+import { Checkbox } from 'semantic-ui-react';
+import { getQueryId } from '../../../../../search/search.events';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -93,45 +99,85 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 interface SearchBarViewProps {
   // value: string;
   // focused?: boolean;
-  // onSearch: () => void;
-  // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
-  // onClear?: () => void;
+  onClear?: () => void;
 }
 
 export const SearchBarView: React.FC<SearchBarViewProps> = ({
   // value,
   // focused,
-  // onSearch,
-  // onChange,
+  onSearch,
+  onChange,
   onBlur,
   onClick,
-  // onClear,
+  onClear,
   // getPolyglotText,
-}) => (
-  <div className="g-search-header" data-area={Area.SEARCH}>
-    <div className="search_wrap">
-      <input
-        type="text"
-        placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-        // value={value}
-        // onChange={onChange}
-        onClick={onClick}
-        // onBlur={onBlur}
-        // onKeyPress={(e) => e.key === 'Enter' && onSearch()}
-        className="ui input search_ipt"
+}) => {
+  //
+  const [write, setWrite] = useState<string>('');
+
+  const queryId = getQueryId();
+  const searchInSearchInfo = useSearchInSearchInfo();
+
+  return (
+    <>
+      <div className="g-search-header" data-area={Area.SEARCH}>
+        <div className="search_wrap">
+          <input
+            type="text"
+            placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
+            // value={value}
+            onChange={onChange}
+            onClick={onClick}
+            // onBlur={onBlur}
+            onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+            className="ui input search_ipt"
+          />
+        </div>
+        <div className="ui button b-search">
+          <i
+            aria-hidden="true"
+            className="icon search-grey"
+            //  onClick={onSearch}
+          />
+        </div>
+        <Checkbox
+          className="again_chk"
+          label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
+          checked={searchInSearchInfo?.checkSearchInSearch}
+          onClick={() => {
+            if (!searchInSearchInfo?.checkSearchInSearch) {
+              setWrite('');
+            }
+            setSearchInSearchInfo({
+              checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+              parentSearchValue: queryId,
+              searchValue: write,
+            });
+          }}
+        />
+      </div>
+      <Checkbox
+        className="again_chk on"
+        label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
+        checked={searchInSearchInfo?.checkSearchInSearch}
+        onClick={() => {
+          if (!searchInSearchInfo?.checkSearchInSearch) {
+            setWrite('');
+          }
+          setSearchInSearchInfo({
+            checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+            parentSearchValue: queryId,
+            searchValue: write,
+          });
+        }}
       />
-    </div>
-    <div className="ui button b-search">
-      <i
-        aria-hidden="true"
-        className="icon search-grey"
-        //  onClick={onSearch}
-      />
-    </div>
-  </div>
-);
+    </>
+  );
+};
 
 export const LearningMenuView: React.FC<MenuViewProps> =
   function LearningMenuView({ onClickMenu }) {
