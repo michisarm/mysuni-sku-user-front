@@ -11,7 +11,6 @@ import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/Lecture
 import { PlayerState, seekTo } from '@sku/skuniv-ui-video-player';
 import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { TranScriptAlertModalView } from '../view/TranScriptAlertModalView';
 import { reactAlert } from '@nara.platform/accent';
 
 const style = {
