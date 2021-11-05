@@ -58,12 +58,6 @@ export async function requestHotTopic(id: string) {
         setHotTopicDetailViewModel(cardBundleDetail);
       } else {
         hotTopicList.push(cardBundleDetail);
-        //테스트로 여러개
-        hotTopicList.push(cardBundleDetail);
-        hotTopicList.push(cardBundleDetail);
-        hotTopicList.push(cardBundleDetail);
-        hotTopicList.push(cardBundleDetail);
-        hotTopicList.push(cardBundleDetail);
         setHotTopicListViewModel(hotTopicList);
       }
     }

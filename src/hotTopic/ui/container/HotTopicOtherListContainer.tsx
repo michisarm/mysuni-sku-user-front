@@ -10,7 +10,9 @@ export function HotTopicOtherListContainer() {
   const hotTopicList = useHotTopicListViewModel();
   const swipeName = 'swiperOtherTopics';
 
+  // swiper instance
   const [swiper, setSwiper] = useState<any>(null);
+  const [play, setPlay] = useState(true); // auto play 기준
 
   const topicGridSwiper = {
     loop: true,
@@ -27,15 +29,6 @@ export function HotTopicOtherListContainer() {
     getSwiper: setSwiper,
   };
 
-  // swiper instance
-  const [play, setPlay] = useState(true); // auto play 기준
-
-  // useEffect(() => {
-  //   const swiperInstance = document.querySelector('.swiper-container')?.swiper;
-
-  //   setSwiper(swiperInstance);
-  // }, []);
-
   useEffect(() => {
     if (
       swiper !== null &&
@@ -44,10 +37,8 @@ export function HotTopicOtherListContainer() {
     ) {
       if (play) {
         swiper.autoplay.start();
-        console.log('swiper start');
       } else {
         swiper.autoplay.stop();
-        console.log('swiper stop');
       }
     }
   }, [swiper, play]);
@@ -55,17 +46,6 @@ export function HotTopicOtherListContainer() {
   const onClickAutoPlayBtn = () => {
     setPlay(!play);
   };
-
-  //const swiperRef = useRef(null);
-  // const onClickAutoPlayBtn2 = () => {
-  //   if (swiperRef.current && swiperRef.current.swiper) {
-  //     if (play) {
-  //       swiperRef.current.swiper.autoplay.start();
-  //     } else {
-  //       swiperRef.current.swiper.autoplay.stop();
-  //     }
-  //   }
-  // }
 
   return (
     <>
