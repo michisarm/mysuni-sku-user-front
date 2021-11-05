@@ -23,6 +23,7 @@ function LearningTimeDetailView(props: Props) {
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
   const instructTimeSummary =
     MyLearningSummaryService.instance._instructTimeSummary;
+  console.log(instructTimeSummary);
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
@@ -38,7 +39,8 @@ function LearningTimeDetailView(props: Props) {
         {
           label: '강의시간',
           // value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
-          value: instructTimeSummary?.totalLectureTime || 0,
+          value:
+            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
         },
         {
           label: '개인학습',
@@ -57,7 +59,8 @@ function LearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value: instructTimeSummary?.totalLectureTime || 0,
+          value:
+            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
         },
       ];
     }
@@ -192,7 +195,8 @@ function LearningTimeDetailView(props: Props) {
                         <strong>
                           {Math.floor(
                             (instructTimeSummary &&
-                              instructTimeSummary.totalLectureTime / 60) ||
+                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime /
+                                60) ||
                               0
                           )}
                           <em>
@@ -205,7 +209,8 @@ function LearningTimeDetailView(props: Props) {
                         <strong>
                           {Math.floor(
                             (instructTimeSummary &&
-                              instructTimeSummary.totalLectureTime % 60) ||
+                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime %
+                                60) ||
                               0
                           )}
                           <em>

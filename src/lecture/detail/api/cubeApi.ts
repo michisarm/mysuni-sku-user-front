@@ -23,6 +23,7 @@ import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml
 import ContentsProvider from '../../model/ContentsProvider';
 import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
 import { findSsoTypeCache } from './checkpointApi';
+import { InstructorLearningTimeSummary } from 'personalcube/personalcube/model/InstructorLearningTimeSummary';
 
 const BASE_URL = '/api/cube';
 
@@ -292,7 +293,7 @@ export function findMyLectureTimeSummary() {
 export function findMyInstructTimeSummary() {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/myInstructorLearningTimeSummary`;
-  return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
+  return axios.get<InstructorLearningTimeSummary>(url).then(AxiosReturn);
 }
 
 export function setPinByPostId(postId: string, pinned: number) {

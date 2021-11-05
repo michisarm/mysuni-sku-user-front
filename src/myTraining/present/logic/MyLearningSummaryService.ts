@@ -8,6 +8,7 @@ import {
   findMyLectureTimeSummary,
   findMyInstructTimeSummary,
 } from '../../../lecture/detail/api/cubeApi';
+import { InstructorLearningTimeSummary } from 'personalcube/personalcube/model/InstructorLearningTimeSummary';
 
 @autobind
 class MyLearningSummaryService {
@@ -26,7 +27,7 @@ class MyLearningSummaryService {
   _lectureTimeSummary?: LectureTimeSummary;
 
   @observable
-  _instructTimeSummary?: LectureTimeSummary;
+  _instructTimeSummary?: InstructorLearningTimeSummary;
 
   @computed get lectureTimeSummary() {
     return this._lectureTimeSummary;
