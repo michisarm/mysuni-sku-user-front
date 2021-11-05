@@ -23,7 +23,6 @@ function LearningTimeDetailView(props: Props) {
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
   const instructTimeSummary =
     MyLearningSummaryService.instance._instructTimeSummary;
-  console.log(instructTimeSummary);
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
