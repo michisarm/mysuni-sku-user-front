@@ -43,6 +43,7 @@ class FavoriteWelcomeContainer extends Component<Props> {
                 {parsePolyglotString(name)},
               </h2>
               <p
+                style={{ maxWidth: '580px' }}
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
                     `무슨 교육을 수강해야 할지, 내게 필요한 강의는 무엇인지
