@@ -39,6 +39,7 @@ import { MyContentType } from 'myTraining/ui/model/MyContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 import MyStampService from 'myTraining/present/logic/MyStampService';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface CompletedListPageContainerProps {
   myTrainingService?: MyTrainingService;
@@ -75,8 +76,7 @@ function CompletedListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const { scrollOnceMove } = useScrollMove();
-  const { myTrainingTableViews, myTrainingTableCount, selectedServiceIds } =
-    myTrainingService!;
+  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
 
@@ -393,51 +393,23 @@ function CompletedListPageContainer({
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
           )) || (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-              {!isLoading && (
-                <NoSuchContentPanel
-                  message={getPolyglotText(
-                    '필터 조건에 해당하는 결과가 없습니다.',
-                    'mapg-msmp-검색x4'
-                  )}
-                />
-              )}
-            </Segment>
-          )}
-        </>
-      )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={getPolyglotText(
-                'mySUNI 학습완료에 해당하는 학습 과정이 없습니다.',
-                'learning-my-학습완료'
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x4'
               )}
             />
           )}
-        </Segment>
+        </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            'mySUNI 학습완료에 해당하는 학습 과정이 없습니다.',
+            'learning-my-학습완료'
+          )}
+        />
       )}
     </>
   );

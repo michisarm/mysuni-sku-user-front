@@ -38,6 +38,7 @@ import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import { MyContentType } from 'myTraining/ui/model/MyContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 import MyStampService from 'myTraining/present/logic/MyStampService';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface RetryListPageContainerProps {
   myTrainingService?: MyTrainingService;
@@ -74,8 +75,7 @@ function RetryListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const { scrollOnceMove } = useScrollMove();
-  const { myTrainingTableViews, myTrainingTableCount, selectedServiceIds } =
-    myTrainingService!;
+  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
 
@@ -364,51 +364,23 @@ function RetryListPageContainer({
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
           )) || (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-              {!isLoading && (
-                <NoSuchContentPanel
-                  message={getPolyglotText(
-                    '필터 조건에 해당하는 결과가 없습니다.',
-                    'mapg-msmp-검색x4'
-                  )}
-                />
-              )}
-            </Segment>
-          )}
-        </>
-      )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={getPolyglotText(
-                '취소/미이수에 해당하는 학습 과정이 없습니다.',
-                'learning-my-취소'
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x4'
               )}
             />
           )}
-        </Segment>
+        </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '취소/미이수에 해당하는 학습 과정이 없습니다.',
+            'learning-my-취소'
+          )}
+        />
       )}
     </>
   );

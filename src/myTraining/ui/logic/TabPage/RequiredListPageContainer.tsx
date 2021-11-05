@@ -28,6 +28,7 @@ import {
 } from 'shared/helper/dateTimeHelper';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import { Loadingpanel, NoSuchContentPanel } from 'shared';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface RequiredListPageContainerProps {
   lectureService?: LectureService;
@@ -357,51 +358,23 @@ function RequiredListPageContainer({
               </Table>
             </div>
           )) || (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-              {!isLoading && (
-                <NoSuchContentPanel
-                  message={getPolyglotText(
-                    '필터 조건에 해당하는 결과가 없습니다.',
-                    'mapg-msmp-검색x5'
-                  )}
-                />
-              )}
-            </Segment>
-          )}
-        </>
-      )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={getPolyglotText(
-                '권장과정에 해당하는 학습 과정이 없습니다.',
-                'learning-my-권장과정'
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x5'
               )}
             />
           )}
-        </Segment>
+        </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '권장과정에 해당하는 학습 과정이 없습니다.',
+            'learning-my-권장과정'
+          )}
+        />
       )}
     </>
   );

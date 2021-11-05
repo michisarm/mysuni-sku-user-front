@@ -21,6 +21,7 @@ import routePaths from 'myTraining/routePaths';
 import { AplState } from 'myTraining/model/AplState';
 import { aplStateNamePolyglotText } from 'myTraining/model/AplStateName';
 import moment from 'moment';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface PersonalCompletedListPageContainerProps {
   aplService?: AplService;
@@ -253,51 +254,23 @@ function PersonalCompletedListPageContainer({
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
           )) || (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-              {isLoading === false && (
-                <NoSuchContentPanel
-                  message={getPolyglotText(
-                    '승인된 개인학습 정보가 없습니다.',
-                    'learning-my-승인'
-                  )}
-                />
-              )}
-            </Segment>
-          )}
-        </>
-      )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={getPolyglotText(
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
                 '승인된 개인학습 정보가 없습니다.',
                 'learning-my-승인'
               )}
             />
           )}
-        </Segment>
+        </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '승인된 개인학습 정보가 없습니다.',
+            'learning-my-승인'
+          )}
+        />
       )}
     </>
   );

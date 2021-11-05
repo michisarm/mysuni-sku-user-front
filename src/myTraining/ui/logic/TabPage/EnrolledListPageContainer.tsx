@@ -24,6 +24,7 @@ import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface EnrolledListPageContainerProps {
   myTrainingService?: MyTrainingService;
@@ -326,49 +327,21 @@ function EnrolledListPageContainer({
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
           )) || (
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-                {!isLoading && (
-                  <NoSuchContentPanel
-                    message={getPolyglotText(
-                      '필터 조건에 해당하는 결과가 없습니다.',
-                      'mapg-msmp-검색x2'
-                    )}
-                  />
+              <NoSuchContentsView
+                isLoading={isLoading}
+                emptyText={getPolyglotText(
+                  '필터 조건에 해당하는 결과가 없습니다.',
+                  'mapg-msmp-검색x2'
                 )}
-              </Segment>
+              />
             ) || (
-              <Segment
-                style={{
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  height: 400,
-                  boxShadow: '0 0 0 0',
-                  border: 0,
-                }}
-              >
-                <Loadingpanel loading={isLoading} />
-                {!isLoading && (
-                  <NoSuchContentPanel
-                    message={getPolyglotText(
-                      '학습예정인 과정이 없습니다.',
-                      'learning-my-학습예정'
-                    )}
-                  />
+              <NoSuchContentsView
+                isLoading={isLoading}
+                emptyText={getPolyglotText(
+                  '학습예정인 과정이 없습니다.',
+                  'learning-my-학습예정'
                 )}
-              </Segment>
+              />
             )}
         </>
       )}

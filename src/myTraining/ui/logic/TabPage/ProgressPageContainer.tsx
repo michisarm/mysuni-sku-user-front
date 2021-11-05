@@ -38,6 +38,7 @@ import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import { MyContentType } from 'myTraining/ui/model/MyContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 import MyStampService from 'myTraining/present/logic/MyStampService';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 
 interface ProgressPageContainerProps {
   skProfileService?: SkProfileService;
@@ -429,17 +430,15 @@ function ProgressPageContainer({
 
                   <Table.Header>
                     <Table.Row>
-                      {contentType === MyLearningContentType.InProgress && (
-                        <Table.HeaderCell className="ck">
-                          <Checkbox
-                            checked={
-                              selectedServiceIds.length ===
-                              myTrainingTableViews.length
-                            }
-                            onChange={onCheckAll}
-                          />
-                        </Table.HeaderCell>
-                      )}
+                      <Table.HeaderCell className="ck">
+                        <Checkbox
+                          checked={
+                            selectedServiceIds.length ===
+                            myTrainingTableViews.length
+                          }
+                          onChange={onCheckAll}
+                        />
+                      </Table.HeaderCell>
                       {headerColumns &&
                         headerColumns.length &&
                         headerColumns.map((headerColumn) => (
@@ -531,53 +530,23 @@ function ProgressPageContainer({
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
             </>
           )) || (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} />
-              {!isLoading && (
-                <NoSuchContentPanel
-                  message={getPolyglotText(
-                    '필터 조건에 해당하는 결과가 없습니다.',
-                    'mapg-msmp-검색x4'
-                  )}
-                  link={noSuchLink()}
-                />
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x4'
               )}
-            </Segment>
+            />
           )}
         </>
       )) || (
-        <Segment
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            height: 400,
-            boxShadow: '0 0 0 0',
-            border: 0,
-          }}
-        >
-          <Loadingpanel loading={isLoading} />
-          {!isLoading && (
-            <NoSuchContentPanel
-              message={getPolyglotText(
-                '학습중인 과정이 없습니다.',
-                'learning-my-학습중'
-              )}
-              link={noSuchLink()}
-            />
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '학습중인 과정이 없습니다.',
+            'learning-my-학습중'
           )}
-        </Segment>
+        />
       )}
 
       <MyLearningDeleteModal
