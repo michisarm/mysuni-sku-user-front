@@ -5,9 +5,9 @@ import {
   getLectureTaskDetail,
   setLectureTaskDetail,
   setLectureTaskOffset,
-  setLectureTaskTab,
   setLectureTaskViewType,
   setLectureTaskOrder,
+  getLectureTaskViewType,
 } from '../../store/LectureTaskStore';
 import { ContentLayout } from 'shared';
 import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView';
@@ -15,11 +15,7 @@ import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummar
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
 import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
-import LectureTaskReplyView from '../view/LectureTaskView/LectureTaskReplyView';
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
-import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOverview/useLectureSubcategory';
-import { useLectureFile } from 'lecture/detail/service/useLectureFile';
-import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { useLectureTaskViewType } from 'lecture/detail/service/useLectureTask/useLectureTaskViewType';
 import {
   getLectureTaskCreateItem,
@@ -33,9 +29,6 @@ import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskD
 import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
 import { getLectureParams } from '../../store/LectureParamsStore';
-import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
-import { OverviewField } from '../../../../personalcube';
-import { Image } from 'semantic-ui-react';
 import { useLectureState } from '../../store/LectureStateStore';
 import { refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import { submitRegisterStudent } from '../../../../lecture/detail/service/useLectureState/utility/cubeStateActions';
@@ -43,18 +36,11 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
-
-const PUBLIC_URL = process.env.PUBLIC_URL;
+import { getCubeLectureTask } from '../../service/useLectureTask/utility/getCubeLectureTask';
 
 function LectureTaskContainer() {
-  const { pathname, hash } = useLocation();
+  const { hash } = useLocation();
   const history = useHistory();
-
-  // useEffect(() => {
-  //   return () => {
-  //     setLectureTaskTab('Overview');
-  //   };
-  // }, [pathname]);
 
   useEffect(() => {
     if (hash === '#create') {
@@ -68,34 +54,62 @@ function LectureTaskContainer() {
       setLectureTaskViewType('detail');
       return;
     }
-    setLectureTaskViewType('list');
+    if (getLectureTaskViewType() !== 'list') {
+      setLectureTaskViewType('list');
+      getCubeLectureTask();
+    }
   }, [hash]);
 
   const lectureState = useLectureState();
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
   const [lectureDescription] = useLectureDescription();
-  const [lectureSubcategory] = useLectureSubcategory();
-  const [lectureFile] = useLectureFile();
-  const [lectureTags] = useLectureTags();
   const [viewType] = useLectureTaskViewType();
   const [detailTaskId, setDetailTaskId] = useState<string>('');
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
   const [isReply, setIsReply] = useState<boolean>(false);
-  const [activePage, setActivePage] = useState<number>(1);
+  const [activePage, _setActivePage] = useState<number>(() => {
+    let page = 1;
+    const search = window.location.search.replace('?', '');
+    if (search.length > 0) {
+      const searches = search.split('&');
+      searches.forEach((c) => {
+        const [key, value] = c.split('=');
+        if (key === 'page' && !isNaN(parseInt(value)) && parseInt(value) > 1) {
+          page = parseInt(value);
+        }
+      });
+    }
+    return page;
+  });
   const [totalPage, setTotalPage] = useState<number>(1);
   // 이수정보 관련
   const [cubeAutomaticCompletion, setCubeAutomaticCompletion] =
     useState<boolean>(false);
   const [cubePostCount, setCubePostCount] = useState<number>(0);
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
-  const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
   const [postCount, setPostCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
-  const [subCommentCount, setSubCommentCount] = useState<number>(0);
   const [isStudent, setIsStudent] = useState<boolean>(false);
+
+  const setActivePage = useCallback(
+    (page: number) => {
+      if (activePage === page) {
+        return;
+      }
+      const params = getLectureParams();
+      if (params === undefined) {
+        return;
+      }
+      history.push({
+        pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}/?page=${page}`,
+      });
+      _setActivePage(page);
+    },
+    [history, activePage]
+  );
 
   useEffect(() => {
     if (taskItem) {
@@ -123,10 +137,6 @@ function LectureTaskContainer() {
           lectureState.cubeDetail.cubeMaterial.board.completionCondition
             ?.commentCount || 0
         );
-        setCubeSubCommentCount(
-          lectureState.cubeDetail.cubeMaterial.board.completionCondition
-            ?.subCommentCount || 0
-        );
         setCubeAutomaticCompletion(
           lectureState.cubeDetail.cubeMaterial.board?.automaticCompletion ||
             false
@@ -137,7 +147,6 @@ function LectureTaskContainer() {
           setIsStudent(true);
           setPostCount(lectureState.student.postCount || 0);
           setCommentCount(lectureState.student.commentCount || 0);
-          setSubCommentCount(lectureState.student.subCommentCount || 0);
         }
       }
     }
@@ -152,6 +161,7 @@ function LectureTaskContainer() {
   const sortChange = (data: any) => {
     setLectureTaskOrder(data);
     setActivePage(1);
+    console.log('sortChange');
     setLectureTaskOffset(0);
   };
 
@@ -177,20 +187,9 @@ function LectureTaskContainer() {
       return;
     }
     refresh(1).then(() => {
-      history.push({
-        pathname: `/lecture/card/${params.cardId}/cube/${params.cubeId}/${params.viewType}/${params.cubeType}`,
-      });
-      setActivePage(1);
+      history.goBack();
     });
   }, [history]);
-
-  // const onHandleSave = useCallback(() => {
-  //   history.goBack();
-  // }, []);
-
-  // const onHandleReply = useCallback(() => {
-  //   history.goBack();
-  // }, []);
 
   const onClickModify = useCallback(() => {
     setCreate(true);
@@ -222,22 +221,6 @@ function LectureTaskContainer() {
     },
     [history]
   );
-
-  const listHashLink = useCallback((hash: string) => {
-    setLectureTaskTab(hash);
-    const element = document.getElementById(hash);
-    if (element !== null) {
-      element.scrollIntoView();
-    }
-  }, []);
-
-  const overviewHashLink = useCallback((hash: string) => {
-    setLectureTaskTab(hash);
-    const element = document.getElementById(hash);
-    if (element !== null) {
-      element.scrollIntoView();
-    }
-  }, []);
 
   const handelClickCreateTask = useCallback(() => {
     setCreate(true);
@@ -456,12 +439,6 @@ function LectureTaskContainer() {
               taskItem={taskItem}
               moreView={moreView}
               handleClickTaskRow={moveToDetail}
-              listHashLink={listHashLink}
-              overviewHashLink={overviewHashLink}
-              // lectureDescription={lectureDescription}
-              // lectureSubcategory={lectureSubcategory}
-              // lectureTags={lectureTags}
-              // lectureFile={lectureFile}
               sortChange={sortChange}
               pageChange={pageChange}
               activePage={activePage}
@@ -470,10 +447,8 @@ function LectureTaskContainer() {
               cubeAutomaticCompletion={cubeAutomaticCompletion}
               cubePostCount={cubePostCount}
               cubeCommentCount={cubeCommentCount}
-              cubeSubCommentCount={cubeSubCommentCount}
               postCount={postCount}
               commentCount={commentCount}
-              subCommentCount={subCommentCount}
             />
           </ContentLayout>
         </div>
