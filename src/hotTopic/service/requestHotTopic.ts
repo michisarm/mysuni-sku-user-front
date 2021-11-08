@@ -51,6 +51,7 @@ export async function requestHotTopic(id: string) {
           thumbImagePath: card.thumbImagePath,
           thumbnailImagePath: card.thumbnailImagePath,
           type: card.type,
+          mainCollegeId: card.mainCollegeId,
         };
         return hotTopicCard;
       });

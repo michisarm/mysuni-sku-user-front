@@ -31,4 +31,5 @@ export interface HotTopicCardViewModel {
   thumbImagePath: string;
   thumbnailImagePath: string;
   type: CardType;
+  mainCollegeId: string;
 }
