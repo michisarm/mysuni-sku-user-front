@@ -47,7 +47,7 @@ function MyPagePage({
   const { colleges } = collegeService!;
 
   useEffect(() => {
-    requestNoteCount();
+    // requestNoteCount();
     if (colleges && colleges.length > 0) {
       return;
     }
