@@ -81,23 +81,23 @@ export function findCubeList(
 }
 
 // 노트 리스트 조회
-export function findNoteList(
-  searchBox: SearchBox
-  // cardId: string,
-  // cubeId: string,
-  // limit: string,
-  // offset: string,
-): Promise<OffsetElementList<NoteWithLecture> | undefined> {
-  // let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
-  let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&collegeId=${searchBox.collegeId}`;
-  if (!searchBox.startDate) {
-    url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
-  }
-
-  return axiosApi
-    .get<OffsetElementList<NoteWithLecture>>(url)
-    .then(AxiosReturn);
-}
+// export function findNoteList(
+//   searchBox: SearchBox
+//   // cardId: string,
+//   // cubeId: string,
+//   // limit: string,
+//   // offset: string,
+// ): Promise<OffsetElementList<NoteWithLecture> | undefined> {
+//   // let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
+//   let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&collegeId=${searchBox.collegeId}`;
+//   if (!searchBox.startDate) {
+//     url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+//   }
+//
+//   return axiosApi
+//     .get<OffsetElementList<NoteWithLecture>>(url)
+//     .then(AxiosReturn);
+// }
 
 // 폴더별 노트보기
 export function findNoteListByFolderId(
@@ -121,7 +121,7 @@ export function findNoteExcelList(): Promise<
 
 // 노트 내용수정
 export function modifyNote(id: string, noteUdo: NoteUdo): Promise<void> {
-  const url = `${BASE_URL}/${id}`;
+  const url = `${BASE_URL}/noteContents/${id}`;
   return axiosApi
     .put<void>(url, noteUdo)
     .then((response) => response && response.data);
@@ -141,7 +141,7 @@ export function modifyFolderId(
 
 // 노트 삭제
 export function deleteNote(id: string): Promise<void> {
-  const url = `${BASE_URL}/${id}`;
+  const url = `${BASE_URL}/noteContents/${id}`;
   return axiosApi.delete(url).then((response) => response && response.data);
 }
 

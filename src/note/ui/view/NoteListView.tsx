@@ -3,19 +3,12 @@ import {
   Segment,
   Accordion,
   Image,
-  Menu,
-  Table,
   Select,
   Button,
-  Label,
   Icon,
   Form,
   TextArea,
-  DropdownDivider,
-  DropdownProps,
-  SemanticCOLORS,
 } from 'semantic-ui-react';
-import Calendar from './Calendar';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import {
   OffsetElementList,
@@ -24,15 +17,11 @@ import {
 } from '@nara.platform/accent';
 import Note, { getConvertEnter } from '../../model/Note';
 import {
-  requestNoteList,
-  requestColleges,
-  requestNoteCount,
   requestAppendCubeList,
   requestCubeList,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
-import { setSearchBox, getSearchBox } from '../../store/SearchBoxStore';
-import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
+import { setSearchBox } from '../../store/SearchBoxStore';
 import moment from 'moment';
 import Folder from '../../model/Folder';
 import NoteCdoItem, { getNoteCdoItem } from '../../viewModel/NoteCdoItem';
@@ -41,7 +30,6 @@ import { saveNote, saveFolder } from '../../service/useNote/saveNote';
 import NoteUdoItem, { getNoteUdoItem } from '../../viewModel/NoteUdoItem';
 import NoteUdo from '../../model/NoteUdo';
 import { deleteNoteById } from '../../service/useNote/deleteNote';
-import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import {
   requestCubeListByFolderId,
@@ -49,16 +37,12 @@ import {
   requestAppendCubeListByFolderId,
 } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
-import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
-import NoteWithLectureListItem, {
-  getNoteWithLectureListItem,
-} from '../../viewModel/NoteWithLectureListItem';
-import NoteWithLecture from '../../model/NoteWithLecture';
 import { setNoteCount, getNoteCount } from '../../store/NoteCountStore';
 import CategoryColorType from '../../../shared/model/CategoryColorType';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { playSecondToString } from '../logic/NoteHelper';
 
 interface NoteViewProps {
   noteList: OffsetElementList<Note>;
@@ -149,8 +133,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
         offset: 0,
       });
 
-      const noteList = await requestNoteList();
-
       setNoteUdoItem(undefined);
       setNoteCdoItem(undefined);
     },
@@ -177,67 +159,53 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
 
   const save = useCallback(
     async (noteCdo: NoteCdo, id: string, index: number) => {
-      // console.log(activeIndexList);
-      // if (noteCdo.content === null || noteCdo.content === '') {
-      //   reactAlert({
-      //     title: getPolyglotText('알림', 'mypage-noteList-알림2'),
-      //     message: getPolyglotText(
-      //       '노트 내용을 작성해주세요.',
-      //       'mypage-noteList-노트작성1'
-      //     ),
-      //   });
-      //   return;
-      // }
-      //
-      // // My Page에서 신규 저장 시 cubeType에 관계없이 기본 값 지정
-      // noteCdo.playTime = '00:00:00';
-      // if (
-      //   noteCdo.cubeType !== null &&
-      //   (noteCdo.cubeType === 'Audio' || noteCdo.cubeType === 'Video')
-      // ) {
-      //   noteCdo.playTime = 'Note';
-      // }
-      //
-      // await saveNote(noteCdo, id);
-      //
-      // params.pageNo === '2' && (await requestCubeListByFolderId());
-      // params.pageNo === '1' && (await requestCubeList());
-      //
-      // // await searchNoteByCubeId(index, noteCdo.cubeId || '', noteCdo.cardId);
-      //
-      // setNoteCdoItem(undefined);
-      // params.pageNo === '2' && (await requestNoteCountByFolderId());
-      // // await requestNoteCount();
-      // const noteCount = getNoteCount() || 0;
-      // setNoteCount(noteCount + 1);
-      // console.log(activeIndexList);
+      if (noteCdo.content === null || noteCdo.content === '') {
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-noteList-알림2'),
+          message: getPolyglotText(
+            '노트 내용을 작성해주세요.',
+            'mypage-noteList-노트작성1'
+          ),
+        });
+        return;
+      }
+
+      // My Page에서 신규 저장 시 cubeType에 관계없이 기본 값 지정
+      await saveNote(noteCdo, id);
+
+      params.pageNo === '2' && (await requestCubeListByFolderId());
+      params.pageNo === '1' && (await requestCubeList());
+
+      setNoteCdoItem(undefined);
+      params.pageNo === '2' && (await requestNoteCountByFolderId());
+
+      const noteCount = getNoteCount() || 0;
+      setNoteCount(noteCount + 1);
     },
     [params.pageNo]
   );
 
   const update = useCallback(
     async (noteUdo: NoteUdo, id: string, index: number, note: Note) => {
-      // if (noteUdo.content === null || noteUdo.content === '') {
-      //   reactAlert({
-      //     title: getPolyglotText('알림', 'mypage-noteList-알림3'),
-      //     message: getPolyglotText(
-      //       '노트 내용을 작성해주세요.',
-      //       'mypage-noteList-노트작성2'
-      //     ),
-      //   });
-      //   return;
-      // }
-      //
-      // noteUdo.playTime =
-      //   note.playTime.indexOf('Note ') === -1 ? note.playTime : 'Note';
-      //
-      // await saveNote(undefined, id, noteUdo);
-      // params.pageNo === '2' && (await requestCubeListByFolderId());
-      // params.pageNo === '1' && (await requestCubeList());
-      // // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
-      //
-      // setNoteUdoItem(undefined);
-      // console.log(activeIndexList);
+      if (noteUdo.content === null || noteUdo.content === '') {
+        reactAlert({
+          title: getPolyglotText('알림', 'mypage-noteList-알림3'),
+          message: getPolyglotText(
+            '노트 내용을 작성해주세요.',
+            'mypage-noteList-노트작성2'
+          ),
+        });
+        return;
+      }
+
+      noteUdo.playSecond = note.noteContents[index].playSecond || 0;
+
+      await saveNote(undefined, id, noteUdo);
+      params.pageNo === '2' && (await requestCubeListByFolderId());
+      params.pageNo === '1' && (await requestCubeList());
+      // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+
+      setNoteUdoItem(undefined);
     },
     [params.pageNo]
   );
@@ -254,13 +222,18 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
         });
         return;
       }
-      setNoteUdoItem(getNoteUdoItem(index, cubeId, { content: note.content }));
+      setNoteUdoItem(
+        getNoteUdoItem(index, cubeId, {
+          content: note.noteContents[index].content,
+          playSecond: note.noteContents[index].playSecond || 0,
+        })
+      );
     },
     [noteCdoItem, noteUdoItem]
   );
 
   const deleteNote = useCallback(
-    async (id: string, index: number, note: Note) => {
+    async (id: string) => {
       reactConfirm({
         title: getPolyglotText('알림', 'mypage-noteList-알림5'),
         message: getPolyglotText(
@@ -272,14 +245,16 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
         },
         onOk: async () => {
           await deleteNoteById(id);
-          params.pageNo === '2' && (await requestCubeListByFolderId());
           params.pageNo === '1' && (await requestCubeList());
-          // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
+
+          params.pageNo === '2' && (await requestCubeListByFolderId());
           params.pageNo === '2' && (await requestNoteCountByFolderId());
+          // await searchNoteByCubeId(index, note.cubeId || '', note.cardId);
 
           // await requestNoteCount();
-          const noteCount = getNoteCount() || 0;
-          noteCount > 0 && setNoteCount(noteCount - 1);
+          // const noteCount = getNoteCount() || 0;
+          // noteCount > 0 && setNoteCount(noteCount - 1);
+          await requestCubeList();
         },
       });
     },
@@ -475,33 +450,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                     activeIndexList?.find((f) => f === index) !== undefined
                   }
                 >
-                  {/* 노트 보기 및 작성 */}
-                  {/* <NoteContent1 /> */}
                   <div className="note_content">
                     <div className="note_content_total">
-                      {/* <strong className="txt">
-                        <PolyglotText
-                          id="mypage-noteList-작성노트"
-                          defaultString="작성한 노트"
-                        />
-                      </strong>
-                      <span
-                        className="cnt"
-                        dangerouslySetInnerHTML={{
-                          __html: getPolyglotText(
-                            '{count}개',
-                            'mypage-noteList-노트수',
-                            {
-                              count: subNoteList
-                                .filter((f) => f.index === index)
-                                .map(
-                                  (f) => f.noteWithLectureList.results.length
-                                )
-                                .toString(),
-                            }
-                          ),
-                        }}
-                      /> */}
                       <div
                         className="note_content_total"
                         dangerouslySetInnerHTML={{
@@ -546,14 +496,15 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                             )}
                             value={noteCdoItem.noteCdo?.content}
                             onChange={(e, data) => {
-                              // (data.value as string).length < 1001 &&
-                              //   setNoteCdoItem({
-                              //     ...noteCdoItem,
-                              //     noteCdo: {
-                              //       ...noteCdoItem.noteCdo,
-                              //       content: (data.value as string) || '',
-                              //     },
-                              //   });
+                              (data.value as string).length < 1001 &&
+                                setNoteCdoItem({
+                                  ...noteCdoItem,
+                                  index,
+                                  noteCdo: {
+                                    ...noteCdoItem.noteCdo,
+                                    content: (data.value as string) || '',
+                                  },
+                                });
                             }}
                           />
                         </Form>
@@ -589,8 +540,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                         </div>
                       </div>
                     )}
-                    {/*{subNoteList &&*/}
-                    {/*  subNoteList.map(*/}
                     {item.noteContents &&
                       item.noteContents.map((content, subIndex) => (
                         <div
@@ -600,56 +549,45 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                           }`}
                         >
                           <div className="note_info">
-                            {content.playSecond &&
-                              // item.note.playTime.indexOf('Note ') === -1 &&
-                              (item.cubeType === 'Video' ||
-                                item.cubeType === 'Audio') && (
-                                <Link
-                                  className="time"
-                                  to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}
-                                  onClick={(e) =>
-                                    submit(
-                                      (content.playSecond &&
-                                        content.playSecond.toString()) ||
-                                        ''
-                                    )
-                                  }
-                                >
-                                  <Icon>
-                                    <Image
-                                      src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
-                                    />
-                                  </Icon>
-                                  {content.playSecond}
-                                  <Icon className="icongo">
-                                    <Image
-                                      src={`${PUBLIC_URL}/images/all/icon-go-a.svg`}
-                                    />
-                                  </Icon>
-                                </Link>
-                              )}
-                            {(!content.playSecond ||
-                              // subItem.note.playTime.indexOf('Note ') > -1 ||
-                              (item.cubeType !== 'Video' &&
-                                item.cubeType !== 'Audio')) && (
-                              <Icon>
-                                <Image
-                                  src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
-                                  alt="노트이미지"
-                                />
-                              </Icon>
+                            {playSecondToString(content.playSecond) ===
+                            '00:00:00' ? (
+                              <>
+                                <Icon>
+                                  <Image
+                                    src={`${PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
+                                    alt="노트이미지"
+                                  />
+                                </Icon>
+                                {`Note ${
+                                  (item.noteContents.length || 0) - subIndex
+                                }`}
+                              </>
+                            ) : (
+                              <Link
+                                className="time"
+                                to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}
+                                onClick={(e) =>
+                                  submit(
+                                    (content.playSecond &&
+                                      playSecondToString(content.playSecond)) ||
+                                      ''
+                                  )
+                                }
+                              >
+                                <Icon>
+                                  <Image
+                                    src={`${PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
+                                  />
+                                </Icon>
+                                {playSecondToString(content.playSecond)}
+                                <Icon className="icongo">
+                                  <Image
+                                    src={`${PUBLIC_URL}/images/all/icon-go-a.svg`}
+                                  />
+                                </Icon>
+                              </Link>
                             )}
-                            {(!content.playSecond ||
-                              (item.cubeType !== 'Video' &&
-                                item.cubeType !== 'Audio')) &&
-                              `Note ${
-                                (item.noteContents.length || 0) - subIndex
-                              }`}
-                            {content.playSecond &&
-                              // subItem.note.playTime.indexOf('Note ') > -1 &&
-                              (item.cubeType === 'Video' ||
-                                item.cubeType === 'Audio') &&
-                              `${content.playSecond}`}
+
                             <span className="date">
                               {content.modifiedTime !== 0
                                 ? moment(content.modifiedTime).format(
@@ -698,6 +636,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                         noteUdo: {
                                           ...noteUdoItem.noteUdo,
                                           content: (data.value as string) || '',
+                                          playSecond:
+                                            noteUdoItem.noteUdo?.playSecond ||
+                                            0,
                                         },
                                       })
                                     }
@@ -706,9 +647,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                 <div className="note_btn">
                                   <Button
                                     className="delete"
-                                    onClick={(e, data) =>
-                                      deleteNote(item.id, index, item)
-                                    }
+                                    onClick={() => deleteNote(content.id)}
                                   >
                                     <Image
                                       src={`${PUBLIC_URL}/images/all/icon-list-delete-24-px.svg`}
@@ -731,7 +670,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                                       noteUdoItem.noteUdo &&
                                       update(
                                         noteUdoItem.noteUdo,
-                                        item.id,
+                                        content.id,
                                         index,
                                         item
                                       )

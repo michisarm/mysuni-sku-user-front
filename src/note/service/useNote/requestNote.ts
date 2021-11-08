@@ -1,19 +1,15 @@
 import {
-  findNoteList,
+  // findNoteList,
   findNoteById,
   findCubeList,
   findAllCollege,
   findNoteCount,
   findNoteExcelList,
 } from '../../api/noteApi';
-import { setNote } from '../../store/NoteStore';
 import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
-import { OffsetElementList } from '@nara.platform/accent';
-import Note from '../../model/Note';
-import { getNoteCount, setNoteCount } from '../../store/NoteCountStore';
+import { setNoteCount } from '../../store/NoteCountStore';
 import { getSearchBox } from '../../store/SearchBoxStore';
-import moment from 'moment';
 import { setColleges } from '../../store/CollegesStore';
 import { setNoteWithLecture } from '../../store/NoteWithLectureStore';
 
@@ -26,17 +22,17 @@ export function requestNote(noteId: string) {
 }
 
 // export function requestNoteList(searchBox: SearchBox) {
-export function requestNoteList() {
-  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
-
-  // return findNoteList(cardId, cubeId, limit, offset).then(async result => {
-  return findNoteList(searchBox).then(async (result) => {
-    if (result) {
-      // setNoteList(result);
-      return result;
-    }
-  });
-}
+// export function requestNoteList() {
+//   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+//
+//   // return findNoteList(cardId, cubeId, limit, offset).then(async result => {
+//   return findNoteList(searchBox).then(async (result) => {
+//     if (result) {
+//       // setNoteList(result);
+//       return result;
+//     }
+//   });
+// }
 
 export function requestCubeList() {
   let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
@@ -48,6 +44,12 @@ export function requestCubeList() {
   findCubeList(searchBox).then(async (result) => {
     if (result) {
       setNoteList(result);
+
+      setNoteCount(
+        result.results
+          .map((note) => note.noteContents.length || 0)
+          .reduce((p, n) => p + n)
+      );
     }
   });
 }
@@ -59,7 +61,6 @@ export function requestAppendCubeList() {
     if (result) {
       // note or cube 명칭 정리
       const noteList = getNoteList();
-      const count = getNoteCount();
 
       if (noteList) {
         //
@@ -68,11 +69,11 @@ export function requestAppendCubeList() {
           results: noteList?.results.concat(result.results),
         });
 
-        setNoteCount(
-          noteList.results
-            .map((note) => note.noteContents.length || 0)
-            .reduce((p, n) => p + n)
-        );
+        // setNoteCount(
+        //   result.results
+        //     .map((note) => note.noteContents.length || 0)
+        //     .reduce((p, n) => p + n)
+        // );
       }
     }
   });

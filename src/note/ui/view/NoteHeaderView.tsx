@@ -14,23 +14,12 @@ import { Link } from 'react-router-dom';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import {
-  requestNoteList,
-  requestColleges,
   requestNoteExcelList,
   requestCubeList,
-  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
-import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
-import moment from 'moment';
 import Folder from '../../model/Folder';
-import NoteCdoItem, { getNoteCdoItem } from '../../viewModel/NoteCdoItem';
-import NoteCdo, { convertNoteToNoteCdo } from '../../model/NoteCdo';
-import { saveNote } from '../../service/useNote/saveNote';
-import NoteUdoItem, { getNoteUdoItem } from '../../viewModel/NoteUdoItem';
-import NoteUdo from '../../model/NoteUdo';
-import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model';
 import XLSX from 'xlsx';
@@ -38,7 +27,6 @@ import {
   convertNoteToNoteXlsxModel,
   NoteXlsxModel,
 } from '../../viewModel/NoteXlsxModel';
-import NoteWithLecture from '../../model/NoteWithLecture';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
