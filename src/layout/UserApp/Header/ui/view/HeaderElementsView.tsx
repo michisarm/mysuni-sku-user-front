@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
-
 import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
-import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
@@ -20,6 +17,8 @@ import {
 } from '../../../../../search/search.services';
 import { Checkbox } from 'semantic-ui-react';
 import { getQueryId } from '../../../../../search/search.events';
+import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
+import { observer } from 'mobx-react';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -98,7 +97,8 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 
 interface SearchBarViewProps {
   value: string;
-  setSearchValue: (value: string) => void;
+  searchInfo: SearchInfoModel;
+  setSearchValue: (name: string, value: any) => void;
   // focused?: boolean;
   onSearch: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -108,72 +108,75 @@ interface SearchBarViewProps {
   isSearch?: boolean;
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = ({
-  value,
-  setSearchValue,
-  // focused,
-  onSearch,
-  onChange,
-  onBlur,
-  onClick,
-  onClear,
-  isSearch,
-  // getPolyglotText,
-}) => {
-  //
-  const queryId = getQueryId();
-  const searchInSearchInfo = useSearchInSearchInfo();
+export const SearchBarView: React.FC<SearchBarViewProps> = observer(
+  ({
+    value,
+    searchInfo,
+    setSearchValue,
+    // focused,
+    onSearch,
+    onChange,
+    onBlur,
+    onClick,
+    onClear,
+    isSearch,
+    // getPolyglotText,
+  }) => {
+    //
+    console.log(searchInfo);
 
-  return (
-    <>
-      <div className="g-search-header" data-area={Area.SEARCH}>
-        <div className={isSearch ? 'search_wrap show_re' : 'search_wrap'}>
-          {isSearch ? (
-            <div className="re_text">
-              <span className="ellipsis">
-                {searchInSearchInfo?.parentSearchValue}
-              </span>
-            </div>
-          ) : null}
-          <input
-            type="text"
-            placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-            value={value}
-            onChange={onChange}
-            onClick={onClick}
-            // onBlur={onBlur}
-            onKeyPress={(e) => e.key === 'Enter' && onSearch()}
-            className="ui input search_ipt"
-          />
+    return (
+      <>
+        <div className="g-search-header" data-area={Area.SEARCH}>
+          <div className={isSearch ? 'search_wrap show_re' : 'search_wrap'}>
+            {searchInfo.inAgain ? (
+              <div className="re_text">
+                <span className="ellipsis">{searchInfo.recentSearchValue}</span>
+              </div>
+            ) : null}
+            <input
+              type="text"
+              placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
+              value={value}
+              onChange={onChange}
+              onClick={onClick}
+              // onBlur={onBlur}
+              onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+              className="ui input search_ipt"
+            />
+          </div>
+          <div className="ui button b-search">
+            <i
+              aria-hidden="true"
+              className="icon search-grey"
+              onClick={onSearch}
+            />
+          </div>
         </div>
-        <div className="ui button b-search">
-          <i
-            aria-hidden="true"
-            className="icon search-grey"
-            //  onClick={onSearch}
+        {isSearch ? (
+          <Checkbox
+            className="again_chk on"
+            label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
+            checked={searchInfo.inAgain}
+            onClick={() => {
+              if (!searchInfo?.inAgain) {
+                setSearchValue('searchValue', '');
+              }
+              // setSearchValue('searchValue', value);
+              // setSearchValue('recentSearchValue', queryId);
+              setSearchValue('inAgain', !searchInfo.inAgain);
+              // setSearchInSearchInfo({
+              //   checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+              //   parentSearchValue: queryId,
+              //   searchValue: value,
+              // });
+            }}
           />
-        </div>
-      </div>
-      {isSearch ? (
-        <Checkbox
-          className="again_chk on"
-          label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
-          checked={searchInSearchInfo?.checkSearchInSearch}
-          onClick={() => {
-            if (!searchInSearchInfo?.checkSearchInSearch) {
-              setSearchValue('');
-            }
-            setSearchInSearchInfo({
-              checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
-              parentSearchValue: queryId,
-              searchValue: value,
-            });
-          }}
-        />
-      ) : null}
-    </>
-  );
-};
+        ) : null}
+      </>
+    );
+  }
+);
 
 export const LearningMenuView: React.FC<MenuViewProps> =
   function LearningMenuView({ onClickMenu }) {

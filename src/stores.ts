@@ -16,6 +16,7 @@ import lectureCardStores from 'lecture/stores';
 import myTrainingStores from 'myTraining/stores';
 import approvalStores from 'approval/stores';
 import abtestStores from 'abtest/stores';
+import SearchService from './search/service/SearchService';
 
 const stores = {
   shared: {
@@ -23,6 +24,7 @@ const stores = {
     collegeService: new CollegeService(),
     reviewService: ReviewService.instance,
     commentService: CommentService.instance,
+    searchService: SearchService.instance,
   },
   ...layoutStores,
   ...notieStores,

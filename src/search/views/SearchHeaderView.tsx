@@ -39,38 +39,13 @@ export function SearchHeaderView() {
       setActiveItem('all');
     }
     handleClose();
-
-    // if (searchInSearchInfo?.checkSearchInSearch) {
-    //   setWrite(searchInSearchInfo.searchValue);
-    // } else {
-    //   setWrite(getQueryId());
-    // }
   }, [params]);
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleClose = () => {
     setIsOpen(false);
   };
-  //
-  // const searchSetting = (searchValue?: string) => {
-  //   if (searchValue !== undefined) {
-  //     setWrite(searchValue);
-  //     setSearchInSearchInfo({
-  //       checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
-  //       parentSearchValue: queryId,
-  //       searchValue,
-  //     });
-  //   }
-  //   handleClose();
-  // };
-
-  //const isExternal = isExternalInstructor();
 
   useEffect(() => {
-    //const axios = getAxios();
     const fetchMenu = async () => {
       const response = await findAvailablePageElements();
       setMenuAuth(response);
@@ -80,8 +55,6 @@ export function SearchHeaderView() {
 
   return (
     <>
-      {/*<div className="top_search_area" data-area={Area.SEARCH}></div>*/}
-
       <div className="tab_search_inner">
         <Menu className="tab_search_title">
           <Menu.Item

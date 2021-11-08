@@ -646,8 +646,8 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   filterClearAll();
   const errataValue = await findNaverOpenApiErrata(searchValue);
-  console.log('----errata searchValue----');
-  console.log(errataValue);
+  // console.log('----errata searchValue----');
+  // console.log(errataValue);
 
   searchCardFilterData(decodedSearchValue);
   setPreRef(searchValue);
@@ -665,8 +665,8 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   setSearchBadgeList([]);
   setSearchCommunityList([]);
-  console.log('----Badge Search----');
-  console.log(searchValue);
+  // console.log('----Badge Search----');
+  // console.log(searchValue);
   findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
@@ -674,8 +674,8 @@ export async function searchData(searchValue: string, searchType?: string) {
     }
   });
 
-  console.log('----Community Search----');
-  console.log(searchValue);
+  // console.log('----Community Search----');
+  // console.log(searchValue);
   if (
     getMenuAuth()?.some(
       (pagemElement) =>
@@ -691,8 +691,8 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
-  console.log('----Recent Search----');
-  console.log(searchValue);
+  // console.log('----Recent Search----');
+  // console.log(searchValue);
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   searchRecents.unshift(searchValue);
@@ -710,8 +710,8 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   // 연관검색어
   const suggestions: string[] = [];
-  console.log('----Suggestion Search----');
-  console.log(searchValue);
+  // console.log('----Suggestion Search----');
+  // console.log(searchValue);
   findRelatedKeywordByKeyword(searchValue)
     .then((c) => {
       if (c !== undefined) {

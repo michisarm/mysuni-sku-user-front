@@ -26,9 +26,17 @@ import { SearchContentsResultLectureView } from './views/SearchContentsResultLec
 import { SearchContentsResultSideView } from './views/SearchContentsResultSideView';
 import { SearchNoDataView } from './views/SearchNoDataView';
 import { Area } from 'tracker/model';
+import SearchInfoModel from './model/SeachInfoModel';
 
-export function SearchContentsPage() {
+interface Props {
+  onSearch: (value: string) => void;
+  searchInfo: SearchInfoModel;
+}
+
+export function SearchContentsPage(props: Props) {
   //
+  const { onSearch, searchInfo } = props;
+
   const params = useParams<SearchParam>();
 
   const queryId = getQueryId();
@@ -77,31 +85,11 @@ export function SearchContentsPage() {
   }
 
   const HeaderTotalCountTitle = () => {
-    const searchInSearchInfo = useSearchInSearchInfo();
     const relatedList = useSearchRelatedList();
-    const [write, setWrite] = useState<string>('');
-
-    // const handleClose = () => {
-    //   setIsOpen(false);
-    // };
-
-    const searchSetting = (searchValue?: string) => {
-      if (searchValue !== undefined) {
-        setWrite(searchValue);
-        setSearchInSearchInfo({
-          checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
-          parentSearchValue: queryId,
-          searchValue,
-        });
-      }
-      // handleClose();
-    };
-
-    console.log(searchInSearchInfo);
 
     return (
       <>
-        {searchInSearchInfo?.checkSearchInSearch && (
+        {searchInfo.inAgain && (
           <p
             className="ttl_txt"
             dangerouslySetInnerHTML={{
@@ -109,15 +97,15 @@ export function SearchContentsPage() {
                 '{value} 중 <strong class="search_keyword">{value2}</strong>에 대한 검색결과는 총 <strong>{value3}건</strong> 입니다.',
                 '통검-요약정보-결과내검색타이틀',
                 {
-                  value: searchInSearchInfo.parentSearchValue,
-                  value2: searchInSearchInfo.searchValue,
+                  value: searchInfo.recentSearchValue,
+                  value2: searchInfo.searchValue,
                   value3: totalCount.toString(),
                 }
               ),
             }}
           />
         )}
-        {!searchInSearchInfo?.checkSearchInSearch && (
+        {!searchInfo.inAgain && (
           <p
             className="ttl_txt"
             dangerouslySetInnerHTML={{
@@ -151,8 +139,7 @@ export function SearchContentsPage() {
                       <a
                         href="javascript:void(0);"
                         onClick={() => {
-                          searchSetting(related);
-                          search(related);
+                          onSearch(related);
                         }}
                       >
                         {related}

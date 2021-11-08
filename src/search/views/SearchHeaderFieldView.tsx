@@ -12,31 +12,12 @@ import { StorageModel } from '@nara.platform/accent';
 
 interface Props {
   callback?: (searchValue?: string) => void;
-  setSearchValue: (value: string) => void;
+  setSearchValue: (name: string, value: any) => void;
+  onSearch: (value: string) => void;
 }
 
 export function SearchHeaderFieldView(props: Props) {
   //
-  // const [write, setWrite] = useState<string>();
-  // const [isSearchOpen, setIsSearchOpen] = useState<boolean>();
-
-  // const setSearchOpen = () => {
-  //   setWrite('');
-  //   // this.setState({ isSearchOpen: !isSearchOpen });
-  //   setIsSearchOpen(!isSearchOpen);
-  //   document.getElementById('btnSearchPopup')?.click();
-  //   setSearchInSearchInfo({
-  //     checkSearchInSearch: false,
-  //     parentSearchValue: '',
-  //     searchValue: '',
-  //   }); // 초기화
-  // };
-
-  const onClickSearch = (searchValue: string) => {
-    props.setSearchValue(searchValue);
-    search(searchValue);
-  };
-
   const searchRecents = useSearchRecentList();
 
   const onClickRemove = (searchValue: string) => {
@@ -90,7 +71,7 @@ export function SearchHeaderFieldView(props: Props) {
                     <li key={`search-recent-${index}`}>
                       <strong
                         className="rwd"
-                        onClick={() => onClickSearch(searchRecent)}
+                        onClick={() => props.onSearch(searchRecent)}
                       >
                         {searchRecent}
                       </strong>
@@ -111,7 +92,7 @@ export function SearchHeaderFieldView(props: Props) {
               <strong className="w_tit">인기 검색어</strong>
             </div>
             <div className="w_contents">
-              <SearchHeaderFieldPopularView onClickSearch={onClickSearch} />
+              <SearchHeaderFieldPopularView onClickSearch={props.onSearch} />
             </div>
           </div>
         </div>

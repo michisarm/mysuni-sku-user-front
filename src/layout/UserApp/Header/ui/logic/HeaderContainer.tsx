@@ -1,18 +1,17 @@
 import React, { Component, createRef, useEffect } from 'react';
-import { reactAutobind, getCookie } from '@nara.platform/accent';
+import {
+  reactAutobind,
+  getCookie,
+  ReactComponent,
+  mobxHelper,
+} from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
-import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
-import {
-  LearningMenuView,
-  LogoView,
-  MenuView,
-  SearchBarView,
-} from '../view/HeaderElementsView';
+import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
@@ -21,29 +20,27 @@ import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
-import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
-import { useSearchInSearchInfo } from '../../../../../search/search.services';
+import SearchService from '../../../../../search/service/SearchService';
+import { inject, observer } from 'mobx-react';
 
 interface Props extends RouteComponentProps {}
 
-interface State {
-  searchValue: string;
-  focused: boolean;
+interface State {}
+
+interface Injected {
+  searchService: SearchService;
 }
 
+@inject(mobxHelper.injectFrom('shared.searchService'))
+@observer
 @reactAutobind
-class HeaderContainer extends Component<Props, State> {
+class HeaderContainer extends ReactComponent<Props, State, Injected> {
   //
   static contextType = Context;
 
   headerRef: React.RefObject<any> = createRef();
 
   supportPath = boardRoutePaths.supportNotice();
-
-  state = {
-    searchValue: '',
-    focused: false,
-  };
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
@@ -61,24 +58,34 @@ class HeaderContainer extends Component<Props, State> {
   }
 
   handleClickOutside(event: any) {
+    //
+    const { searchService } = this.injected;
     if (!this.headerRef.current?.contains(event.target)) {
-      this.setState({ focused: false });
+      searchService.setFocusedValue(false);
     }
   }
 
   initSearchValue() {
-    this.setState({ searchValue: '' });
+    //
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
+    // this.setState({ searchValue: '' });
   }
 
   onSearch() {
     //
-    const { searchValue } = this.state;
-    console.log(searchValue);
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+    console.log('search============');
+    searchService.setSearchInfoValue(
+      'recentSearchValue',
+      searchInfo.searchValue
+    );
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
-    if (searchValue) {
+    if (searchInfo.searchValue) {
       const { history } = this.props;
-      history.push(`/search?query=${searchValue}`);
+      history.push(`/search?query=${searchInfo.searchValue}`);
       // window.location.href = encodeURI(`/search?query=${searchValue}`);
 
       // search track
@@ -92,7 +99,7 @@ class HeaderContainer extends Component<Props, State> {
         area: Area.SEARCH,
         actionType: ActionType.GENERAL,
         action: Action.SEARCH,
-        actionName: '헤더검색::' + searchValue,
+        actionName: '헤더검색::' + searchInfo.searchValue,
       } as ActionTrackParam);
 
       // react-GA logic
@@ -107,27 +114,35 @@ class HeaderContainer extends Component<Props, State> {
   }
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ searchValue: e.target.value });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', e.target.value);
+    // this.setState({ searchValue: e.target.value });
   }
 
-  setSearchValue(value: string): void {
+  setSearchInfoValue(name: string, value: any): void {
     //
-    console.log(value);
-    this.setState({ searchValue: value });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue(name, value);
+    // this.setState({ searchValue: value });
   }
 
   onClickSearchInput() {
     //
-    this.setState({ focused: true });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(true);
   }
 
   onBlurSearchInput() {
     //
-    this.setState({ focused: false });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(false);
+    // this.setState({ focused: false });
   }
 
   onClickClearSearch() {
-    this.setState({ searchValue: '' });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
+    // this.setState({ searchValue: '' });
   }
 
   cleanSessionStorage() {
@@ -165,7 +180,9 @@ class HeaderContainer extends Component<Props, State> {
   render() {
     //
     const { breadcrumb } = this.context;
-    const { searchValue, focused } = this.state;
+    const { searchService } = this.injected;
+    const { searchInfo, searchViewFocused } = searchService;
+
     const isExternal = isExternalInstructor();
 
     const isSearchPage = this.props.location.pathname === '/search';
@@ -184,15 +201,17 @@ class HeaderContainer extends Component<Props, State> {
           // Notice
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
-          setSearchValue={this.setSearchValue}
-          open={focused}
+          setSearchInfoValue={this.setSearchInfoValue}
+          focused={searchViewFocused}
+          searchInfo={searchInfo}
         >
           <>
             <LogoView onClickMenu={this.onClickMenu} />
             <MenuView onClickMenu={this.onClickMenu} />
             <SearchBarView
-              value={searchValue}
-              setSearchValue={this.setSearchValue}
+              value={searchInfo.searchValue}
+              searchInfo={searchInfo}
+              setSearchValue={this.setSearchInfoValue}
               onSearch={this.onSearch}
               onChange={this.onChangeSearchInput}
               onClear={this.onClickClearSearch}

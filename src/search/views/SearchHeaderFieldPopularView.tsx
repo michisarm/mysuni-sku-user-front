@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
-  onClickSearch: (searchValue: string) => void;
+  onClickSearch: (searchValue: any) => void;
 }
 
 export function SearchHeaderFieldPopularView(props: Props) {
