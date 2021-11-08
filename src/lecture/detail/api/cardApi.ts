@@ -167,8 +167,8 @@ export function findCardsByRdo(cardRdo: CardRdo) {
 
 export function findRequiredLearning() {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/required/cardIds`;
-  return axios.get<string[]>(url).then(AxiosReturn);
+  const url = `${BASE_URL}/cards/required`;
+  return axios.get<UserLectureCard[]>(url).then(AxiosReturn);
 }
 
 export const [findByRdoCache, clearFindByRdo] = createCacheApi(findByRdo);

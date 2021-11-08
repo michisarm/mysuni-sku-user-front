@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import Swiper from 'react-id-swiper';
+
 import { Button, Icon } from 'semantic-ui-react';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
@@ -25,24 +27,32 @@ interface Props extends RouteComponentProps {
   profileMemberName?: string;
 }
 
+const SwiperProps = {
+  slidesPerView: 4,
+  spaceBetween: 7,
+  slidesPerGroup: 4,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.' + 'swiperRequired' + ' .swiper-button-next',
+    prevEl: '.' + 'swiperRequired' + ' .swiper-button-prev',
+  },
+  speed: 500,
+};
+
 const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [title] = useState(
-    getPolyglotText('Deep Change를 위한 권장과정', 'home-DeepChange-Title')
+    getPolyglotText('Deep Change를 위한 핵인싸 과정', 'home-DeepChange-Title')
   );
 
   const fetchCardList = async () => {
     const userLanguage = parseLanguage(
       SkProfileService.instance.skProfile.language
     );
-    const cardIds = await findRequiredLearning();
-
-    if (cardIds) {
-      const cardList = await findCardFromCardBundle(cardIds, 8, false);
-
-      if (cardList !== undefined) {
-        setCardList(parseUserLectureCards(cardList, userLanguage));
-      }
+    const cardList = await findRequiredLearning();
+    if (cardList !== undefined) {
+      setCardList(parseUserLectureCards(cardList, userLanguage));
     }
   };
 
@@ -70,28 +80,37 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   return (
     <ContentWrapper dataArea={Area.MAIN_REQUIRED}>
       <div className="section-head">
-        <strong>{title}</strong>
-        <div className="right">
-          <Button icon className="right btn-blue" onClick={onViewAll}>
-            View all <Icon className="morelink" />
-          </Button>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
+        <div className="sec-tit-btn">
+          <button className="btn-more" onClick={onViewAll}>
+            전체보기
+          </button>
         </div>
       </div>
-      <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
-        {cardList.map((item, i) => {
-          return (
-            <li key={i}>
-              <CardGroup type={GroupType.Box}>
-                <LectureCardView
-                  {...item}
-                  useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                  dataArea={Area.MAIN_REQUIRED}
-                />
-              </CardGroup>
-            </li>
-          );
-        })}
-      </Lecture.Group>
+      <div className="section-body">
+        <div className="cardSwiper">
+          <Swiper {...SwiperProps}>
+            {cardList.map((item, i) => {
+              return (
+                <CardGroup type={GroupType.Wrap} key={item.cardId}>
+                  <LectureCardView
+                    {...item}
+                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                    dataArea={Area.MAIN_REQUIRED}
+                  />
+                </CardGroup>
+              );
+            })}
+          </Swiper>
+          <div className="swiperRequired">
+            <div className="swiper-button-prev" />
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </div>
     </ContentWrapper>
   );
 };

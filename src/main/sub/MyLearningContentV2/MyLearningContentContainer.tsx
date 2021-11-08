@@ -13,7 +13,8 @@ import RQDLearning from './MainComponents/RQDLearning';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import LRSLearning from './MainComponents/LRSLearning';
+import { LRSFromContentbase } from './MainComponents/LRSFromContentbase';
+import { LRSFromLearningPatternBased } from './MainComponents/LRSFromLearningPatternBased';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -56,16 +57,24 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
         return <LeraningContainer key={i} cardBundle={cardBundle} />;
       })} */}
       <MainBanner />
-      <InProgressLearning profileMemberName={skProfile.profileViewName} />
+      <div className="learning-section-wrap">
+        <RQDLearning />
+        {cardBundles?.map((cardBundle, i) => {
+          // if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
+          //   return null;
+          // }
+          return <LeraningContainer key={i} cardBundle={cardBundle} />;
+        })}
+      </div>
+      <div className="learning-section-wrap bg-gray">
+        <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+        <LRSFromLearningPatternBased
+          profileMemberName={skProfile.profileViewName}
+        />
+      </div>
+      {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
+
       <MainChallengingBadgeContainer />
-      <RQDLearning />
-      {cardBundles?.map((cardBundle, i) => {
-        if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
-          return null;
-        }
-        return <LeraningContainer key={i} cardBundle={cardBundle} />;
-      })}
-      <LRSLearning profileMemberName={skProfile.profileViewName} />
       <EnrollingLearning />
     </>
   );

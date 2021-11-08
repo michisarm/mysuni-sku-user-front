@@ -9,7 +9,7 @@ import CardGroup, {
 import { SkProfileService } from 'profile/stores';
 
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCards } from '../../../lecture/recommend/api/recommendApi';
+import { findRecommendationCardsFromContentBase } from '../../../lecture/recommend/api/recommendApi';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   LectureCardView,
@@ -39,7 +39,7 @@ function LRSListContainer() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    findRecommendationCards().then((next) => {
+    findRecommendationCardsFromContentBase().then((next) => {
       if (next !== undefined) {
         setViewModel(next);
       }
