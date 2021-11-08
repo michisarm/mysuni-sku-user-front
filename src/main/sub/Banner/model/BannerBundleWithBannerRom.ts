@@ -15,6 +15,6 @@ export interface BannerBundleWithBannerRom {
   endDate: number;
   modifiedTime: number;
   top: boolean;
-  topBgColor: string;
+  // topBgColor: string;
   banners: Banner[];
 }
