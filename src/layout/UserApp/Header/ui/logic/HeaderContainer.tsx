@@ -9,6 +9,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
+import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
@@ -18,7 +19,6 @@ import ReactGA from 'react-ga';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
@@ -69,7 +69,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     searchService.setSearchInfoValue('searchValue', '');
-    // this.setState({ searchValue: '' });
   }
 
   onSearch() {
@@ -102,7 +101,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
         actionName: '헤더검색::' + searchInfo.searchValue,
       } as ActionTrackParam);
 
-      // react-GA logic
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,
@@ -183,8 +181,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const { searchService } = this.injected;
     const { searchInfo, searchViewFocused } = searchService;
 
-    const isExternal = isExternalInstructor();
-
     const isSearchPage = this.props.location.pathname === '/search';
     const isSearch =
       this.props.location.search !== null && this.props.location.search !== '';
@@ -198,7 +194,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
               supportPath={this.supportPath}
             />
           }
-          // Notice
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
           setSearchInfoValue={this.setSearchInfoValue}
@@ -219,7 +214,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
               onBlur={this.onBlurSearchInput}
               isSearch={isSearchPage && isSearch}
             />
-            {/* <CategoryMenuContainer /> */}
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>
         </HeaderWrapperView>

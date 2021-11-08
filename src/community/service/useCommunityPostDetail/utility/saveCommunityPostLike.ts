@@ -1,4 +1,4 @@
-import { registerLike } from "community/api/likeApi";
+import { registerLike } from 'community/api/likeApi';
 
 export async function saveCommunityPostLike(
   postId: string,

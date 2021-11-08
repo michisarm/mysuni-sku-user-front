@@ -1,18 +1,16 @@
-import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import ReactQuill from 'react-quill';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;

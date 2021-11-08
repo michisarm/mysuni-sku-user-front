@@ -769,15 +769,34 @@ export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어
 export function searchSuggest(text_idx: string) {
-  const url = encodeURI(
-    `${SUGGEST_URL}?target=related&domain_no=0&term=${text_idx}&max_count=10`
-  );
-  return axiosApi.get<string[]>(url).then(AxiosReturn);
+  return axiosApi
+    .get<string[]>(SUGGEST_URL, {
+      params: {
+        target: 'related',
+        domain_no: 0,
+        max_count: 10,
+        term: text_idx,
+      },
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
 }
 
 export function findRelatedKeywordByKeyword(keyword: string) {
   const url = `${SEARCH_API_URL}/relatedKeyword/search`;
-  return axiosApi.get<string[]>(url, { params: { keyword } }).then(AxiosReturn);
+  return axiosApi
+    .get<string[]>(url, { params: { keyword }, paramsSerializer })
+    .then(AxiosReturn);
+}
+
+function paramsSerializer(paramObj: Record<string, any>) {
+  const params = new URLSearchParams();
+  for (const key in paramObj) {
+    if (paramObj[key] !== undefined) {
+      params.append(key, paramObj[key]);
+    }
+  }
+  return params.toString();
 }
 
 // 오타제안검색

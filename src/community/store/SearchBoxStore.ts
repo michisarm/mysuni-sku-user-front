@@ -2,16 +2,7 @@ import { createStore } from './Store';
 import { SearchBox } from 'community/model/SearchBox';
 
 // 전체멤버 조회
-const [
-  setSearchBox,
-  onSearchBox,
-  getSearchBox,
-  useSearchBox
-] = createStore<SearchBox>();
+const [setSearchBox, onSearchBox, getSearchBox, useSearchBox] =
+  createStore<SearchBox>();
 
-export {
-  setSearchBox,
-  onSearchBox,
-  getSearchBox,
-  useSearchBox
- }
+export { setSearchBox, onSearchBox, getSearchBox, useSearchBox };

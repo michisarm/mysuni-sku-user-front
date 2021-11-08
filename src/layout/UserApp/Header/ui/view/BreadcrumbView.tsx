@@ -117,7 +117,11 @@ class BreadcrumbView extends Component<Props, State> {
     //
     const { values, supportPath } = this.props;
     return (
-      <div className="breadcrumbs" data-area={Area.HEADER_BREADCRUMBS}>
+      <div
+        className="breadcrumbs"
+        data-area={Area.HEADER_BREADCRUMBS}
+        style={{ display: 'block' }}
+      >
         <div className="cont-inner">
           <div className="ui standard breadcrumb community-link">
             <Link to="/" className="section">
