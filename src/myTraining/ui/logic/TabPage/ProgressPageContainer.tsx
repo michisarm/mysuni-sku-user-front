@@ -3,7 +3,6 @@ import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
-import MyStampService from 'myTraining/present/logic/MyStampService';
 import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { ProgressPageTableView } from 'myTraining/ui/view/table/ProgressPageTableView';
@@ -14,7 +13,6 @@ import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import XLSX from 'xlsx';
 import { StudentService } from '../../../../lecture';
-import { SkProfileService } from '../../../../profile/stores';
 import FilterBoxService from '../../../../shared/present/logic/FilterBoxService';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { Direction, toggleDirection } from '../../../model/Direction';
@@ -31,19 +29,15 @@ import MyLearningDeleteModal from '../../view/MyLearningDeleteModal';
 import MyLearningNoCheckModal from '../../view/MyLearningNoCheckModal';
 
 interface ProgressPageContainerProps {
-  skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
   studentService?: StudentService;
   filterBoxService?: FilterBoxService;
-  myStampService?: MyStampService;
 }
 
 function ProgressPageContainer({
-  skProfileService,
   myTrainingService,
   studentService,
   filterBoxService,
-  myStampService,
 }: ProgressPageContainerProps) {
   //
 
@@ -52,7 +46,6 @@ function ProgressPageContainer({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const { profileMemberName } = skProfileService!;
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [deleteFinishModal, setDeleteFinishModal] = useState<boolean>(false);
   const [noCheckedModal, setNoCheckedModal] = useState<boolean>(false);
@@ -88,6 +81,9 @@ function ProgressPageContainer({
   useEffect(() => {
     myTrainingService!.clearAllTableViews();
     myTrainingService!.initFilterRdo(contentType);
+    if (selectedServiceIds && selectedServiceIds.length > 0) {
+      myTrainingService!.clearAllSelectedServiceIds();
+    }
 
     if (params.pageNo === '1') {
       requestMyTrainings();
@@ -558,11 +554,9 @@ function ProgressPageContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'profile.skProfileService',
     'lecture.studentService',
     'myTraining.myTrainingService',
-    'shared.filterBoxService',
-    'myTraining.myStampService'
+    'shared.filterBoxService'
   )
 )(observer(ProgressPageContainer));
 
