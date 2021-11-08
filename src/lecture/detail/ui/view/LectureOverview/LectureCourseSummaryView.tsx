@@ -62,11 +62,13 @@ function hasCommunityAuthRequest() {
   const hasCommunityAuth = async () => {
     let hasAuth = false;
     const response = await findAvailablePageElements();
-    response.forEach((pageElement) => {
-      if (pageElement.type === 'Community') {
-        hasAuth = true;
-      }
-    });
+    if (response !== undefined) {
+      response.forEach((pageElement) => {
+        if (pageElement.type === 'Community') {
+          hasAuth = true;
+        }
+      });
+    }
     return hasAuth;
   };
   return hasCommunityAuth();

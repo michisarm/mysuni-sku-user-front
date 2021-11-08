@@ -20,7 +20,9 @@ const LectureCohortView: React.FC<LectureWebpage & Props> =
       //const axios = getAxios();
       const fetchMenu = async () => {
         const response = await findAvailablePageElements();
-        setMenuAuth(response);
+        if (response !== undefined) {
+          setMenuAuth(response);
+        }
       };
       fetchMenu();
     }, []);
