@@ -7,6 +7,7 @@ import StructureLink from './StructureLink';
 import lecturePath from '../../../../routePaths';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 import { getPreCourseFailCardId } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 export function parseCubeType(cubeType: CubeType) {
   switch (cubeType) {
@@ -30,13 +31,13 @@ async function cannotAlert(cardId: string) {
   //   message: '선수 학습 완료 후 진행이 가능합니다.',
   // });
 
-  console.log('durationable');
-
   if (failCardId !== '' && failCardId !== null) {
     reactConfirm({
-      title: '안내',
-      message:
+      title: getPolyglotText('안내', 'lecture-preCard-confirm-title'),
+      message: getPolyglotText(
         '선수 학습 완료 후 진행이 가능합니다. 선수 학습으로 이동하시겠습니까?',
+        'lecture-preCard-confirm-message'
+      ),
       onOk: () => history?.push(lecturePath.lectureCard(failCardId)),
       onCancel: () => {},
     });
