@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLectureReview } from '../../../service/useLectuerCubeOverview/useLectureReview';
-import LectureCourseSummaryView from '../../view/LectureOverview/LectureCourseSummaryView';
-
-import { useLectureStructure } from '../../../store/LectureStructureStore';
-import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 import findAvailablePageElements from '../../../../shared/api/arrangeApi';
 import { PageElement } from '../../../../shared/model/PageElement';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
+import { useLectureReview } from '../../../service/useLectuerCubeOverview/useLectureReview';
+import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
+import LectureCourseSummaryView from '../../view/LectureOverview/LectureCourseSummaryView';
 
 function LectureCardSummaryContainer() {
   const lectureSummary = useLectureCardSummary();

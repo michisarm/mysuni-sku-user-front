@@ -6,24 +6,16 @@ const [
   setCommunityMember,
   onCommunityMember,
   getCommunityMember,
-  useCommunityMember
+  useCommunityMember,
 ] = createStore<CommunityMemberList>();
 
 // 검색멤버 조회
-const [
-  setSearchMember,
-  onSearchMember,
-  getSearchMember,
-  useSearchMember
-] = createStore<CommunityMemberList>();
+const [setSearchMember, onSearchMember, getSearchMember, useSearchMember] =
+  createStore<CommunityMemberList>();
 
 // 검색멤버 조회
-const [
-  setSearchText,
-  onSearchText,
-  getSearchText,
-  useSearchText
-] = createStore<string>();
+const [setSearchText, onSearchText, getSearchText, useSearchText] =
+  createStore<string>();
 
 export {
   setCommunityMember,
@@ -37,5 +29,5 @@ export {
   setSearchText,
   onSearchText,
   getSearchText,
-  useSearchText
- }
+  useSearchText,
+};

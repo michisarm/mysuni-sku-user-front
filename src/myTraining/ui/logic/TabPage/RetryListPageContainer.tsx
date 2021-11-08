@@ -1,44 +1,23 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
+import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import { inject, observer } from 'mobx-react';
+import { MyTrainingTableViewModel } from 'myTraining/model';
+import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
+import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
+import { RetryListPageTableView } from 'myTraining/ui/view/table/RetryListPageTableView';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import { Checkbox, Icon, Segment, Table } from 'semantic-ui-react';
-import XLSX from 'xlsx';
-import { MyTrainingService } from '../../../stores';
-import MyLearningDeleteModal from '../../view/MyLearningDeleteModal';
-import MyLearningDeleteFinishModal from '../../view/MyLearningDeleteFinishModal';
-import MyLearningNoCheckModal from '../../view/MyLearningNoCheckModal';
-import { SeeMoreButton, StudentService } from '../../../../lecture';
-import { TabHeader } from '../../../ui/view/tabHeader';
+import { useHistory, useParams } from 'react-router-dom';
 import FilterBoxService from '../../../../shared/present/logic/FilterBoxService';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
-import FilterBoxContainer from '../FilterBoxContainer';
-import { MyTrainingRouteParams } from '../../../routeParams';
-import { useScrollMove } from '../../../useScrollMove';
 import { Direction, toggleDirection } from '../../../model/Direction';
-import TableHeaderColumn, {
-  inProgressPolyglot,
-} from '../../../ui/model/TableHeaderColumn';
-import { MyLearningContentType } from '../../../ui/model';
 import { Order } from '../../../model/Order';
-import { LearningType, LearningTypeName } from '../../../model/LearningType';
-import {
-  convertTimeToDate,
-  timeToHourMinutePaddingFormat,
-} from '../../../../shared/helper/dateTimeHelper';
-import { Loadingpanel, NoSuchContentPanel } from '../../../../shared';
-import { SkProfileService } from '../../../../profile/stores';
-import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
-import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
-import { MyTrainingTableViewModel } from 'myTraining/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
-import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
-import { MyContentType } from 'myTraining/ui/model/MyContentType';
-import { MyPageContentType } from '../../model/MyPageContentType';
-import MyStampService from 'myTraining/present/logic/MyStampService';
-import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
+import { MyTrainingRouteParams } from '../../../routeParams';
+import { MyTrainingService } from '../../../stores';
+import { MyLearningContentType } from '../../../ui/model';
+import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
+import { TabHeader } from '../../../ui/view/tabHeader';
+import { useScrollMove } from '../../../useScrollMove';
 
 interface RetryListPageContainerProps {
   myTrainingService?: MyTrainingService;
@@ -248,121 +227,129 @@ function RetryListPageContainer({
 
   return (
     <>
-      {((!resultEmpty || filterCount > 0) && (
-        <>
-          <TabHeader
-            totalCount={myTrainingTableCount}
-            resultEmpty={resultEmpty}
-            filterOpotions={filterOptions}
-          >
-            <div
-              className="list-number"
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
-                  'learning-학보드-게시물총수',
-                  {
-                    totalCount: (myTrainingTableCount || 0).toString(),
-                  }
-                ),
-              }}
-            />
-          </TabHeader>
-          <FilterBoxContainer />
-        </>
-      )) || <div style={{ marginTop: 50 }} />}
+      {
+        <TabHeader
+          totalCount={myTrainingTableCount}
+          filterCount={filterCount}
+          resultEmpty={resultEmpty}
+          filterOpotions={filterOptions}
+        >
+          <div
+            className="list-number"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
+                'learning-학보드-게시물총수',
+                {
+                  totalCount: (myTrainingTableCount || 0).toString(),
+                }
+              ),
+            }}
+          />
+        </TabHeader>
+      }
       {(myTrainingTableViews && myTrainingTableViews.length > 0 && (
         <>
           {(!resultEmpty && (
-            <>
-              <div className="mylearning-list-wrap">
-                <Table className="ml-02-03">
-                  <Table.Header>
-                    <Table.Row>
-                      {headerColumns &&
-                        headerColumns.length > 0 &&
-                        headerColumns.map((headerColumn) => (
-                          <Table.HeaderCell
-                            key={`learning-header-${headerColumn.key}`}
-                            className={
-                              headerColumn.text === '과정명' ? 'title' : ''
-                            }
-                          >
-                            {inProgressPolyglot(headerColumn.text)}
-                            {headerColumn.icon && (
-                              <a
-                                href="#"
-                                onClick={(e) => {
-                                  handleClickSort(headerColumn.text);
-                                  e.preventDefault();
-                                }}
-                              >
-                                <Icon
-                                  className={getOrderIcon(
-                                    headerColumn.text,
-                                    true
-                                  )}
-                                >
-                                  <span className="blind">
-                                    {getOrderIcon(headerColumn.text)}
-                                  </span>
-                                </Icon>
-                              </a>
-                            )}
-                          </Table.HeaderCell>
-                        ))}
-                    </Table.Row>
-                  </Table.Header>
+            <RetryListPageTableView
+              totalCount={myTrainingTableCount}
+              headerColumns={headerColumns}
+              learningList={myTrainingTableViews}
+              showSeeMore={showSeeMore}
+              onClickRow={onViewDetail}
+              onClickSeeMore={onClickSeeMore}
+              getOrderIcon={getOrderIcon}
+              onClickSort={handleClickSort}
+            />
+            // <>
+            //   <div className="mylearning-list-wrap">
+            //     <Table className="ml-02-03">
+            //       <Table.Header>
+            //         <Table.Row>
+            //           {headerColumns &&
+            //             headerColumns.length > 0 &&
+            //             headerColumns.map((headerColumn) => (
+            //               <Table.HeaderCell
+            //                 key={`learning-header-${headerColumn.key}`}
+            //                 className={
+            //                   headerColumn.text === '과정명' ? 'title' : ''
+            //                 }
+            //               >
+            //                 {inProgressPolyglot(headerColumn.text)}
+            //                 {headerColumn.icon && (
+            //                   <a
+            //                     href="#"
+            //                     onClick={(e) => {
+            //                       handleClickSort(headerColumn.text);
+            //                       e.preventDefault();
+            //                     }}
+            //                   >
+            //                     <Icon
+            //                       className={getOrderIcon(
+            //                         headerColumn.text,
+            //                         true
+            //                       )}
+            //                     >
+            //                       <span className="blind">
+            //                         {getOrderIcon(headerColumn.text)}
+            //                       </span>
+            //                     </Icon>
+            //                   </a>
+            //                 )}
+            //               </Table.HeaderCell>
+            //             ))}
+            //         </Table.Row>
+            //       </Table.Header>
 
-                  <Table.Body>
-                    {myTrainingTableViews.map((myTraining, index) => {
-                      const collegeId = myTraining.category?.collegeId || '';
-                      return (
-                        <Table.Row key={`mytraining-list-${index}`}>
-                          <Table.Cell>
-                            {myTrainingTableCount - index}
-                          </Table.Cell>
-                          <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
-                          <Table.Cell className="title">
-                            <a
-                              href="#"
-                              onClick={(e) => onViewDetail(e, myTraining)}
-                            >
-                              <span
-                                className={`ellipsis ${
-                                  myTraining.useNote ? 'noteOn' : ''
-                                }`}
-                              >
-                                {parsePolyglotString(myTraining.name)}
-                              </span>
-                            </a>
-                          </Table.Cell>
-                          <Table.Cell>
-                            {LearningTypeName[myTraining.cubeType] || '-'}{' '}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {myTraining.difficultyLevel || '-'}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {timeToHourMinutePaddingFormat(
-                              myTraining.learningTime +
-                                myTraining.additionalLearningTime
-                            )}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {myTraining.stampCount || '-'}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {convertTimeToDate(myTraining.modifiedTime)}
-                          </Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                  </Table.Body>
-                </Table>
-              </div>
-              {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            </>
+            //       <Table.Body>
+            //         {myTrainingTableViews.map((myTraining, index) => {
+            //           const collegeId = myTraining.category?.collegeId || '';
+            //           return (
+            //             <Table.Row key={`mytraining-list-${index}`}>
+            //               <Table.Cell>
+            //                 {myTrainingTableCount - index}
+            //               </Table.Cell>
+            //               <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
+            //               <Table.Cell className="title">
+            //                 <a
+            //                   href="#"
+            //                   onClick={(e) => onViewDetail(e, myTraining)}
+            //                 >
+            //                   <span
+            //                     className={`ellipsis ${
+            //                       myTraining.useNote ? 'noteOn' : ''
+            //                     }`}
+            //                   >
+            //                     {parsePolyglotString(myTraining.name)}
+            //                   </span>
+            //                 </a>
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {LearningTypeName[myTraining.cubeType] || '-'}{' '}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {myTraining.difficultyLevel || '-'}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {timeToHourMinutePaddingFormat(
+            //                   myTraining.learningTime +
+            //                     myTraining.additionalLearningTime
+            //                 )}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {myTraining.stampCount || '-'}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {convertTimeToDate(myTraining.modifiedTime)}
+            //               </Table.Cell>
+            //             </Table.Row>
+            //           );
+            //         })}
+            //       </Table.Body>
+            //     </Table>
+            //   </div>
+            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset } from '@nara.platform/accent';
-import ReactGA from 'react-ga';
-import { Segment, Table } from 'semantic-ui-react';
-import { SeeMoreButton } from '../../../../lecture';
-import { TabHeader } from '../../../ui/view/tabHeader';
-import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
-import { MyTrainingRouteParams } from '../../../routeParams';
-import { scrollSave, useScrollMove } from '../../../useScrollMove';
-import TableHeaderColumn, {
-  inProgressPolyglot,
-} from '../../../ui/model/TableHeaderColumn';
-import { Loadingpanel, NoSuchContentPanel } from '../../../../shared';
-import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
+import moment from 'moment';
 import { AplModel } from 'myTraining/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { AplState } from 'myTraining/model/AplState';
 import AplService from 'myTraining/present/logic/AplService';
 import routePaths from 'myTraining/routePaths';
-import { AplState } from 'myTraining/model/AplState';
-import { aplStateNamePolyglotText } from 'myTraining/model/AplStateName';
-import moment from 'moment';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
+import { PersonalCompletedListPageTableView } from 'myTraining/ui/view/table/PersonalCompletedListPageTableView';
+import React, { useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
+import { useHistory, useParams } from 'react-router-dom';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import { MyTrainingRouteParams } from '../../../routeParams';
+import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
+import { TabHeader } from '../../../ui/view/tabHeader';
+import { scrollSave, useScrollMove } from '../../../useScrollMove';
 
 interface PersonalCompletedListPageContainerProps {
   aplService?: AplService;
@@ -170,7 +163,7 @@ function PersonalCompletedListPageContainer({
 
   return (
     <>
-      {(!resultEmpty && (
+      {
         <TabHeader resultEmpty={resultEmpty} totalCount={aplTableCount}>
           <div
             className="list-number"
@@ -183,76 +176,86 @@ function PersonalCompletedListPageContainer({
             }}
           />
         </TabHeader>
-      )) || <div style={{ marginTop: 50 }} />}
+      }
       {(aplTableViews && aplTableViews.length > 0 && (
         <>
           {(!resultEmpty && (
-            <>
-              <div className="mylearning-list-wrap">
-                <Table className="ml-02-09">
-                  <colgroup>
-                    <col width="10%" />
-                    <col width="25%" />
-                    <col width="15%" />
-                    <col width="10%" />
-                    <col width="5%" />
-                    <col width="15%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                  </colgroup>
+            <PersonalCompletedListPageTableView
+              totalCount={aplTableCount}
+              headerColumns={headerColumns}
+              learningList={aplTableViews}
+              showSeeMore={showSeeMore}
+              onClickRow={onClickItem}
+              onClickSeeMore={onClickSeeMore}
+              getApprovalTime={getApprovalTime}
+              getAllowTime={getAllowTime}
+            />
+            // <>
+            //   <div className="mylearning-list-wrap">
+            //     <Table className="ml-02-09">
+            //       <colgroup>
+            //         <col width="10%" />
+            //         <col width="25%" />
+            //         <col width="15%" />
+            //         <col width="10%" />
+            //         <col width="5%" />
+            //         <col width="15%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //       </colgroup>
 
-                  <Table.Header>
-                    <Table.Row>
-                      {headerColumns &&
-                        headerColumns.length &&
-                        headerColumns.map((headerColumn) => (
-                          <Table.HeaderCell
-                            key={`learning-header-${headerColumn.key}`}
-                            className={
-                              headerColumn.text === '과정명' ? 'title' : ''
-                            }
-                          >
-                            {inProgressPolyglot(headerColumn.text)}
-                          </Table.HeaderCell>
-                        ))}
-                    </Table.Row>
-                  </Table.Header>
+            //       <Table.Header>
+            //         <Table.Row>
+            //           {headerColumns &&
+            //             headerColumns.length &&
+            //             headerColumns.map((headerColumn) => (
+            //               <Table.HeaderCell
+            //                 key={`learning-header-${headerColumn.key}`}
+            //                 className={
+            //                   headerColumn.text === '과정명' ? 'title' : ''
+            //                 }
+            //               >
+            //                 {inProgressPolyglot(headerColumn.text)}
+            //               </Table.HeaderCell>
+            //             ))}
+            //         </Table.Row>
+            //       </Table.Header>
 
-                  <Table.Body>
-                    {aplTableViews.map((apl, index) => {
-                      const channelName = getChannelName(apl.channelId);
-                      return (
-                        <Table.Row key={`personalCompleted-list-${index}`}>
-                          <Table.Cell>{aplTableCount - index}</Table.Cell>
-                          <Table.Cell className="title">
-                            <a onClick={() => onClickItem('learning', apl.id)}>
-                              <span className="ellipsis">{apl.title}</span>
-                            </a>{' '}
-                          </Table.Cell>
-                          <Table.Cell>
-                            <span className="ellipsis">{channelName}</span>
-                          </Table.Cell>
-                          <Table.Cell>{getAllowTime(apl)}</Table.Cell>
-                          <Table.Cell>
-                            {parsePolyglotString(
-                              apl.approvalUserIdentity?.name
-                            )}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {apl.approvalUserIdentity?.email || '-'}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {aplStateNamePolyglotText(apl.state)}
-                          </Table.Cell>
-                          <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                  </Table.Body>
-                </Table>
-              </div>
-              {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            </>
+            //       <Table.Body>
+            //         {aplTableViews.map((apl, index) => {
+            //           const channelName = getChannelName(apl.channelId);
+            //           return (
+            //             <Table.Row key={`personalCompleted-list-${index}`}>
+            //               <Table.Cell>{aplTableCount - index}</Table.Cell>
+            //               <Table.Cell className="title">
+            //                 <a onClick={() => onClickItem('learning', apl.id)}>
+            //                   <span className="ellipsis">{apl.title}</span>
+            //                 </a>{' '}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 <span className="ellipsis">{channelName}</span>
+            //               </Table.Cell>
+            //               <Table.Cell>{getAllowTime(apl)}</Table.Cell>
+            //               <Table.Cell>
+            //                 {parsePolyglotString(
+            //                   apl.approvalUserIdentity?.name
+            //                 )}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {apl.approvalUserIdentity?.email || '-'}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {aplStateNamePolyglotText(apl.state)}
+            //               </Table.Cell>
+            //               <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
+            //             </Table.Row>
+            //           );
+            //         })}
+            //       </Table.Body>
+            //     </Table>
+            //   </div>
+            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

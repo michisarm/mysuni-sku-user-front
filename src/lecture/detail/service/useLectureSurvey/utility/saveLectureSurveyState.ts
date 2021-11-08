@@ -1,4 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   clearFindMyCardRelatedStudentsCache,
   saveTask,
@@ -21,7 +22,6 @@ import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure'
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();

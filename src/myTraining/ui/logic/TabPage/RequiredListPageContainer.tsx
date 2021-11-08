@@ -1,34 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
-import ReactGA from 'react-ga';
-import { Checkbox, Icon, Segment, Table } from 'semantic-ui-react';
-import { LectureService, SeeMoreButton } from 'lecture';
-import FilterBoxService from 'shared/present/logic/FilterBoxService';
-import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { useScrollMove } from 'myTraining/useScrollMove';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
-import { TabHeader } from 'myTraining/ui/view/tabHeader';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import FilterBoxContainer from '../FilterBoxContainer';
-import TableHeaderColumn, {
-  inProgressPolyglot,
-} from 'myTraining/ui/model/TableHeaderColumn';
+import { LectureService } from 'lecture';
+import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
-import { stateNamePolytglot } from 'shared/model/LearningStateName';
-import { LearningTypeName } from 'myTraining/model/LearningType';
-import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
-import { LearningStateName, LearningState } from 'shared/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import {
-  convertTimeToDate,
-  timeToHourMinutePaddingFormat,
-} from 'shared/helper/dateTimeHelper';
-import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
-import { Loadingpanel, NoSuchContentPanel } from 'shared';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
+import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
+import TableHeaderColumn from 'myTraining/ui/model/TableHeaderColumn';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
+import { TabHeader } from 'myTraining/ui/view/tabHeader';
+import { RequiredListPageTableView } from 'myTraining/ui/view/table/RequiredListPageTableView';
+import { useScrollMove } from 'myTraining/useScrollMove';
+import React, { useCallback, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
+import { useHistory, useParams } from 'react-router-dom';
+import FilterBoxService from 'shared/present/logic/FilterBoxService';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface RequiredListPageContainerProps {
   lectureService?: LectureService;
@@ -219,144 +206,154 @@ function RequiredListPageContainer({
 
   return (
     <>
-      {((!resultEmpty || filterCount > 0) && (
-        <>
-          <TabHeader
-            resultEmpty={resultEmpty}
-            totalCount={lectureTableCount}
-            filterOpotions={filterOptions}
-          >
-            <div
-              className="list-number"
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
-                  'learning-학보드-게시물총수',
-                  {
-                    totalCount: (lectureTableCount || 0).toString(),
-                  }
-                ),
-              }}
-            />
-          </TabHeader>
-          <FilterBoxContainer />
-        </>
-      )) || <div style={{ marginTop: 50 }} />}
+      {
+        <TabHeader
+          resultEmpty={resultEmpty}
+          totalCount={lectureTableCount}
+          filterCount={filterCount}
+          filterOpotions={filterOptions}
+        >
+          <div
+            className="list-number"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
+                'learning-학보드-게시물총수',
+                {
+                  totalCount: (lectureTableCount || 0).toString(),
+                }
+              ),
+            }}
+          />
+        </TabHeader>
+      }
       {(lectureTableViews && lectureTableViews.length > 0 && (
         <>
           {(!resultEmpty && (
-            <div className="mylearning-list-wrap">
-              <Table className="ml-02-03">
-                <colgroup>
-                  <col width="8%" />
-                  <col width="12%" />
-                  <col width="20%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                </colgroup>
+            <RequiredListPageTableView
+              totalCount={lectureTableCount}
+              headerColumns={headerColumns}
+              learningList={lectureTableViews}
+              showSeeMore={showSeeMore}
+              onClickRow={onViewDetail}
+              onClickSeeMore={onClickSeeMore}
+              getOrderIcon={getOrderIcon}
+              onClickSort={handleClickSort}
+            />
+            // <>
+            //   <div className="mylearning-list-wrap">
+            //     <Table className="ml-02-03">
+            //       <colgroup>
+            //         <col width="8%" />
+            //         <col width="12%" />
+            //         <col width="20%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //         <col width="10%" />
+            //       </colgroup>
 
-                <Table.Header>
-                  <Table.Row>
-                    {headerColumns &&
-                      headerColumns.length &&
-                      headerColumns.map((headerColumn) => (
-                        <Table.HeaderCell
-                          key={`learning-header-${headerColumn.key}`}
-                          className={
-                            headerColumn.text === '과정명' ? 'title' : ''
-                          }
-                        >
-                          {inProgressPolyglot(headerColumn.text)}
-                          {headerColumn.icon && (
-                            <a
-                              href="#"
-                              onClick={(e) => {
-                                handleClickSort(headerColumn.text);
-                                e.preventDefault();
-                              }}
-                            >
-                              <Icon
-                                className={getOrderIcon(
-                                  headerColumn.text,
-                                  true
-                                )}
-                              >
-                                <span className="blind">
-                                  {getOrderIcon(headerColumn.text)}
-                                </span>
-                              </Icon>
-                            </a>
-                          )}
-                        </Table.HeaderCell>
-                      ))}
-                  </Table.Row>
-                </Table.Header>
+            //       <Table.Header>
+            //         <Table.Row>
+            //           {headerColumns &&
+            //             headerColumns.length &&
+            //             headerColumns.map((headerColumn) => (
+            //               <Table.HeaderCell
+            //                 key={`learning-header-${headerColumn.key}`}
+            //                 className={
+            //                   headerColumn.text === '과정명' ? 'title' : ''
+            //                 }
+            //               >
+            //                 {inProgressPolyglot(headerColumn.text)}
+            //                 {headerColumn.icon && (
+            //                   <a
+            //                     href="#"
+            //                     onClick={(e) => {
+            //                       handleClickSort(headerColumn.text);
+            //                       e.preventDefault();
+            //                     }}
+            //                   >
+            //                     <Icon
+            //                       className={getOrderIcon(
+            //                         headerColumn.text,
+            //                         true
+            //                       )}
+            //                     >
+            //                       <span className="blind">
+            //                         {getOrderIcon(headerColumn.text)}
+            //                       </span>
+            //                     </Icon>
+            //                   </a>
+            //                 )}
+            //               </Table.HeaderCell>
+            //             ))}
+            //         </Table.Row>
+            //       </Table.Header>
 
-                <Table.Body>
-                  {lectureTableViews.map((requiredCard, index) => {
-                    const learningType = LearningTypeName[requiredCard.type];
-                    const collegeName = getCollgeName(
-                      requiredCard.category.collegeId
-                    );
-                    const learningState =
-                      (requiredCard.learningState &&
-                        LearningStateName[
-                          requiredCard.learningState as LearningState
-                        ]) ||
-                      '-';
-                    const progressRate =
-                      (requiredCard.learningState &&
-                        `${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}`) ||
-                      '-';
+            //       <Table.Body>
+            //         {lectureTableViews.map((requiredCard, index) => {
+            //           const learningType = LearningTypeName[requiredCard.type];
+            //           const collegeName = getCollgeName(
+            //             requiredCard.category.collegeId
+            //           );
+            //           const learningState =
+            //             (requiredCard.learningState &&
+            //               LearningStateName[
+            //                 requiredCard.learningState as LearningState
+            //               ]) ||
+            //             '-';
+            //           const progressRate =
+            //             (requiredCard.learningState &&
+            //               `${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}`) ||
+            //             '-';
 
-                    return (
-                      <Table.Row key={`requried-card-${index}`}>
-                        <Table.Cell>{lectureTableCount - index}</Table.Cell>
-                        <Table.Cell>{collegeName}</Table.Cell>
-                        <Table.Cell className="title">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              onViewDetail(e, requiredCard.serviceId);
-                            }}
-                          >
-                            <span
-                              className={`ellipsis ${
-                                requiredCard.useNote ? 'noteOn' : ''
-                              }`}
-                            >
-                              {requiredCard.name &&
-                                parsePolyglotString(requiredCard.name)}
-                            </span>
-                          </a>
-                        </Table.Cell>
-                        <Table.Cell>{learningType || '-'} </Table.Cell>
-                        <Table.Cell>
-                          {requiredCard.difficultyLevel || '-'}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {timeToHourMinutePaddingFormat(
-                            requiredCard.learningTime
-                          )}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {convertTimeToDate(requiredCard.updateTime)}
-                        </Table.Cell>
-                        <Table.Cell>{progressRate}</Table.Cell>
-                        <Table.Cell>
-                          {stateNamePolytglot(learningState)}
-                        </Table.Cell>
-                      </Table.Row>
-                    );
-                  })}
-                </Table.Body>
-                {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              </Table>
-            </div>
+            //           return (
+            //             <Table.Row key={`requried-card-${index}`}>
+            //               <Table.Cell>{lectureTableCount - index}</Table.Cell>
+            //               <Table.Cell>{collegeName}</Table.Cell>
+            //               <Table.Cell className="title">
+            //                 <a
+            //                   href="#"
+            //                   onClick={(e) => {
+            //                     onViewDetail(e, requiredCard.serviceId);
+            //                   }}
+            //                 >
+            //                   <span
+            //                     className={`ellipsis ${
+            //                       requiredCard.useNote ? 'noteOn' : ''
+            //                     }`}
+            //                   >
+            //                     {requiredCard.name &&
+            //                       parsePolyglotString(requiredCard.name)}
+            //                   </span>
+            //                 </a>
+            //               </Table.Cell>
+            //               <Table.Cell>{learningType || '-'} </Table.Cell>
+            //               <Table.Cell>
+            //                 {requiredCard.difficultyLevel || '-'}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {timeToHourMinutePaddingFormat(
+            //                   requiredCard.learningTime
+            //                 )}
+            //               </Table.Cell>
+            //               <Table.Cell>
+            //                 {convertTimeToDate(requiredCard.updateTime)}
+            //               </Table.Cell>
+            //               <Table.Cell>{progressRate}</Table.Cell>
+            //               <Table.Cell>
+            //                 {stateNamePolytglot(learningState)}
+            //               </Table.Cell>
+            //             </Table.Row>
+            //           );
+            //         })}
+            //       </Table.Body>
+            //     </Table>
+            //   </div>
+            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

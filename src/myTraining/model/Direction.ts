@@ -1,6 +1,6 @@
 export enum Direction {
   ASC = 'asc',
-  DESC = 'desc'
+  DESC = 'desc',
 }
 
 export function toggleDirection(prev: Direction) {

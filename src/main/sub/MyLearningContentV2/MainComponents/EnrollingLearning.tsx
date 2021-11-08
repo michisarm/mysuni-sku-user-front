@@ -1,26 +1,25 @@
+import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { Lecture } from 'lecture';
 import React, { useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import ReactGA from 'react-ga';
 import { Loadingpanel } from 'shared';
-import { Lecture } from 'lecture';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
 import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
+import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
+import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
+import { SkProfileService } from '../../../../profile/stores';
+import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
-import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
-import { SkProfileService } from '../../../../profile/stores';
+import { ContentWrapper } from '../MyLearningContentElementsView';
 
 function EnrollingLearning() {
   const history = useHistory();

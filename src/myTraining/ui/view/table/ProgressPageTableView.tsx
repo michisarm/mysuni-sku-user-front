@@ -10,13 +10,16 @@ import {
 } from 'shared/helper/dateTimeHelper';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { SeeMoreButton } from '../../../../lecture';
 
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
   learningList: MyTrainingTableViewModel[];
+  showSeeMore: boolean;
   getLearningType: (type: LearningType) => LearningTypeName;
   onClickRow: (e: any, myTraining: MyTrainingTableViewModel) => void;
+  onClickSeeMore: () => void;
 
   getOrderIcon: (
     column: string,
@@ -33,8 +36,10 @@ export function ProgressPageTableView({
   totalCount,
   headerColumns,
   learningList,
+  showSeeMore,
   getLearningType,
   onClickRow,
+  onClickSeeMore,
 
   getOrderIcon,
   onClickSort,
@@ -141,6 +146,7 @@ export function ProgressPageTableView({
           </Table.Body>
         </Table>
       </div>
+      {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
     </>
   );
 }

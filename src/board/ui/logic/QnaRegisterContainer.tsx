@@ -1,28 +1,26 @@
-import React from 'react';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import {
-  reactAutobind,
   mobxHelper,
+  reactAutobind,
   ReactComponent,
 } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import depot, { FileBox, ValidationType, PatronType } from '@nara.drama/depot';
-
 import classNames from 'classnames';
-import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
-import { depotHelper, AlertWin, ConfirmWin } from 'shared';
-
-import routePaths from '../../routePaths';
-import { BoardService } from '../../stores';
+import { inject, observer } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
+import { AlertWin, ConfirmWin, depotHelper } from 'shared';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import FaqListModal from './FaqListModal';
-import SupportService from '../../present/logic/SupportService';
 import QnAModel from '../../model/QnAModel';
 import QuestionSdo from '../../model/sdo/QuestionSdo';
+import SupportService from '../../present/logic/SupportService';
+import routePaths from '../../routePaths';
+import { BoardService } from '../../stores';
+import FaqListModal from './FaqListModal';
 
 interface Props
   extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
@@ -111,7 +109,9 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { qna } = supportService;
 
     this.onClose();
-    await supportService.registerQuestion(QnAModel.asQuestionSdo(qna, sourceId));
+    await supportService.registerQuestion(
+      QnAModel.asQuestionSdo(qna, sourceId)
+    );
     this.props.history.push(routePaths.supportQnA());
   }
 
@@ -333,7 +333,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                 <div className="lg-attach">
                   <div className="attach-inner">
                     <FileBox
-                      id={qna && qna.question && qna.question.depotId || ''}
+                      id={(qna && qna.question && qna.question.depotId) || ''}
                       vaultKey={{
                         keyString: 'qna-sample',
                         patronType: PatronType.Audience,
