@@ -25,6 +25,9 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import findAvailablePageElements from '../../../../shared/api/arrangeApi';
+import { PageElementType } from '../../../../shared/model/PageElementType';
+import { PageElement } from '../../../../shared/model/PageElement';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -37,6 +40,7 @@ interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
   lectureReview?: LectureReview;
   lectureStructure: LectureStructure;
+  menuAuth: PageElement[];
 }
 
 function copyUrl() {
@@ -51,6 +55,23 @@ function copyUrl() {
     title: getPolyglotText('알림', 'Course-Summary-알림'),
     message: getPolyglotText('URL이 복사되었습니다.', 'Course-Summary-URL'),
   });
+}
+
+function hasCommunityAuthRequest() {
+  // const response = await findAvailablePageElements();
+  const hasCommunityAuth = async () => {
+    let hasAuth = false;
+    const response = await findAvailablePageElements();
+    if (response !== undefined) {
+      response.forEach((pageElement) => {
+        if (pageElement.type === 'Community') {
+          hasAuth = true;
+        }
+      });
+    }
+    return hasAuth;
+  };
+  return hasCommunityAuth();
 }
 
 function getColor(collegeId: string) {
@@ -98,6 +119,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     lectureSummary,
     lectureReview,
     lectureStructure,
+    menuAuth,
   }) {
     let difficultyLevelIcon = 'basic';
     switch (lectureSummary.difficultyLevel) {
@@ -181,6 +203,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
       postService.post.alarmInfo.contentsName = lectureSummary.name;
     }, [lectureSummary]);
+
+    useEffect(() => {
+      //const axios = getAxios();
+      const fetchMenu = async () => {
+        const response = await findAvailablePageElements();
+      };
+      fetchMenu();
+    }, []);
 
     return (
       <div className="course-info-header" data-area={Area.CARD_HEADER}>
@@ -314,23 +344,29 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                 </div>
               </div>
             </div>
+            `
           </div>
           <div className="right-area">
             <div className="header-right-link">
-              {lectureSummary.hasCommunity && (
-                <Link
-                  to={`/community/${lectureSummary.communityId}`}
-                  target="_blank"
-                >
-                  <span className="communityText">
-                    <Icon className="communityLink" />
-                    <PolyglotText
-                      defaultString="커뮤니티로 이동"
-                      id="Course-Summary-커뮤니티"
-                    />
-                  </span>
-                </Link>
-              )}
+              {lectureSummary.hasCommunity &&
+                menuAuth.some(
+                  (pagemElement) =>
+                    pagemElement.position === 'TopMenu' &&
+                    pagemElement.type === 'Community'
+                ) && (
+                  <Link
+                    to={`/community/${lectureSummary.communityId}`}
+                    target="_blank"
+                  >
+                    <span className="communityText">
+                      <Icon className="communityLink" />
+                      <PolyglotText
+                        defaultString="커뮤니티로 이동"
+                        id="Course-Summary-커뮤니티"
+                      />
+                    </span>
+                  </Link>
+                )}
               <a onClick={toggleCardBookmark}>
                 <span>
                   <Icon

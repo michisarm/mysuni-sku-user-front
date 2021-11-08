@@ -7,10 +7,10 @@ import { CountType } from '../model/AplRdoModel';
 
 export function useRequestAllMyTrainingCount() {
   useEffect(() => {
-    MyTrainingService.instance.findAllTabCount();
-    InMyLectureService.instance.findAllTabCount();
-    LectureService.instance.countRequiredLectures();
-    AplService.instance.findAllTabCount(CountType.patronKeyString);
+    // MyTrainingService.instance.findAllTabCount();
+    // InMyLectureService.instance.findAllTabCount();
+    // LectureService.instance.countRequiredLectures();
+    // AplService.instance.findAllTabCount(CountType.patronKeyString);
 
     return () => {
       MyTrainingService.instance.clearAllTabCount();

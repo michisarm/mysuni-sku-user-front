@@ -11,6 +11,7 @@ import {
   findCard,
   findCommunities,
   findExpert,
+  findNaverOpenApiErrata,
   findPreCard,
   findRelatedKeywordByKeyword,
   searchRankinsCache,
@@ -80,6 +81,7 @@ export function getQueryId(): string {
     window.location.search.indexOf('=') + 1,
     window.location.search.length
   );
+
   if (queryId.endsWith('%')) {
     let decodedQueryId = queryId;
     while (decodedQueryId.endsWith('%')) {
@@ -644,6 +646,9 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   filterClearAll();
+  const errataValue = await findNaverOpenApiErrata(searchValue);
+  // console.log('----errata searchValue----');
+  // console.log(errataValue);
 
   searchCardFilterData(decodedSearchValue);
   setPreRef(searchValue);
@@ -661,6 +666,8 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   setSearchBadgeList([]);
   setSearchCommunityList([]);
+  // console.log('----Badge Search----');
+  // console.log(searchValue);
   findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
@@ -668,6 +675,8 @@ export async function searchData(searchValue: string, searchType?: string) {
     }
   });
 
+  // console.log('----Community Search----');
+  // console.log(searchValue);
   if (
     getMenuAuth()?.some(
       (pagemElement) =>
@@ -683,6 +692,8 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
+  // console.log('----Recent Search----');
+  // console.log(searchValue);
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   searchRecents.unshift(searchValue);
@@ -700,7 +711,8 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   // 연관검색어
   const suggestions: string[] = [];
-
+  // console.log('----Suggestion Search----');
+  // console.log(searchValue);
   findRelatedKeywordByKeyword(searchValue)
     .then((c) => {
       if (c !== undefined) {
@@ -793,20 +805,36 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
   if (keyword.indexOf(' ') > -1) {
     const keywords = keyword.split(' ');
+    let htmlTitles = htmlTitle;
     keywords.map((item) => {
-      htmlTitle = htmlTitle.replace(
-        new RegExp(item, 'gi'),
-        `<strong class="search_keyword">${item}</strong>`
-      );
+      htmlTitles = escapeRegex(item, htmlTitles);
+      return htmlTitles;
     });
+    return htmlTitles;
   }
 
-  htmlTitle = htmlTitle.replace(
-    new RegExp(keyword, 'gi'),
-    `<strong class="search_keyword">${keyword}</strong>`
-  );
-
+  htmlTitle = escapeRegex(keyword, htmlTitle);
   return htmlTitle;
+}
+
+function escapeRegex(item: string, target: string): string {
+  //
+  const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+  const regExpItem = item.replace(ESCAPE_REGEX, '');
+  let replacedText;
+  if (item.match(ESCAPE_REGEX)) {
+    replacedText = target.replace(
+      item,
+      `<strong class="search_keyword">${item}</strong>`
+    );
+  } else {
+    replacedText = target.replace(
+      new RegExp(regExpItem, 'gi'),
+      `<strong class="search_keyword">${regExpItem}</strong>`
+    );
+  }
+
+  return replacedText;
 }
 
 export function getTagsHtml(tags: string) {
