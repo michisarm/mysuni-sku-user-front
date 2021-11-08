@@ -161,6 +161,10 @@ class HeaderContainer extends Component<Props, State> {
     const { searchValue, focused } = this.state;
     const isExternal = isExternalInstructor();
 
+    const isSearchPage = this.props.location.pathname === '/search';
+    const isSearch =
+      this.props.location.search !== null && this.props.location.search !== '';
+
     return (
       <div ref={this.headerRef}>
         <HeaderWrapperView
@@ -184,6 +188,7 @@ class HeaderContainer extends Component<Props, State> {
               onClear={this.onClickClearSearch}
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}
+              isSearch={isSearchPage && isSearch}
             />
             {/* <CategoryMenuContainer /> */}
             {/*!isExternal && (

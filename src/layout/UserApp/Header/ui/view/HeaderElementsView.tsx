@@ -104,6 +104,7 @@ interface SearchBarViewProps {
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   onClear?: () => void;
+  isSearch?: boolean;
 }
 
 export const SearchBarView: React.FC<SearchBarViewProps> = ({
@@ -114,6 +115,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onBlur,
   onClick,
   onClear,
+  isSearch,
   // getPolyglotText,
 }) => {
   //
@@ -160,21 +162,23 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
           }}
         />
       </div>
-      <Checkbox
-        className="again_chk on"
-        label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
-        checked={searchInSearchInfo?.checkSearchInSearch}
-        onClick={() => {
-          if (!searchInSearchInfo?.checkSearchInSearch) {
-            setWrite('');
-          }
-          setSearchInSearchInfo({
-            checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
-            parentSearchValue: queryId,
-            searchValue: write,
-          });
-        }}
-      />
+      {isSearch ? (
+        <Checkbox
+          className="again_chk on"
+          label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
+          checked={searchInSearchInfo?.checkSearchInSearch}
+          onClick={() => {
+            if (!searchInSearchInfo?.checkSearchInSearch) {
+              setWrite('');
+            }
+            setSearchInSearchInfo({
+              checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+              parentSearchValue: queryId,
+              searchValue: write,
+            });
+          }}
+        />
+      ) : null}
     </>
   );
 };
