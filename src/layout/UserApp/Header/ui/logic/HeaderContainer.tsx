@@ -4,24 +4,16 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
-import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
-import {
-  LearningMenuView,
-  LogoView,
-  MenuView,
-  SearchBarView,
-} from '../view/HeaderElementsView';
+import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
-import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
 
 interface Props extends RouteComponentProps {}
 
@@ -73,14 +65,9 @@ class HeaderContainer extends Component<Props, State> {
     //
     const { searchValue } = this.state;
 
-    // alert("점검중 입니다.")
-    // 개발 시 주석 제거
     if (searchValue) {
       const { history } = this.props;
       history.push(`/search?query=${searchValue}`);
-      // window.location.href = encodeURI(`/search?query=${searchValue}`);
-
-      // search track
       debounceActionTrack({
         email:
           (window.sessionStorage.getItem('email') as string) ||
@@ -94,7 +81,6 @@ class HeaderContainer extends Component<Props, State> {
         actionName: '헤더검색::' + searchValue,
       } as ActionTrackParam);
 
-      // react-GA logic
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,
@@ -158,8 +144,7 @@ class HeaderContainer extends Component<Props, State> {
   render() {
     //
     const { breadcrumb } = this.context;
-    const { searchValue, focused } = this.state;
-    const isExternal = isExternalInstructor();
+    const { focused } = this.state;
 
     return (
       <div ref={this.headerRef}>
@@ -170,7 +155,6 @@ class HeaderContainer extends Component<Props, State> {
               supportPath={this.supportPath}
             />
           }
-          // Notice
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
           open={focused}
@@ -185,19 +169,6 @@ class HeaderContainer extends Component<Props, State> {
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}
             />
-            {/* <CategoryMenuContainer /> */}
-            {/*!isExternal && (
-            <SearchBarView
-              value={searchValue}
-              focused={focused}
-              onSearch={this.onSearch}
-              onBlur={this.onBlurSearchInput}
-              onClick={this.onClickSearchInput}
-              onChange={this.onChangeSearchInput}
-              onClear={this.onClickClearSearch}
-              getPolyglotText={getPolyglotText}
-            />
-          )*/}
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>
         </HeaderWrapperView>

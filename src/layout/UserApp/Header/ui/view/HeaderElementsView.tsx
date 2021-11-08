@@ -129,52 +129,16 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
           <input
             type="text"
             placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-            // value={value}
             onChange={onChange}
             onClick={onClick}
-            // onBlur={onBlur}
             onKeyPress={(e) => e.key === 'Enter' && onSearch()}
             className="ui input search_ipt"
           />
         </div>
         <div className="ui button b-search">
-          <i
-            aria-hidden="true"
-            className="icon search-grey"
-            //  onClick={onSearch}
-          />
+          <i aria-hidden="true" className="icon search-grey" />
         </div>
-        <Checkbox
-          className="again_chk"
-          label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
-          checked={searchInSearchInfo?.checkSearchInSearch}
-          onClick={() => {
-            if (!searchInSearchInfo?.checkSearchInSearch) {
-              setWrite('');
-            }
-            setSearchInSearchInfo({
-              checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
-              parentSearchValue: queryId,
-              searchValue: write,
-            });
-          }}
-        />
       </div>
-      <Checkbox
-        className="again_chk on"
-        label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
-        checked={searchInSearchInfo?.checkSearchInSearch}
-        onClick={() => {
-          if (!searchInSearchInfo?.checkSearchInSearch) {
-            setWrite('');
-          }
-          setSearchInSearchInfo({
-            checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
-            parentSearchValue: queryId,
-            searchValue: write,
-          });
-        }}
-      />
     </>
   );
 };
