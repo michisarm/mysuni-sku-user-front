@@ -20,7 +20,7 @@ export function TopBannerContainer() {
           target={topBanner.target}
           linkUrl={topBanner.linkUrl}
           imageUrl={topBanner.imageUrl}
-          backgroundColor={topBanner.topBgColor}
+          backgroundColor={topBanner.bdColor}
           onClose={onClickClose}
         />
       )}

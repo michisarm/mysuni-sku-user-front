@@ -1,9 +1,15 @@
-import React, { Component, createRef } from 'react';
-import { reactAutobind, getCookie } from '@nara.platform/accent';
+import React, { Component, createRef, useEffect } from 'react';
+import {
+  reactAutobind,
+  getCookie,
+  ReactComponent,
+  mobxHelper,
+} from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
+import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
@@ -14,27 +20,27 @@ import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
+import SearchService from '../../../../../search/service/SearchService';
+import { inject, observer } from 'mobx-react';
 
 interface Props extends RouteComponentProps {}
 
-interface State {
-  searchValue: string;
-  focused: boolean;
+interface State {}
+
+interface Injected {
+  searchService: SearchService;
 }
 
+@inject(mobxHelper.injectFrom('shared.searchService'))
+@observer
 @reactAutobind
-class HeaderContainer extends Component<Props, State> {
+class HeaderContainer extends ReactComponent<Props, State, Injected> {
   //
   static contextType = Context;
 
   headerRef: React.RefObject<any> = createRef();
 
   supportPath = boardRoutePaths.supportNotice();
-
-  state = {
-    searchValue: '',
-    focused: false,
-  };
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
@@ -43,7 +49,7 @@ class HeaderContainer extends Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.location.key !== this.props.location.key) {
-      this.initSearchValue();
+      // this.initSearchValue();
     }
   }
 
@@ -52,22 +58,36 @@ class HeaderContainer extends Component<Props, State> {
   }
 
   handleClickOutside(event: any) {
+    //
+    const { searchService } = this.injected;
     if (!this.headerRef.current?.contains(event.target)) {
-      this.setState({ focused: false });
+      searchService.setFocusedValue(false);
     }
   }
 
   initSearchValue() {
-    this.setState({ searchValue: '' });
+    //
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
   }
 
   onSearch() {
     //
-    const { searchValue } = this.state;
-
-    if (searchValue) {
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+    console.log('search============');
+    searchService.setSearchInfoValue(
+      'recentSearchValue',
+      searchInfo.searchValue
+    );
+    // alert("점검중 입니다.")
+    // 개발 시 주석 제거
+    if (searchInfo.searchValue) {
       const { history } = this.props;
-      history.push(`/search?query=${searchValue}`);
+      history.push(`/search?query=${searchInfo.searchValue}`);
+      // window.location.href = encodeURI(`/search?query=${searchValue}`);
+
+      // search track
       debounceActionTrack({
         email:
           (window.sessionStorage.getItem('email') as string) ||
@@ -78,7 +98,7 @@ class HeaderContainer extends Component<Props, State> {
         area: Area.SEARCH,
         actionType: ActionType.GENERAL,
         action: Action.SEARCH,
-        actionName: '헤더검색::' + searchValue,
+        actionName: '헤더검색::' + searchInfo.searchValue,
       } as ActionTrackParam);
 
       setTimeout(() => {
@@ -92,21 +112,35 @@ class HeaderContainer extends Component<Props, State> {
   }
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ searchValue: e.target.value });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', e.target.value);
+    // this.setState({ searchValue: e.target.value });
+  }
+
+  setSearchInfoValue(name: string, value: any): void {
+    //
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue(name, value);
+    // this.setState({ searchValue: value });
   }
 
   onClickSearchInput() {
     //
-    this.setState({ focused: true });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(true);
   }
 
   onBlurSearchInput() {
     //
-    this.setState({ focused: false });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(false);
+    // this.setState({ focused: false });
   }
 
   onClickClearSearch() {
-    this.setState({ searchValue: '' });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
+    // this.setState({ searchValue: '' });
   }
 
   cleanSessionStorage() {
@@ -144,7 +178,12 @@ class HeaderContainer extends Component<Props, State> {
   render() {
     //
     const { breadcrumb } = this.context;
-    const { focused } = this.state;
+    const { searchService } = this.injected;
+    const { searchInfo, searchViewFocused } = searchService;
+
+    const isSearchPage = this.props.location.pathname === '/search';
+    const isSearch =
+      this.props.location.search !== null && this.props.location.search !== '';
 
     return (
       <div ref={this.headerRef}>
@@ -157,17 +196,23 @@ class HeaderContainer extends Component<Props, State> {
           }
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
-          open={focused}
+          setSearchInfoValue={this.setSearchInfoValue}
+          focused={searchViewFocused}
+          searchInfo={searchInfo}
         >
           <>
             <LogoView onClickMenu={this.onClickMenu} />
             <MenuView onClickMenu={this.onClickMenu} />
             <SearchBarView
+              value={searchInfo.searchValue}
+              searchInfo={searchInfo}
+              setSearchValue={this.setSearchInfoValue}
               onSearch={this.onSearch}
               onChange={this.onChangeSearchInput}
               onClear={this.onClickClearSearch}
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}
+              isSearch={isSearchPage && isSearch}
             />
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>

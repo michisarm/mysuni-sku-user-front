@@ -7,6 +7,8 @@ import { CheckboxOptions } from './search.models';
 import { useSearchUI, setSearchUI } from './search.services';
 import { SearchHeaderPage } from './SearchHeaderPage';
 import { SearchContentsPage } from './SearchContentsPage';
+import SearchService from './service/SearchService';
+import { search } from './search.events';
 
 function LoadingView() {
   return (
@@ -28,6 +30,9 @@ export function SearchPage() {
   const contextRef = useRef<HTMLDivElement>(null);
 
   const searchUI = useSearchUI();
+
+  const searchService = SearchService.instance;
+
   useEffect(() => {
     // model에서 생성시에는 다국어가 먹히지 않아서 여기서 다시 셋팅
     CheckboxOptions.difficulty_level_json_query = [
@@ -100,6 +105,14 @@ export function SearchPage() {
     return setSearchUI;
   }, []);
 
+  const onSearch = async (value: string) => {
+    searchService.setSearchInfoValue('searchValue', value);
+    if (!searchService.searchInfo.inAgain) {
+      searchService.setSearchInfoValue('recentSearchValue', value);
+    }
+    await search(value);
+  };
+
   return (
     <>
       <ContentLayout className="searchTotal" breadcrumb={[{ text: 'Search' }]}>
@@ -109,7 +122,10 @@ export function SearchPage() {
           </Sticky>
 
           <Segment attached="bottom">
-            <SearchContentsPage />
+            <SearchContentsPage
+              onSearch={onSearch}
+              searchInfo={searchService.searchInfo}
+            />
           </Segment>
         </div>
 

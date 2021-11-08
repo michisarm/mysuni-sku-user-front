@@ -3,6 +3,7 @@ import { HotTopicCardViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import React, { useMemo } from 'react';
 import { Card, Icon, Label, Image } from 'semantic-ui-react';
 import { LearningState } from 'shared/model';
+import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
@@ -58,7 +59,7 @@ export function HotTopicCardView({ card }: Props) {
             <div className="contents-inner">
               <div className="topic-card-tit">
                 <Label className="college-name">
-                  <span>??collegeName</span>
+                  <span>{getCollgeName(card.mainCollegeId)}</span>
                 </Label>
                 <div className="topic-card-title">{card.name}</div>
                 <div className="tipic-card-txt">{card.simpleDescription}</div>
