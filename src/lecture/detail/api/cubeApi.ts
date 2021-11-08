@@ -23,6 +23,7 @@ import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml
 import ContentsProvider from '../../model/ContentsProvider';
 import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
 import { findSsoTypeCache } from './checkpointApi';
+import { InstructorLearningTimeSummary } from 'personalcube/personalcube/model/InstructorLearningTimeSummary';
 
 const BASE_URL = '/api/cube';
 
@@ -59,7 +60,7 @@ async function AppendSamlQueryToCubeMaterial(
     return cubeMaterial;
   }
   let contentsProviderSaml = contentsProviderSamls.find(
-    c => c.contentsProviderId === cubeContents.organizerId
+    (c) => c.contentsProviderId === cubeContents.organizerId
   );
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
@@ -67,7 +68,7 @@ async function AppendSamlQueryToCubeMaterial(
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     contentsProviderSaml = contentsProviderSamls.find(
-      c =>
+      (c) =>
         c.contentsProviderId ===
         cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType
           .id
@@ -81,9 +82,10 @@ async function AppendSamlQueryToCubeMaterial(
   if (loginUserSourceType === undefined) {
     return cubeMaterial;
   }
-  const directConnection = contentsProviderSaml.contentsProviderDirectConnections.find(
-    c => c.loginUserSourceType === loginUserSourceType
-  )?.directConnection;
+  const directConnection =
+    contentsProviderSaml.contentsProviderDirectConnections.find(
+      (c) => c.loginUserSourceType === loginUserSourceType
+    )?.directConnection;
   if (directConnection === undefined) {
     return cubeMaterial;
   }
@@ -93,12 +95,13 @@ async function AppendSamlQueryToCubeMaterial(
       undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
-    cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
-      cubeMaterial.media?.mediaContents.contentsProvider.url,
-      directConnection
-    );
+    cubeMaterial.media.mediaContents.contentsProvider.url =
+      concatDirectConnection(
+        cubeMaterial.media?.mediaContents.contentsProvider.url,
+        directConnection
+      );
     contentsProviderSaml = contentsProviderSamls.find(
-      c =>
+      (c) =>
         c.contentsProviderId ===
         cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType
           .id
@@ -111,7 +114,7 @@ async function AppendSamlQueryToCubeMaterial(
     );
   }
   if (Array.isArray(cubeMaterial.classrooms)) {
-    cubeMaterial.classrooms = cubeMaterial.classrooms.map(classrooom => {
+    cubeMaterial.classrooms = cubeMaterial.classrooms.map((classrooom) => {
       if (
         classrooom.operation.siteUrl !== undefined &&
         classrooom.operation.siteUrl !== ''
@@ -155,22 +158,23 @@ async function AppendPanoptoSamlQueryToCubeMaterial(
     cubeMaterial.media?.mediaContents.internalMedias[0] !== undefined
   ) {
     const panoptoContentsProviderSaml = contentsProviderSamls.find(
-      c => c.contentsProviderId === 'PANOPTO'
+      (c) => c.contentsProviderId === 'PANOPTO'
     );
     if (panoptoContentsProviderSaml !== undefined) {
       const loginUserSourceType = await findSsoTypeCache();
       if (loginUserSourceType === undefined) {
         return cubeMaterial;
       }
-      const contentsProviderDirectConnection = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
-        c => c.loginUserSourceType === loginUserSourceType
-      );
+      const contentsProviderDirectConnection =
+        panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
+          (c) => c.loginUserSourceType === loginUserSourceType
+        );
       if (contentsProviderDirectConnection === undefined) {
         return cubeMaterial;
       }
 
       Array.from(cubeMaterial.media?.mediaContents.internalMedias).forEach(
-        internalMediaConnection => {
+        (internalMediaConnection) => {
           internalMediaConnection.directConnectionName =
             contentsProviderDirectConnection.directConnectionName;
           internalMediaConnection.targetSamlInstanceName =
@@ -201,9 +205,8 @@ function findCubesByIds(ids: string[]) {
   return axios.post<Cube[]>(url, ids).then(AxiosReturn);
 }
 
-const [findCubesByIdsCache, clearFindCubesByIdsCache] = createCacheApi(
-  findCubesByIds
-);
+const [findCubesByIdsCache, clearFindCubesByIdsCache] =
+  createCacheApi(findCubesByIds);
 export { findCubesByIdsCache, clearFindCubesByIdsCache };
 
 function findCubeDetail(cubeId: string) {
@@ -212,32 +215,31 @@ function findCubeDetail(cubeId: string) {
   return axios
     .get<CubeDetail>(url)
     .then(AxiosReturn)
-    .then(r => {
+    .then((r) => {
       if (r === undefined) {
         return undefined;
       }
       return AppendSamlQueryToCubeMaterial(r.cubeContents, r.cubeMaterial).then(
-        cubeMaterial => {
+        (cubeMaterial) => {
           return { ...r, cubeMaterial } as CubeDetail;
         }
       );
     })
-    .then(r => {
+    .then((r) => {
       if (r === undefined) {
         return undefined;
       }
       return AppendPanoptoSamlQueryToCubeMaterial(
         r.cubeContents,
         r.cubeMaterial
-      ).then(cubeMaterial => {
+      ).then((cubeMaterial) => {
         return { ...r, cubeMaterial } as CubeDetail;
       });
     });
 }
 
-const [findCubeDetailCache, clearFindCubeDetailCache] = createCacheApi(
-  findCubeDetail
-);
+const [findCubeDetailCache, clearFindCubeDetailCache] =
+  createCacheApi(findCubeDetail);
 export { findCubeDetailCache, clearFindCubeDetailCache };
 
 export function registerPost(postCdo: PostCdo) {
@@ -288,6 +290,12 @@ export function findMyLectureTimeSummary() {
   return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }
 
+export function findMyInstructTimeSummary() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myInstructorLearningTimeSummary`;
+  return axios.get<InstructorLearningTimeSummary>(url).then(AxiosReturn);
+}
+
 export function setPinByPostId(postId: string, pinned: number) {
   const axios = getAxios();
   const url = `${BASE_URL}/posts/setPinByPostId/${postId}/${pinned}`;
@@ -323,15 +331,11 @@ export function modifyReply(
 function countClassroomStudents(cubeId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/countClassroomStudents`;
-  return axios
-    .get<IntPair[]>(url, { params: { cubeId } })
-    .then(AxiosReturn);
+  return axios.get<IntPair[]>(url, { params: { cubeId } }).then(AxiosReturn);
 }
 
-export const [
-  countClassroomStudentsCache,
-  cleaCountClassroomStudentsCache,
-] = createCacheApi(countClassroomStudents);
+export const [countClassroomStudentsCache, cleaCountClassroomStudentsCache] =
+  createCacheApi(countClassroomStudents);
 
 export function findMyDiscussionCounts(studentId: string) {
   const axios = getAxios();

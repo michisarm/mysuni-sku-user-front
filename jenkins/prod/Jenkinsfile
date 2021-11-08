@@ -11,7 +11,7 @@ timestamps {
         containers: [
             //containerTemplate(name: 'node', image: 'node:10.16.3', ttyEnabled: true, command: 'cat'),
             containerTemplate(name: 'node', image: 'node:10.16.3', ttyEnabled: true, command: 'cat'
-                , resourceLimitCpu: '2.5', resourceLimitMemory: '5Gi'),
+                , resourceLimitCpu: '3', resourceLimitMemory: '7Gi'),
             containerTemplate(name: 'docker', image: 'docker:17-dind', ttyEnabled: true, command: 'dockerd-entrypoint.sh', privileged: true),
             containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat')
         ],

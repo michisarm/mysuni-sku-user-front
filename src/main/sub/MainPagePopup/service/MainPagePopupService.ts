@@ -6,7 +6,7 @@ export function requestMainPagePopupFirst() {
   const mainModal = getCookie('mainPopupModal');
 
   getMainPagePopupFirst().then((result) => {
-    if (mainModal == 'HIDE') {
+    if (mainModal === 'HIDE') {
       // result.open = false;
     }
 

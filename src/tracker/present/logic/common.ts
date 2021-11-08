@@ -76,7 +76,7 @@ export const setAuth = async () => {
         } else if (key === '직책') {
           auth.position.group_field = key;
           auth.position.group_name = userGroup[key];
-        } else if (key === '멤버쉽') {
+        } else if (key === '멤버십') {
           auth.membership.group_field = key;
           auth.membership.group_name = userGroup[key];
         }
@@ -106,16 +106,16 @@ export const getAuth = async () => {
 };
 
 export const getAbtestUserTargets = async () => {
-  let targets = '';
-  try {
-    await getUserTargets().then((data) => {
-      if (data) {
-        targets = JSON.stringify(data);
-      }
-    });
-  } catch {
-    //
-  }
+  const targets = '[]';
+  // try {
+  //   await getUserTargets().then((data) => {
+  //     if (data) {
+  //       targets = JSON.stringify(data);
+  //     }
+  //   });
+  // } catch {
+  //   //
+  // }
   return targets;
 };
 

@@ -129,6 +129,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     myLearningSummaryService!.findMyLearningSummaryByYear(currentYear);
     myLearningSummaryService!.findLectureTimeSummary();
+    myLearningSummaryService!.findInstructTimeSummary();
     // badgeService!.findAllBadgeCount();
   }
 

@@ -80,6 +80,7 @@ export function getQueryId(): string {
     window.location.search.indexOf('=') + 1,
     window.location.search.length
   );
+
   if (queryId.endsWith('%')) {
     let decodedQueryId = queryId;
     while (decodedQueryId.endsWith('%')) {
@@ -700,7 +701,7 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   // 연관검색어
   const suggestions: string[] = [];
-
+  // const encodingSearchValue = encodeURI(searchValue);
   findRelatedKeywordByKeyword(searchValue)
     .then((c) => {
       if (c !== undefined) {
@@ -718,6 +719,9 @@ export async function searchData(searchValue: string, searchType?: string) {
               suggestions.length = 10;
             }
           }
+        })
+        .catch((error) => {
+          console.log(error);
         })
         .finally(() => {
           setSearchRelatedList(suggestions);
@@ -793,20 +797,36 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
   if (keyword.indexOf(' ') > -1) {
     const keywords = keyword.split(' ');
+    let htmlTitles = htmlTitle;
     keywords.map((item) => {
-      htmlTitle = htmlTitle.replace(
-        new RegExp(item, 'gi'),
-        `<strong class="search_keyword">${item}</strong>`
-      );
+      htmlTitles = escapeRegex(item, htmlTitles);
+      return htmlTitles;
     });
+    return htmlTitles;
   }
 
-  htmlTitle = htmlTitle.replace(
-    new RegExp(keyword, 'gi'),
-    `<strong class="search_keyword">${keyword}</strong>`
-  );
-
+  htmlTitle = escapeRegex(keyword, htmlTitle);
   return htmlTitle;
+}
+
+function escapeRegex(item: string, target: string): string {
+  //
+  const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+  const regExpItem = item.replace(ESCAPE_REGEX, '');
+  let replacedText;
+  if (item.match(ESCAPE_REGEX)) {
+    replacedText = target.replace(
+      item,
+      `<strong class="search_keyword">${item}</strong>`
+    );
+  } else {
+    replacedText = target.replace(
+      new RegExp(regExpItem, 'gi'),
+      `<strong class="search_keyword">${regExpItem}</strong>`
+    );
+  }
+
+  return replacedText;
 }
 
 export function getTagsHtml(tags: string) {
