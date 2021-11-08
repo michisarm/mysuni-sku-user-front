@@ -622,10 +622,9 @@ export async function isPrecoursePassed(cardId: string) {
     return true;
   }
 
-  const filterPrecourse =
-    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
-      (course) => course.required
-    );
+  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+    (course) => course.required
+  );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
 
@@ -651,6 +650,55 @@ export async function isPrecoursePassed(cardId: string) {
   }
 
   return true;
+}
+
+// 해당 카드의 선수 과정이 존재하는지 완료되었는지 체크하는 함수
+export async function getPreCourseFailCardId(cardId: string) {
+  const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  const cardRelatedStudent = await findMyCardRelatedStudentsCache(cardId);
+
+  // api 호출이 실패 했을 경우
+  if (
+    cardRelatedStudent === undefined ||
+    cardWithContentsAndRelatedCountRom === undefined
+  ) {
+    return null;
+  }
+
+  if (
+    isEmpty(cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards)
+  ) {
+    return '';
+  }
+
+  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+    (course) => course.required
+  );
+  const prerequisiteCardStudents =
+    cardRelatedStudent.prerequisiteCardStudents || [];
+
+  //선수 과정이 존재하지 않거나 필수인 선수 과정이 없는 경우
+  if (isEmpty(filterPrecourse)) {
+    return '';
+  }
+
+  for (let i = 0; i < filterPrecourse.length; i++) {
+    const find = prerequisiteCardStudents.find(
+      (course) => course.lectureId === filterPrecourse[i].prerequisiteCardId
+    );
+
+    // 필수인 선수 과정이 존재 하지만 아직 해당 선수 과정을 시작하지 않은 경우
+    if (find === undefined && !isEmpty(filterPrecourse)) {
+      return filterPrecourse[i].prerequisiteCardId;
+    }
+
+    // 필수인 선수 과정을 시작 했지만 아직 Passed 하지 못한경우
+    if (find !== undefined && find.learningState !== 'Passed') {
+      return filterPrecourse[i].prerequisiteCardId;
+    }
+  }
+
+  return '';
 }
 
 async function parseCubeItem(
