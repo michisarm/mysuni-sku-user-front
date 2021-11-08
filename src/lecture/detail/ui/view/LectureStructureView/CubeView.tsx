@@ -4,7 +4,7 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import lecturePath from '../../../../routePaths';
 import { getPreCourseFailCardId } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
@@ -29,9 +29,11 @@ async function cannotAlert(cardId: string) {
 
   if (failCardId !== null) {
     reactConfirm({
-      title: '안내',
-      message:
+      title: getPolyglotText('안내', 'lecture-preCard-confirm-title'),
+      message: getPolyglotText(
         '선수 학습 완료 후 진행이 가능합니다. 선수 학습으로 이동하시겠습니까?',
+        'lecture-preCard-confirm-message'
+      ),
       onOk: () => history?.push(lecturePath.lectureCard(failCardId)),
       onCancel: () => {},
     });
