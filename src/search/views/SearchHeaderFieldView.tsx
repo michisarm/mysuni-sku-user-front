@@ -12,27 +12,28 @@ import { StorageModel } from '@nara.platform/accent';
 
 interface Props {
   callback?: (searchValue?: string) => void;
+  setSearchValue: (value: string) => void;
 }
 
 export function SearchHeaderFieldView(props: Props) {
   //
-  const [write, setWrite] = useState<string>();
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>();
+  // const [write, setWrite] = useState<string>();
+  // const [isSearchOpen, setIsSearchOpen] = useState<boolean>();
 
-  const setSearchOpen = () => {
-    setWrite('');
-    // this.setState({ isSearchOpen: !isSearchOpen });
-    setIsSearchOpen(!isSearchOpen);
-    document.getElementById('btnSearchPopup')?.click();
-    setSearchInSearchInfo({
-      checkSearchInSearch: false,
-      parentSearchValue: '',
-      searchValue: '',
-    }); // 초기화
-  };
+  // const setSearchOpen = () => {
+  //   setWrite('');
+  //   // this.setState({ isSearchOpen: !isSearchOpen });
+  //   setIsSearchOpen(!isSearchOpen);
+  //   document.getElementById('btnSearchPopup')?.click();
+  //   setSearchInSearchInfo({
+  //     checkSearchInSearch: false,
+  //     parentSearchValue: '',
+  //     searchValue: '',
+  //   }); // 초기화
+  // };
 
   const onClickSearch = (searchValue: string) => {
-    setWrite(searchValue);
+    props.setSearchValue(searchValue);
     search(searchValue);
   };
 

@@ -17,6 +17,7 @@ import {
   useSearchBadgeList,
   useSearchCommunityList,
   useSearchRelatedList,
+  useSearchInSearchInfo,
 } from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
@@ -76,7 +77,7 @@ export function SearchContentsPage() {
   }
 
   const HeaderTotalCountTitle = () => {
-    const searchInSearchInfo = getSearchInSearchInfo();
+    const searchInSearchInfo = useSearchInSearchInfo();
     const relatedList = useSearchRelatedList();
     const [write, setWrite] = useState<string>('');
 
@@ -95,6 +96,8 @@ export function SearchContentsPage() {
       }
       // handleClose();
     };
+
+    console.log(searchInSearchInfo);
 
     return (
       <>

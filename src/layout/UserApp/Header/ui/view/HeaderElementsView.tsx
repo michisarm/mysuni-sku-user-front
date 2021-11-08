@@ -97,7 +97,8 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  // value: string;
+  value: string;
+  setSearchValue: (value: string) => void;
   // focused?: boolean;
   onSearch: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -108,7 +109,8 @@ interface SearchBarViewProps {
 }
 
 export const SearchBarView: React.FC<SearchBarViewProps> = ({
-  // value,
+  value,
+  setSearchValue,
   // focused,
   onSearch,
   onChange,
@@ -119,19 +121,24 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   // getPolyglotText,
 }) => {
   //
-  const [write, setWrite] = useState<string>('');
-
   const queryId = getQueryId();
   const searchInSearchInfo = useSearchInSearchInfo();
 
   return (
     <>
       <div className="g-search-header" data-area={Area.SEARCH}>
-        <div className="search_wrap">
+        <div className={isSearch ? 'search_wrap show_re' : 'search_wrap'}>
+          {isSearch ? (
+            <div className="re_text">
+              <span className="ellipsis">
+                {searchInSearchInfo?.parentSearchValue}
+              </span>
+            </div>
+          ) : null}
           <input
             type="text"
             placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-            // value={value}
+            value={value}
             onChange={onChange}
             onClick={onClick}
             // onBlur={onBlur}
@@ -146,21 +153,6 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
             //  onClick={onSearch}
           />
         </div>
-        <Checkbox
-          className="again_chk"
-          label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
-          checked={searchInSearchInfo?.checkSearchInSearch}
-          onClick={() => {
-            if (!searchInSearchInfo?.checkSearchInSearch) {
-              setWrite('');
-            }
-            setSearchInSearchInfo({
-              checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
-              parentSearchValue: queryId,
-              searchValue: write,
-            });
-          }}
-        />
       </div>
       {isSearch ? (
         <Checkbox
@@ -169,12 +161,12 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
           checked={searchInSearchInfo?.checkSearchInSearch}
           onClick={() => {
             if (!searchInSearchInfo?.checkSearchInSearch) {
-              setWrite('');
+              setSearchValue('');
             }
             setSearchInSearchInfo({
               checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
               parentSearchValue: queryId,
-              searchValue: write,
+              searchValue: value,
             });
           }}
         />

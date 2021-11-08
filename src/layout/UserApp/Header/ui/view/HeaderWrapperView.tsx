@@ -7,6 +7,7 @@ interface Props {
   children: React.ReactNode;
   topBanner: React.ReactNode;
   mainNotice: React.ReactNode;
+  setSearchValue: (value: string) => void;
   open: boolean;
 }
 
@@ -19,7 +20,14 @@ class HeaderWrapperView extends Component<Props> {
 
   render() {
     //
-    const { breadcrumbs, topBanner, mainNotice, children, open } = this.props;
+    const {
+      breadcrumbs,
+      topBanner,
+      mainNotice,
+      children,
+      setSearchValue,
+      open,
+    } = this.props;
 
     return (
       <>
@@ -28,7 +36,7 @@ class HeaderWrapperView extends Component<Props> {
           {mainNotice}
           <div className={open ? 'group off' : 'group'}>
             <div className="cont-inner">{children}</div>
-            <SearchHeaderFieldView />
+            <SearchHeaderFieldView setSearchValue={setSearchValue} />
           </div>
 
           {breadcrumbs}

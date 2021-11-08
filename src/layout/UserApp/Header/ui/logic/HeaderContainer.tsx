@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component, createRef, useEffect } from 'react';
 import { reactAutobind, getCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -22,6 +22,7 @@ import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
+import { useSearchInSearchInfo } from '../../../../../search/search.services';
 
 interface Props extends RouteComponentProps {}
 
@@ -51,7 +52,7 @@ class HeaderContainer extends Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.location.key !== this.props.location.key) {
-      this.initSearchValue();
+      // this.initSearchValue();
     }
   }
 
@@ -72,7 +73,7 @@ class HeaderContainer extends Component<Props, State> {
   onSearch() {
     //
     const { searchValue } = this.state;
-
+    console.log(searchValue);
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
     if (searchValue) {
@@ -107,6 +108,12 @@ class HeaderContainer extends Component<Props, State> {
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ searchValue: e.target.value });
+  }
+
+  setSearchValue(value: string): void {
+    //
+    console.log(value);
+    this.setState({ searchValue: value });
   }
 
   onClickSearchInput() {
@@ -177,12 +184,15 @@ class HeaderContainer extends Component<Props, State> {
           // Notice
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
+          setSearchValue={this.setSearchValue}
           open={focused}
         >
           <>
             <LogoView onClickMenu={this.onClickMenu} />
             <MenuView onClickMenu={this.onClickMenu} />
             <SearchBarView
+              value={searchValue}
+              setSearchValue={this.setSearchValue}
               onSearch={this.onSearch}
               onChange={this.onChangeSearchInput}
               onClear={this.onClickClearSearch}
@@ -191,18 +201,6 @@ class HeaderContainer extends Component<Props, State> {
               isSearch={isSearchPage && isSearch}
             />
             {/* <CategoryMenuContainer /> */}
-            {/*!isExternal && (
-            <SearchBarView
-              value={searchValue}
-              focused={focused}
-              onSearch={this.onSearch}
-              onBlur={this.onBlurSearchInput}
-              onClick={this.onClickSearchInput}
-              onChange={this.onChangeSearchInput}
-              onClear={this.onClickClearSearch}
-              getPolyglotText={getPolyglotText}
-            />
-          )*/}
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>
         </HeaderWrapperView>

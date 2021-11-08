@@ -17,11 +17,9 @@ import { Area } from 'tracker/model';
 
 export function SearchHeaderView() {
   const [activeItem, setActiveItem] = useState<string>('');
-  const [write, setWrite] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const queryId = getQueryId();
-  const searchInSearchInfo = useSearchInSearchInfo();
 
   const handleMenuClick = (e: any, { name }: any) => {
     //search(queryId, name === 'all' ? undefined : name);
@@ -42,11 +40,11 @@ export function SearchHeaderView() {
     }
     handleClose();
 
-    if (searchInSearchInfo?.checkSearchInSearch) {
-      setWrite(searchInSearchInfo.searchValue);
-    } else {
-      setWrite(getQueryId());
-    }
+    // if (searchInSearchInfo?.checkSearchInSearch) {
+    //   setWrite(searchInSearchInfo.searchValue);
+    // } else {
+    //   setWrite(getQueryId());
+    // }
   }, [params]);
 
   const togglePopup = () => {
@@ -56,17 +54,18 @@ export function SearchHeaderView() {
   const handleClose = () => {
     setIsOpen(false);
   };
-  const searchSetting = (searchValue?: string) => {
-    if (searchValue !== undefined) {
-      setWrite(searchValue);
-      setSearchInSearchInfo({
-        checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
-        parentSearchValue: queryId,
-        searchValue,
-      });
-    }
-    handleClose();
-  };
+  //
+  // const searchSetting = (searchValue?: string) => {
+  //   if (searchValue !== undefined) {
+  //     setWrite(searchValue);
+  //     setSearchInSearchInfo({
+  //       checkSearchInSearch: searchInSearchInfo?.checkSearchInSearch || false,
+  //       parentSearchValue: queryId,
+  //       searchValue,
+  //     });
+  //   }
+  //   handleClose();
+  // };
 
   //const isExternal = isExternalInstructor();
 
