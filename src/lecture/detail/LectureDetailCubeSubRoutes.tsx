@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import LectureCubeAudioPage from './ui/logic/LectureCubeAudioPage';
 import LectureCubeClassroomPage from './ui/logic/LectureCubeClassroomPage';
 import LectureCubeDocumentsPage from './ui/logic/LectureCubeDocumentsPage';
@@ -12,18 +12,36 @@ import LectureParams from './viewModel/LectureParams';
 import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 import LectureCubeDiscussionPage from './ui/logic/LectureCubeDiscussionPage';
 import lecturePath from '../routePaths';
-import { isPrecoursePassed } from './service/useLectureStructure/utility/requestCardLectureStructure';
+import { getPreCourseFailCardId } from './service/useLectureStructure/utility/requestCardLectureStructure';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
-  const isPassed = await isPrecoursePassed(cardId);
+  const failCardId = await getPreCourseFailCardId(cardId);
   const history = getCurrentHistory();
 
-  if (!isPassed) {
+  if (failCardId === null) {
     reactAlert({
       title: '안내',
-      message: '선수 학습 완료 후 진행이 가능합니다.',
-      onClose: () => history?.push(lecturePath.lectureCard(cardId)),
+      message: '알수 없는 오류가 발생했습니다',
+      // onClose: () => history?.push(lecturePath.lectureCard(cardId)),
+    });
+  }
+
+  if (failCardId !== '' && failCardId !== null) {
+    // reactAlert({
+    //   title: '안내',
+    //   message: '선수 학습 완료 후 진행이 가능합니다.',
+    //   onClose: () => history?.push(lecturePath.lectureCard(cardId)),
+    // });
+
+    reactConfirm({
+      title: '안내',
+      message:
+        '선수 학습 완료 후 진행이 가능합니다. 선수 학습으로 이동하시겠습니까?',
+      onOk: () => history?.push(lecturePath.lectureCard(failCardId)),
+      onCancel: () => {
+        history?.push(lecturePath.lectureCard(cardId));
+      },
     });
   }
 }

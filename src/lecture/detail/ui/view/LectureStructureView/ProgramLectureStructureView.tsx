@@ -46,7 +46,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           />
         </Link>
       )}
-      {lectureStructure.items.map(item => {
+      {lectureStructure.items.map((item) => {
         if (item.type === 'CHAPTER') {
           const chapter = item as LectureStructureChapterItem;
           return (
@@ -71,6 +71,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                 <>
                   {cube.isDurationable !== true && (
                     <CubeView
+                      cardId={lectureStructure.card.cardId}
                       key={cube.cubeId}
                       name={cube.name}
                       state={cube.state}
@@ -83,6 +84,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   )}
                   {cube.isDurationable === true && (
                     <DurationableCubeView
+                      cardId={lectureStructure.card.cardId}
                       key={cube.cubeId}
                       name={cube.name}
                       state={cube.state}
@@ -114,15 +116,17 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                       activated={cube.survey.path === pathname}
                     />
                   )}
-                  {cube?.report !== undefined && (cube.report.name !== null && cube.report.name !== '') &&  (
-                    <ReportView
-                      name={cube.report.name}
-                      state={cube.report.state}
-                      path={cube.report.path}
-                      can={cube.report.can}
-                      activated={cube.report.path === pathname}
-                    />
-                  )}{' '}
+                  {cube?.report !== undefined &&
+                    cube.report.name !== null &&
+                    cube.report.name !== '' && (
+                      <ReportView
+                        name={cube.report.name}
+                        state={cube.report.state}
+                        path={cube.report.path}
+                        can={cube.report.can}
+                        activated={cube.report.path === pathname}
+                      />
+                    )}{' '}
                 </>
               )}
 
@@ -184,15 +188,17 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           activated={lectureStructure.card.survey.path === pathname}
         />
       )}
-      {lectureStructure.card?.report !== undefined && (lectureStructure.card?.report.name !== null && lectureStructure.card?.report.name !== '') && (
-        <ProgramReportView
-          name={lectureStructure.card.report.name}
-          state={lectureStructure.card.report.state}
-          path={lectureStructure.card.report.path}
-          can={lectureStructure.card.report.can}
-          activated={lectureStructure.card.report.path === pathname}
-        />
-      )}
+      {lectureStructure.card?.report !== undefined &&
+        lectureStructure.card?.report.name !== null &&
+        lectureStructure.card?.report.name !== '' && (
+          <ProgramReportView
+            name={lectureStructure.card.report.name}
+            state={lectureStructure.card.report.state}
+            path={lectureStructure.card.report.path}
+            can={lectureStructure.card.report.can}
+            activated={lectureStructure.card.report.path === pathname}
+          />
+        )}
     </>
   );
 };
