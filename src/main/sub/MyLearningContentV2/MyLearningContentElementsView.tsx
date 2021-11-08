@@ -74,9 +74,9 @@ interface MainBannerProps {
 export const MainBannerWrapper: FunctionComponent<MainBannerProps> = ({
   children,
 }) => (
-  <div className="middle-swiper" data-area={Area.MAIN_BANNER}>
-    <Segment className="full">
-      <div className="swiper-section type2">{children}</div>
+  <div className="visual-banner-wrap" data-area={Area.MAIN_BANNER}>
+    <Segment className="full wide">
+      <div className="swiper-section type4">{children}</div>
     </Segment>
   </div>
 );

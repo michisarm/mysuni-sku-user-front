@@ -15,6 +15,7 @@ import {
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang, LangSupport } from 'lecture/model/LangSupport';
+import { Icon } from 'semantic-ui-react';
 
 enum AnchorTargetType {
   self = '_self',
@@ -57,13 +58,13 @@ function RenderBanner(props: BannerProps) {
     <div key={`main-banner-${index}`} className="swiper-slide">
       {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
         <Link
-          className="ui image"
           title={name}
           target={target}
           to={{ pathname: getTargetUrl }}
           onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
           <Image
+            className="ui image"
             alt={parsePolyglotString(imageAlt, getDefaultLang(langSupports))}
             src={parsePolyglotString(imageUrl, getDefaultLang(langSupports))}
           />
@@ -73,13 +74,13 @@ function RenderBanner(props: BannerProps) {
           {target === AnchorTargetType.blank ||
           target === AnchorTargetType.self ? (
             <a
-              className="ui image"
               title={name}
               target={target}
               href={targetUrl}
               onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
               <Image
+                className="ui image"
                 alt={parsePolyglotString(
                   imageAlt,
                   getDefaultLang(langSupports)
@@ -91,18 +92,11 @@ function RenderBanner(props: BannerProps) {
               />
             </a>
           ) : (
-            <div className="ui image">
-              <Image
-                alt={parsePolyglotString(
-                  imageAlt,
-                  getDefaultLang(langSupports)
-                )}
-                src={parsePolyglotString(
-                  imageUrl,
-                  getDefaultLang(langSupports)
-                )}
-              />
-            </div>
+            <Image
+              className="ui image"
+              alt={parsePolyglotString(imageAlt, getDefaultLang(langSupports))}
+              src={parsePolyglotString(imageUrl, getDefaultLang(langSupports))}
+            />
           )}
         </>
       )}
@@ -131,7 +125,7 @@ const MainBanner: React.FC<Props> = (Props) => {
 
   const params = {
     loop: true,
-    //effect: 'fade',
+    effect: 'slide',
     autoplay: {
       delay: DEFAULT_BANNER_INTERVAL,
       disableOnInteraction: false,
@@ -199,20 +193,22 @@ const MainBanner: React.FC<Props> = (Props) => {
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
       <Swiper {...params}>
         {banners.map((banner, index) => (
-          <React.Fragment key={banner.id}>
-            <RenderBanner
-              index={index}
-              onClickBanner={onClickBanner}
-              {...banner}
-            />
-          </React.Fragment>
+          <RenderBanner
+            key={banner.id}
+            index={index}
+            onClickBanner={onClickBanner}
+            {...banner}
+          />
         ))}
       </Swiper>
 
       <div className="navi">
-        <div className="swiper-button-prev" />
-        <div className="swiper-pagination" />
-        <div className="swiper-button-next" />
+        <div className="swiper-navi-wrap">
+          <div className="swiper-pagination" />
+          <div className="btn-play">
+            <Icon name="pause" />
+          </div>
+        </div>
       </div>
 
       {clickedBanner.modalOpen && (

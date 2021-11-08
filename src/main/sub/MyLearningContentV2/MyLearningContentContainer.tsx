@@ -49,15 +49,15 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
   return (
     <>
-      {cardBundles?.map((cardBundle, i) => {
+      {/* {cardBundles?.map((cardBundle, i) => {
         if (cardBundle.id !== '5e1114a9-73da-4c9a-b961-332311a007eb') {
           return null;
         }
         return <LeraningContainer key={i} cardBundle={cardBundle} />;
-      })}
+      })} */}
+      <MainBanner />
       <InProgressLearning profileMemberName={skProfile.profileViewName} />
       <MainChallengingBadgeContainer />
-      <MainBanner />
       <RQDLearning />
       {cardBundles?.map((cardBundle, i) => {
         if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
