@@ -30,6 +30,7 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
 
 function LectureDetailCubeSubRoutes() {
   const { cubeType, cardId } = useParams<LectureParams>();
+  console.log(cubeType, cardId);
   isOpenPassedPreCourseModal(cardId);
 
   return (
