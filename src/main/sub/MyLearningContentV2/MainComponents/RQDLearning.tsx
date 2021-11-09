@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import Swiper from 'react-id-swiper';
 
-import { Button, Icon } from 'semantic-ui-react';
-import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
-import {
-  findRequiredLearning,
-  findCardFromCardBundle,
-} from '../../../../lecture/detail/api/cardApi';
+import { findRequiredLearning } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';

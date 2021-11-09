@@ -15,7 +15,8 @@ export async function requestHotTopic(id: string) {
   setHotTopicDetailViewModel();
   setHotTopicListViewModel();
 
-  const cardBundles: CardBundle[] = await findAvailableCardBundles();
+  const cardBundles: CardBundle[] | undefined =
+    await findAvailableCardBundles();
 
   if (cardBundles === undefined) {
     return;

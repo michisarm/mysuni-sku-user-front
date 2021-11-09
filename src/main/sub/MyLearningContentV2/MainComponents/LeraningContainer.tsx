@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Button, Icon } from 'semantic-ui-react';
 import { NoSuchContentPanel } from 'shared';
-import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
 import { findCardFromCardBundle } from '../../../../lecture/detail/api/cardApi';
@@ -23,6 +21,7 @@ import {
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import Swiper from 'react-id-swiper';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -95,43 +94,32 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         break;
     }
   }, [cardBundle]);
+  const swipeName = useMemo(() => {
+    switch (cardBundle.type) {
+      case 'New':
+        return 'swiperNew';
+      case 'Popular':
+        return 'swiperPopular';
+    }
+    return 'swiperNormal';
+  }, [cardBundle.type]);
 
-  if (cardList.length === 0 && isRecommend) {
-    return null;
-  }
-
-  return (
-    <ContentWrapper dataArea={dataArea}>
-      <div className="section-head">
-        <strong>{parsePolyglotString(cardBundle?.displayText)}</strong>
-        <div className="right">
-          {cardList.length > 0 && (
-            <Button icon className="right btn-blue" onClick={onViewAll}>
-              View all <Icon className="morelink" />
-            </Button>
-          )}
+  if (cardList.length === 0) {
+    return (
+      <ContentWrapper dataArea={Area.MAIN_REQUIRED}>
+        <div className="section-head">
+          <div
+            className="sec-tit-txt"
+            dangerouslySetInnerHTML={{
+              __html: parsePolyglotString(cardBundle?.displayText),
+            }}
+          />
+          <div className="sec-tit-btn">
+            <button className="btn-more" onClick={onViewAll}>
+              전체보기
+            </button>
+          </div>
         </div>
-      </div>
-      {cardList.length > 0 ? (
-        <Lecture.Group
-          type={Lecture.GroupType.Line}
-          dataActionName={parsePolyglotString(cardBundle?.displayText)}
-        >
-          {cardList.map((item, i) => {
-            return (
-              <li key={i}>
-                <CardGroup type={GroupType.Box}>
-                  <LectureCardView
-                    {...item}
-                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                    dataArea={dataArea}
-                  />
-                </CardGroup>
-              </li>
-            );
-          })}
-        </Lecture.Group>
-      ) : (
         <NoSuchContentPanel
           message={
             <div
@@ -148,7 +136,59 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
             />
           }
         />
-      )}
+      </ContentWrapper>
+    );
+  }
+
+  const SwiperProps = {
+    slidesPerView: 4,
+    spaceBetween: 7,
+    slidesPerGroup: 4,
+    loop: false,
+    loopFillGroupWithBlank: true,
+    navigation: {
+      nextEl: '.' + swipeName + ' .swiper-button-next',
+      prevEl: '.' + swipeName + ' .swiper-button-prev',
+    },
+    speed: 500,
+  };
+
+  return (
+    <ContentWrapper dataArea={dataArea}>
+      <div className="section-head">
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: parsePolyglotString(cardBundle?.displayText),
+          }}
+        />
+        <div className="sec-tit-btn">
+          <button className="btn-more" onClick={onViewAll}>
+            전체보기
+          </button>
+        </div>
+      </div>
+      <div className="section-body">
+        <div className="cardSwiper">
+          <Swiper {...SwiperProps}>
+            {cardList.map((item, i) => {
+              return (
+                <CardGroup type={GroupType.Wrap} key={item.cardId}>
+                  <LectureCardView
+                    {...item}
+                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                    dataArea={Area.MAIN_REQUIRED}
+                  />
+                </CardGroup>
+              );
+            })}
+          </Swiper>
+          <div className={swipeName}>
+            <div className="swiper-button-prev" />
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </div>
     </ContentWrapper>
   );
 };

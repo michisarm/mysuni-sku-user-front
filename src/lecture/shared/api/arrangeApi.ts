@@ -13,8 +13,6 @@ function findAvailablePageElements() {
 export function findAvailableCardBundles() {
   const axios = getAxios();
   const url = '/api/arrange/cardBundles/available';
-  return axios
-    .get<CardBundle[]>(url)
-    .then((response) => (response && response.data) || null);
+  return axios.get<CardBundle[]>(url).then(AxiosReturn);
 }
 export default findAvailablePageElements;

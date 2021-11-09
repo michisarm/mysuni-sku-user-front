@@ -829,3 +829,7 @@ body.msie
 .ui.cards.card-item-wrap .card-item:nth-child(4n + 1) {
   margin-left: 0;
 }
+
+/* .ui.card.card-item {
+  padding: 0 10px 10px;
+} */
