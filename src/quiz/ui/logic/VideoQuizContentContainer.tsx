@@ -396,6 +396,7 @@ const VideoQuizContentContainer = ({
             </span>
             <div
               className="wro2"
+              style={{ width: '100%' }}
               dangerouslySetInnerHTML={{
                 __html:
                   questionData[currentIndex].alertMessage.failMessage !== ''
