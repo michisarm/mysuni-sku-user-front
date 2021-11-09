@@ -15,6 +15,7 @@ import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { LRSFromContentbase } from './MainComponents/LRSFromContentbase';
 import { LRSFromLearningPatternBased } from './MainComponents/LRSFromLearningPatternBased';
+import { BookmarkCards } from './MainComponents/BookmarkCards';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -71,6 +72,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
         <LRSFromLearningPatternBased
           profileMemberName={skProfile.profileViewName}
         />
+        <BookmarkCards profileMemberName={skProfile.profileViewName} />
       </div>
       {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
 

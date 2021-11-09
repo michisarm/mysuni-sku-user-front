@@ -304,3 +304,9 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
     .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
     .then(AxiosReturn);
 }
+
+export function findBookmarkCards() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/bookmark`;
+  return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
+}

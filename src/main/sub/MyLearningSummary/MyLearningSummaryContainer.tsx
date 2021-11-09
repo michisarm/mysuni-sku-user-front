@@ -391,7 +391,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             )}
           </AdditionalToolsMyLearning>
         )}
-        <div className="main-learning-link sty2" data-area={Area.MAIN_INFO}>
+        <div
+          className="main-learning-link sty2"
+          data-area={Area.MAIN_INFO}
+          style={{ display: 'none' }}
+        >
           <div className="inner">
             <div className="left">
               <div>
