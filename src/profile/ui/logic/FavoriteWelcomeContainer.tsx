@@ -40,7 +40,7 @@ class FavoriteWelcomeContainer extends Component<Props> {
                   defaultString="안녕하세요"
                   id="profile-interest-안녕하세요"
                 />
-                {parsePolyglotString(name)},
+                {` ${parsePolyglotString(name)}`},
               </h2>
               <p
                 style={{ maxWidth: '580px' }}
