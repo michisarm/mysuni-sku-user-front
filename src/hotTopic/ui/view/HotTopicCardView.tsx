@@ -1,10 +1,11 @@
 import { onClickHotTopicCard } from 'hotTopic/event/hotTopicEvent';
 import { HotTopicCardViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import React, { useMemo } from 'react';
-import { Card, Icon, Label, Image } from 'semantic-ui-react';
+import { Card, Icon, Label } from 'semantic-ui-react';
 import { LearningState } from 'shared/model';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import Image from 'shared/components/Image/Image';
 
 interface Props {
   card: HotTopicCardViewModel;

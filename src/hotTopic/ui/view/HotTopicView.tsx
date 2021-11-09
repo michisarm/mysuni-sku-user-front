@@ -1,9 +1,10 @@
 import { onClickHotTopic } from 'hotTopic/event/hotTopicEvent';
 import { HotTopicDetailViewModel } from 'hotTopic/viewmodel/HotTopicViewModel';
 import React, { useMemo } from 'react';
-import { Card, Icon, Label, Image } from 'semantic-ui-react';
+import { Card, Icon, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import Image from 'shared/components/Image/Image';
 
 interface Props {
   hotTopic: HotTopicDetailViewModel;

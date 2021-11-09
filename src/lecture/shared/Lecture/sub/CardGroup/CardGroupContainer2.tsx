@@ -45,7 +45,7 @@ class CardGroup2 extends Component<Props> {
     if (type === GroupType.Wrap) {
       elements = <Card.Group className="card-warp">{children}</Card.Group>;
     } else if (type === GroupType.Box) {
-      elements = <Card.Group className="box-cards">{children}</Card.Group>;
+      elements = <Card.Group className="card-item-wrap">{children}</Card.Group>;
     } else if (type === GroupType.List) {
       elements = <Card.Group className="list-cards">{children}</Card.Group>;
     } else if (type === GroupType.ListStamp) {
