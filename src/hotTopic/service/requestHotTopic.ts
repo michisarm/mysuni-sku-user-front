@@ -23,7 +23,8 @@ export async function requestHotTopic(id: string) {
   }
 
   const hotTopicList: HotTopicDetailViewModel[] = [];
-  cardBundles.map(async (cardBundle) => {
+
+  cardBundles.map((cardBundle) => {
     const cardBundleDetail: HotTopicDetailViewModel = {
       cardIds: cardBundle.cardIds,
       description: parsePolyglotString(cardBundle.description),
@@ -35,33 +36,40 @@ export async function requestHotTopic(id: string) {
       type: cardBundle.type,
     };
     if (cardBundle.type === 'HotTopic') {
-      const cards = await findCardFromCardBundle(
-        cardBundleDetail.cardIds,
-        999,
-        false
-      );
-      cardBundleDetail.cards = cards?.map((card) => {
-        const hotTopicCard: HotTopicCardViewModel = {
-          id: card.id,
-          learningState: card.learningState,
-          learningTime: card.learningTime,
-          name: parsePolyglotString(card.name),
-          simpleDescription: parsePolyglotString(card.simpleDescription),
-          starCount: card.starCount,
-          passedStudentCount: card.passedStudentCount,
-          thumbImagePath: card.thumbImagePath,
-          thumbnailImagePath: card.thumbnailImagePath,
-          type: card.type,
-          mainCollegeId: card.mainCollegeId,
-        };
-        return hotTopicCard;
-      });
       if (cardBundle.id === id) {
-        setHotTopicDetailViewModel(cardBundleDetail);
+        setHotTopicDetailWithCards(cardBundleDetail);
       } else {
         hotTopicList.push(cardBundleDetail);
-        setHotTopicListViewModel(hotTopicList);
       }
     }
   });
+  setHotTopicListViewModel(hotTopicList);
+}
+
+async function setHotTopicDetailWithCards(
+  cardBundleDetail: HotTopicDetailViewModel
+) {
+  const cards = await findCardFromCardBundle(
+    cardBundleDetail.cardIds,
+    999,
+    false
+  );
+  cardBundleDetail.cards = cards?.map((card) => {
+    const hotTopicCard: HotTopicCardViewModel = {
+      id: card.id,
+      learningState: card.learningState,
+      learningTime: card.learningTime,
+      name: parsePolyglotString(card.name),
+      simpleDescription: parsePolyglotString(card.simpleDescription),
+      starCount: card.starCount,
+      passedStudentCount: card.passedStudentCount,
+      thumbImagePath: card.thumbImagePath,
+      thumbnailImagePath: card.thumbnailImagePath,
+      type: card.type,
+      mainCollegeId: card.mainCollegeId,
+    };
+    return hotTopicCard;
+  });
+
+  setHotTopicDetailViewModel(cardBundleDetail);
 }
