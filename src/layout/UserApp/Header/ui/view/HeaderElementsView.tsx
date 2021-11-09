@@ -91,7 +91,6 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  value: string;
   searchInfo: SearchInfoModel;
   setSearchValue: (name: string, value: any) => void;
   // focused?: boolean;
@@ -105,7 +104,6 @@ interface SearchBarViewProps {
 
 export const SearchBarView: React.FC<SearchBarViewProps> = observer(
   ({
-    value,
     searchInfo,
     setSearchValue,
     // focused,
@@ -130,7 +128,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             <input
               type="text"
               placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-              value={value}
+              value={searchInfo.searchValue}
               onChange={onChange}
               onClick={onClick}
               // onBlur={onBlur}

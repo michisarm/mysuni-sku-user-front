@@ -113,6 +113,14 @@ export function SearchPage() {
     await search(value);
   };
 
+  const onSearchByOriginal = async (value: string) => {
+    searchService.setSearchInfoValue('searchValue', value);
+    if (!searchService.searchInfo.inAgain) {
+      searchService.setSearchInfoValue('recentSearchValue', value);
+    }
+    await search(value, '', true);
+  };
+
   return (
     <>
       <ContentLayout className="searchTotal" breadcrumb={[{ text: 'Search' }]}>
@@ -124,6 +132,7 @@ export function SearchPage() {
           <Segment attached="bottom">
             <SearchContentsPage
               onSearch={onSearch}
+              onSearchByOriginal={onSearchByOriginal}
               searchInfo={searchService.searchInfo}
             />
           </Segment>

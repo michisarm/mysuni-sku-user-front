@@ -585,7 +585,11 @@ export function toggle_support_lang_json_query(value: string) {
 //  // 필터 선택 값 만들기
 //  // 필터
 
-export async function search(searchValue: string, searchType?: string) {
+export async function search(
+  searchValue: string,
+  searchType?: string,
+  withOriginal?: boolean
+) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -603,12 +607,16 @@ export async function search(searchValue: string, searchType?: string) {
 
   const searchInSearchInfo = SearchService.instance.searchInfo;
   if (searchInSearchInfo?.inAgain) {
-    searchInSearchData(decodedSearchValue);
+    await searchInSearchData(decodedSearchValue);
   } else {
     const queryId = getQueryId();
     if (queryId === decodedSearchValue) {
       // 동일한 검색어로 검색할경우 SearchContentsPage에서 감지하지 못하므로 여기서 조회
-      searchDataWithErrata(decodedSearchValue);
+      if (withOriginal) {
+        await searchData(decodedSearchValue);
+      } else {
+        await searchDataWithErrata(decodedSearchValue);
+      }
     } else {
       const history = getCurrentHistory();
       if (searchType === undefined) {
@@ -639,8 +647,17 @@ export async function searchDataWithErrata(
 ) {
   //
   const errataValue = await findNaverOpenApiErrata(searchValue);
-  console.log('----errata searchValue----');
-  console.log(errataValue);
+
+  if (errataValue?.errata) {
+    SearchService.instance.setSearchInfoValue(
+      'errataValue',
+      errataValue.errata
+    );
+    // SearchService.instance.setSearchInfoValue('searchValue', searchValue);
+  } else {
+    SearchService.instance.setSearchInfoValue('errataValue', '');
+  }
+
   await searchData(
     (errataValue && errataValue.errata) || searchValue,
     searchType
@@ -648,7 +665,6 @@ export async function searchDataWithErrata(
 }
 
 export async function searchData(searchValue: string, searchType?: string) {
-  console.log(searchValue);
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -676,8 +692,6 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   setSearchBadgeList([]);
   setSearchCommunityList([]);
-  // console.log('----Badge Search----');
-  // console.log(searchValue);
   findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
@@ -685,8 +699,6 @@ export async function searchData(searchValue: string, searchType?: string) {
     }
   });
 
-  // console.log('----Community Search----');
-  // console.log(searchValue);
   if (
     getMenuAuth()?.some(
       (pagemElement) =>
@@ -702,8 +714,6 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
-  // console.log('----Recent Search----');
-  // console.log(searchValue);
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   searchRecents.unshift(searchValue);
