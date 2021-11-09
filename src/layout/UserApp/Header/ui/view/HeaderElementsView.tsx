@@ -11,12 +11,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { usePageElements } from '../../../../../shared/store/PageElementsStore';
-import {
-  setSearchInSearchInfo,
-  useSearchInSearchInfo,
-} from '../../../../../search/search.services';
 import { Checkbox } from 'semantic-ui-react';
-import { getQueryId } from '../../../../../search/search.events';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
 import { observer } from 'mobx-react';
 
@@ -123,8 +118,6 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
     // getPolyglotText,
   }) => {
     //
-    console.log(searchInfo);
-
     return (
       <>
         <div className="g-search-header" data-area={Area.SEARCH}>

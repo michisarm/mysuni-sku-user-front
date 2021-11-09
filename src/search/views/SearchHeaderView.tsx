@@ -4,16 +4,9 @@ import { useParams } from 'react-router-dom';
 import { SearchParam } from '../search.models';
 import { getQueryId } from '../search.events';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
-import {
-  getMenuAuth,
-  setMenuAuth,
-  setSearchInSearchInfo,
-  useSearchInSearchInfo,
-  useSearchRelatedList,
-} from '../search.services';
+import { getMenuAuth, setMenuAuth } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
-import { Area } from 'tracker/model';
 
 export function SearchHeaderView() {
   const [activeItem, setActiveItem] = useState<string>('');

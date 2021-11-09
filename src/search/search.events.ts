@@ -1,6 +1,5 @@
 import { reactAlert, StorageModel, getCookie } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
-import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -31,7 +30,6 @@ import {
   getQueryOptions,
   getSearchBadgeOriList,
   getSearchCommunityOriList,
-  getSearchInSearchInfo,
   InitialConditions,
   setCard,
   setCollegeOptions,
@@ -60,6 +58,7 @@ import {
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
+import SearchService from './service/SearchService';
 
 export function initSearchData() {
   filterClearAll();
@@ -602,14 +601,14 @@ export async function search(searchValue: string, searchType?: string) {
     return;
   }
 
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  if (searchInSearchInfo?.inAgain) {
     searchInSearchData(decodedSearchValue);
   } else {
     const queryId = getQueryId();
     if (queryId === decodedSearchValue) {
       // 동일한 검색어로 검색할경우 SearchContentsPage에서 감지하지 못하므로 여기서 조회
-      searchData(decodedSearchValue);
+      searchDataWithErrata(decodedSearchValue);
     } else {
       const history = getCurrentHistory();
       if (searchType === undefined) {
@@ -634,7 +633,22 @@ export async function search(searchValue: string, searchType?: string) {
   } as ActionTrackParam);
 }
 
+export async function searchDataWithErrata(
+  searchValue: string,
+  searchType?: string
+) {
+  //
+  const errataValue = await findNaverOpenApiErrata(searchValue);
+  console.log('----errata searchValue----');
+  console.log(errataValue);
+  await searchData(
+    (errataValue && errataValue.errata) || searchValue,
+    searchType
+  );
+}
+
 export async function searchData(searchValue: string, searchType?: string) {
+  console.log(searchValue);
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -645,9 +659,6 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   filterClearAll();
-  const errataValue = await findNaverOpenApiErrata(searchValue);
-  // console.log('----errata searchValue----');
-  // console.log(errataValue);
 
   searchCardFilterData(decodedSearchValue);
   setPreRef(searchValue);
@@ -793,8 +804,8 @@ export function getTitleHtmlSearchKeyword(title: string) {
   let htmlTitle = title;
 
   let keyword = getQueryId();
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
     htmlTitle = htmlTitle

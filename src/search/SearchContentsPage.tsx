@@ -4,20 +4,16 @@ import { useParams } from 'react-router-dom';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   getQueryId,
-  searchData,
   initSearchData,
-  search,
+  searchDataWithErrata,
 } from './search.events';
 import { SearchParam } from './search.models';
 import {
-  getSearchInSearchInfo,
-  setSearchInSearchInfo,
   useDisplayCard,
   useExpert,
   useSearchBadgeList,
   useSearchCommunityList,
   useSearchRelatedList,
-  useSearchInSearchInfo,
 } from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
@@ -60,7 +56,7 @@ export function SearchContentsPage(props: Props) {
       });
       return;
     }
-    searchData(queryId);
+    searchDataWithErrata(queryId);
   }, [queryId]);
 
   const cards = useDisplayCard();

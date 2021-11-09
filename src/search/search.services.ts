@@ -157,18 +157,18 @@ export const [
   useSearchRelatedList,
 ] = createStore<string[]>([]);
 
-// 결과내재검색
-const InitialSearchInSearchInfo = {
-  checkSearchInSearch: false,
-  parentSearchValue: '',
-  searchValue: '',
-};
-export const [
-  setSearchInSearchInfo,
-  onSearchInSearchInfo,
-  getSearchInSearchInfo,
-  useSearchInSearchInfo,
-] = createStore(InitialSearchInSearchInfo);
+// // 결과내재검색
+// const InitialSearchInSearchInfo = {
+//   checkSearchInSearch: false,
+//   parentSearchValue: '',
+//   searchValue: '',
+// };
+// export const [
+//   setSearchInSearchInfo,
+//   onSearchInSearchInfo,
+//   getSearchInSearchInfo,
+//   useSearchInSearchInfo,
+// ] = createStore(InitialSearchInSearchInfo);
 
 export const [setMenuAuth, onMenuAuth, getMenuAuth, useMenuAuth] = createStore<
   PageElement[]

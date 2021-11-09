@@ -23,11 +23,6 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
-import { isCollegeManager } from 'shared/helper/isCollegeManager';
-import classNames from 'classnames';
-import { getCurrentHistory } from 'shared/store/HistoryStore';
-import { SearchHeaderFieldView } from 'search/views/SearchHeaderFieldView';
-import { setSearchInSearchInfo } from 'search/search.services';
 import { LearningMenuView } from '../view/HeaderElementsView';
 
 interface Props extends RouteComponentProps {
@@ -171,16 +166,16 @@ class ProfileContainer extends Component<Props, State> {
       this.setState({ isOpen: !isOpen });
       document.getElementById('btnProFile')?.click();
     };
-    const setSearchOpen = () => {
-      // setWrite('');
-      this.setState({ isSearchOpen: !isSearchOpen });
-      document.getElementById('btnSearchPopup')?.click();
-      setSearchInSearchInfo({
-        checkSearchInSearch: false,
-        parentSearchValue: '',
-        searchValue: '',
-      }); // 초기화
-    };
+    // const setSearchOpen = () => {
+    //   // setWrite('');
+    //   this.setState({ isSearchOpen: !isSearchOpen });
+    //   document.getElementById('btnSearchPopup')?.click();
+    //   setSearchInSearchInfo({
+    //     checkSearchInSearch: false,
+    //     parentSearchValue: '',
+    //     searchValue: '',
+    //   }); // 초기화
+    // };
     // const setWrite = (searchValue: string) => {
     //   this.setState({ write: searchValue });
     // };
