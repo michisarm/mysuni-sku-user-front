@@ -10,6 +10,7 @@ interface Props {
   topBanner: React.ReactNode;
   mainNotice: React.ReactNode;
   setSearchInfoValue: (name: string, value: any) => void;
+  onSearch: (value: string) => void;
   focused: boolean;
   searchInfo: SearchInfoModel;
 }
@@ -21,15 +22,6 @@ class HeaderWrapperView extends Component<Props> {
     super(props);
   }
 
-  async onSearch(value: string) {
-    //
-    this.props.setSearchInfoValue('searchValue', value);
-    if (!this.props.searchInfo.inAgain) {
-      this.props.setSearchInfoValue('recentSearchValue', value);
-    }
-    await search(value);
-  }
-
   render() {
     //
     const {
@@ -38,6 +30,7 @@ class HeaderWrapperView extends Component<Props> {
       mainNotice,
       children,
       setSearchInfoValue,
+      onSearch,
       focused,
     } = this.props;
 
@@ -50,7 +43,7 @@ class HeaderWrapperView extends Component<Props> {
             <div className="cont-inner">{children}</div>
             <SearchHeaderFieldView
               setSearchValue={setSearchInfoValue}
-              onSearch={this.onSearch}
+              onSearch={onSearch}
             />
           </div>
 

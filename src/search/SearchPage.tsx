@@ -111,6 +111,7 @@ export function SearchPage() {
       searchService.setSearchInfoValue('recentSearchValue', value);
     }
     await search(value);
+    searchService.setFocusedValue(false);
   };
 
   const onSearchByOriginal = async (value: string) => {
@@ -119,6 +120,7 @@ export function SearchPage() {
       searchService.setSearchInfoValue('recentSearchValue', value);
     }
     await search(value, '', true);
+    searchService.setFocusedValue(false);
   };
 
   return (
