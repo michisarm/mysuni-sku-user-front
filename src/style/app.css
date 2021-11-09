@@ -810,3 +810,22 @@ body.msie
   margin: 0 0 40px;
   padding-bottom: 40px;
 }
+.ui.cards.card-item-wrap,
+.ui.cards.card-item-wrap .card-item {
+  display: flex;
+}
+
+.ui.cards.card-item-wrap {
+  margin: -13px 0 0 !important;
+}
+
+.ui.cards.card-item-wrap .card-item {
+  margin: 13px;
+}
+
+.ui.cards.card-item-wrap .card-item:nth-child(4n) {
+  margin-right: 0;
+}
+.ui.cards.card-item-wrap .card-item:nth-child(4n + 1) {
+  margin-left: 0;
+}
