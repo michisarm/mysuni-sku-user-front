@@ -774,3 +774,15 @@ body.msie
 .detail.completion-terms {
   white-space: pre-wrap;
 }
+
+
+
+/* 페이지경로 스타일 수정 */
+#root section.header div.breadcrumbs { background: #fafafa; border-top: #eee 1px solid; border-bottom: #eee 1px solid; }
+#root section.header div.breadcrumbs .ui.breadcrumb.standard a { color: #666 !important; }
+#root section.header div.breadcrumbs .ui.breadcrumb.standard .section.active { font-weight: 700; color: #666; }
+
+/* 학습카드 css 수정 */
+.ui.box-cards .card.card-item {
+  padding: 0 !important;
+}
