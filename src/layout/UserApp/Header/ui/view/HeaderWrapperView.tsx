@@ -32,6 +32,7 @@ class HeaderWrapperView extends Component<Props> {
       setSearchInfoValue,
       onSearch,
       focused,
+      searchInfo,
     } = this.props;
 
     return (
@@ -43,6 +44,7 @@ class HeaderWrapperView extends Component<Props> {
             <div className="cont-inner">{children}</div>
             <SearchHeaderFieldView
               setSearchValue={setSearchInfoValue}
+              searchInfo={searchInfo}
               onSearch={onSearch}
             />
           </div>

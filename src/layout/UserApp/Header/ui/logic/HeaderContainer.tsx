@@ -76,7 +76,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     const { searchInfo } = searchService;
-    console.log('search============');
     searchService.setSearchInfoValue(
       'recentSearchValue',
       searchInfo.searchValue
@@ -110,6 +109,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
         );
       }, 1000);
     }
+    searchService.setFocusedValue(false);
   }
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -119,14 +119,12 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
       // searchService.setSearchInfoValue('errataValue', '');
     }
     searchService.setSearchInfoValue('searchValue', e.target.value);
-    // this.setState({ searchValue: e.target.value });
   }
 
   setSearchInfoValue(name: string, value: any): void {
     //
     const { searchService } = this.injected;
     searchService.setSearchInfoValue(name, value);
-    // this.setState({ searchValue: value });
   }
 
   onClickSearchInput() {
@@ -139,13 +137,11 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     searchService.setFocusedValue(false);
-    // this.setState({ focused: false });
   }
 
   onClickClearSearch() {
     const { searchService } = this.injected;
     searchService.setSearchInfoValue('searchValue', '');
-    // this.setState({ searchValue: '' });
   }
 
   cleanSessionStorage() {
