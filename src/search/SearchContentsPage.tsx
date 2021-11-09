@@ -4,20 +4,16 @@ import { useParams } from 'react-router-dom';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   getQueryId,
-  searchData,
   initSearchData,
-  search,
+  searchDataWithErrata,
 } from './search.events';
 import { SearchParam } from './search.models';
 import {
-  getSearchInSearchInfo,
-  setSearchInSearchInfo,
   useDisplayCard,
   useExpert,
   useSearchBadgeList,
   useSearchCommunityList,
   useSearchRelatedList,
-  useSearchInSearchInfo,
 } from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
@@ -27,15 +23,17 @@ import { SearchContentsResultSideView } from './views/SearchContentsResultSideVi
 import { SearchNoDataView } from './views/SearchNoDataView';
 import { Area } from 'tracker/model';
 import SearchInfoModel from './model/SeachInfoModel';
+import { Button } from 'semantic-ui-react';
 
 interface Props {
   onSearch: (value: string) => void;
+  onSearchByOriginal: (value: string) => void;
   searchInfo: SearchInfoModel;
 }
 
 export function SearchContentsPage(props: Props) {
   //
-  const { onSearch, searchInfo } = props;
+  const { onSearch, onSearchByOriginal, searchInfo } = props;
 
   const params = useParams<SearchParam>();
 
@@ -60,7 +58,7 @@ export function SearchContentsPage(props: Props) {
       });
       return;
     }
-    searchData(queryId);
+    searchDataWithErrata(queryId);
   }, [queryId]);
 
   const cards = useDisplayCard();
@@ -98,7 +96,7 @@ export function SearchContentsPage(props: Props) {
                 '통검-요약정보-결과내검색타이틀',
                 {
                   value: searchInfo.recentSearchValue,
-                  value2: searchInfo.searchValue,
+                  value2: searchInfo.errataValue && searchInfo.searchValue,
                   value3: totalCount.toString(),
                 }
               ),
@@ -113,14 +111,29 @@ export function SearchContentsPage(props: Props) {
                 '<strong class="search_keyword">{value}</strong>에 대한 검색결과는 총 <strong>{value2}건</strong>입니다.',
                 '통검-요약정보-타이틀2',
                 {
-                  value: queryId,
+                  value:
+                    (searchInfo.errataValue && searchInfo.errataValue) ||
+                    queryId,
                   value2: totalCount.toString(),
                 }
               ),
             }}
           />
         )}
-
+        {(searchInfo.errataValue && (
+          <div className="suggest_wrap">
+            <Button
+              className="b_suggest"
+              onClick={() => onSearchByOriginal(searchInfo.searchValue)}
+            >
+              {`${searchInfo.searchValue} ${getPolyglotText(
+                '검색결과 보기',
+                '통검-제안검색-버튼1'
+              )}`}
+            </Button>
+          </div>
+        )) ||
+          null}
         {relatedList && relatedList.length > 0 && (
           <div className="relative_box">
             <dl>

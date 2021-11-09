@@ -11,12 +11,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { usePageElements } from '../../../../../shared/store/PageElementsStore';
-import {
-  setSearchInSearchInfo,
-  useSearchInSearchInfo,
-} from '../../../../../search/search.services';
 import { Checkbox } from 'semantic-ui-react';
-import { getQueryId } from '../../../../../search/search.events';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
 import { observer } from 'mobx-react';
 
@@ -96,7 +91,6 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  value: string;
   searchInfo: SearchInfoModel;
   setSearchValue: (name: string, value: any) => void;
   // focused?: boolean;
@@ -110,7 +104,6 @@ interface SearchBarViewProps {
 
 export const SearchBarView: React.FC<SearchBarViewProps> = observer(
   ({
-    value,
     searchInfo,
     setSearchValue,
     // focused,
@@ -123,8 +116,6 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
     // getPolyglotText,
   }) => {
     //
-    console.log(searchInfo);
-
     return (
       <>
         <div className="g-search-header" data-area={Area.SEARCH}>
@@ -137,7 +128,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             <input
               type="text"
               placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-              value={value}
+              value={searchInfo.searchValue}
               onChange={onChange}
               onClick={onClick}
               // onBlur={onBlur}

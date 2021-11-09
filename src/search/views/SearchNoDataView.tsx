@@ -1,20 +1,19 @@
 import React from 'react';
 import { getQueryId } from 'search/search.events';
-import { getSearchInSearchInfo } from 'search/search.services';
 import {
   PolyglotText,
   getPolyglotText,
 } from '../../shared/ui/logic/PolyglotText';
+import SearchService from 'search/service/SearchService';
 
 export function SearchNoDataView() {
   //
-
   const queryId = getQueryId();
-  const searchInSearchInfo = getSearchInSearchInfo();
+  const searchInSearchInfo = SearchService.instance.searchInfo;
 
   return (
     <>
-      {searchInSearchInfo?.checkSearchInSearch && (
+      {searchInSearchInfo?.inAgain && (
         <p
           className="ttl_txt"
           dangerouslySetInnerHTML={{
@@ -22,14 +21,14 @@ export function SearchNoDataView() {
               '{value} 중 <strong class="search_keyword"> ‘{value2}’</strong>에 대한 검색결과가 없습니다.',
               '통검-요약정보-결과내검색없음',
               {
-                value: searchInSearchInfo.parentSearchValue,
+                value: searchInSearchInfo.recentSearchValue,
                 value2: searchInSearchInfo.searchValue,
               }
             ),
           }}
         />
       )}
-      {!searchInSearchInfo?.checkSearchInSearch && (
+      {!searchInSearchInfo?.inAgain && (
         <p
           className="ttl_txt"
           dangerouslySetInnerHTML={{

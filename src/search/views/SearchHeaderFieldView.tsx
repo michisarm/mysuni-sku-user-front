@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
-import { search } from '../search.events';
-import {
-  setSearchInSearchInfo,
-  setSearchRecentList,
-  useSearchRecentList,
-} from '../search.services';
+import { setSearchRecentList, useSearchRecentList } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
 

@@ -1,6 +1,5 @@
 import { reactAlert, StorageModel, getCookie } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
-import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -31,7 +30,6 @@ import {
   getQueryOptions,
   getSearchBadgeOriList,
   getSearchCommunityOriList,
-  getSearchInSearchInfo,
   InitialConditions,
   setCard,
   setCollegeOptions,
@@ -60,6 +58,7 @@ import {
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
+import SearchService from './service/SearchService';
 
 export function initSearchData() {
   filterClearAll();
@@ -587,7 +586,11 @@ export function toggle_support_lang_json_query(value: string) {
 //  // 필터 선택 값 만들기
 //  // 필터
 
-export async function search(searchValue: string, searchType?: string) {
+export async function search(
+  searchValue: string,
+  searchType?: string,
+  withOriginal?: boolean
+) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -603,14 +606,18 @@ export async function search(searchValue: string, searchType?: string) {
     return;
   }
 
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
-    searchInSearchData(decodedSearchValue);
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  if (searchInSearchInfo?.inAgain) {
+    await searchInSearchData(decodedSearchValue);
   } else {
     const queryId = getQueryId();
     if (queryId === decodedSearchValue) {
       // 동일한 검색어로 검색할경우 SearchContentsPage에서 감지하지 못하므로 여기서 조회
-      searchData(decodedSearchValue);
+      if (withOriginal) {
+        await searchData(decodedSearchValue);
+      } else {
+        await searchDataWithErrata(decodedSearchValue);
+      }
     } else {
       const history = getCurrentHistory();
       if (searchType === undefined) {
@@ -635,6 +642,29 @@ export async function search(searchValue: string, searchType?: string) {
   } as ActionTrackParam);
 }
 
+export async function searchDataWithErrata(
+  searchValue: string,
+  searchType?: string
+) {
+  //
+  const errataValue = await findNaverOpenApiErrata(searchValue);
+
+  if (errataValue?.errata) {
+    SearchService.instance.setSearchInfoValue(
+      'errataValue',
+      errataValue.errata
+    );
+    // SearchService.instance.setSearchInfoValue('searchValue', searchValue);
+  } else {
+    SearchService.instance.setSearchInfoValue('errataValue', '');
+  }
+
+  await searchData(
+    (errataValue && errataValue.errata) || searchValue,
+    searchType
+  );
+}
+
 export async function searchData(searchValue: string, searchType?: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
@@ -646,9 +676,6 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   filterClearAll();
-  const errataValue = await findNaverOpenApiErrata(searchValue);
-  // console.log('----errata searchValue----');
-  // console.log(errataValue);
 
   searchCardFilterData(decodedSearchValue);
   setPreRef(searchValue);
@@ -666,8 +693,6 @@ export async function searchData(searchValue: string, searchType?: string) {
 
   setSearchBadgeList([]);
   setSearchCommunityList([]);
-  // console.log('----Badge Search----');
-  // console.log(searchValue);
   findBadges(searchValue).then((response) => {
     if (response) {
       setSearchBadgeList(response.results);
@@ -675,8 +700,6 @@ export async function searchData(searchValue: string, searchType?: string) {
     }
   });
 
-  // console.log('----Community Search----');
-  // console.log(searchValue);
   if (
     getMenuAuth()?.some(
       (pagemElement) =>
@@ -692,8 +715,6 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
-  // console.log('----Recent Search----');
-  // console.log(searchValue);
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   searchRecents.unshift(searchValue);
@@ -794,8 +815,8 @@ export function getTitleHtmlSearchKeyword(title: string) {
   let htmlTitle = title;
 
   let keyword = getQueryId();
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
     htmlTitle = htmlTitle

@@ -113,6 +113,10 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+    if (searchInfo.errataValue) {
+      // searchService.setSearchInfoValue('errataValue', '');
+    }
     searchService.setSearchInfoValue('searchValue', e.target.value);
     // this.setState({ searchValue: e.target.value });
   }
@@ -204,7 +208,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
             <LogoView onClickMenu={this.onClickMenu} />
             <MenuView onClickMenu={this.onClickMenu} />
             <SearchBarView
-              value={searchInfo.searchValue}
               searchInfo={searchInfo}
               setSearchValue={this.setSearchInfoValue}
               onSearch={this.onSearch}

@@ -802,5 +802,7 @@ function paramsSerializer(paramObj: Record<string, any>) {
 // 오타제안검색
 export function findNaverOpenApiErrata(keyword: string) {
   const url = `${SEARCH_API_URL}/errata`;
-  return axiosApi.get<string[]>(url, { params: { keyword } }).then(AxiosReturn);
+  return axiosApi
+    .get<{ errata: string }>(url, { params: { keyword } })
+    .then(AxiosReturn);
 }
