@@ -775,25 +775,6 @@ body.msie
   white-space: pre-wrap;
 }
 
-/* 페이지경로 스타일 수정 */
-#root section.header div.breadcrumbs {
-  background: #fafafa;
-  border-top: #eee 1px solid;
-  border-bottom: #eee 1px solid;
-}
-#root section.header div.breadcrumbs .ui.breadcrumb.standard a {
-  color: #666 !important;
-}
-#root section.header div.breadcrumbs .ui.breadcrumb.standard .section.active {
-  font-weight: 700;
-  color: #666;
-}
-
-/* 학습카드 css 수정 */
-.ui.box-cards .card.card-item {
-  padding: 0 !important;
-}
-
 /* 메인 페이지 뱃지 백그라운드 이미지 */
 .badge-banner-wrap {
   background: url('https://image.mysuni.sk.com/suni-asset/public/static/media/bg-bnr-badge.png');
@@ -810,26 +791,47 @@ body.msie
   margin: 0 0 40px;
   padding-bottom: 40px;
 }
-.ui.cards.card-item-wrap,
-.ui.cards.card-item-wrap .card-item {
-  display: flex;
-}
-
-.ui.cards.card-item-wrap {
-  margin: -13px 0 0 !important;
-}
-
-.ui.cards.card-item-wrap .card-item {
-  margin: 13px;
-}
-
-.ui.cards.card-item-wrap .card-item:nth-child(4n) {
-  margin-right: 0;
-}
-.ui.cards.card-item-wrap .card-item:nth-child(4n + 1) {
-  margin-left: 0;
-}
 
 /* .ui.card.card-item {
   padding: 0 10px 10px;
 } */
+
+
+
+
+
+/* === 2021.11.09 최은영 (코드정리) 시작 === */
+
+/* 페이지경로 스타일 수정 */
+#root section.header div.breadcrumbs {
+  background: #fafafa;
+  border-top: #eee 1px solid;
+  border-bottom: #eee 1px solid;
+}
+#root section.header div.breadcrumbs .ui.breadcrumb.standard a {
+  color: #666 !important;
+}
+#root section.header div.breadcrumbs .ui.breadcrumb.standard .section.active {
+  font-weight: 700;
+  color: #666;
+}
+
+/* 컬리지 학습카드 컨테이너 */
+.ui.cards.card-item-wrap,
+.ui.cards.card-item-wrap .card-item {
+    display: flex;
+}
+.ui.cards.card-item-wrap {
+    margin: -13px 0 0  !important;
+}
+.ui.cards.card-item-wrap .card-item {
+    margin: 13px;
+}
+.ui.cards.card-item-wrap .card-item:nth-child(4n) {
+    margin-right: 0;
+}
+.ui.cards.card-item-wrap .card-item:nth-child(4n+1) {
+    margin-left: 0;
+}
+
+/* === 2021.11.09 최은영 (코드정리) 끝 === */
