@@ -26,14 +26,13 @@ import SearchInfoModel from './model/SeachInfoModel';
 import { Button } from 'semantic-ui-react';
 
 interface Props {
-  onSearch: (value: string) => void;
-  onSearchByOriginal: (value: string) => void;
+  onSearch: (value: string, withOriginal?: boolean) => void;
   searchInfo: SearchInfoModel;
 }
 
 export function SearchContentsPage(props: Props) {
   //
-  const { onSearch, onSearchByOriginal, searchInfo } = props;
+  const { onSearch, searchInfo } = props;
 
   const params = useParams<SearchParam>();
 
@@ -124,9 +123,9 @@ export function SearchContentsPage(props: Props) {
           <div className="suggest_wrap">
             <Button
               className="b_suggest"
-              onClick={() => onSearchByOriginal(searchInfo.searchValue)}
+              onClick={() => onSearch(searchInfo.searchValue || queryId, true)}
             >
-              {`${searchInfo.searchValue} ${getPolyglotText(
+              {`${searchInfo.searchValue || queryId} ${getPolyglotText(
                 '검색결과 보기',
                 '통검-제안검색-버튼1'
               )}`}

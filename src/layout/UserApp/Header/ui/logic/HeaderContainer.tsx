@@ -22,6 +22,7 @@ import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
+import { search } from '../../../../../search/search.events';
 
 interface Props extends RouteComponentProps {}
 
@@ -75,7 +76,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     const { searchInfo } = searchService;
-    console.log('search============');
     searchService.setSearchInfoValue(
       'recentSearchValue',
       searchInfo.searchValue
@@ -109,6 +109,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
         );
       }, 1000);
     }
+    searchService.setFocusedValue(false);
   }
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -118,14 +119,12 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
       // searchService.setSearchInfoValue('errataValue', '');
     }
     searchService.setSearchInfoValue('searchValue', e.target.value);
-    // this.setState({ searchValue: e.target.value });
   }
 
   setSearchInfoValue(name: string, value: any): void {
     //
     const { searchService } = this.injected;
     searchService.setSearchInfoValue(name, value);
-    // this.setState({ searchValue: value });
   }
 
   onClickSearchInput() {
@@ -138,13 +137,11 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     searchService.setFocusedValue(false);
-    // this.setState({ focused: false });
   }
 
   onClickClearSearch() {
     const { searchService } = this.injected;
     searchService.setSearchInfoValue('searchValue', '');
-    // this.setState({ searchValue: '' });
   }
 
   cleanSessionStorage() {
@@ -179,6 +176,19 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     this.cleanSessionStorage();
   }
 
+  async onSearchValue(value: string) {
+    //
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+
+    searchService.setSearchInfoValue('searchValue', value);
+    if (!searchInfo.inAgain) {
+      searchService.setSearchInfoValue('recentSearchValue', value);
+    }
+    await search(value);
+    searchService.setFocusedValue(false);
+  }
+
   render() {
     //
     const { breadcrumb } = this.context;
@@ -201,6 +211,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
           topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
           setSearchInfoValue={this.setSearchInfoValue}
+          onSearch={this.onSearchValue}
           focused={searchViewFocused}
           searchInfo={searchInfo}
         >

@@ -105,20 +105,17 @@ export function SearchPage() {
     return setSearchUI;
   }, []);
 
-  const onSearch = async (value: string) => {
+  const onSearch = async (value: string, withOriginal?: boolean) => {
     searchService.setSearchInfoValue('searchValue', value);
     if (!searchService.searchInfo.inAgain) {
       searchService.setSearchInfoValue('recentSearchValue', value);
     }
-    await search(value);
-  };
-
-  const onSearchByOriginal = async (value: string) => {
-    searchService.setSearchInfoValue('searchValue', value);
-    if (!searchService.searchInfo.inAgain) {
-      searchService.setSearchInfoValue('recentSearchValue', value);
+    if (withOriginal) {
+      await search(value, '', true);
+    } else {
+      await search(value);
     }
-    await search(value, '', true);
+    searchService.setFocusedValue(false);
   };
 
   return (
@@ -132,7 +129,6 @@ export function SearchPage() {
           <Segment attached="bottom">
             <SearchContentsPage
               onSearch={onSearch}
-              onSearchByOriginal={onSearchByOriginal}
               searchInfo={searchService.searchInfo}
             />
           </Segment>

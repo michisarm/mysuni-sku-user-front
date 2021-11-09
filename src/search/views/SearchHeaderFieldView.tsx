@@ -4,10 +4,12 @@ import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
 import { setSearchRecentList, useSearchRecentList } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
+import SearchInfoModel from '../model/SeachInfoModel';
 
 interface Props {
   callback?: (searchValue?: string) => void;
   setSearchValue: (name: string, value: any) => void;
+  searchInfo: SearchInfoModel;
   onSearch: (value: string) => void;
 }
 
@@ -90,6 +92,16 @@ export function SearchHeaderFieldView(props: Props) {
               <SearchHeaderFieldPopularView onClickSearch={props.onSearch} />
             </div>
           </div>
+        </div>
+        <div className="w_inner_auto on">
+          <ul className="auto_list">
+            <li className="auto_item">hi</li>
+            <li className="auto_item">hi2</li>
+            <li className="auto_item">hi3</li>
+            <li className="auto_item">hi4</li>
+            <li className="auto_item">hi5</li>
+            <li className="auto_item">hi6</li>
+          </ul>
         </div>
       </div>
     </div>
