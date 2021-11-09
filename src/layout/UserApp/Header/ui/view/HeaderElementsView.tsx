@@ -127,7 +127,10 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             ) : null}
             <input
               type="text"
-              placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
+              placeholder={getPolyglotText(
+                '무엇을 배우고 싶으신가요?.',
+                'gnb-search-placeholder'
+              )}
               value={searchInfo.searchValue}
               onChange={onChange}
               onClick={onClick}

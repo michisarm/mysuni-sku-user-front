@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -126,8 +126,8 @@ export function SearchContentsPage(props: Props) {
               onClick={() => onSearch(searchInfo.searchValue || queryId, true)}
             >
               {`${searchInfo.searchValue || queryId} ${getPolyglotText(
-                '검색결과 보기',
-                '통검-제안검색-버튼1'
+                '검색결과 보기.',
+                'result-list'
               )}`}
             </Button>
           </div>
