@@ -93,16 +93,16 @@ export function SearchHeaderFieldView(props: Props) {
             </div>
           </div>
         </div>
-        <div className="w_inner_auto on">
-          <ul className="auto_list">
-            <li className="auto_item">hi</li>
-            <li className="auto_item">hi2</li>
-            <li className="auto_item">hi3</li>
-            <li className="auto_item">hi4</li>
-            <li className="auto_item">hi5</li>
-            <li className="auto_item">hi6</li>
-          </ul>
-        </div>
+        {/*<div className="w_inner_auto on">*/}
+        {/*  <ul className="auto_list">*/}
+        {/*    <li className="auto_item">hi</li>*/}
+        {/*    <li className="auto_item">hi2</li>*/}
+        {/*    <li className="auto_item">hi3</li>*/}
+        {/*    <li className="auto_item">hi4</li>*/}
+        {/*    <li className="auto_item">hi5</li>*/}
+        {/*    <li className="auto_item">hi6</li>*/}
+        {/*  </ul>*/}
+        {/*</div>*/}
       </div>
     </div>
   );
