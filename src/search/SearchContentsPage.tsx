@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {

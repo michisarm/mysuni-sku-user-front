@@ -1,7 +1,6 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
-import { search } from '../../../../../search/search.events';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
 
 interface Props {
