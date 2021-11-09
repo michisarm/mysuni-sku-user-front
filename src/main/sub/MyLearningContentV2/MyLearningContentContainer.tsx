@@ -97,7 +97,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
       {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
 
-      <EnrollingLearning />
+      <div className="learning-section-wrap">
+        <EnrollingLearning />
+      </div>
     </>
   );
 };
