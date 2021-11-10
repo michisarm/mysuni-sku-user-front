@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Table, Icon, Accordion, Progress } from 'semantic-ui-react';
-import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
+import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
 const PUBLIC_URL = `${process.env.PUBLIC_URL}`;
 
@@ -61,40 +61,3 @@ export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> 
       <a onClick={onClick}>{children}</a>
     </>
   );
-
-interface AdditionalToolsMyLearningProps {
-  children: React.ReactNode;
-  activeIndex: number;
-  companyCode: string;
-  onClickQnA: () => void;
-  handleClick: (e: any, data: any) => void;
-}
-
-export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearningProps> =
-  function ({ children, activeIndex, companyCode, onClickQnA, handleClick }) {
-    return (
-      <Accordion>
-        <Accordion.Title
-          active={activeIndex === 1}
-          index={1}
-          onClick={(e, data) => {
-            handleClick(e, data);
-          }}
-        >
-          <img
-            src={
-              activeIndex !== 1
-                ? `${PUBLIC_URL}/images/all/btn-pboard-open.png`
-                : `${PUBLIC_URL}/images/all/btn-pboard-close.png`
-            }
-          />
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 1}>
-          <PersonalBoardContainer
-            companyCode={companyCode}
-            activeIndex={activeIndex}
-          />
-        </Accordion.Content>
-      </Accordion>
-    );
-  };

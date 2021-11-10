@@ -13,6 +13,7 @@ import {
 } from '../../../../search/search.services';
 import SearchService from '../../../../search/service/SearchService';
 import { search } from '../../../../search/search.events';
+import Image from '../../../../shared/components/Image';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -62,6 +63,14 @@ export function MainHotTopicContainer() {
 
   const searchPopularList = useSearchPopular1MList();
 
+  if (
+    searchPopularList === undefined ||
+    searchPopularList.length === 0 ||
+    cardBundles.length === 0
+  ) {
+    return null;
+  }
+
   return (
     <Segment className="full learning-section type5">
       <div className="section-head">
@@ -70,9 +79,14 @@ export function MainHotTopicContainer() {
         </div>
         <div className="keyword-tag-wrap">
           <div className="keyword-wrap">
-            {searchPopularList?.map((c) => {
+            {searchPopularList?.map((c, i) => {
               return (
-                <Label as="button" className="kwd">
+                <Label
+                  as="button"
+                  className="kwd"
+                  onClick={() => onSearchValue(c)}
+                  key={i}
+                >
                   #{c}
                 </Label>
               );
@@ -87,14 +101,14 @@ export function MainHotTopicContainer() {
         <div className="cardSwiper">
           <Swiper {...swiperProps}>
             {cardBundles.map((c) => (
-              <div className="swiper-slide">
+              <div className="swiper-slide" key={c.id}>
                 <Card.Group className="topic-card-warp">
                   <Card className="topic-item">
                     <div className="thumb-img-area">
-                      <img
-                        src={c.imageUrl}
+                      <Image
+                        src={parsePolyglotString(c.imageUrl)}
                         className="ui image thumb-img"
-                        alt="프로필 이미지"
+                        alt="핫 토픽 이미지"
                       />
                     </div>
                     <div className="card-inner">

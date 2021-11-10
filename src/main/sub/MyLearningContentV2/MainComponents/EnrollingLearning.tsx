@@ -88,6 +88,10 @@ function EnrollingLearning() {
     });
   };
 
+  if (cardList === undefined || cardList.length === 0) {
+    return null;
+  }
+
   return (
     <Segment
       className="full learning-section type1"
@@ -110,28 +114,30 @@ function EnrollingLearning() {
             {cardList &&
               cardList.map((card, i) => {
                 return (
-                  <CardGroup type={GroupType.Wrap} key={card.id}>
-                    <LectureCardView
-                      cardId={card.id}
-                      cardName={parsePolyglotString(card.name)}
-                      learningTime={String(card.learningTime)}
-                      thumbnailImagePath={card.thumbImagePath}
-                      difficultyLevel={card.difficultyLevel}
-                      passedStudentCount={String(card.passedStudentCount)}
-                      starCount={String(card.starCount)}
-                      simpleDescription={parsePolyglotString(
-                        card.simpleDescription
-                      )}
-                      studentCount={card.studentCount}
-                      userLanguage={userLanguage}
-                      langSupports={card.langSupports}
-                      collegeId={card.mainCollegeId}
-                      isRequiredLecture={card.required}
-                      upcomingClassroomInfo={card.upcomingClassroomInfo}
-                      dataArea={Area.MAIN_ENROLLING}
-                      useBookMark
-                    />
-                  </CardGroup>
+                  <div className="swiper-slide" key={card.id}>
+                    <CardGroup type={GroupType.Wrap}>
+                      <LectureCardView
+                        cardId={card.id}
+                        cardName={parsePolyglotString(card.name)}
+                        learningTime={String(card.learningTime)}
+                        thumbnailImagePath={card.thumbImagePath}
+                        difficultyLevel={card.difficultyLevel}
+                        passedStudentCount={String(card.passedStudentCount)}
+                        starCount={String(card.starCount)}
+                        simpleDescription={parsePolyglotString(
+                          card.simpleDescription
+                        )}
+                        studentCount={card.studentCount}
+                        userLanguage={userLanguage}
+                        langSupports={card.langSupports}
+                        collegeId={card.mainCollegeId}
+                        isRequiredLecture={card.required}
+                        upcomingClassroomInfo={card.upcomingClassroomInfo}
+                        dataArea={Area.MAIN_ENROLLING}
+                        useBookMark
+                      />
+                    </CardGroup>
+                  </div>
                 );
               })}
           </Swiper>

@@ -167,21 +167,22 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
               SkProfileService.instance.skProfile.language
             ).map((item, i) => {
               return (
-                <CardGroup
-                  type={GroupType.Wrap}
-                  key={item.cardId}
-                  dataActionName={
-                    title.includes('학습 콘텐츠 기반 추천 과정')
-                      ? '학습 콘텐츠 기반 추천 과정'
-                      : 'mySUNI의 추천 과정'
-                  }
-                >
-                  <LectureCardView
-                    {...item}
-                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                    dataArea={Area.MAIN_RECOMMEND}
-                  />
-                </CardGroup>
+                <div className="swiper-slide" key={item.cardId}>
+                  <CardGroup
+                    type={GroupType.Wrap}
+                    dataActionName={
+                      title.includes('학습 콘텐츠 기반 추천 과정')
+                        ? '학습 콘텐츠 기반 추천 과정'
+                        : 'mySUNI의 추천 과정'
+                    }
+                  >
+                    <LectureCardView
+                      {...item}
+                      useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                      dataArea={Area.MAIN_RECOMMEND}
+                    />
+                  </CardGroup>
+                </div>
               );
             })}
           </Swiper>

@@ -6,15 +6,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
 import { timeToHourMinute } from '../../../../../shared/helper/dateTimeHelper';
-import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {
-  activeIndex: number;
   myLearningSummaryService?: MyLearningSummaryService;
 }
 
 const BadgeLearningTimeView: React.FC<Props> = (Props) => {
-  const { activeIndex, history, myLearningSummaryService } = Props;
+  const { history, myLearningSummaryService } = Props;
 
   const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
 
@@ -71,36 +73,35 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    badgeLearningTimeItem.badgeMyCount /
-                                      badgeLearningTimeItem.AllBadgeMyCount >
-                                    1
-                                      ? 100
-                                      : (badgeLearningTimeItem.badgeMyCount /
-                                          badgeLearningTimeItem.AllBadgeMyCount) *
-                                        100
-                                  }%`,
-                                  // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              badgeLearningTimeItem.badgeMyCount /
+                                badgeLearningTimeItem.AllBadgeMyCount >
+                              1
+                                ? 100
+                                : (badgeLearningTimeItem.badgeMyCount /
+                                    badgeLearningTimeItem.AllBadgeMyCount) *
+                                  100
+                            }%`,
+                            // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
+                          }}
                           className="percent"
                         />
                       </div>
                     </div>
                   </div>
-                  <span className="gauge-number"
+                  <span
+                    className="gauge-number"
                     dangerouslySetInnerHTML={{
-                      __html: getPolyglotText('<strong>{badgeMyCount}</strong>개',
+                      __html: getPolyglotText(
+                        '<strong>{badgeMyCount}</strong>개',
                         'home-PersonalBoard-갯수',
-                        {badgeMyCount: badgeLearningTimeItem.badgeMyCount
-                          ? badgeLearningTimeItem.badgeMyCount+''
-                          : 0+''
+                        {
+                          badgeMyCount: badgeLearningTimeItem.badgeMyCount
+                            ? badgeLearningTimeItem.badgeMyCount + ''
+                            : 0 + '',
                         }
-                      )
+                      ),
                     }}
                   />
                 </div>
@@ -115,35 +116,37 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    badgeLearningTimeItem.companyAvgBadgeCount /
-                                      badgeLearningTimeItem.allCompanyAvgBadgeCount >
-                                    1
-                                      ? 100
-                                      : (badgeLearningTimeItem.companyAvgBadgeCount /
-                                          badgeLearningTimeItem.allCompanyAvgBadgeCount) *
-                                        100
-                                  }%`,
-                                  // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              badgeLearningTimeItem.companyAvgBadgeCount /
+                                badgeLearningTimeItem.allCompanyAvgBadgeCount >
+                              1
+                                ? 100
+                                : (badgeLearningTimeItem.companyAvgBadgeCount /
+                                    badgeLearningTimeItem.allCompanyAvgBadgeCount) *
+                                  100
+                            }%`,
+                            // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
+                          }}
                           className="percent"
                         />
                       </div>
                     </div>
                   </div>
-                  <span className="gauge-number"
-                    dangerouslySetInnerHTML={{__html: getPolyglotText('<strong>{companyAvgBadgeCount}</strong>개',
-                      'home-PersonalBoard-갯수AVG',
-                      {companyAvgBadgeCount: badgeLearningTimeItem.companyAvgBadgeCount
-                        ? badgeLearningTimeItem.companyAvgBadgeCount+''
-                        : 0+''
-                      }
-                    )}}  
+                  <span
+                    className="gauge-number"
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        '<strong>{companyAvgBadgeCount}</strong>개',
+                        'home-PersonalBoard-갯수AVG',
+                        {
+                          companyAvgBadgeCount:
+                            badgeLearningTimeItem.companyAvgBadgeCount
+                              ? badgeLearningTimeItem.companyAvgBadgeCount + ''
+                              : 0 + '',
+                        }
+                      ),
+                    }}
                   />
                 </div>
               </div>
@@ -158,9 +161,14 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     />
                   </h3>
                 </a>
-                <span dangerouslySetInnerHTML={{__html: getPolyglotText('{year}년 완료 학습',
-                  'home-PersonalBoard-완료학습',
-                  {year: moment().year()+''})}}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      '{year}년 완료 학습',
+                      'home-PersonalBoard-완료학습',
+                      { year: moment().year() + '' }
+                    ),
+                  }}
                 />
               </div>
               <div className="card-item-con">
@@ -175,23 +183,19 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    totalLearningTime >
-                                    badgeLearningTimeItem.companyAvglearningTime
-                                      ? (totalLearningTime /
-                                          (totalLearningTime * 1.1)) *
-                                        100
-                                      : (totalLearningTime /
-                                          (badgeLearningTimeItem.companyAvglearningTime *
-                                            1.1)) *
-                                        100
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              totalLearningTime >
+                              badgeLearningTimeItem.companyAvglearningTime
+                                ? (totalLearningTime /
+                                    (totalLearningTime * 1.1)) *
+                                  100
+                                : (totalLearningTime /
+                                    (badgeLearningTimeItem.companyAvglearningTime *
+                                      1.1)) *
+                                  100
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
@@ -224,23 +228,19 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    totalLearningTime >
-                                    badgeLearningTimeItem.companyAvglearningTime
-                                      ? (badgeLearningTimeItem.companyAvglearningTime /
-                                          (totalLearningTime * 1.1)) *
-                                        100
-                                      : (badgeLearningTimeItem.companyAvglearningTime /
-                                          (badgeLearningTimeItem.companyAvglearningTime *
-                                            1.1)) *
-                                        100
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              totalLearningTime >
+                              badgeLearningTimeItem.companyAvglearningTime
+                                ? (badgeLearningTimeItem.companyAvglearningTime /
+                                    (totalLearningTime * 1.1)) *
+                                  100
+                                : (badgeLearningTimeItem.companyAvglearningTime /
+                                    (badgeLearningTimeItem.companyAvglearningTime *
+                                      1.1)) *
+                                  100
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
