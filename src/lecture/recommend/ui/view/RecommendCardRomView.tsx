@@ -81,11 +81,12 @@ export function RecommendCardRomView(props: RecommendCardRom) {
         {isCardWithRelatedCountRoms && (
           <div className="right">
             <Link to={`/lecture/recommend/channel/${channelId}`}>
-              <button className="ui icon button right btn-blue">
-                <PolyglotText
+              <button className="ui icon button right btn-more">
+                전체보기
+                {/* <PolyglotText
                   defaultString="View all"
                   id="rcmd-추천-ViewAll2"
-                />
+                /> */}
                 <i aria-hidden="true" className="icon morelink" />
               </button>
             </Link>
@@ -99,44 +100,40 @@ export function RecommendCardRomView(props: RecommendCardRom) {
             <>
               <Swiper {...SwiperProps}>
                 {isCardWithRelatedCountRoms &&
-                  cardWithRelatedCountRdos.map(
-                    ({ card, cardRelatedCount }, index) => {
-                      return (
-                        <div
-                          className={`${channelId}-${swipeName} swiper-slide`}
-                        >
-                          <CardGroup type={GroupType.Wrap} key={card.id}>
-                            <LectureCardView
-                              cardId={card.id}
-                              cardName={parsePolyglotString(card.name)}
-                              learningTime={card.learningTime.toString()}
-                              thumbnailImagePath={card.thumbImagePath}
-                              passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                              starCount={cardRelatedCount.starCount.toString()}
-                              simpleDescription={parsePolyglotString(
-                                card.simpleDescription
-                              )}
-                              difficultyLevel={
-                                card.difficultyLevel || DifficultyLevel.Basic
-                              }
-                              userLanguage={userLanguage}
-                              studentCount={cardRelatedCount.studentCount}
-                              langSupports={card.langSupports}
-                              useBookMark={true}
-                              // 체크 필요
-                              isRequiredLecture={
-                                card.permittedCinerooms
-                                  ? isIncludeCineroomId(card.permittedCinerooms)
-                                  : false
-                              }
-                              collegeId={card.mainCategory.collegeId}
-                              dataArea={Area.EXPERT_LECTURE}
-                            />
-                          </CardGroup>
-                        </div>
-                      );
-                    }
-                  )}
+                  cardWithRelatedCountRdos.map(({ card, cardRelatedCount }) => {
+                    return (
+                      <div className={`${channelId}-${swipeName} swiper-slide`}>
+                        <CardGroup type={GroupType.Wrap} key={card.id}>
+                          <LectureCardView
+                            cardId={card.id}
+                            cardName={parsePolyglotString(card.name)}
+                            learningTime={card.learningTime.toString()}
+                            thumbnailImagePath={card.thumbImagePath}
+                            passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                            starCount={cardRelatedCount.starCount.toString()}
+                            simpleDescription={parsePolyglotString(
+                              card.simpleDescription
+                            )}
+                            difficultyLevel={
+                              card.difficultyLevel || DifficultyLevel.Basic
+                            }
+                            userLanguage={userLanguage}
+                            studentCount={cardRelatedCount.studentCount}
+                            langSupports={card.langSupports}
+                            useBookMark={true}
+                            // 체크 필요
+                            isRequiredLecture={
+                              card.permittedCinerooms
+                                ? isIncludeCineroomId(card.permittedCinerooms)
+                                : false
+                            }
+                            collegeId={card.mainCategory.collegeId}
+                            dataArea={Area.EXPERT_LECTURE}
+                          />
+                        </CardGroup>
+                      </div>
+                    );
+                  })}
               </Swiper>
               <div className={`${channelId}-${swipeName}`}>
                 <div className="swiper-button-prev" />
