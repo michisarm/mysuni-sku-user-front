@@ -15,8 +15,6 @@ import { getChannelName } from '../../../../shared/service/useCollege/useRequest
 import { DifficultyLevel } from 'personalcube/cubeintro/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
-import Swiper from 'react-id-swiper';
-import CardGroup, { GroupType } from 'lecture/shared/Lecture/sub/CardGroup';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   //
@@ -36,21 +34,6 @@ export function RecommendCardRomView(props: RecommendCardRom) {
     }
 
     return cardCount;
-  };
-
-  const swipeName = 'recommandList';
-
-  const SwiperProps = {
-    slidesPerView: 4,
-    spaceBetween: 7,
-    slidesPerGroup: 4,
-    loop: false,
-    loopFillGroupWithBlank: true,
-    navigation: {
-      nextEl: `.${channelId}-${swipeName} .swiper-button-next`,
-      prevEl: `.${channelId}-${swipeName} .swiper-button-prev`,
-    },
-    speed: 500,
   };
 
   return (
@@ -92,58 +75,53 @@ export function RecommendCardRomView(props: RecommendCardRom) {
           </div>
         )}
       </div>
-
-      <div className="section-body">
-        <div className="cardSwiper">
-          {(isCardWithRelatedCountRoms && (
-            <>
-              <Swiper {...SwiperProps}>
-                {isCardWithRelatedCountRoms &&
-                  cardWithRelatedCountRdos.map(
-                    ({ card, cardRelatedCount }, index) => {
-                      return (
-                        <div
-                          className={`${channelId}-${swipeName} swiper-slide`}
-                        >
-                          <CardGroup type={GroupType.Wrap} key={card.id}>
-                            <LectureCardView
-                              cardId={card.id}
-                              cardName={parsePolyglotString(card.name)}
-                              learningTime={card.learningTime.toString()}
-                              thumbnailImagePath={card.thumbImagePath}
-                              passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                              starCount={cardRelatedCount.starCount.toString()}
-                              simpleDescription={parsePolyglotString(
-                                card.simpleDescription
-                              )}
-                              difficultyLevel={
-                                card.difficultyLevel || DifficultyLevel.Basic
-                              }
-                              userLanguage={userLanguage}
-                              studentCount={cardRelatedCount.studentCount}
-                              langSupports={card.langSupports}
-                              useBookMark={true}
-                              // 체크 필요
-                              isRequiredLecture={
-                                card.permittedCinerooms
-                                  ? isIncludeCineroomId(card.permittedCinerooms)
-                                  : false
-                              }
-                              collegeId={card.mainCategory.collegeId}
-                              dataArea={Area.EXPERT_LECTURE}
-                            />
-                          </CardGroup>
-                        </div>
-                      );
-                    }
-                  )}
-              </Swiper>
-              <div className={`${channelId}-${swipeName}`}>
-                <div className="swiper-button-prev" />
-                <div className="swiper-button-next" />
-              </div>
-            </>
-          )) || (
+      <div className="scrolling" data-action-name={getChannelName(channelId)}>
+        <ul className="belt">
+          {isCardWithRelatedCountRoms ? (
+            cardWithRelatedCountRdos.map(
+              ({ card, cardRelatedCount }, index) => {
+                return (
+                  <li key={index}>
+                    <div className="ui cards box-cards">
+                      {/* <CardView
+                      key={card.id}
+                      cardId={card.id}
+                      {...card}
+                      {...cardRelatedCount}
+                      dataArea={Area.RECOMMEND_LIST}
+                    /> */}
+                      <LectureCardView
+                        cardId={card.id}
+                        cardName={parsePolyglotString(card.name)}
+                        learningTime={card.learningTime.toString()}
+                        thumbnailImagePath={card.thumbImagePath}
+                        passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                        starCount={cardRelatedCount.starCount.toString()}
+                        simpleDescription={parsePolyglotString(
+                          card.simpleDescription
+                        )}
+                        difficultyLevel={
+                          card.difficultyLevel || DifficultyLevel.Basic
+                        }
+                        userLanguage={userLanguage}
+                        studentCount={cardRelatedCount.studentCount}
+                        langSupports={card.langSupports}
+                        useBookMark={true}
+                        // 체크 필요
+                        isRequiredLecture={
+                          card.permittedCinerooms
+                            ? isIncludeCineroomId(card.permittedCinerooms)
+                            : false
+                        }
+                        collegeId={card.mainCategory.collegeId}
+                        dataArea={Area.EXPERT_LECTURE}
+                      />
+                    </div>
+                  </li>
+                );
+              }
+            )
+          ) : (
             <NoSuchContentPanel
               message={`${getChannelName(channelId) || ''} ${getPolyglotText(
                 '채널에 해당하는 추천 학습과정이 없습니다.',
@@ -151,7 +129,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
               )}`}
             />
           )}
-        </div>
+        </ul>
       </div>
     </div>
   );
