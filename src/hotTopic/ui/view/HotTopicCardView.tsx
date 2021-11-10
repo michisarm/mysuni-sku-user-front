@@ -16,9 +16,13 @@ export function HotTopicCardView({ card }: Props) {
   const passedStudentCount = useMemo(() => {
     if (card.passedStudentCount >= 10000) {
       const tenthousand = Math.floor(card.passedStudentCount / 10000);
-      const textTenthousand = getPolyglotText('{value}만', 'hottopic-card-만', {
-        value: tenthousand + '',
-      });
+      const textTenthousand = getPolyglotText(
+        '{number}만',
+        'home-Inprogress-이수인원',
+        {
+          number: tenthousand + '',
+        }
+      );
       if (card.passedStudentCount / 10000 === tenthousand) {
         return textTenthousand;
       }
@@ -49,7 +53,7 @@ export function HotTopicCardView({ card }: Props) {
                     __html: getPolyglotText(
                       '<strong>{value}개</strong> 과정',
                       'hottopic-card-과정개수',
-                      { value: '??5' }
+                      { value: card.phaseCount.toString() }
                     ),
                   }}
                 />
