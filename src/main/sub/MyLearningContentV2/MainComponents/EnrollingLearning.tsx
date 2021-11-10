@@ -20,6 +20,20 @@ import {
 } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { ContentWrapper } from '../MyLearningContentElementsView';
+import Swiper from 'react-id-swiper';
+
+const SwiperProps = {
+  slidesPerView: 3,
+  spaceBetween: 7,
+  slidesPerGroup: 3,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.' + 'swiperCommend' + ' .swiper-button-next',
+    prevEl: '.' + 'swiperCommend' + ' .swiper-button-prev',
+  },
+  speed: 500,
+};
 
 function EnrollingLearning() {
   const history = useHistory();
@@ -75,32 +89,28 @@ function EnrollingLearning() {
   };
 
   return (
-    <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
+    <Segment
+      className="full learning-section type1"
+      dataArea={Area.MAIN_ENROLLING}
+    >
       <div className="section-head">
-        {isLoading ||
-          (!isLoading && cardList && cardList.length > 0 && (
-            <strong>{title}</strong>
-          ))}
-        <div className="right">
-          {cardList && cardList.length > 0 && (
-            <Button icon className="right btn-blue" onClick={onViewAll}>
-              <PolyglotText
-                defaultString="View all"
-                id="home-Enrolling-View all"
-              />
-              <Icon className="morelink" />
-            </Button>
-          )}
+        <div className="sec-tit-txt">
+          <strong>수강신청 임박</strong>한 과정
+        </div>
+        <div className="sec-tit-btn">
+          <button className="btn-more" onClick={onViewAll}>
+            전체보기
+          </button>
         </div>
       </div>
-      {(cardList && cardList.length > 0 && (
-        <>
-          <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
-            {cardList.map((card, i) => {
-              console.log(card);
-              return (
-                <li key={i}>
-                  <CardGroup type={GroupType.Box}>
+
+      <div className="section-body">
+        <div className="cardSwiper">
+          <Swiper {...SwiperProps}>
+            {cardList &&
+              cardList.map((card, i) => {
+                return (
+                  <CardGroup type={GroupType.Wrap} key={card.id}>
                     <LectureCardView
                       cardId={card.id}
                       cardName={parsePolyglotString(card.name)}
@@ -121,54 +131,89 @@ function EnrollingLearning() {
                       dataArea={Area.MAIN_ENROLLING}
                       useBookMark
                     />
-
-                    {/*<CardView*/}
-                    {/*  cardId={item.card.id}*/}
-                    {/*  permittedCinerooms={card.permittedCinerooms}*/}
-                    {/*  learningTime={card.learningTime}*/}
-                    {/*  additionalLearningTime={card.additionalLearningTime}*/}
-                    {/*  thumbImagePath={card.thumbImagePath}*/}
-                    {/*  mainCategory={card.mainCategory}*/}
-                    {/*  name={card.name}*/}
-                    {/*  stampCount={card.stampCount}*/}
-                    {/*  simpleDescription={card.simpleDescription}*/}
-                    {/*  type={card.type}*/}
-                    {/*  starCount={cardRelatedCount.starCount}*/}
-                    {/*  passedStudentCount={cardRelatedCount.passedStudentCount}*/}
-                    {/*  studentCount={upcomingClassroomInfo.studentCount}*/}
-                    {/*  remainingDayCount={*/}
-                    {/*    upcomingClassroomInfo.remainingDayCount*/}
-                    {/*  }*/}
-                    {/*  capacity={upcomingClassroomInfo.capacity}*/}
-                    {/*  dataArea={Area.MAIN_ENROLLING}*/}
-                    {/*  langSupports={card.langSupports}*/}
-                    {/*/>*/}
                   </CardGroup>
-                </li>
-              );
-            })}
-          </Lecture.Group>
-        </>
-      )) || (
-        <>
-          {isLoading === true && (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} color="#eff0f1" />
-            </Segment>
-          )}
-        </>
-      )}
-    </ContentWrapper>
+                );
+              })}
+          </Swiper>
+          <div className="swiperRequired">
+            <div className="swiper-button-prev" />
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </div>
+    </Segment>
+
+    // <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
+    //   <div className="section-head">
+    //     {isLoading ||
+    //       (!isLoading && cardList && cardList.length > 0 && (
+    //         <strong>{title}</strong>
+    //       ))}
+    //     <div className="right">
+    //       {cardList && cardList.length > 0 && (
+    //         <Button icon className="right btn-blue" onClick={onViewAll}>
+    //           <PolyglotText
+    //             defaultString="View all"
+    //             id="home-Enrolling-View all"
+    //           />
+    //           <Icon className="morelink" />
+    //         </Button>
+    //       )}
+    //     </div>
+    //   </div>
+    //   {(cardList && cardList.length > 0 && (
+    //     <>
+    //       <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
+    //         {cardList.map((card, i) => {
+    //           return (
+    //             <li key={i}>
+    //               <CardGroup type={GroupType.Box}>
+    //                 <LectureCardView
+    //                   cardId={card.id}
+    //                   cardName={parsePolyglotString(card.name)}
+    //                   learningTime={String(card.learningTime)}
+    //                   thumbnailImagePath={card.thumbImagePath}
+    //                   difficultyLevel={card.difficultyLevel}
+    //                   passedStudentCount={String(card.passedStudentCount)}
+    //                   starCount={String(card.starCount)}
+    //                   simpleDescription={parsePolyglotString(
+    //                     card.simpleDescription
+    //                   )}
+    //                   studentCount={card.studentCount}
+    //                   userLanguage={userLanguage}
+    //                   langSupports={card.langSupports}
+    //                   collegeId={card.mainCollegeId}
+    //                   isRequiredLecture={card.required}
+    //                   upcomingClassroomInfo={card.upcomingClassroomInfo}
+    //                   dataArea={Area.MAIN_ENROLLING}
+    //                   useBookMark
+    //                 />
+    //               </CardGroup>
+    //             </li>
+    //           );
+    //         })}
+    //       </Lecture.Group>
+    //     </>
+    //   )) || (
+    //     <>
+    //       {isLoading === true && (
+    //         <Segment
+    //           style={{
+    //             paddingTop: 0,
+    //             paddingBottom: 0,
+    //             paddingLeft: 0,
+    //             paddingRight: 0,
+    //             height: 400,
+    //             boxShadow: '0 0 0 0',
+    //             border: 0,
+    //           }}
+    //         >
+    //           <Loadingpanel loading={isLoading} color="#eff0f1" />
+    //         </Segment>
+    //       )}
+    //     </>
+    //   )}
+    // </ContentWrapper>
   );
 }
 

@@ -15,7 +15,7 @@ export function HotTopicOtherListContainer() {
   const [play, setPlay] = useState(true); // auto play 기준
 
   const topicGridSwiper = {
-    loop: true,
+    loop: false,
     slidesPerView: 1,
     spaceBetween: 20,
     pagination: {
@@ -64,13 +64,28 @@ export function HotTopicOtherListContainer() {
             />
             <div className="cardSwiper othertopicSwiper common-swiper1">
               <Swiper {...topicGridSwiper}>
-                {hotTopicList.map((hotTopic, index) => {
-                  index++;
+                {hotTopicList.map((hotTopic, index, elements) => {
+                  const next =
+                    elements && index + 1 < elements.length
+                      ? elements[index + 1]
+                      : undefined;
+                  if (index % 2 !== 0) {
+                    return <></>;
+                  }
                   return (
-                    <div className="swiper-slide">
-                      <HotTopicView hotTopic={hotTopic} />
-                      {index < hotTopicList.length && (
-                        <HotTopicView hotTopic={hotTopicList[index]} />
+                    <div
+                      key={`other-hottopic-${index}`}
+                      className="swiper-slide"
+                    >
+                      <HotTopicView
+                        key={`other-hottopic-view-${index}`}
+                        hotTopic={hotTopic}
+                      />
+                      {next && (
+                        <HotTopicView
+                          key={`other-hottopic-view2-${index + 1}`}
+                          hotTopic={next}
+                        />
                       )}
                     </div>
                   );
