@@ -6,6 +6,13 @@ import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrange
 import Swiper from 'react-id-swiper';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
+import { searchRankinsCache } from '../../../../search/api/searchApi';
+import {
+  setSearchPopular1MList,
+  useSearchPopular1MList,
+} from '../../../../search/search.services';
+import SearchService from '../../../../search/service/SearchService';
+import { search } from '../../../../search/search.events';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -20,6 +27,18 @@ const swiperProps = {
   speed: 500,
 };
 
+async function onSearchValue(value: string) {
+  const searchService = SearchService.instance;
+  const { searchInfo } = searchService;
+
+  searchService.setSearchInfoValue('searchValue', value);
+  if (!searchInfo.inAgain) {
+    searchService.setSearchInfoValue('recentSearchValue', value);
+  }
+  await search(value);
+  searchService.setFocusedValue(false);
+}
+
 export function MainHotTopicContainer() {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>([]);
 
@@ -31,7 +50,17 @@ export function MainHotTopicContainer() {
   };
   useEffect(() => {
     fetchCardBundles();
+
+    searchRankinsCache(0).then((response) => {
+      const popularList: string[] = [];
+      response?.map((rank) => {
+        popularList.push(rank[0]);
+      });
+      setSearchPopular1MList(popularList);
+    });
   }, []);
+
+  const searchPopularList = useSearchPopular1MList();
 
   return (
     <Segment className="full learning-section type5">
@@ -39,7 +68,17 @@ export function MainHotTopicContainer() {
         <div className="sec-tit-txt">
           구성원이 찾는 <strong>인기키워드</strong>
         </div>
-        {/* <KeywordTags /> */}
+        <div className="keyword-tag-wrap">
+          <div className="keyword-wrap">
+            {searchPopularList?.map((c) => {
+              return (
+                <Label as="button" className="kwd">
+                  #{c}
+                </Label>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <div className="section-body">
         <div className="sec-tit-txt">
