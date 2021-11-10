@@ -32,4 +32,5 @@ export interface HotTopicCardViewModel {
   thumbnailImagePath: string;
   type: CardType;
   mainCollegeId: string;
+  phaseCount: number;
 }
