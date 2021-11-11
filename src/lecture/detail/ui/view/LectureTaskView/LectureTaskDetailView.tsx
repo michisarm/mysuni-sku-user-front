@@ -206,6 +206,10 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
       [canNotice]
     );
 
+    const isPostWriter =
+      SkProfileService.instance.skProfile.id ===
+      taskDetail?.writerPatronKeyString;
+
     return (
       <Fragment>
         {taskDetail && (
@@ -288,20 +292,30 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
                   )}
                 </Button>
               )}
-              <Button className="ui button post edit" onClick={OnClickModify}>
-                <i area-hidden="true" className="icon edit24" />
-                <PolyglotText
-                  defaultString="Edit"
-                  id="Collage-TaskPostViewDetail-Edit1"
-                />
-              </Button>
-              <Button className="ui button post delete" onClick={OnClickDelete}>
-                <i area-hidden="true" className="icon del24" />
-                <PolyglotText
-                  defaultString="delete"
-                  id="Collage-TaskPostViewDetail-delete"
-                />
-              </Button>
+              {isPostWriter && (
+                <>
+                  <Button
+                    className="ui button post edit"
+                    onClick={OnClickModify}
+                  >
+                    <i area-hidden="true" className="icon edit24" />
+                    <PolyglotText
+                      defaultString="Edit"
+                      id="Collage-TaskPostViewDetail-Edit1"
+                    />
+                  </Button>
+                  <Button
+                    className="ui button post delete"
+                    onClick={OnClickDelete}
+                  >
+                    <i area-hidden="true" className="icon del24" />
+                    <PolyglotText
+                      defaultString="delete"
+                      id="Collage-TaskPostViewDetail-delete"
+                    />
+                  </Button>
+                </>
+              )}
               {/* {detailType === 'parent' && (
               <Button
                 className="ui button post reply"
