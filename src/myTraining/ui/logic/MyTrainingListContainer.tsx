@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -132,15 +133,6 @@ function MyTrainingListContainer({
     setShowSeeMore(true);
   };
 
-  const updateInProgressStorage = async () => {
-    const inProgressTableViews =
-      await myTrainingService!.findAllInProgressStorage();
-    sessionStorage.setItem(
-      'inProgressTableViews',
-      JSON.stringify(inProgressTableViews)
-    );
-  };
-
   const onClickDelete = useCallback(() => {
     const { selectedServiceIds } = myTrainingService!;
 
@@ -163,7 +155,6 @@ function MyTrainingListContainer({
       selectedServiceIds
     );
     if (isHidden) {
-      await updateInProgressStorage();
       myTrainingService!.findAllTabCount();
       myTrainingService!.findAllTableViews();
       myTrainingService!.clearAllSelectedServiceIds();

@@ -14,28 +14,12 @@ import { requestLectureState } from './requestLectureState';
 import { MyTrainingService } from '../../../../../myTraining/stores';
 
 async function refreshInprogess() {
-  const inProgressTableViews = await MyTrainingService.instance.findAllInProgressStorage();
-
   await MyTrainingService!.instance.findAllMyTrainingsWithState(
     'InProgress',
     8,
     0,
     [],
     true
-  );
-
-  sessionStorage.setItem(
-    'inProgressTableViews',
-    JSON.stringify(inProgressTableViews)
-  );
-}
-
-async function refreshCompleted() {
-  const completedTableViews = await MyTrainingService.instance.findAllCompletedStorage();
-
-  sessionStorage.setItem(
-    'completedTableViews',
-    JSON.stringify(completedTableViews)
   );
 }
 
@@ -61,7 +45,6 @@ export async function submit(
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 export async function submitFromCubeId(
@@ -88,7 +71,6 @@ export async function submitFromCubeId(
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 export async function cancleFromCubeId(cubeId: string, cubeType: CubeType) {
@@ -108,7 +90,6 @@ export async function cancleFromCubeId(cubeId: string, cubeType: CubeType) {
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 export async function cancel() {
@@ -128,7 +109,6 @@ export async function cancel() {
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 export async function startLearning() {
@@ -147,7 +127,6 @@ export async function startLearning() {
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 export async function completeLearning() {
@@ -167,7 +146,6 @@ export async function completeLearning() {
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 // 2021.04.21 Cube Discussion 에서 코멘트 등록 후 화면 Refresh를 위해 추가
@@ -186,7 +164,6 @@ export async function refresh(
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
   refreshInprogess();
-  refreshCompleted();
 }
 
 // 2021.04.21 Cube Discussion 에서 코멘트 등록 시 자동으로 학습 진행을 위해 추가
@@ -203,5 +180,4 @@ export async function submitRegisterStudent() {
   };
   await registerStudent(studentCdo);
   refreshInprogess();
-  refreshCompleted();
 }
