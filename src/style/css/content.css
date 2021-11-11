@@ -1,0 +1,55 @@
+/* Recommend */
+.recommend-detail .channel-of-interest
+.channel-of-interest .table-css.type3 .tit-set {
+    height: 36px;
+    line-height: 36px;
+    padding: 0;
+}
+.channel-of-interest .table-css.type3 .item-wrap {
+    width: 100%;
+    height: 36px;
+}
+.channel-of-interest .table-css.type3 .item-wrap .belt {
+    padding-right: 20px;
+}
+.channel-of-interest .table-css.type3 .item-wrap.active {
+    height: auto;
+}
+.channel-of-interest .item-wrap .ui.button.toggle.toggle4{
+    border: #00bfae 1px solid;
+    color: #4c4c4c;
+    height: 36px;
+    border-radius: 18px;
+}
+.channel-of-interest .item-wrap .ui.button.toggle.toggle4.active {
+    background: #00bfae !important;
+}
+.channel-of-interest .table-css.type3 .cell:nth-of-type(3) {
+    width: 56px;
+}
+.toggle-btn .ui.button.img-icon .icon.arrow-down.s26,
+.toggle-btn .ui.button.img-icon .icon.arrow-up.s26 {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #4c4c4c;
+}
+.toggle-btn .ui.button.img-icon .icon.s26:after { 
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: url(/images/all/btn-channel-down.svg) center no-repeat;
+}
+.toggle-btn .ui.button.img-icon .icon.arrow-up.s26:after {
+    background: url(/images/all/btn-channel-up.svg) center no-repeat;
+}
+.recommend-detail .recommend-area .section-head {
+    font-size: 1.375rem;
+    color: #222;
+}
+.recommend-area .section-head .right.btn-more {
+    font-size: 0.9rem;
+    color: #999;
+    padding: 0;
+}
