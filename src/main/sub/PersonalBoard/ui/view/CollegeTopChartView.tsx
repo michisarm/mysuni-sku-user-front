@@ -6,12 +6,9 @@ import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   myLearningSummary: MyLearningSummaryModel;
-  activeIndex: number;
 }
 
-const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
-  activeIndex,
-}) {
+const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
   const collegeTopChartItem = useCollegeTopChartItem();
 
   return (
@@ -46,17 +43,13 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    collegeTopChartItem.length !== 0
-                                      ? collegeTopChartItem[0].percent
-                                      : 0
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              collegeTopChartItem.length !== 0
+                                ? collegeTopChartItem[0].percent
+                                : 0
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
@@ -66,19 +59,15 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    collegeTopChartItem.length !== 0
-                                      ? collegeTopChartItem[1]
-                                        ? collegeTopChartItem[1].percent
-                                        : 0
-                                      : 0
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              collegeTopChartItem.length !== 0
+                                ? collegeTopChartItem[1]
+                                  ? collegeTopChartItem[1].percent
+                                  : 0
+                                : 0
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
@@ -88,19 +77,15 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    collegeTopChartItem.length !== 0
-                                      ? collegeTopChartItem[2]
-                                        ? collegeTopChartItem[2].percent
-                                        : 0
-                                      : 0
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              collegeTopChartItem.length !== 0
+                                ? collegeTopChartItem[2]
+                                  ? collegeTopChartItem[2].percent
+                                  : 0
+                                : 0
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
@@ -110,19 +95,15 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    collegeTopChartItem.length !== 0
-                                      ? collegeTopChartItem[3]
-                                        ? collegeTopChartItem[3].percent
-                                        : 0
-                                      : 0
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              collegeTopChartItem.length !== 0
+                                ? collegeTopChartItem[3]
+                                  ? collegeTopChartItem[3].percent
+                                  : 0
+                                : 0
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>
@@ -132,19 +113,15 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="rangeBox">
                       <div className="range">
                         <div
-                          style={
-                            activeIndex === -1
-                              ? { width: 0 }
-                              : {
-                                  width: `${
-                                    collegeTopChartItem[4]
-                                      ? collegeTopChartItem[4]
-                                        ? collegeTopChartItem[4].percent
-                                        : 0
-                                      : 0
-                                  }%`,
-                                }
-                          }
+                          style={{
+                            width: `${
+                              collegeTopChartItem[4]
+                                ? collegeTopChartItem[4]
+                                  ? collegeTopChartItem[4].percent
+                                  : 0
+                                : 0
+                            }%`,
+                          }}
                           className="percent"
                         />
                       </div>

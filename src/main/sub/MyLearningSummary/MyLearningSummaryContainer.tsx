@@ -1,17 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, createRef, MouseEvent } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
-import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Button, Icon } from 'semantic-ui-react';
 import { SkProfileService } from 'profile/stores';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { BadgeService } from 'lecture/stores';
-import {
-  HeaderWrapperView,
-  AdditionalToolsMyLearning,
-} from './MyLearningSummaryElementsView';
+import { HeaderWrapperView } from './MyLearningSummaryElementsView';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
@@ -33,18 +29,13 @@ import {
 import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
-import LearningTimeSummaryView from './LearningTimeSummaryView';
-import BadgeLearningSummaryView from './BadgeLearningSummaryView';
-import LearningCompleteSummaryView from './LearningCompleteSummaryView';
-import { Action, Area } from 'tracker/model';
-import Image from '../../../shared/components/Image';
 import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
-import { requestAttendEvent } from '../PersonalBoard/service/getAttendEvent';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import Swiper from 'react-id-swiper';
+import { InProgressLearning } from './InProgressLearning';
+import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -59,20 +50,8 @@ interface States {
   attendanceOpen: boolean;
   activeIndex: any;
   learningObjectives?: LearningObjectives;
+  isPersonalBoardContainerVisible: boolean;
 }
-
-const swiperProps = {
-  loop: true,
-  pagination: {
-    el: '.std-navi .swiper-pagination',
-    clickable: true,
-  },
-  navigation: {
-    prevEl: '.std-navi .swiper-button-prev',
-    nextEl: '.std-navi .swiper-button-next',
-  },
-  containerClass: 'std-slider-container',
-};
 
 @inject(
   mobxHelper.injectFrom(
@@ -96,7 +75,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       DailyLearningTimeHour: 0,
       DailyLearningTimeMinute: 0,
     },
+    isPersonalBoardContainerVisible: false,
   };
+
+  personalBoardContainer = createRef<HTMLDivElement>();
 
   componentDidMount(): void {
     this.init();
@@ -105,6 +87,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       (next) => this.setState({ learningObjectives: next }),
       'MyLearningSummaryContainer'
     );
+    requestLearningObjectives();
+    window.addEventListener('click', this.hidePersonalBoardContainer);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.hidePersonalBoardContainer);
   }
 
   handleOpenBtnClick = (e: any, data: any) => {
@@ -114,6 +102,17 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     this.setState({ activeIndex: newIndex });
   };
+
+  hidePersonalBoardContainer(event: any) {
+    if (this.state.isPersonalBoardContainerVisible === false) {
+      return;
+    }
+    if (this.personalBoardContainer.current !== null) {
+      if (!this.personalBoardContainer.current.contains(event.target)) {
+        this.setState({ isPersonalBoardContainerVisible: false });
+      }
+    }
+  }
 
   init() {
     const { skProfileService, myTrainingService } = this.props;
@@ -182,12 +181,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     history.push('/certification/badge/EarnedBadgeList/pages/1');
   }
 
+  showPersonalBoardContainer(event: MouseEvent<HTMLButtonElement>) {
+    this.setState({ isPersonalBoardContainerVisible: true });
+    event.stopPropagation();
+  }
+
   render() {
     const {
       learningObjectivesOpen,
       attendanceOpen,
       activeIndex,
       learningObjectives,
+      isPersonalBoardContainerVisible,
     } = this.state;
     const {
       myLearningSummaryService,
@@ -278,62 +283,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               }}
             />
             <div className="personal-info-go">
-              <button className="ui icon button info-std">
+              <button
+                className="ui icon button info-std"
+                onClick={this.showPersonalBoardContainer}
+              >
                 <i aria-hidden="true" className="icon std" />
                 나의 학습현황 보기
               </button>
             </div>
           </div>
           <div className="main_right">
-            <div className="std-slider-wrap">
-              <div className="std-slider-inner cardSwiper">
-                <Swiper {...swiperProps}>
-                  <div className="swiper-slide">
-                    <a className="inner">
-                      <div className="over-img">
-                        <img src={undefined} className="ui image tmb" />
-                      </div>
-                      <div className="sl-info">
-                        <span className="sl-ct">혁신디자인</span>
-                        <strong className="sl-tit">
-                          사무 공간 혁신과 그 변화에 대한 이야기
-                        </strong>
-                      </div>
-                    </a>
-                  </div>
-                  <div className="swiper-slide">
-                    <a className="inner">
-                      <div className="over-img">
-                        <img src={undefined} className="ui image tmb" />
-                      </div>
-                      <div className="sl-info">
-                        <span className="sl-ct">SV</span>
-                        <strong className="sl-tit">
-                          내일[Tomorrow+My Work]을 위한 SV
-                        </strong>
-                      </div>
-                    </a>
-                  </div>
-                  <div className="swiper-slide">
-                    <a className="inner">
-                      <div className="over-img">
-                        <img src={undefined} className="ui image tmb" />
-                      </div>
-                      <div className="sl-info">
-                        <span className="sl-ct">Leadership</span>
-                        <strong className="sl-tit">
-                          Deep Change Leader로 성장!
-                        </strong>
-                      </div>
-                    </a>
-                  </div>
-                </Swiper>
-                <div className="std-navi">
-                  <div className="swiper-button-prev" />
-                  <div className="swiper-button-next" />
-                  <div className="swiper-pagination" />
-                </div>
-              </div>
+            <div className="main-std-media">
+              <InProgressLearning />
             </div>
           </div>
           {attendEventItem?.useYn === true && (
@@ -348,108 +309,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           )}
         </HeaderWrapperView>
-        {skProfile.companyCode && false && (
-          <AdditionalToolsMyLearning
-            onClickQnA={this.moveToSupportQnA}
-            handleClick={this.handleOpenBtnClick}
-            activeIndex={activeIndex}
+
+        {skProfile.companyCode && (
+          <PersonalBoardContainer
             companyCode={skProfile.companyCode}
-          >
-            <FavoriteChannelChangeModal
-              trigger={
-                <a>
-                  <Icon className="channel24" />
-                  <span>
-                    <PolyglotText
-                      defaultString="관심 채널 설정"
-                      id="home-PersonalBoard-관심채널"
-                    />
-                  </span>
-                </a>
-              }
-              favorites={favoriteChannels}
-              onConfirmCallback={this.onConfirmFavorite}
-            />
-            {menuControlAuth.useApl === true && (
-              <div>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.onClickCreateApl();
-                  }}
-                >
-                  <Icon className="add24" />
-                  <span>
-                    <PolyglotText
-                      defaultString="개인학습"
-                      id="home-PersonalBoard-개인학습"
-                    />
-                  </span>
-                </a>
-              </div>
-            )}
-          </AdditionalToolsMyLearning>
+            isVisible={isPersonalBoardContainerVisible}
+            ref={this.personalBoardContainer}
+          />
         )}
-        {/* <div className="main-learning-link sty2" data-area={Area.MAIN_INFO}>
-          <div className="inner">
-            <div className="left">
-              <div>
-                <FavoriteChannelChangeModal
-                  trigger={
-                    <a>
-                      <Icon className="channel25" />
-                      <span
-                        data-area={Area.MAIN_INFO}
-                        data-action={Action.VIEW}
-                        data-action-name="관심 채널 설정 PV"
-                        data-pathname="관심 채널 설정"
-                        data-page="#attention-channel"
-                      >
-                        <PolyglotText
-                          defaultString="관심 채널 설정"
-                          id="home-PersonalBoard-관심채널2"
-                        />
-                      </span>
-                    </a>
-                  }
-                  favorites={favoriteChannels}
-                  onConfirmCallback={this.onConfirmFavorite}
-                />
-              </div>
-              {menuControlAuth.useApl === true && (
-                <div>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.onClickCreateApl();
-                    }}
-                  >
-                    <Icon className="card-main24" />
-                    <span>
-                      <PolyglotText
-                        defaultString="개인학습"
-                        id="home-PersonalBoard-개인학습2"
-                      />
-                    </span>
-                  </a>
-                </div>
-              )}
-            </div>
-            <div className="right">
-              <a onClick={this.moveToSupportQnA} className="contact-us wh">
-                <span>
-                  <PolyglotText
-                    defaultString="1:1 문의하기"
-                    id="home-PersonalBoard-1대1"
-                  />
-                </span>
-                <Icon className="arrow-w-16" />
-              </a>
-            </div>
-          </div>
-        </div> */}
+
         <AttendanceModalContainer
           open={attendanceOpen}
           setOpen={(value, type?) => {

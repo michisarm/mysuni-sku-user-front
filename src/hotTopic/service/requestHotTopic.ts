@@ -1,3 +1,4 @@
+import { findCardFromCardBundle } from 'hotTopic/api/hotTopicApi';
 import {
   setHotTopicDetailViewModel,
   setHotTopicListViewModel,
@@ -6,7 +7,6 @@ import {
   HotTopicCardViewModel,
   HotTopicDetailViewModel,
 } from 'hotTopic/viewmodel/HotTopicViewModel';
-import { findCardFromCardBundle } from 'lecture/detail/api/cardApi';
 import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
 import { CardBundle } from 'lecture/shared/model/CardBundle';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -30,7 +30,7 @@ export async function requestHotTopic(id: string) {
       description: parsePolyglotString(cardBundle.description),
       displayText: parsePolyglotString(cardBundle.displayText),
       id: cardBundle.id,
-      imageUrl: cardBundle.imageUrl,
+      imageUrl: parsePolyglotString(cardBundle.imageUrl),
       learningTime: cardBundle.learningTime,
       likeFeedbackId: cardBundle.likeFeedbackId,
       type: cardBundle.type,
@@ -49,11 +49,7 @@ export async function requestHotTopic(id: string) {
 async function setHotTopicDetailWithCards(
   cardBundleDetail: HotTopicDetailViewModel
 ) {
-  const cards = await findCardFromCardBundle(
-    cardBundleDetail.cardIds,
-    999,
-    false
-  );
+  const cards = await findCardFromCardBundle(cardBundleDetail.cardIds);
   cardBundleDetail.cards = cards?.map((card) => {
     const hotTopicCard: HotTopicCardViewModel = {
       id: card.id,
@@ -67,6 +63,7 @@ async function setHotTopicDetailWithCards(
       thumbnailImagePath: card.thumbnailImagePath,
       type: card.type,
       mainCollegeId: card.mainCollegeId,
+      phaseCount: card.phaseCount,
     };
     return hotTopicCard;
   });

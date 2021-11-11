@@ -20,6 +20,7 @@ class BannerModel {
     imageVersion: number;
     language: number;
     name: string;
+    bgColor: string;
     patronKey: {
       keyString: string;
     };
