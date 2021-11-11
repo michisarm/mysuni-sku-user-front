@@ -18,6 +18,7 @@ import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer
 import { findMyPisAgreement } from './profile/present/apiclient/instructorApi';
 import { getCurrentHistory } from './shared/store/HistoryStore';
 import profilePaths from './profile/routePaths';
+import { SkProfileService } from './profile/stores';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -51,21 +52,21 @@ class Routes extends PureComponent {
     const serviceId = 'SUNI';
 
     if (isExternal === true) {
-      findMyPisAgreement(agreementFormId, serviceId).then((result) => {
-        if (result === undefined) {
-          const currentHistory = getCurrentHistory();
-          currentHistory?.push(profilePaths.personalInfoAgreement());
-          return;
-        }
-
-        if (
-          window.location.pathname !== '/suni-community/main/my-communities' &&
-          window.location.pathname !==
-            '/suni-main/my-training/my-page/MyProfile'
-        ) {
-          window.location.href = '/suni-community/main/my-communities';
-        }
-      });
+      if (
+        SkProfileService.instance.additionalUserInfo.agreementFormId !==
+          agreementFormId ||
+        SkProfileService.instance.additionalUserInfo.serviceId !== serviceId
+      ) {
+        const currentHistory = getCurrentHistory();
+        currentHistory?.push(profilePaths.personalInfoAgreement());
+        return;
+      }
+      if (
+        window.location.pathname !== '/suni-community/main/my-communities' &&
+        window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
+      ) {
+        window.location.href = '/suni-community/main/my-communities';
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import { inject, observer } from 'mobx-react';
@@ -328,7 +329,6 @@ function ProgressPageContainer({
       selectedServiceIds
     );
     if (isHidden) {
-      await updateInProgressStorage();
       myTrainingService!.findAllTabCount();
       myTrainingService!.findAllTableViews();
       myTrainingService!.clearAllSelectedServiceIds();
@@ -347,14 +347,6 @@ function ProgressPageContainer({
   }, []);
 
   // ------------------------------------------------- etc -------------------------------------------------
-  const updateInProgressStorage = async () => {
-    const inProgressTableViews =
-      await myTrainingService!.findAllInProgressStorage();
-    sessionStorage.setItem(
-      'inProgressTableViews',
-      JSON.stringify(inProgressTableViews)
-    );
-  };
 
   return (
     <>
