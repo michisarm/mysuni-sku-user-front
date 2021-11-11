@@ -30,7 +30,7 @@ export async function requestHotTopic(id: string) {
       description: parsePolyglotString(cardBundle.description),
       displayText: parsePolyglotString(cardBundle.displayText),
       id: cardBundle.id,
-      imageUrl: cardBundle.imageUrl,
+      imageUrl: parsePolyglotString(cardBundle.imageUrl),
       learningTime: cardBundle.learningTime,
       likeFeedbackId: cardBundle.likeFeedbackId,
       type: cardBundle.type,

@@ -20,7 +20,7 @@ export interface CardBundle {
   updataeTime: number;
 
   description: PolyglotString;
-  imageUrl: string;
+  imageUrl: PolyglotString;
   learningTime: number;
   likeFeedbackId: string;
 }

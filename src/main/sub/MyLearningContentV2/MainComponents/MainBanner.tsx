@@ -28,6 +28,7 @@ interface BannerProps {
   targetUrl: string;
   target: string;
   name: string;
+  bgColor?: string;
   imageAlt: PolyglotString;
   imageUrl: PolyglotString;
   langSupports: LangSupport[];
@@ -50,12 +51,17 @@ function RenderBanner(props: BannerProps) {
     targetUrl,
     langSupports,
     onClickBanner,
+    bgColor = '#ffffff',
   } = props;
 
   const getTargetUrl = originSelfPath(targetUrl);
 
   return (
-    <div key={`main-banner-${index}`} className="swiper-slide">
+    <div
+      key={`main-banner-${index}`}
+      className="swiper-slide"
+      style={{ backgroundColor: bgColor }}
+    >
       {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
         <Link
           title={name}

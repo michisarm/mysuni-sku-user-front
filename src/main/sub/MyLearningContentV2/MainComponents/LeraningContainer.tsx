@@ -153,6 +153,10 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     speed: 500,
   };
 
+  if (cardList.length === 0) {
+    return null;
+  }
+
   return (
     <ContentWrapper dataArea={dataArea}>
       <div className="section-head">
@@ -173,13 +177,15 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
           <Swiper {...SwiperProps}>
             {cardList.map((item, i) => {
               return (
-                <CardGroup type={GroupType.Wrap} key={item.cardId}>
-                  <LectureCardView
-                    {...item}
-                    useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                    dataArea={Area.MAIN_REQUIRED}
-                  />
-                </CardGroup>
+                <div className="swiper-slide" key={item.cardId}>
+                  <CardGroup type={GroupType.Wrap}>
+                    <LectureCardView
+                      {...item}
+                      useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                      dataArea={Area.MAIN_REQUIRED}
+                    />
+                  </CardGroup>
+                </div>
               );
             })}
           </Swiper>
