@@ -420,10 +420,6 @@ class MyTrainingService {
       this._myTrainingFilterRdo.myTrainingState ===
       MyLearningContentType.InProgress
     ) {
-      if (this.inProgressTableViews.length <= 0) {
-        this.findInProgressTableViews();
-      }
-
       if (this.inProgressTableViews.length > 0) {
         // const cardIds = this.inProgressTableViews.slice(0, 20).map(result => result.serviceId);
         // const cardNotes = await this.myTrainingApi.findCardNoteList(cardIds) || [];
@@ -461,10 +457,6 @@ class MyTrainingService {
     }
 
     if (this._myTrainingFilterRdo.myTrainingState === 'Completed') {
-      if (this.completedTableViews.length <= 0) {
-        this.findCompletedTableViews();
-      }
-
       if (this.completedTableViews.length > 0) {
         const updateCompletedTableViews = await this.setTableViewsNoteInfo(
           this.completedTableViews.slice(0, 20)
@@ -654,10 +646,6 @@ class MyTrainingService {
       this._myTrainingFilterRdo.myTrainingState ===
       MyLearningContentType.InProgress
     ) {
-      if (this.inProgressTableViews.length <= 0) {
-        this.findInProgressTableViews();
-      }
-
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
@@ -665,9 +653,6 @@ class MyTrainingService {
       this._myTrainingFilterRdo.myTrainingState ===
       MyLearningContentType.Completed
     ) {
-      if (this.completedTableViews.length <= 0) {
-        this.findCompletedTableViews();
-      }
       return this.completedTableViews.slice(0, endIndex);
     }
 
@@ -714,79 +699,6 @@ class MyTrainingService {
       await this.myTrainingApi.findAllTableViewsForExcel(filterRdoForExcel);
 
     return myTrainingTableViewsForExcel;
-  }
-
-  async findAllInProgressStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForInProgressStorage();
-    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> =
-      await this.myTrainingApi.findAllTableViews(filterRdo);
-
-    if (
-      offsetInProgress &&
-      offsetInProgress.results &&
-      offsetInProgress.results.length > 0
-    ) {
-      this.inProgressTableViews = offsetInProgress.results.map(
-        (inProgressTableView) =>
-          new MyTrainingTableViewModel(inProgressTableView)
-      );
-      this.inProgressTableCount = offsetInProgress.totalCount;
-
-      return this.inProgressTableViews;
-    }
-
-    return null;
-  }
-
-  async findAllCompletedStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForCompletedStorage();
-    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> =
-      await this.myTrainingApi.findAllTableViews(filterRdo);
-
-    if (
-      offsetCompleted &&
-      offsetCompleted.results &&
-      offsetCompleted.results.length > 0
-    ) {
-      this.completedTableViews = offsetCompleted.results.map(
-        (completedTableView) => new MyTrainingTableViewModel(completedTableView)
-      );
-      this.completedTableCount = offsetCompleted.totalCount;
-
-      return this.completedTableViews;
-    }
-
-    return null;
-  }
-
-  findInProgressTableViews() {
-    const inProgressJson = sessionStorage.getItem('inProgressTableViews');
-    if (inProgressJson) {
-      const inProgressStorage: MyTrainingTableViewModel[] =
-        JSON.parse(inProgressJson);
-
-      if (inProgressStorage && inProgressStorage.length > 0) {
-        this.inProgressTableViews = inProgressStorage.map(
-          (inProgress: MyTrainingTableViewModel) =>
-            new MyTrainingTableViewModel(inProgress)
-        );
-        this.inProgressTableCount = inProgressStorage.length;
-      }
-    }
-  }
-
-  findCompletedTableViews() {
-    const completedJson = sessionStorage.getItem('completedTableViews');
-    if (completedJson) {
-      const completedStorage: any[] = JSON.parse(completedJson);
-
-      if (completedStorage && completedStorage.length > 0) {
-        this.completedTableViews = completedStorage.map(
-          (completed) => new MyTrainingTableViewModel(completed)
-        );
-        this.completedTableCount = completedStorage.length;
-      }
-    }
   }
 
   @action

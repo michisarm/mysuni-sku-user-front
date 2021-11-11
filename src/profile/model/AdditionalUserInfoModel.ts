@@ -22,6 +22,8 @@ class AdditionalUserInfoModel {
   favoriteLearningTypes: IdNameList | null = null;
   userDefinedFavoriteJobDuty: string = '';
   userDefinedCurrentJobDuty: string = '';
+  agreementFormId: string = '';
+  serviceId: string = '';
 
   constructor(addtionalModel?: AdditionalUserInfoModel) {
     //
