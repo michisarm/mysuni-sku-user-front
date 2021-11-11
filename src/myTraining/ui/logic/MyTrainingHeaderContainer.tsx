@@ -47,9 +47,9 @@ function MyTrainingHeaderContainer({
     (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
   const totalLearningTime =
-    myLearningSummary.suniLearningTime +
+    myLearningSummary.accumulatedLearningTime +
+    myLearningSummary.getMyCompanyLearningTimeSummary() +
     myLearningSummary.myCompanyLearningTime +
-    myLearningSummary.aplAllowTime +
     sumOfCurrentYearLectureTime;
   const totalAccrueLearningTime =
     myLearningSummary.totalSuniLearningTime +

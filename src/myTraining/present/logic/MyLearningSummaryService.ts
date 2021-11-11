@@ -80,17 +80,17 @@ class MyLearningSummaryService {
       : this.myLearningSummary;
   }
 
-  @action
-  async findMyLearningSummaryYear(year: number) {
-    //
-    const myLearningSummary =
-      await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+  // @action
+  // async findMyLearningSummaryYear(year: number) {
+  //   //
+  //   const myLearningSummary =
+  //     await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
 
-    return runInAction(() => {
-      this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
-      return myLearningSummary;
-    });
-  }
+  //   return runInAction(() => {
+  //     this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
+  //     return myLearningSummary;
+  //   });
+  // }
 
   @action
   async findMyLearningSummaryByYear(year: number) {

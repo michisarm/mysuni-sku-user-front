@@ -208,19 +208,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const {
       allBadgeCount: { issuedCount, challengingCount },
     } = badgeService!;
-    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
-    const sumOfCurrentYearLectureTime =
-      (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) ||
-      0;
     const totalLectureTime =
       (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
-    const totalLearningTime =
-      myLearningSummary.suniLearningTime +
-      myLearningSummary.myCompanyLearningTime +
-      myLearningSummary.aplAllowTime +
-      sumOfCurrentYearLectureTime;
     const totalAccruedLearningTime =
       myLearningSummary.totalSuniLearningTime +
       myLearningSummary.totalMyCompanyLearningTime +
