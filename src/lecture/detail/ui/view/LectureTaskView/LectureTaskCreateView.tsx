@@ -156,11 +156,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> =
             '본 컨텐츠에 접근할 수 없습니다.',
             'learning-권한-권한없음'
           ),
-          onClose: () => {
-            const history = getCurrentHistory();
-            history?.goBack();
-          },
         });
+      const history = getCurrentHistory();
+      history?.goBack();
     }, []);
 
     return (
