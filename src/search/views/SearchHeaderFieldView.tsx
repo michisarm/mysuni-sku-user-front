@@ -107,3 +107,13 @@ export function SearchHeaderFieldView(props: Props) {
     </div>
   );
 }
+
+function AutoCompleteText(searchValue: string, completeValue: string) {
+  //
+
+  return (
+    <li className="auto_item">
+      {completeValue.replace(searchValue, `${(<strong>searchValue</strong>)}`)}
+    </li>
+  );
+}

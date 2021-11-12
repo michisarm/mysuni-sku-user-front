@@ -17,7 +17,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
         <div className="personal-card-item-box">
           <div className="personal-card-item">
             <div className="card-item-tit mb18">
-              <MyLearningSummaryModal
+              {/* <MyLearningSummaryModal
                 trigger={
                   <a className="card-item-link">
                     <h3>
@@ -28,7 +28,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
                     </h3>
                   </a>
                 }
-              />
+              /> */}
               <span>
                 <PolyglotText
                   defaultString="전체 College 중 Top5"

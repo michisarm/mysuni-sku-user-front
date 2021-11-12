@@ -61,7 +61,7 @@
 .content.lms .course-info-detail,
 .content.lms.v-wide .course-info-detail,
 .content.lms .lms-sticky-menu,
-#root .video-fixed-holder.lms-video-fixed+.lms-sticky-menu {
+#root .video-fixed-holder.lms-video-fixed + .lms-sticky-menu {
     background: #fff;
 }
 .content.lms .btn-view-change {
@@ -91,3 +91,23 @@
 .badge-navi .btn-prev.prev-on {
     background: url(/images/all/btn-prev-24-px.svg);
 }
+
+/* 학습카드(개별) */
+.card-item .custom-icon.icon-clock { background-image: url(/images/all/icon-tictoc.svg); }
+.card-item .custom-icon.icon-bravo { background-image: url(/images/all/icon-bravo.svg); }
+.card-item .custom-icon.icon-user { background-image: url(/images/all/icon-card-people.svg); }
+.card-item .custom-icon.icon-user-white { background-image: url(/images/all/icon-card-user-white.svg); }
+.card-item .custom-icon.icon-star { background-image: url(/images/all/icon-rate-active-16-px.svg); }
+.card-item .custom-icon.icon-badge { background-image: url(/images/all/icon-hover-badge.svg); }
+.card-item .custom-icon.icon-grade { background-image: url(/images/all/icon-hover-grade.svg); }
+.card-item .button.icon-bookmark { background: url(/images/all/card-bookmark-off.svg) center no-repeat; }
+.card-item .button.icon-bookmark.on { background-image: url(/images/all/card-bookmark-on.svg); }
+
+/* FAQ */
+.support-list-wrap.faq .cate-wrap .radio-wrap .ui.radio.checkbox { border: #00bfae 1px solid; }
+.support-list-wrap.faq .cate-wrap .radio-wrap .ui.radio.checkbox.checked { background: #00bfae; }
+.support-list-wrap.faq .cate-wrap .radio-wrap .ui.radio.checkbox.checked:after { border-top: 10px solid #00bfae; }
+
+/* Loarding */
+.loading { background: rgba(102, 102, 102, 0.8); }
+.loading .spin { background: transparent; }

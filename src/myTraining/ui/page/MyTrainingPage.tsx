@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { ContentLayout } from 'shared';
 import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
-import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 import { learningContentTypeName } from '../model/MyLearningContentType';
 import { CollegeService } from '../../../college/stores';
 import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
@@ -18,7 +17,6 @@ import {
 
 function MyTrainingPage() {
   const params = useParams<MyTrainingRouteParams>();
-  useRequestCollege();
   useRequestMenuAuth();
   useRequestAllMyTrainingCount();
   useClearFilterBox();

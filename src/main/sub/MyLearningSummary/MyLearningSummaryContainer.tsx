@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { SkProfileService } from 'profile/stores';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { BadgeService } from 'lecture/stores';
@@ -20,7 +20,6 @@ import {
   setBadgeLearningTimeItem,
 } from '../PersonalBoard/store/PersonalBoardStore';
 import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
-import { FavoriteChannelChangeModal } from 'shared';
 import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
 import {
   requestLearningObjectives,
@@ -30,10 +29,7 @@ import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
 import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { InProgressLearning } from './InProgressLearning';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
@@ -49,7 +45,6 @@ interface States {
   learningObjectivesOpen: boolean;
   attendanceOpen: boolean;
   activeIndex: any;
-  learningObjectives?: LearningObjectives;
   isPersonalBoardContainerVisible: boolean;
 }
 
@@ -69,12 +64,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     learningObjectivesOpen: false,
     attendanceOpen: false,
     activeIndex: -1,
-    learningObjectives: {
-      AnnualLearningObjectives: 0,
-      WeekAttendanceGoal: 0,
-      DailyLearningTimeHour: 0,
-      DailyLearningTimeMinute: 0,
-    },
     isPersonalBoardContainerVisible: false,
   };
 
@@ -82,11 +71,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   componentDidMount(): void {
     this.init();
-    //requestAttendEvent();
-    onLearningObjectivesItem(
-      (next) => this.setState({ learningObjectives: next }),
-      'MyLearningSummaryContainer'
-    );
     requestLearningObjectives();
     window.addEventListener('click', this.hidePersonalBoardContainer);
   }
@@ -115,18 +99,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   init() {
-    const { skProfileService, myTrainingService } = this.props;
-    skProfileService!.findStudySummary();
     this.requestMyLearningSummary();
     this.requestMenuAuth();
-    myTrainingService!.findLearningCount();
   }
 
   requestMyLearningSummary() {
-    const { myLearningSummaryService, badgeService } = this.props;
-    const currentYear = moment().year();
-
-    myLearningSummaryService!.findMyLearningSummaryByYear(currentYear);
+    const { myLearningSummaryService } = this.props;
     myLearningSummaryService!.findLectureTimeSummary();
     myLearningSummaryService!.findInstructTimeSummary();
     // badgeService!.findAllBadgeCount();
@@ -189,38 +167,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const {
       learningObjectivesOpen,
       attendanceOpen,
-      activeIndex,
-      learningObjectives,
       isPersonalBoardContainerVisible,
     } = this.state;
-    const {
-      myLearningSummaryService,
-      skProfileService,
-      myTrainingService,
-      badgeService,
-      menuControlAuthService,
-    } = this.props;
-    const { skProfile, additionalUserInfo } = skProfileService!;
-    const { menuControlAuth } = menuControlAuthService!;
+    const { myLearningSummaryService, skProfileService } = this.props;
+    const { skProfile } = skProfileService!;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-    const { personalBoardInprogressCount, personalBoardCompletedCount } =
-      myTrainingService!;
-    const {
-      allBadgeCount: { issuedCount, challengingCount },
-    } = badgeService!;
-    const favoriteChannels = additionalUserInfo.favoriteChannelIds;
 
-    const sumOfCurrentYearLectureTime =
-      (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) ||
-      0;
     const totalLectureTime =
       (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
-    const totalLearningTime =
-      myLearningSummary.suniLearningTime +
-      myLearningSummary.myCompanyLearningTime +
-      myLearningSummary.aplAllowTime +
-      sumOfCurrentYearLectureTime;
     const totalAccruedLearningTime =
       myLearningSummary.totalSuniLearningTime +
       myLearningSummary.totalMyCompanyLearningTime +
@@ -313,13 +268,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           <PersonalBoardContainer
             companyCode={skProfile.companyCode}
             isVisible={isPersonalBoardContainerVisible}
-            ref={this.personalBoardContainer}
+            close={() =>
+              this.setState({ isPersonalBoardContainerVisible: false })
+            }
           />
         )}
 
         <AttendanceModalContainer
           open={attendanceOpen}
-          setOpen={(value, type?) => {
+          setOpen={(value) => {
             return this.setState({ attendanceOpen: value });
           }}
         />

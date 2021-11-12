@@ -26,7 +26,10 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import { parseLanguage, parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
@@ -404,7 +407,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                       starCount={cardRelatedCount.starCount.toString()}
                       thumbnailImagePath={card.thumbImagePath}
                       langSupports={card.langSupports}
-                      simpleDescription={parsePolyglotString(card.simpleDescription)}
+                      simpleDescription={parsePolyglotString(
+                        card.simpleDescription
+                      )}
                       studentCount={cardRelatedCount.studentCount}
                       //??
                       isRequiredLecture={false}
@@ -412,7 +417,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                       difficultyLevel={card.difficultyLevel}
                       collegeId={collegeId}
                       userLanguage={userLanguage}
-                      useBookMark={false}
+                      useBookMark={true}
                       dataArea={Area.EXPERT_LECTURE}
                     />
                   );
