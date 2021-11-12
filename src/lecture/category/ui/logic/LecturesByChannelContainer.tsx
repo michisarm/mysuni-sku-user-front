@@ -217,7 +217,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
               {cardWithCardRealtedCounts.map(({ card, cardRelatedCount }) => {
                 return (
                   <li key={card.id}>
-                    <div className="ui cards box-cards">
+                    <Lecture.Group type={Lecture.GroupType.Box}>
                       <LectureCardView
                         cardId={card.id}
                         cardName={parsePolyglotString(card.name)}
@@ -239,7 +239,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                         useBookMark={true}
                         dataArea={Area.EXPERT_LECTURE}
                       />
-                    </div>
+                    </Lecture.Group>
                   </li>
                 );
               })}
