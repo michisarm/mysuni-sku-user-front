@@ -1,5 +1,9 @@
 import { mobxHelper, Offset } from '@nara.platform/accent';
+import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
@@ -18,12 +22,12 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import InMyLectureService from '../../../present/logic/InMyLectureService';
 
 interface InMyListPageContainerProps {
-  inMyLectureService?: InMyLectureService;
+  lectureService?: LectureService;
   filterBoxService?: FilterBoxService;
 }
 
 function InMyListPageContainer({
-  inMyLectureService,
+  lectureService,
   filterBoxService,
 }: InMyListPageContainerProps) {
   //
@@ -36,34 +40,67 @@ function InMyListPageContainer({
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { scrollOnceMove } = useScrollMove();
+  const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
+  const initialOrders = headerColumns
+    .filter((headerColumn) => headerColumn.icon === true)
+    .map((headerColumn) => ({
+      column: headerColumn.text,
+      direction: Direction.DESC,
+    }));
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
 
-  const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  const history = useHistory();
+
+  const {
+    myLearningCards,
+    totalMyLearningCardCount,
+    cardQdo,
+    setCardQdo,
+    findMyLearningCardByQdo,
+    clearMyLearningCard,
+  } = lectureService!;
+
   const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
     filterBoxService!;
 
-  const history = useHistory();
-  const { scrollSave } = useScrollMove();
+  useRequestFilterCountView();
 
-  const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
+  const clearQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.bookmark = true;
+    newCardQdo.orderBy = CardOrderBy.BookmarkRegisteredTimeDesc;
+
+    return newCardQdo;
+  };
 
   useEffect(() => {
-    inMyLectureService!.clearAllTableViews();
-    inMyLectureService!.initFilterRdo();
+    clearMyLearningCard();
 
-    if (params.pageNo === '1') {
-      requestInMyLectures();
-      return;
-    }
+    const newQdo = clearQdo();
 
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
+    requestmyTrainingsWithPage(newQdo, true);
 
-    requestInMyLecturesWithPage({ offset: 0, limit });
+    return () => {};
   }, []);
 
+  const requestmyTrainingsWithPage = async (
+    qdo: CardQdo,
+    firstCheck?: boolean
+  ) => {
+    await setIsLoading(true);
+    await setCardQdo(qdo);
+    await findMyLearningCardByQdo(firstCheck);
+    await checkShowSeeMore();
+    await setIsLoading(false);
+    await scrollOnceMove();
+  };
+
   // ------------------------------------------------- header - filter -------------------------------------------------
-  useRequestFilterCountView();
 
   const onClickOpenFilter = () => {
     setOpenFilter(!openFilter);
@@ -75,50 +112,39 @@ function InMyListPageContainer({
     filterCount,
   };
 
-  const requestInMyLecturesByConditions = async () => {
+  const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
+
+    const newQdo = cardQdo;
+    newQdo.setBycondition(conditions);
+    await setCardQdo(newQdo);
+
+    await findMyLearningCardByQdo();
+    const { myLearningCards } = lectureService!;
+    const isEmpty =
+      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    await setResultEmpty(isEmpty);
+    await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
   };
 
   useEffect(() => {
     if (showResult) {
-      inMyLectureService!.setFilterRdoByConditions(conditions);
-      requestInMyLecturesByConditions();
+      requestMyTrainingsByConditions();
     }
   }, [showResult]);
 
   // ------------------------------------------------- table -------------------------------------------------
 
-  // table - change list
-  const requestInMyLectures = async () => {
-    setIsLoading(true);
-    const isEmpty = await inMyLectureService!.findAllTableViews();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
-    setIsLoading(false);
-  };
-
-  const requestInMyLecturesWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await inMyLectureService!.findAllTableViewsWithPage(offset);
-    checkShowSeeMore();
-    setIsLoading(false);
-    scrollOnceMove();
-  };
-
   const checkShowSeeMore = (): void => {
-    const { inMyLectureTableViews, inMyLectureTableCount } =
-      inMyLectureService!;
+    const { myLearningCards, totalMyLearningCardCount } = lectureService!;
 
-    if (inMyLectureTableViews.length >= inMyLectureTableCount) {
+    if (myLearningCards.length >= totalMyLearningCardCount) {
       setShowSeeMore(false);
       return;
     }
-    if (inMyLectureTableCount <= PAGE_SIZE) {
+    if (totalMyLearningCardCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -127,30 +153,22 @@ function InMyListPageContainer({
   };
 
   const onClickSeeMore = async () => {
-    const currentPageNo = parseInt(params.pageNo);
-    const nextPageNo = currentPageNo + 1;
-
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
-
-    requestInMyLecturesWithPage({ offset, limit });
-
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
+
+    const currentPageNo = parseInt(params.pageNo, 10);
+    const nextPageNo = currentPageNo + 1;
+
+    cardQdo.limit = PAGE_SIZE;
+    cardQdo.offset = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage(cardQdo);
 
     history.replace(`./${nextPageNo}`);
   };
 
   // table - sorting
-  const initialOrders = headerColumns
-    .filter((headerColumn) => headerColumn.icon === true)
-    .map((headerColumn) => ({
-      column: headerColumn.text,
-      direction: Direction.DESC,
-    }));
-
-  const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const getDireciton = (column: string) => {
     return orders.filter((order) => order.column === column)[0].direction;
@@ -168,9 +186,12 @@ function InMyListPageContainer({
       : '오름차순 정렬';
   };
 
-  const onClickSort = useCallback((column: string, direction: Direction) => {
-    inMyLectureService!.sortTableViews(column, direction);
-  }, []);
+  const onClickSort = useCallback(
+    (column: string, direction: Direction) => {
+      lectureService!.sortMyLearningTableViews(column, direction);
+    },
+    [contentType]
+  );
 
   const handleClickSort = useCallback(
     (column: string) => {
@@ -208,7 +229,7 @@ function InMyListPageContainer({
         <TabHeader
           resultEmpty={resultEmpty}
           filterCount={filterCount}
-          totalCount={inMyLectureTableCount}
+          totalCount={totalMyLearningCardCount}
           filterOpotions={filterOptions}
         >
           <div
@@ -218,20 +239,20 @@ function InMyListPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (inMyLectureTableCount || 0).toString(),
+                  totalCount: (totalMyLearningCardCount || 0).toString(),
                 }
               ),
             }}
           />
         </TabHeader>
       }
-      {(inMyLectureTableViews && inMyLectureTableViews.length > 0 && (
+      {(myLearningCards && myLearningCards.length > 0 && (
         <>
           {(!resultEmpty && (
             <InMyListPageTableView
-              totalCount={inMyLectureTableCount}
+              totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
-              learningList={inMyLectureTableViews}
+              learningList={myLearningCards}
               showSeeMore={showSeeMore}
               onClickRow={onViewDetail}
               onClickSeeMore={onClickSeeMore}
@@ -377,6 +398,7 @@ function InMyListPageContainer({
 
 export default inject(
   mobxHelper.injectFrom(
+    'lecture.lectureService',
     'myTraining.inMyLectureService',
     'shared.filterBoxService'
   )

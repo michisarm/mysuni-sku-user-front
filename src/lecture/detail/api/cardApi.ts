@@ -19,6 +19,7 @@ import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
 
 const BASE_URL = '/api/lecture';
 
@@ -229,6 +230,12 @@ export function countRequiredCards() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/count`;
   return axios.get<number>(url).then(AxiosReturn);
+}
+
+export function countLearningTab() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/students/count?type=MYLEARNING_STATE`;
+  return axios.get<LearningTabCountViewModel>(url).then(AxiosReturn);
 }
 
 export function findCollegeAndCardCount() {

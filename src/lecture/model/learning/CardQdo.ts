@@ -1,70 +1,78 @@
 import { decorate, observable } from 'mobx';
+import moment from 'moment';
+import { FilterCondition } from 'myTraining/model/FilterCondition';
 import { DifficultyLevel } from 'personalcube/cubeintro/model';
 import CardOrderBy from './CardOrderBy';
+import StudentLearningType from './StudentLearningType';
 
 class CardQdo {
   //
   offset: number = 0;
-  limit: number = 0;
-
-  startDate: number = 0;
-  endDate: number = 0;
+  limit: number = 20;
 
   name: string = '';
   registrantName: string = '';
-  collegeIds: string[] = [];
-  channelIds: string[] = [];
+  collegeIds: string = '';
+  channelIds: string = '';
 
-  difficultyLevels: string[] = [];
-  learningTimeRanges: string[] = [];
-  hasStamp: boolean = false;
-  hasBadge: boolean = false;
+  difficultyLevels: string = '';
+  learningTimeRanges: string = '';
+  hasStamp: boolean | '' = '';
+  hasBadge: boolean | '' = '';
 
-  required: boolean = false;
-  searchable: boolean = false;
+  required: boolean | '' = '';
+  searchable: boolean | '' = '';
   instructorId: string = '';
   startLearningDate: string = '';
   endLearningDate: string = '';
 
-  type: string[] = [];
-  studentLearning: string[] = [];
-  orderBy: CardOrderBy = CardOrderBy.StudentModifiedTimeDesc;
+  type: string = '';
+  studentLearning: StudentLearningType = StudentLearningType.None;
+
+  bookmark: boolean | '' = '';
+
+  orderBy: CardOrderBy = CardOrderBy.None;
 
   constructor(card?: CardQdo) {
     if (card) {
       Object.assign(this, card);
-      this.collegeIds =
-        (card.collegeIds &&
-          card.collegeIds.length > 0 && [...card.collegeIds]) ||
-        [];
-      this.channelIds =
-        (card.channelIds &&
-          card.channelIds.length > 0 && [...card.channelIds]) ||
-        [];
-      this.difficultyLevels =
-        (card.difficultyLevels &&
-          card.difficultyLevels.length > 0 && [...card.difficultyLevels]) ||
-        [];
-      this.learningTimeRanges =
-        (card.learningTimeRanges &&
-          card.learningTimeRanges.length > 0 && [...card.learningTimeRanges]) ||
-        [];
-      this.type =
-        (card.collegeIds && card.type.length > 0 && [...card.type]) || [];
-      this.studentLearning =
-        (card.studentLearning &&
-          card.studentLearning.length > 0 && [...card.studentLearning]) ||
-        [];
     }
+  }
+
+  setBycondition(conditions: FilterCondition) {
+    console.log(conditions);
+    this.startLearningDate = conditions.startDate
+      ? moment(conditions.startDate).format('YYYY-MM-DD')
+      : '';
+    this.endLearningDate = conditions.endDate
+      ? moment(conditions.endDate).format('YYYY-MM-DD')
+      : '';
+    this.required =
+      conditions.required === 'none' || conditions.required === 'false'
+        ? false
+        : true;
+
+    if (conditions.certifications && conditions.certifications.length > 0) {
+      this.hasStamp =
+        (conditions.certifications.find((x) => x === 'stamp') && true) || false;
+      this.hasBadge =
+        (conditions.certifications.find((x) => x === 'badge') && true) || false;
+    }
+
+    this.offset = 0;
+    this.limit = 20;
+
+    this.collegeIds = conditions.collegeIds.join(',');
+    this.difficultyLevels = conditions.difficultyLevels.join(',');
+    this.learningTimeRanges = conditions.learningTimes.join(',');
+
+    return this;
   }
 }
 
 decorate(CardQdo, {
   offset: observable,
   limit: observable,
-
-  startDate: observable,
-  endDate: observable,
 
   name: observable,
   registrantName: observable,
@@ -84,6 +92,7 @@ decorate(CardQdo, {
 
   type: observable,
   studentLearning: observable,
+  bookmark: observable,
   orderBy: observable,
 });
 

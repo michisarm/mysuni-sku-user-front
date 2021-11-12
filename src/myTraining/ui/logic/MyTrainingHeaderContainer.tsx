@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import moment from 'moment';
 import { SkProfileService } from '../../../profile/stores';
+import { LectureService } from '../../../lecture';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import { BadgeService } from '../../../lecture/stores';
@@ -17,23 +18,26 @@ import lecturePaths from '../../../lecture/routePaths';
 import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
 import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { patronInfo } from '@nara.platform/dock';
 
 interface MyTrainingHeaderContainerProps {
   skProfileService?: SkProfileService;
   myLearningSummaryService?: MyLearningSummaryService;
-  myTrainingService?: MyTrainingService;
+  lectureService?: LectureService;
+  // myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
 }
 
 function MyTrainingHeaderContainer({
   skProfileService,
   myLearningSummaryService,
-  myTrainingService,
+  lectureService,
+  // myTrainingService,
   badgeService,
 }: MyTrainingHeaderContainerProps) {
   const { skProfile } = skProfileService!;
   const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-  const { myStampCount } = myTrainingService!;
+  const { myStampCount } = lectureService!;
   const {
     allBadgeCount: { issuedCount },
   } = badgeService!;
@@ -56,7 +60,10 @@ function MyTrainingHeaderContainer({
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();
-    myTrainingService!.countMyTrainingsWithStamp();
+    const denizenId = patronInfo.getDenizenId();
+    denizenId && lectureService!.countMyStamp(denizenId);
+
+    badgeService!.findAllBadgeCount();
   }, []);
 
   useRequestLearningSummary();
@@ -120,7 +127,8 @@ export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myLearningSummaryService',
-    'myTraining.myTrainingService',
+    'lecture.lectureService',
+    // 'myTraining.myTrainingService',
     'badge.badgeService'
   )
 )(observer(MyTrainingHeaderContainer));

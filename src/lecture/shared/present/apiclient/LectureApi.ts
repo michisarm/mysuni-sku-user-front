@@ -143,12 +143,22 @@ class LectureApi {
   }
 
   // Learning Page
+
+  countMyStamp(denizenId: string) {
+    //
+    return axiosApi
+      .get<number>(this.learningUrl + '/countUserStamp', {
+        params: { denizenId },
+      })
+      .then((response) => response && response.data);
+  }
+
   findMyLearningLectures(cardQdo: CardQdo) {
     //
     return axiosApi
       .get<OffsetElementList<CardForUserViewModel>>(
         this.learningUrl + '/findCardWithPhaseCountForUserViewRdoByCardQdo',
-        cardQdo
+        { params: cardQdo }
       )
       .then((response) => response && response.data);
   }

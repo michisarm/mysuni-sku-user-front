@@ -11,6 +11,7 @@ enum CardOrderBy {
   StudentPassedTimeDesc = 'StudentPassedTimeDesc',
   StudentModifiedTimeDesc = 'StudentModifiedTimeDesc',
   BookmarkRegisteredTimeDesc = 'BookmarkRegisteredTimeDesc',
+  None = '',
 }
 
 export default CardOrderBy;

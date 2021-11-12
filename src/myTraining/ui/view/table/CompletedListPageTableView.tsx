@@ -1,3 +1,4 @@
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
@@ -14,9 +15,9 @@ import { SeeMoreButton } from '../../../../lecture';
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
-  learningList: MyTrainingTableViewModel[];
+  learningList: CardForUserViewModel[];
   showSeeMore: boolean;
-  onClickRow: (e: any, myTraining: MyTrainingTableViewModel) => void;
+  onClickRow: (e: any, serviceId: string) => void;
   onClickSeeMore: () => void;
 
   getOrderIcon: (
@@ -73,13 +74,13 @@ export function CompletedListPageTableView({
           </Table.Header>
           <Table.Body>
             {learningList.map((myTraining, index) => {
-              const collegeId = myTraining.category?.collegeId || '';
+              const collegeId = myTraining.mainCollegeId || '';
               return (
                 <Table.Row key={`mytraining-list-${index}`}>
                   <Table.Cell>{totalCount - index}</Table.Cell>
                   <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
                   <Table.Cell className="title">
-                    <a href="#" onClick={(e) => onClickRow(e, myTraining)}>
+                    <a href="#" onClick={(e) => onClickRow(e, myTraining.id)}>
                       <span
                         className={`ellipsis ${
                           myTraining.useNote ? 'noteOn' : ''
@@ -90,7 +91,7 @@ export function CompletedListPageTableView({
                     </a>
                   </Table.Cell>
                   <Table.Cell>
-                    {LearningTypeName[myTraining.cubeType] || '-'}{' '}
+                    {LearningTypeName[myTraining.type] || '-'}{' '}
                   </Table.Cell>
                   <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
                   <Table.Cell>
@@ -100,7 +101,7 @@ export function CompletedListPageTableView({
                     )}
                   </Table.Cell>
                   <Table.Cell>
-                    {convertTimeToDate(myTraining.endDate)}
+                    {convertTimeToDate(myTraining.passedTime)}
                   </Table.Cell>
                 </Table.Row>
               );

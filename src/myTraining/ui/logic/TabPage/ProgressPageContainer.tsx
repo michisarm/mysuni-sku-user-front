@@ -1,6 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
@@ -13,14 +17,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import XLSX from 'xlsx';
-import { StudentService } from '../../../../lecture';
+import { StudentService, LectureService } from '../../../../lecture';
 import FilterBoxService from '../../../../shared/present/logic/FilterBoxService';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { Direction, toggleDirection } from '../../../model/Direction';
 import { LearningType, LearningTypeName } from '../../../model/LearningType';
 import { Order } from '../../../model/Order';
 import { MyTrainingRouteParams } from '../../../routeParams';
-import { MyTrainingService } from '../../../stores';
 import { MyLearningContentType } from '../../../ui/model';
 import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
 import { TabHeader } from '../../../ui/view/tabHeader';
@@ -30,13 +33,13 @@ import MyLearningDeleteModal from '../../view/MyLearningDeleteModal';
 import MyLearningNoCheckModal from '../../view/MyLearningNoCheckModal';
 
 interface ProgressPageContainerProps {
-  myTrainingService?: MyTrainingService;
+  lectureService?: LectureService;
   studentService?: StudentService;
   filterBoxService?: FilterBoxService;
 }
 
 function ProgressPageContainer({
-  myTrainingService,
+  lectureService,
   studentService,
   filterBoxService,
 }: ProgressPageContainerProps) {
@@ -54,7 +57,7 @@ function ProgressPageContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { scrollSave } = useScrollMove();
+  const { scrollSave, scrollOnceMove } = useScrollMove();
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
   const initialOrders = headerColumns
@@ -65,60 +68,63 @@ function ProgressPageContainer({
     }));
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
-  const { scrollOnceMove } = useScrollMove();
-
   const {
-    myTrainingTableViews,
-    myTrainingTableCount,
+    myLearningCards,
+    totalMyLearningCardCount,
     selectedServiceIds,
+    cardQdo,
+    setCardQdo,
+    findMyLearningCardByQdo,
+    clearMyLearningCard,
     clearOne,
     selectOne,
-  } = myTrainingService!;
+    clearAllSelectedServiceIds,
+  } = lectureService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
 
   useRequestFilterCountView();
 
-  useEffect(() => {
-    myTrainingService!.clearAllTableViews();
-    myTrainingService!.initFilterRdo(contentType);
-    if (selectedServiceIds && selectedServiceIds.length > 0) {
-      myTrainingService!.clearAllSelectedServiceIds();
-    }
+  const clearQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.Learning;
+    newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
 
-    if (params.pageNo === '1') {
-      requestMyTrainings();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo, 10);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset: 0, limit });
-
-    return () => {};
-  }, [contentType]);
-
-  const requestmyTrainingsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await myTrainingService!.findAllTableViewsWithPage(offset);
-    checkShowSeeMore();
-    setIsLoading(false);
-    scrollOnceMove();
+    return newCardQdo;
   };
 
-  const requestMyTrainings = async () => {
-    setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllTableViews();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
-    setIsLoading(false);
+  useEffect(() => {
+    clearMyLearningCard();
+
+    if (selectedServiceIds && selectedServiceIds.length > 0) {
+      clearAllSelectedServiceIds();
+    }
+    const newQdo = clearQdo();
+
+    requestmyTrainingsWithPage(newQdo, true);
+
+    return () => {};
+  }, []);
+
+  const requestmyTrainingsWithPage = async (
+    qdo: CardQdo,
+    firstCheck?: boolean
+  ) => {
+    await setIsLoading(true);
+    await setCardQdo(qdo);
+    await findMyLearningCardByQdo(firstCheck);
+    await checkShowSeeMore();
+    await setIsLoading(false);
+    await scrollOnceMove();
   };
 
   // ------------------------------------------------- header -------------------------------------------------
 
   const onClickDelete = useCallback(() => {
-    const { selectedServiceIds } = myTrainingService!;
+    const { selectedServiceIds } = lectureService!;
 
     if (selectedServiceIds.length === 0) {
       setNoCheckedModal(true);
@@ -136,25 +142,22 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const myTrainingTableViews: MyTrainingTableViewModel[] =
-      await myTrainingService!.findAllTableViewsForExcel();
-    const lastIndex = myTrainingTableViews.length;
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(clearQdo());
+    const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';
 
-    xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-      const collegeName =
-        (myTrainingTableView.category?.collegeId &&
-          getCollgeName(
-            // myTrainingTableView.category.college.id
-            myTrainingTableView.category.collegeId
-          )) ||
-        '';
-      return myTrainingTableView.toXlsxForInProgress(
-        lastIndex - index,
-        collegeName
-      );
-    });
+    xlsxList =
+      (tableViews &&
+        tableViews.length > 0 &&
+        tableViews.map((view, index) => {
+          const collegeName =
+            (view.mainCollegeId && getCollgeName(view.mainCollegeId)) || '';
+          console.dir(view);
+          return view.toXlsxForInProgress(lastIndex - index, collegeName);
+        })) ||
+      [];
 
     writeExcelFile(xlsxList, filename);
   };
@@ -172,16 +175,23 @@ function ProgressPageContainer({
 
   const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
+
+    const newQdo = cardQdo;
+    newQdo.setBycondition(conditions);
+    await setCardQdo(newQdo);
+
+    await findMyLearningCardByQdo();
+    const { myLearningCards } = lectureService!;
+    const isEmpty =
+      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    await setResultEmpty(isEmpty);
+    await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
   };
 
   useEffect(() => {
     if (showResult) {
-      myTrainingService!.setFilterRdoByConditions(conditions);
       requestMyTrainingsByConditions();
     }
   }, [showResult]);
@@ -189,13 +199,13 @@ function ProgressPageContainer({
   // ------------------------------------------------- table -------------------------------------------------
 
   const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+    const { myLearningCards, totalMyLearningCardCount } = lectureService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
+    if (myLearningCards.length >= totalMyLearningCardCount) {
       setShowSeeMore(false);
       return;
     }
-    if (myTrainingTableCount <= PAGE_SIZE) {
+    if (totalMyLearningCardCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -211,26 +221,26 @@ function ProgressPageContainer({
     const currentPageNo = parseInt(params.pageNo, 10);
     const nextPageNo = currentPageNo + 1;
 
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
+    cardQdo.limit = PAGE_SIZE;
+    cardQdo.offset = currentPageNo * PAGE_SIZE;
 
-    requestmyTrainingsWithPage({ offset, limit });
+    requestmyTrainingsWithPage(cardQdo);
 
     history.replace(`./${nextPageNo}`);
   };
 
   const onCheckAll = useCallback(
     (e: any, data: any) => {
-      const { clearAll, selectAll } = myTrainingService!;
+      const { clearAll, selectAll } = lectureService!;
 
-      if (myTrainingTableViews.length === selectedServiceIds.length) {
+      if (myLearningCards.length === selectedServiceIds.length) {
         clearAll();
         return;
       }
 
       selectAll();
     },
-    [myTrainingTableViews, selectedServiceIds]
+    [myLearningCards, selectedServiceIds]
   );
 
   const onCheckOne = useCallback(
@@ -247,7 +257,7 @@ function ProgressPageContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      myTrainingService!.sortTableViews(column, direction);
+      lectureService!.sortMyLearningTableViews(column, direction);
     },
     [contentType]
   );
@@ -286,13 +296,10 @@ function ProgressPageContainer({
 
   const getLearningType = (type: LearningType) => LearningTypeName[type];
 
-  const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
+  const onViewDetail = (e: any, myTraining: CardForUserViewModel) => {
     e.preventDefault();
 
-    const cardId =
-      myTraining.serviceType === 'Card'
-        ? myTraining.serviceId
-        : myTraining.cardId;
+    const cardId = myTraining.id;
 
     const params: LectureParams = {
       cardId,
@@ -309,9 +316,7 @@ function ProgressPageContainer({
           'MyTrainingList-이벤트-과정'
         ),
         action: 'Click',
-        label: `${
-          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
-        } - ${parsePolyglotString(myTraining.name)}`,
+        label: `(Card) - ${parsePolyglotString(myTraining.name)}`,
       });
     }
     scrollSave();
@@ -323,15 +328,14 @@ function ProgressPageContainer({
   }, []);
 
   const onConfirmModal = useCallback(async () => {
-    const { selectedServiceIds } = myTrainingService!;
-
     const isHidden = await studentService!.hideWithSelectedServiceIds(
       selectedServiceIds
     );
     if (isHidden) {
-      myTrainingService!.findAllTabCount();
-      myTrainingService!.findAllTableViews();
-      myTrainingService!.clearAllSelectedServiceIds();
+      // 김민준
+      // myTrainingService!.findAllTabCount();
+      findMyLearningCardByQdo();
+      clearAllSelectedServiceIds();
     }
 
     setDeleteModal(false);
@@ -353,7 +357,7 @@ function ProgressPageContainer({
       {
         <TabHeader
           resultEmpty={resultEmpty}
-          totalCount={myTrainingTableCount}
+          totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
           onClickDelete={onClickDelete}
@@ -366,20 +370,20 @@ function ProgressPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (myTrainingTableCount || 0).toString(),
+                  totalCount: (totalMyLearningCardCount || 0).toString(),
                 }
               ),
             }}
           />
         </TabHeader>
       }
-      {(myTrainingTableViews && myTrainingTableViews.length > 0 && (
+      {(myLearningCards && myLearningCards.length > 0 && (
         <>
           {(!resultEmpty && (
             <ProgressPageTableView
-              totalCount={myTrainingTableCount}
+              totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
-              learningList={myTrainingTableViews}
+              learningList={myLearningCards}
               showSeeMore={showSeeMore}
               getLearningType={getLearningType}
               onClickRow={onViewDetail}
@@ -547,7 +551,7 @@ function ProgressPageContainer({
 export default inject(
   mobxHelper.injectFrom(
     'lecture.studentService',
-    'myTraining.myTrainingService',
+    'lecture.lectureService',
     'shared.filterBoxService'
   )
 )(observer(ProgressPageContainer));

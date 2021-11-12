@@ -26,10 +26,10 @@ import CompletedListPageContainer from 'myTraining/ui/logic/TabPage/CompletedLis
 function MyTrainingTabContainer() {
   const params = useParams<MyTrainingRouteParams>();
   const { menuControlAuth } = MenuControlAuthService.instance;
-  const { inprogressCount, completedCount, myTrainingTableCount2, retryCount } =
-    MyTrainingService.instance;
   const { inMyListCount } = InMyLectureService.instance;
-  const { requiredLecturesCount } = LectureService.instance;
+  const { myTrainingTableCount2 } = MyTrainingService.instance;
+  const { requiredLecturesCount, inProgressCount, completedCount, retryCount } =
+    LectureService.instance;
   const {
     aplCount: { all: personalCompletedCount },
   } = AplService.instance;
@@ -37,7 +37,7 @@ function MyTrainingTabContainer() {
   useEffect(() => {
     MyTrainingService.instance.findAllTabCount();
     InMyLectureService.instance.findAllTabCount();
-    LectureService.instance.countRequiredLectures();
+    LectureService.instance.countLearningTab();
     AplService.instance.findAllTabCount(CountType.patronKeyString);
   }, []);
 
@@ -49,7 +49,7 @@ function MyTrainingTabContainer() {
       item: (
         <MyTrainingTabItemView
           contentType={MyLearningContentType.InProgress}
-          count={inprogressCount}
+          count={inProgressCount}
         />
       ),
       render: () => <ProgressPageContainer />,

@@ -1,6 +1,9 @@
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
@@ -39,10 +42,6 @@ function RequiredListPageContainer({
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
 
-  const { lectureTableViews, lectureTableCount } = lectureService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
-
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
   const initialOrders = headerColumns
@@ -54,37 +53,49 @@ function RequiredListPageContainer({
 
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
+  const {
+    myLearningCards,
+    totalMyLearningCardCount,
+    cardQdo,
+    setCardQdo,
+    findMyLearningCardByQdo,
+    clearMyLearningCard,
+  } = lectureService!;
+  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+    filterBoxService!;
+
   useRequestFilterCountView();
 
-  useEffect(() => {
-    lectureService!.clearAllTableViews();
-    lectureService!.initFilterRdo();
+  const clearQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.required = true;
 
-    if (params.pageNo === '1') {
-      requestRequiredCards();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestRequiredCardsWithPage({ offset: 0, limit });
-  }, []);
-
-  const requestRequiredCards = async () => {
-    setIsLoading(true);
-    const isEmpty = await lectureService!.findAllRqdTableViews();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
-    setIsLoading(false);
+    return newCardQdo;
   };
 
-  const requestRequiredCardsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await lectureService!.findAllRqdTableViewsWithPage(offset);
-    checkShowSeeMore();
-    setIsLoading(false);
-    scrollOnceMove();
+  useEffect(() => {
+    clearMyLearningCard();
+
+    const newQdo = clearQdo();
+
+    requestmyTrainingsWithPage(newQdo, true);
+
+    return () => {};
+  }, []);
+
+  const requestmyTrainingsWithPage = async (
+    qdo: CardQdo,
+    firstCheck?: boolean
+  ) => {
+    await setIsLoading(true);
+    await setCardQdo(qdo);
+    await findMyLearningCardByQdo(firstCheck);
+    await checkShowSeeMore();
+    await setIsLoading(false);
+    await scrollOnceMove();
   };
 
   // ------------------------------------------------- header -------------------------------------------------
@@ -100,32 +111,40 @@ function RequiredListPageContainer({
     filterCount,
   };
 
-  const requestRequiredCardsByConditions = async () => {
+  const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
+
+    const newQdo = cardQdo;
+    newQdo.setBycondition(conditions);
+    await setCardQdo(newQdo);
+
+    await findMyLearningCardByQdo();
+    const { myLearningCards } = lectureService!;
+    const isEmpty =
+      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    await console.log(isEmpty);
+    await setResultEmpty(isEmpty);
+    await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
   };
 
   useEffect(() => {
     if (showResult) {
-      lectureService!.setFilterRdoByConditions(conditions);
-      requestRequiredCardsByConditions();
+      requestMyTrainingsByConditions();
     }
   }, [showResult]);
 
   // ------------------------------------------------- table -------------------------------------------------
 
   const checkShowSeeMore = (): void => {
-    const { lectureTableViews, lectureTableCount } = lectureService!;
+    const { myLearningCards, totalMyLearningCardCount } = lectureService!;
 
-    if (lectureTableViews.length >= lectureTableCount) {
+    if (myLearningCards.length >= totalMyLearningCardCount) {
       setShowSeeMore(false);
       return;
     }
-    if (lectureTableCount <= PAGE_SIZE) {
+    if (totalMyLearningCardCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -138,13 +157,13 @@ function RequiredListPageContainer({
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
 
-    const currentPageNo = parseInt(params.pageNo);
+    const currentPageNo = parseInt(params.pageNo, 10);
     const nextPageNo = currentPageNo + 1;
 
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
+    cardQdo.limit = PAGE_SIZE;
+    cardQdo.offset = currentPageNo * PAGE_SIZE;
 
-    requestRequiredCardsWithPage({ offset, limit });
+    requestmyTrainingsWithPage(cardQdo);
 
     history.replace(`./${nextPageNo}`);
   };
@@ -209,7 +228,7 @@ function RequiredListPageContainer({
       {
         <TabHeader
           resultEmpty={resultEmpty}
-          totalCount={lectureTableCount}
+          totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
         >
@@ -220,20 +239,20 @@ function RequiredListPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (lectureTableCount || 0).toString(),
+                  totalCount: (totalMyLearningCardCount || 0).toString(),
                 }
               ),
             }}
           />
         </TabHeader>
       }
-      {(lectureTableViews && lectureTableViews.length > 0 && (
+      {(myLearningCards && myLearningCards.length > 0 && (
         <>
           {(!resultEmpty && (
             <RequiredListPageTableView
-              totalCount={lectureTableCount}
+              totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
-              learningList={lectureTableViews}
+              learningList={myLearningCards}
               showSeeMore={showSeeMore}
               onClickRow={onViewDetail}
               onClickSeeMore={onClickSeeMore}
