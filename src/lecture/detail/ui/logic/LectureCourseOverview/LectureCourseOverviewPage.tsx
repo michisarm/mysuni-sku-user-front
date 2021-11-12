@@ -12,6 +12,8 @@ import { isPisAgreementPassed } from '../../../service/useLectureStructure/utili
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
 
+  console.log(isPisAgreement);
+
   if (!isPisAgreement) {
     // Model 띄우기
     onOpenLectureCardPisAgreementModal(true);

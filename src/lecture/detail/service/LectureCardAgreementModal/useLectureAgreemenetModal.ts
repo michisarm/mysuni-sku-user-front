@@ -19,10 +19,9 @@ import { updateCardPisAgreement } from '../../api/profileApi';
 
 export function useRequestLectureCardPisAgreementModal(cardId: string) {
   //
-
   useEffect(() => {
     requestLectureCardPisAgreementModal(cardId);
-  }, []);
+  }, [cardId]);
 }
 
 export async function requestLectureCardPisAgreementModal(cardId: string) {
@@ -30,6 +29,8 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
   const lectureCardPisAgreementModal =
     getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+
+  console.log(cardWithContentsAndRelatedCountRom);
 
   if (!cardWithContentsAndRelatedCountRom) {
     return;
