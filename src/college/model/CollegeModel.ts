@@ -29,6 +29,7 @@ export class CollegeModel implements DramaEntity {
   openState: string = '';
   time: number = 0;
   langSupports: LangSupport[] = [];
+  cineroomId: string = '';
 
   constructor(college?: CollegeModel) {
     //

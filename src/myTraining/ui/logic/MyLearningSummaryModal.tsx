@@ -16,6 +16,9 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { CollegeLearningTime } from '../../../main/sub/PersonalBoard/model/TotalLearningTimeRdo';
+import { College } from '../../../shared/service/requestAllColleges';
+import InstructorLearningTimeView from '../view/InstructorLearningTimeView';
 
 interface Props {
   trigger: React.ReactNode;
@@ -25,6 +28,10 @@ interface Props {
   personalCubeService?: PersonalCubeService;
   skProfileService?: SkProfileService;
   menuControlAuthService?: MenuControlAuthService;
+  suniLearningTime: number;
+  myCompanyLearningTime: number;
+  accumulatedLearningTime: number;
+  collegeLearningTimes: CollegeLearningTime[];
 }
 
 interface State {
@@ -89,9 +96,17 @@ class MyLearningSummaryModal extends Component<Props> {
 
   render() {
     const { openModal, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } =
-      this.props;
-    const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+    const {
+      trigger,
+      myLearningSummaryService,
+      menuControlAuthService,
+      suniLearningTime,
+      myCompanyLearningTime,
+      collegeLearningTimes,
+      accumulatedLearningTime,
+    } = this.props;
+    const { myLearningSummary, lectureTimeSummary, instructTimeSummary } =
+      myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
 
     const year = moment().year();
@@ -180,7 +195,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  myLearningSummary.displayMySuniLearningTimeSummary
+                                  suniLearningTime
                                 )}
                                 )
                               </strong>
@@ -215,7 +230,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  totalMyCompanyLearningTime
+                                  myCompanyLearningTime
                                 )}
                                 )
                               </strong>
@@ -261,8 +276,8 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  (lectureTimeSummary &&
-                                    lectureTimeSummary.sumOfCurrentYearLectureTime) ||
+                                  (instructTimeSummary &&
+                                    instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
                                     0
                                 )}
                                 )
@@ -283,23 +298,17 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                   </div>
                   <div className="cell vtop">
-                    {checkedTab === TabType.mySUNI && (
-                      <MySuniCollegeTimeView
-                        myLearningSummary={myLearningSummary}
-                      />
-                    )}
+                    {checkedTab === TabType.mySUNI && <MySuniCollegeTimeView />}
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
-                        myCompanyLearningTime={
-                          myLearningSummary.displayMyCompanyLearningTimeSummary
-                        }
-                        aplTime={myLearningSummary.accumulatedLearningTime}
+                        myCompanyLearningTime={myCompanyLearningTime}
+                        aplTime={accumulatedLearningTime}
                         menuControlAuth={menuControlAuth}
                       />
                     )}
                     {checkedTab === TabType.LectureTime && (
-                      <LectureCollegeTimeView
-                        lectureTimeSummary={lectureTimeSummary}
+                      <InstructorLearningTimeView
+                        instructorLearningTimeSummary={instructTimeSummary}
                       />
                     )}{' '}
                   </div>

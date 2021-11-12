@@ -36,7 +36,7 @@ function MyTrainingHeaderContainer({
   badgeService,
 }: MyTrainingHeaderContainerProps) {
   const { skProfile } = skProfileService!;
-  const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+  const { myLearningSummary, instructTimeSummary } = myLearningSummaryService!;
   const { myStampCount } = lectureService!;
   const {
     allBadgeCount: { issuedCount },
@@ -45,18 +45,11 @@ function MyTrainingHeaderContainer({
   const history = useHistory();
   const currentYear = moment().year();
 
-  const sumOfCurrentYearLectureTime =
-    (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
-  const totalLectureTime =
-    (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
-
-  const totalLearningTime =
-    myLearningSummary.accumulatedLearningTime +
-    myLearningSummary.displayMyCompanyLearningTimeSummary +
-    myLearningSummary.myCompanyLearningTime +
-    sumOfCurrentYearLectureTime;
   const totalAccrueLearningTime =
-    myLearningSummary.displayTotalLearningTimeSummary + totalLectureTime;
+    myLearningSummary.displayTotalLearningTimeSummary +
+    ((instructTimeSummary &&
+      instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
+      0);
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();
@@ -106,9 +99,8 @@ function MyTrainingHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(totalLearningTime !== 0 && (
+        {(totalAccrueLearningTime !== 0 && (
           <ContentHeader.LearningTimeItem
-            minute={totalLearningTime}
             year={currentYear}
             accrueMinute={totalAccrueLearningTime}
           />

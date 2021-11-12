@@ -2,7 +2,7 @@ import { mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { MyLearningSummaryService } from 'myTraining/stores';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
 import { timeToHourMinute } from '../../../../../shared/helper/dateTimeHelper';
@@ -10,15 +10,10 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
+import { useTotalLearningTimeRdo } from '../../model/TotalLearningTimeRdo';
 
-interface Props extends RouteComponentProps {
-  myLearningSummaryService?: MyLearningSummaryService;
-}
-
-const BadgeLearningTimeView: React.FC<Props> = (Props) => {
-  const { history, myLearningSummaryService } = Props;
-
-  const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+export const BadgeLearningTimeView = withRouter((Props) => {
+  const { history } = Props;
 
   const badgeLearningTimeItem = useBadgeLearningTimeItem();
 
@@ -30,13 +25,27 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
     history.push('/my-training/learning/Completed/pages/1');
   }, []);
 
-  const sumOfCurrentYearLectureTime =
-    (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
-  console.dir(myLearningSummary);
-  const totalLearningTime =
-    myLearningSummary.displayTotalLearningTimeSummary +
-    sumOfCurrentYearLectureTime;
-  const { hour, minute } = timeToHourMinute(totalLearningTime);
+  // const sumOfCurrentYearLectureTime =
+  //   (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
+
+  const totalLearningTimeRdo = useTotalLearningTimeRdo();
+  const totalLearningTime = useMemo<number>(() => {
+    const suniLearningTime =
+      totalLearningTimeRdo.collegeLearningTimes.reduce<number>(
+        (p, c) => p + c.learningTime,
+        0
+      );
+    return (
+      suniLearningTime +
+      totalLearningTimeRdo.myCompanyLearningTime +
+      totalLearningTimeRdo.accumulatedLearningTime
+    );
+  }, [totalLearningTimeRdo]);
+
+  const { hour, minute } = useMemo(
+    () => timeToHourMinute(totalLearningTime),
+    [totalLearningTime]
+  );
 
   return (
     <>
@@ -276,8 +285,4 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
       )}
     </>
   );
-};
-
-export default inject(
-  mobxHelper.injectFrom('myTraining.myLearningSummaryService')
-)(withRouter(observer(BadgeLearningTimeView)));
+});

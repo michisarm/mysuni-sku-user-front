@@ -1,26 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
+import { Button, Segment } from 'semantic-ui-react';
 import certificationRoutes from 'certification/routePaths';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
-import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
 import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
-import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import { BadgeService } from 'lecture/stores';
 import { useHistory } from 'react-router-dom';
 import { SkProfileService } from 'profile/stores';
-import { useRequestBadgeAllCount } from 'certification/service/useRequestBadgeAllCount';
+import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -73,6 +65,11 @@ function MainChallengingBadgeContainer() {
     [challengeBadges]
   );
 
+  const badgeLearningTimeItem = useBadgeLearningTimeItem();
+  const badgeMyCount = useMemo<number>(() => {
+    return badgeLearningTimeItem?.badgeMyCount || 0;
+  }, [badgeLearningTimeItem]);
+
   return (
     <Segment
       className="full learning-section badge-section type4"
@@ -122,7 +119,7 @@ function MainChallengingBadgeContainer() {
         <div className="badge-banner-wrap">
           <div className="badge-txt-box">
             <div className="badge-txt">
-              지금까지 총 <strong>4개</strong>의 뱃지를 <br />
+              지금까지 총 <strong>{badgeMyCount}개</strong>의 뱃지를 <br />
               획득하셨어요!
             </div>
             <Button className="btn-badge-go">새로운 뱃지 도전하기!</Button>

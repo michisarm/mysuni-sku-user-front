@@ -115,30 +115,30 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
     return (
       <div className="ui statistic total-time">
         {
-          <MyLearningSummaryModal
-            trigger={
-              <Button
-                className="btn-total-time"
-                style={{ paddingLeft: '100px' }}
-              >
-                <Label className="onlytext">
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: getPolyglotText(
-                        `<strong>{year}년</strong>학습시간`,
-                        'mapg-mifa-년도',
-                        {
-                          year: (year || 0).toString(),
-                        }
-                      ),
-                    }}
-                  />
-                </Label>
-                {total}
-              </Button>
-            }
-            year={year}
-          />
+          // <MyLearningSummaryModal
+          //   trigger={
+          //     <Button
+          //       className="btn-total-time"
+          //       style={{ paddingLeft: '100px' }}
+          //     >
+          //       <Label className="onlytext">
+          //         <span
+          //           dangerouslySetInnerHTML={{
+          //             __html: getPolyglotText(
+          //               `<strong>{year}년</strong>학습시간`,
+          //               'mapg-mifa-년도',
+          //               {
+          //                 year: (year || 0).toString(),
+          //               }
+          //             ),
+          //           }}
+          //         />
+          //       </Label>
+          //       {total}
+          //     </Button>
+          //   }
+          //   year={year}
+          // />
         }
       </div>
     );

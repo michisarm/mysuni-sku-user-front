@@ -89,7 +89,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   );
 
   const onViewAll = () => {
-    history.push(myTrainingRoutes.learningLrsLecture());
+    history.push(myTrainingRoutes.learningLrsLecture('ContentBase'));
 
     // react-ga event
     ReactGA.event({

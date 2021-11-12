@@ -109,54 +109,12 @@ class MyLearningSummaryModel {
   get displayTotalLearningTimeSummary() {
     //
     let summaryTime = 0;
-    this.collegeLearningTimes &&
-      this.collegeLearningTimes.length > 0 &&
-      this.collegeLearningTimes.map((collegeLearningTime) => {
-        mySuniLearningCollegeIds.includes(collegeLearningTime.collegeId) &&
-          (summaryTime += collegeLearningTime.learningTime);
-      });
 
+    summaryTime += this.displayMySuniLearningTimeSummary;
     summaryTime += this.myCompanyLearningTime;
     summaryTime += this.accumulatedLearningTime;
 
     return summaryTime;
-  }
-
-  getCollegeTime(
-    collegeType:
-      | 'ai'
-      | 'dt'
-      | 'happy'
-      | 'sv'
-      | 'design'
-      | 'global'
-      | 'leadership'
-      | 'management'
-      | 'semiconductor'
-      | 'energySolution'
-      | 'bmDesigner'
-      | 'skAcademy'
-      | 'skManagement'
-      | 'lifeStyle'
-  ) {
-    const college = collegeIdMap.find((x) => x.type === collegeType);
-    let findResultTime = 0;
-
-    if (
-      college &&
-      college.id &&
-      this.collegeLearningTimes &&
-      this.collegeLearningTimes.length > 0
-    ) {
-      const collegeLearningTime = this.collegeLearningTimes.find(
-        (x) => x.collegeId === college.id
-      );
-
-      findResultTime =
-        (collegeLearningTime && collegeLearningTime.learningTime) || 0;
-    }
-
-    return findResultTime;
   }
 }
 

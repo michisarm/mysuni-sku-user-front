@@ -18,7 +18,7 @@ import {
 } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { find } from 'lodash';
-import { findAllCollegeCache } from 'college/present/apiclient/CollegeApi';
+import { findAllCollegeCache } from '../../../shared/service/requestAllColleges';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
