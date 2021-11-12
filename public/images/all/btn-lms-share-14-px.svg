@@ -1,0 +1,6 @@
+<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M14 6.625 6.908.25v3.595C2.52 4.221.055 0 .055 0c-.772 9.785 6.853 9.369 6.853 9.369V13L14 6.625z" id="a"/>
+    </defs>
+    <use fill="#BBB" transform="matrix(1 0 0 -1 0 14)" xlink:href="#a" fill-rule="evenodd"/>
+</svg>

@@ -53,3 +53,41 @@
     color: #999;
     padding: 0;
 }
+
+/* 학습카드 상세보기 페이지 */
+.content.lms .course-info-list, .content.lms .course-popup-info-list {
+    box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.content.lms .course-info-detail,
+.content.lms.v-wide .course-info-detail,
+.content.lms .lms-sticky-menu,
+#root .video-fixed-holder.lms-video-fixed+.lms-sticky-menu {
+    background: #fff;
+}
+.content.lms .btn-view-change {
+    color: #777;
+}
+.ui.button.btn_note_new { color: #bbb; }
+.ui.button.btn_note_new.on { color: #777; }
+.detail .ui.label.tag { border: #ddd 1px solid; color: #777; }
+.ui.button.btn_note_new i.icon:before { background: url(/images/all/icon-note-24-px-off.svg) center no-repeat !important; }
+.ui.button.btn_note_new.on i.icon:before { background: url(/images/all/icon-note-24-px.svg) center no-repeat !important; }
+.ui.button.btn_note_new.ing i.icon:before { background: url(/images/all/icon-note-24-px-active.svg) center no-repeat !important; }
+.content.lms .tool-tip > i {
+    border: #777 2px solid;
+    color: #444;
+    box-shadow: none;
+}
+.course-info-banner {
+    border: #777 1px solid;
+    box-shadow: 0 2px 8px -3px #cdcdcd;
+}
+.content.lms .ui.label.onlytext .icon.inter {
+    background: url(/images/all/icon-lms-level-02.svg) 0 0 no-repeat !important;
+}
+.badge-navi .btn-next.next-on {
+    background: url(/images/all/btn-next-24-px.svg);
+}
+.badge-navi .btn-prev.prev-on {
+    background: url(/images/all/btn-prev-24-px.svg);
+}
