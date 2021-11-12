@@ -39,6 +39,11 @@ import { convertLearningStateToState } from './parseModels';
 import { isEmpty } from 'lodash';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../model/LangSupport';
+import {
+  getLectureCardPisAgreementModal,
+  setLectureCardPisAgreementModal,
+} from '../../../store/LectureCardPisAgreementStore';
+import { initLectureCardPisAgreementModal } from '../../../viewModel/LectureCardPisAgreementModal';
 
 function parseCubeTestItem(
   card: Card,
@@ -622,10 +627,9 @@ export async function isPrecoursePassed(cardId: string) {
     return true;
   }
 
-  const filterPrecourse =
-    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
-      (course) => course.required
-    );
+  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+    (course) => course.required
+  );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
 
@@ -648,6 +652,24 @@ export async function isPrecoursePassed(cardId: string) {
     if (find !== undefined && find.learningState !== 'Passed') {
       return false;
     }
+  }
+
+  return true;
+}
+
+// 해당 카드의 동의 여부를 했는지 확인
+export async function isPisAgreementPassed(cardId: string) {
+  //
+  const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+
+  // api 호출이 실패 했을 경우
+  if (cardWithContentsAndRelatedCountRom === undefined) {
+    return false;
+  }
+
+  // Card 개인정보 동의가 있을 경우
+  if (cardWithContentsAndRelatedCountRom.cardContents.pisAgreementRequired) {
+    return false;
   }
 
   return true;

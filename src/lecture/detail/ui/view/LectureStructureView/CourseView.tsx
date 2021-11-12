@@ -67,7 +67,13 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         <button
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
-          dangerouslySetInnerHTML={{__html: getPolyglotText('총<strong>{count}개</strong> 강의 구성', 'Course-Contents-강의개수', {count: (items || cubes || []).length + ''})}}
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '총<strong>{count}개</strong> 강의 구성',
+              'Course-Contents-강의개수',
+              { count: (items || cubes || []).length + '' }
+            ),
+          }}
         />
         <span
           className={`label-state-learning ${
@@ -75,7 +81,10 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           } ${state === 'Completed' ? 'complete' : ''}`}
         >
           <span>
-            <PolyglotText defaultString="진행상태" id="Course-Contents-진행상태" />
+            <PolyglotText
+              defaultString="진행상태"
+              id="Course-Contents-진행상태"
+            />
           </span>
         </span>
       </div>
@@ -84,7 +93,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         style={opened ? {} : { display: 'none' }}
       >
         {items !== undefined &&
-          items.map(item => {
+          items.map((item) => {
             if (item.type === 'CUBE') {
               const cube = item as LectureStructureCubeItem;
 
@@ -133,15 +142,17 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.survey.can}
                     />
                   )}
-                  {cube.report !== undefined && (cube.report.name !== null && cube.report.name !== '') && (
-                    <ReportView
-                      activated={cube.report.path === pathname}
-                      name={cube.report.name}
-                      state={cube.report.state}
-                      path={cube.report.path}
-                      can={cube.report.can}
-                    />
-                  )}
+                  {cube.report !== undefined &&
+                    cube.report.name !== null &&
+                    cube.report.name !== '' && (
+                      <ReportView
+                        activated={cube.report.path === pathname}
+                        name={cube.report.name}
+                        state={cube.report.state}
+                        path={cube.report.path}
+                        can={cube.report.can}
+                      />
+                    )}
                 </Fragment>
               );
             }
@@ -176,7 +187,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             can={survey.can}
           />
         )}
-        {report && (report.name !== null && report.name !== '') && (
+        {report && report.name !== null && report.name !== '' && (
           <CourseReportView
             name={report.name}
             state={report.state}
