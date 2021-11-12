@@ -149,7 +149,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> =
         SkProfileService.instance.skProfile.id !==
           taskDetail?.writerPatronKeyString &&
         viewType === 'edit'
-      )
+      ) {
         reactAlert({
           title: getPolyglotText('알림', 'cicl-학상본문-알림'),
           message: getPolyglotText(
@@ -157,8 +157,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> =
             'learning-권한-권한없음'
           ),
         });
-      const history = getCurrentHistory();
-      history?.goBack();
+        const history = getCurrentHistory();
+        history?.goBack();
+      }
     }, []);
 
     return (
