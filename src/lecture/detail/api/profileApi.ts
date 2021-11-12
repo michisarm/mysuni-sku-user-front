@@ -56,6 +56,34 @@ export function updateAgreement(
   return axios.post(url, params).then(AxiosReturn);
 }
 
+export function findCardPisAgreement(agreementFormId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/pisAgreement/my`;
+
+  const params = {
+    agreementFormId,
+    serviceId: 'CARD',
+  };
+
+  return axios.get(url, { params }).then(AxiosReturn);
+}
+
+export function updateCardPisAgreement(
+  agreementFormId: string,
+  optionalAgreements: boolean[]
+) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/pisAgreement`;
+
+  const params = {
+    agreementFormId,
+    serviceId: 'CARD',
+    optionalAgreements,
+  };
+
+  return axios.post(url, params).then(AxiosReturn);
+}
+
 export function findMyUserWorkspace() {
   const axios = getAxios();
   const url = '/api/user/userWorkspaces/my';
