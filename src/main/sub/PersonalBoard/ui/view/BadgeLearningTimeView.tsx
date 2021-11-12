@@ -32,10 +32,9 @@ const BadgeLearningTimeView: React.FC<Props> = (Props) => {
 
   const sumOfCurrentYearLectureTime =
     (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
+  console.dir(myLearningSummary);
   const totalLearningTime =
-    myLearningSummary.suniLearningTime +
-    myLearningSummary.myCompanyLearningTime +
-    myLearningSummary.aplAllowTime +
+    myLearningSummary.displayTotalLearningTimeSummary +
     sumOfCurrentYearLectureTime;
   const { hour, minute } = timeToHourMinute(totalLearningTime);
 

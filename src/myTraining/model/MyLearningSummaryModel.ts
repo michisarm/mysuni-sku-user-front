@@ -1,8 +1,9 @@
 import { decorate, observable, computed } from 'mobx';
+import { getCollegeTime } from 'personalcube/personalcube/model/LectureTimeSummary';
 import { DramaEntityObservableModel } from 'shared/model';
 import CollegeLearningTimeModel from './CollegeLearningTimeModel';
 
-class MyLearningSummaryModel extends DramaEntityObservableModel {
+class MyLearningSummaryModel {
   //
   // college별 학습시간
   collegeLearningTimes: CollegeLearningTimeModel[] = [];
@@ -57,23 +58,105 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   // }
 
   constructor(summary?: MyLearningSummaryModel) {
-    super();
     if (summary) {
       Object.assign(this, { ...summary });
+
+      this.collegeLearningTimes =
+        (summary.collegeLearningTimes &&
+          summary.collegeLearningTimes.length > 0 && [
+            ...summary.collegeLearningTimes,
+          ]) ||
+        [];
     }
   }
 
-  getMyCompanyLearningTimeSummary() {
+  @computed
+  get displayMyCompanyLearningTimeSummary() {
     //
     let summaryTime = 0;
 
     this.collegeLearningTimes &&
       this.collegeLearningTimes.length > 0 &&
       this.collegeLearningTimes.map((collegeLearningTime) => {
-        summaryTime += collegeLearningTime.learningTime;
+        if (
+          includeCompanyCollegeIds.includes(collegeLearningTime.collegeId) ||
+          !excludeCompanyCollegeIds.includes(collegeLearningTime.collegeId)
+        ) {
+          summaryTime += collegeLearningTime.learningTime;
+        }
       });
 
     return summaryTime;
+  }
+
+  @computed
+  get displayMySuniLearningTimeSummary() {
+    //
+    let summaryTime = 0;
+
+    this.collegeLearningTimes &&
+      this.collegeLearningTimes.length > 0 &&
+      this.collegeLearningTimes.map((collegeLearningTime) => {
+        if (mySuniLearningCollegeIds.includes(collegeLearningTime.collegeId)) {
+          summaryTime += collegeLearningTime.learningTime;
+        }
+      });
+
+    return summaryTime;
+  }
+
+  @computed
+  get displayTotalLearningTimeSummary() {
+    //
+    let summaryTime = 0;
+    this.collegeLearningTimes &&
+      this.collegeLearningTimes.length > 0 &&
+      this.collegeLearningTimes.map((collegeLearningTime) => {
+        mySuniLearningCollegeIds.includes(collegeLearningTime.collegeId) &&
+          (summaryTime += collegeLearningTime.learningTime);
+      });
+
+    summaryTime += this.myCompanyLearningTime;
+    summaryTime += this.accumulatedLearningTime;
+
+    return summaryTime;
+  }
+
+  getCollegeTime(
+    collegeType:
+      | 'ai'
+      | 'dt'
+      | 'happy'
+      | 'sv'
+      | 'design'
+      | 'global'
+      | 'leadership'
+      | 'management'
+      | 'semiconductor'
+      | 'energySolution'
+      | 'bmDesigner'
+      | 'skAcademy'
+      | 'skManagement'
+      | 'lifeStyle'
+  ) {
+    const college = collegeIdMap.find((x) => x.type === collegeType);
+    let findResultTime = 0;
+
+    if (
+      college &&
+      college.id &&
+      this.collegeLearningTimes &&
+      this.collegeLearningTimes.length > 0
+    ) {
+      const collegeLearningTime = this.collegeLearningTimes.find(
+        (x) => x.collegeId === college.id
+      );
+
+      findResultTime =
+        (collegeLearningTime && collegeLearningTime.learningTime) || 0;
+    }
+
+    return findResultTime;
   }
 }
 
@@ -112,3 +195,54 @@ decorate(MyLearningSummaryModel, {
 });
 
 export default MyLearningSummaryModel;
+
+const excludeCompanyCollegeIds = [
+  'CLG00001',
+  'CLG00002',
+  'CLG00003',
+  'CLG00004',
+  'CLG00005',
+  'CLG00006',
+  'CLG00007',
+  'CLG00008',
+  'CLG00019',
+  'CLG00017',
+  'CLG00018',
+  'CLG0001a',
+  'CLG0001c',
+  'CLG00020',
+];
+const includeCompanyCollegeIds = ['CLG0001w'];
+const mySuniLearningCollegeIds = [
+  'CLG00001',
+  'CLG00002',
+  'CLG00003',
+  'CLG00004',
+  'CLG00005',
+  'CLG00006',
+  'CLG00007',
+  'CLG00008',
+  'CLG00019',
+  'CLG00017',
+  'CLG00018',
+  'CLG0001a',
+  'CLG0001c',
+  'CLG00020',
+];
+
+const collegeIdMap = [
+  { type: 'ai', id: 'CLG00001' },
+  { type: 'dt', id: 'CLG00002' },
+  { type: 'happy', id: 'CLG00003' },
+  { type: 'sv', id: 'CLG00004' },
+  { type: 'design', id: 'CLG00005' },
+  { type: 'global', id: 'CLG00006' },
+  { type: 'leadership', id: 'CLG00007' },
+  { type: 'management', id: 'CLG00008' },
+  { type: 'skManagement', id: 'CLG00017' },
+  { type: 'skAcademy', id: 'CLG00018' },
+  { type: 'semiconductor', id: 'CLG00019' },
+  { type: 'bmDesigner', id: 'CLG00020' },
+  { type: 'lifeStyle', id: 'CLG0001a' },
+  { type: 'energySolution', id: 'CLG000c1' },
+];

@@ -99,9 +99,9 @@ class MyLearningSummaryModal extends Component<Props> {
 
     const totalMyCompanyLearningTime =
       (menuControlAuth.useApl &&
-        myLearningSummary.displayMyCompanyLearningTime +
-          myLearningSummary.aplAllowTime) ||
-      myLearningSummary.displayMyCompanyLearningTime;
+        myLearningSummary.displayMyCompanyLearningTimeSummary +
+          myLearningSummary.accumulatedLearningTime) ||
+      myLearningSummary.displayMyCompanyLearningTimeSummary;
 
     return (
       <Modal
@@ -180,7 +180,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  myLearningSummary.displayMySUNILearningTime
+                                  myLearningSummary.displayMySuniLearningTimeSummary
                                 )}
                                 )
                               </strong>
@@ -291,9 +291,9 @@ class MyLearningSummaryModal extends Component<Props> {
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
                         myCompanyLearningTime={
-                          myLearningSummary.displayMyCompanyLearningTime
+                          myLearningSummary.displayMyCompanyLearningTimeSummary
                         }
-                        aplTime={myLearningSummary.aplAllowTime}
+                        aplTime={myLearningSummary.accumulatedLearningTime}
                         menuControlAuth={menuControlAuth}
                       />
                     )}

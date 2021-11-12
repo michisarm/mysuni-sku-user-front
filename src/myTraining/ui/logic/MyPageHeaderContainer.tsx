@@ -47,15 +47,10 @@ function MyPageHeaderContainer({
     (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
   const totalLearningTime =
-    myLearningSummary.suniLearningTime +
-    myLearningSummary.myCompanyLearningTime +
-    myLearningSummary.aplAllowTime +
+    myLearningSummary.displayTotalLearningTimeSummary +
     sumOfCurrentYearLectureTime;
   const totalAccrueLearningTime =
-    myLearningSummary.totalSuniLearningTime +
-    myLearningSummary.totalMyCompanyLearningTime +
-    myLearningSummary.totalAplAllowTime +
-    totalLectureTime;
+    myLearningSummary.displayTotalLearningTimeSummary + totalLectureTime;
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();

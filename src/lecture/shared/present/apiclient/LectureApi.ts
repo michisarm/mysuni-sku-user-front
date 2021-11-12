@@ -9,29 +9,38 @@ import ChannelCountRdo from '../../../model/ChannelCountRdo';
 import CommunityLectureRdoModel from '../../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../../model/InstructorRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
-
+import CardQdo from 'lecture/model/learning/CardQdo';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 
 class LectureApi {
   //
   static instance: LectureApi;
 
-  baseUrl = process.env.REACT_APP_LECTURE_API === undefined || process.env.REACT_APP_LECTURE_API === '' ?
-    '/api/lecture/lectures' : process.env.REACT_APP_LECTURE_API;
+  learningUrl = '/api/lecture/cards';
+  baseUrl =
+    process.env.REACT_APP_LECTURE_API === undefined ||
+    process.env.REACT_APP_LECTURE_API === ''
+      ? '/api/lecture/lectures'
+      : process.env.REACT_APP_LECTURE_API;
 
   findAllLectures(lectureRdo: LectureRdoModel) {
     //
     const params = lectureRdo;
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
-      .then(response => response && response.data);
+    return axiosApi
+      .get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
+      .then((response) => response && response.data);
   }
 
   findAllCommunityLectures(lectureRdo: CommunityLectureRdoModel) {
     //
     const params = lectureRdo;
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/community', { params })
-      .then(response => response && response.data);
+    return axiosApi
+      .get<OffsetElementList<LectureModel>>(this.baseUrl + '/community', {
+        params,
+      })
+      .then((response) => response && response.data);
   }
 
   findLectureCountByChannels(collegeId: string, channels: ChannelModel[]) {
@@ -40,15 +49,25 @@ class LectureApi {
       return Promise.resolve([]);
     }
 
-    const queryParams = `collegeId=${collegeId}&${channels.map((channel) => `channels=${channel.id}`).join('&')}`;
+    const queryParams = `collegeId=${collegeId}&${channels
+      .map((channel) => `channels=${channel.id}`)
+      .join('&')}`;
 
-    return axiosApi.get<ChannelCountRdo[]>(this.baseUrl + `/count/byChannels?${queryParams}`)
-      .then(response => response && response.data || []);
+    return axiosApi
+      .get<ChannelCountRdo[]>(this.baseUrl + `/count/byChannels?${queryParams}`)
+      .then((response) => (response && response.data) || []);
   }
 
-  findLectureViews(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  findLectureViews(
+    coursePlanId: string,
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
     //
-    if ((!lectureCardUsids || lectureCardUsids.length < 1) && (!courseLectureUsids || courseLectureUsids.length < 1 )) {
+    if (
+      (!lectureCardUsids || lectureCardUsids.length < 1) &&
+      (!courseLectureUsids || courseLectureUsids.length < 1)
+    ) {
       return Promise.resolve([]);
     }
 
@@ -58,13 +77,29 @@ class LectureApi {
       courseLectureIds: courseLectureUsids || [],
     });
 
-    return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/view`, params)
-      .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
+    return axiosApi
+      .post<LectureViewModel[]>(this.baseUrl + `/view`, params)
+      .then(
+        (response) =>
+          (response &&
+            response.data &&
+            response.data.map(
+              (lectureViewModel) => new LectureViewModel(lectureViewModel)
+            )) ||
+          []
+      );
   }
 
-  findLectureViewsV2(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  findLectureViewsV2(
+    coursePlanId: string,
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
     //
-    if ((!lectureCardUsids || lectureCardUsids.length < 1) && (!courseLectureUsids || courseLectureUsids.length < 1 )) {
+    if (
+      (!lectureCardUsids || lectureCardUsids.length < 1) &&
+      (!courseLectureUsids || courseLectureUsids.length < 1)
+    ) {
       return Promise.resolve([]);
     }
 
@@ -74,21 +109,48 @@ class LectureApi {
       courseLectureIds: courseLectureUsids || [],
     });
 
-    return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/v2/view`, params)
-      .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
+    return axiosApi
+      .post<LectureViewModel[]>(this.baseUrl + `/v2/view`, params)
+      .then(
+        (response) =>
+          (response &&
+            response.data &&
+            response.data.map(
+              (lectureViewModel) => new LectureViewModel(lectureViewModel)
+            )) ||
+          []
+      );
   }
 
   findAllLecturesByInstructorId(instructorRdo: InstructorRdoModel) {
     //
     const params = instructorRdo;
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/byInstructorId', { params })
-      .then(response => response && response.data);
+    return axiosApi
+      .get<OffsetElementList<LectureModel>>(this.baseUrl + '/byInstructorId', {
+        params,
+      })
+      .then((response) => response && response.data);
   }
 
   findAllSharedLectures(sharedRdo: SharedRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/shared', sharedRdo)
-      .then(response => response && response.data);
+    return axiosApi
+      .post<OffsetElementList<LectureModel>>(
+        this.baseUrl + '/shared',
+        sharedRdo
+      )
+      .then((response) => response && response.data);
+  }
+
+  // Learning Page
+  findMyLearningLectures(cardQdo: CardQdo) {
+    //
+    return axiosApi
+      .get<OffsetElementList<CardForUserViewModel>>(
+        this.learningUrl + '/findCardWithPhaseCountForUserViewRdoByCardQdo',
+        cardQdo
+      )
+      .then((response) => response && response.data);
   }
 }
 

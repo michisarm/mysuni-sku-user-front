@@ -4,13 +4,12 @@ import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 
 interface MySuniCollegeTimeViewProps {
-  myLearningSummary: MyLearningSummaryModel
+  myLearningSummary: MyLearningSummaryModel;
 }
 
 export default function MySuniCollegeTimeView({
   myLearningSummary,
 }: MySuniCollegeTimeViewProps) {
-
   return (
     <ul className="bullet-list2">
       <li>
@@ -18,7 +17,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="AI" id="home-학이시-ai" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.aiCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('ai')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.aiCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -26,7 +28,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="DT" id="home-학이시-dt" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.dtCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('ai')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.dtCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -34,7 +39,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="행복" id="home-학이시-행복" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.happyCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('happy')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.happyCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -42,7 +50,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="SV" id="home-학이시-sv" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.svCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('sv')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.svCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -50,7 +61,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="혁신디자인" id="home-학이시-혁디" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.designCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('design')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.designCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -58,7 +72,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="Global" id="home-학이시-gb" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.globalCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('global')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.globalCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -66,7 +83,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="Leadership" id="home-학이시-리더" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.leadershipCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('leadership')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.leadershipCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -74,7 +94,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="Management" id="home-학이시-mgmt" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.managementCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('management')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.managementCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -82,7 +105,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="미래반도체" id="home-학이시-반도체" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.semiconductorCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('semiconductor')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.semiconductorCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -90,15 +116,24 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="Environment" id="home-학이시-에솔" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.energySolutionCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('energySolution')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.energySolutionCollegeTime)} */}
         </span>
       </li>
       <li>
         <span className="name b14">
-          <PolyglotText defaultString="BM Design & Storytelling" id="home-학이시-bm" />
+          <PolyglotText
+            defaultString="BM Design & Storytelling"
+            id="home-학이시-bm"
+          />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.bmDesignerCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('bmDesigner')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.bmDesignerCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -106,7 +141,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="SK아카데미" id="home-학이시-sa" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.skAcademyCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('skAcademy')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.skAcademyCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -114,7 +152,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="SK경영" id="home-학이시-sk경영" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.skManagementCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('skManagement')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.skManagementCollegeTime)} */}
         </span>
       </li>
       <li>
@@ -122,7 +163,10 @@ export default function MySuniCollegeTimeView({
           <PolyglotText defaultString="Life Style" id="home-학이시-ls" />
         </span>
         <span className="time">
-          {timeToHourMinutePaddingFormat(myLearningSummary.lifeStyleCollegeTime)}
+          {timeToHourMinutePaddingFormat(
+            myLearningSummary.getCollegeTime('lifeStyle')
+          )}
+          {/* {timeToHourMinutePaddingFormat(myLearningSummary.lifeStyleCollegeTime)} */}
         </span>
       </li>
     </ul>

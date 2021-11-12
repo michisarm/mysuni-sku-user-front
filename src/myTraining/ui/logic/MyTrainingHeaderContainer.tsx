@@ -48,14 +48,11 @@ function MyTrainingHeaderContainer({
 
   const totalLearningTime =
     myLearningSummary.accumulatedLearningTime +
-    myLearningSummary.getMyCompanyLearningTimeSummary() +
+    myLearningSummary.displayMyCompanyLearningTimeSummary +
     myLearningSummary.myCompanyLearningTime +
     sumOfCurrentYearLectureTime;
   const totalAccrueLearningTime =
-    myLearningSummary.totalSuniLearningTime +
-    myLearningSummary.totalMyCompanyLearningTime +
-    myLearningSummary.totalAplAllowTime +
-    totalLectureTime;
+    myLearningSummary.displayTotalLearningTimeSummary + totalLectureTime;
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();

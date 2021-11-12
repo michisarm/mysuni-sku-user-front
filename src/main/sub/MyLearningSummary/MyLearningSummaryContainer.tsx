@@ -212,24 +212,25 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const totalLectureTime =
       (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
-    const totalAccruedLearningTime =
-      myLearningSummary.totalSuniLearningTime +
-      myLearningSummary.totalMyCompanyLearningTime +
-      myLearningSummary.totalAplAllowTime +
-      totalLectureTime;
+    // 21-11-12 김민준 learning page 개선
+    // const totalAccruedLearningTime =
+    //   myLearningSummary.totalSuniLearningTime +
+    //   myLearningSummary.totalMyCompanyLearningTime +
+    //   myLearningSummary.totalAplAllowTime +
+    //   totalLectureTime;
 
-    const { hour: accruedHour, minute: accruedMinute } = timeToHourMinute(
-      totalAccruedLearningTime
-    );
+    // const { hour: accruedHour, minute: accruedMinute } = timeToHourMinute(
+    //   totalAccruedLearningTime
+    // );
 
-    const badgeLearningTime = getBadgeLearningTimeItem();
-    if (badgeLearningTime !== undefined) {
-      setBadgeLearningTimeItem({
-        ...badgeLearningTime,
-        mylearningTimeHour: accruedHour,
-        mylearningTimeMinute: accruedMinute,
-      });
-    }
+    // const badgeLearningTime = getBadgeLearningTimeItem();
+    // if (badgeLearningTime !== undefined) {
+    //   setBadgeLearningTimeItem({
+    //     ...badgeLearningTime,
+    //     mylearningTimeHour: accruedHour,
+    //     mylearningTimeMinute: accruedMinute,
+    //   });
+    // }
 
     const attendEventItem = getAttendEventItem();
 

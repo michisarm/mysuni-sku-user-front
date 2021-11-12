@@ -24,7 +24,8 @@ import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import {
   findByRdo,
   countRequiredCards,
-  findCardsByRdo, findByQdo,
+  findCardsByRdo,
+  findByQdo,
 } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
@@ -33,8 +34,14 @@ import { findCardStudentsByCardIds } from '../../../../certification/api/CardStu
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { CardProps, parseUserLectureCards, UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import {
+  CardProps,
+  parseUserLectureCards,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardQdo from 'lecture/model/learning/CardQdo';
 
 @autobind
 class LectureService {
@@ -75,7 +82,12 @@ class LectureService {
   @observable
   _lectureViews: LectureViewModel[] = [];
 
-  //
+  // Learning Page
+  @observable
+  _myLearningCards: CardForUserViewModel[] = [];
+
+  @observable
+  _totalMyLearningCardCount: number = 0;
 
   //
 
@@ -147,6 +159,19 @@ class LectureService {
   //   return (this._preLectureViews as IObservableArray).peek();
   // }
 
+  // Learning page
+
+  @action
+  async findMyLectureCardByLearningType(cardQdo: CardQdo) {
+    //
+    const findReulst = await this.lectureApi.findMyLearningLectures(cardQdo);
+
+    runInAction(() => {
+      this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
+      this._myLearningCards = (findReulst && findReulst.results) || [];
+    });
+  }
+
   // Lectures ----------------------------------------------------------------------------------------------------------
 
   @action
@@ -171,8 +196,9 @@ class LectureService {
         orderBy,
       })) || new OffsetElementList<UserLectureCard>();
 
-    const lectureOffsetElementList =
-      new OffsetElementList<UserLectureCard>(response);
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
     const userLanguage = SkProfileService.instance.skProfile.language;
 
     runInAction(
