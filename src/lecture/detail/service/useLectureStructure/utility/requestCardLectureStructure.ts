@@ -18,7 +18,6 @@ import {
   getLectureStructure,
   setIsLoadingState,
   setLectureStructure,
-  useLectureStructure,
 } from '../../../store/LectureStructureStore';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
@@ -715,17 +714,20 @@ export async function isPisAgreementPassed(cardId: string) {
 
   const lectureStructure = getLectureStructure();
 
+  console.log(cardWithContentsAndRelatedCountRom);
+
   let singleCube = false;
 
   // api 호출이 실패 했을 경우
   if (
-    cardWithContentsAndRelatedCountRom === undefined ||
+    cardWithContentsAndRelatedCountRom === undefined &&
     lectureStructure === undefined
   ) {
     return { isPisAgreement: false, singleCube };
   }
 
   if (
+    lectureStructure &&
     lectureStructure.cubes.length === 1 &&
     lectureStructure.items.length === 1 &&
     lectureStructure.card.test === undefined &&
@@ -736,7 +738,10 @@ export async function isPisAgreementPassed(cardId: string) {
   }
 
   // Card 개인정보 동의가 있을 경우
-  if (cardWithContentsAndRelatedCountRom.cardContents.pisAgreementRequired) {
+  if (
+    cardWithContentsAndRelatedCountRom &&
+    cardWithContentsAndRelatedCountRom.cardContents.pisAgreementRequired
+  ) {
     // 제출한 동의서가 없는 경우 또는 제출한 동의서가 있지만 동의하지 않은 경우
     if (
       isExistAgreement === undefined ||
