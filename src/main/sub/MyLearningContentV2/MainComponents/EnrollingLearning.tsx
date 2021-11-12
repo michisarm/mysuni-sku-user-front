@@ -16,9 +16,9 @@ import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString
 import Swiper from 'react-id-swiper';
 
 const SwiperProps = {
-  slidesPerView: 3,
+  slidesPerView: 4,
   spaceBetween: 7,
-  slidesPerGroup: 3,
+  slidesPerGroup: 4,
   loop: false,
   loopFillGroupWithBlank: true,
   navigation: {
