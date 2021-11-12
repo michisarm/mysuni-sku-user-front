@@ -1,11 +1,9 @@
 import { patronInfo } from '@nara.platform/dock';
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon, Label, Segment } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
-import CardGroup, {
-  GroupType,
-} from '../../../../shared/Lecture/sub/CardGroup/CardGroupContainer';
+
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
@@ -18,8 +16,9 @@ import {
 } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../../../profile/stores';
-import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
-import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
+import Swiper from 'react-id-swiper';
+import CardGroup from 'semantic-ui-react/dist/commonjs/views/Card/CardGroup';
+import { GroupType } from '../../../../shared/Lecture/sub/CardGroup';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -30,6 +29,19 @@ interface LectureViewProps {
   thumbnailImage?: string;
   rating?: number;
 }
+
+const SwiperProps = {
+  slidesPerView: 3,
+  spaceBetween: 7,
+  slidesPerGroup: 3,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.swiperRelations .swiper-button-next',
+    prevEl: '.swiperRelations .swiper-button-prev',
+  },
+  speed: 500,
+};
 
 const LectureView: React.FC<LectureViewProps> = function LectureView({
   model,
@@ -126,47 +138,28 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
             </h3>
           </div>
         </div>
-        <div className="scrolling" data-action-name={lectureSummary?.name}>
-          <ul className="belt">
-            {cards.map((card) => {
-              return (
-                <li key={card.cardId}>
-                  <div className="ui cards box-cards">
-                    {/*<LectureCardView*/}
-                    {/*  cardId={card.id}*/}
-                    {/*  cardName={parsePolyglotString(card.name)}*/}
-                    {/*  learningTime={String(card.learningTime)}*/}
-                    {/*  thumbnailImagePath={card.thumbImagePath}*/}
-                    {/*  difficultyLevel={card.difficultyLevel}*/}
-                    {/*  passedStudentCount={String(card.passedStudentCount)}*/}
-                    {/*  starCount={String(card.starCount)}*/}
-                    {/*  simpleDescription={parsePolyglotString(*/}
-                    {/*    card.simpleDescription*/}
-                    {/*  )}*/}
-                    {/*  studentCount={card.studentCount}*/}
-                    {/*  userLanguage={userLanguage}*/}
-                    {/*  langSupports={card.langSupports}*/}
-                    {/*  collegeId={card.mainCollegeId}*/}
-                    {/*  isRequiredLecture={card.required}*/}
-                    {/*  useBookMark*/}
-                    {/*/>*/}
-                    <LectureCardView
-                      {...card}
-                      useBookMark
-                      dataArea={Area.CARD_RELATION}
-                    />
-
-                    {/*<CardView*/}
-                    {/*  cardId={card.id}*/}
-                    {/*  {...card}*/}
-                    {/*  {...cardRelatedCount}*/}
-                    {/*  dataArea={Area.CARD_RELATION}*/}
-                    {/*/>*/}
+        <div className="section-body">
+          <div className="cardSwiper">
+            <Swiper {...SwiperProps}>
+              {cards.map((card) => {
+                return (
+                  <div className="swiper-slide" key={card.cardId}>
+                    <CardGroup type={GroupType.Wrap}>
+                      <LectureCardView
+                        {...card}
+                        useBookMark
+                        dataArea={Area.CARD_RELATION}
+                      />
+                    </CardGroup>
                   </div>
-                </li>
-              );
-            })}
-          </ul>
+                );
+              })}
+            </Swiper>
+            <div className="swiperRelations">
+              <div className="swiper-button-prev" />
+              <div className="swiper-button-next" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
