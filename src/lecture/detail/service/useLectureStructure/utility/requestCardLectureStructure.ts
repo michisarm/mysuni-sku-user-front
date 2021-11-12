@@ -36,14 +36,10 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
-import { isEmpty } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../model/LangSupport';
-import {
-  getLectureCardPisAgreementModal,
-  setLectureCardPisAgreementModal,
-} from '../../../store/LectureCardPisAgreementStore';
-import { initLectureCardPisAgreementModal } from '../../../viewModel/LectureCardPisAgreementModal';
+import { findCardPisAgreement } from '../../../api/profileApi';
 
 function parseCubeTestItem(
   card: Card,
@@ -661,6 +657,7 @@ export async function isPrecoursePassed(cardId: string) {
 export async function isPisAgreementPassed(cardId: string) {
   //
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  const isExistAgreement = await findCardPisAgreement(cardId);
 
   // api 호출이 실패 했을 경우
   if (cardWithContentsAndRelatedCountRom === undefined) {
@@ -669,7 +666,13 @@ export async function isPisAgreementPassed(cardId: string) {
 
   // Card 개인정보 동의가 있을 경우
   if (cardWithContentsAndRelatedCountRom.cardContents.pisAgreementRequired) {
-    return false;
+    // 제출한 동의서가 없는 경우 또는 제출한 동의서가 있지만 동의하지 않은 경우
+    if (
+      isExistAgreement === undefined ||
+      find(isExistAgreement.optionalClauseAgreements, { accepted: false })
+    ) {
+      return false;
+    }
   }
 
   return true;

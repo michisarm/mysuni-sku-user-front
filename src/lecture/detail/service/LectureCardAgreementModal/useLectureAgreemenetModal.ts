@@ -11,9 +11,15 @@ import { findCardCache } from '../../api/cardApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import deport, { DepotFileViewModel } from '@nara.drama/depot';
 import { patronInfo } from '@nara.platform/dock';
+import { CheckboxProps } from 'semantic-ui-react';
+import { isEmpty } from 'lodash';
+import { getCurrentHistory } from '../../../../shared/store/HistoryStore';
+import routePaths from '../../../routePaths';
+import { updateCardPisAgreement } from '../../api/profileApi';
 
 export function useRequestLectureCardPisAgreementModal(cardId: string) {
   //
+
   useEffect(() => {
     requestLectureCardPisAgreementModal(cardId);
   }, []);
@@ -43,8 +49,6 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
       ),
       true
     );
-
-    console.log(files);
 
     if (!Array.isArray(files)) {
       file.url = '/api/depot/depotFile/flow/download/' + files.id;
@@ -76,15 +80,16 @@ export function onOpenLectureCardPisAgreementModal() {
   });
 }
 
-export function onCloseLectureCardPisAgreementModal() {
+export function onCloseLectureCardPisAgreementModal(cardId: string) {
   //
-  const lectureCardPisAgreement =
-    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+  const history = getCurrentHistory();
+  const lectureCardPisAgreement = initLectureCardPisAgreementModal();
 
   setLectureCardPisAgreementModal({
     ...lectureCardPisAgreement,
-    isOpen: false,
   });
+
+  history?.push(routePaths.lectureCard(cardId));
 }
 
 export function setNumPages(page: number) {
@@ -96,4 +101,77 @@ export function setNumPages(page: number) {
     ...lectureCardPisAgreement,
     numPages: page,
   });
+}
+
+export function nextPage() {
+  //
+  const lectureCardPisAgreement =
+    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+
+  if (lectureCardPisAgreement.pageNumber === lectureCardPisAgreement.numPages)
+    return;
+
+  setLectureCardPisAgreementModal({
+    ...lectureCardPisAgreement,
+    pageNumber: lectureCardPisAgreement.pageNumber + 1,
+  });
+}
+
+export function prevPage() {
+  //
+  const lectureCardPisAgreement =
+    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+
+  if (lectureCardPisAgreement.pageNumber === 1) return;
+
+  setLectureCardPisAgreementModal({
+    ...lectureCardPisAgreement,
+    pageNumber: lectureCardPisAgreement.pageNumber - 1,
+  });
+}
+
+export function onChangeLectureCardPisAgreementRadio(
+  _: React.FormEvent,
+  data: CheckboxProps
+) {
+  //
+  const lectureCardPisAgreement =
+    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+
+  setLectureCardPisAgreementModal({
+    ...lectureCardPisAgreement,
+    checkedName: data.value as 'agree' | 'disagree' | '',
+  });
+}
+
+export async function onConfirmLectureCardPisAgreement(cardId: string) {
+  //
+  const lectureCardPisAgreement =
+    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+
+  const { checkedName } = lectureCardPisAgreement;
+
+  if (isEmpty(checkedName)) {
+    setLectureCardPisAgreementModal({
+      ...lectureCardPisAgreement,
+      showWarning: true,
+    });
+    return;
+  }
+
+  if (checkedName === 'disagree') {
+    updateCardPisAgreement(cardId, [false]);
+    onCloseLectureCardPisAgreementModal(cardId);
+    return;
+  }
+
+  if (checkedName === 'agree') {
+    //
+    await updateCardPisAgreement(cardId, [true]);
+
+    setLectureCardPisAgreementModal({
+      ...lectureCardPisAgreement,
+      isOpen: false,
+    });
+  }
 }

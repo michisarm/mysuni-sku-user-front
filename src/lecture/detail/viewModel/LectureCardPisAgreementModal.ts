@@ -4,6 +4,9 @@ export default interface LectureCardPisAgreementModal {
   pdfUrl: string;
   file: fileModel;
   numPages: number;
+  pageNumber: number;
+  checkedName: string;
+  showWarning: boolean;
 }
 
 interface fileModel {
@@ -22,7 +25,10 @@ export function initLectureCardPisAgreementModal() {
     pisAgreementTitle: '',
     pdfUrl: '',
     file: initFileModel(),
-    numPage: 0,
+    numPages: 0,
+    pageNumber: 1,
+    checkedName: '',
+    showWarning: false,
   };
 }
 
