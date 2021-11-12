@@ -7,6 +7,7 @@ export default interface LectureCardPisAgreementModal {
   pageNumber: number;
   checkedName: string;
   showWarning: boolean;
+  isCard: boolean;
 }
 
 interface fileModel {
@@ -29,6 +30,7 @@ export function initLectureCardPisAgreementModal() {
     pageNumber: 1,
     checkedName: '',
     showWarning: false,
+    isCard: false,
   };
 }
 

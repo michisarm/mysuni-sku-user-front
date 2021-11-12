@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { reactAlert } from '@nara.platform/accent';
 import LectureCubeAudioPage from './ui/logic/LectureCubeAudioPage';
 import LectureCubeClassroomPage from './ui/logic/LectureCubeClassroomPage';
@@ -7,7 +7,7 @@ import LectureCubeElearningPage from './ui/logic/LectureCubeElearningPage';
 import LectureCubeTaskPage from './ui/logic/LectureCubeTaskPage';
 import LectureCubeVideoPage from './ui/logic/LectureCubeVideoPage';
 import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import LectureParams from './viewModel/LectureParams';
 import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 import LectureCubeDiscussionPage from './ui/logic/LectureCubeDiscussionPage';
@@ -22,7 +22,7 @@ import { onOpenLectureCardPisAgreementModal } from './service/LectureCardAgreeme
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
   const isPassed = await isPrecoursePassed(cardId);
-  const isPisAgreement = await isPisAgreementPassed(cardId);
+  const { isPisAgreement, singleCube } = await isPisAgreementPassed(cardId);
   const history = getCurrentHistory();
 
   if (!isPassed) {
@@ -35,7 +35,7 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
 
   if (!isPisAgreement) {
     // Model 띄우기
-    onOpenLectureCardPisAgreementModal();
+    onOpenLectureCardPisAgreementModal(singleCube);
   }
 }
 

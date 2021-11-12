@@ -15,8 +15,10 @@ import {
   findMyTaskConditionCounts,
 } from '../../../api/cubeApi';
 import {
+  getLectureStructure,
   setIsLoadingState,
   setLectureStructure,
+  useLectureStructure,
 } from '../../../store/LectureStructureStore';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
@@ -40,6 +42,8 @@ import { find, isEmpty } from 'lodash';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../model/LangSupport';
 import { findCardPisAgreement } from '../../../api/profileApi';
+import { useHistory } from 'react-router';
+import { useEffect } from 'react';
 
 function parseCubeTestItem(
   card: Card,
@@ -659,9 +663,26 @@ export async function isPisAgreementPassed(cardId: string) {
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
   const isExistAgreement = await findCardPisAgreement(cardId);
 
+  const lectureStructure = getLectureStructure();
+
+  let singleCube = false;
+
   // api 호출이 실패 했을 경우
-  if (cardWithContentsAndRelatedCountRom === undefined) {
-    return false;
+  if (
+    cardWithContentsAndRelatedCountRom === undefined ||
+    lectureStructure === undefined
+  ) {
+    return { isPisAgreement: false, singleCube };
+  }
+
+  if (
+    lectureStructure.cubes.length === 1 &&
+    lectureStructure.items.length === 1 &&
+    lectureStructure.card.test === undefined &&
+    lectureStructure.card.report === undefined &&
+    lectureStructure.card.survey === undefined
+  ) {
+    singleCube = true;
   }
 
   // Card 개인정보 동의가 있을 경우
@@ -671,11 +692,11 @@ export async function isPisAgreementPassed(cardId: string) {
       isExistAgreement === undefined ||
       find(isExistAgreement.optionalClauseAgreements, { accepted: false })
     ) {
-      return false;
+      return { isPisAgreement: false, singleCube };
     }
   }
 
-  return true;
+  return { isPisAgreement: true, singleCube };
 }
 
 async function parseCubeItem(

@@ -69,7 +69,7 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
   }
 }
 
-export function onOpenLectureCardPisAgreementModal() {
+export function onOpenLectureCardPisAgreementModal(isCard?: boolean) {
   //
   const lectureCardPisAgreement =
     getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
@@ -77,19 +77,26 @@ export function onOpenLectureCardPisAgreementModal() {
   setLectureCardPisAgreementModal({
     ...lectureCardPisAgreement,
     isOpen: true,
+    isCard: isCard || false,
   });
 }
 
 export function onCloseLectureCardPisAgreementModal(cardId: string) {
   //
   const history = getCurrentHistory();
-  const lectureCardPisAgreement = initLectureCardPisAgreementModal();
+  const lectureCardPisAgreement =
+    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
 
   setLectureCardPisAgreementModal({
     ...lectureCardPisAgreement,
+    isOpen: false,
+    pageNumber: 1,
+    showWarning: false,
+    checkedName: '',
   });
 
-  history?.push(routePaths.lectureCard(cardId));
+  !lectureCardPisAgreement.isCard &&
+    history?.push(routePaths.lectureCard(cardId));
 }
 
 export function setNumPages(page: number) {
