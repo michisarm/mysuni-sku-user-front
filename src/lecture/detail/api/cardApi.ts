@@ -305,8 +305,8 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
     .then(AxiosReturn);
 }
 
-export function findBookmarkCards() {
+export function findBookmarkCards(limit?: number) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/bookmark`;
+  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }

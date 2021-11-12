@@ -10,10 +10,7 @@ import {
   CachingFetch,
   axiosApi as axios,
 } from '@nara.platform/accent';
-import CollegeApi, {
-  findAllCollegeCache,
-  clearfindAllCollegeCache,
-} from '../../../college/present/apiclient/CollegeApi';
+import CollegeApi from '../../../college/present/apiclient/CollegeApi';
 
 import _ from 'lodash';
 import { IdNameList } from 'shared/model';
@@ -69,8 +66,6 @@ export default class CollegeService {
   ) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
-
-    findAllCollegeCache();
   }
 
   @computed

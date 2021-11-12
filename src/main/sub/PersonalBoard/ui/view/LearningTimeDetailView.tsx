@@ -8,6 +8,10 @@ import {
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { useTotalLearningTimeRdo } from '../../model/TotalLearningTimeRdo';
+import {
+  isMySuniCollege,
+  useAllColleges,
+} from '../../../../../shared/service/requestAllColleges';
 
 interface Props {
   showApl: boolean;
@@ -23,6 +27,7 @@ function LearningTimeDetailView(props: Props) {
     MyLearningSummaryService.instance._instructTimeSummary;
 
   const totalLearningTimeRdo = useTotalLearningTimeRdo();
+  const allColleges = useAllColleges();
 
   const {
     collegeLearningTimes,
@@ -31,7 +36,12 @@ function LearningTimeDetailView(props: Props) {
   } = totalLearningTimeRdo;
 
   const suniLearningTime = useMemo(
-    () => collegeLearningTimes.reduce<number>((p, c) => p + c.learningTime, 0),
+    () =>
+      collegeLearningTimes
+        .filter((c) =>
+          allColleges.filter(isMySuniCollege).some((d) => d.id === c.collegeId)
+        )
+        .reduce<number>((p, c) => p + c.learningTime, 0),
     [collegeLearningTimes]
   );
 
@@ -108,6 +118,10 @@ function LearningTimeDetailView(props: Props) {
                     </h3>
                   </a>
                 }
+                suniLearningTime={suniLearningTime}
+                myCompanyLearningTime={myCompanyLearningTime}
+                accumulatedLearningTime={accumulatedLearningTime}
+                collegeLearningTimes={collegeLearningTimes}
               />
               <span
                 dangerouslySetInnerHTML={{

@@ -89,7 +89,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
   );
 
   const onViewAll = () => {
-    history.push(myTrainingRoutes.learningLrsLecture());
+    history.push(myTrainingRoutes.learningLrsLecture('LearningPatternBased'));
 
     // react-ga event
     ReactGA.event({

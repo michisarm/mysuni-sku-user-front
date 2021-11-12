@@ -5,6 +5,18 @@ import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
 import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
+import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
+import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
+import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+
+export async function isOpenPassedPisAgreementModal(cardId: string) {
+  const { isPisAgreement } = await isPisAgreementPassed(cardId);
+
+  if (!isPisAgreement) {
+    // Model 띄우기
+    onOpenLectureCardPisAgreementModal(true);
+  }
+}
 
 function LectureCourseOverviewPage() {
   useRequestLectureCardOverview();
@@ -24,12 +36,18 @@ function LectureCourseOverviewPage() {
     ) {
       history.replace(lectureStructure.cubes[0].path);
     }
+    isOpenPassedPisAgreementModal(lectureStructure.card.cardId);
   }, [lectureStructure]);
 
   return (
     <Fragment>
       {lectureStructure !== undefined && (
-        <LectureCubeNavigatorView lectureStructure={lectureStructure} />
+        <>
+          <LectureCubeNavigatorView lectureStructure={lectureStructure} />
+          <LectureCardAgreementModalView
+            cardId={lectureStructure.card.cardId}
+          />
+        </>
       )}
       <LectureCourseSummaryContainer />
       <LectureCourseContentContainer />

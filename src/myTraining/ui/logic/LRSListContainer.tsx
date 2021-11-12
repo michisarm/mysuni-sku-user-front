@@ -9,27 +9,38 @@ import CardGroup, {
 import { SkProfileService } from 'profile/stores';
 
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCardsFromContentBase } from '../../../lecture/recommend/api/recommendApi';
+import {
+  findRecommendationCardsFromContentBase,
+  findRecommendationCardsFromLearningPatternBased,
+} from '../../../lecture/recommend/api/recommendApi';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   LectureCardView,
   parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
+import { fi } from 'date-fns/locale';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 
 const CONTENT_TYPE_NAME = '추천과정';
 
-function getTitle(viewModel?: RecommendationViewModel) {
-  if (viewModel === undefined) {
-    return '';
-  }
-  const { recTitle } = viewModel;
-  if (recTitle?.length > 0) {
-    return `${SkProfileService.instance.profileMemberName}${getPolyglotText(
-      '님의 학습 콘텐츠 기반 추천 과정',
-      'home-Recommend-Title1'
-    )}`;
+function getTitle() {
+  const search = window.location.search;
+  if (search.includes('LearningPatternBased')) {
+    return getPolyglotText(
+      '{name}님이 관심 가질만한 과정을 모아봤어요~',
+      'learning-권장과정-Title2',
+      {
+        name: parsePolyglotString(SkProfileService.instance.skProfile.name),
+      }
+    );
   } else {
-    return `${SkProfileService.instance.profileMemberName}님을 위한 mySUNI의 추천 과정`;
+    return getPolyglotText(
+      '{name}님의 학습패턴을 기반으로 추천 드려요!',
+      'learning-권장과정-Title1',
+      {
+        name: parsePolyglotString(SkProfileService.instance.skProfile.name),
+      }
+    );
   }
 }
 
@@ -39,14 +50,23 @@ function LRSListContainer() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    findRecommendationCardsFromContentBase().then((next) => {
-      if (next !== undefined) {
-        setViewModel(next);
-      }
-    });
+    const search = window.location.search;
+    if (search.includes('LearningPatternBased')) {
+      findRecommendationCardsFromLearningPatternBased().then((next) => {
+        if (next !== undefined) {
+          setViewModel(next);
+        }
+      });
+    } else {
+      findRecommendationCardsFromContentBase().then((next) => {
+        if (next !== undefined) {
+          setViewModel(next);
+        }
+      });
+    }
   }, []);
 
-  const title = useMemo(() => getTitle(viewModel), [viewModel]);
+  const title = useMemo(() => getTitle(), []);
 
   if (viewModel === undefined) {
     return null;

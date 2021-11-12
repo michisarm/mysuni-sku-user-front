@@ -7,15 +7,11 @@ import { LectureTaskDetail } from '../viewModel/LectureTaskDetail';
 // } from '../viewModel/LectureTest';
 import { createStore } from './Store';
 
-const [setLectureTaskItem, onLectureTaskItem, getLectureTaskItem] = createStore<
-  LectureTask
->();
+const [setLectureTaskItem, onLectureTaskItem, getLectureTaskItem] =
+  createStore<LectureTask>();
 
-const [
-  setLectureTaskOffset,
-  onLectureTaskOffset,
-  getLectureTaskOffset,
-] = createStore<number>(0);
+const [setLectureTaskOffset, onLectureTaskOffset, getLectureTaskOffset] =
+  createStore<number>(0);
 
 const [
   setLectureTaskOrder,
@@ -24,21 +20,18 @@ const [
   useLectureTaskOrder,
 ] = createStore<string>('new');
 
-const [
-  setLectureTaskViewType,
-  onLectureTaskViewType,
-  getLectureTaskViewType,
-] = createStore<TaskViewType>('list');
+const [setLectureTaskViewType, onLectureTaskViewType, getLectureTaskViewType] =
+  createStore<TaskViewType>('list');
+
+const [setLectureTaskDetail, onLectureTaskDetail, getLectureTaskDetail] =
+  createStore<LectureTaskDetail>();
 
 const [
-  setLectureTaskDetail,
-  onLectureTaskDetail,
-  getLectureTaskDetail,
-] = createStore<LectureTaskDetail>();
-
-const [setLectureTaskTab, onLectureTaskTab, getLectureTaskTab, useLectureTaskTab] = createStore<
-  string
->('Overview');
+  setLectureTaskTab,
+  onLectureTaskTab,
+  getLectureTaskTab,
+  useLectureTaskTab,
+] = createStore<string>('Posts');
 
 export {
   setLectureTaskItem,
