@@ -63,7 +63,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
   const title = useMemo(() => getTitle(), []);
 
   const onViewAll = () => {
-    history.push(myTrainingRoutes.learningLrsLecture());
+    history.push(myTrainingRoutes.learningInMyList());
 
     // react-ga event
     ReactGA.event({
@@ -74,35 +74,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
   };
 
   if (cards.length === 0) {
-    return (
-      <Segment
-        className="full learning-section type2"
-        dataArea={Area.MAIN_RECOMMEND}
-      >
-        <div className="section-head">
-          <div
-            className="sec-tit-txt"
-            dangerouslySetInnerHTML={{ __html: title }}
-          />
-          <div className="sec-tit-btn">
-            <button className="btn-more" onClick={onViewAll}>
-              전체보기
-            </button>
-          </div>
-        </div>
-
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              <PolyglotText
-                defaultString="찜해두신 학습 과정이 없습니다."
-                id="home-bookmark-목록없음"
-              />
-            </div>
-          }
-        />
-      </Segment>
-    );
+    return null;
   }
 
   return (

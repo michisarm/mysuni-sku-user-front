@@ -120,7 +120,9 @@ class BreadcrumbView extends Component<Props, State> {
       <div
         className="breadcrumbs"
         data-area={Area.HEADER_BREADCRUMBS}
-        style={{ display: 'block' }}
+        style={
+          process.env.NODE_ENV === 'development' ? { display: 'block' } : {}
+        }
       >
         <div className="cont-inner">
           <div className="ui standard breadcrumb community-link">
