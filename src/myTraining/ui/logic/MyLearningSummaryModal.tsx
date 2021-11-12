@@ -16,6 +16,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import { CollegeLearningTime } from '../../../main/sub/PersonalBoard/model/TotalLearningTimeRdo';
 
 interface Props {
   trigger: React.ReactNode;
@@ -25,6 +26,10 @@ interface Props {
   personalCubeService?: PersonalCubeService;
   skProfileService?: SkProfileService;
   menuControlAuthService?: MenuControlAuthService;
+  suniLearningTime: number;
+  myCompanyLearningTime: number;
+  accumulatedLearningTime: number;
+  collegeLearningTimes: CollegeLearningTime[];
 }
 
 interface State {
@@ -89,8 +94,15 @@ class MyLearningSummaryModal extends Component<Props> {
 
   render() {
     const { openModal, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } =
-      this.props;
+    const {
+      trigger,
+      myLearningSummaryService,
+      menuControlAuthService,
+      suniLearningTime,
+      myCompanyLearningTime,
+      collegeLearningTimes,
+      accumulatedLearningTime,
+    } = this.props;
     const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
 
@@ -180,7 +192,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  myLearningSummary.displayMySUNILearningTime
+                                  suniLearningTime
                                 )}
                                 )
                               </strong>
@@ -215,7 +227,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  totalMyCompanyLearningTime
+                                  myCompanyLearningTime
                                 )}
                                 )
                               </strong>
@@ -290,10 +302,8 @@ class MyLearningSummaryModal extends Component<Props> {
                     )}
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
-                        myCompanyLearningTime={
-                          myLearningSummary.displayMyCompanyLearningTime
-                        }
-                        aplTime={myLearningSummary.aplAllowTime}
+                        myCompanyLearningTime={myCompanyLearningTime}
+                        aplTime={accumulatedLearningTime}
                         menuControlAuth={menuControlAuth}
                       />
                     )}

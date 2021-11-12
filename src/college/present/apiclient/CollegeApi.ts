@@ -14,13 +14,6 @@ export function findCollege(
   return axios.get<CollegeModel>(url).then(AxiosReturn);
 }
 
-export function findAllCollege() {
-  return axios.get<CollegeModel[]>('/api/college/colleges').then(AxiosReturn);
-}
-
-export const [findAllCollegeCache, clearfindAllCollegeCache] =
-  createCacheApi(findAllCollege);
-
 export default class CollegeApi {
   URLCollege = '/api/college/colleges';
   URLJob = '/api/college/jobGroups';

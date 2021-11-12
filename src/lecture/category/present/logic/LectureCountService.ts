@@ -9,7 +9,7 @@ import _ from 'lodash';
 import { ChannelModel } from 'college/model';
 import LectureApi from '../../../shared/present/apiclient/LectureApi';
 import ChannelCountRdo from '../../../../layout/UserApp/model/ChannelCountRdo';
-import { getCollegeModelStore } from '../../../../shared/store/CollegeStore';
+import { getAllColleges } from '../../../../shared/service/requestAllColleges';
 
 class LectureCountService {
   //
@@ -49,7 +49,7 @@ class LectureCountService {
 
   @computed
   get allSelected() {
-    return this._channels.every(channel => channel.checked === true);
+    return this._channels.every((channel) => channel.checked === true);
   }
 
   @computed
@@ -61,15 +61,15 @@ class LectureCountService {
 
   @action
   findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
-    const collegeModels = getCollegeModelStore();
+    const collegeModels = getAllColleges();
     this._channels =
       collegeModels
-        ?.find(c => c.collegeId === collegeId)
-        ?.channels.map(c => {
+        ?.find((c) => c.id === collegeId)
+        ?.channels.map((c) => {
           return new ChannelModel({
             id: c.id,
             name: c.name,
-            channelId: c.channelId,
+            channelId: c.id,
             checked: false,
           });
         }) || [];
@@ -96,8 +96,8 @@ class LectureCountService {
 
     // channel이 모두 체크이거나, 모두 체크해제인 경우 College Lectures 목록 보여줌.
     if (
-      this._channels.every(channel => channel.checked) ||
-      this._channels.every(channel => !channel.checked)
+      this._channels.every((channel) => channel.checked) ||
+      this._channels.every((channel) => !channel.checked)
     ) {
       this._categoryType = 'CollegeLectures';
     }

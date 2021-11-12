@@ -108,6 +108,10 @@ function LearningTimeDetailView(props: Props) {
                     </h3>
                   </a>
                 }
+                suniLearningTime={suniLearningTime}
+                myCompanyLearningTime={myCompanyLearningTime}
+                accumulatedLearningTime={accumulatedLearningTime}
+                collegeLearningTimes={collegeLearningTimes}
               />
               <span
                 dangerouslySetInnerHTML={{
