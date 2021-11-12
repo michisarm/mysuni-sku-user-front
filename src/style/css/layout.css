@@ -7,6 +7,9 @@ body #root {
 }
 
 /* border */
+#root section.content .tab-menu {
+    border-bottom: #ddd 1px solid;
+}
 .channel .college-detail .channel-of-interest,
 .recommend-detail .channel-of-interest {
     border: #ddd 1px solid;
@@ -17,9 +20,33 @@ body #root {
 }
 .content.lms .lms-sticky-menu,
 .content.lms .badge-detail .ov-paragraph:last-child,
-.badge-detail .ov-paragraph {
+.badge-detail .ov-paragraph,
+.add-personal-learning,
+.post-view-wrap .post-view,
+.post-view-wrap .post-view .title-area {
     border-bottom: #ddd 1px solid;
 }
+.ui.form.reply.base .outline {
+    border: #ddd 1px solid;
+}
+.survey-header {
+    border-bottom: #ddd 1px solid;
+}
+.challenge-wrap .challenge-badge .right-area .badge-title {
+    border-bottom: #ddd 1px solid;
+}
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card > a,
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:last-child > a {
+    border: #ddd 1px solid;
+}
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:nth-child(3n) > a {
+    background: url(/images/down/rectangle.svg) 0 0 no-repeat;
+    border: 0;
+    border-radius: 0;
+}
+.course-info-bottom,
+.survey-preview,
+.content-admin-write { border-top: #ddd 1px solid; }
 
 /* Button */
 .ui.button.moreview {
@@ -39,11 +66,23 @@ body #root {
 .content.lms .header-right-link a {
     color: #777;
 }
+.ui.icon.button.postset {
+    color: #aaa;
+}
+.ui.button.post { border: #777 1px solid; color: #777; }
+.ui.button.post .icon.filter2 { background: url(/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
+.ui.button.post.delete { background: url(/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
+.ui.button.excel-down .icon { background: url(/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
+.challenge-wrap .challenge-badge .right-area .badge-title .path {
+    color: #777;
+    background: url(/images/all/icon-list-24-px.svg) center no-repeat;
+}
 
 /* Font */
 .sort-reult .section-count,
 .ui.segment.full .no-cont-wrap .text,
-.ui.segment.full .top-guide-title .list-number {
+.ui.segment.full .top-guide-title .list-number,
+.support-list-wrap .list-top .list-top-left {
     color: #777;
 }
 .badge-detail .ov-paragraph .list .item > .detail {
@@ -53,6 +92,25 @@ body #root {
 .badge-detail .ov-paragraph .title-style .onlytext span,
 .badge-detail .ov-paragraph .list .item > .title {
     color: #666;
+}
+.comment-star-rating .t,
+.challenge-wrap .challenge-badge .right-area .badge-title,
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card > a .title {
+    color: #222;
+}
+.content.lms .header-right-link button {
+    color: #777;
+}
+.content.lms .ov-paragraph.download-area .down a span,
+.support .post-view-wrap .post-view .content-area .file .link .ellipsis,
+.admin-answer-form.ui.table td .link {
+    color: #00bfae;
+}
+.course-info-ing > h3 {
+    color: #777;
+}
+.lms-paging-holder .lms-num.lms-on {
+    color: #00bfae;
 }
 
 /* Checkbox */
@@ -67,6 +125,9 @@ body #root {
     background: url(/images/all/btn-check-selected.svg) 0 0 no-repeat !important;
     background-size: 100% !important;
 }
+
+/* Text area */
+.ui.input.right-top-count textarea { border: #777 1px solid; }
 
 /* Radio Button */
 .ui.radio input:focus,
@@ -90,53 +151,25 @@ body #root {
 .ui.radio.v-icon input:checked + label > span > span > span .text1 {
     color: #777;
 }
+.ui.icon.button.postset .icon.reply2:before { background: url("/images/all/icon-comment-reply-16-px.svg") 0 0 no-repeat !important; }
+
 
 /* Dropdown */
-.ui.dropdown.small-border { border: #777 1px solid !important;}
+.ui.dropdown.small-border,
+.ui.dropdown.selection { border: #777 1px solid !important;}
 
 
 /* 데이터 없을 때 이미지 */
 i.icon.no-contents80:before { background: url(/images/all/no-contents-80-px.svg) center no-repeat; }
 
-/* icon */
-.ui.label.onlytext .icon.video2 { background: url("/images/all/icon-learningtype-video-16-px.svg") 0 0.125rem no-repeat; }
-.ui.label.onlytext .icon.classroom { background: url("/images/all/icon-learningtype-classroom-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.community { background: url("/images/all/icon-learningtype-community-16-px.svg") 0 0.125rem no-repeat; }
-.ui.label.onlytext .icon.e-learning { background: url("/images/all/icon-learningtype-e-learning-16-px.svg") 0 0.125rem no-repeat; }
-.ui.label.onlytext .icon.course { background: url("/images/all/icon-learningtype-course-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.audio { background: url("/images/all/icon-learningtype-audio-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.stamp { background: url("/images/all/icon-stamp-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.webpage { background: url("/images/all/icon-learningtype-webpage-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.time2 { background: url("/images/all/icon-card-time-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.complete { background: url("/images/all/icon-card-completed-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.experiential { background: url("/images/all/icon-learningtype-experiential-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.documents { background: url("/images/all/icon-learningtype-test-16-px.svg") 0 0.0625rem no-repeat; }
-.ui.label.onlytext .icon.price { background: url("/images/all/icon-card-price-x-18.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.state { background: url("/images/all/icon-check-18-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.date { background: url("/images/all/icon-date-16-px.svg") 0 50% no-repeat; }
-.ui.label.onlytext .icon.file2 { background: url("/images/all/icon-down-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.category { background: url("/images/all/icon-category-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.doument24 { background: url("/images/all/icon-documnet-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.period { background: url("/images/all/icon-period-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.cancellation { background: url("/images/all/icon-cancel-x-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.goal { background: url("/images/all/icon-goal-24-px@3x.png") 0 0 no-repeat; background-size: 100% auto; }
-.ui.label.onlytext .icon.target { background: url("/images/all/icon-target-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.target:before { display: none; }
-.ui.label.onlytext .icon.host { background: url("/images/all/icon-host-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.tag2 { background: url("/images/all/icon-tag-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.series { background: url("/images/all/icon-series-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.url { background: url("/images/all/icon-url-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.require { background: url("/images/all/icon-requirements-24-px.svg") 0 0 no-repeat; }
-.ui.label.onlytext .icon.total-time { width: 1rem; height: 1rem; background: url("/images/all/icon-total-time-16-px.svg") 0 0 no-repeat; }
-
+/* Icon */
 .ui.breadcrumb.standard::before { background: url(/images/all/icon-breadcrumb-home.svg) 0 0 no-repeat !important; }
 .content.lms .icon.ask { background: url(/images/all/icon-ask-11-px.svg) 0 0 no-repeat !important; }
-.content.lms .icon.listAdd { background: url(/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; vertical-align: baseline; }
-.content.lms .icon.linkCopy { background: url(/images/all/btn-lms-share-14-px.svg) 0 0 no-repeat !important; vertical-align: baseline; }
-.content.lms .icon.listDelete {
-
-}
-.icon.before { background: url(/images/all/icon-before-24-px.svg) 0 0 no-repeat !important;}
+.content.lms .icon.listAdd { background: url(/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.linkCopy { background: url(/images/all/btn-lms-share-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.listDelete { background: url(/images/all/btn-lms-delete-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.noteWrite { background: url(/images/all/icon-note-create.svg) 0 0 no-repeat !important; }
+.icon.before { background: url(/images/all/icon-before-24-px.svg) 0 0 no-repeat !important; }
 .lms-comment-icon { background: url(/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before {
     background: #777;
@@ -146,6 +179,7 @@ i.icon.no-contents80:before { background: url(/images/all/no-contents-80-px.svg)
     left: 0;
     margin-right: 0.5rem;
 }
+.content.lms .ov-paragraph.download-area .down a:after { background: url(/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act {
@@ -154,12 +188,22 @@ i.icon.no-contents80:before { background: url(/images/all/no-contents-80-px.svg)
 .content.lms .lms-sticky-menu .lms-fixed-inner a .count {
     color: #ff664d;
 }
+.ui.menu.sku .item.active,
 .ui.menu.sku2 .item.active {
     border-bottom-color: #00bfae;
 }
+.ui.menu.sku .item.active .count,
 .ui.menu.sku2 .item.active .count {
     color: #ff664d;
 }
-.badge-slide-inner .fn-parent.on .icon span:after, .badge-slide-inner .fn-parent:hover .icon span:after {
+.badge-slide-inner .fn-parent.on .icon span:after,
+.badge-slide-inner .fn-parent:hover .icon span:after {
     border-color: #00bfae;
 }
+
+/* Box shadow */
+.ui.segment { box-shadow: none;}
+.mylearning-list-wrap table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2) !important; }
+.ui.comments.base,
+.support-list-wrap.faq .faq-list-wrap,
+.qna-admin-list-wrap { box-shadow: 0 2px 8px rgba(76, 76, 76, 0.2); }
