@@ -1,11 +1,9 @@
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { Lecture } from 'lecture';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import { Loadingpanel } from 'shared';
+import { Segment } from 'semantic-ui-react';
 import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
 import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
@@ -13,13 +11,8 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { SkProfileService } from '../../../../profile/stores';
-import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { ContentWrapper } from '../MyLearningContentElementsView';
 import Swiper from 'react-id-swiper';
 
 const SwiperProps = {
@@ -29,8 +22,8 @@ const SwiperProps = {
   loop: false,
   loopFillGroupWithBlank: true,
   navigation: {
-    nextEl: '.' + 'swiperCommend' + ' .swiper-button-next',
-    prevEl: '.' + 'swiperCommend' + ' .swiper-button-prev',
+    nextEl: '.swiperEnrolling .swiper-button-next',
+    prevEl: '.swiperEnrolling .swiper-button-prev',
   },
   speed: 500,
 };
@@ -141,85 +134,13 @@ function EnrollingLearning() {
                 );
               })}
           </Swiper>
-          <div className="swiperRequired">
+          <div className="swiperEnrolling">
             <div className="swiper-button-prev" />
             <div className="swiper-button-next" />
           </div>
         </div>
       </div>
     </Segment>
-
-    // <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
-    //   <div className="section-head">
-    //     {isLoading ||
-    //       (!isLoading && cardList && cardList.length > 0 && (
-    //         <strong>{title}</strong>
-    //       ))}
-    //     <div className="right">
-    //       {cardList && cardList.length > 0 && (
-    //         <Button icon className="right btn-blue" onClick={onViewAll}>
-    //           <PolyglotText
-    //             defaultString="View all"
-    //             id="home-Enrolling-View all"
-    //           />
-    //           <Icon className="morelink" />
-    //         </Button>
-    //       )}
-    //     </div>
-    //   </div>
-    //   {(cardList && cardList.length > 0 && (
-    //     <>
-    //       <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
-    //         {cardList.map((card, i) => {
-    //           return (
-    //             <li key={i}>
-    //               <CardGroup type={GroupType.Box}>
-    //                 <LectureCardView
-    //                   cardId={card.id}
-    //                   cardName={parsePolyglotString(card.name)}
-    //                   learningTime={String(card.learningTime)}
-    //                   thumbnailImagePath={card.thumbImagePath}
-    //                   difficultyLevel={card.difficultyLevel}
-    //                   passedStudentCount={String(card.passedStudentCount)}
-    //                   starCount={String(card.starCount)}
-    //                   simpleDescription={parsePolyglotString(
-    //                     card.simpleDescription
-    //                   )}
-    //                   studentCount={card.studentCount}
-    //                   userLanguage={userLanguage}
-    //                   langSupports={card.langSupports}
-    //                   collegeId={card.mainCollegeId}
-    //                   isRequiredLecture={card.required}
-    //                   upcomingClassroomInfo={card.upcomingClassroomInfo}
-    //                   dataArea={Area.MAIN_ENROLLING}
-    //                   useBookMark
-    //                 />
-    //               </CardGroup>
-    //             </li>
-    //           );
-    //         })}
-    //       </Lecture.Group>
-    //     </>
-    //   )) || (
-    //     <>
-    //       {isLoading === true && (
-    //         <Segment
-    //           style={{
-    //             paddingTop: 0,
-    //             paddingBottom: 0,
-    //             paddingLeft: 0,
-    //             paddingRight: 0,
-    //             height: 400,
-    //             boxShadow: '0 0 0 0',
-    //             border: 0,
-    //           }}
-    //         >
-    //           <Loadingpanel loading={isLoading} color="#eff0f1" />
-    //         </Segment>
-    //       )}
-    //     </>
-    //   )}
-    // </ContentWrapper>
   );
 }
 
