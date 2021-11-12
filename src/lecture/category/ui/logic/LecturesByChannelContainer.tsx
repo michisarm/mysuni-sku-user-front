@@ -17,7 +17,10 @@ import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import { parseLanguage, parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
@@ -215,11 +218,6 @@ class LecturesByChannelContainer extends Component<Props, State> {
                 return (
                   <li key={card.id}>
                     <div className="ui cards box-cards">
-                      {/*<CardView*/}
-                      {/*  cardId={card.id}*/}
-                      {/*  {...card}*/}
-                      {/*  {...cardRelatedCount}*/}
-                      {/*/>*/}
                       <LectureCardView
                         cardId={card.id}
                         cardName={parsePolyglotString(card.name)}
@@ -228,7 +226,9 @@ class LecturesByChannelContainer extends Component<Props, State> {
                         starCount={cardRelatedCount.starCount.toString()}
                         thumbnailImagePath={card.thumbImagePath}
                         langSupports={card.langSupports}
-                        simpleDescription={parsePolyglotString(card.simpleDescription)}
+                        simpleDescription={parsePolyglotString(
+                          card.simpleDescription
+                        )}
                         studentCount={cardRelatedCount.studentCount}
                         //??
                         isRequiredLecture={false}
@@ -236,7 +236,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                         difficultyLevel={card.difficultyLevel}
                         collegeId={collegeId}
                         userLanguage={userLanguage}
-                        useBookMark={false}
+                        useBookMark={true}
                         dataArea={Area.EXPERT_LECTURE}
                       />
                     </div>
