@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import LectureCubeAudioPage from './ui/logic/LectureCubeAudioPage';
 import LectureCubeClassroomPage from './ui/logic/LectureCubeClassroomPage';
@@ -7,7 +7,7 @@ import LectureCubeElearningPage from './ui/logic/LectureCubeElearningPage';
 import LectureCubeTaskPage from './ui/logic/LectureCubeTaskPage';
 import LectureCubeVideoPage from './ui/logic/LectureCubeVideoPage';
 import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import LectureParams from './viewModel/LectureParams';
 import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 import LectureCubeDiscussionPage from './ui/logic/LectureCubeDiscussionPage';
@@ -18,6 +18,17 @@ import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
   const failCardId = await getPreCourseFailCardId(cardId);
+import {
+  isPisAgreementPassed,
+  isPrecoursePassed,
+} from './service/useLectureStructure/utility/requestCardLectureStructure';
+import { getCurrentHistory } from '../../shared/store/HistoryStore';
+import { LectureCardAgreementModalView } from './ui/view/LectureStateView/LectureCardAgreementModalView';
+import { onOpenLectureCardPisAgreementModal } from './service/LectureCardAgreementModal/useLectureAgreemenetModal';
+
+export async function isOpenPassedPreCourseModal(cardId: string) {
+  const isPassed = await isPrecoursePassed(cardId);
+  const { isPisAgreement, singleCube } = await isPisAgreementPassed(cardId);
   const history = getCurrentHistory();
 
   if (failCardId === null) {
@@ -47,6 +58,11 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
       },
     });
   }
+
+  if (!isPisAgreement) {
+    // Model 띄우기
+    onOpenLectureCardPisAgreementModal(singleCube);
+  }
 }
 
 function LectureDetailCubeSubRoutes() {
@@ -66,6 +82,7 @@ function LectureDetailCubeSubRoutes() {
       {cubeType === 'ClassRoomLecture' && <LectureCubeClassroomPage />}
       {cubeType === 'Cohort' && <LectureCubeCohortPage />}
       {cubeType === 'Discussion' && <LectureCubeDiscussionPage />}
+      <LectureCardAgreementModalView cardId={cardId} />
     </>
   );
 }

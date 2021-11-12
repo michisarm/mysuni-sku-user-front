@@ -36,4 +36,8 @@ export interface CardContents {
   fileBoxId: string;
 
   time: number;
+
+  pisAgreementRequired: boolean;
+  pisAgreementTitle: PolyglotString;
+  pisAgreementDepotId: PolyglotString;
 }

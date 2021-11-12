@@ -7,10 +7,23 @@ import LectureChapterPage from './ui/logic/LectureChapter/LectureChapterPage';
 import LectureDiscussionPage from './ui/logic/LectureDiscussionPage';
 import LectureParams from './viewModel/LectureParams';
 
+// export async function isOpenPassedPisAgreementModal(cardId: string) {
+//   const isPisAgreement = await isPisAgreementPassed(cardId);
+//
+//   if (!isPisAgreement) {
+//     // Model 띄우기
+//     onOpenLectureCardPisAgreementModal();
+//   }
+// }
+
 function LectureDetailCourseSubRoutes() {
   const params = useParams<LectureParams>();
   const { viewType, cardId } = params;
   const { pathname } = useLocation();
+
+  // viewType === 'discussion'
+  //   ? isOpenPassedPreCourseModal(cardId)
+  //   : isOpenPassedPisAgreementModal(cardId);
 
   viewType === 'discussion' && isOpenPassedPreCourseModal(cardId);
 
