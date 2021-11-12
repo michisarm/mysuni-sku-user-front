@@ -17,6 +17,7 @@ import {
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
 import { CollegeLearningTime } from '../../../main/sub/PersonalBoard/model/TotalLearningTimeRdo';
+import { College } from '../../../shared/service/requestAllColleges';
 
 interface Props {
   trigger: React.ReactNode;
@@ -295,11 +296,7 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                   </div>
                   <div className="cell vtop">
-                    {checkedTab === TabType.mySUNI && (
-                      <MySuniCollegeTimeView
-                        myLearningSummary={myLearningSummary}
-                      />
-                    )}
+                    {checkedTab === TabType.mySUNI && <MySuniCollegeTimeView />}
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
                         myCompanyLearningTime={myCompanyLearningTime}
