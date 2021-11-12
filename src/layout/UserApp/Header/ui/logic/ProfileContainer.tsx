@@ -149,11 +149,9 @@ class ProfileContainer extends Component<Props, State> {
 
   render() {
     //
-    // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
     const { myNotieMentions, myNotieNoReadMentionCount } =
       NotieService.instance;
-    // const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
@@ -162,102 +160,15 @@ class ProfileContainer extends Component<Props, State> {
     const { isOpen, isSearchOpen } = this.state;
 
     const setOpen = () => {
-      //this.profileButtonRef.current.click();
       this.setState({ isOpen: !isOpen });
       document.getElementById('btnProFile')?.click();
     };
-    // const setSearchOpen = () => {
-    //   // setWrite('');
-    //   this.setState({ isSearchOpen: !isSearchOpen });
-    //   document.getElementById('btnSearchPopup')?.click();
-    //   setSearchInSearchInfo({
-    //     checkSearchInSearch: false,
-    //     parentSearchValue: '',
-    //     searchValue: '',
-    //   }); // 초기화
-    // };
-    // const setWrite = (searchValue: string) => {
-    //   this.setState({ write: searchValue });
-    // };
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
       <div className="g-info-new">
         <LearningMenuView onClickMenu={this.props.onClickMenu} />
-        {/* {!isExternal && (
-          <>
-            <Popup
-              className="popup_gsearch type_b"
-              trigger={
-                <Button className="btn_gsearch" id="btnSearchPopup">
-                  <img
-                    src={`${PUBLIC_URL}/images/all/icon-gnb-search-36-px.png`}
-                    className="btn_search b_search"
-                    alt="검색버튼"
-                  />
-                </Button>
-              }
-              position="bottom right"
-              on="click"
-              onOpen={setSearchOpen}
-            >
-              <Popup.Header className="gsearch_header">
-                <strong className="h_tit">
-                  <PolyglotText id="통검-필레팝얼-검색" defaultString="검색" />
-                </strong>
-                <div className="close_wrapper">
-                  <Button className="close" Icon onClick={setSearchOpen} />
-                </div>
-              </Popup.Header>
-              <Popup.Content>
-                <div className="gsearch_inner" data-area={Area.SEARCH}>
-                  <div className="search_input">
-                    <div
-                      className={classNames('search show_text', {
-                        focus: 'focus',
-                        write: 'write',
-                        on: isOpen === true, //input이 popup에 맞춰서 모양이 변경됨
-                      })}
-                    >
-                      <Input
-                        type="text"
-                        placeholder={getPolyglotText(
-                          '검색어를 입력하세요.',
-                          'cmm-cfl-검색어'
-                        )}
-                        value={this.state.write}
-                        onChange={(e) => setWrite(e.target.value)}
-                        onKeyDown={(e: any) => {
-                          if (e.key === 'Enter') {
-                            setSearchOpen();
-                            const history = getCurrentHistory();
-                            history?.push(`/search?query=${this.state.write}`);
-                          }
-                        }}
-                      />
-                      <Icon
-                        className="clear link"
-                        onClick={() => setWrite('')}
-                      />
-                      <Button
-                        className="btn_sch"
-                        onClick={() => {
-                          setSearchOpen();
-                          const history = getCurrentHistory();
-                          history?.push(`/search?query=${this.state.write}`);
-                        }}
-                      >
-                        <Icon className="search_i" />
-                      </Button>
-                    </div>
-                  </div>
-                  <SearchHeaderFieldView callback={setSearchOpen} />
-                </div>
-              </Popup.Content>
-            </Popup>
-          </>
-        )} */}
         {!isExternal && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
