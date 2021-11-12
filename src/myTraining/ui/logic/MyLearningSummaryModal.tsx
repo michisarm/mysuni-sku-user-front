@@ -18,6 +18,7 @@ import {
 } from '../../../shared/ui/logic/PolyglotText';
 import { CollegeLearningTime } from '../../../main/sub/PersonalBoard/model/TotalLearningTimeRdo';
 import { College } from '../../../shared/service/requestAllColleges';
+import InstructorLearningTimeView from '../view/InstructorLearningTimeView';
 
 interface Props {
   trigger: React.ReactNode;
@@ -104,7 +105,8 @@ class MyLearningSummaryModal extends Component<Props> {
       collegeLearningTimes,
       accumulatedLearningTime,
     } = this.props;
-    const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+    const { myLearningSummary, lectureTimeSummary, instructTimeSummary } =
+      myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
 
     const year = moment().year();
@@ -274,8 +276,8 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  (lectureTimeSummary &&
-                                    lectureTimeSummary.sumOfCurrentYearLectureTime) ||
+                                  (instructTimeSummary &&
+                                    instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
                                     0
                                 )}
                                 )
@@ -305,8 +307,8 @@ class MyLearningSummaryModal extends Component<Props> {
                       />
                     )}
                     {checkedTab === TabType.LectureTime && (
-                      <LectureCollegeTimeView
-                        lectureTimeSummary={lectureTimeSummary}
+                      <InstructorLearningTimeView
+                        instructorLearningTimeSummary={instructTimeSummary}
                       />
                     )}{' '}
                   </div>
