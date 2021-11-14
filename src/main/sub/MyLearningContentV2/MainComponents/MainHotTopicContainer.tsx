@@ -14,6 +14,10 @@ import {
 import SearchService from '../../../../search/service/SearchService';
 import { search } from '../../../../search/search.events';
 import Image from '../../../../shared/components/Image';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -74,9 +78,15 @@ export function MainHotTopicContainer() {
   return (
     <Segment className="full learning-section type5">
       <div className="section-head">
-        <div className="sec-tit-txt">
-          구성원이 찾는 <strong>인기키워드</strong>
-        </div>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '구성원이 찾는 <strong>인기키워드</strong>',
+              'main-keywords'
+            ),
+          }}
+        />
         <div className="keyword-tag-wrap">
           <div className="keyword-wrap">
             {searchPopularList?.map((c, i) => {
@@ -95,9 +105,15 @@ export function MainHotTopicContainer() {
         </div>
       </div>
       <div className="section-body">
-        <div className="sec-tit-txt">
-          <strong>Hot Topic</strong>
-        </div>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '<strong>Hot Topic</strong>',
+              'main-hottopic'
+            ),
+          }}
+        />
         <div className="cardSwiper">
           <Swiper {...swiperProps}>
             {cardBundles.map((c) => (
@@ -118,9 +134,15 @@ export function MainHotTopicContainer() {
                       <div className="topic-info-wrap">
                         <Label className="topic-info course">
                           <Icon className="list" />
-                          <span>
-                            총 <strong>{c.cardIds.length}개</strong> 학습카드
-                          </span>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                '총 <strong>{length}개</strong> 학습카드',
+                                'main-hottopic-count',
+                                { length: c.cardIds.length.toString() }
+                              ),
+                            }}
+                          />
                         </Label>
                         <Label className="topic-info time">
                           <span>{timeToHourMinuteFormat(c.learningTime)}</span>

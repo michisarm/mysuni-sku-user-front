@@ -191,7 +191,7 @@ export const LearningMenuView: React.FC<MenuViewProps> =
                 className="go-learn"
                 onClick={() => onClickMenu('Learning')}
               >
-                <PolyglotText defaultString="My Learning" id="home-gnb-mtl" />
+                <PolyglotText defaultString="My Learning" id="gnb-mylearning" />
               </NavLink>
             </div>
           )}

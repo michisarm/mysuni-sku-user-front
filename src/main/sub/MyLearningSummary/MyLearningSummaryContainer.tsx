@@ -29,7 +29,10 @@ import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
 import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 import { InProgressLearning } from './InProgressLearning';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
@@ -243,7 +246,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 onClick={this.showPersonalBoardContainer}
               >
                 <i aria-hidden="true" className="icon std" />
-                나의 학습현황 보기
+                <PolyglotText
+                  id="main-personal"
+                  defaultString="나의 학습현황 보기"
+                />
               </button>
             </div>
           </div>

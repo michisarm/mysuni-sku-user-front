@@ -27,7 +27,7 @@ import { findBookmarkCards } from '../../../../lecture/detail/api/cardApi';
 function getTitle() {
   return `${getPolyglotText(
     '<strong>찜해두신 과정</strong>을<br> 모아봤어요!',
-    'home-Bookmark-Title1'
+    'main-bookmark'
   )}`;
 }
 
@@ -89,7 +89,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
         />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            전체보기
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
           </button>
         </div>
       </div>

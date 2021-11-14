@@ -279,8 +279,8 @@ function ProfilePopupView(props: Props) {
                 }}
               >
                 <PolyglotText
-                  defaultString="프로필 설정"
-                  id="mypage-popupview-프로필설정"
+                  defaultString="프로필 설정하기"
+                  id="profilemodal-edit"
                 />
                 <i>
                   <Image
@@ -291,8 +291,13 @@ function ProfilePopupView(props: Props) {
                   className="tool-tip-box"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      '프로필을 설정해서 <br />자유롭게 활동해 보세요!',
-                      'mypage-popupview-설명'
+                      '프로필 설정으로<br />{name} 님을 표현해 보세요!',
+                      'profilemodal-nodata',
+                      {
+                        name: parsePolyglotString(
+                          SkProfileService.instance.skProfile.name
+                        ),
+                      }
                     ),
                   }}
                 />

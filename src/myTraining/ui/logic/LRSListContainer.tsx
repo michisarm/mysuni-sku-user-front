@@ -28,7 +28,7 @@ function getTitle() {
   if (search.includes('LearningPatternBased')) {
     return getPolyglotText(
       '{name}님이 관심 가질만한 과정을 모아봤어요~',
-      'learning-권장과정-Title2',
+      'lrs-title2',
       {
         name: parsePolyglotString(SkProfileService.instance.skProfile.name),
       }
@@ -36,7 +36,7 @@ function getTitle() {
   } else {
     return getPolyglotText(
       '{name}님의 학습패턴을 기반으로 추천 드려요!',
-      'learning-권장과정-Title1',
+      'lrs-title1',
       {
         name: parsePolyglotString(SkProfileService.instance.skProfile.name),
       }
