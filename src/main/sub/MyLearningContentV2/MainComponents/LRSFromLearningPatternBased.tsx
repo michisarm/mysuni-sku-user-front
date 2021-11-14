@@ -88,7 +88,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '<strong>{name} 님</strong>이</br><strong>관심가질만한 과정</strong>을</br>모아봤어요~',
+              '{name} 님이 관심가질만한 과정을 모아봤어요~',
               'main-lrs-title2',
               {
                 name: parsePolyglotString(

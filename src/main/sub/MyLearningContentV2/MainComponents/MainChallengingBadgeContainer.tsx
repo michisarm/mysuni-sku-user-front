@@ -88,7 +88,7 @@ function MainChallengingBadgeContainer() {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: `${getPolyglotText(
-              '<strong>{name}님</strong>이<br /> 도전중인 Badge',
+              '<strong>{name}님</strong>이<br/>도전중인 Badge',
               'main-challenge-badge',
               {
                 name: profileViewName,
@@ -131,7 +131,7 @@ function MainChallengingBadgeContainer() {
                 className="badge-txt"
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
-                    '지금까지 총 <strong>{badgeMyCount}개</strong>의 뱃지를 <br />획득하셨어요!',
+                    '지금까지 총 <strong>{badgeMyCount}개</strong>의 뱃지를<br/>획득하셨어요!',
                     'main-issued-badge',
                     { badgeMyCount: badgeMyCount.toString() }
                   ),

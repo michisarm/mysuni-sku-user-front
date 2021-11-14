@@ -20,7 +20,10 @@ import { SkProfileService } from '../../../profile/stores';
 import { getChannelName } from '../../../shared/service/useCollege/useRequestCollege';
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import { parseLanguage } from '../../../shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from '../../../shared/viewmodel/PolyglotString';
 
 const swipeName = 'swiperInterested';
 
@@ -72,8 +75,13 @@ export function RecommendContainer() {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '<strong>김써니님</strong>의 관심채널',
-              'main-favorites'
+              '<strong>{name}</strong>의 관심채널',
+              'main-favorites',
+              {
+                name: parsePolyglotString(
+                  SkProfileService.instance.skProfile.name
+                ),
+              }
             ),
           }}
         />
