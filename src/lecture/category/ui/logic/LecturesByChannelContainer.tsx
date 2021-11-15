@@ -22,7 +22,10 @@ import {
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  LectureCardView,
+  parseCommunityLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 
 interface Props extends RouteComponentProps<Params> {
@@ -214,28 +217,12 @@ class LecturesByChannelContainer extends Component<Props, State> {
         ) : (
           (cardWithCardRealtedCounts.length && (
             <Lecture.Group type={Lecture.GroupType.Line}>
-              {cardWithCardRealtedCounts.map(({ card, cardRelatedCount }) => {
+              {cardWithCardRealtedCounts.map((cards, i) => {
                 return (
-                  <li key={card.id}>
+                  <li key={i}>
                     <Lecture.Group type={Lecture.GroupType.Box}>
                       <LectureCardView
-                        cardId={card.id}
-                        cardName={parsePolyglotString(card.name)}
-                        learningTime={card.learningTime.toString()}
-                        passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                        starCount={cardRelatedCount.starCount.toString()}
-                        thumbnailImagePath={card.thumbImagePath}
-                        langSupports={card.langSupports}
-                        simpleDescription={parsePolyglotString(
-                          card.simpleDescription
-                        )}
-                        studentCount={cardRelatedCount.studentCount}
-                        //??
-                        isRequiredLecture={false}
-                        // upcomingClassroomInfo={}
-                        difficultyLevel={card.difficultyLevel}
-                        collegeId={collegeId}
-                        userLanguage={userLanguage}
+                        {...parseCommunityLectureCard(cards, userLanguage)}
                         useBookMark={true}
                         dataArea={Area.EXPERT_LECTURE}
                       />
