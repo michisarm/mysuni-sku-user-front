@@ -16,42 +16,55 @@ import LectureParams from '../../viewModel/LectureParams';
 import { getLectureParams } from '../../store/LectureParamsStore';
 import InMyLectureService from '../../../../myTraining/present/logic/InMyLectureService';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  addBookMark,
+  deleteBookMark,
+  reqeustBookmark,
+} from 'shared/service/requestBookmarks';
 
 type Value = LectureCardSummary | undefined;
 
-export function toggleCardBookmark() {
+export function findIsBookmark(cardId: string) {
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  return bookmarks.find((id: string) => {
+    if (id === cardId) {
+      return true;
+    }
+
+    return false;
+  });
+}
+
+export async function toggleCardBookmark() {
   const params = getLectureParams();
   if (params === undefined) {
     return;
   }
   const { cardId } = params;
 
-  const imMyLecture = InMyLectureService.instance.inMyLectureMap.get(cardId);
+  const isBookmark = findIsBookmark(cardId);
 
-  if (imMyLecture === undefined) {
-    const inMyLectureCdo = getInMyLectureCdo();
-    if (inMyLectureCdo !== undefined) {
-      addInMyLecture(inMyLectureCdo).then(() => {
-        InMyLectureService.instance.findAllInMyLectures();
-        reactAlert({
-          title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-          message: getPolyglotText(
-            '본 과정이 관심목록에 추가되었습니다.',
-            '신규학습-신규목록-관심추가'
-          ),
-        });
-      });
-    }
-  } else {
-    removeInMyLecture(imMyLecture.id).then(() => {
-      InMyLectureService.instance.findAllInMyLectures();
-      reactAlert({
-        title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-        message: getPolyglotText(
-          '본 과정이 관심목록에서 제외되었습니다.',
-          '신규학습-신규목록-관심제외'
-        ),
-      });
+  if (isBookmark) {
+    await deleteBookMark(cardId);
+    await reqeustBookmark();
+    reactAlert({
+      title: getPolyglotText('알림', '신규학습-신규목록-알림'),
+      message: getPolyglotText(
+        '본 과정이 관심목록에서 제외되었습니다.',
+        '신규학습-신규목록-관심제외'
+      ),
+    });
+  }
+
+  if (!isBookmark) {
+    await addBookMark(cardId);
+    await reqeustBookmark();
+    reactAlert({
+      title: getPolyglotText('알림', '신규학습-신규목록-알림'),
+      message: getPolyglotText(
+        '본 과정이 관심목록에 추가되었습니다.',
+        '신규학습-신규목록-관심추가'
+      ),
     });
   }
 }
