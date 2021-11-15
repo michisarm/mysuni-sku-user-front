@@ -79,12 +79,12 @@ export function HotTopicOtherListContainer() {
                     >
                       <HotTopicView
                         key={`other-hottopic-view-${index}`}
-                        hotTopic={hotTopic}
+                        hotTopicViewModel={hotTopic}
                       />
                       {next && (
                         <HotTopicView
                           key={`other-hottopic-view2-${index + 1}`}
-                          hotTopic={next}
+                          hotTopicViewModel={next}
                         />
                       )}
                     </div>

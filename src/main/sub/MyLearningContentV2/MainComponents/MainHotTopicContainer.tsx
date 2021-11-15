@@ -18,6 +18,7 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import { HotTopicView } from 'hotTopic/ui/view/HotTopicView';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -119,37 +120,7 @@ export function MainHotTopicContainer() {
             {cardBundles.map((c) => (
               <div className="swiper-slide" key={c.id}>
                 <Card.Group className="topic-card-warp">
-                  <Card className="topic-item">
-                    <div className="thumb-img-area">
-                      <Image
-                        src={parsePolyglotString(c.imageUrl)}
-                        className="ui image thumb-img"
-                        alt="핫 토픽 이미지"
-                      />
-                    </div>
-                    <div className="card-inner">
-                      <div className="topic-tit">
-                        <span>{parsePolyglotString(c.displayText)}</span>
-                      </div>
-                      <div className="topic-info-wrap">
-                        <Label className="topic-info course">
-                          <Icon className="list" />
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: getPolyglotText(
-                                '총 <strong>{length}개</strong> 학습카드',
-                                'main-hottopic-count',
-                                { length: c.cardIds.length.toString() }
-                              ),
-                            }}
-                          />
-                        </Label>
-                        <Label className="topic-info time">
-                          <span>{timeToHourMinuteFormat(c.learningTime)}</span>
-                        </Label>
-                      </div>
-                    </div>
-                  </Card>
+                  <HotTopicView hotTopicCardBundle={c} />
                 </Card.Group>
               </div>
             ))}
