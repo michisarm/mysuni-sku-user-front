@@ -1,25 +1,29 @@
-import { getCollegePercent } from '../api/personalBoardApi';
-import { CollegePercentData } from '../model/CollegePercent';
+import { findTotalLearningTime } from '../api/personalBoardApi';
 import { setCollegeTopChartItem } from '../store/PersonalBoardStore';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { getCollgeName } from '../../../../shared/service/useCollege/useRequestCollege';
+import { setTotalLearningTimeRdo } from '../model/TotalLearningTimeRdo';
 
 export async function requestCollegePercent() {
-  getCollegePercent().then((result: CollegePercentData[]) => {
-    const collegeArr: object[] = [];
+  findTotalLearningTime().then((totalLearningTimeRdo) => {
+    if (totalLearningTimeRdo === undefined) {
+      return;
+    }
+    setTotalLearningTimeRdo(totalLearningTimeRdo);
+    const { collegeLearningTimes } = totalLearningTimeRdo;
 
-    let totalTime = 0;
-    result.map((item: CollegePercentData) => {
-      totalTime += item.learningTime;
-    });
+    const totalTime = collegeLearningTimes.reduce<number>((p, c) => {
+      return p + c.learningTime;
+    }, 0);
 
-    result.map((item: CollegePercentData, index: number) => {
-      if (index < 5) {
-        collegeArr.push({
-          college: parsePolyglotString(item.collegeName),
-          percent: Math.floor((item.learningTime / totalTime) * 100),
-        });
-      }
-    });
+    const collegeArr = collegeLearningTimes
+      .sort((a, b) => b.learningTime - a.learningTime)
+      .filter((_, i) => i < 5)
+      .map((c) => {
+        return {
+          college: getCollgeName(c.collegeId),
+          percent: Math.floor((c.learningTime / totalTime) * 100),
+        };
+      });
 
     setCollegeTopChartItem([...collegeArr]);
   });

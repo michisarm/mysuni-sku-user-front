@@ -40,10 +40,6 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import {
-  onCollegeModelStore,
-  useCollegeModelStore,
-} from '../../../../shared/store/CollegeStore';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import {
   parseLanguage,
@@ -53,6 +49,10 @@ import { getDefaultLang } from '../../../model/LangSupport';
 import { CardProps, LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../../profile/stores';
+import {
+  College,
+  useAllColleges,
+} from '../../../../shared/service/requestAllColleges';
 
 interface Injected {
   newPageService: NewPageService;
@@ -67,7 +67,7 @@ interface Injected {
 interface Props extends RouteComponentProps<RouteParams> {}
 
 interface InnerProps extends RouteComponentProps<RouteParams> {
-  collegeModelStore: CollegeModel[];
+  collegeModelStore: College[];
   scrollOnceMove: () => void;
   scrollSave?: () => void;
 }
@@ -90,15 +90,15 @@ const CollegeLecturesContainer: React.FC<Props> = ({ match }) => {
   const location = useLocation();
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const collegeModelStore = useCollegeModelStore();
+  const allColleges = useAllColleges();
   const lectureCountService = LectureCountService.instance;
 
   useEffect(() => {
-    if (lectureCountService === undefined || collegeModelStore === undefined) {
+    if (lectureCountService === undefined) {
       return;
     }
     const channels =
-      collegeModelStore
+      allColleges
         .find((c) => c.id === match.params.collegeId)
         ?.channels.map(
           (c) =>
@@ -110,20 +110,16 @@ const CollegeLecturesContainer: React.FC<Props> = ({ match }) => {
             })
         ) || [];
     lectureCountService.setChannels(channels);
-  }, [collegeModelStore, match.params.collegeId, lectureCountService]);
+  }, [allColleges, match.params.collegeId, lectureCountService]);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
   }, [history, scrollSave]);
 
-  if (collegeModelStore === undefined) {
-    return null;
-  }
-
   return (
     <CollegeLecturesContainerInner
-      collegeModelStore={collegeModelStore}
+      collegeModelStore={allColleges}
       location={location}
       history={history}
       match={match}
@@ -176,29 +172,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     this.initialFindPagingCollegeLectures();
     this.findChannels();
     this.findInMyLectures();
-    const { match } = this.props;
-    const { lectureCountService } = this.injected;
-    onCollegeModelStore((collegeModelStore) => {
-      if (collegeModelStore === undefined) {
-        return;
-      }
-      if (lectureCountService === undefined) {
-        return;
-      }
-      const channels =
-        collegeModelStore
-          .find((c) => c.id === match.params.collegeId)
-          ?.channels.map(
-            (c) =>
-              new ChannelModel({
-                id: c.id,
-                name: c.name,
-                channelId: c.id,
-                checked: false,
-              })
-          ) || [];
-      lectureCountService.setChannels(channels);
-    }, 'CollegeLecturesContainerInner');
   }
 
   async componentDidUpdate(prevProps: Props) {

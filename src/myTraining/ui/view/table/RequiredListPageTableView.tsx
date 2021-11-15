@@ -1,3 +1,4 @@
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
@@ -16,7 +17,7 @@ import { SeeMoreButton } from '../../../../lecture';
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
-  learningList: LectureTableViewModel[];
+  learningList: CardForUserViewModel[];
   showSeeMore: boolean;
   onClickRow: (e: any, cardId: string) => void;
   onClickSeeMore: () => void;
@@ -89,9 +90,7 @@ export function RequiredListPageTableView({
           <Table.Body>
             {learningList.map((requiredCard, index) => {
               const learningType = LearningTypeName[requiredCard.type];
-              const collegeName = getCollgeName(
-                requiredCard.category.collegeId
-              );
+              const collegeName = getCollgeName(requiredCard.mainCollegeId);
               const learningState =
                 (requiredCard.learningState &&
                   LearningStateName[
@@ -100,7 +99,7 @@ export function RequiredListPageTableView({
                 '-';
               const progressRate =
                 (requiredCard.learningState &&
-                  `${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}`) ||
+                  `${requiredCard.completePhaseCount}/${requiredCard.phaseCount}`) ||
                 '-';
 
               return (
@@ -111,7 +110,7 @@ export function RequiredListPageTableView({
                     <a
                       href="#"
                       onClick={(e) => {
-                        onClickRow(e, requiredCard.serviceId);
+                        onClickRow(e, requiredCard.id);
                       }}
                     >
                       <span
@@ -130,7 +129,7 @@ export function RequiredListPageTableView({
                     {timeToHourMinutePaddingFormat(requiredCard.learningTime)}
                   </Table.Cell>
                   <Table.Cell>
-                    {convertTimeToDate(requiredCard.updateTime)}
+                    {convertTimeToDate(requiredCard.modifiedTime)}
                   </Table.Cell>
                   <Table.Cell>{progressRate}</Table.Cell>
                   <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
@@ -138,7 +137,6 @@ export function RequiredListPageTableView({
               );
             })}
           </Table.Body>
-          {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
         </Table>
       </div>
       {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}

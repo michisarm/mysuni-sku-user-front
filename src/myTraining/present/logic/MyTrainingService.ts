@@ -48,12 +48,6 @@ class MyTrainingService {
   @observable
   thisYearMyStampCount: number = 0;
 
-  @observable
-  personalBoardInprogressCount: number = 0;
-
-  @observable
-  personalBoardCompletedCount: number = 0;
-
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
   }
@@ -358,35 +352,17 @@ class MyTrainingService {
 
   @action
   async findAllTabCount() {
-    const myTrainingTabModel = await this.myTrainingApi.findAllTabCount();
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> | null =
       await this.myTrainingApi.findEnrollTableViews(this._myTrainingFilterRdo);
-
-    if (myTrainingTabModel) {
-      runInAction(() => {
-        if (
-          offsetTableViews &&
-          offsetTableViews.results &&
-          offsetTableViews.results.length > 0
-        ) {
-          this._myTrainingTableViewCount2 = offsetTableViews.totalCount;
-        }
-        this.inprogressCount = myTrainingTabModel.inprogressCount;
-        this.completedCount = myTrainingTabModel.completedCount;
-        this.retryCount = myTrainingTabModel.retryCount;
-      });
-    }
-  }
-
-  @action
-  async findLearningCount() {
-    const learningCount = await this.myTrainingApi.findLearningCount();
-    if (learningCount) {
-      runInAction(() => {
-        this.personalBoardInprogressCount = learningCount.inprogressCount;
-        this.personalBoardCompletedCount = learningCount.completedCount;
-      });
-    }
+    runInAction(
+      () =>
+        (this._myTrainingTableViewCount2 =
+          (offsetTableViews &&
+            offsetTableViews.results &&
+            offsetTableViews.results.length > 0 &&
+            offsetTableViews.totalCount) ||
+          0)
+    );
   }
 
   @action

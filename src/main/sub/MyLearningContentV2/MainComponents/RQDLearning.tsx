@@ -8,7 +8,7 @@ import { findRequiredLearning } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   CardProps,
   LectureCardView,
@@ -38,7 +38,10 @@ const SwiperProps = {
 const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [title] = useState(
-    getPolyglotText('Deep Change를 위한 핵인싸 과정', 'home-DeepChange-Title')
+    getPolyglotText(
+      'Deep Change를 위한 <strong>핵인싸 과정</strong>',
+      'main-required'
+    )
   );
 
   const fetchCardList = async () => {
@@ -81,7 +84,7 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
         />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            전체보기
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
           </button>
         </div>
       </div>

@@ -19,6 +19,7 @@ import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
 
 const BASE_URL = '/api/lecture';
 
@@ -231,6 +232,12 @@ export function countRequiredCards() {
   return axios.get<number>(url).then(AxiosReturn);
 }
 
+export function countLearningTab() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/students/count?type=MYLEARNING_STATE`;
+  return axios.get<LearningTabCountViewModel>(url).then(AxiosReturn);
+}
+
 export function findCollegeAndCardCount() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/collegeAndCardCount`;
@@ -305,8 +312,8 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
     .then(AxiosReturn);
 }
 
-export function findBookmarkCards() {
+export function findBookmarkCards(limit?: number) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/bookmark`;
+  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }

@@ -1,3 +1,4 @@
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { InMyLectureTableViewModel } from 'myTraining/model';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
@@ -16,7 +17,7 @@ import { SeeMoreButton } from '../../../../lecture';
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
-  learningList: InMyLectureTableViewModel[];
+  learningList: CardForUserViewModel[];
   showSeeMore: boolean;
   onClickRow: (e: any, cardId: string) => void;
   onClickSeeMore: () => void;
@@ -88,8 +89,8 @@ export function InMyListPageTableView({
 
           <Table.Body>
             {learningList.map((inMyLecture, index) => {
-              const learningType = LearningTypeName[inMyLecture.cubeType];
-              const collegeName = getCollgeName(inMyLecture.category.collegeId);
+              const learningType = LearningTypeName[inMyLecture.type];
+              const collegeName = getCollgeName(inMyLecture.mainCollegeId);
               const learningState =
                 (inMyLecture.learningState &&
                   LearningStateName[inMyLecture.learningState]) ||
@@ -104,10 +105,7 @@ export function InMyListPageTableView({
                   <Table.Cell>{totalCount - index}</Table.Cell>
                   <Table.Cell>{collegeName}</Table.Cell>
                   <Table.Cell className="title">
-                    <a
-                      href="#"
-                      onClick={(e) => onClickRow(e, inMyLecture.serviceId)}
-                    >
+                    <a href="#" onClick={(e) => onClickRow(e, inMyLecture.id)}>
                       <span
                         className={`ellipsis ${
                           inMyLecture.useNote ? 'noteOn' : ''

@@ -24,7 +24,7 @@ class ContentHeaderWaitingItem extends PureComponent<Props> {
 
     return (
       <div className="ui statistic total-time">
-        <MyLearningSummaryModal
+        {/* <MyLearningSummaryModal
           trigger={
             <Button className="btn-total-time">
               <Label className="onlytext">
@@ -47,7 +47,7 @@ class ContentHeaderWaitingItem extends PureComponent<Props> {
             </Button>
           }
           year={year}
-        />
+        /> */}
       </div>
     );
   }

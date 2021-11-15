@@ -1,5 +1,10 @@
 import { mobxHelper, Offset } from '@nara.platform/accent';
+import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
@@ -23,12 +28,12 @@ import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
 
 interface CompletedListPageContainerProps {
-  myTrainingService?: MyTrainingService;
+  lectureService?: LectureService;
   filterBoxService?: FilterBoxService;
 }
 
 function CompletedListPageContainer({
-  myTrainingService,
+  lectureService,
   filterBoxService,
 }: CompletedListPageContainerProps) {
   //
@@ -45,7 +50,7 @@ function CompletedListPageContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { scrollSave } = useScrollMove();
+  const { scrollSave, scrollOnceMove } = useScrollMove();
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
   const initialOrders = headerColumns
@@ -56,51 +61,51 @@ function CompletedListPageContainer({
     }));
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
-  const { scrollOnceMove } = useScrollMove();
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+  const {
+    myLearningCards,
+    totalMyLearningCardCount,
+    cardQdo,
+    setCardQdo,
+    findMyLearningCardByQdo,
+    clearMyLearningCard,
+  } = lectureService!;
+
+  const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
     filterBoxService!;
 
   useRequestFilterCountView();
 
-  useEffect(() => {
-    myTrainingService!.clearAllTableViews();
-    myTrainingService!.initFilterRdo(contentType);
+  const clearQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
+    newCardQdo.orderBy = CardOrderBy.PassedStudentCountDesc;
 
-    if (params.pageNo === '1') {
-      requestMyTrainings();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset: 0, limit });
-
-    return () => {};
-  }, [contentType]);
-
-  const requestMyTrainings = async () => {
-    setIsLoading(true);
-    if (contentType === MyLearningContentType.Enrolled) {
-      const isEmpty = await myTrainingService!.findEnrollTableViews();
-      setResultEmpty(isEmpty);
-
-      setIsLoading(false);
-    } else {
-      const isEmpty = await myTrainingService!.findAllTableViews();
-      setResultEmpty(isEmpty);
-      checkShowSeeMore();
-      setIsLoading(false);
-    }
+    return newCardQdo;
   };
 
-  const requestmyTrainingsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await myTrainingService!.findAllTableViewsWithPage(offset);
-    checkShowSeeMore();
-    setIsLoading(false);
-    scrollOnceMove();
+  useEffect(() => {
+    clearMyLearningCard();
+
+    const newQdo = clearQdo();
+
+    requestmyTrainingsWithPage(newQdo, true);
+
+    return () => {};
+  }, []);
+
+  const requestmyTrainingsWithPage = async (
+    qdo: CardQdo,
+    firstCheck?: boolean
+  ) => {
+    await setIsLoading(true);
+    await setCardQdo(qdo);
+    await findMyLearningCardByQdo(firstCheck);
+    await checkShowSeeMore();
+    await setIsLoading(false);
+    await scrollOnceMove();
   };
 
   // ------------------------------------------------- header -------------------------------------------------
@@ -113,38 +118,27 @@ function CompletedListPageContainer({
   };
 
   const downloadExcel = async () => {
-    const myTrainingTableViews: MyTrainingTableViewModel[] =
-      await myTrainingService!.findAllTableViewsForExcel();
-    const lastIndex = myTrainingTableViews.length;
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(clearQdo());
+    const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
-    const filename = 'Learning_Completed';
+    const filename = 'Learning_CompletedProgress';
 
-    xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-      const collegeName =
-        (myTrainingTableView.category?.collegeId &&
-          getCollgeName(
-            // myTrainingTableView.category.college.id
-            myTrainingTableView.category.collegeId
-          )) ||
-        '';
-      return myTrainingTableView.toXlsxForCompleted(
-        lastIndex - index,
-        collegeName
-      );
-    });
+    xlsxList =
+      (tableViews &&
+        tableViews.length > 0 &&
+        tableViews.map((view, index) => {
+          const collegeName =
+            (view.mainCollegeId && getCollgeName(view.mainCollegeId)) || '';
+          console.dir(view);
+          return view.toXlsxForCompleted(lastIndex - index, collegeName);
+        })) ||
+      [];
 
     writeExcelFile(xlsxList, filename);
   };
 
   // -------------------------------------------- header - filter --------------------------------------------
-
-  useEffect(() => {
-    if (showResult) {
-      myTrainingService!.setFilterRdoByConditions(conditions);
-      requestMyTrainingsByConditions();
-    }
-  }, [showResult]);
-
   const onClickOpenFilter = () => {
     setOpenFilter(!openFilter);
   };
@@ -157,37 +151,66 @@ function CompletedListPageContainer({
 
   const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
+
+    const newQdo = cardQdo;
+    newQdo.setBycondition(conditions);
+    await setCardQdo(newQdo);
+
+    await findMyLearningCardByQdo();
+    const { myLearningCards } = lectureService!;
+    const isEmpty =
+      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    await setResultEmpty(isEmpty);
+    await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
   };
 
+  useEffect(() => {
+    if (showResult) {
+      requestMyTrainingsByConditions();
+    }
+  }, [showResult]);
+
   // ------------------------------------------------- table -------------------------------------------------
+
+  const checkShowSeeMore = (): void => {
+    const { myLearningCards, totalMyLearningCardCount } = lectureService!;
+
+    if (myLearningCards.length >= totalMyLearningCardCount) {
+      setShowSeeMore(false);
+      return;
+    }
+    if (totalMyLearningCardCount <= PAGE_SIZE) {
+      setShowSeeMore(false);
+      return;
+    }
+
+    setShowSeeMore(true);
+  };
+
+  const onClickSeeMore = () => {
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Learning');
+    }, 1000);
+
+    const currentPageNo = parseInt(params.pageNo, 10);
+    const nextPageNo = currentPageNo + 1;
+
+    cardQdo.limit = PAGE_SIZE;
+    cardQdo.offset = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage(cardQdo);
+
+    history.replace(`./${nextPageNo}`);
+  };
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      myTrainingService!.sortTableViews(column, direction);
+      lectureService!.sortMyLearningTableViews(column, direction);
     },
     [contentType]
   );
-
-  const getDireciton = (column: string) => {
-    return orders.filter((order) => order.column === column)[0].direction;
-  };
-
-  const getOrderIcon = (column: string, fromStyle: boolean = false) => {
-    if (fromStyle) {
-      return getDireciton(column) === Direction.DESC
-        ? 'list-down16'
-        : 'list-up16';
-    }
-
-    return getDireciton(column) === Direction.DESC
-      ? '내림차순 정렬'
-      : '오름차순 정렬';
-  };
 
   const handleClickSort = useCallback(
     (column: string) => {
@@ -204,48 +227,27 @@ function CompletedListPageContainer({
     [orders, onClickSort]
   );
 
-  const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  const getDireciton = (column: string) =>
+    orders.filter((order) => order.column === column)[0].direction;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
-      setShowSeeMore(false);
-      return;
-    }
-    if (myTrainingTableCount <= PAGE_SIZE) {
-      setShowSeeMore(false);
-      return;
+  const getOrderIcon = (column: string, fromStyle: boolean = false) => {
+    if (fromStyle) {
+      return getDireciton(column) === Direction.DESC
+        ? 'list-down16'
+        : 'list-up16';
     }
 
-    setShowSeeMore(true);
-  };
-
-  const onClickSeeMore = () => {
-    setTimeout(() => {
-      ReactGA.pageview(window.location.pathname, [], 'Learning');
-    }, 1000);
-
-    const currentPageNo = parseInt(params.pageNo);
-    const nextPageNo = currentPageNo + 1;
-
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset, limit });
-
-    history.replace(`./${nextPageNo}`);
+    return getDireciton(column) === Direction.DESC
+      ? '내림차순 정렬'
+      : '오름차순 정렬';
   };
 
   // ------------------------------------------------- contents -------------------------------------------------
-  const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
+  const onViewDetail = (e: any, serviceId: string) => {
     e.preventDefault();
 
-    const cardId =
-      myTraining.serviceType === 'Card'
-        ? myTraining.serviceId
-        : myTraining.cardId;
-
     const params: LectureParams = {
-      cardId,
+      cardId: serviceId,
       viewType: 'view',
       pathname: '',
     };
@@ -263,7 +265,7 @@ function CompletedListPageContainer({
     <>
       {
         <TabHeader
-          totalCount={myTrainingTableCount}
+          totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           resultEmpty={resultEmpty}
           filterOpotions={filterOptions}
@@ -276,20 +278,20 @@ function CompletedListPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (myTrainingTableCount || 0).toString(),
+                  totalCount: (totalMyLearningCardCount || 0).toString(),
                 }
               ),
             }}
           />
         </TabHeader>
       }
-      {(myTrainingTableViews && myTrainingTableViews.length > 0 && (
+      {(myLearningCards && myLearningCards.length > 0 && (
         <>
           {(!resultEmpty && (
             <CompletedListPageTableView
-              totalCount={myTrainingTableCount}
+              totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
-              learningList={myTrainingTableViews}
+              learningList={myLearningCards}
               showSeeMore={showSeeMore}
               onClickRow={onViewDetail}
               onClickSeeMore={onClickSeeMore}
@@ -405,10 +407,7 @@ function CompletedListPageContainer({
 }
 
 export default inject(
-  mobxHelper.injectFrom(
-    'shared.filterBoxService',
-    'myTraining.myTrainingService'
-  )
+  mobxHelper.injectFrom('lecture.lectureService', 'shared.filterBoxService')
 )(observer(CompletedListPageContainer));
 
 const PAGE_SIZE = 20;

@@ -1,14 +1,17 @@
 import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
 import { PersonalBoardDoughnutChartView } from '@sku/chart';
-import React, { useEffect, useMemo } from 'react';
-import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
+import React, { useMemo } from 'react';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import { useRequestLearningSummary } from 'myTraining/service/useRequestLearningSummary';
 import { MyLearningSummaryService } from 'myTraining/stores';
+import { useTotalLearningTimeRdo } from '../../model/TotalLearningTimeRdo';
+import {
+  isMySuniCollege,
+  useAllColleges,
+} from '../../../../../shared/service/requestAllColleges';
 
 interface Props {
   showApl: boolean;
@@ -20,20 +23,38 @@ type ChartDataItem = { label: string; value: number };
 function LearningTimeDetailView(props: Props) {
   const { showApl } = props;
 
-  const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
   const instructTimeSummary =
     MyLearningSummaryService.instance._instructTimeSummary;
+
+  const totalLearningTimeRdo = useTotalLearningTimeRdo();
+  const allColleges = useAllColleges();
+
+  const {
+    collegeLearningTimes,
+    myCompanyLearningTime,
+    accumulatedLearningTime,
+  } = totalLearningTimeRdo;
+
+  const suniLearningTime = useMemo(
+    () =>
+      collegeLearningTimes
+        .filter((c) =>
+          allColleges.filter(isMySuniCollege).some((d) => d.id === c.collegeId)
+        )
+        .reduce<number>((p, c) => p + c.learningTime, 0),
+    [collegeLearningTimes]
+  );
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
       return [
         {
           label: 'mySUNI',
-          value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+          value: suniLearningTime || 0,
         },
         {
           label: '관계사',
-          value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+          value: myCompanyLearningTime || 0,
         },
         {
           label: '강의시간',
@@ -43,18 +64,18 @@ function LearningTimeDetailView(props: Props) {
         },
         {
           label: '개인학습',
-          value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
+          value: accumulatedLearningTime || 0,
         },
       ];
     } else {
       return [
         {
           label: 'mySUNI',
-          value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+          value: suniLearningTime || 0,
         },
         {
           label: '관계사',
-          value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+          value: myCompanyLearningTime || 0,
         },
         {
           label: '강의시간',
@@ -63,21 +84,26 @@ function LearningTimeDetailView(props: Props) {
         },
       ];
     }
-  }, [badgeLearningTimeDetailItem]);
+  }, [
+    instructTimeSummary,
+    suniLearningTime,
+    myCompanyLearningTime,
+    accumulatedLearningTime,
+  ]);
 
-  const timeDataBoolean: boolean[] = [];
-
-  datas.map((data) => {
-    if (data.value === 0) {
-      timeDataBoolean.push(false);
-    } else {
-      timeDataBoolean.push(true);
-    }
-  });
+  const timeDataBoolean = useMemo<boolean[]>(() => {
+    return datas.map((data) => {
+      if (data.value === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }, [datas]);
 
   return (
     <>
-      {badgeLearningTimeDetailItem && (
+      {datas.length > 0 && (
         <div className="personal-card-item-box">
           <div className="personal-card-item">
             <div className="card-item-tit mb23">
@@ -92,6 +118,10 @@ function LearningTimeDetailView(props: Props) {
                     </h3>
                   </a>
                 }
+                suniLearningTime={suniLearningTime}
+                myCompanyLearningTime={myCompanyLearningTime}
+                accumulatedLearningTime={accumulatedLearningTime}
+                collegeLearningTimes={collegeLearningTimes}
               />
               <span
                 dangerouslySetInnerHTML={{
@@ -126,9 +156,7 @@ function LearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.suniLearningTime / 60
-                          )}
+                          {Math.floor(suniLearningTime / 60)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -137,9 +165,7 @@ function LearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.suniLearningTime % 60
-                          )}
+                          {Math.floor(suniLearningTime % 60)}
                           <em>
                             <PolyglotText
                               defaultString="m"
@@ -158,10 +184,7 @@ function LearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.displayMyCompanyLearningTime /
-                              60
-                          )}
+                          {Math.floor(myCompanyLearningTime / 60)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -170,10 +193,7 @@ function LearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.displayMyCompanyLearningTime %
-                              60
-                          )}
+                          {Math.floor(myCompanyLearningTime % 60)}
                           <em>
                             <PolyglotText
                               defaultString="m"
@@ -231,9 +251,7 @@ function LearningTimeDetailView(props: Props) {
                         </em>
                         <div>
                           <strong>
-                            {Math.floor(
-                              badgeLearningTimeDetailItem.aplAllowTime / 60
-                            )}
+                            {Math.floor(accumulatedLearningTime / 60)}
                             <em>
                               <PolyglotText
                                 defaultString="h"
@@ -242,9 +260,7 @@ function LearningTimeDetailView(props: Props) {
                             </em>
                           </strong>
                           <strong>
-                            {Math.floor(
-                              badgeLearningTimeDetailItem.aplAllowTime % 60
-                            )}
+                            {Math.floor(accumulatedLearningTime % 60)}
                             <em>
                               <PolyglotText
                                 defaultString="m"

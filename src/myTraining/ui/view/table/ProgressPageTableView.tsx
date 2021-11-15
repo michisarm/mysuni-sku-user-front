@@ -1,4 +1,5 @@
 import LearningTimeItem from 'layout/ContentHeader/sub/LearningTimeItem';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { LearningType, LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
@@ -15,10 +16,10 @@ import { SeeMoreButton } from '../../../../lecture';
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
-  learningList: MyTrainingTableViewModel[];
+  learningList: CardForUserViewModel[];
   showSeeMore: boolean;
   getLearningType: (type: LearningType) => LearningTypeName;
-  onClickRow: (e: any, myTraining: MyTrainingTableViewModel) => void;
+  onClickRow: (e: any, myTraining: CardForUserViewModel) => void;
   onClickSeeMore: () => void;
 
   getOrderIcon: (
@@ -106,14 +107,14 @@ export function ProgressPageTableView({
               <Table.Row key={`mytraining-list-${index}`}>
                 <Table.Cell>
                   <Checkbox
-                    value={myTraining.serviceId}
-                    checked={selectedServiceIds.includes(myTraining.serviceId)}
+                    value={myTraining.id}
+                    checked={selectedServiceIds.includes(myTraining.id)}
                     onChange={onCheckOne}
                   />
                 </Table.Cell>
                 <Table.Cell>{totalCount - index}</Table.Cell>
                 <Table.Cell>
-                  {getCollgeName(myTraining.category?.collegeId || '')}
+                  {getCollgeName(myTraining.mainCollegeId || '')}
                 </Table.Cell>
                 <Table.Cell className="title">
                   <a href="#" onClick={(e) => onClickRow(e, myTraining)}>
@@ -127,7 +128,7 @@ export function ProgressPageTableView({
                   </a>
                 </Table.Cell>
                 <Table.Cell>
-                  {getLearningType(myTraining.cubeType) || '-'}{' '}
+                  {getLearningType(myTraining.type) || '-'}{' '}
                 </Table.Cell>
                 <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
                 <Table.Cell>
@@ -139,7 +140,7 @@ export function ProgressPageTableView({
                   {convertTimeToDate(myTraining.modifiedTime)}
                 </Table.Cell>
                 <Table.Cell>
-                  {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
+                  {`${myTraining.completePhaseCount}/${myTraining.phaseCount}`}
                 </Table.Cell>
               </Table.Row>
             ))}

@@ -1,15 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
+import { Button, Segment } from 'semantic-ui-react';
 import certificationRoutes from 'certification/routePaths';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
-import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
 import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
-import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
 import {
   getPolyglotText,
@@ -18,9 +13,10 @@ import {
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import { BadgeService } from 'lecture/stores';
-import { useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { SkProfileService } from 'profile/stores';
-import { useRequestBadgeAllCount } from 'certification/service/useRequestBadgeAllCount';
+import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
+import certificationPaths from 'certification/routePaths';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -73,6 +69,15 @@ function MainChallengingBadgeContainer() {
     [challengeBadges]
   );
 
+  const badgeLearningTimeItem = useBadgeLearningTimeItem();
+  const badgeMyCount = useMemo<number>(() => {
+    return badgeLearningTimeItem?.badgeMyCount || 0;
+  }, [badgeLearningTimeItem]);
+
+  if (badgeMyCount === 0 && challengeBadges.length === 0) {
+    return null;
+  }
+
   return (
     <Segment
       className="full learning-section badge-section type4"
@@ -83,8 +88,8 @@ function MainChallengingBadgeContainer() {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: `${getPolyglotText(
-              '<strong>{name}님</strong>이<br /> 도전중인 Badge',
-              'home-ChallengeBadges-Title',
+              '<strong>{name}님</strong>이<br/>도전중인 Badge',
+              'main-challenge-badge',
               {
                 name: profileViewName,
               }
@@ -121,11 +126,47 @@ function MainChallengingBadgeContainer() {
       <div className="section-body">
         <div className="badge-banner-wrap">
           <div className="badge-txt-box">
-            <div className="badge-txt">
-              지금까지 총 <strong>4개</strong>의 뱃지를 <br />
-              획득하셨어요!
-            </div>
-            <Button className="btn-badge-go">새로운 뱃지 도전하기!</Button>
+            {badgeMyCount > 0 && (
+              <div
+                className="badge-txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '지금까지 총 <strong>{badgeMyCount}개</strong>의 뱃지를<br/>획득하셨어요!',
+                    'main-issued-badge',
+                    { badgeMyCount: badgeMyCount.toString() }
+                  ),
+                }}
+              />
+            )}
+            {badgeMyCount === 0 && (
+              <div
+                className="badge-txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '현재 획득한 뱃지가 없습니다.</br>학습을 통해 뱃지를 획득하고 지식과 Skill을 인증 받으세요!',
+                    'main-noissued-badge',
+                    { badgeMyCount: badgeMyCount.toString() }
+                  ),
+                }}
+              />
+            )}
+            <NavLink
+              to={certificationPaths.badge()}
+              className="ui button btn-badge-go"
+            >
+              {badgeMyCount > 0 && (
+                <PolyglotText
+                  id="main-new-badge"
+                  defaultString="새로운 뱃지 도전하기!"
+                />
+              )}
+              {badgeMyCount === 0 && (
+                <PolyglotText
+                  id="main-badge-title2"
+                  defaultString="뱃지 도전하기!"
+                />
+              )}
+            </NavLink>
           </div>
         </div>
       </div>

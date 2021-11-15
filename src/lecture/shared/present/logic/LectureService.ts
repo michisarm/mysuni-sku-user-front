@@ -23,8 +23,10 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import {
   findByRdo,
+  findCardsByRdo,
+  findByQdo,
+  countLearningTab,
   countRequiredCards,
-  findCardsByRdo, findByQdo,
 } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
@@ -33,8 +35,15 @@ import { findCardStudentsByCardIds } from '../../../../certification/api/CardStu
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { CardProps, parseUserLectureCards, UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import {
+  CardProps,
+  parseUserLectureCards,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import { patronInfo } from '@nara.platform/dock';
 
 @autobind
 class LectureService {
@@ -75,7 +84,28 @@ class LectureService {
   @observable
   _lectureViews: LectureViewModel[] = [];
 
-  //
+  // Learning Page
+
+  @observable
+  _myStampCount: number = 0;
+
+  @observable
+  _myLearningCards: CardForUserViewModel[] = [];
+
+  @observable
+  _totalMyLearningCardCount: number = 0;
+
+  @observable
+  selectedServiceIds: string[] = [];
+
+  @observable
+  cardQdo: CardQdo = new CardQdo();
+
+  @observable
+  private column: string = '';
+
+  @observable
+  private direction: string = '';
 
   //
 
@@ -92,9 +122,18 @@ class LectureService {
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
   }
 
-  // 권장과정
+  // Learning page
   @observable
   requiredLecturesCount: number = 0;
+
+  @observable
+  inProgressCount: number = 0;
+
+  @observable
+  completedCount: number = 0;
+
+  @observable
+  retryCount: number = 0;
 
   constructor(
     lectureApi: LectureApi,
@@ -141,11 +180,133 @@ class LectureService {
     return (this._lectureViews as IObservableArray).peek();
   }
 
-  // @computed
-  // get preLectureViews() {
-  //   //
-  //   return (this._preLectureViews as IObservableArray).peek();
-  // }
+  @computed
+  get myLearningCards() {
+    //
+    return this._myLearningCards;
+  }
+
+  @computed
+  get totalMyLearningCardCount() {
+    //
+    return this._totalMyLearningCardCount;
+  }
+
+  @computed
+  get myStampCount() {
+    //
+    return this._myStampCount;
+  }
+
+  // Learning page
+
+  @action
+  async countMyStamp(denizenId: string) {
+    //
+    const count = await this.lectureApi.countMyStamp(denizenId);
+    runInAction(() => (this._myStampCount = count));
+  }
+
+  @action
+  clearMyLearningCard() {
+    //
+    this._totalMyLearningCardCount = 0;
+    this._myLearningCards = [];
+  }
+
+  @action
+  setCardQdo(cardQdo: CardQdo) {
+    runInAction(() => {
+      this.cardQdo = new CardQdo(cardQdo);
+    });
+  }
+
+  @action
+  async findMyLearningCardByQdo(firstCheck?: boolean) {
+    //
+    const findReulst = await this.lectureApi.findMyLearningLectures(
+      this.cardQdo
+    );
+
+    findReulst &&
+      runInAction(() => {
+        if (firstCheck) {
+          this._myLearningCards = findReulst.results || [];
+        } else {
+          this._myLearningCards = [
+            ...this._myLearningCards,
+            ...findReulst.results,
+          ];
+        }
+        this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
+      });
+  }
+
+  @action
+  async findMyLearningCardForExcel(cardQdo: CardQdo) {
+    //
+    const findList = await this.lectureApi.findMyLearningLectures(cardQdo);
+
+    const result: CardForUserViewModel[] = [];
+
+    runInAction(() => {
+      return findList.results.map((item) => {
+        result.push(new CardForUserViewModel(item));
+      });
+    });
+
+    return result;
+  }
+
+  @action
+  sortMyLearningTableViews(column: string, direction: Direction) {
+    // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
+    const propKey = convertToKeyInMyLearningTable(column);
+
+    this.column = propKey;
+    this.direction = direction;
+
+    if (direction === Direction.ASC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @action
+  selectOne(serviceId: string) {
+    this.selectedServiceIds = [...this.selectedServiceIds, serviceId];
+  }
+
+  @action
+  clearOne(serviceId: string) {
+    this.selectedServiceIds = this.selectedServiceIds.filter(
+      (selectedServiceId) => selectedServiceId !== serviceId
+    );
+  }
+
+  @action
+  selectAll() {
+    this.selectedServiceIds = this._myLearningCards.map(
+      (tableView) => tableView.id
+    );
+  }
+
+  @action
+  clearAll() {
+    this.selectedServiceIds = [];
+  }
+
+  @action
+  clearAllSelectedServiceIds() {
+    this.selectedServiceIds = [];
+  }
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 
@@ -171,8 +332,9 @@ class LectureService {
         orderBy,
       })) || new OffsetElementList<UserLectureCard>();
 
-    const lectureOffsetElementList =
-      new OffsetElementList<UserLectureCard>(response);
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
     const userLanguage = SkProfileService.instance.skProfile.language;
 
     runInAction(
@@ -514,14 +676,19 @@ class LectureService {
   }
 
   @action
-  async countRequiredLectures() {
-    const count = await countRequiredCards();
+  async countLearningTab() {
+    const countModel = await countLearningTab();
+    const requiredCount = await countRequiredCards();
 
-    if (count !== undefined) {
-      runInAction(() => {
-        this.requiredLecturesCount = count;
-      });
-    }
+    runInAction(() => {
+      this.inProgressCount = (countModel && countModel.inProgressCount) || 0;
+
+      this.requiredLecturesCount = requiredCount || 0;
+
+      this.completedCount = (countModel && countModel.completedCount) || 0;
+
+      this.retryCount = (countModel && countModel.retryCount) || 0;
+    });
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
@@ -775,6 +942,22 @@ const converToKey = (column: string): any => {
       return 'stampCount';
     case '등록일':
       return 'creationTime';
+    default:
+      return '';
+  }
+};
+
+export const convertToKeyInMyLearningTable = (column: string): any => {
+  switch (column) {
+    case '학습시간':
+      return 'learningTime';
+    case '학습완료일':
+      return 'passedTime';
+    case '최근학습일':
+    case '취소/미이수일':
+      return 'modifiedTime';
+    case '스탬프':
+      return 'stampCount';
     default:
       return '';
   }
