@@ -74,15 +74,13 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
           ) && (
-            <Link
-              to="#"
+            <NavLink
+              to="/community"
               className="item"
-              onClick={() =>
-                (window.location.href = `${window.location.origin}/community/`)
-              }
+              onClick={() => onClickMenu('community')}
             >
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
-            </Link>
+            </NavLink>
           )}
         </div>
       </div>
