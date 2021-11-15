@@ -93,6 +93,8 @@ body #root {
 .ui.button.free.complete {border:1px solid #777;color:#777;}
 .ui.button.free.bg2 {background: #777; color: #fff;}
 .ui.button.fix.bg.grey{ background: #777 !important;}
+.course-radio.task .task-post-btn { border-color: #777; color: #777; }
+.course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg);}
 
 /* Font */
 .sort-reult .section-count,
