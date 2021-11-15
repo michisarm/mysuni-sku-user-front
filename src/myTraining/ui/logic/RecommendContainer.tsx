@@ -40,6 +40,12 @@ const SwiperProps = {
   speed: 500,
 };
 
+interface RecommendCardList {
+  cardForUserViewRdos: UserLectureCard[];
+  channelId: string;
+  totalCardCount: number;
+}
+
 export function RecommendContainer() {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [channelOpened, setChannelOpend] = useState<boolean>(false);
@@ -50,22 +56,22 @@ export function RecommendContainer() {
   });
   useEffect(() => {
     // API 확인후 동작
-    // const axios = getAxios();
-    // axios
-    //   .get<UserLectureCard[]>(
-    //     `/api/lecture/cards/recommend/${selectedChannelId}`
-    //   )
-    //   .then(AxiosReturn)
-    //   .then((cardList) => {
-    //     if (cardList !== undefined) {
-    //       setCardList(
-    //         parseUserLectureCards(
-    //           cardList,
-    //           parseLanguage(SkProfileService.instance.skProfile.language)
-    //         )
-    //       );
-    //     }
-    //   });
+    const axios = getAxios();
+    axios
+      .get<RecommendCardList>(
+        `/api/lecture/cards/recommend/${selectedChannelId}`
+      )
+      .then(AxiosReturn)
+      .then((cardList) => {
+        if (cardList !== undefined) {
+          setCardList(
+            parseUserLectureCards(
+              cardList.cardForUserViewRdos,
+              parseLanguage(SkProfileService.instance.skProfile.language)
+            )
+          );
+        }
+      });
   }, [selectedChannelId]);
 
   return (
