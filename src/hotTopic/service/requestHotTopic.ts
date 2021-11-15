@@ -57,7 +57,7 @@ async function setHotTopicDetailWithCards(
       learningTime: card.learningTime,
       name: parsePolyglotString(card.name),
       simpleDescription: parsePolyglotString(card.simpleDescription),
-      starCount: card.starCount,
+      starCount: Math.floor(card.starCount * 10) / 10,
       passedStudentCount: card.passedStudentCount,
       thumbImagePath: card.thumbImagePath,
       thumbnailImagePath: card.thumbnailImagePath,

@@ -2,6 +2,7 @@ import { requestHotTopic } from 'hotTopic/service/requestHotTopic';
 import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Ref, Segment, Sticky } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import { HotTopicCardListContainer } from '../container/HotTopicCardListContainer';
 import { HotTopicTitleContainer } from '../container/HotTopicTitleContainer';
 
@@ -17,7 +18,7 @@ export function HotTopicDetailPage() {
 
   const contextRef = useRef(null);
   return (
-    <section className="content topic-wrap">
+    <ContentLayout className="topic-wrap" breadcrumb={[{ text: 'Hot Topic' }]}>
       <Ref innerRef={contextRef}>
         <Segment className="full">
           <Sticky context={contextRef}>
@@ -26,6 +27,6 @@ export function HotTopicDetailPage() {
           <HotTopicCardListContainer />
         </Segment>
       </Ref>
-    </section>
+    </ContentLayout>
   );
 }
