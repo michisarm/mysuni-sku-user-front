@@ -119,6 +119,10 @@ const MainBanner: React.FC<Props> = (Props) => {
   const { bannerService } = Props;
   const { banners, intervalTime } = bannerService!;
 
+  // swiper instance
+  const [swiper, setSwiper] = useState<any>(null);
+  const [play, setPlay] = useState(true); // auto play 기준
+
   const DEFAULT_BANNER_INTERVAL = 7000;
 
   useEffect(() => {
@@ -130,7 +134,7 @@ const MainBanner: React.FC<Props> = (Props) => {
   }, [bannerService]);
 
   const params = {
-    loop: true,
+    loop: false,
     effect: 'slide',
     autoplay: {
       delay: DEFAULT_BANNER_INTERVAL,
@@ -144,6 +148,7 @@ const MainBanner: React.FC<Props> = (Props) => {
       prevEl: '.navi .swiper-button-prev',
       nextEl: '.navi .swiper-button-next',
     },
+    getSwiper: setSwiper,
   };
 
   const [clickedBanner, setClickedBanner] = useState({
@@ -194,6 +199,24 @@ const MainBanner: React.FC<Props> = (Props) => {
     });
   };
 
+  useEffect(() => {
+    if (
+      swiper !== null &&
+      swiper.autoplay !== undefined &&
+      typeof swiper === 'object'
+    ) {
+      if (play) {
+        swiper.autoplay.start();
+      } else {
+        swiper.autoplay.stop();
+      }
+    }
+  }, [swiper, play]);
+
+  const onClickAutoPlayBtn = () => {
+    setPlay(!play);
+  };
+
   return banners.length > 0 ? (
     <MainBannerWrapper>
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
@@ -212,7 +235,8 @@ const MainBanner: React.FC<Props> = (Props) => {
         <div className="swiper-navi-wrap">
           <div className="swiper-pagination" />
           <div className="btn-play">
-            <Icon name="pause" />
+            {!play && <Icon name="play" onClick={onClickAutoPlayBtn} />}
+            {play && <Icon name="pause" onClick={onClickAutoPlayBtn} />}
           </div>
         </div>
       </div>
