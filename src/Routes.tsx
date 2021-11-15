@@ -62,10 +62,10 @@ class Routes extends PureComponent {
         return;
       }
       if (
-        window.location.pathname !== '/suni-community/main/my-communities' &&
+        window.location.pathname !== '/community/main/my-communities' &&
         window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
       ) {
-        window.location.href = '/suni-community/main/my-communities';
+        window.location.href = '/community/main/my-communities';
       }
     }
   }
@@ -109,10 +109,7 @@ class Routes extends PureComponent {
                       <Route path="/approval" component={ApprovalRoutes} />
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />
-                      <Route
-                        path="/suni-community/"
-                        component={CommunityRoutes}
-                      />
+                      <Route path="/community/" component={CommunityRoutes} />
                       <Route path="/search" component={SearchRoutes} />
                       <Route path="/extra" component={ExtraRoutes} />
 

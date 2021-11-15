@@ -21,8 +21,8 @@ const Routes = function Routes() {
   console.log('ddasdsadsa');
   return (
     <Switch>
-      <Route path="/suni-community/" component={MainRoutes} />
-      <Route path="/community/my-profile" component={MyProfileRoutes} />
+      <Route path="/community" component={MainRoutes} />
+      {/* <Route path="/community/my-profile" component={MyProfileRoutes} />
       <Route path="/community/profile/:profileId" component={ProfileRoutes} />
       <Route
         exact
@@ -34,7 +34,7 @@ const Routes = function Routes() {
         component={CommunityAdminRoutes}
       />
       <Route path="/community/:communityId" component={CommunityRoutes} />
-      <Route component={NotFoundPage} />
+      <Route component={NotFoundPage} /> */}
     </Switch>
   );
 };
