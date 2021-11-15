@@ -99,6 +99,16 @@ function MainChallengingBadgeContainer() {
         />
         <div className="badge-listbox">
           <div className="badge-list-wrap">
+            {challengeBadges.length < 1 && (
+              <div className="badge-no-data">
+                <span>
+                  <PolyglotText
+                    id="home-ChallengeBadges-도전뱃지"
+                    defaultString="도전중인 Badge가 없습니다."
+                  />
+                </span>
+              </div>
+            )}
             {challengeBadges.map((badge: MyBadge, index: number) => {
               return (
                 <a
@@ -131,7 +141,9 @@ function MainChallengingBadgeContainer() {
         </div>
       </div>
       <div className="section-body">
-        <div className="badge-banner-wrap">
+        <div
+          className={`badge-banner-wrap ${badgeMyCount === 0 && 'no-badge'}`}
+        >
           <div className="badge-txt-box">
             {badgeMyCount > 0 && (
               <div
@@ -150,7 +162,7 @@ function MainChallengingBadgeContainer() {
                 className="badge-txt"
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
-                    '현재 획득한 뱃지가 없습니다.</br>학습을 통해 뱃지를 획득하고 지식과 Skill을 인증 받으세요!',
+                    '<div className="badge-txt-big"><strong>현재 획득한 뱃지가 없습니다.</strong></div><div className="badge-txt-sub">학습을 통해 뱃지를 획득하고 <br/>지식과 Skill을 인증 받으세요!</div>',
                     'main-noissued-badge',
                     { badgeMyCount: badgeMyCount.toString() }
                   ),
