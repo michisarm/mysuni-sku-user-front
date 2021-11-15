@@ -17,6 +17,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import { SkProfileService } from 'profile/stores';
 import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
 import certificationPaths from 'certification/routePaths';
+import badgeRoutePaths from 'certification/routePaths';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -100,7 +101,13 @@ function MainChallengingBadgeContainer() {
           <div className="badge-list-wrap">
             {challengeBadges.map((badge: MyBadge, index: number) => {
               return (
-                <a className="badge-col-list" key={badge.id}>
+                <a
+                  className="badge-col-list"
+                  key={badge.id}
+                  onClick={() => {
+                    history.push(badgeRoutePaths.badgeDetailPage(badge.id));
+                  }}
+                >
                   {/* 아래 아이콘('.cate-icon')의 bg컬러를 카테고리별 벳지컬러에 맞춰주시면 됩니다(어드민 내 테마 컬러) */}
                   <div className="badge-col cate-sign">
                     <i
