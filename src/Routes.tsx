@@ -62,10 +62,11 @@ class Routes extends PureComponent {
         return;
       }
       if (
-        window.location.pathname !== '/community/main/my-communities' &&
+        window.location.pathname !==
+          '/suni-main/community/main/my-communities' &&
         window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
       ) {
-        window.location.href = '/community/main/my-communities';
+        window.location.href = '/suni-main/community/main/my-communities';
       }
     }
   }

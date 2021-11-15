@@ -21,7 +21,7 @@ const Routes = function Routes() {
   console.log('ddasdsadsa');
   return (
     <Switch>
-      <Route path="/community" component={MainRoutes} />
+      <Route path="/suni-main/community" component={MainRoutes} />
       {/* <Route path="/community/my-profile" component={MyProfileRoutes} />
       <Route path="/community/profile/:profileId" component={ProfileRoutes} />
       <Route
