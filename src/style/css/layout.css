@@ -1,13 +1,15 @@
 /* Site Header */
-#root section.header.main-sty2.lms-main { z-index: 400; }
-.g-info-new .go-learn.active{background-position-y : 1px !important}
+#root section.header.main-sty2.lms-main .breadcrumbs { display:block }
+
+/* popup */
+.g-info-new .go-learn.active{ background-position-y : 1px !important }
 
 /* 알림 */
 .lms-alarm-item { border-top: 0; border-bottom: 1px solid #ddd; }
 
 /* BG Color */
 body {
-    background: unset !important;
+    background: #fff;
 }
 body #root {
     background: #fff;
@@ -78,7 +80,6 @@ body #root {
 }
 .ui.button.post { border: #777 1px solid; color: #777; }
 .ui.button.post .icon.filter2 { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
-.ui.button.post.delete { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
 .ui.button.excel-down .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
 .challenge-wrap .challenge-badge .right-area .badge-title .path {
     color: #777;
@@ -88,6 +89,10 @@ body #root {
 .ui.button.pop2.d { background: #777; }
 .ui.button.btn-blue2 { color: #777 !important; }
 .ui.button.btn-blue2 .icon.morelink {color: #777; }
+.ui.modal.size-mini .actions.normal .button.secondary { background: #777; }
+.ui.button.free.complete {border:1px solid #777;color:#777;}
+.ui.button.free.bg2 {background: #777; color: #fff;}
+.ui.button.fix.bg.grey{ background: #777 !important;}
 
 /* Font */
 .sort-reult .section-count,

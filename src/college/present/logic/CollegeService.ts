@@ -60,12 +60,22 @@ export default class CollegeService {
   @observable
   banner: CollegeBanner[] = [];
 
+  @observable
+  detailAllColleges: CollegeModel[] = [];
+
   constructor(
     collegeApi: CollegeApi = CollegeApi.instance,
     channelApi: ChannelApi = ChannelApi.instance
   ) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
+    this.findAllCollegeAndChannels();
+  }
+
+  @action
+  async findAllCollegeAndChannels(): Promise<void> {
+    //
+    this.detailAllColleges = await this.collegeApi.findAllCollegeAndChannels();
   }
 
   @computed

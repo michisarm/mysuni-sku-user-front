@@ -50,11 +50,22 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     badgeService!.findAllMyBadges(myBadgeRdo);
   }
 
-  init() {
+  async init() {
     //
     const { myLearningSummaryService } = this.props;
+    const {
+      findMyLearningSummaryByYear,
+      findInstructTimeSummary,
+      getDisplayCompanyLearningTime,
+      getDisplayMySuniLeaningTime,
+      getDisplayTotalLearningTime,
+    } = myLearningSummaryService!;
 
-    myLearningSummaryService!.findMyLearningSummary();
+    await findMyLearningSummaryByYear();
+    await findInstructTimeSummary();
+    getDisplayCompanyLearningTime();
+    getDisplayMySuniLeaningTime();
+    getDisplayTotalLearningTime();
   }
 
   onClickMyBadge() {
@@ -81,7 +92,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     } = this.props;
     const { skProfile } = skProfileService!;
     // const { member } = skProfile;
-    const { myLearningSummary } = myLearningSummaryService!;
+    const { displayTotalLearningTime } = myLearningSummaryService!;
     const myBadgeCount = badgeService!.allBadgeCount.issuedCount;
 
     return (
@@ -96,12 +107,10 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          {myLearningSummary.displayTotalLearningTimeSummary !== 0 && (
-            <ContentHeaderTotalTimeItem
-              minute={myLearningSummary.displayTotalLearningTimeSummary}
-            />
+          {displayTotalLearningTime !== 0 && (
+            <ContentHeaderTotalTimeItem minute={displayTotalLearningTime} />
           )}
-          {myLearningSummary.displayTotalLearningTimeSummary === 0 && (
+          {displayTotalLearningTime === 0 && (
             <ContentHeader.WaitingItem
               onClickRecommend={() => {
                 history.push(lectureRoutePaths.recommend());

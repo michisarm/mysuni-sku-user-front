@@ -17,6 +17,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import { SkProfileService } from 'profile/stores';
 import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
 import certificationPaths from 'certification/routePaths';
+import badgeRoutePaths from 'certification/routePaths';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -98,9 +99,25 @@ function MainChallengingBadgeContainer() {
         />
         <div className="badge-listbox">
           <div className="badge-list-wrap">
+            {challengeBadges.length < 1 && (
+              <div className="badge-no-data">
+                <span>
+                  <PolyglotText
+                    id="home-ChallengeBadges-도전뱃지"
+                    defaultString="도전중인 Badge가 없습니다."
+                  />
+                </span>
+              </div>
+            )}
             {challengeBadges.map((badge: MyBadge, index: number) => {
               return (
-                <a className="badge-col-list" key={badge.id}>
+                <a
+                  className="badge-col-list"
+                  key={badge.id}
+                  onClick={() => {
+                    history.push(badgeRoutePaths.badgeDetailPage(badge.id));
+                  }}
+                >
                   {/* 아래 아이콘('.cate-icon')의 bg컬러를 카테고리별 벳지컬러에 맞춰주시면 됩니다(어드민 내 테마 컬러) */}
                   <div className="badge-col cate-sign">
                     <i
@@ -124,7 +141,9 @@ function MainChallengingBadgeContainer() {
         </div>
       </div>
       <div className="section-body">
-        <div className="badge-banner-wrap">
+        <div
+          className={`badge-banner-wrap ${badgeMyCount === 0 && 'no-badge'}`}
+        >
           <div className="badge-txt-box">
             {badgeMyCount > 0 && (
               <div
@@ -143,7 +162,7 @@ function MainChallengingBadgeContainer() {
                 className="badge-txt"
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
-                    '현재 획득한 뱃지가 없습니다.</br>학습을 통해 뱃지를 획득하고 지식과 Skill을 인증 받으세요!',
+                    '<div className="badge-txt-big"><strong>현재 획득한 뱃지가 없습니다.</strong></div><div className="badge-txt-sub">학습을 통해 뱃지를 획득하고 <br/>지식과 Skill을 인증 받으세요!</div>',
                     'main-noissued-badge',
                     { badgeMyCount: badgeMyCount.toString() }
                   ),

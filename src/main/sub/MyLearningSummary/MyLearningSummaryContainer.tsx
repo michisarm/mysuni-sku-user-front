@@ -1,40 +1,32 @@
-import React, { Component, createRef, MouseEvent } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import moment from 'moment';
-import { Button } from 'semantic-ui-react';
-import { SkProfileService } from 'profile/stores';
-import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
-import { BadgeService } from 'lecture/stores';
-import { HeaderWrapperView } from './MyLearningSummaryElementsView';
-import mainRoutePaths from '../../routePaths';
-import lectureRoutePaths from '../../../lecture/routePaths';
-import supportRoutePaths from '../../../board/routePaths';
-import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
-import SkProfileModel from '../../../profile/model/SkProfileModel';
-import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
-import {
-  getBadgeLearningTimeItem,
-  onLearningObjectivesItem,
-  setBadgeLearningTimeItem,
-} from '../PersonalBoard/store/PersonalBoardStore';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
-import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
+import { BadgeService } from 'lecture/stores';
+import { inject, observer } from 'mobx-react';
+import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
+import { SkProfileService } from 'profile/stores';
+import React, { Component, createRef, MouseEvent } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
+import supportRoutePaths from '../../../board/routePaths';
+import lectureRoutePaths from '../../../lecture/routePaths';
+import SkProfileModel from '../../../profile/model/SkProfileModel';
+import mainRoutePaths from '../../routePaths';
 import {
   requestLearningObjectives,
   saveLearningObjectives,
 } from '../PersonalBoard/service/useLearningObjectives';
-import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
-import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
-import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
 import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
+import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
+import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
+import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { InProgressLearning } from './InProgressLearning';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
+import { InProgressLearning } from './InProgressLearning';
+import { HeaderWrapperView } from './MyLearningSummaryElementsView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -108,7 +100,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   requestMyLearningSummary() {
     const { myLearningSummaryService } = this.props;
-    myLearningSummaryService!.findLectureTimeSummary();
+    myLearningSummaryService!.findMyLearningSummaryByYear();
     myLearningSummaryService!.findInstructTimeSummary();
     // badgeService!.findAllBadgeCount();
   }
@@ -174,10 +166,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     } = this.state;
     const { myLearningSummaryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
-    const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
-
-    const totalLectureTime =
-      (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
 
     // 21-11-12 김민준 learning page 개선
     // const totalAccruedLearningTime =
@@ -200,7 +188,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     // }
 
     const attendEventItem = getAttendEventItem();
-
     return (
       <>
         <HeaderWrapperView>
@@ -272,13 +259,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         </HeaderWrapperView>
 
         {skProfile.companyCode && (
-          <PersonalBoardContainer
-            companyCode={skProfile.companyCode}
-            isVisible={isPersonalBoardContainerVisible}
-            close={() =>
-              this.setState({ isPersonalBoardContainerVisible: false })
-            }
-          />
+          <div ref={this.personalBoardContainer}>
+            <PersonalBoardContainer
+              companyCode={skProfile.companyCode}
+              isVisible={isPersonalBoardContainerVisible}
+              close={() =>
+                this.setState({ isPersonalBoardContainerVisible: false })
+              }
+            />
+          </div>
         )}
 
         <AttendanceModalContainer

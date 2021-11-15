@@ -138,3 +138,28 @@
 .community-slide-wrap .icon.prev-on {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg) !important;
 }
+
+/* Category poopup */
+.g-menu-detail .layer .table-css .row.head .cell:last-of-type {
+    border-left: 1px solid #ddd;
+}
+.g-menu-detail .layer .table-css .row.head .cell {
+    border-bottom: 1px solid #ddd;
+}
+.g-menu-detail .layer .table-css .row.body .cell:first-of-type button.active,
+.g-menu-detail .layer .table-css .row.body .cell:first-of-type button:hover {
+    background: #f6f6f6 !important;
+}
+
+/* profile card */
+.tag-info-area.sty2 .tag-area{padding-bottom: 16px}
+
+/* college 소개 */
+#root section.content .tab-menu2 {
+    border-bottom: 1px solid #ddd;
+}
+#root section.content .tab-menu2 .fixed.top.sticky {
+    box-shadow: -2px 5px 20px -6px rgba(76, 76, 76, 0.2);
+    border-bottom: 0;
+}
+.introduction .providers { background: #f6f6f6; }
