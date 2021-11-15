@@ -42,7 +42,7 @@ function ItemView(props: MainMyCommunitiesItem) {
       </div>
       <Link
         className="community-main-left-list"
-        to={`/community/${communityId}`}
+        to={`/suni-community/community/${communityId}`}
         target="_blank"
       >
         <div className="community-main-left-h3">

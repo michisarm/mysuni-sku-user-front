@@ -39,9 +39,11 @@ export function MainRoutes() {
   );
 }
 
-export const MAIN_PATH = '/community/main';
-export const MAIN_MYCOMMUNITIES_PATH = '/community/main/my-communities';
-export const MAIN_OPENCOMMUNITIES_PATH = '/community/main/open-communities';
-export const MAIN_MYFEED_PATH = '/community/main/my-feed';
-export const MAIN_FOLLOWFEED_PATH = '/community/main/follow-feed';
-export const MAIN_BOOKMARK_PATH = '/community/main/bookmark';
+export const MAIN_PATH = '/suni-main/community/main';
+export const MAIN_MYCOMMUNITIES_PATH =
+  '/suni-main/community/main/my-communities';
+export const MAIN_OPENCOMMUNITIES_PATH =
+  '/suni-main/community/main/open-communities';
+export const MAIN_MYFEED_PATH = '/suni-main/community/main/my-feed';
+export const MAIN_FOLLOWFEED_PATH = '/suni-main/community/main/follow-feed';
+export const MAIN_BOOKMARK_PATH = '/suni-main/community/main/bookmark';
