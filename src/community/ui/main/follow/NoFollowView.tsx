@@ -24,7 +24,7 @@ export function NoFollowView() {
             <br />
             커뮤니티에서 만난 학습자들을 팔로우 해보세요!
           </div>
-          <Link to="/suni-community/main/open-communities">
+          <Link to="/community/main/open-communities">
             <Button icon className="right btn-blue2">
               Community List 바로가기
               <Icon className="morelink" />
