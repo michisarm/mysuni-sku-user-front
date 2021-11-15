@@ -1,7 +1,11 @@
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
+import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
-import { MyTrainingTableViewModel } from 'myTraining/model';
 import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { RetryListPageTableView } from 'myTraining/ui/view/table/RetryListPageTableView';
@@ -14,18 +18,18 @@ import { Direction, toggleDirection } from '../../../model/Direction';
 import { Order } from '../../../model/Order';
 import { MyTrainingRouteParams } from '../../../routeParams';
 import { MyTrainingService } from '../../../stores';
-import { MyLearningContentType } from '../../../ui/model';
 import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
 import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
 
 interface RetryListPageContainerProps {
+  lectureService?: LectureService;
   myTrainingService?: MyTrainingService;
   filterBoxService?: FilterBoxService;
 }
 
 function RetryListPageContainer({
-  myTrainingService,
+  lectureService,
   filterBoxService,
 }: RetryListPageContainerProps) {
   //
@@ -35,14 +39,11 @@ function RetryListPageContainer({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [deleteFinishModal, setDeleteFinishModal] = useState<boolean>(false);
-  const [noCheckedModal, setNoCheckedModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { scrollSave } = useScrollMove();
+  const { scrollSave, scrollOnceMove } = useScrollMove();
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
   const initialOrders = headerColumns
@@ -53,107 +54,169 @@ function RetryListPageContainer({
     }));
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
-  const { scrollOnceMove } = useScrollMove();
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
+  const {
+    myLearningCards,
+    totalMyLearningCardCount,
+    selectedServiceIds,
+    cardQdo,
+    setCardQdo,
+    findMyLearningCardByQdo,
+    clearMyLearningCard,
+    clearOne,
+    selectOne,
+    clearAllSelectedServiceIds,
+  } = lectureService!;
+
+  // const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+  //   filterBoxService!;
 
   useRequestFilterCountView();
 
-  useEffect(() => {
-    myTrainingService!.clearAllTableViews();
-    myTrainingService!.initFilterRdo(contentType);
+  const clearQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.LearningCancel;
+    newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
 
-    if (params.pageNo === '1') {
-      requestMyTrainings();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset: 0, limit });
-
-    return () => {};
-  }, [contentType]);
-
-  const requestMyTrainings = async () => {
-    setIsLoading(true);
-    if (contentType === MyLearningContentType.Enrolled) {
-      const isEmpty = await myTrainingService!.findEnrollTableViews();
-      setResultEmpty(isEmpty);
-
-      setIsLoading(false);
-    } else {
-      const isEmpty = await myTrainingService!.findAllTableViews();
-      setResultEmpty(isEmpty);
-      checkShowSeeMore();
-      setIsLoading(false);
-    }
+    return newCardQdo;
   };
 
-  const requestmyTrainingsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await myTrainingService!.findAllTableViewsWithPage(offset);
-    checkShowSeeMore();
-    setIsLoading(false);
-    scrollOnceMove();
+  useEffect(() => {
+    clearMyLearningCard();
+
+    if (selectedServiceIds && selectedServiceIds.length > 0) {
+      clearAllSelectedServiceIds();
+    }
+    const newQdo = clearQdo();
+
+    requestmyTrainingsWithPage(newQdo, true);
+
+    return () => {};
+  }, []);
+
+  const requestmyTrainingsWithPage = async (
+    qdo: CardQdo,
+    firstCheck?: boolean
+  ) => {
+    await setIsLoading(true);
+    await setCardQdo(qdo);
+    await findMyLearningCardByQdo(firstCheck);
+    await checkShowSeeMore();
+    await setIsLoading(false);
+    await scrollOnceMove();
   };
 
   // ------------------------------------------------- header -------------------------------------------------
 
   // -------------------------------------------- header - filter --------------------------------------------
 
-  useEffect(() => {
-    if (showResult) {
-      myTrainingService!.setFilterRdoByConditions(conditions);
-      requestMyTrainingsByConditions();
-    }
-  }, [showResult]);
+  // useEffect(() => {
+  //   if (showResult) {
+  //     myTrainingService!.setFilterRdoByConditions(conditions);
+  //     requestMyTrainingsByConditions();
+  //   }
+  // }, [showResult]);
 
-  const onClickOpenFilter = () => {
-    setOpenFilter(!openFilter);
-  };
+  // const onClickOpenFilter = () => {
+  //   setOpenFilter(!openFilter);
+  // };
 
-  const filterOptions = {
-    openFilter,
-    onClickOpen: onClickOpenFilter,
-    filterCount,
-  };
+  // const filterOptions = {
+  //   openFilter,
+  //   onClickOpen: onClickOpenFilter,
+  //   filterCount,
+  // };
 
-  const requestMyTrainingsByConditions = async () => {
-    setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
-    setResultEmpty(isEmpty);
-    checkShowSeeMore();
-    setIsLoading(false);
-    history.replace('./1');
-  };
+  // const requestMyTrainingsByConditions = async () => {
+  //   setIsLoading(true);
+
+  //   const newQdo = cardQdo;
+  //   newQdo.setBycondition(conditions);
+  //   await setCardQdo(newQdo);
+
+  //   await findMyLearningCardByQdo();
+  //   const { myLearningCards } = lectureService!;
+  //   const isEmpty =
+  //     (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+  //   await setResultEmpty(isEmpty);
+  //   await checkShowSeeMore();
+  //   setIsLoading(false);
+  //   history.replace('./1');
+  // };
+
+  // useEffect(() => {
+  //   if (showResult) {
+  //     requestMyTrainingsByConditions();
+  //   }
+  // }, [showResult]);
 
   // ------------------------------------------------- table -------------------------------------------------
 
+  const checkShowSeeMore = (): void => {
+    const { myLearningCards, totalMyLearningCardCount } = lectureService!;
+
+    if (myLearningCards.length >= totalMyLearningCardCount) {
+      setShowSeeMore(false);
+      return;
+    }
+    if (totalMyLearningCardCount <= PAGE_SIZE) {
+      setShowSeeMore(false);
+      return;
+    }
+
+    setShowSeeMore(true);
+  };
+
+  const onClickSeeMore = () => {
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Learning');
+    }, 1000);
+
+    const currentPageNo = parseInt(params.pageNo, 10);
+    const nextPageNo = currentPageNo + 1;
+
+    cardQdo.limit = PAGE_SIZE;
+    cardQdo.offset = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage(cardQdo);
+
+    history.replace(`./${nextPageNo}`);
+  };
+
+  const onCheckAll = useCallback(
+    (e: any, data: any) => {
+      const { clearAll, selectAll } = lectureService!;
+
+      if (myLearningCards.length === selectedServiceIds.length) {
+        clearAll();
+        return;
+      }
+
+      selectAll();
+    },
+    [myLearningCards, selectedServiceIds]
+  );
+
+  const onCheckOne = useCallback(
+    (e: any, data: any) => {
+      if (selectedServiceIds.includes(data.value)) {
+        clearOne(data.value);
+        return;
+      }
+
+      selectOne(data.value);
+    },
+    [selectedServiceIds, clearOne, selectOne]
+  );
+
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      myTrainingService!.sortTableViews(column, direction);
+      lectureService!.sortMyLearningTableViews(column, direction);
     },
     [contentType]
   );
-
-  const getDireciton = (column: string) => {
-    return orders.filter((order) => order.column === column)[0].direction;
-  };
-
-  const getOrderIcon = (column: string, fromStyle: boolean = false) => {
-    if (fromStyle) {
-      return getDireciton(column) === Direction.DESC
-        ? 'list-down16'
-        : 'list-up16';
-    }
-
-    return getDireciton(column) === Direction.DESC
-      ? '내림차순 정렬'
-      : '오름차순 정렬';
-  };
 
   const handleClickSort = useCallback(
     (column: string) => {
@@ -170,45 +233,27 @@ function RetryListPageContainer({
     [orders, onClickSort]
   );
 
-  const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  const getDireciton = (column: string) =>
+    orders.filter((order) => order.column === column)[0].direction;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
-      setShowSeeMore(false);
-      return;
-    }
-    if (myTrainingTableCount <= PAGE_SIZE) {
-      setShowSeeMore(false);
-      return;
+  const getOrderIcon = (column: string, fromStyle: boolean = false) => {
+    if (fromStyle) {
+      return getDireciton(column) === Direction.DESC
+        ? 'list-down16'
+        : 'list-up16';
     }
 
-    setShowSeeMore(true);
-  };
-
-  const onClickSeeMore = () => {
-    setTimeout(() => {
-      ReactGA.pageview(window.location.pathname, [], 'Learning');
-    }, 1000);
-
-    const currentPageNo = parseInt(params.pageNo);
-    const nextPageNo = currentPageNo + 1;
-
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset, limit });
-
-    history.replace(`./${nextPageNo}`);
+    return getDireciton(column) === Direction.DESC
+      ? '내림차순 정렬'
+      : '오름차순 정렬';
   };
 
   // ------------------------------------------------- contents -------------------------------------------------
-  const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
+
+  const onViewDetail = (e: any, myTraining: CardForUserViewModel) => {
     e.preventDefault();
 
-    const cardId =
-      myTraining.serviceType === 'Card'
-        ? myTraining.serviceId
-        : myTraining.cardId;
+    const cardId = myTraining.id;
 
     const params: LectureParams = {
       cardId,
@@ -229,10 +274,10 @@ function RetryListPageContainer({
     <>
       {
         <TabHeader
-          totalCount={myTrainingTableCount}
-          filterCount={filterCount}
+          totalCount={totalMyLearningCardCount}
+          // filterCount={filterCount}
           resultEmpty={resultEmpty}
-          filterOpotions={filterOptions}
+          // filterOpotions={filterOptions}
         >
           <div
             className="list-number"
@@ -241,20 +286,20 @@ function RetryListPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (myTrainingTableCount || 0).toString(),
+                  totalCount: (totalMyLearningCardCount || 0).toString(),
                 }
               ),
             }}
           />
         </TabHeader>
       }
-      {(myTrainingTableViews && myTrainingTableViews.length > 0 && (
+      {(myLearningCards && myLearningCards.length > 0 && (
         <>
           {(!resultEmpty && (
             <RetryListPageTableView
-              totalCount={myTrainingTableCount}
+              totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
-              learningList={myTrainingTableViews}
+              learningList={myLearningCards}
               showSeeMore={showSeeMore}
               onClickRow={onViewDetail}
               onClickSeeMore={onClickSeeMore}
@@ -374,10 +419,7 @@ function RetryListPageContainer({
 }
 
 export default inject(
-  mobxHelper.injectFrom(
-    'shared.filterBoxService',
-    'myTraining.myTrainingService'
-  )
+  mobxHelper.injectFrom('shared.filterBoxService', 'lecture.lectureService')
 )(observer(RetryListPageContainer));
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 999999;

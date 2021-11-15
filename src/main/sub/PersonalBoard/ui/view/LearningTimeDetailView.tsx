@@ -1,56 +1,54 @@
+import { PersonalBoardDoughnutChartView } from '@sku/chart';
 import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
-import { PersonalBoardDoughnutChartView } from '@sku/chart';
+import { InstructorLearningTimeSummary } from 'personalcube/personalcube/model/InstructorLearningTimeSummary';
 import React, { useMemo } from 'react';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import { MyLearningSummaryService } from 'myTraining/stores';
-import { useTotalLearningTimeRdo } from '../../model/TotalLearningTimeRdo';
-import {
-  isMySuniCollege,
-  useAllColleges,
-} from '../../../../../shared/service/requestAllColleges';
 
 interface Props {
   showApl: boolean;
+  mySuniLearningTime: number;
+  myCompanyLearningTime: number;
+  instructorTimeSummary: InstructorLearningTimeSummary | undefined;
+  aplTime: number;
 }
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 type ChartDataItem = { label: string; value: number };
 
 function LearningTimeDetailView(props: Props) {
-  const { showApl } = props;
-
-  const instructTimeSummary =
-    MyLearningSummaryService.instance._instructTimeSummary;
-
-  const totalLearningTimeRdo = useTotalLearningTimeRdo();
-  const allColleges = useAllColleges();
-
   const {
-    collegeLearningTimes,
+    showApl,
+    mySuniLearningTime,
     myCompanyLearningTime,
-    accumulatedLearningTime,
-  } = totalLearningTimeRdo;
+    instructorTimeSummary,
+    aplTime,
+  } = props;
 
-  const suniLearningTime = useMemo(
-    () =>
-      collegeLearningTimes
-        .filter((c) =>
-          allColleges.filter(isMySuniCollege).some((d) => d.id === c.collegeId)
-        )
-        .reduce<number>((p, c) => p + c.learningTime, 0),
-    [collegeLearningTimes]
-  );
+  // const totalLearningTimeRdo = useTotalLearningTimeRdo();
+  // const allColleges = useAllColleges();
+
+  // const { collegeLearningTimes } = totalLearningTimeRdo;
+
+  // const suniLearningTime = useMemo(
+  //   () =>
+  //     collegeLearningTimes
+  //       .filter((c) =>
+  //         allColleges.filter(isMySuniCollege).some((d) => d.id === c.collegeId)
+  //       )
+  //       .reduce<number>((p, c) => p + c.learningTime, 0),
+  //   [collegeLearningTimes]
+  // );
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
       return [
         {
           label: 'mySUNI',
-          value: suniLearningTime || 0,
+          value: mySuniLearningTime || 0,
         },
         {
           label: '관계사',
@@ -60,18 +58,20 @@ function LearningTimeDetailView(props: Props) {
           label: '강의시간',
           // value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
           value:
-            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
+            (instructorTimeSummary &&
+              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
+            0,
         },
         {
           label: '개인학습',
-          value: accumulatedLearningTime || 0,
+          value: aplTime || 0,
         },
       ];
     } else {
       return [
         {
           label: 'mySUNI',
-          value: suniLearningTime || 0,
+          value: mySuniLearningTime || 0,
         },
         {
           label: '관계사',
@@ -80,15 +80,17 @@ function LearningTimeDetailView(props: Props) {
         {
           label: '강의시간',
           value:
-            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
+            (instructorTimeSummary &&
+              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
+            0,
         },
       ];
     }
   }, [
-    instructTimeSummary,
-    suniLearningTime,
+    mySuniLearningTime,
     myCompanyLearningTime,
-    accumulatedLearningTime,
+    instructorTimeSummary,
+    aplTime,
   ]);
 
   const timeDataBoolean = useMemo<boolean[]>(() => {
@@ -118,10 +120,6 @@ function LearningTimeDetailView(props: Props) {
                     </h3>
                   </a>
                 }
-                suniLearningTime={suniLearningTime}
-                myCompanyLearningTime={myCompanyLearningTime}
-                accumulatedLearningTime={accumulatedLearningTime}
-                collegeLearningTimes={collegeLearningTimes}
               />
               <span
                 dangerouslySetInnerHTML={{
@@ -156,7 +154,7 @@ function LearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(suniLearningTime / 60)}
+                          {Math.floor(mySuniLearningTime / 60)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -165,7 +163,7 @@ function LearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(suniLearningTime % 60)}
+                          {Math.floor(mySuniLearningTime % 60)}
                           <em>
                             <PolyglotText
                               defaultString="m"
@@ -213,8 +211,8 @@ function LearningTimeDetailView(props: Props) {
                       <div>
                         <strong>
                           {Math.floor(
-                            (instructTimeSummary &&
-                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime /
+                            (instructorTimeSummary &&
+                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime /
                                 60) ||
                               0
                           )}
@@ -227,8 +225,8 @@ function LearningTimeDetailView(props: Props) {
                         </strong>
                         <strong>
                           {Math.floor(
-                            (instructTimeSummary &&
-                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime %
+                            (instructorTimeSummary &&
+                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime %
                                 60) ||
                               0
                           )}
@@ -251,7 +249,7 @@ function LearningTimeDetailView(props: Props) {
                         </em>
                         <div>
                           <strong>
-                            {Math.floor(accumulatedLearningTime / 60)}
+                            {Math.floor(aplTime / 60)}
                             <em>
                               <PolyglotText
                                 defaultString="h"
@@ -260,7 +258,7 @@ function LearningTimeDetailView(props: Props) {
                             </em>
                           </strong>
                           <strong>
-                            {Math.floor(accumulatedLearningTime % 60)}
+                            {Math.floor(aplTime % 60)}
                             <em>
                               <PolyglotText
                                 defaultString="m"

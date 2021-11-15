@@ -1,5 +1,4 @@
 import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
-import MyLearningSummaryModal from 'myTraining/ui/logic/MyLearningSummaryModal';
 import React, { useEffect } from 'react';
 import { useCollegeTopChartItem } from '../../store/PersonalBoardStore';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';

@@ -19,6 +19,7 @@ import { useRequestLearningSummary } from '../../service/useRequestLearningSumma
 import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { patronInfo } from '@nara.platform/dock';
+import { initial } from 'lodash';
 
 interface MyTrainingHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -36,7 +37,13 @@ function MyTrainingHeaderContainer({
   badgeService,
 }: MyTrainingHeaderContainerProps) {
   const { skProfile } = skProfileService!;
-  const { myLearningSummary, instructTimeSummary } = myLearningSummaryService!;
+  const {
+    // instructTimeSummary,
+    findInstructTimeSummary,
+    findMyLearningSummaryByYear,
+    getDisplayTotalLearningTime,
+    displayTotalLearningTime,
+  } = myLearningSummaryService!;
   const { myStampCount } = lectureService!;
   const {
     allBadgeCount: { issuedCount },
@@ -45,19 +52,25 @@ function MyTrainingHeaderContainer({
   const history = useHistory();
   const currentYear = moment().year();
 
-  const totalAccrueLearningTime =
-    myLearningSummary.displayTotalLearningTimeSummary +
-    ((instructTimeSummary &&
-      instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
-      0);
-
   useEffect(() => {
     // badgeService!.findAllBadgeCount();
     const denizenId = patronInfo.getDenizenId();
     denizenId && lectureService!.countMyStamp(denizenId);
 
     badgeService!.findAllBadgeCount();
-  }, []);
+
+    init();
+
+    // findInstructTimeSummary();
+    // findMyLearningSummaryByYear();
+  }, [displayTotalLearningTime]);
+
+  const init = async () => {
+    await findInstructTimeSummary();
+    await findMyLearningSummaryByYear();
+
+    await getDisplayTotalLearningTime();
+  };
 
   useRequestLearningSummary();
 
@@ -99,10 +112,11 @@ function MyTrainingHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(totalAccrueLearningTime !== 0 && (
+        {(displayTotalLearningTime && (
           <ContentHeader.LearningTimeItem
+            minute={displayTotalLearningTime}
             year={currentYear}
-            accrueMinute={totalAccrueLearningTime}
+            // accrueMinute={totalAccrueLearningTime}
           />
         )) || (
           <ContentHeader.WaitingItem

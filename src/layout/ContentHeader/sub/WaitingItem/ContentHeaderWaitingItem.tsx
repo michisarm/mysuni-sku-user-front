@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Label, Icon } from 'semantic-ui-react';
 import moment from 'moment';
-import { MyLearningSummaryModal } from 'myTraining';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {

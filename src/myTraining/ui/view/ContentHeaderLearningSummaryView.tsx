@@ -7,7 +7,6 @@ import {
   timeToHourMinute,
   timeToHourMinutePaddingFormat,
 } from 'shared/helper/dateTimeHelper';
-import MyLearningSummaryModal from '../logic/MyLearningSummaryModal';
 
 interface Props {
   year: number;

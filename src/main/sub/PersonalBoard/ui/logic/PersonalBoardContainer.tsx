@@ -20,7 +20,17 @@ interface Props {
 
 export const PersonalBoardContainer = (props: Props) => {
   const { companyCode, isVisible, close } = props;
-  const { myLearningSummary } = MyLearningSummaryService.instance;
+  const {
+    myLearningSummary,
+    instructTimeSummary,
+    getDisplayMySuniLeaningTime,
+    getDisplayCompanyLearningTime,
+    getDisplayTotalLearningTime,
+    findInstructTimeSummary,
+    findMyLearningSummaryByYear,
+    displayMyCompanyLearningTime,
+    displayMySuniLearningTime,
+  } = MyLearningSummaryService.instance;
   const { menuControlAuth } = MenuControlAuthService.instance;
 
   useEffect(() => {
@@ -28,7 +38,17 @@ export const PersonalBoardContainer = (props: Props) => {
     requestPopularCourse(companyCode, 7);
     requestCollegePercent();
     requestLearningObjectives();
+    init();
   }, []);
+
+  const init = async () => {
+    await findInstructTimeSummary();
+    await findMyLearningSummaryByYear();
+
+    getDisplayTotalLearningTime();
+    getDisplayMySuniLeaningTime();
+    getDisplayCompanyLearningTime();
+  };
 
   const handlePopularCourseDate = useCallback((data: any) => {
     let date = 0;
@@ -51,7 +71,13 @@ export const PersonalBoardContainer = (props: Props) => {
         <div className="inner">
           <div className="personal-contents">
             <BadgeLearningTimeView />
-            <LearningTimeDetailView showApl={menuControlAuth.useApl} />
+            <LearningTimeDetailView
+              showApl={menuControlAuth.useApl}
+              mySuniLearningTime={displayMySuniLearningTime}
+              myCompanyLearningTime={displayMyCompanyLearningTime}
+              instructorTimeSummary={instructTimeSummary}
+              aplTime={myLearningSummary && myLearningSummary.aplTime}
+            />
             <CollegeTopChartView myLearningSummary={myLearningSummary} />
           </div>
           <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate} />
