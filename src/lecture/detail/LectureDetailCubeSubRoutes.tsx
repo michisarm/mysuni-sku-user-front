@@ -60,6 +60,7 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
   if (!isPisAgreement) {
     // Model 띄우기
     onOpenLectureCardPisAgreementModal(singleCube);
+    // onOpenLectureCardPisAgreementModal();
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Modal, Radio } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { initLectureCardPisAgreementModal } from '../../../viewModel/LectureCardPisAgreementModal';
@@ -56,82 +56,87 @@ export function LectureCardAgreementModalView({
               id="lecture-pisAgreement-info"
             />
           </p>
-        </div>
-        <div className="documents-viewer">
-          <div style={{ maxHeight: '50vh' }} className="scrolling-80vh">
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-              <Document
-                renderMode="canvas"
-                file={file}
-                onLoadSuccess={onDocumentLoadSuccess}
-                error={
-                  <div
-                    style={{
-                      position: 'relative',
-                      height: '200px',
-                      verticalAlign: 'middle',
-                    }}
-                  >
+
+          <div
+            className="documents-viewer"
+            style={{ border: '2px solid #37383c' }}
+          >
+            <div style={{ maxHeight: '55vh' }} className="scrolling-80vh">
+              <div style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
+                <Document
+                  renderMode="canvas"
+                  file={file}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  error={
                     <div
                       style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '40%',
-                        fontWeight: 'bold',
+                        position: 'relative',
+                        height: '200px',
+                        verticalAlign: 'middle',
                       }}
                     >
-                      PDF 파일을 읽어 올 수 없습니다.
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '40%',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        PDF 파일을 읽어 올 수 없습니다.
+                      </div>
                     </div>
-                  </div>
-                }
-              >
-                <Page
-                  pageNumber={pageNumber}
-                  renderAnnotationLayer={false}
-                  width={730}
-                />
-              </Document>
+                  }
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    renderAnnotationLayer={false}
+                    width={690}
+                  />
+                </Document>
+              </div>
+            </div>
+            <div className="pdf-control" style={{ height: '55px' }}>
+              <div className="pagination">
+                <a className="pdf-prev" onClick={prevPage}>
+                  prev
+                </a>
+                <span className="num">
+                  {pageNumber}/{numPages}
+                </span>
+                <a className="pdf-next" onClick={nextPage}>
+                  next
+                </a>
+              </div>
             </div>
           </div>
-          <div className="pdf-control" style={{ height: '55px' }}>
-            <div className="pagination">
-              <a className="pdf-prev" onClick={prevPage}>
-                prev
-              </a>
-              <span className="num">
-                {pageNumber}/{numPages}
-              </span>
-              <a className="pdf-next" onClick={nextPage}>
-                next
-              </a>
-            </div>
+
+          <div className="info_chk" style={{ paddingTop: '1.625rem' }}>
+            <Radio
+              className="base"
+              label={getPolyglotText('동의', 'lecture-동의-동의')}
+              name="radioGroup"
+              value="agree"
+              checked={checkedName === 'agree'}
+              onChange={onChangeLectureCardPisAgreementRadio}
+              defaultChecked
+            />
+            <Radio
+              className="base"
+              label={getPolyglotText('동의하지 않음', 'lecture-동의-비동의')}
+              name="radioGroup"
+              value="disagree"
+              checked={checkedName === 'disagree'}
+              onChange={onChangeLectureCardPisAgreementRadio}
+            />
           </div>
-        </div>
-        <div className="info_chk">
-          <Radio
-            className="base"
-            label={getPolyglotText('동의', 'lecture-동의-동의')}
-            name="radioGroup"
-            value="agree"
-            checked={checkedName === 'agree'}
-            onChange={onChangeLectureCardPisAgreementRadio}
-            defaultChecked
-          />
-          <Radio
-            className="base"
-            label={getPolyglotText('동의하지 않음', 'lecture-동의-비동의')}
-            name="radioGroup"
-            value="disagree"
-            checked={checkedName === 'disagree'}
-            onChange={onChangeLectureCardPisAgreementRadio}
-          />
-        </div>
-        <div className={`info_noti ${!showWarning && 'hidden'}`}>
-          <i className="ico" />
-          <PolyglotText
-            defaultString="개인정보 제공 동의 여부를 체크해주세요."
-            id="lecture-동의-안내"
-          />
+          <div className={`info_noti ${!showWarning && 'hidden'}`}>
+            <i className="ico" />
+            <PolyglotText
+              defaultString="개인정보 제공 동의 여부를 체크해주세요."
+              id="lecture-동의-안내"
+            />
+          </div>
         </div>
       </Modal.Content>
       <Modal.Actions className="actions3">
