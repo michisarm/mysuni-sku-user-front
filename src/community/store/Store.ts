@@ -37,7 +37,7 @@ export function createStore<T>(
 
   function publish(next?: T, publisherId?: string) {
     store = next;
-    subscriberMap.forEach(callback => {
+    subscriberMap.forEach((callback) => {
       callback(store);
     });
   }
@@ -69,7 +69,7 @@ export function createStore<T>(
       if (subscriberId === undefined) {
         return;
       }
-      return subscribe(next => {
+      return subscribe((next) => {
         setValue(next);
       }, subscriberId);
     }, [subscriberId]);
