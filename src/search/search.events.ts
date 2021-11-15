@@ -814,8 +814,10 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
   let htmlTitle = title;
 
-  let keyword = getQueryId();
   const searchInSearchInfo = SearchService.instance.searchInfo;
+  // let keyword = getQueryId();
+  let keyword =
+    searchInSearchInfo.errataValue || searchInSearchInfo.searchValue;
   if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
