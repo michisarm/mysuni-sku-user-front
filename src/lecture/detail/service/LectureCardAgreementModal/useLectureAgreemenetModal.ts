@@ -30,7 +30,7 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
   const lectureCardPisAgreementModal =
     getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
 
-  console.log(cardWithContentsAndRelatedCountRom);
+  // console.log(cardWithContentsAndRelatedCountRom);
 
   if (!cardWithContentsAndRelatedCountRom) {
     return;
