@@ -48,6 +48,7 @@ import {
 import { getDefaultLang } from '../../../model/LangSupport';
 import { CardProps, LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { SkProfileService } from '../../../../profile/stores';
 import {
   College,
@@ -463,6 +464,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
                       {...userLectureCard}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
                       dataArea={Area.EXPERT_LECTURE}
+                      hoverTrack={hoverTrack}
                     />
                   </React.Fragment>
                 );

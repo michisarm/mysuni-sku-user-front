@@ -23,6 +23,7 @@ import FilterBoxContainer from './FilterBoxContainer';
 import { useScrollMove } from '../../useScrollMove';
 import myTrainingRoutePaths from '../../routePaths';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Area } from 'tracker/model';
 
 interface MyStampListContainerProps {
   myStampService?: MyStampService;
@@ -149,7 +150,7 @@ function MyStampListContainer({
 
   return (
     <>
-      <div className="mypage_contents my-stamp-list">
+      <div className="mypage_contents my-stamp-list" data-area={Area.MYPAGE_STAMP}>
         <strong className="mypage_title">
           <PolyglotText id="mapg-msmp-Stamp" defaultString="My Stamp" />
         </strong>

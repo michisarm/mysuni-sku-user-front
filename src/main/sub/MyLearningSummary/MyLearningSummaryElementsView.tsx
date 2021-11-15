@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { Table, Icon, Accordion, Progress } from 'semantic-ui-react';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
+import { Area } from 'tracker/model';
 
 const PUBLIC_URL = `${process.env.PUBLIC_URL}`;
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
   <div className="main-personal-wrap">
-    <div className="main_personal">
+    <div className="main_personal" data-area={Area.MAIN_INFO}>
       {/* <table>
         <tbody>
           <tr> */}

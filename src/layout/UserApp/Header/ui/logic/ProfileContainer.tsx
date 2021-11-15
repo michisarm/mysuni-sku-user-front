@@ -167,7 +167,7 @@ class ProfileContainer extends Component<Props, State> {
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
-      <div className="g-info-new">
+      <div className="g-info-new" data-area={Area.HEADER_GNB}>
         <LearningMenuView onClickMenu={this.props.onClickMenu} />
         {!isExternal && (
           <HeaderAlarmView

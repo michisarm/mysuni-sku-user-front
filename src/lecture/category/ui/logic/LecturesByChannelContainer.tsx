@@ -22,6 +22,7 @@ import {
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import {
   LectureCardView,
   parseCommunityLectureCard,
@@ -215,7 +216,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
         <div className="leaning-section-wrap">
           <Segment
             className="full learning-section type1"
-            dataArea={Area.MAIN_REQUIRED}
+            data-area={Area.EXPERT_LECTURE}
           >
             <div className="section-head">
               <div className="sec-tit-txt">
@@ -250,6 +251,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                             {...parseCommunityLectureCard(cards, userLanguage)}
                             useBookMark={true}
                             dataArea={Area.EXPERT_LECTURE}
+                            hoverTrack={hoverTrack}
                           />
                         </CardGroup>
                       </div>

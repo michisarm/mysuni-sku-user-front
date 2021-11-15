@@ -1,5 +1,6 @@
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +18,7 @@ import {
 } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import Swiper from 'react-id-swiper';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 const SwiperProps = {
   slidesPerView: 4,
@@ -73,6 +75,27 @@ function EnrollingLearning() {
     setCardList(enrollingCardList.results);
   };
 
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_ENROLLING,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      })  
+    }
+  }
+
   const onViewAll = () => {
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(`/my-training/new-learning/Enrolling/pages/1`);
@@ -91,7 +114,7 @@ function EnrollingLearning() {
   return (
     <Segment
       className="full learning-section type1"
-      dataArea={Area.MAIN_ENROLLING}
+      data-area={Area.MAIN_ENROLLING}
     >
       <div className="section-head">
         <div
@@ -111,8 +134,8 @@ function EnrollingLearning() {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper">
-          <Swiper {...SwiperProps}>
+        <div className="cardSwiper" data-action-name="수강신청 임박한 과정">
+          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
             {cardList &&
               cardList.map((card, i) => {
                 return (
@@ -137,6 +160,7 @@ function EnrollingLearning() {
                         upcomingClassroomInfo={card.upcomingClassroomInfo}
                         dataArea={Area.MAIN_ENROLLING}
                         useBookMark
+                        hoverTrack={hoverTrack}
                       />
                     </CardGroup>
                   </div>

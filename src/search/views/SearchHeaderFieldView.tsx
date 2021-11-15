@@ -5,6 +5,7 @@ import { setSearchRecentList, useSearchRecentList } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
 import SearchInfoModel from '../model/SeachInfoModel';
+import { Area } from 'tracker/model';
 
 interface Props {
   callback?: (searchValue?: string) => void;
@@ -34,7 +35,7 @@ export function SearchHeaderFieldView(props: Props) {
   };
 
   return (
-    <div className="g-search-field">
+    <div className="g-search-field" data-area={Area.SEARCH}>
       <div className="w_wrap">
         <div className="w_inner">
           <div className="w_area recent_list">
