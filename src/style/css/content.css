@@ -123,3 +123,18 @@
 
 /* Main > 관심채널 */
 .channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }
+
+/* Main > 도정중인 뱃지 */
+.learning-section.sec-tit-txt { word-break: break-all; }
+
+/* 커뮤니티 */
+.favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
+.favorites_tab .ui.menu .item.active .total { color: #ff664d; }
+.check-type1 input:checked + .check-type1-text{ color : #00bfae; border : 1px solid #00bfae; line-height: 1.375rem; }
+.check-type1 input:checked + .check-type1-text span{color : #ff664d}
+.community-slide-wrap .icon.next-on {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg) !important;
+}
+.community-slide-wrap .icon.prev-on {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg) !important;
+}

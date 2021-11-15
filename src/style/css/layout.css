@@ -1,5 +1,9 @@
 /* Site Header */
 #root section.header.main-sty2.lms-main { z-index: 400; }
+.g-info-new .go-learn.active{background-position-y : 1px !important}
+
+/* 알림 */
+.lms-alarm-item { border-top: 0; border-bottom: 1px solid #ddd; }
 
 /* BG Color */
 body {
@@ -80,6 +84,10 @@ body #root {
     color: #777;
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat;
 }
+.ui.button.pop.d,
+.ui.button.pop2.d { background: #777; }
+.ui.button.btn-blue2 { color: #777 !important; }
+.ui.button.btn-blue2 .icon.morelink {color: #777; }
 
 /* Font */
 .sort-reult .section-count,
@@ -116,6 +124,9 @@ body #root {
     color: #00bfae;
 }
 
+/* Text area */
+.ui.input.right-top-count textarea { border: #777 1px solid; }
+
 /* Checkbox */
 .ui.checkbox:not(.radio) input:focus ~ label:before,
 .ui.checkbox:not(.radio) label:before,
@@ -128,9 +139,6 @@ body #root {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0 no-repeat !important;
     background-size: 100% !important;
 }
-
-/* Text area */
-.ui.input.right-top-count textarea { border: #777 1px solid; }
 
 /* Radio Button */
 .ui.radio input:focus,
@@ -160,6 +168,14 @@ body #root {
 /* Dropdown */
 .ui.dropdown.small-border,
 .ui.dropdown.selection { border: #777 1px solid !important;}
+.ui.selection.dropdown:focus,
+.ui.selection.active.dropdown,
+.ui.selection.active.dropdown .menu {
+    border-color: #52CBC4 !important;
+}
+.ui.dropdown.selection .menu .item:focus, .ui.dropdown.selection .menu .item:hover {
+    background: #f6f6f6;
+}
 
 
 /* 데이터 없을 때 이미지 */
@@ -209,4 +225,5 @@ i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-a
 .mylearning-list-wrap table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2) !important; }
 .ui.comments.base,
 .support-list-wrap.faq .faq-list-wrap,
-.qna-admin-list-wrap { box-shadow: 0 2px 8px rgba(76, 76, 76, 0.2); }
+.qna-admin-list-wrap,
+.coc_v2.community-open-card { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
