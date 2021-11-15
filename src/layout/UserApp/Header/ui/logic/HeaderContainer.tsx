@@ -23,6 +23,7 @@ import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopB
 import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
 import { search } from '../../../../../search/search.events';
+import { Dimmer } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps {}
 
@@ -189,6 +190,11 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     searchService.setFocusedValue(false);
   }
 
+  closeSearch() {
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(false);
+  }
+
   render() {
     //
     const { breadcrumb } = this.context;
@@ -227,10 +233,17 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}
               isSearch={isSearchPage && isSearch}
+              closeSearch={this.closeSearch}
             />
             <ProfileContainer onClickMenu={this.onClickMenu} />
           </>
         </HeaderWrapperView>
+        <Dimmer
+          className="dimm_zidx"
+          active={searchViewFocused}
+          page
+          onClick={this.closeSearch}
+        />
       </div>
     );
   }
