@@ -11,7 +11,6 @@ import MenuControlAuthService from '../../../approval/company/present/logic/Menu
 import supportRoutePaths from '../../../board/routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import SkProfileModel from '../../../profile/model/SkProfileModel';
-import { getPolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import mainRoutePaths from '../../routePaths';
 import {
   requestLearningObjectives,
@@ -25,7 +24,6 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
-import { InProgressLearning } from './InProgressLearning';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 import { InProgressLearning } from './InProgressLearning';
 import { HeaderWrapperView } from './MyLearningSummaryElementsView';
