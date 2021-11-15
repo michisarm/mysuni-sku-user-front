@@ -113,13 +113,14 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     searchService.setFocusedValue(false);
   }
 
-  onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+  async onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { searchService } = this.injected;
     const { searchInfo } = searchService;
     if (searchInfo.errataValue) {
       // searchService.setSearchInfoValue('errataValue', '');
     }
     searchService.setSearchInfoValue('searchValue', e.target.value);
+    await searchService.findAutoCompleteValues(e.target.value);
   }
 
   setSearchInfoValue(name: string, value: any): void {
@@ -199,7 +200,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { breadcrumb } = this.context;
     const { searchService } = this.injected;
-    const { searchInfo, searchViewFocused } = searchService;
+    const { searchInfo, searchViewFocused, autoCompleteValues } = searchService;
 
     const isSearchPage = this.props.location.pathname === '/search';
     const isSearch =
@@ -220,6 +221,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
           onSearch={this.onSearchValue}
           focused={searchViewFocused}
           searchInfo={searchInfo}
+          autoCompleteValues={autoCompleteValues}
         >
           <>
             <LogoView onClickMenu={this.onClickMenu} />

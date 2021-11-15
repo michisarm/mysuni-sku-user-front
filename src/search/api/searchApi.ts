@@ -126,7 +126,7 @@ export function findPreCard(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if (((c as unknown) as string).replace !== undefined) {
+      if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -168,7 +168,7 @@ export function findCard(text_idx: string, pre: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if (((c as unknown) as string).replace !== undefined) {
+      if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -419,10 +419,9 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
     }
     if (filterCondition.support_lang_json_query.length > 0) {
       displayCards = displayCards.filter((c) => {
-        return (JSON.parse(
-          c.lang_supports
-        ) as LangSupport[]).some((langSupport) =>
-          filterCondition.support_lang_json_query.includes(langSupport.lang)
+        return (JSON.parse(c.lang_supports) as LangSupport[]).some(
+          (langSupport) =>
+            filterCondition.support_lang_json_query.includes(langSupport.lang)
         );
       });
     }
@@ -447,7 +446,7 @@ export function findExpert(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if (((c as unknown) as string).replace !== undefined) {
+      if ((c as unknown as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -764,9 +763,8 @@ function searchRankins(domainNo: number) {
   const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
   return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
-const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
-  searchRankins
-);
+const [searchRankinsCache, clearSearchRankinsCache] =
+  createCacheApi(searchRankins);
 export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어
@@ -806,5 +804,20 @@ export function findNaverOpenApiErrata(keyword: string) {
   const url = `${SEARCH_API_URL}/errata`;
   return axiosApi
     .get<{ errata: string }>(url, { params: { keyword } })
+    .then(AxiosReturn);
+}
+
+// 검색어 자동완성
+export function searchAutoComplete(text_idx: string) {
+  return axiosApi
+    .get<string[]>(SUGGEST_URL, {
+      params: {
+        target: 'completed',
+        domain_no: 0,
+        max_count: 10,
+        term: text_idx,
+      },
+      paramsSerializer,
+    })
     .then(AxiosReturn);
 }
