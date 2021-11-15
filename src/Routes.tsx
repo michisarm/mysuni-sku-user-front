@@ -110,7 +110,7 @@ class Routes extends PureComponent {
                       <Route path="/approval" component={ApprovalRoutes} />
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />
-                      <Route path="/community/" component={CommunityRoutes} />
+                      <Route path="/community" component={CommunityRoutes} />
                       <Route path="/search" component={SearchRoutes} />
                       <Route path="/extra" component={ExtraRoutes} />
 
