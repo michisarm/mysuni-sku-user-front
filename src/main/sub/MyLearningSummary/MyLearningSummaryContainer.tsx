@@ -200,7 +200,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     // }
 
     const attendEventItem = getAttendEventItem();
-
     return (
       <>
         <HeaderWrapperView>
@@ -272,13 +271,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         </HeaderWrapperView>
 
         {skProfile.companyCode && (
-          <PersonalBoardContainer
-            companyCode={skProfile.companyCode}
-            isVisible={isPersonalBoardContainerVisible}
-            close={() =>
-              this.setState({ isPersonalBoardContainerVisible: false })
-            }
-          />
+          <div ref={this.personalBoardContainer}>
+            <PersonalBoardContainer
+              companyCode={skProfile.companyCode}
+              isVisible={isPersonalBoardContainerVisible}
+              close={() =>
+                this.setState({ isPersonalBoardContainerVisible: false })
+              }
+            />
+          </div>
         )}
 
         <AttendanceModalContainer
