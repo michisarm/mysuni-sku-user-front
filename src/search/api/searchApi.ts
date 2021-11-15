@@ -126,7 +126,7 @@ export function findPreCard(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -152,7 +152,7 @@ export function findCard(text_idx: string, pre: string) {
     `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
   ).replace('##', '%23%23'); // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
 
-  console.log('url', url);
+  // console.log('url', url);
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -168,7 +168,7 @@ export function findCard(text_idx: string, pre: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -419,9 +419,10 @@ export async function filterCard(cards?: SearchCard[]): Promise<SearchCard[]> {
     }
     if (filterCondition.support_lang_json_query.length > 0) {
       displayCards = displayCards.filter((c) => {
-        return (JSON.parse(c.lang_supports) as LangSupport[]).some(
-          (langSupport) =>
-            filterCondition.support_lang_json_query.includes(langSupport.lang)
+        return (JSON.parse(
+          c.lang_supports
+        ) as LangSupport[]).some((langSupport) =>
+          filterCondition.support_lang_json_query.includes(langSupport.lang)
         );
       });
     }
@@ -446,7 +447,7 @@ export function findExpert(text_idx: string) {
       if (c.status !== undefined) {
         return c;
       }
-      if ((c as unknown as string).replace !== undefined) {
+      if (((c as unknown) as string).replace !== undefined) {
         let s = JSON.stringify(c);
         s = s.replace(/\"{/gi, '{').replace(/}\"/gi, '}');
         s = s.replace(/\\\"/gi, '"');
@@ -763,8 +764,9 @@ function searchRankins(domainNo: number) {
   const url = encodeURI(`${RANKINS_URL}?domain_no=${domainNo}&max_count=10`);
   return axiosApi.get<Array<string[]>>(url).then(AxiosReturn);
 }
-const [searchRankinsCache, clearSearchRankinsCache] =
-  createCacheApi(searchRankins);
+const [searchRankinsCache, clearSearchRankinsCache] = createCacheApi(
+  searchRankins
+);
 export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어

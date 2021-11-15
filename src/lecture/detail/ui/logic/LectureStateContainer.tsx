@@ -24,8 +24,8 @@ function LectureStateContainer() {
 
   const receiveMessage = useCallback(
     async (event: MessageEvent) => {
-      console.log('lectureWebpageURL: ', lectureWebpage?.url);
-      console.log('eventOriginURL: ', event.origin);
+      // console.log('lectureWebpageURL: ', lectureWebpage?.url);
+      // console.log('eventOriginURL: ', event.origin);
       if (
         event.data === 'CubePassed' &&
         params.cubeId &&

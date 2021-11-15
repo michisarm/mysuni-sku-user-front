@@ -76,7 +76,7 @@ class RecommendChannelLecturesPage extends Component<Props> {
       name: getChannelName(channelId),
     });
 
-    console.log(studySummaryFavoriteChannels);
+    // console.log(studySummaryFavoriteChannels);
 
     return (
       <ContentLayout

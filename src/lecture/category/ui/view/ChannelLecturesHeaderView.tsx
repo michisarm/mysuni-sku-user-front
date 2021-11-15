@@ -90,7 +90,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
               )
             );
     }
-    console.log(college.name.ko);
+    // console.log(college.name.ko);
     return (
       <>
         <div className="white-title">
