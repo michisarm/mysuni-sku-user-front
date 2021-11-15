@@ -71,6 +71,7 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
 }
 
 export function onOpenLectureCardPisAgreementModal(isCard?: boolean) {
+  // export function onOpenLectureCardPisAgreementModal() {
   //
   const lectureCardPisAgreement =
     getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
@@ -96,8 +97,11 @@ export function onCloseLectureCardPisAgreementModal(cardId: string) {
     checkedName: '',
   });
 
-  !lectureCardPisAgreement.isCard &&
-    history?.push(routePaths.lectureCard(cardId));
+  lectureCardPisAgreement.isCard
+    ? setTimeout(() => {
+        onOpenLectureCardPisAgreementModal(lectureCardPisAgreement.isCard);
+      }, 500)
+    : history?.push(routePaths.lectureCard(cardId));
 }
 
 export function setNumPages(page: number) {
