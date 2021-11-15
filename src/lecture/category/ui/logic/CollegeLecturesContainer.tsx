@@ -493,7 +493,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     const { channels } = lectureCountService;
     return (
       <ChannelsLecturesWrapperView>
-        {channels &&
+        {(channels &&
           channels.length &&
           channels.map(
             (channel: ChannelModel) =>
@@ -504,7 +504,8 @@ class CollegeLecturesContainerInner extends ReactComponent<
                   key={`channel_cont_${channel.id}`}
                 />
               )
-          )}
+          )) ||
+          null}
       </ChannelsLecturesWrapperView>
     );
   }
