@@ -17,6 +17,7 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
   if (!isPisAgreement) {
     // Model 띄우기
     onOpenLectureCardPisAgreementModal(true);
+    // onOpenLectureCardPisAgreementModal();
   }
 }
 
