@@ -78,7 +78,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               to="#"
               className="item"
               onClick={() =>
-                (window.location.href = `${window.location.origin}/suni-main/community/`)
+                (window.location.href = `${window.location.origin}/community/`)
               }
             >
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
