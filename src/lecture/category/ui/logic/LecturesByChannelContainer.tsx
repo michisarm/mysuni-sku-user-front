@@ -33,17 +33,19 @@ import CardGroup, {
   GroupType,
 } from '../../../shared/Lecture/sub/CardGroup/CardGroupContainer2';
 
-const SwiperProps = {
-  slidesPerView: 4,
-  spaceBetween: 7,
-  slidesPerGroup: 4,
-  loop: false,
-  loopFillGroupWithBlank: true,
-  navigation: {
-    nextEl: '.' + 'swiperCollege' + ' .swiper-button-next',
-    prevEl: '.' + 'swiperCollege' + ' .swiper-button-prev',
-  },
-  speed: 500,
+const SwiperProps = (swiperName: string) => {
+  return {
+    slidesPerView: 4,
+    spaceBetween: 7,
+    slidesPerGroup: 4,
+    loop: false,
+    loopFillGroupWithBlank: true,
+    navigation: {
+      nextEl: '.' + swiperName + ' .swiper-button-next',
+      prevEl: '.' + swiperName + ' .swiper-button-prev',
+    },
+    speed: 500,
+  };
 };
 
 interface Props extends RouteComponentProps<Params> {
@@ -237,43 +239,22 @@ class LecturesByChannelContainer extends Component<Props, State> {
             </div>
             <div className="section-body">
               <div className="cardSwiper">
-                <Swiper {...SwiperProps}>
-                  {cardWithCardRealtedCounts.map(
-                    ({ card, cardRelatedCount }) => {
-                      return (
+                <Swiper {...SwiperProps(channel.id)}>
+                  {cardWithCardRealtedCounts.map((cards, i) => {
+                    return (
+                      <div className="swiper-slide" key={cards.card.id}>
                         <CardGroup type={GroupType.Wrap}>
                           <LectureCardView
                             {...parseCommunityLectureCard(cards, userLanguage)}
                             useBookMark={true}
                             dataArea={Area.EXPERT_LECTURE}
                           />
-                          {/*<LectureCardView*/}
-                          {/*  cardId={card.id}*/}
-                          {/*  cardName={parsePolyglotString(card.name)}*/}
-                          {/*  learningTime={card.learningTime.toString()}*/}
-                          {/*  passedStudentCount={cardRelatedCount.passedStudentCount.toString()}*/}
-                          {/*  starCount={cardRelatedCount.starCount.toString()}*/}
-                          {/*  thumbnailImagePath={card.thumbImagePath}*/}
-                          {/*  langSupports={card.langSupports}*/}
-                          {/*  simpleDescription={parsePolyglotString(*/}
-                          {/*    card.simpleDescription*/}
-                          {/*  )}*/}
-                          {/*  studentCount={cardRelatedCount.studentCount}*/}
-                          {/*  //??*/}
-                          {/*  isRequiredLecture={false}*/}
-                          {/*  // upcomingClassroomInfo={}*/}
-                          {/*  difficultyLevel={card.difficultyLevel}*/}
-                          {/*  collegeId={collegeId}*/}
-                          {/*  userLanguage={userLanguage}*/}
-                          {/*  useBookMark={true}*/}
-                          {/*  dataArea={Area.EXPERT_LECTURE}*/}
-                          {/*/>*/}
                         </CardGroup>
-                      );
-                    }
-                  )}
+                      </div>
+                    );
+                  })}
                 </Swiper>
-                <div className="swiperCollege">
+                <div className={channel.id}>
                   <div className="swiper-button-prev" />
                   <div className="swiper-button-next" />
                 </div>
