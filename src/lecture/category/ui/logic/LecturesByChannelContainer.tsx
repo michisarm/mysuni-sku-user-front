@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { LectureService } from '../../../stores';
 import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
-import { Lecture } from '../../../shared';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import {
   parseLanguage,
   parsePolyglotString,
@@ -24,7 +20,6 @@ import {
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
-import { getDefaultLang } from '../../../model/LangSupport';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import Swiper from 'react-id-swiper';
 import CardGroup, {
@@ -239,7 +234,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                   {cardWithCardRealtedCounts.map(
                     ({ card, cardRelatedCount }) => {
                       return (
-                        <li key={card.id}>
+                        <CardGroup type={GroupType.Wrap}>
                           <LectureCardView
                             cardId={card.id}
                             cardName={parsePolyglotString(card.name)}
@@ -261,7 +256,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                             useBookMark={true}
                             dataArea={Area.EXPERT_LECTURE}
                           />
-                        </li>
+                        </CardGroup>
                       );
                     }
                   )}
