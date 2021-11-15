@@ -180,10 +180,10 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const relatedUrlVisible = relatedUrlVisiable(lectureFeedbackContent);
-  console.log(
-    'content: :: ',
-    parsePolyglotString(lectureFeedbackContent?.content)
-  );
+  // console.log(
+  //   'content: :: ',
+  //   parsePolyglotString(lectureFeedbackContent?.content)
+  // );
   const checkContentValue =
     parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
     parsePolyglotString(lectureFeedbackContent?.content) === ''

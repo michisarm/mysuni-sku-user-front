@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import MenuControlAuthService from 'approval/company/present/logic/MenuControlAuthService';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import React, { forwardRef, useCallback, useEffect } from 'react';
@@ -83,7 +84,7 @@ export const PersonalBoardContainer = (props: Props) => {
           <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate} />
         </div>
       </div>
-      <Dimmer className="dimm_zidx2" active={isVisible} page onClick={close} />
+      <Dimmer className="dimm_zidx" active={isVisible} page onClick={close} />
     </>
   );
 };

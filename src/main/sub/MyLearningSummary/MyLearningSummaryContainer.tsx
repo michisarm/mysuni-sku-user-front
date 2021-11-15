@@ -21,6 +21,11 @@ import { getAttendEventItem } from '../PersonalBoard/store/EventStore';
 import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
 import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
+import { InProgressLearning } from './InProgressLearning';
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 import { InProgressLearning } from './InProgressLearning';
 import { HeaderWrapperView } from './MyLearningSummaryElementsView';
@@ -185,7 +190,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     // }
 
     const attendEventItem = getAttendEventItem();
-
     return (
       <>
         <HeaderWrapperView>
@@ -231,7 +235,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 onClick={this.showPersonalBoardContainer}
               >
                 <i aria-hidden="true" className="icon std" />
-                나의 학습현황 보기
+                <PolyglotText
+                  id="main-personal"
+                  defaultString="나의 학습현황 보기"
+                />
               </button>
             </div>
           </div>
@@ -254,13 +261,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         </HeaderWrapperView>
 
         {skProfile.companyCode && (
-          <PersonalBoardContainer
-            companyCode={skProfile.companyCode}
-            isVisible={isPersonalBoardContainerVisible}
-            close={() =>
-              this.setState({ isPersonalBoardContainerVisible: false })
-            }
-          />
+          <div ref={this.personalBoardContainer}>
+            <PersonalBoardContainer
+              companyCode={skProfile.companyCode}
+              isVisible={isPersonalBoardContainerVisible}
+              close={() =>
+                this.setState({ isPersonalBoardContainerVisible: false })
+              }
+            />
+          </div>
         )}
 
         <AttendanceModalContainer

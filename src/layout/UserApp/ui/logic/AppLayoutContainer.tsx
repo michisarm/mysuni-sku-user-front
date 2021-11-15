@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import QuickNav from '../../QuickNav';
+
 import { useRequestProfile } from '../../../../profile/hooks/useRequestProfile';
 import { isExternalInstructor } from '../../../../shared/helper/findUserRole';
 
@@ -16,7 +16,6 @@ export function AppLayoutContainer({ children }: AppLayoutContainerProps) {
     <>
       <Header />
       {children}
-      {!isExternal && <QuickNav />}
       <Footer />
     </>
   );

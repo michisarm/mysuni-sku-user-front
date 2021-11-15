@@ -14,6 +14,11 @@ import {
 import SearchService from '../../../../search/service/SearchService';
 import { search } from '../../../../search/search.events';
 import Image from '../../../../shared/components/Image';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
+import { HotTopicView } from 'hotTopic/ui/view/HotTopicView';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -74,9 +79,15 @@ export function MainHotTopicContainer() {
   return (
     <Segment className="full learning-section type5">
       <div className="section-head">
-        <div className="sec-tit-txt">
-          구성원이 찾는 <strong>인기키워드</strong>
-        </div>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '구성원이 찾는 <strong>인기키워드</strong>',
+              'main-keywords'
+            ),
+          }}
+        />
         <div className="keyword-tag-wrap">
           <div className="keyword-wrap">
             {searchPopularList?.map((c, i) => {
@@ -95,39 +106,21 @@ export function MainHotTopicContainer() {
         </div>
       </div>
       <div className="section-body">
-        <div className="sec-tit-txt">
-          <strong>Hot Topic</strong>
-        </div>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '<strong>Hot Topic</strong>',
+              'main-hottopic'
+            ),
+          }}
+        />
         <div className="cardSwiper">
           <Swiper {...swiperProps}>
             {cardBundles.map((c) => (
               <div className="swiper-slide" key={c.id}>
                 <Card.Group className="topic-card-warp">
-                  <Card className="topic-item">
-                    <div className="thumb-img-area">
-                      <Image
-                        src={parsePolyglotString(c.imageUrl)}
-                        className="ui image thumb-img"
-                        alt="핫 토픽 이미지"
-                      />
-                    </div>
-                    <div className="card-inner">
-                      <div className="topic-tit">
-                        <span>{parsePolyglotString(c.displayText)}</span>
-                      </div>
-                      <div className="topic-info-wrap">
-                        <Label className="topic-info course">
-                          <Icon className="list" />
-                          <span>
-                            총 <strong>{c.cardIds.length}개</strong> 학습카드
-                          </span>
-                        </Label>
-                        <Label className="topic-info time">
-                          <span>{timeToHourMinuteFormat(c.learningTime)}</span>
-                        </Label>
-                      </div>
-                    </div>
-                  </Card>
+                  <HotTopicView hotTopicCardBundle={c} />
                 </Card.Group>
               </div>
             ))}

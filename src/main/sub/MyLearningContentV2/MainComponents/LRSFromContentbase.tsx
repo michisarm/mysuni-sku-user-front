@@ -1,16 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swiper from 'react-id-swiper';
 
-import { RouteComponentProps, withRouter } from 'react-router';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
-import { Lecture } from 'lecture';
+import { Segment } from 'semantic-ui-react';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
-import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
 import { findRecommendationCardsFromContentBase } from '../../../../lecture/recommend/api/recommendApi';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import { useHistory } from 'react-router-dom';
 import {
   getPolyglotText,
@@ -26,28 +21,7 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-
-function getTitle(
-  profileMemberName: string,
-  viewModel?: RecommendationViewModel
-) {
-  if (viewModel === undefined) {
-    return '';
-  }
-  const { recTitle } = viewModel;
-  if (recTitle?.length > 0) {
-    // return `${profileMemberName}${recTitle}`; api에서 받아오는 recTitle내용 추후 변경시
-    return `${profileMemberName} ${getPolyglotText(
-      '님의 학습 콘텐츠 기반 추천 과정',
-      'home-Recommend-Title1'
-    )}`;
-  } else {
-    return `${profileMemberName} ${getPolyglotText(
-      '님을 위한 mySUNI의 추천 과정',
-      'home-Recommend-Title2'
-    )}`;
-  }
-}
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 
 interface Props {
   profileMemberName: string;
@@ -83,11 +57,6 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
     });
   }, []);
 
-  const title = useMemo(
-    () => getTitle(profileMemberName, viewModel),
-    [profileMemberName, viewModel]
-  );
-
   const onViewAll = () => {
     history.push(myTrainingRoutes.learningLrsLecture('ContentBase'));
 
@@ -110,38 +79,6 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
 
   const { cards } = viewModel;
 
-  if (cards.length === 0) {
-    return (
-      <Segment
-        className="full learning-section type2"
-        dataArea={Area.MAIN_RECOMMEND}
-      >
-        <div className="section-head">
-          <div
-            className="sec-tit-txt"
-            dangerouslySetInnerHTML={{ __html: title }}
-          />
-          <div className="sec-tit-btn">
-            <button className="btn-more" onClick={onViewAll}>
-              전체보기
-            </button>
-          </div>
-        </div>
-
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              <PolyglotText
-                defaultString="추천과정에 해당하는 학습 과정이 없습니다."
-                id="home-Recommend-목록없음"
-              />
-            </div>
-          }
-        />
-      </Segment>
-    );
-  }
-
   return (
     <Segment
       className="full learning-section type2"
@@ -150,11 +87,21 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
       <div className="section-head">
         <div
           className="sec-tit-txt"
-          dangerouslySetInnerHTML={{ __html: title }}
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '{name} 님의 학습패턴을 기반으로 추천 드려요!',
+              'main-lrs-title1',
+              {
+                name: parsePolyglotString(
+                  SkProfileService.instance.skProfile.name
+                ),
+              }
+            ),
+          }}
         />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            전체보기
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
           </button>
         </div>
       </div>
@@ -168,14 +115,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
             ).map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>
-                  <CardGroup
-                    type={GroupType.Wrap}
-                    dataActionName={
-                      title.includes('학습 콘텐츠 기반 추천 과정')
-                        ? '학습 콘텐츠 기반 추천 과정'
-                        : 'mySUNI의 추천 과정'
-                    }
-                  >
+                  <CardGroup type={GroupType.Wrap}>
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false

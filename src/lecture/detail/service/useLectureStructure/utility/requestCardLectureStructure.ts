@@ -714,7 +714,7 @@ export async function isPisAgreementPassed(cardId: string) {
 
   const lectureStructure = getLectureStructure();
 
-  console.log(cardWithContentsAndRelatedCountRom);
+  // console.log(cardWithContentsAndRelatedCountRom);
 
   let singleCube = false;
 

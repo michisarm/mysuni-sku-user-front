@@ -30,7 +30,10 @@ import {
   parseLanguage,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  LectureCardView,
+  parseCommunityLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
@@ -72,7 +75,7 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, []);
+  }, [history, scrollSave]);
 
   return (
     <ChannelLecturesInnerContainer
@@ -386,37 +389,10 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map(({ card, cardRelatedCount }, index) => {
+                {lectures.map((cards, index) => {
                   return (
-                    // <CardView
-                    //   key={`${card.id}+${index}`}
-                    //   cardId={card.id}
-                    //   {...card}
-                    //   {...cardRelatedCount}
-                    //   dataArea={
-                    //     window.location.pathname.includes('/recommend')
-                    //       ? Area.RECOMMEND_CARD
-                    //       : Area.COLLEGE_CARD
-                    //   }
-                    // />
                     <LectureCardView
-                      cardId={card.id}
-                      cardName={parsePolyglotString(card.name)}
-                      learningTime={card.learningTime.toString()}
-                      passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                      starCount={cardRelatedCount.starCount.toString()}
-                      thumbnailImagePath={card.thumbImagePath}
-                      langSupports={card.langSupports}
-                      simpleDescription={parsePolyglotString(
-                        card.simpleDescription
-                      )}
-                      studentCount={cardRelatedCount.studentCount}
-                      //??
-                      isRequiredLecture={false}
-                      // upcomingClassroomInfo={}
-                      difficultyLevel={card.difficultyLevel}
-                      collegeId={collegeId}
-                      userLanguage={userLanguage}
+                      {...parseCommunityLectureCard(cards, userLanguage)}
                       useBookMark={true}
                       dataArea={Area.EXPERT_LECTURE}
                     />

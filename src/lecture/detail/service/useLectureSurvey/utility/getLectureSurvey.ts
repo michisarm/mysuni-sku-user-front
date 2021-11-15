@@ -143,7 +143,7 @@ function parseCriterion(
         const answerSummary = lectureSurveyAnswerSummary.find(
           (c) => c.questionNumber === questionNumber
         );
-        console.log('answerSummary : ', answerSummary);
+        // console.log('answerSummary : ', answerSummary);
         if (answerSummary !== undefined) {
           const criteriaItemCountMap =
             answerSummary.summaryItems.criteriaItemCountMap;

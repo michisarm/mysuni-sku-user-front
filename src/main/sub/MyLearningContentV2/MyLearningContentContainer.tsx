@@ -17,6 +17,7 @@ import { LRSFromContentbase } from './MainComponents/LRSFromContentbase';
 import { LRSFromLearningPatternBased } from './MainComponents/LRSFromLearningPatternBased';
 import { BookmarkCards } from './MainComponents/BookmarkCards';
 import { MainHotTopicContainer } from './MainComponents/MainHotTopicContainer';
+import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -89,6 +90,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           profileMemberName={skProfile.profileViewName}
         />
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
+        <RecommendContainer />
       </div>
       <div className="learning-section-wrap">
         <MainChallengingBadgeContainer />

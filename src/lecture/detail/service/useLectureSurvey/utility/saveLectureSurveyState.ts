@@ -83,8 +83,13 @@ async function coreSaveLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-    lectureSurveyState;
+  const {
+    serviceId,
+    round,
+    surveyCaseId,
+    answerItem,
+    answerSheetId,
+  } = lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -121,8 +126,13 @@ async function coreSubmitLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-    lectureSurveyState;
+  const {
+    serviceId,
+    round,
+    surveyCaseId,
+    answerItem,
+    answerSheetId,
+  } = lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -198,8 +208,13 @@ export async function coreLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-    lectureSurveyState;
+  const {
+    serviceId,
+    round,
+    surveyCaseId,
+    answerItem,
+    answerSheetId,
+  } = lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -239,9 +254,9 @@ export async function coreLectureSurveyState() {
         '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach((c) => {
-      console.log(c.no);
-    });
+    // requiredMissAnswers.forEach((c) => {
+    //   console.log(c.no);
+    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
@@ -354,10 +369,10 @@ export async function saveCommunitySurveyState() {
 
 export async function submitCommunitySurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  console.log(
-    'submitCommunitySurveyState.lectureSurveyState',
-    lectureSurveyState
-  );
+  // console.log(
+  //   'submitCommunitySurveyState.lectureSurveyState',
+  //   lectureSurveyState
+  // );
   if (lectureSurveyState === undefined) {
     return;
   }

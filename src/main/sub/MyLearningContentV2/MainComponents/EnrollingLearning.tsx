@@ -11,7 +11,10 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { SkProfileService } from '../../../../profile/stores';
-import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import Swiper from 'react-id-swiper';
 
@@ -91,12 +94,18 @@ function EnrollingLearning() {
       dataArea={Area.MAIN_ENROLLING}
     >
       <div className="section-head">
-        <div className="sec-tit-txt">
-          <strong>수강신청 임박</strong>한 과정
-        </div>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '<strong>수강신청 임박</strong>한 과정',
+              'main-enrolling'
+            ),
+          }}
+        />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            전체보기
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
           </button>
         </div>
       </div>

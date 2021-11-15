@@ -66,11 +66,11 @@ class CollegeLecturesPage extends Component<Props> {
         parsePolyglotString(college.name, getDefaultLang(college.langSupports))
       )
     );
-    console.log(
-      mainRoutePaths.introductionCollege(
-        parsePolyglotString(college.name, getDefaultLang(college.langSupports))
-      )
-    );
+    // console.log(
+    //   mainRoutePaths.introductionCollege(
+    //     parsePolyglotString(college.name, getDefaultLang(college.langSupports))
+    //   )
+    // );
   }
 
   render() {

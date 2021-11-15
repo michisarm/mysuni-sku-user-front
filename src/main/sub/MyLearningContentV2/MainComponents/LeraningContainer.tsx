@@ -13,7 +13,7 @@ import {
   parseLanguage,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   CardProps,
   LectureCardView,
@@ -104,41 +104,41 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     return 'swiperNormal';
   }, [cardBundle.type]);
 
-  if (cardList.length === 0) {
-    return (
-      <ContentWrapper dataArea={Area.MAIN_REQUIRED}>
-        <div className="section-head">
-          <div
-            className="sec-tit-txt"
-            dangerouslySetInnerHTML={{
-              __html: parsePolyglotString(cardBundle?.displayText),
-            }}
-          />
-          <div className="sec-tit-btn">
-            <button className="btn-more" onClick={onViewAll}>
-              전체보기
-            </button>
-          </div>
-        </div>
-        <NoSuchContentPanel
-          message={
-            <div
-              className="text"
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  `{bundleName}에 해당하는 학습 과정이 없습니다.`,
-                  'home-bundleName-title',
-                  {
-                    bundleName: parsePolyglotString(cardBundle.displayText),
-                  }
-                ),
-              }}
-            />
-          }
-        />
-      </ContentWrapper>
-    );
-  }
+  // if (cardList.length === 0) {
+  //   return (
+  //     <ContentWrapper dataArea={Area.MAIN_REQUIRED}>
+  //       <div className="section-head">
+  //         <div
+  //           className="sec-tit-txt"
+  //           dangerouslySetInnerHTML={{
+  //             __html: parsePolyglotString(cardBundle?.displayText),
+  //           }}
+  //         />
+  //         <div className="sec-tit-btn">
+  //           <button className="btn-more" onClick={onViewAll}>
+  //           <PolyglotText id="main-viewall" defaultString="전체보기" />
+  //           </button>
+  //         </div>
+  //       </div>
+  //       <NoSuchContentPanel
+  //         message={
+  //           <div
+  //             className="text"
+  //             dangerouslySetInnerHTML={{
+  //               __html: getPolyglotText(
+  //                 `{bundleName}에 해당하는 학습 과정이 없습니다.`,
+  //                 'home-bundleName-title',
+  //                 {
+  //                   bundleName: parsePolyglotString(cardBundle.displayText),
+  //                 }
+  //               ),
+  //             }}
+  //           />
+  //         }
+  //       />
+  //     </ContentWrapper>
+  //   );
+  // }
 
   const SwiperProps = {
     slidesPerView: 4,
@@ -153,6 +153,22 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     speed: 500,
   };
 
+  const title = useMemo<string>(() => {
+    switch (cardBundle.type) {
+      case 'New':
+        return getPolyglotText(
+          '따끈따끈 <strong>신규 과정</strong>',
+          'main-new'
+        );
+      case 'Popular':
+        return getPolyglotText(
+          '<strong>인기 과정</strong>을 소개해드려요!',
+          'main-popular'
+        );
+    }
+    return parsePolyglotString(cardBundle?.displayText);
+  }, [cardBundle.type, cardBundle.displayText]);
+
   if (cardList.length === 0) {
     return null;
   }
@@ -163,12 +179,12 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         <div
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
-            __html: parsePolyglotString(cardBundle?.displayText),
+            __html: title,
           }}
         />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            전체보기
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
           </button>
         </div>
       </div>

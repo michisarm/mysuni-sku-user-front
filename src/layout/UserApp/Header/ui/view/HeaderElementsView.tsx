@@ -74,15 +74,13 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
           ) && (
-            <Link
-              to="#"
+            <NavLink
+              to="/community"
               className="item"
-              onClick={() =>
-                (window.location.href = `${window.location.origin}/suni-community/`)
-              }
+              onClick={() => onClickMenu('community')}
             >
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
-            </Link>
+            </NavLink>
           )}
         </div>
       </div>
@@ -191,7 +189,7 @@ export const LearningMenuView: React.FC<MenuViewProps> =
                 className="go-learn"
                 onClick={() => onClickMenu('Learning')}
               >
-                <PolyglotText defaultString="My Learning" id="home-gnb-mtl" />
+                <PolyglotText defaultString="My Learning" id="gnb-mylearning" />
               </NavLink>
             </div>
           )}

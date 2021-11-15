@@ -28,7 +28,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
 
   const panes = [
     {
-      menuItem: getPolyglotText('1개월', 'home-PersonalBoard-CompanyPopular1M'),
+      menuItem: getPolyglotText('1주일', 'home-PersonalBoard-CompanyPopular1w'),
       render: () => (
         <Tab.Pane>
           <ol>
@@ -48,7 +48,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
       ),
     },
     {
-      menuItem: getPolyglotText('6개월', '통검-필레팝-6개월'),
+      menuItem: getPolyglotText('1개월', 'home-PersonalBoard-CompanyPopular1M'),
       render: () => (
         <Tab.Pane>
           <ol>
@@ -68,7 +68,7 @@ export function SearchHeaderFieldPopularView(props: Props) {
       ),
     },
     {
-      menuItem: getPolyglotText('1년', '통검-필레팝-1년'),
+      menuItem: getPolyglotText('3개월', 'home-PersonalBoard-CompanyPopular3M'),
       render: () => (
         <Tab.Pane>
           <ol>
