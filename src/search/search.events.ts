@@ -75,12 +75,13 @@ export function initSearchData() {
   setSearchRelatedList([]);
 }
 
-export function getQueryId(): string {
-  const queryId: string = window.location.search.slice(
-    window.location.search.indexOf('=') + 1,
-    window.location.search.length
-  );
-
+export function getQueryId(value?: string): string {
+  const queryId: string =
+    value?.trim() ||
+    window.location.search.slice(
+      window.location.search.indexOf('=') + 1,
+      window.location.search.length
+    );
   if (queryId.endsWith('%')) {
     let decodedQueryId = queryId;
     while (decodedQueryId.endsWith('%')) {
@@ -815,9 +816,9 @@ export function getTitleHtmlSearchKeyword(title: string) {
   let htmlTitle = title;
 
   const searchInSearchInfo = SearchService.instance.searchInfo;
-  // let keyword = getQueryId();
-  let keyword =
-    searchInSearchInfo.errataValue || searchInSearchInfo.searchValue;
+  let keyword = getQueryId(
+    searchInSearchInfo.errataValue || searchInSearchInfo.searchValue
+  );
   if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
