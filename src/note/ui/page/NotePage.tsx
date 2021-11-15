@@ -6,7 +6,7 @@ interface NotePageProps {
 }
 
 const NotePage: React.FC<NotePageProps> = function NotePage({ noteCount }) {
-  console.log(noteCount);
+  // console.log(noteCount);
 
   return (
     <>

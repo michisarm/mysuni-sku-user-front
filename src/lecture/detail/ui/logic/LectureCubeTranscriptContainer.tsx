@@ -30,11 +30,11 @@ interface LectureTranscriptContainerProps {
 
 const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
   function LectureTranscriptContainer({
-    transLangVal,
-    setTransLangVal,
-    lectureSummary,
-    // trascriptScrollMove
-  }) {
+                                        transLangVal,
+                                        setTransLangVal,
+                                        lectureSummary,
+                                        // trascriptScrollMove
+                                      }) {
     const selectTransLangObj = [
       { key: 'ko', value: 'ko', text: 'KR' },
       { key: 'eng', value: 'en', text: 'ENG' },
@@ -46,7 +46,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
     const [transcriptList, setTranScriptList] = useState<any>();
     const [panoptoSessionId, setPanoptoSessionId] = useState<
       string | undefined
-    >(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+      >(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
 
     const [autoHighlight, setAutoHighlight] = useState<boolean>();
     const intervalTranscript: any = useRef<any>(null);
