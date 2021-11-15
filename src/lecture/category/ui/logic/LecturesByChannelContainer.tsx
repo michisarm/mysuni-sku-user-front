@@ -14,7 +14,7 @@ import { LectureService } from '../../../stores';
 import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared';
-import { Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import {
@@ -24,6 +24,25 @@ import {
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
+import { getDefaultLang } from '../../../model/LangSupport';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import Swiper from 'react-id-swiper';
+import CardGroup, {
+  GroupType,
+} from '../../../shared/Lecture/sub/CardGroup/CardGroupContainer2';
+
+const SwiperProps = {
+  slidesPerView: 4,
+  spaceBetween: 7,
+  slidesPerGroup: 4,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.' + 'swiperCollege' + ' .swiper-button-next',
+    prevEl: '.' + 'swiperCollege' + ' .swiper-button-prev',
+  },
+  speed: 500,
+};
 
 interface Props extends RouteComponentProps<Params> {
   lectureService?: LectureService;
@@ -187,65 +206,74 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
     return (
       <>
-        <Lecture.LineHeader
-          channel={channel}
-          title={
-            <>
-              의 학습 과정입니다.{' '}
-              <span className="channel">({totalCount})</span>
-            </>
-          }
-          onViewAll={this.onViewAll}
-        />
-        {isLoading ? (
+        <div className="leaning-section-wrap">
           <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
+            className="full learning-section type1"
+            dataArea={Area.MAIN_REQUIRED}
           >
-            <Loadingpanel loading={isLoading} />
+            <div className="section-head">
+              <div className="sec-tit-txt">
+                <div
+                  className="section-count-big"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      '<strong>{name}</strong> 의 학습 과정 입니다. <strong>({count})</strong>',
+                      'cicl-목록-학습과정',
+                      {
+                        name: parsePolyglotString(channel.name),
+                        count: totalCount + '',
+                      }
+                    ),
+                  }}
+                />
+              </div>
+              <div className="sec-tit-btn">
+                <button className="btn-more" onClick={this.onViewAll}>
+                  전체보기
+                </button>
+              </div>
+            </div>
+            <div className="section-body">
+              <div className="cardSwiper">
+                <Swiper {...SwiperProps}>
+                  {cardWithCardRealtedCounts.map(
+                    ({ card, cardRelatedCount }) => {
+                      return (
+                        <li key={card.id}>
+                          <LectureCardView
+                            cardId={card.id}
+                            cardName={parsePolyglotString(card.name)}
+                            learningTime={card.learningTime.toString()}
+                            passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
+                            starCount={cardRelatedCount.starCount.toString()}
+                            thumbnailImagePath={card.thumbImagePath}
+                            langSupports={card.langSupports}
+                            simpleDescription={parsePolyglotString(
+                              card.simpleDescription
+                            )}
+                            studentCount={cardRelatedCount.studentCount}
+                            //??
+                            isRequiredLecture={false}
+                            // upcomingClassroomInfo={}
+                            difficultyLevel={card.difficultyLevel}
+                            collegeId={collegeId}
+                            userLanguage={userLanguage}
+                            useBookMark={true}
+                            dataArea={Area.EXPERT_LECTURE}
+                          />
+                        </li>
+                      );
+                    }
+                  )}
+                </Swiper>
+                <div className="swiperCollege">
+                  <div className="swiper-button-prev" />
+                  <div className="swiper-button-next" />
+                </div>
+              </div>
+            </div>
           </Segment>
-        ) : (
-          (cardWithCardRealtedCounts.length && (
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              {cardWithCardRealtedCounts.map(({ card, cardRelatedCount }) => {
-                return (
-                  <li key={card.id}>
-                    <Lecture.Group type={Lecture.GroupType.Box}>
-                      <LectureCardView
-                        cardId={card.id}
-                        cardName={parsePolyglotString(card.name)}
-                        learningTime={card.learningTime.toString()}
-                        passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                        starCount={cardRelatedCount.starCount.toString()}
-                        thumbnailImagePath={card.thumbImagePath}
-                        langSupports={card.langSupports}
-                        simpleDescription={parsePolyglotString(
-                          card.simpleDescription
-                        )}
-                        studentCount={cardRelatedCount.studentCount}
-                        //??
-                        isRequiredLecture={false}
-                        // upcomingClassroomInfo={}
-                        difficultyLevel={card.difficultyLevel}
-                        collegeId={collegeId}
-                        userLanguage={userLanguage}
-                        useBookMark={true}
-                        dataArea={Area.EXPERT_LECTURE}
-                      />
-                    </Lecture.Group>
-                  </li>
-                );
-              })}
-            </Lecture.Group>
-          )) || <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
-        )}
+        </div>
       </>
     );
   }
