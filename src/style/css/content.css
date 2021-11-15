@@ -39,10 +39,10 @@
     content: "";
     width: 100%;
     height: 100%;
-    background: url(/images/all/btn-channel-down.svg) center no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-channel-down.svg) center no-repeat;
 }
 .toggle-btn .ui.button.img-icon .icon.arrow-up.s26:after {
-    background: url(/images/all/btn-channel-up.svg) center no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-channel-up.svg) center no-repeat;
 }
 .recommend-detail .recommend-area .section-head {
     font-size: 1.375rem;
@@ -70,9 +70,9 @@
 .ui.button.btn_note_new { color: #bbb; }
 .ui.button.btn_note_new.on { color: #777; }
 .detail .ui.label.tag { border: #ddd 1px solid; color: #777; }
-.ui.button.btn_note_new i.icon:before { background: url(/images/all/icon-note-24-px-off.svg) center no-repeat !important; }
-.ui.button.btn_note_new.on i.icon:before { background: url(/images/all/icon-note-24-px.svg) center no-repeat !important; }
-.ui.button.btn_note_new.ing i.icon:before { background: url(/images/all/icon-note-24-px-active.svg) center no-repeat !important; }
+.ui.button.btn_note_new i.icon:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-note-24-px-off.svg) center no-repeat !important; }
+.ui.button.btn_note_new.on i.icon:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-note-24-px.svg) center no-repeat !important; }
+.ui.button.btn_note_new.ing i.icon:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-note-24-px-active.svg) center no-repeat !important; }
 .content.lms .tool-tip > i {
     border: #777 2px solid;
     color: #444;
@@ -83,25 +83,25 @@
     box-shadow: 0 2px 8px -3px #cdcdcd;
 }
 .content.lms .ui.label.onlytext .icon.inter {
-    background: url(/images/all/icon-lms-level-02.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg) 0 0 no-repeat !important;
 }
 .badge-navi .btn-next.next-on {
-    background: url(/images/all/btn-next-24-px.svg);
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg);
 }
 .badge-navi .btn-prev.prev-on {
-    background: url(/images/all/btn-prev-24-px.svg);
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg);
 }
 
 /* 학습카드(개별) */
-.card-item .custom-icon.icon-clock { background-image: url(/images/all/icon-tictoc.svg); }
-.card-item .custom-icon.icon-bravo { background-image: url(/images/all/icon-bravo.svg); }
-.card-item .custom-icon.icon-user { background-image: url(/images/all/icon-card-people.svg); }
-.card-item .custom-icon.icon-user-white { background-image: url(/images/all/icon-card-user-white.svg); }
-.card-item .custom-icon.icon-star { background-image: url(/images/all/icon-rate-active-16-px.svg); }
-.card-item .custom-icon.icon-badge { background-image: url(/images/all/icon-hover-badge.svg); }
-.card-item .custom-icon.icon-grade { background-image: url(/images/all/icon-hover-grade.svg); }
-.card-item .button.icon-bookmark { background: url(/images/all/card-bookmark-off.svg) center no-repeat; }
-.card-item .button.icon-bookmark.on { background-image: url(/images/all/card-bookmark-on.svg); }
+.card-item .custom-icon.icon-clock { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tictoc.svg); }
+.card-item .custom-icon.icon-bravo { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-bravo.svg); }
+.card-item .custom-icon.icon-user { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-card-people.svg); }
+.card-item .custom-icon.icon-user-white { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-card-user-white.svg); }
+.card-item .custom-icon.icon-star { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-rate-active-16-px.svg); }
+.card-item .custom-icon.icon-badge { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-hover-badge.svg); }
+.card-item .custom-icon.icon-grade { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-hover-grade.svg); }
+.card-item .button.icon-bookmark { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/card-bookmark-off.svg) center no-repeat; }
+.card-item .button.icon-bookmark.on { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/card-bookmark-on.svg); }
 
 /* FAQ */
 .support-list-wrap.faq .cate-wrap .radio-wrap .ui.radio.checkbox { border: #00bfae 1px solid; }
@@ -111,3 +111,14 @@
 /* Loarding */
 .loading { background: rgba(102, 102, 102, 0.8); }
 .loading .spin { background: transparent; }
+
+/* Main > Hot Topic */
+.ui.cards a.card:hover, .ui.link.card:hover, .ui.link.cards .card:hover, a.ui.card:hover {
+    transform: translateY(0);
+}
+
+/* Main > mypage popup */
+.profile-contents-area .button.page-bttn { width: 180px; border-radius: 18px; }
+
+/* Main > 관심채널 */
+.channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }

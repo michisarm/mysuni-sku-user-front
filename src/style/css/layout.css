@@ -1,3 +1,6 @@
+/* Site Header */
+#root section.header.main-sty2.lms-main { z-index: 400; }
+
 /* BG Color */
 body {
     background: unset !important;
@@ -40,7 +43,7 @@ body #root {
     border: #ddd 1px solid;
 }
 .challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:nth-child(3n) > a {
-    background: url(/images/down/rectangle.svg) 0 0 no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/down/rectangle.svg) 0 0 no-repeat;
     border: 0;
     border-radius: 0;
 }
@@ -53,7 +56,7 @@ body #root {
     color: #999 !important;
 }
 .ui.icon.button.moreview .icon {
-    background: url(/images/all/icon-list-more-16-px.svg) center no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg) center no-repeat;
     margin-right: 4px !important;
 }
 .cont-inner .item-button {
@@ -70,12 +73,12 @@ body #root {
     color: #aaa;
 }
 .ui.button.post { border: #777 1px solid; color: #777; }
-.ui.button.post .icon.filter2 { background: url(/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
-.ui.button.post.delete { background: url(/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
-.ui.button.excel-down .icon { background: url(/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
+.ui.button.post .icon.filter2 { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
+.ui.button.post.delete { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
+.ui.button.excel-down .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
 .challenge-wrap .challenge-badge .right-area .badge-title .path {
     color: #777;
-    background: url(/images/all/icon-list-24-px.svg) center no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat;
 }
 
 /* Font */
@@ -117,12 +120,12 @@ body #root {
 .ui.checkbox:not(.radio) input:focus ~ label:before,
 .ui.checkbox:not(.radio) label:before,
 .ui.checkbox:not(.radio) label:hover:before {
-    background: url(/images/all/btn-check-normal.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-normal.svg) 0 0 no-repeat !important;
     background-size: 100% !important;
 }
 .ui.checkbox:not(.radio) input:checked ~ label:before,
 .ui.checkbox input:checked ~ label:before {
-    background: url(/images/all/btn-check-selected.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0 no-repeat !important;
     background-size: 100% !important;
 }
 
@@ -134,13 +137,13 @@ body #root {
 .ui.radio input:focus ~ label:before,
 .ui.radio label:before,
 .ui.radio label:hover:before {
-    background: url(/images/all/btn-radio-type-2-nomal.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-2-nomal.svg) 0 0 no-repeat !important;
 }
 .ui.radio input:checked,
 .ui.radio input:checked:focus,
 .ui.radio input:checked:focus ~ label:before,
 .ui.radio input:checked ~ label:before {
-    background: url(/images/all/btn-radio-type-2-selected.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-2-selected.svg) 0 0 no-repeat !important;
 }
 
 .ui.radio.base label,
@@ -151,7 +154,7 @@ body #root {
 .ui.radio.v-icon input:checked + label > span > span > span .text1 {
     color: #777;
 }
-.ui.icon.button.postset .icon.reply2:before { background: url("/images/all/icon-comment-reply-16-px.svg") 0 0 no-repeat !important; }
+.ui.icon.button.postset .icon.reply2:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-reply-16-px.svg") 0 0 no-repeat !important; }
 
 
 /* Dropdown */
@@ -160,17 +163,17 @@ body #root {
 
 
 /* 데이터 없을 때 이미지 */
-i.icon.no-contents80:before { background: url(/images/all/no-contents-80-px.svg) center no-repeat; }
+i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/no-contents-80-px.svg) center no-repeat; }
 
 /* Icon */
-.ui.breadcrumb.standard::before { background: url(/images/all/icon-breadcrumb-home.svg) 0 0 no-repeat !important; }
-.content.lms .icon.ask { background: url(/images/all/icon-ask-11-px.svg) 0 0 no-repeat !important; }
-.content.lms .icon.listAdd { background: url(/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; }
-.content.lms .icon.linkCopy { background: url(/images/all/btn-lms-share-14-px.svg) 0 0 no-repeat !important; }
-.content.lms .icon.listDelete { background: url(/images/all/btn-lms-delete-14-px.svg) 0 0 no-repeat !important; }
-.content.lms .icon.noteWrite { background: url(/images/all/icon-note-create.svg) 0 0 no-repeat !important; }
-.icon.before { background: url(/images/all/icon-before-24-px.svg) 0 0 no-repeat !important; }
-.lms-comment-icon { background: url(/images/all/icon-community-comment.svg) center no-repeat; }
+.ui.breadcrumb.standard::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-home.svg) 0 0 no-repeat !important; }
+.content.lms .icon.ask { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-ask-11-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.listAdd { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.linkCopy { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-share-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.listDelete { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-delete-14-px.svg) 0 0 no-repeat !important; }
+.content.lms .icon.noteWrite { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-note-create.svg) 0 0 no-repeat !important; }
+.icon.before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-before-24-px.svg) 0 0 no-repeat !important; }
+.lms-comment-icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before {
     background: #777;
     position: relative;
@@ -179,7 +182,7 @@ i.icon.no-contents80:before { background: url(/images/all/no-contents-80-px.svg)
     left: 0;
     margin-right: 0.5rem;
 }
-.content.lms .ov-paragraph.download-area .down a:after { background: url(/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
+.content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act {
