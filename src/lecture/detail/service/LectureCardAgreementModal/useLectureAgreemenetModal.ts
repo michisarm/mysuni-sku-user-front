@@ -97,11 +97,13 @@ export function onCloseLectureCardPisAgreementModal(cardId: string) {
     checkedName: '',
   });
 
-  lectureCardPisAgreement.isCard
-    ? setTimeout(() => {
-        onOpenLectureCardPisAgreementModal(lectureCardPisAgreement.isCard);
-      }, 500)
-    : history?.push(routePaths.lectureCard(cardId));
+  // lectureCardPisAgreement.isCard
+  //   ? setTimeout(() => {
+  //       onOpenLectureCardPisAgreementModal(lectureCardPisAgreement.isCard);
+  //     }, 500)
+  //   : history?.push(routePaths.lectureCard(cardId));
+  !lectureCardPisAgreement.isCard &&
+    history?.push(routePaths.lectureCard(cardId));
 }
 
 export function setNumPages(page: number) {
