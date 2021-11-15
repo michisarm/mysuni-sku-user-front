@@ -35,6 +35,8 @@ import CardGroup, {
 
 const SwiperProps = (swiperName: string) => {
   return {
+    observer: true,
+    observerParents: true,
     slidesPerView: 4,
     spaceBetween: 7,
     slidesPerGroup: 4,
