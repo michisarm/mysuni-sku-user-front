@@ -807,7 +807,7 @@ body.msie
   background: #fafafa;
   border-top: #eee 1px solid;
   border-bottom: #eee 1px solid;
-  margin-bottom: -1px;
+  margin-bottom: -2px;
 }
 #root section.header div.breadcrumbs .ui.breadcrumb.standard a {
   color: #666 !important;
