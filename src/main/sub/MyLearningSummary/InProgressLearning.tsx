@@ -5,6 +5,7 @@ import { findMyLatestLearningCards } from '../../../lecture/detail/api/cardApi';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import Image from 'shared/components/Image';
+import { useHistory } from 'react-router-dom';
 
 const swiperProps = {
   loop: false,
@@ -54,8 +55,15 @@ export function InProgressLearning() {
 }
 
 export function ItemView(c: CardProps) {
+  const history = useHistory();
   return (
-    <div className="swiper-slide" key={c.cardId}>
+    <div
+      className="swiper-slide"
+      key={c.cardId}
+      onClick={() => {
+        history.push(`/lecture/card/${c.cardId}/view`);
+      }}
+    >
       <a className="inner">
         <div className="over-img">
           <Image src={c.thumbnailImagePath} className="tmb" />
