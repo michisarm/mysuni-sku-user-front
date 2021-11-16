@@ -18,6 +18,7 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { onResetFocusControl } from '../aplCreate.events';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
+import { CollegeModel } from '../../../college/model';
 
 export async function requestAplApprover() {
   const aplService = AplService.instance;
@@ -64,27 +65,25 @@ export async function requestAplApprover() {
 }
 
 export async function requestAplCreateColleges() {
-  const collegeLectureCountService = CollegeLectureCountService.instance;
+  //
   if (window.navigator.onLine) {
-    const collegeLectureCounts =
-      await collegeLectureCountService.findCollegeLectureCounts();
-    if (collegeLectureCounts.length > 0) {
-      parseCollegeOptions(collegeLectureCounts);
-    }
+    await CollegeService.instance.findCollegesForCurrentCineroom();
+    parseCollegeOptions(CollegeService.instance.mainColleges);
   }
 }
 
-export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+// export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+export function parseCollegeOptions(colleges: CollegeModel[]) {
   const collegeOptions: SelectOption[] = [
     { key: 'Select', value: 'Select', text: 'Select' },
   ];
   if (colleges) {
     colleges.map((college, index) => {
-      if (college.collegeType === 'Company') {
+      if (college.cineroomId !== 'ne1-m2-c2') {
         collegeOptions.push({
           key: String(index + 1),
           value: college.id,
-          text: college.name,
+          text: parsePolyglotString(college.name),
         });
       }
     });
