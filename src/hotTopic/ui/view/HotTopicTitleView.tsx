@@ -26,7 +26,13 @@ export function HotTopicTitleView({ hotTopicDetail, hotTopicLikeInfo }: Props) {
     <>
       <div className=" txt-box">
         <div className="page-tit">{hotTopicDetail.displayText}</div>
-        <div className="sub-txt">{hotTopicDetail.description}</div>
+        <div
+          className="sub-txt"
+          style={{ whiteSpace: 'pre-wrap' }}
+          dangerouslySetInnerHTML={{
+            __html: hotTopicDetail.description,
+          }}
+        />
       </div>
       <div className="icon-area icon-box">
         <div className="f-left">

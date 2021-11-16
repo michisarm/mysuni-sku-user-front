@@ -11,6 +11,13 @@ interface Props {
   card: HotTopicCardViewModel;
 }
 
+function numberWithCommas(x: number) {
+  let s = x.toString();
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
+  return s;
+}
+
 export function HotTopicCardView({ card }: Props) {
   //
   const passedStudentCount = useMemo(() => {
@@ -20,7 +27,7 @@ export function HotTopicCardView({ card }: Props) {
         '{number}만',
         'home-Inprogress-이수인원',
         {
-          number: tenthousand + '',
+          number: numberWithCommas(tenthousand) + '',
         }
       );
       if (card.passedStudentCount / 10000 === tenthousand) {
@@ -28,7 +35,7 @@ export function HotTopicCardView({ card }: Props) {
       }
       return textTenthousand + '+';
     }
-    return card.passedStudentCount + '';
+    return numberWithCommas(card.passedStudentCount) + '';
   }, [card.passedStudentCount]);
 
   return (
