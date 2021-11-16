@@ -20,6 +20,8 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import Swiper from 'react-id-swiper';
 import CardGroup, { GroupType } from 'lecture/shared/Lecture/sub/CardGroup';
+import { Segment } from 'semantic-ui-react';
+import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
   //
@@ -56,15 +58,19 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   };
 
   return (
-    <div
-      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollHorizontalTrack({
-          e,
-          area: Area.RECOMMEND_LIST,
-          scrollClassName: 'scrolling',
-          actionName: '추천카드 스크롤',
-        })
-      }
+    // <div
+    //   onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
+    //     scrollHorizontalTrack({
+    //       e,
+    //       area: Area.RECOMMEND_LIST,
+    //       scrollClassName: 'scrolling',
+    //       actionName: '추천카드 스크롤',
+    //     })
+    //   }
+    // >
+    <Segment
+      className="full learning-section type1"
+      data-area={Area.RECOMMEND_LIST}
     >
       <div className="section-head">
         <span
@@ -109,7 +115,9 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                           <LectureCardView
                             cardId={item.id}
                             cardName={parsePolyglotString(item.name)}
-                            learningTime={item.learningTime.toString()}
+                            learningTime={timeToHourMinuteFormat(
+                              item.learningTime
+                            )}
                             thumbnailImagePath={item.thumbImagePath}
                             passedStudentCount={item.passedStudentCount.toString()}
                             starCount={item.starCount.toString()}
@@ -149,6 +157,6 @@ export function RecommendCardRomView(props: RecommendCardRom) {
           )}
         </div>
       </div>
-    </div>
+    </Segment>
   );
 }
