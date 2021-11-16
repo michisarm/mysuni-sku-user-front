@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
 import { setSearchRecentList, useSearchRecentList } from '../search.services';
@@ -6,6 +6,8 @@ import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
 import SearchInfoModel from '../model/SeachInfoModel';
 import { Area } from 'tracker/model';
+import { useParams } from 'react-router-dom';
+import { requestSearchRecentList } from 'search/search.events';
 
 interface Props {
   callback?: (searchValue?: string) => void;
@@ -17,6 +19,12 @@ interface Props {
 
 export function SearchHeaderFieldView(props: Props) {
   //
+  const param = useParams();
+
+  useEffect(() => {
+    requestSearchRecentList();
+  }, [param]);
+
   const searchRecents = useSearchRecentList();
 
   const onClickRemove = (searchValue: string) => {
