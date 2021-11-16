@@ -137,9 +137,7 @@ export function RecommendContainer() {
               '<strong>{name}</strong>의 관심채널',
               'main-favorites',
               {
-                name: parsePolyglotString(
-                  SkProfileService.instance.skProfile.name
-                ),
+                name: SkProfileService.instance.profileMemberName,
               }
             ),
           }}
