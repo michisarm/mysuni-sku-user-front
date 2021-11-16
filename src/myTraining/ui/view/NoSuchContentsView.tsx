@@ -1,5 +1,4 @@
 import React from 'react';
-import { Children, ReactNode } from 'react-router/node_modules/@types/react';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from 'shared';
 
