@@ -56,13 +56,13 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.MAIN_RECOMMEND,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
@@ -113,9 +113,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
               '{name} 님이 관심가질만한 과정을 모아봤어요~',
               'main-lrs-title2',
               {
-                name: parsePolyglotString(
-                  SkProfileService.instance.skProfile.name
-                ),
+                name: SkProfileService.instance.profileMemberName,
               }
             ),
           }}
@@ -129,7 +127,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
 
       <div className="section-body swiper-no-txticon">
         <div className="cardSwiper" data-action-name="관심가질만한 과정">
-          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {parseUserLectureCards(
               cards,
               SkProfileService.instance.skProfile.language

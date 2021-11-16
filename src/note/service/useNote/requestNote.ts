@@ -20,6 +20,7 @@ import {
   setNoteWithLectureList,
   getNoteWithLectureList,
 } from '../../store/NoteWithLectureListStore';
+import CollegeService from '../../../college/present/logic/CollegeService';
 
 export function requestNote(noteId: string) {
   findNoteById(noteId).then(async (result) => {
@@ -81,13 +82,14 @@ export function requestNoteExcelList() {
 }
 
 export function requestColleges() {
-  return findAllCollege().then(async (result) => {
-    if (result) {
-      // note or cube 명칭 정리
-      // return result;
-      setColleges(result);
-    }
-  });
+  // return findAllCollege().then(async (result) => {
+  //   if (result) {
+  //     // note or cube 명칭 정리
+  //     // return result;
+  //     setColleges({ ...result });
+  //   }
+  // });
+  setColleges(CollegeService.instance.detailAllColleges);
 }
 
 export function requestNoteCount(flag?: string) {

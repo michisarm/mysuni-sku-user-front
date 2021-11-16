@@ -59,7 +59,7 @@ class LectureService {
   private myTrainingApi: MyTrainingApi;
 
   @observable
-  _lectures: CardWithCardRealtedCount[] = [];
+  _lectures: UserLectureCard[] = [];
 
   @observable
   _userLectureCards: CardProps[] = [];
@@ -376,14 +376,15 @@ class LectureService {
     orderBy: OrderByType
   ) {
     const response =
-      (await findByRdo({
+      (await findByQdo({
         channelIds: channelId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
-    const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+      })) || new OffsetElementList<UserLectureCard>();
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
 
     runInAction(
       () =>
@@ -408,16 +409,17 @@ class LectureService {
     }
 
     const response =
-      (await findByRdo({
+      (await findByQdo({
         collegeIds: collegeId,
         channelIds: channelId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
+      })) || new OffsetElementList<UserLectureCard>();
 
-    const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
 
     runInAction(
       () =>

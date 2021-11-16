@@ -32,7 +32,7 @@ import {
 } from 'shared/viewmodel/PolyglotString';
 import {
   LectureCardView,
-  parseCommunityLectureCard,
+  parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
@@ -265,53 +265,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     );
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    const { inMyLectureService } = this.props;
-
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
-  }
-
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
@@ -350,14 +303,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   render() {
     //
-    const { pageService, lectureService, reviewService, inMyLectureService } =
-      this.props;
+    const { pageService, lectureService } = this.props;
     const { sorting, collegeOrder, loading } = this.state;
-    const { collegeId } = this.props.match.params;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { lectures } = lectureService!;
-    const { ratingMap } = reviewService!;
-    const { inMyLectureMap } = inMyLectureService!;
+    const { _lectures } = lectureService!;
+
     const userLanguage = parseLanguage(
       SkProfileService.instance.skProfile.language
     );
@@ -365,7 +315,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
-        countDisabled={lectures.length < 1}
+        countDisabled={_lectures.length < 1}
       >
         {loading ? (
           <Segment
@@ -381,7 +331,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
           >
             <Loadingpanel loading={loading} />
           </Segment>
-        ) : lectures && lectures.length > 0 ? (
+        ) : _lectures && _lectures.length > 0 ? (
           <>
             <CardSorting
               value={sorting}
@@ -390,12 +340,17 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((cards, index) => {
+                {parseUserLectureCards(_lectures).map((cards, index) => {
                   return (
                     <LectureCardView
-                      {...parseCommunityLectureCard(cards, userLanguage)}
+                      {...cards}
+                      userLanguage={userLanguage}
                       useBookMark={true}
-                      dataArea={Area.EXPERT_LECTURE}
+                      dataArea={
+                        window.location.pathname.includes('/recommend')
+                          ? Area.RECOMMEND_CARD
+                          : Area.COLLEGE_CARD
+                      }
                       hoverTrack={hoverTrack}
                     />
                   );
