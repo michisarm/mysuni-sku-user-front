@@ -6,7 +6,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
-import { InMyLectureService } from '../../../myTraining/stores';
 import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
 import { BookmarkCards } from './MainComponents/BookmarkCards';
 import EnrollingLearning from './MainComponents/EnrollingLearning';
@@ -20,12 +19,11 @@ import RQDLearning from './MainComponents/RQDLearning';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
-  inMyLectureService?: InMyLectureService;
 }
 
 const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>();
-  const { skProfileService, inMyLectureService } = Props;
+  const { skProfileService } = Props;
   const { skProfile } = skProfileService!;
   // const { member } = skProfile;
   const [memName, setMemName] = useState('');
@@ -40,15 +38,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
-    inMyLectureService!.findAllInMyLectures();
-
     setMemName(parsePolyglotString(skProfile.name));
     if (memName.length < 1) {
       setTimeout(() => {
         setMemName(parsePolyglotString(skProfile.name));
       }, 200);
     }
-  }, [inMyLectureService, memName.length, skProfile.name, skProfileService]);
+  }, [memName.length, skProfile.name, skProfileService]);
 
   return (
     <>

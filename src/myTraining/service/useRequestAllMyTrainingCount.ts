@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import MyTrainingService from '../present/logic/MyTrainingService';
-import InMyLectureService from '../present/logic/InMyLectureService';
 import { LectureService } from '../../lecture';
 import AplService from '../present/logic/AplService';
-import { CountType } from '../model/AplRdoModel';
 
 export function useRequestAllMyTrainingCount() {
   useEffect(() => {

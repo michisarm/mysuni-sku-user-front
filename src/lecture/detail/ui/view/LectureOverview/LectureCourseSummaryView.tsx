@@ -21,7 +21,6 @@ import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { autorun } from 'mobx';
-import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
 import { Area } from 'tracker/model';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 import {
@@ -183,25 +182,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       postService.post.alarmInfo.contentsName = lectureSummary.name;
     }, [lectureSummary]);
 
-    const [inMyLectureMap, setInMyLectureMap] =
-      useState<Map<string, InMyLectureModel>>();
-    const [inMyLectureModel, setInMyLectureModel] =
-      useState<InMyLectureModel>();
-
     const params = useLectureParams();
-
-    useEffect(() => {
-      return autorun(() => {
-        setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
-      });
-    }, []);
-
-    useEffect(() => {
-      if (params?.cardId === undefined) {
-        return;
-      }
-      setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
-    }, [inMyLectureMap, params?.cardId]);
 
     useEffect(() => {
       const postService = PostService.instance;

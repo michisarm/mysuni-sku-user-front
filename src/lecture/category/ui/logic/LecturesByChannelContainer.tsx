@@ -6,9 +6,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { ChannelModel } from 'college/model';
-import { InMyLectureService } from 'myTraining/stores';
 import { LectureService } from '../../../stores';
-import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
 import { Segment } from 'semantic-ui-react';
 import {
@@ -51,7 +50,6 @@ const SwiperProps = (swiperName: string) => {
 interface Props extends RouteComponentProps<Params> {
   lectureService?: LectureService;
   reviewService?: ReviewService;
-  inMyLectureService?: InMyLectureService;
   channel: ChannelModel;
   onViewAll: (e: any, data: any) => void;
 }
@@ -102,8 +100,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   async findLectures() {
     //
-    const { lectureService, reviewService, inMyLectureService, channel } =
-      this.props;
+    const { lectureService, channel } = this.props;
 
     this.setState({ isLoading: true });
     const { results, totalCount } =
@@ -113,11 +110,6 @@ class LecturesByChannelContainer extends Component<Props, State> {
         0,
         OrderByType.Time
       );
-    inMyLectureService!.findAllInMyLectures().then(() => {
-      this.setState({
-        isLoading: false,
-      });
-    });
 
     this.setState({
       cardWithCardRealtedCounts: results,
@@ -153,11 +145,10 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, reviewService, inMyLectureService } = this.props;
+    const { channel, reviewService } = this.props;
     const { collegeId } = this.props.match.params;
     const { cardWithCardRealtedCounts, totalCount, isLoading } = this.state;
     const { ratingMap } = reviewService as ReviewService;
-    const { inMyLectureMap } = inMyLectureService as InMyLectureService;
     const userLanguage = parseLanguage(
       SkProfileService.instance.skProfile.language
     );

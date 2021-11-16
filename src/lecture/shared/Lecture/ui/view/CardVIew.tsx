@@ -15,7 +15,6 @@ import {
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
 import { reactAlert } from '@nara.platform/accent';
-import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
@@ -101,9 +100,8 @@ export default function CardView({
   dataArea,
   langSupports,
 }: Props) {
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
+  const [inMyLectureMap, setInMyLectureMap] =
+    useState<Map<string, InMyLectureModel>>();
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
@@ -117,12 +115,6 @@ export default function CardView({
       return parsed;
     }
   }, [name, langSupports]);
-
-  useEffect(() => {
-    return autorun(() => {
-      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
-    });
-  }, []);
 
   useEffect(() => {
     setInMyLectureModel(inMyLectureMap?.get(cardId));
@@ -175,23 +167,23 @@ export default function CardView({
   };
 
   const handleInMyLecture = () => {
-    if (inMyLectureModel) {
-      InMyLectureService.instance.removeInMyLectureCard(cardId);
-    } else {
-      InMyLectureService.instance.addInMyLectureCard({
-        serviceId: cardId,
-        serviceType: 'Card',
-        category: {
-          channelId: mainCategory.channelId,
-          collegeId: mainCategory.collegeId,
-          mainCategory: mainCategory.mainCategory,
-        },
-        name: parseName,
-        cubeType: type,
-        learningTime,
-        stampCount,
-      });
-    }
+    // if (inMyLectureModel) {
+    //   InMyLectureService.instance.removeInMyLectureCard(cardId);
+    // } else {
+    //   InMyLectureService.instance.addInMyLectureCard({
+    //     serviceId: cardId,
+    //     serviceType: 'Card',
+    //     category: {
+    //       channelId: mainCategory.channelId,
+    //       collegeId: mainCategory.collegeId,
+    //       mainCategory: mainCategory.mainCategory,
+    //     },
+    //     name: parseName,
+    //     cubeType: type,
+    //     learningTime,
+    //     stampCount,
+    //   });
+    // }
 
     handleAlert(inMyLectureModel);
   };

@@ -14,7 +14,6 @@ import LectureCardSummary from '../../viewModel/LectureOverview/LectureCardSumma
 import { studentInfoView } from 'lecture/detail/api/lectureApi';
 import LectureParams from '../../viewModel/LectureParams';
 import { getLectureParams } from '../../store/LectureParamsStore';
-import InMyLectureService from '../../../../myTraining/present/logic/InMyLectureService';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   addBookMark,
@@ -24,7 +23,10 @@ import {
 
 type Value = LectureCardSummary | undefined;
 
-export function findIsBookmark(cardId: string) {
+export function findIsBookmark(cardId?: string) {
+  if (cardId === undefined) {
+    return false;
+  }
   const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
   return bookmarks.find((id: string) => {
     if (id === cardId) {

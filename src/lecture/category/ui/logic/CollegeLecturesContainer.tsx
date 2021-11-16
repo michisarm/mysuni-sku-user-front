@@ -16,10 +16,9 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { NewPageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
-import { ChannelModel, CollegeModel } from 'college/model';
+import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 
 import routePaths from '../../../routePaths';
 import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
@@ -61,7 +60,6 @@ interface Injected {
   lectureService: LectureService;
   lectureCountService: LectureCountService;
   reviewService: ReviewService;
-  inMyLectureService: InMyLectureService;
   coursePlanService: CoursePlanService;
 }
 
@@ -172,7 +170,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     await this.findCollegeOrder();
     this.initialFindPagingCollegeLectures();
     this.findChannels();
-    this.findInMyLectures();
   }
 
   async componentDidUpdate(prevProps: Props) {
@@ -184,7 +181,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
       await this.findCollegeOrder();
       this.clearAndInit();
       this.initialFindPagingCollegeLectures();
-      this.findInMyLectures();
     }
     if (prevParams.pageNo !== params.pageNo) {
       this.addFindPagingCollegeLectures();
@@ -215,11 +211,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
       match.params.collegeId,
       collegeService!.channels
     );
-  }
-
-  findInMyLectures() {
-    const { inMyLectureService } = this.injected;
-    inMyLectureService!.findAllInMyLectures();
   }
 
   async initialFindPagingCollegeLectures() {
@@ -320,49 +311,45 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.injected;
-
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
+    // if (lecture instanceof InMyLectureModel) {
+    //   inMyLectureService!
+    //     .removeInMyLecture(lecture.id)
+    //     .then(() =>
+    //       inMyLectureService!.removeInMyLectureInAllList(
+    //         lecture.serviceId,
+    //         lecture.serviceType
+    //       )
+    //     );
+    // } else {
+    //   inMyLectureService!
+    //     .addInMyLecture(
+    //       new InMyLectureCdoModel({
+    //         serviceId: lecture.serviceId,
+    //         serviceType: lecture.serviceType,
+    //         category: lecture.category,
+    //         name: lecture.name ? parsePolyglotString(lecture.name) : '',
+    //         description: lecture.description,
+    //         cubeType: lecture.cubeType,
+    //         learningTime: lecture.learningTime,
+    //         stampCount: lecture.stampCount,
+    //         coursePlanId: lecture.coursePlanId,
+    //         requiredSubsidiaries: lecture.requiredSubsidiaries,
+    //         cubeId: lecture.cubeId,
+    //         courseSetJson: lecture.courseSetJson,
+    //         courseLectureUsids: lecture.courseLectureUsids,
+    //         lectureCardUsids: lecture.lectureCardUsids,
+    //         reviewId: lecture.reviewId,
+    //         baseUrl: lecture.baseUrl,
+    //         servicePatronKeyString: lecture.patronKey.keyString,
+    //       })
+    //     )
+    //     .then(() =>
+    //       inMyLectureService.addInMyLectureInAllList(
+    //         lecture.serviceId,
+    //         lecture.serviceType
+    //       )
+    //     );
+    // }
   }
 
   onViewDetail(e: any, { model }: any) {
@@ -403,20 +390,9 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   renderCollegeLectures() {
     //
-    const {
-      newPageService,
-      collegeService,
-      reviewService,
-      inMyLectureService,
-    } = this.injected;
+    const { newPageService, collegeService, reviewService } = this.injected;
     const { lectures, sorting, totalCnt, collegeOrder, loading } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
-    const page = newPageService.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService;
-    const { ratingMap } = reviewService;
-    const { inMyLectureMap } = inMyLectureService;
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
 
     return (
       <CategoryLecturesWrapperView

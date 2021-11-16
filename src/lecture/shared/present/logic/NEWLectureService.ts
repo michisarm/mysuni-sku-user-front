@@ -10,7 +10,6 @@ import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
-import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 @autobind
 class NEWLectureService {
@@ -18,11 +17,9 @@ class NEWLectureService {
   static instance: NEWLectureService;
 
   private arrangeApi: ArrangeApi;
-  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
+  constructor(arrangeApi: ArrangeApi) {
     this.arrangeApi = arrangeApi;
-    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -97,9 +94,8 @@ class NEWLectureService {
         window.navigator.onLine &&
         window.sessionStorage.getItem('NewLearningList');
       if (savedNewLearningList && savedNewLearningList.length > 0) {
-        const newMain: OffsetElementList<LectureModel> = JSON.parse(
-          savedNewLearningList
-        );
+        const newMain: OffsetElementList<LectureModel> =
+          JSON.parse(savedNewLearningList);
         newMain.title = this._title;
         window.sessionStorage.setItem(
           'NewLearningList',
@@ -155,9 +151,8 @@ class NEWLectureService {
       window.navigator.onLine &&
       window.sessionStorage.getItem('NewLearningList');
     if (savedNewLearningList && savedNewLearningList.length > 0) {
-      const NewMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedNewLearningList
-      );
+      const NewMain: OffsetElementList<LectureModel> =
+        JSON.parse(savedNewLearningList);
       if (NewMain && NewMain.results && NewMain.results.length > 0) {
         NewMain.results = NewMain.results.filter(
           (item) => item.serviceId !== serviceId
@@ -173,9 +168,6 @@ class NEWLectureService {
   }
 }
 
-NEWLectureService.instance = new NEWLectureService(
-  ArrangeApi.instance,
-  InMyLectureApi.instance
-);
+NEWLectureService.instance = new NEWLectureService(ArrangeApi.instance);
 
 export default NEWLectureService;

@@ -1,4 +1,3 @@
-import { InMyLectureService } from '../../../../../myTraining/stores';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
@@ -106,18 +105,13 @@ export async function requestLectureCardSummary(cardId: string) {
     return;
   }
 
-  const {
-    card,
-    cardContents,
-    cardOperatorIdentity,
-    cardRelatedCount,
-  } = cardWithContentsAndRelatedCountRom;
+  const { card, cardContents, cardOperatorIdentity, cardRelatedCount } =
+    cardWithContentsAndRelatedCountRom;
 
   if (card === null) {
     return;
   }
 
-  await InMyLectureService.instance.findAllInMyLectures();
   const lectureCardSummary = parseLectureSummary(
     card,
     cardContents,

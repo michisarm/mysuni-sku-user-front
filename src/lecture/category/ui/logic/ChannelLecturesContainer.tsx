@@ -14,10 +14,8 @@ import { PageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 
-import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureServiceType, OrderByType } from '../../../model';
 import { LectureCardService, LectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
 import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
@@ -26,10 +24,7 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import {
-  parseLanguage,
-  parsePolyglotString,
-} from 'shared/viewmodel/PolyglotString';
+import { parseLanguage } from 'shared/viewmodel/PolyglotString';
 import {
   LectureCardView,
   parseUserLectureCards,
@@ -46,7 +41,6 @@ interface Props
   lectureService?: LectureService;
   lectureCardService?: LectureCardService;
   reviewService?: ReviewService;
-  inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
   scrollOnceMove?: () => void;
@@ -66,7 +60,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   lectureService,
   lectureCardService,
   reviewService,
-  inMyLectureService,
   match,
 }) => {
   const history = useHistory();
@@ -86,7 +79,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       lectureService={lectureService}
       lectureCardService={lectureCardService}
       reviewService={reviewService}
-      inMyLectureService={inMyLectureService}
       history={history}
       location={location}
       match={match}
@@ -181,13 +173,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   async findPagingChannelLectures() {
     //
-    const {
-      match,
-      pageService,
-      lectureService,
-      inMyLectureService,
-      scrollOnceMove,
-    } = this.props;
+    const { match, pageService, lectureService, scrollOnceMove } = this.props;
 
     const getChannelOffset: string | null =
       sessionStorage.getItem('channelOffset');
@@ -199,7 +185,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.setState({ channelOffset: prevChannelOffset });
     const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    inMyLectureService!.findAllInMyLectures();
 
     const lectureOffsetList =
       await lectureService!.findPagingChannelOrderLectures(

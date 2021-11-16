@@ -19,7 +19,6 @@ import {
   InMyLectureCdoModel,
   InMyLectureModel,
 } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
@@ -43,20 +42,14 @@ import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService;
   popLectureService?: POPLectureService;
-  inMyLectureService?: InMyLectureService;
 
   profileMemberName: string;
 }
 
 const POPLearning: React.FC<Props> = (Props) => {
   //
-  const {
-    reviewService,
-    popLectureService,
-    inMyLectureService,
-    profileMemberName,
-    history,
-  } = Props;
+  const { reviewService, popLectureService, profileMemberName, history } =
+    Props;
 
   const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
@@ -142,12 +135,6 @@ const POPLearning: React.FC<Props> = (Props) => {
       });
   };
 
-  const getInMyLecture = (serviceId: string) => {
-    //
-    const { inMyLectureMap } = inMyLectureService!;
-    return inMyLectureMap.get(serviceId);
-  };
-
   const getRating = (learning: LectureModel | InMyLectureModel) => {
     //
     const { ratingMap } = reviewService!;
@@ -228,38 +215,35 @@ const POPLearning: React.FC<Props> = (Props) => {
     training: MyTrainingModel | LectureModel | InMyLectureModel
   ) => {
     //
-    if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id);
-    } else {
-      let servicePatronKeyString = training.patronKey.keyString;
-
-      if (training instanceof MyTrainingModel) {
-        servicePatronKeyString = training.servicePatronKeyString;
-      }
-      inMyLectureService!.addInMyLecture(
-        new InMyLectureCdoModel({
-          serviceId: training.serviceId,
-          serviceType: training.serviceType,
-          category: training.category,
-          name: training.name ? parsePolyglotString(training.name) : '',
-          description: training.description,
-          cubeType: training.cubeType,
-          learningTime: training.learningTime,
-          stampCount: training.stampCount,
-          coursePlanId: training.coursePlanId,
-
-          requiredSubsidiaries: training.requiredSubsidiaries,
-          cubeId: training.cubeId,
-          courseSetJson: training.courseSetJson,
-          courseLectureUsids: training.courseLectureUsids,
-          lectureCardUsids: training.lectureCardUsids,
-
-          reviewId: training.reviewId,
-          baseUrl: training.baseUrl,
-          servicePatronKeyString,
-        })
-      );
-    }
+    // if (training instanceof InMyLectureModel) {
+    //   inMyLectureService!.removeInMyLecture(training.id);
+    // } else {
+    //   let servicePatronKeyString = training.patronKey.keyString;
+    //   if (training instanceof MyTrainingModel) {
+    //     servicePatronKeyString = training.servicePatronKeyString;
+    //   }
+    //   inMyLectureService!.addInMyLecture(
+    //     new InMyLectureCdoModel({
+    //       serviceId: training.serviceId,
+    //       serviceType: training.serviceType,
+    //       category: training.category,
+    //       name: training.name ? parsePolyglotString(training.name) : '',
+    //       description: training.description,
+    //       cubeType: training.cubeType,
+    //       learningTime: training.learningTime,
+    //       stampCount: training.stampCount,
+    //       coursePlanId: training.coursePlanId,
+    //       requiredSubsidiaries: training.requiredSubsidiaries,
+    //       cubeId: training.cubeId,
+    //       courseSetJson: training.courseSetJson,
+    //       courseLectureUsids: training.courseLectureUsids,
+    //       lectureCardUsids: training.lectureCardUsids,
+    //       reviewId: training.reviewId,
+    //       baseUrl: training.baseUrl,
+    //       servicePatronKeyString,
+    //     })
+    //   );
+    // }
   };
 
   const routeToRecommend = () => {
@@ -282,8 +266,6 @@ const POPLearning: React.FC<Props> = (Props) => {
       {popCard?.cards && popCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
           {popCard.cards.map((card, i) => {
-            const inMyLecture = getInMyLecture(card.id);
-
             return (
               <li>
                 {/* <CardGroup type={GroupType.Box}>

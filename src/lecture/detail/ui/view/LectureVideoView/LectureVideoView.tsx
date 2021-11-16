@@ -27,10 +27,12 @@ import {
 import LectureState from '../../../viewModel/LectureState';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCubeDetailCache } from '../../../api/cubeApi';
-import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import {
+  findIsBookmark,
+  toggleCardBookmark,
+} from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
-import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
 import { isMobile } from 'react-device-detect';
 import {
   getPolyglotText,
@@ -259,24 +261,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
       sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
     }, [pathname]);
 
-    const [inMyLectureMap, setInMyLectureMap] =
-      useState<Map<string, InMyLectureModel>>();
-    const [inMyLectureModel, setInMyLectureModel] =
-      useState<InMyLectureModel>();
-
-    useEffect(() => {
-      return autorun(() => {
-        setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
-      });
-    }, []);
-
-    useEffect(() => {
-      if (params?.cardId === undefined) {
-        return;
-      }
-      setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
-    }, [inMyLectureMap, params?.cardId]);
-
     const onCompletedQuiz = useCallback(() => {
       if (quizPop) {
         setQuizPop(false);
@@ -414,71 +398,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
               </>
             </VideoContainer>
           )}
-          {/* <div className="video-container">
-            <div id="panopto-embed-player" />
-            <VideoQuizContainer
-              quizPop={quizPop}
-              quizCurrentIndex={quizCurrentIndex}
-              onCompletedQuiz={onCompletedQuiz}
-            />
-            {pauseVideoSticky && (
-              <div className="video-overlay-small art">
-                <button onClick={onScrollTop} type="button">
-                  <span className="copy">
-                    <PolyglotText
-                      defaultString="퀴즈풀고 이어보기"
-                      id="Collage-Video-퀴즈풀기"
-                    />
-                  </span>
-                </button>
-              </div>
-            )}
-            {nextContentsView &&
-              nextContent?.path !== undefined &&
-              lectureState.student?.learningState === 'Passed' && (
-                <>
-                  <div
-                    id="video-overlay"
-                    className="video-overlay"
-                    onClick={() => nextContents(nextContent?.path)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className="video-overlay-btn">
-                      <button>
-                        <img src={playerBtn} />
-                      </button>
-                    </div>
-                    <div className="video-overlay-text">
-                      <p>
-                        <PolyglotText
-                          defaultString="다음 학습 이어하기"
-                          id="Collage-Video-이어하기"
-                        />
-                      </p>
-                      <h3>
-                        {nextContent &&
-                          (nextContent as LectureStructureCubeItem).name}
-                      </h3>
-                    </div>
-                  </div>
-                  <div
-                    className="video-overlay-small"
-                    onClick={() => nextContents(nextContent?.path)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <button>
-                      <img src={playerBtn} />
-                    </button>
-                    <span className="copy">
-                      <PolyglotText
-                        defaultString="다음 학습 이어하기"
-                        id="Collage-Video-이어하기"
-                      />
-                    </span>
-                  </div>
-                </>
-              )}
-          </div> */}
+
           <div className="sticky-video-content">
             <div className="header">{cubeName}</div>
             <div className="time-check">
@@ -498,10 +418,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 <span>
                   <Icon
                     className={
-                      inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
+                      !findIsBookmark(params.cardId) ? 'listAdd' : 'listDelete'
                     }
                   />
-                  {inMyLectureModel === undefined
+                  {!findIsBookmark(params.cardId)
                     ? getPolyglotText('관심목록 추가', 'Collage-Video-관심추가')
                     : getPolyglotText(
                         '관심목록 제거',

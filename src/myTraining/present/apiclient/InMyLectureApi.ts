@@ -31,14 +31,14 @@ class InMyLectureApi {
   addInMyLecture(inMyLectureCdo: InMyLectureCdoModel) {
     return axiosApi
       .post<string>(this.baseUrl, inMyLectureCdo)
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
   }
 
   // 모델 변경으로 InMyLectureCdo model 을 받는 api 추가
   addInMyLectureCard(inMyLectureCdo: InMyLectureCdo) {
     return axiosApi
       .post<string>(this.baseUrl, inMyLectureCdo)
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
   }
 
   // 관심목록에서 제거
@@ -58,7 +58,7 @@ class InMyLectureApi {
 
     return axiosApi
       .get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
   }
 
   findInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
@@ -68,14 +68,14 @@ class InMyLectureApi {
         this.baseUrl + '/myLectures/filterWithJoinedValue',
         inMyLectureRdo
       )
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
   }
 
   findAllInMyLectures() {
     return axiosApi
       .get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
       .then(
-        response =>
+        (response) =>
           (response && Array.isArray(response.data) && response.data) || []
       );
   }
@@ -101,15 +101,15 @@ class InMyLectureApi {
         `${this.baseUrl}/table/views`,
         inMyLectureFilterRdo
       )
-      .then(response => (response && response.data) || null)
-      .catch(error => error && null);
+      .then((response) => (response && response.data) || null)
+      .catch((error) => error && null);
   }
 
   findAllFilterCountViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
     return axiosApi
       .post(`${this.baseUrl}/table/filter/count`, inMyLectureFilterRdo)
-      .then(response => (response && response.data) || null)
-      .catch(error => error && null);
+      .then((response) => (response && response.data) || null)
+      .catch((error) => error && null);
   }
 
   ////////////////////////////// 개편 //////////////////////////////
@@ -117,4 +117,4 @@ class InMyLectureApi {
 
 InMyLectureApi.instance = new InMyLectureApi();
 
-export default InMyLectureApi;
+// export default InMyLectureApi;
