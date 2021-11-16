@@ -147,12 +147,10 @@ class LectureApi {
 
   // Learning Page
 
-  countMyStamp(denizenId: string) {
+  countMyStamp() {
     //
     return axiosApi
-      .get<number>(this.learningUrl + '/countUserStamp', {
-        params: { denizenId },
-      })
+      .get<number>(this.learningUrl + '/countUserStamp')
       .then((response) => response && response.data);
   }
 
@@ -167,20 +165,20 @@ class LectureApi {
   }
 
   // filter
-  findCardTypeAndCardCount(type: ParsingLearningType) {
+  findCardTypeAndCardCount(type: ParsingLearningType, hasStamp?: boolean) {
     //
     return axiosApi
       .get<CountByCardTypeModel[]>(this.learningUrl + '/cardTypeAndCardCount', {
-        params: { type },
+        params: { type, hasStamp },
       })
       .then((response) => (response && response.data) || []);
   }
 
-  findCollegeAndCardCount(type: ParsingLearningType) {
+  findCollegeAndCardCount(type: ParsingLearningType, hasStamp?: boolean) {
     //
     return axiosApi
       .get<CountByCollegeIdModel[]>(this.learningUrl + '/collegeAndCardCount', {
-        params: { type },
+        params: { type, hasStamp },
       })
       .then((response) => (response && response.data) || []);
   }

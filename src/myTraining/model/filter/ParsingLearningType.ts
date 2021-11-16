@@ -21,8 +21,8 @@ export function getParsingLearningType(
     case MyLearningContentType.Required:
       return ParsingLearningType.Required;
     case MyLearningContentType.Completed:
-      return ParsingLearningType.LearningCompleted;
     case MyPageContentType.EarnedStampList:
+      return ParsingLearningType.LearningCompleted;
     default:
       return ParsingLearningType.None;
   }

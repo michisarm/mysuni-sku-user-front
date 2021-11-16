@@ -54,8 +54,7 @@ function MyTrainingHeaderContainer({
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();
-    const denizenId = patronInfo.getDenizenId();
-    denizenId && lectureService!.countMyStamp(denizenId);
+    lectureService!.countMyStamp();
 
     badgeService!.findAllBadgeCount();
 

@@ -1,32 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, deleteCookie } from '@nara.platform/accent';
-import { MyTrainingService } from 'myTraining/stores';
+import { deleteCookie, mobxHelper } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { LectureService } from 'lecture';
 import { BadgeService } from 'lecture/stores';
-import myTrainingRoutePaths from 'myTraining/routePaths';
+import { inject, observer } from 'mobx-react';
+import myPageRoutePaths from 'myTraining/routePaths';
+import { MyTrainingService } from 'myTraining/stores';
+import FolderPage from 'note/ui/page/FolderPage';
+import NotePage from 'note/ui/page/NotePage';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { Button, Image } from 'semantic-ui-react';
 import { ContentLayout, TabItemModel } from 'shared';
-import Tab from 'shared/components/Tab';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import MyPageBadgeListContainer from '../../../certification/ui/logic/MyPageBadgeListContainer';
+import { CollegeService } from '../../../college/stores';
+import { requestNoteCount } from '../../../note/service/useNote/requestNote';
+import { useNoteCount } from '../../../note/store/NoteCountStore';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
-import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import MyPageProfileCardContainer from '../logic/MyPageProfileCardContainer';
+import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
+import MyStampListContainer from '../logic/MyStampListContainer';
 import {
   MyPageContentType,
   MyPageContentTypeName,
 } from '../model/MyPageContentType';
-import MyStampListContainer from '../logic/MyStampListContainer';
-import { CollegeService } from '../../../college/stores';
-import NotePage from 'note/ui/page/NotePage';
-import FolderPage from 'note/ui/page/FolderPage';
-import { useNoteCount } from '../../../note/store/NoteCountStore';
-import { requestNoteCount } from '../../../note/service/useNote/requestNote';
-import { Image, Label, Icon, Button, List, Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import myPageRoutePaths from 'myTraining/routePaths';
-import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
-import { isExternalInstructor } from '../../../shared/helper/findUserRole';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -60,6 +58,8 @@ function MyPagePage({
     }
 
     collegeService!.findAllColleges();
+
+    LectureService.instance.countMyStamp();
   }, []);
 
   const getTabs = (): TabItemModel[] => {
@@ -92,8 +92,8 @@ function MyPagePage({
   };
 
   const onChangeTab = useCallback((tab: TabItemModel): string => {
-    history.push(myTrainingRoutePaths.myPageTab(tab.name));
-    return myTrainingRoutePaths.myPageTab(tab.name);
+    history.push(myPageRoutePaths.myPageTab(tab.name));
+    return myPageRoutePaths.myPageTab(tab.name);
   }, []);
 
   const onLogout = useCallback(() => {

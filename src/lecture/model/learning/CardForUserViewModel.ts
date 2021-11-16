@@ -88,7 +88,7 @@ class CardForUserViewModel extends DramaEntityObservableModel {
       College: collegeName || '-',
       과정명: parsePolyglotString(this.name) || '-',
       스탬프: String(this.stampCount),
-      획득일자: convertTimeToDate(this.endDate),
+      획득일자: convertTimeToDate(this.passedTime),
     };
   }
 }

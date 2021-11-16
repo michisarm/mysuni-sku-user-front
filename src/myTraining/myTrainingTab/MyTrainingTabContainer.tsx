@@ -3,8 +3,6 @@ import { LectureService } from 'lecture';
 import { observer } from 'mobx-react';
 import { CountType } from 'myTraining/model/AplRdoModel';
 import PersonalCompletedListContainer from 'myTraining/personalLearning/PersonalCompletedListContainer';
-import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import routePaths from 'myTraining/routePaths';
 import { AplService } from 'myTraining/stores';

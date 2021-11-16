@@ -36,14 +36,23 @@ class FilterCountService {
   ) {
     const parsingCardType = getParsingLearningType(contentType);
 
+    const hasStamp =
+      (contentType === MyPageContentType.EarnedStampList && true) || undefined;
+
     const resultByCardType =
       (parsingCardType &&
-        (await this.lectureApi.findCardTypeAndCardCount(parsingCardType))) ||
+        (await this.lectureApi.findCardTypeAndCardCount(
+          parsingCardType,
+          hasStamp
+        ))) ||
       [];
 
     const resultByCollegeId =
       (parsingCardType &&
-        (await this.lectureApi.findCollegeAndCardCount(parsingCardType))) ||
+        (await this.lectureApi.findCollegeAndCardCount(
+          parsingCardType,
+          hasStamp
+        ))) ||
       [];
 
     runInAction(() => {

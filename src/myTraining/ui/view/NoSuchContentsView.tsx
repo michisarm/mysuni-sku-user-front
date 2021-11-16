@@ -1,13 +1,19 @@
 import React from 'react';
+import { Children, ReactNode } from 'react-router/node_modules/@types/react';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from 'shared';
 
 interface props {
   isLoading: boolean;
-  emptyText: string;
+  emptyText?: string;
+  children?: React.ReactNode;
 }
 
-export default function NoSuchContentsView({ isLoading, emptyText }: props) {
+export default function NoSuchContentsView({
+  isLoading,
+  emptyText,
+  children,
+}: props) {
   //
   return (
     <Segment
@@ -22,7 +28,9 @@ export default function NoSuchContentsView({ isLoading, emptyText }: props) {
       }}
     >
       <Loadingpanel loading={isLoading} />
-      {!isLoading && <NoSuchContentPanel message={emptyText || ''} />}
+      {(!isLoading && children) || (
+        <NoSuchContentPanel message={emptyText || ''} />
+      )}
     </Segment>
   );
 }

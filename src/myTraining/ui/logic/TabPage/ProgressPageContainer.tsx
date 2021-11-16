@@ -192,11 +192,8 @@ function ProgressPageContainer({
   const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
 
-    console.log('test');
     const newQdo = cardQdo;
-    console.log(conditions);
     newQdo.setBycondition(conditions);
-    console.log(newQdo);
     await setCardQdo(newQdo);
 
     await findMyLearningCardByQdo(true);

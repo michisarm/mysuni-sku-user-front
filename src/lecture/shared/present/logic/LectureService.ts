@@ -205,9 +205,9 @@ class LectureService {
   // Learning page
 
   @action
-  async countMyStamp(denizenId: string) {
+  async countMyStamp() {
     //
-    const count = await this.lectureApi.countMyStamp(denizenId);
+    const count = await this.lectureApi.countMyStamp();
     runInAction(() => (this._myStampCount = count));
   }
 

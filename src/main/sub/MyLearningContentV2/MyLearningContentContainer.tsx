@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { SkProfileService } from 'profile/stores';
-import InProgressLearning from './MainComponents/InProgressLearning';
-import MainChallengingBadgeContainer from './MainComponents/MainChallengingBadgeContainer';
-import MainBanner from './MainComponents/MainBanner';
-import { InMyLectureService } from '../../../myTraining/stores';
-import LeraningContainer from './MainComponents/LeraningContainer';
-import EnrollingLearning from './MainComponents/EnrollingLearning';
-import RQDLearning from './MainComponents/RQDLearning';
-import { CardBundle } from '../../../lecture/shared/model/CardBundle';
-import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+import React, { useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+import { CardBundle } from '../../../lecture/shared/model/CardBundle';
+import { InMyLectureService } from '../../../myTraining/stores';
+import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
+import { BookmarkCards } from './MainComponents/BookmarkCards';
+import EnrollingLearning from './MainComponents/EnrollingLearning';
+import LeraningContainer from './MainComponents/LeraningContainer';
 import { LRSFromContentbase } from './MainComponents/LRSFromContentbase';
 import { LRSFromLearningPatternBased } from './MainComponents/LRSFromLearningPatternBased';
-import { BookmarkCards } from './MainComponents/BookmarkCards';
+import MainBanner from './MainComponents/MainBanner';
+import MainChallengingBadgeContainer from './MainComponents/MainChallengingBadgeContainer';
 import { MainHotTopicContainer } from './MainComponents/MainHotTopicContainer';
-import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
+import RQDLearning from './MainComponents/RQDLearning';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
