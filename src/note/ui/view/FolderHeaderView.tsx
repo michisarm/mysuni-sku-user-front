@@ -1,10 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Segment,
+  Accordion,
   Image,
   Menu,
+  Table,
+  Select,
   Button,
+  Label,
   Icon,
+  Form,
+  TextArea,
   Modal,
   Input,
 } from 'semantic-ui-react';
@@ -23,13 +29,16 @@ import {
   reactConfirm,
   OffsetElementList,
 } from '@nara.platform/accent';
+import { requestNoteCount } from '../../service/useNote/requestNote';
 import { setSearchBox } from '../../store/SearchBoxStore';
+import { deleteFolder } from '../../api/noteApi';
 import Note from '../../model/Note';
+import NoteWithLecture from '../../model/NoteWithLecture';
 import { deleteFolderById } from '../../service/useFolder/deleteFolder';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface FolderHeaderViewProps {
-  noteList: OffsetElementList<Note>;
+  noteList: OffsetElementList<NoteWithLecture>;
   folder: Folder | undefined;
   noteCount: number;
   folderNoteCount: number | undefined;
