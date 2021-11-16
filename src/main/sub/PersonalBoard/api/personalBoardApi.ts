@@ -33,7 +33,7 @@ const eventURL = '/api/event';
 export function getBadgeLearningCompanyAvg(companyCode: string) {
   return axiosApi
     .get<any>(
-      `/api/mytraining/companyAverage/${companyCode}/${moment().year()}`
+      `/api/statistics/companyAverage/${companyCode}/${moment().year()}`
     )
     .then((response) => response && response.data);
 }
