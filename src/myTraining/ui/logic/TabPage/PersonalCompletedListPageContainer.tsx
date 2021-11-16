@@ -31,7 +31,6 @@ function PersonalCompletedListPageContainer({
   const contentType = params.tab;
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
 
@@ -70,7 +69,6 @@ function PersonalCompletedListPageContainer({
     setIsLoading(true);
     const offsetApl = await findAllAplsByQuery();
     const isEmpty = offsetApl.results.length === 0 ? true : false;
-    setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   };
@@ -164,7 +162,10 @@ function PersonalCompletedListPageContainer({
   return (
     <>
       {
-        <TabHeader resultEmpty={resultEmpty} totalCount={aplTableCount}>
+        <TabHeader
+          resultEmpty={!(aplTableCount > 0)}
+          totalCount={aplTableCount}
+        >
           <div
             className="list-number"
             dangerouslySetInnerHTML={{
@@ -177,95 +178,17 @@ function PersonalCompletedListPageContainer({
           />
         </TabHeader>
       }
-      {(aplTableViews && aplTableViews.length > 0 && (
-        <>
-          {(!resultEmpty && (
-            <PersonalCompletedListPageTableView
-              totalCount={aplTableCount}
-              headerColumns={headerColumns}
-              learningList={aplTableViews}
-              showSeeMore={showSeeMore}
-              onClickRow={onClickItem}
-              onClickSeeMore={onClickSeeMore}
-              getApprovalTime={getApprovalTime}
-              getAllowTime={getAllowTime}
-            />
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-09">
-            //       <colgroup>
-            //         <col width="10%" />
-            //         <col width="25%" />
-            //         <col width="15%" />
-            //         <col width="10%" />
-            //         <col width="5%" />
-            //         <col width="15%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //       </colgroup>
-
-            //       <Table.Header>
-            //         <Table.Row>
-            //           {headerColumns &&
-            //             headerColumns.length &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-
-            //       <Table.Body>
-            //         {aplTableViews.map((apl, index) => {
-            //           const channelName = getChannelName(apl.channelId);
-            //           return (
-            //             <Table.Row key={`personalCompleted-list-${index}`}>
-            //               <Table.Cell>{aplTableCount - index}</Table.Cell>
-            //               <Table.Cell className="title">
-            //                 <a onClick={() => onClickItem('learning', apl.id)}>
-            //                   <span className="ellipsis">{apl.title}</span>
-            //                 </a>{' '}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 <span className="ellipsis">{channelName}</span>
-            //               </Table.Cell>
-            //               <Table.Cell>{getAllowTime(apl)}</Table.Cell>
-            //               <Table.Cell>
-            //                 {parsePolyglotString(
-            //                   apl.approvalUserIdentity?.name
-            //                 )}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {apl.approvalUserIdentity?.email || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {aplStateNamePolyglotText(apl.state)}
-            //               </Table.Cell>
-            //               <Table.Cell>{getApprovalTime(apl)}</Table.Cell>
-            //             </Table.Row>
-            //           );
-            //         })}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
-          )) || (
-            <NoSuchContentsView
-              isLoading={isLoading}
-              emptyText={getPolyglotText(
-                '승인된 개인학습 정보가 없습니다.',
-                'learning-my-승인'
-              )}
-            />
-          )}
-        </>
+      {(aplTableCount > 0 && (
+        <PersonalCompletedListPageTableView
+          totalCount={aplTableCount}
+          headerColumns={headerColumns}
+          learningList={aplTableViews}
+          showSeeMore={showSeeMore}
+          onClickRow={onClickItem}
+          onClickSeeMore={onClickSeeMore}
+          getApprovalTime={getApprovalTime}
+          getAllowTime={getAllowTime}
+        />
       )) || (
         <NoSuchContentsView
           isLoading={isLoading}

@@ -36,7 +36,6 @@ function RequiredListPageContainer({
   const contentType = params.tab;
 
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
@@ -53,6 +52,7 @@ function RequiredListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const {
+    requiredLecturesCount,
     myLearningCards,
     totalMyLearningCardCount,
     cardQdo,
@@ -120,7 +120,6 @@ function RequiredListPageContainer({
     await setCardQdo(newQdo);
 
     const isEmpty = await !findMyLearningCardByQdo(true);
-    await setResultEmpty(isEmpty);
     await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
@@ -224,7 +223,7 @@ function RequiredListPageContainer({
     <>
       {
         <TabHeader
-          resultEmpty={resultEmpty}
+          resultEmpty={!(requiredLecturesCount > 0)}
           totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
@@ -244,9 +243,9 @@ function RequiredListPageContainer({
           />
         </TabHeader>
       }
-      {(myLearningCards && myLearningCards.length > 0 && (
+      {(requiredLecturesCount > 0 && (
         <>
-          {(!resultEmpty && (
+          {(totalMyLearningCardCount > 0 && (
             <RequiredListPageTableView
               totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
@@ -257,120 +256,6 @@ function RequiredListPageContainer({
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
             />
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-03">
-            //       <colgroup>
-            //         <col width="8%" />
-            //         <col width="12%" />
-            //         <col width="20%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //       </colgroup>
-
-            //       <Table.Header>
-            //         <Table.Row>
-            //           {headerColumns &&
-            //             headerColumns.length &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //                 {headerColumn.icon && (
-            //                   <a
-            //                     href="#"
-            //                     onClick={(e) => {
-            //                       handleClickSort(headerColumn.text);
-            //                       e.preventDefault();
-            //                     }}
-            //                   >
-            //                     <Icon
-            //                       className={getOrderIcon(
-            //                         headerColumn.text,
-            //                         true
-            //                       )}
-            //                     >
-            //                       <span className="blind">
-            //                         {getOrderIcon(headerColumn.text)}
-            //                       </span>
-            //                     </Icon>
-            //                   </a>
-            //                 )}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-
-            //       <Table.Body>
-            //         {lectureTableViews.map((requiredCard, index) => {
-            //           const learningType = LearningTypeName[requiredCard.type];
-            //           const collegeName = getCollgeName(
-            //             requiredCard.category.collegeId
-            //           );
-            //           const learningState =
-            //             (requiredCard.learningState &&
-            //               LearningStateName[
-            //                 requiredCard.learningState as LearningState
-            //               ]) ||
-            //             '-';
-            //           const progressRate =
-            //             (requiredCard.learningState &&
-            //               `${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}`) ||
-            //             '-';
-
-            //           return (
-            //             <Table.Row key={`requried-card-${index}`}>
-            //               <Table.Cell>{lectureTableCount - index}</Table.Cell>
-            //               <Table.Cell>{collegeName}</Table.Cell>
-            //               <Table.Cell className="title">
-            //                 <a
-            //                   href="#"
-            //                   onClick={(e) => {
-            //                     onViewDetail(e, requiredCard.serviceId);
-            //                   }}
-            //                 >
-            //                   <span
-            //                     className={`ellipsis ${
-            //                       requiredCard.useNote ? 'noteOn' : ''
-            //                     }`}
-            //                   >
-            //                     {requiredCard.name &&
-            //                       parsePolyglotString(requiredCard.name)}
-            //                   </span>
-            //                 </a>
-            //               </Table.Cell>
-            //               <Table.Cell>{learningType || '-'} </Table.Cell>
-            //               <Table.Cell>
-            //                 {requiredCard.difficultyLevel || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {timeToHourMinutePaddingFormat(
-            //                   requiredCard.learningTime
-            //                 )}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {convertTimeToDate(requiredCard.updateTime)}
-            //               </Table.Cell>
-            //               <Table.Cell>{progressRate}</Table.Cell>
-            //               <Table.Cell>
-            //                 {stateNamePolytglot(learningState)}
-            //               </Table.Cell>
-            //             </Table.Row>
-            //           );
-            //         })}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

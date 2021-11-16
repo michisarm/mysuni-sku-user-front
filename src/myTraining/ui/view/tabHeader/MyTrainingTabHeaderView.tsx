@@ -25,7 +25,6 @@ interface MyTrainingTabHeaderViewProps {
 export function MyTrainingTabHeaderView({
   children,
   resultEmpty,
-  filterCount,
   totalCount,
   onClickDelete,
   onClickDownloadExcel,
@@ -34,7 +33,7 @@ export function MyTrainingTabHeaderView({
 }: MyTrainingTabHeaderViewProps) {
   //
   return (
-    ((!resultEmpty || (filterCount && filterCount > 0)) && (
+    (!resultEmpty && (
       <>
         <div className="top-guide-title">
           {!resultEmpty && totalCount > 0 && (
