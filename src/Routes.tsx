@@ -49,13 +49,11 @@ class Routes extends PureComponent {
     const isExternal = isExternalInstructor();
     // TODO :: 현재 하드코딩 => 변경 예정
     const agreementFormId = '20210622-1';
-    const serviceId = 'SUNI';
 
     if (isExternal === true) {
       if (
-        SkProfileService.instance.additionalUserInfo.agreementFormId !==
-          agreementFormId ||
-        SkProfileService.instance.additionalUserInfo.serviceId !== serviceId
+        SkProfileService.instance.additionalUserInfo
+          .mySuniPisAgreementFormId !== agreementFormId
       ) {
         const currentHistory = getCurrentHistory();
         currentHistory?.push(profilePaths.personalInfoAgreement());

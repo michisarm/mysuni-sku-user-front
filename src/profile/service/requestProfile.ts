@@ -13,10 +13,8 @@ export async function requestProfile() {
 
   const additionalUserInfo = SkProfileService.instance.additionalUserInfo;
   const currentHistory = getCurrentHistory();
-  if (
-    additionalUserInfo.agreementFormId !== agreementFormId ||
-    additionalUserInfo.serviceId !== serviceId
-  ) {
+
+  if (additionalUserInfo.mySuniPisAgreementFormId !== agreementFormId) {
     currentHistory?.push(profilePaths.personalInfoAgreement());
     return;
   }
