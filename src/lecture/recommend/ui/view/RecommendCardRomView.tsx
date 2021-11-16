@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
@@ -22,8 +22,30 @@ import Swiper from 'react-id-swiper';
 import CardGroup, { GroupType } from 'lecture/shared/Lecture/sub/CardGroup';
 import { Segment } from 'semantic-ui-react';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
+
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.RECOMMEND_LIST,
+        scrollClassName: 'cardSwiper',
+        actionName: '추천카드 스크롤',
+      })  
+    }
+  }
   //
   const userLanguage = SkProfileService.instance.skProfile.language;
 
@@ -41,6 +63,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
 
     return cardCount;
   };
+  
 
   const swipeName = 'recommandList';
 
@@ -106,7 +129,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
         <div className="cardSwiper">
           {(isCardWithRelatedCountRoms && (
             <>
-              <Swiper {...SwiperProps}>
+              <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
                 {isCardWithRelatedCountRoms &&
                   cardForUserViewRdos.map((item) => {
                     return (

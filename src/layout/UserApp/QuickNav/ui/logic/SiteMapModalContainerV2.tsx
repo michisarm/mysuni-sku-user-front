@@ -20,6 +20,7 @@ import {
   getPolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { SkProfileService } from '../../../../../profile/stores';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode;
@@ -387,6 +388,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         open={open}
         onOpen={this.onOpen}
         onClose={this.onClose}
+        data-area={Area.FOOTER_SITEMAP}
       >
         <Modal.Header>
           <PolyglotText

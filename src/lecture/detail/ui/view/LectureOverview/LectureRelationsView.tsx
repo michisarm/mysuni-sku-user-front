@@ -1,5 +1,5 @@
 import { patronInfo } from '@nara.platform/dock';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon, Label, Segment } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
@@ -19,6 +19,7 @@ import { SkProfileService } from '../../../../../profile/stores';
 import Swiper from 'react-id-swiper';
 import CardGroup from 'semantic-ui-react/dist/commonjs/views/Card/CardGroup';
 import { GroupType } from '../../../../shared/Lecture/sub/CardGroup';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -107,19 +108,32 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
 
   const cards = parseUserLectureCards(lectureRelations.cards, userLanguage);
 
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.CARD_RELATION,
+        scrollClassName: 'cardSwiper',
+        actionName: '카드상세 관련과정 스크롤',
+      })  
+    }
+  }
+
   return (
     <div
       className="badge-detail border-none"
       id="lms-related-process"
       data-area={Area.CARD_RELATION}
-      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollHorizontalTrack({
-          e,
-          area: Area.CARD_RELATION,
-          scrollClassName: 'scrolling',
-          actionName: '카드상세 관련과정 스크롤',
-        })
-      }
     >
       <div className="ov-paragraph">
         <div className="section-head">
@@ -140,7 +154,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
         </div>
         <div className="section-body">
           <div className="cardSwiper">
-            <Swiper {...SwiperProps}>
+            <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
               {cards.map((card) => {
                 return (
                   <div className="swiper-slide" key={card.cardId}>

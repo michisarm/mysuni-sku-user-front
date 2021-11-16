@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -29,6 +29,7 @@ import Swiper from 'react-id-swiper';
 import CardGroup, {
   GroupType,
 } from '../../../shared/Lecture/sub/CardGroup/CardGroupContainer2';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 const SwiperProps = (swiperName: string) => {
   return {
@@ -62,6 +63,7 @@ interface State {
   cardWithCardRealtedCounts: UserLectureCard[];
   totalCount: number;
   isLoading: boolean;
+  swiper: any;
 }
 
 @inject(
@@ -83,6 +85,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
       cardWithCardRealtedCounts: [],
       totalCount: 0,
       isLoading: false,
+      swiper: null,
     };
   }
 
@@ -96,6 +99,27 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const { channel: prevChannel } = prevProps;
 
     if (channel && channel.id !== prevChannel.id) this.findLectures();
+
+    const { swiper } = this.state;
+    swiper.on('slideChange', () => this.onSlideChangeHandler(swiper));
+  }
+
+  componentWillUnmount() {
+    const { swiper } = this.state;
+    if (swiper !== null) {
+      swiper.off('slideChange', () => this.onSlideChangeHandler(swiper));
+    }
+  }
+
+  onSlideChangeHandler = (swiper: any) => {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.COLLEGE_CARD,
+        scrollClassName: 'cardSwiper',
+        actionName: 'COLLEGE 스크롤',
+      })  
+    }
   }
 
   async findLectures() {
@@ -158,7 +182,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
         <div className="leaning-section-wrap">
           <Segment
             className="full learning-section type1"
-            data-area={Area.EXPERT_LECTURE}
+            data-area={Area.COLLEGE_CARD}
           >
             <div className="section-head">
               <div className="sec-tit-txt">
@@ -183,8 +207,8 @@ class LecturesByChannelContainer extends Component<Props, State> {
               </div>
             </div>
             <div className="section-body">
-              <div className="cardSwiper">
-                <Swiper {...SwiperProps(channel.id)}>
+              <div className="cardSwiper" data-action-name={parsePolyglotString(channel.name, 'ko')+`의 학습 과정 입니다`}>
+                <Swiper {...SwiperProps(channel.id)} getSwiper={s => this.setState({swiper: s})}>
                   {parseUserLectureCards(cardWithCardRealtedCounts).map(
                     (card, i) => {
                       return (
@@ -194,7 +218,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
                               {...card}
                               userLanguage={userLanguage}
                               useBookMark={true}
-                              dataArea={Area.EXPERT_LECTURE}
+                              dataArea={Area.COLLEGE_CARD}
                               hoverTrack={hoverTrack}
                             />
                           </CardGroup>

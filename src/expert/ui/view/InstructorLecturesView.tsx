@@ -9,7 +9,7 @@ import { NoSuchContentPanel } from 'shared';
 import { Lecture, SeeMoreButton } from 'lecture';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { Area } from 'tracker/model';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   LectureCardView,
@@ -65,6 +65,7 @@ export function InstructorLecturesView(props: Props) {
                   <LectureCardView
                     {...cards}
                     useBookMark
+                    dataArea={Area.EXPERT_LECTURE}
                     hoverTrack={hoverTrack}
                   />
                 );

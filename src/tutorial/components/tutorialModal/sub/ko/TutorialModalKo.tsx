@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, Checkbox, Icon, Tab } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { TutorialProps } from '../../TutorialModal';
+import { Area } from 'tracker/model';
 
 class TutorialModalKo extends Component<TutorialProps> {
   render() {
@@ -120,6 +121,7 @@ class TutorialModalKo extends Component<TutorialProps> {
         <Modal
           open={open}
           className="base w1000 tutorials3 front scrolling kor"
+          data-area={Area.MAIN_POPBANNER}
         >
           <Modal.Header className="header3">
             <div className="right-btn">
