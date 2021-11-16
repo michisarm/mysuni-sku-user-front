@@ -39,10 +39,7 @@ class InMyLectureService {
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
-  constructor(
-    inMyLectureApi: InMyLectureApi, 
-    myTrainingApi: MyTrainingApi
-  ) {
+  constructor(inMyLectureApi: InMyLectureApi, myTrainingApi: MyTrainingApi) {
     this.inMyLectureApi = inMyLectureApi;
     this.myTrainingApi = myTrainingApi;
   }
@@ -73,7 +70,7 @@ class InMyLectureService {
   @computed
   get inMyLectureMap() {
     const map = new Map<string, InMyLectureModel>();
-    this._inMyLectureAll.forEach(inMyLecture => {
+    this._inMyLectureAll.forEach((inMyLecture) => {
       map.set(inMyLecture.serviceId, inMyLecture);
     });
     return map;
@@ -90,7 +87,7 @@ class InMyLectureService {
   async addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
     await this.inMyLectureApi
       .addInMyLecture(inMyLectureCdoModel)
-      .then(response => {
+      .then((response) => {
         if (response && response.length > 0) {
           runInAction(() => this.findAllInMyLectures());
         }
@@ -105,7 +102,7 @@ class InMyLectureService {
   async addInMyLectureCard(inMyLectureCdo: InMyLectureCdo) {
     await this.inMyLectureApi
       .addInMyLectureCard(inMyLectureCdo)
-      .then(response => {
+      .then((response) => {
         if (response && response.length > 0) {
           runInAction(() => this.findAllInMyLectures());
         }
@@ -151,7 +148,7 @@ class InMyLectureService {
     );
 
     lecturesOffsetElementList.results = lecturesOffsetElementList.results.map(
-      lecture => new InMyLectureModel(lecture)
+      (lecture) => new InMyLectureModel(lecture)
     );
 
     runInAction(
@@ -170,7 +167,7 @@ class InMyLectureService {
     //
     const fetched = this.inMyLectureAllCachingFetch.fetch(
       () => this.inMyLectureApi.findAllInMyLectures(),
-      inMyLectures =>
+      (inMyLectures) =>
         runInAction(
           () =>
             (this._inMyLectureAll = inMyLectures.map(
@@ -215,7 +212,7 @@ class InMyLectureService {
   removeInMyLectureInAllList(serviceId: string, serviceType: string) {
     //
     const index = this._inMyLectureAll.findIndex(
-      inMyLecture =>
+      (inMyLecture) =>
         inMyLecture.serviceId === serviceId &&
         inMyLecture.serviceType === serviceType
     );
@@ -234,10 +231,11 @@ class InMyLectureService {
   @observable
   _inMyLectureTableViewCount: number = 0;
 
-  _inMyLectureFilterRdo: InMyLectureFilterRdoModel = new InMyLectureFilterRdoModel();
+  _inMyLectureFilterRdo: InMyLectureFilterRdoModel =
+    new InMyLectureFilterRdoModel();
 
-  @observable
-  _inMyListCount: number = 0;
+  // @observable
+  // _inMyListCount: number = 0;
 
   @computed get inMyLectureTableViews() {
     return this._inMyLectureTableViews;
@@ -247,9 +245,9 @@ class InMyLectureService {
     return this._inMyLectureTableViewCount;
   }
 
-  @computed get inMyListCount() {
-    return this._inMyListCount;
-  }
+  // @computed get inMyListCount() {
+  //   return this._inMyListCount;
+  // }
 
   @action
   clearAllTableViews() {
@@ -297,10 +295,10 @@ class InMyLectureService {
       // let noteDatas: any = [];
 
       // if(cardIds.size > 0 && cubeIds.size > 0){
-      //   const cubeNotes = await this.myTrainingApi.findCubeNoteList(Array.from(cardIds), Array.from(cubeIds)) || [] 
+      //   const cubeNotes = await this.myTrainingApi.findCubeNoteList(Array.from(cardIds), Array.from(cubeIds)) || []
       //   if(cubeNotes && cubeNotes.length > 0) noteDatas = noteDatas.concat(cubeNotes);
       // }
-      
+
       // if(cardIds.size > 0 && cubeIds.size === 0){
       //   const cardNotes = await this.myTrainingApi.findCardNoteList(Array.from(cardIds)) || [];
       //   if(cardNotes && cardNotes.length > 0) noteDatas = noteDatas.concat(cardNotes);
@@ -313,11 +311,11 @@ class InMyLectureService {
       //         if(result.serviceType === "Card"){
       //           if(note?.cardId === result.serviceId){
       //             return true;
-      //           } 
+      //           }
       //         }else if(result.serviceType === "Cube"){
       //           if(note?.cardId === result.cardId && note?.cardId === result.cardId){
       //             return true;
-      //           } 
+      //           }
       //         }
       //         return false;
       //       }) || false;
@@ -325,7 +323,9 @@ class InMyLectureService {
       //   return new InMyLectureTableViewModel(result)
       // });
 
-      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(
+        offsetTableViews.results
+      );
 
       runInAction(() => {
         this._inMyLectureTableViews = updateNoteInMyLectureTableViews;
@@ -347,7 +347,9 @@ class InMyLectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
-      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+      const updateNoteInMyLectureTableViews = await this.setTableViewsNoteInfo(
+        offsetTableViews.results
+      );
 
       runInAction(() => {
         this._inMyLectureTableViews = updateNoteInMyLectureTableViews;
@@ -375,7 +377,8 @@ class InMyLectureService {
       //   (result: any) => new InMyLectureTableViewModel(result)
       // );
 
-      const updateNoteInMyLectureAddTableViews = await this.setTableViewsNoteInfo(offsetTableViews.results);
+      const updateNoteInMyLectureAddTableViews =
+        await this.setTableViewsNoteInfo(offsetTableViews.results);
 
       runInAction(() => {
         this._inMyLectureTableViews = [
@@ -387,17 +390,17 @@ class InMyLectureService {
     }
   }
 
-  @action
-  async findAllTabCount() {
-    const tabCount = await this.inMyLectureApi.countInMyLectures();
+  // @action
+  // async findAllTabCount() {
+  //   const tabCount = await this.inMyLectureApi.countInMyLectures();
 
-    runInAction(() => (this._inMyListCount = tabCount));
-  }
+  //   runInAction(() => (this._inMyListCount = tabCount));
+  // }
 
-  @action
-  clearAllTabCount() {
-    this._inMyListCount = 0;
-  }
+  // @action
+  // clearAllTabCount() {
+  //   this._inMyListCount = 0;
+  // }
 
   @action
   sortTableViews(column: string, direction: Direction) {
@@ -419,59 +422,69 @@ class InMyLectureService {
 
   // Home > Learning > 관심목록 노트 작성여부 표현하기 위해 추가
   async setTableViewsNoteInfo(tableViews: any[]) {
-      const cardIds = new Set<string>();
-      const cubeIds = new Set<string>();
-      let noteDatas: any = [];
+    const cardIds = new Set<string>();
+    const cubeIds = new Set<string>();
+    let noteDatas: any = [];
 
-      if(tableViews &&
-          tableViews.length > 0){
-        tableViews.map((result: any) => {
-          // map.set(result.serviceId, result.serviceType);
-          if(result.cubeType && result.category){
-            if(result.serviceType === "Card"){
-              if(result.serviceId) cardIds.add(result.serviceId);
-            }else if(result.serviceType === "Cube"){
-              if(result.cardId && result.serviceId){
-                cardIds.add(result.cardId);
-                cubeIds.add(result.serviceId);
-              }
+    if (tableViews && tableViews.length > 0) {
+      tableViews.map((result: any) => {
+        // map.set(result.serviceId, result.serviceType);
+        if (result.cubeType && result.category) {
+          if (result.serviceType === 'Card') {
+            if (result.serviceId) cardIds.add(result.serviceId);
+          } else if (result.serviceType === 'Cube') {
+            if (result.cardId && result.serviceId) {
+              cardIds.add(result.cardId);
+              cubeIds.add(result.serviceId);
             }
           }
-        });
-  
-        if(cardIds.size > 0 && cubeIds.size > 0){
-          const cubeNotes = await this.myTrainingApi.findCubeNoteList(Array.from(cardIds), Array.from(cubeIds)) || [] 
-          if(cubeNotes && cubeNotes.length > 0) noteDatas = noteDatas.concat(cubeNotes);
         }
-        
-        if(cardIds.size > 0 && cubeIds.size === 0){
-          const cardNotes = await this.myTrainingApi.findCardNoteList(Array.from(cardIds)) || [];
-          if(cardNotes && cardNotes.length > 0) noteDatas = noteDatas.concat(cardNotes);
-        }
+      });
 
-        const updateTableViews = tableViews.map((result: any) => {
-          if(noteDatas.length > 0){
-            result.useNote = noteDatas.some(
-              (note: any) => {
-                if(result.serviceType === "Card"){
-                  if(note?.cardId === result.serviceId){
-                    return true;
-                  } 
-                }else if(result.serviceType === "Cube"){
-                  if(note?.cardId === result.cardId && note?.cardId === result.cardId){
-                    return true;
-                  } 
-                }
-                return false;
-              }) || false;
-          }
-          return new InMyLectureTableViewModel(result)
-        });
-        
-        return updateTableViews;
-      }else{
-        return tableViews;
+      if (cardIds.size > 0 && cubeIds.size > 0) {
+        const cubeNotes =
+          (await this.myTrainingApi.findCubeNoteList(
+            Array.from(cardIds),
+            Array.from(cubeIds)
+          )) || [];
+        if (cubeNotes && cubeNotes.length > 0)
+          noteDatas = noteDatas.concat(cubeNotes);
       }
+
+      if (cardIds.size > 0 && cubeIds.size === 0) {
+        const cardNotes =
+          (await this.myTrainingApi.findCardNoteList(Array.from(cardIds))) ||
+          [];
+        if (cardNotes && cardNotes.length > 0)
+          noteDatas = noteDatas.concat(cardNotes);
+      }
+
+      const updateTableViews = tableViews.map((result: any) => {
+        if (noteDatas.length > 0) {
+          result.useNote =
+            noteDatas.some((note: any) => {
+              if (result.serviceType === 'Card') {
+                if (note?.cardId === result.serviceId) {
+                  return true;
+                }
+              } else if (result.serviceType === 'Cube') {
+                if (
+                  note?.cardId === result.cardId &&
+                  note?.cardId === result.cardId
+                ) {
+                  return true;
+                }
+              }
+              return false;
+            }) || false;
+        }
+        return new InMyLectureTableViewModel(result);
+      });
+
+      return updateTableViews;
+    } else {
+      return tableViews;
+    }
   }
   /////////////////////////////////////// 개편 ///////////////////////////////////////
 }

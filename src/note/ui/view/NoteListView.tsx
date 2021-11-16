@@ -3,19 +3,12 @@ import {
   Segment,
   Accordion,
   Image,
-  Menu,
-  Table,
   Select,
   Button,
-  Label,
   Icon,
   Form,
   TextArea,
-  DropdownDivider,
-  DropdownProps,
-  SemanticCOLORS,
 } from 'semantic-ui-react';
-import Calendar from './Calendar';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import {
   OffsetElementList,
@@ -25,14 +18,11 @@ import {
 import Note, { getConvertEnter } from '../../model/Note';
 import {
   requestNoteList,
-  requestColleges,
-  requestNoteCount,
   requestAppendCubeList,
   requestCubeList,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
-import { setSearchBox, getSearchBox } from '../../store/SearchBoxStore';
-import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
+import { setSearchBox } from '../../store/SearchBoxStore';
 import moment from 'moment';
 import Folder from '../../model/Folder';
 import NoteCdoItem, { getNoteCdoItem } from '../../viewModel/NoteCdoItem';
@@ -41,7 +31,6 @@ import { saveNote, saveFolder } from '../../service/useNote/saveNote';
 import NoteUdoItem, { getNoteUdoItem } from '../../viewModel/NoteUdoItem';
 import NoteUdo from '../../model/NoteUdo';
 import { deleteNoteById } from '../../service/useNote/deleteNote';
-import classNames from 'classnames';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import {
   requestCubeListByFolderId,
@@ -49,7 +38,6 @@ import {
   requestAppendCubeListByFolderId,
 } from '../../service/useFolder/requestFolder';
 import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
-import NoteCategoryColorType from '../../viewModel/NoteCategoryColorType';
 import NoteWithLectureListItem, {
   getNoteWithLectureListItem,
 } from '../../viewModel/NoteWithLectureListItem';
@@ -227,7 +215,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
       // await requestNoteCount();
       const noteCount = getNoteCount() || 0;
       setNoteCount(noteCount + 1);
-      console.log(activeIndexList);
     },
     [params.pageNo]
   );

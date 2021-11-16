@@ -1,35 +1,37 @@
-import React, { useEffect } from 'react';
-import { observer, inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
-import CheckedFilterView from '../view/filterbox/CheckedFilterView';
-import CheckboxOptions from '../model/CheckboxOptions';
-import { FilterBoxView } from '../view/filterbox/FilterBoxView';
+import { inject, observer } from 'mobx-react';
+import React, { useEffect } from 'react';
+import { CheckboxProps } from 'semantic-ui-react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CollegeService } from '../../../college/stores';
-import { initialCondition, getFilterCount } from '../../model/FilterCondition';
+import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import { getFilterCount, initialCondition } from '../../model/FilterCondition';
 import {
   FilterConditionName,
   filterConditionNamePolyglot,
 } from '../../model/FilterConditionName';
-import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import FilterCountService from '../../present/logic/FilterCountService';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
-import { CheckboxProps } from 'semantic-ui-react';
+import { MyLearningContentType, MyPageContentType } from '../model';
+import CheckboxOptions from '../model/CheckboxOptions';
+import CheckedFilterView from '../view/filterbox/CheckedFilterView';
+import { FilterBoxView } from '../view/filterbox/FilterBoxView';
 
 interface FilterBoxContainerProps {
-  filterCountService?: FilterCountService;
   collegeService?: CollegeService;
   filterBoxService?: FilterBoxService;
+  contentType: MyLearningContentType | MyPageContentType;
 }
 
 function FilterBoxContainer({
   collegeService,
-  filterCountService,
   filterBoxService,
+  contentType,
 }: FilterBoxContainerProps) {
   const { colleges } = collegeService!;
   const {
+    filterCountViews,
+    findAllFilterCountViews,
     conditions,
     openFilter,
     showResult,
@@ -38,7 +40,10 @@ function FilterBoxContainer({
     setFilterCount,
     setShowResult,
   } = filterBoxService!;
-  const { filterCountViews, totalFilterCountView } = filterCountService!;
+  //
+  useEffect(() => {
+    findAllFilterCountViews(contentType);
+  }, [contentType]);
 
   useEffect(() => {
     if (showResult) {
@@ -371,8 +376,7 @@ function FilterBoxContainer({
           <FilterBoxView
             colleges={colleges}
             conditions={conditions}
-            filterCounts={filterCountViews}
-            totalFilterCount={totalFilterCountView}
+            filterCountModel={filterCountViews}
             onCheckOne={onCheckOne}
             onCheckAll={onCheckAll}
             onChangeStartDate={onChangeStartDate}
@@ -399,9 +403,5 @@ function FilterBoxContainer({
 }
 
 export default inject(
-  mobxHelper.injectFrom(
-    'college.collegeService',
-    'myTraining.filterCountService',
-    'shared.filterBoxService'
-  )
+  mobxHelper.injectFrom('college.collegeService', 'shared.filterBoxService')
 )(observer(FilterBoxContainer));

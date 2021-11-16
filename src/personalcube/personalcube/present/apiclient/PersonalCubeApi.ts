@@ -8,12 +8,17 @@ import { ExcelView } from '../../../../shared/model/ExcelView';
 import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
 
 const BASE_URL = '/api/personalCube/personalcubes';
 
-export function findPersonalCube(personalCubeId: string): Promise<PersonalCubeModel | undefined> {
+export function findPersonalCube(
+  personalCubeId: string
+): Promise<PersonalCubeModel | undefined> {
   const url = `${BASE_URL}/${personalCubeId}`;
-  return axios.get<PersonalCubeModel>(url).then(response => (response && response.data) || null);
+  return axios
+    .get<PersonalCubeModel>(url)
+    .then((response) => (response && response.data) || null);
 }
 
 export default class PersonalCubeApi {
@@ -55,30 +60,37 @@ export default class PersonalCubeApi {
     );
 
     offsetElementList.results = offsetElementList.results.map(
-      result => new PersonalCubeModel(result)
+      (result) => new PersonalCubeModel(result)
     );
     return offsetElementList;
+  }
+
+  findCubeCount() {
+    //
+    return axios
+      .get<LearningTabCountViewModel>('/api/cube/cubes/cubeCount')
+      .then((response) => (response && response.data) || null);
   }
 
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
     return axios
       .post<string>('/api/cube/userCubes', cubeCdo)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   registerUserCube(cubeCdo: PersonalCubeCdoModel) {
     //
     return axios
       .post<string>('/api/cube/userCubes', cubeCdo)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   findPersonalCube(personalCubeId: string) {
     //
     return axios
       .get<PersonalCubeModel>(this.URL + `/${personalCubeId}`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   modifyPersonalCube(personalCubeId: string, nameValues: NameValueList) {
@@ -141,14 +153,14 @@ export default class PersonalCubeApi {
       .get<OffsetElementList<ApprovalContents>>(this.approvalURL, {
         params: approvalContents,
       })
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   personalCubeRequestOpen(personalCubeRequestCdo: PersonalCubeRequestCdoModel) {
     //
     return axios
       .post<string>(this.flowURL + `/requestOpen`, personalCubeRequestCdo)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   personalCubeRequestReject(
@@ -157,7 +169,7 @@ export default class PersonalCubeApi {
     //
     return axios
       .post<string>(this.flowURL + `/requestReject`, personalCubeRequestCdo)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 
   // todo Domain 변경으로 Excel 메소드 확인 필요 to 왕선임님
@@ -175,7 +187,7 @@ export default class PersonalCubeApi {
     //
     return axios
       .get<string>(this.depotURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
-      .then(response => (response && response.data) || null);
+      .then((response) => (response && response.data) || null);
   }
 }
 

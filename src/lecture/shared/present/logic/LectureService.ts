@@ -102,10 +102,10 @@ class LectureService {
   cardQdo: CardQdo = new CardQdo();
 
   @observable
-  private column: string = '';
+  column: string = '';
 
   @observable
-  private direction: string = '';
+  direction: Direction | null = null;
 
   //
 
@@ -123,11 +123,15 @@ class LectureService {
   }
 
   // Learning page
-  @observable
-  requiredLecturesCount: number = 0;
 
   @observable
   inProgressCount: number = 0;
+
+  @observable
+  bookmarkCount: number = 0;
+
+  @observable
+  requiredLecturesCount: number = 0;
 
   @observable
   completedCount: number = 0;
@@ -212,6 +216,7 @@ class LectureService {
     //
     this._totalMyLearningCardCount = 0;
     this._myLearningCards = [];
+    this.clearSortParam();
   }
 
   @action
@@ -222,7 +227,7 @@ class LectureService {
   }
 
   @action
-  async findMyLearningCardByQdo(firstCheck?: boolean) {
+  async findMyLearningCardByQdo(firstCheck?: boolean): Promise<boolean> {
     //
     const findReulst = await this.lectureApi.findMyLearningLectures(
       this.cardQdo
@@ -240,6 +245,8 @@ class LectureService {
         }
         this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
       });
+
+    return (this._totalMyLearningCardCount > 0 && true) || false;
   }
 
   @action
@@ -259,7 +266,14 @@ class LectureService {
   }
 
   @action
-  sortMyLearningTableViews(column: string, direction: Direction) {
+  private clearSortParam() {
+    //
+    this.column = '';
+    this.direction = null;
+  }
+
+  @action
+  async sortMyLearningTableViews(column: string, direction: Direction) {
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
     const propKey = convertToKeyInMyLearningTable(column);
 
@@ -682,6 +696,8 @@ class LectureService {
 
     runInAction(() => {
       this.inProgressCount = (countModel && countModel.inProgressCount) || 0;
+
+      this.bookmarkCount = (countModel && countModel.bookmarkCount) || 0;
 
       this.requiredLecturesCount = requiredCount || 0;
 

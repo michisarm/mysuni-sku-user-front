@@ -1,44 +1,50 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { MenuControlAuthService } from 'approval/stores';
-import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
-import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
 import { LectureService } from 'lecture';
+import { observer } from 'mobx-react';
+import { CountType } from 'myTraining/model/AplRdoModel';
+import PersonalCompletedListContainer from 'myTraining/personalLearning/PersonalCompletedListContainer';
+import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
+import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
+import routePaths from 'myTraining/routePaths';
 import { AplService } from 'myTraining/stores';
-import TabContainer, { TabItemModel } from 'shared/components/Tab';
+import CompletedListPageContainer from 'myTraining/ui/logic/TabPage/CompletedListPageContainer';
+import EnrolledListPageContainer from 'myTraining/ui/logic/TabPage/EnrolledListPageContainer';
+import InMyListPageContainer from 'myTraining/ui/logic/TabPage/InMyListPageContainer';
+import ProgressPageContainer from 'myTraining/ui/logic/TabPage/ProgressPageContainer';
+import RequiredListPageContainer from 'myTraining/ui/logic/TabPage/RequiredListPageContainer';
+import RetryListPageContainer from 'myTraining/ui/logic/TabPage/RetryListPageContainer';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import { NotieService } from 'notie/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import TabContainer, { TabItemModel } from 'shared/components/Tab';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
-import routePaths from 'myTraining/routePaths';
 import MyTrainingTabItemView from './MyTrainingTabItemView';
-import ProgressPageContainer from 'myTraining/ui/logic/TabPage/ProgressPageContainer';
-import InMyListPageContainer from 'myTraining/ui/logic/TabPage/InMyListPageContainer';
-import { CountType } from 'myTraining/model/AplRdoModel';
-import RequiredListPageContainer from 'myTraining/ui/logic/TabPage/RequiredListPageContainer';
-import EnrolledListContainer from 'myTraining/ui/logic/EnrolledListContainer';
-import EnrolledListPageContainer from 'myTraining/ui/logic/TabPage/EnrolledListPageContainer';
-import RetryListPageContainer from 'myTraining/ui/logic/TabPage/RetryListPageContainer';
-import PersonalCompletedListContainer from 'myTraining/personalLearning/PersonalCompletedListContainer';
-import CompletedListPageContainer from 'myTraining/ui/logic/TabPage/CompletedListPageContainer';
 
 function MyTrainingTabContainer() {
   const params = useParams<MyTrainingRouteParams>();
   const { menuControlAuth } = MenuControlAuthService.instance;
-  const { inMyListCount } = InMyLectureService.instance;
-  const { myTrainingTableCount2 } = MyTrainingService.instance;
-  const { requiredLecturesCount, inProgressCount, completedCount, retryCount } =
-    LectureService.instance;
+  // const { inMyListCount } = InMyLectureService.instance;
+  const {
+    inProgressCount,
+    requiredLecturesCount,
+    bookmarkCount,
+    completedCount,
+    retryCount,
+  } = LectureService.instance;
+  const { enrolledCount } = PersonalCubeService.instance;
   const {
     aplCount: { all: personalCompletedCount },
   } = AplService.instance;
 
   useEffect(() => {
-    MyTrainingService.instance.findAllTabCount();
-    InMyLectureService.instance.findAllTabCount();
+    // MyTrainingService.instance.findAllTabCount();
+    // InMyLectureService.instance.findAllTabCount();
     LectureService.instance.countLearningTab();
-    AplService.instance.findAllTabCount(CountType.patronKeyString);
+    // AplService.instance.findAllTabCount(CountType.patronKeyString);
+    PersonalCubeService.instance.findCountByEnrolledTabCount();
   }, []);
 
   const getTabs = () => {
@@ -60,7 +66,7 @@ function MyTrainingTabContainer() {
       item: (
         <MyTrainingTabItemView
           contentType={MyLearningContentType.InMyList}
-          count={inMyListCount}
+          count={bookmarkCount}
         />
       ),
       // render: () => <></>,
@@ -85,7 +91,7 @@ function MyTrainingTabContainer() {
       item: (
         <MyTrainingTabItemView
           contentType={MyLearningContentType.Enrolled}
-          count={myTrainingTableCount2}
+          count={enrolledCount}
         />
       ),
       // render: () => <></>,

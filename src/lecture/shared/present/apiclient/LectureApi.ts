@@ -11,6 +11,9 @@ import InstructorRdoModel from '../../../model/InstructorRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import { ParsingLearningType } from 'myTraining/model/filter/ParsingLearningType';
+import { CountByCardTypeModel } from 'myTraining/model/filter/CountByCardTypeModel';
+import { CountByCollegeIdModel } from 'myTraining/model/filter/CountByCollegeIdModel';
 
 class LectureApi {
   //
@@ -161,6 +164,25 @@ class LectureApi {
         { params: cardQdo }
       )
       .then((response) => response && response.data);
+  }
+
+  // filter
+  findCardTypeAndCardCount(type: ParsingLearningType) {
+    //
+    return axiosApi
+      .get<CountByCardTypeModel[]>(this.learningUrl + '/cardTypeAndCardCount', {
+        params: { type },
+      })
+      .then((response) => (response && response.data) || []);
+  }
+
+  findCollegeAndCardCount(type: ParsingLearningType) {
+    //
+    return axiosApi
+      .get<CountByCollegeIdModel[]>(this.learningUrl + '/collegeAndCardCount', {
+        params: { type },
+      })
+      .then((response) => (response && response.data) || []);
   }
 }
 

@@ -8,7 +8,6 @@ import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import TableHeaderColumn from 'myTraining/ui/model/TableHeaderColumn';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
@@ -64,11 +63,9 @@ function RequiredListPageContainer({
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
 
-  useRequestFilterCountView();
-
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
-    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.required = true;
@@ -80,11 +77,15 @@ function RequiredListPageContainer({
     clearMyLearningCard();
 
     const newQdo = clearQdo();
-
-    requestmyTrainingsWithPage(newQdo, true);
+    requestmyTrainingsWithPage(newQdo, true).finally(() => {
+      if (parseInt(params.pageNo) > 1) {
+        newQdo.limit = PAGE_SIZE;
+        setCardQdo(newQdo);
+      }
+    });
 
     return () => {};
-  }, []);
+  }, [contentType]);
 
   const requestmyTrainingsWithPage = async (
     qdo: CardQdo,
@@ -118,10 +119,7 @@ function RequiredListPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    await findMyLearningCardByQdo();
-    const { myLearningCards } = lectureService!;
-    const isEmpty =
-      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    const isEmpty = await !findMyLearningCardByQdo(true);
     await console.log(isEmpty);
     await setResultEmpty(isEmpty);
     await checkShowSeeMore();
@@ -231,6 +229,7 @@ function RequiredListPageContainer({
           totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
+          contentType={contentType}
         >
           <div
             className="list-number"

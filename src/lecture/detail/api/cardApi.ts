@@ -234,7 +234,7 @@ export function countRequiredCards() {
 
 export function countLearningTab() {
   const axios = getAxios();
-  const url = `${BASE_URL}/students/count?type=MYLEARNING_STATE`;
+  const url = `${BASE_URL}/cards/cardCount`;
   return axios.get<LearningTabCountViewModel>(url).then(AxiosReturn);
 }
 
