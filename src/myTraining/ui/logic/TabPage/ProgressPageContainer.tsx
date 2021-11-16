@@ -80,14 +80,30 @@ function ProgressPageContainer({
     selectOne,
     clearAllSelectedServiceIds,
   } = lectureService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    showResult,
+    filterCount,
+    openFilter,
+    setOpenFilter,
+  } = filterBoxService!;
 
   useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
     newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.Learning;
+    newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
+
+    return newCardQdo;
+  };
+
+  const excelQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = 9999999;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.Learning;
@@ -142,8 +158,9 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(clearQdo());
+    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
+      excelQdo()
+    );
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';
@@ -154,7 +171,7 @@ function ProgressPageContainer({
         tableViews.map((view, index) => {
           const collegeName =
             (view.mainCollegeId && getCollgeName(view.mainCollegeId)) || '';
-          console.dir(view);
+          // console.dir(view);
           return view.toXlsxForInProgress(lastIndex - index, collegeName);
         })) ||
       [];
