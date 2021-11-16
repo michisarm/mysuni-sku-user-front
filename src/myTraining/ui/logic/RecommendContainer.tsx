@@ -27,6 +27,7 @@ import {
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { autorun } from 'mobx';
 
 const swipeName = 'swiperInterested';
 
@@ -52,6 +53,11 @@ interface RecommendCardList {
 export function RecommendContainer() {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [channelOpened, setChannelOpend] = useState<boolean>(false);
+  const [favoriteChannelIds, setFavoriteChannelIds] = useState<string[]>(() => {
+    return Array.from(
+      SkProfileService.instance.additionalUserInfo.favoriteChannelIds
+    );
+  });
   const [selectedChannelId, setSelectedChannelId] = useState<string>(() => {
     return (
       SkProfileService.instance.additionalUserInfo.favoriteChannelIds[0] || ''
@@ -83,6 +89,19 @@ export function RecommendContainer() {
         }
       });
   }, [selectedChannelId]);
+  useEffect(() => {
+    return autorun(() => {
+      const next = Array.from(
+        SkProfileService.instance.additionalUserInfo.favoriteChannelIds
+      );
+      if (next.length !== favoriteChannelIds.length) {
+        setSelectedChannelId(
+          SkProfileService.instance.additionalUserInfo.favoriteChannelIds[0] ||
+            ''
+        );
+      }
+    });
+  }, [favoriteChannelIds]);
 
   const [swiper, updateSwiper] = useState<any>(null);
   useEffect(() => {

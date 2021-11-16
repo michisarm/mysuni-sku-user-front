@@ -64,22 +64,28 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.MAIN_FAVORITE,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
   useEffect(() => {
-    findBookmarkCards().then((next) => {
-      if (next !== undefined) {
-        setCards(next.results);
-      }
-    });
+    (window as any).refreshBookmarks = function refreshBookmarks() {
+      findBookmarkCards().then((next) => {
+        if (next !== undefined) {
+          setCards(next.results);
+        }
+      });
+    };
+    (window as any).refreshBookmarks();
+    return () => {
+      (window as any).refreshBookmarks = null;
+    };
   }, []);
 
   const title = useMemo(() => getTitle(), []);
@@ -117,8 +123,11 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper swiper-no-txticon" data-action-name="찜해두신 과정">
-          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+        <div
+          className="cardSwiper swiper-no-txticon"
+          data-action-name="찜해두신 과정"
+        >
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {parseUserLectureCards(
               cards,
               SkProfileService.instance.skProfile.language
