@@ -57,7 +57,7 @@ export function ItemView(c: CardProps) {
       className="swiper-slide"
       key={c.cardId}
       onClick={() => {
-        history.push(`/lecture/card/${c.cardId}/view`);
+        history.push(`/lecture/card/${c.cardId}/view/redirect-cube`);
       }}
     >
       <a className="inner">

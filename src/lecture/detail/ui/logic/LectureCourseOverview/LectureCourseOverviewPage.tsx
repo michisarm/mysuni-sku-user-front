@@ -8,6 +8,7 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
 import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
@@ -38,7 +39,27 @@ function LectureCourseOverviewPage() {
       lectureStructure.card.survey === undefined
     ) {
       history.replace(lectureStructure.cubes[0].path);
+      return;
     }
+    // eslint-disable-next-line
+    if (location.pathname.endsWith('/redirect-cube')) {
+      let modifiedTime = 0;
+      let path: string | null = null;
+      lectureStructure.cubes.forEach((c) => {
+        if (c.student !== undefined) {
+          console.log(c);
+          if (c.student.modifiedTime > modifiedTime) {
+            modifiedTime = c.student.modifiedTime;
+            path = c.path;
+          }
+        }
+      });
+      if (path !== null) {
+        history.replace(path);
+        return;
+      }
+    }
+
     isOpenPassedPisAgreementModal(lectureStructure.card.cardId);
   }, [lectureStructure]);
 
