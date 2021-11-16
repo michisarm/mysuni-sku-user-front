@@ -74,8 +74,7 @@ function EnrolledListPageContainer({
   const requestMyTrainings = async () => {
     setIsLoading(true);
     if (contentType === MyLearningContentType.Enrolled) {
-      const isEmpty = await myTrainingService!.findEnrollTableViews();
-
+      await myTrainingService!.findEnrollTableViews();
       setIsLoading(false);
     }
   };

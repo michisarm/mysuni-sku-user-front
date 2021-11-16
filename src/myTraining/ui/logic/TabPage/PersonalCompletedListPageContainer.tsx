@@ -67,8 +67,7 @@ function PersonalCompletedListPageContainer({
 
   const requestAplList = async () => {
     setIsLoading(true);
-    const offsetApl = await findAllAplsByQuery();
-    const isEmpty = offsetApl.results.length === 0 ? true : false;
+    await findAllAplsByQuery();
     checkShowSeeMore();
     setIsLoading(false);
   };

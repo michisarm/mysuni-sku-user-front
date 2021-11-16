@@ -12,7 +12,6 @@ interface MyTrainingTabHeaderViewProps {
   onClickDelete?: () => void;
   onClickDownloadExcel?: () => Promise<void>;
 
-  filterCount?: number;
   filterOpotions?: {
     openFilter: boolean;
     onClickOpen: () => void;

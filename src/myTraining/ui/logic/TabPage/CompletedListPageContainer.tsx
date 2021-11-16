@@ -165,7 +165,7 @@ function CompletedListPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    const isEmpty = await !findMyLearningCardByQdo(true);
+    await findMyLearningCardByQdo(true);
     await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
@@ -272,7 +272,6 @@ function CompletedListPageContainer({
         <TabHeader
           resultEmpty={!(completedCount > 0)}
           totalCount={totalMyLearningCardCount}
-          filterCount={filterCount}
           filterOpotions={filterOptions}
           contentType={contentType}
           onClickDownloadExcel={downloadExcel}

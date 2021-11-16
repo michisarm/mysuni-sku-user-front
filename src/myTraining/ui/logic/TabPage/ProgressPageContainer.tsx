@@ -373,7 +373,6 @@ function ProgressPageContainer({
         <TabHeader
           resultEmpty={!(inProgressCount > 0)}
           totalCount={totalMyLearningCardCount}
-          filterCount={filterCount}
           filterOpotions={filterOptions}
           contentType={contentType}
           onClickDelete={onClickDelete}

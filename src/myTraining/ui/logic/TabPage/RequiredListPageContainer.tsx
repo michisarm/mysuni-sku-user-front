@@ -119,7 +119,7 @@ function RequiredListPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    const isEmpty = await !findMyLearningCardByQdo(true);
+    await findMyLearningCardByQdo(true);
     await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
@@ -225,7 +225,6 @@ function RequiredListPageContainer({
         <TabHeader
           resultEmpty={!(requiredLecturesCount > 0)}
           totalCount={totalMyLearningCardCount}
-          filterCount={filterCount}
           filterOpotions={filterOptions}
           contentType={contentType}
         >

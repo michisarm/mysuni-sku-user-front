@@ -226,7 +226,6 @@ function InMyListPageContainer({
       {
         <TabHeader
           resultEmpty={!(bookmarkCount > 0)}
-          filterCount={filterCount}
           totalCount={totalMyLearningCardCount}
           filterOpotions={filterOptions}
           contentType={contentType}
