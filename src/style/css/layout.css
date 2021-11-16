@@ -56,12 +56,17 @@ body #root {
 .course-info-bottom,
 .survey-preview,
 .content-admin-write { border-top: #ddd 1px solid; }
+.profile-badge-contents .group-wrapper { border-top: #ddd 1px solid;}
+
 
 /* Button */
-.ui.button.moreview {
-    color: #999 !important;
-}
-.ui.icon.button.moreview .icon {
+i.icon.ask24::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-ask-24-px.svg) 0 0 no-repeat !important; }
+i.icon.reply24::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-reply-24-px.svg) 0 0 no-repeat !important; }
+i.icon.list24::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) 0 0 no-repeat !important; }
+i.icon.edit24::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-edit-24-px.svg) 0 0 no-repeat !important; }
+i.icon.del24::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-delete-24-px.svg) 0 0 no-repeat !important; }
+.ui.button.moreview { color: #999 !important; }
+.ui.icon.button.moreview .icon {  
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg) center no-repeat;
     margin-right: 4px !important;
 }
@@ -88,12 +93,12 @@ body #root {
 .ui.button.pop.d,
 .ui.button.pop2.d { background: #777; }
 .ui.button.btn-blue2 { color: #777 !important; }
-.ui.button.btn-blue2 .icon.morelink {color: #777; }
+.ui.button.btn-blue2 .icon.morelink { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-link.svg) 50% 0 no-repeat; }
 .ui.modal.size-mini .actions.normal .button.secondary { background: #777; }
 .ui.button.free.complete {border:1px solid #777;color:#777;}
 .ui.button.free.bg2 {background: #777; color: #fff;}
 .ui.button.fix.bg.grey{ background: #777 !important;}
-.course-radio.task .task-post-btn { border-color: #777; color: #777; }
+.ui.icon.button.postset .icon.edit2::before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg) 0 0 no-repeat !important; }
 .course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg);}
 
 /* Font */
@@ -234,3 +239,7 @@ i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-a
 .support-list-wrap.faq .faq-list-wrap,
 .qna-admin-list-wrap,
 .coc_v2.community-open-card { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
+
+/* Alert */
+.ui.modal.size-mini .main .header { border-bottom: #ddd 1px solid; }
+.ui.modal.size-mini .main .content .description { color: #777; word-break: break-all; }

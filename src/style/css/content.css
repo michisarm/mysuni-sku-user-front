@@ -120,6 +120,7 @@
 
 /* Main > mypage popup */
 .profile-contents-area .button.page-bttn { width: 180px; border-radius: 18px; }
+.ui.popup.pop_profile{ max-width:17.5rem }
 
 /* Main > 관심채널 */
 .channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }
@@ -194,7 +195,25 @@
     border-color: #777;
     border-radius: 0;
 }
-.filter-table 
- .moreAll {
+.filter-table .moreAll {
     border-color: #777;
 }
+
+/* Mypage */
+.ui.menu.note-tab a.item.active { background: #fff; }
+.profile-edit-contents .table-wrapper { border-color: #ddd; }
+.ui.menu.note-tab a.item.active { background: #fff; border-bottom-color: #fff; }
+.ui.menu.note-tab a.item { color: #777; }
+.search_box .ui.table { border-color: #ddd; }
+.ui.h40.admin_calendar > .admin_date > button.active { color: #00bfae !important; border: 1px solid #00bfae !important; }
+.total_box { border-bottom: #ddd 1px solid; color: #777; }
+.total_box .tit_cnt + .tit_cnt:before { background-color: #ddd; }
+.total_box .button.btn_download { border: 1px solid #777; color: #777; }
+
+/* Hot Topic Card(개별) */
+.card.topic-item .ui.label.topic-info.time { display: none; }
+.card.topic-item .ui.label.topic-info { position: absolute; left: 0; bottom: 0; }
+.aside-tit { word-break: break-word; }
+
+/* Hot Topic Page */
+.topic-title .sub-txt { max-width: 900px; word-break: break-word; }
