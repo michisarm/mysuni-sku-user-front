@@ -1,6 +1,8 @@
 /* Site Header */
 #root section.header.main-sty2 { z-index: 200; border-bottom: #ddd 1px solid; }
 #root section.header.main-sty2.lms-main .breadcrumbs { display:block }
+.margin-bottom-80 + .main-sty2.main.content{ padding-top : 80px }
+.personal-info-wrap.visible{ position:fixed; top : 80px; }
 
 /* popup */
 .g-info-new .go-learn.active{ background-position-y : 1px !important }
@@ -9,12 +11,9 @@
 .lms-alarm-item { border-top: 0; border-bottom: 1px solid #ddd; }
 
 /* BG Color */
-body {
-    background: #fff;
-}
-body #root {
-    background: #fff;
-}
+body { background: #fff; }
+body #root { background: #fff; }
+.survey-preview .ui.button.fix.line{ background-color : #fff }
 
 /* border */
 #root section.content .tab-menu {
@@ -33,7 +32,8 @@ body #root {
 .badge-detail .ov-paragraph,
 .add-personal-learning,
 .post-view-wrap .post-view,
-.post-view-wrap .post-view .title-area {
+.post-view-wrap .post-view .title-area,
+.badge-slide-wrap {
     border-bottom: #ddd 1px solid;
 }
 .ui.form.reply.base .outline {
@@ -61,6 +61,21 @@ body #root {
 .ui.form.reply.base .field { border-bottom: #ddd 1px solid; }
 .ui.form.reply.base .outline .more button { border-left: #ddd 1px solid; }
 
+/* Input Focus */
+.ui.form input:not([type]):focus,
+.ui.form input[type=date]:focus,
+.ui.form input[type=datetime-local]:focus,
+.ui.form input[type=email]:focus,
+.ui.form input[type=file]:focus,
+.ui.form input[type=number]:focus,
+.ui.form input[type=password]:focus,
+.ui.form input[type=search]:focus,
+.ui.form input[type=tel]:focus,
+.ui.form input[type=text]:focus,
+.ui.form input[type=time]:focus,
+.ui.form input[type=url]:focus {
+    border: #52CBC0 1px solid !important;
+}
 
 /* Button */
 i.icon.ask24:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-ask-24-px.svg) 0 0 no-repeat !important; }
@@ -69,39 +84,24 @@ i.icon.list24:before { background: url(https://image.mysuni.sk.com/suni-asset/pu
 i.icon.edit24:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-edit-24-px.svg) 0 0 no-repeat !important; }
 i.icon.del24:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-delete-24-px.svg) 0 0 no-repeat !important; }
 .ui.button.moreview { color: #999 !important; }
-.ui.icon.button.moreview .icon {  
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg) center no-repeat;
-    margin-right: 4px !important;
-}
-.cont-inner .item-button {
-    line-height: 20px;
-}
-.content.lms .ui.button.post-s {
-    border: #777 1px solid;
-    color: #777;
-}
-.content.lms .header-right-link a {
-    color: #777;
-}
-.ui.icon.button.postset {
-    color: #aaa;
-}
-.ui.button.post { border: #777 1px solid; color: #777; }
+.ui.icon.button.moreview .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg) center no-repeat; margin-right: 4px !important; }
+.content.lms .ui.label.onlytext .icon.basic { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg") 0 0 no-repeat !important; }
+.cont-inner .item-button { line-height: 20px; }
+.content.lms .ui.button.post-s { border: #777 1px solid; color: #777; }
+.content.lms .header-right-link a { color: #777; }
+.ui.icon.button.postset { color: #aaa; } .ui.button.post { border: #777 1px solid; color: #777; }
 .ui.button.post .icon.filter2 { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
 .ui.button.excel-down .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
-.challenge-wrap .challenge-badge .right-area .badge-title .path {
-    color: #777;
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat;
-}
-.ui.button.pop.d,
-.ui.button.pop2.d { background: #777; }
+.ui.button.pop.d, .ui.button.pop2.d { background: #777 !important; }
 .ui.button.btn-blue2 { color: #777 !important; }
+.ui.segment.full .contents.overview .ov-paragraph .btn-blue { color: #777;}
 .ui.button.btn-blue2 .icon.morelink { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-link.svg) 50% 0 no-repeat; }
 .ui.modal.size-mini .actions.normal .button.secondary { background: #777; }
 .ui.button.free.complete {border:1px solid #777;color:#777;}
 .ui.button.free.bg2 {background: #777; color: #fff;}
 .ui.button.fix.bg.grey{ background: #777 !important;}
 .ui.icon.button.postset .icon.edit2before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg) 0 0 no-repeat !important; }
+.challenge-wrap .challenge-badge .right-area .badge-title .path { color: #777; background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat; }
 .course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg);}
 
 /* Font */
