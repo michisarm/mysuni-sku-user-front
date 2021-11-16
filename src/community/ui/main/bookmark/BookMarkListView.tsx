@@ -60,7 +60,14 @@ function BookMarkPostView(props: BookMarkItem) {
             <Comment.Avatar src={profileImg} />
             <Comment.Content>
               <Comment.Author as="a">
-                <Link to={`/community/${communityId}`} target="_blank">
+                <Link
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}`
+                    )
+                  }
+                >
                   {communityName}
                 </Link>
               </Comment.Author>
@@ -124,8 +131,12 @@ function BookMarkPostView(props: BookMarkItem) {
                   게시물
                 </span>
                 <Link
-                  to={`/community/${communityId}/post/${postId}`}
-                  target="_blank"
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`
+                    )
+                  }
                 >
                   {title}
                 </Link>
