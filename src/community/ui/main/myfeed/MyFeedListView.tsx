@@ -66,7 +66,14 @@ function FeedView(props: FeedItem) {
             <Comment.Avatar src={profileImg} />
             <Comment.Content>
               <Comment.Author as="a">
-                <Link to={`/community/${communityId}`} target="_blank">
+                <Link
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}`
+                    )
+                  }
+                >
                   {communityName}
                 </Link>
               </Comment.Author>
@@ -136,8 +143,12 @@ function FeedView(props: FeedItem) {
                   게시물
                 </span>
                 <Link
-                  to={`/community/${communityId}/post/${postId}`}
-                  target="_blank"
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`
+                    )
+                  }
                 >
                   {title}
                 </Link>

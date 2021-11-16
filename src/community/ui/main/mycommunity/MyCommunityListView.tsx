@@ -35,6 +35,7 @@ function ItemView(props: MainMyCommunitiesItem) {
     memberCount,
     isBookMarked,
   } = props;
+  console.log(window.location.host, window.location.origin);
   return (
     <div className="community-main-left-contents">
       <div className="thumbnail">
@@ -42,8 +43,12 @@ function ItemView(props: MainMyCommunitiesItem) {
       </div>
       <Link
         className="community-main-left-list"
-        to={`/suni-community/community/${communityId}`}
-        target="_blank"
+        to="#"
+        onClick={() =>
+          window.open(
+            `${window.location.origin}/suni-community/community/${communityId}`
+          )
+        }
       >
         <div className="community-main-left-h3">
           {name}

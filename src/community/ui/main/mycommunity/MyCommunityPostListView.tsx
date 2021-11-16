@@ -84,8 +84,12 @@ function ItemView(props: MainMyCommunitiesPostItem) {
             <Comment.Content>
               <Comment.Author>
                 <Link
-                  to={`/community/${communityId}/post/${postId}`}
-                  target="_blank"
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`
+                    )
+                  }
                 >
                   {communityName}
                 </Link>
