@@ -119,8 +119,10 @@ function CompletedListPageContainer({
   };
 
   const downloadExcel = async () => {
+    const newQdo = clearQdo();
+    newQdo.limit = 999999;
     const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(clearQdo());
+      await lectureService!.findMyLearningCardForExcel(newQdo);
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';

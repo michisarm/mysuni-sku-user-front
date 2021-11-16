@@ -8,7 +8,7 @@ import { AplModel } from '../../model';
 import AplUdoModel from '../../model/AplApprovalUdo';
 
 export default class AplApi {
-  serverUrl = '/api/mytraining/apl';
+  serverUrl = '/api/learning/apl';
   devUrl =
     process.env.REACT_APP_MY_LEARNING_SUMMARY_API === undefined ||
     process.env.REACT_APP_MY_LEARNING_SUMMARY_API === ''
