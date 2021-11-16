@@ -31,10 +31,8 @@ export function InProgressLearning() {
     setSwiperOn(true);
   };
   useEffect(() => {
-    if (cardList === null || cardList.length === 0) {
-      fetchLearningCardLsit();
-    }
-  }, [cardList]);
+    fetchLearningCardLsit();
+  }, []);
 
   return (
     <div className="std-slider-wrap">

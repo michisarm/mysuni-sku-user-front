@@ -271,38 +271,31 @@ function ProfilePopupView(props: Props) {
           </div>
           <div className="tag-info-area sty2">
             {!isSettingProfile && (
-              // 프로필설정이 안되어있는 경우
-              <Button
-                className="btn-setting"
-                onClick={() => {
-                  props.setOpen();
-                  history.push(myTrainingRoutePaths.myPage());
-                }}
-              >
-                <PolyglotText
-                  defaultString="프로필 설정하기"
-                  id="profilemodal-edit"
-                />
-                <i>
-                  <Image
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-tooltip-w-20-px.svg`}
-                  />
-                </i>
+              <div className="prf-setting-area">
                 <p
-                  className="tool-tip-box"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
                       '프로필 설정으로<br />{name} 님을 표현해 보세요!',
                       'profilemodal-nodata',
                       {
-                        name: parsePolyglotString(
-                          SkProfileService.instance.skProfile.name
-                        ),
+                        name: SkProfileService.instance.profileMemberName,
                       }
                     ),
                   }}
                 />
-              </Button>
+                <button
+                  onClick={() => {
+                    props.setOpen();
+                    history.push(myTrainingRoutePaths.myPage());
+                  }}
+                  className="ui button setting-bttn"
+                >
+                  <PolyglotText
+                    defaultString="프로필 설정하기"
+                    id="profilemodal-edit"
+                  />
+                </button>
+              </div>
             )}
             {isSettingProfile && (
               // 프로필설정이 되어있는 경우
