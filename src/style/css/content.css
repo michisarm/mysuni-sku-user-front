@@ -217,3 +217,32 @@
 
 /* Hot Topic Page */
 .topic-title .sub-txt { max-width: 900px; word-break: break-word; }
+
+/* 이모지 */
+i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
+i.icon.icon_emoji_2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-2.svg') no-repeat center/100%;}
+i.icon.icon_emoji_3{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-3.svg') no-repeat center/100%;}
+i.icon.icon_emoji_4{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-4.svg') no-repeat center/100%;}
+i.icon.icon_emoji_5{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-5.svg') no-repeat center/100%;}
+i.icon.icon_emoji_6{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-6.svg') no-repeat center/100%;}
+i.icon.icon_emoji_7{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-7.svg') no-repeat center/100%;}
+i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-8.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-2-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_3{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-3-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_4{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-4-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_5{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-5-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_6{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-6-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_7{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-7-b.svg') no-repeat center/100%;}
+.emoji_list.active > .icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-8-b.svg') no-repeat center/100%;}
+
+.emoji_header .emoji_list.active::after{
+    content: '';
+    display: inline-block;
+    width: 1.625rem;
+    height: 0.125rem;
+    position: absolute;
+    bottom:0;
+    left:0.5rem;
+    background:#00bfae;
+}

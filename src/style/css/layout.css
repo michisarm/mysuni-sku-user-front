@@ -57,6 +57,8 @@ body #root {
 .survey-preview,
 .content-admin-write { border-top: #ddd 1px solid; }
 .profile-badge-contents .group-wrapper { border-top: #ddd 1px solid;}
+.ui.form.reply.base .field { border-bottom: #ddd 1px solid; }
+.ui.form.reply.base .outline .more button { border-left: #ddd 1px solid; }
 
 
 /* Button */
