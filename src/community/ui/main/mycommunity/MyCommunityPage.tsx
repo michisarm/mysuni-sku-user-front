@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { Sticky, Menu, Segment } from 'semantic-ui-react';
 import { Area } from '../../../../tracker/model/ActionType';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   MAIN_MYCOMMUNITIES_PATH,
   MAIN_OPENCOMMUNITIES_PATH,
@@ -13,10 +13,12 @@ import { MyCommunityListView } from './MyCommunityListView';
 import { useRequestMainMyCommunityItems } from './services/mycommunity.request.services';
 import { MyCommunityPostListView } from './MyCommunityPostListView';
 import { checkExternalInstructor } from '../../app.services';
+import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export function MyCommunityPage() {
   const contextRef = useRef(null);
   useRequestMainMyCommunityItems();
+  CommunityHomeBreadcrumb('My Community');
 
   return (
     <div ref={contextRef}>
