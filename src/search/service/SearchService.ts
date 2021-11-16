@@ -48,7 +48,9 @@ class SearchService {
       if (values.error) {
         this.autoCompleteValues = [];
       } else {
-        this.autoCompleteValues = values?.suggestions?.flat(Infinity) || [];
+        // 최대 10개만 보여줌
+        this.autoCompleteValues =
+          values?.suggestions?.flat(Infinity).slice(0, 10) || [];
       }
     });
   }
