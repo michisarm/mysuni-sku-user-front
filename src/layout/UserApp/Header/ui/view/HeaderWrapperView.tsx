@@ -42,12 +42,27 @@ class HeaderWrapperView extends Component<Props> {
   };
 
   isMainAndSearchPage() {
-    const url = `${window.location.host}${window.location.pathname}`;
+    let url = window.location.pathname;
 
-    if (
-      url === `${window.location.host}/pages/1` ||
-      url === `${window.location.host}/search`
-    ) {
+    if (process.env.NODE_ENV === 'development') {
+      url = `/suni-main${url}`;
+    }
+
+    if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
+      return true;
+    }
+
+    return false;
+  }
+
+  isCommunityPage() {
+    let url = window.location.pathname;
+
+    if (process.env.NODE_ENV === 'development') {
+      url = `/suni-main${url}`;
+    }
+
+    if (url.includes('/suni-main/community/main')) {
       return true;
     }
 
@@ -88,7 +103,8 @@ class HeaderWrapperView extends Component<Props> {
               autoCompleteValues={autoCompleteValues}
             />
           </div>
-          {!this.isMainAndSearchPage() && breadcrumbs}
+          {(!this.isMainAndSearchPage() || !this.isCommunityPage()) &&
+            breadcrumbs}
         </section>
       </>
     );
