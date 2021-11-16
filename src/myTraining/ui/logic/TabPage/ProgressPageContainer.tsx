@@ -82,12 +82,28 @@ function ProgressPageContainer({
     column,
     direction,
   } = lectureService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    showResult,
+    filterCount,
+    openFilter,
+    setOpenFilter,
+  } = filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
     newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.Learning;
+    newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
+
+    return newCardQdo;
+  };
+
+  const excelQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = 9999999;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.Learning;
@@ -148,8 +164,9 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(clearQdo());
+    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
+      excelQdo()
+    );
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';

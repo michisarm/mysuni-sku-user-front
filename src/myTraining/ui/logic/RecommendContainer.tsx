@@ -169,7 +169,10 @@ export function RecommendContainer() {
                         selectedChannelId === id ? 'active' : ''
                       }`}
                       key={id}
-                      onClick={() => setSelectedChannelId(id)}
+                      onClick={() => {
+                        setSelectedChannelId(id);
+                        setChannelOpend(false);
+                      }}
                     >
                       {getChannelName(id)}
                     </Label>
