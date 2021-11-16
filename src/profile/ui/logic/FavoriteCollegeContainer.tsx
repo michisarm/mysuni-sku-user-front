@@ -24,6 +24,7 @@ import {
   getCollgeName,
   getChannelName,
 } from 'shared/service/useCollege/useRequestCollege';
+import { CollegeIdModel } from 'shared/model/CollegeIdModel';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
@@ -32,14 +33,9 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  selectedCollege: SelectedCollege;
+  selectedCollege: CollegeIdModel;
   favorites: IdName[];
   favoriteCompanyChannels: ChannelModel[];
-}
-
-interface SelectedCollege {
-  id: string;
-  channelIds: string[];
 }
 
 const style = {
@@ -64,7 +60,7 @@ const style = {
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, State> {
   state = {
-    selectedCollege: {} as SelectedCollege,
+    selectedCollege: {} as CollegeIdModel,
     favorites: [] as IdName[],
     favoriteCompanyChannels: [] as ChannelModel[],
   };
@@ -126,7 +122,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     });
   }
 
-  onSelectCollege(college: SelectedCollege) {
+  onSelectCollege(college: CollegeIdModel) {
     this.setState({ selectedCollege: college });
   }
 
