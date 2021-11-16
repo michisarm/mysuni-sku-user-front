@@ -146,7 +146,7 @@ function EnrollingLearning() {
                         cardId={card.id}
                         cardName={parsePolyglotString(card.name)}
                         learningTime={timeToHourMinuteFormat(card.learningTime)}
-                        thumbnailImagePath={card.thumbImagePath}
+                        thumbnailImagePath={card.thumbnailImagePath}
                         difficultyLevel={card.difficultyLevel}
                         passedStudentCount={String(card.passedStudentCount)}
                         starCount={String(card.starCount)}

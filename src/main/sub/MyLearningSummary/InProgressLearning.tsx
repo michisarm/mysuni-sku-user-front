@@ -31,10 +31,8 @@ export function InProgressLearning() {
     setSwiperOn(true);
   };
   useEffect(() => {
-    if (cardList === null || cardList.length === 0) {
-      fetchLearningCardLsit();
-    }
-  }, [cardList]);
+    fetchLearningCardLsit();
+  }, []);
 
   return (
     <div className="std-slider-wrap">
@@ -59,7 +57,7 @@ export function ItemView(c: CardProps) {
       className="swiper-slide"
       key={c.cardId}
       onClick={() => {
-        history.push(`/lecture/card/${c.cardId}/view`);
+        history.push(`/lecture/card/${c.cardId}/view/redirect-cube`);
       }}
     >
       <a className="inner">

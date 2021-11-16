@@ -34,7 +34,6 @@ function RetryListPageContainer({
   const contentType = params.tab;
 
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollSave, scrollOnceMove } = useScrollMove();
@@ -49,6 +48,7 @@ function RetryListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const {
+    retryCount,
     myLearningCards,
     totalMyLearningCardCount,
     selectedServiceIds,
@@ -271,9 +271,9 @@ function RetryListPageContainer({
     <>
       {
         <TabHeader
+          resultEmpty={!(retryCount > 0)}
           totalCount={totalMyLearningCardCount}
           // filterCount={filterCount}
-          resultEmpty={resultEmpty}
           // filterOpotions={filterOptions}
         >
           <div
@@ -290,9 +290,9 @@ function RetryListPageContainer({
           />
         </TabHeader>
       }
-      {(myLearningCards && myLearningCards.length > 0 && (
+      {(retryCount > 0 && (
         <>
-          {(!resultEmpty && (
+          {(totalMyLearningCardCount > 0 && (
             <RetryListPageTableView
               totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
@@ -303,95 +303,6 @@ function RetryListPageContainer({
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
             />
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-03">
-            //       <Table.Header>
-            //         <Table.Row>
-            //           {headerColumns &&
-            //             headerColumns.length > 0 &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //                 {headerColumn.icon && (
-            //                   <a
-            //                     href="#"
-            //                     onClick={(e) => {
-            //                       handleClickSort(headerColumn.text);
-            //                       e.preventDefault();
-            //                     }}
-            //                   >
-            //                     <Icon
-            //                       className={getOrderIcon(
-            //                         headerColumn.text,
-            //                         true
-            //                       )}
-            //                     >
-            //                       <span className="blind">
-            //                         {getOrderIcon(headerColumn.text)}
-            //                       </span>
-            //                     </Icon>
-            //                   </a>
-            //                 )}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-
-            //       <Table.Body>
-            //         {myTrainingTableViews.map((myTraining, index) => {
-            //           const collegeId = myTraining.category?.collegeId || '';
-            //           return (
-            //             <Table.Row key={`mytraining-list-${index}`}>
-            //               <Table.Cell>
-            //                 {myTrainingTableCount - index}
-            //               </Table.Cell>
-            //               <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
-            //               <Table.Cell className="title">
-            //                 <a
-            //                   href="#"
-            //                   onClick={(e) => onViewDetail(e, myTraining)}
-            //                 >
-            //                   <span
-            //                     className={`ellipsis ${
-            //                       myTraining.useNote ? 'noteOn' : ''
-            //                     }`}
-            //                   >
-            //                     {parsePolyglotString(myTraining.name)}
-            //                   </span>
-            //                 </a>
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {LearningTypeName[myTraining.cubeType] || '-'}{' '}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {myTraining.difficultyLevel || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {timeToHourMinutePaddingFormat(
-            //                   myTraining.learningTime +
-            //                     myTraining.additionalLearningTime
-            //                 )}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {myTraining.stampCount || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {convertTimeToDate(myTraining.modifiedTime)}
-            //               </Table.Cell>
-            //             </Table.Row>
-            //           );
-            //         })}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

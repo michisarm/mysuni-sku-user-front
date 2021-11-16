@@ -40,23 +40,23 @@ class CardQdo {
   }
 
   setBycondition(conditions: FilterCondition) {
-    console.log(conditions);
     this.startLearningDate = conditions.startDate
       ? moment(conditions.startDate).format('YYYY-MM-DD')
       : '';
     this.endLearningDate = conditions.endDate
       ? moment(conditions.endDate).format('YYYY-MM-DD')
       : '';
-    this.required =
-      conditions.required === 'none' || conditions.required === 'false'
-        ? false
-        : true;
+    const tempRequired =
+      (conditions.required === 'true' && true) || this.required;
+    this.required = tempRequired;
 
     if (conditions.certifications && conditions.certifications.length > 0) {
       this.hasStamp =
-        (conditions.certifications.find((x) => x === 'stamp') && true) || false;
+        (conditions.certifications.find((x) => x === 'stamp') && true) ||
+        this.hasStamp;
       this.hasBadge =
-        (conditions.certifications.find((x) => x === 'badge') && true) || false;
+        (conditions.certifications.find((x) => x === 'badge') && true) ||
+        this.hasBadge;
     }
 
     this.offset = 0;

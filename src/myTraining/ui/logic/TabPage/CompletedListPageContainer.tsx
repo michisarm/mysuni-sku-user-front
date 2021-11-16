@@ -39,11 +39,7 @@ function CompletedListPageContainer({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [deleteFinishModal, setDeleteFinishModal] = useState<boolean>(false);
-  const [noCheckedModal, setNoCheckedModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollSave, scrollOnceMove } = useScrollMove();
@@ -58,6 +54,7 @@ function CompletedListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const {
+    completedCount,
     myLearningCards,
     totalMyLearningCardCount,
     cardQdo,
@@ -74,6 +71,17 @@ function CompletedListPageContainer({
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
     newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
+    newCardQdo.orderBy = CardOrderBy.PassedStudentCountDesc;
+
+    return newCardQdo;
+  };
+
+  const excelQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = 9999999;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
@@ -120,7 +128,7 @@ function CompletedListPageContainer({
 
   const downloadExcel = async () => {
     const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(clearQdo());
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';
@@ -157,8 +165,7 @@ function CompletedListPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    const isEmpty = await !findMyLearningCardByQdo(true);
-    await setResultEmpty(isEmpty);
+    await findMyLearningCardByQdo(true);
     await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
@@ -263,9 +270,8 @@ function CompletedListPageContainer({
     <>
       {
         <TabHeader
+          resultEmpty={!(completedCount > 0)}
           totalCount={totalMyLearningCardCount}
-          filterCount={filterCount}
-          resultEmpty={resultEmpty}
           filterOpotions={filterOptions}
           contentType={contentType}
           onClickDownloadExcel={downloadExcel}
@@ -284,9 +290,9 @@ function CompletedListPageContainer({
           />
         </TabHeader>
       }
-      {(myLearningCards && myLearningCards.length > 0 && (
+      {(completedCount > 0 && (
         <>
-          {(!resultEmpty && (
+          {(totalMyLearningCardCount > 0 && (
             <CompletedListPageTableView
               totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
@@ -297,91 +303,6 @@ function CompletedListPageContainer({
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
             />
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-03">
-            //       <Table.Header>
-            //         <Table.Row>
-            //           {headerColumns &&
-            //             headerColumns.length > 0 &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //                 {headerColumn.icon && (
-            //                   <a
-            //                     href="#"
-            //                     onClick={(e) => {
-            //                       handleClickSort(headerColumn.text);
-            //                       e.preventDefault();
-            //                     }}
-            //                   >
-            //                     <Icon
-            //                       className={getOrderIcon(
-            //                         headerColumn.text,
-            //                         true
-            //                       )}
-            //                     >
-            //                       <span className="blind">
-            //                         {getOrderIcon(headerColumn.text)}
-            //                       </span>
-            //                     </Icon>
-            //                   </a>
-            //                 )}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-            //       <Table.Body>
-            //         {myTrainingTableViews.map((myTraining, index) => {
-            //           const collegeId = myTraining.category?.collegeId || '';
-            //           return (
-            //             <Table.Row key={`mytraining-list-${index}`}>
-            //               <Table.Cell>
-            //                 {myTrainingTableCount - index}
-            //               </Table.Cell>
-            //               <Table.Cell>{getCollgeName(collegeId)}</Table.Cell>
-            //               <Table.Cell className="title">
-            //                 <a
-            //                   href="#"
-            //                   onClick={(e) => onViewDetail(e, myTraining)}
-            //                 >
-            //                   <span
-            //                     className={`ellipsis ${
-            //                       myTraining.useNote ? 'noteOn' : ''
-            //                     }`}
-            //                   >
-            //                     {parsePolyglotString(myTraining.name)}
-            //                   </span>
-            //                 </a>
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {LearningTypeName[myTraining.cubeType] || '-'}{' '}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {myTraining.difficultyLevel || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {timeToHourMinutePaddingFormat(
-            //                   myTraining.learningTime +
-            //                     myTraining.additionalLearningTime
-            //                 )}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {convertTimeToDate(myTraining.endDate)}
-            //               </Table.Cell>
-            //             </Table.Row>
-            //           );
-            //         })}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}

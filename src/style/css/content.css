@@ -85,12 +85,11 @@
 .content.lms .ui.label.onlytext .icon.inter {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg) 0 0 no-repeat !important;
 }
-.badge-navi .btn-next.next-on {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg);
-}
-.badge-navi .btn-prev.prev-on {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg);
-}
+
+.badge-navi .btn-next.next-off { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px-disable.svg); }
+.badge-navi .btn-next.next-on { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg); }
+.badge-navi .btn-prev.prev-off { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px-disable.svg); }
+.badge-navi .btn-prev.prev-on { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg); }
 
 /* 학습카드(개별) */
 .card-item .custom-icon.icon-clock { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tictoc.svg); }
@@ -216,7 +215,7 @@
 .aside-tit { word-break: break-word; }
 
 /* Hot Topic Page */
-.topic-title .sub-txt { max-width: 900px; word-break: break-word; }
+.topic-title .sub-txt { word-break: break-word; }
 
 /* 이모지 */
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
@@ -249,3 +248,21 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 /* 메인 > 뱃지 없을 때 > 버튼 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
+
+/* 메인 레이아웃 수정(2021.11.16) */
+.learning-section-wrap { margin-top: 40px; }
+.learning-section.type1 .section-head { margin-bottom: 10px; }
+.ui.segment.full.learning-section+.learning-section { margin-top: 40px; }
+.card-item .txticon-wrap .ui.label { font-size: 13px; }
+.card-item .card-inner .contents-area .txticon-wrap .ui.label div {background-position: 0 -1px;}
+.learning-section-wrap.bg-gray { margin-top: 60px; padding-top: 70px; margin-bottom: 60px; }
+.learning-section-wrap.bg-gray .ui.segment.full.learning-section+.learning-section { margin-top: 50px; }
+.learning-section.type5 .sec-tit-txt { margin-bottom: 20px; }
+.card.topic-item .ui.label.topic-info { bottom: 10px; }
+.content.main-sty2 .main_personal .personal-header-title h3 { font-size: 24px; }
+.content.main-sty2 .main_personal .personal-header-title p { font-size: 18px; font-weight: 300; color: #4c4c4c; }
+.learning-section.type1 .sec-tit-btn { position: relative; }
+.learning-section.type1 .sec-tit-btn .btn-more {height: auto;position: absolute;right: 0;bottom: 10px;}
+.content.main-sty2 .main_personal .personal-header-title { margin: 28px 0 20px; }
+.main-time-info { margin-top: 0; }
+.personal-info-go { margin-top: 40px; }

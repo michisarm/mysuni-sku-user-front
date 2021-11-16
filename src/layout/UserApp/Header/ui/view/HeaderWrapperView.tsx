@@ -13,33 +13,24 @@ interface Props {
   focused: boolean;
   searchInfo: SearchInfoModel;
   autoCompleteValues: string[];
+  fixedClass?: string;
 }
 
 @reactAutobind
 class HeaderWrapperView extends Component<Props> {
-  state = {
-    isFixed: false,
-  };
+  isCommunityPage() {
+    let url = window.location.pathname;
 
-  componentDidMount() {
-    document.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    document.addEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll = () => {
-    if (!this.isMainAndSearchPage()) {
-      return;
+    if (process.env.NODE_ENV === 'development') {
+      url = `/suni-main${url}`;
     }
 
-    if (window.pageYOffset > 0) {
-      this.setState({ isFixed: true });
-    } else {
-      this.setState({ isFixed: false });
+    if (url.includes('/suni-main/community/main')) {
+      return true;
     }
-  };
+
+    return false;
+  }
 
   isMainAndSearchPage() {
     let url = window.location.pathname;
@@ -49,20 +40,6 @@ class HeaderWrapperView extends Component<Props> {
     }
 
     if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
-      return true;
-    }
-
-    return false;
-  }
-
-  isCommunityPage() {
-    let url = window.location.pathname;
-
-    if (process.env.NODE_ENV === 'development') {
-      url = `/suni-main${url}`;
-    }
-
-    if (url.includes('/suni-main/community/main')) {
       return true;
     }
 
@@ -83,10 +60,7 @@ class HeaderWrapperView extends Component<Props> {
       autoCompleteValues,
     } = this.props;
 
-    const classNames = `header main-sty2 ${
-      this.isMainAndSearchPage() && 'lms-main'
-    }
-    ${this.state.isFixed && 'fixed'}
+    const classNames = `header main-sty2 ${this.props.fixedClass || ''}
     `;
 
     return (

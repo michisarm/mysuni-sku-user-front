@@ -96,7 +96,7 @@ class LectureService {
   _totalMyLearningCardCount: number = 0;
 
   @observable
-  selectedServiceIds: string[] = [];
+  _selectedServiceIds: string[] = [];
 
   @observable
   cardQdo: CardQdo = new CardQdo();
@@ -227,26 +227,36 @@ class LectureService {
   }
 
   @action
-  async findMyLearningCardByQdo(firstCheck?: boolean): Promise<boolean> {
+  async findMyLearningCardByQdo(firstCheck?: boolean) {
     //
     const findReulst = await this.lectureApi.findMyLearningLectures(
       this.cardQdo
     );
 
+    const cardNotes =
+      (await this.myTrainingApi.findCardNoteList(
+        findReulst.results.map((card) => card.id)
+      )) || [];
+
+    const myLearningCards = findReulst.results.map((card) => {
+      //
+      const myLectureCard = card;
+      myLectureCard.useNote = cardNotes.some((note) => note.cardId === card.id);
+      return myLectureCard;
+    });
+
     findReulst &&
       runInAction(() => {
         if (firstCheck) {
-          this._myLearningCards = findReulst.results || [];
+          this._myLearningCards = myLearningCards || [];
         } else {
           this._myLearningCards = [
             ...this._myLearningCards,
-            ...findReulst.results,
+            ...myLearningCards,
           ];
         }
         this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
       });
-
-    return (this._totalMyLearningCardCount > 0 && true) || false;
   }
 
   @action
@@ -293,33 +303,41 @@ class LectureService {
     }
   }
 
+  @computed
+  get selectedServiceIds() {
+    //
+    return this._selectedServiceIds;
+  }
+
   @action
   selectOne(serviceId: string) {
-    this.selectedServiceIds = [...this.selectedServiceIds, serviceId];
+    runInAction(() => {
+      this._selectedServiceIds = [...this._selectedServiceIds, serviceId];
+    });
   }
 
   @action
   clearOne(serviceId: string) {
-    this.selectedServiceIds = this.selectedServiceIds.filter(
+    this._selectedServiceIds = this._selectedServiceIds.filter(
       (selectedServiceId) => selectedServiceId !== serviceId
     );
   }
 
   @action
   selectAll() {
-    this.selectedServiceIds = this._myLearningCards.map(
+    this._selectedServiceIds = this._myLearningCards.map(
       (tableView) => tableView.id
     );
   }
 
   @action
   clearAll() {
-    this.selectedServiceIds = [];
+    this._selectedServiceIds = [];
   }
 
   @action
   clearAllSelectedServiceIds() {
-    this.selectedServiceIds = [];
+    this._selectedServiceIds = [];
   }
 
   // Lectures ----------------------------------------------------------------------------------------------------------

@@ -521,15 +521,31 @@ class MyTrainingService {
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> | null =
       await this.myTrainingApi.findEnrollTableViews(this._myTrainingFilterRdo);
 
+    const cardIds = offsetTableViews?.results.map((card) => card.cardId) || [];
+
+    const cardNotes =
+      (await this.myTrainingApi.findCardNoteList(cardIds)) || [];
+
+    const enrolledLectures = offsetTableViews?.results.map((card) => {
+      const enrolledLecture = card;
+      enrolledLecture.useNote = cardNotes.some(
+        (note) => note.cardId === card.cardId
+      );
+      return enrolledLecture;
+    });
+
     if (
       offsetTableViews &&
       offsetTableViews.results &&
       offsetTableViews.results.length > 0
     ) {
       runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          (result) => new MyTrainingTableViewModel(result)
-        );
+        this._myTrainingTableViews =
+          (enrolledLectures &&
+            enrolledLectures.map(
+              (result) => new MyTrainingTableViewModel(result)
+            )) ||
+          [];
         this._myTrainingTableViewCount2 = offsetTableViews.totalCount;
       });
       return false;

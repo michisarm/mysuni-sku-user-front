@@ -30,7 +30,9 @@ import { isExternalInstructor } from 'shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {}
 
-interface State {}
+interface State {
+  isFixed: boolean;
+}
 
 interface Injected {
   searchService: SearchService;
@@ -43,6 +45,10 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
   //
   static contextType = Context;
 
+  state = {
+    isFixed: false,
+  };
+
   headerRef: React.RefObject<any> = createRef();
 
   supportPath = boardRoutePaths.supportNotice();
@@ -51,6 +57,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     document.addEventListener('mousedown', this.handleClickOutside);
     const isExternal = isExternalInstructor();
     !isExternal && this.avaible(); //api호출을 위해서 3.30
+    document.addEventListener('scroll', this.handleScroll);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -62,7 +69,34 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
 
   componentWillUnmount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    document.addEventListener('scroll', this.handleScroll);
   }
+
+  isMainAndSearchPage() {
+    let url = window.location.pathname;
+
+    if (process.env.NODE_ENV === 'development') {
+      url = `/suni-main${url}`;
+    }
+
+    if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
+      return true;
+    }
+
+    return false;
+  }
+
+  handleScroll = () => {
+    if (!this.isMainAndSearchPage()) {
+      return;
+    }
+
+    if (window.pageYOffset > 0) {
+      this.setState({ isFixed: true });
+    } else {
+      this.setState({ isFixed: false });
+    }
+  };
 
   handleClickOutside(event: any) {
     //
@@ -212,9 +246,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const response = await findAvailablePageElements();
 
     if (response) {
-      this.setState({
-        menuAuth: response,
-      });
       setMenuAuthModel(response);
     }
   }
@@ -229,8 +260,15 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const isSearch =
       this.props.location.search !== null && this.props.location.search !== '';
 
+    const fixedClass: string =
+      this.isMainAndSearchPage() && this.state.isFixed ? 'fixed' : '';
+
     return (
-      <div ref={this.headerRef}>
+      // fixed: margin-bottom-80
+      <div
+        ref={this.headerRef}
+        className={`${this.state.isFixed ? 'margin-bottom-80' : ''}`}
+      >
         <HeaderWrapperView
           breadcrumbs={
             <BreadcrumbView
@@ -245,6 +283,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
           focused={searchViewFocused}
           searchInfo={searchInfo}
           autoCompleteValues={autoCompleteValues}
+          fixedClass={fixedClass}
         >
           <>
             <LogoView onClickMenu={this.onClickMenu} />

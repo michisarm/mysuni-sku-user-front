@@ -53,7 +53,6 @@ function ProgressPageContainer({
   const [deleteFinishModal, setDeleteFinishModal] = useState<boolean>(false);
   const [noCheckedModal, setNoCheckedModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollSave, scrollOnceMove } = useScrollMove();
@@ -68,6 +67,7 @@ function ProgressPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const {
+    inProgressCount,
     myLearningCards,
     totalMyLearningCardCount,
     selectedServiceIds,
@@ -82,13 +82,8 @@ function ProgressPageContainer({
     column,
     direction,
   } = lectureService!;
-  const {
-    conditions,
-    showResult,
-    filterCount,
-    openFilter,
-    setOpenFilter,
-  } = filterBoxService!;
+  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+    filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -164,9 +159,8 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
-      excelQdo()
-    );
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';
@@ -198,12 +192,14 @@ function ProgressPageContainer({
   const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
 
+    console.log('test');
     const newQdo = cardQdo;
+    console.log(conditions);
     newQdo.setBycondition(conditions);
+    console.log(newQdo);
     await setCardQdo(newQdo);
 
-    const isEmpty = await !findMyLearningCardByQdo(true);
-    await setResultEmpty(isEmpty);
+    await findMyLearningCardByQdo(true);
     await checkShowSeeMore();
     setIsLoading(false);
     history.replace('./1');
@@ -266,11 +262,11 @@ function ProgressPageContainer({
     (e: any, data: any) => {
       if (selectedServiceIds.includes(data.value)) {
         clearOne(data.value);
-        return;
+      } else {
+        selectOne(data.value);
       }
-
-      selectOne(data.value);
     },
+
     [selectedServiceIds, clearOne, selectOne]
   );
 
@@ -347,18 +343,18 @@ function ProgressPageContainer({
   }, []);
 
   const onConfirmModal = useCallback(async () => {
+    const { selectedServiceIds } = lectureService!;
     const isHidden = await studentService!.hideWithSelectedServiceIds(
       selectedServiceIds
     );
     if (isHidden) {
-      // 김민준
       // myTrainingService!.findAllTabCount();
-      findMyLearningCardByQdo();
-      clearAllSelectedServiceIds();
+      await findMyLearningCardByQdo();
+      await clearAllSelectedServiceIds();
     }
 
-    setDeleteModal(false);
-    setDeleteFinishModal(true);
+    await setDeleteModal(false);
+    await setDeleteFinishModal(true);
   }, []);
 
   const onCloseNoCheckedModal = useCallback(() => {
@@ -375,9 +371,8 @@ function ProgressPageContainer({
     <>
       {
         <TabHeader
-          resultEmpty={resultEmpty}
+          resultEmpty={!(inProgressCount > 0)}
           totalCount={totalMyLearningCardCount}
-          filterCount={filterCount}
           filterOpotions={filterOptions}
           contentType={contentType}
           onClickDelete={onClickDelete}
@@ -397,9 +392,9 @@ function ProgressPageContainer({
           />
         </TabHeader>
       }
-      {(myLearningCards && myLearningCards.length > 0 && (
+      {(inProgressCount > 0 && (
         <>
-          {(!resultEmpty && (
+          {(totalMyLearningCardCount > 0 && (
             <ProgressPageTableView
               totalCount={totalMyLearningCardCount}
               headerColumns={headerColumns}
@@ -414,123 +409,6 @@ function ProgressPageContainer({
               onCheckAll={onCheckAll}
               onCheckOne={onCheckOne}
             />
-
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-02">
-            //       <colgroup>
-            //         <col width="4%" />
-            //         <col width="4%" />
-            //         <col width="15%" />
-            //         <col width="25%" />
-            //         <col width="11%" />
-            //         <col width="11%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //         <col width="10%" />
-            //       </colgroup>
-
-            //       <Table.Header>
-            //         <Table.Row>
-            //           <Table.HeaderCell className="ck">
-            //             <Checkbox
-            //               checked={
-            //                 selectedServiceIds.length ===
-            //                 myTrainingTableViews.length
-            //               }
-            //               onChange={onCheckAll}
-            //             />
-            //           </Table.HeaderCell>
-            //           {headerColumns &&
-            //             headerColumns.length &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //                 {headerColumn.icon && (
-            //                   <a
-            //                     href="#"
-            //                     onClick={(e) => {
-            //                       handleClickSort(headerColumn.text);
-            //                       e.preventDefault();
-            //                     }}
-            //                   >
-            //                     <Icon
-            //                       className={getOrderIcon(
-            //                         headerColumn.text,
-            //                         true
-            //                       )}
-            //                     >
-            //                       <span className="blind">
-            //                         {getOrderIcon(headerColumn.text)}
-            //                       </span>
-            //                     </Icon>
-            //                   </a>
-            //                 )}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-
-            //       <Table.Body>
-            //         {myTrainingTableViews.map((myTraining, index) => (
-            //           <Table.Row key={`mytraining-list-${index}`}>
-            //             <Table.Cell>
-            //               <Checkbox
-            //                 value={myTraining.serviceId}
-            //                 checked={selectedServiceIds.includes(
-            //                   myTraining.serviceId
-            //                 )}
-            //                 onChange={onCheckOne}
-            //               />
-            //             </Table.Cell>
-            //             <Table.Cell>{myTrainingTableCount - index}</Table.Cell>
-            //             <Table.Cell>
-            //               {getCollgeName(myTraining.category?.collegeId || '')}
-            //             </Table.Cell>
-            //             <Table.Cell className="title">
-            //               <a
-            //                 href="#"
-            //                 onClick={(e) => onViewDetail(e, myTraining)}
-            //               >
-            //                 <span
-            //                   className={`ellipsis ${
-            //                     myTraining.useNote ? 'noteOn' : ''
-            //                   }`}
-            //                 >
-            //                   {parsePolyglotString(myTraining.name)}
-            //                 </span>
-            //               </a>
-            //             </Table.Cell>
-            //             <Table.Cell>
-            //               {getLearningType(myTraining.cubeType) || '-'}{' '}
-            //             </Table.Cell>
-            //             <Table.Cell>
-            //               {myTraining.difficultyLevel || '-'}
-            //             </Table.Cell>
-            //             <Table.Cell>
-            //               {timeToHourMinutePaddingFormat(
-            //                 myTraining.learningTime +
-            //                   myTraining.additionalLearningTime
-            //               )}
-            //             </Table.Cell>
-            //             <Table.Cell>
-            //               {convertTimeToDate(myTraining.modifiedTime)}
-            //             </Table.Cell>
-            //             <Table.Cell>
-            //               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
-            //             </Table.Cell>
-            //           </Table.Row>
-            //         ))}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
           )) || (
             <NoSuchContentsView
               isLoading={isLoading}
