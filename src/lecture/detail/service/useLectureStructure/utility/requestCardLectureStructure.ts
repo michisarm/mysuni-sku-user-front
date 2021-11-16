@@ -673,7 +673,7 @@ export async function isPisAgreementPassed(cardId: string) {
     cardWithContentsAndRelatedCountRom === undefined &&
     lectureStructure === undefined
   ) {
-    return { isPisAgreement: false, singleCube };
+    return { isPisAgreement: true, singleCube };
   }
 
   if (
