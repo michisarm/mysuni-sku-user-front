@@ -63,3 +63,14 @@ export function getColor(categoryId: string) {
       return CategoryColorType.Default;
   }
 }
+
+export function compareCollgeCineroom(collegeId: string) {
+  const collegeList = getAllColleges();
+  const findCollege = find(collegeList, { id: collegeId });
+
+  if (findCollege) {
+    return findCollege.cineroomId === 'ne1-m2-c2';
+  }
+
+  return false;
+}

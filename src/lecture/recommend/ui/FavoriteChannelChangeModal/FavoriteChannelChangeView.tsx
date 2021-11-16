@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import {
+  compareCollgeCineroom,
   getChannelName,
   getCollgeName,
 } from 'shared/service/useCollege/useRequestCollege';
 import { CollegeIdModel } from 'shared/model/CollegeIdModel';
-import { patronInfo } from '@nara.platform/dock';
 import { find, isEmpty } from 'lodash';
 
 interface Props {
@@ -37,12 +37,12 @@ class FavoriteChannelChangeView extends Component<Props> {
     'teal',
   ];
 
-  isChecked(channelId: string) {
+  isChecked(collegeId: string, channelId: string) {
     //
     const { favoriteChannels } = this.props;
 
     return (
-      patronInfo.getCineroomId() === 'ne1-m2-c2' ||
+      !compareCollgeCineroom(collegeId) ||
       !isEmpty(find(favoriteChannels, { id: channelId }))
     );
   }
@@ -58,8 +58,6 @@ class FavoriteChannelChangeView extends Component<Props> {
       onToggleCollege,
       onToggleChannel,
     } = this.props;
-
-    const cineroomId = patronInfo.getCineroomId();
 
     return (
       <div className="row">
@@ -102,8 +100,13 @@ class FavoriteChannelChangeView extends Component<Props> {
                                       <label>{getChannelName(channelId)}</label>
                                     }
                                     name={channelId}
-                                    checked={this.isChecked(channelId)}
-                                    disabled={cineroomId === 'ne1-m2-c2'}
+                                    checked={this.isChecked(
+                                      college.id,
+                                      channelId
+                                    )}
+                                    disabled={
+                                      !compareCollgeCineroom(college.id)
+                                    }
                                     onChange={() =>
                                       onToggleChannel({
                                         id: channelId,
