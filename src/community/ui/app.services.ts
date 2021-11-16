@@ -4,6 +4,8 @@ import { CollegeColor } from './data/college/models/CollegeColor';
 import { findMember, joinCommunity } from './data/community/apis/memberApi';
 import { PermittedCineroom } from './data/lecture/models/PermittedCineroom';
 import { showAlert, showConfirm } from '../packages/alert/Alert';
+import { getAllColleges } from '../../shared/service/requestAllColleges';
+import { parsePolyglotString } from '../../shared/viewmodel/PolyglotString';
 
 export async function checkMember(
   communityId: string
@@ -55,12 +57,6 @@ export function checkExternalInstructor() {
     return true;
   }
   return false;
-}
-
-export function getCollegeName(collegeId: string) {
-  const colleges = getColleges();
-  const foundCollege = find(colleges, { id: collegeId });
-  return foundCollege?.name || '';
 }
 
 export function getCollegeColor(collegeId: string) {

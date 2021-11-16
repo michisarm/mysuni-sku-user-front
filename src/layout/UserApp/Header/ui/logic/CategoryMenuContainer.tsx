@@ -19,6 +19,7 @@ import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
+import { getChannelName } from '../../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props extends RouteComponentProps {}
 
@@ -63,13 +64,16 @@ class CategoryMenuContainer extends Component<Props, State> {
       activeCollege: college,
       banner: bannerData,
     });
-
-    console.log(college);
+    const categoryColleges =
+      CollegeLectureCountService.instance.categoryColleges;
     CollegeLectureCountService.instance.setChannelCounts(
-      college.channels.map((c) => ({
-        id: c.id,
-        name: c.name,
-        count: c.count,
+      college.channelIds.map((id) => ({
+        id,
+        name: getChannelName(id),
+        count:
+          categoryColleges
+            .find((d) => d.id === college.id)
+            ?.channels.find((d) => d.id === id)?.count || 0,
       }))
     );
   }

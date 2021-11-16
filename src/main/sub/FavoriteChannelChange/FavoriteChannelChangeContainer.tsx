@@ -16,7 +16,10 @@ import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { getChannelName } from '../../../shared/service/useCollege/useRequestCollege';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+} from '../../../shared/service/useCollege/useRequestCollege';
 
 export const history = createBrowserHistory();
 
@@ -70,11 +73,10 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
   ) {
     //
     const companyChannels = colleges
-      .filter((college) => college.collegeType === CollegeType.Company)
+      .filter((college) => compareCollgeCineroom(college.id))
       .map((college) =>
-        college.channels.map(
-          (channel) =>
-            new ChannelModel({ channelId: channel.id, name: channel.name })
+        college.channelIds.map(
+          (id) => new ChannelModel({ channelId: id, name: getChannelName(id) })
         )
       )
       .flat();
@@ -115,7 +117,8 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
     });
 
     collegeService!.findChannelByName('');
-    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges =
+      await collegeLectureCountService!.findCollegeLectureCounts();
 
     this.setDefaultFavorites(favoriteChannels, colleges);
   }
@@ -211,10 +214,8 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
       selectedCollegeIds,
     }: State = this.state;
     const { channelIds } = collegeService!;
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      collegeLectureCountService!;
 
     return (
       <section className="content f-channel">

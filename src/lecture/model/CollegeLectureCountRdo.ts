@@ -22,7 +22,6 @@ class CollegeLectureCountRdo {
   channels: {
     id: string;
     name: string;
-    langSupports: LangSupport[];
     count: number;
   }[] = [];
 

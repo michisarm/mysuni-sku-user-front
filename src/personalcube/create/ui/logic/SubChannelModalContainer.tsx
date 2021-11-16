@@ -13,12 +13,13 @@ import {
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../lecture/model/LangSupport';
+import { compareCollgeCineroom } from '../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props {
   collegeService?: CollegeService;
   trigger: React.ReactNode;
   defaultSelectedCategoryChannels: CategoryModel[];
-  collegeType?: CollegeType;
+  isMysuniCollege: boolean;
   targetCollegeId?: string;
   onConfirmCategoryChannels: (categoryChannels: CategoryModel[]) => void;
 }
@@ -51,9 +52,8 @@ class SubChannelModalContainer extends Component<Props, State> {
     prevState: Readonly<State>
   ): void {
     //
-    const {
-      defaultSelectedCategoryChannels: prevSelectedCategoryChannels,
-    } = prevProps;
+    const { defaultSelectedCategoryChannels: prevSelectedCategoryChannels } =
+      prevProps;
     const { defaultSelectedCategoryChannels } = this.props;
 
     if (prevSelectedCategoryChannels !== defaultSelectedCategoryChannels) {
@@ -61,9 +61,9 @@ class SubChannelModalContainer extends Component<Props, State> {
     }
 
     const { targetCollegeId: prevTargetCollegeId } = prevProps;
-    const { targetCollegeId, collegeType } = this.props;
+    const { targetCollegeId } = this.props;
 
-    if (prevTargetCollegeId !== targetCollegeId && collegeType) {
+    if (prevTargetCollegeId !== targetCollegeId) {
       this.setSelectedCollege();
     }
   }
@@ -99,9 +99,9 @@ class SubChannelModalContainer extends Component<Props, State> {
   getTargetColleges() {
     //
     const { colleges } = this.props.collegeService!;
-    const { targetCollegeId, collegeType } = this.props;
+    const { targetCollegeId, isMysuniCollege } = this.props;
 
-    if (collegeType && collegeType === CollegeType.Company) {
+    if (!isMysuniCollege) {
       const college = colleges.find(
         (college) => college.collegeId === targetCollegeId
       );
@@ -110,26 +110,22 @@ class SubChannelModalContainer extends Component<Props, State> {
         return [college];
       }
     }
-    return colleges.filter(
-      (college) => college.collegeType === CollegeType.University
-    );
+    return colleges.filter((college) => compareCollgeCineroom(college.id));
   }
 
   isActiveCollege(college: CollegeModel) {
     //
-    const { collegeType } = this.props;
+    const { isMysuniCollege } = this.props;
     const { selectedCollege } = this.state;
 
-    return collegeType === CollegeType.Company
-      ? true
-      : college.collegeId === selectedCollege.id;
+    return !isMysuniCollege ? true : college.collegeId === selectedCollege.id;
   }
 
   onOpen() {
     //
-    const { collegeType, targetCollegeId } = this.props;
+    const { targetCollegeId } = this.props;
 
-    if (!collegeType || !targetCollegeId) {
+    if (!targetCollegeId) {
       reactAlert({
         title: '메인채널 선택',
         message: '서브채널을 선택하기 전에 메인채널을 먼저 선택해 주세요.',
@@ -223,7 +219,7 @@ class SubChannelModalContainer extends Component<Props, State> {
 
   render() {
     //
-    const { trigger, collegeType }: Props = this.props;
+    const { trigger, isMysuniCollege }: Props = this.props;
     const { open, selectedCategoryChannels }: State = this.state;
     const targetColleges = this.getTargetColleges();
 
@@ -307,7 +303,7 @@ class SubChannelModalContainer extends Component<Props, State> {
                             getDefaultLang(college.langSupports)
                           )}
                         </span>
-                        {collegeType === CollegeType.University && <Icon />}
+                        {isMysuniCollege && <Icon />}
                       </Accordion.Title>
                       <Accordion.Content active={this.isActiveCollege(college)}>
                         <ul>

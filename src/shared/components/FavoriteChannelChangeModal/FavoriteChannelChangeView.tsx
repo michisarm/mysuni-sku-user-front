@@ -8,7 +8,10 @@ import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { parsePolyglotString } from '../../viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
-import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+} from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
@@ -36,13 +39,12 @@ class FavoriteChannelChangeView extends Component<Props> {
     'teal',
   ];
 
-  isChecked(collegeType: CollegeType, channelId: string) {
+  isChecked(collegeId: string, channelId: string) {
     //
     const { favoriteChannels } = this.props;
 
     return (
-      collegeType === CollegeType.Company ||
-      favoriteChannels.includes(channelId)
+      !compareCollgeCineroom(collegeId) || favoriteChannels.includes(channelId)
     );
   }
 
@@ -86,29 +88,22 @@ class FavoriteChannelChangeView extends Component<Props> {
                           active={selectedCollegeIds.includes(college.id)}
                         >
                           <ul>
-                            {college.channels &&
-                              college.channels.length > 0 &&
-                              college.channels
-                                .filter((channel) =>
-                                  channelIds.includes(channel.id)
-                                )
-                                .map((channel, index) => (
+                            {college.channelIds.length > 0 &&
+                              college.channelIds
+                                .filter((id) => channelIds.includes(id))
+                                .map((id, index) => (
                                   <li key={`channel-${index}`}>
                                     <Checkbox
                                       className="base"
-                                      label={<label>{channel.name}</label>}
-                                      name={channel.name}
-                                      checked={this.isChecked(
-                                        college.collegeType,
-                                        channel.id
-                                      )}
+                                      label={
+                                        <label>{getChannelName(id)}</label>
+                                      }
+                                      name={getChannelName(id)}
+                                      checked={this.isChecked(college.id, id)}
                                       disabled={
-                                        college.collegeType ===
-                                        CollegeType.Company
+                                        !compareCollgeCineroom(college.id)
                                       }
-                                      onChange={() =>
-                                        onToggleChannel(channel.id)
-                                      }
+                                      onChange={() => onToggleChannel(id)}
                                     />
                                   </li>
                                 ))}

@@ -23,6 +23,7 @@ import { findAllCollegeCache } from '../../../shared/service/requestAllColleges'
 import {
   getCollgeName,
   getChannelName,
+  compareCollgeCineroom,
 } from 'shared/service/useCollege/useRequestCollege';
 import { CollegeIdModel } from 'shared/model/CollegeIdModel';
 
@@ -82,11 +83,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
     // 필수 관심채널 필터링
     const companyChannels = colleges
-      .filter((college) => college.collegeType === CollegeType.Company)
+      .filter((college) => !compareCollgeCineroom(college.id))
       .map((college) =>
-        college.channels.map(
-          (channel) =>
-            new ChannelModel({ channelId: channel.id, name: channel.name })
+        college.channelIds.map(
+          (id) => new ChannelModel({ channelId: id, name: getChannelName(id) })
         )
       )
       .flat();

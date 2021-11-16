@@ -7,14 +7,17 @@ import {
 } from 'approval/stores';
 import { CollegeService } from 'college/stores';
 import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
-import { getDefaultLang } from 'lecture/model/LangSupport';
 import { CollegeLectureCountService } from 'lecture/stores';
 import moment from 'moment';
 import { AplService } from 'myTraining/stores';
 import { SkProfileModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import { SelectOption } from 'shared/model/SelectOption';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+  getCollgeName,
+} from '../../../shared/service/useCollege/useRequestCollege';
 import { onResetFocusControl } from '../aplCreate.events';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
@@ -79,12 +82,12 @@ export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
     { key: 'Select', value: 'Select', text: 'Select' },
   ];
   if (colleges) {
-    colleges.map((college, index) => {
-      if (college.collegeType === 'Company') {
+    colleges.forEach((college, index) => {
+      if (!compareCollgeCineroom(college.id)) {
         collegeOptions.push({
           key: String(index + 1),
           value: college.id,
-          text: college.name,
+          text: getCollgeName(college.id),
         });
       }
     });
@@ -103,10 +106,7 @@ export function getChannelOptions() {
     channelOptions.push({
       key: index + 1,
       value: channel.id,
-      text: parsePolyglotString(
-        channel.name,
-        getDefaultLang(channel.langSupports)
-      ),
+      text: getChannelName(channel.id),
     });
   });
   return channelOptions;

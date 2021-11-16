@@ -54,14 +54,13 @@ export async function requestCategory() {
     .map((college) => new CollegeLectureCountRdo(college))
     .filter((college) => _.includes(targetCollegeIds, college.id))
     .map((college) => {
-      const nextChannels = college.channels.filter((channel) =>
-        _.includes(targetChannelIds, channel.id)
-      );
-
-      nextChannels.forEach((nextChannel) => {
-        nextChannel.count = targetChannelCountMap.get(nextChannel.id) || 0;
-        nextChannel.name = getChannelName(nextChannel.id);
-      });
+      const nextChannels = college.channelIds
+        .filter((id) => _.includes(targetChannelIds, id))
+        .map((id) => ({
+          id,
+          count: targetChannelCountMap.get(id) || 0,
+          name: getChannelName(id),
+        }));
 
       return {
         ...college,
