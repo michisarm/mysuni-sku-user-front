@@ -19,6 +19,7 @@ import {
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import Swiper from 'react-id-swiper';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 const SwiperProps = {
   slidesPerView: 4,
@@ -86,13 +87,13 @@ function EnrollingLearning() {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.MAIN_ENROLLING,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
@@ -135,7 +136,7 @@ function EnrollingLearning() {
 
       <div className="section-body">
         <div className="cardSwiper" data-action-name="수강신청 임박한 과정">
-          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardList &&
               cardList.map((card, i) => {
                 return (
@@ -144,7 +145,7 @@ function EnrollingLearning() {
                       <LectureCardView
                         cardId={card.id}
                         cardName={parsePolyglotString(card.name)}
-                        learningTime={String(card.learningTime)}
+                        learningTime={timeToHourMinuteFormat(card.learningTime)}
                         thumbnailImagePath={card.thumbImagePath}
                         difficultyLevel={card.difficultyLevel}
                         passedStudentCount={String(card.passedStudentCount)}
