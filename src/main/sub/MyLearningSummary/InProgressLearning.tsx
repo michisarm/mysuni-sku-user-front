@@ -36,8 +36,6 @@ export function InProgressLearning() {
     }
   }, [cardList]);
 
-  console.log(cardList);
-
   return (
     <div className="std-slider-wrap">
       <div className="std-slider-inner cardSwiper">

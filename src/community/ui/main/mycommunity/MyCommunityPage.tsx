@@ -13,12 +13,10 @@ import { MyCommunityListView } from './MyCommunityListView';
 import { useRequestMainMyCommunityItems } from './services/mycommunity.request.services';
 import { MyCommunityPostListView } from './MyCommunityPostListView';
 import { checkExternalInstructor } from '../../app.services';
-import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export function MyCommunityPage() {
   const contextRef = useRef(null);
   useRequestMainMyCommunityItems();
-  CommunityHomeBreadcrumb('My Community');
 
   return (
     <div ref={contextRef}>
