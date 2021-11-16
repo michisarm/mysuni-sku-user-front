@@ -9,7 +9,7 @@ export default function CommunityHomeBreadcrumb(breadcrumb: string) {
   const { pathname } = useLocation();
   useEffect(() => {
     setBreadcrumb([
-      { text: 'community', path: '/community/main/my-communities' },
+      { text: 'Community', path: '/community/main/my-communities' },
       {
         text: `${breadcrumb}`,
         path: `${pathname}`,
