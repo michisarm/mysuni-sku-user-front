@@ -74,7 +74,7 @@ export function onOpenLectureCardPisAgreementModal(isCard?: boolean) {
   // export function onOpenLectureCardPisAgreementModal() {
   //
   // 창을 다시 띄우는 경우 이전에 닫히는 함수로 인해 닫히는 경우가 있어서
-  // 0.5초의 딜레이를 넣어봄.
+  // 0.2초의 딜레이를 넣어봄.
   setTimeout(() => {
     const lectureCardPisAgreement =
       getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
@@ -84,7 +84,7 @@ export function onOpenLectureCardPisAgreementModal(isCard?: boolean) {
       isOpen: true,
       isCard: isCard || false,
     });
-  }, 500);
+  }, 200);
 }
 
 export function onCloseLectureCardPisAgreementModal(cardId: string) {
