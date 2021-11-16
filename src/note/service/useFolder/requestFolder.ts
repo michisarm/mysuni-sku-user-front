@@ -8,7 +8,10 @@ import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
 import { setFolderNoteCount } from '../../store/FolderNoteCountStore';
-// import { setNoteList, getNoteList } from '../../store/NoteWithLectureListStore';
+import {
+  setNoteWithLectureList,
+  getNoteWithLectureList,
+} from '../../store/NoteWithLectureListStore';
 
 export function requestFolder() {
   findFolder().then(async (result) => {
@@ -28,7 +31,7 @@ export function requestCubeListByFolderId() {
   findNoteListByFolderId(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
-      setNoteList(result);
+      setNoteWithLectureList(result);
     }
   });
 }
@@ -55,9 +58,9 @@ export function requestAppendCubeListByFolderId() {
   findNoteListByFolderId(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
-      const noteList = getNoteList();
+      const noteList = getNoteWithLectureList();
       noteList &&
-        setNoteList({
+        setNoteWithLectureList({
           ...noteList,
           results: noteList?.results.concat(result.results),
         });

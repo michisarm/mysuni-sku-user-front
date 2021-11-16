@@ -14,7 +14,7 @@ export class NoteXlsxModel {
   Card명: string = '';
   Cube명: string = '';
   학습유형?: string = '';
-  PlaySecond: string = '';
+  Playtime: string = '';
   작성일자: string = '';
   상태: string = '';
   내용: string = '';
@@ -55,8 +55,7 @@ export function convertNoteToNoteXlsxModel(
     Card명: parsePolyglotString(noteWithLecture.lectureRom.cardName),
     Cube명: parsePolyglotString(noteWithLecture.lectureRom.cubeName),
     학습유형: noteWithLecture.note.cubeType,
-    // PlaySecond: noteWithLecture.note.playTime,
-    PlaySecond: '',
+    Playtime: noteWithLecture.note.playTime,
     작성일자: moment(noteWithLecture.note.registeredTime).format('YYYY-MM-DD'),
     상태: noteWithLecture.note.modifiedTime !== 0 ? '편집' : '작성',
     내용: noteWithLecture.note.content,

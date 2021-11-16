@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import StudentLearningType from 'lecture/model/learning/StudentLearningType';
+import { parseInt } from 'lodash';
 import { inject, observer } from 'mobx-react';
-import { MyTrainingTableViewModel } from 'myTraining/model';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { ProgressPageTableView } from 'myTraining/ui/view/table/ProgressPageTableView';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -79,15 +78,16 @@ function ProgressPageContainer({
     clearOne,
     selectOne,
     clearAllSelectedServiceIds,
+    sortMyLearningTableViews,
+    column,
+    direction,
   } = lectureService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
 
-  useRequestFilterCountView();
-
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
-    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.Learning;
@@ -104,10 +104,15 @@ function ProgressPageContainer({
     }
     const newQdo = clearQdo();
 
-    requestmyTrainingsWithPage(newQdo, true);
+    requestmyTrainingsWithPage(newQdo, true).finally(() => {
+      if (parseInt(params.pageNo) > 1) {
+        newQdo.limit = PAGE_SIZE;
+        setCardQdo(newQdo);
+      }
+    });
 
     return () => {};
-  }, []);
+  }, [contentType]);
 
   const requestmyTrainingsWithPage = async (
     qdo: CardQdo,
@@ -116,6 +121,7 @@ function ProgressPageContainer({
     await setIsLoading(true);
     await setCardQdo(qdo);
     await findMyLearningCardByQdo(firstCheck);
+    // column && direction && (await sortMyLearningTableViews(column, direction));
     await checkShowSeeMore();
     await setIsLoading(false);
     await scrollOnceMove();
@@ -154,7 +160,6 @@ function ProgressPageContainer({
         tableViews.map((view, index) => {
           const collegeName =
             (view.mainCollegeId && getCollgeName(view.mainCollegeId)) || '';
-          console.dir(view);
           return view.toXlsxForInProgress(lastIndex - index, collegeName);
         })) ||
       [];
@@ -180,10 +185,7 @@ function ProgressPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    await findMyLearningCardByQdo();
-    const { myLearningCards } = lectureService!;
-    const isEmpty =
-      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    const isEmpty = await !findMyLearningCardByQdo(true);
     await setResultEmpty(isEmpty);
     await checkShowSeeMore();
     setIsLoading(false);
@@ -257,7 +259,7 @@ function ProgressPageContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      lectureService!.sortMyLearningTableViews(column, direction);
+      sortMyLearningTableViews(column, direction);
     },
     [contentType]
   );
@@ -360,6 +362,7 @@ function ProgressPageContainer({
           totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
+          contentType={contentType}
           onClickDelete={onClickDelete}
           onClickDownloadExcel={downloadExcel}
         >

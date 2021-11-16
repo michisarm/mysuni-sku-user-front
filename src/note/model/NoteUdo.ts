@@ -1,4 +1,4 @@
 export default interface NoteUdo {
   content: string;
-  playSecond: number;
+  playTime?: string;
 }

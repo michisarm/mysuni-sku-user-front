@@ -1,5 +1,6 @@
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { MenuControlAuthService } from 'approval/stores';
+import { requestCollegePercent } from 'main/sub/PersonalBoard/service/getCollegePercent';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { AplService } from 'myTraining/stores';
@@ -68,6 +69,7 @@ class MyLearningSummaryModal extends Component<Props> {
       findInstructTimeSummary,
     } = myLearningSummaryService!;
 
+    await requestCollegePercent();
     await findInstructTimeSummary();
     await findMyLearningSummaryByYear();
     getDisplayMySuniLeaningTime();

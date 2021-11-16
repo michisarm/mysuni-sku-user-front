@@ -107,9 +107,7 @@ function MyPageHeaderContainer({
         <div className="profile-wrapper">
           <div className="bg-wrapper">
             <ProfileImage
-              src={
-                bgImageBase64 || skProfile.backgroundImagePath || DefaultBgImg
-              }
+              src={skProfile.backgroundImagePath || DefaultBgImg}
               onError={(event: any) => {
                 event.currentTarget.style.display = 'none';
               }}

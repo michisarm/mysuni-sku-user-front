@@ -11,15 +11,12 @@ import FilterBoxContainer from './FilterBoxContainer';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { Direction } from '../../model/Direction';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../model/NoSuchContentPanelMessages';
+import { nosuchMessagesPolyglot } from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import InMyLectureListView from '../view/InMyLectureListVIew';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
@@ -45,7 +42,7 @@ function InMyLectureListContainer({
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
   const { conditions, filterCount, showResult } = filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   useEffect(() => {
     inMyLectureService!.clearAllTableViews();
@@ -153,7 +150,7 @@ function InMyLectureListContainer({
             resultEmpty={resultEmpty}
             totalCount={inMyLectureTableCount}
           />
-          <FilterBoxContainer />
+          <FilterBoxContainer contentType={contentType} />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {(inMyLectureTableViews && inMyLectureTableViews.length > 0 && (

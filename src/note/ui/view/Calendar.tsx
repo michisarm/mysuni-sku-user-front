@@ -45,8 +45,8 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
   useEffect(() => {
     setSearchBox({
       ...searchBox,
-      startDate: startDate && startDate.toDate().getTime(),
-      endDate: endDate && endDate.toDate().getTime(),
+      createStartDate: startDate && startDate.toDate().getTime(),
+      createEndDate: endDate && endDate.toDate().getTime(),
     });
   }, [startDate, endDate]);
 

@@ -103,7 +103,7 @@ class HeaderWrapperView extends Component<Props> {
               autoCompleteValues={autoCompleteValues}
             />
           </div>
-          {(!this.isMainAndSearchPage() || !this.isCommunityPage()) &&
+          {!(this.isMainAndSearchPage() || this.isCommunityPage()) &&
             breadcrumbs}
         </section>
       </>

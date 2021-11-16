@@ -39,7 +39,7 @@ export default class CollegeApi {
   findAllColleges() {
     //
     return axios
-      .get<CollegeModel[]>(this.URLCollege + '/available')
+      .get<CollegeModel[]>(this.URLCollege)
       .then(
         (response) =>
           (response &&
