@@ -263,3 +263,6 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .content.main-sty2 .main_personal .personal-header-title p { font-size: 18px; font-weight: 300; color: #4c4c4c; }
 .learning-section.type1 .sec-tit-btn { position: relative; }
 .learning-section.type1 .sec-tit-btn .btn-more {height: auto;position: absolute;right: 0;bottom: 10px;}
+.content.main-sty2 .main_personal .personal-header-title { margin: 28px 0 20px; }
+.main-time-info { margin-top: 0; }
+.personal-info-go { margin-top: 40px; }
