@@ -10,15 +10,14 @@ import NoteWithLecture from '../model/NoteWithLecture';
 
 //TODO : card, cube read model 추가, folder 버전 갱신 후 테스트 필요함
 
-// const BASE_URL = '/api/mytraining/note';
-const BASE_URL = '/api/learning/notes';
+const BASE_URL = '/api/mytraining/note';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
   if (
     response === null ||
     response === undefined ||
     response.data === null ||
-    response.data === undefined ||
+    response.data === null ||
     (response.data as unknown) === ''
   ) {
     return undefined;
@@ -45,8 +44,7 @@ export function findNoteCount(
 ): Promise<number | undefined> {
   let url = `${BASE_URL}/allNoteCnt`;
   if (searchBox) {
-    // url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
-    url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&collegeId=${searchBox.collegeId}`;
+    url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
   }
   return axiosApi.get<number>(url).then(AxiosReturn);
 }
@@ -62,50 +60,40 @@ export function findNoteCountByFolderId(
 // 노트 큐브 리스트 조회
 export function findCubeList(
   searchBox: SearchBox
-): Promise<OffsetElementList<Note> | undefined> {
-  // const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
-
+): Promise<OffsetElementList<NoteWithLecture> | undefined> {
+  const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
   return axiosApi
-    .get<OffsetElementList<Note>>(BASE_URL, {
-      params: {
-        limit: searchBox.limit,
-        offset: searchBox.offset,
-        content: searchBox.content,
-        cubeName: searchBox.cubeName,
-        startDate: searchBox.startDate,
-        endDate: searchBox.endDate,
-        collegeId: searchBox.collegeId,
-      },
-    })
+    .get<OffsetElementList<NoteWithLecture>>(url)
     .then(AxiosReturn);
 }
 
 // 노트 리스트 조회
-// export function findNoteList(
-//   searchBox: SearchBox
-//   // cardId: string,
-//   // cubeId: string,
-//   // limit: string,
-//   // offset: string,
-// ): Promise<OffsetElementList<NoteWithLecture> | undefined> {
-//   // let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
-//   let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&collegeId=${searchBox.collegeId}`;
-//   if (!searchBox.startDate) {
-//     url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
-//   }
-//
-//   return axiosApi
-//     .get<OffsetElementList<NoteWithLecture>>(url)
-//     .then(AxiosReturn);
-// }
+export function findNoteList(
+  searchBox: SearchBox
+  // cardId: string,
+  // cubeId: string,
+  // limit: string,
+  // offset: string,
+): Promise<OffsetElementList<NoteWithLecture> | undefined> {
+  let url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
+  if (!searchBox.createStartDate) {
+    url = `${BASE_URL}/list/${searchBox.cardId}/${searchBox.cubeId}/?limit=${searchBox.limit}&offset=${searchBox.offset}`;
+  }
+
+  return axiosApi
+    .get<OffsetElementList<NoteWithLecture>>(url)
+    .then(AxiosReturn);
+}
 
 // 폴더별 노트보기
 export function findNoteListByFolderId(
   searchBox: SearchBox
-): Promise<OffsetElementList<Note> | undefined> {
+): Promise<OffsetElementList<NoteWithLecture> | undefined> {
   // const url = `${BASE_URL}/list/${searchBox.folderId}?limit=${searchBox.limit}&offset=${searchBox.offset}`;
   const url = `${BASE_URL}/list/card/cube/${searchBox.folderId}?limit=${searchBox.limit}&offset=${searchBox.offset}`;
-  return axiosApi.get<OffsetElementList<Note>>(url).then(AxiosReturn);
+  return axiosApi
+    .get<OffsetElementList<NoteWithLecture>>(url)
+    .then(AxiosReturn);
 }
 
 // GET http://ma.mysuni.sk.com/api/mytraining/note/excelDownload
@@ -121,7 +109,7 @@ export function findNoteExcelList(): Promise<
 
 // 노트 내용수정
 export function modifyNote(id: string, noteUdo: NoteUdo): Promise<void> {
-  const url = `${BASE_URL}/noteContents/${id}`;
+  const url = `${BASE_URL}/${id}`;
   return axiosApi
     .put<void>(url, noteUdo)
     .then((response) => response && response.data);
@@ -141,14 +129,14 @@ export function modifyFolderId(
 
 // 노트 삭제
 export function deleteNote(id: string): Promise<void> {
-  const url = `${BASE_URL}/noteContents/${id}`;
+  const url = `${BASE_URL}/${id}`;
   return axiosApi.delete(url).then((response) => response && response.data);
 }
 
 // 폴더
 // 폴더 생성
 export function registerFolder(folder: Folder): Promise<string> {
-  const url = `${BASE_URL}/folders`;
+  const url = `${BASE_URL}/folder`;
   return axiosApi
     .post<string>(url, folder)
     .then((response) => response && response.data);
@@ -156,13 +144,13 @@ export function registerFolder(folder: Folder): Promise<string> {
 
 // 폴더 단건조회
 export function findFolder(): Promise<Folder | undefined> {
-  const url = `${BASE_URL}/folders`;
+  const url = `${BASE_URL}/folder`;
   return axiosApi.get<Folder>(url).then(AxiosReturn);
 }
 
 // 폴더 수정
 export function modifyFolder(folder: Folder): Promise<string> {
-  const url = `${BASE_URL}/folders`;
+  const url = `${BASE_URL}/folder`;
   return axiosApi
     .put<string>(url, folder)
     .then((response) => response && response.data);
