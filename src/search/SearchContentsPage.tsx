@@ -5,6 +5,7 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   getQueryId,
   initSearchData,
+  search,
   searchDataWithErrata,
 } from './search.events';
 import { SearchParam } from './search.models';
@@ -57,7 +58,8 @@ export function SearchContentsPage(props: Props) {
       });
       return;
     }
-    searchDataWithErrata(queryId);
+    search(queryId);
+    // searchDataWithErrata(queryId);
   }, [queryId]);
 
   const cards = useDisplayCard();
@@ -95,7 +97,7 @@ export function SearchContentsPage(props: Props) {
                 '통검-요약정보-결과내검색타이틀',
                 {
                   value: searchInfo.recentSearchValue,
-                  value2: searchInfo.errataValue && searchInfo.searchValue,
+                  value2: searchInfo.errataValue || searchInfo.searchValue,
                   value3: totalCount.toString(),
                 }
               ),

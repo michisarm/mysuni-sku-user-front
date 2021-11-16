@@ -77,10 +77,10 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     //
     const { searchService } = this.injected;
     const { searchInfo } = searchService;
-    searchService.setSearchInfoValue(
-      'recentSearchValue',
-      searchInfo.searchValue
-    );
+    // searchService.setSearchInfoValue(
+    //   'recentSearchValue',
+    //   searchInfo.searchValue
+    // );
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
     if (searchInfo.searchValue) {
@@ -113,14 +113,15 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     searchService.setFocusedValue(false);
   }
 
-  async onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+  async onChangeSearchInput(value: string) {
     const { searchService } = this.injected;
-    const { searchInfo } = searchService;
-    if (searchInfo.errataValue) {
-      // searchService.setSearchInfoValue('errataValue', '');
-    }
-    searchService.setSearchInfoValue('searchValue', e.target.value);
-    await searchService.findAutoCompleteValues(e.target.value);
+    searchService.setSearchInfoValue('searchValue', value);
+  }
+
+  async findAutoCompleteValues(value: string) {
+    //
+    const { searchService } = this.injected;
+    await searchService.findAutoCompleteValues(value);
   }
 
   setSearchInfoValue(name: string, value: any): void {
@@ -231,6 +232,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
               setSearchValue={this.setSearchInfoValue}
               onSearch={this.onSearch}
               onChange={this.onChangeSearchInput}
+              findAutoCompleteValues={this.findAutoCompleteValues}
               onClear={this.onClickClearSearch}
               onClick={this.onClickSearchInput}
               onBlur={this.onBlurSearchInput}

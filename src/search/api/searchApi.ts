@@ -810,9 +810,9 @@ export function findNaverOpenApiErrata(keyword: string) {
 // 검색어 자동완성
 export function searchAutoComplete(text_idx: string) {
   return axiosApi
-    .get<string[]>(SUGGEST_URL, {
+    .get(SUGGEST_URL, {
       params: {
-        target: 'completed',
+        target: 'complete',
         domain_no: 0,
         max_count: 10,
         term: text_idx,

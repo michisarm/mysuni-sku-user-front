@@ -5,6 +5,8 @@ import { setSearchRecentList, useSearchRecentList } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
 import SearchInfoModel from '../model/SeachInfoModel';
+import SearchService from '../service/SearchService';
+import { getQueryId } from '../search.events';
 
 interface Props {
   callback?: (searchValue?: string) => void;
@@ -36,7 +38,11 @@ export function SearchHeaderFieldView(props: Props) {
   return (
     <div className="g-search-field">
       <div className="w_wrap">
-        <div className="w_inner">
+        <div
+          className={
+            props.autoCompleteValues.length > 0 ? 'w_inner off' : 'w_inner'
+          }
+        >
           <div className="w_area recent_list">
             <div className="w_header">
               <strong>
@@ -95,7 +101,13 @@ export function SearchHeaderFieldView(props: Props) {
           </div>
         </div>
         {(props.autoCompleteValues && props.autoCompleteValues.length > 0 && (
-          <div className="w_inner_auto on">
+          <div
+            className={
+              props.autoCompleteValues.length > 0
+                ? 'w_inner_auto on'
+                : 'w_inner_auto'
+            }
+          >
             <ul className="auto_list">
               {props.autoCompleteValues.map((value, idx) => {
                 return AutoCompleteText(props.searchInfo.searchValue, value);
@@ -113,7 +125,52 @@ function AutoCompleteText(searchValue: string, completeValue: string) {
   //
   return (
     <li className="auto_item">
-      {completeValue.replace(searchValue, `${(<strong>searchValue</strong>)}`)}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: getTitleHtmlSearchKeyword(completeValue, searchValue.trim()),
+        }}
+      />
     </li>
   );
+}
+
+function getTitleHtmlSearchKeyword(title: string, keyword: string) {
+  if (title === null || title === undefined) {
+    return '';
+  }
+
+  let htmlTitle = title;
+
+  if (keyword.indexOf(' ') > -1) {
+    const keywords = keyword.split(' ');
+    let htmlTitles = htmlTitle;
+    keywords.map((item) => {
+      htmlTitles = escapeRegex(item, htmlTitles);
+      return htmlTitles;
+    });
+    return htmlTitles;
+  }
+
+  htmlTitle = escapeRegex(keyword, htmlTitle);
+  return htmlTitle;
+}
+
+function escapeRegex(item: string, target: string): string {
+  //
+  const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+  const regExpItem = item.replace(ESCAPE_REGEX, '');
+  let replacedText;
+  if (item.match(ESCAPE_REGEX)) {
+    replacedText = target.replace(
+      item,
+      `<strong class="a_text">${item}</strong>`
+    );
+  } else {
+    replacedText = target.replace(
+      new RegExp(regExpItem, 'gi'),
+      `<strong class="a_text">${regExpItem}</strong>`
+    );
+  }
+
+  return replacedText;
 }
