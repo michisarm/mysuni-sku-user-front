@@ -45,7 +45,11 @@ class SearchService {
     //
     const values = await searchAutoComplete(value);
     runInAction(() => {
-      this.autoCompleteValues = values || [];
+      if (values.error) {
+        this.autoCompleteValues = [];
+      } else {
+        this.autoCompleteValues = values?.suggestions?.flat(Infinity) || [];
+      }
     });
   }
 
