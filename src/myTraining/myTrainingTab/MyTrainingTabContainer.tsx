@@ -16,6 +16,7 @@ import RequiredListPageContainer from 'myTraining/ui/logic/TabPage/RequiredListP
 import RetryListPageContainer from 'myTraining/ui/logic/TabPage/RetryListPageContainer';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import { NotieService } from 'notie/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TabContainer, { TabItemModel } from 'shared/components/Tab';
@@ -25,19 +26,25 @@ import MyTrainingTabItemView from './MyTrainingTabItemView';
 function MyTrainingTabContainer() {
   const params = useParams<MyTrainingRouteParams>();
   const { menuControlAuth } = MenuControlAuthService.instance;
-  const { inMyListCount } = InMyLectureService.instance;
-  const { myTrainingTableCount2 } = MyTrainingService.instance;
-  const { requiredLecturesCount, inProgressCount, completedCount, retryCount } =
-    LectureService.instance;
+  // const { inMyListCount } = InMyLectureService.instance;
+  const {
+    inProgressCount,
+    requiredLecturesCount,
+    bookmarkCount,
+    completedCount,
+    retryCount,
+  } = LectureService.instance;
+  const { enrolledCount } = PersonalCubeService.instance;
   const {
     aplCount: { all: personalCompletedCount },
   } = AplService.instance;
 
   useEffect(() => {
-    MyTrainingService.instance.findAllTabCount();
-    InMyLectureService.instance.findAllTabCount();
+    // MyTrainingService.instance.findAllTabCount();
+    // InMyLectureService.instance.findAllTabCount();
     LectureService.instance.countLearningTab();
-    AplService.instance.findAllTabCount(CountType.patronKeyString);
+    // AplService.instance.findAllTabCount(CountType.patronKeyString);
+    PersonalCubeService.instance.findCountByEnrolledTabCount();
   }, []);
 
   const getTabs = () => {
@@ -59,7 +66,7 @@ function MyTrainingTabContainer() {
       item: (
         <MyTrainingTabItemView
           contentType={MyLearningContentType.InMyList}
-          count={inMyListCount}
+          count={bookmarkCount}
         />
       ),
       // render: () => <></>,
@@ -84,7 +91,7 @@ function MyTrainingTabContainer() {
       item: (
         <MyTrainingTabItemView
           contentType={MyLearningContentType.Enrolled}
-          count={myTrainingTableCount2}
+          count={enrolledCount}
         />
       ),
       // render: () => <></>,

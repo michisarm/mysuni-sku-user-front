@@ -51,7 +51,7 @@ export function MyTrainingTabHeaderView({
             </MyTrainingTabHeaderTemplate>
           )}
           <MyTrainingTabHeaderTemplate className="right-wrap">
-            {filterOpotions && (
+            {filterOpotions && contentType && (
               <MyTrainingRightTabHeaderPanel
                 filterCount={filterOpotions.filterCount}
                 openFilter={filterOpotions.openFilter}

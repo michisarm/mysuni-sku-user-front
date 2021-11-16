@@ -14,7 +14,6 @@ export function useRequestAllMyTrainingCount() {
 
     return () => {
       MyTrainingService.instance.clearAllTabCount();
-      InMyLectureService.instance.clearAllTabCount();
       LectureService.instance.clearAllTabCount();
       AplService.instance.clearAplCount();
     };

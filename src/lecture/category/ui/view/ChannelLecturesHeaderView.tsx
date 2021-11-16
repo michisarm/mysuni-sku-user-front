@@ -9,6 +9,7 @@ import { ChannelModel, CollegeModel } from 'college/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -93,7 +94,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     // console.log(college.name.ko);
     return (
       <>
-        <div className="white-title">
+        <div className="white-title" data-area={Area.COLLEGE_INFO}>
           <div className="inner">
             <strong>
               {parsePolyglotString(

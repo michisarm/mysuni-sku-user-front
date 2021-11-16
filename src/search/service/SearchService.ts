@@ -1,7 +1,8 @@
 import { autobind } from '@nara.platform/accent';
-import { action, observable } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import SearchInfoModel from '../model/SeachInfoModel';
 import _ from 'lodash';
+import { searchAutoComplete } from '../api/searchApi';
 
 @autobind
 class SearchService {
@@ -34,6 +35,24 @@ class SearchService {
   setFocusedValue(value: boolean): void {
     //
     this.searchViewFocused = value;
+  }
+
+  @observable
+  autoCompleteValues: string[] = [];
+
+  @action
+  async findAutoCompleteValues(value: string): Promise<void> {
+    //
+    const values = await searchAutoComplete(value);
+    runInAction(() => {
+      this.autoCompleteValues = values || [];
+    });
+  }
+
+  @action
+  clearAutoCompleteValues(): void {
+    //
+    this.autoCompleteValues = [];
   }
 }
 

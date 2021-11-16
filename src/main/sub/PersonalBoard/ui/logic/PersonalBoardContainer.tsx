@@ -31,13 +31,14 @@ export const PersonalBoardContainer = (props: Props) => {
     findMyLearningSummaryByYear,
     displayMyCompanyLearningTime,
     displayMySuniLearningTime,
+    displayTotalLearningTime,
   } = MyLearningSummaryService.instance;
   const { menuControlAuth } = MenuControlAuthService.instance;
 
   useEffect(() => {
     requestBadgeLearningTime(companyCode);
     requestPopularCourse(companyCode, 7);
-    requestCollegePercent();
+    // requestCollegePercent();
     requestLearningObjectives();
     init();
   }, []);
@@ -71,7 +72,9 @@ export const PersonalBoardContainer = (props: Props) => {
       >
         <div className="inner">
           <div className="personal-contents">
-            <BadgeLearningTimeView />
+            <BadgeLearningTimeView
+              totalLearningTime={displayTotalLearningTime}
+            />
             <LearningTimeDetailView
               showApl={menuControlAuth.useApl}
               mySuniLearningTime={displayMySuniLearningTime}

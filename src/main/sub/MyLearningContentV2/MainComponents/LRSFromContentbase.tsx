@@ -22,6 +22,8 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props {
   profileMemberName: string;
@@ -44,6 +46,26 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   const { profileMemberName } = Props;
   const history = useHistory();
   const [viewModel, setViewModel] = useState<RecommendationViewModel>();
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_PATTERN,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      })  
+    }
+  }
 
   useEffect(() => {
     findRecommendationCardsFromContentBase().then((next) => {
@@ -82,7 +104,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   return (
     <Segment
       className="full learning-section type2"
-      dataArea={Area.MAIN_RECOMMEND}
+      data-area={Area.MAIN_PATTERN}
     >
       <div className="section-head">
         <div
@@ -107,8 +129,8 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper swiper-no-txticon">
-          <Swiper {...SwiperProps}>
+        <div className="cardSwiper swiper-no-txticon" data-action-name="학습패턴">
+          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
             {parseUserLectureCards(
               cards,
               SkProfileService.instance.skProfile.language
@@ -119,7 +141,8 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_RECOMMEND}
+                      dataArea={Area.MAIN_PATTERN}
+                      hoverTrack={hoverTrack}
                     />
                   </CardGroup>
                 </div>

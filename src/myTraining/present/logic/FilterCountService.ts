@@ -1,27 +1,23 @@
 import { autobind } from '@nara.platform/accent';
 import { LectureApi } from 'lecture';
 import { action, computed, observable, runInAction } from 'mobx';
-import FilterCountViewModel from 'myTraining/model/filter/FilterCountViewModel';
+import FileterViewModel from 'myTraining/model/filter/FilterViewModel';
 import { getParsingLearningType } from 'myTraining/model/filter/ParsingLearningType';
-import MyTrainingFilterRdoModel from '../../model/MyTrainingFilterRdoModel';
 import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
 import { MyPageContentType } from '../../ui/model/MyPageContentType';
-import MyTrainingApi from '../apiclient/MyTrainingApi';
 
 @autobind
 class FilterCountService {
   static instance: FilterCountService;
 
-  private myTrainingApi: MyTrainingApi;
   private lectureApi: LectureApi;
 
-  constructor(myTrainingApi: MyTrainingApi, lectureApi: LectureApi) {
-    this.myTrainingApi = myTrainingApi;
+  constructor(lectureApi: LectureApi) {
     this.lectureApi = lectureApi;
   }
 
   @observable
-  _filterCountViews: FilterCountViewModel = new FilterCountViewModel();
+  _filterCountViews: FileterViewModel = new FileterViewModel();
 
   @computed get filterCountViews() {
     return this._filterCountViews;
@@ -51,7 +47,7 @@ class FilterCountService {
       [];
 
     runInAction(() => {
-      this._filterCountViews = FilterCountViewModel.getTotalFilterCountView(
+      this._filterCountViews = FileterViewModel.getTotalFilterCountView(
         resultByCardType,
         resultByCollegeId
       );
@@ -101,40 +97,40 @@ class FilterCountService {
 
   @action
   clearAllFilterCountViews() {
-    this._filterCountViews = new FilterCountViewModel();
+    this._filterCountViews = new FileterViewModel();
     // this._totalFilterCountView = new FilterCountViewModel();
   }
 
-  private async findByContentType(
-    contentType: MyLearningContentType | MyPageContentType
-  ) {
-    switch (contentType) {
-      case MyLearningContentType.InProgress:
-      case MyLearningContentType.InMyList:
-      case MyLearningContentType.Required:
-      case MyLearningContentType.Completed:
-      case MyLearningContentType.Retry: {
-        return;
-      }
-      // case MyLearningContentType.InMyList: {
-      //   const filterRdo = new InMyLectureFilterRdoModel();
-      //   return this.inMyLectureApi.findAllFilterCountViews(filterRdo);
-      // }
-      // case MyLearningContentType.Required: {
-      //   return findCollegeAndCardCount();
-      // }
-      default: {
-        const filterRdo = MyTrainingFilterRdoModel.create(contentType);
-        return this.myTrainingApi.findAllFilterCountViews(filterRdo);
-      }
-    }
-  }
+  // private async findByContentType(
+  //   contentType: MyLearningContentType | MyPageContentType
+  // ) {
+  //   switch (contentType) {
+  //     case MyLearningContentType.InProgress:
+  //     case MyLearningContentType.InMyList:
+  //     case MyLearningContentType.Required:
+  //     case MyLearningContentType.Completed:
+  //     case MyLearningContentType.Retry: {
+  //       return;
+  //     }
+  //     // case MyLearningContentType.InMyList: {
+  //     //   const filterRdo = new InMyLectureFilterRdoModel();
+  //     //   return this.inMyLectureApi.findAllFilterCountViews(filterRdo);
+  //     // }
+  //     // case MyLearningContentType.Required: {
+  //     //   return findCollegeAndCardCount();
+  //     // }
+  //     default: {
+  //       const filterRdo = MyTrainingFilterRdoModel.create(contentType);
+  //       return this.myTrainingApi.findAllFilterCountViews(filterRdo);
+  //     }
+  //   }
+  // }
 }
 
 export default FilterCountService;
 
 Object.defineProperty(FilterCountService, 'instance', {
-  value: new FilterCountService(MyTrainingApi.instance, LectureApi.instance),
+  value: new FilterCountService(LectureApi.instance),
   writable: false,
   configurable: false,
 });

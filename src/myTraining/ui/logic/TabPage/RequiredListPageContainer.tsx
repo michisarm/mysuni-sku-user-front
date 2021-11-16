@@ -65,7 +65,7 @@ function RequiredListPageContainer({
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
-    newCardQdo.limit = PAGE_SIZE;
+    newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
     newCardQdo.offset = 0;
     newCardQdo.searchable = true;
     newCardQdo.required = true;
@@ -77,11 +77,15 @@ function RequiredListPageContainer({
     clearMyLearningCard();
 
     const newQdo = clearQdo();
-
-    requestmyTrainingsWithPage(newQdo, true);
+    requestmyTrainingsWithPage(newQdo, true).finally(() => {
+      if (parseInt(params.pageNo) > 1) {
+        newQdo.limit = PAGE_SIZE;
+        setCardQdo(newQdo);
+      }
+    });
 
     return () => {};
-  }, []);
+  }, [contentType]);
 
   const requestmyTrainingsWithPage = async (
     qdo: CardQdo,
@@ -115,10 +119,7 @@ function RequiredListPageContainer({
     newQdo.setBycondition(conditions);
     await setCardQdo(newQdo);
 
-    await findMyLearningCardByQdo();
-    const { myLearningCards } = lectureService!;
-    const isEmpty =
-      (await (myLearningCards && myLearningCards.length > 0 && false)) || true;
+    const isEmpty = await !findMyLearningCardByQdo(true);
     await console.log(isEmpty);
     await setResultEmpty(isEmpty);
     await checkShowSeeMore();

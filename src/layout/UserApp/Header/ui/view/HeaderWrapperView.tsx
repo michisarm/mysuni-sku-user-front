@@ -12,6 +12,7 @@ interface Props {
   onSearch: (value: string) => void;
   focused: boolean;
   searchInfo: SearchInfoModel;
+  autoCompleteValues: string[];
 }
 
 @reactAutobind
@@ -32,6 +33,7 @@ class HeaderWrapperView extends Component<Props> {
       onSearch,
       focused,
       searchInfo,
+      autoCompleteValues,
     } = this.props;
 
     return (
@@ -45,6 +47,7 @@ class HeaderWrapperView extends Component<Props> {
               setSearchValue={setSearchInfoValue}
               searchInfo={searchInfo}
               onSearch={onSearch}
+              autoCompleteValues={autoCompleteValues}
             />
           </div>
 

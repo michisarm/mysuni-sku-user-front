@@ -83,7 +83,12 @@ function RetryListPageContainer({
     }
     const newQdo = clearQdo();
 
-    requestmyTrainingsWithPage(newQdo, true);
+    requestmyTrainingsWithPage(newQdo, true).finally(() => {
+      if (parseInt(params.pageNo) > 1) {
+        newQdo.limit = PAGE_SIZE;
+        setCardQdo(newQdo);
+      }
+    });
 
     return () => {};
   }, []);

@@ -1,25 +1,25 @@
 import React, { Fragment } from 'react';
-import { Checkbox } from 'semantic-ui-react';
 import ReactDatePicker from 'react-datepicker';
-import CheckboxOptions, {
-  learningTimePolyglot,
-  requiredPolyglot,
-} from '../../model/CheckboxOptions';
+import { Checkbox } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CollegeModel } from '../../../../college/model';
-import FilterCountViewModel from '../../../model/filter/FilterCountViewModel';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import FilterViewModel from '../../../model/filter/FilterViewModel';
 import { FilterCondition } from '../../../model/FilterCondition';
 import {
   FilterConditionName,
   filterConditionNamePolyglot,
 } from '../../../model/FilterConditionName';
-import { getDefaultLang } from '../../../../lecture/model/LangSupport';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import CheckboxOptions, {
+  learningTimePolyglot,
+  requiredPolyglot,
+} from '../../model/CheckboxOptions';
 
 interface FilterBoxViewProps {
   colleges: CollegeModel[];
   conditions: FilterCondition;
-  filterCountModel: FilterCountViewModel;
+  filterCountModel: FilterViewModel;
   onCheckAll: (e: any, data: any) => void;
   onCheckOne: (e: any, data: any) => void;
   onChangeStartDate: (data: Date) => void;
