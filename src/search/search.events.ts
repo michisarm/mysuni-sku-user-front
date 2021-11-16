@@ -153,6 +153,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
           displayCard.push(c);
         }
       });
+
     setCard(displayCard);
     setAllowedCard(displayCard);
     setDisplayCard([...displayCard]);
@@ -203,6 +204,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
 
     const cards = await filterCard(getCard());
     setAllowedCard(cards);
+
     setDisplayCard(cards);
   });
 }
@@ -776,6 +778,7 @@ export async function searchInSearchData(
     .replace(/%/g, ' ');
 
   const cards = getAllowedCard();
+
   const newCards = cards?.filter(
     (ele) =>
       parsePolyglotString(
