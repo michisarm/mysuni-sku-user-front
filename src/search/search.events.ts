@@ -608,7 +608,6 @@ export async function search(
   }
 
   const searchInSearchInfo = SearchService.instance.searchInfo;
-  console.log(searchInSearchInfo?.inAgain);
   if (searchInSearchInfo?.inAgain) {
     await searchInSearchData(decodedSearchValue);
   } else {
