@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { EnrolledListPageTableView } from 'myTraining/ui/view/table/EnrolledListPageTableView';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
@@ -20,10 +21,12 @@ import { useScrollMove } from '../../../useScrollMove';
 
 interface EnrolledListPageContainerProps {
   myTrainingService?: MyTrainingService;
+  personalCubeService?: PersonalCubeService;
 }
 
 function EnrolledListPageContainer({
   myTrainingService,
+  personalCubeService,
 }: EnrolledListPageContainerProps) {
   //
 
@@ -33,12 +36,12 @@ function EnrolledListPageContainer({
   const contentType = params.tab;
 
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
 
   const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
+  const { enrolledCount } = personalCubeService!;
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
@@ -71,9 +74,7 @@ function EnrolledListPageContainer({
   const requestMyTrainings = async () => {
     setIsLoading(true);
     if (contentType === MyLearningContentType.Enrolled) {
-      const isEmpty = await myTrainingService!.findEnrollTableViews();
-      setResultEmpty(isEmpty);
-
+      await myTrainingService!.findEnrollTableViews();
       setIsLoading(false);
     }
   };
@@ -200,7 +201,10 @@ function EnrolledListPageContainer({
   return (
     <>
       {
-        <TabHeader resultEmpty={resultEmpty} totalCount={myTrainingTableCount2}>
+        <TabHeader
+          resultEmpty={!(enrolledCount > 0)}
+          totalCount={myTrainingTableCount2}
+        >
           <div
             className="list-number"
             dangerouslySetInnerHTML={{
@@ -215,9 +219,9 @@ function EnrolledListPageContainer({
           />
         </TabHeader>
       }
-      {myTrainingTableViews && myTrainingTableViews.length > 0 && (
+      {enrolledCount > 0 && (
         <>
-          {(!resultEmpty && (
+          {(myTrainingTableCount2 > 0 && (
             <EnrolledListPageTableView
               totalCount={myTrainingTableCount2}
               headerColumns={headerColumns}
@@ -228,99 +232,6 @@ function EnrolledListPageContainer({
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
             />
-            // <>
-            //   <div className="mylearning-list-wrap">
-            //     <Table className="ml-02-03">
-            //       <Table.Header>
-            //         <Table.Row>
-            //           {headerColumns &&
-            //             headerColumns.length &&
-            //             headerColumns.map((headerColumn) => (
-            //               <Table.HeaderCell
-            //                 key={`learning-header-${headerColumn.key}`}
-            //                 className={
-            //                   headerColumn.text === '과정명' ? 'title' : ''
-            //                 }
-            //               >
-            //                 {inProgressPolyglot(headerColumn.text)}
-            //                 {headerColumn.icon && (
-            //                   <a
-            //                     href="#"
-            //                     onClick={(e) => {
-            //                       handleClickSort(headerColumn.text);
-            //                       e.preventDefault();
-            //                     }}
-            //                   >
-            //                     <Icon
-            //                       className={getOrderIcon(
-            //                         headerColumn.text,
-            //                         true
-            //                       )}
-            //                     >
-            //                       <span className="blind">
-            //                         {getOrderIcon(headerColumn.text)}
-            //                       </span>
-            //                     </Icon>
-            //                   </a>
-            //                 )}
-            //               </Table.HeaderCell>
-            //             ))}
-            //         </Table.Row>
-            //       </Table.Header>
-
-            //       <Table.Body>
-            //         {myTrainingTableViews.map((myTraining, index) => {
-            //           const learningType = LearningTypeName[myTraining.type];
-            //           const formattedLearningTime =
-            //             dateTimeHelper.timeToHourMinuteFormat(
-            //               myTraining.learningTime
-            //             );
-
-            //           return (
-            //             <Table.Row key={`mytraining-list-${index}`}>
-            //               <Table.Cell>
-            //                 {myTrainingTableCount2 - index}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {getCollgeName(myTraining.collegeId)}
-            //               </Table.Cell>
-            //               <Table.Cell className="title">
-            //                 <a
-            //                   href="#"
-            //                   onClick={(e) => onViewDetail(e, myTraining)}
-            //                 >
-            //                   <span
-            //                     className={`ellipsis ${
-            //                       myTraining.useNote ? 'noteOn' : ''
-            //                     }`}
-            //                   >
-            //                     {parsePolyglotString(myTraining.cubeName)}
-            //                   </span>
-            //                 </a>
-            //               </Table.Cell>
-            //               <Table.Cell>{learningType || '-'} </Table.Cell>
-            //               <Table.Cell>{myTraining.round} </Table.Cell>
-            //               <Table.Cell>
-            //                 {myTraining.difficultyLevel || '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>{formattedLearningTime}</Table.Cell>
-            //               <Table.Cell>
-            //                 {(myTraining.stampCount !== 0 &&
-            //                   myTraining.stampCount) ||
-            //                   '-'}
-            //               </Table.Cell>
-            //               <Table.Cell>
-            //                 {myTraining.learningStartDate}
-            //               </Table.Cell>
-            //             </Table.Row>
-            //           );
-            //         })}
-            //       </Table.Body>
-            //     </Table>
-            //   </div>
-
-            //   {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-            // </>
           )) || (
               <NoSuchContentsView
                 isLoading={isLoading}
@@ -344,8 +255,11 @@ function EnrolledListPageContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom('myTraining.myTrainingService'))(
-  observer(EnrolledListPageContainer)
-);
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.myTrainingService',
+    'personalCube.personalCubeService'
+  )
+)(observer(EnrolledListPageContainer));
 
 const PAGE_SIZE = 20;

@@ -227,7 +227,7 @@ class LectureService {
   }
 
   @action
-  async findMyLearningCardByQdo(firstCheck?: boolean): Promise<boolean> {
+  async findMyLearningCardByQdo(firstCheck?: boolean) {
     //
     const findReulst = await this.lectureApi.findMyLearningLectures(
       this.cardQdo
@@ -257,8 +257,6 @@ class LectureService {
         }
         this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
       });
-
-    return (this._totalMyLearningCardCount > 0 && true) || false;
   }
 
   @action
