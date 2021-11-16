@@ -48,7 +48,8 @@ class MyTrainingTableViewModel {
 
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
     if (myTrainingTableView) {
-      Object.assign(this, myTrainingTableView);
+      const useNote = myTrainingTableView.useNote;
+      Object.assign(this, { ...myTrainingTableView, useNote });
     }
   }
 
