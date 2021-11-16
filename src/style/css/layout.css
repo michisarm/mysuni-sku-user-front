@@ -14,6 +14,7 @@
 body { background: #fff; }
 body #root { background: #fff; }
 .survey-preview .ui.button.fix.line{ background-color : #fff }
+.relation-badge-area { background: #f5f5f5; }
 
 /* border */
 #root section.content .tab-menu {
@@ -33,7 +34,8 @@ body #root { background: #fff; }
 .add-personal-learning,
 .post-view-wrap .post-view,
 .post-view-wrap .post-view .title-area,
-.badge-slide-wrap {
+.badge-slide-wrap,
+.badge-header {
     border-bottom: #ddd 1px solid;
 }
 .ui.form.reply.base .outline {
@@ -103,6 +105,7 @@ i.icon.del24:before { background: url(https://image.mysuni.sk.com/suni-asset/pub
 .ui.icon.button.postset .icon.edit2before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg) 0 0 no-repeat !important; }
 .challenge-wrap .challenge-badge .right-area .badge-title .path { color: #777; background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat; }
 .course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg);}
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card::after { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/ct-arrow.svg') 0 0 no-repeat; }
 
 /* Font */
 .sort-reult .section-count,
@@ -136,6 +139,9 @@ i.icon.del24:before { background: url(https://image.mysuni.sk.com/suni-asset/pub
     color: #777;
 }
 .profile-edit-contents .mypage-edit-bottom span { color: #777; }
+.challenge-wrap .challenge-badge .left-area .status .number { color: #333; } 
+.challenge-wrap .challenge-badge .left-area .status .txt { color: #777; }
+.relation-badge-area .title-style .onlytext span { color: #777; }
 
 /* Text area */
 .ui.input.right-top-count textarea { border: #777 1px solid; }
@@ -242,6 +248,7 @@ i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-a
 .qna-admin-list-wrap,
 .coc_v2.community-open-card,
 .profile-edit-contents .table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
+.course-cont .course-box { box-shadow: 0 2px 6px 0 rgba(76, 76, 76, 0.2) }
 
 /* Alert */
 .ui.modal.size-mini .main .header { border-bottom: #ddd 1px solid; }
