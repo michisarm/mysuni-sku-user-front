@@ -6,7 +6,10 @@ import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { hoverTrack, scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import {
+  hoverTrack,
+  scrollHorizontalTrack,
+} from 'tracker/present/logic/ActionTrackService';
 import {
   getPolyglotText,
   PolyglotText,
@@ -22,11 +25,10 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   //
   const userLanguage = SkProfileService.instance.skProfile.language;
 
-  const { channelId, cardCount, totalCardCount, cardWithRelatedCountRdos } =
-    props;
+  const { channelId, cardCount, totalCardCount, cardForUserViewRdos } = props;
 
   const isCardWithRelatedCountRoms =
-    cardWithRelatedCountRdos == null || cardWithRelatedCountRdos.length < 0
+    cardForUserViewRdos == null || cardForUserViewRdos.length < 0
       ? false
       : true;
 
@@ -100,34 +102,35 @@ export function RecommendCardRomView(props: RecommendCardRom) {
             <>
               <Swiper {...SwiperProps}>
                 {isCardWithRelatedCountRoms &&
-                  cardWithRelatedCountRdos.map(({ card, cardRelatedCount }) => {
+                  cardForUserViewRdos.map((item) => {
                     return (
                       <div className={`${channelId}-${swipeName} swiper-slide`}>
-                        <CardGroup type={GroupType.Wrap} key={card.id}>
+                        <CardGroup type={GroupType.Wrap} key={item.id}>
                           <LectureCardView
-                            cardId={card.id}
-                            cardName={parsePolyglotString(card.name)}
-                            learningTime={card.learningTime.toString()}
-                            thumbnailImagePath={card.thumbImagePath}
-                            passedStudentCount={cardRelatedCount.passedStudentCount.toString()}
-                            starCount={cardRelatedCount.starCount.toString()}
+                            cardId={item.id}
+                            cardName={parsePolyglotString(item.name)}
+                            learningTime={item.learningTime.toString()}
+                            thumbnailImagePath={item.thumbImagePath}
+                            passedStudentCount={item.passedStudentCount.toString()}
+                            starCount={item.starCount.toString()}
                             simpleDescription={parsePolyglotString(
-                              card.simpleDescription
+                              item.simpleDescription
                             )}
                             difficultyLevel={
-                              card.difficultyLevel || DifficultyLevel.Basic
+                              item.difficultyLevel || DifficultyLevel.Basic
                             }
                             userLanguage={userLanguage}
-                            studentCount={cardRelatedCount.studentCount}
-                            langSupports={card.langSupports}
+                            studentCount={item.studentCount}
+                            langSupports={item.langSupports}
                             useBookMark={true}
                             // 체크 필요
                             isRequiredLecture={
-                              card.permittedCinerooms
-                                ? isIncludeCineroomId(card.permittedCinerooms)
-                                : false
+                              false
+                              // item.permittedCinerooms
+                              //   ? isIncludeCineroomId(item.permittedCinerooms)
+                              //   : false
                             }
-                            collegeId={card.mainCategory.collegeId}
+                            collegeId={item.mainCollegeId}
                             dataArea={Area.EXPERT_LECTURE}
                             hoverTrack={hoverTrack}
                           />

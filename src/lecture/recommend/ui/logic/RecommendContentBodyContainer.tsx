@@ -81,36 +81,39 @@ async function requestFindRecommendCards() {
       allChannelLoading: false,
     });
   } else {
+    const recommendCardRoms:
+      | RecommendCardRom[]
+      | undefined = await findRecommendCardsCache();
+
     const checkableChannels = getCheckableChannelsStore();
     if (checkableChannels === undefined) {
       return;
     }
     setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
-    const promiseArray = checkableChannels
+    const nextRecommendCardRoms = checkableChannels
       .filter((c) => c.checked === true)
-      .map<Promise<RecommendCardRom>>((c) => {
-        const cardRdo: CardRdo = {
-          channelIds: c.id,
-          offset: 0,
-          limit: CARDS_SIZE,
-        };
-        return findByRdoCache(cardRdo).then((r) => {
-          if (r !== undefined) {
-            return {
-              channelId: c.id,
-              cardCount: r.results.length,
-              cardWithRelatedCountRdos: r.results,
-            };
-          }
+      .map<RecommendCardRom>((c) => {
+        if (recommendCardRoms) {
+          const cardForUserViewRdos = recommendCardRoms
+            .filter((rcr) => rcr.channelId === c.id)
+            .map((rcr) => rcr.cardForUserViewRdos)
+            .flat();
+          return {
+            channelId: c.id,
+            cardCount: cardForUserViewRdos.length,
+            cardForUserViewRdos,
+          };
+        } else {
           return {
             channelId: c.id,
             cardCount: 0,
-            cardWithRelatedCountRdos: [],
+            cardForUserViewRdos: [],
           };
-        });
+        }
       });
-    const recommendCardRoms = await Promise.all(promiseArray);
-    setRecommendCardRoms(recommendCardRoms);
+
+    // const recommendCardRoms = await Promise.all(promiseArray);
+    setRecommendCardRoms(nextRecommendCardRoms);
     const nextRecommendPageViewModel = getRecommendPage();
     if (nextRecommendPageViewModel === undefined) {
       return;
