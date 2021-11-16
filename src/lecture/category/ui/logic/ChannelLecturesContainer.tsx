@@ -395,7 +395,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                     <LectureCardView
                       {...parseCommunityLectureCard(cards, userLanguage)}
                       useBookMark={true}
-                      dataArea={Area.EXPERT_LECTURE}
+                      dataArea={
+                        window.location.pathname.includes('/recommend')
+                          ? Area.RECOMMEND_CARD
+                          : Area.COLLEGE_CARD
+                      }
                       hoverTrack={hoverTrack}
                     />
                   );

@@ -134,7 +134,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                             // 체크 필요
                             isRequiredLecture={item.required}
                             collegeId={item.mainCollegeId}
-                            dataArea={Area.EXPERT_LECTURE}
+                            dataArea={Area.RECOMMEND_LIST}
                             hoverTrack={hoverTrack}
                           />
                         </CardGroup>
