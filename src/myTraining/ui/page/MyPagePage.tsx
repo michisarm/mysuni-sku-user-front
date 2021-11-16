@@ -10,6 +10,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { Button, Image } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Area } from 'tracker/model';
 import MyPageBadgeListContainer from '../../../certification/ui/logic/MyPageBadgeListContainer';
 import { CollegeService } from '../../../college/stores';
 import { requestNoteCount } from '../../../note/service/useNote/requestNote';
@@ -132,6 +133,7 @@ function MyPagePage({
     <>
       <ContentLayout
         className="mypagev2"
+        dataArea={Area.MYPAGE_INFO}
         breadcrumb={[
           { text: getPolyglotText('My Page', 'mapg-mifa-dth2') },
           { text: MyPageContentTypeName[params.tab] },
@@ -232,11 +234,11 @@ function MyPagePage({
         {params.tab === 'EarnedBadgeList' && <MyPageBadgeListContainer />}
         {params.tab === 'EarnedStampList' && <MyStampListContainer />}
         {params.tab === 'EarnedNoteList' && params.pageNo === '1' && (
-          <NotePage noteCount={noteCount} />
+          <NotePage noteCount={noteCount} dataArea={Area.MYPAGE_NOTE}/>
         )}
 
         {params.tab === 'EarnedNoteList' && params.pageNo === '2' && (
-          <FolderPage noteCount={noteCount} />
+          <FolderPage noteCount={noteCount} dataArea={Area.MYPAGE_NOTE}/>
         )}
 
         {params.tab === 'MyProfile' && (

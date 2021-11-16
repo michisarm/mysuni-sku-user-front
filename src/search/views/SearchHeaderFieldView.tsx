@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
 import { setSearchRecentList, useSearchRecentList } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { StorageModel } from '@nara.platform/accent';
 import SearchInfoModel from '../model/SeachInfoModel';
+import { Area } from 'tracker/model';
+import { useParams } from 'react-router-dom';
+import { requestSearchRecentList } from 'search/search.events';
 
 interface Props {
   callback?: (searchValue?: string) => void;
   setSearchValue: (name: string, value: any) => void;
   searchInfo: SearchInfoModel;
   onSearch: (value: string) => void;
+  autoCompleteValues: string[];
 }
 
 export function SearchHeaderFieldView(props: Props) {
   //
+  const param = useParams();
+
+  useEffect(() => {
+    requestSearchRecentList();
+  }, [param]);
+
   const searchRecents = useSearchRecentList();
 
   const onClickRemove = (searchValue: string) => {
@@ -33,7 +43,7 @@ export function SearchHeaderFieldView(props: Props) {
   };
 
   return (
-    <div className="g-search-field">
+    <div className="g-search-field" data-area={Area.SEARCH}>
       <div className="w_wrap">
         <div className="w_inner">
           <div className="w_area recent_list">
@@ -93,16 +103,16 @@ export function SearchHeaderFieldView(props: Props) {
             </div>
           </div>
         </div>
-        {/*<div className="w_inner_auto on">*/}
-        {/*  <ul className="auto_list">*/}
-        {/*    <li className="auto_item">hi</li>*/}
-        {/*    <li className="auto_item">hi2</li>*/}
-        {/*    <li className="auto_item">hi3</li>*/}
-        {/*    <li className="auto_item">hi4</li>*/}
-        {/*    <li className="auto_item">hi5</li>*/}
-        {/*    <li className="auto_item">hi6</li>*/}
-        {/*  </ul>*/}
-        {/*</div>*/}
+        {(props.autoCompleteValues && props.autoCompleteValues.length > 0 && (
+          <div className="w_inner_auto on">
+            <ul className="auto_list">
+              {props.autoCompleteValues.map((value, idx) => {
+                return AutoCompleteText(props.searchInfo.searchValue, value);
+              })}
+            </ul>
+          </div>
+        )) ||
+          null}
       </div>
     </div>
   );
@@ -110,7 +120,6 @@ export function SearchHeaderFieldView(props: Props) {
 
 function AutoCompleteText(searchValue: string, completeValue: string) {
   //
-
   return (
     <li className="auto_item">
       {completeValue.replace(searchValue, `${(<strong>searchValue</strong>)}`)}

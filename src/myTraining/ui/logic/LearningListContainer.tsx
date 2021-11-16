@@ -25,6 +25,7 @@ import {
   UserLectureCard,
 } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../profile/stores';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface MatchPrams {
   type: string;
@@ -189,7 +190,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                   //   isRequiredLecture={card.required}
                   //   upcomingClassroomInfo={card.upcomingClassroomInfo}
                   // />
-                  <LectureCardView {...card} useBookMark dataArea={dataArea} />
+                  <LectureCardView {...card} useBookMark dataArea={dataArea} hoverTrack={hoverTrack}/>
 
                   // <CardView
                   //   key={item.card.id}

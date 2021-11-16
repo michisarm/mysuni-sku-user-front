@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -22,11 +22,34 @@ import {
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import {
   LectureCardView,
   parseCommunityLectureCard,
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import Swiper from 'react-id-swiper';
+import CardGroup, {
+  GroupType,
+} from '../../../shared/Lecture/sub/CardGroup/CardGroupContainer2';
+
+const SwiperProps = (swiperName: string) => {
+  return {
+    observer: true,
+    observerParents: true,
+    slidesPerView: 4,
+    spaceBetween: 7,
+    slidesPerGroup: 4,
+    loop: false,
+    loopFillGroupWithBlank: true,
+    navigation: {
+      nextEl: '.' + swiperName + ' .swiper-button-next',
+      prevEl: '.' + swiperName + ' .swiper-button-prev',
+    },
+    speed: 500,
+  };
+};
 
 interface Props extends RouteComponentProps<Params> {
   lectureService?: LectureService;
@@ -190,49 +213,59 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
     return (
       <>
-        <Lecture.LineHeader
-          channel={channel}
-          title={
-            <>
-              의 학습 과정입니다.{' '}
-              <span className="channel">({totalCount})</span>
-            </>
-          }
-          onViewAll={this.onViewAll}
-        />
-        {isLoading ? (
+        <div className="leaning-section-wrap">
           <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
+            className="full learning-section type1"
+            data-area={Area.EXPERT_LECTURE}
           >
-            <Loadingpanel loading={isLoading} />
+            <div className="section-head">
+              <div className="sec-tit-txt">
+                <div
+                  className="section-count-big"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      '<strong>{name}</strong> 의 학습 과정 입니다. <strong>({count})</strong>',
+                      'cicl-목록-학습과정',
+                      {
+                        name: parsePolyglotString(channel.name),
+                        count: totalCount + '',
+                      }
+                    ),
+                  }}
+                />
+              </div>
+              <div className="sec-tit-btn">
+                <button className="btn-more" onClick={this.onViewAll}>
+                  전체보기
+                </button>
+              </div>
+            </div>
+            <div className="section-body">
+              <div className="cardSwiper">
+                <Swiper {...SwiperProps(channel.id)}>
+                  {cardWithCardRealtedCounts.map((cards, i) => {
+                    return (
+                      <div className="swiper-slide" key={cards.card.id}>
+                        <CardGroup type={GroupType.Wrap}>
+                          <LectureCardView
+                            {...parseCommunityLectureCard(cards, userLanguage)}
+                            useBookMark={true}
+                            dataArea={Area.EXPERT_LECTURE}
+                            hoverTrack={hoverTrack}
+                          />
+                        </CardGroup>
+                      </div>
+                    );
+                  })}
+                </Swiper>
+                <div className={channel.id}>
+                  <div className="swiper-button-prev" />
+                  <div className="swiper-button-next" />
+                </div>
+              </div>
+            </div>
           </Segment>
-        ) : (
-          (cardWithCardRealtedCounts.length && (
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              {cardWithCardRealtedCounts.map((cards, i) => {
-                return (
-                  <li key={i}>
-                    <Lecture.Group type={Lecture.GroupType.Box}>
-                      <LectureCardView
-                        {...parseCommunityLectureCard(cards, userLanguage)}
-                        useBookMark={true}
-                        dataArea={Area.EXPERT_LECTURE}
-                      />
-                    </Lecture.Group>
-                  </li>
-                );
-              })}
-            </Lecture.Group>
-          )) || <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
-        )}
+        </div>
       </>
     );
   }

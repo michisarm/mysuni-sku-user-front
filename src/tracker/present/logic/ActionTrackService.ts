@@ -16,6 +16,7 @@ import {
   ActionTrackParam,
   ActionTrackViewParam,
   ScrollTrackParam,
+  ScrollSwiperTrackParam,
   HoverTrackParam,
   ActionTrackModel,
   ActionContextModel,
@@ -28,6 +29,7 @@ import {
   debounce,
   getElementsByClassName,
   getBrowserString,
+  closest,
 } from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
 
@@ -318,6 +320,36 @@ export function scrollHorizontalTrack({
         actionName,
       } as ActionTrackParam);
     }
+  }
+}
+
+export function scrollSwiperHorizontalTrack({
+  element,
+  area,
+  actionName,
+}: ScrollSwiperTrackParam) {
+  if (!area) {
+    return;
+  }
+  const scrollTarget = 'closest' in document.documentElement
+        ? element.closest('[data-action-name]')
+        : closest(element, '[data-action-name]');  
+  if (scrollTarget && scrollTarget instanceof HTMLElement) {
+    if (scrollTarget.dataset.actionName) {
+      actionName += '::' + scrollTarget.dataset.actionName;
+    }
+    debounceActionTrack({
+      email:
+        (window.sessionStorage.getItem('email') as string) ||
+        (window.localStorage.getItem('nara.email') as string) ||
+        getCookie('tryingLoginId'),
+      path: window.location.pathname,
+      search: window.location.search,
+      area,
+      actionType: ActionType.GENERAL,
+      action: Action.SCROLL_H,
+      actionName,
+    } as ActionTrackParam);
   }
 }
 

@@ -20,6 +20,9 @@ import {
 } from '@sku/skuniv-ui-lecture-card';
 import { fi } from 'date-fns/locale';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+
 
 const CONTENT_TYPE_NAME = '추천과정';
 
@@ -102,7 +105,12 @@ function LRSListContainer() {
               {parseUserLectureCards(cards).map((card, i) => {
                 return (
                   <li key={i}>
-                    <LectureCardView {...card} useBookMark={true} />
+                    <LectureCardView 
+                      {...card}
+                      useBookMark={true} 
+                      dataArea={window.location.search.includes('LearningPatternBased') ? Area.NEWLEARNING_RECOMMEND : Area.NEWLEARNING_PATTERN}
+                      hoverTrack={hoverTrack}
+                    />
                   </li>
                 );
               })}

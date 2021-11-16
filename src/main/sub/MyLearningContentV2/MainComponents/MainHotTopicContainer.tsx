@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Card, Icon, Label, Segment } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
@@ -19,6 +19,8 @@ import {
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
 import { HotTopicView } from 'hotTopic/ui/view/HotTopicView';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -47,6 +49,26 @@ async function onSearchValue(value: string) {
 
 export function MainHotTopicContainer() {
   const [cardBundles, setCardBundles] = useState<CardBundle[]>([]);
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_TOPIC,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      })  
+    }
+  }
 
   const fetchCardBundles = async () => {
     const response = await findAvailableCardBundles();
@@ -78,7 +100,7 @@ export function MainHotTopicContainer() {
 
   return (
     <Segment className="full learning-section type5">
-      <div className="section-head">
+      <div className="section-head" data-area={Area.MAIN_KEYWORD}>
         <div
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
@@ -105,7 +127,7 @@ export function MainHotTopicContainer() {
           </div>
         </div>
       </div>
-      <div className="section-body">
+      <div className="section-body" data-area={Area.MAIN_TOPIC}>
         <div
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
@@ -115,8 +137,8 @@ export function MainHotTopicContainer() {
             ),
           }}
         />
-        <div className="cardSwiper">
-          <Swiper {...swiperProps}>
+        <div className="cardSwiper" data-action-name="Hot Topic">
+          <Swiper {...swiperProps} getSwiper={s => updateSwiper(s)}>
             {cardBundles.map((c) => (
               <div className="swiper-slide" key={c.id}>
                 <Card.Group className="topic-card-warp">

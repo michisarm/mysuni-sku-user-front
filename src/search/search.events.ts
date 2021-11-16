@@ -75,12 +75,13 @@ export function initSearchData() {
   setSearchRelatedList([]);
 }
 
-export function getQueryId(): string {
-  const queryId: string = window.location.search.slice(
-    window.location.search.indexOf('=') + 1,
-    window.location.search.length
-  );
-
+export function getQueryId(value?: string): string {
+  const queryId: string =
+    value?.trim() ||
+    window.location.search.slice(
+      window.location.search.indexOf('=') + 1,
+      window.location.search.length
+    );
   if (queryId.endsWith('%')) {
     let decodedQueryId = queryId;
     while (decodedQueryId.endsWith('%')) {
@@ -715,20 +716,7 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
-  const searchRecents =
-    JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
-  searchRecents.unshift(searchValue);
-  const newSearchRecents = searchRecents.filter(
-    (element: string, index: number) => {
-      return searchRecents.indexOf(element) === index;
-    }
-  );
-  if (newSearchRecents.length > 5) {
-    newSearchRecents.length = 5;
-  }
-  new StorageModel('localStorage', 'searchRecents').save(newSearchRecents);
-  //localStorage.setItem('searchRecents', newSearchRecents);
-  setSearchRecentList(newSearchRecents);
+  requestSearchRecentList(searchValue);
 
   // 연관검색어
   const suggestions: string[] = [];
@@ -756,6 +744,26 @@ export async function searchData(searchValue: string, searchType?: string) {
           setSearchRelatedList(suggestions);
         })
     );
+}
+
+export function requestSearchRecentList(searchValue?: string) {
+  // 최근검색어
+  const searchRecents =
+    JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
+  if (searchValue !== undefined) {
+    searchRecents.unshift(searchValue);
+  }
+  const newSearchRecents = searchRecents.filter(
+    (element: string, index: number) => {
+      return searchRecents.indexOf(element) === index;
+    }
+  );
+  if (newSearchRecents.length > 5) {
+    newSearchRecents.length = 5;
+  }
+  new StorageModel('localStorage', 'searchRecents').save(newSearchRecents);
+  //localStorage.setItem('searchRecents', newSearchRecents);
+  setSearchRecentList(newSearchRecents);
 }
 
 export async function searchInSearchData(
@@ -814,8 +822,10 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
   let htmlTitle = title;
 
-  let keyword = getQueryId();
   const searchInSearchInfo = SearchService.instance.searchInfo;
+  let keyword = getQueryId(
+    searchInSearchInfo.errataValue || searchInSearchInfo.searchValue
+  );
   if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
