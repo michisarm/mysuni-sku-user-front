@@ -3,6 +3,7 @@ import { ContentLayout } from '../../../shared';
 import MyLearningSummaryContainer from '../../sub/MyLearningSummary/MyLearningSummaryContainer';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MainPagePopupContainer from '../../sub/MainPagePopup/ui/logic/MainPagePopupContainer';
+import { TutorialModal } from '../../../tutorial/components/tutorialModal';
 
 function UserMainPage() {
   return (
@@ -10,7 +11,8 @@ function UserMainPage() {
       <div className="main-wrap personal-wrap">
         <MyLearningSummaryContainer />
         <MyLearningContentContainer />
-        <MainPagePopupContainer />
+        {/*<MainPagePopupContainer />*/}
+        {TutorialModal()}
       </div>
     </ContentLayout>
   );
