@@ -11,10 +11,11 @@ import {
 } from '../../page/MainRoutes';
 import { Area } from '../../../../tracker/model/ActionType';
 import { MyFeedListView } from './MyFeedListView';
+import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export function MyFeedPage() {
   const contextRef = useRef(null);
-
+  CommunityHomeBreadcrumb('My Feed');
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">

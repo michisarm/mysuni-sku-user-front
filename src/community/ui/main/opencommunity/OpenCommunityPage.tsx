@@ -13,10 +13,11 @@ import { OpenCommunityFieldItemsView } from './OpenCommunityFieldItemsView';
 import { NoOpenCommunityView } from './NoOpenCommunityView';
 import { OpenCommunityListHeaderView } from './OpenCommunityListHeaderView';
 import { OpenCommunityListView } from './OpenCommunityListView';
+import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export default function OpenCommunityPage() {
   const contextRef = useRef(null);
-
+  CommunityHomeBreadcrumb('Community List');
   //   ga 유지 여부 확인
   //   const gaOnClick = (name: string) => {
   //     // react-ga
