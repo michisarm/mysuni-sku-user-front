@@ -24,6 +24,9 @@ import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
 import { search } from '../../../../../search/search.events';
 import { Dimmer } from 'semantic-ui-react';
+import { findAvailablePageElements } from 'community/ui/data/arrange/apis/apis';
+import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
+import { isExternalInstructor } from 'shared/helper/findUserRole';
 
 interface Props extends RouteComponentProps {}
 
@@ -46,6 +49,8 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    const isExternal = isExternalInstructor();
+    !isExternal && this.avaible(); //api호출을 위해서 3.30
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -201,6 +206,17 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
   closeSearch() {
     const { searchService } = this.injected;
     searchService.setFocusedValue(false);
+  }
+
+  async avaible() {
+    const response = await findAvailablePageElements();
+
+    if (response) {
+      this.setState({
+        menuAuth: response,
+      });
+      setMenuAuthModel(response);
+    }
   }
 
   render() {
