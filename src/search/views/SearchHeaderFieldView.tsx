@@ -119,7 +119,15 @@ export function SearchHeaderFieldView(props: Props) {
           >
             <ul className="auto_list">
               {props.autoCompleteValues.map((value, idx) => {
-                return AutoCompleteText(props.searchInfo.searchValue, value);
+                // return AutoCompleteText(props.searchInfo.searchValue, value);
+                return (
+                  <AutoCompleteText
+                    onClickText={props.onSearch}
+                    key={idx}
+                    searchValue={props.searchInfo.searchValue}
+                    completeValue={value}
+                  />
+                );
               })}
             </ul>
           </div>
@@ -130,13 +138,27 @@ export function SearchHeaderFieldView(props: Props) {
   );
 }
 
-function AutoCompleteText(searchValue: string, completeValue: string) {
+interface AutoCompleteTextProps {
+  onClickText: (value: string) => void;
+  key: any;
+  searchValue: string;
+  completeValue: string;
+}
+
+function AutoCompleteText(props: AutoCompleteTextProps) {
   //
   return (
-    <li className="auto_item">
-      <span
+    <li
+      className="auto_item"
+      key={props.key}
+      onClick={() => props.onClickText(props.completeValue)}
+    >
+      <a
         dangerouslySetInnerHTML={{
-          __html: getTitleHtmlSearchKeyword(completeValue, searchValue.trim()),
+          __html: getTitleHtmlSearchKeyword(
+            props.completeValue,
+            props.searchValue.trim()
+          ),
         }}
       />
     </li>
