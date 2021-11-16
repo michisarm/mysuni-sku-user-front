@@ -1,8 +1,9 @@
-import { CardWithCardRealtedCount } from './CardWithCardRealtedCount';
+import { CardForUserViewRdos } from './CardForUserViewRdos';
 
 export interface RecommendCardRom {
   cardCount: number;
   totalCardCount?: number;
   channelId: string;
-  cardWithRelatedCountRdos: CardWithCardRealtedCount[];
+  // cardWithRelatedCountRdos: CardWithCardRealtedCount[];
+  cardForUserViewRdos: CardForUserViewRdos[];
 }

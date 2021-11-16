@@ -779,6 +779,7 @@ body.msie
 .badge-banner-wrap {
   background: url('https://image.mysuni.sk.com/suni-asset/public/static/media/bg-bnr-badge.png');
 }
+.badge-banner-wrap.no-badge { background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr-nobadge.png'); }
 
 /* 핫토픽 상세 페이지 카드 스타일 오류 */
 #root .topic-list-wrap .card.card-item.topic-list {

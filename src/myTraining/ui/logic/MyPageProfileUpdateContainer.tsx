@@ -518,10 +518,17 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                     <Table.Cell>
                       {(!isExternalInstructor() && (
                         <TextArea
-                          placeholder={getPolyglotText(
-                            `자기소개 키워드는 쉼표( , )로 구분합니다. (45자까지 입력 가능)\n사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`,
-                            'mypage-프로필설정-자기소개설명'
-                          )}
+                          placeholder={
+                            getPolyglotText(
+                              `자기소개 키워드는 쉼표( , )로 구분합니다.(45자까지 입력 가능)`,
+                              'mypage-프로필설정-자기소개설명1'
+                            ) +
+                            '\n' +
+                            getPolyglotText(
+                              `사용자 화면에서는 키워드 앞에 해시태그( # )와 함께 보여집니다.`,
+                              'mypage-프로필설정-자기소개설명2'
+                            )
+                          }
                           onChange={(e) => this.handleIntroduceChange(e)}
                           value={
                             changeIntroduce

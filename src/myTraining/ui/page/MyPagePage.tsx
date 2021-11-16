@@ -1,26 +1,32 @@
-import { deleteCookie, mobxHelper } from '@nara.platform/accent';
-import { BadgeService } from 'lecture/stores';
-import { inject, observer } from 'mobx-react';
-import myPageRoutePaths from 'myTraining/routePaths';
-import { MyTrainingService } from 'myTraining/stores';
-import FolderPage from 'note/ui/page/FolderPage';
-import NotePage from 'note/ui/page/NotePage';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { Button, Image } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { Area } from 'tracker/model';
+import { useHistory, useParams } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper, deleteCookie } from '@nara.platform/accent';
+import { MyTrainingService } from 'myTraining/stores';
+import { BadgeService } from 'lecture/stores';
+import myTrainingRoutePaths from 'myTraining/routePaths';
+import { ContentLayout, TabItemModel } from 'shared';
+import Tab from 'shared/components/Tab';
 import MyPageBadgeListContainer from '../../../certification/ui/logic/MyPageBadgeListContainer';
-import { CollegeService } from '../../../college/stores';
-import { requestNoteCount } from '../../../note/service/useNote/requestNote';
-import { useNoteCount } from '../../../note/store/NoteCountStore';
-import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import MyPageProfileCardContainer from '../logic/MyPageProfileCardContainer';
-import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
+import {
+  MyPageContentType,
+  MyPageContentTypeName,
+} from '../model/MyPageContentType';
 import MyStampListContainer from '../logic/MyStampListContainer';
-import { MyPageContentTypeName } from '../model/MyPageContentType';
+import { CollegeService } from '../../../college/stores';
+import NotePage from 'note/ui/page/NotePage';
+import FolderPage from 'note/ui/page/FolderPage';
+import { useNoteCount } from '../../../note/store/NoteCountStore';
+import { requestNoteCount } from '../../../note/service/useNote/requestNote';
+import { Image, Label, Icon, Button, List, Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import myPageRoutePaths from 'myTraining/routePaths';
+import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
+import { isExternalInstructor } from '../../../shared/helper/findUserRole';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -36,7 +42,7 @@ function MyPagePage({
   const history = useHistory();
   const noteCount = useNoteCount() || 0;
   const params = useParams<MyPageRouteParams>();
-  // const [activeTab, setActiveTab] = useState('badge');
+  const [activeTab, setActiveTab] = useState('badge');
 
   const [photoImageBase64, setPhotoImageBase64] = useState('');
   const [bgImageBase64, setBgImageBase64] = useState('');
@@ -48,7 +54,7 @@ function MyPagePage({
   const { colleges } = collegeService!;
 
   useEffect(() => {
-    // requestNoteCount();
+    requestNoteCount();
     if (colleges && colleges.length > 0) {
       return;
     }
@@ -56,39 +62,39 @@ function MyPagePage({
     collegeService!.findAllColleges();
   }, []);
 
-  // const getTabs = (): TabItemModel[] => {
-  //   return [
-  //     {
-  //       name: MyPageContentType.EarnedBadgeList,
-  //       item: getTabItem(MyPageContentType.EarnedBadgeList, issuedCount),
-  //       // render: () => <MyBadgeListContainer />
-  //     },
-  //     {
-  //       name: MyPageContentType.EarnedStampList,
-  //       item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
-  //       // render: () => <MyStampListContainer />
-  //     },
-  //     {
-  //       name: MyPageContentType.EarnedNoteList,
-  //       item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
-  //       // render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
-  //     },
-  //   ] as TabItemModel[];
-  // };
+  const getTabs = (): TabItemModel[] => {
+    return [
+      {
+        name: MyPageContentType.EarnedBadgeList,
+        item: getTabItem(MyPageContentType.EarnedBadgeList, issuedCount),
+        // render: () => <MyBadgeListContainer />
+      },
+      {
+        name: MyPageContentType.EarnedStampList,
+        item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
+        // render: () => <MyStampListContainer />
+      },
+      {
+        name: MyPageContentType.EarnedNoteList,
+        item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
+        // render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
+      },
+    ] as TabItemModel[];
+  };
 
-  // const getTabItem = (contentType: MyPageContentType, count: number) => {
-  //   return (
-  //     <>
-  //       {MyPageContentTypeName[contentType]}
-  //       <span className="count">+{(count > 0 && count) || 0}</span>
-  //     </>
-  //   );
-  // };
+  const getTabItem = (contentType: MyPageContentType, count: number) => {
+    return (
+      <>
+        {MyPageContentTypeName[contentType]}
+        <span className="count">+{(count > 0 && count) || 0}</span>
+      </>
+    );
+  };
 
-  // const onChangeTab = useCallback((tab: TabItemModel): string => {
-  //   history.push(myTrainingRoutePaths.myPageTab(tab.name));
-  //   return myTrainingRoutePaths.myPageTab(tab.name);
-  // }, []);
+  const onChangeTab = useCallback((tab: TabItemModel): string => {
+    history.push(myTrainingRoutePaths.myPageTab(tab.name));
+    return myTrainingRoutePaths.myPageTab(tab.name);
+  }, []);
 
   const onLogout = useCallback(() => {
     localStorage.clear();
@@ -116,24 +122,23 @@ function MyPagePage({
     }
   }, []);
 
-  // const obj = {
-  //   profile: (
-  //     <MyPageProfileUpdateContainer
-  //       clickTabHandler={clickTabHandler}
-  //       onChangeImageFile={onChangeImageFile}
-  //     />
-  //   ),
-  //   badge: <MyPageBadgeListContainer />,
-  //   stamp: <MyStampListContainer />,
-  //   note: <NotePage noteCount={noteCount} />,
-  //   folder: <FolderPage noteCount={noteCount} />,
-  // };
+  const obj = {
+    profile: (
+      <MyPageProfileUpdateContainer
+        clickTabHandler={clickTabHandler}
+        onChangeImageFile={onChangeImageFile}
+      />
+    ),
+    badge: <MyPageBadgeListContainer />,
+    stamp: <MyStampListContainer />,
+    note: <NotePage noteCount={noteCount} />,
+    folder: <FolderPage noteCount={noteCount} />,
+  };
 
   return (
     <>
       <ContentLayout
         className="mypagev2"
-        dataArea={Area.MYPAGE_INFO}
         breadcrumb={[
           { text: getPolyglotText('My Page', 'mapg-mifa-dth2') },
           { text: MyPageContentTypeName[params.tab] },
@@ -234,11 +239,11 @@ function MyPagePage({
         {params.tab === 'EarnedBadgeList' && <MyPageBadgeListContainer />}
         {params.tab === 'EarnedStampList' && <MyStampListContainer />}
         {params.tab === 'EarnedNoteList' && params.pageNo === '1' && (
-          <NotePage noteCount={noteCount} dataArea={Area.MYPAGE_NOTE}/>
+          <NotePage noteCount={noteCount} />
         )}
 
         {params.tab === 'EarnedNoteList' && params.pageNo === '2' && (
-          <FolderPage noteCount={noteCount} dataArea={Area.MYPAGE_NOTE}/>
+          <FolderPage noteCount={noteCount} />
         )}
 
         {params.tab === 'MyProfile' && (

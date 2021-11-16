@@ -12,7 +12,7 @@ import {
 import FolderHeaderView from '../view/FolderHeaderView';
 import { useColleges } from '../../store/CollegesStore';
 import { useFolderNoteCount } from '../../store/FolderNoteCountStore';
-import { useNoteList } from '../../store/NoteListStore';
+import { useNoteWithLectureList } from '../../store/NoteWithLectureListStore';
 
 interface FolderContainerProps {
   noteCount: number;
@@ -20,7 +20,7 @@ interface FolderContainerProps {
 const FolderContainer: React.FC<FolderContainerProps> = function FolderContainer({
   noteCount,
 }) {
-  const noteList = useNoteList();
+  const noteList = useNoteWithLectureList();
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
   const colleges = useColleges();
