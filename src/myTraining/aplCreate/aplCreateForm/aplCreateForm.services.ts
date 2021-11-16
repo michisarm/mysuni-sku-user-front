@@ -21,6 +21,7 @@ import {
 import { onResetFocusControl } from '../aplCreate.events';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
+import { CollegeModel } from '../../../college/model';
 
 export async function requestAplApprover() {
   const aplService = AplService.instance;
@@ -67,17 +68,15 @@ export async function requestAplApprover() {
 }
 
 export async function requestAplCreateColleges() {
-  const collegeLectureCountService = CollegeLectureCountService.instance;
+  //
   if (window.navigator.onLine) {
-    const collegeLectureCounts =
-      await collegeLectureCountService.findCollegeLectureCounts();
-    if (collegeLectureCounts.length > 0) {
-      parseCollegeOptions(collegeLectureCounts);
-    }
+    await CollegeService.instance.findCollegesForCurrentCineroom();
+    parseCollegeOptions(CollegeService.instance.mainColleges);
   }
 }
 
-export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+// export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+export function parseCollegeOptions(colleges: CollegeModel[]) {
   const collegeOptions: SelectOption[] = [
     { key: 'Select', value: 'Select', text: 'Select' },
   ];

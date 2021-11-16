@@ -40,6 +40,8 @@ function AplCreateFormView({
   const { collegeOptions } = AplCreateCollegeService.instance;
   const channelOptions = apl && apl.collegeId && getChannelOptions();
 
+  console.log(collegeOptions);
+
   return (
     <>
       <Form.Field>

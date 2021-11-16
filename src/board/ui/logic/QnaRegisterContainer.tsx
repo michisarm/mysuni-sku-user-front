@@ -73,6 +73,11 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { supportService } = this.injected;
     await supportService.findAllCategories();
     supportService.clearQna();
+
+    if (this.props.match.params.sourceId) {
+      this.onChangeQnAProps('question.mainCategoryId', 'CATEGORY-1');
+      this.onChangeQnAProps('question.subCategoryId', 'CATEGORY-a');
+    }
   }
 
   componentWillUnmount(): void {
@@ -178,6 +183,8 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
     const { getMainCategorySelect, getSubCategorySelect } = supportService;
     const { qna } = supportService;
 
+    console.log(qna);
+
     return (
       <>
         <Segment className="full qna-write-content">
@@ -201,6 +208,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     )}
                     className="trig-pop-faq"
                     options={getMainCategorySelect()}
+                    value={qna.question.mainCategoryId}
                     onChange={(e: any, data: any) =>
                       this.onChangeQnAProps(
                         'question.mainCategoryId',
@@ -215,6 +223,7 @@ class QnaRegisterContainer extends ReactComponent<Props, States, Injected> {
                     )}
                     // className="ui selection dropdown"
                     options={getSubCategorySelect(qna.question.mainCategoryId)}
+                    value={qna.question.subCategoryId}
                     onChange={(e: any, data: any) =>
                       this.onChangeQnAProps(
                         'question.subCategoryId',

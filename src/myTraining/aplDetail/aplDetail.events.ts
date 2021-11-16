@@ -27,6 +27,13 @@ export function routeToList() {
   if (params.page === 'approval') {
     currentHistory?.push(routePaths.approvalPersonalLearning());
   }
+  const aplDetailModal = getAplDetailModal();
+  if (aplDetailModal !== undefined) {
+    setAplDetailModal({
+      ...aplDetailModal,
+      openListModal: false,
+    });
+  }
 }
 
 export function onClickList() {
