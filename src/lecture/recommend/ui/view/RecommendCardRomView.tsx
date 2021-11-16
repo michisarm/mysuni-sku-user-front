@@ -118,7 +118,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                             learningTime={timeToHourMinuteFormat(
                               item.learningTime
                             )}
-                            thumbnailImagePath={item.thumbImagePath}
+                            thumbnailImagePath={item.thumbnailImagePath}
                             passedStudentCount={item.passedStudentCount.toString()}
                             starCount={item.starCount.toString()}
                             simpleDescription={parsePolyglotString(
