@@ -82,6 +82,17 @@ function CompletedListPageContainer({
     return newCardQdo;
   };
 
+  const excelQdo = () => {
+    const newCardQdo = new CardQdo();
+    newCardQdo.limit = 9999999;
+    newCardQdo.offset = 0;
+    newCardQdo.searchable = true;
+    newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
+    newCardQdo.orderBy = CardOrderBy.PassedStudentCountDesc;
+
+    return newCardQdo;
+  };
+
   useEffect(() => {
     clearMyLearningCard();
 
@@ -120,7 +131,7 @@ function CompletedListPageContainer({
 
   const downloadExcel = async () => {
     const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(clearQdo());
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';

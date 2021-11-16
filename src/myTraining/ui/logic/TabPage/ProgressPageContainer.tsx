@@ -82,13 +82,8 @@ function ProgressPageContainer({
     column,
     direction,
   } = lectureService!;
-  const {
-    conditions,
-    showResult,
-    filterCount,
-    openFilter,
-    setOpenFilter,
-  } = filterBoxService!;
+  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+    filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -164,9 +159,8 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
-      excelQdo()
-    );
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';
@@ -198,8 +192,11 @@ function ProgressPageContainer({
   const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
 
+    console.log('test');
     const newQdo = cardQdo;
+    console.log(conditions);
     newQdo.setBycondition(conditions);
+    console.log(newQdo);
     await setCardQdo(newQdo);
 
     const isEmpty = await !findMyLearningCardByQdo(true);
@@ -266,11 +263,11 @@ function ProgressPageContainer({
     (e: any, data: any) => {
       if (selectedServiceIds.includes(data.value)) {
         clearOne(data.value);
-        return;
+      } else {
+        selectOne(data.value);
       }
-
-      selectOne(data.value);
     },
+
     [selectedServiceIds, clearOne, selectOne]
   );
 
@@ -347,18 +344,18 @@ function ProgressPageContainer({
   }, []);
 
   const onConfirmModal = useCallback(async () => {
+    const { selectedServiceIds } = lectureService!;
     const isHidden = await studentService!.hideWithSelectedServiceIds(
       selectedServiceIds
     );
     if (isHidden) {
-      // 김민준
       // myTrainingService!.findAllTabCount();
-      findMyLearningCardByQdo();
-      clearAllSelectedServiceIds();
+      await findMyLearningCardByQdo();
+      await clearAllSelectedServiceIds();
     }
 
-    setDeleteModal(false);
-    setDeleteFinishModal(true);
+    await setDeleteModal(false);
+    await setDeleteFinishModal(true);
   }, []);
 
   const onCloseNoCheckedModal = useCallback(() => {
