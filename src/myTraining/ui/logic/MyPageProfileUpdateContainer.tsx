@@ -244,14 +244,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       await this.onConfirm();
     }
 
-    if (bgImageFile !== undefined) {
-      const imagePath = await uploadFileProfile(bgImageFile);
-
-      if (imagePath) {
-        skProfile.backgroundImagePath = imagePath;
-      }
-    }
-
     if (nickNameTemp) {
       // skProfile.nickname = nickNameTemp;
       skProfileService.modifyProfileNickName(nickNameTemp);
@@ -259,6 +251,13 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     if (introduceTemp) {
       skProfile.selfIntroduction = introduceTemp;
+    }
+
+    if (bgImageFile !== undefined) {
+      const imagePath = await uploadFileProfile(bgImageFile);
+      if (imagePath) {
+        this.setState({ bgImageTemp: imagePath });
+      }
     }
 
     if (
@@ -271,7 +270,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
           { name: 'nickname', value: skProfile.nickname },
           { name: 'selfIntroduction', value: skProfile.selfIntroduction },
           { name: 'photoImagePath', value: skProfile.photoImagePath },
-          { name: 'backgroundImagePath', value: skProfile.backgroundImagePath },
+          { name: 'backgroundImagePath', value: this.state.bgImageTemp },
         ],
       };
 
@@ -444,6 +443,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     //   photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
     // }
+
+    console.log(bgImageTemp);
 
     return (
       <>

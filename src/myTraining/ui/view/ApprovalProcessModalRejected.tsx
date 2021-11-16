@@ -78,37 +78,15 @@ class ApprovalProcessModalRejected extends Component<Props> {
     );
     this.onChangeStudentRequestCdoProps('studentIds', [...selectedList]);
 
-    // 미사용
-    // const responseData = await approvalCubeService!.studentRequestReject(
-    //   studentRequest
-    // );
-    //const { error, message } = responseData;
-    //
-    // if (error) {
-    //   if (message) {
-    //     reactAlert({ title: '알림', message });
-    //   } else {
-    //     reactAlert({
-    //       title: '알림',
-    //       message: '에러 입니다. 관리자에게 문의 하세요.',
-    //     });
-    //   }
-    // } else {
-    //   reactAlert({ title: '알림', message: '성공입니다.' });
-    //   this.routeToCreateList();
-    // }
+    await approvalCubeService!.studentRequestReject(studentRequest);
     reactAlert({
       title: getPolyglotText('알림', '승인관리-유료과정-알림2'),
       message: getPolyglotText('성공입니다.', '승인관리-유료과정-성공'),
+      onClose: () => this.routeToCreateList(),
     });
-    this.routeToCreateList();
   }
 
   routeToCreateList() {
-    //
-    // this.clearAll();
-    // window.location.href =
-    //   '/suni-main/my-training/my-page/ApprovalList/pages/1';
     window.location.href =
       process.env.PUBLIC_URL + routePaths.approvalPaidCourse();
   }
