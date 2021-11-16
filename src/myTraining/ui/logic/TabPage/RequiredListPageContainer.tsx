@@ -120,7 +120,6 @@ function RequiredListPageContainer({
     await setCardQdo(newQdo);
 
     const isEmpty = await !findMyLearningCardByQdo(true);
-    await console.log(isEmpty);
     await setResultEmpty(isEmpty);
     await checkShowSeeMore();
     setIsLoading(false);

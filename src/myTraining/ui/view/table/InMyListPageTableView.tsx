@@ -95,10 +95,6 @@ export function InMyListPageTableView({
                 (inMyLecture.learningState &&
                   LearningStateName[inMyLecture.learningState]) ||
                 '-';
-              const progressRate =
-                (inMyLecture.learningState &&
-                  `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
-                '-';
 
               return (
                 <Table.Row key={`inMyLecture-list-${index}`}>
@@ -123,7 +119,9 @@ export function InMyListPageTableView({
                   <Table.Cell>
                     {convertTimeToDate(inMyLecture.lastStudyDate)}
                   </Table.Cell>
-                  <Table.Cell>{progressRate}</Table.Cell>
+                  <Table.Cell>
+                    {inMyLecture.completePhaseCount}/{inMyLecture.phaseCount}
+                  </Table.Cell>
                   <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
                 </Table.Row>
               );
