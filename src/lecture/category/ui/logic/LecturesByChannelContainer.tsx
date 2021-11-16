@@ -5,27 +5,24 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel } from 'college/model';
-import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { LectureService } from '../../../stores';
 import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
-import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
-import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import {
   parseLanguage,
   parsePolyglotString,
 } from 'shared/viewmodel/PolyglotString';
-import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import {
+  Area,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import {
   LectureCardView,
-  parseCommunityLectureCard,
+  parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
@@ -64,7 +61,7 @@ interface Params {
 }
 
 interface State {
-  cardWithCardRealtedCounts: CardWithCardRealtedCount[];
+  cardWithCardRealtedCounts: UserLectureCard[];
   totalCount: number;
   isLoading: boolean;
 }
@@ -109,7 +106,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
       this.props;
 
     this.setState({ isLoading: true });
-    const { results: cardWithCardRealtedCounts, totalCount } =
+    const { results, totalCount } =
       await lectureService!.findPagingChannelLectures(
         channel.id,
         this.PAGE_SIZE,
@@ -123,55 +120,9 @@ class LecturesByChannelContainer extends Component<Props, State> {
     });
 
     this.setState({
-      cardWithCardRealtedCounts,
+      cardWithCardRealtedCounts: results,
       totalCount,
     });
-  }
-
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    const { inMyLectureService } = this.props;
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
   }
 
   onViewDetail(e: any, data: any) {
@@ -243,20 +194,23 @@ class LecturesByChannelContainer extends Component<Props, State> {
             <div className="section-body">
               <div className="cardSwiper">
                 <Swiper {...SwiperProps(channel.id)}>
-                  {cardWithCardRealtedCounts.map((cards, i) => {
-                    return (
-                      <div className="swiper-slide" key={cards.card.id}>
-                        <CardGroup type={GroupType.Wrap}>
-                          <LectureCardView
-                            {...parseCommunityLectureCard(cards, userLanguage)}
-                            useBookMark={true}
-                            dataArea={Area.EXPERT_LECTURE}
-                            hoverTrack={hoverTrack}
-                          />
-                        </CardGroup>
-                      </div>
-                    );
-                  })}
+                  {parseUserLectureCards(cardWithCardRealtedCounts).map(
+                    (card, i) => {
+                      return (
+                        <div className="swiper-slide" key={card.cardId}>
+                          <CardGroup type={GroupType.Wrap}>
+                            <LectureCardView
+                              {...card}
+                              userLanguage={userLanguage}
+                              useBookMark={true}
+                              dataArea={Area.EXPERT_LECTURE}
+                              hoverTrack={hoverTrack}
+                            />
+                          </CardGroup>
+                        </div>
+                      );
+                    }
+                  )}
                 </Swiper>
                 <div className={channel.id}>
                   <div className="swiper-button-prev" />

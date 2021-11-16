@@ -48,7 +48,7 @@ class CardQdo {
       ? moment(conditions.endDate).format('YYYY-MM-DD')
       : '';
     this.required =
-      conditions.required === 'none' || conditions.required === 'false'
+      conditions.required === '' || conditions.required === 'false'
         ? false
         : true;
 

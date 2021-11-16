@@ -43,7 +43,7 @@ function MyTrainingTabContainer() {
     // MyTrainingService.instance.findAllTabCount();
     // InMyLectureService.instance.findAllTabCount();
     LectureService.instance.countLearningTab();
-    // AplService.instance.findAllTabCount(CountType.patronKeyString);
+    AplService.instance.findAllTabCount(CountType.patronKeyString);
     PersonalCubeService.instance.findCountByEnrolledTabCount();
   }, []);
 
