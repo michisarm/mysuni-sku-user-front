@@ -212,8 +212,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const isSearch =
       this.props.location.search !== null && this.props.location.search !== '';
 
-    console.log('this.props.location.pathname', this.props.location.pathname);
-
     return (
       <div ref={this.headerRef}>
         <HeaderWrapperView
@@ -231,22 +229,20 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
           searchInfo={searchInfo}
           autoCompleteValues={autoCompleteValues}
         >
-          <>
-            <LogoView onClickMenu={this.onClickMenu} />
-            <MenuView onClickMenu={this.onClickMenu} />
-            <SearchBarView
-              searchInfo={searchInfo}
-              setSearchValue={this.setSearchInfoValue}
-              onSearch={this.onSearch}
-              onChange={this.onChangeSearchInput}
-              onClear={this.onClickClearSearch}
-              onClick={this.onClickSearchInput}
-              onBlur={this.onBlurSearchInput}
-              isSearch={isSearchPage && isSearch}
-              closeSearch={this.closeSearch}
-            />
-            <ProfileContainer onClickMenu={this.onClickMenu} />
-          </>
+          <LogoView onClickMenu={this.onClickMenu} />
+          <MenuView onClickMenu={this.onClickMenu} />
+          <SearchBarView
+            searchInfo={searchInfo}
+            setSearchValue={this.setSearchInfoValue}
+            onSearch={this.onSearch}
+            onChange={this.onChangeSearchInput}
+            onClear={this.onClickClearSearch}
+            onClick={this.onClickSearchInput}
+            onBlur={this.onBlurSearchInput}
+            isSearch={isSearchPage && isSearch}
+            closeSearch={this.closeSearch}
+          />
+          <ProfileContainer onClickMenu={this.onClickMenu} />
         </HeaderWrapperView>
         <Dimmer
           className="dimm_zidx"

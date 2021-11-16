@@ -122,9 +122,9 @@ export function SearchPage() {
     <>
       <ContentLayout className="searchTotal" breadcrumb={[{ text: 'Search' }]}>
         <div ref={contextRef}>
-          <Sticky context={contextRef} className="tab-menu offset0">
-            <SearchHeaderPage />
-          </Sticky>
+          {/* <Sticky context={contextRef} className="tab-menu offset0"> */}
+          <SearchHeaderPage />
+          {/* </Sticky> */}
 
           <Segment attached="bottom">
             <SearchContentsPage
