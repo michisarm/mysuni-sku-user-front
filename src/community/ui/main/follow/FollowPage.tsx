@@ -14,12 +14,11 @@ import {
 import { NoFollowView } from './NoFollowView';
 import { FollowPostListView } from './FollowPostListView';
 import { FollowListView } from './FollowListView';
-import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export function FollowPage() {
   useRequestMainFollow();
   const contextRef = useRef(null);
-  CommunityHomeBreadcrumb('Follower Feed');
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">

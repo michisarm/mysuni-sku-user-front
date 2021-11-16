@@ -166,7 +166,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     } = this.state;
     const { myLearningSummaryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
-
+    const { menuControlAuth } = MenuControlAuthService.instance;
     // 21-11-12 김민준 learning page 개선
     // const totalAccruedLearningTime =
     //   myLearningSummary.totalSuniLearningTime +
@@ -238,12 +238,24 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   defaultString="나의 학습현황 보기"
                 />
               </button>
-              <div className="info-go">
-                <a className="info-pl">
-                  <Icon className="pl" />
-                  개인학습
-                </a>
-              </div>
+              {menuControlAuth.useApl && (
+                <div className="info-go">
+                  <a
+                    className="info-pl"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.onClickCreateApl();
+                    }}
+                  >
+                    <Icon className="pl" />
+                    <PolyglotText
+                      defaultString="개인학습"
+                      id="home-PersonalBoard-개인학습"
+                    />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           <div className="main_right">

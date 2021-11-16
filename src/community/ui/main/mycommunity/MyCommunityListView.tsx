@@ -35,7 +35,7 @@ function ItemView(props: MainMyCommunitiesItem) {
     memberCount,
     isBookMarked,
   } = props;
-  console.log(window.location.host, window.location.origin);
+
   return (
     <div className="community-main-left-contents">
       <div className="thumbnail">

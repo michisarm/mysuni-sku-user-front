@@ -45,7 +45,13 @@ class SearchService {
     //
     const values = await searchAutoComplete(value);
     runInAction(() => {
-      this.autoCompleteValues = values || [];
+      if (values.error) {
+        this.autoCompleteValues = [];
+      } else {
+        // 최대 10개만 보여줌
+        this.autoCompleteValues =
+          values?.suggestions?.flat(Infinity).slice(0, 10) || [];
+      }
     });
   }
 

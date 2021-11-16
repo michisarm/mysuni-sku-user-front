@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import myTrainingPaths from 'myTraining/routePaths';
@@ -14,6 +20,8 @@ import { usePageElements } from '../../../../../shared/store/PageElementsStore';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
 import { observer } from 'mobx-react';
+import _ from 'lodash';
+import { debounce } from '../../../../../tracker-react/utils';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -93,7 +101,8 @@ interface SearchBarViewProps {
   setSearchValue: (name: string, value: any) => void;
   // focused?: boolean;
   onSearch: () => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
+  findAutoCompleteValues: (value: string) => void;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   onClear?: () => void;
@@ -107,6 +116,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
     setSearchValue,
     // focused,
     onSearch,
+    findAutoCompleteValues,
     onChange,
     onBlur,
     onClick,
@@ -116,6 +126,17 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
     closeSearch,
   }) => {
     //
+    const inputRef = createRef<HTMLInputElement>();
+
+    const delayedChangeEvent = useRef(
+      _.debounce((q) => findAutoCompleteValues(q), 500)
+    ).current;
+
+    const delayedOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(event.target.value);
+      delayedChangeEvent(event.target.value);
+    };
+
     return (
       <>
         <div className="g-search-header" data-area={Area.SEARCH}>
@@ -127,12 +148,13 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             ) : null}
             <input
               type="text"
+              ref={inputRef}
               placeholder={getPolyglotText(
                 '무엇을 배우고 싶으신가요?.',
                 'gnb-search-placeholder'
               )}
               value={searchInfo.searchValue}
-              onChange={onChange}
+              onChange={(e) => delayedOnChange(e)}
               onClick={onClick}
               // onBlur={onBlur}
               onKeyPress={(e) => e.key === 'Enter' && onSearch()}
@@ -154,6 +176,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             checked={searchInfo.inAgain}
             onClick={() => {
               if (!searchInfo?.inAgain) {
+                setSearchValue('recentSearchValue', searchInfo.searchValue);
                 setSearchValue('searchValue', '');
               }
               // setSearchValue('searchValue', value);
