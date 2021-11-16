@@ -206,11 +206,12 @@ function ItemView(props: OpenCommunityItem) {
         )}
         {type !== 'SECRET' && (
           <Link
-            to={COMMUNITY_HOME_PATH.replace(
-              COMMUNITY_MAIN_PARAM_COMMUNITYID,
-              communityId
-            )}
-            target="_blank"
+            to="#"
+            onClick={() =>
+              window.open(
+                `${window.location.origin}/suni-community/community/${communityId}`
+              )
+            }
           >
             <div className="open-card-content">
               <p>{name}</p>
