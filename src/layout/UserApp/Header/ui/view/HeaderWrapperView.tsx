@@ -17,9 +17,41 @@ interface Props {
 
 @reactAutobind
 class HeaderWrapperView extends Component<Props> {
-  //
-  constructor(props: Props) {
-    super(props);
+  state = {
+    isFixed: false,
+  };
+
+  componentDidMount() {
+    document.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    document.addEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (!this.isMainAndSearchPage()) {
+      return;
+    }
+
+    if (window.pageYOffset > 0) {
+      this.setState({ isFixed: true });
+    } else {
+      this.setState({ isFixed: false });
+    }
+  };
+
+  isMainAndSearchPage() {
+    const url = `${window.location.host}${window.location.pathname}`;
+
+    if (
+      url === `${window.location.host}/pages/1` ||
+      url === `${window.location.host}/search`
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   render() {
@@ -36,10 +68,16 @@ class HeaderWrapperView extends Component<Props> {
       autoCompleteValues,
     } = this.props;
 
+    const classNames = `header main-sty2 ${
+      this.isMainAndSearchPage() && 'lms-main'
+    }
+    ${this.state.isFixed && 'fixed'}
+    `;
+
     return (
       <>
         {/* {topBanner} */}
-        <section className="header main-sty2 lms-main" id="lms-header">
+        <section className={classNames} id="lms-header">
           {mainNotice}
           <div className={focused ? 'group off' : 'group'}>
             <div className="cont-inner">{children}</div>
@@ -50,8 +88,7 @@ class HeaderWrapperView extends Component<Props> {
               autoCompleteValues={autoCompleteValues}
             />
           </div>
-
-          {breadcrumbs}
+          {!this.isMainAndSearchPage() && breadcrumbs}
         </section>
       </>
     );

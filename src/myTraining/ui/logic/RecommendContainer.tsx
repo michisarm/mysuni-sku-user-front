@@ -24,6 +24,9 @@ import {
   parseLanguage,
   parsePolyglotString,
 } from '../../../shared/viewmodel/PolyglotString';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 const swipeName = 'swiperInterested';
 
@@ -63,19 +66,50 @@ export function RecommendContainer() {
       )
       .then(AxiosReturn)
       .then((cardList) => {
-        if (cardList !== undefined) {
-          setCardList(
-            parseUserLectureCards(
-              cardList.cardForUserViewRdos,
-              parseLanguage(SkProfileService.instance.skProfile.language)
-            )
-          );
+        if (
+          cardList !== undefined &&
+          cardList.cardForUserViewRdos !== undefined
+        ) {
+          try {
+            setCardList(
+              parseUserLectureCards(
+                cardList.cardForUserViewRdos,
+                parseLanguage(SkProfileService.instance.skProfile.language)
+              )
+            );
+          } catch (e) {
+            console.log(e);
+          }
         }
       });
   }, [selectedChannelId]);
 
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if (swiper && swiper.isEnd) {
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_CHANNEL,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      });
+    }
+  }
+
   return (
-    <Segment className="full learning-section type1">
+    <Segment
+      className="full learning-section type1"
+      data-area={Area.MAIN_CHANNEL}
+    >
       <div className="section-head">
         <div
           className="sec-tit-txt"
@@ -126,8 +160,11 @@ export function RecommendContainer() {
             </div>
           </div>
         </div>
-        <div className="cardSwiper swiper-no-txticon">
-          <Swiper {...SwiperProps}>
+        <div
+          className="cardSwiper swiper-no-txticon"
+          data-action-name="관심채널"
+        >
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardList.map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>
@@ -135,6 +172,8 @@ export function RecommendContainer() {
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                      dataArea={Area.MAIN_CHANNEL}
+                      hoverTrack={hoverTrack}
                     />
                   </CardGroup>
                 </div>

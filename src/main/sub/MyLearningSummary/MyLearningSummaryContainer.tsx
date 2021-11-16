@@ -6,7 +6,7 @@ import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { SkProfileService } from 'profile/stores';
 import React, { Component, createRef, MouseEvent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
 import supportRoutePaths from '../../../board/routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
@@ -238,6 +238,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   defaultString="나의 학습현황 보기"
                 />
               </button>
+              <div className="info-go">
+                <a className="info-pl">
+                  <Icon className="pl" />
+                  개인학습
+                </a>
+              </div>
             </div>
           </div>
           <div className="main_right">

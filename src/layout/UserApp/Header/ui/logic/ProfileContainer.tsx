@@ -24,6 +24,7 @@ import {
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 import { LearningMenuView } from '../view/HeaderElementsView';
+import { findForeignerUser } from 'shared/helper/findForeignerUser';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -167,9 +168,9 @@ class ProfileContainer extends Component<Props, State> {
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
-      <div className="g-info-new">
+      <div className="g-info-new" data-area={Area.HEADER_GNB}>
         <LearningMenuView onClickMenu={this.props.onClickMenu} />
-        {!isExternal && (
+        {!isExternal && !findForeignerUser() && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
             myNotieNoReadMentionCount={myNotieNoReadMentionCount}

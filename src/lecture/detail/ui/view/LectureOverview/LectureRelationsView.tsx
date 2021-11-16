@@ -8,7 +8,7 @@ import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
-import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { hoverTrack, scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   LectureCardView,
@@ -149,6 +149,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
                         {...card}
                         useBookMark
                         dataArea={Area.CARD_RELATION}
+                        hoverTrack={hoverTrack}
                       />
                     </CardGroup>
                   </div>

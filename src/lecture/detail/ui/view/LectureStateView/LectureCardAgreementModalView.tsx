@@ -49,17 +49,19 @@ export function LectureCardAgreementModalView({
         <strong>{pisAgreementTitle}</strong>
       </Modal.Header>
       <Modal.Content>
-        <div className="info_inner">
-          <p className="info_txt1">
-            <PolyglotText
-              defaultString="아래 내용을 확인 후 동의 여부를 체크해주세요. 미동의 시 교육 수강이 제한됩니다."
-              id="lecture-pisAgreement-info"
-            />
-          </p>
-
+        <div className="info_inner" style={{ paddingTop: '10px' }}>
+          <span
+            className="info_txt1"
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `아래 내용을 확인 후 동의 여부를 체크해주세요. 미동의 시 교육 수강이 제한됩니다.`,
+                'lecture-pisAgreement-info'
+              ),
+            }}
+          />
           <div
             className="documents-viewer"
-            style={{ border: '2px solid #37383c' }}
+            style={{ border: '1px solid #37383c', marginTop: '20px' }}
           >
             <div style={{ maxHeight: '55vh' }} className="scrolling-80vh">
               <div style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
@@ -133,8 +135,8 @@ export function LectureCardAgreementModalView({
           <div className={`info_noti ${!showWarning && 'hidden'}`}>
             <i className="ico" />
             <PolyglotText
-              defaultString="개인정보 제공 동의 여부를 체크해주세요."
-              id="lecture-동의-안내"
+              defaultString="동의 여부를 체크해주세요."
+              id="lecture-pisAgreement-agreeInfoText"
             />
           </div>
         </div>

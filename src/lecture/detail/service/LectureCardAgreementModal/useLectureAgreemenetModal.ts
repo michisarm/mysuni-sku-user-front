@@ -30,7 +30,7 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
   const lectureCardPisAgreementModal =
     getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
 
-  console.log(cardWithContentsAndRelatedCountRom);
+  // console.log(cardWithContentsAndRelatedCountRom);
 
   if (!cardWithContentsAndRelatedCountRom) {
     return;
@@ -73,14 +73,18 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
 export function onOpenLectureCardPisAgreementModal(isCard?: boolean) {
   // export function onOpenLectureCardPisAgreementModal() {
   //
-  const lectureCardPisAgreement =
-    getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
+  // 창을 다시 띄우는 경우 이전에 닫히는 함수로 인해 닫히는 경우가 있어서
+  // 0.2초의 딜레이를 넣어봄.
+  setTimeout(() => {
+    const lectureCardPisAgreement =
+      getLectureCardPisAgreementModal() || initLectureCardPisAgreementModal();
 
-  setLectureCardPisAgreementModal({
-    ...lectureCardPisAgreement,
-    isOpen: true,
-    isCard: isCard || false,
-  });
+    setLectureCardPisAgreementModal({
+      ...lectureCardPisAgreement,
+      isOpen: true,
+      isCard: isCard || false,
+    });
+  }, 200);
 }
 
 export function onCloseLectureCardPisAgreementModal(cardId: string) {
@@ -97,11 +101,13 @@ export function onCloseLectureCardPisAgreementModal(cardId: string) {
     checkedName: '',
   });
 
-  lectureCardPisAgreement.isCard
-    ? setTimeout(() => {
-        onOpenLectureCardPisAgreementModal(lectureCardPisAgreement.isCard);
-      }, 500)
-    : history?.push(routePaths.lectureCard(cardId));
+  // lectureCardPisAgreement.isCard
+  //   ? setTimeout(() => {
+  //       onOpenLectureCardPisAgreementModal(lectureCardPisAgreement.isCard);
+  //     }, 500)
+  //   : history?.push(routePaths.lectureCard(cardId));
+  !lectureCardPisAgreement.isCard &&
+    history?.push(routePaths.lectureCard(cardId));
 }
 
 export function setNumPages(page: number) {

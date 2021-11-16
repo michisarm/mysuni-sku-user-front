@@ -84,8 +84,12 @@ function ItemView(props: MainMyCommunitiesPostItem) {
             <Comment.Content>
               <Comment.Author>
                 <Link
-                  to={`/community/${communityId}/post/${postId}`}
-                  target="_blank"
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}`
+                    )
+                  }
                 >
                   {communityName}
                 </Link>
@@ -152,8 +156,12 @@ function ItemView(props: MainMyCommunitiesPostItem) {
               <h3 className="ellipsis cmt_tit">
                 <span className={`ico_feed ${icon}`}>게시물</span>
                 <Link
-                  to={`/community/${communityId}/post/${postId}`}
-                  target="_blank"
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`
+                    )
+                  }
                 >
                   {name}
                 </Link>

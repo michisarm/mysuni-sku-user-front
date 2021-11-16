@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { SearchHeaderFieldPopularView } from './SearchHeaderFieldPopularView';
 import { setSearchRecentList, useSearchRecentList } from '../search.services';
@@ -7,6 +7,9 @@ import { StorageModel } from '@nara.platform/accent';
 import SearchInfoModel from '../model/SeachInfoModel';
 import SearchService from '../service/SearchService';
 import { getQueryId } from '../search.events';
+import { Area } from 'tracker/model';
+import { useParams } from 'react-router-dom';
+import { requestSearchRecentList } from 'search/search.events';
 
 interface Props {
   callback?: (searchValue?: string) => void;
@@ -18,6 +21,12 @@ interface Props {
 
 export function SearchHeaderFieldView(props: Props) {
   //
+  const param = useParams();
+
+  useEffect(() => {
+    requestSearchRecentList();
+  }, [param]);
+
   const searchRecents = useSearchRecentList();
 
   const onClickRemove = (searchValue: string) => {
@@ -36,7 +45,7 @@ export function SearchHeaderFieldView(props: Props) {
   };
 
   return (
-    <div className="g-search-field">
+    <div className="g-search-field" data-area={Area.SEARCH}>
       <div className="w_wrap">
         <div
           className={

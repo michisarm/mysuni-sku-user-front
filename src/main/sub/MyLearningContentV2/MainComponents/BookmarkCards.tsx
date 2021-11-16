@@ -23,6 +23,8 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { findBookmarkCards } from '../../../../lecture/detail/api/cardApi';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 function getTitle() {
   return `${getPolyglotText(
@@ -51,6 +53,26 @@ const SwiperProps = {
 export const BookmarkCards: React.FC<Props> = (Props) => {
   const history = useHistory();
   const [cards, setCards] = useState<UserLectureCard[]>([]);
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_FAVORITE,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      })  
+    }
+  }
 
   useEffect(() => {
     findBookmarkCards().then((next) => {
@@ -80,7 +102,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
   return (
     <Segment
       className="full learning-section type2"
-      dataArea={Area.MAIN_RECOMMEND}
+      data-area={Area.MAIN_FAVORITE}
     >
       <div className="section-head">
         <div
@@ -95,26 +117,20 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper swiper-no-txticon">
-          <Swiper {...SwiperProps}>
+        <div className="cardSwiper swiper-no-txticon" data-action-name="찜해두신 과정">
+          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
             {parseUserLectureCards(
               cards,
               SkProfileService.instance.skProfile.language
             ).map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>
-                  <CardGroup
-                    type={GroupType.Wrap}
-                    dataActionName={
-                      title.includes('학습 콘텐츠 기반 추천 과정')
-                        ? '학습 콘텐츠 기반 추천 과정'
-                        : 'mySUNI의 추천 과정'
-                    }
-                  >
+                  <CardGroup type={GroupType.Wrap}>
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_RECOMMEND}
+                      dataArea={Area.MAIN_FAVORITE}
+                      hoverTrack={hoverTrack}
                     />
                   </CardGroup>
                 </div>

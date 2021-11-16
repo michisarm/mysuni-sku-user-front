@@ -157,6 +157,12 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     sessionStorage.removeItem('SCROLL_POS');
   }
 
+  communityBreadCrumb() {
+    if (this.props.location.pathname.includes('suni-community')) {
+      return null;
+    }
+  }
+
   onClickMenu(menuName: string) {
     // react-GA logic
     if (menuName === 'mySUNI') {

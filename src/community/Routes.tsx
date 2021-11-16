@@ -16,9 +16,11 @@ const Routes = function Routes() {
   // } = useContext(AppContext);
   // const { pathname } = useLocation();
   // useEffect(() => {
-  //   setBreadcrumb([]);
+  //   setBreadcrumb([
+  //     { text: 'community', path: '/community/main/my-communities' },
+  //   ]);
   // }, [pathname]);
-  console.log('ddasdsadsa');
+
   return (
     <Switch>
       <Route path="/community" component={MainRoutes} />

@@ -36,6 +36,7 @@ import {
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -395,6 +396,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                       {...parseCommunityLectureCard(cards, userLanguage)}
                       useBookMark={true}
                       dataArea={Area.EXPERT_LECTURE}
+                      hoverTrack={hoverTrack}
                     />
                   );
                 })}
