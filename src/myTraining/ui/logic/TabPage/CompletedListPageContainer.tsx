@@ -130,9 +130,8 @@ function CompletedListPageContainer({
   };
 
   const downloadExcel = async () => {
-    const newQdo = clearQdo();
     const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(newQdo);
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';
