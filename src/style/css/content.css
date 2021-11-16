@@ -215,7 +215,7 @@
 .aside-tit { word-break: break-word; }
 
 /* Hot Topic Page */
-.topic-title .sub-txt { max-width: 900px; word-break: break-word; }
+.topic-title .sub-txt { word-break: break-word; }
 
 /* 이모지 */
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
