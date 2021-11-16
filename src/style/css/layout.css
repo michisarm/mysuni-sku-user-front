@@ -134,9 +134,6 @@ i.icon.del24:before { background: url(https://image.mysuni.sk.com/suni-asset/pub
 .course-info-ing > h3 {
     color: #777;
 }
-.lms-paging-holder .lms-num.lms-on {
-    color: #00bfae;
-}
 .profile-edit-contents .mypage-edit-bottom span { color: #777; }
 
 /* Text area */
@@ -248,3 +245,8 @@ i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-a
 /* Alert */
 .ui.modal.size-mini .main .header { border-bottom: #ddd 1px solid; }
 .ui.modal.size-mini .main .content .description { color: #777; word-break: break-all; }
+
+/* Pagination */
+.lms-paging-holder .lms-num.lms-on { color: #00bfae; }
+.lms-paging-holder .lms-prev{background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-pagenavi-back-nomal.svg) center no-repeat; }
+.lms-paging-holder .lms-next{background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-pagenavi-next-nomal.svg) center no-repeat; }
