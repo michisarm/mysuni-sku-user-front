@@ -1,33 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset, reactAlert } from '@nara.platform/accent';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
+import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { SkProfileService } from 'profile/stores';
-import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
-import { MyTrainingService } from '../../stores';
-import { SeeMoreButton, StudentService } from '../../../lecture';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useHistory, useParams } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
-import FilterBoxContainer from './FilterBoxContainer';
-import { Direction } from '../../model/Direction';
-import { MyLearningContentType } from '../model/MyLearningContentType';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../model/NoSuchContentPanelMessages';
-import { MyContentType } from '../model/MyContentType';
-import MyTrainingListView from '../view/MyTrainingListView';
+import { Loadingpanel, NoSuchContentPanel } from 'shared';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { SeeMoreButton, StudentService } from '../../../lecture';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import { Direction } from '../../model/Direction';
+import { MyTrainingService } from '../../stores';
+import { useScrollMove } from '../../useScrollMove';
+import { MyContentType } from '../model/MyContentType';
+import { MyLearningContentType } from '../model/MyLearningContentType';
+import { nosuchMessagesPolyglot } from '../model/NoSuchContentPanelMessages';
+import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
+import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
+import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
+import MyTrainingListView from '../view/MyTrainingListView';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
-import { useScrollMove } from '../../useScrollMove';
-import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
-import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
-import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import FilterBoxContainer from './FilterBoxContainer';
+import LineHeaderContainerV2 from './LineHeaderContainerV2';
 
 interface EnrolledListContainerProps {
   skProfileService?: SkProfileService;
@@ -59,7 +56,7 @@ function EnrolledListContainer({
   const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   useEffect(() => {
     myTrainingService!.clearAllTableViews();
@@ -225,7 +222,7 @@ function EnrolledListContainer({
               onClickDelete={onClickDelete}
             />
           )}
-          <FilterBoxContainer />
+          <FilterBoxContainer contentType={contentType} />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {(myTrainingTableViews && myTrainingTableViews.length > 0 && (

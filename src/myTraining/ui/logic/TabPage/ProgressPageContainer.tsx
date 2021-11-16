@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
-import { MyTrainingTableViewModel } from 'myTraining/model';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { ProgressPageTableView } from 'myTraining/ui/view/table/ProgressPageTableView';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -82,8 +80,6 @@ function ProgressPageContainer({
   } = lectureService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
-
-  useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -360,6 +356,7 @@ function ProgressPageContainer({
           totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
+          contentType={contentType}
           onClickDelete={onClickDelete}
           onClickDownloadExcel={downloadExcel}
         >

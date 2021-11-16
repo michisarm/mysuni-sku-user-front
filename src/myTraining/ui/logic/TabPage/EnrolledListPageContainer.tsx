@@ -2,7 +2,6 @@ import { mobxHelper, Offset } from '@nara.platform/accent';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { EnrolledListPageTableView } from 'myTraining/ui/view/table/EnrolledListPageTableView';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -51,8 +50,6 @@ function EnrolledListPageContainer({
     }));
 
   const [orders, setOrders] = useState<Order[]>(initialOrders);
-
-  useRequestFilterCountView();
 
   useEffect(() => {
     myTrainingService!.clearAllTableViews();

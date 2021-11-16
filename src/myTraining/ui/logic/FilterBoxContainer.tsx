@@ -16,17 +16,21 @@ import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { CheckboxProps } from 'semantic-ui-react';
+import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
+import { MyPageContentType } from '../../ui/model/MyPageContentType';
 
 interface FilterBoxContainerProps {
   filterCountService?: FilterCountService;
   collegeService?: CollegeService;
   filterBoxService?: FilterBoxService;
+  contentType: MyLearningContentType | MyPageContentType;
 }
 
 function FilterBoxContainer({
   collegeService,
   filterCountService,
   filterBoxService,
+  contentType,
 }: FilterBoxContainerProps) {
   const { colleges } = collegeService!;
   const {
@@ -38,7 +42,11 @@ function FilterBoxContainer({
     setFilterCount,
     setShowResult,
   } = filterBoxService!;
-  const { filterCountViews, totalFilterCountView } = filterCountService!;
+  const { filterCountViews } = filterCountService!;
+  //
+  useEffect(() => {
+    filterCountService!.findAllFilterCountViews(contentType);
+  }, [contentType]);
 
   useEffect(() => {
     if (showResult) {
@@ -371,8 +379,7 @@ function FilterBoxContainer({
           <FilterBoxView
             colleges={colleges}
             conditions={conditions}
-            filterCounts={filterCountViews}
-            totalFilterCount={totalFilterCountView}
+            filterCountModel={filterCountViews}
             onCheckOne={onCheckOne}
             onCheckAll={onCheckAll}
             onChangeStartDate={onChangeStartDate}

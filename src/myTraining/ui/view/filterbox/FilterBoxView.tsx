@@ -6,7 +6,7 @@ import CheckboxOptions, {
   requiredPolyglot,
 } from '../../model/CheckboxOptions';
 import { CollegeModel } from '../../../../college/model';
-import FilterCountViewModel from '../../../model/FilterCountViewModel';
+import FilterCountViewModel from '../../../model/filter/FilterCountViewModel';
 import { FilterCondition } from '../../../model/FilterCondition';
 import {
   FilterConditionName,
@@ -19,8 +19,7 @@ import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 interface FilterBoxViewProps {
   colleges: CollegeModel[];
   conditions: FilterCondition;
-  totalFilterCount: FilterCountViewModel;
-  filterCounts: FilterCountViewModel[];
+  filterCountModel: FilterCountViewModel;
   onCheckAll: (e: any, data: any) => void;
   onCheckOne: (e: any, data: any) => void;
   onChangeStartDate: (data: Date) => void;
@@ -30,8 +29,7 @@ interface FilterBoxViewProps {
 export function FilterBoxView({
   colleges,
   conditions,
-  totalFilterCount,
-  filterCounts,
+  filterCountModel,
   onCheckAll,
   onCheckOne,
   onChangeStartDate,
@@ -50,7 +48,7 @@ export function FilterBoxView({
               name={filterConditionNamePolyglot(
                 FilterConditionName.LearningType
               )}
-              label={`${SELECT_ALL} (${totalFilterCount.totalCount})`}
+              label={`${SELECT_ALL} (${filterCountModel.totalCountByCardType})`}
               checked={
                 conditions.learningTypes.length ===
                 CheckboxOptions.learningTypes.length
@@ -68,7 +66,7 @@ export function FilterBoxView({
                       )}
                       label={`${
                         learningType.text
-                      } (${totalFilterCount.getCountFromLearningType(
+                      } (${filterCountModel.getCountFromLearningType(
                         learningType.text
                       )})`}
                       value={learningType.value}
@@ -88,7 +86,7 @@ export function FilterBoxView({
             <Checkbox
               className="base"
               name={filterConditionNamePolyglot(FilterConditionName.College)}
-              label={`${SELECT_ALL} (${totalFilterCount.college})`}
+              label={`${SELECT_ALL} (${filterCountModel.totalCountByCollegeId})`}
               checked={conditions.collegeIds.length === colleges.length}
               onChange={onCheckAll}
             />
@@ -104,7 +102,7 @@ export function FilterBoxView({
                     label={`${parsePolyglotString(
                       college.name,
                       getDefaultLang(college.langSupports)
-                    )} (${getCollegeCount(filterCounts, college.id)})`}
+                    )} (${filterCountModel.getCountByCollegeId(college.id)})`}
                     value={college.id}
                     checked={conditions.collegeIds.includes(college.id)}
                     onChange={onCheckOne}
@@ -322,13 +320,3 @@ export function FilterBoxView({
 }
 
 const SELECT_ALL = 'Select All';
-
-const getCollegeCount = (
-  filterCountViews: FilterCountViewModel[],
-  collegeId: string
-): number => {
-  const filterCountView = filterCountViews.find(
-    (filterCountview) => filterCountview.collegeId === collegeId
-  );
-  return filterCountView ? filterCountView.college : 0;
-};

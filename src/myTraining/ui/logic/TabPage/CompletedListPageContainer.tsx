@@ -1,4 +1,4 @@
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
@@ -6,9 +6,7 @@ import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
-import { MyTrainingTableViewModel } from 'myTraining/model';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { CompletedListPageTableView } from 'myTraining/ui/view/table/CompletedListPageTableView';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -21,8 +19,6 @@ import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { Direction, toggleDirection } from '../../../model/Direction';
 import { Order } from '../../../model/Order';
 import { MyTrainingRouteParams } from '../../../routeParams';
-import { MyTrainingService } from '../../../stores';
-import { MyLearningContentType } from '../../../ui/model';
 import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
 import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
@@ -73,7 +69,7 @@ function CompletedListPageContainer({
   const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
     filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -269,6 +265,7 @@ function CompletedListPageContainer({
           filterCount={filterCount}
           resultEmpty={resultEmpty}
           filterOpotions={filterOptions}
+          contentType={contentType}
           onClickDownloadExcel={downloadExcel}
         >
           <div

@@ -1,28 +1,25 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Segment, Icon, Button } from 'semantic-ui-react';
-import { useParams, useHistory } from 'react-router-dom';
-import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { Offset, mobxHelper } from '@nara.platform/accent';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import LineHeaderContainerV2 from './LineHeaderContainerV2';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../model/NoSuchContentPanelMessages';
-import { MyPageContentType } from '../model/MyPageContentType';
-import { Direction } from '../../model/Direction';
-import MyStampListView from '../view/MyStampListView';
-import MyStampService from '../../present/logic/MyStampService';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import { Direction } from '../../model/Direction';
+import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import MyStampService from '../../present/logic/MyStampService';
+import myTrainingRoutePaths from '../../routePaths';
+import { useScrollMove } from '../../useScrollMove';
+import { MyPageContentType } from '../model/MyPageContentType';
+import { nosuchMessagesPolyglot } from '../model/NoSuchContentPanelMessages';
+import MyStampListView from '../view/MyStampListView';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import FilterBoxContainer from './FilterBoxContainer';
-import { useScrollMove } from '../../useScrollMove';
-import myTrainingRoutePaths from '../../routePaths';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import LineHeaderContainerV2 from './LineHeaderContainerV2';
 
 interface MyStampListContainerProps {
   myStampService?: MyStampService;
@@ -46,7 +43,7 @@ function MyStampListContainer({
   const { myStamps, myStampCount } = myStampService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   useEffect(() => {
     myStampService!.clearAllMyStamps();
@@ -161,7 +158,7 @@ function MyStampListContainer({
                 resultEmpty={resultEmpty}
                 totalCount={myStampCount}
               />
-              <FilterBoxContainer />
+              <FilterBoxContainer contentType={contentType} />
             </>
           )) || <div style={{ marginTop: 50 }} />}
           {(myStamps && myStamps.length > 0 && (

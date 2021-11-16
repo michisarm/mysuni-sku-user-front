@@ -1,14 +1,12 @@
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import CardQdo from 'lecture/model/learning/CardQdo';
-import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import TableHeaderColumn from 'myTraining/ui/model/TableHeaderColumn';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
@@ -19,7 +17,6 @@ import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import InMyLectureService from '../../../present/logic/InMyLectureService';
 
 interface InMyListPageContainerProps {
   lectureService?: LectureService;
@@ -65,7 +62,7 @@ function InMyListPageContainer({
   const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
     filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -231,6 +228,7 @@ function InMyListPageContainer({
           filterCount={filterCount}
           totalCount={totalMyLearningCardCount}
           filterOpotions={filterOptions}
+          contentType={contentType}
         >
           <div
             className="list-number"

@@ -8,7 +8,6 @@ import { inject, observer } from 'mobx-react';
 import { Direction, toggleDirection } from 'myTraining/model/Direction';
 import { Order } from 'myTraining/model/Order';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import TableHeaderColumn from 'myTraining/ui/model/TableHeaderColumn';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
@@ -63,8 +62,6 @@ function RequiredListPageContainer({
   } = lectureService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
-
-  useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -231,6 +228,7 @@ function RequiredListPageContainer({
           totalCount={totalMyLearningCardCount}
           filterCount={filterCount}
           filterOpotions={filterOptions}
+          contentType={contentType}
         >
           <div
             className="list-number"

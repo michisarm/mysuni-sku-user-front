@@ -6,31 +6,25 @@ import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
-import { useRequestFilterCountView } from 'myTraining/service/useRequestFilterCountView';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { RetryListPageTableView } from 'myTraining/ui/view/table/RetryListPageTableView';
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
-import FilterBoxService from '../../../../shared/present/logic/FilterBoxService';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { Direction, toggleDirection } from '../../../model/Direction';
 import { Order } from '../../../model/Order';
 import { MyTrainingRouteParams } from '../../../routeParams';
-import { MyTrainingService } from '../../../stores';
 import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
 import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
 
 interface RetryListPageContainerProps {
   lectureService?: LectureService;
-  myTrainingService?: MyTrainingService;
-  filterBoxService?: FilterBoxService;
 }
 
 function RetryListPageContainer({
   lectureService,
-  filterBoxService,
 }: RetryListPageContainerProps) {
   //
 
@@ -69,8 +63,6 @@ function RetryListPageContainer({
 
   // const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
   //   filterBoxService!;
-
-  useRequestFilterCountView();
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -418,8 +410,8 @@ function RetryListPageContainer({
   );
 }
 
-export default inject(
-  mobxHelper.injectFrom('shared.filterBoxService', 'lecture.lectureService')
-)(observer(RetryListPageContainer));
+export default inject(mobxHelper.injectFrom('lecture.lectureService'))(
+  observer(RetryListPageContainer)
+);
 
 const PAGE_SIZE = 999999;
