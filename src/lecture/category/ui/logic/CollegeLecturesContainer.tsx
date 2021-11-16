@@ -463,7 +463,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
                     <LectureCardView
                       {...userLectureCard}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.EXPERT_LECTURE}
+                      dataArea={Area.COLLEGE_CARD}
                       hoverTrack={hoverTrack}
                     />
                   </React.Fragment>
