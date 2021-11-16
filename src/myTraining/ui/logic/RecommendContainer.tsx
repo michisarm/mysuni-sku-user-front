@@ -63,7 +63,10 @@ export function RecommendContainer() {
       )
       .then(AxiosReturn)
       .then((cardList) => {
-        if (cardList !== undefined) {
+        if (
+          cardList !== undefined &&
+          cardList.cardForUserViewRdos !== undefined
+        ) {
           setCardList(
             parseUserLectureCards(
               cardList.cardForUserViewRdos,
