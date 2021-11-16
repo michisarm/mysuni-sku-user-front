@@ -11,11 +11,10 @@ import {
 } from '../../page/MainRoutes';
 import { Area } from '../../../../tracker/model/ActionType';
 import { BookMarkListView } from './BookMarkListView';
-import CommunityHomeBreadcrumb from '../CommunityHomeBreadcrumb';
 
 export function BookMarkPage() {
   const contextRef = useRef(null);
-  CommunityHomeBreadcrumb('Bookmark');
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
