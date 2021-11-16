@@ -50,6 +50,7 @@ export function ProgressPageTableView({
   onCheckOne,
 }: props) {
   //
+
   return (
     <>
       <div className="mylearning-list-wrap">

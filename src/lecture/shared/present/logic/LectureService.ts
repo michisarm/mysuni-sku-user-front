@@ -233,14 +233,26 @@ class LectureService {
       this.cardQdo
     );
 
+    const cardNotes =
+      (await this.myTrainingApi.findCardNoteList(
+        findReulst.results.map((card) => card.id)
+      )) || [];
+
+    const myLearningCards = findReulst.results.map((card) => {
+      //
+      const myLectureCard = card;
+      myLectureCard.useNote = cardNotes.some((note) => note.cardId === card.id);
+      return myLectureCard;
+    });
+
     findReulst &&
       runInAction(() => {
         if (firstCheck) {
-          this._myLearningCards = findReulst.results || [];
+          this._myLearningCards = myLearningCards || [];
         } else {
           this._myLearningCards = [
             ...this._myLearningCards,
-            ...findReulst.results,
+            ...myLearningCards,
           ];
         }
         this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
