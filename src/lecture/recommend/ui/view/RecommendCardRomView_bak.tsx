@@ -6,7 +6,7 @@ import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { hoverTrack, scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 import {
   getPolyglotText,
   PolyglotText,
@@ -115,6 +115,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                         }
                         collegeId={card.mainCategory.collegeId}
                         dataArea={Area.EXPERT_LECTURE}
+                        hoverTrack={hoverTrack}
                       />
                     </div>
                   </li>

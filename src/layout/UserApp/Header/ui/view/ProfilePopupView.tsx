@@ -23,6 +23,7 @@ import { observer } from 'mobx-react';
 import { usePageElements } from 'shared/store/PageElementsStore';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { patronInfo } from '@nara.platform/dock';
+import { Area } from 'tracker/model';
 
 interface Props {
   setOpen: () => void;
@@ -163,7 +164,7 @@ function ProfilePopupView(props: Props) {
   return (
     <>
       {skProfile && (
-        <div className="profile-contents-area">
+        <div className="profile-contents-area" data-area={Area.HEADER_PROFILE}>
           <div className="profile-wrapper">
             <div className="bg-wrapper">
               {

@@ -82,7 +82,7 @@ function MainChallengingBadgeContainer() {
   return (
     <Segment
       className="full learning-section badge-section type4"
-      dataArea={Area.MAIN_BADGE}
+      data-area={Area.MAIN_BADGE}
     >
       <div className="section-head">
         <div

@@ -20,8 +20,11 @@ import {
   parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
-import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { Area } from 'tracker/model';
+import { Area as LectureArea } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import Swiper from 'react-id-swiper';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -33,8 +36,29 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   history,
 }) {
   const [dataArea, setDataArea] = useState<Area>();
+  const [dataLectureArea, setDataLectureArea] = useState<LectureArea>();
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const isRecommend = cardBundle.type === 'Recommended';
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if(swiper && swiper.isEnd){
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: dataArea,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      })  
+    }
+  }
 
   const fetchCardList = async () => {
     const userLanguage = parseLanguage(
@@ -82,15 +106,19 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     switch (type) {
       case 'Normal':
         setDataArea(Area.MAIN_NORMAL);
+        setDataLectureArea(LectureArea.MAIN_NORMAL);
         break;
       case 'New':
         setDataArea(Area.MAIN_NEW);
+        setDataLectureArea(LectureArea.MAIN_NEW);
         break;
       case 'Popular':
         setDataArea(Area.MAIN_POPULAR);
+        setDataLectureArea(LectureArea.MAIN_POPULAR);
         break;
       case 'Recommended':
         setDataArea(Area.MAIN_RECOMMEND);
+        setDataLectureArea(LectureArea.MAIN_REQUIRED);
         break;
     }
   }, [cardBundle]);
@@ -189,8 +217,11 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         </div>
       </div>
       <div className="section-body">
-        <div className="cardSwiper">
-          <Swiper {...SwiperProps}>
+        <div 
+          className="cardSwiper"
+          data-action-name={cardBundle.type === 'New' ?  '따끈따끈 신규 과정' : cardBundle.type === 'Popular' ? '인기 과정을 소개해드려요!' : parsePolyglotString(cardBundle?.displayText,'ko')}
+        >
+          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
             {cardList.map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>
@@ -198,7 +229,8 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_REQUIRED}
+                      dataArea={dataLectureArea}
+                      hoverTrack={hoverTrack}
                     />
                   </CardGroup>
                 </div>

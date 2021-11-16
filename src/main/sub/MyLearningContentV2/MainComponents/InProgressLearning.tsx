@@ -21,6 +21,7 @@ import {
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { findMyLatestLearningCards } from '../../../../lecture/detail/api/cardApi';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
@@ -93,6 +94,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     {...item}
                     useBookMark={false} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
                     dataArea={Area.MAIN_LEARNING}
+                    hoverTrack={hoverTrack}
                   />
                 </CardGroup>
               </li>

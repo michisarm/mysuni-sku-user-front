@@ -39,6 +39,13 @@ export interface ScrollTrackParam {
   actionName: string;
 }
 
+export interface ScrollSwiperTrackParam {
+  element: HTMLElement;
+  area: Area | undefined;
+  scrollClassName: string;
+  actionName: string;
+}
+
 export interface HoverTrackParam {
   area: Area | undefined;
   actionName: string;

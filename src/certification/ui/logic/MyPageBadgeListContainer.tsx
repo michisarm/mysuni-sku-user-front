@@ -18,6 +18,7 @@ import { MyBadge } from '../../model/MyBadge';
 import MyBadgeModal from '../view/MyBadgeModal';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 
 interface MyPageBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -54,7 +55,7 @@ function MyPageBadgeListContainer({
 
   return (
     <>
-      <div className="mypage_contents profile-badge-contents">
+      <div className="mypage_contents profile-badge-contents" data-area={Area.MYPAGE_MYBADGE}>
         <div className="ui segment full">
           <strong className="mypage_title">My Badge</strong>
           <LineHeaderContainer

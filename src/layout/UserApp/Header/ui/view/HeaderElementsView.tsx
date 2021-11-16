@@ -11,7 +11,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { usePageElements } from '../../../../../shared/store/PageElementsStore';
-import { Checkbox } from 'semantic-ui-react';
+import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
 import { observer } from 'mobx-react';
 
@@ -98,6 +98,7 @@ interface SearchBarViewProps {
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   onClear?: () => void;
   isSearch?: boolean;
+  closeSearch?: () => void;
 }
 
 export const SearchBarView: React.FC<SearchBarViewProps> = observer(
@@ -112,6 +113,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
     onClear,
     isSearch,
     // getPolyglotText,
+    closeSearch,
   }) => {
     //
     return (
@@ -165,6 +167,9 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
             }}
           />
         ) : null}
+        <Button className="b-cl" icon onClick={closeSearch}>
+          <Icon className="b-cl" />
+        </Button>
       </>
     );
   }
