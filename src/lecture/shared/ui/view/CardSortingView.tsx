@@ -46,8 +46,8 @@ class CardSortingView extends Component<Props> {
                 className="base"
                 label={getPolyglotText('이수순', 'cicl-목록-이수순')}
                 name="sortRadioGroup"
-                value={OrderByType.StudentCount}
-                checked={value === OrderByType.StudentCount}
+                value={OrderByType.PassedStudentCount}
+                checked={value === OrderByType.PassedStudentCount}
                 onChange={onChange}
               />
             </Form.Field>
