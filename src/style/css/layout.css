@@ -1,4 +1,5 @@
 /* Site Header */
+#root section.header.main-sty2 { z-index: 200; border-bottom: #ddd 1px solid; }
 #root section.header.main-sty2.lms-main .breadcrumbs { display:block }
 
 /* popup */
