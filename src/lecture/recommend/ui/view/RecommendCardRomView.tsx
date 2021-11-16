@@ -124,12 +124,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                             langSupports={item.langSupports}
                             useBookMark={true}
                             // 체크 필요
-                            isRequiredLecture={
-                              false
-                              // item.permittedCinerooms
-                              //   ? isIncludeCineroomId(item.permittedCinerooms)
-                              //   : false
-                            }
+                            isRequiredLecture={item.required}
                             collegeId={item.mainCollegeId}
                             dataArea={Area.EXPERT_LECTURE}
                             hoverTrack={hoverTrack}
