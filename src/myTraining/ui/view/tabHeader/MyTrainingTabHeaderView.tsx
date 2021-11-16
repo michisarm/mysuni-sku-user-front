@@ -3,6 +3,7 @@ import { MyTrainingTabHeaderTemplate } from './MyTrainingTabHeaderTemplate';
 import { MyTrainingLeftTabHeaderPanel } from './MyTrainingLeftTabHeaderPanel';
 import MyTrainingRightTabHeaderPanel from './MyTrainingRightTabHeaderPanel';
 import FilterBoxContainer from 'myTraining/ui/logic/FilterBoxContainer';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 
 interface MyTrainingTabHeaderViewProps {
   resultEmpty: boolean;
@@ -17,6 +18,7 @@ interface MyTrainingTabHeaderViewProps {
     onClickOpen: () => void;
     filterCount: number;
   };
+  contentType?: MyLearningContentType | MyPageContentType;
   children: React.ReactNode;
 }
 
@@ -28,6 +30,7 @@ export function MyTrainingTabHeaderView({
   onClickDelete,
   onClickDownloadExcel,
   filterOpotions,
+  contentType,
 }: MyTrainingTabHeaderViewProps) {
   //
   return (
@@ -48,7 +51,7 @@ export function MyTrainingTabHeaderView({
             </MyTrainingTabHeaderTemplate>
           )}
           <MyTrainingTabHeaderTemplate className="right-wrap">
-            {filterOpotions && (
+            {filterOpotions && contentType && (
               <MyTrainingRightTabHeaderPanel
                 filterCount={filterOpotions.filterCount}
                 openFilter={filterOpotions.openFilter}
@@ -63,7 +66,9 @@ export function MyTrainingTabHeaderView({
             )}
           </MyTrainingTabHeaderTemplate>
         </div>
-        {filterOpotions && <FilterBoxContainer />}
+        {filterOpotions && contentType && (
+          <FilterBoxContainer contentType={contentType} />
+        )}
       </>
     )) || <div style={{ marginTop: 50 }} />
   );

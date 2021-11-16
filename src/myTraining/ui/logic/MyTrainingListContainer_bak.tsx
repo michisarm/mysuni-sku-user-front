@@ -14,15 +14,12 @@ import { Segment } from 'semantic-ui-react';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../model/NoSuchContentPanelMessages';
+import { nosuchMessagesPolyglot } from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
 import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
 import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
@@ -60,7 +57,7 @@ function MyTrainingListContainer({
     myTrainingService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   useEffect(() => {
     myTrainingService!.clearAllTableViews();
@@ -232,7 +229,7 @@ function MyTrainingListContainer({
             />
           )}
 
-          <FilterBoxContainer />
+          <FilterBoxContainer contentType={contentType} />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {(myTrainingTableViews && myTrainingTableViews.length > 0 && (

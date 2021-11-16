@@ -1,15 +1,17 @@
-import CardType from "../shared/model/CardType";
-import FilterCountViewModel from "../../myTraining/model/FilterCountViewModel";
+import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
+import CardType from '../shared/model/CardType';
 
 export interface CardTypeAndCardCount {
   cardType: CardType;
   count: number;
 }
 
-export function getTotalFilterCountView(cardTypeCardCounts: CardTypeAndCardCount[]): FilterCountViewModel {
+export function getTotalFilterCountView(
+  cardTypeCardCounts: CardTypeAndCardCount[]
+): FilterCountViewModel {
   const totalFilterCountView = new FilterCountViewModel();
 
-  cardTypeCardCounts.forEach(cardCount => {
+  cardTypeCardCounts.forEach((cardCount) => {
     totalFilterCountView.totalCount += cardCount.count;
 
     switch (cardCount.cardType) {

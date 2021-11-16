@@ -65,6 +65,7 @@ class CardQdo {
     this.collegeIds = conditions.collegeIds.join(',');
     this.difficultyLevels = conditions.difficultyLevels.join(',');
     this.learningTimeRanges = conditions.learningTimes.join(',');
+    this.type = conditions.learningTypes.join(',');
 
     return this;
   }
