@@ -6,7 +6,7 @@ import { getQueryId } from '../search.events';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import { getMenuAuth, setMenuAuth } from '../search.services';
 import { PolyglotText } from '../../shared/ui/logic/PolyglotText';
-import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
+import { findAvailablePageElementsCache } from '../../lecture/shared/api/arrangeApi';
 
 export function SearchHeaderView() {
   const [activeItem, setActiveItem] = useState<string>('');
@@ -40,7 +40,7 @@ export function SearchHeaderView() {
 
   useEffect(() => {
     const fetchMenu = async () => {
-      const response = await findAvailablePageElements();
+      const response = await findAvailablePageElementsCache();
       setMenuAuth(response);
     };
     fetchMenu();

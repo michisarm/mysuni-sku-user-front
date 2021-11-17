@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
 import { usePageElements } from 'shared/store/PageElementsStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
 import { BookmarkCards } from './MainComponents/BookmarkCards';
@@ -31,7 +31,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const [memName, setMemName] = useState('');
 
   const fetchCardBundles = async () => {
-    const response = await findAvailableCardBundles();
+    const response = await findAvailableCardBundlesCache();
     setCardBundles(response);
   };
 

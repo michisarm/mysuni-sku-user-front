@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import findAvailablePageElements from '../../../../shared/api/arrangeApi';
+import { findAvailablePageElementsCache } from '../../../../shared/api/arrangeApi';
 import { PageElement } from '../../../../shared/model/PageElement';
 import { useLectureReview } from '../../../service/useLectuerCubeOverview/useLectureReview';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
@@ -20,7 +20,7 @@ function LectureCardSummaryContainer() {
   useEffect(() => {
     //const axios = getAxios();
     const fetchMenu = async () => {
-      const response = await findAvailablePageElements();
+      const response = await findAvailablePageElementsCache();
       if (response !== undefined) {
         setMenuAuth(response);
       }

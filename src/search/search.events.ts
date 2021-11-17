@@ -108,6 +108,9 @@ export function getQueryId(value?: string): string {
 // 필터
 export function filterClearAll() {
   setFilterCondition(InitialConditions);
+  setExpert(getExpertOri());
+  setSearchBadgeList(getSearchBadgeOriList());
+  setSearchCommunityList(getSearchCommunityOriList());
 }
 
 export function searchCardFilterData(decodedSearchValue: string) {
@@ -733,8 +736,8 @@ export async function searchData(searchValue: string, searchType?: string) {
     .finally(() =>
       searchSuggest(searchValue)
         .then((response) => {
-          if (response) {
-            response.forEach((s2) => {
+          if (response && response.error === undefined) {
+            response.forEach((s2: string) => {
               suggestions.push(s2);
             });
             if (suggestions.length > 10) {
@@ -816,6 +819,18 @@ export async function searchInSearchData(
 export async function filterClickSearch() {
   const cards = await filterCard(getAllowedCard());
   setDisplayCard(cards);
+  const filterCondition = getFilterCondition();
+  if (
+    JSON.stringify(filterCondition || '') === JSON.stringify(InitialConditions)
+  ) {
+    setExpert(getExpertOri());
+    setSearchBadgeList(getSearchBadgeOriList());
+    setSearchCommunityList(getSearchCommunityOriList());
+  } else {
+    setExpert([]);
+    setSearchBadgeList([]);
+    setSearchCommunityList([]);
+  }
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {

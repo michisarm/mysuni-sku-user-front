@@ -157,7 +157,12 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
               onChange={(e) => delayedOnChange(e)}
               onClick={onClick}
               // onBlur={onBlur}
-              onKeyPress={(e) => e.key === 'Enter' && onSearch()}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
+                  onSearch();
+                }
+              }}
               className="ui input search_ipt"
             />
           </div>

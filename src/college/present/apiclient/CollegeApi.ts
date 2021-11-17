@@ -86,12 +86,6 @@ export default class CollegeApi {
       .get<CollegeBanner[]>(this.URLCollege + `/banner`)
       .then((response) => (response && response.data) || null);
   }
-
-  findAllCollegeAndChannels() {
-    return axios
-      .get<CollegeModel[]>('/api/college/colleges')
-      .then((response) => response.data);
-  }
 }
 
 Object.defineProperty(CollegeApi, 'instance', {

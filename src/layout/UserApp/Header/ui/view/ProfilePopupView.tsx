@@ -6,7 +6,7 @@ import { useProfilePopupModel } from '../../../store/ProfilePopupStore';
 import { Button, Image } from 'semantic-ui-react';
 import { getProfilePopup } from '../../../service/ProfilePopupService/getProfilePopup';
 import { SkProfileService } from 'profile/stores';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, StorageModel } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
@@ -145,7 +145,10 @@ function ProfilePopupView(props: Props) {
   }
 
   function onLogout() {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
     sessionStorage.clear();
     window.location.href = '/api/checkpoint/sso/logout';
   }
