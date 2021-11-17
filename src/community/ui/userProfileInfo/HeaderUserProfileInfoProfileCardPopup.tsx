@@ -18,9 +18,13 @@ import {
   modifyProfile,
 } from '../data/community/apis/profilesApi';
 import { NameValue } from '../data/accent/models/NameValue';
+import { StorageModel } from '@nara.platform/accent';
 
 function onLogout() {
+  const searchRecents =
+    JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
   localStorage.clear();
+  new StorageModel('localStorage', 'searchRecents').save(searchRecents);
   sessionStorage.clear();
   window.location.href = '/api/checkpoint/sso/logout';
 }

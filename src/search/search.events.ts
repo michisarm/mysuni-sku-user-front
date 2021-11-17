@@ -733,8 +733,8 @@ export async function searchData(searchValue: string, searchType?: string) {
     .finally(() =>
       searchSuggest(searchValue)
         .then((response) => {
-          if (response) {
-            response.forEach((s2) => {
+          if (response && response.error === undefined) {
+            response.forEach((s2: string) => {
               suggestions.push(s2);
             });
             if (suggestions.length > 10) {
@@ -816,6 +816,11 @@ export async function searchInSearchData(
 export async function filterClickSearch() {
   const cards = await filterCard(getAllowedCard());
   setDisplayCard(cards);
+  const filterCondition = getFilterCondition();
+  console.log('filterCondition', filterCondition);
+  setExpert([]);
+  setSearchBadgeList([]);
+  setSearchCommunityList([]);
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
