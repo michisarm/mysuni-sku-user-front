@@ -87,6 +87,8 @@ body #root { background: #fff; }
 .content.lms .ui.button.post-s { border: #777 1px solid; color: #777; }
 .content.lms .header-right-link a { color: #777; }
 .ui.icon.button.postset { color: #aaa; } .ui.button.post { border: #777 1px solid; color: #777; }
+.ui.icon.button.postset .icon.edit2:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg") 0 0 no-repeat !important; }
+.ui.icon.button.postset .icon.delete:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-delete-16-px.svg") 0 0 no-repeat !important; }
 .ui.button.post .icon.filter2 { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-filter-24-px.svg) 0 0 no-repeat; }
 .ui.button.excel-down .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-excel-24-px.svg) 0 0 no-repeat; }
 .ui.button.pop.d, .ui.button.pop2.d { background: #777 !important; }
@@ -98,7 +100,6 @@ body #root { background: #fff; }
 .ui.button.free.complete {border:1px solid #777;color:#777;}
 .ui.button.free.bg2 {background: #777; color: #fff;}
 .ui.button.fix.bg.grey{ background: #777 !important;}
-.ui.icon.button.postset .icon.edit2before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg) 0 0 no-repeat !important; }
 .challenge-wrap .challenge-badge .right-area .badge-title .path { color: #777; background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat; }
 .course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg);}
 .challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card::after { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/ct-arrow.svg') 0 0 no-repeat; }
