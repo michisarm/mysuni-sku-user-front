@@ -255,6 +255,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     if (bgImageFile !== undefined) {
       const imagePath = await uploadFileProfile(bgImageFile);
+
       if (imagePath) {
         this.setState({ bgImageTemp: imagePath });
       }
@@ -443,8 +444,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     //   photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
     // }
-
-    console.log(bgImageTemp);
 
     return (
       <>

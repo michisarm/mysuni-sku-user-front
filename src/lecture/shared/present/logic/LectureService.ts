@@ -351,6 +351,12 @@ class LectureService {
   }
 
   @action
+  clearCollegeLectures() {
+    //
+    return runInAction(() => (this._userLectureCards = []));
+  }
+
+  @action
   async findPagingCollegeLectures(
     collegeId: string,
     limit: number,
