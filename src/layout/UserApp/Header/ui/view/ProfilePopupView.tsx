@@ -24,6 +24,7 @@ import { usePageElements } from 'shared/store/PageElementsStore';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { patronInfo } from '@nara.platform/dock';
 import { Area } from 'tracker/model';
+import { isExternalInstructor } from 'shared/helper/findUserRole';
 
 interface Props {
   setOpen: () => void;
@@ -65,7 +66,7 @@ function ProfilePopupView(props: Props) {
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
   const history = useHistory();
-  const externalInstructor = localStorage.getItem('nara.externalInstructor');
+  const externalInstructor = isExternalInstructor();
   const instructorId = localStorage.getItem('nara.instructorId');
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
   const profileInfo = useProfilePopupModel();
