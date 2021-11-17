@@ -377,14 +377,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   pagemElement.position === 'TopMenu' &&
                   pagemElement.type === 'Community'
               ) && (
-              <Link
-                to="#"
-                onClick={() =>
-                  window.open(
-                    `${window.location.origin}/suni-community/community/${lectureSummary.communityId}`
-                  )
-                }
-              >
+                <Link
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      `${window.location.origin}/suni-community/community/${lectureSummary.communityId}`
+                    )
+                  }
+                >
                   <span className="communityText">
                     <Icon className="communityLink" />
                     <PolyglotText
@@ -396,7 +396,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               )}
             <a onClick={toggleCardBookmark}>
               <span>
-                <Icon className={!isBookmark ? 'listAdd' : 'listDelete' } />
+                <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
                 {!isBookmark
                   ? getPolyglotText('관심목록 추가', 'Course-Summary-관심추가')
                   : getPolyglotText('관심목록 제거', 'Course-Summary-관심제거')}
