@@ -406,6 +406,18 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.modal.base .header { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .head .cell { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .cell:nth-of-type(2) { border-left: #ddd 1px solid; }
+/* 학습이수시간 팝업 버튼컬러 수정 */
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked+label+.buri {
+    background: none;
+    border-left: #52CBC0 14px solid;
+    border-top: transparent 9px solid;
+    border-bottom: transparent 9px solid;
+}
+.ui.rect-icon.radio.checkbox input:checked~label:before {
+    background: transparent !important;
+    border: #fff 7px solid !important;
+    border-radius: 50% !important;
+}
 
 /* College 소개 */
 .transcript-box .transcript-hover:hover{ background : #eee }
@@ -493,4 +505,10 @@ border-left-color: #00bfae;
 .again_chk.ui.checkbox:not(.radio) input:focus~label:before,
 .again_chk.ui.checkbox:not(.radio) label:before,
 .again_chk.ui.checkbox:not(.radio) label:hover:before { background-color: #fff !important; background-image: none !important;}
-.again_chk.ui.checkbox:not(.radio) input:checked~label:before, .again_chk.ui.checkbox input:checked~label:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0/100% no-repeat!important;}
+.again_chk.ui.checkbox:not(.radio) input:checked~label:before, .again_chk.ui.checkbox input:checked~label:before{
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0/100% no-repeat!important;
+}
+
+/* Certification 뱃지 페이지 */
+.challenge-wrap .challenge-badge .left-area .status button { background-color: #fff;}
+.ui.segment.full .top-guide-title .left-wrap .post + .list-number:after { background: #ddd;}
