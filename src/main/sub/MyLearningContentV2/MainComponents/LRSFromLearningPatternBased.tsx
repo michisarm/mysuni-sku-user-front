@@ -109,7 +109,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{name} 님이 관심가질만한 과정을 모아봤어요~',
+              '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
               'main-lrs-title2',
               {
                 name: SkProfileService.instance.profileMemberName,
