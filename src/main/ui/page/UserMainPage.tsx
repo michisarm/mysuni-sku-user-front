@@ -12,7 +12,7 @@ function UserMainPage() {
         <MyLearningSummaryContainer />
         <MyLearningContentContainer />
         {/*<MainPagePopupContainer />*/}
-        {TutorialModal()}
+        {/*{TutorialModal()}*/}
       </div>
     </ContentLayout>
   );
