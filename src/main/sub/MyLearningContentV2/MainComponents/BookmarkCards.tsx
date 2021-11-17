@@ -44,8 +44,8 @@ const SwiperProps = {
   loop: false,
   loopFillGroupWithBlank: true,
   navigation: {
-    nextEl: '.' + 'swiperCommend' + ' .swiper-button-next',
-    prevEl: '.' + 'swiperCommend' + ' .swiper-button-prev',
+    nextEl: '.' + 'swiperWish' + ' .swiper-button-next',
+    prevEl: '.' + 'swiperWish' + ' .swiper-button-prev',
   },
   speed: 500,
 };
@@ -146,7 +146,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
               );
             })}
           </Swiper>
-          <div className="swiperCommend">
+          <div className="swiperWish">
             <div className="swiper-button-prev" />
             <div className="swiper-button-next" />
           </div>

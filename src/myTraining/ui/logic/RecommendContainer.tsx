@@ -42,6 +42,8 @@ const SwiperProps = {
     prevEl: '.' + swipeName + ' .swiper-button-prev',
   },
   speed: 500,
+  observer: true,
+  observerParents: true,
 };
 
 interface RecommendCardList {
