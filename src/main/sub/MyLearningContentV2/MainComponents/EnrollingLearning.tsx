@@ -1,4 +1,7 @@
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import React, { useEffect, useState } from 'react';
@@ -16,10 +19,8 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import Swiper from 'react-id-swiper';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
-import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 const SwiperProps = {
   slidesPerView: 4,
@@ -138,27 +139,12 @@ function EnrollingLearning() {
         <div className="cardSwiper" data-action-name="수강신청 임박한 과정">
           <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardList &&
-              cardList.map((card, i) => {
+              parseUserLectureCards(cardList, userLanguage).map((card, i) => {
                 return (
-                  <div className="swiper-slide" key={card.id}>
+                  <div className="swiper-slide" key={card.cardId}>
                     <CardGroup type={GroupType.Wrap}>
                       <LectureCardView
-                        cardId={card.id}
-                        cardName={parsePolyglotString(card.name)}
-                        learningTime={timeToHourMinuteFormat(card.learningTime)}
-                        thumbnailImagePath={card.thumbnailImagePath}
-                        difficultyLevel={card.difficultyLevel}
-                        passedStudentCount={String(card.passedStudentCount)}
-                        starCount={String(card.starCount)}
-                        simpleDescription={parsePolyglotString(
-                          card.simpleDescription
-                        )}
-                        studentCount={card.studentCount}
-                        userLanguage={userLanguage}
-                        langSupports={card.langSupports}
-                        collegeId={card.mainCollegeId}
-                        isRequiredLecture={card.required}
-                        upcomingClassroomInfo={card.upcomingClassroomInfo}
+                        {...card}
                         dataArea={Area.MAIN_ENROLLING}
                         useBookMark
                         hoverTrack={hoverTrack}

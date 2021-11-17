@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
 import { SkProfileService } from '../../../../profile/stores';
 import { RecommendCardRom } from '../../../model/RecommendCardRom';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import {
-  hoverTrack,
-  scrollHorizontalTrack,
-} from 'tracker/present/logic/ActionTrackService';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../shared/ui/logic/PolyglotText';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
-import { DifficultyLevel } from 'personalcube/cubeintro/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import Swiper from 'react-id-swiper';
 import CardGroup, { GroupType } from 'lecture/shared/Lecture/sub/CardGroup';
 import { Segment } from 'semantic-ui-react';
-import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
-
   const [swiper, updateSwiper] = useState<any>(null);
   useEffect(() => {
     if (swiper !== null) {
@@ -37,13 +28,13 @@ export function RecommendCardRomView(props: RecommendCardRom) {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.RECOMMEND_LIST,
         scrollClassName: 'cardSwiper',
         actionName: '추천카드 스크롤',
-      })  
+      });
     }
   }
   //
@@ -63,7 +54,6 @@ export function RecommendCardRomView(props: RecommendCardRom) {
 
     return cardCount;
   };
-  
 
   const swipeName = 'recommandList';
 
@@ -129,41 +119,26 @@ export function RecommendCardRomView(props: RecommendCardRom) {
         <div className="cardSwiper">
           {(isCardWithRelatedCountRoms && (
             <>
-              <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+              <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
                 {isCardWithRelatedCountRoms &&
-                  cardForUserViewRdos.map((item) => {
-                    return (
-                      <div className={`${channelId}-${swipeName} swiper-slide`}>
-                        <CardGroup type={GroupType.Wrap} key={item.id}>
-                          <LectureCardView
-                            cardId={item.id}
-                            cardName={parsePolyglotString(item.name)}
-                            learningTime={timeToHourMinuteFormat(
-                              item.learningTime
-                            )}
-                            thumbnailImagePath={item.thumbnailImagePath}
-                            passedStudentCount={item.passedStudentCount.toString()}
-                            starCount={item.starCount.toString()}
-                            simpleDescription={parsePolyglotString(
-                              item.simpleDescription
-                            )}
-                            difficultyLevel={
-                              item.difficultyLevel || DifficultyLevel.Basic
-                            }
-                            userLanguage={userLanguage}
-                            studentCount={item.studentCount}
-                            langSupports={item.langSupports}
-                            useBookMark={true}
-                            // 체크 필요
-                            isRequiredLecture={item.required}
-                            collegeId={item.mainCollegeId}
-                            dataArea={Area.RECOMMEND_LIST}
-                            hoverTrack={hoverTrack}
-                          />
-                        </CardGroup>
-                      </div>
-                    );
-                  })}
+                  parseUserLectureCards(cardForUserViewRdos, userLanguage).map(
+                    (item) => {
+                      return (
+                        <div
+                          className={`${channelId}-${swipeName} swiper-slide`}
+                        >
+                          <CardGroup type={GroupType.Wrap} key={item.cardId}>
+                            <LectureCardView
+                              {...item}
+                              useBookMark={true}
+                              dataArea={Area.RECOMMEND_LIST}
+                              hoverTrack={hoverTrack}
+                            />
+                          </CardGroup>
+                        </div>
+                      );
+                    }
+                  )}
               </Swiper>
               <div className={`${channelId}-${swipeName}`}>
                 <div className="swiper-button-prev" />
