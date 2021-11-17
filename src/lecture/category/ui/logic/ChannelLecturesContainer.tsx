@@ -14,7 +14,6 @@ import { PageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-
 import { LectureServiceType, OrderByType } from '../../../model';
 import { LectureCardService, LectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
@@ -24,7 +23,10 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import { parseLanguage } from 'shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
 import {
   LectureCardView,
   parseUserLectureCards,
@@ -253,20 +255,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
-    const { history, scrollSave } = this.props;
-    const collegeId = model.category.college.id;
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+    const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Card) {
-      // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
       history.push(routePaths.courseOverview(model.cardId));
     } else {
-      // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
-    // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
 
     ReactGA.event({
       category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
@@ -291,7 +286,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService, lectureService } = this.props;
     const { sorting, collegeOrder, loading } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { _lectures } = lectureService!;
+    const { lectures } = lectureService!;
 
     const userLanguage = parseLanguage(
       SkProfileService.instance.skProfile.language
@@ -300,7 +295,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
-        countDisabled={_lectures.length < 1}
+        countDisabled={lectures.length < 1}
       >
         {loading ? (
           <Segment
@@ -316,7 +311,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
           >
             <Loadingpanel loading={loading} />
           </Segment>
-        ) : _lectures && _lectures.length > 0 ? (
+        ) : lectures && lectures.length > 0 ? (
           <>
             <CardSorting
               value={sorting}
@@ -325,7 +320,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {parseUserLectureCards(_lectures).map((cards, index) => {
+                {parseUserLectureCards(lectures).map((cards, index) => {
                   return (
                     <LectureCardView
                       {...cards}

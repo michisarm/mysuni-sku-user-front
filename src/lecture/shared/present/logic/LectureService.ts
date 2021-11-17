@@ -152,7 +152,7 @@ class LectureService {
   }
 
   @computed
-  get lectures(): CardWithCardRealtedCount[] {
+  get lectures(): UserLectureCard[] {
     //
     const lectures = this._lectures as IObservableArray;
     return lectures.peek();
@@ -241,7 +241,9 @@ class LectureService {
     const myLearningCards = findReulst.results.map((card) => {
       //
       const myLectureCard = card;
-      myLectureCard.useNote = cardNotes.some((note) => note.cardId === card.id);
+      myLectureCard.useNote = cardNotes.some(
+        (note: any) => note.cardId === card.id
+      );
       return myLectureCard;
     });
 
