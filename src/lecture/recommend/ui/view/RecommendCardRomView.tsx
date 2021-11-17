@@ -123,6 +123,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                     (item) => {
                       return (
                         <div
+                          key={item.cardId}
                           className={`${channelId}-${swipeName} swiper-slide`}
                         >
                           <CardGroup type={GroupType.Wrap} key={item.cardId}>

@@ -94,28 +94,35 @@ async function requestFindRecommendCards() {
     setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
 
     const checkedChannels = checkableChannels.filter((c) => c.checked);
-    const nextRecommendCardRoms =
-      recommendCardRoms?.filter((cardRoms) =>
-        checkedChannels.some((c) => c.id === cardRoms.channelId)
-      ) || [];
-
     let findRecommendCard: any = {};
 
     /* eslint-disable no-await-in-loop */
     for (const channel of checkedChannels) {
       if (
-        nextRecommendCardRoms &&
-        !nextRecommendCardRoms.some(
-          (cardRoms) => cardRoms.channelId === channel.id
-        )
+        recommendCardRoms &&
+        !recommendCardRoms.some((cardRoms) => cardRoms.channelId === channel.id)
       ) {
         findRecommendCard = await findRecommendCardsByChannelId(channel.id);
       }
     }
 
-    if (findRecommendCard.channelId) {
-      nextRecommendCardRoms.push(findRecommendCard);
+    if (recommendCardRoms && findRecommendCard.channelId) {
+      recommendCardRoms.push(findRecommendCard);
     }
+
+    const nextRecommendCardRoms =
+      recommendCardRoms
+        ?.filter((cardRoms) =>
+          checkedChannels.some((c) => c.id === cardRoms.channelId)
+        )
+        .sort((a, b) => {
+          return (
+            checkableChannels.findIndex(
+              (channel) => channel.id === a.channelId
+            ) -
+            checkableChannels.findIndex((channel) => channel.id === b.channelId)
+          );
+        }) || [];
 
     // const nextRecommendCardRoms = checkableChannels
     //   .filter((c) => c.checked === true)
