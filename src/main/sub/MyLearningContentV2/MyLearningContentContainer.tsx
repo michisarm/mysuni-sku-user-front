@@ -3,6 +3,8 @@ import { inject } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { isExternalInstructor } from 'shared/helper/findUserRole';
+import { usePageElements } from 'shared/store/PageElementsStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
@@ -46,6 +48,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
     }
   }, [memName.length, skProfile.name, skProfileService]);
 
+  const pageElements = usePageElements();
+  const isExternal = isExternalInstructor();
+
   return (
     <>
       {/* {cardBundles?.map((cardBundle, i) => {
@@ -85,10 +90,19 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           profileMemberName={skProfile.profileViewName}
         />
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
-        <RecommendContainer />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'RecommendCards'
+        ) && <RecommendContainer />}
       </div>
       <div className="learning-section-wrap">
-        <MainChallengingBadgeContainer />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'TopMenu' &&
+            pagemElement.type === 'Certification'
+        ) &&
+          !isExternal && <MainChallengingBadgeContainer />}
         <MainHotTopicContainer />
       </div>
 

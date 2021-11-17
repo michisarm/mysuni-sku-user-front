@@ -4,12 +4,14 @@ import MyLearningSummaryContainer from '../../sub/MyLearningSummary/MyLearningSu
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MainPagePopupContainer from '../../sub/MainPagePopup/ui/logic/MainPagePopupContainer';
 import { TutorialModal } from '../../../tutorial/components/tutorialModal';
+import { usePageElements } from 'shared/store/PageElementsStore';
 
 function UserMainPage() {
+  const pageElements = usePageElements();
   return (
     <ContentLayout className="main main-sty2">
       <div className="main-wrap personal-wrap">
-        <MyLearningSummaryContainer />
+        <MyLearningSummaryContainer pageElements={pageElements} />
         <MyLearningContentContainer />
         {/*<MainPagePopupContainer />*/}
         {/*{TutorialModal()}*/}

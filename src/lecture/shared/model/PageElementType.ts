@@ -15,4 +15,5 @@ export type PageElementType =
   | 'Summary'
   | 'LearningCards'
   | 'ChallengingBadges'
-  | 'RecommendCards';
+  | 'RecommendCards'
+  | 'EventButton';

@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { SkProfileService } from 'profile/stores';
 import React, { Component, createRef, MouseEvent } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
 import supportRoutePaths from '../../../board/routePaths';
@@ -27,6 +27,8 @@ import {
 import { PersonalBoardContainer } from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 import { InProgressLearning } from './InProgressLearning';
 import { HeaderWrapperView } from './MyLearningSummaryElementsView';
+import { usePageElements } from 'shared/store/PageElementsStore';
+import { PageElement } from 'lecture/shared/model/PageElement';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -34,6 +36,7 @@ interface Props extends RouteComponentProps {
   menuControlAuthService?: MenuControlAuthService;
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
+  pageElements: PageElement[];
 }
 
 interface States {
@@ -164,7 +167,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       attendanceOpen,
       isPersonalBoardContainerVisible,
     } = this.state;
-    const { myLearningSummaryService, skProfileService } = this.props;
+    const { myLearningSummaryService, skProfileService, pageElements } =
+      this.props;
     const { skProfile } = skProfileService!;
     const { menuControlAuth } = MenuControlAuthService.instance;
     // 21-11-12 김민준 learning page 개선
@@ -254,6 +258,20 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                       id="home-PersonalBoard-개인학습"
                     />
                   </a>
+                </div>
+              )}
+              {pageElements.some(
+                (pagemElement) =>
+                  pagemElement.position === 'HomeElement' &&
+                  pagemElement.type === 'EventButton'
+              ) && (
+                <div className="info-boading">
+                  <Link
+                    to="/lecture/card/CARD-1489/view"
+                    className="boading-wrap"
+                  >
+                    <span className="blind">써니가 처음이세요</span>
+                  </Link>
                 </div>
               )}
             </div>
