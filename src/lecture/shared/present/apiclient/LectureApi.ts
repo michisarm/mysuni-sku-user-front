@@ -165,20 +165,28 @@ class LectureApi {
   }
 
   // filter
-  findCardTypeAndCardCount(type: ParsingLearningType, hasStamp?: boolean) {
+  findCardTypeAndCardCount(
+    type: ParsingLearningType,
+    hasStamp?: boolean,
+    searchable?: boolean
+  ) {
     //
     return axiosApi
       .get<CountByCardTypeModel[]>(this.learningUrl + '/cardTypeAndCardCount', {
-        params: { type, hasStamp },
+        params: { type, hasStamp, searchable },
       })
       .then((response) => (response && response.data) || []);
   }
 
-  findCollegeAndCardCount(type: ParsingLearningType, hasStamp?: boolean) {
+  findCollegeAndCardCount(
+    type: ParsingLearningType,
+    hasStamp?: boolean,
+    searchable?: boolean
+  ) {
     //
     return axiosApi
       .get<CountByCollegeIdModel[]>(this.learningUrl + '/collegeAndCardCount', {
-        params: { type, hasStamp },
+        params: { type, hasStamp, searchable },
       })
       .then((response) => (response && response.data) || []);
   }

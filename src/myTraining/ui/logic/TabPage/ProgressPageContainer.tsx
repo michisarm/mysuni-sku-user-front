@@ -89,7 +89,6 @@ function ProgressPageContainer({
     const newCardQdo = new CardQdo();
     newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
     newCardQdo.offset = 0;
-    newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.Learning;
     newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
 
@@ -100,7 +99,6 @@ function ProgressPageContainer({
     const newCardQdo = new CardQdo();
     newCardQdo.limit = 9999999;
     newCardQdo.offset = 0;
-    newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.Learning;
     newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
 
