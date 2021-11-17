@@ -1,5 +1,10 @@
 import React, { Component, useState } from 'react';
-import { reactAutobind, mobxHelper, deleteCookie } from '@nara.platform/accent';
+import {
+  reactAutobind,
+  mobxHelper,
+  deleteCookie,
+  StorageModel,
+} from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { getAxios } from 'shared/api/Axios';
@@ -106,7 +111,10 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   onLogout() {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
 
     // localStorage.removeItem('nara.cineroomId');
     // localStorage.removeItem('nara.workspaces');
