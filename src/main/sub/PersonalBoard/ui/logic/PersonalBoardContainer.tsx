@@ -36,12 +36,14 @@ export const PersonalBoardContainer = (props: Props) => {
   const { menuControlAuth } = MenuControlAuthService.instance;
 
   useEffect(() => {
-    requestBadgeLearningTime(companyCode);
-    requestPopularCourse(companyCode, 7);
-    // requestCollegePercent();
-    requestLearningObjectives();
-    init();
-  }, []);
+    if (isVisible) {
+      requestBadgeLearningTime(companyCode);
+      requestPopularCourse(companyCode, 7);
+      // requestCollegePercent();
+      requestLearningObjectives();
+      init();
+    }
+  }, [isVisible]);
 
   const init = async () => {
     await findInstructTimeSummary();
