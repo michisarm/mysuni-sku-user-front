@@ -132,6 +132,7 @@
 
 /* Main > 도정중인 뱃지 */
 .learning-section.sec-tit-txt { word-break: break-all; }
+.badge-txt { word-break: break-all; }
 
 /* 커뮤니티 */
 .favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
@@ -318,8 +319,10 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.button.approval .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-approval.svg')0 0/18px auto no-repeat }
 .ui.button.return .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-return.svg')0 0/18px auto no-repeat }
 
-
-
+/* 카테고리 전체보기 이미지 상실 보완 */
+i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media//thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
+i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
+i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
 
 
 ul.ui.list.my-task-bar {border-color: #ddd;}
