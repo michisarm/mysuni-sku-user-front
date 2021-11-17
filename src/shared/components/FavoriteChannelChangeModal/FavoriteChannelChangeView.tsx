@@ -11,6 +11,7 @@ import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import {
   compareCollgeCineroom,
   getChannelName,
+  getCollgeName,
 } from 'shared/service/useCollege/useRequestCollege';
 
 interface Props {
@@ -80,7 +81,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                           onClick={() => onToggleCollege(college.id)}
                         >
                           <span className={`name ${this.color[index]}`}>
-                            {college.name}
+                            {getCollgeName(college.id)}
                           </span>
                           <Icon />
                         </Accordion.Title>
@@ -133,10 +134,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                 ))}
                 {favoriteCompanyChannels.map((channel: ChannelModel) => (
                   <Button key={`del_${channel.id}`} className="del default">
-                    {parsePolyglotString(
-                      channel.name,
-                      getDefaultLang(channel.langSupports)
-                    )}
+                    {getChannelName(channel.id)}
                   </Button>
                 ))}
               </div>
