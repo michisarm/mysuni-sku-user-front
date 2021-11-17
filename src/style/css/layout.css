@@ -80,17 +80,10 @@ body #root {
   > a {
   border: #ddd 1px solid;
 }
-.challenge-wrap
-  .challenge-badge
-  .right-area
-  .challenge-list
-  ul
-  .class-card:nth-child(3n)
-  > a {
-  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/rectangle.svg)
-    0 0 no-repeat;
-  border: 0;
-  border-radius: 0;
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:nth-child(3n) > a {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/rectangle.svg) 0 0 no-repeat;
+    border: 0;
+    border-radius: 0;
 }
 .course-info-bottom,
 .survey-preview,
@@ -109,18 +102,20 @@ body #root {
 
 /* Input Focus */
 .ui.form input:not([type]):focus,
-.ui.form input[type='date']:focus,
-.ui.form input[type='datetime-local']:focus,
-.ui.form input[type='email']:focus,
-.ui.form input[type='file']:focus,
-.ui.form input[type='number']:focus,
-.ui.form input[type='password']:focus,
-.ui.form input[type='search']:focus,
-.ui.form input[type='tel']:focus,
-.ui.form input[type='text']:focus,
-.ui.form input[type='time']:focus,
-.ui.form input[type='url']:focus {
-  border: #52cbc0 1px solid !important;
+.ui.form input[type=date]:focus,
+.ui.form input[type=datetime-local]:focus,
+.ui.form input[type=email]:focus,
+.ui.form input[type=file]:focus,
+.ui.form input[type=number]:focus,
+.ui.form input[type=password]:focus,
+.ui.form input[type=search]:focus,
+.ui.form input[type=tel]:focus,
+.ui.form input[type=text]:focus,
+.ui.form input[type=time]:focus,
+.ui.form input[type=url]:focus,
+.ui.input.focus > input,
+.ui.input > input:focus {
+    border: #52CBC0 1px solid !important;
 }
 
 /* Button */
@@ -251,8 +246,9 @@ body #root {
 }
 .content.lms .ov-paragraph.download-area .down a span,
 .support .post-view-wrap .post-view .content-area .file .link .ellipsis,
-.admin-answer-form.ui.table td .link {
-  color: #00bfae;
+.admin-answer-form.ui.table td .link,
+.ql-snow a {
+    color: #00bfae;
 }
 .course-info-ing > h3 {
   color: #777;
