@@ -770,7 +770,7 @@ export { searchRankinsCache, clearSearchRankinsCache };
 // 연관검색어
 export function searchSuggest(text_idx: string) {
   return axiosApi
-    .get<string[]>(SUGGEST_URL, {
+    .get<any>(SUGGEST_URL, {
       params: {
         target: 'related',
         domain_no: 0,
