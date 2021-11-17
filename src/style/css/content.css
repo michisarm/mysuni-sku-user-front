@@ -134,6 +134,41 @@
 .learning-section.sec-tit-txt { word-break: break-all; }
 .badge-txt { word-break: break-all; }
 
+/* Main > 도정중인 뱃지 > 뱃지리스트 수정 */
+.badge-list-wrap {
+    border-bottom: 0;
+    height: 138px;
+}
+.badge-col-list {
+    border-bottom: 0;
+    line-height: 26px;
+    font-size: 1rem;
+}
+.badge-col.cate-sign {
+    padding-left: 0;
+}
+.badge-col.cate {
+    padding: 10px 16px;
+}
+.badge-col.cate-sign .cate-icon {
+    background: transparent;
+    border: #CCC 3px solid;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    transform: translateY(2px);
+}
+.badge-col.cate-sign .cate-icon .cate-icon2 {
+    border: #ccc 2px solid;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /* 커뮤니티 */
 .favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
 .favorites_tab .ui.menu .item.active .total { color: #ff664d; }
@@ -261,9 +296,20 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 .emoji_icons .em_b { font-weight: normal; }
 
-/* 메인 > 뱃지 없을 때 > 버튼 */
+/* 메인 > 뱃지 없을 때 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .button.ui.btn-badge-go { width: auto; }
+.badge-banner-wrap.no-badge .badge-txt {
+    font-size: 1.2rem;
+    line-height: 1.43;
+}
+.badge-banner-wrap.no-badge .badge-txt strong {
+    font-size: 1.375rem;
+}
+.badge-txt {
+    padding-right: 33px;
+    word-break: break-all;
+}
 
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
@@ -323,6 +369,11 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media//thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
 i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
 i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
+
+/* 검색결과화면 */
+.result_category .ui.checked.radio.checkbox input:checked~label:before {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAMAAABVlYYBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABRUExURUdwTFTRyC7KvHHZ0V3TzCXIulHRxwrCsiDHuGTUzRjFtm7Y0EfPxD7Nwm3b23re3gC/rv///+76+TLLveD39a3q5UXQxPj9/ej5+Izi2qDn4HgJzLAAAAAQdFJOUwCw7y+P+bn++Hf7Qc/dBxflXQeFAAAAgklEQVQY03XR1w6AIAwF0DqQ4SqKGP3/D7Uihjq4DySchEILQIjulJSmLCpI0QJjZDfe2CCLan8Q0YQqGl8pCQf1VqwBar7fnaRVAPQMFzudii2oB86xRDjiNo5YXLrajSFpqOBX6xJShes24oR0W3yZdwlFrov/jjPTyUwyM/XvDx02ZhQIKFZWqQAAAABJRU5ErkJggg==) no-repeat 0 0!important;
+}
 
 
 ul.ui.list.my-task-bar {border-color: #ddd;}
