@@ -122,7 +122,10 @@ export function InMyListPageTableView({
                   <Table.Cell>
                     {inMyLecture.completePhaseCount}/{inMyLecture.phaseCount}
                   </Table.Cell>
-                  <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
+                  <Table.Cell>
+                    {(learningState && stateNamePolytglot(learningState)) ||
+                      '-'}
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

@@ -132,7 +132,10 @@ export function RequiredListPageTableView({
                     {convertTimeToDate(requiredCard.modifiedTime)}
                   </Table.Cell>
                   <Table.Cell>{progressRate}</Table.Cell>
-                  <Table.Cell>{stateNamePolytglot(learningState)}</Table.Cell>
+                  <Table.Cell>
+                    {(learningState && stateNamePolytglot(learningState)) ||
+                      '-'}
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

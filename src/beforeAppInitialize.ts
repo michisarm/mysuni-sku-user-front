@@ -2,7 +2,7 @@ import { MenuControlAuthService } from 'approval/stores';
 import { SkProfileService } from './profile/stores';
 import { requestAllColleges } from './shared/service/requestAllColleges';
 import { requestAvailablePageElements } from './shared/service/requestAvailablePageElements';
-import { reqeustBookmark } from './shared/service/requestBookmarks';
+import { requestBookmark } from './shared/service/requestBookmarks';
 import { initializeI18nResource } from './shared/viewmodel/PolyglotText';
 
 export async function beforeAppInitialize() {
@@ -10,6 +10,6 @@ export async function beforeAppInitialize() {
   await MenuControlAuthService.instance.findMenuControlAuth();
   await initializeI18nResource();
   await requestAvailablePageElements();
-  await reqeustBookmark();
+  await requestBookmark();
   await requestAllColleges();
 }

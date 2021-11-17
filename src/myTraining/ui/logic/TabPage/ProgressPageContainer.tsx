@@ -78,6 +78,7 @@ function ProgressPageContainer({
     clearOne,
     selectOne,
     clearAllSelectedServiceIds,
+    countLearningTab,
     sortMyLearningTableViews,
     column,
     direction,
@@ -344,8 +345,10 @@ function ProgressPageContainer({
     );
     if (isHidden) {
       // myTrainingService!.findAllTabCount();
-      await findMyLearningCardByQdo();
-      await clearAllSelectedServiceIds();
+      const newQdo = clearQdo();
+      requestmyTrainingsWithPage(newQdo, true);
+      countLearningTab();
+      clearAllSelectedServiceIds();
     }
 
     await setDeleteModal(false);

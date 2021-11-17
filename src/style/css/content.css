@@ -132,6 +132,7 @@
 
 /* Main > 도정중인 뱃지 */
 .learning-section.sec-tit-txt { word-break: break-all; }
+.badge-txt { word-break: break-all; }
 
 /* 커뮤니티 */
 .favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
@@ -262,6 +263,7 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 /* 메인 > 뱃지 없을 때 > 버튼 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
+.button.ui.btn-badge-go { width: auto; }
 
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
@@ -307,3 +309,28 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 /* 메인 > 퍼스널카드 */
 .std-slider-container .over-img::after{ background: rgba(67,71,77,0.1) url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-main-play.png') 50% 50%/54px auto no-repeat; }
 .margin-bottom-80 + .content.searchTotal{ padding-top:80px }
+
+/* 승인관리 */
+.ui.table.create th { border-color: #ddd; color: #777; }
+.ui.table.create td { border-color: #ddd; }
+.mylearning-list-wrap {padding-top: 20px;}
+.confirm-list-wrap .list-top .list-number {color: #777;}
+.confirm-list-wrap .list-top .list-number span:after {background-color: #d6d6d6;}
+.ui.button.approval .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-approval.svg')0 0/18px auto no-repeat }
+.ui.button.return .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-return.svg')0 0/18px auto no-repeat }
+
+/* 카테고리 전체보기 이미지 상실 보완 */
+i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media//thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
+i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
+i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
+
+
+ul.ui.list.my-task-bar {border-color: #ddd;}
+.community-cont .community-list {box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);}
+.course-radio.task .task-post-btn {border-color: #777; color: #777; }
+.course-info-header.task { border-color: #ddd;}
+.discuss-wrap {border-color: #ddd;}
+.task-title-wrap .task-number span{color :#777}
+.community_templete .title_result .result_cnt{word-break : break-all}
+.ct_search_box .note_input input{padding-right : 30px}
+#root section.header.lms .group .g-search.search .input input{padding-right: 65px}
