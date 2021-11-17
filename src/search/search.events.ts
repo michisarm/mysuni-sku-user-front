@@ -108,6 +108,9 @@ export function getQueryId(value?: string): string {
 // 필터
 export function filterClearAll() {
   setFilterCondition(InitialConditions);
+  setExpert(getExpertOri());
+  setSearchBadgeList(getSearchBadgeOriList());
+  setSearchCommunityList(getSearchCommunityOriList());
 }
 
 export function searchCardFilterData(decodedSearchValue: string) {
@@ -817,10 +820,17 @@ export async function filterClickSearch() {
   const cards = await filterCard(getAllowedCard());
   setDisplayCard(cards);
   const filterCondition = getFilterCondition();
-  console.log('filterCondition', filterCondition);
-  setExpert([]);
-  setSearchBadgeList([]);
-  setSearchCommunityList([]);
+  if (
+    JSON.stringify(filterCondition || '') === JSON.stringify(InitialConditions)
+  ) {
+    setExpert(getExpertOri());
+    setSearchBadgeList(getSearchBadgeOriList());
+    setSearchCommunityList(getSearchCommunityOriList());
+  } else {
+    setExpert([]);
+    setSearchBadgeList([]);
+    setSearchCommunityList([]);
+  }
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
