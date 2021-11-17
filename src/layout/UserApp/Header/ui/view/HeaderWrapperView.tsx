@@ -39,7 +39,7 @@ class HeaderWrapperView extends Component<Props> {
       url = `/suni-main${url}`;
     }
 
-    if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
+    if (url === '/suni-main/pages/1' || url.includes('/suni-main/search')) {
       return true;
     }
 

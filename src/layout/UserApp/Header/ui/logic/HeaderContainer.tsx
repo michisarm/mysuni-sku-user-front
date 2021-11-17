@@ -90,7 +90,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
       url = `/suni-main${url}`;
     }
 
-    if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
+    if (url === '/suni-main/pages/1' || url.includes('/suni-main/search')) {
       return true;
     }
 
