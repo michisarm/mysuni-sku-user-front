@@ -319,6 +319,9 @@
 .card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before {
     display: none;
 }
+.card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
+    padding: 7px 10px;
+}
 
 /* 이모지 */
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
