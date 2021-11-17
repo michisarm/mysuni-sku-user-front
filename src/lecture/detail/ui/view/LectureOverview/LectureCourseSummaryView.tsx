@@ -382,8 +382,12 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                     pagemElement.type === 'Community'
                 ) && (
                   <Link
-                    to={`/community/${lectureSummary.communityId}`}
-                    target="_blank"
+                    to="#"
+                    onClick={() =>
+                      window.open(
+                        `${window.location.origin}/suni-community/community/${lectureSummary.communityId}`
+                      )
+                    }
                   >
                     <span className="communityText">
                       <Icon className="communityLink" />
