@@ -8,7 +8,6 @@ import {
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { getAxios } from 'shared/api/Axios';
-import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { SkProfileService } from 'profile/stores';
 import { NotieService } from 'notie/stores';
@@ -30,6 +29,7 @@ import {
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
 import { LearningMenuView } from '../view/HeaderElementsView';
 import { findForeignerUser } from 'shared/helper/findForeignerUser';
+import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -87,7 +87,7 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   async avaible() {
-    const response = await findAvailablePageElements();
+    const response = await findAvailablePageElementsCache();
 
     if (response) {
       this.setState({

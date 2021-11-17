@@ -23,7 +23,6 @@ import {
 import MenuControlAuthService from '../../../../../approval/company/present/logic/MenuControlAuthService';
 
 import ReactGA from 'react-ga';
-import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
 
@@ -90,14 +89,13 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   async avaible() {
-    const response = await findAvailablePageElements();
-
-    if (response) {
-      this.setState({
-        menuAuth: response,
-      });
-      setMenuAuthModel(response);
-    }
+    // const response = await findAvailablePageElements();
+    // if (response) {
+    //   this.setState({
+    //     menuAuth: response,
+    //   });
+    //   setMenuAuthModel(response);
+    // }
   }
 
   deactive() {

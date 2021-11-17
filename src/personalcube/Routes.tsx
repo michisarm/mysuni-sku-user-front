@@ -9,7 +9,7 @@ import {
   CreateCubeIntroPage,
   CreateCubeDetailPage,
 } from './create';
-import findAvailablePageElements from 'lecture/shared/api/arrangeApi';
+import { findAvailablePageElementsCache } from '../lecture/shared/api/arrangeApi';
 
 class Routes extends PureComponent {
   componentDidMount() {
@@ -17,7 +17,7 @@ class Routes extends PureComponent {
   }
 
   isCheckedAllowCommunity = async () => {
-    const available = await findAvailablePageElements();
+    const available = await findAvailablePageElementsCache();
 
     if (available === undefined) {
       window.location.href = '/suni-main';

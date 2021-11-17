@@ -64,7 +64,6 @@ class MyLearningSummaryService {
 
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
-    this.findInstructTimeSummary();
   }
 
   // Summary ----------------------------------------------------------------------------------------------------------

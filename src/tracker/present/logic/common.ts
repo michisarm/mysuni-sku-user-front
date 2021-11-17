@@ -11,11 +11,10 @@ import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
 import { findJsonUserGroup } from 'profile/present/apiclient/SkProfileApi';
-import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
-import { getUserTargets } from 'abtest/api/AbtestApi';
 import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
 import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 const AUTH_STORAGE_KEY = '_mysuni_auth';
@@ -325,7 +324,7 @@ const getFieldName = async (id: string, type: string) => {
       name = badge?.name;
     } else if (type === FieldType.CardBundle) {
       // id기반 api 없는지 확인
-      const cardBundles = await findAvailableCardBundles();
+      const cardBundles = await findAvailableCardBundlesCache();
       const cardBundle = find(cardBundles, { id });
       let type = cardBundle?.type || 'none';
       switch (type) {
