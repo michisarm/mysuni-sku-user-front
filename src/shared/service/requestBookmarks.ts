@@ -7,14 +7,18 @@ interface BookMark {
   cardId: string;
 }
 
-export function addBookMark(cardId: string) {
+export function addBookMark(cardId: string): Promise<string[]> {
   const axios = getAxios();
-  axios.post(`${BASE_URL}/byCardId?cardId=${cardId}`).then(AxiosReturn);
+  return axios
+    .post<string[]>(`${BASE_URL}/byCardId?cardId=${cardId}`)
+    .then((response) => (response && response.data) || []);
 }
 
-export function deleteBookMark(cardId: string) {
+export function deleteBookMark(cardId: string): Promise<string[]> {
   const axios = getAxios();
-  axios.delete(`${BASE_URL}/byCardId?cardId=${cardId}`).then(AxiosReturn);
+  return axios
+    .delete<string[]>(`${BASE_URL}/byCardId?cardId=${cardId}`)
+    .then((response) => (response && response.data) || []);
 }
 
 function findAllBookMarkCardIds(): Promise<BookMark[] | undefined> {
@@ -23,7 +27,7 @@ function findAllBookMarkCardIds(): Promise<BookMark[] | undefined> {
   return axios.get<BookMark[]>(`${BASE_URL}/cardIds`).then(AxiosReturn);
 }
 
-export async function reqeustBookmark() {
+export async function requestBookmark() {
   const bookmarks = (await findAllBookMarkCardIds()) || [];
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 }
