@@ -68,7 +68,6 @@ function RetryListPageContainer({
     const newCardQdo = new CardQdo();
     newCardQdo.limit = PAGE_SIZE;
     newCardQdo.offset = 0;
-    newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.LearningCancel;
     newCardQdo.orderBy = CardOrderBy.StudentModifiedTimeDesc;
 

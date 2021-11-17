@@ -275,6 +275,14 @@ function findRecommendCards(channelLimit?: number, limit?: number) {
     .then(AxiosReturn);
 }
 
+export function findRecommendCardsByChannelId(
+  channelId: string
+): Promise<RecommendCardRom> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/recommend/${channelId}`;
+  return axios.get(url).then((response) => (response && response.data) || []);
+}
+
 export const [findRecommendCardsCache, clearFindRecommendCards] =
   createCacheApi(findRecommendCards);
 

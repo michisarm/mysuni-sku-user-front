@@ -230,42 +230,42 @@ class MyTrainingService {
     return offsetList;
   }
 
-  @action
-  async findAndAddAllMyTrainingsWithRequired(
-    limit: number,
-    offset: number,
-    channelIds: string[] = []
-  ) {
-    //
-    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
-    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
+  // @action
+  // async findAndAddAllMyTrainingsWithRequired(
+  //   limit: number,
+  //   offset: number,
+  //   channelIds: string[] = []
+  // ) {
+  //   //
+  //   const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
+  //   const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    runInAction(
-      () => (this._myTrainings = this._myTrainings.concat(offsetList.results))
-    );
-    return offsetList;
-  }
+  //   runInAction(
+  //     () => (this._myTrainings = this._myTrainings.concat(offsetList.results))
+  //   );
+  //   return offsetList;
+  // }
 
-  @action
-  async findAndAddAllMyCommunityTrainings(limit: number, offset: number) {
-    //
-    const rdo = MyTrainingRdoModel.newWithCubeType(
-      CubeType.Community,
-      limit,
-      offset
-    );
-    const trainingOffsetElementList =
-      await this.myTrainingApi.findAllMyTrainings(rdo);
+  // @action
+  // async findAndAddAllMyCommunityTrainings(limit: number, offset: number) {
+  //   //
+  //   const rdo = MyTrainingRdoModel.newWithCubeType(
+  //     CubeType.Community,
+  //     limit,
+  //     offset
+  //   );
+  //   const trainingOffsetElementList =
+  //     await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    runInAction(
-      () =>
-        (this._myTrainings = this._myTrainings.concat(
-          trainingOffsetElementList.results
-        ))
-    );
+  //   runInAction(
+  //     () =>
+  //       (this._myTrainings = this._myTrainings.concat(
+  //         trainingOffsetElementList.results
+  //       ))
+  //   );
 
-    return trainingOffsetElementList;
-  }
+  //   return trainingOffsetElementList;
+  // }
 
   @action
   async countMyTrainingsWithStamp(

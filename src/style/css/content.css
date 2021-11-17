@@ -258,7 +258,7 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     background:#00bfae;
 }
 
-.emoji_icons .em_b { color: #222; }
+.emoji_icons .em_b { font-weight: normal; }
 
 /* 메인 > 뱃지 없을 때 > 버튼 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }

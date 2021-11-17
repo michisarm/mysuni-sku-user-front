@@ -43,9 +43,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   const { channelId, cardCount, totalCardCount, cardForUserViewRdos } = props;
 
   const isCardWithRelatedCountRoms =
-    cardForUserViewRdos == null || cardForUserViewRdos.length < 0
-      ? false
-      : true;
+    cardForUserViewRdos && cardForUserViewRdos.length > 0;
 
   const getCardCount = () => {
     if (totalCardCount !== undefined && totalCardCount >= 0) {
@@ -125,6 +123,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
                     (item) => {
                       return (
                         <div
+                          key={item.cardId}
                           className={`${channelId}-${swipeName} swiper-slide`}
                         >
                           <CardGroup type={GroupType.Wrap} key={item.cardId}>

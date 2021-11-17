@@ -91,16 +91,37 @@ class FilterBoxService {
   async findAllFilterCountViews(
     contentType: MyLearningContentType | MyPageContentType
   ) {
+    let hasStamp;
+    let searchable;
+    if (contentType === MyPageContentType.EarnedStampList) {
+      hasStamp = true;
+    }
+
+    if (
+      contentType === MyLearningContentType.InMyList ||
+      contentType === MyLearningContentType.Required
+    ) {
+      searchable = true;
+    }
+
     const parsingCardType = getParsingLearningType(contentType);
 
     const resultByCardType =
       (parsingCardType &&
-        (await this.lectureApi.findCardTypeAndCardCount(parsingCardType))) ||
+        (await this.lectureApi.findCardTypeAndCardCount(
+          parsingCardType,
+          hasStamp,
+          searchable
+        ))) ||
       [];
 
     const resultByCollegeId =
       (parsingCardType &&
-        (await this.lectureApi.findCollegeAndCardCount(parsingCardType))) ||
+        (await this.lectureApi.findCollegeAndCardCount(
+          parsingCardType,
+          hasStamp,
+          searchable
+        ))) ||
       [];
 
     runInAction(() => {

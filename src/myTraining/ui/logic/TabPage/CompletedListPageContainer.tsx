@@ -72,7 +72,6 @@ function CompletedListPageContainer({
     const newCardQdo = new CardQdo();
     newCardQdo.limit = parseInt(params.pageNo) * PAGE_SIZE;
     newCardQdo.offset = 0;
-    newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
     newCardQdo.orderBy = CardOrderBy.PassedStudentCountDesc;
 
@@ -83,7 +82,6 @@ function CompletedListPageContainer({
     const newCardQdo = new CardQdo();
     newCardQdo.limit = 9999999;
     newCardQdo.offset = 0;
-    newCardQdo.searchable = true;
     newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
     newCardQdo.orderBy = CardOrderBy.PassedStudentCountDesc;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import Swiper from 'react-id-swiper';
 import CardGroup, {
   GroupType,
@@ -109,10 +109,12 @@ export function RecommendContainer() {
   useEffect(() => {
     if (swiper !== null) {
       const onSlideChangeHandler = () => onSlideChange(swiper);
-      swiper.on('slideChange', onSlideChangeHandler);
-      return () => {
-        swiper.off('slideChange', onSlideChangeHandler);
-      };
+      if (!swiper.destroyed) {
+        swiper.on('slideChange', onSlideChangeHandler);
+        return () => {
+          swiper.off('slideChange', onSlideChangeHandler);
+        };
+      }
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
@@ -186,26 +188,41 @@ export function RecommendContainer() {
           className="cardSwiper swiper-no-txticon"
           data-action-name="관심채널"
         >
-          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
-            {cardList.map((item, i) => {
-              return (
-                <div className="swiper-slide" key={item.cardId}>
-                  <CardGroup type={GroupType.Wrap}>
-                    <LectureCardView
-                      {...item}
-                      useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_CHANNEL}
-                      hoverTrack={hoverTrack}
-                    />
-                  </CardGroup>
-                </div>
-              );
-            })}
-          </Swiper>
-          <div className={swipeName}>
-            <div className="swiper-button-prev" />
-            <div className="swiper-button-next" />
-          </div>
+          {cardList && cardList.length > 0 ? (
+            <>
+              <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
+                {cardList.map((item, i) => {
+                  return (
+                    <div className="swiper-slide" key={item.cardId}>
+                      <CardGroup type={GroupType.Wrap}>
+                        <LectureCardView
+                          {...item}
+                          useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                          dataArea={Area.MAIN_CHANNEL}
+                          hoverTrack={hoverTrack}
+                        />
+                      </CardGroup>
+                    </div>
+                  );
+                })}
+              </Swiper>
+              <div className={swipeName}>
+                <div className="swiper-button-prev" />
+                <div className="swiper-button-next" />
+              </div>
+            </>
+          ) : (
+            <div className="no-cont-wrap type2">
+              <Icon className="no-contents80" />
+              <span className="blind">콘텐츠 없음</span>
+              <div className="text02">
+                {getPolyglotText(
+                  '선택하신 채널에 해당하는 추천 학습과정이 없습니다.',
+                  'rcmd-추천-목록없음'
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Segment>

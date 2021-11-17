@@ -9,12 +9,14 @@ import {
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import {
   findByRdoCache,
+  findRecommendCardsByChannelId,
   findRecommendCardsCache,
 } from '../../../detail/api/cardApi';
 import { CardRdo } from '../../../detail/model/CardRdo';
 import {
   setRecommendCardRoms,
   useRecommendCardRoms,
+  getRecommendCardRoms,
 } from '../../../detail/store/RecommendCardRomsStore';
 import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import {
@@ -81,38 +83,69 @@ async function requestFindRecommendCards() {
       allChannelLoading: false,
     });
   } else {
-    const recommendCardRoms:
-      | RecommendCardRom[]
-      | undefined = await findRecommendCardsCache();
-
     const checkableChannels = getCheckableChannelsStore();
     if (checkableChannels === undefined) {
       return;
     }
-    setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
-    const nextRecommendCardRoms = checkableChannels
-      .filter((c) => c.checked === true)
-      .map<RecommendCardRom>((c) => {
-        if (recommendCardRoms) {
-          const cardForUserViewRdos = recommendCardRoms
-            .filter((rcr) => rcr.channelId === c.id)
-            .map((rcr) => rcr.cardForUserViewRdos)
-            .flat();
-          return {
-            channelId: c.id,
-            cardCount: cardForUserViewRdos.length,
-            cardForUserViewRdos,
-          };
-        } else {
-          return {
-            channelId: c.id,
-            cardCount: 0,
-            cardForUserViewRdos: [],
-          };
-        }
-      });
 
-    // const recommendCardRoms = await Promise.all(promiseArray);
+    const recommendCardRoms: RecommendCardRom[] | undefined =
+      getRecommendCardRoms();
+
+    setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
+
+    const checkedChannels = checkableChannels.filter((c) => c.checked);
+    let findRecommendCard: any = {};
+
+    /* eslint-disable no-await-in-loop */
+    for (const channel of checkedChannels) {
+      if (
+        recommendCardRoms &&
+        !recommendCardRoms.some((cardRoms) => cardRoms.channelId === channel.id)
+      ) {
+        findRecommendCard = await findRecommendCardsByChannelId(channel.id);
+      }
+    }
+
+    if (recommendCardRoms && findRecommendCard.channelId) {
+      recommendCardRoms.push(findRecommendCard);
+    }
+
+    const nextRecommendCardRoms =
+      recommendCardRoms
+        ?.filter((cardRoms) =>
+          checkedChannels.some((c) => c.id === cardRoms.channelId)
+        )
+        .sort((a, b) => {
+          return (
+            checkableChannels.findIndex(
+              (channel) => channel.id === a.channelId
+            ) -
+            checkableChannels.findIndex((channel) => channel.id === b.channelId)
+          );
+        }) || [];
+
+    // const nextRecommendCardRoms = checkableChannels
+    //   .filter((c) => c.checked === true)
+    //   .map<RecommendCardRom>((c) => {
+    //     if (recommendCardRoms) {
+    //       const cardForUserViewRdos = recommendCardRoms
+    //         .filter((rcr) => rcr.channelId === c.id)
+    //         .map((rcr) => rcr.cardForUserViewRdos)
+    //         .flat();
+    //       return {
+    //         channelId: c.id,
+    //         cardCount: cardForUserViewRdos.length,
+    //         cardForUserViewRdos,
+    //       };
+    //     } else {
+    //       return {
+    //         channelId: c.id,
+    //         cardCount: 0,
+    //         cardForUserViewRdos: [],
+    //       };
+    //     }
+    //   });
+
     setRecommendCardRoms(nextRecommendCardRoms);
     const nextRecommendPageViewModel = getRecommendPage();
     if (nextRecommendPageViewModel === undefined) {
@@ -189,7 +222,7 @@ function AllChannelsContainerView() {
             border: 0,
           }}
         >
-          <Loadingpanel loading={true} />
+          <Loadingpanel loading={true} color="#FFFFFF" />
         </Segment>
       </div>
     );
