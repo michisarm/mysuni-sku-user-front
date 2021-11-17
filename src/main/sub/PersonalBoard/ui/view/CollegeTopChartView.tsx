@@ -2,6 +2,7 @@ import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
 import React, { useEffect } from 'react';
 import { useCollegeTopChartItem } from '../../store/PersonalBoardStore';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
   myLearningSummary: MyLearningSummaryModel;
@@ -16,14 +17,19 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
         <div className="personal-card-item-box">
           <div className="personal-card-item">
             <div className="card-item-tit mb18">
-              <a className="card-item-link">
-                <h3>
-                  <PolyglotText
-                    defaultString="College별 학습 비중"
-                    id="home-PersonalBoard-college비중"
-                  />
-                </h3>
-              </a>
+              <MyLearningSummaryModal
+                trigger={
+                  <a className="card-item-link">
+                    <h3>
+                      <PolyglotText
+                        defaultString="College별 학습 비중"
+                        id="home-PersonalBoard-college비중"
+                      />
+                    </h3>
+                  </a>
+                }
+              />
+
               <span>
                 <PolyglotText
                   defaultString="전체 College 중 Top5"
