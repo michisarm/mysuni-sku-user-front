@@ -135,6 +135,11 @@
 .badge-txt { word-break: break-all; }
 
 /* Main > 도정중인 뱃지 > 뱃지리스트 수정 */
+.learning-section.type4 .badge-listbox {
+    border: #ddd 1px solid;
+    padding: 20px;
+    border-radius: 12px;
+}
 .badge-list-wrap {
     border-bottom: 0;
     height: 138px;
