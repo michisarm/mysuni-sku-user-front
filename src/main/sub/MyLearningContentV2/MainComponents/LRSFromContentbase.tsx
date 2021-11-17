@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import ReactGA from 'react-ga';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCardsFromContentBase } from '../../../../lecture/recommend/api/recommendApi';
+import { findRecommendationCardsFromLearningPatternBased } from '../../../../lecture/recommend/api/recommendApi';
 import { useHistory } from 'react-router-dom';
 import {
   getPolyglotText,
@@ -21,7 +21,6 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
@@ -68,7 +67,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    findRecommendationCardsFromContentBase().then((next) => {
+    findRecommendationCardsFromLearningPatternBased().then((next) => {
       if (next !== undefined) {
         const sortedCards = takeTwoOfEachCollege(next.cards);
         setViewModel({
