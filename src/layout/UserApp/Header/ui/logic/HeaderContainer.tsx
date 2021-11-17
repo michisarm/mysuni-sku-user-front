@@ -22,7 +22,7 @@ import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
 import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
-import { search } from '../../../../../search/search.events';
+import { getQueryId, search } from '../../../../../search/search.events';
 import { Dimmer } from 'semantic-ui-react';
 import { findAvailablePageElements } from 'community/ui/data/arrange/apis/apis';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
@@ -58,6 +58,17 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const isExternal = isExternalInstructor();
     !isExternal && this.avaible(); //api호출을 위해서 3.30
     document.addEventListener('scroll', this.handleScroll);
+
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+
+    // search 페이지의 헤더일 경우 최초 접근시 검색 입력 필드에 값 셋팅
+    const isSearchPage = this.props.location.pathname.startsWith('/search');
+    const isSearch =
+      this.props.location.search !== null && this.props.location.search !== '';
+    if (isSearchPage && isSearch && searchInfo.searchValue === '') {
+      searchService.setSearchInfoValue('searchValue', getQueryId());
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -79,7 +90,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
       url = `/suni-main${url}`;
     }
 
-    if (url === '/suni-main/pages/1' || url === '/suni-main/search') {
+    if (url === '/suni-main/pages/1' || url.includes('/suni-main/search')) {
       return true;
     }
 
@@ -124,8 +135,12 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     // 개발 시 주석 제거
     if (searchInfo.searchValue) {
       const { history } = this.props;
-      history.push(`/search?query=${searchInfo.searchValue}`);
-      // window.location.href = encodeURI(`/search?query=${searchValue}`);
+      if (!searchInfo.inAgain) {
+        history.push(`/search?query=${searchInfo.searchValue}`);
+        // window.location.href = encodeURI(`/search?query=${searchValue}`);
+      } else {
+        search(searchInfo.searchValue); // 결과내 재검색은 이미 /search 페이지에 들어와 있는 상태
+      }
 
       // search track
       debounceActionTrack({
@@ -256,7 +271,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     const { searchService } = this.injected;
     const { searchInfo, searchViewFocused, autoCompleteValues } = searchService;
 
-    const isSearchPage = this.props.location.pathname === '/search';
+    const isSearchPage = this.props.location.pathname.startsWith('/search');
     const isSearch =
       this.props.location.search !== null && this.props.location.search !== '';
 

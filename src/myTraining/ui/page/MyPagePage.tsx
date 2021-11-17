@@ -1,4 +1,4 @@
-import { deleteCookie, mobxHelper } from '@nara.platform/accent';
+import { deleteCookie, mobxHelper, StorageModel } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { LectureService } from 'lecture';
 import { BadgeService } from 'lecture/stores';
@@ -97,7 +97,10 @@ function MyPagePage({
   }, []);
 
   const onLogout = useCallback(() => {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
     sessionStorage.clear();
     deleteCookie('nara.isLogin');
     window.location.href = `${window.location.protocol}//${window.location.host}/api/checkpoint/sso/logout`;

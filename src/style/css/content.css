@@ -132,6 +132,47 @@
 
 /* Main > 도정중인 뱃지 */
 .learning-section.sec-tit-txt { word-break: break-all; }
+.badge-txt { word-break: break-all; }
+
+/* Main > 도정중인 뱃지 > 뱃지리스트 수정 */
+.learning-section.type4 .badge-listbox {
+    border: #ddd 1px solid;
+    padding: 20px;
+    border-radius: 12px;
+}
+.badge-list-wrap {
+    border-bottom: 0;
+    height: 138px;
+}
+.badge-col-list {
+    border-bottom: 0;
+    line-height: 26px;
+    font-size: 1rem;
+}
+.badge-col.cate-sign {
+    padding-left: 0;
+}
+.badge-col.cate {
+    padding: 10px 16px;
+}
+.badge-col.cate-sign .cate-icon {
+    background: transparent;
+    border: #CCC 3px solid;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    transform: translateY(2px);
+}
+.badge-col.cate-sign .cate-icon .cate-icon2 {
+    border: #ccc 2px solid;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 /* 커뮤니티 */
 .favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
@@ -229,6 +270,64 @@
 /* Hot Topic Page */
 .topic-title .sub-txt { word-break: break-word; }
 
+/* 핫토픽 페이지 레이아웃 수정 */
+#root .topic-list-wrap .card.card-item.topic-list {
+    height: 96px;
+    border-bottom: 0;
+    padding: 0;
+    margin-bottom: 30px;
+}
+.card.card-item.topic-list .card-inner .thumbnail-area {
+    width: 168px;
+    height: 96px;
+}
+.card.card-item.topic-list .card-inner .contents-area {
+    width: calc(100% - 168px);
+    padding: 0 0 0 20px;
+}
+.card-item .card-inner .contents-area .ui.label.college-name {
+    font-size: 12px;
+}
+.card.card-item.topic-list .card-inner .contents-area .topic-card-title {
+    margin-top: 0;
+    white-space: normal;
+    line-height: 1.5rem;
+    max-height: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.card.card-item.topic-list .card-inner .contents-area .tipic-card-txt {
+    height: 24px;
+    overflow: hidden;
+    line-height: 24px;
+    text-overflow: ellipsis;
+    display: -webkit-box;line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-top: 0;
+}
+.card.card-item.topic-list .card-inner .contents-area .icon-area {
+    position: static;
+    margin-top: 10px;
+}
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning {
+    padding-left: 0;
+    margin-left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before {
+    display: none;
+}
+.card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
+    padding: 7px 10px;
+}
+
 /* 이모지 */
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
 i.icon.icon_emoji_2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-2.svg') no-repeat center/100%;}
@@ -260,9 +359,20 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 .emoji_icons .em_b { font-weight: normal; }
 
-/* 메인 > 뱃지 없을 때 > 버튼 */
+/* 메인 > 뱃지 없을 때 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .button.ui.btn-badge-go { width: auto; }
+.badge-banner-wrap.no-badge .badge-txt {
+    font-size: 1.2rem;
+    line-height: 1.43;
+}
+.badge-banner-wrap.no-badge .badge-txt strong {
+    font-size: 1.375rem;
+}
+.badge-txt {
+    padding-right: 33px;
+    word-break: break-all;
+}
 
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
@@ -301,6 +411,18 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.modal.base .header { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .head .cell { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .cell:nth-of-type(2) { border-left: #ddd 1px solid; }
+/* 학습이수시간 팝업 버튼컬러 수정 */
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked+label+.buri {
+    background: none;
+    border-left: #52CBC0 14px solid;
+    border-top: transparent 9px solid;
+    border-bottom: transparent 9px solid;
+}
+.ui.rect-icon.radio.checkbox input:checked~label:before {
+    background: transparent !important;
+    border: #fff 7px solid !important;
+    border-radius: 50% !important;
+}
 
 /* College 소개 */
 .transcript-box .transcript-hover:hover{ background : #eee }
@@ -315,11 +437,19 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .mylearning-list-wrap {padding-top: 20px;}
 .confirm-list-wrap .list-top .list-number {color: #777;}
 .confirm-list-wrap .list-top .list-number span:after {background-color: #d6d6d6;}
+.confirm-list-wrap .ui.table { box-shadow: 0 2px 6px 0 rgb(76 76 76 / 20%);}
 .ui.button.approval .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-approval.svg')0 0/18px auto no-repeat }
 .ui.button.return .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-return.svg')0 0/18px auto no-repeat }
 
+/* 카테고리 전체보기 이미지 상실 보완 */
+i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
+i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
+i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
 
-
+/* 검색결과화면 */
+.result_category .ui.checked.radio.checkbox input:checked~label:before {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAMAAABVlYYBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABRUExURUdwTFTRyC7KvHHZ0V3TzCXIulHRxwrCsiDHuGTUzRjFtm7Y0EfPxD7Nwm3b23re3gC/rv///+76+TLLveD39a3q5UXQxPj9/ej5+Izi2qDn4HgJzLAAAAAQdFJOUwCw7y+P+bn++Hf7Qc/dBxflXQeFAAAAgklEQVQY03XR1w6AIAwF0DqQ4SqKGP3/D7Uihjq4DySchEILQIjulJSmLCpI0QJjZDfe2CCLan8Q0YQqGl8pCQf1VqwBar7fnaRVAPQMFzudii2oB86xRDjiNo5YXLrajSFpqOBX6xJShes24oR0W3yZdwlFrov/jjPTyUwyM/XvDx02ZhQIKFZWqQAAAABJRU5ErkJggg==) no-repeat 0 0!important;
+}
 
 
 ul.ui.list.my-task-bar {border-color: #ddd;}
@@ -331,3 +461,59 @@ ul.ui.list.my-task-bar {border-color: #ddd;}
 .community_templete .title_result .result_cnt{word-break : break-all}
 .ct_search_box .note_input input{padding-right : 30px}
 #root section.header.lms .group .g-search.search .input input{padding-right: 65px}
+
+
+/* 마이페이지 > 노트 */
+.note_area { box-shadow: 0 2px 6px 0 rgba(76,76,76, 0.2);}
+.note_title { border-color: #ddd;}
+.folder_area {border-color: #ddd;}
+
+/* 개인학습 create */
+.ui.table.create { border-color: #777;}
+
+.profile-contents-area .foll-info span { font-weight: 700;}
+.ui.button.del {border-color: #00bfae;color: #1c5551;}
+.ui.modal.base .header.res .sub.f12 { color: #777; }
+.ui.button.del:before{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-channel-delete.svg') no-repeat 0 0}
+
+.ui.modal.base .header.res .sub { color: #777;}
+.ui.radio.rect-icon input:checked + label { background: #00bfae;}
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked+label+.buri {
+width: 0;
+height: 0;
+border-width: 9px;
+border-color: #fff;
+background: #fff !important;
+right: -18px;
+border-style: solid;
+border-left-color: #00bfae;
+}
+
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important;}
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon label span { word-break: break-all; padding-right: 45px;}
+.completion-time .table-css .bullet-list2 .time { letter-spacing: -0.1px;}
+
+.stamp-list-wrapper .ui.table{overflow : hidden; border-radius : 8px}
+.course-cont .course-box .bar .num .completed { color: #999;}
+.badge-detail .ov-paragraph .list.bulleted .item .title{padding-top:10px}
+.channel .main-info-area { border-color: #ddd;}
+.channel-of-interest .item-wrap .ui.button.toggle.toggle4 { color: #1c5551;}
+.community-left .sub-info-box {box-shadow: 0 2px 6px 0 rgba(76,76,76, 0.2);}
+
+/* 검색결과 */
+.result .result_title .link_more { color: #777; font-weight: 400;}
+.relative_box dl dd a { border-color: #666; }
+.result .search_detail dt { color: #999; }
+.result .tagbox { color: #999;}
+.result .tagbox strong:after { background-color: #bbb;}
+.again_chk.ui.checkbox:not(.radio) label:before { border-color: #ccc !important; background: #fff !important;}
+.again_chk.ui.checkbox:not(.radio) input:focus~label:before,
+.again_chk.ui.checkbox:not(.radio) label:before,
+.again_chk.ui.checkbox:not(.radio) label:hover:before { background-color: #fff !important; background-image: none !important;}
+.again_chk.ui.checkbox:not(.radio) input:checked~label:before, .again_chk.ui.checkbox input:checked~label:before{
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0/100% no-repeat!important;
+}
+
+/* Certification 뱃지 페이지 */
+.challenge-wrap .challenge-badge .left-area .status button { background-color: #fff;}
+.ui.segment.full .top-guide-title .left-wrap .post + .list-number:after { background: #ddd;}
