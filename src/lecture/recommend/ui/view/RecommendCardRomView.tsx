@@ -43,9 +43,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
   const { channelId, cardCount, totalCardCount, cardForUserViewRdos } = props;
 
   const isCardWithRelatedCountRoms =
-    cardForUserViewRdos == null || cardForUserViewRdos.length < 0
-      ? false
-      : true;
+    cardForUserViewRdos && cardForUserViewRdos.length > 0;
 
   const getCardCount = () => {
     if (totalCardCount !== undefined && totalCardCount >= 0) {
