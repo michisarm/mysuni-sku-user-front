@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import Swiper from 'react-id-swiper';
 import CardGroup, {
@@ -65,6 +65,15 @@ export function RecommendContainer() {
       SkProfileService.instance.additionalUserInfo.favoriteChannelIds[0] || ''
     );
   });
+
+  const scrollRef = createRef<HTMLDivElement>();
+
+  function onClickSetChannelOpened(value: boolean) {
+    //
+    scrollRef.current?.scrollTo(0, 0);
+    setChannelOpend(value);
+  }
+
   useEffect(() => {
     // API 확인후 동작
     const axios = getAxios();
@@ -157,11 +166,11 @@ export function RecommendContainer() {
           <div className="channel-tag-btn">
             <Button
               className="channel-btn"
-              onClick={() => setChannelOpend(!channelOpened)}
+              onClick={() => onClickSetChannelOpened(!channelOpened)}
             />
           </div>
           <div className="channel-tag-box">
-            <div className="channel-wrap">
+            <div className="channel-wrap" ref={scrollRef}>
               {SkProfileService.instance.additionalUserInfo.favoriteChannelIds.map(
                 (id) => {
                   return (
@@ -173,7 +182,7 @@ export function RecommendContainer() {
                       key={id}
                       onClick={() => {
                         setSelectedChannelId(id);
-                        setChannelOpend(false);
+                        // setChannelOpend(false);
                       }}
                     >
                       {getChannelName(id)}
