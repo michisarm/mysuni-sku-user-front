@@ -803,7 +803,7 @@ function paramsSerializer(paramObj: Record<string, any>) {
 export function findNaverOpenApiErrata(keyword: string) {
   const url = `${SEARCH_API_URL}/errata`;
   return axiosApi
-    .get<{ errata: string }>(url, { params: { keyword } })
+    .get<{ errata: string }>(url, { params: { keyword }, paramsSerializer })
     .then(AxiosReturn);
 }
 
