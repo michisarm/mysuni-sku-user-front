@@ -189,11 +189,12 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   init() {
     //
-    const { match } = this.props;
+    const { match, history } = this.props;
     const { newPageService, lectureService } = this.injected;
-    const pageNo = parseInt(match.params.pageNo, 10);
-    newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
-    lectureService!.clearLectures();
+    const pageNo = 8;
+    history.replace(routePaths.collegeLecturesPage(1));
+    newPageService!.initPageMap(this.PAGE_KEY, pageNo, 1);
+    lectureService!.clearCollegeLectures();
   }
 
   clearAndInit() {
@@ -217,6 +218,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
+
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
   }
 
@@ -390,15 +392,24 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   renderCollegeLectures() {
     //
-    const { newPageService, collegeService, reviewService } = this.injected;
+
+    const { newPageService, collegeService, reviewService, lectureService } =
+      this.injected;
     const { lectures, sorting, totalCnt, collegeOrder, loading } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const { college } = collegeService;
+    const { ratingMap } = reviewService;
+
+    const { _userLectureCards } = lectureService!;
+
+    const userLanguage = parseLanguage(
+      SkProfileService.instance.skProfile.language
+    );
 
     return (
       <CategoryLecturesWrapperView
         header={
-          lectures &&
-          lectures.length > 0 && (
+          _userLectureCards &&
+          _userLectureCards.length > 0 && (
             <>
               <DescriptionView
                 name={`${parsePolyglotString(
@@ -430,10 +441,12 @@ class CollegeLecturesContainerInner extends ReactComponent<
           >
             <Loadingpanel loading={loading} />
           </Segment>
-        ) : lectures && lectures.length > 0 && lectures[0] ? (
+        ) : _userLectureCards &&
+          _userLectureCards.length > 0 &&
+          _userLectureCards[0] ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((userLectureCard: CardProps, index) => {
+              {_userLectureCards.map((userLectureCard: CardProps, index) => {
                 return (
                   <React.Fragment key={index}>
                     <LectureCardView

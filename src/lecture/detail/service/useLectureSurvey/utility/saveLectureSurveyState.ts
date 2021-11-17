@@ -83,13 +83,8 @@ async function coreSaveLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -126,13 +121,8 @@ async function coreSubmitLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
@@ -162,7 +152,13 @@ async function coreSubmitLectureSurveyState() {
   const requiredMissAnswers = lectureSurvey.surveyItems
     .filter((c) => c.isRequired)
     .filter(
-      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
+      (c) =>
+        !answerItem.some(
+          (d) =>
+            d.questionNumber === c.questionNumber &&
+            (c.type !== 'Matrix' ||
+              (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
+        )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
@@ -208,13 +204,8 @@ export async function coreLectureSurveyState() {
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
-  const {
-    serviceId,
-    round,
-    surveyCaseId,
-    answerItem,
-    answerSheetId,
-  } = lectureSurveyState;
+  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+    lectureSurveyState;
 
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,

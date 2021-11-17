@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import ReactGA from 'react-ga';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCardsFromLearningPatternBased } from '../../../../lecture/recommend/api/recommendApi';
+import { findRecommendationCardsFromContentBase } from '../../../../lecture/recommend/api/recommendApi';
 import { useHistory } from 'react-router-dom';
 import {
   getPolyglotText,
@@ -22,7 +22,6 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props {
@@ -67,7 +66,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    findRecommendationCardsFromLearningPatternBased().then((next) => {
+    findRecommendationCardsFromContentBase().then((next) => {
       if (next !== undefined) {
         const sortedCards = takeTwoOfEachCollege(next.cards);
         setViewModel({
@@ -110,7 +109,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{name} 님이 관심가질만한 과정을 모아봤어요~',
+              '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
               'main-lrs-title2',
               {
                 name: SkProfileService.instance.profileMemberName,

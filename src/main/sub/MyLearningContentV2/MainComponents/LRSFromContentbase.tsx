@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import ReactGA from 'react-ga';
 import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCardsFromContentBase } from '../../../../lecture/recommend/api/recommendApi';
+import { findRecommendationCardsFromLearningPatternBased } from '../../../../lecture/recommend/api/recommendApi';
 import { useHistory } from 'react-router-dom';
 import {
   getPolyglotText,
@@ -21,7 +21,6 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
@@ -68,7 +67,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    findRecommendationCardsFromContentBase().then((next) => {
+    findRecommendationCardsFromLearningPatternBased().then((next) => {
       if (next !== undefined) {
         const sortedCards = takeTwoOfEachCollege(next.cards);
         setViewModel({
@@ -111,7 +110,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{name} 님의 학습패턴을 기반으로 추천 드려요!',
+              '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
               'main-lrs-title1',
               {
                 name: SkProfileService.instance.profileMemberName,

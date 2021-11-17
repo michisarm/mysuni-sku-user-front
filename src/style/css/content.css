@@ -148,6 +148,8 @@
 .community-main-left .community-main-left-list .community-main-left-span>span:first-child{word-break : break-all}
 .main-info-area>.progress-info-wrap.personal-detail .cell:nth-child(4){vertical-align : middle}
 .community-main-left .community-main-left-contents .thumbnail img{border-radius: 50%; border: 1px solid #eee}
+.g-info.info .btn_user img{ width: 32px; height: 32px; }
+.g-info.info .btn_user{ width:32px;height:32px; }
 
 /* Category poopup */
 .g-menu-detail .layer .table-css .row.head .cell:last-of-type {
@@ -217,6 +219,7 @@
 .ui.comments .comment .avatar img,
 .ui.comments .comment img.avatar,
 .profile-contents-area .image-area img { image-rendering : -webkit-optimize-contrast }
+.stamp-list-wrapper .ui.table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
 
 /* Hot Topic Card(개별) */
 .card.topic-item .ui.label.topic-info.time { display: none; }
@@ -255,6 +258,8 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     background:#00bfae;
 }
 
+.emoji_icons .em_b { font-weight: normal; }
+
 /* 메인 > 뱃지 없을 때 > 버튼 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
 
@@ -276,6 +281,29 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .main-time-info { margin-top: 0; }
 .personal-info-go { margin-top: 40px; }
 
-/*  */
+/* 에디터 */
 .admin_menu_wrap .ui.editor-wrap{width : 38.75rem}
 .ui.editor-wrap{width : auto}
+
+/* 학습카드 상세 > 차수정보 테이블 */
+.ui.segment.full .contents.overview .ov-paragraph .title-style .onlytext span { color: #666; }
+.ui.segment.full .contents.overview .ov-paragraph .btn-blue .icon.morelink { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-link.svg) 50% 0; }
+.ui.segment.full .contents.overview .ov-paragraph .series-wrap .table { border-top: 4px solid #ccc; border-bottom: 4px solid #ccc; }
+.ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info th:first-child { border-bottom: 1px solid #ccc; }
+.ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info td { border-bottom: #ddd 1px solid; }
+
+/* 마이러닝 > 학습이수시간 팝업 */
+.ui.radio.rect-icon label::before {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-nomal@3x.png) no-repeat 0 0 !important;
+    background-size: 100% 100% !important;
+}
+.ui.modal.base .header { border-bottom: #ddd 1px solid; }
+.completion-time .table-css .head .cell { border-bottom: #ddd 1px solid; }
+.completion-time .table-css .cell:nth-of-type(2) { border-left: #ddd 1px solid; }
+
+/* College 소개 */
+.transcript-box .transcript-hover:hover{ background : #eee }
+
+/* 메인 > 퍼스널카드 */
+.std-slider-container .over-img::after{ background: rgba(67,71,77,0.1) url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-main-play.png') 50% 50%/54px auto no-repeat; }
+.margin-bottom-80 + .content.searchTotal{ padding-top:80px }
