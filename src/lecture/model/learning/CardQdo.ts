@@ -47,17 +47,18 @@ class CardQdo {
     this.endLearningDate = conditions.endDate
       ? moment(conditions.endDate).format('YYYY-MM-DD')
       : '';
-    const tempRequired =
-      (conditions.required === 'true' && true) || this.required;
+    const tempRequired = this.getRequired(conditions.required);
+    console.log(tempRequired);
     this.required = tempRequired;
 
     if (conditions.certifications && conditions.certifications.length > 0) {
       this.hasStamp =
-        (conditions.certifications.find((x) => x === 'stamp') && true) ||
-        this.hasStamp;
+        (conditions.certifications.find((x) => x === 'stamp') && true) || '';
       this.hasBadge =
-        (conditions.certifications.find((x) => x === 'badge') && true) ||
-        this.hasBadge;
+        (conditions.certifications.find((x) => x === 'badge') && true) || '';
+    } else {
+      this.hasStamp = '';
+      this.hasBadge = '';
     }
 
     this.offset = 0;
@@ -69,6 +70,19 @@ class CardQdo {
     this.type = conditions.learningTypes.join(',');
 
     return this;
+  }
+
+  private getRequired(value: string): boolean | '' {
+    switch (value) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      case 'none':
+      case '':
+      default:
+        return '';
+    }
   }
 }
 
