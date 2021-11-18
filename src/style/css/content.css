@@ -465,9 +465,12 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 .ui.button.return .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-return.svg')0 0/18px auto no-repeat }
 
 /* 카테고리 전체보기 이미지 상실 보완 */
-i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
-i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
-i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
+i.icon.college-sv86:before {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-sv-86-px.dd4cab9c.png) 0 0/100% no-repeat!important}
+i.icon.college-skacademy86:before {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0/100% no-repeat!important}
+i.icon.college-operation86:before{
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0/100% no-repeat!important}
 
 /* 검색결과화면 */
 .result_category .ui.checked.radio.checkbox input:checked~label:before {
@@ -553,8 +556,8 @@ border-left-color: #00bfae;
 .apl-form-wrap .ui.form .section-tit .text1 {color: #222;}
 .scrolling-60vh.faq-list-wrap .accordion.ui.styled .content > div { padding-bottom: 10px;}
 .faq-list-wrap .accordion.ui.styled .content.active > div { padding-bottom: 10px;}
-.create .create-detail dl dt { padding-left: 14px; width: 180px;}
-.create .create-detail dl dt:before { margin: 0; left: -14px;}
+.create .create-detail dl dt { padding-left: 14px; width: 180px; text-indent : -4px}
+.create .create-detail dl dt:before { margin: 0; left: -10px;}
 .create .create-detail dl dd { vertical-align: top; margin-left: 10px; }
 .apl-form-wrap .time-wrap>.time { width: auto; }
 
