@@ -527,7 +527,7 @@ border-left-color: #00bfae;
 
 /* 검색결과 */
 .result .result_title .link_more { color: #777; font-weight: 400;}
-.relative_box dl dd a { border-color: #666; }
+.relative_box dl dd a { border-color: #666; color: #666; }
 .result .search_detail dt { color: #999; }
 .result .tagbox { color: #999;}
 .result .tagbox strong:after { background-color: #bbb;}
