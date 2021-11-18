@@ -176,7 +176,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { params: prevParams } = prevProps.match;
     const { params } = this.props.match;
-    console.log(params.pageNo, prevParams.pageNo);
+
     if (prevParams.collegeId !== params.collegeId) {
       await this.findCollegeOrder();
       this.clearAndInit();
@@ -218,7 +218,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-    console.log('이닛', page);
+
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
   }
 
@@ -226,7 +226,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-    console.log('이것도 호출?', page.nextOffset);
+
     this.findPagingCollegeLectures(page.limit, page.nextOffset);
   }
 
@@ -248,7 +248,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const totalCount = lectureOffsetList.totalCount;
     this.setState({ totalCnt: totalCount });
-    console.log('pageNo 들어갈때 오프셋', match.params.pageNo);
 
     newPageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
