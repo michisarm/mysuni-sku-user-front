@@ -4,14 +4,13 @@ import { Area } from 'tracker/model';
 
 interface FolderPageProps {
   noteCount: number;
-  dataArea?: Area;
 }
 
-const FolderPage: React.FC<FolderPageProps> = function FolderPage({ noteCount, dataArea }) {
+const FolderPage: React.FC<FolderPageProps> = function FolderPage({ noteCount }) {
 
   return (
     <>
-      <div className="mypage_contents profile-badge-contents" data-area={dataArea}>
+      <div className="mypage_contents profile-badge-contents" data-area={Area.MYPAGE_NOTE}>
         <strong className="mypage_title">Note</strong>
         <div className="ui segment full note-tab-area">
           <FolderContainer noteCount={noteCount} />
