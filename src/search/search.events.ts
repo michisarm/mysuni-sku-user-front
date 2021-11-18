@@ -215,7 +215,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
 export function settingSearchFilter(searchValue: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue === '') {
     return;
@@ -599,7 +599,7 @@ export async function search(
 ) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
@@ -674,7 +674,7 @@ export async function searchDataWithErrata(
 export async function searchData(searchValue: string, searchType?: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   if (decodedSearchValue === '') {
@@ -777,7 +777,7 @@ export async function searchInSearchData(
 ) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   const cards = getAllowedCard();

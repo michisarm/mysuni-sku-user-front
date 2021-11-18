@@ -29,9 +29,11 @@ import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {
   //
-  const initialConditionLimit = 5;
+  const initialConditionLimit = 999;
   const [activeIndex, setActiveIndex] = useState<Number>(-1);
-  const [collegeLimit, setCollegeLimit] = useState<Number>(999);
+  const [collegeLimit, setCollegeLimit] = useState<Number>(
+    initialConditionLimit
+  );
   const [cubeTypeLimit, setCubeTypeLimit] = useState<Number>(
     initialConditionLimit
   );
@@ -53,7 +55,7 @@ export function SearchContentsResultSideView() {
   // const card = getDisplayCard();
   useEffect(() => {
     settingSearchFilter(queryId);
-    setCollegeLimit(999);
+    setCollegeLimit(initialConditionLimit);
     setCubeTypeLimit(initialConditionLimit);
   }, [allowedCard]);
 
@@ -420,7 +422,7 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {cubeTypeOptions.length > initialConditionLimit &&
+              {/*cubeTypeOptions.length > initialConditionLimit &&
                 cubeTypeLimit < 999 && (
                   <Button
                     className="btn_more"
@@ -432,7 +434,7 @@ export function SearchContentsResultSideView() {
                     />
                     <Icon color="grey" name="angle down" />
                   </Button>
-                )}
+                )*/}
             </Accordion.Content>
           </Accordion>
         )}
