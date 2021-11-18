@@ -30,6 +30,7 @@ class CardQdo {
   studentLearning: StudentLearningType = StudentLearningType.None;
 
   bookmark: boolean | '' = '';
+  ignoreAccessRule: boolean | '' = '';
 
   orderBy: CardOrderBy = CardOrderBy.None;
 

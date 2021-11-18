@@ -168,12 +168,13 @@ class LectureApi {
   findCardTypeAndCardCount(
     type: ParsingLearningType,
     hasStamp?: boolean,
-    searchable?: boolean
+    searchable?: boolean,
+    ignoreAccessRule?: boolean
   ) {
     //
     return axiosApi
       .get<CountByCardTypeModel[]>(this.learningUrl + '/cardTypeAndCardCount', {
-        params: { type, hasStamp, searchable },
+        params: { type, hasStamp, searchable, ignoreAccessRule },
       })
       .then((response) => (response && response.data) || []);
   }
@@ -181,12 +182,13 @@ class LectureApi {
   findCollegeAndCardCount(
     type: ParsingLearningType,
     hasStamp?: boolean,
-    searchable?: boolean
+    searchable?: boolean,
+    ignoreAccessRule?: boolean
   ) {
     //
     return axiosApi
       .get<CountByCollegeIdModel[]>(this.learningUrl + '/collegeAndCardCount', {
-        params: { type, hasStamp, searchable },
+        params: { type, hasStamp, searchable, ignoreAccessRule },
       })
       .then((response) => (response && response.data) || []);
   }
