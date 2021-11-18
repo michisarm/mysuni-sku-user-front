@@ -18,13 +18,13 @@ export default function MySuniCollegeTimeView() {
 
   return (
     <ul className="bullet-list2">
-      {allColleges.filter(isMySuniCollege).map((c) => {
+      {allColleges.filter(isMySuniCollege).map((c, idx) => {
         const time =
           collegeLearningTimes.find((d) => d.collegeId == c.id)?.learningTime ||
           0;
         return (
           <li key={c.id}>
-            <span className="name b1" style={{ width: 230 }}>
+            <span className={`name b${idx + 1}`} style={{ width: 230 }}>
               {getCollgeName(c.id)}
             </span>
             <span className="time">{timeToHourMinutePaddingFormat(time)}</span>
