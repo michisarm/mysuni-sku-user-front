@@ -112,15 +112,15 @@ class LecturesByChannelContainer extends Component<Props, State> {
   }
 
   onSlideChangeHandler = (swiper: any) => {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.COLLEGE_CARD,
         scrollClassName: 'cardSwiper',
         actionName: 'COLLEGE 스크롤',
-      })  
+      });
     }
-  }
+  };
 
   async findLectures() {
     //
@@ -173,9 +173,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const { collegeId } = this.props.match.params;
     const { cardWithCardRealtedCounts, totalCount, isLoading } = this.state;
     const { ratingMap } = reviewService as ReviewService;
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     return (
       <>
@@ -207,25 +205,34 @@ class LecturesByChannelContainer extends Component<Props, State> {
               </div>
             </div>
             <div className="section-body">
-              <div className="cardSwiper" data-action-name={parsePolyglotString(channel.name, 'ko')+`의 학습 과정 입니다`}>
-                <Swiper {...SwiperProps(channel.id)} getSwiper={s => this.setState({swiper: s})}>
-                  {parseUserLectureCards(cardWithCardRealtedCounts).map(
-                    (card, i) => {
-                      return (
-                        <div className="swiper-slide" key={card.cardId}>
-                          <CardGroup type={GroupType.Wrap}>
-                            <LectureCardView
-                              {...card}
-                              userLanguage={userLanguage}
-                              useBookMark={true}
-                              dataArea={Area.COLLEGE_CARD}
-                              hoverTrack={hoverTrack}
-                            />
-                          </CardGroup>
-                        </div>
-                      );
-                    }
-                  )}
+              <div
+                className="cardSwiper"
+                data-action-name={
+                  parsePolyglotString(channel.name, 'ko') +
+                  `의 학습 과정 입니다`
+                }
+              >
+                <Swiper
+                  {...SwiperProps(channel.id)}
+                  getSwiper={(s) => this.setState({ swiper: s })}
+                >
+                  {parseUserLectureCards(
+                    cardWithCardRealtedCounts,
+                    userLanguage
+                  ).map((card, i) => {
+                    return (
+                      <div className="swiper-slide" key={card.cardId}>
+                        <CardGroup type={GroupType.Wrap}>
+                          <LectureCardView
+                            {...card}
+                            useBookMark={true}
+                            dataArea={Area.COLLEGE_CARD}
+                            hoverTrack={hoverTrack}
+                          />
+                        </CardGroup>
+                      </div>
+                    );
+                  })}
                 </Swiper>
                 <div className={channel.id}>
                   <div className="swiper-button-prev" />

@@ -9,10 +9,7 @@ import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import {
-  parseLanguage,
-  parsePolyglotString,
-} from 'shared/viewmodel/PolyglotString';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   CardProps,
@@ -50,20 +47,18 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: dataArea,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
   const fetchCardList = async () => {
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     if (cardBundle.cardIds) {
       const cardList = await findCardFromCardBundle(
@@ -217,11 +212,17 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         </div>
       </div>
       <div className="section-body">
-        <div 
+        <div
           className="cardSwiper"
-          data-action-name={cardBundle.type === 'New' ?  '따끈따끈 신규 과정' : cardBundle.type === 'Popular' ? '인기 과정을 소개해드려요!' : parsePolyglotString(cardBundle?.displayText,'ko')}
+          data-action-name={
+            cardBundle.type === 'New'
+              ? '따끈따끈 신규 과정'
+              : cardBundle.type === 'Popular'
+              ? '인기 과정을 소개해드려요!'
+              : parsePolyglotString(cardBundle?.displayText, 'ko')
+          }
         >
-          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardList.map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>
