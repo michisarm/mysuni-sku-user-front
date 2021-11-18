@@ -91,6 +91,8 @@
 .badge-navi .btn-prev.prev-off { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px-disable.svg); }
 .badge-navi .btn-prev.prev-on { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg); }
 
+.badge-detail .ov-paragraph .list.bulleted .item .title {padding-left: 10px;}
+
 /* 학습카드(개별) */
 .card-item .custom-icon.icon-clock { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tictoc.svg); }
 .card-item .custom-icon.icon-bravo { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-bravo.svg); }
@@ -219,6 +221,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 /* 커뮤니티 */
 .favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat 0.938rem;}
 .favorites_tab .ui.menu .item.active .total { color: #ff664d; }
+.check-type1 input + .check-type1-text { line-height: 1.375rem; }
 .check-type1 input:checked + .check-type1-text{ color : #00bfae; border : 1px solid #00bfae; line-height: 1.375rem; }
 .check-type1 input:checked + .check-type1-text span{color : #ff664d}
 .community-slide-wrap .icon.next-on {
@@ -233,6 +236,22 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .community-main-left .community-main-left-contents .thumbnail img{border-radius: 50%; border: 1px solid #eee}
 .g-info.info .btn_user img{ width: 32px; height: 32px; }
 .g-info.info .btn_user{ width:32px;height:32px; }
+
+/* 커뮤니티 > 타인의 커뮤니티 타이틀 클릭: 팝업 */
+.profile-modal-new .follow-bttn-area .button.following {
+    background-color: #00bfae;
+    border: 1px solid #00bfae;
+}
+.profile-modal-new .right-side .ui.menu .item.active {
+    background: #00bfae !important;
+    border-color: #00bfae;
+}
+.profile-modal-new .right-side .ui.menu {
+    border-bottom: 1px solid #00bfae;
+}
+.profile-modal-new .list-wrapper .top-line span strong {
+    color: #00bfae;
+}
 
 /* Category poopup */
 .g-menu-detail .layer .table-css .row.head .cell:last-of-type {
@@ -288,6 +307,12 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .filter-table .moreAll {
     border-color: #777;
 }
+.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time .label>span>strong {
+    margin-top: 0;
+}
+.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time>.ui.label.onlytext {
+    margin-top: 0;
+}
 
 /* Mypage */
 .ui.menu.note-tab a.item.active { background: #fff; }
@@ -303,6 +328,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.comments .comment img.avatar,
 .profile-contents-area .image-area img { image-rendering : -webkit-optimize-contrast }
 .stamp-list-wrapper .ui.table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
+.mypagev2 .ui.segment.full .top-guide-title .ui.button.excel-down { margin-left: 0; }
 
 /* Hot Topic Card(개별) */
 .card.topic-item .ui.label.topic-info.time { display: none; }
@@ -313,6 +339,12 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .topic-title .sub-txt { word-break: break-word; }
 
 /* 핫토픽 페이지 레이아웃 수정 */
+.topic-title .page-title-wrap {
+    padding: 40px 0 20px;
+}
+.topic-list-wrap {
+    padding-right: 60px;
+}
 #root .topic-list-wrap .card.card-item.topic-list {
     height: 96px;
     border-bottom: 0;
@@ -579,7 +611,6 @@ border-left-color: #00bfae;
 
 
 .total_box .button.btn_download{margin-right : 0}
-.ui.segment.full .top-guide-title .ui.button.excel-down {margin-left: 0;}
 .ui.dropdown.small-border .text{color : #777 !important}
 .result_category .title { height: 50px; font-size: 1rem !important;}
 .stamp-list-wrapper .table tr .title { line-height: 1.43;}
@@ -616,7 +647,19 @@ border-left-color: #00bfae;
     height: 38px;
     line-height: 38px;
 }
+.support .post-view-wrap .post-view {
+    border-bottom: #ddd 1px solid;
+}
+.post-view-wrap .comment-area {
+    border-bottom: #ddd 1px solid;
+}
 
 
 .compo_vod .compo_info .info_top .writer img { position: relative; display: inline-block; vertical-align: middle; max-width: 100%; background-color: transparent;}
 .compo_vod .compo_thumb { height: 205px; overflow: hidden;}
+
+/* 문의글쓰기 > 첨부파일 삭제 버튼 텍스트 삭제 */
+.lg-attach .attach-inner .side-segment-list .ui.list .item .material-icons {
+    font-size: 0;
+    display: inline-block;
+}
