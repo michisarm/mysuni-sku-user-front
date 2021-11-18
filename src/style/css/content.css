@@ -602,3 +602,21 @@ border-left-color: #00bfae;
     background: #fff !important;
     border: #ccc 1px solid !important;
 }
+
+
+.community-main-left>.sub-info-box>.main-left-search>.ui.input.search.h38 input { border-color: #7f7f7f !important; color: #222 !important;}
+.community-main-left>.sub-info-box>.main-left-search>.ui.input.search.h38 input::placeholder { color: #999 !important;}
+.ui.active.visible.selection.dropdown.small-border.select-right { text-indent: 0;}
+.ui.selection.dropdown.small-border.select-right {text-indent: 10px;color: #777 !important;}
+.survey-preview .ui.button.fix.line{background: #fff}
+
+
+/* Notice */
+.support-list-wrap .list-top .list-top-left {
+    height: 38px;
+    line-height: 38px;
+}
+
+
+.compo_vod .compo_info .info_top .writer img { position: relative; display: inline-block; vertical-align: middle; max-width: 100%; background-color: transparent;}
+.compo_vod .compo_thumb { height: 205px; overflow: hidden;}
