@@ -176,13 +176,13 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { params: prevParams } = prevProps.match;
     const { params } = this.props.match;
-
+    console.log(params.pageNo, prevParams.pageNo);
     if (prevParams.collegeId !== params.collegeId) {
       await this.findCollegeOrder();
       this.clearAndInit();
       this.initialFindPagingCollegeLectures();
     }
-    if (prevParams.pageNo !== params.pageNo) {
+    if (prevParams.pageNo < params.pageNo) {
       this.addFindPagingCollegeLectures();
     }
   }
@@ -199,8 +199,8 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   clearAndInit() {
     //
+
     this.init();
-    this.setState({ lectures: [] });
   }
 
   findChannels() {
@@ -218,7 +218,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-
+    console.log('이닛', page);
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
   }
 
@@ -226,7 +226,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
     //
     const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-
+    console.log('이것도 호출?', page.nextOffset);
     this.findPagingCollegeLectures(page.limit, page.nextOffset);
   }
 
@@ -235,7 +235,8 @@ class CollegeLecturesContainerInner extends ReactComponent<
     const { match, scrollOnceMove } = this.props;
     const { newPageService, lectureService } = this.injected;
     const { sorting } = this.state;
-    const pageNo = parseInt(match.params.pageNo, 10);
+
+    const pageNo = offset !== 0 ? parseInt(match.params.pageNo, 10) : 1;
 
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(
       match.params.collegeId,
@@ -243,15 +244,11 @@ class CollegeLecturesContainerInner extends ReactComponent<
       offset,
       sorting
     );
-    const userLectureCards = lectureService._userLectureCards;
-
-    this.setState((prevState) => ({
-      lectures: [...prevState.lectures, ...userLectureCards],
-    }));
 
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const totalCount = lectureOffsetList.totalCount;
     this.setState({ totalCnt: totalCount });
+    console.log('pageNo 들어갈때 오프셋', match.params.pageNo);
 
     newPageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
