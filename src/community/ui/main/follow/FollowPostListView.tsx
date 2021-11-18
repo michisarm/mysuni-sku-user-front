@@ -35,7 +35,7 @@ function ItemView(props: MainFollowPostItem) {
       return;
     }
 
-    const url = `${window.location.origin}/community/${communityId}/post/${postId}`;
+    const url = `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
   const bookmarkClick = useCallback(() => {
