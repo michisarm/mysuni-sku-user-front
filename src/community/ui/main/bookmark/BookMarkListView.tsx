@@ -10,6 +10,7 @@ import {
 import { BookMarkItem } from './bookmark.models';
 import { copyUrl } from '../../../packages/services/html.services';
 import { Content } from '../components/Content';
+import { NoBookMarkList } from './NoBookMarkList';
 
 function BookMarkPostView(props: BookMarkItem) {
   const {
@@ -179,7 +180,7 @@ export function BookMarkListView() {
   useRequestBookMark();
   const bookmark = useBookMark();
   if (bookmark === undefined || bookmark.bookmarkList.length === 0) {
-    return null;
+    return <NoBookMarkList />;
   }
 
   const { bookmarkList, totalcount, offset } = bookmark;
