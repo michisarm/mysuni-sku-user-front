@@ -1009,7 +1009,7 @@ const koPanes = [
               </div>
               <div className="text-right-box">
                 <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                  href="/lecture/college/CLG00006/channels/pages/1"
                   className="item-button"
                 >
                   <img
