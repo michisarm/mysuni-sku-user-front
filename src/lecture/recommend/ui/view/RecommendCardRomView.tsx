@@ -114,7 +114,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper">
+        <div className="cardSwiper" data-action-name={getChannelName(channelId)}>
           {(isCardWithRelatedCountRoms && (
             <>
               <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
