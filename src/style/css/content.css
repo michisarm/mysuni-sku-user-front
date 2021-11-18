@@ -562,3 +562,6 @@ border-left-color: #00bfae;
 
 .main-info-area>.progress-info-wrap.personal-channel .cell .text-info .name { max-width: 100%; white-space: nowrap; word-break: break-all;}
 #root .video-fixed-holder.lms-video-fixed+.lms-sticky-menu {border-color: #ddd;}
+
+/* 학습상세 스크롤 해결 */
+.description.ql-editor {overflow-y: inherit;}
