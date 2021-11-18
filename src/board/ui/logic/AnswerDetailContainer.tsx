@@ -88,7 +88,7 @@ class AnswerDetailContainer extends Component<Props, States> {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: 'Support' },
+          { text: 'Support', path: routePaths.supportNotice() },
           { text: 'Q&A' },
           { text: 'Answered' },
         ]}

@@ -123,7 +123,7 @@ export class BoardListPage extends ReactComponent<Props, {}, Injected> {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: `Support`, path: routePaths.supportNotice() },
+          { text: 'Support', path: routePaths.supportNotice() },
           {
             text: this.getBreadCrumbString(),
             path: routePaths.supportTab(params.boardId),
