@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect } from 'react';
+import React, { createRef } from 'react';
 import {
   reactAutobind,
   getCookie,
@@ -9,7 +9,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
-import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
@@ -24,9 +23,9 @@ import SearchService from '../../../../../search/service/SearchService';
 import { inject, observer } from 'mobx-react';
 import { getQueryId, search } from '../../../../../search/search.events';
 import { Dimmer } from 'semantic-ui-react';
-import { findAvailablePageElements } from 'community/ui/data/arrange/apis/apis';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
+import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
 
 interface Props extends RouteComponentProps {}
 
@@ -258,7 +257,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
   }
 
   async avaible() {
-    const response = await findAvailablePageElements();
+    const response = await findAvailablePageElementsCache();
 
     if (response) {
       setMenuAuthModel(response);

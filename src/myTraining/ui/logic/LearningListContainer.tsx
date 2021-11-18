@@ -3,11 +3,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Segment } from 'semantic-ui-react';
 import { Lecture } from 'lecture';
 import { NoSuchContentPanel } from 'shared';
-import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { UpcomingClassroomInfo } from '../../../lecture/model/UpcomingClassroomInfo';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
-import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { find } from 'lodash';
 import { findEnrollingCardList } from '../../../lecture/detail/api/cardApi';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
@@ -26,6 +24,7 @@ import {
 } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { SkProfileService } from '../../../profile/stores';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 interface MatchPrams {
   type: string;
@@ -73,7 +72,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         setCardList(parseUserLectureCards(cardList.results, userLanguage));
       }
     } else {
-      const cardBundles = await findAvailableCardBundles();
+      const cardBundles = await findAvailableCardBundlesCache();
 
       // 현재는 uuid 값을 받아서 필터 유니크한 타입이 생성이 되면 id => type으로 변경시켜야 한다.
       const filteredCardBundle = find(cardBundles, { id: match.params.type });
@@ -190,7 +189,12 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                   //   isRequiredLecture={card.required}
                   //   upcomingClassroomInfo={card.upcomingClassroomInfo}
                   // />
-                  <LectureCardView {...card} useBookMark dataArea={dataArea} hoverTrack={hoverTrack}/>
+                  <LectureCardView
+                    {...card}
+                    useBookMark
+                    dataArea={dataArea}
+                    hoverTrack={hoverTrack}
+                  />
 
                   // <CardView
                   //   key={item.card.id}

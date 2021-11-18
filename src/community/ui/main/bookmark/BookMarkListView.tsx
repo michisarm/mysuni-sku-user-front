@@ -10,6 +10,7 @@ import {
 import { BookMarkItem } from './bookmark.models';
 import { copyUrl } from '../../../packages/services/html.services';
 import { Content } from '../components/Content';
+import { NoBookMarkList } from './NoBookMarkList';
 
 function BookMarkPostView(props: BookMarkItem) {
   const {
@@ -35,8 +36,7 @@ function BookMarkPostView(props: BookMarkItem) {
     if (hostLength === -1) {
       return;
     }
-    const host = window.location.href.substring(0, hostLength);
-    const url = `${host}/community/${communityId}/post/${postId}`;
+    const url = `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
 
@@ -180,7 +180,7 @@ export function BookMarkListView() {
   useRequestBookMark();
   const bookmark = useBookMark();
   if (bookmark === undefined || bookmark.bookmarkList.length === 0) {
-    return null;
+    return <NoBookMarkList />;
   }
 
   const { bookmarkList, totalcount, offset } = bookmark;

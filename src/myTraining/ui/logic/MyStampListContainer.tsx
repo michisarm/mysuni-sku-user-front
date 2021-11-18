@@ -74,6 +74,7 @@ function MyStampListContainer({
     newCardQdo.offset = 0;
     newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
     newCardQdo.hasStamp = true;
+    newCardQdo.ignoreAccessRule = true;
     newCardQdo.orderBy = CardOrderBy.StudentPassedTimeDesc;
 
     return newCardQdo;
@@ -85,6 +86,7 @@ function MyStampListContainer({
     newCardQdo.offset = 0;
     newCardQdo.studentLearning = StudentLearningType.LearningCompleted;
     newCardQdo.hasStamp = true;
+    newCardQdo.ignoreAccessRule = true;
     newCardQdo.orderBy = CardOrderBy.StudentPassedTimeDesc;
 
     return newCardQdo;

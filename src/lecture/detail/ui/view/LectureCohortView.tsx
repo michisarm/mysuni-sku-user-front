@@ -4,7 +4,7 @@ import DefaultImg from '../../../../style/media/default-thumbnail.png';
 import { Action, ActionType, Area } from 'tracker/model';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { PageElement } from '../../../shared/model/PageElement';
-import findAvailablePageElements from '../../../shared/api/arrangeApi';
+import { findAvailablePageElementsCache } from '../../../shared/api/arrangeApi';
 
 interface Props {
   action?: () => void;
@@ -17,9 +17,8 @@ const LectureCohortView: React.FC<LectureWebpage & Props> =
     const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
 
     useEffect(() => {
-      //const axios = getAxios();
       const fetchMenu = async () => {
-        const response = await findAvailablePageElements();
+        const response = await findAvailablePageElementsCache();
         if (response !== undefined) {
           setMenuAuth(response);
         }

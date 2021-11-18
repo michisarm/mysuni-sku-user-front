@@ -56,26 +56,6 @@ class MyLearningSummaryModal extends Component<Props> {
     checkedTab: TabType.mySUNI,
   };
 
-  componentDidMount() {
-    this.init();
-  }
-
-  async init() {
-    const { myLearningSummaryService } = this.props;
-    const {
-      getDisplayMySuniLeaningTime,
-      getDisplayCompanyLearningTime,
-      findMyLearningSummaryByYear,
-      findInstructTimeSummary,
-    } = myLearningSummaryService!;
-
-    await requestCollegePercent();
-    await findInstructTimeSummary();
-    await findMyLearningSummaryByYear();
-    getDisplayMySuniLeaningTime();
-    getDisplayCompanyLearningTime();
-  }
-
   onOpenModal() {
     this.setState({
       openModal: true,

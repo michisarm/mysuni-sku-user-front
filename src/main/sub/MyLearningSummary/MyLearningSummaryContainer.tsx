@@ -68,7 +68,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   personalBoardContainer = createRef<HTMLDivElement>();
 
   componentDidMount(): void {
-    this.init();
+    // this.init();
     requestLearningObjectives();
     window.addEventListener('click', this.hidePersonalBoardContainer);
   }
@@ -96,26 +96,26 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     }
   }
 
-  init() {
-    this.requestMyLearningSummary();
-    this.requestMenuAuth();
-  }
+  // init() {
+  //   // this.requestMyLearningSummary();
+  //   this.requestMenuAuth();
+  // }
 
-  requestMyLearningSummary() {
-    const { myLearningSummaryService } = this.props;
-    myLearningSummaryService!.findMyLearningSummaryByYear();
-    myLearningSummaryService!.findInstructTimeSummary();
-    // badgeService!.findAllBadgeCount();
-  }
+  // requestMyLearningSummary() {
+  //   const { myLearningSummaryService } = this.props;
+  //   myLearningSummaryService!.findMyLearningSummaryByYear();
+  //   myLearningSummaryService!.findInstructTimeSummary();
+  //   // badgeService!.findAllBadgeCount();
+  // }
 
-  async requestMenuAuth() {
-    const { skProfileService, menuControlAuthService } = this.props;
-    const foundProfile: SkProfileModel =
-      await skProfileService!.findSkProfile();
-    if (foundProfile) {
-      menuControlAuthService!.findMenuControlAuth();
-    }
-  }
+  // async requestMenuAuth() {
+  //   const { skProfileService, menuControlAuthService } = this.props;
+  //   const foundProfile: SkProfileModel =
+  //     await skProfileService!.findSkProfile();
+  //   if (foundProfile) {
+  //     menuControlAuthService!.findMenuControlAuth();
+  //   }
+  // }
 
   onConfirmFavorite() {
     const { location, history } = this.props;
