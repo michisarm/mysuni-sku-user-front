@@ -21,20 +21,6 @@ function numberWithCommas(x: number) {
 export function HotTopicCardView({ card }: Props) {
   //
   const passedStudentCount = useMemo(() => {
-    if (card.passedStudentCount >= 10000) {
-      const tenthousand = Math.floor(card.passedStudentCount / 10000);
-      const textTenthousand = getPolyglotText(
-        '{number}만',
-        'home-Inprogress-이수인원',
-        {
-          number: numberWithCommas(tenthousand) + '',
-        }
-      );
-      if (card.passedStudentCount / 10000 === tenthousand) {
-        return textTenthousand;
-      }
-      return textTenthousand + '+';
-    }
     return numberWithCommas(card.passedStudentCount) + '';
   }, [card.passedStudentCount]);
 

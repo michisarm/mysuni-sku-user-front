@@ -47,8 +47,7 @@ function ItemView(props: MainMyCommunitiesPostItem) {
     if (hostLength === -1) {
       return;
     }
-    const host = window.location.href.substring(0, hostLength);
-    const url = `${host}/community/${communityId}/post/${postId}`;
+    const url = `${window.location.origin}/suni-community/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
   const bookmarkClick = useCallback(() => {

@@ -85,10 +85,18 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
         })} */}
       </div>
       <div className="learning-section-wrap bg-gray">
-        <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
-        <LRSFromLearningPatternBased
-          profileMemberName={skProfile.profileViewName}
-        />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'LRSCards'
+        ) && (
+          <>
+            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+            <LRSFromLearningPatternBased
+              profileMemberName={skProfile.profileViewName}
+            />
+          </>
+        )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
         {pageElements.some(
           (pagemElement) =>

@@ -93,8 +93,10 @@ class FilterBoxService {
   ) {
     let hasStamp;
     let searchable;
+    let ignoreAccessRule;
     if (contentType === MyPageContentType.EarnedStampList) {
       hasStamp = true;
+      ignoreAccessRule = true;
     }
 
     if (
@@ -111,7 +113,8 @@ class FilterBoxService {
         (await this.lectureApi.findCardTypeAndCardCount(
           parsingCardType,
           hasStamp,
-          searchable
+          searchable,
+          ignoreAccessRule
         ))) ||
       [];
 
@@ -120,7 +123,8 @@ class FilterBoxService {
         (await this.lectureApi.findCollegeAndCardCount(
           parsingCardType,
           hasStamp,
-          searchable
+          searchable,
+          ignoreAccessRule
         ))) ||
       [];
 

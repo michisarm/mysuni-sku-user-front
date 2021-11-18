@@ -63,6 +63,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
       };
     }
   }, [onSlideChange, swiper]);
+
   function onSlideChange(swiper: any) {
     if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
@@ -75,17 +76,22 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    (window as any).refreshBookmarks = function refreshBookmarks() {
-      findBookmarkCards().then((next) => {
-        if (next !== undefined) {
-          setCards(next.results);
-        }
-      });
-    };
-    (window as any).refreshBookmarks();
-    return () => {
-      (window as any).refreshBookmarks = null;
-    };
+    // (window as any).refreshBookmarks = function refreshBookmarks() {
+    //   findBookmarkCards().then((next) => {
+    //     if (next !== undefined) {
+    //       setCards(next.results);
+    //     }
+    //   });
+    // };
+    // (window as any).refreshBookmarks();
+    // return () => {
+    //   (window as any).refreshBookmarks = null;
+    // };
+    findBookmarkCards().then((next) => {
+      if (next !== undefined) {
+        setCards(next.results);
+      }
+    });
   }, []);
 
   const title = useMemo(() => getTitle(), []);

@@ -20,10 +20,6 @@ import { SkProfileService } from '../../../profile/stores';
 import { getChannelName } from '../../../shared/service/useCollege/useRequestCollege';
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import {
-  parseLanguage,
-  parsePolyglotString,
-} from '../../../shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
@@ -91,7 +87,7 @@ export function RecommendContainer() {
             setCardList(
               parseUserLectureCards(
                 cardList.cardForUserViewRdos,
-                parseLanguage(SkProfileService.instance.skProfile.language)
+                SkProfileService.instance.skProfile.language
               )
             );
           } catch (e) {

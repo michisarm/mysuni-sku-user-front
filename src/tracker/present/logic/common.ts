@@ -340,6 +340,9 @@ const getFieldName = async (id: string, type: string) => {
         case 'Recommended':
           type = '추천과정';
           break;
+        case 'HotTopic':
+          type = '핫토픽';
+          break;
       }
       if (cardBundle) {
         const text = await getKoreaName(cardBundle.displayText);
@@ -489,6 +492,9 @@ export const getPathName = async (path: string, search: string) => {
                 case 'EarnedStampList':
                   pathName += '::stamp';
                   break;
+                  case 'EarnedNoteList':
+                  pathName += '::note';
+                  break;
               }
               break;
           }
@@ -503,9 +509,25 @@ export const getPathName = async (path: string, search: string) => {
                   break;
               }
               break;
+            case 'my-page':
+              pathName = 'mypage';
+              switch (RegExp.$3) {
+                case 'MyProfile':
+                  pathName += '::profile';
+                  break;
+              }
           }
           break;
       }
+      break;
+    case /(^\/suni-main)?\/hot-topic\/(.*)/.test(path):
+      pathName = 'Main-Section::HotTopic';
+      await setResultName({
+        type: FieldType.CardBundle,
+        id: RegExp.$2,
+      }).then((result) => {
+        pathName = 'Main-Section::' + result.name;
+      });
       break;
     case /(^\/suni-main)?\/lecture\/recommend\/(.*?)\/(.*)/.test(path):
       pathName = 'Recommend';

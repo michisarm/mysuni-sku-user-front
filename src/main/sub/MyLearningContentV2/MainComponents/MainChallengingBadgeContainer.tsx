@@ -89,11 +89,8 @@ function MainChallengingBadgeContainer() {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: `${getPolyglotText(
-              '<strong>{name}님</strong>이<br/>도전중인 Badge',
-              'main-challenge-badge',
-              {
-                name: profileViewName,
-              }
+              '<strong>도전중인 Badge</strong>',
+              'main-challenge-badge'
             )}`,
           }}
         />
@@ -120,17 +117,26 @@ function MainChallengingBadgeContainer() {
                 >
                   {/* 아래 아이콘('.cate-icon')의 bg컬러를 카테고리별 벳지컬러에 맞춰주시면 됩니다(어드민 내 테마 컬러) */}
                   <div className="badge-col cate-sign">
-                    <i
-                      aria-hidden="true"
-                      className="icon cate-icon"
-                      style={{
-                        backgroundColor: badge.badgeCategory.themeColor,
-                      }}
-                    />
+                    {/*<i*/}
+                    {/*  aria-hidden="true"*/}
+                    {/*  className="icon cate-icon"*/}
+                    {/*  style={{*/}
+                    {/*    backgroundColor: badge.badgeCategory.themeColor,*/}
+                    {/*  }}*/}
+                    {/*/>*/}
+                    <div
+                      className="cate-icon"
+                      style={{ borderColor: badge.badgeCategory.themeColor }}
+                    >
+                      <div
+                        className="cate-icon2"
+                        style={{ borderColor: badge.badgeCategory.themeColor }}
+                      />
+                    </div>
                   </div>
-                  <div className="badge-col cate">
-                    {parsePolyglotString(badge.badgeCategory.name)}
-                  </div>
+                  {/*<div className="badge-col cate">*/}
+                  {/*  {parsePolyglotString(badge.badgeCategory.name)}*/}
+                  {/*</div>*/}
                   <div className="badge-col name">
                     {parsePolyglotString(badge.name)}
                   </div>

@@ -130,11 +130,34 @@
 /* Main > 관심채널 */
 .channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }
 
-/* Main > 도정중인 뱃지 */
+/* Main > 도전중인 뱃지 */
 .learning-section.sec-tit-txt { word-break: break-all; }
-.badge-txt { word-break: break-all; }
+.badge-txt { word-break: break-word; }
+.badge-txt-box { left: 355px; }
+.badge-banner-wrap {
+    background-size: 100%;
+    background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr@2x.png);
+}
+.badge-banner-wrap.no-badge {
+    background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr-nobadge@2x.png);
+}
 
-/* Main > 도정중인 뱃지 > 뱃지리스트 수정 */
+/* Main > 뱃지 없을 때 */
+a.button.ui.btn-badge-go { line-height: 1.6rem; }
+.button.ui.btn-badge-go { width: auto; min-width: 200px; }
+.badge-banner-wrap.no-badge .badge-txt {
+    font-size: 1.2rem;
+    line-height: 1.43;
+}
+.badge-banner-wrap.no-badge .badge-txt strong {
+    font-size: 1.375rem;
+}
+.badge-txt {
+    padding-right: 33px;
+    word-break: break-all;
+}
+
+/* Main > 도전중인 뱃지 > 뱃지리스트 수정 */
 .learning-section.type4 .badge-listbox {
     border: #ddd 1px solid;
     padding: 20px;
@@ -143,17 +166,36 @@
 .badge-list-wrap {
     border-bottom: 0;
     height: 138px;
+    padding-right: 10px;
 }
 .badge-col-list {
     border-bottom: 0;
-    line-height: 26px;
     font-size: 1rem;
+    overflow: hidden;
+    display: flex;
+}
+.badge-col {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: block;
+    float: left;
 }
 .badge-col.cate-sign {
     padding-left: 0;
+    padding-right: 10px;
 }
 .badge-col.cate {
-    padding: 10px 16px;
+    padding: 8px 16px;
+    display: none;
+}
+.badge-col.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 30px;
 }
 .badge-col.cate-sign .cate-icon {
     background: transparent;
@@ -161,7 +203,7 @@
     width: 16px;
     height: 16px;
     position: relative;
-    transform: translateY(2px);
+    transform: translateY(7px);
 }
 .badge-col.cate-sign .cate-icon .cate-icon2 {
     border: #ccc 2px solid;
@@ -175,7 +217,7 @@
 }
 
 /* 커뮤니티 */
-.favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
+.favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat 0.938rem;}
 .favorites_tab .ui.menu .item.active .total { color: #ff664d; }
 .check-type1 input:checked + .check-type1-text{ color : #00bfae; border : 1px solid #00bfae; line-height: 1.375rem; }
 .check-type1 input:checked + .check-type1-text span{color : #ff664d}
@@ -359,21 +401,6 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 .emoji_icons .em_b { font-weight: normal; }
 
-/* 메인 > 뱃지 없을 때 */
-a.button.ui.btn-badge-go { line-height: 1.6rem; }
-.button.ui.btn-badge-go { width: auto; }
-.badge-banner-wrap.no-badge .badge-txt {
-    font-size: 1.2rem;
-    line-height: 1.43;
-}
-.badge-banner-wrap.no-badge .badge-txt strong {
-    font-size: 1.375rem;
-}
-.badge-txt {
-    padding-right: 33px;
-    word-break: break-all;
-}
-
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
 .learning-section.type1 .section-head { margin-bottom: 10px; }
@@ -382,15 +409,17 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .card-item .card-inner .contents-area .txticon-wrap .ui.label div {background-position: 0 -1px;}
 .learning-section-wrap.bg-gray { margin-top: 60px; padding-top: 70px; margin-bottom: 60px; }
 .learning-section-wrap.bg-gray .ui.segment.full.learning-section+.learning-section { margin-top: 50px; }
-.learning-section.type5 .sec-tit-txt { margin-bottom: 20px; }
+.learning-section.type4 .sec-tit-txt { line-height: inherit; padding: 5px 0;}
+.learning-section.type5 .sec-tit-txt { margin-bottom: 20px; line-height: inherit; padding: 5px  0; }
 .card.topic-item .ui.label.topic-info { bottom: 10px; }
 .content.main-sty2 .main_personal .personal-header-title h3 { font-size: 24px; }
 .content.main-sty2 .main_personal .personal-header-title p { font-size: 18px; font-weight: 300; color: #4c4c4c; }
 .learning-section.type1 .sec-tit-btn { position: relative; }
-.learning-section.type1 .sec-tit-btn .btn-more {height: auto;position: absolute;right: 0;bottom: 10px;}
+.learning-section.type1 .sec-tit-btn .btn-more { height: auto;position: absolute;right: 0; bottom: 10px; white-space: nowrap; }
 .content.main-sty2 .main_personal .personal-header-title { margin: 28px 0 20px; }
 .main-time-info { margin-top: 0; }
 .personal-info-go { margin-top: 40px; }
+.learning-section.type2 .section-head { padding-right: 20px; }
 
 /* 에디터 */
 .admin_menu_wrap .ui.editor-wrap{width : 38.75rem}
@@ -411,6 +440,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.modal.base .header { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .head .cell { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .cell:nth-of-type(2) { border-left: #ddd 1px solid; }
+
 /* 학습이수시간 팝업 버튼컬러 수정 */
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked+label+.buri {
     background: none;
@@ -434,7 +464,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 /* 승인관리 */
 .ui.table.create th { border-color: #ddd; color: #777; }
 .ui.table.create td { border-color: #ddd; }
-.mylearning-list-wrap {padding-top: 20px;}
+.MyApprovalPage .mylearning-list-wrap {padding-top: 20px;}
 .confirm-list-wrap .list-top .list-number {color: #777;}
 .confirm-list-wrap .list-top .list-number span:after {background-color: #d6d6d6;}
 .confirm-list-wrap .ui.table { box-shadow: 0 2px 6px 0 rgb(76 76 76 / 20%);}
@@ -442,9 +472,12 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.button.return .icon {background : #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-24-px-return.svg')0 0/18px auto no-repeat }
 
 /* 카테고리 전체보기 이미지 상실 보완 */
-i.icon.college-sv86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-sv-86-px.dd4cab9c.png) 0 0 no-repeat!important}
-i.icon.college-skacademy86:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0 no-repeat!important}
-i.icon.college-operation86:before{ background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0 no-repeat!important}
+i.icon.college-sv86:before {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-sv-86-px.dd4cab9c.png) 0 0/100% no-repeat!important}
+i.icon.college-skacademy86:before {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-skacademy-86-px.3fd2cc9a.png) 0 0/100% no-repeat!important}
+i.icon.college-operation86:before{
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/media/thumb-college-operation-86-px.3421e2bd.png) 0 0/100% no-repeat!important}
 
 /* 검색결과화면 */
 .result_category .ui.checked.radio.checkbox input:checked~label:before {
@@ -495,14 +528,13 @@ border-left-color: #00bfae;
 
 .stamp-list-wrapper .ui.table{overflow : hidden; border-radius : 8px}
 .course-cont .course-box .bar .num .completed { color: #999;}
-.badge-detail .ov-paragraph .list.bulleted .item .title{padding-top:10px}
 .channel .main-info-area { border-color: #ddd;}
 .channel-of-interest .item-wrap .ui.button.toggle.toggle4 { color: #1c5551;}
 .community-left .sub-info-box {box-shadow: 0 2px 6px 0 rgba(76,76,76, 0.2);}
 
 /* 검색결과 */
 .result .result_title .link_more { color: #777; font-weight: 400;}
-.relative_box dl dd a { border-color: #666; }
+.relative_box dl dd a { border-color: #666; color: #666; }
 .result .search_detail dt { color: #999; }
 .result .tagbox { color: #999;}
 .result .tagbox strong:after { background-color: #bbb;}
@@ -517,3 +549,56 @@ border-left-color: #00bfae;
 /* Certification 뱃지 페이지 */
 .challenge-wrap .challenge-badge .left-area .status button { background-color: #fff;}
 .ui.segment.full .top-guide-title .left-wrap .post + .list-number:after { background: #ddd;}
+.badge-detail .ov-paragraph .detail .label.tag{ margin: .375rem 0.5rem .25rem 0 }
+.badge-detail .ov-paragraph .list.bulleted .item .detail.ql-snow .ql-editor {padding-top: 3px;}
+.badge-detail .ov-paragraph .list .item>.detail.ql-snow .ql-editor {padding-top: 0;}
+
+/* 사이트맵 */
+.site-map {padding: 1.875rem;}
+.site-map>ul {margin: 0;}
+.site-map>ul:first-of-type>li:first-of-type ul {height: 300px;}
+
+/* Support */
+.faq-list-wrap .accordion.ui.styled .content.active p{margin-bottom : 0.5rem}
+.apl-form-wrap .ui.form .section-tit .text1 {color: #222;}
+.scrolling-60vh.faq-list-wrap .accordion.ui.styled .content > div { padding-bottom: 10px;}
+.faq-list-wrap .accordion.ui.styled .content.active > div { padding-bottom: 10px;}
+.create .create-detail dl dt { padding-left: 14px; width: 180px; text-indent : -4px}
+.create .create-detail dl dt:before { margin: 0; left: -10px;}
+.create .create-detail dl dd { vertical-align: top; margin-left: 10px; }
+.apl-form-wrap .time-wrap>.time { width: auto; }
+
+
+
+.main-info-area>.progress-info-wrap.personal-channel .cell .text-info .name { max-width: 100%; white-space: nowrap; word-break: break-all;}
+#root .video-fixed-holder.lms-video-fixed+.lms-sticky-menu {border-color: #ddd;}
+
+/* 학습상세 스크롤 해결 */
+.description.ql-editor {overflow-y: inherit;}
+
+
+
+.total_box .button.btn_download{margin-right : 0}
+.ui.segment.full .top-guide-title .ui.button.excel-down {margin-left: 0;}
+.ui.dropdown.small-border .text{color : #777 !important}
+.result_category .title { height: 50px; font-size: 1rem !important;}
+.stamp-list-wrapper .table tr .title { line-height: 1.43;}
+.mynote .note_info .time{color: #999;}
+.check-type1-text { color: #666; border-color: #666;}
+.community-slide-inner .check-type1 { vertical-align: top;}
+.ui.comments.base>.comment .content .actions .cmt { background: #fff; padding: 11px 0;}
+.recommend-area .section-head .right.btn-more{margin-right: 0}
+.ui.dropdown.small-border .text{color :#777 !important}
+.support-list-wrap .tit_cnt {vertical-align: -3px;}
+.ui.form.reply.focus .field, .ui.form.reply.focus .more .count, .ui.form.reply.focus .more button, .ui.form.reply.focus .outline {border-color: #00bfae !important;}
+.ui.comments.base>.comment+.comment { border-color: #ddd;}
+
+/* 검색결과화면 왼쪽 체크박스 */
+.result_category .ui.checkbox:not(.radio):not(checked) label::before,
+.result_category .ui.checkbox:not(checked) label:before,
+.result_category .ui.checkbox label:hover:before {
+    display: block;
+    content: "";
+    background: #fff !important;
+    border: #ccc 1px solid !important;
+}

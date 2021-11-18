@@ -21,7 +21,7 @@ const CollegeInnerTabAi = () => {
   const history = useHistory();
 
   const pageMove = (path: string) => {
-    history.push(path);
+    history.replace(path);
   };
 
   const [activeIndex, setActiveIndex] = useState(0);
