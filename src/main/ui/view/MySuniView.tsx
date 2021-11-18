@@ -278,15 +278,15 @@ function KoView(props: Props) {
                 />
               </a>
             </li>
-            <li>
-              <a href="http://intelik.com/" target="_blank">
-                <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/intelik.png"
-                  alt="intelik"
-                  className="ui image"
-                />
-              </a>
-            </li>
+            {/*<li>*/}
+            {/*  <a href="http://intelik.com/" target="_blank">*/}
+            {/*    <img*/}
+            {/*      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/intelik.png"*/}
+            {/*      alt="intelik"*/}
+            {/*      className="ui image"*/}
+            {/*    />*/}
+            {/*  </a>*/}
+            {/*</li>*/}
             <li>
               <a href="https://www.imooc.co.kr/" target="_blank">
                 <img
@@ -988,10 +988,9 @@ function MySuniView() {
       setLinkedInDirectConnection('');
       return;
     }
-    const directConnection =
-      contentsProviderSaml.contentsProviderDirectConnections.find(
-        (c) => c.loginUserSourceType === loginUserSourceType
-      )?.directConnection;
+    const directConnection = contentsProviderSaml.contentsProviderDirectConnections.find(
+      (c) => c.loginUserSourceType === loginUserSourceType
+    )?.directConnection;
     if (directConnection === undefined) {
       setLinkedInDirectConnection('');
       return;
