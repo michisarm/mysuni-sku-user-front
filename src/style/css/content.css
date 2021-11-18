@@ -134,6 +134,13 @@
 .learning-section.sec-tit-txt { word-break: break-all; }
 .badge-txt { word-break: break-word; }
 .badge-txt-box { left: 355px; }
+.badge-banner-wrap {
+    background-size: 100%;
+    background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr@2x.png);
+}
+.badge-banner-wrap.no-badge {
+    background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr-nobadge@2x.png);
+}
 
 /* Main > 뱃지 없을 때 */
 a.button.ui.btn-badge-go { line-height: 1.6rem; }
@@ -210,7 +217,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 }
 
 /* 커뮤니티 */
-.favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat;}
+.favorites_tab .ui.menu .item.active { background: url(http://image.mysuni.sk.com/suni-asset/public/images/all/icon-tabcheck-12-px.svg) no-repeat 0.938rem;}
 .favorites_tab .ui.menu .item.active .total { color: #ff664d; }
 .check-type1 input:checked + .check-type1-text{ color : #00bfae; border : 1px solid #00bfae; line-height: 1.375rem; }
 .check-type1 input:checked + .check-type1-text span{color : #ff664d}
@@ -457,7 +464,7 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 /* 승인관리 */
 .ui.table.create th { border-color: #ddd; color: #777; }
 .ui.table.create td { border-color: #ddd; }
-.mylearning-list-wrap {padding-top: 20px;}
+.MyApprovalPage .mylearning-list-wrap {padding-top: 20px;}
 .confirm-list-wrap .list-top .list-number {color: #777;}
 .confirm-list-wrap .list-top .list-number span:after {background-color: #d6d6d6;}
 .confirm-list-wrap .ui.table { box-shadow: 0 2px 6px 0 rgb(76 76 76 / 20%);}
@@ -568,3 +575,30 @@ border-left-color: #00bfae;
 
 /* 학습상세 스크롤 해결 */
 .description.ql-editor {overflow-y: inherit;}
+
+
+
+.total_box .button.btn_download{margin-right : 0}
+.ui.segment.full .top-guide-title .ui.button.excel-down {margin-left: 0;}
+.ui.dropdown.small-border .text{color : #777 !important}
+.result_category .title { height: 50px; font-size: 1rem !important;}
+.stamp-list-wrapper .table tr .title { line-height: 1.43;}
+.mynote .note_info .time{color: #999;}
+.check-type1-text { color: #666; border-color: #666;}
+.community-slide-inner .check-type1 { vertical-align: top;}
+.ui.comments.base>.comment .content .actions .cmt { background: #fff; padding: 11px 0;}
+.recommend-area .section-head .right.btn-more{margin-right: 0}
+.ui.dropdown.small-border .text{color :#777 !important}
+.support-list-wrap .tit_cnt {vertical-align: -3px;}
+.ui.form.reply.focus .field, .ui.form.reply.focus .more .count, .ui.form.reply.focus .more button, .ui.form.reply.focus .outline {border-color: #00bfae !important;}
+.ui.comments.base>.comment+.comment { border-color: #ddd;}
+
+/* 검색결과화면 왼쪽 체크박스 */
+.result_category .ui.checkbox:not(.radio):not(checked) label::before,
+.result_category .ui.checkbox:not(checked) label:before,
+.result_category .ui.checkbox label:hover:before {
+    display: block;
+    content: "";
+    background: #fff !important;
+    border: #ccc 1px solid !important;
+}

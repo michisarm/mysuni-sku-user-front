@@ -155,7 +155,7 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> =
             </div>
           </div>
           <div className="section-body">
-            <div className="cardSwiper">
+            <div className="cardSwiper" data-action-name={lectureSummary?.name}>
               <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
                 {cards.map((card) => {
                   return (

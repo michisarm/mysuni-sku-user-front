@@ -101,7 +101,10 @@ function LRSListContainer() {
         <div className="section">
           {cards.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {parseUserLectureCards(cards).map((card, i) => {
+              {parseUserLectureCards(
+                cards,
+                SkProfileService.instance.skProfile.language
+              ).map((card, i) => {
                 return (
                   <LectureCardView
                     {...card}

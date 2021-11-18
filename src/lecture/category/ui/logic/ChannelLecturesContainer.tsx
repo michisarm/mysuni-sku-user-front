@@ -24,10 +24,6 @@ import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
 import {
-  parseLanguage,
-  parsePolyglotString,
-} from 'shared/viewmodel/PolyglotString';
-import {
   LectureCardView,
   parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
@@ -288,9 +284,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
 
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     return (
       <ChannelLecturesContentWrapperView
@@ -320,21 +314,22 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {parseUserLectureCards(lectures).map((cards, index) => {
-                  return (
-                    <LectureCardView
-                      {...cards}
-                      userLanguage={userLanguage}
-                      useBookMark={true}
-                      dataArea={
-                        window.location.pathname.includes('/recommend')
-                          ? Area.RECOMMEND_CARD
-                          : Area.COLLEGE_CARD
-                      }
-                      hoverTrack={hoverTrack}
-                    />
-                  );
-                })}
+                {parseUserLectureCards(lectures, userLanguage).map(
+                  (cards, index) => {
+                    return (
+                      <LectureCardView
+                        {...cards}
+                        useBookMark={true}
+                        dataArea={
+                          window.location.pathname.includes('/recommend')
+                            ? Area.RECOMMEND_CARD
+                            : Area.COLLEGE_CARD
+                        }
+                        hoverTrack={hoverTrack}
+                      />
+                    );
+                  }
+                )}
               </Lecture.Group>
 
               {this.isContentMore() && (

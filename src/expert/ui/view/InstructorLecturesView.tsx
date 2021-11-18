@@ -38,9 +38,8 @@ export function InstructorLecturesView(props: Props) {
   const needMore = cardsTotalCount > cards.length;
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [cardViewOn, setCardViewOn] = useState<number>(1);
-  const userLanguage = parseLanguage(
-    SkProfileService.instance.skProfile.language
-  );
+  const userLanguage = SkProfileService.instance.skProfile.language;
+
   const cardsIds = cards.map((c) => {
     return c.card.id;
   });
@@ -52,7 +51,7 @@ export function InstructorLecturesView(props: Props) {
       }
       setCardList(parseCommunityLectureCards(c, userLanguage));
     });
-  }, [cards]);
+  }, [cards, cardsIds, userLanguage]);
 
   return (
     <div className="expert-cont">
