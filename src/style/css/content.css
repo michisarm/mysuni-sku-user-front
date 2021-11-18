@@ -555,5 +555,10 @@ border-left-color: #00bfae;
 .faq-list-wrap .accordion.ui.styled .content.active > div { padding-bottom: 10px;}
 .create .create-detail dl dt { padding-left: 14px; width: 180px;}
 .create .create-detail dl dt:before { margin: 0; left: -14px;}
-.create .create-detail dl dd { vertical-align: 2px; margin-left: 10px;}
-.apl-form-wrap .time-wrap>.time { width: auto;}
+.create .create-detail dl dd { vertical-align: top; margin-left: 10px; }
+.apl-form-wrap .time-wrap>.time { width: auto; }
+
+
+
+.main-info-area>.progress-info-wrap.personal-channel .cell .text-info .name { max-width: 100%; white-space: nowrap; word-break: break-all;}
+#root .video-fixed-holder.lms-video-fixed+.lms-sticky-menu {border-color: #ddd;}
