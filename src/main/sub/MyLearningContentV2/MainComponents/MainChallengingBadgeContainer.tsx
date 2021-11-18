@@ -89,11 +89,8 @@ function MainChallengingBadgeContainer() {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: `${getPolyglotText(
-              '<strong>{name}님</strong>이<br/>도전중인 Badge',
-              'main-challenge-badge',
-              {
-                name: profileViewName,
-              }
+              '<strong>도전중인 Badge</strong>',
+              'main-challenge-badge'
             )}`,
           }}
         />
