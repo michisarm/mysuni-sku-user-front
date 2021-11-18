@@ -63,6 +63,7 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
       };
     }
   }, [onSlideChange, swiper]);
+
   function onSlideChange(swiper: any) {
     if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
@@ -86,6 +87,11 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
     // return () => {
     //   (window as any).refreshBookmarks = null;
     // };
+    findBookmarkCards().then((next) => {
+      if (next !== undefined) {
+        setCards(next.results);
+      }
+    });
   }, []);
 
   const title = useMemo(() => getTitle(), []);
