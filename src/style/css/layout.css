@@ -232,3 +232,18 @@ i.icon.del24:before { background: url(https://image.mysuni.sk.com/suni-asset/pub
 .lms-paging-holder .ui.menu>.item:first-child { background: #fff url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-pagenavi-back-nomal.svg) 50% no-repeat;}
 .lms-paging-holder .ui.menu>.item:last-child, .lms-paging-holder .ui.menu>.item:last-child:hover {background: #fff url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-pagenavi-next-nomal.svg) 50% no-repeat;}
 .lms-paging-holder .ui.pagination.menu .active.item { color: #00bfae; }
+
+/* 로그인 화면 */
+.login-content .right-area .inner .txt-btn-area li { padding: 0 0.625rem; }
+.login-content .right-area .inner .txt-btn-area li:after { display: none; }
+.login-content .right-area .inner .txt-btn-area li + li:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -6px;
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: #ddd;
+}

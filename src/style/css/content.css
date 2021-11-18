@@ -130,11 +130,27 @@
 /* Main > 관심채널 */
 .channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }
 
-/* Main > 도정중인 뱃지 */
+/* Main > 도전중인 뱃지 */
 .learning-section.sec-tit-txt { word-break: break-all; }
-.badge-txt { word-break: break-all; }
+.badge-txt { word-break: break-word; }
+.badge-txt-box { left: 355px; }
 
-/* Main > 도정중인 뱃지 > 뱃지리스트 수정 */
+/* Main > 뱃지 없을 때 */
+a.button.ui.btn-badge-go { line-height: 1.6rem; }
+.button.ui.btn-badge-go { width: auto; min-width: 200px; }
+.badge-banner-wrap.no-badge .badge-txt {
+    font-size: 1.2rem;
+    line-height: 1.43;
+}
+.badge-banner-wrap.no-badge .badge-txt strong {
+    font-size: 1.375rem;
+}
+.badge-txt {
+    padding-right: 33px;
+    word-break: break-all;
+}
+
+/* Main > 도전중인 뱃지 > 뱃지리스트 수정 */
 .learning-section.type4 .badge-listbox {
     border: #ddd 1px solid;
     padding: 20px;
@@ -143,17 +159,36 @@
 .badge-list-wrap {
     border-bottom: 0;
     height: 138px;
+    padding-right: 10px;
 }
 .badge-col-list {
     border-bottom: 0;
-    line-height: 26px;
     font-size: 1rem;
+    overflow: hidden;
+    display: flex;
+}
+.badge-col {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: block;
+    float: left;
 }
 .badge-col.cate-sign {
     padding-left: 0;
+    padding-right: 10px;
 }
 .badge-col.cate {
-    padding: 10px 16px;
+    padding: 8px 16px;
+    display: none;
+}
+.badge-col.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 30px;
 }
 .badge-col.cate-sign .cate-icon {
     background: transparent;
@@ -359,21 +394,6 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 .emoji_icons .em_b { font-weight: normal; }
 
-/* 메인 > 뱃지 없을 때 */
-a.button.ui.btn-badge-go { line-height: 1.6rem; }
-.button.ui.btn-badge-go { width: auto; }
-.badge-banner-wrap.no-badge .badge-txt {
-    font-size: 1.2rem;
-    line-height: 1.43;
-}
-.badge-banner-wrap.no-badge .badge-txt strong {
-    font-size: 1.375rem;
-}
-.badge-txt {
-    padding-right: 33px;
-    word-break: break-all;
-}
-
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
 .learning-section.type1 .section-head { margin-bottom: 10px; }
@@ -382,15 +402,17 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .card-item .card-inner .contents-area .txticon-wrap .ui.label div {background-position: 0 -1px;}
 .learning-section-wrap.bg-gray { margin-top: 60px; padding-top: 70px; margin-bottom: 60px; }
 .learning-section-wrap.bg-gray .ui.segment.full.learning-section+.learning-section { margin-top: 50px; }
-.learning-section.type5 .sec-tit-txt { margin-bottom: 20px; }
+.learning-section.type4 .sec-tit-txt { line-height: inherit; padding: 5px 0;}
+.learning-section.type5 .sec-tit-txt { margin-bottom: 20px; line-height: inherit; padding: 5px  0; }
 .card.topic-item .ui.label.topic-info { bottom: 10px; }
 .content.main-sty2 .main_personal .personal-header-title h3 { font-size: 24px; }
 .content.main-sty2 .main_personal .personal-header-title p { font-size: 18px; font-weight: 300; color: #4c4c4c; }
 .learning-section.type1 .sec-tit-btn { position: relative; }
-.learning-section.type1 .sec-tit-btn .btn-more {height: auto;position: absolute;right: 0;bottom: 10px;}
+.learning-section.type1 .sec-tit-btn .btn-more { height: auto;position: absolute;right: 0; bottom: 10px; white-space: nowrap; }
 .content.main-sty2 .main_personal .personal-header-title { margin: 28px 0 20px; }
 .main-time-info { margin-top: 0; }
 .personal-info-go { margin-top: 40px; }
+.learning-section.type2 .section-head { padding-right: 20px; }
 
 /* 에디터 */
 .admin_menu_wrap .ui.editor-wrap{width : 38.75rem}
@@ -411,6 +433,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.modal.base .header { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .head .cell { border-bottom: #ddd 1px solid; }
 .completion-time .table-css .cell:nth-of-type(2) { border-left: #ddd 1px solid; }
+
 /* 학습이수시간 팝업 버튼컬러 수정 */
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked+label+.buri {
     background: none;
@@ -495,7 +518,6 @@ border-left-color: #00bfae;
 
 .stamp-list-wrapper .ui.table{overflow : hidden; border-radius : 8px}
 .course-cont .course-box .bar .num .completed { color: #999;}
-.badge-detail .ov-paragraph .list.bulleted .item .title{padding-top:10px}
 .channel .main-info-area { border-color: #ddd;}
 .channel-of-interest .item-wrap .ui.button.toggle.toggle4 { color: #1c5551;}
 .community-left .sub-info-box {box-shadow: 0 2px 6px 0 rgba(76,76,76, 0.2);}
@@ -517,3 +539,21 @@ border-left-color: #00bfae;
 /* Certification 뱃지 페이지 */
 .challenge-wrap .challenge-badge .left-area .status button { background-color: #fff;}
 .ui.segment.full .top-guide-title .left-wrap .post + .list-number:after { background: #ddd;}
+.badge-detail .ov-paragraph .detail .label.tag{ margin: .375rem 0.5rem .25rem 0 }
+.badge-detail .ov-paragraph .list.bulleted .item .detail.ql-snow .ql-editor {padding-top: 3px;}
+.badge-detail .ov-paragraph .list .item>.detail.ql-snow .ql-editor {padding-top: 0;}
+
+/* 사이트맵 */
+.site-map {padding: 1.875rem;}
+.site-map>ul {margin: 0;}
+.site-map>ul:first-of-type>li:first-of-type ul {height: 300px;}
+
+/* Support */
+.faq-list-wrap .accordion.ui.styled .content.active p{margin-bottom : 0.5rem}
+.apl-form-wrap .ui.form .section-tit .text1 {color: #222;}
+.scrolling-60vh.faq-list-wrap .accordion.ui.styled .content > div { padding-bottom: 10px;}
+.faq-list-wrap .accordion.ui.styled .content.active > div { padding-bottom: 10px;}
+.create .create-detail dl dt { padding-left: 14px; width: 180px;}
+.create .create-detail dl dt:before { margin: 0; left: -14px;}
+.create .create-detail dl dd { vertical-align: 2px; margin-left: 10px;}
+.apl-form-wrap .time-wrap>.time { width: auto;}
