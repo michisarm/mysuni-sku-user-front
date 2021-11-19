@@ -35,11 +35,11 @@ export async function confirmProgress(studentId?: string): Promise<void> {
     requestLectureState(params.cardId, params.cubeId, params.cubeType);
   }
 
-  await MyTrainingService!.instance.findAllMyTrainingsWithState(
-    'InProgress',
-    8,
-    0,
-    [],
-    true
-  );
+  // await MyTrainingService!.instance.findAllMyTrainingsWithState(
+  //   'InProgress',
+  //   8,
+  //   0,
+  //   [],
+  //   true
+  // );
 }
