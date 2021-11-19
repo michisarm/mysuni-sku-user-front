@@ -123,7 +123,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
       {pageElements.some(
         (pagemElement) =>
           pagemElement.position === 'HomeElement' &&
-          pagemElement.type === 'HotTopic'
+          pagemElement.type === 'EnrollingCards'
       ) && (
         <div className="learning-section-wrap">
           <EnrollingLearning />
