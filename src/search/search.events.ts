@@ -108,6 +108,9 @@ export function getQueryId(value?: string): string {
 // 필터
 export function filterClearAll() {
   setFilterCondition(InitialConditions);
+  setExpert(getExpertOri());
+  setSearchBadgeList(getSearchBadgeOriList());
+  setSearchCommunityList(getSearchCommunityOriList());
 }
 
 export function searchCardFilterData(decodedSearchValue: string) {
@@ -212,7 +215,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
 export function settingSearchFilter(searchValue: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue === '') {
     return;
@@ -596,7 +599,7 @@ export async function search(
 ) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
@@ -671,7 +674,7 @@ export async function searchDataWithErrata(
 export async function searchData(searchValue: string, searchType?: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   if (decodedSearchValue === '') {
@@ -733,8 +736,8 @@ export async function searchData(searchValue: string, searchType?: string) {
     .finally(() =>
       searchSuggest(searchValue)
         .then((response) => {
-          if (response) {
-            response.forEach((s2) => {
+          if (response && response.error === undefined) {
+            response.forEach((s2: string) => {
               suggestions.push(s2);
             });
             if (suggestions.length > 10) {
@@ -774,7 +777,7 @@ export async function searchInSearchData(
 ) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   const cards = getAllowedCard();
@@ -816,6 +819,18 @@ export async function searchInSearchData(
 export async function filterClickSearch() {
   const cards = await filterCard(getAllowedCard());
   setDisplayCard(cards);
+  const filterCondition = getFilterCondition();
+  if (
+    JSON.stringify(filterCondition || '') === JSON.stringify(InitialConditions)
+  ) {
+    setExpert(getExpertOri());
+    setSearchBadgeList(getSearchBadgeOriList());
+    setSearchCommunityList(getSearchCommunityOriList());
+  } else {
+    setExpert([]);
+    setSearchBadgeList([]);
+    setSearchCommunityList([]);
+  }
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
@@ -853,20 +868,44 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
 function escapeRegex(item: string, target: string): string {
   //
+
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
   const regExpItem = item.replace(ESCAPE_REGEX, '');
-  let replacedText;
-  if (item.match(ESCAPE_REGEX)) {
-    replacedText = target.replace(
-      item,
-      `<strong class="search_keyword">${item}</strong>`
-    );
-  } else {
-    replacedText = target.replace(
-      new RegExp(regExpItem, 'gi'),
-      `<strong class="search_keyword">${regExpItem}</strong>`
-    );
-  }
+  let replacedText = '';
+  const splitTags = target.split('</strong>');
+  const changedValues = splitTags.map((splitValue, index) => {
+    const splitTargetValue =
+      splitTags.length !== index + 1 ? splitValue + '</strong>' : splitValue;
+    if (splitTargetValue.includes('</strong>')) {
+      return splitTargetValue;
+    } else {
+      if (item.match(ESCAPE_REGEX)) {
+        return splitTargetValue.replace(
+          item,
+          `<strong class="search_keyword">${item}</strong>`
+        );
+      } else {
+        return splitTargetValue.replace(
+          new RegExp(regExpItem),
+          `<strong class="search_keyword">${regExpItem}</strong>`
+        );
+      }
+    }
+  });
+
+  replacedText = changedValues.join('');
+
+  // if (item.match(ESCAPE_REGEX)) {
+  //   replacedText = target.replace(
+  //     item,
+  //     `<strong class="a_text">${item}</strong>`
+  //   );
+  // } else {
+  //   replacedText = target.replace(
+  //     new RegExp(regExpItem, 'gi'),
+  //     `<strong class="a_text">${regExpItem}</strong>`
+  //   );
+  // }
 
   return replacedText;
 }

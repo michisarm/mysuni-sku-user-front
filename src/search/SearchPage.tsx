@@ -34,6 +34,14 @@ export function SearchPage() {
   const searchService = SearchService.instance;
 
   useEffect(() => {
+    return () => {
+      //console.log('search page 빠져나감');
+      searchService.clearSearchInfo();
+      searchService.clearAutoCompleteValues();
+    };
+  }, []);
+
+  useEffect(() => {
     // model에서 생성시에는 다국어가 먹히지 않아서 여기서 다시 셋팅
     CheckboxOptions.difficulty_level_json_query = [
       {

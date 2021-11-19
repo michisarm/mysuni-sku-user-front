@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import Swiper from 'react-id-swiper';
 import CardGroup, {
@@ -20,10 +20,6 @@ import { SkProfileService } from '../../../profile/stores';
 import { getChannelName } from '../../../shared/service/useCollege/useRequestCollege';
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import {
-  parseLanguage,
-  parsePolyglotString,
-} from '../../../shared/viewmodel/PolyglotString';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
@@ -65,6 +61,15 @@ export function RecommendContainer() {
       SkProfileService.instance.additionalUserInfo.favoriteChannelIds[0] || ''
     );
   });
+
+  const scrollRef = createRef<HTMLDivElement>();
+
+  function onClickSetChannelOpened(value: boolean) {
+    //
+    scrollRef.current?.scrollTo(0, 0);
+    setChannelOpend(value);
+  }
+
   useEffect(() => {
     // API 확인후 동작
     const axios = getAxios();
@@ -82,7 +87,7 @@ export function RecommendContainer() {
             setCardList(
               parseUserLectureCards(
                 cardList.cardForUserViewRdos,
-                parseLanguage(SkProfileService.instance.skProfile.language)
+                SkProfileService.instance.skProfile.language
               )
             );
           } catch (e) {
@@ -157,11 +162,11 @@ export function RecommendContainer() {
           <div className="channel-tag-btn">
             <Button
               className="channel-btn"
-              onClick={() => setChannelOpend(!channelOpened)}
+              onClick={() => onClickSetChannelOpened(!channelOpened)}
             />
           </div>
           <div className="channel-tag-box">
-            <div className="channel-wrap">
+            <div className="channel-wrap" ref={scrollRef}>
               {SkProfileService.instance.additionalUserInfo.favoriteChannelIds.map(
                 (id) => {
                   return (
@@ -173,7 +178,7 @@ export function RecommendContainer() {
                       key={id}
                       onClick={() => {
                         setSelectedChannelId(id);
-                        setChannelOpend(false);
+                        // setChannelOpend(false);
                       }}
                     >
                       {getChannelName(id)}

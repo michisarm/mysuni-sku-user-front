@@ -7,16 +7,16 @@ import {
   HotTopicCardViewModel,
   HotTopicDetailViewModel,
 } from 'hotTopic/viewmodel/HotTopicViewModel';
-import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
 import { CardBundle } from 'lecture/shared/model/CardBundle';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { findAvailableCardBundlesCache } from '../../lecture/shared/api/arrangeApi';
 
 export async function requestHotTopic(id: string) {
   setHotTopicDetailViewModel();
   setHotTopicListViewModel();
 
   const cardBundles: CardBundle[] | undefined =
-    await findAvailableCardBundles();
+    await findAvailableCardBundlesCache();
 
   if (cardBundles === undefined) {
     return;

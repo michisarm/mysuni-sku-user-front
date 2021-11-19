@@ -1,4 +1,4 @@
-import { deleteCookie, mobxHelper } from '@nara.platform/accent';
+import { deleteCookie, mobxHelper, StorageModel } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { LectureService } from 'lecture';
 import { BadgeService } from 'lecture/stores';
@@ -25,6 +25,7 @@ import {
   MyPageContentType,
   MyPageContentTypeName,
 } from '../model/MyPageContentType';
+import { Area } from 'tracker/model';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -97,7 +98,10 @@ function MyPagePage({
   }, []);
 
   const onLogout = useCallback(() => {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
     sessionStorage.clear();
     deleteCookie('nara.isLogin');
     window.location.href = `${window.location.protocol}//${window.location.host}/api/checkpoint/sso/logout`;
@@ -145,7 +149,7 @@ function MyPagePage({
         ]}
       >
         {/* <MyPageHeaderContainer /> */}
-        <div className="mypage_lnb">
+        <div className="mypage_lnb" data-area={Area.MYPAGE_INFO}>
           <div className="inner">
             <MyPageProfileCardContainer
               clickTabHandler={clickTabHandler}

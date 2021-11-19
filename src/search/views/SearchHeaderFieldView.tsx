@@ -121,12 +121,13 @@ export function SearchHeaderFieldView(props: Props) {
               {props.autoCompleteValues.map((value, idx) => {
                 // return AutoCompleteText(props.searchInfo.searchValue, value);
                 return (
-                  <AutoCompleteText
-                    onClickText={props.onSearch}
-                    key={idx}
-                    searchValue={props.searchInfo.searchValue}
-                    completeValue={value}
-                  />
+                  <React.Fragment key={idx}>
+                    <AutoCompleteText
+                      onClickText={props.onSearch}
+                      searchValue={props.searchInfo.searchValue}
+                      completeValue={value}
+                    />
+                  </React.Fragment>
                 );
               })}
             </ul>
@@ -140,7 +141,6 @@ export function SearchHeaderFieldView(props: Props) {
 
 interface AutoCompleteTextProps {
   onClickText: (value: string) => void;
-  key: any;
   searchValue: string;
   completeValue: string;
 }
@@ -150,7 +150,6 @@ function AutoCompleteText(props: AutoCompleteTextProps) {
   return (
     <li
       className="auto_item"
-      key={props.key}
       onClick={() => props.onClickText(props.completeValue)}
     >
       <a
@@ -175,6 +174,7 @@ function getTitleHtmlSearchKeyword(title: string, keyword: string) {
   if (keyword.indexOf(' ') > -1) {
     const keywords = keyword.split(' ');
     let htmlTitles = htmlTitle;
+
     keywords.map((item) => {
       htmlTitles = escapeRegex(item, htmlTitles);
       return htmlTitles;
@@ -183,6 +183,7 @@ function getTitleHtmlSearchKeyword(title: string, keyword: string) {
   }
 
   htmlTitle = escapeRegex(keyword, htmlTitle);
+
   return htmlTitle;
 }
 
@@ -190,18 +191,41 @@ function escapeRegex(item: string, target: string): string {
   //
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
   const regExpItem = item.replace(ESCAPE_REGEX, '');
-  let replacedText;
-  if (item.match(ESCAPE_REGEX)) {
-    replacedText = target.replace(
-      item,
-      `<strong class="a_text">${item}</strong>`
-    );
-  } else {
-    replacedText = target.replace(
-      new RegExp(regExpItem, 'gi'),
-      `<strong class="a_text">${regExpItem}</strong>`
-    );
-  }
+  let replacedText = '';
+  const splitTags = target.split('</strong>');
+  const changedValues = splitTags.map((splitValue, index) => {
+    const splitTargetValue =
+      splitTags.length !== index + 1 ? splitValue + '</strong>' : splitValue;
+    if (splitTargetValue.includes('</strong>')) {
+      return splitTargetValue;
+    } else {
+      if (item.match(ESCAPE_REGEX)) {
+        return splitTargetValue.replace(
+          item,
+          `<strong class="a_text">${item}</strong>`
+        );
+      } else {
+        return splitTargetValue.replace(
+          new RegExp(regExpItem),
+          `<strong class="a_text">${regExpItem}</strong>`
+        );
+      }
+    }
+  });
+
+  replacedText = changedValues.join('');
+
+  // if (item.match(ESCAPE_REGEX)) {
+  //   replacedText = target.replace(
+  //     item,
+  //     `<strong class="a_text">${item}</strong>`
+  //   );
+  // } else {
+  //   replacedText = target.replace(
+  //     new RegExp(regExpItem, 'gi'),
+  //     `<strong class="a_text">${regExpItem}</strong>`
+  //   );
+  // }
 
   return replacedText;
 }

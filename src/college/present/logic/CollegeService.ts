@@ -19,6 +19,7 @@ import { CollegeModel } from '../../model';
 import ChannelModel from '../../model/ChannelModel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CollegeBanner } from '../../model/CollegeBanner';
+import { findAllCollegeCache } from '../../../shared/service/requestAllColleges';
 
 @autobind
 export default class CollegeService {
@@ -73,9 +74,14 @@ export default class CollegeService {
   }
 
   @action
-  async findAllCollegeAndChannels(): Promise<void> {
+  async findAllCollegeAndChannels() {
     //
-    this.detailAllColleges = await this.collegeApi.findAllCollegeAndChannels();
+    const next = await findAllCollegeCache();
+    if (next !== undefined) {
+      runInAction(() => {
+        this.detailAllColleges = next as unknown as CollegeModel[];
+      });
+    }
   }
 
   @computed

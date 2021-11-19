@@ -10,9 +10,3 @@ export function findLatestBannerBundles(top: boolean = false) {
   const url = `${BASE_URL}/bannerBundles/latest?top=${top}`;
   return axios.get<BannerBundleWithBannerRom>(url).then(AxiosReturn);
 }
-
-export function findAvailablePageElements() {
-  const axios = getAxios();
-  const url = `${BASE_URL}/pageElements/available`;
-  return axios.get<PageElement[]>(url).then(AxiosReturn);
-}

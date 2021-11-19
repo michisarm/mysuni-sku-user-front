@@ -40,10 +40,7 @@ import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
-import {
-  parseLanguage,
-  parsePolyglotString,
-} from '../../../../shared/viewmodel/PolyglotString';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
 import { CardProps, LectureCardView } from '@sku/skuniv-ui-lecture-card';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
@@ -396,10 +393,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     const { ratingMap } = reviewService;
 
     const { _userLectureCards } = lectureService!;
-
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
 
     return (
       <CategoryLecturesWrapperView

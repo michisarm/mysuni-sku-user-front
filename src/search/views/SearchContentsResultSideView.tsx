@@ -29,8 +29,8 @@ import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {
   //
-  const initialConditionLimit = 5;
-  const [activeIndex, setActiveIndex] = useState<Number>(0);
+  const initialConditionLimit = 999;
+  const [activeIndex, setActiveIndex] = useState<Number>(-1);
   const [collegeLimit, setCollegeLimit] = useState<Number>(
     initialConditionLimit
   );
@@ -169,7 +169,7 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {collegeOptions.length > initialConditionLimit &&
+              {/*collegeOptions.length > initialConditionLimit &&
                 collegeLimit < 999 && (
                   <Button
                     className="btn_more"
@@ -181,7 +181,7 @@ export function SearchContentsResultSideView() {
                     />
                     <Icon color="grey" name="angle down" />
                   </Button>
-                )}
+                )*/}
             </Accordion.Content>
           </Accordion>
         )}
@@ -422,7 +422,7 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {cubeTypeOptions.length > initialConditionLimit &&
+              {/*cubeTypeOptions.length > initialConditionLimit &&
                 cubeTypeLimit < 999 && (
                   <Button
                     className="btn_more"
@@ -434,7 +434,7 @@ export function SearchContentsResultSideView() {
                     />
                     <Icon color="grey" name="angle down" />
                   </Button>
-                )}
+                )*/}
             </Accordion.Content>
           </Accordion>
         )}

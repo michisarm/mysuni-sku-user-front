@@ -67,7 +67,7 @@ function ListLeftTopPanel(props: Props) {
             className="list-number"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                '전체 <strong>{count}개<strong>의 개인학습',
+                '전체 <strong>{count}개</strong>의 개인학습',
                 'learning-개인보드-전체',
                 { count: totalCount + '' || 0 + '' }
               ),

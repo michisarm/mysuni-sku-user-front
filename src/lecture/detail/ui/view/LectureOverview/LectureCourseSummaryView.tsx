@@ -27,14 +27,13 @@ import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import findAvailablePageElements from '../../../../shared/api/arrangeApi';
-import { PageElementType } from '../../../../shared/model/PageElementType';
 import { PageElement } from '../../../../shared/model/PageElement';
 import {
   addBookMark,
   deleteBookMark,
-  reqeustBookmark,
+  requestBookmark,
 } from 'shared/service/requestBookmarks';
+import { findAvailablePageElementsCache } from '../../../../shared/api/arrangeApi';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -62,23 +61,6 @@ function copyUrl() {
     title: getPolyglotText('알림', 'Course-Summary-알림'),
     message: getPolyglotText('URL이 복사되었습니다.', 'Course-Summary-URL'),
   });
-}
-
-function hasCommunityAuthRequest() {
-  // const response = await findAvailablePageElements();
-  const hasCommunityAuth = async () => {
-    let hasAuth = false;
-    const response = await findAvailablePageElements();
-    if (response !== undefined) {
-      response.forEach((pageElement) => {
-        if (pageElement.type === 'Community') {
-          hasAuth = true;
-        }
-      });
-    }
-    return hasAuth;
-  };
-  return hasCommunityAuth();
 }
 
 function getColor(collegeId: string) {
@@ -128,6 +110,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     lectureStructure,
     menuAuth,
   }) {
+    const params = useLectureParams();
     const [isBookmark, setIsBookmark] = useState<boolean>(false);
     let difficultyLevelIcon = 'basic';
     switch (lectureSummary.difficultyLevel) {
@@ -182,8 +165,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       postService.post.alarmInfo.contentsName = lectureSummary.name;
     }, [lectureSummary]);
 
-    const params = useLectureParams();
-
     useEffect(() => {
       const postService = PostService.instance;
 
@@ -195,12 +176,8 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     }, [lectureSummary]);
 
     useEffect(() => {
-      //const axios = getAxios();
-      const fetchMenu = async () => {
-        const response = await findAvailablePageElements();
-      };
-      fetchMenu();
-    }, []);
+      setIsBookmark(findIsBookmark(params?.cardId));
+    }, [params?.cardId]);
 
     async function toggleCardBookmark() {
       const cardId = params?.cardId;
@@ -212,32 +189,18 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       const isBookmark = findIsBookmark(cardId);
 
       if (isBookmark) {
-        await deleteBookMark(cardId);
-        await reqeustBookmark();
-        reactAlert({
-          title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-          message: getPolyglotText(
-            '본 과정이 관심목록에서 제외되었습니다.',
-            '신규학습-신규목록-관심제외'
-          ),
+        deleteBookMark(cardId).then((bookmarks) => {
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+          setIsBookmark(findIsBookmark(cardId));
         });
       }
 
       if (!isBookmark) {
-        await addBookMark(cardId);
-        await reqeustBookmark();
-        reactAlert({
-          title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-          message: getPolyglotText(
-            '본 과정이 관심목록에 추가되었습니다.',
-            '신규학습-신규목록-관심추가'
-          ),
+        addBookMark(cardId).then((bookmarks) => {
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+          setIsBookmark(findIsBookmark(cardId));
         });
       }
-
-      setTimeout(() => {
-        setIsBookmark(findIsBookmark(cardId));
-      }, 400);
     }
 
     return (
@@ -400,8 +363,8 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                 )}
               <a onClick={toggleCardBookmark}>
                 <span>
-                  <Icon className={isBookmark ? 'listAdd' : 'listDelete'} />
-                  {isBookmark
+                  <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
+                  {!isBookmark
                     ? getPolyglotText(
                         '관심목록 추가',
                         'Course-Summary-관심추가'

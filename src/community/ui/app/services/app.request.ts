@@ -19,13 +19,11 @@ import {
   findCollegeBanners,
 } from '../../data/college/apis/collegeApi';
 import { CollegeIdName } from '../models/app.college';
-import {
-  findAvailablePageElements,
-  findLatestBannerBundles,
-} from '../../data/arrange/apis/apis';
+import { findLatestBannerBundles } from '../../data/arrange/apis/apis';
 import { parsePolyglotString } from '../../../packages/polyglot/PolyglotString';
 import { getDefaultLang } from '../../../packages/polyglot/LangSupport';
 import { onLogin } from '../../../packages/login/onLogin';
+import { findAvailablePageElementsCache } from '../../../../lecture/shared/api/arrangeApi';
 
 const PROTOCOL = window.location.protocol;
 const HOST = window.location.host;
@@ -164,7 +162,7 @@ export async function requestPisAgreement() {
 }
 
 export async function isCheckedAllowCommunity() {
-  const available = await findAvailablePageElements();
+  const available = await findAvailablePageElementsCache();
 
   if (available === undefined) {
     window.location.href = '/suni-main';

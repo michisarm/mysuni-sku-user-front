@@ -4,15 +4,14 @@ import { Area } from 'tracker/model';
 
 interface NotePageProps {
   noteCount: number;
-  dataArea?: Area;
 }
 
-const NotePage: React.FC<NotePageProps> = function NotePage({ noteCount, dataArea }) {
+const NotePage: React.FC<NotePageProps> = function NotePage({ noteCount }) {
   // console.log(noteCount);
 
   return (
     <>
-      <div className="mypage_contents profile-badge-contents" data-area={dataArea}>
+      <div className="mypage_contents profile-badge-contents" data-area={Area.MYPAGE_NOTE}>
         <strong className="mypage_title">Note</strong>
         <div className="ui segment full note-tab-area">
           <NoteContainer noteCount={noteCount} />

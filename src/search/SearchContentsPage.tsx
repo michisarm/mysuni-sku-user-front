@@ -114,7 +114,7 @@ export function SearchContentsPage(props: Props) {
                 {
                   value:
                     (searchInfo.errataValue && searchInfo.errataValue) ||
-                    queryId,
+                    searchInfo.searchValue,
                   value2: totalCount.toString(),
                 }
               ),
@@ -127,10 +127,18 @@ export function SearchContentsPage(props: Props) {
               className="b_suggest"
               onClick={() => onSearch(searchInfo.searchValue || queryId, true)}
             >
-              {`${searchInfo.searchValue || queryId} ${getPolyglotText(
-                '검색결과 보기.',
-                'result-list'
-              )}`}
+              <div
+                className="tt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `${searchInfo.searchValue || queryId} 검색결과 보기.`,
+                    'result-list-suggest',
+                    {
+                      searchValue: searchInfo.searchValue || queryId,
+                    }
+                  ),
+                }}
+              />
             </Button>
           </div>
         )) ||

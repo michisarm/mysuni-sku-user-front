@@ -1,11 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Card, Icon, Label, Segment } from 'semantic-ui-react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Card, Label, Segment } from 'semantic-ui-react';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
-import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
 import Swiper from 'react-id-swiper';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import { searchRankinsCache } from '../../../../search/api/searchApi';
 import {
   setSearchPopular1MList,
@@ -13,14 +9,14 @@ import {
 } from '../../../../search/search.services';
 import SearchService from '../../../../search/service/SearchService';
 import { search } from '../../../../search/search.events';
-import Image from '../../../../shared/components/Image';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { HotTopicView } from 'hotTopic/ui/view/HotTopicView';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import {
+  findAvailableCardBundlesCache,
+  findAvailablePageElementsCache,
+} from '../../../../lecture/shared/api/arrangeApi';
 
 const swiperProps = {
   slidesPerView: 3,
@@ -60,18 +56,18 @@ export function MainHotTopicContainer() {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.MAIN_TOPIC,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
   const fetchCardBundles = async () => {
-    const response = await findAvailableCardBundles();
+    const response = await findAvailableCardBundlesCache();
     if (response !== undefined) {
       setCardBundles(response.filter((c) => c.type === 'HotTopic'));
     }
@@ -138,7 +134,7 @@ export function MainHotTopicContainer() {
           }}
         />
         <div className="cardSwiper" data-action-name="Hot Topic">
-          <Swiper {...swiperProps} getSwiper={s => updateSwiper(s)}>
+          <Swiper {...swiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardBundles.map((c) => (
               <div className="swiper-slide" key={c.id}>
                 <Card.Group className="topic-card-warp">

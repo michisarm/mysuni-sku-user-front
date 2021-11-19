@@ -14,7 +14,6 @@ import {
   LectureCardView,
   parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
-import { parseLanguage } from '../../../../shared/viewmodel/PolyglotString';
 import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
@@ -50,13 +49,13 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
     }
   }, [onSlideChange, swiper]);
   function onSlideChange(swiper: any) {
-    if(swiper && swiper.isEnd){
+    if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
         area: Area.MAIN_REQUIRED,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
-      })  
+      });
     }
   }
 
@@ -68,9 +67,7 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
   );
 
   const fetchCardList = async () => {
-    const userLanguage = parseLanguage(
-      SkProfileService.instance.skProfile.language
-    );
+    const userLanguage = SkProfileService.instance.skProfile.language;
     const cardList = await findRequiredLearning();
     if (cardList !== undefined) {
       setCardList(parseUserLectureCards(cardList, userLanguage));
@@ -112,8 +109,11 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
         </div>
       </div>
       <div className="section-body">
-        <div className="cardSwiper" data-action-name="Deep Change를 위한 핵인싸 과정">
-          <Swiper {...SwiperProps} getSwiper={s => updateSwiper(s)}>
+        <div
+          className="cardSwiper"
+          data-action-name="Deep Change를 위한 핵인싸 과정"
+        >
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
             {cardList.map((item, i) => {
               return (
                 <div className="swiper-slide" key={item.cardId}>

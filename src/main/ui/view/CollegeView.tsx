@@ -1008,8 +1008,8 @@ const koPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                <Link
+                  to="/lecture/college/CLG00006/channels/pages/1"
                   className="item-button"
                 >
                   <img
@@ -1017,7 +1017,7 @@ const koPanes = [
                     alt=""
                   />
                   과정 바로가기
-                </a>
+                </Link>
               </div>
             </div>
 
