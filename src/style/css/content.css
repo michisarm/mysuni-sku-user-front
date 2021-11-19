@@ -677,3 +677,6 @@ border-left-color: #00bfae;
     font-size: 0;
     display: inline-block;
 }
+
+/* 칼리지소개 아이콘수정 */
+.text-right-box .item-button>img{width : 18px; height : 18px}

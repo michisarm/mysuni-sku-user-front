@@ -249,7 +249,8 @@ i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/pu
 .support-list-wrap.faq .faq-list-wrap,
 .qna-admin-list-wrap,
 .coc_v2.community-open-card,
-.profile-edit-contents .table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
+.profile-edit-contents .table,
+.filter-table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
 .course-cont .course-box { box-shadow: 0 2px 6px 0 rgba(76, 76, 76, 0.2); }
 
 /* Alert */
