@@ -2,7 +2,9 @@ import React, { Fragment, memo } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { CollegeModel } from 'college/model';
-import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
+import CheckboxOptions, {
+  learningTimePolyglot,
+} from 'myTraining/ui/model/CheckboxOptions';
 import { FilterCondition } from '../../../model/FilterCondition';
 import {
   FilterConditionName,
@@ -142,7 +144,7 @@ function CheckedFilterView(props: Props) {
               )
             }
           >
-            {FilterConditionName.Required}
+            {filterConditionNamePolyglot(FilterConditionName.Required)}
           </Button>
         </Fragment>
       );
@@ -283,6 +285,8 @@ const getTextFromValue = (
   filterConditionName: FilterConditionName,
   value: string
 ) => {
+  console.log('test');
+  console.log(value);
   switch (filterConditionName) {
     case FilterConditionName.Certification:
       return CheckboxOptions.certifications
@@ -291,6 +295,6 @@ const getTextFromValue = (
     case FilterConditionName.LearningTime:
       return CheckboxOptions.learningTimes
         .filter((learningTime) => learningTime.value === value)
-        .map((learningTime) => learningTime.text);
+        .map((learningTime) => learningTimePolyglot(learningTime.text));
   }
 };
