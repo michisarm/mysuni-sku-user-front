@@ -64,7 +64,7 @@ class TutorialModalZh extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: '基于类似学习者的推荐​',
+        menuItem: '基于类似学习者的推荐',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
