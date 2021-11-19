@@ -40,15 +40,15 @@ class MyTrainingApi {
     return offsetElementList;
   }
 
-  findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
-    //
-    return axiosApi
-      .post<OffsetElementList<MyTrainingModel>>(
-        this.baseUrl + '/byState/filterWithJoinedValue',
-        myTrainingRdo
-      )
-      .then(this.getOffsetElementList);
-  }
+  // findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
+  //   //
+  //   return axiosApi
+  //     .post<OffsetElementList<MyTrainingModel>>(
+  //       this.baseUrl + '/byState/filterWithJoinedValue',
+  //       myTrainingRdo
+  //     )
+  //     .then(this.getOffsetElementList);
+  // }
 
   fetchAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
@@ -174,12 +174,12 @@ class MyTrainingApi {
       .catch((error) => error && null);
   }
 
-  /* 
+  /*
     findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
       return axiosApi.post('http://localhost:8233/mytraining/mytrainings/stamps/v2', myTrainingFilterRdo)
         .then(response => response && response.data || null)
         .catch(error => error && null);
-    } 
+    }
   */
   //////////////////////// 개편 ////////////////////////
 }
