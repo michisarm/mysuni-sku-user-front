@@ -57,13 +57,25 @@ export function findCardFromCardBundle(
   return axios.post<UserLectureCard[]>(url, postBodyCdo).then(AxiosReturn);
 }
 
-export function findCardList(cardIds: string) {
+// export function findCardList(cardIds: string) {
+//   const axios = getAxios();
+//   // const url = `${BASE_URL}/cards/findCards`;
+//   const url = `${BASE_URL}/cards/findCardForUserViewRdos`;
+//
+//   return axios
+//     .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
+//     .then(AxiosReturn);
+// }
+
+export function findCardList(cardIds: string[]) {
   const axios = getAxios();
   // const url = `${BASE_URL}/cards/findCards`;
   const url = `${BASE_URL}/cards/findCardForUserViewRdos`;
-
+  const cardForUserViewByIdQdo = {
+    ids: cardIds,
+  };
   return axios
-    .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
+    .post<UserLectureCard[]>(url, cardForUserViewByIdQdo)
     .then(AxiosReturn);
 }
 
