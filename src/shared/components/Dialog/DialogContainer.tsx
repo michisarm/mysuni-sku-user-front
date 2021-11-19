@@ -36,7 +36,7 @@ class DialogContainer extends Component<Props> {
                 wrapped
                 className="modal-img"
                 size="medium"
-                src={`${process.env.PUBLIC_URL}/images/modal/${image}`}
+                src={`https://image.mysuni.sk.com/suni-asset/public/images/modal/${image}`}
               />
               <div className="title">{title}</div>
               <div
