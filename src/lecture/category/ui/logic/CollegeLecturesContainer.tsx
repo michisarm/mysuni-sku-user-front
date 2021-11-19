@@ -74,6 +74,7 @@ interface State {
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
   collegeOrder: boolean;
   loading: boolean;
+  seeMoreButtonView: HTMLDivElement | null;
 }
 
 interface RouteParams {
@@ -149,6 +150,8 @@ class CollegeLecturesContainerInner extends ReactComponent<
 
   PAGE_SIZE = 8;
 
+  observer: IntersectionObserver | null = null;
+
   constructor(props: InnerProps) {
     //
     super(props);
@@ -159,28 +162,52 @@ class CollegeLecturesContainerInner extends ReactComponent<
       totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
       collegeOrder: false,
       loading: true,
+      seeMoreButtonView: null,
     };
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      this.observer = new IntersectionObserver(
+        this.intersectionCallback,
+        options
+      );
+    }
   }
 
   async componentDidMount() {
     //
+    this.setState({ loading: true });
     await this.findCollegeOrder();
     this.initialFindPagingCollegeLectures();
     this.findChannels();
   }
 
-  async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props, prevState: State) {
     //
     const { params: prevParams } = prevProps.match;
     const { params } = this.props.match;
 
     if (prevParams.collegeId !== params.collegeId) {
+      // eslint-disable-next-line
+      this.setState({ loading: true });
       await this.findCollegeOrder();
       this.clearAndInit();
       this.initialFindPagingCollegeLectures();
     }
     if (prevParams.pageNo < params.pageNo) {
+      // eslint-disable-next-line
+      this.setState({ loading: true });
       this.addFindPagingCollegeLectures();
+    }
+    if (prevState.seeMoreButtonView !== this.state.seeMoreButtonView) {
+      if (this.observer !== null) {
+        if (this.state.seeMoreButtonView !== null) {
+          this.observer.observe(this.state.seeMoreButtonView);
+        } else {
+          this.observer.disconnect();
+        }
+      }
     }
   }
 
@@ -304,49 +331,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
     );
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    // if (lecture instanceof InMyLectureModel) {
-    //   inMyLectureService!
-    //     .removeInMyLecture(lecture.id)
-    //     .then(() =>
-    //       inMyLectureService!.removeInMyLectureInAllList(
-    //         lecture.serviceId,
-    //         lecture.serviceType
-    //       )
-    //     );
-    // } else {
-    //   inMyLectureService!
-    //     .addInMyLecture(
-    //       new InMyLectureCdoModel({
-    //         serviceId: lecture.serviceId,
-    //         serviceType: lecture.serviceType,
-    //         category: lecture.category,
-    //         name: lecture.name ? parsePolyglotString(lecture.name) : '',
-    //         description: lecture.description,
-    //         cubeType: lecture.cubeType,
-    //         learningTime: lecture.learningTime,
-    //         stampCount: lecture.stampCount,
-    //         coursePlanId: lecture.coursePlanId,
-    //         requiredSubsidiaries: lecture.requiredSubsidiaries,
-    //         cubeId: lecture.cubeId,
-    //         courseSetJson: lecture.courseSetJson,
-    //         courseLectureUsids: lecture.courseLectureUsids,
-    //         lectureCardUsids: lecture.lectureCardUsids,
-    //         reviewId: lecture.reviewId,
-    //         baseUrl: lecture.baseUrl,
-    //         servicePatronKeyString: lecture.patronKey.keyString,
-    //       })
-    //     )
-    //     .then(() =>
-    //       inMyLectureService.addInMyLectureInAllList(
-    //         lecture.serviceId,
-    //         lecture.serviceType
-    //       )
-    //     );
-    // }
-  }
-
   onViewDetail(e: any, { model }: any) {
     //
     const { history, scrollSave } = this.props;
@@ -383,6 +367,19 @@ class CollegeLecturesContainerInner extends ReactComponent<
     );
   }
 
+  seeMoreButtonViewRef(ref: HTMLDivElement | null) {
+    this.setState({ seeMoreButtonView: ref });
+  }
+
+  intersectionCallback(entries: IntersectionObserverEntry[]) {
+    console.log(entries);
+    entries.forEach((c) => {
+      if (c.isIntersecting) {
+        this.onClickSeeMore();
+      }
+    });
+  }
+
   renderCollegeLectures() {
     //
 
@@ -416,23 +413,9 @@ class CollegeLecturesContainerInner extends ReactComponent<
           )
         }
       >
-        {loading ? (
-          <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
-          >
-            <Loadingpanel loading={loading} />
-          </Segment>
-        ) : _userLectureCards &&
-          _userLectureCards.length > 0 &&
-          _userLectureCards[0] ? (
+        {_userLectureCards &&
+        _userLectureCards.length > 0 &&
+        _userLectureCards[0] ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {_userLectureCards.map((userLectureCard: CardProps, index) => {
@@ -448,8 +431,26 @@ class CollegeLecturesContainerInner extends ReactComponent<
                 );
               })}
             </Lecture.Group>
-            {this.isContentMore() && (
-              <SeeMoreButton onClick={this.onClickSeeMore} />
+            {loading && (
+              <Segment
+                style={{
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  height: 400,
+                  boxShadow: '0 0 0 0',
+                  border: 0,
+                }}
+              >
+                <Loadingpanel loading={loading} />
+              </Segment>
+            )}
+            {!loading && this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+                ref={this.seeMoreButtonViewRef}
+              />
             )}
           </>
         ) : (
