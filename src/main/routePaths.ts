@@ -40,6 +40,8 @@ const routePaths = {
 
   introductionCertification: () => routePaths.introductionTab('Certification'),
 
+  introductionPromotion: () => routePaths.introductionTab('PromotionTab'),
+
   currentPage: (pageNo: number) => `./${pageNo}`,
 };
 
