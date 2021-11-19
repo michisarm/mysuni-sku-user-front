@@ -81,7 +81,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         setTitle(parsePolyglotString(filteredCardBundle.displayText));
         setCardType(filteredCardBundle.type);
 
-        const joinedIds = filteredCardBundle.cardIds.join();
+        const joinedIds = filteredCardBundle.cardIds;
         const cardList = await findCardList(joinedIds);
 
         if (cardList) {

@@ -4,7 +4,10 @@ import moment from 'moment';
 import { CollegeModel } from 'college/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { FilterCondition } from '../../../model/FilterCondition';
-import { FilterConditionName } from '../../../model/FilterConditionName';
+import {
+  FilterConditionName,
+  filterConditionNamePolyglot,
+} from '../../../model/FilterConditionName';
 import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../lecture/model/LangSupport';
@@ -23,7 +26,7 @@ function CheckedFilterView(props: Props) {
   /* render functions */
   const renderCheckedConditions = () => {
     const buttons: React.ReactNode[] = [];
-    const collegeNames = getCollegeNames(colleges, conditions.collegeIds);
+    const collegeDataList = getCollegeNames(colleges, conditions.collegeIds);
 
     if (conditions.learningTypes && conditions.learningTypes.length) {
       buttons.push(
@@ -32,7 +35,10 @@ function CheckedFilterView(props: Props) {
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.LearningType, learningType)
+                onClearOne(
+                  filterConditionNamePolyglot(FilterConditionName.LearningType),
+                  learningType
+                )
               }
             >
               {learningType}
@@ -44,15 +50,18 @@ function CheckedFilterView(props: Props) {
 
     if (conditions.collegeIds && conditions.collegeIds.length) {
       buttons.push(
-        collegeNames.map((collegeName, index) => (
+        collegeDataList.map((college, index) => (
           <Fragment key={`checked-college-${index}`}>
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.College, collegeName)
+                onClearOne(
+                  filterConditionNamePolyglot(FilterConditionName.College),
+                  college.collegeId
+                )
               }
             >
-              {collegeName}
+              {college.collegeName}
             </Button>
           </Fragment>
         ))
@@ -66,7 +75,10 @@ function CheckedFilterView(props: Props) {
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.LearningTime, learningTime)
+                onClearOne(
+                  filterConditionNamePolyglot(FilterConditionName.LearningTime),
+                  learningTime
+                )
               }
             >
               {getTextFromValue(FilterConditionName.LearningTime, learningTime)}
@@ -83,7 +95,12 @@ function CheckedFilterView(props: Props) {
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.DifficultyLevel, difficultyLevel)
+                onClearOne(
+                  filterConditionNamePolyglot(
+                    FilterConditionName.DifficultyLevel
+                  ),
+                  difficultyLevel
+                )
               }
             >
               {difficultyLevel}
@@ -100,7 +117,10 @@ function CheckedFilterView(props: Props) {
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.Organizer, organizer)
+                onClearOne(
+                  filterConditionNamePolyglot(FilterConditionName.Organizer),
+                  organizer
+                )
               }
             >
               {organizer}
@@ -116,7 +136,10 @@ function CheckedFilterView(props: Props) {
           <Button
             className="del"
             onClick={() =>
-              onClearOne(FilterConditionName.Required, conditions.required)
+              onClearOne(
+                filterConditionNamePolyglot(FilterConditionName.Required),
+                conditions.required
+              )
             }
           >
             {FilterConditionName.Required}
@@ -132,7 +155,12 @@ function CheckedFilterView(props: Props) {
             <Button
               className="del"
               onClick={() =>
-                onClearOne(FilterConditionName.Certification, certification)
+                onClearOne(
+                  filterConditionNamePolyglot(
+                    FilterConditionName.Certification
+                  ),
+                  certification
+                )
               }
             >
               {getTextFromValue(
@@ -152,7 +180,9 @@ function CheckedFilterView(props: Props) {
             className="del"
             onClick={() =>
               onClearOne(
-                FilterConditionName.LearningSchedule,
+                filterConditionNamePolyglot(
+                  FilterConditionName.LearningSchedule
+                ),
                 'learningSchedule'
               )
             }
@@ -172,7 +202,9 @@ function CheckedFilterView(props: Props) {
             className="del"
             onClick={() =>
               onClearOne(
-                FilterConditionName.LearningSchedule,
+                filterConditionNamePolyglot(
+                  FilterConditionName.LearningSchedule
+                ),
                 conditions.applying
               )
             }
@@ -218,15 +250,33 @@ export default memo(CheckedFilterView);
 const getCollegeNames = (
   colleges: CollegeModel[],
   collegeIds: string[]
-): string[] => {
+): { collegeId: string; collegeName: string }[] => {
   /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
-  return collegeIds.map((collegeId) => {
-    const college = colleges.filter((college) => college.id === collegeId)[0];
-    return parsePolyglotString(
-      college.name,
-      getDefaultLang(college.langSupports)
-    );
+
+  const resultList: { collegeId: string; collegeName: string }[] = [];
+
+  collegeIds.map((collegeId) => {
+    const college = colleges.find((college) => college.id === collegeId);
+
+    college &&
+      resultList.push({
+        collegeId: college.id,
+        collegeName: parsePolyglotString(
+          college.name,
+          getDefaultLang(college.langSupports)
+        ),
+      });
   });
+
+  return resultList;
+
+  // collegeIds.map((collegeId) => {
+  //   const college = colleges.filter((college) => college.id === collegeId)[0];
+  //   const name =  parsePolyglotString(
+  //     college.name,
+  //     getDefaultLang(college.langSupports)
+  //   );
+  // });
 };
 
 const getTextFromValue = (

@@ -289,16 +289,22 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     background: #333;
     border: 1px solid #333;
 }
-.ui.button.btn-filter-blue.on {
-    padding: 0 !important;
-    float: none;
-    border: #777 1px solid !important;
-    color: #777 !important;
-    width: 5.5rem;
+.ui.button.btn-filter-blue {
+    border: 1px solid #777!important;
+    color: #777!important;
+    letter-spacing: -.01625rem;
+    min-width: 5.5rem;
     margin-right: 0;
 }
+.ui.button.btn-filter-blue.on {
+    width: auto;
+    padding: 0 12px !important;
+}
+.btn-filter-blue span {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-down-20-px.png) left 50%/16px no-repeat;
+}
 .btn-filter-blue.on span {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-up-20-px.png) left 50% no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-up-20-px.png) left 50%/16px no-repeat;
 }
 .filter-table .selected {
     border-color: #777;
@@ -328,7 +334,15 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.comments .comment img.avatar,
 .profile-contents-area .image-area img { image-rendering : -webkit-optimize-contrast }
 .stamp-list-wrapper .ui.table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
-.mypagev2 .ui.segment.full .top-guide-title .ui.button.excel-down { margin-left: 0; }
+
+/* Learning, Mypage */
+.ui.segment.full .top-guide-title .ui.button.excel-down { margin-left: 0; }
+.ui.segment.full .top-guide-title .button.post + .button.post {
+    margin-left: 8px !important;
+}
+.ui.calendar.h40 .ui.input input[type=text] {
+    border-color: #aaa !important;
+}
 
 /* Hot Topic Card(개별) */
 .card.topic-item .ui.label.topic-info.time { display: none; }
@@ -568,7 +582,6 @@ border-style: solid;
 border-left-color: #00bfae;
 }
 
-.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important;}
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon label span { word-break: break-all; padding-right: 45px;}
 .completion-time .table-css .bullet-list2 .time { letter-spacing: -0.1px;}
 
@@ -680,3 +693,8 @@ border-left-color: #00bfae;
 
 /* 칼리지소개 아이콘수정 */
 .text-right-box .item-button>img{width : 18px; height : 18px}
+
+
+.profile-contents-area .button.page-bttn.active { border-color: #00bfae; background-color: #00bfae;}
+.apl-form-wrap .post.change-admin.btn { width: auto; height: auto; padding: 3px 16px !important;}
+.mylearning-list-wrap table.ml-02-09 td:nth-child(2) .ellipsis, .mylearning-list-wrap table.ml-02-09 th:nth-child(2) .ellipsis{width : 25.75rem}
