@@ -106,7 +106,7 @@
 .tutorials3.eng .tu6 .ui.menu.secondary{margin-top: 10px;}
 
 .tutorials3.chn .tu6 .ui.menu.secondary .item { margin-right: 19px;}
-.tutorials3.chn .ui.menu.secondary .item:nth-child(2) { line-height: 1.07; white-space: pre-line;}
+.tutorials3.chn .tu6 .ui.menu.secondary .item:nth-child(2) { line-height: 1.07; white-space: pre-line;}
 
 .tutorials3.eng .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-eng.png') 95px 0/contain no-repeat;}
 .tutorials3.chn .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-chn.png') 105px 0/contain no-repeat;}
