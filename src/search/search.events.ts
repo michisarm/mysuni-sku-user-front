@@ -55,7 +55,7 @@ import {
   setSearchPopular1YList,
   getMenuAuth,
 } from './search.services';
-import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { debounceSearchActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
 import SearchService from './service/SearchService';
@@ -633,8 +633,9 @@ export async function search(
       }
     }
   }
+  
   // search track
-  debounceActionTrack({
+  debounceSearchActionTrack({
     email:
       (window.sessionStorage.getItem('email') as string) ||
       (window.localStorage.getItem('nara.email') as string) ||
@@ -644,7 +645,7 @@ export async function search(
     area: Area.SEARCH,
     actionType: ActionType.GENERAL,
     action: Action.SEARCH,
-    actionName: '검색::' + decodedSearchValue,
+    actionName: (searchInSearchInfo?.inAgain ? '재검색::' + searchInSearchInfo.recentSearchValue + '검색::' : '검색::') + decodedSearchValue,
   } as ActionTrackParam);
 }
 
