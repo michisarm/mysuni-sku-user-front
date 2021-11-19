@@ -132,7 +132,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
 
   baseTopSiteMaps = [
     {
-      name: getPolyglotText('Learning', 'home-사이트맵-대카테2'),
+      name: getPolyglotText('My Learning', 'home-사이트맵-대카테2'),
       items: [
         {
           name: getPolyglotText('학습중', 'home-사이트맵-중카20'),
@@ -209,6 +209,10 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         {
           name: getPolyglotText('인증제도 소개', 'home-사이트맵-중카32'),
           path: mainRoutePaths.introductionCertification(),
+        },
+        {
+          name: getPolyglotText('홍보자료', 'home-사이트맵-중카33'),
+          path: mainRoutePaths.introductionPromotion(),
         },
       ],
     },
