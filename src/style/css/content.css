@@ -93,6 +93,56 @@
 
 .badge-detail .ov-paragraph .list.bulleted .item .title {padding-left: 10px;}
 
+/* 학습진도 다이어그램 */
+.content.lms .label-state-cube {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-play.svg") center no-repeat;
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+  }
+  .content.lms .label-state-cube.proceeding {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.complete {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-completed.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step0 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-play.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step1 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-10.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step2 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-20.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step3 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-30.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step4 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-40.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step5 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-50.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step6 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all//icon-lms-cube-learing-ing-60.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step7 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-70.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step8 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-80.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step9 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-90.svg") center no-repeat;
+  }
+  .content.lms .label-state-cube.l-step10 {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-completed.svg") center no-repeat;
+  }
+  .content.lms .btn-close {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-close.svg") center no-repeat;
+  }
+
 /* 학습카드(개별) */
 .card-item .custom-icon.icon-clock { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tictoc.svg); }
 .card-item .custom-icon.icon-bravo { background-image: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-bravo.svg); }
