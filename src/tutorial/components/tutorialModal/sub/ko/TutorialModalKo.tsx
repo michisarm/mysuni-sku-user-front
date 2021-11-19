@@ -370,7 +370,7 @@ class TutorialModalKo extends Component<TutorialProps> {
                             Hot Topic을 중심으로 성장의 기반을
                             <br />
                             다져보세요.
-                          </strong>
+                          </strong>{' '}
                           앞으로도 다양한 주제로 찾아뵐게요!
                         </div>
                         <Tab

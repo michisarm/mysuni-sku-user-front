@@ -7,6 +7,8 @@
 .ui.modal.base.tutorials3 .header3 .right-btn .ui.base.checkbox + .ui.button.close{margin-left:1rem; color:#fff; font-size: 0.875rem;}
 .ui.modal.base.tutorials3 .content{padding: 0 !important; border-radius: 4px;}
 .ui.modal.base.tutorials3 .content .cont-wrap{height: 40rem; display: flex; border-radius: 8px !important; overflow: hidden;}
+.ui.modal.tutorials3 .scrolling-80vh {max-height: 80vh;}
+
 
 .tutorials3 .left{width: 240px; height: 100%; background: #fff; box-shadow: 0 2px 20px 0 rgba(0,0,0, 0.2); z-index:1;}
 .tutorials3 .left .top-logo{margin:20px 0 23px 30px;}
@@ -90,12 +92,21 @@
 
 /* kor, eng, chn */
 .tutorials3.kor .intro-button ul { width: 582px; }
+
 .tutorials3.eng .intro-button li { width: 130px; height: 130px; }
 .tutorials3.eng .intro-button li .intro { padding-top: 26px; line-height: 1.07; }
 .tutorials3.eng .intro-button li .intro .icon.tuto-01 { margin-bottom: 17px; }
+.tutorials3.eng .intro-button li .intro .icon.tuto-02 {margin-bottom: 10px;}
+.tutorials3.eng .intro-button li .intro .icon.tuto-03 {margin-bottom: 6px;}
+.tutorials3.eng .intro-button li:last-child .intro {font-size: 14px;}
 .tutorials3.eng .tu-cont .top-text { padding-top: 8px; line-height: 1.37;}
 .tutorials3.eng .tab-tu .ui.menu.secondary {margin-top: 20px;}
-.tutorials3.eng .tu6 .ui.menu.secondary .item{padding-left:34px;  line-height: 1.34; font-size: 0.75rem; white-space: pre-line;}
+.tutorials3.eng .tu6 .ui.menu.secondary .item{padding-left:34px;  line-height: 1.34; font-size: 0.75rem; white-space: pre-line; margin-right:20px}
+.tutorials3.eng .tu6 .ui.menu.secondary .item:nth-child(2):after {top: 8px;}
+.tutorials3.eng .tu6 .ui.menu.secondary{margin-top: 10px;}
+
+.tutorials3.chn .tu6 .ui.menu.secondary .item { margin-right: 19px;}
+.tutorials3.chn .ui.menu.secondary .item:nth-child(2) { line-height: 1.07; white-space: pre-line;}
 
 .tutorials3.eng .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-eng.png') 95px 0/contain no-repeat;}
 .tutorials3.chn .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-chn.png') 105px 0/contain no-repeat;}

@@ -82,7 +82,7 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: `Recommendation based \non similar learners`,
+        menuItem: `Recommendation\nbased on similar\nlearners`,
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
