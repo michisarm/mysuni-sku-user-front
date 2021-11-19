@@ -114,7 +114,7 @@ export function SearchContentsPage(props: Props) {
                 {
                   value:
                     (searchInfo.errataValue && searchInfo.errataValue) ||
-                    queryId,
+                    searchInfo.searchValue,
                   value2: totalCount.toString(),
                 }
               ),
