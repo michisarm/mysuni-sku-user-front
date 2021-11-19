@@ -245,10 +245,11 @@ class TutorialModalEn extends Component<TutorialProps> {
                         <div className="top-text">
                           The simplified menu
                           <strong>
+                            {' '}
                             separates your exploring
                             <br />
                             /searching area from “my area”
-                          </strong>
+                          </strong>{' '}
                           for convenient
                           <br />
                           searching and learning.
@@ -267,10 +268,11 @@ class TutorialModalEn extends Component<TutorialProps> {
                       <div className="inner">
                         <div className="top-text">
                           <strong>
+                            {' '}
                             Improved search features like auto-complete
                             <br />
                             and typo correction
-                          </strong>
+                          </strong>{' '}
                           make it easier to find
                           <br />
                           what you want to learn.
@@ -290,10 +292,11 @@ class TutorialModalEn extends Component<TutorialProps> {
                         <div className="top-text">
                           Click
                           <strong>
+                            {' '}
                             “View My Learning Status” to see a summary
                             <br />
                             of your learning
-                          </strong>
+                          </strong>{' '}
                           and quickly get back to the course
                           <br />
                           <strong>you just learned.</strong>
@@ -335,10 +338,10 @@ class TutorialModalEn extends Component<TutorialProps> {
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            {`We'll recommend courses by data analysis using
-                              <br />
-                              machine learning.`}
-                          </strong>
+                            {`We'll recommend courses by data analysis using`}
+                            <br />
+                            machine learning.
+                          </strong>{' '}
                           We will continue to upgrade mySUNI,
                           <br />
                           so look forward to it!
