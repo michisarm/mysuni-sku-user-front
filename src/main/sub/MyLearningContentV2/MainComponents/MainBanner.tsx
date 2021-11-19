@@ -149,6 +149,7 @@ const MainBanner: React.FC<Props> = (Props) => {
       nextEl: '.navi .swiper-button-next',
     },
     getSwiper: setSwiper,
+    speed: 500, // 여기 추가 하시면 될거 같아요
   };
 
   const [clickedBanner, setClickedBanner] = useState({

@@ -1022,6 +1022,8 @@ export const convertToKeyInMyLearningTable = (column: string): any => {
       return 'modifiedTime';
     case '스탬프':
       return 'stampCount';
+    case '획득일자':
+      return 'passedTime';
     default:
       return '';
   }
