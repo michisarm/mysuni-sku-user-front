@@ -22,9 +22,9 @@
 .tutorials3 .tu-cont .inner{position:relative; width:100%; height: 100%;}
 .tutorials3 .tu-cont .top-text{ padding:16px 0 0 4px; color: #333; font-size: 20px; line-height: 30px; letter-spacing: -0.5px;}
 
-.ui.checkbox.new:not(.radio) label:before, .ui.checkbox.new:not(.radio) label:hover:before{background:url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/btn-check-nomal-green.svg') 0 0 no-repeat !important;}
-.ui.checkbox:not(.radio) input:checked~label:before,
-.ui.checkbox.checked.new:not(.radio) label:hover:before{background : url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/btn-check-selected-green.svg') 0 0 no-repeat !important}
+/*.ui.checkbox.new:not(.radio) label:before, .ui.checkbox.new:not(.radio) label:hover:before{background:url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/btn-check-nomal-green.svg') 0 0 no-repeat !important;}*/
+/*.ui.checkbox:not(.radio) input:checked~label:before,*/
+/*.ui.checkbox.checked.new:not(.radio) label:hover:before{background : url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/btn-check-selected-green.svg') 0 0 no-repeat !important}*/
 
 /* intro */
 .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image.png') 105px 0/contain no-repeat;}
@@ -54,10 +54,10 @@
 .tab-tu .ui.menu.secondary .item:nth-child(1)::after{content : '1'}
 .tab-tu .ui.menu.secondary .item:nth-child(2)::after{content : '2'}
 .tab-tu .ui.menu.secondary .item:nth-child(3)::after{content : '3'}
-.tab-tu .ui.secondary.menu .item:hover{color: #888; background-color: transparent;}
+.tab-tu .ui.secondary.menu .item:hover{color: #888; background-color: #fff;}
 .tab-tu .ui.menu.secondary .item.active{ background: transparent; color: #ff664d;}
 .tab-tu .ui.menu.secondary .item.active::after{background-color: #ff664d;}
-.tab-tu .ui.secondary.menu .item.active:hover{color: #ff664d; background-color: transparent;}
+.tab-tu .ui.secondary.menu .item.active:hover{color: #ff664d; background-color: #fff;}
 .tab-tu .ui.segment.tab.tab-img-wrap{margin:0; padding:0; display: block; border :0; border-radius: 0; overflow: hidden; width: 690px; height: 420px; background-color: transparent; position: absolute; top : calc(100% - 420px);right: 0; bottom: 0; left: 0; }
 .tab-tu .ui.segment.tab.tab-img-wrap .tab-img{width:100%; height: 100%; background-color: #fff; background-size: 100% 100%; background-repeat: no-repeat; box-shadow: 0 0 0 1px #ccc inset;}
 
@@ -95,8 +95,7 @@
 .tutorials3.eng .intro-button li .intro .icon.tuto-01 { margin-bottom: 17px; }
 .tutorials3.eng .tu-cont .top-text { padding-top: 8px; line-height: 1.37;}
 .tutorials3.eng .tab-tu .ui.menu.secondary {margin-top: 20px;}
-.tutorials3.eng .tu6 .ui.menu.secondary .item{padding-left:34px;  line-height: 1.34; font-size: 0.75rem;}
-
+.tutorials3.eng .tu6 .ui.menu.secondary .item{padding-left:34px;  line-height: 1.34; font-size: 0.75rem; white-space: pre-line;}
 
 .tutorials3.eng .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-eng.png') 95px 0/contain no-repeat;}
 .tutorials3.chn .tu-cont.tu1{background: url('https://image.mysuni.sk.com/suni-asset/public/static/images/all/key-image-chn.png') 105px 0/contain no-repeat;}

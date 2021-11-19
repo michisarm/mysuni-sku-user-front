@@ -74,7 +74,7 @@ class TutorialModalEn extends Component<TutorialProps> {
 
     const panes6 = [
       {
-        menuItem: `Learning-pattern-based\nrecommendations`,
+        menuItem: `Learning-pattern-based \nrecommendations`,
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -82,7 +82,7 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: `Recommendation based\non similar learners`,
+        menuItem: `Recommendation based \non similar learners`,
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
@@ -90,7 +90,7 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: `Courses you added\nas a channel of interest`,
+        menuItem: `Courses you added \nas a channel of interest`,
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img3" />
@@ -110,7 +110,7 @@ class TutorialModalEn extends Component<TutorialProps> {
             <div className="right-btn">
               <Checkbox
                 label="I don’t want to see this anymore."
-                className="base new"
+                className="base"
                 checked={isShowTutorial === 'HIDE'}
                 onChange={(e, data) =>
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')
