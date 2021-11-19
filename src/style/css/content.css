@@ -537,8 +537,19 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 .ui.segment.full .contents.overview .ov-paragraph .title-style .onlytext span { color: #666; }
 .ui.segment.full .contents.overview .ov-paragraph .btn-blue .icon.morelink { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-link.svg) 50% 0; }
 .ui.segment.full .contents.overview .ov-paragraph .series-wrap .table { border-top: 4px solid #ccc; border-bottom: 4px solid #ccc; }
+.ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info th { color :#666}
 .ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info th:first-child { border-bottom: 1px solid #ccc; }
-.ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info td { border-bottom: #ddd 1px solid; }
+.ui.segment.full .contents.overview .ov-paragraph .series-wrap .th-info td { border-bottom: #ddd 1px solid; color :#222; }
+
+/* 학습카드 상세 > 관심목록 북마크 아이콘 변경 */
+.content.lms .course-detail-center .icon.listAdd {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-active-14-px.svg) 0 0 no-repeat !important;
+    transform: translateY(-1px);
+}
+.content.lms .course-detail-center .icon.listDelete {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important;
+    transform: translateY(-1px);
+}
 
 /* 마이러닝 > 학습이수시간 팝업 */
 .ui.radio.rect-icon label::before {
