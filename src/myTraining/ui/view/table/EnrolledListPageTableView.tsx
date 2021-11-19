@@ -94,10 +94,10 @@ export function EnrolledListPageTableView({
                   <Table.Cell>{myTraining.round} </Table.Cell>
                   <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
                   <Table.Cell>{formattedLearningTime}</Table.Cell>
-                  <Table.Cell>
+                  {/* <Table.Cell>
                     {(myTraining.stampCount !== 0 && myTraining.stampCount) ||
                       '-'}
-                  </Table.Cell>
+                  </Table.Cell> */}
                   <Table.Cell>{myTraining.learningStartDate}</Table.Cell>
                 </Table.Row>
               );

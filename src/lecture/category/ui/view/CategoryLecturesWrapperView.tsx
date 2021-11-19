@@ -1,11 +1,9 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-
 interface Props {
-  header: React.ReactNode,
-  children: React.ReactNode,
+  header: React.ReactNode;
+  children: React.ReactNode;
 }
 
 @reactAutobind
@@ -13,19 +11,13 @@ class CategoryLecturesWrapperView extends Component<Props> {
   //
   render() {
     //
-    const {
-      header, children,
-    } = this.props;
+    const { header, children } = this.props;
 
     return (
       <div className="cont-wrap">
-        <div className="section-top">
-          {header}
-        </div>
+        <div className="section-top">{header}</div>
 
-        <div className="section">
-          {children}
-        </div>
+        <div className="section">{children}</div>
       </div>
     );
   }

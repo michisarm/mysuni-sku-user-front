@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { Component, useEffect } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import {
   RouteComponentProps,
@@ -7,7 +7,6 @@ import {
   useLocation,
   withRouter,
 } from 'react-router-dom';
-import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PageService } from 'shared/stores';
@@ -49,6 +48,7 @@ interface State {
   collegeOrder: boolean;
   channelOffset: number;
   loading: boolean;
+  seeMoreButtonView: HTMLDivElement | null;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -106,17 +106,28 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   PAGE_SIZE = 8;
 
-  state = {
-    sorting: OrderByType.Time,
-    collegeOrder: false,
-    channelOffset: 0,
-    loading: true,
-  };
+  observer: IntersectionObserver | null = null;
 
   constructor(props: Props) {
     //
     super(props);
     this.init();
+    this.state = {
+      sorting: OrderByType.Time,
+      collegeOrder: false,
+      channelOffset: 0,
+      loading: true,
+      seeMoreButtonView: null,
+    };
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      this.observer = new IntersectionObserver(
+        this.intersectionCallback,
+        options
+      );
+    }
   }
 
   async componentDidMount() {
@@ -129,7 +140,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.findPagingChannelLectures();
   }
 
-  async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props, prevState: State) {
     //
     const { pageService } = this.props;
     if (
@@ -149,6 +160,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         console.error('TODO', error);
       }
       this.findPagingChannelLectures();
+    }
+
+    if (prevState.seeMoreButtonView !== this.state.seeMoreButtonView) {
+      if (this.observer !== null) {
+        if (this.state.seeMoreButtonView !== null) {
+          this.observer.observe(this.state.seeMoreButtonView);
+        } else {
+          this.observer.disconnect();
+        }
+      }
     }
   }
 
@@ -190,7 +211,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         match.params.channelId,
         page!.limit,
         page!.nextOffset,
-        sorting
+        sorting as OrderByType
       );
     this.setState({ loading: false });
 
@@ -277,6 +298,19 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.findPagingChannelLectures();
   }
 
+  seeMoreButtonViewRef(ref: HTMLDivElement | null) {
+    this.setState({ seeMoreButtonView: ref });
+  }
+
+  intersectionCallback(entries: IntersectionObserverEntry[]) {
+    console.log(entries);
+    entries.forEach((c) => {
+      if (c.isIntersecting) {
+        this.onClickSeeMore();
+      }
+    });
+  }
+
   render() {
     //
     const { pageService, lectureService } = this.props;
@@ -286,26 +320,30 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
     const userLanguage = SkProfileService.instance.skProfile.language;
 
+    if (lectures.length === 0 && loading) {
+      return (
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={loading} />
+        </Segment>
+      );
+    }
+
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        {loading ? (
-          <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
-          >
-            <Loadingpanel loading={loading} />
-          </Segment>
-        ) : lectures && lectures.length > 0 ? (
+        {lectures && lectures.length > 0 ? (
           <>
             <CardSorting
               value={sorting}
@@ -314,26 +352,42 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {parseUserLectureCards(lectures, userLanguage).map(
-                  (cards, index) => {
-                    return (
-                      <LectureCardView
-                        {...cards}
-                        useBookMark={true}
-                        dataArea={
-                          window.location.pathname.includes('/recommend')
-                            ? Area.RECOMMEND_CARD
-                            : Area.COLLEGE_CARD
-                        }
-                        hoverTrack={hoverTrack}
-                      />
-                    );
-                  }
-                )}
+                {parseUserLectureCards(lectures, userLanguage).map((cards) => {
+                  return (
+                    <LectureCardView
+                      {...cards}
+                      useBookMark={true}
+                      dataArea={
+                        window.location.pathname.includes('/recommend')
+                          ? Area.RECOMMEND_CARD
+                          : Area.COLLEGE_CARD
+                      }
+                      hoverTrack={hoverTrack}
+                    />
+                  );
+                })}
               </Lecture.Group>
+              {loading && (
+                <Segment
+                  style={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    height: 400,
+                    boxShadow: '0 0 0 0',
+                    border: 0,
+                  }}
+                >
+                  <Loadingpanel loading={loading} />
+                </Segment>
+              )}
 
-              {this.isContentMore() && (
-                <SeeMoreButton onClick={this.onClickSeeMore} />
+              {!loading && this.isContentMore() && (
+                <SeeMoreButton
+                  onClick={this.onClickSeeMore}
+                  ref={this.seeMoreButtonViewRef}
+                />
               )}
             </div>
           </>

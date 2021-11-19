@@ -1,6 +1,9 @@
+/* @ts-nocheck */
 /* eslint-disable */
+/* @ts-ignore */
+import 'intersection-observer';
 
-export function repeatPolyfill() {
+function repeatPolyfill() {
   if (!String.prototype.repeat) {
     String.prototype.repeat = function (count) {
       'use strict';
@@ -40,4 +43,8 @@ export function repeatPolyfill() {
       return str;
     };
   }
+}
+
+export function polyfill() {
+  repeatPolyfill();
 }

@@ -28,7 +28,7 @@ function FilterBoxContainer({
   filterBoxService,
   contentType,
 }: FilterBoxContainerProps) {
-  const { colleges } = collegeService!;
+  const { availableColleges } = collegeService!;
   const {
     filterCountViews,
     findAllFilterCountViews,
@@ -60,7 +60,7 @@ function FilterBoxContainer({
   }, [conditions, openFilter, setFilterCount]);
 
   const getCollegeId = (collegeName: string) => {
-    const college = colleges.filter(
+    const college = availableColleges.filter(
       (college) =>
         parsePolyglotString(
           college.name,
@@ -97,14 +97,14 @@ function FilterBoxContainer({
         });
         break;
       case filterConditionNamePolyglot(FilterConditionName.College):
-        if (conditions.collegeIds.length === colleges.length) {
+        if (conditions.collegeIds.length === availableColleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
           break;
         }
 
         setConditions({
           ...conditions,
-          collegeIds: [...colleges.map((college) => college.id)],
+          collegeIds: [...availableColleges.map((college) => college.id)],
         });
         break;
       case filterConditionNamePolyglot(FilterConditionName.DifficultyLevel):
@@ -297,7 +297,7 @@ function FilterBoxContainer({
         setConditions({
           ...conditions,
           collegeIds: conditions.collegeIds.filter(
-            (collegeId) => collegeId !== getCollegeId(condition)
+            (collegeId) => collegeId !== condition
           ),
         });
         break;
@@ -374,7 +374,7 @@ function FilterBoxContainer({
             </a>
           </div>
           <FilterBoxView
-            colleges={colleges}
+            colleges={availableColleges}
             conditions={conditions}
             filterCountModel={filterCountViews}
             onCheckOne={onCheckOne}
@@ -383,7 +383,7 @@ function FilterBoxContainer({
             onChangeEndDate={onChangeEndDate}
           />
           <CheckedFilterView
-            colleges={colleges}
+            colleges={availableColleges}
             conditions={conditions}
             onClearOne={onClearOne}
             onClearAll={onClearAll}

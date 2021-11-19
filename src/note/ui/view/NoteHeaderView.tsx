@@ -383,7 +383,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             onClick={(e, data) => excelDownload()}
           >
             <Image
-              src={`${PUBLIC_URL}/images/all/icon-excel-24-px.svg`}
+              src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-excel-24-px.svg"
               alt="엑셀아이콘"
             />
             <PolyglotText

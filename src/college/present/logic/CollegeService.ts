@@ -1,25 +1,23 @@
+import { autobind, CachingFetch } from '@nara.platform/accent';
+import _ from 'lodash';
 import {
+  action,
+  computed,
   IObservableArray,
   observable,
-  action,
   runInAction,
-  computed,
 } from 'mobx';
-import {
-  autobind,
-  CachingFetch,
-  axiosApi as axios,
-} from '@nara.platform/accent';
-import CollegeApi from '../../../college/present/apiclient/CollegeApi';
-
-import _ from 'lodash';
 import { IdNameList } from 'shared/model';
-import ChannelApi from '../apiclient/ChannelApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import CollegeApi from '../../../college/present/apiclient/CollegeApi';
+import {
+  findAllCollegeCache,
+  findAvailableCollegeChannels,
+} from '../../../shared/service/requestAllColleges';
 import { CollegeModel } from '../../model';
 import ChannelModel from '../../model/ChannelModel';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CollegeBanner } from '../../model/CollegeBanner';
-import { findAllCollegeCache } from '../../../shared/service/requestAllColleges';
+import ChannelApi from '../apiclient/ChannelApi';
 
 @autobind
 export default class CollegeService {
@@ -64,6 +62,9 @@ export default class CollegeService {
   @observable
   detailAllColleges: CollegeModel[] = [];
 
+  @observable
+  availableColleges: CollegeModel[] = [];
+
   constructor(
     collegeApi: CollegeApi = CollegeApi.instance,
     channelApi: ChannelApi = ChannelApi.instance
@@ -78,8 +79,25 @@ export default class CollegeService {
     //
     const next = await findAllCollegeCache();
     if (next !== undefined) {
+      const availableList = await findAvailableCollegeChannels();
       runInAction(() => {
         this.detailAllColleges = next as unknown as CollegeModel[];
+
+        const tempDetailCollegeList = next as unknown as CollegeModel[];
+        const tempList: CollegeModel[] = [];
+        availableList &&
+          availableList.length > 0 &&
+          tempDetailCollegeList.length > 0 &&
+          tempDetailCollegeList.forEach((detailCollege) => {
+            if (
+              availableList.some(
+                (availableCollege) => availableCollege.id === detailCollege.id
+              )
+            ) {
+              tempList.push(detailCollege);
+            }
+          });
+        this.availableColleges = [...tempList];
       });
     }
   }
