@@ -34,7 +34,7 @@
     border-radius: 50%;
     background: #4c4c4c;
 }
-.toggle-btn .ui.button.img-icon .icon.s26:after {
+.toggle-btn .ui.button.img-icon .icon.s26:after { 
     display: block;
     content: "";
     width: 100%;
@@ -333,7 +333,11 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 /* Hot Topic Card(개별) */
 .card.topic-item .ui.label.topic-info.time { display: none; }
 .card.topic-item .ui.label.topic-info { position: absolute; left: 0; bottom: 0; }
-.aside-tit { word-break: break-word; }
+.aside-tit {
+    word-break: break-word;
+    font-size: 1.125rem;
+    margin-bottom: 20px;
+}
 
 /* Hot Topic Page */
 .topic-title .sub-txt { word-break: break-word; }
@@ -342,7 +346,11 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .topic-title .page-title-wrap {
     padding: 40px 0 20px;
 }
+.topic-title .txt-box {
+    margin-bottom: 20px;
+}
 .topic-list-wrap {
+    padding-top: 30px;;
     padding-right: 60px;
 }
 #root .topic-list-wrap .card.card-item.topic-list {
@@ -350,6 +358,9 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     border-bottom: 0;
     padding: 0;
     margin-bottom: 30px;
+}
+.topic-content .side-area .aside-inner {
+    padding-top: 30px;
 }
 .card.card-item.topic-list .card-inner .thumbnail-area {
     width: 168px;
@@ -363,7 +374,6 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     font-size: 12px;
 }
 .card.card-item.topic-list .card-inner .contents-area .topic-card-title {
-    margin-top: 0;
     white-space: normal;
     line-height: 1.5rem;
     max-height: 1.5rem;
@@ -375,6 +385,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     -webkit-box-orient: vertical;
 }
 .card.card-item.topic-list .card-inner .contents-area .tipic-card-txt {
+    margin-top: 2px;
     height: 24px;
     overflow: hidden;
     line-height: 24px;
@@ -386,9 +397,10 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 }
 .card.card-item.topic-list .card-inner .contents-area .icon-area {
     position: static;
-    margin-top: 10px;
+    margin-top: 4px;
 }
-.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning {
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning,
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.completed {
     padding-left: 0;
     margin-left: 0;
     position: absolute;
@@ -515,6 +527,8 @@ i.icon.college-operation86:before{
 .result_category .ui.checked.radio.checkbox input:checked~label:before {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAMAAABVlYYBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABRUExURUdwTFTRyC7KvHHZ0V3TzCXIulHRxwrCsiDHuGTUzRjFtm7Y0EfPxD7Nwm3b23re3gC/rv///+76+TLLveD39a3q5UXQxPj9/ej5+Izi2qDn4HgJzLAAAAAQdFJOUwCw7y+P+bn++Hf7Qc/dBxflXQeFAAAAgklEQVQY03XR1w6AIAwF0DqQ4SqKGP3/D7Uihjq4DySchEILQIjulJSmLCpI0QJjZDfe2CCLan8Q0YQqGl8pCQf1VqwBar7fnaRVAPQMFzudii2oB86xRDjiNo5YXLrajSFpqOBX6xJShes24oR0W3yZdwlFrov/jjPTyUwyM/XvDx02ZhQIKFZWqQAAAABJRU5ErkJggg==) no-repeat 0 0!important;
 }
+.result .sortbox span{ color:#777; }
+.result .sortbox span + span{ background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-step.svg') no-repeat 0 60%;}
 
 
 ul.ui.list.my-task-bar {border-color: #ddd;}
@@ -554,7 +568,7 @@ border-style: solid;
 border-left-color: #00bfae;
 }
 
-.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important; border: none !important;}
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important;}
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon label span { word-break: break-all; padding-right: 45px;}
 .completion-time .table-css .bullet-list2 .time { letter-spacing: -0.1px;}
 
