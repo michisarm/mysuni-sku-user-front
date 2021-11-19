@@ -41,6 +41,7 @@ export function RequiredListPageTableView({
   onClickSort,
 }: props) {
   //
+
   return (
     <>
       <div className="mylearning-list-wrap">

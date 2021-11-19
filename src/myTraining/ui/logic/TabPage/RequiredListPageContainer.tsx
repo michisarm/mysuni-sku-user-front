@@ -181,7 +181,7 @@ function RequiredListPageContainer({
   };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
-    lectureService!.sortTableViews(column, direction);
+    lectureService!.sortMyTrainingCards(column, direction);
   }, []);
 
   const handleClickSort = useCallback(
