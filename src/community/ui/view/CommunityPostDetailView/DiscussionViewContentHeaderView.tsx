@@ -173,7 +173,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
           <div className="discuss-wrap" style={{ width: '850px' }}>
             <div className="discuss-box">
               <Image
-                src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-communtiy-discussion.png"
                 alt=""
                 style={{ display: 'inline-block' }}
               />
