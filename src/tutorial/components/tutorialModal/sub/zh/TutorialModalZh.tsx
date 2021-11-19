@@ -92,7 +92,7 @@ class TutorialModalZh extends Component<TutorialProps> {
             <div className="right-btn">
               <Checkbox
                 label="不再显示"
-                className="base new"
+                className="base"
                 checked={isShowTutorial === 'HIDE'}
                 onChange={(e, data) =>
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')

@@ -127,7 +127,7 @@ class TutorialModalKo extends Component<TutorialProps> {
             <div className="right-btn">
               <Checkbox
                 label="더 이상 보지 않기"
-                className="base new"
+                className="base"
                 checked={isShowTutorial === 'HIDE'}
                 onChange={(e, data) =>
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')
