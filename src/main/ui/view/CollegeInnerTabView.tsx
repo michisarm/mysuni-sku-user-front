@@ -31,7 +31,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -278,7 +278,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -453,7 +453,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -613,7 +613,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -908,7 +908,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -1162,7 +1162,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -1398,7 +1398,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -1735,7 +1735,7 @@ const panes = [
             >
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               과정 바로가기
@@ -1950,7 +1950,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -2166,7 +2166,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -2351,7 +2351,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -2490,7 +2490,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -2760,7 +2760,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -2990,7 +2990,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -3214,7 +3214,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -3551,7 +3551,7 @@ const panesZh = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               直接进入课程
@@ -3754,7 +3754,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -4009,7 +4009,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -4214,7 +4214,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -4374,7 +4374,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -4668,7 +4668,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -4954,7 +4954,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -5274,7 +5274,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses
@@ -5681,7 +5681,7 @@ const panesEn = [
             <a className="item-button" href="#none">
               <Image
                 style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                 alt=""
               />
               Go to Courses

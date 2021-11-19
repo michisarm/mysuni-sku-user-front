@@ -167,7 +167,7 @@ function MyPagePage({
                   <ul>
                     <li>
                       <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
+                        src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-badge.svg"
                         alt="뱃지"
                       />
                       <Link
@@ -184,7 +184,7 @@ function MyPagePage({
                     </li>
                     <li>
                       <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
+                        src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-stamp.svg"
                         alt="스탬프"
                       />
                       <Link
@@ -201,7 +201,7 @@ function MyPagePage({
                     </li>
                     <li>
                       <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
+                        src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-note.svg"
                         alt="노트"
                       />
                       <Link
