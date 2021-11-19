@@ -17,4 +17,6 @@ export type PageElementType =
   | 'ChallengingBadges'
   | 'RecommendCards'
   | 'EventButton'
-  | 'LRSCards';
+  | 'LRSCards'
+  | 'HotTopic'
+  | 'EnrollingCards';

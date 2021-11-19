@@ -32,6 +32,13 @@ export function findAllCollege() {
   return axios.get<College[]>('/api/college/colleges').then(AxiosReturn);
 }
 
+export function findAvailableCollegeChannels() {
+  const axios = getAxios();
+  return axios
+    .get<College[]>('/api/college/colleges/available')
+    .then(AxiosReturn);
+}
+
 export const [findAllCollegeCache] = createCacheApi(findAllCollege);
 
 export async function requestAllColleges() {

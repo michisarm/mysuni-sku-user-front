@@ -64,7 +64,7 @@ class TutorialModalZh extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: '按照个人特点推荐',
+        menuItem: `基于类似学习者的\n推荐`,
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
@@ -92,7 +92,7 @@ class TutorialModalZh extends Component<TutorialProps> {
             <div className="right-btn">
               <Checkbox
                 label="不再显示"
-                className="base new"
+                className="base"
                 checked={isShowTutorial === 'HIDE'}
                 onChange={(e, data) =>
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')

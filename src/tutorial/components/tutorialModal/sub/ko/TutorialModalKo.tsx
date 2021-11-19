@@ -127,7 +127,7 @@ class TutorialModalKo extends Component<TutorialProps> {
             <div className="right-btn">
               <Checkbox
                 label="더 이상 보지 않기"
-                className="base new"
+                className="base"
                 checked={isShowTutorial === 'HIDE'}
                 onChange={(e, data) =>
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')
@@ -265,9 +265,10 @@ class TutorialModalKo extends Component<TutorialProps> {
                       {/* 간소화된 메뉴 구성 */}
                       <div className="inner">
                         <div className="top-text">
-                          메뉴 간소화를 통해
+                          메뉴 간소화를 통해{' '}
                           <strong>탐색/조회 영역과 나의 영역을 구분</strong>하여
-                          <br /> 편리하게 검색하고 학습에 참여할 수 있어요.
+                          <br />
+                          편리하게 검색하고 학습에 참여할 수 있어요.
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -283,7 +284,7 @@ class TutorialModalKo extends Component<TutorialProps> {
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            자동완성, 오타 정정 등 업그레이드 된 검색 기능
+                            자동완성, 오타 정정 등 업그레이드된 검색 기능
                           </strong>
                           으로
                           <br />
@@ -302,8 +303,9 @@ class TutorialModalKo extends Component<TutorialProps> {
                       {/* 편리해진 나의 학습 확인 */}
                       <div className="inner">
                         <div className="top-text">
-                          <strong>‘나의 학습현황 보기’</strong> 클릭으로
-                          <strong>학습의 요약 정보를 확인</strong>하고 <br />
+                          <strong>‘나의 학습현황 보기’</strong> 클릭으로{' '}
+                          <strong>학습의 요약 정보를 확인</strong>하고
+                          <br />
                           <strong>최근에 학습한 과정</strong>으로 빠르게 들어갈
                           수 있어요.
                         </div>
@@ -322,9 +324,11 @@ class TutorialModalKo extends Component<TutorialProps> {
                       <div className="inner">
                         <div className="top-text">
                           <strong>이미지형 학습카드</strong>로 학습 내용을
-                          빠르게 파악할 수 있어요. <br />
-                          관심 목록으로 담은 과정들은
-                          <strong>My Learning 메뉴</strong>에서 <br />
+                          빠르게 파악할 수 있어요.
+                          <br />
+                          관심 목록으로 담은 과정들은{' '}
+                          <strong>My Learning</strong> 메뉴에서
+                          <br />
                           모아볼 수 있어요.
                         </div>
                         <div className="tab-tu">
@@ -342,9 +346,10 @@ class TutorialModalKo extends Component<TutorialProps> {
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            머신 러닝을 활용한 데이터 분석으로 과정을 추천
+                            머신 러닝을 활용한 데이터 분석으로 과정
                           </strong>
-                          해 드립니다. <br />
+                          을 추천해 드립니다.
+                          <br />
                           계속 업그레이드할 예정이니 많이 기대해 주세요!
                         </div>
                         <Tab
@@ -360,13 +365,13 @@ class TutorialModalKo extends Component<TutorialProps> {
                       {/* 따끈한 Topic 모음 */}
                       <div className="inner">
                         <div className="top-text">
-                          mySUNI가 엄선한
+                          mySUNI가 엄선한{' '}
                           <strong>
                             Hot Topic을 중심으로 성장의 기반을
                             <br />
                             다져보세요.
-                          </strong>
-                          앞으로도 다양한 주제로 찾아 뵐게요!
+                          </strong>{' '}
+                          앞으로도 다양한 주제로 찾아뵐게요!
                         </div>
                         <Tab
                           menu={{ secondary: true }}

@@ -289,16 +289,22 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     background: #333;
     border: 1px solid #333;
 }
-.ui.button.btn-filter-blue.on {
-    padding: 0 !important;
-    float: none;
-    border: #777 1px solid !important;
-    color: #777 !important;
-    width: 5.5rem;
+.ui.button.btn-filter-blue {
+    border: 1px solid #777!important;
+    color: #777!important;
+    letter-spacing: -.01625rem;
+    min-width: 5.5rem;
     margin-right: 0;
 }
+.ui.button.btn-filter-blue.on {
+    width: auto;
+    padding: 0 12px !important;
+}
+.btn-filter-blue span {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-down-20-px.png) left 50%/16px no-repeat;
+}
 .btn-filter-blue.on span {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-up-20-px.png) left 50% no-repeat;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-up-20-px.png) left 50%/16px no-repeat;
 }
 .filter-table .selected {
     border-color: #777;
@@ -328,12 +334,24 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .ui.comments .comment img.avatar,
 .profile-contents-area .image-area img { image-rendering : -webkit-optimize-contrast }
 .stamp-list-wrapper .ui.table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
-.mypagev2 .ui.segment.full .top-guide-title .ui.button.excel-down { margin-left: 0; }
+
+/* Learning, Mypage */
+.ui.segment.full .top-guide-title .ui.button.excel-down { margin-left: 0; }
+.ui.segment.full .top-guide-title .button.post + .button.post {
+    margin-left: 8px !important;
+}
+.ui.calendar.h40 .ui.input input[type=text] {
+    border-color: #aaa !important;
+}
 
 /* Hot Topic Card(개별) */
 .card.topic-item .ui.label.topic-info.time { display: none; }
 .card.topic-item .ui.label.topic-info { position: absolute; left: 0; bottom: 0; }
-.aside-tit { word-break: break-word; }
+.aside-tit {
+    word-break: break-word;
+    font-size: 1.125rem;
+    margin-bottom: 20px;
+}
 
 /* Hot Topic Page */
 .topic-title .sub-txt { word-break: break-word; }
@@ -342,7 +360,11 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .topic-title .page-title-wrap {
     padding: 40px 0 20px;
 }
+.topic-title .txt-box {
+    margin-bottom: 20px;
+}
 .topic-list-wrap {
+    padding-top: 30px;;
     padding-right: 60px;
 }
 #root .topic-list-wrap .card.card-item.topic-list {
@@ -350,6 +372,9 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     border-bottom: 0;
     padding: 0;
     margin-bottom: 30px;
+}
+.topic-content .side-area .aside-inner {
+    padding-top: 30px;
 }
 .card.card-item.topic-list .card-inner .thumbnail-area {
     width: 168px;
@@ -363,7 +388,6 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     font-size: 12px;
 }
 .card.card-item.topic-list .card-inner .contents-area .topic-card-title {
-    margin-top: 0;
     white-space: normal;
     line-height: 1.5rem;
     max-height: 1.5rem;
@@ -375,6 +399,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     -webkit-box-orient: vertical;
 }
 .card.card-item.topic-list .card-inner .contents-area .tipic-card-txt {
+    margin-top: 2px;
     height: 24px;
     overflow: hidden;
     line-height: 24px;
@@ -386,9 +411,10 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 }
 .card.card-item.topic-list .card-inner .contents-area .icon-area {
     position: static;
-    margin-top: 10px;
+    margin-top: 4px;
 }
-.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning {
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning,
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.completed {
     padding-left: 0;
     margin-left: 0;
     position: absolute;
@@ -515,6 +541,8 @@ i.icon.college-operation86:before{
 .result_category .ui.checked.radio.checkbox input:checked~label:before {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAMAAABVlYYBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABRUExURUdwTFTRyC7KvHHZ0V3TzCXIulHRxwrCsiDHuGTUzRjFtm7Y0EfPxD7Nwm3b23re3gC/rv///+76+TLLveD39a3q5UXQxPj9/ej5+Izi2qDn4HgJzLAAAAAQdFJOUwCw7y+P+bn++Hf7Qc/dBxflXQeFAAAAgklEQVQY03XR1w6AIAwF0DqQ4SqKGP3/D7Uihjq4DySchEILQIjulJSmLCpI0QJjZDfe2CCLan8Q0YQqGl8pCQf1VqwBar7fnaRVAPQMFzudii2oB86xRDjiNo5YXLrajSFpqOBX6xJShes24oR0W3yZdwlFrov/jjPTyUwyM/XvDx02ZhQIKFZWqQAAAABJRU5ErkJggg==) no-repeat 0 0!important;
 }
+.result .sortbox span{ color:#777; }
+.result .sortbox span + span{ background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-step.svg') no-repeat 0 60%;}
 
 
 ul.ui.list.my-task-bar {border-color: #ddd;}
@@ -554,7 +582,6 @@ border-style: solid;
 border-left-color: #00bfae;
 }
 
-.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important;}
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon label span { word-break: break-all; padding-right: 45px;}
 .completion-time .table-css .bullet-list2 .time { letter-spacing: -0.1px;}
 
@@ -663,3 +690,11 @@ border-left-color: #00bfae;
     font-size: 0;
     display: inline-block;
 }
+
+/* 칼리지소개 아이콘수정 */
+.text-right-box .item-button>img{width : 18px; height : 18px}
+
+
+.profile-contents-area .button.page-bttn.active { border-color: #00bfae; background-color: #00bfae;}
+.apl-form-wrap .post.change-admin.btn { width: auto; height: auto; padding: 3px 16px !important;}
+.mylearning-list-wrap table.ml-02-09 td:nth-child(2) .ellipsis, .mylearning-list-wrap table.ml-02-09 th:nth-child(2) .ellipsis{width : 25.75rem}

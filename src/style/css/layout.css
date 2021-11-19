@@ -185,6 +185,9 @@ i.icon.no-contents50:before { background: url(https://image.mysuni.sk.com/suni-a
 i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/no-contents-80-px.svg) center no-repeat !important; }
 
 /* Icon */
+i.blue.icon {
+    color: #00bfae !important;
+}
 i.icon.search-32{background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-gnb-search-32-px.svg') no-repeat 50% 50%;}
 i.icon.support-tel{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-support-tel-16-px.svg") no-repeat 50% 50%;}
 i.icon.ask24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-ask-24-px.svg') 0 0 no-repeat !important; }
@@ -249,7 +252,8 @@ i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/pu
 .support-list-wrap.faq .faq-list-wrap,
 .qna-admin-list-wrap,
 .coc_v2.community-open-card,
-.profile-edit-contents .table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
+.profile-edit-contents .table,
+.filter-table { box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); }
 .course-cont .course-box { box-shadow: 0 2px 6px 0 rgba(76, 76, 76, 0.2); }
 
 /* Alert */

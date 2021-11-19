@@ -7,10 +7,10 @@
                 <g id="li_01" transform="translate(0.000000, 320.000000)">
                     <g id="icon_mypage_menu_badge" transform="translate(30.000000, 24.000000)">
                         <rect id="area" x="0" y="0" width="16" height="16"></rect>
-                        <polyline id="Rectangle-Copy-2" stroke="#A7ABBE" fill="#FFFFFF" transform="translate(10.610544, 11.500000) scale(-1, 1) rotate(-330.000000) translate(-10.610544, -11.500000) " points="12.3605445 8.75 12.3605445 14.25 10.5647393 13.4177261 8.86054446 14.25 8.86054446 8.75"></polyline>
-                        <polyline id="Rectangle-Copy-3" stroke="#A7ABBE" fill="#FFFFFF" transform="translate(5.390544, 11.500000) rotate(-330.000000) translate(-5.390544, -11.500000) " points="7.14054446 8.75 7.14054446 14.25 5.34473932 13.4177261 3.64054446 14.25 3.64054446 8.75"></polyline>
-                        <circle id="Oval" stroke="#A7ABBE" fill="#FFFFFF" cx="8" cy="6" r="5.5"></circle>
-                        <polygon id="Star" stroke="#A7ABBE" fill="#FFFFFF" points="8 7.25 6.53053687 8.02254249 6.81117935 6.38627124 5.62235871 5.22745751 7.26526843 4.98872876 8 3.5 8.73473157 4.98872876 10.3776413 5.22745751 9.18882065 6.38627124 9.46946313 8.02254249"></polygon>
+                        <polyline id="Rectangle-Copy-2" stroke="#AAA" fill="#FFFFFF" transform="translate(10.610544, 11.500000) scale(-1, 1) rotate(-330.000000) translate(-10.610544, -11.500000) " points="12.3605445 8.75 12.3605445 14.25 10.5647393 13.4177261 8.86054446 14.25 8.86054446 8.75"></polyline>
+                        <polyline id="Rectangle-Copy-3" stroke="#AAA" fill="#FFFFFF" transform="translate(5.390544, 11.500000) rotate(-330.000000) translate(-5.390544, -11.500000) " points="7.14054446 8.75 7.14054446 14.25 5.34473932 13.4177261 3.64054446 14.25 3.64054446 8.75"></polyline>
+                        <circle id="Oval" stroke="#AAA" fill="#FFFFFF" cx="8" cy="6" r="5.5"></circle>
+                        <polygon id="Star" stroke="#AAA" fill="#FFFFFF" points="8 7.25 6.53053687 8.02254249 6.81117935 6.38627124 5.62235871 5.22745751 7.26526843 4.98872876 8 3.5 8.73473157 4.98872876 10.3776413 5.22745751 9.18882065 6.38627124 9.46946313 8.02254249"></polygon>
                     </g>
                 </g>
             </g>

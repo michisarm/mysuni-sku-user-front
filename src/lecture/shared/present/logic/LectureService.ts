@@ -959,6 +959,26 @@ class LectureService {
   }
 
   @action
+  sortMyTrainingCards(column: string, direction: Direction) {
+    const propKey =
+      converToKey(column) === 'updateTime'
+        ? 'modifiedTime'
+        : converToKey(column);
+
+    if (direction === Direction.ASC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @action
   clearAllTabCount() {
     this.requiredLecturesCount = 0;
   }
@@ -1002,6 +1022,8 @@ export const convertToKeyInMyLearningTable = (column: string): any => {
       return 'modifiedTime';
     case '스탬프':
       return 'stampCount';
+    case '획득일자':
+      return 'passedTime';
     default:
       return '';
   }

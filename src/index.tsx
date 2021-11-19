@@ -13,10 +13,10 @@ import './style/css/layout.css';
 import './style/css/content.css';
 import 'react-quill/dist/quill.snow.css';
 
-import { repeatPolyfill } from './polyfill';
+import { polyfill } from './polyfill';
 import { beforeAppInitialize } from './beforeAppInitialize';
 
-repeatPolyfill();
+polyfill();
 initializeBody();
 beforeAppInitialize()
   .then(() => {

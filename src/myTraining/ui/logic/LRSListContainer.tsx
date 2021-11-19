@@ -29,16 +29,16 @@ function getTitle() {
   const search = window.location.search;
   if (search.includes('LearningPatternBased')) {
     return getPolyglotText(
-      '{name}님이 관심 가질만한 과정을 모아봤어요~',
-      'lrs-title2',
+      '{name}님의 학습패턴을 기반으로 추천 드려요!',
+      'lrs-title1',
       {
         name: parsePolyglotString(SkProfileService.instance.skProfile.name),
       }
     );
   } else {
     return getPolyglotText(
-      '{name}님의 학습패턴을 기반으로 추천 드려요!',
-      'lrs-title1',
+      '{name}님이 관심 가질만한 과정을 모아봤어요~',
+      'lrs-title2',
       {
         name: parsePolyglotString(SkProfileService.instance.skProfile.name),
       }

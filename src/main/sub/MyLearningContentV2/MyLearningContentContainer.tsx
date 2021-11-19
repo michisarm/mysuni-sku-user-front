@@ -91,10 +91,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'LRSCards'
         ) && (
           <>
-            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
             <LRSFromLearningPatternBased
               profileMemberName={skProfile.profileViewName}
             />
+            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
           </>
         )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
@@ -111,14 +111,24 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'Certification'
         ) &&
           !isExternal && <MainChallengingBadgeContainer />}
-        <MainHotTopicContainer />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'HotTopic'
+        ) && <MainHotTopicContainer />}
       </div>
 
       {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
 
-      <div className="learning-section-wrap">
-        <EnrollingLearning />
-      </div>
+      {pageElements.some(
+        (pagemElement) =>
+          pagemElement.position === 'HomeElement' &&
+          pagemElement.type === 'EnrollingCards'
+      ) && (
+        <div className="learning-section-wrap">
+          <EnrollingLearning />
+        </div>
+      )}
     </>
   );
 };
