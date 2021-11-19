@@ -34,7 +34,7 @@
     border-radius: 50%;
     background: #4c4c4c;
 }
-.toggle-btn .ui.button.img-icon .icon.s26:after { 
+.toggle-btn .ui.button.img-icon .icon.s26:after {
     display: block;
     content: "";
     width: 100%;
@@ -554,7 +554,7 @@ border-style: solid;
 border-left-color: #00bfae;
 }
 
-.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important;}
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon.checkbox input:checked~label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-selected.svg) 0 0 no-repeat !important; border: none !important;}
 .completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon label span { word-break: break-all; padding-right: 45px;}
 .completion-time .table-css .bullet-list2 .time { letter-spacing: -0.1px;}
 
