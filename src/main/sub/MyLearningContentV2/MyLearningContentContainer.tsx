@@ -111,14 +111,24 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'Certification'
         ) &&
           !isExternal && <MainChallengingBadgeContainer />}
-        <MainHotTopicContainer />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'HotTopic'
+        ) && <MainHotTopicContainer />}
       </div>
 
       {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
 
-      <div className="learning-section-wrap">
-        <EnrollingLearning />
-      </div>
+      {pageElements.some(
+        (pagemElement) =>
+          pagemElement.position === 'HomeElement' &&
+          pagemElement.type === 'HotTopic'
+      ) && (
+        <div className="learning-section-wrap">
+          <EnrollingLearning />
+        </div>
+      )}
     </>
   );
 };
