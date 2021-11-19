@@ -277,6 +277,7 @@ export function FilterBoxView({
                     selected={conditions.startDate}
                     onChange={onChangeStartDate}
                     dateFormat="yyyy.MM.dd"
+                    maxDate={conditions.endDate}
                   />
                   <i className="calendar24 icon">
                     <span className="blind">date</span>

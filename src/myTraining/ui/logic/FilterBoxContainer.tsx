@@ -297,7 +297,7 @@ function FilterBoxContainer({
         setConditions({
           ...conditions,
           collegeIds: conditions.collegeIds.filter(
-            (collegeId) => collegeId !== getCollegeId(condition)
+            (collegeId) => collegeId !== condition
           ),
         });
         break;
