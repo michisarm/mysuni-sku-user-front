@@ -191,13 +191,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       if (isBookmark) {
         deleteBookMark(cardId).then((bookmarks) => {
           localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-          reactAlert({
-            title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-            message: getPolyglotText(
-              '본 과정이 관심목록에서 제외되었습니다.',
-              '신규학습-신규목록-관심제외'
-            ),
-          });
           setIsBookmark(findIsBookmark(cardId));
         });
       }
@@ -205,13 +198,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       if (!isBookmark) {
         addBookMark(cardId).then((bookmarks) => {
           localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-          reactAlert({
-            title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-            message: getPolyglotText(
-              '본 과정이 관심목록에 추가되었습니다.',
-              '신규학습-신규목록-관심추가'
-            ),
-          });
           setIsBookmark(findIsBookmark(cardId));
         });
       }
