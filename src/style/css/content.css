@@ -543,11 +543,11 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 /* 학습카드 상세 > 관심목록 북마크 아이콘 변경 */
 .content.lms .course-detail-center .icon.listAdd {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-active-14-px.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important;
     transform: translateY(-1px);
 }
 .content.lms .course-detail-center .icon.listDelete {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-active-14-px.svg) 0 0 no-repeat !important;
     transform: translateY(-1px);
 }
 
