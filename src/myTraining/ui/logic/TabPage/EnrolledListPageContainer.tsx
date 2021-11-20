@@ -219,7 +219,7 @@ function EnrolledListPageContainer({
           />
         </TabHeader>
       }
-      {enrolledCount > 0 && (
+      {(enrolledCount > 0 && (
         <>
           {(myTrainingTableCount2 > 0 && (
             <EnrolledListPageTableView
@@ -233,23 +233,23 @@ function EnrolledListPageContainer({
               onClickSort={handleClickSort}
             />
           )) || (
-              <NoSuchContentsView
-                isLoading={isLoading}
-                emptyText={getPolyglotText(
-                  '필터 조건에 해당하는 결과가 없습니다.',
-                  'mapg-msmp-검색x2'
-                )}
-              />
-            ) || (
-              <NoSuchContentsView
-                isLoading={isLoading}
-                emptyText={getPolyglotText(
-                  '학습예정인 과정이 없습니다.',
-                  'learning-my-학습예정'
-                )}
-              />
-            )}
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x2'
+              )}
+            />
+          )}
         </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '학습예정인 과정이 없습니다.',
+            'learning-my-학습예정'
+          )}
+        />
       )}
     </>
   );
