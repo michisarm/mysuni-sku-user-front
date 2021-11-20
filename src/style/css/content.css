@@ -759,3 +759,11 @@ border-left-color: #00bfae;
 .profile-contents-area .button.page-bttn.active { border-color: #00bfae; background-color: #00bfae;}
 .apl-form-wrap .post.change-admin.btn { width: auto; height: auto; padding: 3px 16px !important;}
 .mylearning-list-wrap table.ml-02-09 td:nth-child(2) .ellipsis, .mylearning-list-wrap table.ml-02-09 th:nth-child(2) .ellipsis{width : 25.75rem}
+
+
+/* Main > Main Visual Banner */
+.visual-banner-wrap .swiper-slide a {
+    display: block;
+    max-width: 1200px;
+    margin: 0 auto;
+}
