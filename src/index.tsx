@@ -3,9 +3,8 @@ import 'react-app-polyfill/stable';
 // import 'semantic-ui-less/semantic.less';
 // import '@nara.drama/approval/lib/snap.css';
 
-import React from 'react';
+import React, { lazy } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { initializeBody } from './shared/helper/bodyHelper';
 
 import './style/app.css';
@@ -20,8 +19,14 @@ polyfill();
 initializeBody();
 beforeAppInitialize()
   .then(() => {
-    ReactDOM.render(<App />, document.getElementById('root'));
+    import('./App').then((AppModule: any) => {
+      const App: any = AppModule.default;
+      ReactDOM.render(<App />, document.getElementById('root'));
+    });
   })
   .catch(() => {
-    ReactDOM.render(<App />, document.getElementById('root'));
+    import('./App').then((AppModule: any) => {
+      const App: any = AppModule.default;
+      ReactDOM.render(<App />, document.getElementById('root'));
+    });
   });
