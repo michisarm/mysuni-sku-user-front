@@ -93,6 +93,8 @@
 
 .badge-detail .ov-paragraph .list.bulleted .item .title {padding-left: 10px;}
 
+.transcript-box .transcript-top>div>.ui.button.post.delete-kr { color: #777;}
+
 /* 학습진도 다이어그램 */
 .content.lms .label-state-cube {
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-play.svg") center no-repeat;
@@ -507,6 +509,7 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     background:#00bfae;
 }
 
+
 .emoji_icons .em_b { font-weight: normal; }
 
 /* 메인 레이아웃 수정(2021.11.16) */
@@ -759,6 +762,7 @@ border-left-color: #00bfae;
 .profile-contents-area .button.page-bttn.active { border-color: #00bfae; background-color: #00bfae;}
 .apl-form-wrap .post.change-admin.btn { width: auto; height: auto; padding: 3px 16px !important;}
 .mylearning-list-wrap table.ml-02-09 td:nth-child(2) .ellipsis, .mylearning-list-wrap table.ml-02-09 th:nth-child(2) .ellipsis{width : 25.75rem}
+.ui.button.free.proceeding{background : #fff}
 
 
 /* Main > Main Visual Banner */
