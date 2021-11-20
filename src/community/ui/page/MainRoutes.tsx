@@ -11,6 +11,8 @@ import { BookMarkPage } from '../main/bookmark/BookMarkPage';
 // import { checkExternalInstructor } from '../app.services';
 
 export function MainRoutes() {
+  const redirectCommunity =
+    '/suni-community' + window.location.pathname.replace('/suni-main', '');
   return (
     <>
       {/* {checkExternalInstructor() && <CommunityHeader />}
@@ -19,6 +21,7 @@ export function MainRoutes() {
         <MainInitializer />
         <MainHeaderView />
         <Switch>
+          <Redirect exact path={MAIN_PATH} to={MAIN_MYCOMMUNITIES_PATH} />
           <Route
             exact
             path={MAIN_MYCOMMUNITIES_PATH}
@@ -32,6 +35,7 @@ export function MainRoutes() {
           <Route exact path={MAIN_MYFEED_PATH} component={MyFeedPage} />
           <Route exact path={MAIN_FOLLOWFEED_PATH} component={FollowPage} />
           <Route exact path={MAIN_BOOKMARK_PATH} component={BookMarkPage} />
+          <Redirect path="/community/:communityId" to={redirectCommunity} />
           <Redirect to={MAIN_MYCOMMUNITIES_PATH} />
         </Switch>
       </section>
