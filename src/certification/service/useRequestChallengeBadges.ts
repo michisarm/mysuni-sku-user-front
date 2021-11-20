@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { BadgeRouteParams } from "../ui/model/BadgeRouteParams";
-import { BadgeService } from "../../lecture/stores";
-import { MyBadgeRdo } from "../model/MyBadgeRdo";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { BadgeRouteParams } from '../ui/model/BadgeRouteParams';
+import { BadgeService } from '../../lecture/stores';
+import { MyBadgeRdo } from '../model/MyBadgeRdo';
 
 const PAGE_SIZE = 4;
 
@@ -12,8 +12,9 @@ export function useRequestChallengeBadges() {
 
   const selectedLevel = BadgeService.instance.selectedLevel;
 
-  useEffect(() => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  useEffect(() => {
     return () => {
       BadgeService.instance.clearChallengeBadges();
     };
@@ -29,7 +30,11 @@ export function useRequestChallengeBadges() {
       limit,
     };
 
-    BadgeService.instance.findAllChallengeBadges(myBadgeRdo);
-
+    setIsLoading(true);
+    BadgeService.instance
+      .findAllChallengeBadges(myBadgeRdo)
+      .then(() => setIsLoading(false));
   }, [selectedLevel, params.pageNo]);
+
+  return isLoading;
 }

@@ -10,7 +10,7 @@ import { inject, observer } from 'mobx-react';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { ProgressPageTableView } from 'myTraining/ui/view/table/ProgressPageTableView';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
@@ -80,8 +80,6 @@ function ProgressPageContainer({
     clearAllSelectedServiceIds,
     countLearningTab,
     sortMyLearningTableViews,
-    column,
-    direction,
   } = lectureService!;
   const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
     filterBoxService!;
@@ -239,6 +237,41 @@ function ProgressPageContainer({
 
     history.replace(`./${nextPageNo}`);
   };
+
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
 
   const onCheckAll = useCallback(
     (e: any, data: any) => {
@@ -406,6 +439,8 @@ function ProgressPageContainer({
               selectedServiceIds={selectedServiceIds}
               onCheckAll={onCheckAll}
               onCheckOne={onCheckOne}
+              isLoading={isLoading}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
             <NoSuchContentsView

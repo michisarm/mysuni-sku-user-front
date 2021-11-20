@@ -25,6 +25,8 @@ interface props {
     fromStyle?: boolean
   ) => 'list-down16' | 'list-up16' | '내림차순 정렬' | '오름차순 정렬';
   onClickSort: (column: string) => void;
+  seeMoreButtonViewRef: (ref: HTMLDivElement | null) => void;
+  isLoading: boolean;
 }
 
 export function RetryListPageTableView({
@@ -37,6 +39,9 @@ export function RetryListPageTableView({
 
   getOrderIcon,
   onClickSort,
+
+  seeMoreButtonViewRef,
+  isLoading,
 }: props) {
   //
   return (
@@ -111,7 +116,9 @@ export function RetryListPageTableView({
           </Table.Body>
         </Table>
       </div>
-      {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+      {!isLoading && showSeeMore && (
+        <SeeMoreButton onClick={onClickSeeMore} ref={seeMoreButtonViewRef} />
+      )}
     </>
   );
 }

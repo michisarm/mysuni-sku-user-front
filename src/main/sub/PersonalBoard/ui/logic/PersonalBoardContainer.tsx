@@ -55,8 +55,6 @@ export const PersonalBoardContainer = inject(
       displayTotalLearningTime,
     } = myLearningSummaryService || MyLearningSummaryService.instance;
 
-    console.log('myLearningSummaryService', myLearningSummaryService);
-
     const { menuControlAuth } = MenuControlAuthService.instance;
 
     useEffect(() => {

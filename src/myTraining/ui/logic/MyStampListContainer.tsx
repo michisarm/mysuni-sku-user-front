@@ -165,6 +165,7 @@ function MyStampListContainer({
 
     const newQdo = cardQdo;
     newQdo.setBycondition(conditions);
+    newQdo.hasStamp = true;
     await setCardQdo(newQdo);
 
     await findMyLearningCardByQdo(true);

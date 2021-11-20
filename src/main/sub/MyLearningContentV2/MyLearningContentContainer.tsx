@@ -91,10 +91,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'LRSCards'
         ) && (
           <>
+            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
             <LRSFromLearningPatternBased
               profileMemberName={skProfile.profileViewName}
             />
-            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
           </>
         )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />

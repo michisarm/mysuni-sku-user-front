@@ -5,7 +5,7 @@ import { MyTrainingTableViewModel } from 'myTraining/model';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { EnrolledListPageTableView } from 'myTraining/ui/view/table/EnrolledListPageTableView';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -124,6 +124,41 @@ function EnrolledListPageContainer({
     history.replace(`./${nextPageNo}`);
   };
 
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       myTrainingService!.sortTableViews(column, direction);
@@ -219,7 +254,7 @@ function EnrolledListPageContainer({
           />
         </TabHeader>
       }
-      {enrolledCount > 0 && (
+      {(enrolledCount > 0 && (
         <>
           {(myTrainingTableCount2 > 0 && (
             <EnrolledListPageTableView
@@ -231,25 +266,27 @@ function EnrolledListPageContainer({
               onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
+              isLoading={isLoading}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
-              <NoSuchContentsView
-                isLoading={isLoading}
-                emptyText={getPolyglotText(
-                  '필터 조건에 해당하는 결과가 없습니다.',
-                  'mapg-msmp-검색x2'
-                )}
-              />
-            ) || (
-              <NoSuchContentsView
-                isLoading={isLoading}
-                emptyText={getPolyglotText(
-                  '학습예정인 과정이 없습니다.',
-                  'learning-my-학습예정'
-                )}
-              />
-            )}
+            <NoSuchContentsView
+              isLoading={isLoading}
+              emptyText={getPolyglotText(
+                '필터 조건에 해당하는 결과가 없습니다.',
+                'mapg-msmp-검색x2'
+              )}
+            />
+          )}
         </>
+      )) || (
+        <NoSuchContentsView
+          isLoading={isLoading}
+          emptyText={getPolyglotText(
+            '학습예정인 과정이 없습니다.',
+            'learning-my-학습예정'
+          )}
+        />
       )}
     </>
   );

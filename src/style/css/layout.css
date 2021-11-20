@@ -104,6 +104,18 @@ body #root { background: #fff; }
 .mylearning-list-wrap table.ml-02-06 td.title .ellipsis.noteOn{
     background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-note-create.svg') no-repeat 100% .3125rem;
 }
+i.icon.icon-down-type5::before {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-5-24-px.svg") 0 0 no-repeat !important; background-size: 100% auto;
+}
+i.icon.tooltip::before { content: ''; display: inline-block; width: 24px; height: 24px; vertical-align: top;
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tooltip-gray-24-px.svg") 0 0 no-repeat !important; background-size: 100% auto;
+}
+i.icon.testHeader::before {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-60-px.png") 0 0 no-repeat !important;
+}
+i.icon.testHeader02::before {
+    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-60-px.png") 0 0 no-repeat !important;
+}
 
 /* Font */
 .sort-reult .section-count,
@@ -149,9 +161,10 @@ body #root { background: #fff; }
 /* Checkbox */
 .ui.checkbox:not(.radio) input:focus ~ label:before,
 .ui.checkbox:not(.radio) label:before,
-.ui.checkbox:not(.radio) label:hover:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-normal.svg) 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox:not(.radio) label:hover:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-normal.svg") 0 0 no-repeat !important; background-size: 100% !important; }
 .ui.checkbox:not(.radio) input:checked ~ label:before,
-.ui.checkbox input:checked ~ label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox input:checked ~ label:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg") 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox input:disabled:checked ~ label:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-disabled-checked.svg") 0 0 no-repeat !important; background-size: 100% auto !important; }
 
 /* Radio Button */
 .ui.radio input:focus,

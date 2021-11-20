@@ -48,7 +48,6 @@ class CardQdo {
       ? moment(conditions.endDate).format('YYYY-MM-DD')
       : '';
     const tempRequired = this.getRequired(conditions.required);
-    console.log(tempRequired);
     this.required = tempRequired;
 
     if (conditions.certifications && conditions.certifications.length > 0) {

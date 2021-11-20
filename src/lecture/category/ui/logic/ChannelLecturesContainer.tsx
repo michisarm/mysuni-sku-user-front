@@ -225,8 +225,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       page.limit = 8;
     }
 
-    console.log('channelOffset', channelOffset);
-
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
@@ -253,9 +251,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     //
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-
-    console.log('page!.pageNo', page!.pageNo);
-    console.log('page!.totalPages', page!.totalPages);
 
     return page!.pageNo < page!.totalPages;
   }
@@ -310,7 +305,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   }
 
   intersectionCallback(entries: IntersectionObserverEntry[]) {
-    console.log(entries);
     entries.forEach((c) => {
       if (c.isIntersecting) {
         this.onClickSeeMore();
