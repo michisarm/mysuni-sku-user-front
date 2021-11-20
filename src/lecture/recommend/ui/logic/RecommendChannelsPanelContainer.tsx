@@ -145,17 +145,23 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
                 })}
               >
                 <div className="belt" ref={this.panelRef}>
-                  {channels.map((channel, index) => (
-                    <Button
-                      key={`sub-category-${index}`}
-                      className={`toggle toggle4 ${
-                        channel.checked ? 'active' : ''
-                      }`}
-                      onClick={(e) => this.onClickChannel(e, index, channel)}
-                    >
-                      {getChannelName(channel.id)}
-                    </Button>
-                  ))}
+                  {channels.map((channel, index) => {
+                    if (getChannelName(channel.id) !== '') {
+                      return (
+                        <Button
+                          key={`sub-category-${index}`}
+                          className={`toggle toggle4 ${
+                            channel.checked ? 'active' : ''
+                          }`}
+                          onClick={(e) =>
+                            this.onClickChannel(e, index, channel)
+                          }
+                        >
+                          {getChannelName(channel.id)}
+                        </Button>
+                      );
+                    }
+                  })}
                 </div>
               </div>
             </div>

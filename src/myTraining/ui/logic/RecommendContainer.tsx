@@ -169,21 +169,23 @@ export function RecommendContainer() {
             <div className="channel-wrap" ref={scrollRef}>
               {SkProfileService.instance.additionalUserInfo.favoriteChannelIds.map(
                 (id) => {
-                  return (
-                    <Label
-                      as="button"
-                      className={`ch ${
-                        selectedChannelId === id ? 'active' : ''
-                      }`}
-                      key={id}
-                      onClick={() => {
-                        setSelectedChannelId(id);
-                        // setChannelOpend(false);
-                      }}
-                    >
-                      {getChannelName(id)}
-                    </Label>
-                  );
+                  if (getChannelName(id) !== '') {
+                    return (
+                      <Label
+                        as="button"
+                        className={`ch ${
+                          selectedChannelId === id ? 'active' : ''
+                        }`}
+                        key={id}
+                        onClick={() => {
+                          setSelectedChannelId(id);
+                          // setChannelOpend(false);
+                        }}
+                      >
+                        {getChannelName(id)}
+                      </Label>
+                    );
+                  }
                 }
               )}
             </div>

@@ -645,7 +645,7 @@ export async function search(
     area: Area.SEARCH,
     actionType: ActionType.GENERAL,
     action: Action.SEARCH,
-    actionName: (searchInSearchInfo?.inAgain ? '재검색::' + searchInSearchInfo.recentSearchValue + '검색::' : '검색::') + decodedSearchValue,
+    actionName: (searchInSearchInfo?.inAgain ? '재검색::' + searchInSearchInfo.recentSearchValue + '::' : '검색::') + decodedSearchValue,
   } as ActionTrackParam);
 }
 
