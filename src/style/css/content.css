@@ -181,6 +181,11 @@
     box-shadow: none;
 }
 
+/* Main > 스와이퍼 타입2 타이틀 수정 */
+.learning-section.type2 .sec-tit-txt {
+    word-break: break-word;
+}
+
 /* Main > 관심채널 */
 .channel-tag-wrap .channel-tag-box .ui.label.ch { display: block; float: left; }
 
