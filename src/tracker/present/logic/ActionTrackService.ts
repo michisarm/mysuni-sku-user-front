@@ -154,6 +154,12 @@ async function beforeActionTrack({
   } as ActionTrackParam);
 }
 
+export const debounceSearchActionTrack = debounce(
+  (param: ActionTrackParam) => 
+    debounceActionTrack(param),
+  2000
+);
+
 export const debounceActionTrack = debounce(
   ({
     email,

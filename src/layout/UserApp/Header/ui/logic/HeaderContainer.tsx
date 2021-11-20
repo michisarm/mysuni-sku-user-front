@@ -141,20 +141,6 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
         search(searchInfo.searchValue); // 결과내 재검색은 이미 /search 페이지에 들어와 있는 상태
       }
 
-      // search track
-      debounceActionTrack({
-        email:
-          (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string) ||
-          getCookie('tryingLoginId'),
-        path: window.location.pathname,
-        search: window.location.search,
-        area: Area.SEARCH,
-        actionType: ActionType.GENERAL,
-        action: Action.SEARCH,
-        actionName: '헤더검색::' + searchInfo.searchValue,
-      } as ActionTrackParam);
-
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,

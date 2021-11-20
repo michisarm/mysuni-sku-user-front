@@ -295,31 +295,35 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                         {channel.name}
                       </Button>
                     ))}
-                  {favoriteCompanyChannels.map((channel: ChannelModel) => (
-                    <Popup
-                      className="custom-black"
-                      content={getPolyglotText(
-                        '필수 관심채널이며, 삭제 불가능합니다.',
-                        'college-favorite-주의'
-                      )}
-                      inverted
-                      style={style}
-                      position="top center"
-                      trigger={
-                        <Button
-                          key={`del_${channel.id}`}
-                          className="del default"
-                          data-offset="23"
-                          style={{ fontWeight: '500' }}
-                        >
-                          {parsePolyglotString(
-                            channel.name as PolyglotString,
-                            getDefaultLang(channel.langSupports)
-                          )}
-                        </Button>
-                      }
-                    />
-                  ))}
+                  {favoriteCompanyChannels.map((channel: ChannelModel) => {
+                    //
+                    return (
+                      <Popup
+                        className="custom-black"
+                        content={getPolyglotText(
+                          '필수 관심채널이며, 삭제 불가능합니다.',
+                          'college-favorite-주의'
+                        )}
+                        inverted
+                        style={style}
+                        position="top center"
+                        trigger={
+                          <Button
+                            key={`del_${channel.id}`}
+                            className="del default"
+                            data-offset="23"
+                            style={{ fontWeight: '500' }}
+                          >
+                            {/*{parsePolyglotString(*/}
+                            {/*  channel.name as PolyglotString,*/}
+                            {/*  getDefaultLang(channel.langSupports)*/}
+                            {/*)}*/}
+                            {channel.name}
+                          </Button>
+                        }
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </div>
