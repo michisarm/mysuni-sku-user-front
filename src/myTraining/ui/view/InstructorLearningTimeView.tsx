@@ -93,7 +93,7 @@ export default function InstructorLearningTimeView({
         </span>
       </li>
       <li>
-        <span className="name b13">
+        <span className="name b10">
           <PolyglotText defaultString="Environment" id="home-학이시-에솔강시" />
         </span>
         <span className="time">
@@ -101,7 +101,7 @@ export default function InstructorLearningTimeView({
         </span>
       </li>
       <li>
-        <span className="name b14">
+        <span className="name b11">
           <PolyglotText
             defaultString="BM Design & Storytelling"
             id="home-학이시-bm강시"
@@ -112,7 +112,7 @@ export default function InstructorLearningTimeView({
         </span>
       </li>
       <li>
-        <span className="name b10">
+        <span className="name b12">
           <PolyglotText defaultString="SK아카데미" id="home-학이시-sa강시" />
         </span>
         <span className="time">
@@ -120,7 +120,7 @@ export default function InstructorLearningTimeView({
         </span>
       </li>
       <li>
-        <span className="name b11">
+        <span className="name b13">
           <PolyglotText defaultString="SK경영" id="home-학이시-sk경영강시" />
         </span>
         <span className="time">
@@ -128,7 +128,7 @@ export default function InstructorLearningTimeView({
         </span>
       </li>
       <li>
-        <span className="name b12">
+        <span className="name b14">
           <PolyglotText defaultString="Life Style" id="home-학이시-ls강시" />
         </span>
         <span className="time">

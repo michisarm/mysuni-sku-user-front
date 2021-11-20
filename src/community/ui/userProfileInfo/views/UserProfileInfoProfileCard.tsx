@@ -12,10 +12,7 @@ import {
   requestMyFollow,
 } from '../userProfileInfo.request.services';
 import { checkExternalInstructor } from '../../app.services';
-import {
-  requestFindFollower,
-  requestFindFollowing,
-} from '../../main/main.request.services';
+import { requestFindFollowerAndFollowing } from '../../main/main.request.services';
 
 interface Props {
   open: boolean;
@@ -79,15 +76,13 @@ export function UserProfileInfoProfileCard(props: Props) {
     if (isFollow === 'Unfollow') {
       unfollow(props.memberId).then(() => {
         requestUserProfileInfo(props.memberId);
-        requestFindFollowing();
-        requestFindFollower();
+        requestFindFollowerAndFollowing();
         changeFollowState(true);
       });
     } else {
       follow(props.memberId).then(() => {
         requestUserProfileInfo(props.memberId);
-        requestFindFollowing();
-        requestFindFollower();
+        requestFindFollowerAndFollowing();
         changeFollowState(false);
       });
     }
