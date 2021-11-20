@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
-import { useHistory, useParams } from 'react-router';
+import { matchPath, useHistory, useParams } from 'react-router';
 import { NoSuchContentPanel } from 'shared';
 import routePaths from '../../../personalcube/routePaths';
 import BadgeService from '../../present/logic/BadgeService';
@@ -35,10 +35,9 @@ function AllBadgeListContainer({
   const { selectedCategoryId } = badgeCategoryService!;
 
   const history = useHistory();
-  const params = useParams<BadgeRouteParams>();
   const { scrollOnceMove } = useScrollMove();
 
-  useRequestAllBadges();
+  const isLoading = useRequestAllBadges();
 
   useEffect(() => {
     setSelectedLevel('');
@@ -57,26 +56,65 @@ function AllBadgeListContainer({
     }
   }, [badges.length, scrollOnceMove]);
 
+  const onClickSeeMore = useCallback(() => {
+    const pathname = window.location.pathname;
+    const path = pathname.substr(pathname.indexOf('/certification'));
+    const mathch = matchPath<BadgeRouteParams>(path, {
+      path: '/certification/badge/:tab/pages/:pageNo',
+      strict: true,
+    });
+    if (mathch?.isExact) {
+      const nextPageNo = parseInt(mathch.params.pageNo) + 1;
+      history.replace(routePaths.currentPage(nextPageNo));
+    }
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Certification');
+    }, 1000);
+  }, []);
+
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   const onSelectLevel = (level: BadgeLevel) => {
     history.replace(routePaths.currentPage(1));
     setSelectedLevel(level);
   };
 
-  const getCurrentPageNo = () => {
-    return parseInt(params.pageNo);
-  };
-
   const isContentMore = () => {
     return badges.length < badgeCount ? true : false;
-  };
-
-  const onClickSeeMore = () => {
-    const nextPageNo = getCurrentPageNo() + 1;
-    history.replace(routePaths.currentPage(nextPageNo));
-
-    setTimeout(() => {
-      ReactGA.pageview(window.location.pathname, [], 'Certification');
-    }, 1000);
   };
 
   return (
@@ -133,7 +171,9 @@ function AllBadgeListContainer({
           )}
         </ul>
       </div>
-      {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
+      {!isLoading && isContentMore() && (
+        <SeeMoreButton onClick={onClickSeeMore} ref={seeMoreButtonViewRef} />
+      )}
     </>
   );
 }

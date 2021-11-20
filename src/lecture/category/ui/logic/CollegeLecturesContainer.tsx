@@ -372,7 +372,6 @@ class CollegeLecturesContainerInner extends ReactComponent<
   }
 
   intersectionCallback(entries: IntersectionObserverEntry[]) {
-    console.log(entries);
     entries.forEach((c) => {
       if (c.isIntersecting) {
         this.onClickSeeMore();
