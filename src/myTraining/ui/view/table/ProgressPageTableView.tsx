@@ -1,9 +1,7 @@
-import LearningTimeItem from 'layout/ContentHeader/sub/LearningTimeItem';
+import React from 'react';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
-import { MyTrainingTableViewModel } from 'myTraining/model';
 import { LearningType, LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
-import React from 'react';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import {
   convertTimeToDate,
@@ -31,6 +29,8 @@ interface props {
   selectedServiceIds: string[];
   onCheckAll: (e: any, data: any) => void;
   onCheckOne: (e: any, data: any) => void;
+  seeMoreButtonViewRef: (ref: HTMLDivElement | null) => void;
+  isLoading: boolean;
 }
 
 export function ProgressPageTableView({
@@ -48,6 +48,8 @@ export function ProgressPageTableView({
   selectedServiceIds,
   onCheckAll,
   onCheckOne,
+  seeMoreButtonViewRef,
+  isLoading,
 }: props) {
   //
 
@@ -148,7 +150,9 @@ export function ProgressPageTableView({
           </Table.Body>
         </Table>
       </div>
-      {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+      {!isLoading && showSeeMore && (
+        <SeeMoreButton onClick={onClickSeeMore} ref={seeMoreButtonViewRef} />
+      )}
     </>
   );
 }

@@ -8,7 +8,7 @@ import StudentLearningType from 'lecture/model/learning/StudentLearningType';
 import { inject, observer } from 'mobx-react';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { RetryListPageTableView } from 'myTraining/ui/view/table/RetryListPageTableView';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
@@ -181,6 +181,41 @@ function RetryListPageContainer({
     history.replace(`./${nextPageNo}`);
   };
 
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   const onCheckAll = useCallback(
     (e: any, data: any) => {
       const { clearAll, selectAll } = lectureService!;
@@ -301,6 +336,8 @@ function RetryListPageContainer({
               onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
+              isLoading={isLoading}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
             <NoSuchContentsView

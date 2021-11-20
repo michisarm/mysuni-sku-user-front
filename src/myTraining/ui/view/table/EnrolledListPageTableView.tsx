@@ -21,6 +21,8 @@ interface props {
     fromStyle?: boolean
   ) => 'list-down16' | 'list-up16' | '내림차순 정렬' | '오름차순 정렬';
   onClickSort: (column: string) => void;
+  seeMoreButtonViewRef: (ref: HTMLDivElement | null) => void;
+  isLoading: boolean;
 }
 
 export function EnrolledListPageTableView({
@@ -33,6 +35,8 @@ export function EnrolledListPageTableView({
 
   getOrderIcon,
   onClickSort,
+  seeMoreButtonViewRef,
+  isLoading,
 }: props) {
   //
   return (
@@ -106,7 +110,9 @@ export function EnrolledListPageTableView({
         </Table>
       </div>
 
-      {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
+      {!isLoading && showSeeMore && (
+        <SeeMoreButton onClick={onClickSeeMore} ref={seeMoreButtonViewRef} />
+      )}
     </>
   );
 }

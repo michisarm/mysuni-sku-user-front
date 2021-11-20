@@ -13,7 +13,7 @@ import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
 import { RequiredListPageTableView } from 'myTraining/ui/view/table/RequiredListPageTableView';
 import { useScrollMove } from 'myTraining/useScrollMove';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
@@ -165,6 +165,41 @@ function RequiredListPageContainer({
     history.replace(`./${nextPageNo}`);
   };
 
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   const getDireciton = (column: string) => {
     return orders.filter((order) => order.column === column)[0].direction;
   };
@@ -255,6 +290,8 @@ function RequiredListPageContainer({
               onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
+              isLoading={isLoading}
             />
           )) || (
             <NoSuchContentsView
