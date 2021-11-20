@@ -3,6 +3,7 @@
 #root section.header.main-sty2.lms-main .breadcrumbs { display: block; }
 .margin-bottom-80 + .main-sty2.main.content { padding-top: 80px; }
 .personal-info-wrap.visible { position: absolute; top: 0px; }
+.margin-bottom-80 + .content.main-sty2 .personal-info-wrap.visible { position: fixed; top: 81px;}
 .lms-alarm { background-position-y: -2px; }
 
 /* popup */
@@ -179,6 +180,7 @@ body #root { background: #fff; }
 .ui.dropdown.selection .menu .item:focus,
 .ui.dropdown.selection .menu .item:hover { background: #f6f6f6; }
 .ui.dropdown.small-border .text { color: #777; }
+.ui.dropdown.inline.large .menu {border-color: #00bfae;}
 
 /* 데이터 없을 때 이미지 */
 i.icon.no-contents50:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/no-contents-50-px.svg) center no-repeat !important; }
