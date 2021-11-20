@@ -18,6 +18,7 @@ import { SkProfileService } from 'profile/stores';
 import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
 import certificationPaths from 'certification/routePaths';
 import badgeRoutePaths from 'certification/routePaths';
+import { requestBadgeLearningTime } from '../../PersonalBoard/service/getBadgeLearningTime';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -34,6 +35,7 @@ function MainChallengingBadgeContainer() {
       limit: 5,
     };
     badgeService.findAllChallengeBadges(myBadgeRdo);
+    requestBadgeLearningTime(SkProfileService.instance.skProfile.companyCode);
 
     return () => {
       badgeService.clearChallengeBadges();
@@ -78,6 +80,8 @@ function MainChallengingBadgeContainer() {
   if (badgeMyCount === 0 && challengeBadges.length === 0) {
     return null;
   }
+
+  console.log(badgeMyCount);
 
   return (
     <Segment
