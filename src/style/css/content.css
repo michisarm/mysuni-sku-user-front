@@ -771,3 +771,13 @@ border-left-color: #00bfae;
     max-width: 1200px;
     margin: 0 auto;
 }
+
+/* 학습상세페이지 학습카드스와이퍼 수정 */
+.course-info-detail .swiper-slide {
+    width: 294.75px !important;
+}
+
+/* 커뮤니티 학습카드스와이퍼 수정 */
+.templete_complete .swiper-slide {
+    width: 292px !important;
+}

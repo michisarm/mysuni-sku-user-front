@@ -60,8 +60,7 @@ class Routes extends PureComponent {
         return;
       }
       if (
-        window.location.pathname !==
-          '/suni-main/community/main/my-communities' &&
+        !window.location.pathname.startsWith('/suni-main/community/main') &&
         window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
       ) {
         window.location.href = '/suni-main/community/main/my-communities';
