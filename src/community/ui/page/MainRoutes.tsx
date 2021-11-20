@@ -7,12 +7,11 @@ import { FollowPage } from '../main/follow/FollowPage';
 import { MyCommunityPage } from '../main/mycommunity/MyCommunityPage';
 import { MyFeedPage } from '../main/myfeed/MyFeedPage';
 import { BookMarkPage } from '../main/bookmark/BookMarkPage';
+import { RedirectCommunityPage } from '../main/mycommunity/RedirectCommunityPage';
 // import { CommunityHeader, LMSHeader } from '../header/Header';
 // import { checkExternalInstructor } from '../app.services';
 
 export function MainRoutes() {
-  const redirectCommunity =
-    '/suni-community' + window.location.pathname.replace('/suni-main', '');
   return (
     <>
       {/* {checkExternalInstructor() && <CommunityHeader />}
@@ -21,6 +20,7 @@ export function MainRoutes() {
         <MainInitializer />
         <MainHeaderView />
         <Switch>
+          <Redirect exact path="/community" to={MAIN_MYCOMMUNITIES_PATH} />
           <Redirect exact path={MAIN_PATH} to={MAIN_MYCOMMUNITIES_PATH} />
           <Route
             exact
@@ -35,7 +35,10 @@ export function MainRoutes() {
           <Route exact path={MAIN_MYFEED_PATH} component={MyFeedPage} />
           <Route exact path={MAIN_FOLLOWFEED_PATH} component={FollowPage} />
           <Route exact path={MAIN_BOOKMARK_PATH} component={BookMarkPage} />
-          <Redirect path="/community/:communityId" to={redirectCommunity} />
+          <Route
+            path="/community/:communityId"
+            component={RedirectCommunityPage}
+          />
           <Redirect to={MAIN_MYCOMMUNITIES_PATH} />
         </Switch>
       </section>
