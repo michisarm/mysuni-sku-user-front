@@ -20,6 +20,7 @@ import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { patronInfo } from '@nara.platform/dock';
 import { initial } from 'lodash';
+import { requestCollegePercent } from '../../../main/sub/PersonalBoard/service/getCollegePercent';
 
 interface MyTrainingHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -42,6 +43,8 @@ function MyTrainingHeaderContainer({
     findInstructTimeSummary,
     findMyLearningSummaryByYear,
     getDisplayTotalLearningTime,
+    getDisplayMySuniLeaningTime,
+    getDisplayCompanyLearningTime,
     displayTotalLearningTime,
   } = myLearningSummaryService!;
   const { myStampCount } = lectureService!;
@@ -67,8 +70,11 @@ function MyTrainingHeaderContainer({
   const init = async () => {
     await findInstructTimeSummary();
     await findMyLearningSummaryByYear();
+    await requestCollegePercent();
 
     await getDisplayTotalLearningTime();
+    await getDisplayMySuniLeaningTime();
+    await getDisplayCompanyLearningTime();
   };
 
   useRequestLearningSummary();
