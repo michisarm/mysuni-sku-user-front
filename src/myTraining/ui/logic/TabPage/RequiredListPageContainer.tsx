@@ -117,6 +117,7 @@ function RequiredListPageContainer({
 
     const newQdo = cardQdo;
     newQdo.setBycondition(conditions);
+    newQdo.required = true;
     await setCardQdo(newQdo);
 
     await findMyLearningCardByQdo(true);
