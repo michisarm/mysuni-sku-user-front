@@ -16,6 +16,35 @@ import { useEffect } from 'react';
 import { getDenizedId, getProfileImage } from '../app.formatters';
 import { parsePolyglotString } from '../../packages/polyglot/PolyglotString';
 
+export async function requestFindFollowerAndFollowing() {
+  if (checkExternalInstructor()) {
+    return;
+  }
+  const memberId = getDenizedId();
+  const followings = await findFollowingUsers(memberId);
+  const followers = await findFollowerUsers(memberId);
+  if (followings !== undefined && followers !== undefined) {
+    const main = getMain() || getEmptyMain();
+
+    const parseFollowersProfile = followers.results.map(profileViewToModel);
+    const follows = await findAllFollow();
+
+    parseFollowersProfile.forEach((follower) => {
+      follower.follow = follows?.some(
+        (item) => item.followingId === follower.id
+      );
+    });
+
+    setMain({
+      ...main,
+      followerCount: followers.totalCount,
+      followers: parseFollowersProfile,
+      followingCount: followings.totalCount,
+      followings: followings.results.map(profileViewToModel),
+    });
+  }
+}
+
 export async function requestFindFollowing() {
   if (checkExternalInstructor()) {
     return;
@@ -63,8 +92,7 @@ export async function requestFollow(id: string) {
     return;
   }
   await follow(id);
-  requestFindFollowing();
-  requestFindFollower();
+  requestFindFollowerAndFollowing();
 }
 
 export async function requestUnfollow(id: string) {
@@ -72,8 +100,7 @@ export async function requestUnfollow(id: string) {
     return;
   }
   await unfollow(id);
-  requestFindFollowing();
-  requestFindFollower();
+  requestFindFollowerAndFollowing();
 }
 
 export function useRequestMain() {
@@ -106,8 +133,8 @@ export function useRequestMain() {
           followings: [],
         };
         setMain(main);
-        requestFindFollowing();
-        requestFindFollower();
+
+        requestFindFollowerAndFollowing();
       }
     });
   }, []);
