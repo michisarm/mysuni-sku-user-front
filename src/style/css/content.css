@@ -786,3 +786,6 @@ border-left-color: #00bfae;
 .templete_complete .swiper-slide {
     width: 292px !important;
 }
+
+/* My Learning title 수정 */
+.main-info-area>.progress-info-wrap.mypage.personal-detail .cell .text-info .name {white-space: nowrap; max-width: 100%;}
