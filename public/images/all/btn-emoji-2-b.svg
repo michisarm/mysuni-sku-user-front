@@ -1,22 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="42" viewBox="0 0 42 42">
+<svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
-        <path id="kzgksdjfaa" d="M0 19.999L20 19.999 20 0 0 0z"/>
+        <path id="a" d="M0 20h20V0H0z"/>
     </defs>
-    <g fill="none" fill-rule="evenodd">
-        <g>
-            <g>
-                <g>
-                    <g>
-                        <g transform="translate(-190.000000, -115.000000) translate(146.000000, 115.000000) translate(2.000000, 0.000000) translate(42.000000, 0.000000) translate(9.000000, 9.000000) translate(2.000000, 2.000000)">
-                            <path stroke="#3E8AE9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M17.04 8.369h-3.91c-.791 0-1.292-.848-.911-1.54.228-.415.448-.824.587-1.097.465-.917 1.229-3.014-.071-4.276-.705-.684-1.38-.717-1.88-.58-.434.119-.8.409-1.056.777l-4.66 6.7v10.835h8.205c.501 0 .934-.11 1.302-.254.827-.322 1.475-.986 1.852-1.79.527-1.12 1.824-3.869 2.435-5.616C20.07 8.288 17.04 8.37 17.04 8.37z"/>
-                            <mask id="x1859kv0ob" fill="#fff">
-                                <use xlink:href="#kzgksdjfaa"/>
-                            </mask>
-                            <path stroke="#3E8AE9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M0.811 19.188L5.139 19.188 5.139 8.369 0.811 8.369z" mask="url(#x1859kv0ob)"/>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+    <g transform="translate(11 11)" fill="none" fill-rule="evenodd">
+        <path d="M17.04 8.369h-3.91a1.04 1.04 0 0 1-.911-1.54c.228-.415.448-.824.587-1.097.465-.917 1.229-3.014-.071-4.276-.705-.684-1.38-.717-1.88-.58-.434.119-.8.409-1.056.777l-4.66 6.7v10.835h8.205c.501 0 .934-.11 1.302-.254.827-.322 1.475-.986 1.852-1.79.527-1.12 1.824-3.869 2.435-5.616C20.07 8.288 17.04 8.37 17.04 8.37z" stroke="#00BFAE" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <path stroke="#00BFAE" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" mask="url(#b)" d="M.811 19.188H5.14V8.369H.811z"/>
     </g>
 </svg>
