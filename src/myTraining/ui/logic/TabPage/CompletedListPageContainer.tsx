@@ -9,7 +9,7 @@ import { inject, observer } from 'mobx-react';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { CompletedListPageTableView } from 'myTraining/ui/view/table/CompletedListPageTableView';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
@@ -208,6 +208,41 @@ function CompletedListPageContainer({
     history.replace(`./${nextPageNo}`);
   };
 
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       lectureService!.sortMyLearningTableViews(column, direction);
@@ -300,6 +335,8 @@ function CompletedListPageContainer({
               onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
+              isLoading={isLoading}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
             <NoSuchContentsView

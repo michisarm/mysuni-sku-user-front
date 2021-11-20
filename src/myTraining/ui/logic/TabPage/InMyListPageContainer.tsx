@@ -12,7 +12,7 @@ import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { TabHeader } from 'myTraining/ui/view/tabHeader';
 import { InMyListPageTableView } from 'myTraining/ui/view/table/InMyListPageTableView';
 import { useScrollMove } from 'myTraining/useScrollMove';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
@@ -166,6 +166,41 @@ function InMyListPageContainer({
     history.replace(`./${nextPageNo}`);
   };
 
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   // table - sorting
 
   const getDireciton = (column: string) => {
@@ -256,6 +291,8 @@ function InMyListPageContainer({
               onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
+              isLoading={isLoading}
+              seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
             <NoSuchContentsView
