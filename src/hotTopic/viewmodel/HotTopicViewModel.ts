@@ -22,7 +22,7 @@ export interface HotTopicLikeInfo {
 
 export interface HotTopicCardViewModel {
   id: string;
-  learningState: string;
+  learningState: string | null;
   learningTime: number;
   name: string;
   simpleDescription: string;

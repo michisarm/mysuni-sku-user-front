@@ -14,6 +14,7 @@ export interface ActionTrackParam {
   actionName: string;
   target?: HTMLElement;
   abtest?: string | null;
+  time?: number;
 }
 
 export interface ActionTrackViewParam {

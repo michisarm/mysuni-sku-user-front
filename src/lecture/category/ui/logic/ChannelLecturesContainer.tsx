@@ -219,14 +219,18 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       scrollOnceMove();
     }
 
+    const nextPage = Math.ceil((page!.nextOffset + page!.limit) / 8);
+
     if (channelOffset > 0 && page) {
       page.limit = 8;
     }
 
+    console.log('channelOffset', channelOffset);
+
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      channelOffset > 0 ? channelOffset / 8 + page!.pageNo : page!.pageNo + 1
+      nextPage
     );
     this.setState({ channelOffset: 0 });
   }
@@ -249,6 +253,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     //
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    console.log('page!.pageNo', page!.pageNo);
+    console.log('page!.totalPages', page!.totalPages);
 
     return page!.pageNo < page!.totalPages;
   }

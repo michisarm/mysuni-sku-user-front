@@ -422,9 +422,6 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    if (offset >= 8) {
-      sessionStorage.setItem('channelOffset', JSON.stringify(offset + limit));
-    }
 
     const response =
       (await findByQdo({
@@ -434,6 +431,10 @@ class LectureService {
         offset,
         orderBy,
       })) || new OffsetElementList<UserLectureCard>();
+
+    if (offset >= 8) {
+      sessionStorage.setItem('channelOffset', JSON.stringify(offset + limit));
+    }
 
     const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
       response

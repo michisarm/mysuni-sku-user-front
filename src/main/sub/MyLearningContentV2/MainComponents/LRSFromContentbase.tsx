@@ -111,7 +111,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
               '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
-              'main-lrs-title1',
+              'main-lrs-title2',
               {
                 name: SkProfileService.instance.profileMemberName,
               }
