@@ -8,6 +8,7 @@ import {
   ActionTrackParam,
   ActionTrackViewParam,
 } from 'tracker/model/ActionTrackModel';
+import { pvInitSave } from 'tracker/present/logic/ActionTrackService';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -167,6 +168,11 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     if (areaElement instanceof HTMLElement) {
       data.target = areaElement;
       data.area = areaElement.dataset.area;
+    }
+
+    // target=_blank, <a> 사용시 대응
+    if(target && data.area){
+      pvInitSave(target, data.area, data.referer, data.refererSearch);
     }
 
     valueRef.current = data;

@@ -137,3 +137,9 @@ export interface Auth {
   position: Group;
   membership: Group;
 }
+
+export interface PvInit {
+  area: string;
+  referer: string;
+  refererSearch: string;
+}
