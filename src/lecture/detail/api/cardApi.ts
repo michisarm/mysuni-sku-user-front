@@ -20,6 +20,7 @@ import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 
 const BASE_URL = '/api/lecture';
 
@@ -332,8 +333,8 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
     .then(AxiosReturn);
 }
 
-export function findBookmarkCards(limit?: number) {
+export function findBookmarkCards(limit?: number, orderBy?:CardOrderBy) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}`;
+  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}&orderBy=${orderBy || CardOrderBy.BookmarkRegisteredTimeDesc}`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }
