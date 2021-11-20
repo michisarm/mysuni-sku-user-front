@@ -61,8 +61,15 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         excludeClosed = true;
       }
 
-      setTitle('수강 신청 과정 모아보기');
-      setSubTitle('사전 수강 신청이 필요한 과정들을 조회할 수 있습니다.');
+      setTitle(
+        getPolyglotText('수강 신청 과정 모아보기', 'home-Enrolling-Title')
+      );
+      setSubTitle(
+        getPolyglotText(
+          '사전 수강 신청이 필요한 과정들을 조회할 수 있습니다.',
+          'home-Enrolling-subTItle'
+        )
+      );
 
       const cardList = await findEnrollingCardList(
         LectureFilterRdoModel.enrLectures(0, 0, excludeClosed)
@@ -94,7 +101,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchCardList();
-  }, [viewType]);
+  }, [fetchCardList, viewType]);
 
   useEffect(() => {
     let area = null;
