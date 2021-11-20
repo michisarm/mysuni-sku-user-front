@@ -1,22 +1,20 @@
 import {
   getLectureTaskOffset,
-  getLectureTaskTab,
   getLectureTaskOrder,
+  getLectureTaskTab,
   onLectureTaskItem,
   onLectureTaskOffset,
   onLectureTaskTab,
   onLectureTaskViewType,
-  onLectureTaskOrder,
   setLectureTaskDetail,
   setLectureTaskItem,
   setLectureTaskOffset,
-  setLectureTaskTab,
   setLectureTaskOrder,
+  setLectureTaskTab,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { useEffect, useState } from 'react';
 import { useLectureParams } from '../../store/LectureParamsStore';
-
 import { getCubeLectureTask } from './utility/getCubeLectureTask';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 

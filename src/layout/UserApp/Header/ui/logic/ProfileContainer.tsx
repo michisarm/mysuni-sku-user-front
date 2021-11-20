@@ -1,9 +1,13 @@
 import React, { Component, useState } from 'react';
-import { reactAutobind, mobxHelper, deleteCookie } from '@nara.platform/accent';
+import {
+  reactAutobind,
+  mobxHelper,
+  deleteCookie,
+  StorageModel,
+} from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { getAxios } from 'shared/api/Axios';
-import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { SkProfileService } from 'profile/stores';
 import { NotieService } from 'notie/stores';
@@ -23,15 +27,14 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { LanguageSelectPopupView } from '../view/LanguageSelectPopupView';
-import { isCollegeManager } from 'shared/helper/isCollegeManager';
-import classNames from 'classnames';
-import { getCurrentHistory } from 'shared/store/HistoryStore';
-import { SearchHeaderFieldView } from 'search/views/SearchHeaderFieldView';
-import { setSearchInSearchInfo } from 'search/search.services';
+import { LearningMenuView } from '../view/HeaderElementsView';
+import { findForeignerUser } from 'shared/helper/findForeignerUser';
+import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   notieService?: NotieService;
+  onClickMenu: (menuName: string) => void;
 }
 
 interface State {
@@ -39,7 +42,7 @@ interface State {
   menuAuth: PageElement[];
   isOpen: boolean;
   isSearchOpen: boolean;
-  write: string;
+  // write: string;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
@@ -53,7 +56,7 @@ class ProfileContainer extends Component<Props, State> {
     menuAuth: [],
     isOpen: false,
     isSearchOpen: false,
-    write: '',
+    // write: '',
   };
 
   componentDidMount() {
@@ -84,7 +87,7 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   async avaible() {
-    const response = await findAvailablePageElements();
+    const response = await findAvailablePageElementsCache();
 
     if (response) {
       this.setState({
@@ -108,7 +111,10 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   onLogout() {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
 
     // localStorage.removeItem('nara.cineroomId');
     // localStorage.removeItem('nara.workspaces');
@@ -152,11 +158,9 @@ class ProfileContainer extends Component<Props, State> {
 
   render() {
     //
-    // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
     const { myNotieMentions, myNotieNoReadMentionCount } =
       NotieService.instance;
-    // const { member } = skProfile;
     const { balloonShowClass } = this.state;
     const { menuAuth } = this.state;
     const isExternal = isExternalInstructor();
@@ -165,106 +169,16 @@ class ProfileContainer extends Component<Props, State> {
     const { isOpen, isSearchOpen } = this.state;
 
     const setOpen = () => {
-      //this.profileButtonRef.current.click();
       this.setState({ isOpen: !isOpen });
       document.getElementById('btnProFile')?.click();
-    };
-    const setSearchOpen = () => {
-      setWrite('');
-      this.setState({ isSearchOpen: !isSearchOpen });
-      document.getElementById('btnSearchPopup')?.click();
-      setSearchInSearchInfo({
-        checkSearchInSearch: false,
-        parentSearchValue: '',
-        searchValue: '',
-      }); // 초기화
-    };
-    const setWrite = (searchValue: string) => {
-      this.setState({ write: searchValue });
     };
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
 
     return (
-      <div className="g-info g-info2 g-ab3">
-        {!isExternal && (
-          <>
-            <Popup
-              className="popup_gsearch type_b"
-              trigger={
-                <Button className="btn_gsearch" id="btnSearchPopup">
-                  <img
-                    src={`${PUBLIC_URL}/images/all/icon-gnb-search-36-px.png`}
-                    className="btn_search b_search"
-                    alt="검색버튼"
-                  />
-                </Button>
-              }
-              position="bottom right"
-              on="click"
-              //open={isOpen}
-              onOpen={setSearchOpen}
-            >
-              <Popup.Header className="gsearch_header">
-                <strong className="h_tit">
-                  <PolyglotText id="통검-필레팝얼-검색" defaultString="검색" />
-                </strong>
-                <div className="close_wrapper">
-                  <Button className="close" Icon onClick={setSearchOpen} />
-                </div>
-              </Popup.Header>
-              <Popup.Content>
-                <div className="gsearch_inner" data-area={Area.SEARCH}>
-                  <div className="search_input">
-                    {/* 검색어 입력필드 */}
-                    <div
-                      className={classNames('search show_text', {
-                        focus: 'focus',
-                        write: 'write',
-                        on: isOpen === true, //input이 popup에 맞춰서 모양이 변경됨
-                      })}
-                    >
-                      <Input
-                        type="text"
-                        placeholder={getPolyglotText(
-                          '검색어를 입력하세요.',
-                          'cmm-cfl-검색어'
-                        )}
-                        value={this.state.write}
-                        onChange={(e) => setWrite(e.target.value)}
-                        onKeyDown={(e: any) => {
-                          if (e.key === 'Enter') {
-                            setSearchOpen();
-                            const history = getCurrentHistory();
-                            history?.push(`/search?query=${this.state.write}`);
-                          }
-                        }}
-                      />
-                      <Icon
-                        className="clear link"
-                        onClick={() => setWrite('')}
-                      />
-                      {/* <Icon className="search_i"/> */}
-                      <Button
-                        className="btn_sch"
-                        onClick={() => {
-                          setSearchOpen();
-                          const history = getCurrentHistory();
-                          history?.push(`/search?query=${this.state.write}`);
-                        }}
-                      >
-                        <Icon className="search_i" />
-                      </Button>
-                    </div>
-                  </div>
-                  <SearchHeaderFieldView callback={setSearchOpen} />
-                </div>
-              </Popup.Content>
-            </Popup>
-          </>
-        )}
-        <LanguageSelectPopupView />
-        {!isExternal && (
+      <div className="g-info-new" data-area={Area.HEADER_GNB}>
+        <LearningMenuView onClickMenu={this.props.onClickMenu} />
+        {!isExternal && !findForeignerUser() && (
           <HeaderAlarmView
             myNotieMentions={myNotieMentions}
             myNotieNoReadMentionCount={myNotieNoReadMentionCount}
@@ -272,20 +186,18 @@ class ProfileContainer extends Component<Props, State> {
             handleClickAlarm={this.handleClickAlarm}
           />
         )}
+
         {isExternal ? (
           <>
             <button
-              className="ui user image label"
+              className="ui button user_btn"
               onClick={this.onTogglePop}
               ref={this.profileButtonRef}
             >
-              <span className="name">{skProfile.name}</span>
-              <span className="affiliation">
-                {skProfile.companyName} {skProfile.departmentName}
-              </span>
-              <Image
-                src={skProfile.photoFilePath || profileImg}
-                alt="profile"
+              <img
+                src="data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMzBweCIgaGVpZ2h0PSIzMHB4IiB2aWV3Qm94PSIwIDAgMzAgMzAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+MjdGN0RBRTctMUZBNC00MzU0LTlGNkUtQzI2MzJDMTA2OEYwPC90aXRsZT4KICAgIDxnIGlkPSLstZzsooXrs7giIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJOZXdfTWFpbl8wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE0OTAuMDAwMDAwLCAtMTA1LjAwMDAwMCkiIHN0cm9rZT0iIzIyMjIyMiI+CiAgICAgICAgICAgIDxnIGlkPSJbK10tR05CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgODIuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iYnRuX2duYl9teXByb2ZpbGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0OTAuMDAwMDAwLCAyMy4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBjeD0iMTUiIGN5PSIxMC41IiByPSI1LjUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNSwyNSBDMjUsMTcuMTQyODU3MSAxOS45NjQzNTczLDE2IDE1LDE2IEMxMC4wMzU2NDI3LDE2IDUsMTcuMTQyODU3MSA1LDI1IiBpZD0iT3ZhbC1Db3B5IiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
+                alt="프로필"
+                className="ui image"
               />
             </button>
             <div
@@ -326,13 +238,12 @@ class ProfileContainer extends Component<Props, State> {
           <Popup
             className="pop_profile"
             trigger={
-              <Button id="btnProFile" className="user image label btn_user">
-                <span>
-                  <Image
-                    src={skProfile.photoFilePath || profileImg}
-                    alt="profile"
-                  />
-                </span>
+              <Button id="btnProFile" className="user_btn">
+                <img
+                  src="data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMzBweCIgaGVpZ2h0PSIzMHB4IiB2aWV3Qm94PSIwIDAgMzAgMzAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+MjdGN0RBRTctMUZBNC00MzU0LTlGNkUtQzI2MzJDMTA2OEYwPC90aXRsZT4KICAgIDxnIGlkPSLstZzsooXrs7giIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJOZXdfTWFpbl8wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE0OTAuMDAwMDAwLCAtMTA1LjAwMDAwMCkiIHN0cm9rZT0iIzIyMjIyMiI+CiAgICAgICAgICAgIDxnIGlkPSJbK10tR05CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgODIuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iYnRuX2duYl9teXByb2ZpbGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0OTAuMDAwMDAwLCAyMy4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBjeD0iMTUiIGN5PSIxMC41IiByPSI1LjUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNSwyNSBDMjUsMTcuMTQyODU3MSAxOS45NjQzNTczLDE2IDE1LDE2IEMxMC4wMzU2NDI3LDE2IDUsMTcuMTQyODU3MSA1LDI1IiBpZD0iT3ZhbC1Db3B5IiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
+                  alt="프로필"
+                  className="ui image"
+                />
               </Button>
             }
             position="bottom right"
@@ -346,6 +257,8 @@ class ProfileContainer extends Component<Props, State> {
             </Popup.Content>
           </Popup>
         )}
+
+        <LanguageSelectPopupView />
       </div>
     );
   }

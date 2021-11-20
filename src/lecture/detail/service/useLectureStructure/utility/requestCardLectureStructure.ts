@@ -15,6 +15,7 @@ import {
   findMyTaskConditionCounts,
 } from '../../../api/cubeApi';
 import {
+  getLectureStructure,
   setIsLoadingState,
   setLectureStructure,
 } from '../../../store/LectureStructureStore';
@@ -36,9 +37,12 @@ import {
   LectureStructureCardItem,
 } from '../../../viewModel/LectureStructure';
 import { convertLearningStateToState } from './parseModels';
-import { isEmpty } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../model/LangSupport';
+import { findCardPisAgreement } from '../../../api/profileApi';
+import { useHistory } from 'react-router';
+import { useEffect } from 'react';
 
 function parseCubeTestItem(
   card: Card,
@@ -622,9 +626,10 @@ export async function isPrecoursePassed(cardId: string) {
     return true;
   }
 
-  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
-    (course) => course.required
-  );
+  const filterPrecourse =
+    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+      (course) => course.required
+    );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
 
@@ -671,9 +676,10 @@ export async function getPreCourseFailCardId(cardId: string) {
     return '';
   }
 
-  const filterPrecourse = cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
-    (course) => course.required
-  );
+  const filterPrecourse =
+    cardWithContentsAndRelatedCountRom.cardContents.prerequisiteCards.filter(
+      (course) => course.required
+    );
   const prerequisiteCardStudents =
     cardRelatedStudent.prerequisiteCardStudents || [];
 
@@ -699,6 +705,53 @@ export async function getPreCourseFailCardId(cardId: string) {
   }
 
   return '';
+}
+// 해당 카드의 동의 여부를 했는지 확인
+export async function isPisAgreementPassed(cardId: string) {
+  //
+  const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  const isExistAgreement = await findCardPisAgreement(cardId);
+
+  const lectureStructure = getLectureStructure();
+
+  // console.log(cardWithContentsAndRelatedCountRom);
+
+  let singleCube = false;
+
+  // api 호출이 실패 했을 경우
+  if (
+    cardWithContentsAndRelatedCountRom === undefined &&
+    lectureStructure === undefined
+  ) {
+    return { isPisAgreement: true, singleCube };
+  }
+
+  if (
+    lectureStructure &&
+    lectureStructure.cubes.length === 1 &&
+    lectureStructure.items.length === 1 &&
+    lectureStructure.card.test === undefined &&
+    lectureStructure.card.report === undefined &&
+    lectureStructure.card.survey === undefined
+  ) {
+    singleCube = true;
+  }
+
+  // Card 개인정보 동의가 있을 경우
+  if (
+    cardWithContentsAndRelatedCountRom &&
+    cardWithContentsAndRelatedCountRom.cardContents.pisAgreementRequired
+  ) {
+    // 제출한 동의서가 없는 경우 또는 제출한 동의서가 있지만 동의하지 않은 경우
+    if (
+      isExistAgreement === undefined ||
+      find(isExistAgreement.optionalClauseAgreements, { accepted: false })
+    ) {
+      return { isPisAgreement: false, singleCube };
+    }
+  }
+
+  return { isPisAgreement: true, singleCube };
 }
 
 async function parseCubeItem(

@@ -1,10 +1,23 @@
-import { autobind } from "@nara.platform/accent";
-import { observable, computed, action } from "mobx";
-import { FilterCondition, initialCondition } from "../../../myTraining/model/FilterCondition";
+import { autobind } from '@nara.platform/accent';
+import { LectureApi } from 'lecture';
+import { action, computed, observable, runInAction } from 'mobx';
+import FilterViewModel from 'myTraining/model/filter/FilterViewModel';
+import { getParsingLearningType } from 'myTraining/model/filter/ParsingLearningType';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import {
+  FilterCondition,
+  initialCondition,
+} from '../../../myTraining/model/FilterCondition';
 
 @autobind
 class FilterBoxService {
   static instance: FilterBoxService;
+
+  private lectureApi: LectureApi;
+
+  constructor(lectureApi: LectureApi) {
+    this.lectureApi = lectureApi;
+  }
 
   @observable
   private _conditions: FilterCondition = initialCondition;
@@ -14,7 +27,7 @@ class FilterBoxService {
   }
 
   @action setConditions(next: FilterCondition) {
-    return this._conditions = next;
+    return (this._conditions = next);
   }
 
   @observable
@@ -54,7 +67,7 @@ class FilterBoxService {
   }
 
   @action setShowResult(next: boolean) {
-    return this._showResult = next;
+    return (this._showResult = next);
   }
 
   @action
@@ -64,12 +77,70 @@ class FilterBoxService {
     this._openFilter = false;
     this._showResult = false;
   }
+
+  @observable
+  _filterCountViews: FilterViewModel = new FilterViewModel();
+
+  @computed
+  get filterCountViews() {
+    //
+    return this._filterCountViews;
+  }
+
+  @action
+  async findAllFilterCountViews(
+    contentType: MyLearningContentType | MyPageContentType
+  ) {
+    let hasStamp;
+    let searchable;
+    let ignoreAccessRule;
+    if (contentType === MyPageContentType.EarnedStampList) {
+      hasStamp = true;
+      ignoreAccessRule = true;
+    }
+
+    if (
+      contentType === MyLearningContentType.InMyList ||
+      contentType === MyLearningContentType.Required
+    ) {
+      searchable = true;
+    }
+
+    const parsingCardType = getParsingLearningType(contentType);
+
+    const resultByCardType =
+      (parsingCardType &&
+        (await this.lectureApi.findCardTypeAndCardCount(
+          parsingCardType,
+          hasStamp,
+          searchable,
+          ignoreAccessRule
+        ))) ||
+      [];
+
+    const resultByCollegeId =
+      (parsingCardType &&
+        (await this.lectureApi.findCollegeAndCardCount(
+          parsingCardType,
+          hasStamp,
+          searchable,
+          ignoreAccessRule
+        ))) ||
+      [];
+
+    runInAction(() => {
+      this._filterCountViews = FilterViewModel.getTotalFilterCountView(
+        resultByCardType,
+        resultByCollegeId
+      );
+    });
+  }
 }
 
 export default FilterBoxService;
 
 Object.defineProperty(FilterBoxService, 'instance', {
-  value: new FilterBoxService(),
+  value: new FilterBoxService(LectureApi.instance),
   writable: false,
   configurable: false,
-})
+});

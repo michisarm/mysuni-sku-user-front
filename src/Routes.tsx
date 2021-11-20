@@ -18,12 +18,14 @@ import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer
 import { findMyPisAgreement } from './profile/present/apiclient/instructorApi';
 import { getCurrentHistory } from './shared/store/HistoryStore';
 import profilePaths from './profile/routePaths';
+import { SkProfileService } from './profile/stores';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
 const PersonalCubeRoutes = lazy(() => import('./personalcube/Routes'));
 const LectureRoutes = lazy(() => import('./lecture/Routes'));
 const MyTrainingRoutes = lazy(() => import('./myTraining/Routes'));
+const HotTopicRoutes = lazy(() => import('./hotTopic/Routes'));
 const ApprovalRoutes = lazy(() => import('./approval/Routes'));
 const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
@@ -47,23 +49,23 @@ class Routes extends PureComponent {
     const isExternal = isExternalInstructor();
     // TODO :: 현재 하드코딩 => 변경 예정
     const agreementFormId = '20210622-1';
-    const serviceId = 'SUNI';
 
     if (isExternal === true) {
-      findMyPisAgreement(agreementFormId, serviceId).then((result) => {
-        if (result === undefined) {
-          const currentHistory = getCurrentHistory();
-          currentHistory?.push(profilePaths.personalInfoAgreement());
-          return;
-        }
-
-        if (
-          window.location.pathname !== '/suni-community/main/my-communities' &&
-          window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
-        ) {
-          window.location.href = '/suni-community/main/my-communities';
-        }
-      });
+      if (
+        SkProfileService.instance.additionalUserInfo
+          .mySuniPisAgreementFormId !== agreementFormId
+      ) {
+        const currentHistory = getCurrentHistory();
+        currentHistory?.push(profilePaths.personalInfoAgreement());
+        return;
+      }
+      if (
+        window.location.pathname !==
+          '/suni-main/community/main/my-communities' &&
+        window.location.pathname !== '/suni-main/my-training/my-page/MyProfile'
+      ) {
+        window.location.href = '/suni-main/community/main/my-communities';
+      }
     }
   }
 
@@ -102,6 +104,7 @@ class Routes extends PureComponent {
                           path="/my-training2"
                         // component={MyTrainingRoutes2}
                         /> */}
+                      <Route path="/hot-topic" component={HotTopicRoutes} />
                       <Route path="/approval" component={ApprovalRoutes} />
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />

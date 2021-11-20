@@ -13,6 +13,10 @@ import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 import { PolyglotText } from '../../ui/logic/PolyglotText';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+} from '../../service/useCollege/useRequestCollege';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -55,11 +59,10 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   ) {
     //
     const companyChannels = colleges
-      .filter((college) => college.collegeType === CollegeType.Company)
+      .filter((college) => !compareCollgeCineroom(college.id))
       .map((college) =>
-        college.channels.map(
-          (channel) =>
-            new ChannelModel({ channelId: channel.id, name: channel.name })
+        college.channelIds.map(
+          (id) => new ChannelModel({ channelId: id, name: getChannelName(id) })
         )
       )
       .flat();
@@ -79,11 +82,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   async onOpenModal() {
     //
-    const {
-      collegeService,
-      collegeLectureCountService,
-      favorites,
-    } = this.props;
+    const { collegeService, collegeLectureCountService, favorites } =
+      this.props;
     const favoriteChannels = [...favorites];
 
     this.setState({
@@ -92,7 +92,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     });
 
     collegeService!.findChannelByName('');
-    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges =
+      await collegeLectureCountService!.findCollegeLectureCounts();
 
     this.setDefaultFavorites(favoriteChannels, colleges);
   }
@@ -145,8 +146,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       this.setState({ selectedCollegeIds: [] });
       colleges
         .filter((college) => {
-          const searchedChannels = college.channels.filter((channel) =>
-            channelIds.includes(channel.id)
+          const searchedChannels = college.channelIds.filter((id) =>
+            channelIds.includes(id)
           );
           return searchedChannels.length > 0 ? college : null;
         })
@@ -200,10 +201,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       selectedCollegeIds,
     }: State = this.state;
     const { channelIds } = collegeService!;
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      collegeLectureCountService!;
 
     return (
       <Modal

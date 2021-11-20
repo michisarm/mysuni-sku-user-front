@@ -93,7 +93,7 @@ function ListRightTopPanel(props: Props) {
       default:
         return (
           <Button
-            icon={activeFilter ? false : true}
+            icon={!activeFilter}
             className={classNames(active, open)}
             onClick={onClickFilter}
           >

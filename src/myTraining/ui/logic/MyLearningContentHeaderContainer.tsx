@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -20,18 +19,19 @@ import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoM
 import { MyBadgeRdo } from '../../../certification/model/MyBadgeRdo';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
-
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  skProfileService?: SkProfileService,
-  myLearningSummaryService?: MyLearningSummaryService,
-  badgeService?: BadgeService,
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  skProfileService?: SkProfileService;
+  myLearningSummaryService?: MyLearningSummaryService;
+  badgeService?: BadgeService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'myTraining.myLearningSummaryService',
-  'badge.badgeService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'myTraining.myLearningSummaryService',
+    'badge.badgeService'
+  )
+)
 @observer
 @reactAutobind
 class MyLearningContentHeaderContainer extends Component<Props> {
@@ -44,17 +44,28 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     const myBadgeRdo: MyBadgeRdo = {
       issued: true,
       offset: 0,
-      limit: 20
+      limit: 20,
     };
 
     badgeService!.findAllMyBadges(myBadgeRdo);
   }
 
-  init() {
+  async init() {
     //
     const { myLearningSummaryService } = this.props;
+    const {
+      findMyLearningSummaryByYear,
+      findInstructTimeSummary,
+      getDisplayCompanyLearningTime,
+      getDisplayMySuniLeaningTime,
+      getDisplayTotalLearningTime,
+    } = myLearningSummaryService!;
 
-    myLearningSummaryService!.findMyLearningSummary();
+    await findMyLearningSummaryByYear();
+    await findInstructTimeSummary();
+    getDisplayCompanyLearningTime();
+    getDisplayMySuniLeaningTime();
+    getDisplayTotalLearningTime();
   }
 
   onClickMyBadge() {
@@ -73,10 +84,15 @@ class MyLearningContentHeaderContainer extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, myLearningSummaryService, badgeService, history } = this.props;
+    const {
+      skProfileService,
+      myLearningSummaryService,
+      badgeService,
+      history,
+    } = this.props;
     const { skProfile } = skProfileService!;
     // const { member } = skProfile;
-    const { myLearningSummary } = myLearningSummaryService!;
+    const { displayTotalLearningTime } = myLearningSummaryService!;
     const myBadgeCount = badgeService!.allBadgeCount.issuedCount;
 
     return (
@@ -91,14 +107,14 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          {myLearningSummary.totalLearningTime !== 0 && (
-            <ContentHeaderTotalTimeItem
-              minute={myLearningSummary.totalLearningTime}
-            />
+          {displayTotalLearningTime !== 0 && (
+            <ContentHeaderTotalTimeItem minute={displayTotalLearningTime} />
           )}
-          {myLearningSummary.totalLearningTime === 0 && (
+          {displayTotalLearningTime === 0 && (
             <ContentHeader.WaitingItem
-              onClickRecommend={() => { history.push(lectureRoutePaths.recommend()); }}
+              onClickRecommend={() => {
+                history.push(lectureRoutePaths.recommend());
+              }}
             />
           )}
         </ContentHeader.Cell>

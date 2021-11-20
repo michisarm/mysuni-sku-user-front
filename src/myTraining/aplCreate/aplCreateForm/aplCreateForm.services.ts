@@ -7,17 +7,21 @@ import {
 } from 'approval/stores';
 import { CollegeService } from 'college/stores';
 import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
-import { getDefaultLang } from 'lecture/model/LangSupport';
 import { CollegeLectureCountService } from 'lecture/stores';
 import moment from 'moment';
 import { AplService } from 'myTraining/stores';
 import { SkProfileModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import { SelectOption } from 'shared/model/SelectOption';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+  getCollgeName,
+} from '../../../shared/service/useCollege/useRequestCollege';
 import { onResetFocusControl } from '../aplCreate.events';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
+import { CollegeModel } from '../../../college/model';
 
 export async function requestAplApprover() {
   const aplService = AplService.instance;
@@ -64,29 +68,25 @@ export async function requestAplApprover() {
 }
 
 export async function requestAplCreateColleges() {
-  const collegeLectureCountService = CollegeLectureCountService.instance;
+  //
   if (window.navigator.onLine) {
-    const collegeLectureCounts = await collegeLectureCountService.findCollegeLectureCounts();
-    if (collegeLectureCounts.length > 0) {
-      parseCollegeOptions(collegeLectureCounts);
-    }
+    await CollegeService.instance.findCollegesForCurrentCineroom();
+    parseCollegeOptions(CollegeService.instance.mainColleges);
   }
 }
 
-export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+// export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
+export function parseCollegeOptions(colleges: CollegeModel[]) {
   const collegeOptions: SelectOption[] = [
     { key: 'Select', value: 'Select', text: 'Select' },
   ];
   if (colleges) {
-    colleges.map((college, index) => {
-      if (college.collegeType === 'Company') {
+    colleges.forEach((college, index) => {
+      if (!compareCollgeCineroom(college.id)) {
         collegeOptions.push({
           key: String(index + 1),
           value: college.id,
-          text: parsePolyglotString(
-            college.name,
-            getDefaultLang(college.langSupports)
-          ),
+          text: getCollgeName(college.id),
         });
       }
     });
@@ -105,10 +105,7 @@ export function getChannelOptions() {
     channelOptions.push({
       key: index + 1,
       value: channel.id,
-      text: parsePolyglotString(
-        channel.name,
-        getDefaultLang(channel.langSupports)
-      ),
+      text: getChannelName(channel.id),
     });
   });
   return channelOptions;

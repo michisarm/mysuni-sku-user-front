@@ -13,11 +13,8 @@ import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory'
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
 import { createStore } from './Store';
 
-const [
-  setLectureCubeSummary,
-  onLectureCubeSummary,
-  getLectureCubeSummary,
-] = createStore<LectureCubeSummary>();
+const [setLectureCubeSummary, onLectureCubeSummary, getLectureCubeSummary] =
+  createStore<LectureCubeSummary>();
 
 const [
   setLectureCardSummary,
@@ -33,19 +30,12 @@ const [
   getLectureCardSummaryLearningState,
 ] = createStore<LectureCardSummary>();
 
-const [
-  setLectureDescription,
-  onLectureDescription,
-  getLectureDescription,
-] = createStore<LectureDescription>();
-const [
-  setLectureSubcategory,
-  onLectureSubcategory,
-  getLectureSubcategory,
-] = createStore<LectureSubcategory>();
-const [setLectureTags, onLectureTags, getLectureTags] = createStore<
-  LectureTags
->();
+const [setLectureDescription, onLectureDescription, getLectureDescription] =
+  createStore<LectureDescription>();
+const [setLectureSubcategory, onLectureSubcategory, getLectureSubcategory] =
+  createStore<LectureSubcategory>();
+const [setLectureTags, onLectureTags, getLectureTags] =
+  createStore<LectureTags>();
 const [
   setLectureInstructor,
   onLectureInstructor,
@@ -53,37 +43,26 @@ const [
   useLectureInstructor,
 ] = createStore<LectureInstructor>();
 
-const [
-  setLecturePrecourse,
-  onLecturePrecourse,
-  getLecturePrecourse,
-] = createStore<LecturePrecourse>();
+const [setLecturePrecourse, onLecturePrecourse, getLecturePrecourse] =
+  createStore<LecturePrecourse>();
 
-const [setLectureBadge, onLectureBadge, getLectureBadge] = createStore<
-  LectureBadge
->();
+const [setLectureBadge, onLectureBadge, getLectureBadge] =
+  createStore<LectureBadge>();
 
-const [setLectureFile, onLectureFile, getLectureFile] = createStore<
-  LectureFile
->();
+const [setLectureFile, onLectureFile, getLectureFile] =
+  createStore<LectureFile>();
 
-const [setLectureComment, onLectureComment, getLectureComment] = createStore<
-  LectureComment
->();
+const [setLectureComment, onLectureComment, getLectureComment] =
+  createStore<LectureComment>();
 
-const [setLectureReview, onLectureReview, getLectureReview] = createStore<
-  LectureReview
->();
+const [setLectureReview, onLectureReview, getLectureReview] =
+  createStore<LectureReview>();
 
-const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] = createStore<
-  InMyLectureCdo
->();
+const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] =
+  createStore<InMyLectureCdo>();
 
-const [
-  setLectureRelations,
-  onLectureRelations,
-  getLectureRelations,
-] = createStore<LectureRelations>();
+const [setLectureRelations, onLectureRelations, getLectureRelations] =
+  createStore<LectureRelations>();
 
 export {
   setLectureCubeSummary,

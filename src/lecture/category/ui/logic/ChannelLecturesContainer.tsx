@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { Component, useEffect } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import {
   RouteComponentProps,
@@ -7,18 +7,13 @@ import {
   useLocation,
   withRouter,
 } from 'react-router-dom';
-import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
 import { PageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-
-import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureServiceType, OrderByType } from '../../../model';
 import { LectureCardService, LectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
 import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
@@ -27,9 +22,13 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import { Area } from 'tracker/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -39,7 +38,6 @@ interface Props
   lectureService?: LectureService;
   lectureCardService?: LectureCardService;
   reviewService?: ReviewService;
-  inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
   scrollOnceMove?: () => void;
@@ -50,6 +48,7 @@ interface State {
   collegeOrder: boolean;
   channelOffset: number;
   loading: boolean;
+  seeMoreButtonView: HTMLDivElement | null;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -59,7 +58,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   lectureService,
   lectureCardService,
   reviewService,
-  inMyLectureService,
   match,
 }) => {
   const history = useHistory();
@@ -69,7 +67,7 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, []);
+  }, [history, scrollSave]);
 
   return (
     <ChannelLecturesInnerContainer
@@ -79,7 +77,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       lectureService={lectureService}
       lectureCardService={lectureCardService}
       reviewService={reviewService}
-      inMyLectureService={inMyLectureService}
       history={history}
       location={location}
       match={match}
@@ -109,17 +106,28 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   PAGE_SIZE = 8;
 
-  state = {
-    sorting: OrderByType.Time,
-    collegeOrder: false,
-    channelOffset: 0,
-    loading: true,
-  };
+  observer: IntersectionObserver | null = null;
 
   constructor(props: Props) {
     //
     super(props);
     this.init();
+    this.state = {
+      sorting: OrderByType.Time,
+      collegeOrder: false,
+      channelOffset: 0,
+      loading: true,
+      seeMoreButtonView: null,
+    };
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      this.observer = new IntersectionObserver(
+        this.intersectionCallback,
+        options
+      );
+    }
   }
 
   async componentDidMount() {
@@ -132,7 +140,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.findPagingChannelLectures();
   }
 
-  async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props, prevState: State) {
     //
     const { pageService } = this.props;
     if (
@@ -152,6 +160,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         console.error('TODO', error);
       }
       this.findPagingChannelLectures();
+    }
+
+    if (prevState.seeMoreButtonView !== this.state.seeMoreButtonView) {
+      if (this.observer !== null) {
+        if (this.state.seeMoreButtonView !== null) {
+          this.observer.observe(this.state.seeMoreButtonView);
+        } else {
+          this.observer.disconnect();
+        }
+      }
     }
   }
 
@@ -174,13 +192,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   async findPagingChannelLectures() {
     //
-    const {
-      match,
-      pageService,
-      lectureService,
-      inMyLectureService,
-      scrollOnceMove,
-    } = this.props;
+    const { match, pageService, lectureService, scrollOnceMove } = this.props;
 
     const getChannelOffset: string | null =
       sessionStorage.getItem('channelOffset');
@@ -192,7 +204,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.setState({ channelOffset: prevChannelOffset });
     const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    inMyLectureService!.findAllInMyLectures();
 
     const lectureOffsetList =
       await lectureService!.findPagingChannelOrderLectures(
@@ -200,7 +211,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         match.params.channelId,
         page!.limit,
         page!.nextOffset,
-        sorting
+        sorting as OrderByType
       );
     this.setState({ loading: false });
 
@@ -208,14 +219,18 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       scrollOnceMove();
     }
 
+    const nextPage = Math.ceil((page!.nextOffset + page!.limit) / 8);
+
     if (channelOffset > 0 && page) {
       page.limit = 8;
     }
 
+    console.log('channelOffset', channelOffset);
+
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      channelOffset > 0 ? channelOffset / 8 + page!.pageNo : page!.pageNo + 1
+      nextPage
     );
     this.setState({ channelOffset: 0 });
   }
@@ -239,6 +254,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
+    console.log('page!.pageNo', page!.pageNo);
+    console.log('page!.totalPages', page!.totalPages);
+
     return page!.pageNo < page!.totalPages;
   }
 
@@ -258,70 +276,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     );
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    const { inMyLectureService } = this.props;
-
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
-  }
-
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
-    const { history, scrollSave } = this.props;
-    const collegeId = model.category.college.id;
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+    const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Card) {
-      // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
       history.push(routePaths.courseOverview(model.cardId));
     } else {
-      // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
-    // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
 
     ReactGA.event({
       category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
@@ -341,36 +305,52 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.findPagingChannelLectures();
   }
 
+  seeMoreButtonViewRef(ref: HTMLDivElement | null) {
+    this.setState({ seeMoreButtonView: ref });
+  }
+
+  intersectionCallback(entries: IntersectionObserverEntry[]) {
+    console.log(entries);
+    entries.forEach((c) => {
+      if (c.isIntersecting) {
+        this.onClickSeeMore();
+      }
+    });
+  }
+
   render() {
     //
-    const { pageService, lectureService, reviewService, inMyLectureService } =
-      this.props;
+    const { pageService, lectureService } = this.props;
     const { sorting, collegeOrder, loading } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
-    const { ratingMap } = reviewService!;
-    const { inMyLectureMap } = inMyLectureService!;
+
+    const userLanguage = SkProfileService.instance.skProfile.language;
+
+    if (lectures.length === 0 && loading) {
+      return (
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={loading} />
+        </Segment>
+      );
+    }
 
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        {loading ? (
-          <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
-          >
-            <Loadingpanel loading={loading} />
-          </Segment>
-        ) : lectures && lectures.length > 0 ? (
+        {lectures && lectures.length > 0 ? (
           <>
             <CardSorting
               value={sorting}
@@ -379,25 +359,42 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map(({ card, cardRelatedCount }, index) => {
+                {parseUserLectureCards(lectures, userLanguage).map((cards) => {
                   return (
-                    <CardView
-                      key={`${card.id}+${index}`}
-                      cardId={card.id}
-                      {...card}
-                      {...cardRelatedCount}
+                    <LectureCardView
+                      {...cards}
+                      useBookMark={true}
                       dataArea={
                         window.location.pathname.includes('/recommend')
                           ? Area.RECOMMEND_CARD
                           : Area.COLLEGE_CARD
                       }
+                      hoverTrack={hoverTrack}
                     />
                   );
                 })}
               </Lecture.Group>
+              {loading && (
+                <Segment
+                  style={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    height: 400,
+                    boxShadow: '0 0 0 0',
+                    border: 0,
+                  }}
+                >
+                  <Loadingpanel loading={loading} />
+                </Segment>
+              )}
 
-              {this.isContentMore() && (
-                <SeeMoreButton onClick={this.onClickSeeMore} />
+              {!loading && this.isContentMore() && (
+                <SeeMoreButton
+                  onClick={this.onClickSeeMore}
+                  ref={this.seeMoreButtonViewRef}
+                />
               )}
             </div>
           </>

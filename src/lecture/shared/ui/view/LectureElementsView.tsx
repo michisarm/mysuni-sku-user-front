@@ -139,8 +139,11 @@ interface ThumbnailProps {
   image?: string;
 }
 
-export const Thumbnail = ({ image }: ThumbnailProps) => (
-  <div className="thumbnail">
-    {image && <Image alt="card-thumbnail" src={image} />}
-  </div>
-);
+export const Thumbnail = ({ image }: ThumbnailProps) => {
+  return null;
+  //   (
+  //   <div className="thumbnail">
+  //     {image && <Image alt="card-thumbnail" src={image} />}
+  //   </div>
+  // )
+};

@@ -5,6 +5,23 @@ import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
 import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
+import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
+import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
+import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
+import { cs } from 'date-fns/locale';
+
+export async function isOpenPassedPisAgreementModal(cardId: string) {
+  const { isPisAgreement } = await isPisAgreementPassed(cardId);
+
+  // console.log(isPisAgreement);
+
+  if (!isPisAgreement) {
+    // Model 띄우기
+    onOpenLectureCardPisAgreementModal(true);
+    // onOpenLectureCardPisAgreementModal();
+  }
+}
 
 function LectureCourseOverviewPage() {
   useRequestLectureCardOverview();
@@ -23,13 +40,84 @@ function LectureCourseOverviewPage() {
       lectureStructure.card.survey === undefined
     ) {
       history.replace(lectureStructure.cubes[0].path);
+      return;
     }
+    if (
+      // eslint-disable-next-line
+      location.pathname.endsWith('/redirect-cube') &&
+      lectureStructure.cubes.length !== 0 &&
+      lectureStructure.cubes.some(
+        (c) => c.state === 'Progress' || c.state === 'Completed'
+      )
+    ) {
+      // 모두 학습 완료인 경우
+      if (lectureStructure.cubes.every((c) => c.state === 'Completed')) {
+        if (
+          lectureStructure.card.report?.state === 'None' ||
+          lectureStructure.card.report?.state === 'Progress'
+        ) {
+          history.push(lectureStructure.card.report.path);
+          return;
+        }
+        if (
+          lectureStructure.card.test?.state === 'None' ||
+          lectureStructure.card.test?.state === 'Progress'
+        ) {
+          history.push(lectureStructure.card.test.path);
+          return;
+        }
+        if (
+          lectureStructure.card.survey?.state === 'None' ||
+          lectureStructure.card.survey?.state === 'Progress'
+        ) {
+          history.push(lectureStructure.card.survey.path);
+          return;
+        }
+      }
+      // 학습 중인 큐브가 없어서, 새로운 큐브로 이동
+      else if (!lectureStructure.cubes.some((c) => c.state === 'Progress')) {
+        const cube = lectureStructure.cubes.find(
+          (c) => c.state !== 'Progress' && c.state !== 'Completed'
+        );
+        if (cube !== undefined) {
+          history.push(cube.path);
+          return;
+        }
+      }
+      // 최근 학습 중인 큐브로 이동
+      else {
+        let modifiedTime = 0;
+        let path: string | null = null;
+        lectureStructure.cubes
+          .filter((c) => c.state === 'Progress')
+          .forEach((c) => {
+            if (c.student !== undefined) {
+              console.log(c);
+              if (c.student.modifiedTime > modifiedTime) {
+                modifiedTime = c.student.modifiedTime;
+                path = c.path;
+              }
+            }
+          });
+        if (path !== null) {
+          history.replace(path);
+          return;
+        }
+      }
+    }
+
+    isOpenPassedPisAgreementModal(lectureStructure.card.cardId);
   }, [lectureStructure]);
 
   return (
     <Fragment>
       {lectureStructure !== undefined && (
-        <LectureCubeNavigatorView lectureStructure={lectureStructure} />
+        <>
+          <LectureCubeNavigatorView lectureStructure={lectureStructure} />
+          <LectureCardAgreementModalView
+            cardId={lectureStructure.card.cardId}
+          />
+        </>
       )}
       <LectureCourseSummaryContainer />
       <LectureCourseContentContainer />

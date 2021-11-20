@@ -1,12 +1,10 @@
-
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button, Label, Icon } from 'semantic-ui-react';
-import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
-  minute?: number,
+  minute?: number;
 }
 
 @reactAutobind
@@ -32,28 +30,31 @@ class ContentHeaderTotalTimeItem extends PureComponent<Props> {
     if (hour < 1 && onlyMinute! < 1) {
       total = (
         <div className="value2">
-          <strong>00</strong><span>h</span> <strong>00</strong><span>m</span>
+          <strong>00</strong>
+          <span>h</span> <strong>00</strong>
+          <span>m</span>
         </div>
       );
-    }
-    else if (hour < 1) {
+    } else if (hour < 1) {
       total = (
         <div className="value2">
-          <strong>{onlyMinute}</strong><span>m</span>
+          <strong>{onlyMinute}</strong>
+          <span>m</span>
         </div>
       );
-    }
-    else if (onlyMinute! < 1) {
+    } else if (onlyMinute! < 1) {
       total = (
         <div className="value2">
-          <strong>{hour}</strong><span>h</span>
+          <strong>{hour}</strong>
+          <span>h</span>
         </div>
       );
-    }
-    else {
+    } else {
       total = (
         <div className="value2">
-          <strong>{hour}</strong><span>h</span> <strong>{onlyMinute}</strong><span>m</span>
+          <strong>{hour}</strong>
+          <span>h</span> <strong>{onlyMinute}</strong>
+          <span>m</span>
         </div>
       );
     }
@@ -61,16 +62,16 @@ class ContentHeaderTotalTimeItem extends PureComponent<Props> {
     return (
       <div className="ui statistic total-time">
         {
-          <MyLearningSummaryModal
-            trigger={(
-              <Button className="btn-total-time">
-                <Label className="onlytext">
-                  <Icon className="total-time" /><span>총 학습시간</span>
-                </Label>
-                {total}
-              </Button>
-            )}
-          />
+          // <MyLearningSummaryModal
+          //   trigger={(
+          //     <Button className="btn-total-time">
+          //       <Label className="onlytext">
+          //         <Icon className="total-time" /><span>총 학습시간</span>
+          //       </Label>
+          //       {total}
+          //     </Button>
+          //   )}
+          // />
         }
       </div>
     );

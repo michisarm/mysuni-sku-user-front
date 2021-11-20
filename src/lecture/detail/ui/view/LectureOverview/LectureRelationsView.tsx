@@ -1,19 +1,28 @@
 import { patronInfo } from '@nara.platform/dock';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon, Label, Segment } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
-import CardGroup, {
-  GroupType,
-} from '../../../../shared/Lecture/sub/CardGroup/CardGroupContainer';
+
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
-import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
 import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
-import { Area } from 'tracker/model';
-import { scrollHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import {
+  hoverTrack,
+  scrollHorizontalTrack,
+} from 'tracker/present/logic/ActionTrackService';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { SkProfileService } from '../../../../../profile/stores';
+import Swiper from 'react-id-swiper';
+import CardGroup from 'semantic-ui-react/dist/commonjs/views/Card/CardGroup';
+import { GroupType } from '../../../../shared/Lecture/sub/CardGroup';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -24,6 +33,19 @@ interface LectureViewProps {
   thumbnailImage?: string;
   rating?: number;
 }
+
+const SwiperProps = {
+  slidesPerView: 4,
+  spaceBetween: 7,
+  slidesPerGroup: 4,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.swiperRelations .swiper-button-next',
+    prevEl: '.swiperRelations .swiper-button-prev',
+  },
+  speed: 500,
+};
 
 const LectureView: React.FC<LectureViewProps> = function LectureView({
   model,
@@ -81,56 +103,84 @@ const LectureView: React.FC<LectureViewProps> = function LectureView({
   );
 };
 
-const LectureRelationsView: React.FC<LectureRelationsViewProps> = function LectureRelationsView({
-  lectureRelations,
-}) {
-  const lectureSummary = useLectureCardSummary();
-  return (
-    <div
-      className="badge-detail border-none"
-      id="lms-related-process"
-      data-area={Area.CARD_RELATION}
-      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollHorizontalTrack({
-          e,
-          area: Area.CARD_RELATION,
-          scrollClassName: 'scrolling',
-          actionName: '카드상세 관련과정 스크롤',
-        })
+const LectureRelationsView: React.FC<LectureRelationsViewProps> =
+  function LectureRelationsView({ lectureRelations }) {
+    const lectureSummary = useLectureCardSummary();
+    const userLanguage = SkProfileService.instance.skProfile.language;
+
+    const cards = parseUserLectureCards(lectureRelations.cards, userLanguage);
+
+    const [swiper, updateSwiper] = useState<any>(null);
+    useEffect(() => {
+      if (swiper !== null) {
+        const onSlideChangeHandler = () => onSlideChange(swiper);
+        swiper.on('slideChange', onSlideChangeHandler);
+        return () => {
+          swiper.off('slideChange', onSlideChangeHandler);
+        };
       }
-    >
-      <div className="ov-paragraph">
-        <div className="section-head">
-          <div className="title">
-            <h3 className="title-style">
-              <Label className="onlytext bold size24">
-                <Icon className="before" />
-                <span>{/*Tag*/}<PolyglotText defaultString="관련과정" id="Course-Contents-관련과정" /></span>
-              </Label>
-            </h3>
+    }, [onSlideChange, swiper]);
+    function onSlideChange(swiper: any) {
+      if (swiper && swiper.isEnd) {
+        scrollSwiperHorizontalTrack({
+          element: swiper.el,
+          area: Area.CARD_RELATION,
+          scrollClassName: 'cardSwiper',
+          actionName: '카드상세 관련과정 스크롤',
+        });
+      }
+    }
+
+    return (
+      <div
+        className="badge-detail border-none"
+        id="lms-related-process"
+        data-area={Area.CARD_RELATION}
+      >
+        <div className="ov-paragraph">
+          <div className="section-head">
+            <div className="title">
+              <h3 className="title-style">
+                <Label className="onlytext bold size24">
+                  <Icon className="before" />
+                  <span>
+                    {/*Tag*/}
+                    <PolyglotText
+                      defaultString="관련과정"
+                      id="Course-Contents-관련과정"
+                    />
+                  </span>
+                </Label>
+              </h3>
+            </div>
+          </div>
+          <div className="section-body">
+            <div className="cardSwiper" data-action-name={lectureSummary?.name}>
+              <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
+                {cards.map((card) => {
+                  return (
+                    <div className="swiper-slide" key={card.cardId}>
+                      <CardGroup className="card-warp">
+                        <LectureCardView
+                          {...card}
+                          useBookMark
+                          dataArea={Area.CARD_RELATION}
+                          hoverTrack={hoverTrack}
+                        />
+                      </CardGroup>
+                    </div>
+                  );
+                })}
+              </Swiper>
+              <div className="swiperRelations">
+                <div className="swiper-button-prev" />
+                <div className="swiper-button-next" />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="scrolling" data-action-name={lectureSummary?.name}>
-          <ul className="belt">
-            {lectureRelations.cards.map(({ card, cardRelatedCount }) => {
-              return (
-                <li key={card.id}>
-                  <div className="ui cards box-cards">
-                    <CardView
-                      cardId={card.id}
-                      {...card}
-                      {...cardRelatedCount}
-                      dataArea={Area.CARD_RELATION}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default LectureRelationsView;

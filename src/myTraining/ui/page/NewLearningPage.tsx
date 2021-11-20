@@ -5,10 +5,10 @@ import { ContentLayout } from 'shared';
 import { find } from 'lodash';
 import LRSListContainer from '../logic/LRSListContainer';
 import LearningListContainer from '../logic/LearningListContainer';
-import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { Area } from 'tracker/model';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 export enum ContentType {
   Recommend = 'Recommend',
@@ -28,7 +28,7 @@ function NewLearningPage() {
   const contentType = type as ContentType;
 
   const getDisplayName = async () => {
-    const cardBundles = await findAvailableCardBundles();
+    const cardBundles = await findAvailableCardBundlesCache();
     const cardBundle = find(cardBundles, { id: type });
 
     if (cardBundle) {
@@ -62,7 +62,9 @@ function NewLearningPage() {
     let area = null;
     switch (contentType) {
       case ContentType.Recommend:
-        area = Area.NEWLEARNING_RECOMMEND;
+        area = window.location.search.includes('LearningPatternBased')
+          ? Area.NEWLEARNING_RECOMMEND
+          : Area.NEWLEARNING_PATTERN;
         break;
       case ContentType.Enrolling:
         area = Area.NEWLEARNING_ENROLLING;

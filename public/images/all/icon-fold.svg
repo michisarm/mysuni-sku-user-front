@@ -1,20 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>B049CE88-4F40-455F-9418-DC6C8C638FEB</title>
-    <g id="Note" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Note_03_Default(LM-VI-10)" transform="translate(-308.000000, -122.000000)">
-            <g id="@-LNB" transform="translate(-0.000001, 109.000000)">
-                <g id="list-close" transform="translate(0.000000, 0.000000)">
-                    <g id="icon_fold" transform="translate(308.000001, 13.000000)">
-                        <circle id="Mask" cx="12" cy="12" r="12"></circle>
-                        <g id="x" transform="translate(3.838119, 4.000000)">
-                            <polyline id="Path-2" stroke="#6C788F" stroke-width="2" points="6 2 0 8 6 14"></polyline>
-                            <rect id="Rectangle" fill="#6C788F" x="13.5" y="0" width="2" height="16"></rect>
-                            <rect id="Rectangle" fill="#6C788F" x="1.5" y="7" width="10" height="2"></rect>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="12" cy="12" r="12"/>
+        <path stroke="#777" stroke-width="2" d="m9.838 6-6 6 6 6"/>
+        <path fill="#777" d="M17.338 4h2v16h-2zM3.338 11h12v2h-12z"/>
     </g>
 </svg>

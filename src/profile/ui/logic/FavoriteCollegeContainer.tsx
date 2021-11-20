@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
-import { ChannelModel, CollegeType } from 'college/model';
+import { ChannelModel, CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
@@ -18,7 +18,14 @@ import {
 } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { find } from 'lodash';
-import { findAllCollegeCache } from 'college/present/apiclient/CollegeApi';
+import { findAllCollegeCache } from '../../../shared/service/requestAllColleges';
+
+import {
+  getCollgeName,
+  getChannelName,
+  compareCollgeCineroom,
+} from 'shared/service/useCollege/useRequestCollege';
+import { CollegeIdModel } from 'shared/model/CollegeIdModel';
 
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService;
@@ -27,7 +34,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  selectedCollege: CollegeLectureCountRdo;
+  selectedCollege: CollegeIdModel;
   favorites: IdName[];
   favoriteCompanyChannels: ChannelModel[];
 }
@@ -54,7 +61,7 @@ const style = {
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, State> {
   state = {
-    selectedCollege: new CollegeLectureCountRdo(),
+    selectedCollege: {} as CollegeIdModel,
     favorites: [] as IdName[],
     favoriteCompanyChannels: [] as ChannelModel[],
   };
@@ -76,11 +83,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
     // 필수 관심채널 필터링
     const companyChannels = colleges
-      .filter((college) => college.collegeType === CollegeType.Company)
+      .filter((college) => !compareCollgeCineroom(college.id))
       .map((college) =>
-        college.channels.map(
-          (channel) =>
-            new ChannelModel({ channelId: channel.id, name: channel.name })
+        college.channelIds.map(
+          (id) => new ChannelModel({ channelId: id, name: getChannelName(id) })
         )
       )
       .flat();
@@ -116,7 +122,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     });
   }
 
-  onSelectCollege(college: CollegeLectureCountRdo) {
+  onSelectCollege(college: CollegeIdModel) {
     this.setState({ selectedCollege: college });
   }
 
@@ -199,13 +205,12 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                           className="hidden"
                           tabIndex={index}
                           value={college.collegeId}
-                          onChange={() => this.onSelectCollege(college)}
+                          onChange={() => {
+                            this.onSelectCollege(college);
+                          }}
                         />
                         <label htmlFor={`radio_${index}`}>
-                          {parsePolyglotString(
-                            college.name,
-                            getDefaultLang(college.langSupports)
-                          )}
+                          {getCollgeName(college.id)}
                           {college?.channelCounts?.length !== undefined
                             ? `(${college?.channelCounts?.length})`
                             : ''}
@@ -227,9 +232,9 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
               <div className="scrolling">
                 <div className="channel">
                   <ul>
-                    {(selectedCollege &&
-                      selectedCollege.channels.length &&
-                      selectedCollege.channels.map((channel, index) => {
+                    {(selectedCollege.channelIds &&
+                      selectedCollege.channelIds.length &&
+                      selectedCollege.channelIds.map((channelId, index) => {
                         return (
                           <li key={index}>
                             <div className="ui base checkbox popup-wrap">
@@ -240,14 +245,11 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 tabIndex={index}
                                 checked={favorites
                                   .map((favoriteChannel) => favoriteChannel.id)
-                                  .includes(channel.id)}
+                                  .includes(channelId)}
                                 onChange={() =>
                                   this.onSelectChannel({
-                                    id: channel.id,
-                                    name: parsePolyglotString(
-                                      channel.name,
-                                      getDefaultLang(channel.langSupports)
-                                    ),
+                                    id: channelId,
+                                    name: getChannelName(channelId),
                                   })
                                 }
                               />
@@ -256,10 +258,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 data-offset="23"
                                 htmlFor={`checkbox_${index}`}
                               >
-                                {parsePolyglotString(
-                                  channel.name,
-                                  getDefaultLang(channel.langSupports)
-                                )}
+                                {getChannelName(channelId)}
                               </label>
                             </div>
                           </li>

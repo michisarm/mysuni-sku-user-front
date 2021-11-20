@@ -10,6 +10,7 @@ import { MyCompanyPopularCourseItem } from '../model/LectureMyCompanyPopularCour
 import AttendEvent from '../viewModel/AttendEvent';
 import LearningObjectives from '../viewModel/LearningObjectives';
 import { findMyLearningSummaryByYearCache } from '../../../../myTraining/present/apiclient/MyLearningSummaryApi';
+import { TotalLearningTimeRdo } from '../model/TotalLearningTimeRdo';
 
 // const badgeURl = '/api/badge'
 const flowURL = '/api/mytraining/summaries/flow';
@@ -32,7 +33,7 @@ const eventURL = '/api/event';
 export function getBadgeLearningCompanyAvg(companyCode: string) {
   return axiosApi
     .get<any>(
-      `/api/mytraining/companyAverage/${companyCode}/${moment().year()}`
+      `/api/statistics/companyAverage/${companyCode}/${moment().year()}`
     )
     .then((response) => response && response.data);
 }
@@ -104,14 +105,11 @@ export function updateLearningObjectives(
 }
 
 //college별 학습 비중
-export function getCollegePercent() {
+export function findTotalLearningTime() {
+  const year = moment().format('YYYY');
   return axiosApi
-    .get<CollegePercentData[]>(
-      `/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`
-    )
-    .then((response) => {
-      return response && response.data;
-    });
+    .get<TotalLearningTimeRdo>(`/api/learning/learningTimes/total?year=${year}`)
+    .then(AxiosReturn);
 }
 
 //이벤트 정보 조회

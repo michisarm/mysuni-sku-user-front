@@ -279,15 +279,6 @@ function KoView(props: Props) {
               </a>
             </li>
             <li>
-              <a href="http://intelik.com/" target="_blank">
-                <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/intelik.png"
-                  alt="intelik"
-                  className="ui image"
-                />
-              </a>
-            </li>
-            <li>
               <a href="https://www.imooc.co.kr/" target="_blank">
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/carrot.png"
@@ -602,15 +593,6 @@ function EnView(props: Props) {
               </a>
             </li>
             <li>
-              <a href="http://intelik.com/" target="_blank">
-                <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/intelik.png"
-                  alt="intelik"
-                  className="ui image"
-                />
-              </a>
-            </li>
-            <li>
               <a href="https://www.imooc.co.kr/" target="_blank">
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/carrot.png"
@@ -905,15 +887,6 @@ function ZhView(props: Props) {
                 <img
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/ohmyschool.png"
                   alt="ohmyschool"
-                  className="ui image"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="http://intelik.com/" target="_blank">
-                <img
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/intelik.png"
-                  alt="intelik"
                   className="ui image"
                 />
               </a>

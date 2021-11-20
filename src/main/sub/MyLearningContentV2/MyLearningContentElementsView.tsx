@@ -16,25 +16,21 @@ export const ContentWrapper: FunctionComponent<ContentWrapperProps> = ({
   dataArea,
   dataAction,
 }) => (
-  <div
-    className={classNames('scrolling-area', className)}
+  <Segment
     data-area={dataArea}
     data-action={dataAction}
+    className="full learning-section type1"
+    onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
+      scrollHorizontalTrack({
+        e,
+        area: dataArea,
+        scrollClassName: 'scrolling',
+        actionName: '메인카드 스크롤',
+      })
+    }
   >
-    <Segment
-      className="full"
-      onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) =>
-        scrollHorizontalTrack({
-          e,
-          area: dataArea,
-          scrollClassName: 'scrolling',
-          actionName: '메인카드 스크롤',
-        })
-      }
-    >
-      {children}
-    </Segment>
-  </div>
+    {children}
+  </Segment>
 );
 
 interface TabsViewProps {
@@ -74,9 +70,9 @@ interface MainBannerProps {
 export const MainBannerWrapper: FunctionComponent<MainBannerProps> = ({
   children,
 }) => (
-  <div className="middle-swiper" data-area={Area.MAIN_BANNER}>
-    <Segment className="full">
-      <div className="swiper-section type2">{children}</div>
+  <div className="visual-banner-wrap" data-area={Area.MAIN_BANNER}>
+    <Segment className="full wide">
+      <div className="swiper-section type4">{children}</div>
     </Segment>
   </div>
 );

@@ -1,6 +1,5 @@
 import { reactAlert, StorageModel, getCookie } from '@nara.platform/accent';
 import { getDefaultLang } from 'lecture/model/LangSupport';
-import { useRef } from 'react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -11,6 +10,7 @@ import {
   findCard,
   findCommunities,
   findExpert,
+  findNaverOpenApiErrata,
   findPreCard,
   findRelatedKeywordByKeyword,
   searchRankinsCache,
@@ -30,7 +30,6 @@ import {
   getQueryOptions,
   getSearchBadgeOriList,
   getSearchCommunityOriList,
-  getSearchInSearchInfo,
   InitialConditions,
   setCard,
   setCollegeOptions,
@@ -56,9 +55,10 @@ import {
   setSearchPopular1YList,
   getMenuAuth,
 } from './search.services';
-import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { debounceSearchActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model/ActionType';
+import SearchService from './service/SearchService';
 
 export function initSearchData() {
   filterClearAll();
@@ -75,12 +75,13 @@ export function initSearchData() {
   setSearchRelatedList([]);
 }
 
-export function getQueryId(): string {
-  const queryId: string = window.location.search.slice(
-    window.location.search.indexOf('=') + 1,
-    window.location.search.length
-  );
-
+export function getQueryId(value?: string): string {
+  const queryId: string =
+    value?.trim() ||
+    window.location.search.slice(
+      window.location.search.indexOf('=') + 1,
+      window.location.search.length
+    );
   if (queryId.endsWith('%')) {
     let decodedQueryId = queryId;
     while (decodedQueryId.endsWith('%')) {
@@ -107,6 +108,9 @@ export function getQueryId(): string {
 // 필터
 export function filterClearAll() {
   setFilterCondition(InitialConditions);
+  setExpert(getExpertOri());
+  setSearchBadgeList(getSearchBadgeOriList());
+  setSearchCommunityList(getSearchCommunityOriList());
 }
 
 export function searchCardFilterData(decodedSearchValue: string) {
@@ -152,6 +156,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
           displayCard.push(c);
         }
       });
+
     setCard(displayCard);
     setAllowedCard(displayCard);
     setDisplayCard([...displayCard]);
@@ -202,6 +207,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
 
     const cards = await filterCard(getCard());
     setAllowedCard(cards);
+
     setDisplayCard(cards);
   });
 }
@@ -209,7 +215,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
 export function settingSearchFilter(searchValue: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue === '') {
     return;
@@ -586,10 +592,14 @@ export function toggle_support_lang_json_query(value: string) {
 //  // 필터 선택 값 만들기
 //  // 필터
 
-export async function search(searchValue: string, searchType?: string) {
+export async function search(
+  searchValue: string,
+  searchType?: string,
+  withOriginal?: boolean
+) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
   if (decodedSearchValue.replace(/ /g, '').length < 2) {
     reactAlert({
@@ -602,14 +612,18 @@ export async function search(searchValue: string, searchType?: string) {
     return;
   }
 
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
-    searchInSearchData(decodedSearchValue);
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  if (searchInSearchInfo?.inAgain) {
+    await searchInSearchData(decodedSearchValue);
   } else {
     const queryId = getQueryId();
     if (queryId === decodedSearchValue) {
       // 동일한 검색어로 검색할경우 SearchContentsPage에서 감지하지 못하므로 여기서 조회
-      searchData(decodedSearchValue);
+      if (withOriginal) {
+        await searchData(decodedSearchValue);
+      } else {
+        await searchDataWithErrata(decodedSearchValue);
+      }
     } else {
       const history = getCurrentHistory();
       if (searchType === undefined) {
@@ -619,8 +633,9 @@ export async function search(searchValue: string, searchType?: string) {
       }
     }
   }
+  
   // search track
-  debounceActionTrack({
+  debounceSearchActionTrack({
     email:
       (window.sessionStorage.getItem('email') as string) ||
       (window.localStorage.getItem('nara.email') as string) ||
@@ -630,14 +645,37 @@ export async function search(searchValue: string, searchType?: string) {
     area: Area.SEARCH,
     actionType: ActionType.GENERAL,
     action: Action.SEARCH,
-    actionName: '검색::' + decodedSearchValue,
+    actionName: (searchInSearchInfo?.inAgain ? '재검색::' + searchInSearchInfo.recentSearchValue + '검색::' : '검색::') + decodedSearchValue,
   } as ActionTrackParam);
+}
+
+export async function searchDataWithErrata(
+  searchValue: string,
+  searchType?: string
+) {
+  //
+  const errataValue = await findNaverOpenApiErrata(searchValue);
+
+  if (errataValue?.errata) {
+    SearchService.instance.setSearchInfoValue(
+      'errataValue',
+      errataValue.errata
+    );
+    // SearchService.instance.setSearchInfoValue('searchValue', searchValue);
+  } else {
+    SearchService.instance.setSearchInfoValue('errataValue', '');
+  }
+
+  await searchData(
+    (errataValue && errataValue.errata) || searchValue,
+    searchType
+  );
 }
 
 export async function searchData(searchValue: string, searchType?: string) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   if (decodedSearchValue === '') {
@@ -684,9 +722,43 @@ export async function searchData(searchValue: string, searchType?: string) {
   }
 
   // 최근검색어
+  requestSearchRecentList(searchValue);
+
+  // 연관검색어
+  const suggestions: string[] = [];
+  // console.log('----Suggestion Search----');
+  // console.log(searchValue);
+  findRelatedKeywordByKeyword(searchValue)
+    .then((c) => {
+      if (c !== undefined) {
+        c.forEach((d) => suggestions.push(d));
+      }
+    })
+    .finally(() =>
+      searchSuggest(searchValue)
+        .then((response) => {
+          if (response && response.error === undefined) {
+            response.forEach((s2: string) => {
+              suggestions.push(s2);
+            });
+            if (suggestions.length > 10) {
+              suggestions.length = 10;
+            }
+          }
+        })
+        .finally(() => {
+          setSearchRelatedList(suggestions);
+        })
+    );
+}
+
+export function requestSearchRecentList(searchValue?: string) {
+  // 최근검색어
   const searchRecents =
     JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
-  searchRecents.unshift(searchValue);
+  if (searchValue !== undefined) {
+    searchRecents.unshift(searchValue);
+  }
   const newSearchRecents = searchRecents.filter(
     (element: string, index: number) => {
       return searchRecents.indexOf(element) === index;
@@ -698,35 +770,6 @@ export async function searchData(searchValue: string, searchType?: string) {
   new StorageModel('localStorage', 'searchRecents').save(newSearchRecents);
   //localStorage.setItem('searchRecents', newSearchRecents);
   setSearchRecentList(newSearchRecents);
-
-  // 연관검색어
-  const suggestions: string[] = [];
-  // const encodingSearchValue = encodeURI(searchValue);
-  findRelatedKeywordByKeyword(searchValue)
-    .then((c) => {
-      if (c !== undefined) {
-        c.forEach((d) => suggestions.push(d));
-      }
-    })
-    .finally(() =>
-      searchSuggest(searchValue)
-        .then((response) => {
-          if (response) {
-            response.forEach((s2) => {
-              suggestions.push(s2);
-            });
-            if (suggestions.length > 10) {
-              suggestions.length = 10;
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setSearchRelatedList(suggestions);
-        })
-    );
 }
 
 export async function searchInSearchData(
@@ -735,10 +778,11 @@ export async function searchInSearchData(
 ) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
-    .replace(/&/g, ' ')
+    //.replace(/&/g, ' ')
     .replace(/%/g, ' ');
 
   const cards = getAllowedCard();
+
   const newCards = cards?.filter(
     (ele) =>
       parsePolyglotString(
@@ -776,6 +820,18 @@ export async function searchInSearchData(
 export async function filterClickSearch() {
   const cards = await filterCard(getAllowedCard());
   setDisplayCard(cards);
+  const filterCondition = getFilterCondition();
+  if (
+    JSON.stringify(filterCondition || '') === JSON.stringify(InitialConditions)
+  ) {
+    setExpert(getExpertOri());
+    setSearchBadgeList(getSearchBadgeOriList());
+    setSearchCommunityList(getSearchCommunityOriList());
+  } else {
+    setExpert([]);
+    setSearchBadgeList([]);
+    setSearchCommunityList([]);
+  }
 }
 
 export function getTitleHtmlSearchKeyword(title: string) {
@@ -785,9 +841,11 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
   let htmlTitle = title;
 
-  let keyword = getQueryId();
-  const searchInSearchInfo = getSearchInSearchInfo();
-  if (searchInSearchInfo?.checkSearchInSearch) {
+  const searchInSearchInfo = SearchService.instance.searchInfo;
+  let keyword = getQueryId(
+    searchInSearchInfo.errataValue || searchInSearchInfo.searchValue
+  );
+  if (searchInSearchInfo?.inAgain) {
     keyword = searchInSearchInfo.searchValue;
   } else {
     htmlTitle = htmlTitle
@@ -811,20 +869,44 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
 function escapeRegex(item: string, target: string): string {
   //
+
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
   const regExpItem = item.replace(ESCAPE_REGEX, '');
-  let replacedText;
-  if (item.match(ESCAPE_REGEX)) {
-    replacedText = target.replace(
-      item,
-      `<strong class="search_keyword">${item}</strong>`
-    );
-  } else {
-    replacedText = target.replace(
-      new RegExp(regExpItem, 'gi'),
-      `<strong class="search_keyword">${regExpItem}</strong>`
-    );
-  }
+  let replacedText = '';
+  const splitTags = target.split('</strong>');
+  const changedValues = splitTags.map((splitValue, index) => {
+    const splitTargetValue =
+      splitTags.length !== index + 1 ? splitValue + '</strong>' : splitValue;
+    if (splitTargetValue.includes('</strong>')) {
+      return splitTargetValue;
+    } else {
+      if (item.match(ESCAPE_REGEX)) {
+        return splitTargetValue.replace(
+          item,
+          `<strong class="search_keyword">${item}</strong>`
+        );
+      } else {
+        return splitTargetValue.replace(
+          new RegExp(regExpItem),
+          `<strong class="search_keyword">${regExpItem}</strong>`
+        );
+      }
+    }
+  });
+
+  replacedText = changedValues.join('');
+
+  // if (item.match(ESCAPE_REGEX)) {
+  //   replacedText = target.replace(
+  //     item,
+  //     `<strong class="a_text">${item}</strong>`
+  //   );
+  // } else {
+  //   replacedText = target.replace(
+  //     new RegExp(regExpItem, 'gi'),
+  //     `<strong class="a_text">${regExpItem}</strong>`
+  //   );
+  // }
 
   return replacedText;
 }

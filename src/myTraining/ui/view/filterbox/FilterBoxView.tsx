@@ -1,26 +1,25 @@
 import React, { Fragment } from 'react';
-import { Checkbox } from 'semantic-ui-react';
 import ReactDatePicker from 'react-datepicker';
-import CheckboxOptions, {
-  learningTimePolyglot,
-  requiredPolyglot,
-} from '../../model/CheckboxOptions';
+import { Checkbox } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CollegeModel } from '../../../../college/model';
-import FilterCountViewModel from '../../../model/FilterCountViewModel';
+import { getDefaultLang } from '../../../../lecture/model/LangSupport';
+import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import FilterViewModel from '../../../model/filter/FilterViewModel';
 import { FilterCondition } from '../../../model/FilterCondition';
 import {
   FilterConditionName,
   filterConditionNamePolyglot,
 } from '../../../model/FilterConditionName';
-import { getDefaultLang } from '../../../../lecture/model/LangSupport';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import CheckboxOptions, {
+  learningTimePolyglot,
+  requiredPolyglot,
+} from '../../model/CheckboxOptions';
 
 interface FilterBoxViewProps {
   colleges: CollegeModel[];
   conditions: FilterCondition;
-  totalFilterCount: FilterCountViewModel;
-  filterCounts: FilterCountViewModel[];
+  filterCountModel: FilterViewModel;
   onCheckAll: (e: any, data: any) => void;
   onCheckOne: (e: any, data: any) => void;
   onChangeStartDate: (data: Date) => void;
@@ -30,8 +29,7 @@ interface FilterBoxViewProps {
 export function FilterBoxView({
   colleges,
   conditions,
-  totalFilterCount,
-  filterCounts,
+  filterCountModel,
   onCheckAll,
   onCheckOne,
   onChangeStartDate,
@@ -50,7 +48,7 @@ export function FilterBoxView({
               name={filterConditionNamePolyglot(
                 FilterConditionName.LearningType
               )}
-              label={`${SELECT_ALL} (${totalFilterCount.totalCount})`}
+              label={`${SELECT_ALL} (${filterCountModel.totalCountByCardType})`}
               checked={
                 conditions.learningTypes.length ===
                 CheckboxOptions.learningTypes.length
@@ -68,7 +66,7 @@ export function FilterBoxView({
                       )}
                       label={`${
                         learningType.text
-                      } (${totalFilterCount.getCountFromLearningType(
+                      } (${filterCountModel.getCountFromLearningType(
                         learningType.text
                       )})`}
                       value={learningType.value}
@@ -88,7 +86,7 @@ export function FilterBoxView({
             <Checkbox
               className="base"
               name={filterConditionNamePolyglot(FilterConditionName.College)}
-              label={`${SELECT_ALL} (${totalFilterCount.college})`}
+              label={`${SELECT_ALL} (${filterCountModel.totalCountByCollegeId})`}
               checked={conditions.collegeIds.length === colleges.length}
               onChange={onCheckAll}
             />
@@ -104,7 +102,7 @@ export function FilterBoxView({
                     label={`${parsePolyglotString(
                       college.name,
                       getDefaultLang(college.langSupports)
-                    )} (${getCollegeCount(filterCounts, college.id)})`}
+                    )} (${filterCountModel.getCountByCollegeId(college.id)})`}
                     value={college.id}
                     checked={conditions.collegeIds.includes(college.id)}
                     onChange={onCheckOne}
@@ -279,6 +277,7 @@ export function FilterBoxView({
                     selected={conditions.startDate}
                     onChange={onChangeStartDate}
                     dateFormat="yyyy.MM.dd"
+                    maxDate={conditions.endDate}
                   />
                   <i className="calendar24 icon">
                     <span className="blind">date</span>
@@ -322,13 +321,3 @@ export function FilterBoxView({
 }
 
 const SELECT_ALL = 'Select All';
-
-const getCollegeCount = (
-  filterCountViews: FilterCountViewModel[],
-  collegeId: string
-): number => {
-  const filterCountView = filterCountViews.find(
-    (filterCountview) => filterCountview.collegeId === collegeId
-  );
-  return filterCountView ? filterCountView.college : 0;
-};

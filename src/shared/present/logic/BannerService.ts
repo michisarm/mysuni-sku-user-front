@@ -40,6 +40,7 @@ class BannerService {
     imageVersion: number; // 이미지 버전 0: base64, 1: url
     creatorName: string; // 생성
     creationTime: number; // 생성일
+    bgColor: string;
     patronKey: {
       keyString: string;
     };

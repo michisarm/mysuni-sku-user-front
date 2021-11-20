@@ -1,1 +1,4 @@
-export type RecommendationType = 'ContentsBased' | 'JobGroupBased';
+export type RecommendationType =
+  | 'ContentsBased'
+  | 'JobGroupBased'
+  | 'LearningPatternBased';

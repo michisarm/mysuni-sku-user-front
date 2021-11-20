@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { getAxios } from 'shared/api/Axios';
-import { AxiosReturn } from 'shared/api/AxiosReturn';
 
-import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
-
-import classNames from 'classnames';
-import lecturePaths from 'lecture/routePaths';
 import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
-import personalCubePaths from 'personalcube/routePaths';
-import communityPaths from 'community/routePaths';
-import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
+import { usePageElements } from '../../../../../shared/store/PageElementsStore';
+import { Button, Checkbox, Icon } from 'semantic-ui-react';
+import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
+import { observer } from 'mobx-react';
+import _ from 'lodash';
+import { debounce } from '../../../../../tracker-react/utils';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -45,71 +51,19 @@ interface MenuViewProps {
 }
 
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
-  const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
+  const pageElements = usePageElements();
   const isExternal = isExternalInstructor();
-
-  useEffect(() => {
-    //const axios = getAxios();
-    const fetchMenu = async () => {
-      const response = await findAvailablePageElements();
-      setMenuAuth(response);
-    };
-    fetchMenu();
-  }, []);
 
   return (
     <>
-      {menuAuth.some(
+      {pageElements.some(
         (pagemElement) =>
           pagemElement.position === 'TopMenu' &&
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
-      <div className="g-menu">
-        <div className="nav" data-area={Area.HEADER_GNB}>
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Learning'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={myTrainingPaths.learning()}
-                className="item"
-                onClick={() => onClickMenu('Learning')}
-              >
-                <PolyglotText defaultString="Learning" id="home-gnb-mtl" />
-              </NavLink>
-            )}
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Recommend'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={lecturePaths.recommend()}
-                className="item"
-                onClick={() => onClickMenu('Recommend')}
-              >
-                <PolyglotText defaultString="Recommend" id="home-gnb-mtr" />
-              </NavLink>
-            )}
-          {/* 메인의 Create 삭제 
-          {menuAuth.some(
-            (pagemElement) =>
-              pagemElement.position === 'TopMenu' &&
-              pagemElement.type === 'Create'
-          ) &&
-            !isExternal && (
-              <NavLink
-                to={personalCubePaths.create()}
-                className="item"
-                onClick={() => onClickMenu('Create')}
-              >
-                <PolyglotText defaultString="Create" id="home-gnb-mtc" />
-              </NavLink>
-            )} */}
-          {menuAuth.some(
+      <div className="g-menu-area">
+        <div className="ui nav menu" data-area={Area.HEADER_GNB}>
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Certification'
@@ -123,20 +77,18 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
                 <PolyglotText defaultString="Certification" id="home-gnb-mtf" />
               </NavLink>
             )}
-          {menuAuth.some(
+          {pageElements.some(
             (pagemElement) =>
               pagemElement.position === 'TopMenu' &&
               pagemElement.type === 'Community'
           ) && (
-            <Link
-              to="#"
+            <NavLink
+              to="/community"
               className="item"
-              onClick={() =>
-                (window.location.href = `${window.location.origin}/suni-community/`)
-              }
+              onClick={() => onClickMenu('community')}
             >
               <PolyglotText defaultString="Community" id="home-gnb-mtm" />
-            </Link>
+            </NavLink>
           )}
         </div>
       </div>
@@ -145,45 +97,135 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
 };
 
 interface SearchBarViewProps {
-  value: string;
-  focused?: boolean;
+  searchInfo: SearchInfoModel;
+  setSearchValue: (name: string, value: any) => void;
+  // focused?: boolean;
   onSearch: () => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
+  findAutoCompleteValues: (value: string) => void;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   onClear?: () => void;
-  getPolyglotText: (defaultValue: string, id: string) => string;
+  isSearch?: boolean;
+  closeSearch?: () => void;
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = ({
-  value,
-  focused,
-  onSearch,
-  onChange,
-  onBlur,
-  onClick,
-  onClear,
-  getPolyglotText,
-}) => (
-  <div className="g-search g-ab" data-area={Area.SEARCH}>
-    <div
-      className={classNames('ui h38 search input', {
-        focus: focused,
-        write: value,
-      })}
-      style={{ display: 'block' }}
-    >
-      <input
-        type="text"
-        placeholder={getPolyglotText('Search', 'home-gnb-검색창t')}
-        value={value}
-        onChange={onChange}
-        onClick={onClick}
-        onBlur={onBlur}
-        onKeyPress={(e) => e.key === 'Enter' && onSearch()}
-      />
-      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
-    </div>
-  </div>
+export const SearchBarView: React.FC<SearchBarViewProps> = observer(
+  ({
+    searchInfo,
+    setSearchValue,
+    // focused,
+    onSearch,
+    findAutoCompleteValues,
+    onChange,
+    onBlur,
+    onClick,
+    onClear,
+    isSearch,
+    // getPolyglotText,
+    closeSearch,
+  }) => {
+    //
+    const inputRef = createRef<HTMLInputElement>();
+
+    const delayedChangeEvent = useRef(
+      _.debounce((q) => findAutoCompleteValues(q), 500)
+    ).current;
+
+    const delayedOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(event.target.value);
+      delayedChangeEvent(event.target.value);
+    };
+
+    return (
+      <>
+        <div className="g-search-header" data-area={Area.SEARCH}>
+          <div className={isSearch ? 'search_wrap show_re' : 'search_wrap'}>
+            {searchInfo.inAgain ? (
+              <div className="re_text">
+                <span className="ellipsis">{searchInfo.recentSearchValue}</span>
+              </div>
+            ) : null}
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder={getPolyglotText(
+                '무엇을 배우고 싶으신가요?.',
+                'gnb-search-placeholder'
+              )}
+              value={searchInfo.searchValue}
+              onChange={(e) => delayedOnChange(e)}
+              onClick={onClick}
+              // onBlur={onBlur}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
+                  onSearch();
+                }
+              }}
+              className="ui input search_ipt"
+            />
+          </div>
+          <div className="ui button b-search">
+            <i
+              aria-hidden="true"
+              className="icon search-grey"
+              onClick={onSearch}
+            />
+          </div>
+        </div>
+        {isSearch ? (
+          <Checkbox
+            className="again_chk on"
+            label={getPolyglotText('결과 내 재검색', '통검-필레팝-재검색')}
+            checked={searchInfo.inAgain}
+            onClick={() => {
+              if (!searchInfo?.inAgain) {
+                setSearchValue('recentSearchValue', searchInfo.searchValue);
+                setSearchValue('searchValue', '');
+              }
+              // setSearchValue('searchValue', value);
+              // setSearchValue('recentSearchValue', queryId);
+              setSearchValue('inAgain', !searchInfo.inAgain);
+              // setSearchInSearchInfo({
+              //   checkSearchInSearch: !searchInSearchInfo?.checkSearchInSearch,
+              //   parentSearchValue: queryId,
+              //   searchValue: value,
+              // });
+            }}
+          />
+        ) : null}
+        <Button className="b-cl" icon onClick={closeSearch}>
+          <Icon className="b-cl" />
+        </Button>
+      </>
+    );
+  }
 );
+
+export const LearningMenuView: React.FC<MenuViewProps> =
+  function LearningMenuView({ onClickMenu }) {
+    const pageElements = usePageElements();
+    const isExternal = isExternalInstructor();
+
+    return (
+      <>
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'TopMenu' &&
+            pagemElement.type === 'Learning'
+        ) &&
+          !isExternal && (
+            <div className="g-learn">
+              <NavLink
+                to={myTrainingPaths.learning()}
+                className="go-learn"
+                onClick={() => onClickMenu('Learning')}
+              >
+                <PolyglotText defaultString="My Learning" id="gnb-mylearning" />
+              </NavLink>
+            </div>
+          )}
+      </>
+    );
+  };

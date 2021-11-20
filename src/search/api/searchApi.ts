@@ -65,8 +65,11 @@ interface CubeTypeGroup {
 
 export function findCubeTypeGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
-  );
+    `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
+  ).replace(/%2526/g, '%26');
   return axiosApi.get<SearchResult<CubeTypeGroup>>(url).then(AxiosReturn);
 }
 
@@ -84,8 +87,11 @@ interface ColleageGroup {
 
 export function findColleageGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
-  );
+    `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
+  ).replace(/%2526/g, '%26');
   return axiosApi.get<SearchResult<ColleageGroup>>(url).then(AxiosReturn);
 }
 
@@ -103,8 +109,11 @@ interface CPGroup {
 
 export function findCPGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
-  );
+    `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
+  ).replace(/%2526/g, '%26');
   return axiosApi.get<SearchResult<CPGroup>>(url).then(AxiosReturn);
 }
 
@@ -114,8 +123,11 @@ const FIND_CARD_COLUMNS =
 export function findPreCard(text_idx: string) {
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
-  );
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
+  ).replace(/%2526/g, '%26');
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -149,10 +161,18 @@ export function findCard(text_idx: string, pre: string) {
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx}##${pre}`
-  ).replace('##', '%23%23'); // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx.replace(
+      /&/g,
+      '%26'
+    )}##${pre}`
+  )
+    .replace('##', '%23%23') // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
+    .replace(/%2526/g, '%26');
 
-  console.log('url', url);
+  // console.log('url', url);
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
     .then(AxiosReturn)
@@ -434,8 +454,11 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career,introduction&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
-  );
+    `${BASE_URL}?select=channel_name,department,id,name,photo_id,position,career,introduction&from=expert.expert&where=text_idx='${text_idx.replace(
+      /&/g,
+      '%26'
+    )}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
+  ).replace(/%2526/g, '%26');
   return axiosApi
     .get<SearchResult<SearchExpert>>(url)
     .then(AxiosReturn)
@@ -742,8 +765,11 @@ export function makeQuery(
 
 export function findBadges(text_idx: string) {
   const url = encodeURI(
-    `${BADGE_URL}/badges/search?keyword=${text_idx}&limit=999&offset=0&sort=`
-  );
+    `${BADGE_URL}/badges/search?keyword=${text_idx.replace(
+      /&/g,
+      '%26'
+    )}&limit=999&offset=0&sort=`
+  ).replace(/%2526/g, '%26');
   return axiosApi
     .get<{ results: SearchBadge[]; totalCount: number }>(url)
     .then(AxiosReturn);
@@ -751,8 +777,11 @@ export function findBadges(text_idx: string) {
 
 export function findCommunities(text_idx: string) {
   const url = encodeURI(
-    `${COMMUNITY_URL}/communities/communityView/search?keyword=${text_idx}&limit=999&offset=0&sort=`
-  );
+    `${COMMUNITY_URL}/communities/communityView/search?keyword=${text_idx.replace(
+      /&/g,
+      '%26'
+    )}&limit=999&offset=0&sort=`
+  ).replace(/%2526/g, '%26');
   return axiosApi
     .get<{ results: SearchCommunity[]; totalCount: number }>(url)
     .then(AxiosReturn);
@@ -769,24 +798,23 @@ export { searchRankinsCache, clearSearchRankinsCache };
 
 // 연관검색어
 export function searchSuggest(text_idx: string) {
-  return axiosApi
-    .get<string[]>(SUGGEST_URL, {
-      params: {
-        target: 'related',
-        domain_no: 0,
-        max_count: 10,
-        term: text_idx,
-      },
-      paramsSerializer,
-    })
-    .then(AxiosReturn);
+  const url = encodeURI(
+    `${SUGGEST_URL}?target=related&domain_no=0&max_count=10&term=${text_idx.replace(
+      /&/g,
+      '%26'
+    )}`
+  ).replace(/%2526/g, '%26');
+  return axiosApi.get<any>(url).then(AxiosReturn);
 }
 
 export function findRelatedKeywordByKeyword(keyword: string) {
-  const url = `${SEARCH_API_URL}/relatedKeyword/search`;
-  return axiosApi
-    .get<string[]>(url, { params: { keyword }, paramsSerializer })
-    .then(AxiosReturn);
+  const url = encodeURI(
+    `${SEARCH_API_URL}/relatedKeyword/search?keyword=${keyword.replace(
+      /&/g,
+      '%26'
+    )}`
+  ).replace(/%2526/g, '%26');
+  return axiosApi.get<string[]>(url).then(AxiosReturn);
 }
 
 function paramsSerializer(paramObj: Record<string, any>) {
@@ -797,4 +825,23 @@ function paramsSerializer(paramObj: Record<string, any>) {
     }
   }
   return params.toString();
+}
+
+// 오타제안검색
+export function findNaverOpenApiErrata(keyword: string) {
+  const url = encodeURI(
+    `${SEARCH_API_URL}/errata?keyword=${keyword.replace(/&/g, '%26')}`
+  ).replace(/%2526/g, '%26');
+  return axiosApi.get<{ errata: string }>(url).then(AxiosReturn);
+}
+
+// 검색어 자동완성
+export function searchAutoComplete(text_idx: string) {
+  const url = encodeURI(
+    `${SUGGEST_URL}?target=complete&domain_no=0&max_count=10&term=${text_idx.replace(
+      /&/g,
+      '%26'
+    )}`
+  ).replace(/%2526/g, '%26');
+  return axiosApi.get(url).then(AxiosReturn);
 }

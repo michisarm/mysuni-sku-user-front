@@ -1,4 +1,4 @@
-import { IdNameList, IdName } from "../../shared/model";
+import { IdNameList, IdName } from '../../shared/model';
 
 export default interface Folder {
   id: string;
@@ -12,7 +12,7 @@ export function getFolderItem(name: string): Folder {
   return {
     id: '',
     folders: {
-      idNames: [idname]
-    }
+      idNames: [idname],
+    },
   };
 }

@@ -16,9 +16,7 @@ import dateTimeHelper, {
 } from '../../../shared/helper/dateTimeHelper';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
-import { useCollegeStore } from '../../../shared/store/CollegeStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
@@ -36,7 +34,6 @@ function MyTrainingListView({
 }: MyTrainingListViewProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
-  const colleges = useCollegeStore();
   const contentType = params.tab;
 
   const { scrollSave } = useScrollMove();
@@ -173,7 +170,9 @@ function MyTrainingListView({
                 myTraining.learningTime + myTraining.additionalLearningTime
               )}
             </Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
+            <Table.Cell>
+              {convertTimeToDate(myTraining.modifiedTime)}
+            </Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
@@ -206,7 +205,9 @@ function MyTrainingListView({
               )}
             </Table.Cell>
             <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
-            <Table.Cell>{convertTimeToDate(myTraining.modifiedTime)}</Table.Cell>
+            <Table.Cell>
+              {convertTimeToDate(myTraining.modifiedTime)}
+            </Table.Cell>
           </>
         );
       }

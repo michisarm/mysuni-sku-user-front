@@ -13,6 +13,7 @@ import CreateInput from '../shared/CreateInput';
 import MainChannelModalContainer from './MainChannelModalContainer';
 import SubChannelModalContainer from './SubChannelModalContainer';
 import { ChannelFieldRow } from '../view/DetailElementsView';
+import { compareCollgeCineroom } from '../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props {
   collegeService?: CollegeService;
@@ -107,9 +108,8 @@ class BasicInfoFormContainer extends Component<Props, State> {
     //
     const { contentNew, personalCube } = this.props;
     const { selectedCollegeId, collegeType } = this.state;
-    const subCategoriesGroupByCollege = PersonalCubeModel.getSubCategoriesGroupByCollege(
-      personalCube
-    );
+    const subCategoriesGroupByCollege =
+      PersonalCubeModel.getSubCategoriesGroupByCollege(personalCube);
 
     return (
       <>
@@ -165,7 +165,9 @@ class BasicInfoFormContainer extends Component<Props, State> {
                       채널선택
                     </Button>
                   }
-                  collegeType={collegeType}
+                  isMysuniCollege={compareCollgeCineroom(
+                    personalCube.category.college.id
+                  )}
                   targetCollegeId={selectedCollegeId}
                   defaultSelectedCategoryChannels={personalCube.subCategories}
                   onConfirmCategoryChannels={this.onConfirmSubChannel}

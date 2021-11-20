@@ -1,18 +1,18 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Button, Icon, Label } from 'semantic-ui-react';
-import { timeToHourMinute, timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
-import MyLearningSummaryModal from '../logic/MyLearningSummaryModal';
-
+import {
+  timeToHourMinute,
+  timeToHourMinutePaddingFormat,
+} from 'shared/helper/dateTimeHelper';
 
 interface Props {
-  year: number
-  totalLearningTime: number
-  mySuniLearningTime: number
-  myCompanyLearningTime: number
+  year: number;
+  totalLearningTime: number;
+  mySuniLearningTime: number;
+  myCompanyLearningTime: number;
 }
 
 @observer
@@ -28,28 +28,31 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
     if (hour < 1 && minute < 1) {
       node = (
         <>
-          <strong>00</strong><span>h</span> <strong>00</strong><span>m</span>
+          <strong>00</strong>
+          <span>h</span> <strong>00</strong>
+          <span>m</span>
         </>
       );
-    }
-    else if (hour < 1) {
+    } else if (hour < 1) {
       node = (
         <>
-          <strong>{minute}</strong><span>m</span>
+          <strong>{minute}</strong>
+          <span>m</span>
         </>
       );
-    }
-    else if (minute < 1) {
+    } else if (minute < 1) {
       node = (
         <>
-          <strong>{hour}</strong><span>h</span>
+          <strong>{hour}</strong>
+          <span>h</span>
         </>
       );
-    }
-    else {
+    } else {
       node = (
         <>
-          <strong>{hour}</strong><span>h</span> <strong>{minute}</strong><span>m</span>
+          <strong>{hour}</strong>
+          <span>h</span> <strong>{minute}</strong>
+          <span>m</span>
         </>
       );
     }
@@ -64,7 +67,9 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
     if (!(mySuniLearningTime + myCompanyLearningTime)) {
       return 0;
     }
-    return Math.floor(mySuniLearningTime / (mySuniLearningTime + myCompanyLearningTime) * 360);
+    return Math.floor(
+      (mySuniLearningTime / (mySuniLearningTime + myCompanyLearningTime)) * 360
+    );
   }
 
   getModalTrigger() {
@@ -72,7 +77,8 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
     return (
       <Button className="btn-total-time">
         <Label className="onlytext">
-          <Icon className="total-time" /><span>총 학습시간</span>
+          <Icon className="total-time" />
+          <span>총 학습시간</span>
         </Label>
         {this.getTotalTimeNode()}
       </Button>
@@ -86,10 +92,10 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
     return (
       <>
         <div className="ui statistic total-time">
-          <MyLearningSummaryModal
+          {/* <MyLearningSummaryModal
             trigger={this.getModalTrigger()}
             year={year}
-          />
+          /> */}
         </div>
 
         {/*<div className="chart-wrap">*/}

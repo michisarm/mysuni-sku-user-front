@@ -15,10 +15,39 @@ export function getRecentlyStudyChannel() {
     });
 }
 
-export async function findRecommendationCards() {
+export async function findRecommendationCardsFromContentBase() {
   const axios = getAxios();
   const recommendationUrl = '/api/lrs/cardRecommendation/cards';
   const contentsBasedType: RecommendationType = 'ContentsBased';
+  const recommendation = await axios
+    .get<Recommendation>(recommendationUrl, {
+      params: { Type: contentsBasedType },
+    })
+    .then(AxiosReturn);
+  if (recommendation !== undefined) {
+    const { recTitle } = recommendation;
+    const recommendationViewModel: RecommendationViewModel = {
+      recTitle,
+      cards: [],
+    };
+    if (
+      Array.isArray(recommendation.cards) &&
+      recommendation.cards.length > 0
+    ) {
+      const cardIds = recommendation.cards.join();
+      const cards = await findCardsWithoutLearningExperience(cardIds);
+      if (cards !== undefined) {
+        return { ...recommendationViewModel, cards };
+      }
+    }
+    return recommendationViewModel;
+  }
+}
+
+export async function findRecommendationCardsFromLearningPatternBased() {
+  const axios = getAxios();
+  const recommendationUrl = '/api/lrs/cardRecommendation/cards';
+  const contentsBasedType: RecommendationType = 'LearningPatternBased';
   const recommendation = await axios
     .get<Recommendation>(recommendationUrl, {
       params: { Type: contentsBasedType },

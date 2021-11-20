@@ -116,6 +116,8 @@ class CategoryMenuPanelView extends Component<Props> {
       });
     };
 
+    const filteredChannel = channels?.filter((item) => item.count > 0);
+
     return (
       <div className="layer lms-category">
         <div className="table-css">
@@ -131,29 +133,28 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
-                  {colleges.map((college) => (
-                    <button
-                      key={`category_${college.id}`}
-                      className={classNames('', {
-                        active:
-                          activeCollege && activeCollege.id === college.id,
-                        bm: college.id === 'CLG00020',
-                      })}
-                      onClick={(e) => {
-                        onActiveCollege(e, college);
-                      }}
-                      data-area={Area.HEADER_CATEGORYLIST}
-                      data-action={Action.CLICK}
-                      data-action-name={`CATEGORY 목록 클릭::${getKoreaName(
-                        college.name
-                      )}`}
-                    >
-                      {parsePolyglotString(
-                        college.name,
-                        getDefaultLang(college.langSupports)
-                      )}
-                    </button>
-                  ))}
+                  {colleges.map((college) => {
+                    return (
+                      <button
+                        key={`category_${college.id}`}
+                        className={classNames('', {
+                          active:
+                            activeCollege && activeCollege.id === college.id,
+                          bm: college.id === 'CLG00020',
+                        })}
+                        onClick={(e) => {
+                          onActiveCollege(e, college);
+                        }}
+                        data-area={Area.HEADER_CATEGORYLIST}
+                        data-action={Action.CLICK}
+                        data-action-name={`CATEGORY 목록 클릭::${getKoreaName(
+                          college.name
+                        )}`}
+                      >
+                        {college.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -165,10 +166,7 @@ class CategoryMenuPanelView extends Component<Props> {
                     data-area={Area.HEADER_CATEGORY}
                   >
                     <span className="category-title">
-                      {parsePolyglotString(
-                        activeCollege.name,
-                        getDefaultLang(activeCollege.langSupports)
-                      )}{' '}
+                      {activeCollege.name}{' '}
                       <PolyglotText defaultString="College" id="home-cipp-ch" />
                       {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
@@ -176,13 +174,8 @@ class CategoryMenuPanelView extends Component<Props> {
                       className="btn-category-all"
                       onClick={(e) => {
                         this.onClickChannelActionLog(
-                          `${parsePolyglotString(
-                            activeCollege.name,
-                            getDefaultLang(activeCollege.langSupports)
-                          )} ${getPolyglotText(
-                            '전체보기',
-                            'home-cipp-전체보기'
-                          )}`
+                          `${activeCollege.name}
+                          ${getPolyglotText('전체보기', 'home-cipp-전체보기')}`
                         );
                         onRouteChannel(e);
                       }}
@@ -198,10 +191,10 @@ class CategoryMenuPanelView extends Component<Props> {
                     className="category-body"
                     data-area={Area.HEADER_CATEGORY}
                   >
-                    {Array.isArray(channels) &&
-                      channels.map((channel, index) => {
+                    {Array.isArray(filteredChannel) &&
+                      filteredChannel.map((channel, index) => {
                         if (index % 2 === 0) {
-                          if (channels[index + 1] !== undefined) {
+                          if (filteredChannel[index + 1] !== undefined) {
                             return (
                               <div className="category-row">
                                 <span className="check-type2">
@@ -229,13 +222,15 @@ class CategoryMenuPanelView extends Component<Props> {
                                   </a>
                                 </span>
                                 <span className="check-type2">
-                                  <label htmlFor={channels[index + 1].id}>
+                                  <label
+                                    htmlFor={filteredChannel[index + 1].id}
+                                  >
                                     <input
                                       type="checkbox"
-                                      id={channels[index + 1].id}
-                                      name={channels[index + 1].id}
+                                      id={filteredChannel[index + 1].id}
+                                      name={filteredChannel[index + 1].id}
                                       checked={this.categoryCheck(
-                                        channels[index + 1].id
+                                        filteredChannel[index + 1].id
                                       )}
                                       onChange={this.favoriteChannel}
                                       key={index}
@@ -246,13 +241,16 @@ class CategoryMenuPanelView extends Component<Props> {
                                     className="check-type2-text"
                                     onClick={(e) => {
                                       this.onClickChannelActionLog(
-                                        channels[index + 1].name
+                                        filteredChannel[index + 1].name
                                       );
-                                      onRouteChannel(e, channels[index + 1]);
+                                      onRouteChannel(
+                                        e,
+                                        filteredChannel[index + 1]
+                                      );
                                     }}
                                   >
-                                    {`${channels[index + 1].name} (${
-                                      channels[index + 1].count
+                                    {`${filteredChannel[index + 1].name} (${
+                                      filteredChannel[index + 1].count
                                     })`}
                                   </a>
                                 </span>

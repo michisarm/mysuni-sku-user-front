@@ -1,1 +1,7 @@
-export type CardBundleType = 'Normal' | 'Recommended' | 'New' | 'Popular' | 'Enrolling';
+export type CardBundleType =
+  | 'Normal'
+  | 'Recommended'
+  | 'New'
+  | 'Popular'
+  | 'Enrolling'
+  | 'HotTopic';

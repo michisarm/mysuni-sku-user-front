@@ -20,7 +20,6 @@ import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
-import { InMyLectureService } from '../../../../../myTraining/stores';
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { Area } from 'tracker/model';
 import { getLectureNotePopupState } from '../../../store/LectureNoteStore';
@@ -37,6 +36,7 @@ import {
   useLectureState,
 } from 'lecture/detail/store/LectureStateStore';
 import { isEmpty, trim } from 'lodash';
+import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -227,6 +227,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   lectureReview,
   lectureClassroom,
 }) {
+  const params = useLectureParams();
+  const [isBookmark, setIsBookmark] = useState<boolean>(false);
   const instrutor = lectureInstructor?.instructors.find(
     (c) => c.representative === true
   );
@@ -262,25 +264,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     postService.post.alarmInfo.contentsName = lectureSummary.name;
   }, [lectureSummary]);
 
-  const [inMyLectureMap, setInMyLectureMap] = useState<
-    Map<string, InMyLectureModel>
-  >();
-  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
-
-  const params = useLectureParams();
-
   useEffect(() => {
-    return autorun(() => {
-      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (params?.cardId === undefined) {
-      return;
-    }
-    setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
-  }, [inMyLectureMap, params?.cardId]);
+    setIsBookmark(findIsBookmark(params?.cardId));
+  }, [params?.cardId]);
 
   const clickNewTab = () => {
     const popupState = getLectureNotePopupState();
@@ -559,14 +545,10 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </span>
               </Button>
             )}
-            <a onClick={toggleCubeBookmark}>
+            <a onClick={() => toggleCubeBookmark(setIsBookmark)}>
               <span>
-                <Icon
-                  className={
-                    inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
-                  }
-                />
-                {inMyLectureModel === undefined
+                <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
+                {!isBookmark
                   ? getPolyglotText('관심목록 추가', 'cicl-학상본문-관심추가')
                   : getPolyglotText('관심목록 제거', 'cicl-학상본문-관심제거')}
               </span>

@@ -1,65 +1,47 @@
-import React, { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { MainHeaderView } from '../main/MainHeaderView';
+import { Switch, Redirect, Route } from 'react-router-dom';
+import { MainInitializer } from '../main/MainInitializer';
+import OpenCommunityPage from '../main/opencommunity/OpenCommunityPage';
+import { FollowPage } from '../main/follow/FollowPage';
+import { MyCommunityPage } from '../main/mycommunity/MyCommunityPage';
+import { MyFeedPage } from '../main/myfeed/MyFeedPage';
+import { BookMarkPage } from '../main/bookmark/BookMarkPage';
+// import { CommunityHeader, LMSHeader } from '../header/Header';
+// import { checkExternalInstructor } from '../app.services';
 
-import NotFoundPage from 'layout/NotFoundPage';
-import MyCommunityPage from './MyCommunityPage';
-import OpenCommunityPage from './OpenCommunityPage';
-import FollowPage from './FollowPage';
-import CommunityMainHeaderContainer from '../logic/CommunityMainHeaderContainer';
-import { findProfile } from '../../api/communityApi';
-import { setMyProfile } from '../../store/MyProfileStore';
-import {
-  requestMyCommunityList,
-  requestMyCommunityPostList,
-} from '../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
-import {
-  requestFieldList,
-  requestOpenCommunityList,
-} from '../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
-import {
-  setMyCommunityIntro,
-  setOpenCommunityIntro,
-} from '../../store/CommunityMainStore';
-import { getEmptyMyCommunityIntro } from '../../viewModel/MyCommunityIntro/MyCommunityIntro';
-import { getEmptyOpenCommunityIntro } from '../../viewModel/OpenCommunityIntro/OpenCommunityIntro';
-import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
-import MyProfilePage from './MyProfilePage';
-import ProfileFeedPage from './ProfileFeedPage';
-import MyProfileBookmarkPage from './MyProfileBookmarkPage';
-
-function MainRoutes() {
-  useEffect(() => {
-    findProfile().then(setMyProfile);
-    getCommunityProfile();
-    requestMyCommunityList();
-    requestMyCommunityPostList();
-    requestFieldList();
-    requestOpenCommunityList();
-
-    return () => {
-      setMyProfile();
-      setMyCommunityIntro(getEmptyMyCommunityIntro());
-      setOpenCommunityIntro(getEmptyOpenCommunityIntro());
-    };
-  }, []);
-
+export function MainRoutes() {
   return (
-    <section className="content community">
-      <CommunityMainHeaderContainer />
-      <Switch>
-        <Route exact path="/community/main" component={MyCommunityPage} />
-        <Route
-          exact
-          path="/community/main/open-communities"
-          component={OpenCommunityPage}
-        />
-        <Route exact path="/community/main/follow" component={FollowPage} />
-        <Route exact path="/community/main/feed" component={()=>ProfileFeedPage('')} />
-        <Route exact path="/community/main/bookmark" component={MyProfileBookmarkPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </section>
+    <>
+      {/* {checkExternalInstructor() && <CommunityHeader />}
+      {!checkExternalInstructor() && <LMSHeader />} */}
+      <section className="content community">
+        <MainInitializer />
+        <MainHeaderView />
+        <Switch>
+          <Route
+            exact
+            path={MAIN_MYCOMMUNITIES_PATH}
+            component={MyCommunityPage}
+          />
+          <Route
+            exact
+            path={MAIN_OPENCOMMUNITIES_PATH}
+            component={OpenCommunityPage}
+          />
+          <Route exact path={MAIN_MYFEED_PATH} component={MyFeedPage} />
+          <Route exact path={MAIN_FOLLOWFEED_PATH} component={FollowPage} />
+          <Route exact path={MAIN_BOOKMARK_PATH} component={BookMarkPage} />
+          <Redirect to={MAIN_MYCOMMUNITIES_PATH} />
+        </Switch>
+      </section>
+    </>
   );
 }
 
-export default MainRoutes;
+export const MAIN_PATH = '/community/main';
+export const MAIN_MYCOMMUNITIES_PATH = '/community/main/my-communities';
+export const MAIN_OPENCOMMUNITIES_PATH = '/community/main/open-communities';
+export const MAIN_MYFEED_PATH = '/community/main/my-feed';
+export const MAIN_FOLLOWFEED_PATH = '/community/main/follow-feed';
+export const MAIN_BOOKMARK_PATH = '/community/main/bookmark';

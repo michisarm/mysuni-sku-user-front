@@ -21,7 +21,7 @@ const CollegeInnerTabAi = () => {
   const history = useHistory();
 
   const pageMove = (path: string) => {
-    history.push(path);
+    history.replace(path);
   };
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -62,7 +62,7 @@ const CollegeInnerTabAi = () => {
               >
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 과정 바로가기
@@ -215,7 +215,7 @@ const CollegeInnerTabAi = () => {
               >
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 과정 바로가기
@@ -381,7 +381,7 @@ const CollegeInnerTabAi = () => {
               >
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 과정 바로가기
@@ -567,7 +567,7 @@ const CollegeInnerTabAi = () => {
               >
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 과정 바로가기
@@ -829,7 +829,7 @@ export const CollegeInnerEnTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
@@ -978,7 +978,7 @@ export const CollegeInnerEnTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
@@ -1143,7 +1143,7 @@ export const CollegeInnerEnTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
@@ -1329,7 +1329,7 @@ export const CollegeInnerEnTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 Go to Courses
@@ -1589,7 +1589,7 @@ export const CollegeInnerZhTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程
@@ -1726,7 +1726,7 @@ export const CollegeInnerZhTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程
@@ -1860,7 +1860,7 @@ export const CollegeInnerZhTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程
@@ -2014,7 +2014,7 @@ export const CollegeInnerZhTabAi = () => {
               <a className="item-button" href="#none">
                 <Image
                   style={{ display: 'inline' }}
-                  src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                  src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                   alt=""
                 />
                 直接进入课程

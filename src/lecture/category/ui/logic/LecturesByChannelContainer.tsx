@@ -1,36 +1,69 @@
-import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import React, { useEffect, useState, Component } from 'react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel } from 'college/model';
-import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 import { LectureService } from '../../../stores';
-import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
-import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
-import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import {
+  parseLanguage,
+  parsePolyglotString,
+} from 'shared/viewmodel/PolyglotString';
+import {
+  Area,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import Swiper from 'react-id-swiper';
+import CardGroup, {
+  GroupType,
+} from '../../../shared/Lecture/sub/CardGroup/CardGroupContainer2';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
 
-interface Props extends RouteComponentProps {
+const SwiperProps = (swiperName: string) => {
+  return {
+    observer: true,
+    observerParents: true,
+    slidesPerView: 4,
+    spaceBetween: 7,
+    slidesPerGroup: 4,
+    loop: false,
+    loopFillGroupWithBlank: true,
+    navigation: {
+      nextEl: '.' + swiperName + ' .swiper-button-next',
+      prevEl: '.' + swiperName + ' .swiper-button-prev',
+    },
+    speed: 500,
+  };
+};
+
+interface Props extends RouteComponentProps<Params> {
   lectureService?: LectureService;
   reviewService?: ReviewService;
-  inMyLectureService?: InMyLectureService;
   channel: ChannelModel;
   onViewAll: (e: any, data: any) => void;
 }
 
+interface Params {
+  collegeId: string;
+}
+
 interface State {
-  cardWithCardRealtedCounts: CardWithCardRealtedCount[];
+  cardWithCardRealtedCounts: UserLectureCard[];
   totalCount: number;
   isLoading: boolean;
+  swiper: any;
 }
 
 @inject(
@@ -52,6 +85,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
       cardWithCardRealtedCounts: [],
       totalCount: 0,
       isLoading: false,
+      swiper: null,
     };
   }
 
@@ -65,77 +99,46 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const { channel: prevChannel } = prevProps;
 
     if (channel && channel.id !== prevChannel.id) this.findLectures();
+
+    const { swiper } = this.state;
+    swiper.on('slideChange', () => this.onSlideChangeHandler(swiper));
   }
+
+  componentWillUnmount() {
+    const { swiper } = this.state;
+    if (swiper !== null) {
+      swiper.off('slideChange', () => this.onSlideChangeHandler(swiper));
+    }
+  }
+
+  onSlideChangeHandler = (swiper: any) => {
+    if (swiper && swiper.isEnd) {
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.COLLEGE_CARD,
+        scrollClassName: 'cardSwiper',
+        actionName: 'COLLEGE 스크롤',
+      });
+    }
+  };
 
   async findLectures() {
     //
-    const { lectureService, reviewService, inMyLectureService, channel } =
-      this.props;
+    const { lectureService, channel } = this.props;
 
     this.setState({ isLoading: true });
-    const { results: cardWithCardRealtedCounts, totalCount } =
+    const { results, totalCount } =
       await lectureService!.findPagingChannelLectures(
         channel.id,
         this.PAGE_SIZE,
         0,
         OrderByType.Time
       );
-    inMyLectureService!.findAllInMyLectures().then(() => {
-      this.setState({
-        isLoading: false,
-      });
-    });
 
     this.setState({
-      cardWithCardRealtedCounts,
+      cardWithCardRealtedCounts: results,
       totalCount,
     });
-  }
-
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    const { inMyLectureService } = this.props;
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
   }
 
   onViewDetail(e: any, data: any) {
@@ -166,56 +169,79 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, reviewService, inMyLectureService } = this.props;
+    const { channel, reviewService } = this.props;
+    const { collegeId } = this.props.match.params;
     const { cardWithCardRealtedCounts, totalCount, isLoading } = this.state;
     const { ratingMap } = reviewService as ReviewService;
-    const { inMyLectureMap } = inMyLectureService as InMyLectureService;
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     return (
       <>
-        <Lecture.LineHeader
-          channel={channel}
-          title={
-            <>
-              의 학습 과정입니다.{' '}
-              <span className="channel">({totalCount})</span>
-            </>
-          }
-          onViewAll={this.onViewAll}
-        />
-        {isLoading ? (
+        <div className="leaning-section-wrap">
           <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
+            className="full learning-section type1"
+            data-area={Area.COLLEGE_CARD}
           >
-            <Loadingpanel loading={isLoading} />
+            <div className="section-head">
+              <div className="sec-tit-txt">
+                <div
+                  className="section-count-big"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      '<strong>{name}</strong> 의 학습 과정 입니다. <strong>({count})</strong>',
+                      'cicl-목록-학습과정',
+                      {
+                        name: parsePolyglotString(channel.name),
+                        count: totalCount + '',
+                      }
+                    ),
+                  }}
+                />
+              </div>
+              <div className="sec-tit-btn">
+                <button className="btn-more" onClick={this.onViewAll}>
+                  전체보기
+                </button>
+              </div>
+            </div>
+            <div className="section-body">
+              <div
+                className="cardSwiper"
+                data-action-name={
+                  parsePolyglotString(channel.name, 'ko') +
+                  `의 학습 과정 입니다`
+                }
+              >
+                <Swiper
+                  {...SwiperProps(channel.id)}
+                  getSwiper={(s) => this.setState({ swiper: s })}
+                >
+                  {parseUserLectureCards(
+                    cardWithCardRealtedCounts,
+                    userLanguage
+                  ).map((card, i) => {
+                    return (
+                      <div className="swiper-slide" key={card.cardId}>
+                        <CardGroup type={GroupType.Wrap}>
+                          <LectureCardView
+                            {...card}
+                            useBookMark={true}
+                            dataArea={Area.COLLEGE_CARD}
+                            hoverTrack={hoverTrack}
+                          />
+                        </CardGroup>
+                      </div>
+                    );
+                  })}
+                </Swiper>
+                <div className={channel.id}>
+                  <div className="swiper-button-prev" />
+                  <div className="swiper-button-next" />
+                </div>
+              </div>
+            </div>
           </Segment>
-        ) : (
-          (cardWithCardRealtedCounts.length && (
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              {cardWithCardRealtedCounts.map(({ card, cardRelatedCount }) => {
-                return (
-                  <li key={card.id}>
-                    <div className="ui cards box-cards">
-                      <CardView
-                        cardId={card.id}
-                        {...card}
-                        {...cardRelatedCount}
-                      />
-                    </div>
-                  </li>
-                );
-              })}
-            </Lecture.Group>
-          )) || <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
-        )}
+        </div>
       </>
     );
   }

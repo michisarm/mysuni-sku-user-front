@@ -1,0 +1,11 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g fill-rule="nonzero" fill="none">
+        <path stroke="#777" stroke-width="2" d="M8 8h12v12H8z"/>
+        <g fill="#777">
+            <path d="m11.879 15.121 4.242-4.242 1.415 1.414-4.243 4.243z"/>
+            <path d="m10.464 13.707 1.415-1.414 2.828 2.828-1.414 1.415z"/>
+        </g>
+        <path fill="#777" d="M3 3h2v12H3zM14 3h2v3h-2z"/>
+        <path fill="#777" d="M3 3h12v2H3zM3 14h3v2H3z"/>
+    </g>
+</svg>

@@ -14,6 +14,7 @@ export interface ActionTrackParam {
   actionName: string;
   target?: HTMLElement;
   abtest?: string | null;
+  time?: number;
 }
 
 export interface ActionTrackViewParam {
@@ -34,6 +35,13 @@ export interface ActionTrackViewParam {
 
 export interface ScrollTrackParam {
   e: React.UIEvent<HTMLElement>;
+  area: Area | undefined;
+  scrollClassName: string;
+  actionName: string;
+}
+
+export interface ScrollSwiperTrackParam {
+  element: HTMLElement;
   area: Area | undefined;
   scrollClassName: string;
   actionName: string;

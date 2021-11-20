@@ -5,25 +5,30 @@ import ReactGA from 'react-ga';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
-import { findMyLatestLearningCards } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
-import { Area } from 'tracker/model';
 import {
   PolyglotText,
   getPolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  CardProps,
+  LectureCardView,
+  parseUserLectureCards,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { findMyLatestLearningCards } from '../../../../lecture/detail/api/cardApi';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
 }
 
 function InProgressLearning({ profileMemberName, history }: Props) {
-  const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>();
+  const [cardList, setCardList] = useState<CardProps[]>();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -33,7 +38,9 @@ function InProgressLearning({ profileMemberName, history }: Props) {
 
   const fetchLearningCardLsit = async () => {
     const learningCardList = await findMyLatestLearningCards(8);
-    setCardList(learningCardList);
+    const userLanguage = SkProfileService.instance.skProfile.language;
+
+    setCardList(parseUserLectureCards(learningCardList, userLanguage));
     setIsLoading(false);
   };
 
@@ -80,29 +87,14 @@ function InProgressLearning({ profileMemberName, history }: Props) {
           dataActionName="학습중인 과정"
         >
           {cardList.map((item, i) => {
-            const { card, cardRelatedCount } = item;
-
             return (
               <li key={i}>
                 <CardGroup type={GroupType.Box}>
-                  <CardView
-                    cardId={item.card.id}
-                    permittedCinerooms={card.permittedCinerooms}
-                    learningTime={card.learningTime}
-                    additionalLearningTime={card.additionalLearningTime}
-                    thumbImagePath={card.thumbImagePath}
-                    mainCategory={card.mainCategory}
-                    name={card.name}
-                    stampCount={card.stampCount}
-                    simpleDescription={card.simpleDescription}
-                    type={card.type}
-                    passedStudentCount={cardRelatedCount.passedStudentCount}
-                    starCount={cardRelatedCount.starCount}
+                  <LectureCardView
+                    {...item}
+                    useBookMark={false} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
                     dataArea={Area.MAIN_LEARNING}
-                    langSupports={card.langSupports}
-                    // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함
-                    // 정원 마감 : capacity <= student_count
-                    // D-DAY OR D-14 ... : 수강신청 마감일 - TODAY
+                    hoverTrack={hoverTrack}
                   />
                 </CardGroup>
               </li>
@@ -119,7 +111,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
             height: 400,
             boxShadow: '0 0 0 0',
             border: 0,
-            background: "#eff0f1",
+            background: '#eff0f1',
           }}
         >
           <Loadingpanel loading={isLoading} color="#eff0f1" />

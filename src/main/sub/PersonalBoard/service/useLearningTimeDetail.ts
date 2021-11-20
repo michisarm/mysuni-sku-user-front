@@ -1,15 +1,21 @@
-import { findMyLearningSummaryYear } from '../api/personalBoardApi';
+import { MyLearningSummaryService } from 'myTraining/stores';
 import { setLearningTimeDetailItem } from '../store/PersonalBoardStore';
 
-export function requestLearningTimeDetail() {
-  findMyLearningSummaryYear().then((result) => {
-    setLearningTimeDetailItem({
-      suniLearningTime:
-        result.suniLearningTime - result.myCompanyInSuniLearningTime, //mySuni
-      displayMyCompanyLearningTime:
-        result.myCompanyLearningTime + result.myCompanyInSuniLearningTime, //관계사
-      aplAllowTime: result.aplAllowTime, //개인학습
-      totalCollegeTime: result.totalCollegeTime, //강의시간
-    });
+export async function requestLearningTimeDetail() {
+  //
+  const myLearningSummaryService = MyLearningSummaryService.instance!;
+
+  const {
+    displayMySuniLearningTime,
+    displayMyCompanyLearningTime,
+    displayTotalLearningTime,
+    myLearningSummary,
+  } = myLearningSummaryService;
+
+  setLearningTimeDetailItem({
+    suniLearningTime: displayMySuniLearningTime,
+    displayMyCompanyLearningTime: displayMyCompanyLearningTime,
+    totalCollegeTime: displayTotalLearningTime,
+    aplAllowTime: (myLearningSummary && myLearningSummary.aplTime) || 0, //개인학습//강의시간
   });
 }

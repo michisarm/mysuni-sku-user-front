@@ -180,10 +180,10 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const relatedUrlVisible = relatedUrlVisiable(lectureFeedbackContent);
-  console.log(
-    'content: :: ',
-    parsePolyglotString(lectureFeedbackContent?.content)
-  );
+  // console.log(
+  //   'content: :: ',
+  //   parsePolyglotString(lectureFeedbackContent?.content)
+  // );
   const checkContentValue =
     parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
     parsePolyglotString(lectureFeedbackContent?.content) === ''
@@ -196,7 +196,7 @@ export default function LectureDiscussionContainer() {
           <div className="discuss-wrap">
             <div className="discuss-box">
               <Image
-                src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-communtiy-discussion.png"
                 alt=""
                 style={{ display: 'inline-block' }}
               />

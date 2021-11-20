@@ -23,6 +23,7 @@ import {
 import {
   getCollgeName,
   getChannelName,
+  compareCollgeCineroom,
 } from '../../../../shared/service/useCollege/useRequestCollege';
 import {
   useSelectedCollege,
@@ -213,7 +214,9 @@ function CreateCubeBasicInfoFormView() {
                   </Button>
                 }
                 targetCollegeId={selectedCollege?.collegeId}
-                collegeType={selectedCollege?.collegeType}
+                isMysuniCollege={compareCollgeCineroom(
+                  selectedCollege?.collegeId || ''
+                )}
                 defaultSelectedCategoryChannels={subCategoryModels}
                 onConfirmCategoryChannels={onConfirmSubChannel}
               />

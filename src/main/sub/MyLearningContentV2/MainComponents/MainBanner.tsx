@@ -15,6 +15,7 @@ import {
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang, LangSupport } from 'lecture/model/LangSupport';
+import { Icon } from 'semantic-ui-react';
 
 enum AnchorTargetType {
   self = '_self',
@@ -27,6 +28,7 @@ interface BannerProps {
   targetUrl: string;
   target: string;
   name: string;
+  bgColor?: string;
   imageAlt: PolyglotString;
   imageUrl: PolyglotString;
   langSupports: LangSupport[];
@@ -49,21 +51,26 @@ function RenderBanner(props: BannerProps) {
     targetUrl,
     langSupports,
     onClickBanner,
+    bgColor = '#ffffff',
   } = props;
 
   const getTargetUrl = originSelfPath(targetUrl);
 
   return (
-    <div className="swiper-slide" key={`main-banner-${index}`}>
+    <div
+      key={`main-banner-${index}`}
+      className="swiper-slide"
+      style={{ backgroundColor: bgColor }}
+    >
       {!/^(http|https)/.test(targetUrl) && target === AnchorTargetType.self ? (
         <Link
-          className="ui image"
           title={name}
           target={target}
           to={{ pathname: getTargetUrl }}
           onClick={() => onClickBanner(targetUrl, target, name, index)}
         >
           <Image
+            className="ui image"
             alt={parsePolyglotString(imageAlt, getDefaultLang(langSupports))}
             src={parsePolyglotString(imageUrl, getDefaultLang(langSupports))}
           />
@@ -73,13 +80,13 @@ function RenderBanner(props: BannerProps) {
           {target === AnchorTargetType.blank ||
           target === AnchorTargetType.self ? (
             <a
-              className="ui image"
               title={name}
               target={target}
               href={targetUrl}
               onClick={() => onClickBanner(targetUrl, target, name, index)}
             >
               <Image
+                className="ui image"
                 alt={parsePolyglotString(
                   imageAlt,
                   getDefaultLang(langSupports)
@@ -91,18 +98,11 @@ function RenderBanner(props: BannerProps) {
               />
             </a>
           ) : (
-            <div className="ui image">
-              <Image
-                alt={parsePolyglotString(
-                  imageAlt,
-                  getDefaultLang(langSupports)
-                )}
-                src={parsePolyglotString(
-                  imageUrl,
-                  getDefaultLang(langSupports)
-                )}
-              />
-            </div>
+            <Image
+              className="ui image"
+              alt={parsePolyglotString(imageAlt, getDefaultLang(langSupports))}
+              src={parsePolyglotString(imageUrl, getDefaultLang(langSupports))}
+            />
           )}
         </>
       )}
@@ -119,6 +119,10 @@ const MainBanner: React.FC<Props> = (Props) => {
   const { bannerService } = Props;
   const { banners, intervalTime } = bannerService!;
 
+  // swiper instance
+  const [swiper, setSwiper] = useState<any>(null);
+  const [play, setPlay] = useState(true); // auto play 기준
+
   const DEFAULT_BANNER_INTERVAL = 7000;
 
   useEffect(() => {
@@ -130,8 +134,8 @@ const MainBanner: React.FC<Props> = (Props) => {
   }, [bannerService]);
 
   const params = {
-    loop: true,
-    //effect: 'fade',
+    loop: false,
+    effect: 'slide',
     autoplay: {
       delay: DEFAULT_BANNER_INTERVAL,
       disableOnInteraction: false,
@@ -144,6 +148,8 @@ const MainBanner: React.FC<Props> = (Props) => {
       prevEl: '.navi .swiper-button-prev',
       nextEl: '.navi .swiper-button-next',
     },
+    getSwiper: setSwiper,
+    speed: 500, // 여기 추가 하시면 될거 같아요
   };
 
   const [clickedBanner, setClickedBanner] = useState({
@@ -160,7 +166,7 @@ const MainBanner: React.FC<Props> = (Props) => {
     name: string,
     index: number
   ) => {
-    console.log('hi', index);
+    // console.log('hi', index);
 
     // react-ga event
     ReactGA.event({
@@ -194,12 +200,31 @@ const MainBanner: React.FC<Props> = (Props) => {
     });
   };
 
+  useEffect(() => {
+    if (
+      swiper !== null &&
+      swiper.autoplay !== undefined &&
+      typeof swiper === 'object'
+    ) {
+      if (play) {
+        swiper.autoplay.start();
+      } else {
+        swiper.autoplay.stop();
+      }
+    }
+  }, [swiper, play]);
+
+  const onClickAutoPlayBtn = () => {
+    setPlay(!play);
+  };
+
   return banners.length > 0 ? (
     <MainBannerWrapper>
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
       <Swiper {...params}>
         {banners.map((banner, index) => (
           <RenderBanner
+            key={banner.id}
             index={index}
             onClickBanner={onClickBanner}
             {...banner}
@@ -208,9 +233,13 @@ const MainBanner: React.FC<Props> = (Props) => {
       </Swiper>
 
       <div className="navi">
-        <div className="swiper-button-prev" />
-        <div className="swiper-pagination" />
-        <div className="swiper-button-next" />
+        <div className="swiper-navi-wrap">
+          <div className="swiper-pagination" />
+          <div className="btn-play">
+            {!play && <Icon name="play" onClick={onClickAutoPlayBtn} />}
+            {play && <Icon name="pause" onClick={onClickAutoPlayBtn} />}
+          </div>
+        </div>
       </div>
 
       {clickedBanner.modalOpen && (

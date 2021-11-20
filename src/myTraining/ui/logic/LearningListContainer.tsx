@@ -1,27 +1,30 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Segment } from 'semantic-ui-react';
 import { Lecture } from 'lecture';
 import { NoSuchContentPanel } from 'shared';
-import { useRequestCollege } from 'shared/service/useCollege/useRequestCollege';
-import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { UpcomingClassroomInfo } from '../../../lecture/model/UpcomingClassroomInfo';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
-import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
-import CardGroup, {
-  GroupType,
-} from '../../../lecture/shared/Lecture/sub/CardGroup';
-import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { find } from 'lodash';
 import { findEnrollingCardList } from '../../../lecture/detail/api/cardApi';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  CardProps,
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import {
+  Area,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { SkProfileService } from '../../../profile/stores';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 interface MatchPrams {
   type: string;
@@ -32,13 +35,13 @@ type CardListExtendsUpcomingClassRom = CardWithCardRealtedCount & {
 };
 
 function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
-  const [cardList, setCardList] = useState<CardListExtendsUpcomingClassRom[]>(
-    []
-  );
+  // const [cardList, setCardList] = useState<UserLectureCard[]>([]);
+  const [cardList, setCardList] = useState<CardProps[]>([]);
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
   const [cardType, setCardType] = useState<String>();
   const [dataArea, setDataArea] = useState<Area>();
 
+  const userLanguage = SkProfileService.instance.skProfile.language;
   const onChangeViewType = (e: any, data: any, func?: any) => {
     setViewType(data.value);
   };
@@ -66,10 +69,10 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       );
 
       if (cardList) {
-        setCardList(cardList.results);
+        setCardList(parseUserLectureCards(cardList.results, userLanguage));
       }
     } else {
-      const cardBundles = await findAvailableCardBundles();
+      const cardBundles = await findAvailableCardBundlesCache();
 
       // 현재는 uuid 값을 받아서 필터 유니크한 타입이 생성이 되면 id => type으로 변경시켜야 한다.
       const filteredCardBundle = find(cardBundles, { id: match.params.type });
@@ -78,11 +81,11 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         setTitle(parsePolyglotString(filteredCardBundle.displayText));
         setCardType(filteredCardBundle.type);
 
-        const joinedIds = filteredCardBundle.cardIds.join();
+        const joinedIds = filteredCardBundle.cardIds;
         const cardList = await findCardList(joinedIds);
 
         if (cardList) {
-          setCardList(cardList);
+          setCardList(parseUserLectureCards(cardList, userLanguage));
         }
       }
     }
@@ -166,29 +169,53 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         <div className="section">
           {cardList.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {cardList.map((item, i) => {
-                const { card, cardRelatedCount, upcomingClassroomInfo } = item;
+              {cardList.map((card, i) => {
                 return (
-                  <CardView
-                    key={item.card.id}
-                    cardId={item.card.id}
-                    permittedCinerooms={card.permittedCinerooms}
-                    learningTime={card.learningTime}
-                    additionalLearningTime={card.additionalLearningTime}
-                    thumbImagePath={card.thumbImagePath}
-                    mainCategory={card.mainCategory}
-                    name={card.name}
-                    stampCount={card.stampCount}
-                    simpleDescription={card.simpleDescription}
-                    type={card.type}
-                    passedStudentCount={cardRelatedCount.passedStudentCount}
-                    starCount={cardRelatedCount.starCount}
-                    capacity={upcomingClassroomInfo?.capacity}
-                    studentCount={upcomingClassroomInfo?.studentCount}
-                    remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
+                  // <LectureCardView
+                  //   cardId={card.id}
+                  //   cardName={parsePolyglotString(card.name)}
+                  //   learningTime={String(card.learningTime)}
+                  //   thumbnailImagePath={card.thumbImagePath}
+                  //   difficultyLevel={card.difficultyLevel}
+                  //   passedStudentCount={String(card.passedStudentCount)}
+                  //   starCount={String(card.starCount)}
+                  //   simpleDescription={parsePolyglotString(
+                  //     card.simpleDescription
+                  //   )}
+                  //   studentCount={card.studentCount}
+                  //   userLanguage={userLanguage}
+                  //   langSupports={card.langSupports}
+                  //   collegeId={card.mainCollegeId}
+                  //   isRequiredLecture={card.required}
+                  //   upcomingClassroomInfo={card.upcomingClassroomInfo}
+                  // />
+                  <LectureCardView
+                    {...card}
+                    useBookMark
                     dataArea={dataArea}
-                    langSupports={card.langSupports}
+                    hoverTrack={hoverTrack}
                   />
+
+                  // <CardView
+                  //   key={item.card.id}
+                  //   cardId={item.card.id}
+                  //   permittedCinerooms={card.permittedCinerooms}
+                  //   learningTime={card.learningTime}
+                  //   additionalLearningTime={card.additionalLearningTime}
+                  //   thumbImagePath={card.thumbImagePath}
+                  //   mainCategory={card.mainCategory}
+                  //   name={card.name}
+                  //   stampCount={card.stampCount}
+                  //   simpleDescription={card.simpleDescription}
+                  //   type={card.type}
+                  //   passedStudentCount={cardRelatedCount.passedStudentCount}
+                  //   starCount={cardRelatedCount.starCount}
+                  //   capacity={upcomingClassroomInfo?.capacity}
+                  //   studentCount={upcomingClassroomInfo?.studentCount}
+                  //   remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
+                  //   dataArea={dataArea}
+                  //   langSupports={card.langSupports}
+                  // />
                 );
               })}
             </Lecture.Group>

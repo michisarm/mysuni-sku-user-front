@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { IdName, reactAutobind } from '@nara.platform/accent';
+import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-
 import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
-import { IdNameCount } from 'shared/model';
-import { CollegeType } from 'college/model';
-import { CollegeLectureCountRdo } from 'lecture/model';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../model/LangSupport';
-import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+  getCollgeName,
+} from 'shared/service/useCollege/useRequestCollege';
+import { CollegeIdModel } from 'shared/model/CollegeIdModel';
+import { find, isEmpty } from 'lodash';
 
 interface Props {
-  colleges: CollegeLectureCountRdo[];
+  colleges: CollegeIdModel[];
   channelIds: string[];
   selectedCollegeIds: string[];
   favoriteChannels: CheckableChannel[];
@@ -37,15 +37,13 @@ class FavoriteChannelChangeView extends Component<Props> {
     'teal',
   ];
 
-  isChecked(collegeType: CollegeType, channelId: string) {
+  isChecked(collegeId: string, channelId: string) {
     //
     const { favoriteChannels } = this.props;
 
     return (
-      collegeType === CollegeType.Company ||
-      favoriteChannels
-        .map((favoriteChannel) => favoriteChannel.id)
-        .includes(channelId)
+      !compareCollgeCineroom(collegeId) ||
+      !isEmpty(find(favoriteChannels, { id: channelId }))
     );
   }
 
@@ -73,67 +71,56 @@ class FavoriteChannelChangeView extends Component<Props> {
                 </div>
               ) : (
                 <Accordion className="channel">
-                  {colleges.map(
-                    (college: CollegeLectureCountRdo, index: number) => (
-                      <div key={`college-${index}`}>
-                        <Accordion.Title
-                          active={selectedCollegeIds.includes(college.id)}
-                          onClick={() => onToggleCollege(college.id)}
-                        >
-                          <span className={`name ${this.color[index]}`}>
-                            {parsePolyglotString(
-                              college.name,
-                              getDefaultLang(college.langSupports)
-                            )}
-                          </span>
-                          <Icon />
-                        </Accordion.Title>
-                        <Accordion.Content
-                          active={selectedCollegeIds.includes(college.id)}
-                        >
-                          <ul>
-                            {college.channels &&
-                              college.channels.length > 0 &&
-                              college.channels
-                                .filter((channel) =>
-                                  channelIds.includes(channel.id)
-                                )
-                                .map((channel, index) => (
-                                  <li key={`channel-${index}`}>
-                                    <Checkbox
-                                      className="base"
-                                      label={
-                                        <label>
-                                          {getChannelName(channel.id)}
-                                        </label>
-                                      }
-                                      name={parsePolyglotString(
-                                        channel.name,
-                                        getDefaultLang(channel.langSupports)
-                                      )}
-                                      checked={this.isChecked(
-                                        college.collegeType,
-                                        channel.id
-                                      )}
-                                      disabled={
-                                        college.collegeType ===
-                                        CollegeType.Company
-                                      }
-                                      onChange={() =>
-                                        onToggleChannel({
-                                          id: channel.id,
-                                          name: getChannelName(channel.id),
-                                          checked: false,
-                                        })
-                                      }
-                                    />
-                                  </li>
-                                ))}
-                          </ul>
-                        </Accordion.Content>
-                      </div>
-                    )
-                  )}
+                  {colleges.map((college, index: number) => (
+                    <div key={`college-${index}`}>
+                      <Accordion.Title
+                        active={selectedCollegeIds.includes(college.id)}
+                        onClick={() => onToggleCollege(college.id)}
+                      >
+                        <span className={`name ${this.color[index]}`}>
+                          {getCollgeName(college.id)}
+                        </span>
+                        <Icon />
+                      </Accordion.Title>
+                      <Accordion.Content
+                        active={selectedCollegeIds.includes(college.id)}
+                      >
+                        <ul>
+                          {college.channelIds &&
+                            college.channelIds.length > 0 &&
+                            college.channelIds
+                              .filter((channelId) =>
+                                channelIds.includes(channelId)
+                              )
+                              .map((channelId, index) => (
+                                <li key={`channel-${index}`}>
+                                  <Checkbox
+                                    className="base"
+                                    label={
+                                      <label>{getChannelName(channelId)}</label>
+                                    }
+                                    name={channelId}
+                                    checked={this.isChecked(
+                                      college.id,
+                                      channelId
+                                    )}
+                                    disabled={
+                                      !compareCollgeCineroom(college.id)
+                                    }
+                                    onChange={() =>
+                                      onToggleChannel({
+                                        id: channelId,
+                                        name: getChannelName(channelId),
+                                        checked: false,
+                                      })
+                                    }
+                                  />
+                                </li>
+                              ))}
+                        </ul>
+                      </Accordion.Content>
+                    </div>
+                  ))}
                 </Accordion>
               )}
             </div>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>3F13E21D-1519-46F2-9FA8-AE5975F0772B</title>
+    <defs>
+        <circle id="path-1" cx="10" cy="10" r="10"></circle>
+    </defs>
+    <g id="LMS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Emoji" transform="translate(-821.000000, -115.000000)">
+            <g transform="translate(567.000000, 115.000000)" id="off">
+                <g transform="translate(2.000000, 0.000000)">
+                    <g id="btn-/-emoji7" transform="translate(252.000000, 0.000000)">
+                        <g id="icon-/-24px-/-emoji" transform="translate(9.000000, 9.000000)">
+                            <g id="Group-8" transform="translate(2.000000, 2.000000)">
+                                <mask id="mask-2" fill="white">
+                                    <use xlink:href="#path-1"></use>
+                                </mask>
+                                <circle stroke="#222222" stroke-width="1.2" cx="10" cy="10" r="9.4"></circle>
+                                <g mask="url(#mask-2)">
+                                    <g transform="translate(-0.618595, -0.000000)">
+                                        <path d="M10.6185951,6.36803399 L14.0728001,8.87766078 L12.7534112,12.9383222 L8.48377908,12.9383222 L7.16439019,8.87766078 L10.6185951,6.36803399 Z" id="Polygon" stroke="#222222" stroke-width="1" fill="none"></path>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" x="10.1185951" y="2.5" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(4.368595, 16.000000) rotate(-90.000000) translate(-4.368595, -16.000000) " x="3.86859513" y="13.75" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(6.933901, 18.102743) rotate(-15.000000) translate(-6.933901, -18.102743) " x="6.4339009" y="15.8527426" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(14.433901, 18.102743) scale(-1, 1) rotate(-15.000000) translate(-14.433901, -18.102743) " x="13.9339009" y="15.8527426" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(16.868595, 16.000000) rotate(-90.000000) translate(-16.868595, -16.000000) " x="16.3685951" y="13.75" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" x="3.13859513" y="3.5" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" x="17.0985951" y="3.5" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(13.818718, 14.429880) rotate(-35.000000) translate(-13.818718, -14.429880) " x="13.3187181" y="12.1798803" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(7.318718, 14.469880) scale(-1, 1) rotate(-35.000000) translate(-7.318718, -14.469880) " x="6.81871814" y="12.2198803" width="1" height="4.5"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(9.016774, 1.602948) rotate(-53.000000) translate(-9.016774, -1.602948) " x="8.51677367" y="-0.397052199" width="1" height="4"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(5.168990, 8.153887) rotate(-70.000000) translate(-5.168990, -8.153887) " x="4.66899045" y="6.1538866" width="1" height="4"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(16.068990, 8.153887) scale(-1, 1) rotate(-70.000000) translate(-16.068990, -8.153887) " x="15.5689904" y="6.1538866" width="1" height="4"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(12.016774, 1.602948) scale(-1, 1) rotate(-53.000000) translate(-12.016774, -1.602948) " x="11.5167737" y="-0.397052199" width="1" height="4"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(2.016774, 8.426139) scale(-1, 1) rotate(-64.000000) translate(-2.016774, -8.426139) " x="1.51677367" y="6.42613932" width="1" height="4"></rect>
+                                        <rect id="Rectangle" stroke="none" fill="#222222" fill-rule="evenodd" transform="translate(19.016774, 8.426139) rotate(-64.000000) translate(-19.016774, -8.426139) " x="18.5167737" y="6.42613932" width="1" height="4"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

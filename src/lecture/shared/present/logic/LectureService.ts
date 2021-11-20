@@ -23,8 +23,10 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import {
   findByRdo,
-  countRequiredCards,
   findCardsByRdo,
+  findByQdo,
+  countLearningTab,
+  countRequiredCards,
 } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
@@ -33,6 +35,15 @@ import { findCardStudentsByCardIds } from '../../../../certification/api/CardStu
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import MyTrainingApi from '../../../../myTraining/present/apiclient/MyTrainingApi';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
+import {
+  CardProps,
+  parseUserLectureCards,
+  UserLectureCard,
+} from '@sku/skuniv-ui-lecture-card';
+import { SkProfileService } from '../../../../profile/stores';
+import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
+import CardQdo from 'lecture/model/learning/CardQdo';
+import { patronInfo } from '@nara.platform/dock';
 
 @autobind
 class LectureService {
@@ -48,7 +59,10 @@ class LectureService {
   private myTrainingApi: MyTrainingApi;
 
   @observable
-  _lectures: CardWithCardRealtedCount[] = [];
+  _lectures: UserLectureCard[] = [];
+
+  @observable
+  _userLectureCards: CardProps[] = [];
 
   @observable
   _requiredLectures: LectureModel[] = [];
@@ -70,7 +84,28 @@ class LectureService {
   @observable
   _lectureViews: LectureViewModel[] = [];
 
-  //
+  // Learning Page
+
+  @observable
+  _myStampCount: number = 0;
+
+  @observable
+  _myLearningCards: CardForUserViewModel[] = [];
+
+  @observable
+  _totalMyLearningCardCount: number = 0;
+
+  @observable
+  _selectedServiceIds: string[] = [];
+
+  @observable
+  cardQdo: CardQdo = new CardQdo();
+
+  @observable
+  column: string = '';
+
+  @observable
+  direction: Direction | null = null;
 
   //
 
@@ -87,9 +122,22 @@ class LectureService {
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
   }
 
-  // 권장과정
+  // Learning page
+
+  @observable
+  inProgressCount: number = 0;
+
+  @observable
+  bookmarkCount: number = 0;
+
   @observable
   requiredLecturesCount: number = 0;
+
+  @observable
+  completedCount: number = 0;
+
+  @observable
+  retryCount: number = 0;
 
   constructor(
     lectureApi: LectureApi,
@@ -104,7 +152,7 @@ class LectureService {
   }
 
   @computed
-  get lectures(): CardWithCardRealtedCount[] {
+  get lectures(): UserLectureCard[] {
     //
     const lectures = this._lectures as IObservableArray;
     return lectures.peek();
@@ -136,11 +184,163 @@ class LectureService {
     return (this._lectureViews as IObservableArray).peek();
   }
 
-  // @computed
-  // get preLectureViews() {
-  //   //
-  //   return (this._preLectureViews as IObservableArray).peek();
-  // }
+  @computed
+  get myLearningCards() {
+    //
+    return this._myLearningCards;
+  }
+
+  @computed
+  get totalMyLearningCardCount() {
+    //
+    return this._totalMyLearningCardCount;
+  }
+
+  @computed
+  get myStampCount() {
+    //
+    return this._myStampCount;
+  }
+
+  // Learning page
+
+  @action
+  async countMyStamp() {
+    //
+    const count = await this.lectureApi.countMyStamp();
+    runInAction(() => (this._myStampCount = count));
+  }
+
+  @action
+  clearMyLearningCard() {
+    //
+    this._totalMyLearningCardCount = 0;
+    this._myLearningCards = [];
+    this.clearSortParam();
+  }
+
+  @action
+  setCardQdo(cardQdo: CardQdo) {
+    runInAction(() => {
+      this.cardQdo = new CardQdo(cardQdo);
+    });
+  }
+
+  @action
+  async findMyLearningCardByQdo(firstCheck?: boolean) {
+    //
+    const findReulst = await this.lectureApi.findMyLearningLectures(
+      this.cardQdo
+    );
+
+    const cardNotes =
+      (await this.myTrainingApi.findCardNoteList(
+        findReulst.results.map((card) => card.id)
+      )) || [];
+
+    const myLearningCards = findReulst.results.map((card) => {
+      //
+      const myLectureCard = card;
+      myLectureCard.useNote = cardNotes.some(
+        (note: any) => note.cardId === card.id
+      );
+      return myLectureCard;
+    });
+
+    findReulst &&
+      runInAction(() => {
+        if (firstCheck) {
+          this._myLearningCards = myLearningCards || [];
+        } else {
+          this._myLearningCards = [
+            ...this._myLearningCards,
+            ...myLearningCards,
+          ];
+        }
+        this._totalMyLearningCardCount = findReulst && findReulst.totalCount;
+      });
+  }
+
+  @action
+  async findMyLearningCardForExcel(cardQdo: CardQdo) {
+    //
+    const findList = await this.lectureApi.findMyLearningLectures(cardQdo);
+
+    const result: CardForUserViewModel[] = [];
+
+    runInAction(() => {
+      return findList.results.map((item) => {
+        result.push(new CardForUserViewModel(item));
+      });
+    });
+
+    return result;
+  }
+
+  @action
+  private clearSortParam() {
+    //
+    this.column = '';
+    this.direction = null;
+  }
+
+  @action
+  async sortMyLearningTableViews(column: string, direction: Direction) {
+    // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
+    const propKey = convertToKeyInMyLearningTable(column);
+
+    this.column = propKey;
+    this.direction = direction;
+
+    if (direction === Direction.ASC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @computed
+  get selectedServiceIds() {
+    //
+    return this._selectedServiceIds;
+  }
+
+  @action
+  selectOne(serviceId: string) {
+    runInAction(() => {
+      this._selectedServiceIds = [...this._selectedServiceIds, serviceId];
+    });
+  }
+
+  @action
+  clearOne(serviceId: string) {
+    this._selectedServiceIds = this._selectedServiceIds.filter(
+      (selectedServiceId) => selectedServiceId !== serviceId
+    );
+  }
+
+  @action
+  selectAll() {
+    this._selectedServiceIds = this._myLearningCards.map(
+      (tableView) => tableView.id
+    );
+  }
+
+  @action
+  clearAll() {
+    this._selectedServiceIds = [];
+  }
+
+  @action
+  clearAllSelectedServiceIds() {
+    this._selectedServiceIds = [];
+  }
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 
@@ -148,6 +348,12 @@ class LectureService {
   clearLectures() {
     //
     return runInAction(() => (this._lectures = []));
+  }
+
+  @action
+  clearCollegeLectures() {
+    //
+    return runInAction(() => (this._userLectureCards = []));
   }
 
   @action
@@ -159,20 +365,22 @@ class LectureService {
   ) {
     //
     const response =
-      (await findByRdo({
+      (await findByQdo({
         collegeIds: collegeId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
+      })) || new OffsetElementList<UserLectureCard>();
 
-    const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
+    const userLanguage = SkProfileService.instance.skProfile.language;
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
+        (this._userLectureCards = this._userLectureCards.concat(
+          parseUserLectureCards(lectureOffsetElementList.results, userLanguage)
         ))
     );
     return lectureOffsetElementList;
@@ -186,14 +394,15 @@ class LectureService {
     orderBy: OrderByType
   ) {
     const response =
-      (await findByRdo({
+      (await findByQdo({
         channelIds: channelId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
-    const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+      })) || new OffsetElementList<UserLectureCard>();
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
 
     runInAction(
       () =>
@@ -213,21 +422,23 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    if (offset >= 8) {
-      sessionStorage.setItem('channelOffset', JSON.stringify(offset + limit));
-    }
 
     const response =
-      (await findByRdo({
+      (await findByQdo({
         collegeIds: collegeId,
         channelIds: channelId,
         limit,
         offset,
         orderBy,
-      })) || new OffsetElementList<CardWithCardRealtedCount>();
+      })) || new OffsetElementList<UserLectureCard>();
 
-    const lectureOffsetElementList =
-      new OffsetElementList<CardWithCardRealtedCount>(response);
+    if (offset >= 8) {
+      sessionStorage.setItem('channelOffset', JSON.stringify(offset + limit));
+    }
+
+    const lectureOffsetElementList = new OffsetElementList<UserLectureCard>(
+      response
+    );
 
     runInAction(
       () =>
@@ -508,14 +719,21 @@ class LectureService {
   }
 
   @action
-  async countRequiredLectures() {
-    const count = await countRequiredCards();
+  async countLearningTab() {
+    const countModel = await countLearningTab();
+    const requiredCount = await countRequiredCards();
 
-    if (count !== undefined) {
-      runInAction(() => {
-        this.requiredLecturesCount = count;
-      });
-    }
+    runInAction(() => {
+      this.inProgressCount = (countModel && countModel.inProgressCount) || 0;
+
+      this.bookmarkCount = (countModel && countModel.bookmarkCount) || 0;
+
+      this.requiredLecturesCount = requiredCount || 0;
+
+      this.completedCount = (countModel && countModel.completedCount) || 0;
+
+      this.retryCount = (countModel && countModel.retryCount) || 0;
+    });
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
@@ -742,6 +960,26 @@ class LectureService {
   }
 
   @action
+  sortMyTrainingCards(column: string, direction: Direction) {
+    const propKey =
+      converToKey(column) === 'updateTime'
+        ? 'modifiedTime'
+        : converToKey(column);
+
+    if (direction === Direction.ASC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this._myLearningCards = this._myLearningCards.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @action
   clearAllTabCount() {
     this.requiredLecturesCount = 0;
   }
@@ -769,6 +1007,24 @@ const converToKey = (column: string): any => {
       return 'stampCount';
     case '등록일':
       return 'creationTime';
+    default:
+      return '';
+  }
+};
+
+export const convertToKeyInMyLearningTable = (column: string): any => {
+  switch (column) {
+    case '학습시간':
+      return 'learningTime';
+    case '학습완료일':
+      return 'passedTime';
+    case '최근학습일':
+    case '취소/미이수일':
+      return 'modifiedTime';
+    case '스탬프':
+      return 'stampCount';
+    case '획득일자':
+      return 'passedTime';
     default:
       return '';
   }

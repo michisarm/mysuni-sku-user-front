@@ -1,83 +1,111 @@
+import { PersonalBoardDoughnutChartView } from '@sku/chart';
 import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
-import { PersonalBoardDoughnutChartView } from '@sku/chart';
-import React, { useEffect, useMemo } from 'react';
-import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
+import { InstructorLearningTimeSummary } from 'personalcube/personalcube/model/InstructorLearningTimeSummary';
+import React, { useMemo } from 'react';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import { useRequestLearningSummary } from 'myTraining/service/useRequestLearningSummary';
-import { MyLearningSummaryService } from 'myTraining/stores';
 
 interface Props {
   showApl: boolean;
+  mySuniLearningTime: number;
+  myCompanyLearningTime: number;
+  instructorTimeSummary: InstructorLearningTimeSummary | undefined;
+  aplTime: number;
 }
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 type ChartDataItem = { label: string; value: number };
 
 function LearningTimeDetailView(props: Props) {
-  const { showApl } = props;
+  const {
+    showApl,
+    mySuniLearningTime,
+    myCompanyLearningTime,
+    instructorTimeSummary,
+    aplTime,
+  } = props;
 
-  const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
-  const instructTimeSummary =
-    MyLearningSummaryService.instance._instructTimeSummary;
+  // const totalLearningTimeRdo = useTotalLearningTimeRdo();
+  // const allColleges = useAllColleges();
+
+  // const { collegeLearningTimes } = totalLearningTimeRdo;
+
+  // const suniLearningTime = useMemo(
+  //   () =>
+  //     collegeLearningTimes
+  //       .filter((c) =>
+  //         allColleges.filter(isMySuniCollege).some((d) => d.id === c.collegeId)
+  //       )
+  //       .reduce<number>((p, c) => p + c.learningTime, 0),
+  //   [collegeLearningTimes]
+  // );
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
       return [
         {
           label: 'mySUNI',
-          value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+          value: mySuniLearningTime || 0,
         },
         {
           label: '관계사',
-          value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+          value: myCompanyLearningTime || 0,
         },
         {
           label: '강의시간',
           // value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
           value:
-            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
+            (instructorTimeSummary &&
+              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
+            0,
         },
         {
           label: '개인학습',
-          value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
+          value: aplTime || 0,
         },
       ];
     } else {
       return [
         {
           label: 'mySUNI',
-          value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+          value: mySuniLearningTime || 0,
         },
         {
           label: '관계사',
-          value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+          value: myCompanyLearningTime || 0,
         },
         {
           label: '강의시간',
           value:
-            instructTimeSummary?.sumOfCurrentYearInstructorLearningTime || 0,
+            (instructorTimeSummary &&
+              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
+            0,
         },
       ];
     }
-  }, [badgeLearningTimeDetailItem]);
+  }, [
+    mySuniLearningTime,
+    myCompanyLearningTime,
+    instructorTimeSummary,
+    aplTime,
+  ]);
 
-  const timeDataBoolean: boolean[] = [];
-
-  datas.map((data) => {
-    if (data.value === 0) {
-      timeDataBoolean.push(false);
-    } else {
-      timeDataBoolean.push(true);
-    }
-  });
+  const timeDataBoolean = useMemo<boolean[]>(() => {
+    return datas.map((data) => {
+      if (data.value === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }, [datas]);
 
   return (
     <>
-      {badgeLearningTimeDetailItem && (
+      {datas.length > 0 && (
         <div className="personal-card-item-box">
           <div className="personal-card-item">
             <div className="card-item-tit mb23">
@@ -126,9 +154,7 @@ function LearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.suniLearningTime / 60
-                          )}
+                          {Math.floor(mySuniLearningTime / 60)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -137,9 +163,7 @@ function LearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.suniLearningTime % 60
-                          )}
+                          {Math.floor(mySuniLearningTime % 60)}
                           <em>
                             <PolyglotText
                               defaultString="m"
@@ -158,10 +182,7 @@ function LearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.displayMyCompanyLearningTime /
-                              60
-                          )}
+                          {Math.floor(myCompanyLearningTime / 60)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -170,10 +191,7 @@ function LearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            badgeLearningTimeDetailItem.displayMyCompanyLearningTime %
-                              60
-                          )}
+                          {Math.floor(myCompanyLearningTime % 60)}
                           <em>
                             <PolyglotText
                               defaultString="m"
@@ -193,8 +211,8 @@ function LearningTimeDetailView(props: Props) {
                       <div>
                         <strong>
                           {Math.floor(
-                            (instructTimeSummary &&
-                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime /
+                            (instructorTimeSummary &&
+                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime /
                                 60) ||
                               0
                           )}
@@ -207,8 +225,8 @@ function LearningTimeDetailView(props: Props) {
                         </strong>
                         <strong>
                           {Math.floor(
-                            (instructTimeSummary &&
-                              instructTimeSummary.sumOfCurrentYearInstructorLearningTime %
+                            (instructorTimeSummary &&
+                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime %
                                 60) ||
                               0
                           )}
@@ -231,9 +249,7 @@ function LearningTimeDetailView(props: Props) {
                         </em>
                         <div>
                           <strong>
-                            {Math.floor(
-                              badgeLearningTimeDetailItem.aplAllowTime / 60
-                            )}
+                            {Math.floor(aplTime / 60)}
                             <em>
                               <PolyglotText
                                 defaultString="h"
@@ -242,9 +258,7 @@ function LearningTimeDetailView(props: Props) {
                             </em>
                           </strong>
                           <strong>
-                            {Math.floor(
-                              badgeLearningTimeDetailItem.aplAllowTime % 60
-                            )}
+                            {Math.floor(aplTime % 60)}
                             <em>
                               <PolyglotText
                                 defaultString="m"

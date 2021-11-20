@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ContentLayout } from '../../../shared';
 import MyLearningSummaryContainer from '../../sub/MyLearningSummary/MyLearningSummaryContainer';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MainPagePopupContainer from '../../sub/MainPagePopup/ui/logic/MainPagePopupContainer';
-import { BadgeService } from 'lecture/stores';
+import { TutorialModal } from '../../../tutorial/components/tutorialModal';
+import { usePageElements } from 'shared/store/PageElementsStore';
 
 function UserMainPage() {
-  useEffect(() => {
-    BadgeService.instance.findAllBadgeCount();
-  }, []);
-
+  const pageElements = usePageElements();
   return (
-    <ContentLayout className="main">
+    <ContentLayout className="main main-sty2">
       <div className="main-wrap personal-wrap">
-        <MyLearningSummaryContainer />
+        <MyLearningSummaryContainer pageElements={pageElements} />
         <MyLearningContentContainer />
-        <MainPagePopupContainer />
+        {/*<MainPagePopupContainer />*/}
+        {TutorialModal()}
       </div>
     </ContentLayout>
   );

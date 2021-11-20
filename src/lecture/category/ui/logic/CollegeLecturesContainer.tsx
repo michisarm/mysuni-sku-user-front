@@ -1,5 +1,9 @@
-import React, { Component, useEffect, useState } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { useEffect, useState } from 'react';
+import {
+  reactAutobind,
+  mobxHelper,
+  ReactComponent,
+} from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import {
   RouteComponentProps,
@@ -10,13 +14,11 @@ import {
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
 import { NewPageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
-import { ChannelModel, CollegeModel } from 'college/model';
+import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 
 import routePaths from '../../../routePaths';
 import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
@@ -37,40 +39,42 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
-import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
-import CardView from '../../../shared/Lecture/ui/view/CardVIew';
-import {
-  getCollegeStore,
-  onCollegeModelStore,
-  useCollegeModelStore,
-} from '../../../../shared/store/CollegeStore';
-import { Area } from 'tracker/model';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../model/LangSupport';
+import { CardProps, LectureCardView } from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { SkProfileService } from '../../../../profile/stores';
+import {
+  College,
+  useAllColleges,
+} from '../../../../shared/service/requestAllColleges';
 
-interface Props extends RouteComponentProps<RouteParams> {
-  newPageService?: NewPageService;
-  collegeService?: CollegeService;
-  lectureService?: LectureService;
-  lectureCountService?: LectureCountService;
-  reviewService?: ReviewService;
-  inMyLectureService?: InMyLectureService;
-  coursePlanService?: CoursePlanService;
+interface Injected {
+  newPageService: NewPageService;
+  collegeService: CollegeService;
+  lectureService: LectureService;
+  lectureCountService: LectureCountService;
+  reviewService: ReviewService;
+  coursePlanService: CoursePlanService;
 }
 
-interface CollegeLecturesContainerInnerProps extends Props {
-  collegeModelStore: CollegeModel[];
+interface Props extends RouteComponentProps<RouteParams> {}
+
+interface InnerProps extends RouteComponentProps<RouteParams> {
+  collegeModelStore: College[];
   scrollOnceMove: () => void;
   scrollSave?: () => void;
 }
 
 interface State {
-  lectures: CardWithCardRealtedCount[];
+  lectures: CardProps[];
   sorting: OrderByType;
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
   collegeOrder: boolean;
   loading: boolean;
+  seeMoreButtonView: HTMLDivElement | null;
 }
 
 interface RouteParams {
@@ -78,28 +82,20 @@ interface RouteParams {
   pageNo: string;
 }
 
-const CollegeLecturesContainer: React.FC<Props> = ({
-  newPageService,
-  collegeService,
-  lectureService,
-  lectureCountService,
-  reviewService,
-  inMyLectureService,
-  coursePlanService,
-  match,
-}) => {
+const CollegeLecturesContainer: React.FC<Props> = ({ match }) => {
   const history = useHistory();
   const location = useLocation();
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const collegeModelStore = useCollegeModelStore();
+  const allColleges = useAllColleges();
+  const lectureCountService = LectureCountService.instance;
 
   useEffect(() => {
-    if (lectureCountService === undefined || collegeModelStore === undefined) {
+    if (lectureCountService === undefined) {
       return;
     }
     const channels =
-      collegeModelStore
+      allColleges
         .find((c) => c.id === match.params.collegeId)
         ?.channels.map(
           (c) =>
@@ -111,27 +107,16 @@ const CollegeLecturesContainer: React.FC<Props> = ({
             })
         ) || [];
     lectureCountService.setChannels(channels);
-  }, [collegeModelStore, match.params.collegeId, lectureCountService]);
+  }, [allColleges, match.params.collegeId, lectureCountService]);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
   }, [history, scrollSave]);
 
-  if (collegeModelStore === undefined) {
-    return null;
-  }
-
   return (
     <CollegeLecturesContainerInner
-      newPageService={newPageService}
-      collegeService={collegeService}
-      lectureService={lectureService}
-      lectureCountService={lectureCountService}
-      reviewService={reviewService}
-      inMyLectureService={inMyLectureService}
-      coursePlanService={coursePlanService}
-      collegeModelStore={collegeModelStore}
+      collegeModelStore={allColleges}
       location={location}
       history={history}
       match={match}
@@ -155,16 +140,19 @@ export default withRouter(CollegeLecturesContainer);
 )
 @reactAutobind
 @observer
-class CollegeLecturesContainerInner extends Component<
-  CollegeLecturesContainerInnerProps,
-  State
+class CollegeLecturesContainerInner extends ReactComponent<
+  InnerProps,
+  State,
+  Injected
 > {
   //
   PAGE_KEY = 'lecture.category';
 
   PAGE_SIZE = 8;
 
-  constructor(props: CollegeLecturesContainerInnerProps) {
+  observer: IntersectionObserver | null = null;
+
+  constructor(props: InnerProps) {
     //
     super(props);
     this.init();
@@ -174,72 +162,75 @@ class CollegeLecturesContainerInner extends Component<
       totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
       collegeOrder: false,
       loading: true,
+      seeMoreButtonView: null,
     };
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      this.observer = new IntersectionObserver(
+        this.intersectionCallback,
+        options
+      );
+    }
   }
 
   async componentDidMount() {
     //
+    this.setState({ loading: true });
     await this.findCollegeOrder();
     this.initialFindPagingCollegeLectures();
     this.findChannels();
-    this.findInMyLectures();
-    const { lectureCountService, match } = this.props;
-    onCollegeModelStore((collegeModelStore) => {
-      if (collegeModelStore === undefined) {
-        return;
-      }
-      if (lectureCountService === undefined) {
-        return;
-      }
-      const channels =
-        collegeModelStore
-          .find((c) => c.id === match.params.collegeId)
-          ?.channels.map(
-            (c) =>
-              new ChannelModel({
-                id: c.id,
-                name: c.name,
-                channelId: c.id,
-                checked: false,
-              })
-          ) || [];
-      lectureCountService.setChannels(channels);
-    }, 'CollegeLecturesContainerInner');
   }
 
-  async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props, prevState: State) {
     //
     const { params: prevParams } = prevProps.match;
     const { params } = this.props.match;
 
     if (prevParams.collegeId !== params.collegeId) {
+      // eslint-disable-next-line
+      this.setState({ loading: true });
       await this.findCollegeOrder();
       this.clearAndInit();
       this.initialFindPagingCollegeLectures();
-      this.findInMyLectures();
     }
-    if (prevParams.pageNo !== params.pageNo) {
+    if (prevParams.pageNo < params.pageNo) {
+      // eslint-disable-next-line
+      this.setState({ loading: true });
       this.addFindPagingCollegeLectures();
+    }
+    if (prevState.seeMoreButtonView !== this.state.seeMoreButtonView) {
+      if (this.observer !== null) {
+        if (this.state.seeMoreButtonView !== null) {
+          this.observer.observe(this.state.seeMoreButtonView);
+        } else {
+          this.observer.disconnect();
+        }
+      }
     }
   }
 
   init() {
     //
-    const { match, newPageService, lectureService } = this.props;
-    const pageNo = parseInt(match.params.pageNo, 10);
-    newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
-    lectureService!.clearLectures();
+    const { match, history } = this.props;
+    const { newPageService, lectureService } = this.injected;
+    const pageNo = 8;
+    history.replace(routePaths.collegeLecturesPage(1));
+    newPageService!.initPageMap(this.PAGE_KEY, pageNo, 1);
+    lectureService!.clearCollegeLectures();
   }
 
   clearAndInit() {
     //
+
     this.init();
-    this.setState({ lectures: [] });
   }
 
   findChannels() {
     //
-    const { match, collegeService, lectureCountService } = this.props;
+    const { match } = this.props;
+    const { collegeService, lectureCountService } = this.injected;
 
     lectureCountService!.findLectureCountByCollegeId(
       match.params.collegeId,
@@ -247,21 +238,17 @@ class CollegeLecturesContainerInner extends Component<
     );
   }
 
-  findInMyLectures() {
-    const { inMyLectureService } = this.props;
-    inMyLectureService!.findAllInMyLectures();
-  }
-
   async initialFindPagingCollegeLectures() {
     //
-    const { newPageService } = this.props;
+    const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
+
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
   }
 
   async addFindPagingCollegeLectures() {
     //
-    const { newPageService } = this.props;
+    const { newPageService } = this.injected;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
 
     this.findPagingCollegeLectures(page.limit, page.nextOffset);
@@ -269,14 +256,11 @@ class CollegeLecturesContainerInner extends Component<
 
   async findPagingCollegeLectures(limit: number, offset: number) {
     //
-    const {
-      match,
-      newPageService,
-      lectureService,
-      scrollOnceMove,
-    } = this.props;
+    const { match, scrollOnceMove } = this.props;
+    const { newPageService, lectureService } = this.injected;
     const { sorting } = this.state;
-    const pageNo = parseInt(match.params.pageNo, 10);
+
+    const pageNo = offset !== 0 ? parseInt(match.params.pageNo, 10) : 1;
 
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(
       match.params.collegeId,
@@ -284,10 +268,6 @@ class CollegeLecturesContainerInner extends Component<
       offset,
       sorting
     );
-
-    this.setState((prevState) => ({
-      lectures: [...prevState.lectures, ...lectureOffsetList.results],
-    }));
 
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const totalCount = lectureOffsetList.totalCount;
@@ -307,7 +287,8 @@ class CollegeLecturesContainerInner extends Component<
 
   async findCollegeOrder() {
     //
-    const { match, coursePlanService } = this.props;
+    const { match } = this.props;
+    const { coursePlanService } = this.injected;
     const collegeSortOrderCount = await coursePlanService!.findCollegeSortOrder(
       match.params.collegeId
     );
@@ -321,7 +302,8 @@ class CollegeLecturesContainerInner extends Component<
 
   isContentMore() {
     //
-    const { match, newPageService } = this.props;
+    const { match } = this.props;
+    const { newPageService } = this.injected;
     const pageNo = parseInt(match.params.pageNo, 10);
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
 
@@ -330,7 +312,7 @@ class CollegeLecturesContainerInner extends Component<
 
   onSelectChannel(e: any, { index, channel }: any) {
     //
-    const { lectureCountService } = this.props;
+    const { lectureCountService } = this.injected;
 
     lectureCountService!.setChannelsProp(index, 'checked', !channel.checked);
   }
@@ -349,60 +331,14 @@ class CollegeLecturesContainerInner extends Component<
     );
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
-    //
-    const { inMyLectureService } = this.props;
-
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name ? parsePolyglotString(lecture.name) : '',
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
-
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
-
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
-        )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
-  }
-
   onViewDetail(e: any, { model }: any) {
     //
-    const { history, collegeService, scrollSave } = this.props;
-    const { college } = collegeService!;
+    const { history, scrollSave } = this.props;
+    const { collegeService } = this.injected;
+    const { college } = collegeService;
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+      patronInfo.getCineroomByDomain(model);
 
     if (model.serviceType === LectureServiceType.Card) {
       // history.push(routePaths.courseOverviewPrev(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
@@ -431,25 +367,35 @@ class CollegeLecturesContainerInner extends Component<
     );
   }
 
+  seeMoreButtonViewRef(ref: HTMLDivElement | null) {
+    this.setState({ seeMoreButtonView: ref });
+  }
+
+  intersectionCallback(entries: IntersectionObserverEntry[]) {
+    console.log(entries);
+    entries.forEach((c) => {
+      if (c.isIntersecting) {
+        this.onClickSeeMore();
+      }
+    });
+  }
+
   renderCollegeLectures() {
     //
-    const {
-      newPageService,
-      collegeService,
-      reviewService,
-      inMyLectureService,
-    } = this.props;
+
+    const { newPageService, collegeService, reviewService, lectureService } =
+      this.injected;
     const { lectures, sorting, totalCnt, collegeOrder, loading } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
-    const page = newPageService!.pageMap.get(this.PAGE_KEY);
-    const { college } = collegeService!;
-    const { ratingMap } = reviewService!;
-    const { inMyLectureMap } = inMyLectureService!;
+    const { college } = collegeService;
+    const { ratingMap } = reviewService;
+
+    const { _userLectureCards } = lectureService!;
 
     return (
       <CategoryLecturesWrapperView
         header={
-          lectures &&
-          lectures.length > 0 && (
+          _userLectureCards &&
+          _userLectureCards.length > 0 && (
             <>
               <DescriptionView
                 name={`${parsePolyglotString(
@@ -467,37 +413,44 @@ class CollegeLecturesContainerInner extends Component<
           )
         }
       >
-        {loading ? (
-          <Segment
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: 400,
-              boxShadow: '0 0 0 0',
-              border: 0,
-            }}
-          >
-            <Loadingpanel loading={loading} />
-          </Segment>
-        ) : lectures && lectures.length > 0 && lectures[0] ? (
+        {_userLectureCards &&
+        _userLectureCards.length > 0 &&
+        _userLectureCards[0] ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map(({ card, cardRelatedCount }) => {
+              {_userLectureCards.map((userLectureCard: CardProps, index) => {
                 return (
-                  <CardView
-                    key={card.id}
-                    cardId={card.id}
-                    {...card}
-                    {...cardRelatedCount}
-                    dataArea={Area.COLLEGE_CARD}
-                  />
+                  <React.Fragment key={index}>
+                    <LectureCardView
+                      {...userLectureCard}
+                      useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
+                      dataArea={Area.COLLEGE_CARD}
+                      hoverTrack={hoverTrack}
+                    />
+                  </React.Fragment>
                 );
               })}
             </Lecture.Group>
-            {this.isContentMore() && (
-              <SeeMoreButton onClick={this.onClickSeeMore} />
+            {loading && (
+              <Segment
+                style={{
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  height: 400,
+                  boxShadow: '0 0 0 0',
+                  border: 0,
+                }}
+              >
+                <Loadingpanel loading={loading} />
+              </Segment>
+            )}
+            {!loading && this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+                ref={this.seeMoreButtonViewRef}
+              />
             )}
           </>
         ) : (
@@ -514,14 +467,14 @@ class CollegeLecturesContainerInner extends Component<
 
   renderChannelsLectures() {
     //
-    const { lectureCountService } = this.props;
+    const { lectureCountService } = this.injected;
     if (lectureCountService === undefined) {
       return null;
     }
     const { channels } = lectureCountService;
     return (
       <ChannelsLecturesWrapperView>
-        {channels &&
+        {(channels &&
           channels.length &&
           channels.map(
             (channel: ChannelModel) =>
@@ -532,15 +485,16 @@ class CollegeLecturesContainerInner extends Component<
                   key={`channel_cont_${channel.id}`}
                 />
               )
-          )}
+          )) ||
+          null}
       </ChannelsLecturesWrapperView>
     );
   }
 
   render() {
     //
-    const { lectureCountService } = this.props;
-    const { channels } = lectureCountService!;
+    const { lectureCountService } = this.injected;
+    const { channels } = lectureCountService;
     const allSelected =
       channels.every((c) => c.checked === true) ||
       channels.every((c) => c.checked !== true);

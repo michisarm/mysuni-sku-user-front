@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
 import classNames from 'classnames';
-import numeral from 'numeral';
-import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
-import { dateTimeHelper } from 'shared';
-import { CubeTypeNameType } from 'personalcube/personalcube/model';
+import { observer } from 'mobx-react';
 import { InMyLectureModel, MyTrainingModel } from 'myTraining/model';
-
+import numeral from 'numeral';
+import React, { Component } from 'react';
+import { Button, Card, Icon, Label, Rating } from 'semantic-ui-react';
+import { dateTimeHelper } from 'shared';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+// 고도화
+import { CategoryModel } from '../../../../../shared/model';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 import { LectureModel } from '../../../../model';
 import {
   Buttons,
+  EnrollingRibbon,
   Field,
   Fields,
   Ribbon,
   SubField,
   Thumbnail,
   Title,
-  EnrollingRibbon,
 } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
-import { CubeIconType } from '../../model';
-// 고도화
-import { CategoryModel, CubeType } from '../../../../../shared/model';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel;
@@ -159,7 +155,11 @@ class BoxCardView extends Component<Props, States> {
               // )} ${numeral(model.passedStudentCount).format(
               //   '0,0'
               // )}${getPolyglotText('명', 'home-Inprogress-명')}`}
-              text={getPolyglotText('이수 {personCount}명', 'home-Inprogress-이수', {personCount: numeral(model.passedStudentCount).format('0,0')})}
+              text={getPolyglotText(
+                '이수 {personCount}명',
+                'home-Inprogress-이수',
+                { personCount: numeral(model.passedStudentCount).format('0,0') }
+              )}
             />
           </Fields>
 

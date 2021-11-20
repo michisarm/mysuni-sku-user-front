@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
-import 'semantic-ui-less/semantic.less';
-import '@nara.drama/approval/lib/snap.css';
+// import 'semantic-ui-less/semantic.less';
+// import '@nara.drama/approval/lib/snap.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,17 +9,16 @@ import App from './App';
 import { initializeBody } from './shared/helper/bodyHelper';
 
 import './style/app.css';
+import './style/css/layout.css';
+import './style/css/content.css';
 import 'react-quill/dist/quill.snow.css';
 
-// 2021-10-06 14:00
-import './style/css/2.1ba1de7b.chunk.css';
-import './style/css/main.4860a582.chunk.css';
-import { initializeI18nResource } from 'shared/viewmodel/PolyglotText';
-import { repeatPolyfill } from './polyfill';
+import { polyfill } from './polyfill';
+import { beforeAppInitialize } from './beforeAppInitialize';
 
-repeatPolyfill();
+polyfill();
 initializeBody();
-initializeI18nResource()
+beforeAppInitialize()
   .then(() => {
     ReactDOM.render(<App />, document.getElementById('root'));
   })

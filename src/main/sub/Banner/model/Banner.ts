@@ -11,4 +11,5 @@ export interface Banner {
   imageVersion: number;
   targetUrl: string;
   version: number;
+  bgColor: string;
 }

@@ -27,6 +27,9 @@ export function inProgressPolyglot(s: string) {
     return getPolyglotText('승인자', 'learning-개인학습-h승인');
   } else if (s === '학습완료일') {
     return getPolyglotText('학습완료일', 'learning-학완보드-h완료');
+  } else if (s === '학습예정일') {
+    // todo 김민준 번역 추가 및 아이디 변경
+    return getPolyglotText('학습예정일', 'learning-학보드-hd학예');
   } else if (s === '생성자 E-mail') {
     return getPolyglotText('생성자 E-mail', '승인관리-개인학습-헤더7');
   } else if (s === '상태') {
@@ -134,14 +137,14 @@ const TableHeaderColumn = {
       text: '학습시간',
       icon: true,
     },
+    // {
+    //   key: 7,
+    //   text: '스탬프',
+    //   icon: true,
+    // },
     {
       key: 7,
-      text: '스탬프',
-      icon: true,
-    },
-    {
-      key: 8,
-      text: '최근학습일',
+      text: '학습예정일',
       icon: true,
     },
   ],

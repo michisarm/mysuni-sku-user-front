@@ -144,3 +144,20 @@ function CommunityRoutes() {
 }
 
 export default CommunityRoutes;
+
+export const COMMUNITY_MAIN_PATH = '/community/:communityId';
+export const COMMUNITY_INTRO_PATH = '/community/:communityId/intro';
+export const COMMUNITY_ALL_PATH = '/community/:communityId/all/:pageNo';
+export const COMMUNITY_NOTICE_PATH = '/community/:communityId/notice/:pageNo';
+export const COMMUNITY_NOTICE_RECOMMEND_CARD_PATH =
+  '/community/:communityId/notice/card/recommend';
+export const COMMUNITY_MEMBER_PATH = '/community/:communityId/member';
+export const COMMUNITY_BOARD_PATH =
+  '/community/:communityId/board/:boardId/:pageNo';
+export const COMMUNITY_NOTICE_CREATE_PATH =
+  '/community/:communityId/notice/create';
+export const COMMUNITY_POST_PATH = '/community/:communityId/post/:postId';
+export const COMMUNITY_EDIT_POST_PATH =
+  '/community/:communityId/post/:postId/edit';
+export const COMMUNITY_MAIN_PARAM_COMMUNITYID = ':communityId';
+export const COMMUNITY_HOME_PATH = '/community/:communityId/home';

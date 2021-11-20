@@ -42,22 +42,23 @@ class CollegeLectureCountService {
   get totalChannelCount() {
     let total = 0;
     this._collegeLectureCounts.map((college) => {
-      total += college.channels.length;
+      total += college.channelIds.length;
     });
     return total;
   }
 
-  getCollegesByChannelName(name: string) {
-    return this._collegeLectureCounts.map((college) => {
-      const selectedChannels = college.channels.filter((channel) =>
-        parsePolyglotString(
-          channel.name,
-          getDefaultLang(channel.langSupports)
-        ).includes(name)
-      );
-      return selectedChannels.length > 0 ? college : null;
-    });
-  }
+  //@Deprecated
+  // getCollegesByChannelName(name: string) {
+  //   return this._collegeLectureCounts.map((college) => {
+  //     const selectedChannels = college.channels.filter((channel) =>
+  //       parsePolyglotString(
+  //         channel.name,
+  //         getDefaultLang(channel.langSupports)
+  //       ).includes(name)
+  //     );
+  //     return selectedChannels.length > 0 ? college : null;
+  //   });
+  // }
 
   @action
   clearAll() {
