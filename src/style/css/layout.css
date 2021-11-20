@@ -161,9 +161,10 @@ i.icon.testHeader02::before {
 /* Checkbox */
 .ui.checkbox:not(.radio) input:focus ~ label:before,
 .ui.checkbox:not(.radio) label:before,
-.ui.checkbox:not(.radio) label:hover:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-normal.svg) 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox:not(.radio) label:hover:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-normal.svg") 0 0 no-repeat !important; background-size: 100% !important; }
 .ui.checkbox:not(.radio) input:checked ~ label:before,
-.ui.checkbox input:checked ~ label:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg) 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox input:checked ~ label:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-selected.svg") 0 0 no-repeat !important; background-size: 100% !important; }
+.ui.checkbox input:disabled:checked ~ label:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-check-disabled-checked.svg") 0 0 no-repeat !important; background-size: 100% auto !important; }
 
 /* Radio Button */
 .ui.radio input:focus,
