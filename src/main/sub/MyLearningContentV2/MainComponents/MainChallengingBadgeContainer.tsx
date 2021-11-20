@@ -81,8 +81,6 @@ function MainChallengingBadgeContainer() {
     return null;
   }
 
-  console.log(badgeMyCount);
-
   return (
     <Segment
       className="full learning-section badge-section type4"
