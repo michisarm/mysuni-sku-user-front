@@ -276,9 +276,8 @@ class MyTrainingService {
   ) {
     //
     const rdo = MyTrainingRdoModel.new(0, 0, channelIds, startDate, endDate);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
-      rdo
-    );
+    const trainingOffsetElementList =
+      await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
     if (trainingOffsetElementList === undefined) {
       return;
     }
@@ -321,7 +320,8 @@ class MyTrainingService {
   @observable
   _myTrainingTableViewCount2: number = 0;
 
-  _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
+  _myTrainingFilterRdo: MyTrainingFilterRdoModel =
+    new MyTrainingFilterRdoModel();
 
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
 
@@ -353,11 +353,8 @@ class MyTrainingService {
 
   @action
   async findAllTabCount() {
-    const offsetTableViews: OffsetElementList<
-      MyTrainingTableViewModel
-    > | null = await this.myTrainingApi.findEnrollTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> | null =
+      await this.myTrainingApi.findEnrollTableViews(this._myTrainingFilterRdo);
     runInAction(
       () =>
         (this._myTrainingTableViewCount2 =
@@ -451,9 +448,8 @@ class MyTrainingService {
       }
     }
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> =
+      await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
@@ -523,11 +519,8 @@ class MyTrainingService {
 
   @action
   async findEnrollTableViews() {
-    const offsetTableViews: OffsetElementList<
-      MyTrainingTableViewModel
-    > | null = await this.myTrainingApi.findEnrollTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> | null =
+      await this.myTrainingApi.findEnrollTableViews(this._myTrainingFilterRdo);
 
     const cardIds = offsetTableViews?.results.map((card) => card.cardId) || [];
 
@@ -571,10 +564,8 @@ class MyTrainingService {
     ) {
       if (this._myTrainingFilterRdo.getFilterCount() === 0) {
         const addTableViews = this.getAddTableViewsFromStorage(offset);
-        const updateNoteInProgressTableViews = await this.setTableViewsNoteInfoWithPage(
-          addTableViews,
-          offset
-        );
+        const updateNoteInProgressTableViews =
+          await this.setTableViewsNoteInfoWithPage(addTableViews, offset);
         const totalCount =
           this._myTrainingFilterRdo.myTrainingState ===
           MyLearningContentType.InProgress
@@ -590,18 +581,18 @@ class MyTrainingService {
       } else {
         this._myTrainingFilterRdo.setOffset(offset);
 
-        const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllMyTrainingTableViewsSearch(
-          this._myTrainingFilterRdo
-        );
+        const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> =
+          await this.myTrainingApi.findAllMyTrainingTableViewsSearch(
+            this._myTrainingFilterRdo
+          );
 
         if (
           offsetTableViews &&
           offsetTableViews.results &&
           offsetTableViews.results.length
         ) {
-          const updateMyTrainingAddTableViews = await this.setTableViewsNoteInfo(
-            offsetTableViews.results
-          );
+          const updateMyTrainingAddTableViews =
+            await this.setTableViewsNoteInfo(offsetTableViews.results);
 
           runInAction(() => {
             this._myTrainingTableViews = [
@@ -617,9 +608,8 @@ class MyTrainingService {
 
     this._myTrainingFilterRdo.setOffset(offset);
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> =
+      await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
@@ -664,9 +654,10 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsByConditions() {
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllMyTrainingTableViewsSearch(
-      this._myTrainingFilterRdo
-    );
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> =
+      await this.myTrainingApi.findAllMyTrainingTableViewsSearch(
+        this._myTrainingFilterRdo
+      );
 
     if (
       offsetMyTrainings &&
@@ -690,17 +681,15 @@ class MyTrainingService {
 
   async findAllTableViewsForExcel() {
     // 기존의 rdo 를 copy 해 새로운 엑셀 조회용 rdo 생성. ( offset 을 변경함으로 기존의 Rdo 에 영향이 없도록 하기 위함.)
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(
-      this._myTrainingFilterRdo
-    );
+    const filterRdoForExcel: MyTrainingFilterRdoModel =
+      new MyTrainingFilterRdoModel(this._myTrainingFilterRdo);
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
     filterRdoForExcel.setOffset({ offset: 0, limit: 9999 });
     filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
-    const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(
-      filterRdoForExcel
-    );
+    const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] =
+      await this.myTrainingApi.findAllTableViewsForExcel(filterRdoForExcel);
 
     return myTrainingTableViewsForExcel;
   }
@@ -738,7 +727,6 @@ class MyTrainingService {
   sortTableViews(column: string, direction: Direction) {
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
     const propKey = convertToKey(column);
-
     this.column = propKey;
     this.direction = direction;
 
@@ -926,6 +914,8 @@ export const convertToKey = (column: string): any => {
       return 'createDate';
     case '취소/미이수일':
       return 'time';
+    case '학습예정일':
+      return 'sortableLearningStartDate';
     default:
       return '';
   }

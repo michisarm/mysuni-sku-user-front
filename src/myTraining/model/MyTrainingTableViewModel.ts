@@ -13,6 +13,7 @@ import {
   parsePolyglotString,
   PolyglotString,
 } from 'shared/viewmodel/PolyglotString';
+import moment from 'moment';
 
 class MyTrainingTableViewModel {
   [key: string]: any;
@@ -34,6 +35,7 @@ class MyTrainingTableViewModel {
   additionalLearningTime: number = 0; //카드추가학습시간
   startDate: number = 0; // 학습시작일
   learningStartDate: number = 0; // 학습시작일
+  sortableLearningStartDate: number = 0; // 학습시작일
   endDate: number = 0; // 학습완료일
   createDate: number = 0; // 등록일
   time: number = 0; // 최근학습일 || 취소 미이수일
@@ -49,7 +51,15 @@ class MyTrainingTableViewModel {
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
     if (myTrainingTableView) {
       const useNote = myTrainingTableView.useNote;
-      Object.assign(this, { ...myTrainingTableView, useNote });
+      const sortableLearningStartDate = moment(
+        myTrainingTableView.learningStartDate,
+        'YYYY-MM-DD'
+      ).valueOf();
+      Object.assign(this, {
+        ...myTrainingTableView,
+        useNote,
+        sortableLearningStartDate,
+      });
     }
   }
 
