@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { FieldType } from 'tracker/model/ActionType';
-import { Field } from 'tracker/model/ActionTrackModel';
+import { Field, PvInit } from 'tracker/model/ActionTrackModel';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
 import { ChapterParams } from 'lecture/detail/model/ChapterParams';
@@ -18,6 +18,7 @@ import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arran
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 const AUTH_STORAGE_KEY = '_mysuni_auth';
+const PV_INIT_STORAGE_KEY = '_mysuni_pv_init';
 
 export const mobileCheck = () => {
   let check = false;
@@ -30,6 +31,48 @@ export const mobileCheck = () => {
   }
   return check;
 };
+
+export const initPvInit = () => {
+  return {
+    area: 'INIT',
+    referer: '',
+    refererSearch: '',
+    createDate: moment().toISOString(true)
+  };
+}
+
+export const setPvInit = (pvParam: PvInit) => {
+  const pvInit = initPvInit();
+  try {
+    if (lsTest()) {
+      pvInit.area = pvParam.area;
+      pvInit.referer = pvParam.referer;
+      pvInit.refererSearch = pvParam.refererSearch;
+      localStorage.setItem(PV_INIT_STORAGE_KEY, JSON.stringify(pvInit));
+    }
+  } catch {
+    //
+  }
+}
+
+export const getPvInit = () => {
+  let pvInit = null;
+  try {
+    if (lsTest()) {
+      const cachedPvInit = localStorage.getItem(PV_INIT_STORAGE_KEY);
+      if (cachedPvInit) {
+        const parsePvInit = JSON.parse(cachedPvInit);
+        if(parsePvInit.createDate && moment(parsePvInit.createDate).diff(moment(), 'seconds') > -20){
+          pvInit = parsePvInit;
+        }
+        localStorage.removeItem(PV_INIT_STORAGE_KEY);
+      }
+    }
+  } catch {
+    //
+  }
+  return pvInit;
+}
 
 export const initAuth = () => {
   const auth = {

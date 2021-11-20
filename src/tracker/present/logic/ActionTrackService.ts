@@ -11,6 +11,8 @@ import {
   getAuth,
   setAuth,
   getAbtestUserTargets,
+  setPvInit,
+  getPvInit,
 } from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
@@ -30,6 +32,7 @@ import {
   getElementsByClassName,
   getBrowserString,
   closest,
+  findLinkElement,
 } from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
 
@@ -197,6 +200,22 @@ export async function actionTrackView({
   target,
   init,
 }: ActionTrackViewParam) {
+  
+  let auth = initAuth();
+  if (init) {
+    auth = await setAuth();
+
+    // target=_blank, <a> 사용시 대응
+    const pvInit = await getPvInit();
+    if(pvInit){
+      area = pvInit.area;
+      referer = pvInit.referer;
+      refererSearch = pvInit.refererSearch;
+    }
+  } else {
+    auth = await getAuth();
+  }
+
   // search setting
   search = search ? decodeURI(search) : '';
   refererSearch = refererSearch ? decodeURI(refererSearch) : '';
@@ -208,12 +227,6 @@ export async function actionTrackView({
       ? await getPathName(referer, refererSearch)
       : refererName;
 
-  let auth = initAuth();
-  if (init) {
-    auth = await setAuth();
-  } else {
-    auth = await getAuth();
-  }
   const abtest = await getAbtestUserTargets();
 
   // field name setting
@@ -384,4 +397,20 @@ export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
     action: Action.HOVER,
     actionName,
   } as ActionTrackParam);
+}
+
+export function pvInitSave(target: EventTarget, area: string, referer: string, refererSearch: string){
+  const atarget = findLinkElement(target);
+  if (!(atarget instanceof HTMLAnchorElement)) {
+    return;
+  }
+  const href = atarget.getAttribute('href');
+  if(!href){
+    return;
+  }
+  if(atarget.target && atarget.target === '_blank'){
+    setPvInit({area, referer, refererSearch});
+  } else if(/^http|https/.test(href)){
+    setPvInit({area, referer, refererSearch});
+  }
 }
