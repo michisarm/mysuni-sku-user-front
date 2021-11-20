@@ -79,7 +79,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   }, []);
 
   const onViewAll = () => {
-    history.push(myTrainingRoutes.learningLrsLecture('ContentBase'));
+    history.push(myTrainingRoutes.learningLrsLecture('LearningPatternBased'));
 
     // react-ga event
     ReactGA.event({
@@ -110,8 +110,8 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
-              'main-lrs-title2',
+              '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
+              'main-lrs-title1',
               {
                 name: SkProfileService.instance.profileMemberName,
               }

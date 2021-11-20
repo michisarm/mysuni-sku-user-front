@@ -29,18 +29,18 @@ function getTitle() {
   const search = window.location.search;
   if (search.includes('LearningPatternBased')) {
     return getPolyglotText(
-      '{name}님의 학습패턴을 기반으로 추천 드려요!',
+      '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
       'lrs-title1',
       {
-        name: parsePolyglotString(SkProfileService.instance.skProfile.name),
+        name: SkProfileService.instance.profileMemberName,
       }
     );
   } else {
     return getPolyglotText(
-      '{name}님이 관심 가질만한 과정을 모아봤어요~',
+      '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
       'lrs-title2',
       {
-        name: parsePolyglotString(SkProfileService.instance.skProfile.name),
+        name: SkProfileService.instance.profileMemberName,
       }
     );
   }
@@ -80,7 +80,11 @@ function LRSListContainer() {
     <>
       <div className="ma-title">
         <div className="inner">
-          <h2>{title}</h2>
+          <h2
+            dangerouslySetInnerHTML={{
+              __html: title,
+            }}
+          />
         </div>
       </div>
       <Segment className="full">
