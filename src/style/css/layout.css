@@ -2,7 +2,7 @@
 #root section.header.main-sty2 { z-index: 200; border-bottom: #ddd 1px solid; }
 #root section.header.main-sty2.lms-main .breadcrumbs { display: block; }
 .margin-bottom-80 + .main-sty2.main.content { padding-top: 80px; }
-.personal-info-wrap.visible { position: fixed; top: 80px; }
+.personal-info-wrap.visible { position: absolute; top: 0px; }
 .lms-alarm { background-position-y: -2px; }
 
 /* popup */
