@@ -93,6 +93,8 @@
 
 .badge-detail .ov-paragraph .list.bulleted .item .title {padding-left: 10px;}
 
+.transcript-box .transcript-top>div>.ui.button.post.delete-kr { color: #777;}
+
 /* 학습진도 다이어그램 */
 .content.lms .label-state-cube {
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-play.svg") center no-repeat;
@@ -177,6 +179,11 @@
 .ui.cards a.card:hover, .ui.link.card:hover, .ui.link.cards .card:hover, a.ui.card:hover {
     transform: translateY(0);
     box-shadow: none;
+}
+
+/* Main > 스와이퍼 타입2 타이틀 수정 */
+.learning-section.type2 .sec-tit-txt {
+    word-break: break-word;
 }
 
 /* Main > 관심채널 */
@@ -507,6 +514,7 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     background:#00bfae;
 }
 
+
 .emoji_icons .em_b { font-weight: normal; }
 
 /* 메인 레이아웃 수정(2021.11.16) */
@@ -759,6 +767,7 @@ border-left-color: #00bfae;
 .profile-contents-area .button.page-bttn.active { border-color: #00bfae; background-color: #00bfae;}
 .apl-form-wrap .post.change-admin.btn { width: auto; height: auto; padding: 3px 16px !important;}
 .mylearning-list-wrap table.ml-02-09 td:nth-child(2) .ellipsis, .mylearning-list-wrap table.ml-02-09 th:nth-child(2) .ellipsis{width : 25.75rem}
+.ui.button.free.proceeding{background : #fff}
 
 
 /* Main > Main Visual Banner */
@@ -767,3 +776,16 @@ border-left-color: #00bfae;
     max-width: 1200px;
     margin: 0 auto;
 }
+
+/* 학습상세페이지 학습카드스와이퍼 수정 */
+.course-info-detail .swiper-slide {
+    width: 294.75px !important;
+}
+
+/* 커뮤니티 학습카드스와이퍼 수정 */
+.templete_complete .swiper-slide {
+    width: 292px !important;
+}
+
+/* My Learning title 수정 */
+.main-info-area>.progress-info-wrap.mypage.personal-detail .cell .text-info .name {white-space: nowrap; max-width: 100%;}

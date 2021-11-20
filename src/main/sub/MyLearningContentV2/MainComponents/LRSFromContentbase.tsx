@@ -59,7 +59,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
     if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
-        area: Area.MAIN_PATTERN,
+        area: Area.MAIN_RECOMMEND,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
       });
@@ -79,7 +79,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   }, []);
 
   const onViewAll = () => {
-    history.push(myTrainingRoutes.learningLrsLecture('ContentBase'));
+    history.push(myTrainingRoutes.learningLrsLecture('LearningPatternBased'));
 
     // react-ga event
     ReactGA.event({
@@ -103,15 +103,15 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
   return (
     <Segment
       className="full learning-section type2"
-      data-area={Area.MAIN_PATTERN}
+      data-area={Area.MAIN_RECOMMEND}
     >
       <div className="section-head">
         <div
           className="sec-tit-txt"
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
-              'main-lrs-title2',
+              '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
+              'main-lrs-title1',
               {
                 name: SkProfileService.instance.profileMemberName,
               }
@@ -141,7 +141,7 @@ export const LRSFromContentbase: React.FC<Props> = (Props) => {
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_PATTERN}
+                      dataArea={Area.MAIN_RECOMMEND}
                       hoverTrack={hoverTrack}
                     />
                   </CardGroup>
