@@ -9,7 +9,10 @@ import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import { NoSuchContentPanel } from 'shared';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
-import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../shared/ui/logic/PolyglotText';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import Swiper from 'react-id-swiper';
 import CardGroup, { GroupType } from 'lecture/shared/Lecture/sub/CardGroup';
@@ -101,11 +104,7 @@ export function RecommendCardRomView(props: RecommendCardRom) {
           <div className="right">
             <Link to={`/lecture/recommend/channel/${channelId}`}>
               <button className="ui icon button right btn-more">
-                전체보기
-                {/* <PolyglotText
-                  defaultString="View all"
-                  id="rcmd-추천-ViewAll2"
-                /> */}
+                <PolyglotText id="main-viewall" defaultString="전체보기" />
                 <i aria-hidden="true" className="icon morelink" />
               </button>
             </Link>
@@ -114,7 +113,10 @@ export function RecommendCardRomView(props: RecommendCardRom) {
       </div>
 
       <div className="section-body">
-        <div className="cardSwiper" data-action-name={getChannelName(channelId)}>
+        <div
+          className="cardSwiper"
+          data-action-name={getChannelName(channelId)}
+        >
           {(isCardWithRelatedCountRoms && (
             <>
               <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
