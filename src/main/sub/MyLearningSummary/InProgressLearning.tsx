@@ -2,6 +2,7 @@ import { CardProps, parseUserLectureCards } from '@sku/skuniv-ui-lecture-card';
 import React, { useCallback, useEffect, useState } from 'react';
 import Swiper from 'react-id-swiper';
 import {
+  findByQdo,
   findCardFromCardBundle,
   findMyLatestLearningCards,
 } from '../../../lecture/detail/api/cardApi';
@@ -41,6 +42,17 @@ export function InProgressLearning() {
         );
       }
     }
+    if (learningCardList === undefined || learningCardList.length === 0) {
+      const learningCardListOffsetList = await findByQdo({
+        offset: 0,
+        limit: 3,
+        orderBy: 'TimeDesc',
+      });
+      if ((learningCardListOffsetList?.results.length || 0) > 0) {
+        learningCardList = learningCardListOffsetList?.results;
+      }
+    }
+
     if (learningCardList !== undefined) {
       const userLanguage = SkProfileService.instance.skProfile.language;
       setCardList(parseUserLectureCards(learningCardList, userLanguage));
