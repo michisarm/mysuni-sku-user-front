@@ -788,4 +788,19 @@ border-left-color: #00bfae;
 }
 
 /* My Learning title 수정 */
-.main-info-area>.progress-info-wrap.mypage.personal-detail .cell .text-info .name {white-space: nowrap; max-width: 100%;}
+.main-info-area>.progress-info-wrap.mypage.personal-detail .cell .text-info .name {
+    white-space: nowrap; max-width: 100%;
+}
+
+/* My Learning 학습시간 팝업 */
+/* .completion-time .table-css .bullet-list2 .b10:before { background: #dd052b; }
+.completion-time .table-css .bullet-list2 .b11:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b12:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b13:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b14:before { background: #cb1fac; } */
+
+.completion-time .table-css .bullet-list2 .b12:before { background: #dd052b; }
+.completion-time .table-css .bullet-list2 .b11:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b10:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b14:before { background: #01297a; }
+.completion-time .table-css .bullet-list2 .b13:before { background: #cb1fac; }
