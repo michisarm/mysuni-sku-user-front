@@ -63,8 +63,8 @@ function NewLearningPage() {
     switch (contentType) {
       case ContentType.Recommend:
         area = window.location.search.includes('LearningPatternBased')
-          ? Area.NEWLEARNING_RECOMMEND
-          : Area.NEWLEARNING_PATTERN;
+          ? Area.NEWLEARNING_PATTERN
+          : Area.NEWLEARNING_RECOMMEND;
         break;
       case ContentType.Enrolling:
         area = Area.NEWLEARNING_ENROLLING;

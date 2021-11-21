@@ -58,7 +58,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
     if (swiper && swiper.isEnd) {
       scrollSwiperHorizontalTrack({
         element: swiper.el,
-        area: Area.MAIN_PATTERN,
+        area: Area.MAIN_RECOMMEND,
         scrollClassName: 'cardSwiper',
         actionName: '메인카드 스크롤',
       });
@@ -102,7 +102,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
   return (
     <Segment
       className="full learning-section type2"
-      data-area={Area.MAIN_PATTERN}
+      data-area={Area.MAIN_RECOMMEND}
     >
       <div className="section-head">
         <div
@@ -137,7 +137,7 @@ export const LRSFromLearningPatternBased: React.FC<Props> = (Props) => {
                     <LectureCardView
                       {...item}
                       useBookMark={true} // bookMark 기능을 사용하면 true, 사용하지 않으면 false
-                      dataArea={Area.MAIN_PATTERN}
+                      dataArea={Area.MAIN_RECOMMEND}
                       hoverTrack={hoverTrack}
                     />
                   </CardGroup>
