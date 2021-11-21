@@ -40,8 +40,10 @@ function InProgressLearning({ profileMemberName, history }: Props) {
     const learningCardList = await findMyLatestLearningCards(8);
     const userLanguage = SkProfileService.instance.skProfile.language;
 
-    setCardList(parseUserLectureCards(learningCardList, userLanguage));
-    setIsLoading(false);
+    if (learningCardList !== undefined) {
+      setCardList(parseUserLectureCards(learningCardList, userLanguage));
+      setIsLoading(false);
+    }
   };
 
   const onViewAll = () => {
