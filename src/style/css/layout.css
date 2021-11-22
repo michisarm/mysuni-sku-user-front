@@ -200,9 +200,7 @@ i.icon.no-contents50:before { background: url(https://image.mysuni.sk.com/suni-a
 i.icon.no-contents80:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/no-contents-80-px.svg) center no-repeat !important; }
 
 /* Icon */
-i.blue.icon {
-    color: #00bfae !important;
-}
+i.blue.icon { color: #00bfae !important; }
 i.icon.search-32{background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-gnb-search-32-px.svg') no-repeat 50% 50%;}
 i.icon.support-tel{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-support-tel-16-px.svg") no-repeat 50% 50%;}
 i.icon.ask24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-ask-24-px.svg') 0 0 no-repeat !important; }
@@ -210,6 +208,10 @@ i.icon.reply24:before { background: url('https://image.mysuni.sk.com/suni-asset/
 i.icon.list24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg') 0 0 no-repeat !important; }
 i.icon.edit24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-edit-24-px.svg') 0 0 no-repeat !important; }
 i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-delete-24-px.svg') 0 0 no-repeat !important; }
+i.icon.commu-list16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-community-list-16-px.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.delete-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-delete-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.reply-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-reply-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 .ui.label.onlytext .icon.video2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-video-16-px.svg') 0 0.125rem no-repeat; }
 .ui.label.onlytext .icon.classroom { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-classroom-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.community { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-community-16-px.svg') 0 0.125rem no-repeat; }
