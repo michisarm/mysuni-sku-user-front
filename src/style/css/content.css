@@ -804,3 +804,18 @@ border-left-color: #00bfae;
 .completion-time .table-css .bullet-list2 .b12:before { background: #dd052b; }
 .completion-time .table-css .bullet-list2 .b13:before { background: #01297a; }
 .completion-time .table-css .bullet-list2 .b14:before { background: #01297a; }
+
+/* 1:1문의 읽기 페이지 */
+.support .post-view-wrap .post-view .content-area .file {
+    color: #333;
+}
+.support .post-view-wrap .post-view .content-area .file:before {
+    display: inline-block;
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: #666;
+    border-radius: 50%;
+    margin-right: 6px;
+    transform: translateY(-1px);
+}
