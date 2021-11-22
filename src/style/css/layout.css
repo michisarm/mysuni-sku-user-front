@@ -65,7 +65,10 @@ body #root { background: #fff; }
 /* Button */
 .ui.button.moreview { color: #999 !important; }
 .ui.icon.button.moreview .icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg)   center no-repeat; margin-right: 4px !important; }
-.content.lms .ui.label.onlytext .icon.basic { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg') 0 0 no-repeat !important; }
+.content.lms .ui.label.onlytext .icon.basic { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-01.svg') 0 0 no-repeat !important; }
+.content.lms .ui.label.onlytext .icon.inter { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg') 0 0 no-repeat !important; }
+.content.lms .ui.label.onlytext .icon.advanced { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-03.svg') 0 0 no-repeat !important; }
+.content.lms .ui.label.onlytext .icon.export { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-04.svg') 0 0 no-repeat !important; }
 .cont-inner .item-button { line-height: 20px; }
 .content.lms .ui.button.post-s { border: #777 1px solid; color: #777; }
 .content.lms .header-right-link a { color: #777; }
