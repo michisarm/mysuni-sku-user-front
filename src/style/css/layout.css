@@ -140,13 +140,16 @@ i.icon.testHeader02::before {
 .content.lms .header-right-link button {
     color: #777;
 }
-.content.lms .ov-paragraph.download-area .down a span,
+/* .content.lms .ov-paragraph.download-area .down a span,
 .support .post-view-wrap .post-view .content-area .file .link .ellipsis,
 .admin-answer-form.ui.table td .link,
-.ql-snow a,
+.ql-snow a {
+    color: #00bfae;
+} */
 .create .create-detail dl dd span.blue {
     color: #00bfae;
 }
+.support .post-view-wrap .post-view .content-area .file .link .ellipsis,
 .course-info-ing > h3 { color: #777; }
 .profile-edit-contents .mypage-edit-bottom span { color: #777; }
 .challenge-wrap .challenge-badge .left-area .status .number { color: #333; }

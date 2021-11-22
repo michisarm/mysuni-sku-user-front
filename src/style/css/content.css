@@ -808,6 +808,7 @@ border-left-color: #00bfae;
 /* 1:1문의 읽기 페이지 */
 .support .post-view-wrap .post-view .content-area .file {
     color: #333;
+    font-weight: bold;
 }
 .support .post-view-wrap .post-view .content-area .file:before {
     display: inline-block;
