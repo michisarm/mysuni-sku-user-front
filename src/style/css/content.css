@@ -82,9 +82,6 @@
     border: #777 1px solid;
     box-shadow: 0 2px 8px -3px #cdcdcd;
 }
-.content.lms .ui.label.onlytext .icon.inter {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-level-02.svg) 0 0 no-repeat !important;
-}
 
 .badge-navi .btn-next.next-off { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px-disable.svg); }
 .badge-navi .btn-next.next-on { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg); }
