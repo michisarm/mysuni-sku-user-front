@@ -1,3 +1,4 @@
+import 'element-scroll-polyfill';
 import React, { useState, useEffect, createRef } from 'react';
 import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import Swiper from 'react-id-swiper';
@@ -50,7 +51,7 @@ interface RecommendCardList {
 
 export function RecommendContainer() {
   const [cardList, setCardList] = useState<CardProps[]>([]);
-  const [channelOpened, setChannelOpend] = useState<boolean>(false);
+  const [channelOpened, setChannelOpened] = useState<boolean>(false);
   const [favoriteChannelIds, setFavoriteChannelIds] = useState<string[]>(() => {
     return Array.from(
       SkProfileService.instance.additionalUserInfo.favoriteChannelIds
@@ -66,8 +67,8 @@ export function RecommendContainer() {
 
   function onClickSetChannelOpened(value: boolean) {
     //
+    setChannelOpened(value);
     scrollRef.current?.scrollTo(0, 0);
-    setChannelOpend(value);
   }
 
   useEffect(() => {
