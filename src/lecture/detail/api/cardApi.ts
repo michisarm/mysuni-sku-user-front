@@ -89,7 +89,7 @@ export function findMyLatestLearningCards(count: number) {
 
   return axios
     .get<UserLectureCard[]>(url, { params: { count } })
-    .then((response) => (response && response.data) || []);
+    .then(AxiosReturn);
 }
 
 export function findCardWithLearningContentCounts(
@@ -333,8 +333,10 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
     .then(AxiosReturn);
 }
 
-export function findBookmarkCards(limit?: number, orderBy?:CardOrderBy) {
+export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}&orderBy=${orderBy || CardOrderBy.BookmarkRegisteredTimeDesc}`;
+  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}&orderBy=${
+    orderBy || CardOrderBy.BookmarkRegisteredTimeDesc
+  }`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }

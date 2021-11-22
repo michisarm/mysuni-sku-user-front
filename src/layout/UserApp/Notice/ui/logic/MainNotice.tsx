@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import moment from 'moment';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -6,12 +6,13 @@ import { PostModel } from 'board/model';
 import NoticeView from '../view/NoticeView';
 import MainNoticeService from '../../../present/logic/MainNoticeService';
 import { getCookie, setCookie } from '@nara.platform/accent';
+import { testIsIE } from '../../../../../shared/helper/bodyHelper';
 
 interface Props {
   mainNoticeService?: MainNoticeService;
 }
 
-const MainNoticeContainer: React.FC<Props> = Props => {
+const MainNoticeContainer: React.FC<Props> = (Props) => {
   //
   const { mainNoticeService } = Props;
 
@@ -32,9 +33,8 @@ const MainNoticeContainer: React.FC<Props> = Props => {
   const setLatestNotice = async () => {
     mainNoticeService!.clearMainNotices();
     // 알림이 없으면 null을 리턴받는디.
-    const notiInfo:
-      | PostModel[]
-      | [] = await mainNoticeService!.getMainNotices();
+    const notiInfo: PostModel[] | [] =
+      await mainNoticeService!.getMainNotices();
     if (notices === null && notiInfo.length < 1) {
       setNotices([]);
     } else if (
@@ -77,6 +77,13 @@ const MainNoticeContainer: React.FC<Props> = Props => {
     }
   } else if (getCookie('notice_show') === 'HIDE' && showNotice) {
     setShowNotice(false);
+  }
+
+  const isIE = useMemo<boolean>(testIsIE, []);
+
+  // 임시 코드 ~ 2021-11-30 이후에 제거
+  if (!isIE) {
+    return null;
   }
 
   return showNotice && notices !== null && notices.length > 0 ? (

@@ -101,7 +101,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchCardList();
-  }, [fetchCardList, viewType]);
+  }, [viewType]);
 
   useEffect(() => {
     let area = null;
