@@ -9,8 +9,11 @@ enum CardOrderBy {
   StarCountAsc = 'StarCountAsc',
   CollegeOrder = 'CollegeOrder',
   StudentPassedTimeDesc = 'StudentPassedTimeDesc',
+  StudentModifiedTimeAsc = 'StudentModifiedTimeAsc',
   StudentModifiedTimeDesc = 'StudentModifiedTimeDesc',
   BookmarkRegisteredTimeDesc = 'BookmarkRegisteredTimeDesc',
+  CardLearningTimeAsc = 'CardLearningTimeAsc',
+  CardLearningTimeDesc = 'CardLearningTimeDesc',
   None = '',
 }
 
