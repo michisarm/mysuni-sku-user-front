@@ -55,7 +55,7 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> =
                             badge.name,
                             getDefaultLang(badge.langSupport)
                           )}
-                          level="Level1"
+                          level={badge.level}
                           iconUrl={badge.iconUrl}
                           categoryId={badgeCategory.id}
                           badgeSize={BadgeSize.Small}
