@@ -144,7 +144,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         nowScroll >=
         sectionRef.current.scrollHeight - (scrollValue + 287 + 113 + 70)
       ) {
-        return 'v-wide';
+        return 'v-wide v-wide2';
       }
     }
 
@@ -160,7 +160,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       ref={sectionRef}
       className={`content lms ${getStickyClassName()}`}
       id="lms-content"
-      style={nowScroll > scrollValue ? { margin: '70px 0' } : {}}
+      // style={nowScroll > scrollValue ? { margin: '70px 0' } : {}}
     >
       <div
         className="course-info-list"
