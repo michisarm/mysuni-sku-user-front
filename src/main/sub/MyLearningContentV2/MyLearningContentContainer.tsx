@@ -1,7 +1,7 @@
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
 import { usePageElements } from 'shared/store/PageElementsStore';
@@ -9,6 +9,7 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { RecommendContainer } from '../../../myTraining/ui/logic/RecommendContainer';
+import { testIsIE } from '../../../shared/helper/bodyHelper';
 import { BookmarkCards } from './MainComponents/BookmarkCards';
 import EnrollingLearning from './MainComponents/EnrollingLearning';
 import LeraningContainer from './MainComponents/LeraningContainer';
@@ -50,15 +51,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
   const pageElements = usePageElements();
   const isExternal = isExternalInstructor();
+  const isIE = useMemo(testIsIE, []);
 
   return (
     <>
-      {/* {cardBundles?.map((cardBundle, i) => {
-        if (cardBundle.id !== '5e1114a9-73da-4c9a-b961-332311a007eb') {
-          return null;
-        }
-        return <LeraningContainer key={i} cardBundle={cardBundle} />;
-      })} */}
       <MainBanner />
       <div className="learning-section-wrap">
         <RQDLearning />
@@ -77,12 +73,6 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           .map((c) => (
             <LeraningContainer key={c.id} cardBundle={c} />
           ))}
-        {/* {cardBundles?.map((cardBundle, i) => {
-          // if (cardBundle.id === '5e1114a9-73da-4c9a-b961-332311a007eb') {
-          //   return null;
-          // }
-          return <LeraningContainer key={i} cardBundle={cardBundle} />;
-        })} */}
       </div>
       <div className="learning-section-wrap bg-gray">
         {pageElements.some(
@@ -98,11 +88,12 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           </>
         )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
-        {pageElements.some(
-          (pagemElement) =>
-            pagemElement.position === 'HomeElement' &&
-            pagemElement.type === 'RecommendCards'
-        ) && <RecommendContainer />}
+        {!isIE &&
+          pageElements.some(
+            (pagemElement) =>
+              pagemElement.position === 'HomeElement' &&
+              pagemElement.type === 'RecommendCards'
+          ) && <RecommendContainer />}
       </div>
       <div className="learning-section-wrap">
         {pageElements.some(
@@ -117,8 +108,6 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'HotTopic'
         ) && <MainHotTopicContainer />}
       </div>
-
-      {/* Header 로 이동 <InProgressLearning profileMemberName={skProfile.profileViewName} /> */}
 
       {pageElements.some(
         (pagemElement) =>

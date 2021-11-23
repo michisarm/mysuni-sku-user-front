@@ -1,10 +1,17 @@
-import { getMainFollow, setMainFollow } from './follow.services';
+import {
+  getMainFollow,
+  setMainFollow,
+  getMainFollowPost,
+  setMainFollowPost,
+} from './follow.services';
 import {
   getEmptyMainFollow,
   profileViewToMainFollowItem,
   postToMainFollowPostItem,
   MainFollow,
   MainFollowItem,
+  getEmptyMainFollowPost,
+  MainFollowPost,
 } from './follow.model';
 import { findFollowPostViews } from '../../data/community/apis/postviewsApi';
 import { useEffect } from 'react';
@@ -23,8 +30,6 @@ export async function requestMainFollowItems() {
   const followings = await findFollowerUsers(memberId);
 
   if (followings !== undefined) {
-    const value = getMainFollow() || getEmptyMainFollow();
-
     const parseFollowerProfile = followings.results.map(
       profileViewToMainFollowItem
     );
@@ -40,27 +45,28 @@ export async function requestMainFollowItems() {
         followerCount: followCount?.followerCount || 0,
         followingCount: followCount?.followingCount || 0,
       });
-    });
-
-    setMainFollow({
-      ...value,
-      search: '',
-      items: nextFollowerProfile,
-      filteredItems: nextFollowerProfile,
+      const value = getMainFollow() || getEmptyMainFollow();
+      setMainFollow({
+        ...value,
+        search: '',
+        items: nextFollowerProfile,
+        filteredItems: nextFollowerProfile,
+      });
     });
   }
 }
 
 export async function requestMainFollowPostItems() {
-  const { postItems, postIndex } = getMainFollow() || getEmptyMainFollow();
+  const { postItems, postIndex } =
+    getMainFollowPost() || getEmptyMainFollowPost();
   const followPostViews = await findFollowPostViews(postIndex);
   if (followPostViews !== undefined) {
-    const value = getMainFollow() || getEmptyMainFollow();
+    const value = getMainFollowPost() || getEmptyMainFollowPost();
     const nextPostItems = [
       ...postItems,
       ...followPostViews.results.map(postToMainFollowPostItem),
     ];
-    setMainFollow({
+    setMainFollowPost({
       ...value,
       postItems: nextPostItems,
       postIndex: nextPostItems.length,
@@ -73,7 +79,6 @@ export async function useRequestMainFollow() {
   useEffect(() => {
     requestMainFollowItems();
     requestMainFollowPostItems();
-
     return setMainFollow;
   }, []);
 }
@@ -81,7 +86,7 @@ export async function useRequestMainFollow() {
 export async function bookmark(postId: string) {
   const bookmarkId = await registerBookmark(postId);
   if (bookmarkId !== undefined) {
-    const mainFollow = getMainFollow();
+    const mainFollow = getMainFollowPost();
     if (mainFollow !== undefined) {
       const nextPostItem = mainFollow.postItems.map((postItem) => {
         if (postItem.postId === postId) {
@@ -89,18 +94,18 @@ export async function bookmark(postId: string) {
         }
         return postItem;
       });
-      const next: MainFollow = {
+      const next: MainFollowPost = {
         ...mainFollow,
         postItems: nextPostItem,
       };
-      setMainFollow(next);
+      setMainFollowPost(next);
     }
   }
 }
 
 export async function unbookmark(postId: string) {
   await removeBookmark(postId);
-  const mainFollow = getMainFollow();
+  const mainFollow = getMainFollowPost();
   if (mainFollow !== undefined) {
     const nextPostItem = mainFollow.postItems.map((postItem) => {
       if (postItem.postId === postId) {
@@ -108,10 +113,10 @@ export async function unbookmark(postId: string) {
       }
       return postItem;
     });
-    const next: MainFollow = {
+    const next: MainFollowPost = {
       ...mainFollow,
       postItems: nextPostItem,
     };
-    setMainFollow(next);
+    setMainFollowPost(next);
   }
 }
