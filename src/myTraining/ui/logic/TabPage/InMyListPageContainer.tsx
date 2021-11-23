@@ -229,22 +229,12 @@ function InMyListPageContainer({
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       // lectureService!.sortMyLearningTableViews(column, direction);
-      const cardQdo = new CardQdo();
-      const columnType = convertToKeyInMyLearningTable(column);
-
-      cardQdo.bookmark = true;
-
-      if (columnType === 'modifiedTime') {
-        cardQdo.orderBy =
-          direction === Direction.ASC
-            ? CardOrderBy.StudentModifiedTimeAsc
-            : CardOrderBy.StudentModifiedTimeDesc;
-      } else if (columnType === 'learningTime') {
-        cardQdo.orderBy =
-          direction === Direction.ASC
-            ? CardOrderBy.CardLearningTimeAsc
-            : CardOrderBy.CardLearningTimeDesc;
-      }
+      const cardQdo = CardQdo.getOrderByCardQdo(
+        convertToKeyInMyLearningTable(column),
+        direction,
+        StudentLearningType.None,
+        true
+      );
 
       setCardQdo(cardQdo);
 

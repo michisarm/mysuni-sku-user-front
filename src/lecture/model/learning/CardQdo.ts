@@ -84,7 +84,7 @@ class CardQdo {
     }
   }
 
-  private getOrderByCardQdo(
+  static getOrderByCardQdo(
     columnType: string,
     direction: Direction,
     studentLearning?: StudentLearningType,
