@@ -307,3 +307,39 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
     height: 12px;
     background: #ddd;
 }
+
+/* 학습카드 오버뷰 (학습내용 상세보기 페이지) : position 풀기 */
+#root section.content.lms {
+    position: relative;
+    margin: 0 !important;
+}
+.content.lms.v-wide .course-info-list {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+.content.lms.v-wide .course-info-detail {
+    margin-left: 21.88rem;
+}
+.content.lms.v-wide2 .course-info-list {
+    position: absolute;
+}
+#root section.content .course-info-list .course-info-wrapper {
+    padding-bottom: 6rem;
+}
+.content.lms.v-wide2 .course-info-list .course-info-wrapper {
+    position: absolute;
+    height: calc(100vh - 327px);
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.content.lms.v-wide2 .course-info-list .course-header-list {
+    position: fixed;
+    top: 0;
+    width: 21.88rem;
+}
+#root section.content.lms.lms-lnb-fixed .course-info-list .lms-fixed-holder {
+    display: block;
+    height: 0;
+}
