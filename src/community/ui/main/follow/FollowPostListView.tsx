@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Comment, Popup, Icon } from 'semantic-ui-react';
-import { useMainFollow } from './follow.services';
+import { useMainFollowPost } from './follow.services';
 import { MainFollowPostItem } from './follow.model';
 import { Link, useLocation } from 'react-router-dom';
 import { copyUrl } from '../../../packages/services/html.services';
@@ -178,7 +178,7 @@ function ItemView(props: MainFollowPostItem) {
 }
 
 export function FollowPostListView() {
-  const mainFollow = useMainFollow();
+  const mainFollow = useMainFollowPost();
   if (mainFollow === undefined) {
     return null;
   }
