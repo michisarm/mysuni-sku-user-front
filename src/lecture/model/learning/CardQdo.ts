@@ -1,9 +1,9 @@
 import { decorate, observable } from 'mobx';
 import moment from 'moment';
 import { FilterCondition } from 'myTraining/model/FilterCondition';
-import { DifficultyLevel } from 'personalcube/cubeintro/model';
 import CardOrderBy from './CardOrderBy';
 import StudentLearningType from './StudentLearningType';
+import { Direction } from '../../../myTraining/model/Direction';
 
 class CardQdo {
   //
@@ -82,6 +82,33 @@ class CardQdo {
       default:
         return '';
     }
+  }
+
+  private getOrderByCardQdo(
+    columnType: string,
+    direction: Direction,
+    studentLearning?: StudentLearningType,
+    bookmark?: boolean
+  ) {
+    //
+    const cardQdo = new CardQdo();
+
+    if (columnType === 'modifiedTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.StudentModifiedTimeAsc
+          : CardOrderBy.StudentModifiedTimeDesc;
+    } else if (columnType === 'learningTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.CardLearningTimeAsc
+          : CardOrderBy.CardLearningTimeDesc;
+    }
+
+    cardQdo.studentLearning = studentLearning || StudentLearningType.None;
+    cardQdo.bookmark = bookmark || false;
+
+    return cardQdo;
   }
 }
 

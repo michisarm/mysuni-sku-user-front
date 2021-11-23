@@ -308,22 +308,8 @@ function ProgressPageContainer({
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       // sortMyLearningTableViews(column, direction);
-      const cardQdo = new CardQdo();
       const columnType = convertToKeyInMyLearningTable(column);
-
-      cardQdo.studentLearning = StudentLearningType.Learning;
-
-      if (columnType === 'modifiedTime') {
-        cardQdo.orderBy =
-          direction === Direction.ASC
-            ? CardOrderBy.StudentModifiedTimeAsc
-            : CardOrderBy.StudentModifiedTimeDesc;
-      } else if (columnType === 'learningTime') {
-        cardQdo.orderBy =
-          direction === Direction.ASC
-            ? CardOrderBy.CardLearningTimeAsc
-            : CardOrderBy.CardLearningTimeDesc;
-      }
+      // const cardQdo = getOrde;
 
       setCardQdo(cardQdo);
 
