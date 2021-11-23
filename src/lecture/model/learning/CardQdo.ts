@@ -113,8 +113,12 @@ class CardQdo {
         direction === Direction.ASC
           ? CardOrderBy.CardLearningTimeAsc
           : CardOrderBy.CardLearningTimeDesc;
+    } else if (columnType === 'passedTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.StudentPassedTimeAsc
+          : CardOrderBy.StudentPassedTimeDesc;
     }
-
     cardQdo.studentLearning = studentLearning || StudentLearningType.None;
     cardQdo.bookmark = bookmark || '';
     cardQdo.required = required || '';

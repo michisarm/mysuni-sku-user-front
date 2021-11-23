@@ -22,6 +22,7 @@ import { MyTrainingRouteParams } from '../../../routeParams';
 import TableHeaderColumn from '../../../ui/model/TableHeaderColumn';
 import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
+import { convertToKeyInMyLearningTable } from '../../../../lecture/shared/present/logic/LectureService';
 
 interface CompletedListPageContainerProps {
   lectureService?: LectureService;
@@ -63,8 +64,13 @@ function CompletedListPageContainer({
     clearMyLearningCard,
   } = lectureService!;
 
-  const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    filterCount,
+    showResult,
+    setOpenFilter,
+    openFilter,
+  } = filterBoxService!;
 
   // useRequestFilterCountView();
 
@@ -125,8 +131,9 @@ function CompletedListPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(excelQdo());
+    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
+      excelQdo()
+    );
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';
@@ -137,7 +144,6 @@ function CompletedListPageContainer({
         tableViews.map((view, index) => {
           const collegeName =
             (view.mainCollegeId && getCollgeName(view.mainCollegeId)) || '';
-          console.dir(view);
           return view.toXlsxForCompleted(lastIndex - index, collegeName);
         })) ||
       [];
@@ -210,7 +216,6 @@ function CompletedListPageContainer({
 
   const intersectionCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
       entries.forEach((c) => {
         if (c.isIntersecting) {
           onClickSeeMore();
@@ -245,7 +250,17 @@ function CompletedListPageContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      lectureService!.sortMyLearningTableViews(column, direction);
+      // lectureService!.sortMyLearningTableViews(column, direction);
+      const cardQdo = CardQdo.getOrderByCardQdo({
+        columnType: convertToKeyInMyLearningTable(column),
+        direction,
+        studentLearning: StudentLearningType.LearningCompleted,
+      });
+
+      setCardQdo(cardQdo);
+
+      findMyLearningCardByQdo(true);
+      history.replace('./1');
     },
     [contentType]
   );
