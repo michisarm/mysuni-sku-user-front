@@ -308,7 +308,7 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 }
 
 /* 학습카드 오버뷰 (학습내용 상세보기 페이지) : position 풀기 */
-/* #root section.content.lms {
+#root section.content.lms {
     position: relative;
     margin: 0 !important;
 }
@@ -319,7 +319,7 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 }
 .content.lms.v-wide .course-info-detail {
     margin-left: 21.88rem;
-} */
+}
 .content.lms.v-wide2 .course-info-list {
     position: absolute;
 }
