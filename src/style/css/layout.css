@@ -247,6 +247,7 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .ui.label.onlytext .icon.url { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-url-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.require { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-requirements-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.total-time { width: 1rem; height: 1rem; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-total-time-16-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.document24{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-documnet-24-px.svg') 0 0 no-repeat;}
 .ui.breadcrumb.standard:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-home.svg) 0 0 no-repeat !important; }
 .content.lms .icon.ask { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-ask-11-px.svg) 0 0 no-repeat !important; }
 .content.lms .icon.listAdd { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; }

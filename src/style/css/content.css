@@ -370,7 +370,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time .label>span>strong {
     margin-top: 0;
 }
-.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time>.ui.label.onlytext {
+.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time>.ui.label.onlytext  {
     margin-top: 0;
 }
 
