@@ -1,4 +1,8 @@
-import { useRequestMainFollow } from './follow.request.services';
+import {
+  useRequestMainFollow,
+  requestMainFollowItems,
+  requestMainFollowPostItems,
+} from './follow.request.services';
 import { useRef } from 'react';
 import React from 'react';
 import { Sticky, Menu, Segment } from 'semantic-ui-react';
@@ -17,6 +21,7 @@ import { FollowListView } from './FollowListView';
 
 export function FollowPage() {
   useRequestMainFollow();
+
   const contextRef = useRef(null);
 
   return (

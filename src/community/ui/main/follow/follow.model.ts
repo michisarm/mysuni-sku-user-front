@@ -40,8 +40,10 @@ export interface MainFollowPostItem {
 export interface MainFollow {
   items: MainFollowItem[];
   filteredItems: MainFollowItem[];
-  postItems: MainFollowPostItem[];
   search: string;
+}
+export interface MainFollowPost {
+  postItems: MainFollowPostItem[];
   postTotalCount: number;
   postIndex: number;
 }
@@ -50,13 +52,16 @@ export function getEmptyMainFollow(): MainFollow {
   return {
     items: [],
     filteredItems: [],
-    postItems: [],
     search: '',
+  };
+}
+export function getEmptyMainFollowPost(): MainFollowPost {
+  return {
+    postItems: [],
     postTotalCount: 0,
     postIndex: 0,
   };
 }
-
 export function profileViewToMainFollowItem(
   profileView: ProfileView
 ): MainFollowItem {
