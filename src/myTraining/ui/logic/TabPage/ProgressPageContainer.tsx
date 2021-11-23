@@ -308,11 +308,11 @@ function ProgressPageContainer({
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       // sortMyLearningTableViews(column, direction);
-      const cardQdo = CardQdo.getOrderByCardQdo(
-        convertToKeyInMyLearningTable(column),
+      const cardQdo = CardQdo.getOrderByCardQdo({
+        columnType: convertToKeyInMyLearningTable(column),
         direction,
-        StudentLearningType.Learning
-      );
+        studentLearning: StudentLearningType.Learning,
+      });
 
       setCardQdo(cardQdo);
 

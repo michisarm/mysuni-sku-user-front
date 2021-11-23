@@ -5,6 +5,14 @@ import CardOrderBy from './CardOrderBy';
 import StudentLearningType from './StudentLearningType';
 import { Direction } from '../../../myTraining/model/Direction';
 
+interface OrderCardQdoProps {
+  columnType: string;
+  direction: Direction;
+  studentLearning?: StudentLearningType;
+  bookmark?: boolean | '';
+  required?: boolean | '';
+}
+
 class CardQdo {
   //
   offset: number = 0;
@@ -84,13 +92,15 @@ class CardQdo {
     }
   }
 
-  static getOrderByCardQdo(
-    columnType: string,
-    direction: Direction,
-    studentLearning?: StudentLearningType,
-    bookmark?: boolean
-  ) {
+  static getOrderByCardQdo(orderCardQdoProps: OrderCardQdoProps) {
     //
+    const {
+      columnType,
+      direction,
+      studentLearning,
+      bookmark,
+      required,
+    } = orderCardQdoProps;
     const cardQdo = new CardQdo();
 
     if (columnType === 'modifiedTime') {
@@ -106,7 +116,8 @@ class CardQdo {
     }
 
     cardQdo.studentLearning = studentLearning || StudentLearningType.None;
-    cardQdo.bookmark = bookmark || false;
+    cardQdo.bookmark = bookmark || '';
+    cardQdo.required = required || '';
 
     return cardQdo;
   }

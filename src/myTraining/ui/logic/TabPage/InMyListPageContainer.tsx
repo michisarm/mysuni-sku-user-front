@@ -175,7 +175,6 @@ function InMyListPageContainer({
 
   const intersectionCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
       entries.forEach((c) => {
         if (c.isIntersecting) {
           onClickSeeMore();
@@ -229,12 +228,12 @@ function InMyListPageContainer({
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       // lectureService!.sortMyLearningTableViews(column, direction);
-      const cardQdo = CardQdo.getOrderByCardQdo(
-        convertToKeyInMyLearningTable(column),
+      const cardQdo = CardQdo.getOrderByCardQdo({
+        columnType: convertToKeyInMyLearningTable(column),
         direction,
-        StudentLearningType.None,
-        true
-      );
+        studentLearning: StudentLearningType.None,
+        bookmark: true,
+      });
 
       setCardQdo(cardQdo);
 
