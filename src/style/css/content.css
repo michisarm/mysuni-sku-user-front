@@ -261,7 +261,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     width: 16px;
     height: 16px;
     position: relative;
-    transform: translateY(7px);
+    transform: translateY(8px);
 }
 .badge-col.cate-sign .cate-icon .cate-icon2 {
     border: #ccc 2px solid;
