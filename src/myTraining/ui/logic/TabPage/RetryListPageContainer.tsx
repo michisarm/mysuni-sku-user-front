@@ -265,7 +265,7 @@ function RetryListPageContainer({
   );
 
   const getDireciton = (column: string) =>
-    orders.filter((order) => order.column === column)[0].direction;
+    orders.filter((order) => order.column === column)[0]?.direction;
 
   const getOrderIcon = (column: string, fromStyle: boolean = false) => {
     if (fromStyle) {

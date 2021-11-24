@@ -226,14 +226,8 @@ class TabContainer extends Component<Props, State> {
 
   renderItems() {
     //
-    const {
-      renderItems,
-      header,
-      className,
-      large,
-      tabs,
-      renderStaticMenu,
-    } = this.props;
+    const { renderItems, header, className, large, tabs, renderStaticMenu } =
+      this.props;
     const { activeName } = this.state;
     const dataArea = this.findArea('tab');
     if (renderItems) {
