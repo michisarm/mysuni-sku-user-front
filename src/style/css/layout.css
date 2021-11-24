@@ -247,6 +247,7 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .ui.label.onlytext .icon.url { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-url-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.require { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-requirements-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.total-time { width: 1rem; height: 1rem; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-total-time-16-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.document24{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-documnet-24-px.svg') 0 0 no-repeat;}
 .ui.breadcrumb.standard:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-home.svg) 0 0 no-repeat !important; }
 .content.lms .icon.ask { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-ask-11-px.svg) 0 0 no-repeat !important; }
 .content.lms .icon.listAdd { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-14-px.svg) 0 0 no-repeat !important; }
@@ -305,4 +306,41 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
     width: 1px;
     height: 12px;
     background: #ddd;
+}
+
+/* 학습카드 오버뷰 (학습내용 상세보기 페이지) : position 풀기 */
+#root section.content.lms {
+    position: relative;
+    margin: 0 !important;
+}
+.content.lms.v-wide .course-info-list {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+.content.lms.v-wide .course-info-detail {
+    margin-left: 21.88rem;
+}
+.content.lms.v-wide2 .course-info-list {
+    position: absolute;
+}
+#root section.content .course-info-list .course-info-wrapper {
+    padding-bottom: 6rem;
+}
+.content.lms.v-wide2 .course-info-list .course-info-wrapper {
+    position: fixed;
+    width: 21.88rem;
+    top: 50px;;
+    bottom: 227px;
+    overflow-y: auto;
+}
+
+.content.lms.v-wide2 .course-info-list .course-header-list {
+    position: fixed;
+    top: 0;
+    width: 21.88rem;
+}
+#root section.content.lms.lms-lnb-fixed .course-info-list .lms-fixed-holder {
+    display: block;
+    height: 0;
 }

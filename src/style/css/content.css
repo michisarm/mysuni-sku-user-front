@@ -52,6 +52,8 @@
     font-size: 0.9rem;
     color: #999;
     padding: 0;
+    margin-right: 0;
+    font-weight: 400;
 }
 
 /* 학습카드 상세보기 페이지 */
@@ -259,7 +261,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     width: 16px;
     height: 16px;
     position: relative;
-    transform: translateY(7px);
+    transform: translateY(8px);
 }
 .badge-col.cate-sign .cate-icon .cate-icon2 {
     border: #ccc 2px solid;
@@ -290,6 +292,14 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .community-main-left .community-main-left-contents .thumbnail img{border-radius: 50%; border: 1px solid #eee}
 .g-info.info .btn_user img{ width: 32px; height: 32px; }
 .g-info.info .btn_user{ width:32px;height:32px; }
+.community-main-contants .community-main-card .ui.comments.base>.comment .content .actions .right.top button:first-child > img {display: none;}
+.community-main-contants .community-main-card .ui.comments.base>.comment .content .actions .right.top button:first-child:before {
+    display: block;
+    content: "";
+    width: 36px;
+    height: 36px;
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-menu.svg) center/100% no-repeat;
+}
 
 /* 커뮤니티 > 타인의 커뮤니티 타이틀 클릭: 팝업 */
 .profile-modal-new .follow-bttn-area .button.following {
@@ -370,7 +380,7 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time .label>span>strong {
     margin-top: 0;
 }
-.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time>.ui.label.onlytext {
+.mylearning .main-info-area>.progress-info-wrap.mypage.personal-detail .cell .total-time .btn-total-time>.ui.label.onlytext  {
     margin-top: 0;
 }
 
@@ -711,7 +721,6 @@ border-left-color: #00bfae;
 .check-type1-text { color: #666; border-color: #666;}
 .community-slide-inner .check-type1 { vertical-align: top;}
 .ui.comments.base>.comment .content .actions .cmt { background: #fff; padding: 11px 0;}
-.recommend-area .section-head .right.btn-more{margin-right: 0}
 .ui.dropdown.small-border .text{color :#777 !important}
 .support-list-wrap .tit_cnt {vertical-align: -3px;}
 .ui.form.reply.focus .field, .ui.form.reply.focus .more .count, .ui.form.reply.focus .more button, .ui.form.reply.focus .outline {border-color: #00bfae !important;}
