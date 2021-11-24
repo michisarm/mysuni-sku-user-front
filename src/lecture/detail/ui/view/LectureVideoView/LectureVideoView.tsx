@@ -414,8 +414,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
               <span>
                 <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
                 {!isBookmark
-                  ? getPolyglotText('관심목록 추가', 'Collage-Video-관심추가')
-                  : getPolyglotText('관심목록 제거', 'Collage-Video-관심제거')}
+                  ? getPolyglotText('찜한 과정', 'Collage-Video-관심추가')
+                  : getPolyglotText('찜한 과정', 'Collage-Video-관심제거')}
               </span>
             </a>
             <a onClick={copyUrl}>
