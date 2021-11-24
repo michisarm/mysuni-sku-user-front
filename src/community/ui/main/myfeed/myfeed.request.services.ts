@@ -3,16 +3,19 @@ import {
   registerBookmark,
   removeBookmark,
 } from '../../data/community/apis/bookmarksApi';
-import { findAllPostViewsFromProfileFeed } from '../../data/community/apis/postviewsApi';
+import {
+  findAllPostViewsFromProfileFeed,
+  findMyPostViewsFromProfileFeed,
+} from '../../data/community/apis/postviewsApi';
 import { MyFeed, postToMyFeedPostItme } from './myfeed.models';
 import { setMyFeed, getMyFeed, initMyFeed } from './myfeed.services';
 
 export async function requestMyFeed() {
   const myFeed = getMyFeed() || initMyFeed();
-  const profileFeed = await findAllPostViewsFromProfileFeed(
+  const profileFeed = await findMyPostViewsFromProfileFeed(
     '',
     myFeed.offset,
-    10,
+    10
   );
 
   if (profileFeed !== undefined) {
@@ -42,7 +45,7 @@ export async function bookmark(postId: string) {
   if (bookmarkId !== undefined) {
     const myFeed = getMyFeed();
     if (myFeed !== undefined) {
-      const nextPostItem = myFeed.feedList.map(feed => {
+      const nextPostItem = myFeed.feedList.map((feed) => {
         if (feed.postId === postId) {
           return { ...feed, bookmarked: true };
         }
@@ -61,7 +64,7 @@ export async function unbookmark(postId: string) {
   await removeBookmark(postId);
   const myFeed = getMyFeed();
   if (myFeed !== undefined) {
-    const nextPostItem = myFeed.feedList.map(feed => {
+    const nextPostItem = myFeed.feedList.map((feed) => {
       if (feed.postId === postId) {
         return { ...feed, bookmarked: false };
       }
