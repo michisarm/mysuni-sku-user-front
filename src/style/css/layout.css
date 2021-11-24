@@ -328,10 +328,10 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
     padding-bottom: 6rem;
 }
 .content.lms.v-wide2 .course-info-list .course-info-wrapper {
-    position: absolute;
-    width: 100%;
-    height: calc(100vh - 327px);
-    bottom: 0;
+    position: fixed;
+    width: 21.88rem;
+    top: 50px;;
+    bottom: 227px;
     overflow-y: auto;
 }
 
