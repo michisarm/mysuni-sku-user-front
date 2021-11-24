@@ -24,7 +24,7 @@ class NoticeListView extends React.Component<Props> {
 
     return (
       <>
-        <Table selectable className="qna-admin-list">
+        <Table className="qna-admin-list">
           <colgroup>
             <col width="80px" />
             <col width="500px" />
@@ -57,6 +57,7 @@ class NoticeListView extends React.Component<Props> {
               posts.map((post, index) => {
                 return (
                   <Table.Row
+                    selectable={posts && posts.length > 0}
                     key={post.postId}
                     onClick={() => onClickPost(post.postId)}
                   >
