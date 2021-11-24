@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Button, Icon, Image } from 'semantic-ui-react';
 import LectureStructureContainer from '../logic/LectureStructureContainer';
 import { useLocation, useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ import {
 const LectureDetailLayout: React.FC = function LectureDetailLayout({
   children,
 }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [structureVisible, setStructureVisible] = useState<boolean>(true);
   const { pathname } = useLocation();
   const [scrollValue, setScrollValue] = useState<any>();
@@ -128,17 +129,38 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     [noteTabUsable, noteTabActivity]
   );
 
+  const getStickyClassName = () => {
+    if (!structureVisible) {
+      return '';
+    }
+
+    if (sectionRef && sectionRef.current) {
+      // console.log(nowScroll, scrollValue, sectionRef.current.scrollHeight);
+      // console.log(
+      //   sectionRef.current.clientHeight,
+      //   sectionRef.current.offsetHeight
+      // );
+      if (
+        nowScroll >=
+        sectionRef.current.scrollHeight - (scrollValue + 287 + 113 + 70)
+      ) {
+        return 'v-wide v-wide2';
+      }
+    }
+
+    if (nowScroll > scrollValue) {
+      return 'v-wide lms-lnb-fixed';
+    }
+
+    return 'v-wide';
+  };
+
   return (
     <section
-      className={`content lms ${
-        structureVisible
-          ? nowScroll > scrollValue
-            ? 'v-wide lms-lnb-fixed'
-            : 'v-wide'
-          : ''
-      }`}
+      ref={sectionRef}
+      className={`content lms ${getStickyClassName()}`}
       id="lms-content"
-      style={nowScroll > scrollValue ? { margin: '70px 0' } : {}}
+      // style={nowScroll > scrollValue ? { margin: '70px 0' } : {}}
     >
       <div
         className="course-info-list"
