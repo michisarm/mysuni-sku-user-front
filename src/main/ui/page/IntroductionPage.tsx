@@ -142,6 +142,7 @@ class UserMainPage extends Component<Props> {
                 : SkProfileService.instance.skProfile.language === 'Chinese'
                 ? ContentTypeZhName[params.tab]
                 : ContentTypeKoName[params.tab],
+            path: routePaths.introductionClickBreadCrumb(),
           },
         ]}
       >
