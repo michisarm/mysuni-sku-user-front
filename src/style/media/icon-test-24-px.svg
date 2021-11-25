@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>35A9D940-1E89-4A48-BDF5-7424EE069A57</title>
+    <g id="Symbols_assets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_test_24px" transform="translate(3.000000, 3.000000)">
+            <path d="M11,2 L11,12.5850982 L7.58573207,16 L1,16 L1,2 L11,2 Z" id="Rectangle" stroke="#777777" stroke-width="2"></path>
+            <path d="M15.5,1.88679623 L17,4.28679623 L17,17 L14,17 L14,4.28679623 L15.5,1.88679623 Z" id="Rectangle-Copy-67" stroke="#777777" stroke-width="2"></path>
+            <rect id="Rectangle-Copy" fill="#777777" x="3" y="11" width="3" height="2"></rect>
+            <polygon id="Rectangle-Copy-70" fill="#777777" points="7 12 12 12 7 17"></polygon>
+            <rect id="Rectangle-Copy-68" fill="#777777" x="3" y="8" width="6" height="2"></rect>
+            <rect id="Rectangle-Copy-69" fill="#777777" x="3" y="5" width="6" height="2"></rect>
+        </g>
+    </g>
+</svg>
