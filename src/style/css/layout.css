@@ -161,6 +161,7 @@ i.icon.testHeader02::before {
 .challenge-wrap .challenge-badge .left-area .status .number { color: #333; }
 .challenge-wrap .challenge-badge .left-area .status .txt { color: #777; }
 .relation-badge-area .title-style .onlytext span { color: #777; }
+.content.lms .label-type { color: #222; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg') 0 50%/24px no-repeat;}
 
 /* Text area */
 .ui.input.right-top-count textarea { border: #777 1px solid; }
@@ -333,8 +334,8 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .content.lms.v-wide2 .course-info-list .course-info-wrapper {
     position: fixed;
     width: 21.88rem;
-    top: 50px;;
-    bottom: 227px;
+    top: 50px;
+    bottom: 277px;
     overflow-y: auto;
 }
 
