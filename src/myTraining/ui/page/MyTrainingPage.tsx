@@ -14,6 +14,7 @@ import {
   MyTrainingRouteParams,
   setMyTrainingRouteParams,
 } from 'myTraining/routeParams';
+import routePaths from 'myTraining/routePaths';
 
 function MyTrainingPage() {
   const params = useParams<MyTrainingRouteParams>();
@@ -29,7 +30,10 @@ function MyTrainingPage() {
     <ContentLayout
       className="mylearning"
       breadcrumb={[
-        { text: getPolyglotText('Learning', 'learning-brc-dth2') },
+        {
+          text: getPolyglotText('My Learning', 'learning-brc-dth4'),
+          path: routePaths.learningInProgress(),
+        },
         { text: learningContentTypeName(params.tab) },
       ]}
     >

@@ -147,6 +147,17 @@ export function findAllPostViewsFromProfileFeed(
   return axios.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
+export function findMyPostViewsFromProfileFeed(
+  memberId: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/myFeed?offset=0&limit=9999`;
+
+  return axios.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
 export function findAllPostViewsFromProfileBookmark(
   offset: number,
   limit: number

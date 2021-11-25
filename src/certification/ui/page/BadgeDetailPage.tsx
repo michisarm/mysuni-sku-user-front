@@ -9,6 +9,8 @@ import { useRequestBadgeDetail } from '../../service/useRequestBadgeDetail';
 import BadgeSummaryContainer from '../logic/BadgeSummaryContainer';
 import BadgeContentContainer from '../logic/BadgeContentContainer';
 import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import routePaths from 'certification/routePaths';
 
 interface BadgeDetailPageProps {
   badgeService?: BadgeService;
@@ -22,7 +24,13 @@ function BadgeDetailPage({ badgeService }: BadgeDetailPageProps) {
   return (
     <ContentLayout
       className="no-padding"
-      breadcrumb={[{ text: getBadgeCategoryName(mainCategoryId) }]}
+      breadcrumb={[
+        {
+          text: getPolyglotText('Certification', 'Certification-cb-dp2'),
+          path: routePaths.badgeTab(),
+        },
+        { text: getBadgeCategoryName(mainCategoryId) },
+      ]}
     >
       <BadgeSummaryContainer />
       <BadgeContentContainer />

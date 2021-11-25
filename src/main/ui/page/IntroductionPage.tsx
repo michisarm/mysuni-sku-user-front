@@ -134,7 +134,7 @@ class UserMainPage extends Component<Props> {
             : ''
         }`}
         breadcrumb={[
-          { text: 'About Us' },
+          { text: 'About Us', path: routePaths.introductionMySuni() },
           {
             text:
               SkProfileService.instance.skProfile.language === 'English'
