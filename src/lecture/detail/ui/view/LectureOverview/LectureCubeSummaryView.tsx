@@ -549,8 +549,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
               <span>
                 <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
                 {!isBookmark
-                  ? getPolyglotText('관심목록 추가', 'cicl-학상본문-관심추가')
-                  : getPolyglotText('관심목록 제거', 'cicl-학상본문-관심제거')}
+                  ? getPolyglotText('찜한 과정', 'cicl-학상본문-관심추가')
+                  : getPolyglotText('찜한 과정', 'cicl-학상본문-관심제거')}
               </span>
             </a>
             <a onClick={copyUrl}>

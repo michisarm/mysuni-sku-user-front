@@ -57,7 +57,7 @@ function MyLearningListHeaderView({
 
   /* functions */
   const getDireciton = (column: string) => {
-    return orders.filter((order) => order.column === column)[0].direction;
+    return orders.filter((order) => order.column === column)[0]?.direction;
   };
 
   const getOrderIcon = (column: string, fromStyle: boolean = false) => {

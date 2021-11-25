@@ -60,378 +60,390 @@ interface NameValue {
 }
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
-const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({
-  getStickyPosition,
-  scroll,
-  videoPosition,
-  enabled, // 링크드인 판별 state
-  nextContentsView,
-  lectureState,
-  currentTime,
-  duration,
-  playerState,
-}) {
-  const params = useParams<LectureParams>();
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
-  const lectureMedia = useLectureMedia();
-  const [videoContainerProps, setVideoContainerProps] = useState<
-    | {
-        panoptoSessionId: string;
-        directConnectionName?: string;
-        targetSamlInstanceName?: string;
-      }
-    | undefined
-  >(undefined);
-  useEffect(() => {
-    if (params.cubeId !== undefined) {
-      findCubeDetailCache(params.cubeId).then((cubeDetail) => {
-        if (cubeDetail !== undefined) {
-          const {
-            cubeMaterial: { media },
-          } = cubeDetail;
-          if (
-            media !== null &&
-            media.mediaContents.internalMedias[0] !== undefined
-          ) {
-            let serverName: string | undefined;
-            let search = window.location.search;
-            if (search.includes('serverName')) {
-              search = search.substring(1);
-              search.split('&').forEach((keyValue) => {
-                const [key, value] = keyValue.split('=');
-                if (key === 'serverName') {
-                  serverName = value;
-                }
+const LectureVideoView: React.FC<LectureVideoViewProps> =
+  function LectureVideoView({
+    getStickyPosition,
+    scroll,
+    videoPosition,
+    enabled, // 링크드인 판별 state
+    nextContentsView,
+    lectureState,
+    currentTime,
+    duration,
+    playerState,
+  }) {
+    const params = useParams<LectureParams>();
+    const [isBookmark, setIsBookmark] = useState<boolean>(false);
+    const [serverName, setServerName] = useState<string>();
+    const lectureMedia = useLectureMedia();
+    const [videoContainerProps, setVideoContainerProps] = useState<
+      | {
+          panoptoSessionId: string;
+          directConnectionName?: string;
+          targetSamlInstanceName?: string;
+        }
+      | undefined
+    >(undefined);
+    useEffect(() => {
+      if (params.cubeId !== undefined) {
+        findCubeDetailCache(params.cubeId).then((cubeDetail) => {
+          if (cubeDetail !== undefined) {
+            const {
+              cubeMaterial: { media },
+            } = cubeDetail;
+            if (
+              media !== null &&
+              media.mediaContents.internalMedias[0] !== undefined
+            ) {
+              let nextServerName: string | undefined;
+              let search = window.location.search;
+              if (search.includes('serverName')) {
+                search = search.substring(1);
+                search.split('&').forEach((keyValue) => {
+                  const [key, value] = keyValue.split('=');
+                  if (key === 'serverName') {
+                    nextServerName = value;
+                  }
+                });
+              }
+              setServerName(nextServerName);
+
+              const panoptoSessionId =
+                media.mediaContents.internalMedias[0].panoptoSessionId;
+              const directConnectionName =
+                media.mediaContents.internalMedias[0].directConnectionName;
+              const targetSamlInstanceName =
+                media.mediaContents.internalMedias[0].targetSamlInstanceName;
+              setVideoContainerProps({
+                panoptoSessionId,
+                directConnectionName,
+                targetSamlInstanceName,
               });
             }
-
-            const panoptoSessionId =
-              media.mediaContents.internalMedias[0].panoptoSessionId;
-            const directConnectionName =
-              media.mediaContents.internalMedias[0].directConnectionName;
-            const targetSamlInstanceName =
-              media.mediaContents.internalMedias[0].targetSamlInstanceName;
-            setVideoContainerProps({
-              panoptoSessionId,
-              directConnectionName,
-              targetSamlInstanceName,
-            });
           }
-        }
-      });
-    }
+        });
+      }
 
-    return clearPanoptoEmbedPlayer;
-  }, [params.cubeId]);
+      return clearPanoptoEmbedPlayer;
+    }, [params.cubeId]);
 
-  const history = useHistory();
-  const nextContents = useCallback((path: string) => {
-    history.push(path);
-  }, []);
+    const history = useHistory();
+    const nextContents = useCallback((path: string) => {
+      history.push(path);
+    }, []);
 
-  const [cubeName, setCubeName] = useState<any>('');
+    const [cubeName, setCubeName] = useState<any>('');
 
-  const { pathname } = useLocation();
-  const document: any = window.document;
+    const { pathname } = useLocation();
+    const document: any = window.document;
 
-  const nextContent = useNextContent();
-  const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
+    const nextContent = useNextContent();
+    const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
 
-  // 영상 스티키 시작 시간표시
-  const getTimeStringSeconds = useCallback((seconds: number) => {
-    if (seconds >= 3600) {
+    // 영상 스티키 시작 시간표시
+    const getTimeStringSeconds = useCallback((seconds: number) => {
+      if (seconds >= 3600) {
+        let min: number | string = 0;
+        let sec: number | string = 0;
+        let hour: number | string = 0;
+
+        hour = Math.round(seconds / 3600);
+        min = Math.round((seconds % 3600) / 60);
+        sec = Math.round(seconds % 60);
+
+        if (hour.toString().length == 1) hour = '0' + hour;
+        if (min.toString().length == 1) min = '0' + min;
+        if (sec.toString().length == 1) sec = '0' + sec;
+
+        return hour + ':' + min + ':' + sec;
+      }
+
       let min: number | string = 0;
       let sec: number | string = 0;
-      let hour: number | string = 0;
 
-      hour = Math.round(seconds / 3600);
       min = Math.round((seconds % 3600) / 60);
       sec = Math.round(seconds % 60);
 
-      if (hour.toString().length == 1) hour = '0' + hour;
       if (min.toString().length == 1) min = '0' + min;
       if (sec.toString().length == 1) sec = '0' + sec;
+      return min + ':' + sec;
+    }, []);
 
-      return hour + ':' + min + ':' + sec;
-    }
+    // sticky시 비디오명 표시 (cube)
+    useEffect(() => {
+      const params = getLectureParams();
+      if (params === undefined) {
+        return;
+      }
+      const currentItem = getActiveStructureItem(params.pathname);
+      if (currentItem?.type === 'CUBE') {
+        setCubeName((currentItem as LectureStructureCubeItem).name);
+      }
+    }, [params.cubeId]);
 
-    let min: number | string = 0;
-    let sec: number | string = 0;
+    const [quizPop, setQuizPop] = useState<boolean>(false);
+    const [quizShowTime, setQuizShowTime] = useState<number[]>();
+    const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
+    const [quizCurrentTime, setQuizquizCurrentTime] = useState<number>(0);
 
-    min = Math.round((seconds % 3600) / 60);
-    sec = Math.round(seconds % 60);
+    useEffect(() => {
+      const matchesQuizTime: number = Math.floor(currentTime);
 
-    if (min.toString().length == 1) min = '0' + min;
-    if (sec.toString().length == 1) sec = '0' + sec;
-    return min + ':' + sec;
-  }, []);
+      if (matchesQuizTime !== quizCurrentTime) {
+        setQuizquizCurrentTime(matchesQuizTime);
+      }
 
-  // sticky시 비디오명 표시 (cube)
-  useEffect(() => {
-    const params = getLectureParams();
-    if (params === undefined) {
-      return;
-    }
-    const currentItem = getActiveStructureItem(params.pathname);
-    if (currentItem?.type === 'CUBE') {
-      setCubeName((currentItem as LectureStructureCubeItem).name);
-    }
-  }, [params.cubeId]);
+      const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
 
-  const [quizPop, setQuizPop] = useState<boolean>(false);
-  const [quizShowTime, setQuizShowTime] = useState<number[]>();
-  const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
-  const [quizCurrentTime, setQuizquizCurrentTime] = useState<number>(0);
-
-  useEffect(() => {
-    const matchesQuizTime: number = Math.floor(currentTime);
-
-    if (matchesQuizTime !== quizCurrentTime) {
-      setQuizquizCurrentTime(matchesQuizTime);
-    }
-
-    const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
-
-    if (pathnameChangeCheck && playerState === PlayerState.Playing) {
-      setTimeout(() => {
-        sessionStorage.removeItem('lectureVideoView');
-      }, 1000);
-    }
-    if (
-      // learningState !== 'Passed' && // 학습이수 체크
-      matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
-      quizShowTime && // 퀴즈 등장 시간
-      // matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
-      quizShowTime.filter((f) => f === matchesQuizTime).length > 0 && // 퀴즈 등장 시간
-      lectureMedia?.mediaContents.internalMedias[0].quizIds // quizIds 체크
-      // pathnameChangeCheck !== 'true'
-    ) {
-      setQuizCurrentIndex(quizShowTime.findIndex((f) => f === matchesQuizTime));
+      if (pathnameChangeCheck && playerState === PlayerState.Playing) {
+        setTimeout(() => {
+          sessionStorage.removeItem('lectureVideoView');
+        }, 1000);
+      }
       if (
-        scroll > videoPosition &&
-        quizShowTime.indexOf(matchesQuizTime) !== -1
+        // learningState !== 'Passed' && // 학습이수 체크
+        matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
+        quizShowTime && // 퀴즈 등장 시간
+        // matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
+        quizShowTime.filter((f) => f === matchesQuizTime).length > 0 && // 퀴즈 등장 시간
+        lectureMedia?.mediaContents.internalMedias[0].quizIds // quizIds 체크
+        // pathnameChangeCheck !== 'true'
       ) {
-        setQuizquizCurrentTime(0);
-        setPauseVideoSticky(true);
-        setQuizPop(false);
-        pauseVideo();
-        reactAlert({
-          title: getPolyglotText(
-            '영상이 중지됐습니다.',
-            'Collage-Video-영상중지'
-          ),
-          message: getPolyglotText(
-            '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
-            'Collage-Video-답안제출'
-          ),
-          onClose: () => onScrollTop(),
-        });
-      } else if (quizCurrentTime !== matchesQuizTime) {
-        setPauseVideoSticky(false);
-        setQuizPop(true);
-        pauseVideo();
+        setQuizCurrentIndex(
+          quizShowTime.findIndex((f) => f === matchesQuizTime)
+        );
+        if (
+          scroll > videoPosition &&
+          quizShowTime.indexOf(matchesQuizTime) !== -1
+        ) {
+          setQuizquizCurrentTime(0);
+          setPauseVideoSticky(true);
+          setQuizPop(false);
+          pauseVideo();
+          reactAlert({
+            title: getPolyglotText(
+              '영상이 중지됐습니다.',
+              'Collage-Video-영상중지'
+            ),
+            message: getPolyglotText(
+              '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+              'Collage-Video-답안제출'
+            ),
+            onClose: () => onScrollTop(),
+          });
+        } else if (quizCurrentTime !== matchesQuizTime) {
+          setPauseVideoSticky(false);
+          setQuizPop(true);
+          pauseVideo();
+        }
       }
-    }
-  }, [currentTime, scroll, quizShowTime]);
+    }, [currentTime, scroll, quizShowTime]);
 
-  useEffect(() => {
-    setQuizPop(false);
-    if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
-      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
-      const quizId = quizIds?.join(',');
-      const getQuizTable = async () => {
-        await findAllQuiz(quizId).then((res) => {
-          setQuizShowTime(
-            res
-              .sort(
-                (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
-              )
-              .map((quiz: QuizTableList) => quiz.showTime)
-          );
-        });
-      };
-      getQuizTable();
-    }
-  }, [lectureMedia]);
-
-  useEffect(() => {
-    sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
-  }, [pathname]);
-
-  useEffect(() => {
-    setIsBookmark(findIsBookmark(params?.cardId));
-  }, [params?.cardId]);
-
-  const onCompletedQuiz = useCallback(() => {
-    if (quizPop) {
+    useEffect(() => {
       setQuizPop(false);
-      playVideo();
-    }
-    // setQuizCurrentIndex(quizCurrentIndex + 1);
-  }, [quizPop, quizCurrentIndex]);
-
-  const onScrollTop = () => {
-    window.scrollTo(0, 124);
-    setPauseVideoSticky(false);
-  };
-
-  function copyUrl() {
-    const textarea = document.createElement('textarea');
-    textarea.value = window.location.href;
-    document.body.appendChild(textarea);
-    textarea.select();
-    textarea.setSelectionRange(0, 9999);
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    reactAlert({
-      title: getPolyglotText('알림', 'cicl-학상본문-알림'),
-      message: getPolyglotText('URL이 복사되었습니다.', 'mypage-유저모달-url'),
-    });
-  }
-
-  const clickNewTab = () => {
-    const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
-
-    if (noteTab !== null) {
-      noteTab.click();
-    }
-    setTimeout(() => {
-      const noteBtn = document.getElementById('handlePopup') as HTMLElement;
-      if (noteBtn !== null) {
-        noteBtn.click();
+      if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+        const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
+        const quizId = quizIds?.join(',');
+        const getQuizTable = async () => {
+          await findAllQuiz(quizId).then((res) => {
+            setQuizShowTime(
+              res
+                .sort(
+                  (a: QuizTableList, b: QuizTableList) =>
+                    a.showTime - b.showTime
+                )
+                .map((quiz: QuizTableList) => quiz.showTime)
+            );
+          });
+        };
+        getQuizTable();
       }
-    }, 500);
-  };
+    }, [lectureMedia]);
 
-  const isSticked = scroll > videoPosition && !enabled;
+    useEffect(() => {
+      sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
+    }, [pathname]);
 
-  return (
-    <div
-      className={
-        isSticked && lectureMedia?.mediaType === 'InternalMedia'
-          ? 'video-fixed-holder lms-video-fixed'
-          : 'video-fixed-holder'
+    useEffect(() => {
+      setIsBookmark(findIsBookmark(params?.cardId));
+    }, [params?.cardId]);
+
+    const onCompletedQuiz = useCallback(() => {
+      if (quizPop) {
+        setQuizPop(false);
+        playVideo();
       }
-      ref={getStickyPosition}
-    >
-      <div className="lms-video-sticky">
-        {videoContainerProps !== undefined && (
-          <VideoContainer
-            language={SkProfileService.instance.skProfile.language}
-            panoptoSessionId={videoContainerProps.panoptoSessionId}
-            directConnectionName={videoContainerProps.directConnectionName}
-            targetSamlInstanceName={videoContainerProps.targetSamlInstanceName}
-            captionText={getPolyglotText('자막언어', '비디오-뷰-자막언어')}
-            disableCaptionText={getPolyglotText(
-              '사용 안함',
-              '비디오-뷰-사용안함'
-            )}
-          >
-            <>
-              <VideoQuizContainer
-                isSticked={isSticked}
-                quizPop={quizPop}
-                quizCurrentIndex={quizCurrentIndex}
-                onCompletedQuiz={onCompletedQuiz}
-              />
-              {pauseVideoSticky && (
-                <div className="video-overlay-small art">
-                  <button onClick={onScrollTop} type="button">
-                    <span className="copy">
-                      <PolyglotText
-                        defaultString="퀴즈풀고 이어보기"
-                        id="Collage-Video-퀴즈풀기"
-                      />
-                    </span>
-                  </button>
-                </div>
+      // setQuizCurrentIndex(quizCurrentIndex + 1);
+    }, [quizPop, quizCurrentIndex]);
+
+    const onScrollTop = () => {
+      window.scrollTo(0, 124);
+      setPauseVideoSticky(false);
+    };
+
+    function copyUrl() {
+      const textarea = document.createElement('textarea');
+      textarea.value = window.location.href;
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, 9999);
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      reactAlert({
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText(
+          'URL이 복사되었습니다.',
+          'mypage-유저모달-url'
+        ),
+      });
+    }
+
+    const clickNewTab = () => {
+      const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
+
+      if (noteTab !== null) {
+        noteTab.click();
+      }
+      setTimeout(() => {
+        const noteBtn = document.getElementById('handlePopup') as HTMLElement;
+        if (noteBtn !== null) {
+          noteBtn.click();
+        }
+      }, 500);
+    };
+
+    const isSticked = scroll > videoPosition && !enabled;
+
+    return (
+      <div
+        className={
+          isSticked && lectureMedia?.mediaType === 'InternalMedia'
+            ? 'video-fixed-holder lms-video-fixed'
+            : 'video-fixed-holder'
+        }
+        ref={getStickyPosition}
+      >
+        <div className="lms-video-sticky">
+          {videoContainerProps !== undefined && (
+            <VideoContainer
+              language={SkProfileService.instance.skProfile.language}
+              panoptoSessionId={videoContainerProps.panoptoSessionId}
+              directConnectionName={videoContainerProps.directConnectionName}
+              targetSamlInstanceName={
+                videoContainerProps.targetSamlInstanceName
+              }
+              captionText={getPolyglotText('자막언어', '비디오-뷰-자막언어')}
+              disableCaptionText={getPolyglotText(
+                '사용 안함',
+                '비디오-뷰-사용안함'
               )}
-              {nextContentsView &&
-                nextContent?.path !== undefined &&
-                lectureState.student?.learningState === 'Passed' && (
-                  <>
-                    <div
-                      id="video-overlay"
-                      className="video-overlay"
-                      onClick={() => nextContents(nextContent?.path)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div className="video-overlay-btn">
+              serverName={serverName}
+            >
+              <>
+                <VideoQuizContainer
+                  isSticked={isSticked}
+                  quizPop={quizPop}
+                  quizCurrentIndex={quizCurrentIndex}
+                  onCompletedQuiz={onCompletedQuiz}
+                />
+                {pauseVideoSticky && (
+                  <div className="video-overlay-small art">
+                    <button onClick={onScrollTop} type="button">
+                      <span className="copy">
+                        <PolyglotText
+                          defaultString="퀴즈풀고 이어보기"
+                          id="Collage-Video-퀴즈풀기"
+                        />
+                      </span>
+                    </button>
+                  </div>
+                )}
+                {nextContentsView &&
+                  nextContent?.path !== undefined &&
+                  lectureState.student?.learningState === 'Passed' && (
+                    <>
+                      <div
+                        id="video-overlay"
+                        className="video-overlay"
+                        onClick={() => nextContents(nextContent?.path)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="video-overlay-btn">
+                          <button>
+                            <img src={playerBtn} />
+                          </button>
+                        </div>
+                        <div className="video-overlay-text">
+                          <p>
+                            <PolyglotText
+                              defaultString="다음 학습 이어하기"
+                              id="Collage-Video-이어하기"
+                            />
+                          </p>
+                          <h3>
+                            {nextContent &&
+                              (nextContent as LectureStructureCubeItem).name}
+                          </h3>
+                        </div>
+                      </div>
+                      <div
+                        className="video-overlay-small"
+                        onClick={() => nextContents(nextContent?.path)}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <button>
                           <img src={playerBtn} />
                         </button>
-                      </div>
-                      <div className="video-overlay-text">
-                        <p>
+                        <span className="copy">
                           <PolyglotText
                             defaultString="다음 학습 이어하기"
                             id="Collage-Video-이어하기"
                           />
-                        </p>
-                        <h3>
-                          {nextContent &&
-                            (nextContent as LectureStructureCubeItem).name}
-                        </h3>
+                        </span>
                       </div>
-                    </div>
-                    <div
-                      className="video-overlay-small"
-                      onClick={() => nextContents(nextContent?.path)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <button>
-                        <img src={playerBtn} />
-                      </button>
-                      <span className="copy">
-                        <PolyglotText
-                          defaultString="다음 학습 이어하기"
-                          id="Collage-Video-이어하기"
-                        />
-                      </span>
-                    </div>
-                  </>
-                )}
-            </>
-          </VideoContainer>
-        )}
+                    </>
+                  )}
+              </>
+            </VideoContainer>
+          )}
 
-        <div className="sticky-video-content">
-          <div className="header">{cubeName}</div>
-          <div className="time-check">
-            <strong>{getTimeStringSeconds(currentTime)}</strong> /
-            {getTimeStringSeconds(duration)}
-          </div>
-          <div className="header-right-link">
-            {!isMobile && (
-              <Button onClick={clickNewTab}>
+          <div className="sticky-video-content">
+            <div className="header">{cubeName}</div>
+            <div className="time-check">
+              <strong>{getTimeStringSeconds(currentTime)}</strong> /
+              {getTimeStringSeconds(duration)}
+            </div>
+            <div className="header-right-link">
+              {!isMobile && (
+                <Button onClick={clickNewTab}>
+                  <span>
+                    <Icon className="noteWrite" />
+                    Note
+                  </span>
+                </Button>
+              )}
+              <a onClick={() => toggleCardBookmark(setIsBookmark)}>
                 <span>
-                  <Icon className="noteWrite" />
-                  Note
+                  <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
+                  {!isBookmark
+                    ? getPolyglotText('찜한 과정', 'Collage-Video-관심추가')
+                    : getPolyglotText('찜한 과정', 'Collage-Video-관심제거')}
                 </span>
-              </Button>
-            )}
-            <a onClick={() => toggleCardBookmark(setIsBookmark)}>
-              <span>
-                <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
-                {!isBookmark
-                  ? getPolyglotText('관심목록 추가', 'Collage-Video-관심추가')
-                  : getPolyglotText('관심목록 제거', 'Collage-Video-관심제거')}
-              </span>
-            </a>
-            <a onClick={copyUrl}>
-              <span>
-                <Icon className="linkCopy" />
-                <PolyglotText
-                  defaultString="링크 복사"
-                  id="Collage-Video-링크복사"
-                />
-              </span>
-            </a>
+              </a>
+              <a onClick={copyUrl}>
+                <span>
+                  <Icon className="linkCopy" />
+                  <PolyglotText
+                    defaultString="링크 복사"
+                    id="Collage-Video-링크복사"
+                  />
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default LectureVideoView;

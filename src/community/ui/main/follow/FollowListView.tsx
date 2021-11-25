@@ -1,6 +1,6 @@
-import { useMainFollow } from './follow.services';
+import { useMainFollow, setMainFollow, getMainFollow } from './follow.services';
 import { MainFollowItem } from './follow.model';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Area } from '../../../../tracker/model/ActionType';
 import { FollowSearchView } from './FollowSearchView';
 import { CommunityProfileModal } from '../../userProfileInfo/CommunityProfileModal';
@@ -58,6 +58,7 @@ export function FollowListView() {
   );
 
   const mainFollow = useMainFollow();
+
   if (mainFollow === undefined) {
     return null;
   }
@@ -65,6 +66,7 @@ export function FollowListView() {
     return null;
   }
   const { filteredItems } = mainFollow;
+
   return (
     <>
       <div

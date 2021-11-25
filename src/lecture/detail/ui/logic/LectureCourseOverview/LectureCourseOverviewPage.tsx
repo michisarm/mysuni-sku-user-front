@@ -8,13 +8,9 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
 import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
-import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
-import { cs } from 'date-fns/locale';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
-
-  // console.log(isPisAgreement);
 
   if (!isPisAgreement) {
     // Model 띄우기
@@ -106,8 +102,10 @@ function LectureCourseOverviewPage() {
       }
     }
 
-    isOpenPassedPisAgreementModal(lectureStructure.card.cardId);
-  }, [lectureStructure]);
+    if (lectureStructure.card.cardId !== '') {
+      isOpenPassedPisAgreementModal(lectureStructure.card.cardId);
+    }
+  }, [history, lectureStructure]);
 
   return (
     <Fragment>

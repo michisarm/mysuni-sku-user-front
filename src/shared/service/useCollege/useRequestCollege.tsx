@@ -74,3 +74,12 @@ export function compareCollgeCineroom(collegeId: string) {
 
   return false;
 }
+
+export function findMyAplCollege(cineroomId: string) {
+  const collegeList = getAllColleges();
+  const findAplcollege = collegeList.filter(
+    (college) => college.cineroomId === cineroomId
+  );
+
+  return findAplcollege;
+}

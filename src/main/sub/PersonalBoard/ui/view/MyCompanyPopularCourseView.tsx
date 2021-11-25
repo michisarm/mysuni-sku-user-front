@@ -148,7 +148,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = (Props) => {
       {popularCourseItem && (
         <div
           className="personal-card-item right-card"
-          data-area={Area.MAIN_INFO}
+          data-area={Area.MAIN_PERSONAL}
         >
           <div className="card-item-tit">
             <h3>

@@ -82,7 +82,7 @@ export const PersonalBoardContainer = inject(
       <>
         <div
           className={`personal-info-wrap ${isVisible ? 'visible' : ''}`}
-          data-area={Area.MAIN_INFO}
+          data-area={Area.MAIN_PERSONAL}
         >
           <div className="inner">
             <div className="personal-contents">

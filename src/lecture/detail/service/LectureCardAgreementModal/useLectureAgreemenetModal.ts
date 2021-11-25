@@ -20,7 +20,9 @@ import { updateCardPisAgreement } from '../../api/profileApi';
 export function useRequestLectureCardPisAgreementModal(cardId: string) {
   //
   useEffect(() => {
-    requestLectureCardPisAgreementModal(cardId);
+    if (cardId !== '') {
+      requestLectureCardPisAgreementModal(cardId);
+    }
   }, [cardId]);
 }
 
@@ -42,14 +44,13 @@ export async function requestLectureCardPisAgreementModal(cardId: string) {
     );
 
     const file = initFileModel();
-    const files:
-      | DepotFileViewModel
-      | DepotFileViewModel[] = await deport.getDepotFiles(
-      parsePolyglotString(
-        cardWithContentsAndRelatedCountRom.cardContents.pisAgreementDepotId
-      ),
-      true
-    );
+    const files: DepotFileViewModel | DepotFileViewModel[] =
+      await deport.getDepotFiles(
+        parsePolyglotString(
+          cardWithContentsAndRelatedCountRom.cardContents.pisAgreementDepotId
+        ),
+        true
+      );
 
     if (!Array.isArray(files)) {
       file.url = '/api/depot/depotFile/flow/download/' + files.id;

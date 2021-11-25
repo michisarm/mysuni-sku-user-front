@@ -14,8 +14,8 @@ export function onMainFollowFilterClick() {
   const value = getMainFollow() || getEmptyMainFollow();
   setMainFollow({
     ...value,
-    filteredItems: value.items.filter(c =>
-      c.profileNickName.includes(value.search),
+    filteredItems: value.items.filter((c) =>
+      c.profileNickName.includes(value.search)
     ),
   });
 }

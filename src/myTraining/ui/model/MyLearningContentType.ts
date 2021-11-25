@@ -2,7 +2,7 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export enum MyLearningContentType {
   InProgress = 'InProgress', // 학습중
-  InMyList = 'InMyList', // 관심목록
+  InMyList = 'InMyList', // 찜한과정
   Enrolled = 'Enrolled', // 학습예정
   Required = 'Required', // 핵인싸 과정
   Completed = 'Completed', // 학습완료('mySUNI 학습완료' 로 변경 예정)
@@ -12,7 +12,7 @@ export enum MyLearningContentType {
 
 export enum MyLearningContentTypeName {
   InProgress = '학습중',
-  InMyList = '관심목록',
+  InMyList = '찜한과정',
   Enrolled = '학습예정',
   Required = '핵인싸 과정',
   Completed = 'mySUNI 학습완료',
@@ -24,7 +24,7 @@ export function learningContentTypeName(s: string) {
   if (s === 'InProgress') {
     return getPolyglotText('학습중', 'learning-tabm-탭학습');
   } else if (s === 'InMyList') {
-    return getPolyglotText('관심목록', 'learning-tabm-탭관심');
+    return getPolyglotText('찜한과정', 'learning-tabm-탭관심');
   } else if (s === 'Enrolled') {
     return getPolyglotText('학습예정', 'learning-tabm-탭학예');
   } else if (s === 'Required') {

@@ -139,7 +139,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           path: myPageRoutePaths.learningInProgress(),
         },
         {
-          name: getPolyglotText('관심목록', 'home-사이트맵-중카21'),
+          name: getPolyglotText('찜한과정', 'home-사이트맵-중카21'),
           path: myPageRoutePaths.learningInMyList(),
         },
         {

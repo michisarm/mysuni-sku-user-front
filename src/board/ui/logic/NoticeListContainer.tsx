@@ -154,7 +154,7 @@ class NoticeListContainer extends ReactComponent<Props, State, Injected> {
                 <Icon
                   link
                   className="search-32"
-                  onClick={() => this.setState({ keyword })}
+                  onClick={() => this.findNoticePosts()}
                 />
               </div>
             </div>

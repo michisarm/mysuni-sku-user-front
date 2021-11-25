@@ -15,6 +15,7 @@ import { SkProfileService } from 'profile/stores';
 import { SelectOption } from 'shared/model/SelectOption';
 import {
   compareCollgeCineroom,
+  findMyAplCollege,
   getChannelName,
   getCollgeName,
 } from '../../../shared/service/useCollege/useRequestCollege';
@@ -22,6 +23,7 @@ import { onResetFocusControl } from '../aplCreate.events';
 import AplCreateCollegeService from '../mobx/AplCreateCollegeService';
 import AplCreateFocusService from '../mobx/AplCreateFocusService';
 import { CollegeModel } from '../../../college/model';
+import { College } from 'shared/service/requestAllColleges';
 
 export async function requestAplApprover() {
   const aplService = AplService.instance;
@@ -70,19 +72,25 @@ export async function requestAplApprover() {
 export async function requestAplCreateColleges() {
   //
   if (window.navigator.onLine) {
-    await CollegeService.instance.findCollegesForCurrentCineroom();
-    parseCollegeOptions(CollegeService.instance.mainColleges);
+    // await CollegeService.instance.findCollegesForCurrentCineroom();
+    // parseCollegeOptions(CollegeService.instance.mainColleges);
+    const aplCollege = findMyAplCollege(
+      MenuControlAuthService.instance.menuControlAuth.id
+    );
+
+    if (aplCollege) {
+      parseCollegeOptions(aplCollege);
+    }
   }
 }
 
-// export function parseCollegeOptions(colleges: CollegeLectureCountRdo[]) {
-export function parseCollegeOptions(colleges: CollegeModel[]) {
+export function parseCollegeOptions(colleges: College[]) {
   const collegeOptions: SelectOption[] = [
     { key: 'Select', value: 'Select', text: 'Select' },
   ];
   if (colleges) {
     colleges.forEach((college, index) => {
-      if (!compareCollgeCineroom(college.id)) {
+      if (college.id) {
         collegeOptions.push({
           key: String(index + 1),
           value: college.id,
