@@ -72,6 +72,7 @@ body #root { background: #fff; }
 .cont-inner .item-button { line-height: 20px; }
 .content.lms .ui.button.post-s { border: #777 1px solid; color: #777; }
 .content.lms .header-right-link a { color: #777; }
+.content.lms .communityText { border-color: #777; }
 .ui.icon.button.postset { color: #aaa; }
 .ui.button.post { border: #777 1px solid; color: #777; }
 .ui.icon.button.postset .icon.edit2:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px.svg') 0 0 no-repeat !important; }
@@ -94,6 +95,8 @@ body #root { background: #fff; }
 .challenge-wrap .challenge-badge .right-area .badge-title .path { color: #777; background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg) center no-repeat; }
 .course-radio.task .task-post-btn:before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-post-24-px.svg); }
 .challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:after { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/ct-arrow.svg') 0 0 no-repeat; }
+.channel-change div.table-css .head .cell, .channel-change div.table-css .cell:nth-of-type(2){border-color:#ddd}
+.ui.accordion.channel .title, .ui.accordion.channel .content{border-color: #ddd}
 .ui.accordion.channel .title i::before {
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-card-list-open.svg") 0 0 no-repeat !important;
     background-size: 26px 26px !important;
