@@ -493,6 +493,14 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 }
 
 /* 이모지 */
+.ui.popup.emoji_popup {
+    box-shadow: none;
+    border: #ddd 1px solid;
+}
+.emoji_popup .emoji_header {
+    border-color: #ddd;
+}
+
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
 i.icon.icon_emoji_2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-2.svg') no-repeat center/100%;}
 i.icon.icon_emoji_3{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-3.svg') no-repeat center/100%;}
@@ -520,7 +528,6 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     left:0.5rem;
     background:#00bfae;
 }
-
 
 .emoji_icons .em_b { font-weight: normal; }
 
@@ -845,4 +852,12 @@ border-left-color: #00bfae;
 .content.lms .ov-paragraph.download-area .down a:after {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-4-24-px.svg) 0 0 no-repeat;
     opacity: 0.7;
+}
+
+/* 404 page */
+#root .center-content .align.error404 .not-found-text {
+    color: #777;
+}
+#root section.bg-white.full {
+    min-height: calc(100vh - 112px - 277px);
 }
