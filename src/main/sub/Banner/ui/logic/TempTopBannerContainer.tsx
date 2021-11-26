@@ -5,7 +5,7 @@ import { requestTempTopBanner } from '../../service/useRequestTopBanner';
 export function TempTopBannerContainer() {
   const bannerData = {
     imageUrl:
-      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner.jpg',
+      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner.png',
     backGroundColor: '#984AEE',
   };
   const [openTopBanner, setOpenTopBanner] = useState<boolean>(true);
