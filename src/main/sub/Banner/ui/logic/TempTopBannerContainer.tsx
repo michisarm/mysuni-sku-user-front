@@ -19,12 +19,12 @@ export function TempTopBannerContainer() {
     const encryptValue = await requestTempTopBanner();
     if (encryptValue) {
       window.open(
-        `https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=${encryptValue}`,
+        `https://mysuni-giftevent.com/Auth/Index?q=${encryptValue}`,
         '_blank'
       );
     } else {
       window.open(
-        'https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=Hm1WQe/vpFhsI3QWn872MPT6c2fnSqaI4DEDYd22bt0=',
+        'https://mysuni-giftevent.com/Auth/Index?q=Hm1WQe/vpFhsI3QWn872MPT6c2fnSqaI4DEDYd22bt0=',
         '_blank'
       );
     }
