@@ -826,3 +826,8 @@ border-left-color: #00bfae;
     margin-right: 6px;
     transform: translateY(-1px);
 }
+
+/* 학습카드 오버뷰 > transcript */
+.transcript-box {
+    padding-bottom: 120px;
+}
