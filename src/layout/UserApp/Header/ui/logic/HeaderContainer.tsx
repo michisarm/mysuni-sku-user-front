@@ -26,6 +26,7 @@ import { Dimmer } from 'semantic-ui-react';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
 import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
+import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
 
 interface Props extends RouteComponentProps {}
 
@@ -276,7 +277,10 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
               supportPath={this.supportPath}
             />
           }
-          topBanner={<TopBannerContainer />}
+          topBanner={
+            (this.isMainAndSearchPage() && <TempTopBannerContainer />) || null
+          }
+          // topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
           setSearchInfoValue={this.setSearchInfoValue}
           onSearch={this.onSearchValue}
