@@ -35,5 +35,5 @@ export async function requestTopBanner() {
 export async function requestTempTopBanner() {
   //
   const encryptString = await getEncryptEventValue();
-  console.log(encryptString);
+  return encryptString;
 }

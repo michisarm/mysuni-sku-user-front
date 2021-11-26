@@ -15,8 +15,19 @@ export function TempTopBannerContainer() {
 
   const displayTopBanner = openTopBanner && bannerData && bannerData.imageUrl;
 
-  const onClickBanner = () => {
-    requestTempTopBanner();
+  const onClickBanner = async () => {
+    const encryptValue = await requestTempTopBanner();
+    if (encryptValue) {
+      window.open(
+        `https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=${encryptValue}`,
+        '_blank'
+      );
+    } else {
+      window.open(
+        'https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=Hm1WQe/vpFhsI3QWn872MPT6c2fnSqaI4DEDYd22bt0=',
+        '_blank'
+      );
+    }
   };
 
   return (
