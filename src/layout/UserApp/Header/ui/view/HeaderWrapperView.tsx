@@ -65,8 +65,8 @@ class HeaderWrapperView extends Component<Props> {
 
     return (
       <>
-        {/* {topBanner} */}
         <section className={classNames} id="lms-header">
+          {topBanner}
           {mainNotice}
           <div className={focused ? 'group off' : 'group'}>
             <div className="cont-inner">{children}</div>
