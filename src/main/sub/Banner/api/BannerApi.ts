@@ -15,8 +15,6 @@ export function findLatestBannerBundles(
 export function getEncryptEventValue(): Promise<string | undefined> {
   //
   return getAxios()
-    .get<string>(
-      'https://stg.mysuni.sk.com/api/event/cypher/encrypt/email/UNIVtomorrow'
-    )
+    .get<string>('/api/event/cypher/encrypt/email/UNIVtomorrow')
     .then(AxiosReturn);
 }
