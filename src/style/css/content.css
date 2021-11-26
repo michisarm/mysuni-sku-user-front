@@ -831,3 +831,18 @@ border-left-color: #00bfae;
 .transcript-box {
     padding-bottom: 120px;
 }
+.follow_list .chk_follow.checked {
+    color: #aaa;
+    border-color: #aaa;
+}
+.documents-viewer .pdf-header,
+.documents-viewer .pdf-header .pdf-header-select a {
+    border-color: #ddd;
+}
+.documents-viewer .pdf-header .pdf-header-select a:hover {
+    background-color: #f5f5f5;
+}
+.content.lms .ov-paragraph.download-area .down a:after {
+    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-4-24-px.svg) 0 0 no-repeat;
+    opacity: 0.7;
+}
