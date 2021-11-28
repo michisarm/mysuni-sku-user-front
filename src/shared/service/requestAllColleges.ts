@@ -23,6 +23,10 @@ export const [useAllColleges, setAllColleges, getAllColleges] = createStore<
   College[]
 >([]);
 
+export const [useAllChannels, setAllChannels, getAllChannels] = createStore<
+  Channel[]
+>([]);
+
 export function isMySuniCollege(college: College) {
   return college.cineroomId === 'ne1-m2-c2';
 }
@@ -44,4 +48,10 @@ export const [findAllCollegeCache] = createCacheApi(findAllCollege);
 export async function requestAllColleges() {
   const colleges = (await findAllCollege()) || [];
   setAllColleges(colleges);
+
+  const allChannels = colleges.reduce<Channel[]>(
+    (p, c) => [...p, ...c.channels],
+    []
+  );
+  setAllChannels(allChannels);
 }

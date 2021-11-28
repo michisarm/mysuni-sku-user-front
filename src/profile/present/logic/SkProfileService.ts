@@ -12,6 +12,7 @@ import StudySummaryModel from '../../model/StudySummaryModel';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import AdditionalUserInfoModel from 'profile/model/AdditionalUserInfoModel';
 import TempProfileModel from 'profile/model/TempProfileModel';
+import { setFavoriteChannelIds, getFavoriteChannelIds } from '../../stores';
 
 @autobind
 class SkProfileService {
@@ -94,6 +95,13 @@ class SkProfileService {
 
   @action
   async divideProfileModel(user: TempProfileModel) {
+    if (
+      JSON.stringify(getFavoriteChannelIds()) !==
+      JSON.stringify(user.additionalUserInfo.favoriteChannelIds)
+    ) {
+      setFavoriteChannelIds(user.additionalUserInfo.favoriteChannelIds);
+    }
+
     await runInAction(() => (this.skProfile = new SkProfileModel(user.user)));
 
     await runInAction(
@@ -141,7 +149,8 @@ class SkProfileService {
 
   @action
   setUserDefinedFavoriteJobDuty(userDefinedFavoriteJobDuty: string) {
-    this.additionalUserInfo.userDefinedFavoriteJobDuty = userDefinedFavoriteJobDuty;
+    this.additionalUserInfo.userDefinedFavoriteJobDuty =
+      userDefinedFavoriteJobDuty;
   }
 
   @action
@@ -156,7 +165,8 @@ class SkProfileService {
 
   @action
   setUserDefinedCurrentJobDuty(userDefinedCurrentJobDuty: string) {
-    this.additionalUserInfo.userDefinedCurrentJobDuty = userDefinedCurrentJobDuty;
+    this.additionalUserInfo.userDefinedCurrentJobDuty =
+      userDefinedCurrentJobDuty;
   }
 
   // StudySummary ------------------------------------------------------------------------------------------------------
@@ -166,6 +176,13 @@ class SkProfileService {
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
       async (additionalUserInfo: AdditionalUserInfoModel) => {
+        if (
+          JSON.stringify(getFavoriteChannelIds()) !==
+          JSON.stringify(additionalUserInfo.favoriteChannelIds)
+        ) {
+          setFavoriteChannelIds(additionalUserInfo.favoriteChannelIds);
+        }
+
         runInAction(() => (this.additionalUserInfo = additionalUserInfo));
       }
     );
