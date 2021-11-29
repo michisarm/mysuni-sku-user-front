@@ -32,6 +32,7 @@ interface Props extends RouteComponentProps {}
 
 interface State {
   isFixed: boolean;
+  isTopBannerOpen: boolean;
 }
 
 interface Injected {
@@ -47,6 +48,7 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
 
   state = {
     isFixed: false,
+    isTopBannerOpen: true,
   };
 
   headerRef: React.RefObject<any> = createRef();
@@ -251,11 +253,17 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
     }
   }
 
+  onClickCloseTopBanner() {
+    //
+    this.setState({ isTopBannerOpen: false });
+  }
+
   render() {
     //
     const { breadcrumb } = this.context;
     const { searchService } = this.injected;
     const { searchInfo, searchViewFocused, autoCompleteValues } = searchService;
+    const { isTopBannerOpen } = this.state;
 
     const isSearchPage = this.props.location.pathname.startsWith('/search');
     const isSearch =
@@ -278,7 +286,13 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
             />
           }
           topBanner={
-            (this.isMainAndSearchPage() && <TempTopBannerContainer />) || null
+            (this.isMainAndSearchPage() && (
+              <TempTopBannerContainer
+                isTopBannerOpen={isTopBannerOpen}
+                onClickCloseBanner={this.onClickCloseTopBanner}
+              />
+            )) ||
+            null
           }
           // topBanner={<TopBannerContainer />}
           mainNotice={<MainNotice />}
