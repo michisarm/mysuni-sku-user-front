@@ -222,7 +222,8 @@ i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/pu
 i.icon.commu-list16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-community-list-16-px.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 i.icon.delete-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-delete-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 i.icon.reply-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-reply-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
-i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.edit-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-tooltip-gray-20-px.svg") no-repeat 0 0 !important; background-size: 100% 100% !important; }
 .ui.label.onlytext .icon.video2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-video-16-px.svg') 0 0.125rem no-repeat; }
 .ui.label.onlytext .icon.classroom { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-classroom-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.community { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-community-16-px.svg') 0 0.125rem no-repeat; }

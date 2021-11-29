@@ -861,3 +861,8 @@ border-left-color: #00bfae;
 #root section.bg-white.full {
     min-height: calc(100vh - 112px - 277px);
 }
+
+/* fixed일때 topbanner */
+.header.main-sty2.fixed .top_banner {
+    display: none;
+}
