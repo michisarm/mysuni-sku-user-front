@@ -1,9 +1,17 @@
 import { decorate, observable } from 'mobx';
 import moment from 'moment';
 import { FilterCondition } from 'myTraining/model/FilterCondition';
-import { DifficultyLevel } from 'personalcube/cubeintro/model';
 import CardOrderBy from './CardOrderBy';
 import StudentLearningType from './StudentLearningType';
+import { Direction } from '../../../myTraining/model/Direction';
+
+interface OrderCardQdoProps {
+  columnType: string;
+  direction: Direction;
+  studentLearning?: StudentLearningType;
+  bookmark?: boolean | '';
+  required?: boolean | '';
+}
 
 class CardQdo {
   //
@@ -82,6 +90,40 @@ class CardQdo {
       default:
         return '';
     }
+  }
+
+  static getOrderByCardQdo(orderCardQdoProps: OrderCardQdoProps) {
+    //
+    const {
+      columnType,
+      direction,
+      studentLearning,
+      bookmark,
+      required,
+    } = orderCardQdoProps;
+    const cardQdo = new CardQdo();
+
+    if (columnType === 'modifiedTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.StudentModifiedTimeAsc
+          : CardOrderBy.StudentModifiedTimeDesc;
+    } else if (columnType === 'learningTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.CardLearningTimeAsc
+          : CardOrderBy.CardLearningTimeDesc;
+    } else if (columnType === 'passedTime') {
+      cardQdo.orderBy =
+        direction === Direction.ASC
+          ? CardOrderBy.StudentPassedTimeAsc
+          : CardOrderBy.StudentPassedTimeDesc;
+    }
+    cardQdo.studentLearning = studentLearning || StudentLearningType.None;
+    cardQdo.bookmark = bookmark || '';
+    cardQdo.required = required || '';
+
+    return cardQdo;
   }
 }
 

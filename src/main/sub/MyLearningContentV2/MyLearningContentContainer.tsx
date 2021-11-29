@@ -88,12 +88,11 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           </>
         )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
-        {!isIE &&
-          pageElements.some(
-            (pagemElement) =>
-              pagemElement.position === 'HomeElement' &&
-              pagemElement.type === 'RecommendCards'
-          ) && <RecommendContainer />}
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'RecommendCards'
+        ) && <RecommendContainer />}
       </div>
       <div className="learning-section-wrap">
         {pageElements.some(

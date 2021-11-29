@@ -1,6 +1,5 @@
-
+import { createStore } from 'restoa';
 import SkProfileService from './present/logic/SkProfileService';
-
 
 export default {
   profile: {
@@ -8,6 +7,10 @@ export default {
   },
 };
 
-export {
-  SkProfileService,
-};
+export { SkProfileService };
+
+export const [
+  useFavoriteChannelIds,
+  setFavoriteChannelIds,
+  getFavoriteChannelIds,
+] = createStore<string[]>([]);
