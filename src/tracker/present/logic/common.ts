@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { FieldType } from 'tracker/model/ActionType';
-import { Field } from 'tracker/model/ActionTrackModel';
+import { Field, PvInit } from 'tracker/model/ActionTrackModel';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
 import { ChapterParams } from 'lecture/detail/model/ChapterParams';
@@ -11,14 +11,14 @@ import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
 import { findJsonUserGroup } from 'profile/present/apiclient/SkProfileApi';
-import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
-import { getUserTargets } from 'abtest/api/AbtestApi';
 import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
 import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
+import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 const AUTH_STORAGE_KEY = '_mysuni_auth';
+const PV_INIT_STORAGE_KEY = '_mysuni_pv_init';
 
 export const mobileCheck = () => {
   let check = false;
@@ -31,6 +31,48 @@ export const mobileCheck = () => {
   }
   return check;
 };
+
+export const initPvInit = () => {
+  return {
+    area: 'INIT',
+    referer: '',
+    refererSearch: '',
+    createDate: moment().toISOString(true)
+  };
+}
+
+export const setPvInit = (pvParam: PvInit) => {
+  const pvInit = initPvInit();
+  try {
+    if (lsTest()) {
+      pvInit.area = pvParam.area;
+      pvInit.referer = pvParam.referer;
+      pvInit.refererSearch = pvParam.refererSearch;
+      localStorage.setItem(PV_INIT_STORAGE_KEY, JSON.stringify(pvInit));
+    }
+  } catch {
+    //
+  }
+}
+
+export const getPvInit = () => {
+  let pvInit = null;
+  try {
+    if (lsTest()) {
+      const cachedPvInit = localStorage.getItem(PV_INIT_STORAGE_KEY);
+      if (cachedPvInit) {
+        const parsePvInit = JSON.parse(cachedPvInit);
+        if(parsePvInit.createDate && moment(parsePvInit.createDate).diff(moment(), 'seconds') > -20){
+          pvInit = parsePvInit;
+        }
+        localStorage.removeItem(PV_INIT_STORAGE_KEY);
+      }
+    }
+  } catch {
+    //
+  }
+  return pvInit;
+}
 
 export const initAuth = () => {
   const auth = {
@@ -106,16 +148,16 @@ export const getAuth = async () => {
 };
 
 export const getAbtestUserTargets = async () => {
-  let targets = '';
-  try {
-    await getUserTargets().then((data) => {
-      if (data) {
-        targets = JSON.stringify(data);
-      }
-    });
-  } catch {
-    //
-  }
+  const targets = '[]';
+  // try {
+  //   await getUserTargets().then((data) => {
+  //     if (data) {
+  //       targets = JSON.stringify(data);
+  //     }
+  //   });
+  // } catch {
+  //   //
+  // }
   return targets;
 };
 
@@ -325,7 +367,7 @@ const getFieldName = async (id: string, type: string) => {
       name = badge?.name;
     } else if (type === FieldType.CardBundle) {
       // id기반 api 없는지 확인
-      const cardBundles = await findAvailableCardBundles();
+      const cardBundles = await findAvailableCardBundlesCache();
       const cardBundle = find(cardBundles, { id });
       let type = cardBundle?.type || 'none';
       switch (type) {
@@ -340,6 +382,9 @@ const getFieldName = async (id: string, type: string) => {
           break;
         case 'Recommended':
           type = '추천과정';
+          break;
+        case 'HotTopic':
+          type = '핫토픽';
           break;
       }
       if (cardBundle) {
@@ -490,6 +535,9 @@ export const getPathName = async (path: string, search: string) => {
                 case 'EarnedStampList':
                   pathName += '::stamp';
                   break;
+                  case 'EarnedNoteList':
+                  pathName += '::note';
+                  break;
               }
               break;
           }
@@ -504,9 +552,25 @@ export const getPathName = async (path: string, search: string) => {
                   break;
               }
               break;
+            case 'my-page':
+              pathName = 'mypage';
+              switch (RegExp.$3) {
+                case 'MyProfile':
+                  pathName += '::profile';
+                  break;
+              }
           }
           break;
       }
+      break;
+    case /(^\/suni-main)?\/hot-topic\/(.*)/.test(path):
+      pathName = 'Main-Section::HotTopic';
+      await setResultName({
+        type: FieldType.CardBundle,
+        id: RegExp.$2,
+      }).then((result) => {
+        pathName = 'Main-Section::' + result.name;
+      });
       break;
     case /(^\/suni-main)?\/lecture\/recommend\/(.*?)\/(.*)/.test(path):
       pathName = 'Recommend';

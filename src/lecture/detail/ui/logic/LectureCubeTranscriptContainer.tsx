@@ -11,6 +11,7 @@ import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/Lecture
 import { PlayerState, seekTo } from '@sku/skuniv-ui-video-player';
 import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert } from '@nara.platform/accent';
 
 const style = {
   borderRadius: '0.375rem',
@@ -29,11 +30,11 @@ interface LectureTranscriptContainerProps {
 
 const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
   function LectureTranscriptContainer({
-    transLangVal,
-    setTransLangVal,
-    lectureSummary,
-    // trascriptScrollMove
-  }) {
+                                        transLangVal,
+                                        setTransLangVal,
+                                        lectureSummary,
+                                        // trascriptScrollMove
+                                      }) {
     const selectTransLangObj = [
       { key: 'ko', value: 'ko', text: 'KR' },
       { key: 'eng', value: 'en', text: 'ENG' },
@@ -45,7 +46,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
     const [transcriptList, setTranScriptList] = useState<any>();
     const [panoptoSessionId, setPanoptoSessionId] = useState<
       string | undefined
-    >(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+      >(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
 
     const [autoHighlight, setAutoHighlight] = useState<boolean>();
     const intervalTranscript: any = useRef<any>(null);
@@ -177,6 +178,33 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
       }
     };
 
+    const onClickDownloadTranScript = () => {
+      reactAlert({
+        title: getPolyglotText(
+          `본 Transcript 파일은 학습의 목적으로 사내 한하여 활용 부탁드리며, <strong>외부 공유를 제한</strong>합니다.`,
+          'cube-transcript-안내'
+        ),
+        message: getPolyglotText(
+          `본 Transcript 파일은 학습의 목적으로 사내 한하여 활용 부탁드리며,<br/><strong>외부 공유를 제한</strong>합니다.`,
+          'cube-transcript-내용'
+        ),
+        onClose: onClickOkInModal,
+      });
+    };
+
+    const onClickOkInModal = () => {
+      //
+      if (transcriptList?.length > 0) {
+        const langText =
+          selectTransLangObj.find((lang) => lang.value === transLangVal)
+            ?.text || '';
+        downloadTranscript(
+          transcriptList,
+          (lectureSummary?.name || 'transcript').concat('_', langText)
+        );
+      }
+    };
+
     return (
       <>
         <div className="transcript-box" id="tanscript-scroll">
@@ -196,22 +224,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> =
             <div>
               <button
                 className="ui icon button left post delete-kr"
-                onClick={() => {
-                  if (transcriptList?.length > 0) {
-                    const langText =
-                      selectTransLangObj.find(
-                        (lang) => lang.value === transLangVal
-                      )?.text || '';
-                    console.log('lectureSummary', lectureSummary);
-                    downloadTranscript(
-                      transcriptList,
-                      (lectureSummary?.name || 'transcript').concat(
-                        '_',
-                        langText
-                      )
-                    );
-                  }
-                }}
+                onClick={() => onClickDownloadTranScript()}
               >
                 <Icon className="icon-down-type5" />
                 <PolyglotText

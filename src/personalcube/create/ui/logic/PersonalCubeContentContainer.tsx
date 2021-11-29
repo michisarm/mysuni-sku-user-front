@@ -22,6 +22,7 @@ import BasicInfoFormContainer from './BasicInfoFormContainer';
 import ExposureInfoFormContainer from './ExposureInfoFormContainer';
 import { FormTitle } from '../view/DetailElementsView';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { compareCollgeCineroom } from '../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props
   extends RouteComponentProps<{ personalCubeId: string; cubeType: string }> {
@@ -79,7 +80,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
         personalCube!.category.college.id
       );
 
-      if (college && college.collegeType === CollegeType.Company) {
+      if (college !== undefined && !compareCollgeCineroom(college.id)) {
         this.setState({
           targetSubsidiaryId: college.id,
         });
@@ -124,12 +125,8 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     const { isNext } = this.state;
 
     // const { name, company, email, department, companyCode } = skProfileService!.skProfile.member;
-    const {
-      name,
-      companyName,
-      departmentName,
-      email,
-    } = skProfileService!.skProfile;
+    const { name, companyName, departmentName, email } =
+      skProfileService!.skProfile;
     const { personalCube } = personalCubeService!;
     const { personalCubeId } = match.params;
 
@@ -214,7 +211,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
 
   onChangeCollege(college: CollegeModel) {
     //
-    const subsidiaryTargeted = college.collegeType === CollegeType.Company;
+    const subsidiaryTargeted = !compareCollgeCineroom(college.id);
 
     if (subsidiaryTargeted) {
       this.setState({ targetSubsidiaryId: college.collegeId });
@@ -226,9 +223,8 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   onSave(isNext: boolean) {
     //
     const { personalCube } = this.props.personalCubeService!;
-    const personalCubeObject = PersonalCubeModel.getBlankRequiredField(
-      personalCube
-    );
+    const personalCubeObject =
+      PersonalCubeModel.getBlankRequiredField(personalCube);
 
     if (personalCubeObject !== 'success') {
       this.alertRequiredField(personalCubeObject);

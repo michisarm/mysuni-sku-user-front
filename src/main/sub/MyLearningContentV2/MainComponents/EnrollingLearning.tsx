@@ -1,22 +1,39 @@
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
-import { Loadingpanel } from 'shared';
-import { Lecture } from 'lecture';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
-import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
+import { useHistory } from 'react-router-dom';
+import { Segment } from 'semantic-ui-react';
 import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
+import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
+import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { Area } from 'tracker/model';
+import { SkProfileService } from '../../../../profile/stores';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../shared/ui/logic/PolyglotText';
+import Swiper from 'react-id-swiper';
+import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+
+const SwiperProps = {
+  slidesPerView: 4,
+  spaceBetween: 7,
+  slidesPerGroup: 4,
+  loop: false,
+  loopFillGroupWithBlank: true,
+  navigation: {
+    nextEl: '.swiperEnrolling .swiper-button-next',
+    prevEl: '.swiperEnrolling .swiper-button-prev',
+  },
+  speed: 500,
+};
 
 function EnrollingLearning() {
   const history = useHistory();
@@ -25,6 +42,7 @@ function EnrollingLearning() {
   const [title] = useState(
     getPolyglotText('수강 신청 과정 모아보기', 'home-Enrolling-Title')
   );
+  const userLanguage = SkProfileService.instance.skProfile.language;
 
   useEffect(() => {
     fetchEnrollingCardList();
@@ -59,6 +77,27 @@ function EnrollingLearning() {
     setCardList(enrollingCardList.results);
   };
 
+  const [swiper, updateSwiper] = useState<any>(null);
+  useEffect(() => {
+    if (swiper !== null) {
+      const onSlideChangeHandler = () => onSlideChange(swiper);
+      swiper.on('slideChange', onSlideChangeHandler);
+      return () => {
+        swiper.off('slideChange', onSlideChangeHandler);
+      };
+    }
+  }, [onSlideChange, swiper]);
+  function onSlideChange(swiper: any) {
+    if (swiper && swiper.isEnd) {
+      scrollSwiperHorizontalTrack({
+        element: swiper.el,
+        area: Area.MAIN_ENROLLING,
+        scrollClassName: 'cardSwiper',
+        actionName: '메인카드 스크롤',
+      });
+    }
+  }
+
   const onViewAll = () => {
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(`/my-training/new-learning/Enrolling/pages/1`);
@@ -70,80 +109,58 @@ function EnrollingLearning() {
     });
   };
 
+  if (cardList === undefined || cardList.length === 0) {
+    return null;
+  }
+
   return (
-    <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
+    <Segment
+      className="full learning-section type1"
+      data-area={Area.MAIN_ENROLLING}
+    >
       <div className="section-head">
-        {isLoading === true ||
-          (isLoading === false && cardList && cardList.length > 0 && (
-            <strong>{title}</strong>
-          ))}
-        <div className="right">
-          {cardList && cardList.length > 0 && (
-            <Button icon className="right btn-blue" onClick={onViewAll}>
-              <PolyglotText
-                defaultString="View all"
-                id="home-Enrolling-View all"
-              />
-              <Icon className="morelink" />
-            </Button>
-          )}
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '<strong>수강신청 임박</strong>한 과정',
+              'main-enrolling'
+            ),
+          }}
+        />
+        <div className="sec-tit-btn">
+          <button className="btn-more" onClick={onViewAll}>
+            <PolyglotText id="main-viewall" defaultString="전체보기" />
+          </button>
         </div>
       </div>
-      {(cardList && cardList.length > 0 && (
-        <>
-          <Lecture.Group type={Lecture.GroupType.Line} dataActionName={title}>
-            {cardList.map((item, i) => {
-              const { card, cardRelatedCount, upcomingClassroomInfo } = item;
-              return (
-                <li key={i}>
-                  <CardGroup type={GroupType.Box}>
-                    <CardView
-                      cardId={item.card.id}
-                      permittedCinerooms={card.permittedCinerooms}
-                      learningTime={card.learningTime}
-                      additionalLearningTime={card.additionalLearningTime}
-                      thumbImagePath={card.thumbImagePath}
-                      mainCategory={card.mainCategory}
-                      name={card.name}
-                      stampCount={card.stampCount}
-                      simpleDescription={card.simpleDescription}
-                      type={card.type}
-                      starCount={cardRelatedCount.starCount}
-                      passedStudentCount={cardRelatedCount.passedStudentCount}
-                      studentCount={upcomingClassroomInfo.studentCount}
-                      remainingDayCount={
-                        upcomingClassroomInfo.remainingDayCount
-                      }
-                      capacity={upcomingClassroomInfo.capacity}
-                      dataArea={Area.MAIN_ENROLLING}
-                      langSupports={card.langSupports}
-                    />
-                  </CardGroup>
-                </li>
-              );
-            })}
-          </Lecture.Group>
-        </>
-      )) || (
-        <>
-          {isLoading === true && (
-            <Segment
-              style={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                height: 400,
-                boxShadow: '0 0 0 0',
-                border: 0,
-              }}
-            >
-              <Loadingpanel loading={isLoading} color="#eff0f1" />
-            </Segment>
-          )}
-        </>
-      )}
-    </ContentWrapper>
+
+      <div className="section-body">
+        <div className="cardSwiper" data-action-name="수강신청 임박한 과정">
+          <Swiper {...SwiperProps} getSwiper={(s) => updateSwiper(s)}>
+            {cardList &&
+              parseUserLectureCards(cardList, userLanguage).map((card, i) => {
+                return (
+                  <div className="swiper-slide" key={card.cardId}>
+                    <CardGroup type={GroupType.Wrap}>
+                      <LectureCardView
+                        {...card}
+                        dataArea={Area.MAIN_ENROLLING}
+                        useBookMark
+                        hoverTrack={hoverTrack}
+                      />
+                    </CardGroup>
+                  </div>
+                );
+              })}
+          </Swiper>
+          <div className="swiperEnrolling">
+            <div className="swiper-button-prev" />
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </div>
+    </Segment>
   );
 }
 

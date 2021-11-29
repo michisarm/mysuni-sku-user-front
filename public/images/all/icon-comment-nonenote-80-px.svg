@@ -1,20 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>62B49CA7-0CF9-4146-ADFC-AEEEB9D3750E</title>
-    <g id="Note" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Note_03_Default(LM-VI-10)" transform="translate(-135.000000, -452.000000)">
-            <g id="@-LNB" transform="translate(-0.000001, 109.000000)">
-                <g id="Course" transform="translate(0.000000, 65.000000)">
-                    <g id="@-없어요" transform="translate(0.000001, 278.000000)">
-                        <g id="icon_comment_nonenote_80px" transform="translate(135.000000, 0.000000)">
-                            <circle id="bg" fill="#C3CDDB" cx="40" cy="40" r="40"></circle>
-                            <g id="icon" transform="translate(22.000000, 20.000000)" fill="#FFFFFF">
-                                <path d="M36,0 L36,33.0495141 L29,40 L0,40 L0,0 L36,0 Z M19.5,25 L10.5,25 C9.67157288,25 9,25.6715729 9,26.5 L9,26.5 L9,27.5 C9,28.3284271 9.67157288,29 10.5,29 L10.5,29 L19.5,29 C20.3284271,29 21,28.3284271 21,27.5 L21,27.5 L21,26.5 C21,25.6715729 20.3284271,25 19.5,25 L19.5,25 Z M25.5,18 L10.5,18 C9.67157288,18 9,18.6715729 9,19.5 L9,19.5 L9,20.5 C9,21.3284271 9.67157288,22 10.5,22 L10.5,22 L25.5,22 C26.3284271,22 27,21.3284271 27,20.5 L27,20.5 L27,19.5 C27,18.6715729 26.3284271,18 25.5,18 L25.5,18 Z M25.5,11 L10.5,11 C9.67157288,11 9,11.6715729 9,12.5 L9,12.5 L9,13.5 C9,14.3284271 9.67157288,15 10.5,15 L10.5,15 L25.5,15 C26.3284271,15 27,14.3284271 27,13.5 L27,13.5 L27,12.5 C27,11.6715729 26.3284271,11 25.5,11 L25.5,11 Z" id="Combined-Shape"></path>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fill-rule="evenodd">
+        <circle fill="#CCC" cx="40" cy="40" r="40"/>
+        <path d="M58 20v33.05L51 60H22V20h36zM41.5 45h-9a1.5 1.5 0 0 0-1.5 1.5v1a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5v-1a1.5 1.5 0 0 0-1.5-1.5zm6-7h-15a1.5 1.5 0 0 0-1.5 1.5v1a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5v-1a1.5 1.5 0 0 0-1.5-1.5zm0-7h-15a1.5 1.5 0 0 0-1.5 1.5v1a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5v-1a1.5 1.5 0 0 0-1.5-1.5z" fill="#FFF"/>
     </g>
 </svg>

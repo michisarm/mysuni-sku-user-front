@@ -11,13 +11,7 @@ import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
 import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
-import { parsePolyglotString } from '../../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../model/LangSupport';
 import { IdName } from '../../../../shared/model';
-import {
-  getChannelStore,
-  setChannelStore,
-} from '../../../../shared/store/ChannelStore';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService;
@@ -48,13 +42,6 @@ class RecommendChannelLecturesPage extends Component<Props> {
     const { skProfileService, collegeService } = this.props;
 
     await skProfileService.findStudySummary();
-    const channelStore = getChannelStore();
-
-    if (!channelStore || channelStore.length === 0) {
-      await collegeService.findAllColleges();
-      const channels = collegeService.channelsInColleges;
-      setChannelStore(channels);
-    }
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -76,7 +63,7 @@ class RecommendChannelLecturesPage extends Component<Props> {
       name: getChannelName(channelId),
     });
 
-    console.log(studySummaryFavoriteChannels);
+    // console.log(studySummaryFavoriteChannels);
 
     return (
       <ContentLayout

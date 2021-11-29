@@ -1,4 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   clearFindMyCardRelatedStudentsCache,
   saveTask,
@@ -21,7 +22,6 @@ import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure'
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -152,7 +152,13 @@ async function coreSubmitLectureSurveyState() {
   const requiredMissAnswers = lectureSurvey.surveyItems
     .filter((c) => c.isRequired)
     .filter(
-      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
+      (c) =>
+        !answerItem.some(
+          (d) =>
+            d.questionNumber === c.questionNumber &&
+            (c.type !== 'Matrix' ||
+              (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
+        )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
@@ -239,9 +245,9 @@ export async function coreLectureSurveyState() {
         '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach((c) => {
-      console.log(c.no);
-    });
+    // requiredMissAnswers.forEach((c) => {
+    //   console.log(c.no);
+    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
@@ -354,10 +360,10 @@ export async function saveCommunitySurveyState() {
 
 export async function submitCommunitySurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  console.log(
-    'submitCommunitySurveyState.lectureSurveyState',
-    lectureSurveyState
-  );
+  // console.log(
+  //   'submitCommunitySurveyState.lectureSurveyState',
+  //   lectureSurveyState
+  // );
   if (lectureSurveyState === undefined) {
     return;
   }

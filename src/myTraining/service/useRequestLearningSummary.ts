@@ -5,21 +5,21 @@ import MyLearningSummaryService from '../present/logic/MyLearningSummaryService'
 export function useRequestLearningSummary() {
   useEffect(() => {
     requestMyLearningSummary();
-    requestLectureTimeSummary();
+    // requestLectureTimeSummary();
   }, []);
 }
 
 const requestMyLearningSummary = () => {
   const currentYear = moment().year();
   MyLearningSummaryService.instance.findMyLearningSummaryByYear(currentYear);
-}
+};
 
-const requestLectureTimeSummary = () => {
-  const lectureTimeSummary = MyLearningSummaryService.instance.lectureTimeSummary;
+// const requestLectureTimeSummary = () => {
+//   const lectureTimeSummary = MyLearningSummaryService.instance.lectureTimeSummary;
 
-  if (lectureTimeSummary) {
-    return;
-  }
+//   if (lectureTimeSummary) {
+//     return;
+//   }
 
-  MyLearningSummaryService.instance.findLectureTimeSummary();
-}
+//   MyLearningSummaryService.instance.findLectureTimeSummary();
+// }

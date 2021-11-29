@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import { Segment } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { AplService } from '../stores';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../ui/model/NoSuchContentPanelMessages';
+import { nosuchMessagesPolyglot } from '../ui/model/NoSuchContentPanelMessages';
 import LineHeaderContainerV2 from '../ui/logic/LineHeaderContainerV2';
 import { SeeMoreButton } from '../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../shared';
@@ -32,6 +30,42 @@ function PersonalCompletedListContainer() {
   const noSuchMessage = nosuchMessagesPolyglot(params.tab);
 
   const seeMoreVisible = aplTableCount > aplTableViews.length;
+
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickSeeMore();
+        }
+      });
+    },
+    [onClickSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   return (
     <>
       {(resultEmpty === false && (
@@ -53,7 +87,12 @@ function PersonalCompletedListContainer() {
                   onClickItem={onClickItem}
                 />
               </MyLearningListTemplate>
-              {seeMoreVisible && <SeeMoreButton onClick={onClickSeeMore} />}
+              {!isLoading && seeMoreVisible && (
+                <SeeMoreButton
+                  onClick={onClickSeeMore}
+                  ref={seeMoreButtonViewRef}
+                />
+              )}
             </>
           )) || (
             <Segment

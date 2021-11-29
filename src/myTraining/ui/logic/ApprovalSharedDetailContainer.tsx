@@ -229,7 +229,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
                 className="apl-notice"
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
-                    `학습 수강에 대한 승인 요청을 결제하실 수 있습니다.\n 승인 혹은 반려 처리에 대한 승인자 의견을 함께 작성하실 수 있습니다.`,
+                    `학습 수강에 대한 승인 요청을 결제하실 수 있습니다.승인 혹은 반려 처리에 대한 승인자 의견을 함께 작성하실 수 있습니다.`,
                     '승인관리-개학승인-요청안내'
                   ),
                 }}
@@ -245,10 +245,11 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
                     <dl className="bl">
                       <dt>
                         <PolyglotText
-                          id="승인관리-개학승인-요청안내"
+                          id="승인관리-개학승인-의견"
                           defaultString="승인자 의견"
                         />
                       </dt>
+
                       {approvalCube.proposalState === 'Submitted' && (
                         <div>
                           <dd>

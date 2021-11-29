@@ -6,9 +6,5 @@ import { MyTrainingRouteParams } from './routeParams';
 export function useClearFilterBox() {
   const params = useParams<MyTrainingRouteParams>();
 
-  useEffect(() => {
-    return () => {
-      FilterBoxService.instance.clear();
-    };
-  }, [params.tab]);
+  useEffect(() => FilterBoxService.instance.clear(), [params.tab]);
 }

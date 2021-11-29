@@ -15,7 +15,6 @@ import { LectureService } from 'lecture/stores';
 import { Lecture, SeeMoreButton } from 'lecture';
 import lectureRoutePaths from 'lecture/routePaths';
 import { InMyLectureModel, InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 
 import routePaths from '../../../routePaths';
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
@@ -25,7 +24,6 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   pageService?: PageService;
   lectureService?: LectureService;
-  inMyLectureService?: InMyLectureService;
   reviewService?: ReviewService;
   onChangeSharedCount: (sharedCount: number) => void;
   scrollSave?: () => void;
@@ -38,7 +36,6 @@ interface States {
 const SharedListContainer: React.FC<Props> = ({
   pageService,
   lectureService,
-  inMyLectureService,
   reviewService,
   onChangeSharedCount,
   match,
@@ -57,7 +54,6 @@ const SharedListContainer: React.FC<Props> = ({
     <SharedListInnerContainer
       pageService={pageService}
       lectureService={lectureService}
-      inMyLectureService={inMyLectureService}
       reviewService={reviewService}
       onChangeSharedCount={onChangeSharedCount}
       match={match}
@@ -148,13 +144,8 @@ class SharedListInnerContainer extends React.Component<Props, States> {
 
   async findSharedLectures(pageNo?: number) {
     //
-    const {
-      pageService,
-      lectureService,
-      reviewService,
-      inMyLectureService,
-      onChangeSharedCount,
-    } = this.props;
+    const { pageService, lectureService, reviewService, onChangeSharedCount } =
+      this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
     const channelIds = channels.map(
@@ -175,8 +166,6 @@ class SharedListInnerContainer extends React.Component<Props, States> {
       );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
-
-    inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
@@ -252,34 +241,32 @@ class SharedListInnerContainer extends React.Component<Props, States> {
 
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
-
-    if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!
-        .removeInMyLecture(lecture.id)
-        .then(() =>
-          inMyLectureService!.removeInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    } else {
-      inMyLectureService!
-        .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
-    }
+    // const { inMyLectureService } = this.props;
+    // if (lecture instanceof InMyLectureModel) {
+    //   inMyLectureService!
+    //     .removeInMyLecture(lecture.id)
+    //     .then(() =>
+    //       inMyLectureService!.removeInMyLectureInAllList(
+    //         lecture.serviceId,
+    //         lecture.serviceType
+    //       )
+    //     );
+    // } else {
+    //   inMyLectureService!
+    //     .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
+    //     .then(() =>
+    //       inMyLectureService!.addInMyLectureInAllList(
+    //         lecture.serviceId,
+    //         lecture.serviceType
+    //       )
+    //     );
+    // }
   }
 
   render() {
     //
-    const { lectureService, inMyLectureService } = this.props;
+    const { lectureService } = this.props;
     const { requiredLectures, totalLectureCount } = lectureService!;
-    const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
     if (requiredLectures.length < 1) {
       return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
@@ -296,37 +283,38 @@ class SharedListInnerContainer extends React.Component<Props, States> {
         <div className="section">
           <Lecture.Group type={Lecture.GroupType.Box}>
             {requiredLectures.map((lecture, index) => {
-              const inMyLecture =
-                inMyLectureMap.get(lecture.serviceId) || undefined;
-              return (
-                <Lecture
-                  key={`lecture-${index}`}
-                  model={lecture}
-                  rating={this.getRating(lecture)}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-                      message: inMyLecture
-                        ? getPolyglotText(
-                            '본 과정이 관심목록에서 제외되었습니다.',
-                            '신규학습-신규목록-관심제외'
-                          )
-                        : getPolyglotText(
-                            '본 과정이 관심목록에 추가되었습니다.',
-                            '신규학습-신규목록-관심추가'
-                          ),
-                    });
-                    this.onToggleBookmarkLecture(inMyLecture || lecture);
-                  }}
-                  onViewDetail={this.onViewDetail}
-                />
-              );
+              // const inMyLecture =
+              //   inMyLectureMap.get(lecture.serviceId) || undefined;
+              return null;
+              // return (
+              //   <Lecture
+              //     key={`lecture-${index}`}
+              //     model={lecture}
+              //     rating={this.getRating(lecture)}
+              //     thumbnailImage={lecture.baseUrl || undefined}
+              //     action={
+              //       inMyLecture
+              //         ? Lecture.ActionType.Remove
+              //         : Lecture.ActionType.Add
+              //     }
+              //     onAction={() => {
+              //       reactAlert({
+              //         title: getPolyglotText('알림', '신규학습-신규목록-알림'),
+              //         message: inMyLecture
+              //           ? getPolyglotText(
+              //               '본 과정이 관심목록에서 제외되었습니다.',
+              //               '신규학습-신규목록-관심제외'
+              //             )
+              //           : getPolyglotText(
+              //               '본 과정이 관심목록에 추가되었습니다.',
+              //               '신규학습-신규목록-관심추가'
+              //             ),
+              //       });
+              //       this.onToggleBookmarkLecture(inMyLecture || lecture);
+              //     }}
+              //     onViewDetail={this.onViewDetail}
+              //   />
+              // );
             })}
           </Lecture.Group>
 

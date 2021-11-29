@@ -1,43 +1,11 @@
-import { useEffect } from 'react';
-import CollegeApi, {
-  findAllCollegeCache,
-  clearfindAllCollegeCache,
-} from '../../../college/present/apiclient/CollegeApi';
-import { devideCollegeAndChannel } from './utility/devideCollegeAndChannel';
-import {
-  setCollegeStore,
-  getCollegeStore,
-  setCollegeModelStore,
-} from '../../store/CollegeStore';
-import { setChannelStore, getChannelStore } from '../../store/ChannelStore';
 import { find } from 'lodash';
 import CategoryColorType from '../../model/CategoryColorType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
-
-async function requestCollegeAndChannel() {
-  const getCollegeData = await findAllCollegeCache();
-  if (getCollegeData !== undefined) {
-    setCollegeModelStore(getCollegeData);
-    const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
-
-    setChannelStore(collegeAndChannelList.channels);
-    setCollegeStore(collegeAndChannelList.colleges);
-  }
-}
-
-export function useRequestCollege() {
-  useEffect(() => {
-    requestCollegeAndChannel();
-
-    return () => {
-      clearfindAllCollegeCache();
-    };
-  }, []);
-}
+import { Channel, getAllChannels, getAllColleges } from '../requestAllColleges';
 
 export function getCollgeName(collegeId: string) {
-  const collegeList = getCollegeStore();
+  const collegeList = getAllColleges();
   const foundCollege = find(collegeList, { id: collegeId });
 
   if (foundCollege && foundCollege.name !== undefined) {
@@ -50,13 +18,13 @@ export function getCollgeName(collegeId: string) {
 }
 
 export function getChannelName(channelId: string) {
-  const channelList = getChannelStore();
-  const foundChannel = find(channelList, { id: channelId });
+  const allChannels = getAllChannels();
+  const channel = allChannels.find((c) => c.id === channelId);
 
-  if (foundChannel && foundChannel.name !== undefined) {
+  if (channel !== undefined) {
     return parsePolyglotString(
-      foundChannel.name,
-      getDefaultLang(foundChannel.langSupports)
+      channel.name,
+      getDefaultLang(channel.langSupports)
     );
   }
 
@@ -90,4 +58,24 @@ export function getColor(categoryId: string) {
     default:
       return CategoryColorType.Default;
   }
+}
+
+export function compareCollgeCineroom(collegeId: string) {
+  const collegeList = getAllColleges();
+  const findCollege = find(collegeList, { id: collegeId });
+
+  if (findCollege) {
+    return findCollege.cineroomId === 'ne1-m2-c2';
+  }
+
+  return false;
+}
+
+export function findMyAplCollege(cineroomId: string) {
+  const collegeList = getAllColleges();
+  const findAplcollege = collegeList.filter(
+    (college) => college.cineroomId === cineroomId
+  );
+
+  return findAplcollege;
 }

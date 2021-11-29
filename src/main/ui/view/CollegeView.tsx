@@ -298,7 +298,7 @@ const koPanes = [
                   >
                     <Image
                       style={{ display: 'inline' }}
-                      src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                       alt=""
                     />
                     과정 바로가기
@@ -1008,16 +1008,16 @@ const koPanes = [
                 </p>
               </div>
               <div className="text-right-box">
-                <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00006/channels/pages/1"
+                <Link
+                  to="/lecture/college/CLG00006/channels/pages/1"
                   className="item-button"
                 >
                   <img
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   과정 바로가기
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -1621,7 +1621,7 @@ const koPanes = [
                   className="item-button"
                 >
                   <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
@@ -2073,7 +2073,7 @@ const koPanes = [
                 >
                   <Image
                     style={{ display: 'inline' }}
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   과정 바로가기
@@ -2919,7 +2919,7 @@ const koPanes = [
                 환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
                 제고하고,
                 <br />
-                탄소중립, 수소, 자원순환, 에너지솔루션 등에 필요한 전문지식을
+                탄소중립, 수소, 순환경제, 에너지솔루션 등에 필요한 전문지식을
                 학습하여,
                 <br />
                 Green Deep Change에 한걸음 한걸음 나아가는 것을 목표로 하고
@@ -3012,7 +3012,7 @@ const koPanes = [
                   className="item-button"
                 >
                   <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
@@ -3037,7 +3037,7 @@ const koPanes = [
                   to="/lecture/college/CLG00020/channels/pages/1"
                   className="item-button"
                 >
-                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  <Image src='https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png' alt="" style={{display: 'inline-block'}} />
                   과정 바로가기
                 </Link>
               </div>
@@ -3684,7 +3684,7 @@ const EnPanes = [
                 <div className="text-right-box">
                   <a className="item-button" href="#none">
                     <img
-                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                       alt=""
                       className="ui image"
                       style={{ display: 'inline' }}
@@ -4326,7 +4326,7 @@ const EnPanes = [
               <div className="text-right-box">
                 <a href="#none" className="item-button">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   Go to Courses
@@ -4911,7 +4911,7 @@ const EnPanes = [
               <div className="text-right-box">
                 <a className="item-button" href="#none">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     className="ui image"
                     style={{ display: 'inline-block' }}
@@ -5275,7 +5275,7 @@ const EnPanes = [
                 <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   Go to Courses
@@ -6181,7 +6181,7 @@ const EnPanes = [
                 <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   Go to Courses
@@ -6262,7 +6262,7 @@ const EnPanes = [
               <div className="text-right-box">
                 <a href="#none" className="item-button">
                   <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     style={{ display: 'inline-block' }}
                   />
@@ -6884,7 +6884,7 @@ const ZhPanes = [
                 <div className="text-right-box">
                   <a className="item-button" href="#none">
                     <img
-                      src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                       alt=""
                       className="ui image"
                       style={{ display: 'inline' }}
@@ -7538,7 +7538,7 @@ const ZhPanes = [
               <div className="text-right-box">
                 <a href="#none" className="item-button">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   直接进入课程
@@ -8082,7 +8082,7 @@ const ZhPanes = [
               <div className="text-right-box">
                 <a className="item-button" href="#none">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     className="ui image"
                     style={{ display: 'inline-block' }}
@@ -8428,7 +8428,7 @@ const ZhPanes = [
                 <a href="#none" className="item-button">
                   <Image
                     style={{ display: 'inline' }}
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                   />
                   直接进入课程
@@ -9173,7 +9173,7 @@ const ZhPanes = [
               <div className="text-right-box">
                 <a href="#none" className="item-button">
                   <Image
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-course-book.png"
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     className="ui image"
                     style={{ display: 'inline-block' }}
@@ -9254,7 +9254,7 @@ const ZhPanes = [
               <div className="text-right-box">
                 <a href="#none" className="item-button">
                   <Image
-                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
                     alt=""
                     style={{ display: 'inline-block' }}
                   />

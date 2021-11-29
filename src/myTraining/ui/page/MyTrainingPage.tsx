@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { ContentLayout } from 'shared';
 import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
-import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 import { learningContentTypeName } from '../model/MyLearningContentType';
 import { CollegeService } from '../../../college/stores';
 import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
@@ -15,10 +14,10 @@ import {
   MyTrainingRouteParams,
   setMyTrainingRouteParams,
 } from 'myTraining/routeParams';
+import routePaths from 'myTraining/routePaths';
 
 function MyTrainingPage() {
   const params = useParams<MyTrainingRouteParams>();
-  useRequestCollege();
   useRequestMenuAuth();
   useRequestAllMyTrainingCount();
   useClearFilterBox();
@@ -31,7 +30,10 @@ function MyTrainingPage() {
     <ContentLayout
       className="mylearning"
       breadcrumb={[
-        { text: getPolyglotText('Learning', 'learning-brc-dth2') },
+        {
+          text: getPolyglotText('My Learning', 'learning-brc-dth4'),
+          path: routePaths.learningInProgress(),
+        },
         { text: learningContentTypeName(params.tab) },
       ]}
     >

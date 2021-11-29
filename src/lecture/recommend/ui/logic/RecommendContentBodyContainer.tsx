@@ -9,12 +9,14 @@ import {
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import {
   findByRdoCache,
+  findRecommendCardsByChannelId,
   findRecommendCardsCache,
 } from '../../../detail/api/cardApi';
 import { CardRdo } from '../../../detail/model/CardRdo';
 import {
   setRecommendCardRoms,
   useRecommendCardRoms,
+  getRecommendCardRoms,
 } from '../../../detail/store/RecommendCardRomsStore';
 import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import {
@@ -85,32 +87,66 @@ async function requestFindRecommendCards() {
     if (checkableChannels === undefined) {
       return;
     }
+
+    const recommendCardRoms: RecommendCardRom[] | undefined =
+      getRecommendCardRoms();
+
     setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
-    const promiseArray = checkableChannels
-      .filter((c) => c.checked === true)
-      .map<Promise<RecommendCardRom>>((c) => {
-        const cardRdo: CardRdo = {
-          channelIds: c.id,
-          offset: 0,
-          limit: CARDS_SIZE,
-        };
-        return findByRdoCache(cardRdo).then((r) => {
-          if (r !== undefined) {
-            return {
-              channelId: c.id,
-              cardCount: r.results.length,
-              cardWithRelatedCountRoms: r.results,
-            };
-          }
-          return {
-            channelId: c.id,
-            cardCount: 0,
-            cardWithRelatedCountRoms: [],
-          };
-        });
-      });
-    const recommendCardRoms = await Promise.all(promiseArray);
-    setRecommendCardRoms(recommendCardRoms);
+
+    const checkedChannels = checkableChannels.filter((c) => c.checked);
+    let findRecommendCard: any = {};
+
+    /* eslint-disable no-await-in-loop */
+    for (const channel of checkedChannels) {
+      if (
+        recommendCardRoms &&
+        !recommendCardRoms.some((cardRoms) => cardRoms.channelId === channel.id)
+      ) {
+        findRecommendCard = await findRecommendCardsByChannelId(channel.id);
+      }
+    }
+
+    if (recommendCardRoms && findRecommendCard.channelId) {
+      recommendCardRoms.push(findRecommendCard);
+    }
+
+    const nextRecommendCardRoms =
+      recommendCardRoms
+        ?.filter((cardRoms) =>
+          checkedChannels.some((c) => c.id === cardRoms.channelId)
+        )
+        .sort((a, b) => {
+          return (
+            checkableChannels.findIndex(
+              (channel) => channel.id === a.channelId
+            ) -
+            checkableChannels.findIndex((channel) => channel.id === b.channelId)
+          );
+        }) || [];
+
+    // const nextRecommendCardRoms = checkableChannels
+    //   .filter((c) => c.checked === true)
+    //   .map<RecommendCardRom>((c) => {
+    //     if (recommendCardRoms) {
+    //       const cardForUserViewRdos = recommendCardRoms
+    //         .filter((rcr) => rcr.channelId === c.id)
+    //         .map((rcr) => rcr.cardForUserViewRdos)
+    //         .flat();
+    //       return {
+    //         channelId: c.id,
+    //         cardCount: cardForUserViewRdos.length,
+    //         cardForUserViewRdos,
+    //       };
+    //     } else {
+    //       return {
+    //         channelId: c.id,
+    //         cardCount: 0,
+    //         cardForUserViewRdos: [],
+    //       };
+    //     }
+    //   });
+
+    setRecommendCardRoms(nextRecommendCardRoms);
     const nextRecommendPageViewModel = getRecommendPage();
     if (nextRecommendPageViewModel === undefined) {
       return;
@@ -186,7 +222,7 @@ function AllChannelsContainerView() {
             border: 0,
           }}
         >
-          <Loadingpanel loading={true} />
+          <Loadingpanel loading={true} color="#FFFFFF" />
         </Segment>
       </div>
     );
@@ -195,8 +231,13 @@ function AllChannelsContainerView() {
   return (
     <div className="recommend-area">
       {Array.isArray(recommendCardRoms) &&
-        recommendCardRoms.map((c) => {
-          return <RecommendCardRomView key={c.channelId} {...c} />;
+        recommendCardRoms.map((recommendCardRom) => {
+          return (
+            <RecommendCardRomView
+              key={recommendCardRom.channelId}
+              {...recommendCardRom}
+            />
+          );
         })}
       <ListMoreView />
     </div>

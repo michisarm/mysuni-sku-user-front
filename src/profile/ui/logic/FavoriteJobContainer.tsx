@@ -235,7 +235,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
               />
             </div>
             <Select
-              placeholder="선택해주세요"
+              placeholder={getPolyglotText('선택해주세요', 'job-recent-select')}
               options={selectOptionJobGroup}
               value={favoriteJobGroupId}
               onChange={this.selectJobGroup}
@@ -250,7 +250,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
                 />
               </div>
               <Select
-                placeholder="선택해주세요"
+                placeholder={getPolyglotText(
+                  '선택해주세요',
+                  'job-recent-select'
+                )}
                 options={selectOptionJobDuty}
                 value={favoriteJobDutyId}
                 onChange={this.selectJobDuty}

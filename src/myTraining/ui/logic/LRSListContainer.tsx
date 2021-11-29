@@ -9,23 +9,40 @@ import CardGroup, {
 import { SkProfileService } from 'profile/stores';
 
 import { RecommendationViewModel } from '../../../lecture/recommend/viewmodel/RecommendationViewModel';
-import { findRecommendationCards } from '../../../lecture/recommend/api/recommendApi';
+import {
+  findRecommendationCardsFromContentBase,
+  findRecommendationCardsFromLearningPatternBased,
+} from '../../../lecture/recommend/api/recommendApi';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  LectureCardView,
+  parseUserLectureCards,
+} from '@sku/skuniv-ui-lecture-card';
+import { fi } from 'date-fns/locale';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
+import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
+import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 const CONTENT_TYPE_NAME = '추천과정';
 
-function getTitle(viewModel?: RecommendationViewModel) {
-  if (viewModel === undefined) {
-    return '';
-  }
-  const { recTitle } = viewModel;
-  if (recTitle?.length > 0) {
-    return `${SkProfileService.instance.profileMemberName}${getPolyglotText(
-      '님의 학습 콘텐츠 기반 추천 과정',
-      'home-Recommend-Title1'
-    )}`;
+function getTitle() {
+  const search = window.location.search;
+  if (search.includes('LearningPatternBased')) {
+    return getPolyglotText(
+      '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
+      'lrs-title1',
+      {
+        name: SkProfileService.instance.profileMemberName,
+      }
+    );
   } else {
-    return `${SkProfileService.instance.profileMemberName}님을 위한 mySUNI의 추천 과정`;
+    return getPolyglotText(
+      '{name}님과 유사한 학습자들을 분석하여 추천드려요~',
+      'lrs-title2',
+      {
+        name: SkProfileService.instance.profileMemberName,
+      }
+    );
   }
 }
 
@@ -35,14 +52,23 @@ function LRSListContainer() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    findRecommendationCards().then((next) => {
-      if (next !== undefined) {
-        setViewModel(next);
-      }
-    });
+    const search = window.location.search;
+    if (search.includes('LearningPatternBased')) {
+      findRecommendationCardsFromLearningPatternBased().then((next) => {
+        if (next !== undefined) {
+          setViewModel(next);
+        }
+      });
+    } else {
+      findRecommendationCardsFromContentBase().then((next) => {
+        if (next !== undefined) {
+          setViewModel(next);
+        }
+      });
+    }
   }, []);
 
-  const title = useMemo(() => getTitle(viewModel), [viewModel]);
+  const title = useMemo(() => getTitle(), []);
 
   if (viewModel === undefined) {
     return null;
@@ -54,7 +80,11 @@ function LRSListContainer() {
     <>
       <div className="ma-title">
         <div className="inner">
-          <h2>{title}</h2>
+          <h2
+            dangerouslySetInnerHTML={{
+              __html: title,
+            }}
+          />
         </div>
       </div>
       <Segment className="full">
@@ -75,29 +105,21 @@ function LRSListContainer() {
         <div className="section">
           {cards.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {cards.map((item, i) => {
-                const { card, cardRelatedCount } = item;
-
+              {parseUserLectureCards(
+                cards,
+                SkProfileService.instance.skProfile.language
+              ).map((card, i) => {
                 return (
-                  <li key={i}>
-                    <CardGroup type={GroupType.Box}>
-                      <CardView
-                        cardId={item.card.id}
-                        permittedCinerooms={card.permittedCinerooms}
-                        learningTime={card.learningTime}
-                        additionalLearningTime={card.additionalLearningTime}
-                        thumbImagePath={card.thumbImagePath}
-                        mainCategory={card.mainCategory}
-                        name={card.name}
-                        stampCount={card.stampCount}
-                        simpleDescription={card.simpleDescription}
-                        type={card.type}
-                        passedStudentCount={cardRelatedCount.passedStudentCount}
-                        starCount={cardRelatedCount.starCount}
-                        langSupports={card.langSupports}
-                      />
-                    </CardGroup>
-                  </li>
+                  <LectureCardView
+                    {...card}
+                    useBookMark={true}
+                    dataArea={
+                      window.location.search.includes('LearningPatternBased')
+                        ? Area.NEWLEARNING_RECOMMEND
+                        : Area.NEWLEARNING_PATTERN
+                    }
+                    hoverTrack={hoverTrack}
+                  />
                 );
               })}
             </Lecture.Group>

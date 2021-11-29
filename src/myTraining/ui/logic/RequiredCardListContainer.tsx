@@ -9,15 +9,12 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import NoSuchContentPanelMessages, {
-  nosuchMessagesPolyglot,
-} from '../model/NoSuchContentPanelMessages';
+import { nosuchMessagesPolyglot } from '../model/NoSuchContentPanelMessages';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import RequiredCardListView from '../view/RequiredCardListView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
 import { MyTrainingRouteParams } from 'myTraining/routeParams';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -44,7 +41,7 @@ function RequiredCardListContainer({
   const { lectureTableViews, lectureTableCount } = lectureService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
-  useRequestFilterCountView();
+  // useRequestFilterCountView();
 
   useEffect(() => {
     lectureService!.clearAllTableViews();
@@ -151,7 +148,7 @@ function RequiredCardListContainer({
             resultEmpty={resultEmpty}
             totalCount={lectureTableCount}
           />
-          <FilterBoxContainer />
+          <FilterBoxContainer contentType={contentType} />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {(lectureTableViews && lectureTableViews.length > 0 && (

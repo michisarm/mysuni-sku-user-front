@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-front-next
+  labels:
+    app: user-front-next
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-front-next
+  template:
+    metadata:
+      labels:
+        app: user-front-next
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - 'amd64'
+                  - key: project
+                    operator: In
+                    values:
+                      - 'user'
+      containers:
+        - name: user-front-next
+          image: sk-university-dev-registry.cloudzcp.io/sk-university/user-front:dev-2273
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: '300m'
+              memory: '256Mi'
+            limits:
+              cpu: '300m'
+              memory: '256Mi'
+          livenessProbe:
+            failureThreshold: 20
+            httpGet:
+              path: /healthCheck
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 20
+            httpGet:
+              path: /healthCheck
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          volumeMounts:
+            - name: user-front-persistent-storage
+              mountPath: /usr/share/nginx/html/profile
+            - name: user-front-persistent-storage
+              mountPath: /usr/share/nginx/html/files
+            - mountPath: /etc/localtime
+              name: timezone-config
+      volumes:
+        - name: user-front-persistent-storage
+          persistentVolumeClaim:
+            claimName: nara-pvc-ma
+        - hostPath:
+            path: /usr/share/zoneinfo/Asia/Seoul
+          name: timezone-config
+      imagePullSecrets:
+        - name: user-secret
+      tolerations:
+        - key: user
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+  strategy:
+    type: RollingUpdate

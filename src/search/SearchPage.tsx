@@ -5,8 +5,10 @@ import { ContentLayout } from 'shared';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CheckboxOptions } from './search.models';
 import { useSearchUI, setSearchUI } from './search.services';
-import { SearchContentsPage } from './SearchContentsPage';
 import { SearchHeaderPage } from './SearchHeaderPage';
+import { SearchContentsPage } from './SearchContentsPage';
+import SearchService from './service/SearchService';
+import { search } from './search.events';
 
 function LoadingView() {
   return (
@@ -28,6 +30,17 @@ export function SearchPage() {
   const contextRef = useRef<HTMLDivElement>(null);
 
   const searchUI = useSearchUI();
+
+  const searchService = SearchService.instance;
+
+  useEffect(() => {
+    return () => {
+      //console.log('search page 빠져나감');
+      searchService.clearSearchInfo();
+      searchService.clearAutoCompleteValues();
+    };
+  }, []);
+
   useEffect(() => {
     // model에서 생성시에는 다국어가 먹히지 않아서 여기서 다시 셋팅
     CheckboxOptions.difficulty_level_json_query = [
@@ -100,16 +113,32 @@ export function SearchPage() {
     return setSearchUI;
   }, []);
 
+  const onSearch = async (value: string, withOriginal?: boolean) => {
+    searchService.setSearchInfoValue('searchValue', value);
+    if (!searchService.searchInfo.inAgain) {
+      searchService.setSearchInfoValue('recentSearchValue', value);
+    }
+    if (withOriginal) {
+      await search(value, '', true);
+    } else {
+      await search(value);
+    }
+    searchService.setFocusedValue(false);
+  };
+
   return (
     <>
       <ContentLayout className="searchTotal" breadcrumb={[{ text: 'Search' }]}>
         <div ref={contextRef}>
-          <Sticky context={contextRef} className="tab-menu offset0">
-            <SearchHeaderPage />
-          </Sticky>
+          {/* <Sticky context={contextRef} className="tab-menu offset0"> */}
+          <SearchHeaderPage />
+          {/* </Sticky> */}
 
           <Segment attached="bottom">
-            <SearchContentsPage />
+            <SearchContentsPage
+              onSearch={onSearch}
+              searchInfo={searchService.searchInfo}
+            />
           </Segment>
         </div>
 

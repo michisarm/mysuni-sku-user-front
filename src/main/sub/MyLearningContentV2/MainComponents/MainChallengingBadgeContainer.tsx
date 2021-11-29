@@ -1,15 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
-import { Button, Icon } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
+import { Button, Segment } from 'semantic-ui-react';
 import certificationRoutes from 'certification/routePaths';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
-import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
 import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
 import { MyBadge } from '../../../../certification/model/MyBadge';
-import BadgeView from '../../../../certification/ui/view/BadgeView';
 import { Area } from 'tracker/model';
 import {
   getPolyglotText,
@@ -18,9 +13,12 @@ import {
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import { BadgeService } from 'lecture/stores';
-import { useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { SkProfileService } from 'profile/stores';
-import { useRequestBadgeAllCount } from 'certification/service/useRequestBadgeAllCount';
+import { useBadgeLearningTimeItem } from '../../PersonalBoard/store/PersonalBoardStore';
+import certificationPaths from 'certification/routePaths';
+import badgeRoutePaths from 'certification/routePaths';
+import { requestBadgeLearningTime } from '../../PersonalBoard/service/getBadgeLearningTime';
 
 function MainChallengingBadgeContainer() {
   const history = useHistory();
@@ -37,6 +35,7 @@ function MainChallengingBadgeContainer() {
       limit: 5,
     };
     badgeService.findAllChallengeBadges(myBadgeRdo);
+    requestBadgeLearningTime(SkProfileService.instance.skProfile.companyCode);
 
     return () => {
       badgeService.clearChallengeBadges();
@@ -73,95 +72,132 @@ function MainChallengingBadgeContainer() {
     [challengeBadges]
   );
 
+  const badgeLearningTimeItem = useBadgeLearningTimeItem();
+  const badgeMyCount = useMemo<number>(() => {
+    return badgeLearningTimeItem?.badgeMyCount || 0;
+  }, [badgeLearningTimeItem]);
+
+  if (badgeMyCount === 0 && challengeBadges.length === 0) {
+    return null;
+  }
+
   return (
-    <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
-      {allBadgeCount.totalCount > 0 && (
-        <>
-          <div className="section-head">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `<strong>${getPolyglotText(
-                  '{name}님이 도전중인 Badge',
-                  'home-ChallengeBadges-Title',
-                  {
-                    name: profileViewName,
-                  }
-                )}</strong>`,
-              }}
-            />
-            <div className="right">
-              {challengeBadges && challengeBadges.length > 0 && (
-                <Button icon className="right btn-blue" onClick={onViewAll}>
+    <Segment
+      className="full learning-section badge-section type4"
+      data-area={Area.MAIN_BADGE}
+    >
+      <div className="section-head">
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: `${getPolyglotText(
+              '<strong>도전중인 Badge</strong>',
+              'main-challenge-badge'
+            )}`,
+          }}
+        />
+        <div className="badge-listbox">
+          <div className="badge-list-wrap">
+            {challengeBadges.length < 1 && (
+              <div className="badge-no-data">
+                <span>
                   <PolyglotText
-                    defaultString="View All"
-                    id="home-ChallengeBadges-ViewAll"
+                    id="home-ChallengeBadges-도전뱃지"
+                    defaultString="도전중인 Badge가 없습니다."
                   />
-                  <Icon className="morelink" />
-                </Button>
-              )}
-            </div>
-          </div>
-          {challengeBadges && challengeBadges.length > 0 ? (
-            <div className="scrolling" data-area-name="도전중인 Badge">
-              <div className="badge-list-type">
-                <ul className="belt">
-                  {challengeBadges.map((badge: MyBadge, index: number) => {
-                    return (
-                      <li key={index} onClick={() => onClick(index)}>
-                        <BadgeView
-                          id={badge.id}
-                          name={parsePolyglotString(
-                            badge.name,
-                            getDefaultLang(badge.langSupport)
-                          )}
-                          level={badge.level}
-                          iconUrl={badge.iconUrl}
-                          categoryId={badge.categoryId}
-                          badgeStyle={BadgeStyle.List}
-                          badgeSize={BadgeSize.Small}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
+                </span>
               </div>
-            </div>
-          ) : (
-            <NoSuchContentPanel
-              message={
-                <>
-                  <div className="text">
-                    <PolyglotText
-                      defaultString="도전중인 Badge가 없습니다."
-                      id="home-ChallengeBadges-도전뱃지"
-                    />
-                    <br />
-                    <PolyglotText
-                      defaultString="등록된 Badge 리스트에서 원하는 Badge에 도전해보세요."
-                      id="home-ChallengeBadges-등뱃없"
-                    />
-                  </div>
-                  <Button
-                    icon
-                    as="a"
-                    className="right btn-blue2"
-                    onClick={onClickLink}
-                  >
-                    <span className="border">
-                      <PolyglotText
-                        defaultString="Badge List 바로가기"
-                        id="home-ChallengeBadges-목록없음"
+            )}
+            {challengeBadges.map((badge: MyBadge, index: number) => {
+              return (
+                <a
+                  className="badge-col-list"
+                  key={badge.id}
+                  onClick={() => {
+                    history.push(badgeRoutePaths.badgeDetailPage(badge.id));
+                  }}
+                >
+                  {/* 아래 아이콘('.cate-icon')의 bg컬러를 카테고리별 벳지컬러에 맞춰주시면 됩니다(어드민 내 테마 컬러) */}
+                  <div className="badge-col cate-sign">
+                    {/*<i*/}
+                    {/*  aria-hidden="true"*/}
+                    {/*  className="icon cate-icon"*/}
+                    {/*  style={{*/}
+                    {/*    backgroundColor: badge.badgeCategory.themeColor,*/}
+                    {/*  }}*/}
+                    {/*/>*/}
+                    <div
+                      className="cate-icon"
+                      style={{ borderColor: badge.badgeCategory.themeColor }}
+                    >
+                      <div
+                        className="cate-icon2"
+                        style={{ borderColor: badge.badgeCategory.themeColor }}
                       />
-                    </span>
-                    <Icon className="morelink" />
-                  </Button>
-                </>
-              }
-            />
-          )}
-        </>
-      )}
-    </ContentWrapper>
+                    </div>
+                  </div>
+                  {/*<div className="badge-col cate">*/}
+                  {/*  {parsePolyglotString(badge.badgeCategory.name)}*/}
+                  {/*</div>*/}
+                  <div className="badge-col name">
+                    {parsePolyglotString(badge.name)}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="section-body">
+        <div
+          className={`badge-banner-wrap ${badgeMyCount === 0 && 'no-badge'}`}
+        >
+          <div className="badge-txt-box">
+            {badgeMyCount > 0 && (
+              <div
+                className="badge-txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '지금까지 총 <strong>{badgeMyCount}개</strong>의 뱃지를<br/>획득하셨어요!',
+                    'main-issued-badge',
+                    { badgeMyCount: badgeMyCount.toString() }
+                  ),
+                }}
+              />
+            )}
+            {badgeMyCount === 0 && (
+              <div
+                className="badge-txt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    '<div className="badge-txt-big"><strong>현재 획득한 뱃지가 없습니다.</strong></div><div className="badge-txt-sub">학습을 통해 뱃지를 획득하고 <br/>지식과 Skill을 인증 받으세요!</div>',
+                    'main-noissued-badge',
+                    { badgeMyCount: badgeMyCount.toString() }
+                  ),
+                }}
+              />
+            )}
+            <NavLink
+              to={certificationPaths.badge()}
+              className="ui button btn-badge-go"
+            >
+              {badgeMyCount > 0 && (
+                <PolyglotText
+                  id="main-new-badge"
+                  defaultString="새로운 뱃지 도전하기!"
+                />
+              )}
+              {badgeMyCount === 0 && (
+                <PolyglotText
+                  id="main-badge-title2"
+                  defaultString="뱃지 도전하기!"
+                />
+              )}
+            </NavLink>
+          </div>
+        </div>
+      </div>
+    </Segment>
   );
 }
 

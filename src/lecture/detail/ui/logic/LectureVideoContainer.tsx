@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
 import {
@@ -20,7 +21,6 @@ import {
   callDebounceActionTrack,
   callRegisterWatchLog,
   checkStudent,
-  fetchAllModelsForStorage,
 } from '../../service/useVideoContainer/utility/VideoContainerEvents';
 import { getActiveCourseStructureItem } from '../../utility/lectureStructureHelper';
 import { reactAlert } from '@nara.platform/accent';
@@ -43,7 +43,6 @@ function LectureVideoContainer() {
   const params = useLectureParams();
 
   const callVideoNearEnded = useCallback(() => {
-    fetchAllModelsForStorage();
     setNextContentsView(true);
   }, []);
 

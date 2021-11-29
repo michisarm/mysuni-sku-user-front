@@ -1,22 +1,20 @@
 import {
   getLectureTaskOffset,
-  getLectureTaskTab,
   getLectureTaskOrder,
+  getLectureTaskTab,
   onLectureTaskItem,
   onLectureTaskOffset,
   onLectureTaskTab,
   onLectureTaskViewType,
-  onLectureTaskOrder,
   setLectureTaskDetail,
   setLectureTaskItem,
   setLectureTaskOffset,
-  setLectureTaskTab,
   setLectureTaskOrder,
+  setLectureTaskTab,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { useEffect, useState } from 'react';
 import { useLectureParams } from '../../store/LectureParamsStore';
-
 import { getCubeLectureTask } from './utility/getCubeLectureTask';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 
@@ -39,8 +37,6 @@ export function useLectureTask(): [TaskValue] {
       offset: 0,
       limit: 10,
     });
-    setLectureTaskTab('Overview');
-    setLectureTaskOffset(0);
     // add
     setLectureTaskOrder('new');
   }, [params?.cubeId]);
@@ -54,7 +50,7 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskItem(next => {
+    return onLectureTaskItem((next) => {
       setTaskValue(next);
     }, subscriberId);
   }, [subscriberId]);
@@ -63,18 +59,11 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskOffset(next => {
+    return onLectureTaskOffset(() => {
       if (params?.cubeId === undefined || getLectureTaskTab() === 'Overview') {
         return;
       }
-      getCubeLectureTask(
-        params?.cubeId,
-        getLectureTaskOffset() || 0,
-        limit,
-        getLectureTaskOrder() === "My" ? 'My' : 'Posts',
-        getLectureTaskOrder() || 'new'
-
-      );
+      getCubeLectureTask();
     }, subscriberId);
   }, [subscriberId, params?.cubeId]);
 
@@ -82,7 +71,7 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskViewType(next => {
+    return onLectureTaskViewType((next) => {
       if (next === 'edit') {
         return;
       }
@@ -92,7 +81,6 @@ export function useLectureTask(): [TaskValue] {
       }
       if (next === 'list') {
         setLectureTaskItem();
-        setLectureTaskOffset(0);
         // add
         setLectureTaskItem();
         setLectureTaskDetail();
@@ -105,13 +93,12 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskTab(next => {
+    return onLectureTaskTab((next) => {
       if (next === 'Overview') {
         return;
       }
 
       setLectureTaskItem();
-      setLectureTaskOffset(0);
       // addd
       setLectureTaskOrder('new');
     }, subscriberId);

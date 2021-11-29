@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { MenuControlAuthService } from 'approval/stores';
+import { requestCollegePercent } from 'main/sub/PersonalBoard/service/getCollegePercent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import moment from 'moment';
-import { Modal, Button, Icon } from 'semantic-ui-react';
-import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { AplService } from 'myTraining/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { SkProfileService } from 'profile/stores';
-import { MenuControlAuthService } from 'approval/stores';
-import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
-import MySuniCollegeTimeView from '../view/MySuniCollegeTimeView';
-import MyCompanyCollegeTimeView from '../view/MyCompanyCollegeTimeView';
-import LectureCollegeTimeView from '../view/LectureCollegeTimeView';
+import React, { Component } from 'react';
+import { Button, Icon, Modal } from 'semantic-ui-react';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../shared/ui/logic/PolyglotText';
+import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
+import InstructorLearningTimeView from '../view/InstructorLearningTimeView';
+import MyCompanyCollegeTimeView from '../view/MyCompanyCollegeTimeView';
+import MySuniCollegeTimeView from '../view/MySuniCollegeTimeView';
 
 interface Props {
   trigger: React.ReactNode;
@@ -55,8 +56,6 @@ class MyLearningSummaryModal extends Component<Props> {
     checkedTab: TabType.mySUNI,
   };
 
-  componentDidMount() {}
-
   onOpenModal() {
     this.setState({
       openModal: true,
@@ -91,17 +90,16 @@ class MyLearningSummaryModal extends Component<Props> {
     const { openModal, checkedTab } = this.state;
     const { trigger, myLearningSummaryService, menuControlAuthService } =
       this.props;
-    const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
+    const {
+      displayMyCompanyLearningTime,
+      displayMySuniLearningTime,
+      myLearningSummary,
+      instructTimeSummary,
+    } = myLearningSummaryService!;
 
     const year = moment().year();
     const today = moment(new Date()).format('YYYY.MM.DD');
-
-    const totalMyCompanyLearningTime =
-      (menuControlAuth.useApl &&
-        myLearningSummary.displayMyCompanyLearningTime +
-          myLearningSummary.aplAllowTime) ||
-      myLearningSummary.displayMyCompanyLearningTime;
 
     return (
       <Modal
@@ -180,7 +178,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  myLearningSummary.displayMySUNILearningTime
+                                  displayMySuniLearningTime
                                 )}
                                 )
                               </strong>
@@ -215,7 +213,11 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  totalMyCompanyLearningTime
+                                  displayMyCompanyLearningTime +
+                                    ((menuControlAuth.useApl &&
+                                      myLearningSummary &&
+                                      myLearningSummary.aplTime) ||
+                                      0)
                                 )}
                                 )
                               </strong>
@@ -261,8 +263,8 @@ class MyLearningSummaryModal extends Component<Props> {
                                 />
                                 (
                                 {timeToHourMinutePaddingFormat(
-                                  (lectureTimeSummary &&
-                                    lectureTimeSummary.sumOfCurrentYearLectureTime) ||
+                                  (instructTimeSummary &&
+                                    instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
                                     0
                                 )}
                                 )
@@ -283,23 +285,19 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                   </div>
                   <div className="cell vtop">
-                    {checkedTab === TabType.mySUNI && (
-                      <MySuniCollegeTimeView
-                        myLearningSummary={myLearningSummary}
-                      />
-                    )}
+                    {checkedTab === TabType.mySUNI && <MySuniCollegeTimeView />}
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
-                        myCompanyLearningTime={
-                          myLearningSummary.displayMyCompanyLearningTime
+                        myCompanyLearningTime={displayMyCompanyLearningTime}
+                        aplTime={
+                          (myLearningSummary && myLearningSummary.aplTime) || 0
                         }
-                        aplTime={myLearningSummary.aplAllowTime}
                         menuControlAuth={menuControlAuth}
                       />
                     )}
                     {checkedTab === TabType.LectureTime && (
-                      <LectureCollegeTimeView
-                        lectureTimeSummary={lectureTimeSummary}
+                      <InstructorLearningTimeView
+                        instructorLearningTimeSummary={instructTimeSummary}
                       />
                     )}{' '}
                   </div>

@@ -14,12 +14,14 @@ export default interface Note {
 }
 
 export function getConvertEnter(content: string): string {
-  let convertString: string = ''
+  let convertString: string = '';
 
-  const stringArr = content.split("\n")
+  const stringArr = content.split('\n');
   stringArr.map((splitItem: string) => {
-    convertString += '<p>' + splitItem + '</p>'
+    convertString += '<p>' + splitItem + '</p>';
   });
-  if (stringArr.length === 0) { convertString = content }
+  if (stringArr.length === 0) {
+    convertString = content;
+  }
   return convertString;
 }

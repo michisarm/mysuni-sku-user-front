@@ -1,33 +1,26 @@
-import { filterConditionNamePolyglot } from '../../myTraining/model/FilterConditionName';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Accordion, Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
+import { filterConditionNamePolyglot } from '../../myTraining/model/FilterConditionName';
 import {
   filterClearAll,
   filterClickSearch,
   getQueryId,
   settingSearchFilter,
   toggle_all_college_name_query,
-  toggle_all_all_college_name_query,
   toggle_cube_type_query,
   toggle_difficulty_level_json_query,
   toggle_learning_time_query,
-  toggle_all_difficulty_level_query,
-  toggle_all_cube_type_query,
-  toggle_all_learning_time_query,
   toggle_support_lang_json_query,
 } from '../../search/search.events';
-import { SearchParam, CheckboxOptions } from '../../search/search.models';
+import { CheckboxOptions } from '../../search/search.models';
 import {
   getAllowedCard,
-  getDisplayCard,
-  getFilterCondition,
+  getSearchUI,
   setFilterCondition,
   useCollegeOptions,
   useCubeTypeOptions,
   useFilterCondition,
-  getSearchUI,
 } from '../../search/search.services';
-import { Accordion, Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
 import {
   getPolyglotText,
   PolyglotText,
@@ -36,8 +29,8 @@ import { CalendarView } from './CalendarView';
 
 export function SearchContentsResultSideView() {
   //
-  const initialConditionLimit = 5;
-  const [activeIndex, setActiveIndex] = useState<Number>(0);
+  const initialConditionLimit = 999;
+  const [activeIndex, setActiveIndex] = useState<Number>(-1);
   const [collegeLimit, setCollegeLimit] = useState<Number>(
     initialConditionLimit
   );
@@ -56,10 +49,10 @@ export function SearchContentsResultSideView() {
     filterClickSearch();
   };
 
-  const params = useParams<SearchParam>();
+  // const params = useParams<SearchParam>();
   const queryId = getQueryId();
   const allowedCard = getAllowedCard();
-  const card = getDisplayCard();
+  // const card = getDisplayCard();
   useEffect(() => {
     settingSearchFilter(queryId);
     setCollegeLimit(initialConditionLimit);
@@ -78,23 +71,23 @@ export function SearchContentsResultSideView() {
     return null;
   }
 
-  const all_all_college_name_condition =
-    filterCondition.all_college_name_query.length !== 0 &&
-    filterCondition.all_college_name_query.length === collegeOptions.length;
+  // const all_all_college_name_condition =
+  //   filterCondition.all_college_name_query.length !== 0 &&
+  //   filterCondition.all_college_name_query.length === collegeOptions.length;
 
-  const all_difficulty_level_condition =
-    filterCondition.difficulty_level_json_query.length !== 0 &&
-    filterCondition.difficulty_level_json_query.length ===
-      CheckboxOptions.difficulty_level_json_query.length;
+  // const all_difficulty_level_condition =
+  //   filterCondition.difficulty_level_json_query.length !== 0 &&
+  //   filterCondition.difficulty_level_json_query.length ===
+  //     CheckboxOptions.difficulty_level_json_query.length;
 
-  const all_cube_type_condition =
-    filterCondition.cube_type_query.length !== 0 &&
-    filterCondition.cube_type_query.length === cubeTypeOptions.length;
+  // const all_cube_type_condition =
+  //   filterCondition.cube_type_query.length !== 0 &&
+  //   filterCondition.cube_type_query.length === cubeTypeOptions.length;
 
-  const all_learning_time_condition =
-    filterCondition.learning_time_query.length !== 0 &&
-    filterCondition.learning_time_query.length ===
-      CheckboxOptions.learning_time_query.length;
+  // const all_learning_time_condition =
+  //   filterCondition.learning_time_query.length !== 0 &&
+  //   filterCondition.learning_time_query.length ===
+  //     CheckboxOptions.learning_time_query.length;
 
   enum FilterConditionName {
     College = 'College',
@@ -107,7 +100,7 @@ export function SearchContentsResultSideView() {
     LearningSchedule = '교육일정',
     SupportLanguage = '지원언어',
   }
-  const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
+  // const SELECT_ALL = getPolyglotText('Select All', '통검-필레팝-모두선택');
 
   const searchUI = getSearchUI();
 
@@ -176,7 +169,7 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {collegeOptions.length > initialConditionLimit &&
+              {/*collegeOptions.length > initialConditionLimit &&
                 collegeLimit < 999 && (
                   <Button
                     className="btn_more"
@@ -188,7 +181,7 @@ export function SearchContentsResultSideView() {
                     />
                     <Icon color="grey" name="angle down" />
                   </Button>
-                )}
+                )*/}
             </Accordion.Content>
           </Accordion>
         )}
@@ -429,7 +422,7 @@ export function SearchContentsResultSideView() {
                   }
                 })}
               </ul>
-              {cubeTypeOptions.length > initialConditionLimit &&
+              {/*cubeTypeOptions.length > initialConditionLimit &&
                 cubeTypeLimit < 999 && (
                   <Button
                     className="btn_more"
@@ -441,7 +434,7 @@ export function SearchContentsResultSideView() {
                     />
                     <Icon color="grey" name="angle down" />
                   </Button>
-                )}
+                )*/}
             </Accordion.Content>
           </Accordion>
         )}

@@ -1,15 +1,20 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { getQueryId, searchData, initSearchData } from './search.events';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  getQueryId,
+  initSearchData,
+  search,
+  searchDataWithErrata,
+} from './search.events';
 import { SearchParam } from './search.models';
 import {
-  getSearchInSearchInfo,
   useDisplayCard,
   useExpert,
   useSearchBadgeList,
   useSearchCommunityList,
+  useSearchRelatedList,
 } from './search.services';
 import { SearchContentsResultBadgeView } from './views/SearchContentsResultBadgeView';
 import { SearchContentsResultCommunityView } from './views/SearchContentsResultCommunityView';
@@ -18,9 +23,18 @@ import { SearchContentsResultLectureView } from './views/SearchContentsResultLec
 import { SearchContentsResultSideView } from './views/SearchContentsResultSideView';
 import { SearchNoDataView } from './views/SearchNoDataView';
 import { Area } from 'tracker/model';
+import SearchInfoModel from './model/SeachInfoModel';
+import { Button } from 'semantic-ui-react';
 
-export function SearchContentsPage() {
+interface Props {
+  onSearch: (value: string, withOriginal?: boolean) => void;
+  searchInfo: SearchInfoModel;
+}
+
+export function SearchContentsPage(props: Props) {
   //
+  const { onSearch, searchInfo } = props;
+
   const params = useParams<SearchParam>();
 
   const queryId = getQueryId();
@@ -44,7 +58,8 @@ export function SearchContentsPage() {
       });
       return;
     }
-    searchData(queryId);
+    search(queryId);
+    // searchDataWithErrata(queryId);
   }, [queryId]);
 
   const cards = useDisplayCard();
@@ -69,11 +84,11 @@ export function SearchContentsPage() {
   }
 
   const HeaderTotalCountTitle = () => {
-    const searchInSearchInfo = getSearchInSearchInfo();
+    const relatedList = useSearchRelatedList();
 
     return (
       <>
-        {searchInSearchInfo?.checkSearchInSearch && (
+        {searchInfo.inAgain && (
           <p
             className="ttl_txt"
             dangerouslySetInnerHTML={{
@@ -81,15 +96,15 @@ export function SearchContentsPage() {
                 '{value} 중 <strong class="search_keyword">{value2}</strong>에 대한 검색결과는 총 <strong>{value3}건</strong> 입니다.',
                 '통검-요약정보-결과내검색타이틀',
                 {
-                  value: searchInSearchInfo.parentSearchValue,
-                  value2: searchInSearchInfo.searchValue,
+                  value: searchInfo.recentSearchValue,
+                  value2: searchInfo.errataValue || searchInfo.searchValue,
                   value3: totalCount.toString(),
                 }
               ),
             }}
           />
         )}
-        {!searchInSearchInfo?.checkSearchInSearch && (
+        {!searchInfo.inAgain && (
           <p
             className="ttl_txt"
             dangerouslySetInnerHTML={{
@@ -97,12 +112,66 @@ export function SearchContentsPage() {
                 '<strong class="search_keyword">{value}</strong>에 대한 검색결과는 총 <strong>{value2}건</strong>입니다.',
                 '통검-요약정보-타이틀2',
                 {
-                  value: queryId,
+                  value:
+                    (searchInfo.errataValue && searchInfo.errataValue) ||
+                    searchInfo.searchValue,
                   value2: totalCount.toString(),
                 }
               ),
             }}
           />
+        )}
+        {(searchInfo.errataValue && (
+          <div className="suggest_wrap">
+            <Button
+              className="b_suggest"
+              onClick={() => onSearch(searchInfo.searchValue || queryId, true)}
+            >
+              <div
+                className="tt"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `${searchInfo.searchValue || queryId} 검색결과 보기.`,
+                    'result-list-suggest',
+                    {
+                      searchValue: searchInfo.searchValue || queryId,
+                    }
+                  ),
+                }}
+              />
+            </Button>
+          </div>
+        )) ||
+          null}
+        {relatedList && relatedList.length > 0 && (
+          <div className="relative_box">
+            <dl>
+              <dt>
+                <strong>
+                  <PolyglotText
+                    id="통검-필레팝-연관검색어"
+                    defaultString="연관 검색어"
+                  />
+                </strong>
+              </dt>
+              <dd>
+                <ul>
+                  {relatedList.map((related: string, index) => (
+                    <li key={`related_${index}`}>
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => {
+                          onSearch(related);
+                        }}
+                      >
+                        {related}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </dl>
+          </div>
         )}
       </>
     );

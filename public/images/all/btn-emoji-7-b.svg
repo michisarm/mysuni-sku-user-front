@@ -1,0 +1,19 @@
+<svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <circle id="a" cx="10" cy="10" r="10"/>
+    </defs>
+    <g transform="translate(11 11)" fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <circle stroke="#00BFAE" stroke-width="1.2" cx="10" cy="10" r="9.4"/>
+        <g mask="url(#b)">
+            <path d="m10 6.368 3.454 2.51-1.32 4.06H7.866l-1.32-4.06L10 6.368z" stroke="#00BFAE"/>
+            <path fill="#00BFAE" d="M9.5 2.5h1V7h-1zM1.5 16.5v-1H6v1z"/>
+            <path fill="#00BFAE" d="m5.25 16.059.966-.259 1.165 4.347-.966.259zM14.88 16.059l-.965-.259-1.165 4.347.966.259z"/>
+            <path fill="#00BFAE" d="M14 16.5v-1h4.5v1zM2.52 3.5h1V8h-1zM16.48 3.5h1V8h-1z"/>
+            <path fill="#00BFAE" d="m11.5 12.874.82-.574 2.58 3.686-.819.574zM8.4 12.914l-.82-.574L5 16.026l.819.574zM6.5.798 7.102 0l3.195 2.407-.602.799zM2.5 7.94 2.842 7l3.759 1.368-.342.94zM17.5 7.94 17.16 7l-3.76 1.368.343.94z"/>
+            <path fill="#00BFAE" d="M13.296.798 12.694 0 9.5 2.407l.602.799zM3.415 7.999l-.438-.9L-.62 8.854l.439.899zM16.381 7.999l.439-.9 3.595 1.754-.438.899z"/>
+        </g>
+    </g>
+</svg>

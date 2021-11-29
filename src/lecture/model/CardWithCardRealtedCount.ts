@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { CardWithLearningContentCountRom } from './CardWithLearningContentCountRom';
 import { getMainCategory } from 'shared/model/CardCategory';
+import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 
 export type CardWithCardRealtedCount = Pick<
   CardWithLearningContentCountRom,
@@ -8,18 +9,18 @@ export type CardWithCardRealtedCount = Pick<
 >;
 
 export function takeTwoOfEachCollege(
-  cardWithCardRealtedCounts: CardWithCardRealtedCount[]
+  cardWithCardRealtedCounts: UserLectureCard[]
 ) {
   const collegeCountMap = new Map();
-  const result: CardWithCardRealtedCount[] = [];
-  const temp: CardWithCardRealtedCount[] = [];
+  const result: UserLectureCard[] = [];
+  const temp: UserLectureCard[] = [];
 
   cardWithCardRealtedCounts.forEach((c) => {
     if (result.length === 8) {
       return;
     }
 
-    const collegeId = getMainCategory(c.card.categories)?.collegeId || '';
+    const collegeId = c.mainCollegeId || '';
     const collegeCount = collegeCountMap.get(collegeId);
 
     if (collegeCount === undefined) {

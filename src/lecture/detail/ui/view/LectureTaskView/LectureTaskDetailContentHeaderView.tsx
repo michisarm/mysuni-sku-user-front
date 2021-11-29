@@ -11,6 +11,7 @@ import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+import { SkProfileService } from 'profile/stores';
 
 interface Props {
   canNotice: boolean;
@@ -88,6 +89,10 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> =
       });
     }, [taskDetail]);
 
+    const isPostWriter =
+      SkProfileService.instance.skProfile.id ===
+      taskDetail.writerPatronKeyString;
+
     return (
       <>
         <div className="course-info-header" data-area={Area.CUBE_HEADER}>
@@ -164,7 +169,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> =
                         )}
                       </Button>
                     )}
-                    {onClickModify && (
+                    {onClickModify && isPostWriter && (
                       <Button
                         icon
                         className="ui button icon postset edit2"
@@ -177,7 +182,7 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> =
                         />
                       </Button>
                     )}
-                    {deletable && (
+                    {deletable && isPostWriter && (
                       <Button
                         icon
                         className="ui button icon postset delete"

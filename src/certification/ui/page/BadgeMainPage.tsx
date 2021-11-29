@@ -85,7 +85,10 @@ function BadgeMainPage({ badgeService }: BadgeMainPageProps) {
   return (
     <ContentLayout
       breadcrumb={[
-        { text: getPolyglotText('Certification', 'Certification-cb-dp2') },
+        {
+          text: getPolyglotText('Certification', 'Certification-cb-dp2'),
+          path: routePaths.badgeTab(),
+        },
         { text: getSubBreadcrumbFromTab(params.tab) },
       ]}
     >

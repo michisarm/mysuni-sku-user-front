@@ -84,7 +84,9 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> =
         {lectureSurveyState === undefined ||
           (lectureSurveyState.state === 'Progress' &&
             lectureSurveyItem.isRequired === true &&
-            lectureSurveyAnswerItem === undefined && (
+            (lectureSurveyAnswerItem === undefined ||
+              lectureSurveyAnswerItem.matrixItem?.length !==
+                lectureSurveyItem.rows?.length) && (
               <div style={{ marginTop: '10px' }}>
                 <Image
                   style={{ display: 'inline-block', marginRight: '5px' }}

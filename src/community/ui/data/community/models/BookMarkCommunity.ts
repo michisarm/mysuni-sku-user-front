@@ -1,0 +1,44 @@
+import { CommunityHomeType } from './CommunityHomeTown';
+import { CommunityType } from './CommunityType';
+
+export interface BookMarkCommunity {
+  allowSelfJoin: number;
+  approved: string;
+  bookmarked: boolean;
+  color: string;
+  communityId: string;
+  courseId: string;
+  createdTime: number;
+  creatorId: string;
+  creatorName: string;
+  deleted: boolean;
+  description: string;
+  field: string;
+  fieldName: string;
+  homeTemplateId: string;
+  homeThumbnailId: string;
+  homeType: CommunityHomeType;
+  html: string;
+  introTemplateId: string;
+  introduce: string;
+  lastPostTime: number;
+  managerCompany: string;
+  managerEmail: string;
+  managerId: string;
+  managerName: string;
+  managerNickName: string;
+  managerProfileImg: string;
+  memberCount: number;
+  memberType: string;
+  modifiedTime: number;
+  modifierId: string;
+  name: string;
+  nameFlag: string;
+  secretNumber: string;
+  signModifyTime: number;
+  signTime: number;
+  thumbnailId: string;
+  type: CommunityType;
+  useWhitelistPolicy: boolean;
+  visible: string;
+}

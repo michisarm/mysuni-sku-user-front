@@ -9,6 +9,10 @@ import { CollegeLectureCountRdo } from 'lecture/model';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
+import {
+  compareCollgeCineroom,
+  getChannelName,
+} from '../../../shared/service/useCollege/useRequestCollege';
 
 interface Props {
   colleges: CollegeLectureCountRdo[];
@@ -35,12 +39,12 @@ class FavoriteChannelChangeView extends Component<Props> {
     'teal',
   ];
 
-  isChecked(collegeType: CollegeType, channelId: string) {
+  isChecked(collegeId: string, channelId: string) {
     //
     const { favoriteChannels } = this.props;
 
     return (
-      collegeType === CollegeType.Company ||
+      compareCollgeCineroom(collegeId) ||
       favoriteChannels
         .map((favoriteChannel) => favoriteChannel.id)
         .includes(channelId)
@@ -84,10 +88,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                           onClick={() => onToggleCollege(college)}
                         >
                           <span className={`name ${this.color[index]}`}>
-                            {parsePolyglotString(
-                              college.name,
-                              getDefaultLang(college.langSupports)
-                            )}
+                            {college.name}
                           </span>
                           <Icon />
                         </Accordion.Title>
@@ -95,43 +96,25 @@ class FavoriteChannelChangeView extends Component<Props> {
                           active={selectedCollegeIds.includes(college.id)}
                         >
                           <ul>
-                            {college.channels &&
-                              college.channels.length > 0 &&
-                              college.channels
-                                .filter((channel) =>
-                                  channelIds.includes(channel.id)
-                                )
-                                .map((channel, index) => (
-                                  <li key={`channel-${index}`}>
+                            {college.channelIds.length > 0 &&
+                              college.channelIds
+                                .filter((id) => channelIds.includes(id))
+                                .map((id, index) => (
+                                  <li key={`channel-${id}`}>
                                     <Checkbox
                                       className="base"
                                       label={
-                                        <label>
-                                          {parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          )}
-                                        </label>
+                                        <label>{getChannelName(id)}</label>
                                       }
-                                      name={parsePolyglotString(
-                                        channel.name,
-                                        getDefaultLang(channel.langSupports)
+                                      name={getChannelName(id)}
+                                      checked={this.isChecked(college.id, id)}
+                                      disabled={compareCollgeCineroom(
+                                        college.id
                                       )}
-                                      checked={this.isChecked(
-                                        college.collegeType,
-                                        channel.id
-                                      )}
-                                      disabled={
-                                        college.collegeType ===
-                                        CollegeType.Company
-                                      }
                                       onChange={() =>
                                         onToggleChannel({
-                                          id: channel.id,
-                                          name: parsePolyglotString(
-                                            channel.name,
-                                            getDefaultLang(channel.langSupports)
-                                          ),
+                                          id,
+                                          name: getChannelName(id),
                                         })
                                       }
                                     />

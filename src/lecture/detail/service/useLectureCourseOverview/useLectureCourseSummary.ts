@@ -14,44 +14,55 @@ import LectureCardSummary from '../../viewModel/LectureOverview/LectureCardSumma
 import { studentInfoView } from 'lecture/detail/api/lectureApi';
 import LectureParams from '../../viewModel/LectureParams';
 import { getLectureParams } from '../../store/LectureParamsStore';
-import InMyLectureService from '../../../../myTraining/present/logic/InMyLectureService';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import {
+  addBookMark,
+  deleteBookMark,
+  requestBookmark,
+} from 'shared/service/requestBookmarks';
 
 type Value = LectureCardSummary | undefined;
 
-export function toggleCardBookmark() {
+export function findIsBookmark(cardId?: string): boolean {
+  if (cardId === undefined) {
+    return false;
+  }
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+
+  // return bookmarks.find((id: string) => {
+  //   if (id === cardId) {
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // });
+  const bookmark = bookmarks.find((id: string) => id === cardId);
+
+  return !!bookmark;
+}
+
+export async function toggleCardBookmark(
+  onChangeIsBookmark: (isBookmark: boolean) => void
+) {
   const params = getLectureParams();
   if (params === undefined) {
     return;
   }
   const { cardId } = params;
 
-  const imMyLecture = InMyLectureService.instance.inMyLectureMap.get(cardId);
+  const isBookmark = findIsBookmark(cardId);
 
-  if (imMyLecture === undefined) {
-    const inMyLectureCdo = getInMyLectureCdo();
-    if (inMyLectureCdo !== undefined) {
-      addInMyLecture(inMyLectureCdo).then(() => {
-        InMyLectureService.instance.findAllInMyLectures();
-        reactAlert({
-          title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-          message: getPolyglotText(
-            '본 과정이 관심목록에 추가되었습니다.',
-            '신규학습-신규목록-관심추가'
-          ),
-        });
-      });
-    }
-  } else {
-    removeInMyLecture(imMyLecture.id).then(() => {
-      InMyLectureService.instance.findAllInMyLectures();
-      reactAlert({
-        title: getPolyglotText('알림', '신규학습-신규목록-알림'),
-        message: getPolyglotText(
-          '본 과정이 관심목록에서 제외되었습니다.',
-          '신규학습-신규목록-관심제외'
-        ),
-      });
+  if (isBookmark) {
+    deleteBookMark(cardId).then((bookmarks) => {
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      onChangeIsBookmark(!isBookmark);
+    });
+  }
+
+  if (!isBookmark) {
+    addBookMark(cardId).then((bookmarks) => {
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      onChangeIsBookmark(!isBookmark);
     });
   }
 }

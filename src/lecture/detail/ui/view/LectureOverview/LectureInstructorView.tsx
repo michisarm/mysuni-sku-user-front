@@ -53,6 +53,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
                 index
               ) => (
                 <Link
+                  key={instructorId}
                   className="ui profile tool-tip"
                   to={`/expert/instructor/${instructorId}/Introduce`}
                 >

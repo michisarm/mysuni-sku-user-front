@@ -18,6 +18,9 @@ import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
 import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
+import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
+import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
+import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 
 const BASE_URL = '/api/lecture';
 
@@ -52,30 +55,40 @@ export function findCardFromCardBundle(
     recommendation: isRecommendation,
   };
 
-  return axios
-    .post<CardWithCardRealtedCount[]>(url, postBodyCdo)
-    .then(AxiosReturn);
+  return axios.post<UserLectureCard[]>(url, postBodyCdo).then(AxiosReturn);
 }
 
-export function findCardList(cardIds: string) {
+// export function findCardList(cardIds: string) {
+//   const axios = getAxios();
+//   // const url = `${BASE_URL}/cards/findCards`;
+//   const url = `${BASE_URL}/cards/findCardForUserViewRdos`;
+//
+//   return axios
+//     .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
+//     .then(AxiosReturn);
+// }
+
+export function findCardList(cardIds: string[]) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/findCards`;
-
+  // const url = `${BASE_URL}/cards/findCards`;
+  const url = `${BASE_URL}/cards/findCardForUserViewRdos`;
+  const cardForUserViewByIdQdo = {
+    ids: cardIds,
+  };
   return axios
-    .get<CardWithCardRealtedCount[]>(url, { params: { ids: cardIds } })
+    .post<UserLectureCard[]>(url, cardForUserViewByIdQdo)
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] = createCacheApi(
-  findCardList
-);
+export const [findCardListCache, clearFindCardListCache] =
+  createCacheApi(findCardList);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findMyLatestLearningCards`;
 
   return axios
-    .get<CardWithCardRealtedCount[]>(url, { params: { count } })
+    .get<UserLectureCard[]>(url, { params: { count } })
     .then(AxiosReturn);
 }
 
@@ -130,16 +143,25 @@ function findRelatedCards(cardId: string) {
   return axios.get<Card[]>(url).then(AxiosReturn);
 }
 
-export const [
-  findRelatedCardsCache,
-  clearFindRelatedCardsCache,
-] = createCacheApi(findRelatedCards);
+export const [findRelatedCardsCache, clearFindRelatedCardsCache] =
+  createCacheApi(findRelatedCards);
 
 export function findByRdo(cardRdo: CardRdo) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findCardWithRelatedCountByRdo`;
   return axios
     .get<OffsetElementList<CardWithCardRealtedCount>>(url, {
+      params: cardRdo,
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
+}
+
+export function findByQdo(cardRdo: CardRdo) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findCardForUserViewRdoByCardQdo`;
+  return axios
+    .get<OffsetElementList<UserLectureCard>>(url, {
       params: cardRdo,
       paramsSerializer,
     })
@@ -159,8 +181,8 @@ export function findCardsByRdo(cardRdo: CardRdo) {
 
 export function findRequiredLearning() {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/required/cardIds`;
-  return axios.get<string[]>(url).then(AxiosReturn);
+  const url = `${BASE_URL}/cards/required`;
+  return axios.get<UserLectureCard[]>(url).then(AxiosReturn);
 }
 
 export const [findByRdoCache, clearFindByRdo] = createCacheApi(findByRdo);
@@ -198,9 +220,7 @@ export function cancelStudents(studentId: string) {
 export function markComplete(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/markComplete`;
-  return axios
-    .put<void>(url, { studentId })
-    .then(AxiosReturn);
+  return axios.put<void>(url, { studentId }).then(AxiosReturn);
 }
 
 export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
@@ -223,6 +243,12 @@ export function countRequiredCards() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/count`;
   return axios.get<number>(url).then(AxiosReturn);
+}
+
+export function countLearningTab() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/cardCount`;
+  return axios.get<LearningTabCountViewModel>(url).then(AxiosReturn);
 }
 
 export function findCollegeAndCardCount() {
@@ -262,10 +288,16 @@ function findRecommendCards(channelLimit?: number, limit?: number) {
     .then(AxiosReturn);
 }
 
-export const [
-  findRecommendCardsCache,
-  clearFindRecommendCards,
-] = createCacheApi(findRecommendCards);
+export function findRecommendCardsByChannelId(
+  channelId: string
+): Promise<RecommendCardRom> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/recommend/${channelId}`;
+  return axios.get(url).then((response) => (response && response.data) || []);
+}
+
+export const [findRecommendCardsCache, clearFindRecommendCards] =
+  createCacheApi(findRecommendCards);
 
 export function registerHomework(
   studentId: string,
@@ -297,6 +329,14 @@ export function findCardsWithoutLearningExperience(cardIds: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findCards/withoutLearningExperience`;
   return axios
-    .get<CardWithCardRealtedCount[]>(url, { params: { ids: cardIds } })
+    .get<UserLectureCard[]>(url, { params: { ids: cardIds } })
     .then(AxiosReturn);
+}
+
+export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/bookmark?limit=${limit || 6}&orderBy=${
+    orderBy || CardOrderBy.BookmarkRegisteredTimeDesc
+  }`;
+  return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }

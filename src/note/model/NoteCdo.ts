@@ -1,4 +1,4 @@
-import Note from "./Note";
+import Note from './Note';
 
 export default interface NoteCdo {
   cardId?: string;
@@ -8,7 +8,6 @@ export default interface NoteCdo {
   folderId?: string;
   playTime?: string;
 }
-
 
 export function convertNoteToNoteCdo(note: Note): NoteCdo {
   return {

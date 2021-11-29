@@ -16,26 +16,6 @@ import { confirmProgress } from '../../useLectureMedia/utility/confirmProgress';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
-export async function fetchAllModelsForStorage() {
-  const inProgressTableViews =
-    await MyTrainingService.instance.findAllInProgressStorage();
-  if (inProgressTableViews && inProgressTableViews.length) {
-    sessionStorage.setItem(
-      'inProgressTableViews',
-      JSON.stringify(inProgressTableViews)
-    );
-  }
-
-  const completedTableViews =
-    await MyTrainingService.instance.findAllCompletedStorage();
-  if (completedTableViews && completedTableViews.length) {
-    sessionStorage.setItem(
-      'completedTableViews',
-      JSON.stringify(completedTableViews)
-    );
-  }
-}
-
 export function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
 ) {

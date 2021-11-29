@@ -1,11 +1,9 @@
-import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Label, Icon } from 'semantic-ui-react';
+import { observer } from 'mobx-react';
 import { MyLearningSummaryModal } from 'myTraining';
-import {
-  PolyglotText,
-  getPolyglotText,
-} from '../../../../shared/ui/logic/PolyglotText';
+import React, { PureComponent } from 'react';
+import { Button, Label } from 'semantic-ui-react';
+import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   minute?: number;
@@ -14,11 +12,9 @@ interface Props {
 }
 
 @reactAutobind
+@observer
 class ContentHeaderLearningTimeItem extends PureComponent<Props> {
   //
-  static defaultProps = {
-    minute: 0,
-  };
 
   render() {
     //

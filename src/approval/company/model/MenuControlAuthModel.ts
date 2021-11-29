@@ -2,6 +2,7 @@ import { decorate, observable } from 'mobx';
 import { LectureApproval } from './LectureApproval';
 
 export class MenuControlAuthModel {
+  id: string = '';
   useApl: boolean = false;
   lectureApproval: LectureApproval = new LectureApproval();
 

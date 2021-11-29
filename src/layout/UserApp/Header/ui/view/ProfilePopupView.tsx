@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { useProfilePopupModel } from '../../../store/ProfilePopupStore';
 import { Button, Image } from 'semantic-ui-react';
 import { getProfilePopup } from '../../../service/ProfilePopupService/getProfilePopup';
 import { SkProfileService } from 'profile/stores';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, StorageModel } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
@@ -20,10 +20,44 @@ import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { isEmpty } from 'lodash';
 import { observer } from 'mobx-react';
+import { usePageElements } from 'shared/store/PageElementsStore';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+import { patronInfo } from '@nara.platform/dock';
+import { Area } from 'tracker/model';
+import { isExternalInstructor } from 'shared/helper/findUserRole';
 
 interface Props {
   setOpen: () => void;
   isInstructor: boolean;
+}
+
+function goToApproval() {
+  const history = getCurrentHistory();
+  history?.push('/approval');
+}
+
+function onClickAdminSite() {
+  // localAdmin by gon
+  if (window.location.hostname === 'mysuni.sk.com') {
+    window.open('https://star.mysuni.sk.com/star-login');
+  } else if (window.location.hostname === 'ma.mysuni.sk.com') {
+    window.open('https://ma-star.mysuni.sk.com/star-login');
+  } else if (window.location.hostname === 'stg.mysuni.sk.com') {
+    window.open('https://stg-star.mysuni.sk.com/star-login');
+  } else if (window.location.hostname === 'localhost') {
+    window.open('http://localhost:8090');
+  } else if (window.location.hostname === 'university.sk.com') {
+    window.open('http://university.sk.com/login');
+  } else {
+    const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
+    if (adminSiteUrl) {
+      window.open(adminSiteUrl);
+    }
+  }
+}
+
+function onInstructor() {
+  window.open(`${window.location.origin}/suni-instructor/`);
 }
 
 function ProfilePopupView(props: Props) {
@@ -32,7 +66,7 @@ function ProfilePopupView(props: Props) {
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
   const history = useHistory();
-  const externalInstructor = localStorage.getItem('nara.externalInstructor');
+  const externalInstructor = isExternalInstructor();
   const instructorId = localStorage.getItem('nara.instructorId');
   const [saveFlag, setSaveFlag] = useState<boolean>(true);
   const profileInfo = useProfilePopupModel();
@@ -111,19 +145,30 @@ function ProfilePopupView(props: Props) {
   }
 
   function onLogout() {
+    const searchRecents =
+      JSON.parse(localStorage.getItem('nara.searchRecents') || '[]') || [];
     localStorage.clear();
+    new StorageModel('localStorage', 'searchRecents').save(searchRecents);
     sessionStorage.clear();
     window.location.href = '/api/checkpoint/sso/logout';
   }
 
-  function onInstructor() {
-    window.open(`${window.location.origin}/suni-instructor/`, '_blank');
-  }
+  const pageElements = usePageElements();
+
+  const hasAdminRole = useMemo<boolean>(
+    () =>
+      patronInfo.hasPavilionRole(
+        'SuperManager',
+        'CollegeManager',
+        'CompanyManager'
+      ),
+    []
+  );
 
   return (
     <>
       {skProfile && (
-        <div className="profile-contents-area">
+        <div className="profile-contents-area" data-area={Area.HEADER_PROFILE}>
           <div className="profile-wrapper">
             <div className="bg-wrapper">
               {
@@ -172,21 +217,9 @@ function ProfilePopupView(props: Props) {
                         />
                       </Button>
                     </div>
-                    <div className="close-wrapper">
-                      <button
-                        onClick={() => {
-                          props.setOpen();
-                        }}
-                      >
-                        <Image
-                          src={`${process.env.PUBLIC_URL}/images/all/icon-profile-close.png`}
-                        />
-                        <span className="blind">
-                          <PolyglotText
-                            defaultString="close"
-                            id="mypage-popupview-close"
-                          />
-                        </span>
+                    <div className="top-right-area">
+                      <button className="ui button lg-out" onClick={onLogout}>
+                        Logout
                       </button>
                     </div>
                   </div>
@@ -220,43 +253,7 @@ function ProfilePopupView(props: Props) {
                       </div>
                     )}
                   </div>
-                  {instructorId &&
-                  instructorId !== '' &&
-                  externalInstructor &&
-                  externalInstructor === 'true' ? (
-                    <div className="page-bttn-area">
-                      <Button className="page-bttn" onClick={onInstructor}>
-                        <PolyglotText
-                          defaultString="강사 서비스"
-                          id="mypage-popupview-강사"
-                        />
-                      </Button>
-                    </div>
-                  ) : instructorId &&
-                    instructorId !== '' &&
-                    externalInstructor &&
-                    externalInstructor === 'false' ? (
-                    <div className="page-bttn-area type2">
-                      <Button
-                        className="page-bttn"
-                        onClick={() => {
-                          props.setOpen();
-                          history.push(myTrainingRoutePaths.myPage());
-                        }}
-                      >
-                        <PolyglotText
-                          defaultString="My Page"
-                          id="mypage-popupview-MyPage"
-                        />
-                      </Button>
-                      <Link to="#" onClick={onInstructor} className="l_to">
-                        <PolyglotText
-                          defaultString="강사 서비스"
-                          id="mypage-popupview-강사2"
-                        />
-                      </Link>
-                    </div>
-                  ) : (
+                  {!externalInstructor && (
                     <div className="page-bttn-area">
                       <Button
                         className="page-bttn"
@@ -276,35 +273,33 @@ function ProfilePopupView(props: Props) {
               </div>
             </div>
           </div>
-          <div className="tag-info-area">
+          <div className="tag-info-area sty2">
             {!isSettingProfile && (
-              // 프로필설정이 안되어있는 경우
-              <Button
-                className="btn-setting"
-                onClick={() => {
-                  props.setOpen();
-                  history.push(myTrainingRoutePaths.myPage());
-                }}
-              >
-                <PolyglotText
-                  defaultString="프로필 설정"
-                  id="mypage-popupview-프로필설정"
-                />
-                <i>
-                  <Image
-                    src={`${process.env.PUBLIC_URL}/images/all/icon-tooltip-w-20-px.svg`}
-                  />
-                </i>
+              <div className="prf-setting-area">
                 <p
-                  className="tool-tip-box"
                   dangerouslySetInnerHTML={{
                     __html: getPolyglotText(
-                      '프로필을 설정해서 <br />자유롭게 활동해 보세요!',
-                      'mypage-popupview-설명'
+                      '프로필 설정으로<br />{name} 님을 표현해 보세요!',
+                      'profilemodal-nodata',
+                      {
+                        name: SkProfileService.instance.profileMemberName,
+                      }
                     ),
                   }}
                 />
-              </Button>
+                <button
+                  onClick={() => {
+                    props.setOpen();
+                    history.push(myTrainingRoutePaths.myPage());
+                  }}
+                  className="ui button setting-bttn"
+                >
+                  <PolyglotText
+                    defaultString="프로필 설정하기"
+                    id="profilemodal-edit"
+                  />
+                </button>
+              </div>
             )}
             {isSettingProfile && (
               // 프로필설정이 되어있는 경우
@@ -327,14 +322,54 @@ function ProfilePopupView(props: Props) {
                 </div>
               </>
             )}
-            <div className="logout-area">
-              <Button onClick={onLogout}>
-                <PolyglotText
-                  defaultString="Logout"
-                  id="mypage-popupview-logout"
-                />
-              </Button>
-            </div>
+          </div>
+          <div className="bottom-bttn-area">
+            <ul>
+              {instructorId !== '' && (
+                <li>
+                  <button
+                    className="ui button b-menu"
+                    onClick={() => {
+                      props.setOpen();
+                      onInstructor();
+                    }}
+                  >
+                    <PolyglotText
+                      defaultString="강사 서비스"
+                      id="mypage-popupview-강사"
+                    />
+                  </button>
+                </li>
+              )}
+              {pageElements.some(
+                (c) => c.position === 'FloatingMenu' && c.type === 'Approval'
+              ) && (
+                <li>
+                  <button
+                    className="ui button b-menu"
+                    onClick={() => {
+                      props.setOpen();
+                      goToApproval();
+                    }}
+                  >
+                    {getPolyglotText('승인관리', 'home-플버튼-승인관리')}
+                  </button>
+                </li>
+              )}
+              {hasAdminRole && (
+                <li>
+                  <button
+                    className="ui button b-menu"
+                    onClick={() => {
+                      props.setOpen();
+                      onClickAdminSite();
+                    }}
+                  >
+                    Admin
+                  </button>
+                </li>
+              )}
+            </ul>
           </div>
         </div>
       )}

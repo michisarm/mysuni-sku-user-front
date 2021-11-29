@@ -774,3 +774,91 @@ body.msie
 .detail.completion-terms {
   white-space: pre-wrap;
 }
+
+/* 메인 페이지 뱃지 백그라운드 이미지 */
+.badge-banner-wrap {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/static/media/bg-bnr-badge.png');
+}
+.badge-banner-wrap.no-badge { background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/bg-bnr-nobadge.png'); }
+
+/* 핫토픽 상세 페이지 카드 스타일 오류 */
+#root .topic-list-wrap .card.card-item.topic-list {
+  width: 100%;
+  height: 160px;
+  box-shadow: none;
+  border-radius: 0;
+  box-sizing: content-box;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 40px;
+  padding-bottom: 40px;
+}
+
+/* .ui.card.card-item {
+  padding: 0 10px 10px;
+} */
+
+/* === 2021.11.09 최은영 (코드정리) 시작 === */
+
+/* 페이지경로 스타일 수정 */
+#root section.header div.breadcrumbs {
+  background: #fafafa;
+  border-top: #eee 1px solid;
+  border-bottom: #eee 1px solid;
+  margin-bottom: -2px;
+}
+#root section.header div.breadcrumbs .ui.breadcrumb.standard a {
+  color: #666 !important;
+}
+#root section.header div.breadcrumbs .ui.breadcrumb.standard .section.active {
+  font-weight: 700;
+  color: #666;
+}
+
+/* 컬리지 학습카드 컨테이너 */
+.ui.cards.card-item-wrap,
+.ui.cards.card-item-wrap .card-item {
+  display: flex;
+}
+.ui.cards.card-item-wrap {
+  margin: -13px 0 0 !important;
+}
+.ui.cards.card-item-wrap .card-item {
+  margin: 13px;
+}
+.ui.cards.card-item-wrap .card-item:nth-child(4n) {
+  margin-right: 0;
+}
+.ui.cards.card-item-wrap .card-item:nth-child(4n + 1) {
+  margin-left: 0;
+}
+
+/* === 2021.11.09 최은영 (코드정리) 끝 === */
+
+/* 개인학습 css추가 */
+.info-go {
+  display: inline-block;
+}
+
+.info-pl {
+  display: inline-block;
+  margin-left: 20px;
+  font-weight: 700;
+  color: #999;
+  font-size: 1rem;
+  vertical-align: middle;
+  line-height: 30px;
+}
+.info-pl:hover {
+  color: #999;
+  font-weight: 700;
+  background-color: transparent;
+}
+.icon.pl {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 4px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-personal.svg')
+    0 0 no-repeat;
+  vertical-align: top;
+}

@@ -41,7 +41,7 @@ export function useTranscriptCount(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onTranscriptCount(next => {
+    return onTranscriptCount((next) => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);
@@ -55,7 +55,6 @@ export function downloadTranscript(
 ) {
   const str = transcriptCdosToString(transcriptCdo);
   const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
-  console.log('title', title);
   saveAs(blob, title + '.txt');
 }
 

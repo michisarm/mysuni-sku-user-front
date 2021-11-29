@@ -67,7 +67,7 @@ function ListLeftTopPanel(props: Props) {
             className="list-number"
             dangerouslySetInnerHTML={{
               __html: getPolyglotText(
-                '전체 <strong>{count}개<strong>의 개인학습',
+                '전체 <strong>{count}개</strong>의 개인학습',
                 'learning-개인보드-전체',
                 { count: totalCount + '' || 0 + '' }
               ),
@@ -86,7 +86,7 @@ function ListLeftTopPanel(props: Props) {
                 ),
               }}
             />
-            <span
+            {/* <span
               dangerouslySetInnerHTML={{
                 __html: getPolyglotText(
                   '등록 <b>{count}개</b>',
@@ -94,13 +94,13 @@ function ListLeftTopPanel(props: Props) {
                   { count: (countModel!.opened || 0).toString() }
                 ),
               }}
-            />
+            /> */}
             <span
               dangerouslySetInnerHTML={{
                 __html: getPolyglotText(
                   '승인 <b>{count}개</b>',
                   'learning-개인보드-승인',
-                  { count: (countModel!.openApproval || 0).toString() }
+                  { count: (countModel!.opened || 0).toString() }
                 ),
               }}
             />
@@ -109,7 +109,7 @@ function ListLeftTopPanel(props: Props) {
                 __html: getPolyglotText(
                   '승인 대기 중 <b>{count}개</b>',
                   'learning-개인보드-승인대기',
-                  { count: (countModel!.rejected || 0).toString() }
+                  { count: (countModel!.openApproval || 0).toString() }
                 ),
               }}
             />

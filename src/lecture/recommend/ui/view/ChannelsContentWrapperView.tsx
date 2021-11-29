@@ -28,7 +28,10 @@ class ChannelsContentWrapperView extends Component<Props> {
         <div className="recommend-detail" data-area={Area.RECOMMEND_LIST}>
           <RecommendChannelsPanelContainer
             channels={channels}
-            title={getPolyglotText('관심 Channel 보기', 'rcmd-흥미채널-관심채널')}
+            title={getPolyglotText(
+              '관심 Channel 보기',
+              'rcmd-흥미채널-관심채널'
+            )}
             configurable
             onSelectChannel={(_: any, { channel }) => onSelectChannel(channel)}
             onConfirmCallback={onConfirmCallback}

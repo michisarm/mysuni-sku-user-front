@@ -1,29 +1,23 @@
-
-import React, { PureComponent } from 'react';
+import React, { PureComponent, forwardRef } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button, Icon } from 'semantic-ui-react';
 
-
 interface Props {
-  onClick: () => void,
+  onClick: () => void;
 }
 
-@reactAutobind
-class SeeMoreButtonView extends PureComponent<Props> {
-  //
-  render() {
-    //
-    const { onClick } = this.props;
+const SeeMoreButtonView = forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const { onClick } = props;
 
-    return (
-      <div className="more-comments">
-        <Button icon className="left moreview" onClick={onClick}>
-          <Icon className="moreview" />list more
-        </Button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="more-comments" ref={ref}>
+      <Button icon className="left moreview" onClick={onClick}>
+        <Icon className="moreview" />
+        list more
+      </Button>
+    </div>
+  );
+});
 
 export default SeeMoreButtonView;

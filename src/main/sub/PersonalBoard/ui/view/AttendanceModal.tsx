@@ -212,7 +212,7 @@ const AttendanceModal: React.FC<Props> = ({ open, setOpen, attendClick }) => {
                   {Array(25)
                     .fill('')
                     .map((v, idx) => (
-                      <li className={className(idx)}>
+                      <li key={idx} className={className(idx)}>
                         <Button
                           type="button"
                           onClick={() => handleAttend(className(idx))}

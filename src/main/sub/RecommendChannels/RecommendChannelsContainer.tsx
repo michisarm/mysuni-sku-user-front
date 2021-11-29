@@ -118,11 +118,8 @@ class RecommendChannelsContainer extends Component<Props> {
 
   render() {
     //
-    const {
-      skProfileService,
-      collegeLectureCountService,
-      lectureService,
-    } = this.props;
+    const { skProfileService, collegeLectureCountService, lectureService } =
+      this.props;
     const { additionalUserInfo } = skProfileService!;
     const { totalChannelCount } = collegeLectureCountService!;
     const { recommendLectures } = lectureService!;

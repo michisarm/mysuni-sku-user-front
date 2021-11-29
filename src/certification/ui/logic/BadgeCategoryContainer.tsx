@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect } from 'react';
-import { inject, observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
 import { mobxHelper } from '@nara.platform/accent';
 import classNames from 'classnames';
+import { getDefaultLang } from 'lecture/model/LangSupport';
+import { inject, observer } from 'mobx-react';
+import React, { useCallback, useEffect } from 'react';
 import ReactGA from 'react-ga';
-import { BadgeCategoryService } from '../../../lecture/stores';
-import { useRequestBadgeCategory } from '../../service/useRequestBadgeCategory';
-import BadgeCategoryView from '../view/BadgeCategoryView';
-import badgePaths from '../../routePaths';
-import { BadgeCategory } from '../../model/BadgeCategory';
-import { useBadgeSlide } from '../../service/useBadgeSlide';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from 'lecture/model/LangSupport';
+import { BadgeCategoryService } from '../../../lecture/stores';
+import { BadgeCategory } from '../../model/BadgeCategory';
+import badgePaths from '../../routePaths';
+import { useBadgeSlide } from '../../service/useBadgeSlide';
+import BadgeCategoryView from '../view/BadgeCategoryView';
 
 interface BadgeCategoryContainerProps {
   badgeCategoryService?: BadgeCategoryService;

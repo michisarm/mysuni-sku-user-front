@@ -10,7 +10,9 @@ import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
 import communityRoutePaths from 'community/routePaths';
+import certificationRoutePaths from 'certification/routePaths';
 import { CollegeLectureCountService } from 'lecture/stores';
+import { findChannelAndCardCount } from '../../../../../lecture/detail/api/cardApi';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 import {
@@ -18,6 +20,7 @@ import {
   getPolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { SkProfileService } from '../../../../../profile/stores';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode;
@@ -129,14 +132,14 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
 
   baseTopSiteMaps = [
     {
-      name: getPolyglotText('Learning', 'home-사이트맵-대카테2'),
+      name: getPolyglotText('My Learning', 'home-사이트맵-대카테2'),
       items: [
         {
           name: getPolyglotText('학습중', 'home-사이트맵-중카20'),
           path: myPageRoutePaths.learningInProgress(),
         },
         {
-          name: getPolyglotText('관심목록', 'home-사이트맵-중카21'),
+          name: getPolyglotText('찜한과정', 'home-사이트맵-중카21'),
           path: myPageRoutePaths.learningInMyList(),
         },
         {
@@ -144,7 +147,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           path: myPageRoutePaths.learningEnrolled(),
         },
         {
-          name: getPolyglotText('권장과정', 'home-사이트맵-중카23'),
+          name: getPolyglotText('핵인싸 과정', 'home-사이트맵-중카23'),
           path: myPageRoutePaths.learningRequired(),
         },
         {
@@ -193,7 +196,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
 
   baseBottomSiteMaps = [
     {
-      name: getPolyglotText('Introduction', 'home-사이트맵-대카테5'),
+      name: getPolyglotText('About Us', 'home-사이트맵-대카테5'),
       items: [
         {
           name: getPolyglotText('mySUNI 소개', 'home-사이트맵-중카30'),
@@ -207,18 +210,26 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           name: getPolyglotText('인증제도 소개', 'home-사이트맵-중카32'),
           path: mainRoutePaths.introductionCertification(),
         },
+        {
+          name: getPolyglotText('홍보자료', 'home-사이트맵-중카33'),
+          path: mainRoutePaths.introductionPromotion(),
+        },
       ],
     },
     {
-      name: getPolyglotText('Create', 'home-사이트맵-대카테6'),
+      name: getPolyglotText('Certification', 'home-사이트맵-대카테10'),
       items: [
         {
-          name: getPolyglotText('Create', 'home-사이트맵-중카33'),
-          path: createRoutePaths.createCreate(),
+          name: getPolyglotText('Badge List', 'home-사이트맵-중카44'),
+          path: certificationRoutePaths.badgeAllBadgeList(),
         },
         {
-          name: getPolyglotText('Shared', 'home-사이트맵-중카34'),
-          path: createRoutePaths.createShared(),
+          name: getPolyglotText('도전중 Badge', 'home-사이트맵-중카45'),
+          path: certificationRoutePaths.badgeChallengingBadgeList(),
+        },
+        {
+          name: getPolyglotText('My Badge', 'home-사이트맵-중카46'),
+          path: certificationRoutePaths.badgeEarnedBadgeList(),
         },
       ],
     },
@@ -308,22 +319,31 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     //
     const { collegeLectureCountService } = this.props;
     const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
-
-    const colleges =
-      await collegeLectureCountService!.findCollegeLectureCounts();
+    const { skProfile } = SkProfileService.instance;
+    const colleges = await findChannelAndCardCount(
+      skProfile.language || 'Korean'
+    );
 
     const categorySiteMap = {
       ...baseCategoryItems,
       items: baseCategoryItems.items.map((item) => {
-        //
-        const college = colleges.find(
-          (college: any) => college.id === item.collegeId
+        const college = colleges?.find(
+          (college) => college.collegeId === item.collegeId
         );
+
+        const channelCardCounts = college?.channelCounts.map(
+          (item) => item.count
+        );
+        const collegeCardCounts = channelCardCounts?.reduce((a, b) => {
+          return a + b;
+        }, 0);
 
         return {
           ...item,
-          path: college && lectureRoutePaths.collegeLectures(college.id),
-          count: (college && college.channels && college.channels.length) || 0,
+          path:
+            (college && lectureRoutePaths.collegeLectures(college.collegeId)) ||
+            '',
+          count: (college && college.channelCounts && collegeCardCounts) || 0,
         };
       }),
     };
@@ -372,6 +392,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         open={open}
         onOpen={this.onOpen}
         onClose={this.onClose}
+        data-area={Area.FOOTER_SITEMAP}
       >
         <Modal.Header>
           <PolyglotText

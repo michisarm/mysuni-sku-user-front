@@ -1,0 +1,45 @@
+import { PostType } from './PostType';
+import { CommunityMenuType } from './CommunityMenuType';
+import { RelatedUrl } from './RelatedUrl';
+
+export interface Post {
+  id?: string;
+  postId: string;
+  communityId: string;
+  menuId: string;
+  menuName: string;
+  type: PostType;
+  title: string;
+  html: string;
+  likeCount: number;
+  replyCount: number;
+  fileBoxId: string;
+  commentFeedbackId: string;
+  pinned: boolean;
+  readCount: number;
+  visible: boolean;
+  createdTime: number;
+  creatorId: string;
+  communityName: string;
+  nickName?: string;
+  introduce?: string;
+  profileImg?: string;
+  creatorEmail?: string;
+  creatorName?: string;
+  creatorCompanyCode?: string;
+  creatorCompanyName?: string;
+  bookmarked: boolean;
+  menuType: CommunityMenuType;
+  prevPost: Post;
+  nextPost: Post;
+  relatedUrlList: RelatedUrl[];
+  depotId: string;
+  thumbImageFileName?: string;
+  thumbImagePath?: string;
+  videoId?: string;
+  videoName?: string;
+  content: string;
+  privateComment: boolean;
+  relatedCardIds: string[];
+  strCreatedTime: string;
+}

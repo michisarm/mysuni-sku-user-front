@@ -32,7 +32,7 @@ function MyPageHeaderContainer({
   badgeService,
 }: MyPageHeaderContainerProps) {
   const { skProfile } = skProfileService!;
-  const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+  const { displayTotalLearningTime } = myLearningSummaryService!;
   const { myStampCount } = myTrainingService!;
   const {
     allBadgeCount: { issuedCount },
@@ -40,22 +40,6 @@ function MyPageHeaderContainer({
 
   const history = useHistory();
   const currentYear = moment().year();
-
-  const sumOfCurrentYearLectureTime =
-    (lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime) || 0;
-  const totalLectureTime =
-    (lectureTimeSummary && lectureTimeSummary.totalLectureTime) || 0;
-
-  const totalLearningTime =
-    myLearningSummary.suniLearningTime +
-    myLearningSummary.myCompanyLearningTime +
-    myLearningSummary.aplAllowTime +
-    sumOfCurrentYearLectureTime;
-  const totalAccrueLearningTime =
-    myLearningSummary.totalSuniLearningTime +
-    myLearningSummary.totalMyCompanyLearningTime +
-    myLearningSummary.totalAplAllowTime +
-    totalLectureTime;
 
   useEffect(() => {
     // badgeService!.findAllBadgeCount();
@@ -109,11 +93,10 @@ function MyPageHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(totalLearningTime !== 0 && (
+        {(displayTotalLearningTime !== 0 && (
           <ContentHeader.LearningTimeItem
-            minute={totalLearningTime}
+            minute={displayTotalLearningTime}
             year={currentYear}
-            accrueMinute={totalAccrueLearningTime}
           />
         )) || (
           <ContentHeader.WaitingItem

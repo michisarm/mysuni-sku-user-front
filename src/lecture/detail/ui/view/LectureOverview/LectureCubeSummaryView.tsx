@@ -20,7 +20,6 @@ import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
-import { InMyLectureService } from '../../../../../myTraining/stores';
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { Area } from 'tracker/model';
 import { getLectureNotePopupState } from '../../../store/LectureNoteStore';
@@ -32,6 +31,12 @@ import {
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import {
+  getLectureState,
+  useLectureState,
+} from 'lecture/detail/store/LectureStateStore';
+import { isEmpty, trim } from 'lodash';
+import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -150,6 +155,18 @@ function getClassroom(classrooms: Classroom[]): Classroom | undefined {
   }
 }
 
+function filterUrl(url: string) {
+  // 주소에 http, https 가 붙는 경우만 return
+  const isHttps = url.includes('https://');
+  const isHttp = url.includes('http://');
+
+  if (isHttps || isHttp) {
+    return trim(url);
+  }
+
+  return '';
+}
+
 function getLearningPeriod(classrooms: Classroom[]): string | undefined {
   const classroom = getClassroom(classrooms);
   if (classroom !== undefined) {
@@ -166,11 +183,22 @@ function getCapacity(classrooms: Classroom[]): string | undefined {
   }
 }
 
-function getElearningLink(classrooms: Classroom[]): string | undefined {
-  const classroom = getClassroom(classrooms);
-  if (classroom !== undefined) {
-    return classroom.siteUrl;
+function getElearningLink(classrooms: Classroom[]): string {
+  const lectureState = getLectureState();
+
+  if (lectureState === undefined || lectureState.student?.round === undefined) {
+    return '';
   }
+
+  const findClassRoom = classrooms.find(
+    (classroom) => classroom.round === lectureState.student?.round
+  );
+
+  if (findClassRoom?.siteUrl === undefined) {
+    return '';
+  }
+
+  return filterUrl(findClassRoom.siteUrl);
 }
 
 function getDifficultyLevelIcon(difficultyLevel: DifficultyLevel) {
@@ -193,340 +221,312 @@ interface LectureCubeSummaryViewProps {
   lectureClassroom?: LectureClassroom;
 }
 
-const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
-  function LectureCubeSummaryView({
-    lectureSummary,
-    lectureInstructor,
-    lectureReview,
-    lectureClassroom,
-  }) {
-    const instrutor = lectureInstructor?.instructors.find(
-      (c) => c.representative === true
-    );
+const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
+  lectureSummary,
+  lectureInstructor,
+  lectureReview,
+  lectureClassroom,
+}) {
+  const params = useLectureParams();
+  const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const instrutor = lectureInstructor?.instructors.find(
+    (c) => c.representative === true
+  );
 
-    useEffect(() => {
-      //
-      if (window.location.search === '?_source=newsletter') {
-        ReactGA.event({
-          category: 'External',
-          action: 'Email',
-          label: 'Newsletter',
-        });
-      } else {
-        setTimeout(() => {
-          ReactGA.pageview(
-            window.location.pathname + window.location.search,
-            [],
-            `(Cube) - ${lectureSummary.name}`
-          );
-        }, 1000);
-      }
-    }, []);
-
-    useEffect(() => {
-      const postService = PostService.instance;
-      const currentUrl = window.location.href;
-      const hostUrl = window.location.host;
-      const alarmUrl = currentUrl.split(hostUrl);
-
-      postService.post.alarmInfo.url =
-        'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
-      postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
-      postService.post.alarmInfo.contentsName = lectureSummary.name;
-    }, [lectureSummary]);
-
-    const [inMyLectureMap, setInMyLectureMap] =
-      useState<Map<string, InMyLectureModel>>();
-    const [inMyLectureModel, setInMyLectureModel] =
-      useState<InMyLectureModel>();
-
-    const params = useLectureParams();
-
-    useEffect(() => {
-      return autorun(() => {
-        setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+  useEffect(() => {
+    //
+    if (window.location.search === '?_source=newsletter') {
+      ReactGA.event({
+        category: 'External',
+        action: 'Email',
+        label: 'Newsletter',
       });
-    }, []);
-
-    useEffect(() => {
-      if (params?.cardId === undefined) {
-        return;
-      }
-      setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
-    }, [inMyLectureMap, params?.cardId]);
-
-    const clickNewTab = () => {
-      const popupState = getLectureNotePopupState();
-      if (popupState) {
-        reactAlert({
-          title: getPolyglotText('알림', 'cicl-학상본문-알림'),
-          message: getPolyglotText(
-            '새 창에서 Note를 작성 중입니다',
-            'cicl-학상본문-새창'
-          ),
-        });
-        return;
-      }
-      const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
-
-      if (noteTab !== null) {
-        noteTab.click();
-      }
+    } else {
       setTimeout(() => {
-        const noteBtn = document.getElementById('handlePopup') as HTMLElement;
-        if (noteBtn !== null) {
-          noteBtn.click();
-        }
-      }, 500);
-    };
+        ReactGA.pageview(
+          window.location.pathname + window.location.search,
+          [],
+          `(Cube) - ${lectureSummary.name}`
+        );
+      }, 1000);
+    }
+  }, [lectureSummary.name]);
 
-    return (
-      <div
-        // className="course-info-header"
-        className={`course-info-header ${
-          lectureSummary.cubeType === 'Task' ||
-          lectureSummary.cubeType === 'Discussion'
-            ? 'task'
-            : ''
-        }`}
-        data-area={Area.CUBE_HEADER}
-      >
-        <div className="contents-header">
-          <div className="title-area">
-            <div
-              className={`ui label ${getColor(
-                lectureSummary.category.collegeId
-              )}`}
-            >
-              {getCollgeName(lectureSummary.category.collegeId)}
-            </div>
-            <div className="header">{lectureSummary.name}</div>
-            <div className="header-deatil">
-              <div className="item">
-                <Label className="bold onlytext">
-                  <Icon
-                    className={getDifficultyLevelIcon(
-                      lectureSummary.difficultyLevel
-                    )}
-                  />
-                  <span>{lectureSummary.difficultyLevel}</span>
-                </Label>
-                {lectureClassroom &&
-                  Array.isArray(lectureClassroom.classrooms) &&
-                  lectureClassroom.classrooms.length > 0 && (
-                    <div className="ui label onlytext">
-                      <i aria-hidden="true" className="icon date" />
-                      <span>
-                        {getLearningPeriod(lectureClassroom.classrooms) || ''}
-                      </span>
-                    </div>
+  useEffect(() => {
+    const postService = PostService.instance;
+    const currentUrl = window.location.href;
+    const hostUrl = window.location.host;
+    const alarmUrl = currentUrl.split(hostUrl);
+
+    postService.post.alarmInfo.url =
+      'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
+
+  useEffect(() => {
+    setIsBookmark(findIsBookmark(params?.cardId));
+  }, [params?.cardId]);
+
+  const clickNewTab = () => {
+    const popupState = getLectureNotePopupState();
+    if (popupState) {
+      reactAlert({
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText(
+          '새 창에서 Note를 작성 중입니다',
+          'cicl-학상본문-새창'
+        ),
+      });
+      return;
+    }
+    const noteTab = document.getElementById('handleNoteTab') as HTMLElement;
+
+    if (noteTab !== null) {
+      noteTab.click();
+    }
+    setTimeout(() => {
+      const noteBtn = document.getElementById('handlePopup') as HTMLElement;
+      if (noteBtn !== null) {
+        noteBtn.click();
+      }
+    }, 500);
+  };
+
+  return (
+    <div
+      // className="course-info-header"
+      className={`course-info-header ${
+        lectureSummary.cubeType === 'Task' ||
+        lectureSummary.cubeType === 'Discussion'
+          ? 'task'
+          : ''
+      }`}
+      data-area={Area.CUBE_HEADER}
+    >
+      <div className="contents-header">
+        <div className="title-area">
+          <div
+            className={`ui label ${getColor(
+              lectureSummary.category.collegeId
+            )}`}
+          >
+            {getCollgeName(lectureSummary.category.collegeId)}
+          </div>
+          <div className="header">{lectureSummary.name}</div>
+          <div className="header-deatil">
+            <div className="item">
+              <Label className="bold onlytext">
+                <Icon
+                  className={getDifficultyLevelIcon(
+                    lectureSummary.difficultyLevel
                   )}
-                {lectureClassroom &&
-                  Array.isArray(lectureClassroom.classrooms) &&
-                  lectureClassroom.classrooms.length > 0 &&
-                  getElearningLink(lectureClassroom.classrooms) !== '' &&
-                  getElearningLink(lectureClassroom.classrooms) !== null && (
-                    <a
-                      id="webpage-link"
-                      target="_blank"
-                      style={{ display: 'none' }}
-                      href={getElearningLink(lectureClassroom.classrooms)}
-                    />
-                  )}
-                {lectureSummary.learningTime !== '00h 00m' && (
-                  <Label className="bold onlytext">
-                    <Icon className="time2" />
-                    <span>{lectureSummary.learningTime}</span>
-                  </Label>
+                />
+                <span>{lectureSummary.difficultyLevel}</span>
+              </Label>
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 && (
+                  <div className="ui label onlytext">
+                    <i aria-hidden="true" className="icon date" />
+                    <span>
+                      {getLearningPeriod(lectureClassroom.classrooms) || ''}
+                    </span>
+                  </div>
                 )}
-                {lectureSummary.cubeType !== 'ClassRoomLecture' &&
-                  lectureSummary.cubeType !== 'ELearning' &&
-                  instrutor !== undefined && (
-                    <Label className="bold onlytext">
-                      <span className="header-span-first">
-                        <PolyglotText
-                          defaultString="강사"
-                          id="cicl-학상본문-강사2"
-                        />
-                      </span>
-                      <span className="tool-tip">
-                        {parsePolyglotString(
-                          instrutor.instructorWithIdentity?.instructor?.name,
-                          getDefaultLang(
-                            instrutor.instructorWithIdentity?.instructor
-                              ?.langSupports
-                          )
-                        )}
-                        <i>
-                          <Link
-                            to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
-                            className="tip-mail"
-                            style={{ whiteSpace: 'nowrap', display: 'block' }}
-                            target="_blank"
-                          >
-                            {parsePolyglotString(
-                              instrutor.instructorWithIdentity?.instructor
-                                ?.name,
-                              getDefaultLang(
-                                instrutor.instructorWithIdentity?.instructor
-                                  ?.langSupports
-                              )
-                            )}
-                          </Link>
-                          <span className="tip-id">
-                            {instrutor.instructorWithIdentity?.instructor
-                              ?.internal
-                              ? parsePolyglotString(
-                                  instrutor.instructorWithIdentity?.userIdentity
-                                    ?.departmentName,
-                                  getDefaultLang(
-                                    instrutor.instructorWithIdentity?.instructor
-                                      .langSupports
-                                  )
-                                )
-                              : parsePolyglotString(
-                                  instrutor.instructorWithIdentity?.instructor
-                                    ?.organization,
-                                  getDefaultLang(
-                                    instrutor.instructorWithIdentity?.instructor
-                                      ?.langSupports
-                                  )
-                                )}
-                          </span>
-                        </i>
-                      </span>
-                    </Label>
-                  )}
-                {lectureClassroom &&
-                  Array.isArray(lectureClassroom.classrooms) &&
-                  lectureClassroom.classrooms.length > 0 &&
-                  (lectureSummary.cubeType === 'ClassRoomLecture' ||
-                    lectureSummary.cubeType === 'ELearning') &&
-                  getCapacity(lectureClassroom.classrooms) !== undefined && (
-                    <Label className="bold onlytext">
-                      <span className="header-span-first">
-                        <PolyglotText
-                          defaultString="정원정보"
-                          id="cicl-학상본문-정원정보"
-                        />
-                      </span>
-                      <span>{getCapacity(lectureClassroom.classrooms)}</span>
-                      <span>
-                        <PolyglotText
-                          defaultString="명"
-                          id="cicl-학상본문-명2"
-                        />
-                      </span>
-                    </Label>
-                  )}
-                {/* Community => Task 데이터 현행화 후 수정 예정*/}
-                {lectureSummary.cubeType !== 'Community' && (
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 &&
+                !isEmpty(getElearningLink(lectureClassroom.classrooms)) && (
+                  <a
+                    id="webpage-link"
+                    target="_blank"
+                    style={{ display: 'none' }}
+                    href={getElearningLink(lectureClassroom.classrooms)}
+                  />
+                )}
+              {lectureSummary.learningTime !== '00h 00m' && (
+                <Label className="bold onlytext">
+                  <Icon className="time2" />
+                  <span>{lectureSummary.learningTime}</span>
+                </Label>
+              )}
+              {lectureSummary.cubeType !== 'ClassRoomLecture' &&
+                lectureSummary.cubeType !== 'ELearning' &&
+                instrutor !== undefined && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">
                       <PolyglotText
-                        defaultString="이수"
-                        id="cicl-학상본문-이수"
+                        defaultString="강사"
+                        id="cicl-학상본문-강사2"
                       />
                     </span>
-                    <span>
-                      {numberWithCommas(lectureSummary.passedStudentCount)}
-                    </span>
-                    <span>
-                      <PolyglotText defaultString="명" id="cicl-학상본문-명3" />
+                    <span className="tool-tip">
+                      {parsePolyglotString(
+                        instrutor.instructorWithIdentity?.instructor?.name,
+                        getDefaultLang(
+                          instrutor.instructorWithIdentity?.instructor
+                            ?.langSupports
+                        )
+                      )}
+                      <i>
+                        <Link
+                          to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
+                          className="tip-mail"
+                          style={{ whiteSpace: 'nowrap', display: 'block' }}
+                          target="_blank"
+                        >
+                          {parsePolyglotString(
+                            instrutor.instructorWithIdentity?.instructor?.name,
+                            getDefaultLang(
+                              instrutor.instructorWithIdentity?.instructor
+                                ?.langSupports
+                            )
+                          )}
+                        </Link>
+                        <span className="tip-id">
+                          {instrutor.instructorWithIdentity?.instructor
+                            ?.internal
+                            ? parsePolyglotString(
+                                instrutor.instructorWithIdentity?.userIdentity
+                                  ?.departmentName,
+                                getDefaultLang(
+                                  instrutor.instructorWithIdentity?.instructor
+                                    .langSupports
+                                )
+                              )
+                            : parsePolyglotString(
+                                instrutor.instructorWithIdentity?.instructor
+                                  ?.organization,
+                                getDefaultLang(
+                                  instrutor.instructorWithIdentity?.instructor
+                                    ?.langSupports
+                                )
+                              )}
+                        </span>
+                      </i>
                     </span>
                   </Label>
                 )}
-                {/* Community => Task 데이터 현행화 후 수정 예정*/}
-                {lectureSummary.cubeType === 'Community' && (
-                  <>
-                    <Label className="bold onlytext">
-                      <span className="header-span-first">
-                        <PolyglotText
-                          defaultString="참여"
-                          id="cicl-학상본문-참여"
-                        />
-                      </span>
-                      <span>
-                        {numberWithCommas(lectureSummary.studentCount)}
-                      </span>
-                      <span>
-                        <PolyglotText
-                          defaultString="명"
-                          id="cicl-학상본문-명4"
-                        />
-                      </span>
-                    </Label>
-                  </>
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 &&
+                (lectureSummary.cubeType === 'ClassRoomLecture' ||
+                  lectureSummary.cubeType === 'ELearning') &&
+                getCapacity(lectureClassroom.classrooms) !== undefined && (
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">
+                      <PolyglotText
+                        defaultString="정원정보"
+                        id="cicl-학상본문-정원정보"
+                      />
+                    </span>
+                    <span>{getCapacity(lectureClassroom.classrooms)}</span>
+                    <span>
+                      <PolyglotText defaultString="명" id="cicl-학상본문-명2" />
+                    </span>
+                  </Label>
                 )}
+              {/* Community => Task 데이터 현행화 후 수정 예정*/}
+              {lectureSummary.cubeType !== 'Community' && (
                 <Label className="bold onlytext">
                   <span className="header-span-first">
                     <PolyglotText
-                      defaultString="담당"
-                      id="cicl-학상본문-담당"
+                      defaultString="이수"
+                      id="cicl-학상본문-이수"
                     />
                   </span>
-                  <span className="tool-tip">
-                    {lectureSummary.operator.name}
-                    <i>
-                      <span className="tip-name">
-                        {lectureSummary.operator.companyName}
-                      </span>
-                      <a
-                        className="tip-mail"
-                        href={`mailto:${lectureSummary.operator.email}`}
-                      >
-                        {lectureSummary.operator.email}
-                      </a>
-                    </i>
+                  <span>
+                    {numberWithCommas(lectureSummary.passedStudentCount)}
+                  </span>
+                  <span>
+                    <PolyglotText defaultString="명" id="cicl-학상본문-명3" />
                   </span>
                 </Label>
-                <Link
-                  to={`/board/support-qna/course/${params?.cardId}`}
-                  className="ui icon button left post-s"
-                >
-                  <Icon className="ask" />
-                  <PolyglotText
-                    defaultString="문의하기"
-                    id="cicl-학상본문-문의"
-                  />
-                </Link>
-              </div>
+              )}
+              {/* Community => Task 데이터 현행화 후 수정 예정*/}
+              {lectureSummary.cubeType === 'Community' && (
+                <>
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">
+                      <PolyglotText
+                        defaultString="참여"
+                        id="cicl-학상본문-참여"
+                      />
+                    </span>
+                    <span>{numberWithCommas(lectureSummary.studentCount)}</span>
+                    <span>
+                      <PolyglotText defaultString="명" id="cicl-학상본문-명4" />
+                    </span>
+                  </Label>
+                </>
+              )}
+              <Label className="bold onlytext">
+                <span className="header-span-first">
+                  <PolyglotText defaultString="담당" id="cicl-학상본문-담당" />
+                </span>
+                <span className="tool-tip">
+                  {lectureSummary.operator.name}
+                  <i>
+                    <span className="tip-name">
+                      {lectureSummary.operator.companyName}
+                    </span>
+                    <a
+                      className="tip-mail"
+                      href={`mailto:${lectureSummary.operator.email}`}
+                    >
+                      {lectureSummary.operator.email}
+                    </a>
+                  </i>
+                </span>
+              </Label>
+              <Link
+                to={`/board/support-qna/course/${params?.cardId}`}
+                className="ui icon button left post-s"
+              >
+                <Icon className="ask" />
+                <PolyglotText
+                  defaultString="문의하기"
+                  id="cicl-학상본문-문의"
+                />
+              </Link>
             </div>
-          </div>
-          <div className="right-area">
-            <LectureStateContainer />
           </div>
         </div>
-        <div className="contents-header-side">
-          <div className="title-area">
-            <div className="header-deatil">
-              <div className="item">
-                {lectureSummary.cubeType !== 'Task' &&
-                  lectureSummary.cubeType !== 'Community' &&
-                  lectureSummary.cubeType !== 'Discussion' && (
-                    <div className="header-rating">
-                      <Rating
-                        defaultRating={0}
-                        maxRating={5}
-                        rating={lectureReview && lectureReview.average}
-                        disabled
-                        className="fixed-rating"
-                      />
-                      <span>
-                        {lectureReview !== undefined
-                          ? `${Math.floor(lectureReview.average * 10) / 10}(${
-                              lectureReview.reviewerCount
-                            }${getPolyglotText('명', 'cicl-학상본문-명')})`
-                          : ''}
-                      </span>
-                    </div>
-                  )}
-              </div>
+        <div className="right-area">
+          <LectureStateContainer />
+        </div>
+      </div>
+      <div className="contents-header-side">
+        <div className="title-area">
+          <div className="header-deatil">
+            <div className="item">
+              {lectureSummary.cubeType !== 'Task' &&
+                lectureSummary.cubeType !== 'Community' &&
+                lectureSummary.cubeType !== 'Discussion' && (
+                  <div className="header-rating">
+                    <Rating
+                      defaultRating={0}
+                      maxRating={5}
+                      rating={lectureReview && lectureReview.average}
+                      disabled
+                      className="fixed-rating"
+                    />
+                    <span>
+                      {lectureReview !== undefined
+                        ? `${Math.floor(lectureReview.average * 10) / 10}(${
+                            lectureReview.reviewerCount
+                          }${getPolyglotText('명', 'cicl-학상본문-명')})`
+                        : ''}
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
-          <div className="right-area">
-            <div className="header-right-link">
-              {/* {lectureCourseSummary?.hasCommunity && (
+        </div>
+        <div className="right-area">
+          <div className="header-right-link">
+            {/* {lectureCourseSummary?.hasCommunity && (
               <Link
                 to={`/community/${lectureCourseSummary.communityId}`}
                 target="_blank"
@@ -537,44 +537,37 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                 </span>
               </Link>
             )} */}
-              {!isMobile && (
-                <Button onClick={clickNewTab}>
-                  <span>
-                    <Icon className="noteWrite" />
-                    Note
-                  </span>
-                </Button>
-              )}
-              <a onClick={toggleCubeBookmark}>
+            {!isMobile && (
+              <Button onClick={clickNewTab}>
                 <span>
-                  <Icon
-                    className={
-                      inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
-                    }
-                  />
-                  {inMyLectureModel === undefined
-                    ? getPolyglotText('관심목록 추가', 'cicl-학상본문-관심추가')
-                    : getPolyglotText(
-                        '관심목록 제거',
-                        'cicl-학상본문-관심제거'
-                      )}
+                  <Icon className="noteWrite" />
+                  Note
                 </span>
-              </a>
-              <a onClick={copyUrl}>
-                <span>
-                  <Icon className="linkCopy" />
+              </Button>
+            )}
+            <a onClick={() => toggleCubeBookmark(setIsBookmark)}>
+              <span>
+                <Icon className={!isBookmark ? 'listAdd' : 'listDelete'} />
+                {!isBookmark
+                  ? getPolyglotText('찜한 과정', 'cicl-학상본문-관심추가')
+                  : getPolyglotText('찜한 과정', 'cicl-학상본문-관심제거')}
+              </span>
+            </a>
+            <a onClick={copyUrl}>
+              <span>
+                <Icon className="linkCopy" />
 
-                  <PolyglotText
-                    defaultString="링크 복사"
-                    id="cicl-학상본문-링크"
-                  />
-                </span>
-              </a>
-            </div>
+                <PolyglotText
+                  defaultString="링크 복사"
+                  id="cicl-학상본문-링크"
+                />
+              </span>
+            </a>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default LectureCubeSummaryView;

@@ -13,6 +13,7 @@ export interface Card {
   type: CardType;
   patronKey: PatronKey;
   thumbImagePath: string;
+  thumbnailImagePath: string;
   stampCount: number;
   simpleDescription: PolyglotString;
   difficultyLevel?: DifficultyLevel;

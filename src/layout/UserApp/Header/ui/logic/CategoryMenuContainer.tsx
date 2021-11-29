@@ -19,6 +19,7 @@ import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import { CollegeBanner } from '../../../../../college/model/CollegeBanner';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../../../lecture/model/LangSupport';
+import { getChannelName } from '../../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props extends RouteComponentProps {}
 
@@ -63,12 +64,16 @@ class CategoryMenuContainer extends Component<Props, State> {
       activeCollege: college,
       banner: bannerData,
     });
-
+    const categoryColleges =
+      CollegeLectureCountService.instance.categoryColleges;
     CollegeLectureCountService.instance.setChannelCounts(
-      college.channels.map((c) => ({
-        id: c.id,
-        name: parsePolyglotString(c.name, getDefaultLang(c.langSupports)),
-        count: c.count,
+      college.channelIds.map((id) => ({
+        id,
+        name: getChannelName(id),
+        count:
+          categoryColleges
+            .find((d) => d.id === college.id)
+            ?.channels.find((d) => d.id === id)?.count || 0,
       }))
     );
   }
@@ -139,17 +144,15 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     const { categoryOpen, activeCollege, banner } = this.state;
-    const {
-      categoryColleges,
-      channelCounts,
-    } = CollegeLectureCountService.instance;
+    const { categoryColleges, channelCounts } =
+      CollegeLectureCountService.instance;
     const { additionalUserInfo } = SkProfileService.instance;
     const channels = additionalUserInfo.favoriteChannelIds;
     const isExternal = isExternalInstructor();
 
     return (
       <>
-        <div className="g-menu-detail">
+        <div className="g-menu-category">
           {!isExternal && (
             <Popup
               trigger={

@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import _ from 'lodash';
+import _, { find } from 'lodash';
 import { CollegeLectureCountService } from 'lecture/stores';
 import { CollegeService } from 'college/stores';
 import { findAvailableColleges } from 'college/api/collegeApi';
 import { SkProfileService } from 'profile/stores';
 import { findChannelAndCardCount } from 'lecture/detail/api/cardApi';
 import { ChannelAndCardCountRom } from '../../../lecture/detail/model/ChannelAndCardCountRom';
+import { CollegeLectureCountRdo } from '../../../lecture/model';
+import { getChannelName } from './useRequestCollege';
 
 export function useRequestCategory() {
   useEffect(() => {
@@ -15,7 +17,8 @@ export function useRequestCategory() {
 
 export async function requestCategory() {
   const { setCategoryColleges } = CollegeLectureCountService.instance;
-  CollegeService.instance.findCollegeBanners();
+  const collegeService = CollegeService.instance;
+  await collegeService.findCollegeBanners();
   const availableColleges = await findAvailableColleges();
   if (availableColleges === undefined) {
     return;
@@ -24,8 +27,13 @@ export async function requestCategory() {
   const channelAndCardCounts = await findChannelAndCardCount(
     skProfile.language || 'Korean'
   );
+
   if (channelAndCardCounts === undefined) {
-    setCategoryColleges(availableColleges);
+    setCategoryColleges(
+      availableColleges.map((college) => {
+        return CollegeLectureCountRdo.asCollegeLectureCountRdo(college);
+      })
+    );
     return;
   }
 
@@ -43,15 +51,16 @@ export async function requestCategory() {
   });
 
   const nextCategoryColleges = availableColleges
+    .map((college) => new CollegeLectureCountRdo(college))
     .filter((college) => _.includes(targetCollegeIds, college.id))
     .map((college) => {
-      const nextChannels = college.channels.filter((channel) =>
-        _.includes(targetChannelIds, channel.id)
-      );
-
-      nextChannels.forEach((nextChannel) => {
-        nextChannel.count = targetChannelCountMap.get(nextChannel.id) || 0;
-      });
+      const nextChannels = college.channelIds
+        .filter((id) => _.includes(targetChannelIds, id))
+        .map((id) => ({
+          id,
+          count: targetChannelCountMap.get(id) || 0,
+          name: getChannelName(id),
+        }));
 
       return {
         ...college,
@@ -59,6 +68,10 @@ export async function requestCategory() {
       };
     });
   if (nextCategoryColleges !== undefined) {
-    setCategoryColleges(nextCategoryColleges);
+    setCategoryColleges(
+      nextCategoryColleges.map((college) => {
+        return CollegeLectureCountRdo.asCollegeLectureCountRdo(college);
+      })
+    );
   }
 }

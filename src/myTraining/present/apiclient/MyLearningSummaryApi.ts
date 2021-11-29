@@ -3,9 +3,14 @@ import { createCacheApi } from '../../../lecture/detail/api/cacheableApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 
 function findMyLearningSummaryByYear(year: string) {
-  return axiosApi
-    .get<MyLearningSummaryModel>(`/api/mytraining/summaries/flow/${year}`)
-    .then((response) => response && response.data);
+  return (
+    axiosApi
+      // .get<MyLearningSummaryModel>(`/api/mytraining/summaries/flow/${year}`)
+      .get<MyLearningSummaryModel>(
+        `/api/learning/learningTimes/total?year=${year}`
+      )
+      .then((response) => response && response.data)
+  );
 }
 
 export const [findMyLearningSummaryByYearCache] = createCacheApi(
@@ -53,14 +58,14 @@ class MyLearningSummaryApi {
       .then((response) => response && response.data);
   }
 
-  findMyLearningSummaryYear(year: number) {
-    //
-    return axiosApi
-      .get<MyLearningSummaryModel>(this.baseUrl + `/${year}`)
-      .then((response) => {
-        return response && response.data;
-      });
-  }
+  // findMyLearningSummaryYear(year: number) {
+  //   //
+  //   return axiosApi
+  //     .get<MyLearningSummaryModel>(this.baseUrl + `/${year}`)
+  //     .then((response) => {
+  //       return response && response.data;
+  //     });
+  // }
 
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
   findTotalMyLearningSummary() {

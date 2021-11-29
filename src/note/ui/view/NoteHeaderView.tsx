@@ -47,6 +47,7 @@ import NoteWithLecture from '../../model/NoteWithLecture';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface NoteHeaderViewProps {
   noteList: OffsetElementList<NoteWithLecture>;
@@ -92,13 +93,10 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
           text: getPolyglotText('전체', 'mypage-note-전체3'),
           value: '',
         });
-        colleges.map((field, index) => {
+        colleges.forEach((field, index) => {
           collegesSelect.push({
             key: index + 1,
-            text: parsePolyglotString(
-              field.name,
-              getDefaultLang(field.langSupports)
-            ),
+            text: getCollgeName(field.id),
             value: field.id,
           });
         });
@@ -385,7 +383,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
             onClick={(e, data) => excelDownload()}
           >
             <Image
-              src={`${PUBLIC_URL}/images/all/icon-excel-24-px.svg`}
+              src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-excel-24-px.svg"
               alt="엑셀아이콘"
             />
             <PolyglotText

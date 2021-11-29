@@ -22,6 +22,9 @@ class AdditionalUserInfoModel {
   favoriteLearningTypes: IdNameList | null = null;
   userDefinedFavoriteJobDuty: string = '';
   userDefinedCurrentJobDuty: string = '';
+  // agreementFormId: string = '';
+  mySuniPisAgreementFormId: string = '';
+  serviceId: string = '';
 
   constructor(addtionalModel?: AdditionalUserInfoModel) {
     //

@@ -14,8 +14,8 @@ function LectureDescriptionView({
   htmlContent,
   overviewClass,
 }: LectureDescriptionViewProps) {
-  const [descriptionOpen, setDescriptionOpen] = useState<boolean>();
-  const [showMoreButton, setShowMoreButton] = useState<boolean>();
+  const [descriptionOpen, setDescriptionOpen] = useState<boolean>(true);
+  const [showMoreButton, setShowMoreButton] = useState<boolean>(false);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   const toggleMore = useCallback(() => {
@@ -23,28 +23,29 @@ function LectureDescriptionView({
   }, [descriptionOpen]);
 
   useEffect(() => {
-    const textContainer = textContainerRef.current;
-    if (textContainer !== null) {
-      if (textContainer.clientHeight < textContainer.scrollHeight) {
-        setShowMoreButton(true);
-      } else {
-        const { ResizeObserver } = window as any;
-        if (ResizeObserver !== undefined) {
-          const resizeObserver = new ResizeObserver(() => {
-            if (showMoreButton) {
-              return;
-            }
-            if (textContainer.clientHeight < textContainer.scrollHeight) {
-              setShowMoreButton(true);
-              resizeObserver.unobserve(textContainer);
-            }
-          });
-          resizeObserver.observe(textContainer);
-        } else {
-          setShowMoreButton(true);
-        }
-      }
-    }
+    // Overview 숨김 기능 없어짐
+    // const textContainer = textContainerRef.current;
+    // if (textContainer !== null) {
+    //   if (textContainer.clientHeight < textContainer.scrollHeight) {
+    //     setShowMoreButton(true);
+    //   } else {
+    //     const { ResizeObserver } = window as any;
+    //     if (ResizeObserver !== undefined) {
+    //       const resizeObserver = new ResizeObserver(() => {
+    //         if (showMoreButton) {
+    //           return;
+    //         }
+    //         if (textContainer.clientHeight < textContainer.scrollHeight) {
+    //           setShowMoreButton(true);
+    //           resizeObserver.unobserve(textContainer);
+    //         }
+    //       });
+    //       resizeObserver.observe(textContainer);
+    //     } else {
+    //       setShowMoreButton(true);
+    //     }
+    //   }
+    // }
   }, [descriptionOpen, showMoreButton]);
   return (
     <div

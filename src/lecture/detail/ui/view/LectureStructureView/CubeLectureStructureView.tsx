@@ -29,13 +29,14 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
   return (
     <>
       {items !== undefined &&
-        items.map(item => {
+        items.map((item) => {
           if (item.type === 'CUBE') {
             const cube = item as LectureStructureCubeItem;
             return (
               <Fragment key={cube.cubeId}>
                 {cube.isDurationable !== true && (
                   <CubeView
+                    cardId={card.cardId}
                     name={cube.name}
                     state={cube.state}
                     activated={cube.path === pathname}
@@ -47,6 +48,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                 )}
                 {cube.isDurationable === true && (
                   <DurationableCubeView
+                    cardId={card.cardId}
                     name={cube.name}
                     state={cube.state}
                     activated={cube.path === pathname}
@@ -77,15 +79,17 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                     can={cube.survey.can}
                   />
                 )}
-                {cube.report !== undefined && (cube.report.name !== null && cube.report.name !== '') &&  (
-                  <ReportView
-                    activated={cube.report.path === pathname}
-                    name={cube.report.name}
-                    state={cube.report.state}
-                    path={cube.report.path}
-                    can={cube.report.can}
-                  />
-                )}
+                {cube.report !== undefined &&
+                  cube.report.name !== null &&
+                  cube.report.name !== '' && (
+                    <ReportView
+                      activated={cube.report.path === pathname}
+                      name={cube.report.name}
+                      state={cube.report.state}
+                      path={cube.report.path}
+                      can={cube.report.can}
+                    />
+                  )}
               </Fragment>
             );
           }
@@ -120,7 +124,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           can={survey.can}
         />
       )}
-      {report  && (report.name !== null && report.name !== '') && (
+      {report && report.name !== null && report.name !== '' && (
         <CourseReportView
           name={report.name}
           state={report.state}

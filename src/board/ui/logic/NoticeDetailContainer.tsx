@@ -1,18 +1,18 @@
-import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import ReactQuill from 'react-quill';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { findCommunityProfile } from 'community/api/profileApi';
+import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
+import { inject, observer } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -21,6 +21,14 @@ interface Props extends RouteComponentProps<{ postId: string }> {
 
 interface State {
   filesMap: Map<string, any>;
+  profileOpen: boolean;
+  profileInfo: {
+    id: string;
+    profileImg: string;
+    introduce: string;
+    nickName: string;
+    creatorName: string;
+  };
 }
 
 @inject(mobxHelper.injectFrom('board.postService', 'profile.skProfileService'))
@@ -30,6 +38,14 @@ class NoticeDetailContainer extends React.Component<Props, State> {
   //
   state = {
     filesMap: new Map<string, any>(),
+    profileOpen: false,
+    profileInfo: {
+      id: '',
+      profileImg: '',
+      introduce: '',
+      nickName: '',
+      creatorName: '',
+    },
   };
 
   constructor(props: Props) {
@@ -44,6 +60,32 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { postService, skProfileService } = this.props;
     skProfileService!.findSkProfile();
     postService!.findPostByPostId(postId).then(() => this.getFileIds());
+
+    this.setState({ profileOpen: false });
+    window.addEventListener('clickProfile', this.clickProfileEventHandler);
+    return () => {
+      window.removeEventListener('clickProfile', this.clickProfileEventHandler);
+    };
+  }
+
+  clickProfileEventHandler() {
+    const id = document.body.getAttribute('selectedProfileId');
+    findCommunityProfile(id!).then((result) => {
+      this.setState({
+        profileInfo: {
+          id: result!.id,
+          profileImg: result!.profileImg,
+          introduce: result!.introduce,
+          nickName: result!.nickname,
+          creatorName: result!.name,
+        },
+      });
+      this.setState({ profileOpen: true });
+    });
+  }
+
+  selectProfileOpen(open: boolean) {
+    this.setState({ profileOpen: open });
   }
 
   onClickList() {
@@ -168,6 +210,17 @@ class NoticeDetailContainer extends React.Component<Props, State> {
             </Button>
           </div>
         </Segment>
+        <CommunityProfileModal
+          open={this.state.profileOpen}
+          setOpen={this.selectProfileOpen}
+          userProfile={
+            this.state.profileInfo && this.state.profileInfo.profileImg
+          }
+          memberId={this.state.profileInfo && this.state.profileInfo.id}
+          introduce={this.state.profileInfo && this.state.profileInfo.introduce}
+          nickName={this.state.profileInfo && this.state.profileInfo.nickName}
+          name={this.state.profileInfo && this.state.profileInfo.creatorName}
+        />
       </>
     );
   }

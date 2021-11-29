@@ -6,6 +6,7 @@ import { ContentLayout } from 'shared';
 import QnaDetailContainer from '../logic/QnaDetailContainer';
 import { Area } from 'tracker/model';
 import QnaManagementDetailContainer from '../logic/QnaManagementDetailContainer';
+import routePaths from 'board/routePaths';
 
 @observer
 @reactAutobind
@@ -16,7 +17,10 @@ class QnaDetailPage extends Component {
     return (
       <ContentLayout
         className="support bg-white"
-        breadcrumb={[{ text: 'Support' }, { text: '문의관리' }]}
+        breadcrumb={[
+          { text: 'Help Center', path: routePaths.supportNotice() },
+          { text: '문의관리', path: routePaths.supportQnAMgt() },
+        ]}
       >
         <div className="post-view-wrap" data-area={Area.BOARD_QNA_CONTENT}>
           <QnaManagementDetailContainer />

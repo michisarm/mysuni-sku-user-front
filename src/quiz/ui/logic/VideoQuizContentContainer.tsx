@@ -160,7 +160,10 @@ const VideoQuizContentContainer = ({
         if (noAnswerCheck === 0) {
           reactAlert({
             title: getPolyglotText('안내', 'Collage-VideoQuiz-안내1'),
-            message: getPolyglotText('답변을 확인해주세요.', 'Collage-VideoQuiz-Subtitle안내1'),
+            message: getPolyglotText(
+              '답변을 확인해주세요.',
+              'Collage-VideoQuiz-Subtitle안내1'
+            ),
           });
           return;
         }
@@ -185,7 +188,10 @@ const VideoQuizContentContainer = ({
         if (noAnswerCheck) {
           reactAlert({
             title: getPolyglotText('안내', 'Collage-VideoQuiz-안내2'),
-            message: getPolyglotText('답변을 확인해주세요.', 'Collage-VideoQuiz-Subtitle안내2'),
+            message: getPolyglotText(
+              '답변을 확인해주세요.',
+              'Collage-VideoQuiz-Subtitle안내2'
+            ),
           });
           return;
         }
@@ -317,9 +323,15 @@ const VideoQuizContentContainer = ({
       (questionData[currentIndex].type === 'SingleChoice' ||
         questionData[currentIndex].type === 'MultipleChoice')
     ) {
-      return getPolyglotText('응답이 완료 되었습니다.', 'Collage-VideoQuiz-응답완료1');
+      return getPolyglotText(
+        '응답이 완료 되었습니다.',
+        'Collage-VideoQuiz-응답완료1'
+      );
     } else {
-      return getPolyglotText('응답이 완료 되었습니다.', 'Collage-VideoQuiz-응답완료2');
+      return getPolyglotText(
+        '응답이 완료 되었습니다.',
+        'Collage-VideoQuiz-응답완료2'
+      );
     }
   };
 
@@ -345,7 +357,10 @@ const VideoQuizContentContainer = ({
           </div>
           <div className="video-quiz-footer" style={{ position: 'absolute' }}>
             <button onClick={onSubmitUserAnswer} className="ui button fix bg">
-              <PolyglotText defaultString="제출하기" id="Collage-VideoQuiz-제출하기" />
+              <PolyglotText
+                defaultString="제출하기"
+                id="Collage-VideoQuiz-제출하기"
+              />
             </button>
           </div>
         </div>
@@ -356,7 +371,10 @@ const VideoQuizContentContainer = ({
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>
-              <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title2" />
+              <PolyglotText
+                defaultString="Video QUIZ"
+                id="Collage-VideoQuiz-Title2"
+              />
             </h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
@@ -371,15 +389,22 @@ const VideoQuizContentContainer = ({
               />
             </div>
             <span className="wro">
-              <PolyglotText defaultString="오답 입니다." id="Collage-VideoQuiz-오답" />
+              <PolyglotText
+                defaultString="오답 입니다."
+                id="Collage-VideoQuiz-오답"
+              />
             </span>
             <div
               className="wro2"
+              style={{ width: '100%' }}
               dangerouslySetInnerHTML={{
                 __html:
                   questionData[currentIndex].alertMessage.failMessage !== ''
                     ? `${questionData[currentIndex].alertMessage.failMessage}`
-                    : getPolyglotText('다시 확인하고 제출하세요.', 'Collage-VideoQuiz-확인후제출'),
+                    : getPolyglotText(
+                        '다시 확인하고 제출하세요.',
+                        'Collage-VideoQuiz-확인후제출'
+                      ),
               }}
             />
           </div>
@@ -401,7 +426,10 @@ const VideoQuizContentContainer = ({
           <div className="video-quiz-wrap sty2">
             <div className="video-quiz-header">
               <h1>
-                <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title3" />
+                <PolyglotText
+                  defaultString="Video QUIZ"
+                  id="Collage-VideoQuiz-Title3"
+                />
               </h1>
             </div>
             <div className="quiz-content-wrap quiz-center-box">
@@ -416,15 +444,22 @@ const VideoQuizContentContainer = ({
                 />
               </div>
               <span className="wro">
-                <PolyglotText defaultString="정답 입니다." id="Collage-VideoQuiz-정답2" />
+                <PolyglotText
+                  defaultString="정답 입니다."
+                  id="Collage-VideoQuiz-정답2"
+                />
               </span>
               <div
                 className="wro2"
+                style={{ width: '100%' }}
                 dangerouslySetInnerHTML={{
                   __html:
                     questionData[currentIndex].alertMessage.passMessage !== ''
                       ? `${questionData[currentIndex].alertMessage.passMessage}`
-                      : getPolyglotText('딩동댕! 정답입니다. ', 'Collage-VideoQuiz-딩동댕'),
+                      : getPolyglotText(
+                          '딩동댕! 정답입니다. ',
+                          'Collage-VideoQuiz-딩동댕'
+                        ),
                 }}
               />
             </div>
@@ -433,7 +468,10 @@ const VideoQuizContentContainer = ({
                 onClick={onChangeNextQuestion}
                 className="ui button fix bg"
               >
-                <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인2" />
+                <PolyglotText
+                  defaultString="확인"
+                  id="Collage-VideoQuiz-확인2"
+                />
               </button>
             </div>
           </div>
@@ -448,7 +486,10 @@ const VideoQuizContentContainer = ({
           <div className="video-quiz-wrap sty2">
             <div className="video-quiz-header">
               <h1>
-                <PolyglotText defaultString="Video QUIZ" id="Collage-VideoQuiz-Title4" />
+                <PolyglotText
+                  defaultString="Video QUIZ"
+                  id="Collage-VideoQuiz-Title4"
+                />
               </h1>
             </div>
             <div className="quiz-content-wrap quiz-center-box">
@@ -470,14 +511,20 @@ const VideoQuizContentContainer = ({
                   onClick={onChangeResultAnswer}
                   className="ui button fix bg grey"
                 >
-                  <PolyglotText defaultString="결과보기" id="Collage-VideoQuiz-결과보기" />
+                  <PolyglotText
+                    defaultString="결과보기"
+                    id="Collage-VideoQuiz-결과보기"
+                  />
                 </button>
               )}
               <button
                 onClick={onChangeNextQuestion}
                 className="ui button fix bg"
               >
-                <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인3" />
+                <PolyglotText
+                  defaultString="확인"
+                  id="Collage-VideoQuiz-확인3"
+                />
               </button>
             </div>
           </div>
@@ -524,7 +571,10 @@ const VideoQuizContentContainer = ({
                   dangerouslySetInnerHTML={{
                     __html:
                       `${questionData[currentIndex].subText}` ||
-                      getPolyglotText('다른 분들의 의견을 살펴보세요!', 'Collage-VideoQuiz-다른의견1'),
+                      getPolyglotText(
+                        '다른 분들의 의견을 살펴보세요!',
+                        'Collage-VideoQuiz-다른의견1'
+                      ),
                   }}
                 />
               </div>
@@ -656,7 +706,10 @@ const VideoQuizContentContainer = ({
                   onClick={onChangeNextQuestion}
                   className="ui button fix bg"
                 >
-                  <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인4" />
+                  <PolyglotText
+                    defaultString="확인"
+                    id="Collage-VideoQuiz-확인4"
+                  />
                 </button>
               </div>
             </div>
@@ -697,7 +750,10 @@ const VideoQuizContentContainer = ({
                   dangerouslySetInnerHTML={{
                     __html:
                       `${questionData[currentIndex].subText}` ||
-                      getPolyglotText('다른 분들의 의견을 살펴보세요!', 'Collage-VideoQuiz-다른의견2'),
+                      getPolyglotText(
+                        '다른 분들의 의견을 살펴보세요!',
+                        'Collage-VideoQuiz-다른의견2'
+                      ),
                   }}
                 />
               </div>
@@ -726,7 +782,10 @@ const VideoQuizContentContainer = ({
                         className="left moreview"
                       >
                         <Icon className="moreview" />
-                        <PolyglotText defaultString="list more" id="Collage-VideoQuiz-listmore" />
+                        <PolyglotText
+                          defaultString="list more"
+                          id="Collage-VideoQuiz-listmore"
+                        />
                       </Button>
                     </div>
                   )}
@@ -737,7 +796,10 @@ const VideoQuizContentContainer = ({
                 onClick={onChangeNextQuestion}
                 className="ui button fix bg"
               >
-                <PolyglotText defaultString="확인" id="Collage-VideoQuiz-확인5" />
+                <PolyglotText
+                  defaultString="확인"
+                  id="Collage-VideoQuiz-확인5"
+                />
               </button>
             </div>
           </div>

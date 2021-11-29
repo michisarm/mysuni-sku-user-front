@@ -18,7 +18,7 @@ interface CubeLectureStructureViewProps {
 
 const CubeLectureStructureNoteView: React.FC<CubeLectureStructureViewProps> = function CubeLectureStructureView({
   lectureStructure,
-  cubeType
+  cubeType,
 }) {
   const { pathname } = useLocation();
   const params = useParams<LectureParams>();
@@ -26,38 +26,38 @@ const CubeLectureStructureNoteView: React.FC<CubeLectureStructureViewProps> = fu
   return (
     <>
       {items !== undefined &&
-        items.map(item => {
+        items.map((item) => {
           if (item.type === 'CUBE') {
             const cube = item as LectureStructureCubeItem;
             return (
               <Fragment key={cube.cubeId}>
-                  <>
-                    <DurationableCubeView
-                      name={cube.name}
-                      state={cube.state}
-                      activated={cube.path === pathname}
-                      learningTime={cube.learningTime}
-                      cubeType={cube.cubeType}
-                      path={cube.path}
-                      can={cube.can}
-                      duration={
-                        (cube as LectureStructureDurationableCubeItem).duration
-                      }
-                    />
-                    {/* 노트 컨테이너 위치 */}
-                    <LectureNoteContainer
-                      cubeId={cube.cubeId} 
-                      cardId={params.cardId} 
-                      cubeType={cubeType}
-                      name={cube.name}
-                      learningTime={cube.learningTime}
-                    />
-                  </>
+                <>
+                  <DurationableCubeView
+                    cardId={params.cardId}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.path === pathname}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                    duration={
+                      (cube as LectureStructureDurationableCubeItem).duration
+                    }
+                  />
+                  {/* 노트 컨테이너 위치 */}
+                  <LectureNoteContainer
+                    cubeId={cube.cubeId}
+                    cardId={params.cardId}
+                    cubeType={cubeType}
+                    name={cube.name}
+                    learningTime={cube.learningTime}
+                  />
+                </>
               </Fragment>
             );
           }
-        })
-      }
+        })}
     </>
   );
 };

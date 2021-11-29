@@ -1,79 +1,143 @@
-import React, { Component } from 'react';
-import { reactAutobind, getCookie } from '@nara.platform/accent';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-
+import {
+  mobxHelper,
+  reactAutobind,
+  ReactComponent,
+} from '@nara.platform/accent';
 import boardRoutePaths from 'board/routePaths';
-import { Context } from '../../../index';
-import CategoryMenuContainer from './CategoryMenuContainer';
-import ProfileContainer from './ProfileContainer';
-import HeaderWrapperView from '../view/HeaderWrapperView';
-import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
-import BreadcrumbView from '../view/BreadcrumbView';
-import MainNotice from '../../../Notice';
+import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
+import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
+import { inject, observer } from 'mobx-react';
+import React, { createRef } from 'react';
 import ReactGA from 'react-ga';
-import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
-import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
-import { ActionType, Action, Area } from 'tracker/model/ActionType';
-import { isExternalInstructor } from '../../../../../shared/helper/findUserRole';
-import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
-import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Dimmer } from 'semantic-ui-react';
+import { isExternalInstructor } from 'shared/helper/findUserRole';
+import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
+import { getQueryId, search } from '../../../../../search/search.events';
+import SearchService from '../../../../../search/service/SearchService';
+import { Context } from '../../../index';
+import MainNotice from '../../../Notice';
+import BreadcrumbView from '../view/BreadcrumbView';
+import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
+import HeaderWrapperView from '../view/HeaderWrapperView';
+import ProfileContainer from './ProfileContainer';
 
 interface Props extends RouteComponentProps {}
 
 interface State {
-  searchValue: string;
-  focused: boolean;
+  isFixed: boolean;
+  isTopBannerOpen: boolean;
 }
 
+interface Injected {
+  searchService: SearchService;
+}
+
+@inject(mobxHelper.injectFrom('shared.searchService'))
+@observer
 @reactAutobind
-class HeaderContainer extends Component<Props, State> {
+class HeaderContainer extends ReactComponent<Props, State, Injected> {
   //
   static contextType = Context;
 
+  state = {
+    isFixed: false,
+    isTopBannerOpen: true,
+  };
+
+  headerRef: React.RefObject<any> = createRef();
+
   supportPath = boardRoutePaths.supportNotice();
 
-  state = {
-    searchValue: '',
-    focused: false,
-  };
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+    const isExternal = isExternalInstructor();
+    !isExternal && this.avaible(); //api호출을 위해서 3.30
+    document.addEventListener('scroll', this.handleScroll);
+
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+
+    // search 페이지의 헤더일 경우 최초 접근시 검색 입력 필드에 값 셋팅
+    const isSearchPage = this.props.location.pathname.startsWith('/search');
+    const isSearch =
+      this.props.location.search !== null && this.props.location.search !== '';
+    if (isSearchPage && isSearch && searchInfo.searchValue === '') {
+      searchService.setSearchInfoValue('searchValue', getQueryId());
+    }
+  }
 
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.location.key !== this.props.location.key) {
-      this.initSearchValue();
+      // this.initSearchValue();
+    }
+  }
+
+  componentWillUnmount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+    document.addEventListener('scroll', this.handleScroll);
+  }
+
+  isMainAndSearchPage() {
+    let url = window.location.pathname;
+
+    if (process.env.NODE_ENV === 'development') {
+      url = `/suni-main${url}`;
+    }
+
+    if (url === '/suni-main/pages/1' || url.includes('/suni-main/search')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  handleScroll = () => {
+    if (!this.isMainAndSearchPage()) {
+      return;
+    }
+
+    if (window.pageYOffset > 0) {
+      this.setState({ isFixed: true });
+    } else {
+      this.setState({ isFixed: false });
+    }
+  };
+
+  handleClickOutside(event: any) {
+    //
+    const { searchService } = this.injected;
+    if (!this.headerRef.current?.contains(event.target)) {
+      searchService.setFocusedValue(false);
     }
   }
 
   initSearchValue() {
-    this.setState({ searchValue: '' });
+    //
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
   }
 
   onSearch() {
     //
-    const { searchValue } = this.state;
-
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+    // searchService.setSearchInfoValue(
+    //   'recentSearchValue',
+    //   searchInfo.searchValue
+    // );
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
-    if (searchValue) {
+    if (searchInfo.searchValue) {
       const { history } = this.props;
-      history.push(`/search?query=${searchValue}`);
-      // window.location.href = encodeURI(`/search?query=${searchValue}`);
+      if (!searchInfo.inAgain) {
+        history.push(`/search?query=${searchInfo.searchValue}`);
+        // window.location.href = encodeURI(`/search?query=${searchValue}`);
+      } else {
+        search(searchInfo.searchValue); // 결과내 재검색은 이미 /search 페이지에 들어와 있는 상태
+      }
 
-      // search track
-      debounceActionTrack({
-        email:
-          (window.sessionStorage.getItem('email') as string) ||
-          (window.localStorage.getItem('nara.email') as string) ||
-          getCookie('tryingLoginId'),
-        path: window.location.pathname,
-        search: window.location.search,
-        area: Area.SEARCH,
-        actionType: ActionType.GENERAL,
-        action: Action.SEARCH,
-        actionName: '헤더검색::' + searchValue,
-      } as ActionTrackParam);
-
-      // react-GA logic
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,
@@ -82,24 +146,41 @@ class HeaderContainer extends Component<Props, State> {
         );
       }, 1000);
     }
+    searchService.setFocusedValue(false);
   }
 
-  onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ searchValue: e.target.value });
+  async onChangeSearchInput(value: string) {
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', value);
+  }
+
+  async findAutoCompleteValues(value: string) {
+    //
+    const { searchService } = this.injected;
+    await searchService.findAutoCompleteValues(value);
+  }
+
+  setSearchInfoValue(name: string, value: any): void {
+    //
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue(name, value);
   }
 
   onClickSearchInput() {
     //
-    this.setState({ focused: true });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(true);
   }
 
   onBlurSearchInput() {
     //
-    this.setState({ focused: false });
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(false);
   }
 
   onClickClearSearch() {
-    this.setState({ searchValue: '' });
+    const { searchService } = this.injected;
+    searchService.setSearchInfoValue('searchValue', '');
   }
 
   cleanSessionStorage() {
@@ -110,6 +191,12 @@ class HeaderContainer extends Component<Props, State> {
     sessionStorage.removeItem('learningOffset');
     sessionStorage.removeItem('sortName');
     sessionStorage.removeItem('SCROLL_POS');
+  }
+
+  communityBreadCrumb() {
+    if (this.props.location.pathname.includes('suni-community')) {
+      return null;
+    }
   }
 
   onClickMenu(menuName: string) {
@@ -134,44 +221,107 @@ class HeaderContainer extends Component<Props, State> {
     this.cleanSessionStorage();
   }
 
+  async onSearchValue(value: string) {
+    //
+    const { searchService } = this.injected;
+    const { searchInfo } = searchService;
+
+    searchService.setSearchInfoValue('searchValue', value);
+    if (!searchInfo.inAgain) {
+      searchService.setSearchInfoValue('recentSearchValue', value);
+    }
+    await search(value);
+    searchService.setFocusedValue(false);
+  }
+
+  closeSearch() {
+    const { searchService } = this.injected;
+    searchService.setFocusedValue(false);
+  }
+
+  async avaible() {
+    const response = await findAvailablePageElementsCache();
+
+    if (response) {
+      setMenuAuthModel(response);
+    }
+  }
+
+  onClickCloseTopBanner() {
+    //
+    this.setState({ isTopBannerOpen: false });
+  }
+
   render() {
     //
     const { breadcrumb } = this.context;
-    const { searchValue, focused } = this.state;
-    const isExternal = isExternalInstructor();
+    const { searchService } = this.injected;
+    const { searchInfo, searchViewFocused, autoCompleteValues } = searchService;
+    const { isTopBannerOpen } = this.state;
+
+    const isSearchPage = this.props.location.pathname.startsWith('/search');
+    const isSearch =
+      this.props.location.search !== null && this.props.location.search !== '';
+
+    const fixedClass: string =
+      this.isMainAndSearchPage() && this.state.isFixed ? 'fixed' : '';
 
     return (
-      <HeaderWrapperView
-        breadcrumbs={
-          <BreadcrumbView
-            values={breadcrumb.values}
-            supportPath={this.supportPath}
-          />
-        }
-        // Notice
-        topBanner={<TopBannerContainer />}
-        mainNotice={<MainNotice />}
+      // fixed: margin-bottom-80
+      <div
+        ref={this.headerRef}
+        className={`${this.state.isFixed ? 'margin-bottom-80' : ''}`}
       >
-        <>
-          <LogoView onClickMenu={this.onClickMenu} />
-          <MenuView onClickMenu={this.onClickMenu} />
-          {/* <CategoryMenuContainer /> */}
-          {/*!isExternal && (
-            <SearchBarView
-              value={searchValue}
-              focused={focused}
-              onSearch={this.onSearch}
-              onBlur={this.onBlurSearchInput}
-              onClick={this.onClickSearchInput}
-              onChange={this.onChangeSearchInput}
-              onClear={this.onClickClearSearch}
-              getPolyglotText={getPolyglotText}
+        <HeaderWrapperView
+          breadcrumbs={
+            <BreadcrumbView
+              values={breadcrumb.values}
+              supportPath={this.supportPath}
             />
-          )*/}
-
-          <ProfileContainer />
-        </>
-      </HeaderWrapperView>
+          }
+          topBanner={
+            (this.isMainAndSearchPage() && (
+              <TempTopBannerContainer
+                isTopBannerOpen={isTopBannerOpen}
+                onClickCloseBanner={this.onClickCloseTopBanner}
+              />
+            )) ||
+            null
+          }
+          // topBanner={<TopBannerContainer />}
+          mainNotice={<MainNotice />}
+          setSearchInfoValue={this.setSearchInfoValue}
+          onSearch={this.onSearchValue}
+          focused={searchViewFocused}
+          searchInfo={searchInfo}
+          autoCompleteValues={autoCompleteValues}
+          fixedClass={fixedClass}
+        >
+          <>
+            <LogoView onClickMenu={this.onClickMenu} />
+            <MenuView onClickMenu={this.onClickMenu} />
+            <SearchBarView
+              searchInfo={searchInfo}
+              setSearchValue={this.setSearchInfoValue}
+              onSearch={this.onSearch}
+              onChange={this.onChangeSearchInput}
+              findAutoCompleteValues={this.findAutoCompleteValues}
+              onClear={this.onClickClearSearch}
+              onClick={this.onClickSearchInput}
+              onBlur={this.onBlurSearchInput}
+              isSearch={isSearchPage && isSearch}
+              closeSearch={this.closeSearch}
+            />
+            <ProfileContainer onClickMenu={this.onClickMenu} />
+          </>
+        </HeaderWrapperView>
+        <Dimmer
+          className="dimm_zidx"
+          active={searchViewFocused}
+          page
+          onClick={this.closeSearch}
+        />
+      </div>
     );
   }
 }

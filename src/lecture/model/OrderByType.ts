@@ -1,6 +1,7 @@
 enum OrderByType {
   Time = 'TimeDesc',
   StudentCount = 'StudentCountDesc',
+  PassedStudentCount = 'PassedStudentCountDesc',
   Star = 'StarCountDesc',
   New = 'NEW',
   Popular = 'POPULAR',

@@ -165,3 +165,13 @@ export function closest(el: any, selector: string) {
   }
   return el;
 }
+
+export const findLinkElement = (el: EventTarget | null): HTMLElement | null => {
+  if (el instanceof HTMLAnchorElement && el.href) {
+    return el
+  }
+  if (el instanceof HTMLElement && el.parentElement) {
+    return findLinkElement(el.parentElement)
+  }
+  return null
+}

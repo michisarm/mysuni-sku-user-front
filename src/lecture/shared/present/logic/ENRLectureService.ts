@@ -10,7 +10,6 @@ import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import EnrollingApi from '../apiclient/EnrollingApi';
-import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 @autobind
 class ENRLectureService {
@@ -18,11 +17,9 @@ class ENRLectureService {
   static instance: ENRLectureService;
 
   private EnrollingApi: EnrollingApi;
-  private inMyLectureApi: InMyLectureApi;
 
-  constructor(EnrollingApi: EnrollingApi, inMyLectureApi: InMyLectureApi) {
+  constructor(EnrollingApi: EnrollingApi) {
     this.EnrollingApi = EnrollingApi;
-    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -86,7 +83,7 @@ class ENRLectureService {
 
     if (!lectureOffsetElementList.empty) {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-        lecture => new LectureModel(lecture)
+        (lecture) => new LectureModel(lecture)
       );
     }
     this._totalCount = lectureOffsetElementList.totalCount;
@@ -96,9 +93,8 @@ class ENRLectureService {
         window.navigator.onLine &&
         window.sessionStorage.getItem('EnrLearningList');
       if (savedEnrLearningList && savedEnrLearningList.length > 0) {
-        const newMain: OffsetElementList<LectureModel> = JSON.parse(
-          savedEnrLearningList
-        );
+        const newMain: OffsetElementList<LectureModel> =
+          JSON.parse(savedEnrLearningList);
         newMain.title = this._title;
         window.sessionStorage.setItem(
           'EnrLearningList',
@@ -124,7 +120,7 @@ class ENRLectureService {
     );
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
+      (lecture) => new LectureModel(lecture)
     );
     this._totalCount = lectureOffsetElementList.totalCount;
 
@@ -154,12 +150,11 @@ class ENRLectureService {
       window.navigator.onLine &&
       window.sessionStorage.getItem('NewLearningList');
     if (savedEnrLearningList && savedEnrLearningList.length > 0) {
-      const NewMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedEnrLearningList
-      );
+      const NewMain: OffsetElementList<LectureModel> =
+        JSON.parse(savedEnrLearningList);
       if (NewMain && NewMain.results && NewMain.results.length > 0) {
         NewMain.results = NewMain.results.filter(
-          item => item.serviceId !== serviceId
+          (item) => item.serviceId !== serviceId
         );
         NewMain.totalCount = NewMain.results.length;
         NewMain.empty = NewMain.totalCount < 1;
@@ -172,9 +167,6 @@ class ENRLectureService {
   }
 }
 
-ENRLectureService.instance = new ENRLectureService(
-  EnrollingApi.instance,
-  InMyLectureApi.instance
-);
+ENRLectureService.instance = new ENRLectureService(EnrollingApi.instance);
 
 export default ENRLectureService;
