@@ -5,6 +5,7 @@ export default interface OfficeWeb {
   name: string;
   fileBoxId: string;
   String: string;
+  height: string;
   learningPeriod: DatePeriod;
   webUrlInfo: OfficeWebUrlInfo;
   webPageUrl: string;

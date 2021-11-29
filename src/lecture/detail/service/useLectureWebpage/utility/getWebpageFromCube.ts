@@ -19,7 +19,7 @@ export async function getWebpageFromCube(params: LectureParams) {
 
   let url = officeWeb.webPageUrl;
 
-  if (officeWeb.urlType && officeWeb.urlType === "embedded") {
+  if (officeWeb.urlType && officeWeb.urlType === 'embedded') {
     const encryptKey = await generationEncryptKey(cubeId, cardId);
     if (url.indexOf('?') > -1) {
       url = url + '&p=' + encryptKey;
@@ -38,8 +38,9 @@ export async function getWebpageFromCube(params: LectureParams) {
       description: undefined,
       image: undefined,
       url,
+      height: officeWeb.height,
       fileBoxId: officeWeb.fileBoxId,
-      urlType: officeWeb.urlType
+      urlType: officeWeb.urlType,
     };
     setLectureWebpage(webpage);
   } else {
@@ -49,8 +50,9 @@ export async function getWebpageFromCube(params: LectureParams) {
       description,
       image,
       url,
+      height: officeWeb.height,
       fileBoxId: officeWeb.fileBoxId,
-      urlType: officeWeb.urlType
+      urlType: officeWeb.urlType,
     };
     setLectureWebpage(webpage);
   }
