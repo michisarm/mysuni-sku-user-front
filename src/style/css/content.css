@@ -531,6 +531,11 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 
 .emoji_icons .em_b { font-weight: normal; }
 
+/* 이모지 공간 확보 위한 학습카드 오버뷰 높이 최소값 */
+.content.lms.v-wide .course-info-detail {
+    min-height: 852px;
+}
+
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
 .learning-section.type1 .section-head { margin-bottom: 10px; }
