@@ -70,7 +70,7 @@ const TableHeaderColumn = {
   */
   InProgress: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
@@ -89,7 +89,7 @@ const TableHeaderColumn = {
 
   InMyList: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
@@ -108,7 +108,7 @@ const TableHeaderColumn = {
   ],
   Required: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
@@ -127,7 +127,7 @@ const TableHeaderColumn = {
   ],
   Enrolled: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: '차수' },
@@ -150,7 +150,7 @@ const TableHeaderColumn = {
   ],
   Completed: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
@@ -180,7 +180,7 @@ const TableHeaderColumn = {
   ],
   Retry: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     {
       key: 3,
@@ -205,7 +205,7 @@ const TableHeaderColumn = {
   ],
   EarnedStampCount: [
     { key: 0, text: 'No' },
-    { key: 1, text: 'Collage' },
+    { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     // { key: 3, text: getPolyglotText('스탬프', 'mapg-msmp-헤더4'), icon: true },
     {
