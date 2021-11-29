@@ -60,6 +60,7 @@ body #root { background: #fff; }
 .ui.form input[type=text]:focus,
 .ui.form input[type=time]:focus,
 .ui.form input[type=url]:focus,
+.ui.form textarea:focus,
 .ui.input.focus > input,
 .ui.input > input:focus { border: #52CBC0 1px solid !important; }
 
