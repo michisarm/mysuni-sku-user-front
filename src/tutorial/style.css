@@ -4,7 +4,7 @@
 .ui.modal.base.tutorials3 .header3 .ui.checkbox{vertical-align: text-top;}
 .ui.modal.base.tutorials3 .header3 .right-btn .ui.checkbox label{color:#fff; font-size: 0.875rem;}
 .ui.modal.base.tutorials3 .header3 .right-btn .ui.checkbox label:hover,.ui.modal.base.tutorials3 .header .right-btn .ui.checkbox + label:hover{color:#fff}
-.ui.modal.base.tutorials3 .header3 .right-btn .ui.base.checkbox + .ui.button.close{margin-left:1rem; color:#fff; font-size: 0.875rem;}
+.ui.modal.base.tutorials3 .header3 .right-btn .ui.base.checkbox + .ui.button.close{margin-left:1rem; color:#fff; font-size: 0.875rem; vertical-align: text-top !important;}
 .ui.modal.base.tutorials3 .content{padding: 0 !important; border-radius: 4px;}
 .ui.modal.base.tutorials3 .content .cont-wrap{height: 40rem; display: flex; border-radius: 8px !important; overflow: hidden;}
 .ui.modal.tutorials3 .scrolling-80vh {max-height: 80vh;}

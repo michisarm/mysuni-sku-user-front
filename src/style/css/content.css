@@ -494,8 +494,8 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 
 /* 이모지 */
 .ui.popup.emoji_popup {
-    box-shadow: none;
-    border: #ddd 1px solid;
+    border-color: #dddd;
+    box-shadow: 0.063rem 0 #ddd, -0.063rem 0 #ddd;
 }
 .emoji_popup .emoji_header {
     border-color: #ddd;
@@ -860,4 +860,9 @@ border-left-color: #00bfae;
 }
 #root section.bg-white.full {
     min-height: calc(100vh - 112px - 277px);
+}
+
+/* fixed일때 topbanner */
+.header.main-sty2.fixed .top_banner {
+    display: none;
 }
