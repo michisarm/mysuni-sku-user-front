@@ -9,13 +9,7 @@ const BASE_URL = '/api/arrange/pageElements';
 function findAvailablePageElements() {
   const axios = getAxios();
   const url = `${BASE_URL}/available`;
-<<<<<<< HEAD
-  return axios
-    .get<PageElement[]>(url)
-    .then(response => (response && response.data) || null);
-=======
   return axios.get<PageElement[]>(url).then(AxiosReturn);
->>>>>>> release-iframe-mj
 }
 
 export const [findAvailablePageElementsCache] = createCacheApi(
