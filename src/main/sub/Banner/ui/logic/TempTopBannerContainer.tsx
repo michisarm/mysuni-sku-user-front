@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import { useEffect } from 'react-router/node_modules/@types/react';
+import React from 'react';
 import Image from '../../../../../shared/components/Image';
 import { requestTempTopBanner } from '../../service/useRequestTopBanner';
 

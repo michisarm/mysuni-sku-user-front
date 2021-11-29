@@ -1,32 +1,26 @@
-import React, { createRef } from 'react';
 import {
-  reactAutobind,
-  getCookie,
-  ReactComponent,
   mobxHelper,
+  reactAutobind,
+  ReactComponent,
 } from '@nara.platform/accent';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-
 import boardRoutePaths from 'board/routePaths';
-import { Context } from '../../../index';
-import ProfileContainer from './ProfileContainer';
-import HeaderWrapperView from '../view/HeaderWrapperView';
-import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
-import BreadcrumbView from '../view/BreadcrumbView';
-import MainNotice from '../../../Notice';
-import ReactGA from 'react-ga';
-import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
-import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
-import { ActionType, Action, Area } from 'tracker/model/ActionType';
-import { TopBannerContainer } from '../../../../../main/sub/Banner/ui/logic/TopBannerContainer';
-import SearchService from '../../../../../search/service/SearchService';
-import { inject, observer } from 'mobx-react';
-import { getQueryId, search } from '../../../../../search/search.events';
-import { Dimmer } from 'semantic-ui-react';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
+import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
+import { inject, observer } from 'mobx-react';
+import React, { createRef } from 'react';
+import ReactGA from 'react-ga';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Dimmer } from 'semantic-ui-react';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
 import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
-import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
+import { getQueryId, search } from '../../../../../search/search.events';
+import SearchService from '../../../../../search/service/SearchService';
+import { Context } from '../../../index';
+import MainNotice from '../../../Notice';
+import BreadcrumbView from '../view/BreadcrumbView';
+import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
+import HeaderWrapperView from '../view/HeaderWrapperView';
+import ProfileContainer from './ProfileContainer';
 
 interface Props extends RouteComponentProps {}
 
