@@ -581,6 +581,18 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     transform: translateY(-1px);
 }
 
+/* 학습카드 상세 > 챕터 */
+.syllabus-contents-wrap .contents-belt {
+    background: #777;
+}
+.syllabus-contents-wrap {
+    border-color: #ddd;
+    box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.essential-wrap {
+    box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+
 /* 마이러닝 > 학습이수시간 팝업 */
 .ui.radio.rect-icon label::before {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-radio-type-1-nomal@3x.png) no-repeat 0 0 !important;
