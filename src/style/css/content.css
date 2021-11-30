@@ -858,6 +858,10 @@ border-left-color: #00bfae;
 .transcript-box {
     padding-bottom: 120px;
 }
+.follow_list .chk_follow {
+    border-color: #00bfae;
+    background: #00bfae;
+}
 .follow_list .chk_follow.checked {
     color: #aaa;
     border-color: #aaa;
