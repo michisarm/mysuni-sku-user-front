@@ -491,6 +491,9 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
     padding: 7px 10px;
 }
+.card-item .card-inner .contents-area .ui.label.my-stat.completed {
+    color: #b9b9b9;
+}
 
 /* 이모지 */
 .ui.popup.emoji_popup {
