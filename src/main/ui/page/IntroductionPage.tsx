@@ -134,7 +134,7 @@ class UserMainPage extends Component<Props> {
             : ''
         }`}
         breadcrumb={[
-          { text: 'About Us' },
+          { text: 'About Us', path: routePaths.introductionMySuni() },
           {
             text:
               SkProfileService.instance.skProfile.language === 'English'
@@ -142,6 +142,7 @@ class UserMainPage extends Component<Props> {
                 : SkProfileService.instance.skProfile.language === 'Chinese'
                 ? ContentTypeZhName[params.tab]
                 : ContentTypeKoName[params.tab],
+            path: routePaths.introductionClickBreadCrumb(),
           },
         ]}
       >

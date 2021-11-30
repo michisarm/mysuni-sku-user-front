@@ -522,7 +522,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
               cubeCommentStartFunction={registerStudent}
               cubeCommentEndFunction={onRefresh}
             />
-            <CommunityProfileModal
+            {/* <CommunityProfileModal
               open={profileOpen}
               setOpen={setProfileOpen}
               userProfile={profileInfo && profileInfo.profileImg}
@@ -530,7 +530,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
               introduce={profileInfo && profileInfo.introduce}
               nickName={profileInfo && profileInfo.nickName}
               name={profileInfo && profileInfo.creatorName}
-            />
+            /> */}
           </div>
         )}
       </>

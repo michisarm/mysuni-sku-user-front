@@ -6,6 +6,8 @@ const routePaths = {
   introductionTab: (tab: string, queryParams?: string) =>
     `/introduction/${tab}${queryParams || ''}`,
 
+  introductionClickBreadCrumb: () => `/introduction/College?subTab=AI`,
+
   introductionAITab: (queryParams?: string) =>
     `/introduction/College?subTab=AI&innerTab=${queryParams || ''}`,
   introductionDTTab: (queryParams?: string) =>

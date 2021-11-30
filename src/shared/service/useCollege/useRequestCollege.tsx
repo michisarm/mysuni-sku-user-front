@@ -2,7 +2,7 @@ import { find } from 'lodash';
 import CategoryColorType from '../../model/CategoryColorType';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
-import { Channel, getAllColleges } from '../requestAllColleges';
+import { Channel, getAllChannels, getAllColleges } from '../requestAllColleges';
 
 export function getCollgeName(collegeId: string) {
   const collegeList = getAllColleges();
@@ -18,17 +18,13 @@ export function getCollgeName(collegeId: string) {
 }
 
 export function getChannelName(channelId: string) {
-  const collegeList = getAllColleges();
-  const channelList = collegeList.reduce<Channel[]>(
-    (p, c) => [...p, ...c.channels],
-    []
-  );
-  const foundChannel = find(channelList, { id: channelId });
+  const allChannels = getAllChannels();
+  const channel = allChannels.find((c) => c.id === channelId);
 
-  if (foundChannel && foundChannel.name !== undefined) {
+  if (channel !== undefined) {
     return parsePolyglotString(
-      foundChannel.name,
-      getDefaultLang(foundChannel.langSupports)
+      channel.name,
+      getDefaultLang(channel.langSupports)
     );
   }
 

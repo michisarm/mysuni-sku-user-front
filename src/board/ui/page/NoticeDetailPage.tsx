@@ -17,8 +17,8 @@ class NoticeDetailPage extends Component {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: 'Support', path: routePaths.supportNotice() },
-          { text: 'Notice' },
+          { text: 'Help Center', path: routePaths.supportNotice() },
+          { text: 'Notice', path: routePaths.supportNotice() },
         ]}
       >
         <div className="post-view-wrap" data-area={Area.BOARD_NOTICE_CONTENT}>

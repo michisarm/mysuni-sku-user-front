@@ -17,7 +17,7 @@ class AnswerDetailPage extends Component {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: 'Support', path: routePaths.supportNotice() },
+          { text: 'Help Center', path: routePaths.supportNotice() },
           { text: 'Q&A' },
           { text: 'Answered' },
         ]}

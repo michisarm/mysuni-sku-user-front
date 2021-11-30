@@ -10,13 +10,13 @@ import { inject, observer } from 'mobx-react';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
 import { ProgressPageTableView } from 'myTraining/ui/view/table/ProgressPageTableView';
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router-dom';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import XLSX from 'xlsx';
-import { StudentService, LectureService } from '../../../../lecture';
+import { LectureService, StudentService } from '../../../../lecture';
 import FilterBoxService from '../../../../shared/present/logic/FilterBoxService';
 import { getPolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 import { Direction, toggleDirection } from '../../../model/Direction';
@@ -30,6 +30,7 @@ import { useScrollMove } from '../../../useScrollMove';
 import MyLearningDeleteFinishModal from '../../view/MyLearningDeleteFinishModal';
 import MyLearningDeleteModal from '../../view/MyLearningDeleteModal';
 import MyLearningNoCheckModal from '../../view/MyLearningNoCheckModal';
+import { convertToKeyInMyLearningTable } from '../../../../lecture/shared/present/logic/LectureService';
 
 interface ProgressPageContainerProps {
   lectureService?: LectureService;
@@ -81,8 +82,13 @@ function ProgressPageContainer({
     countLearningTab,
     sortMyLearningTableViews,
   } = lectureService!;
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    showResult,
+    filterCount,
+    openFilter,
+    setOpenFilter,
+  } = filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -156,8 +162,9 @@ function ProgressPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(excelQdo());
+    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
+      excelQdo()
+    );
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_InProgress';
@@ -240,7 +247,6 @@ function ProgressPageContainer({
 
   const intersectionCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
       entries.forEach((c) => {
         if (c.isIntersecting) {
           onClickSeeMore();
@@ -301,7 +307,17 @@ function ProgressPageContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      sortMyLearningTableViews(column, direction);
+      // sortMyLearningTableViews(column, direction);
+      const cardQdo = CardQdo.getOrderByCardQdo({
+        columnType: convertToKeyInMyLearningTable(column),
+        direction,
+        studentLearning: StudentLearningType.Learning,
+      });
+
+      setCardQdo(cardQdo);
+
+      findMyLearningCardByQdo(true);
+      history.replace('./1');
     },
     [contentType]
   );

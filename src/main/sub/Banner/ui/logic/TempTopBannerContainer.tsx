@@ -1,25 +1,30 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import Image from '../../../../../shared/components/Image';
 import { requestTempTopBanner } from '../../service/useRequestTopBanner';
 
-export function TempTopBannerContainer() {
+interface props {
+  isTopBannerOpen: boolean;
+  onClickCloseBanner: () => void;
+}
+
+export function TempTopBannerContainer({
+  isTopBannerOpen,
+  onClickCloseBanner,
+}: props) {
   const bannerData = {
     imageUrl:
       'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner.png',
     backGroundColor: '#984AEE',
   };
-  const [openTopBanner, setOpenTopBanner] = useState<boolean>(true);
-  const onClickClose = useCallback(() => {
-    setOpenTopBanner(false);
-  }, [setOpenTopBanner]);
 
-  const displayTopBanner = openTopBanner && bannerData && bannerData.imageUrl;
+  const displayTopBanner = isTopBannerOpen && bannerData && bannerData.imageUrl;
 
   const onClickBanner = async () => {
     const encryptValue = await requestTempTopBanner();
     if (encryptValue) {
       window.open(
         `https://mysuni-giftevent.com/Auth/Index?q=${encryptValue}`,
+
         '_blank'
       );
     } else {
@@ -37,7 +42,7 @@ export function TempTopBannerContainer() {
           imageUrl={bannerData.imageUrl}
           backgroundColor={bannerData.backGroundColor}
           onClickBanner={onClickBanner}
-          onClose={onClickClose}
+          onClose={onClickCloseBanner}
         />
       )}
     </>

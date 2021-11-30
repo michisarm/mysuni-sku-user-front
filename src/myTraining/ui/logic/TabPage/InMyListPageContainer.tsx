@@ -17,6 +17,8 @@ import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { convertToKeyInMyLearningTable } from '../../../../lecture/shared/present/logic/LectureService';
+import StudentLearningType from '../../../../lecture/model/learning/StudentLearningType';
 
 interface InMyListPageContainerProps {
   lectureService?: LectureService;
@@ -59,8 +61,13 @@ function InMyListPageContainer({
     clearMyLearningCard,
   } = lectureService!;
 
-  const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    filterCount,
+    showResult,
+    setOpenFilter,
+    openFilter,
+  } = filterBoxService!;
 
   // useRequestFilterCountView();
 
@@ -168,7 +175,6 @@ function InMyListPageContainer({
 
   const intersectionCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
       entries.forEach((c) => {
         if (c.isIntersecting) {
           onClickSeeMore();
@@ -221,7 +227,18 @@ function InMyListPageContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      lectureService!.sortMyLearningTableViews(column, direction);
+      // lectureService!.sortMyLearningTableViews(column, direction);
+      const cardQdo = CardQdo.getOrderByCardQdo({
+        columnType: convertToKeyInMyLearningTable(column),
+        direction,
+        studentLearning: StudentLearningType.None,
+        bookmark: true,
+      });
+
+      setCardQdo(cardQdo);
+
+      findMyLearningCardByQdo(true);
+      history.replace('./1');
     },
     [contentType]
   );
