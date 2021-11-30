@@ -886,3 +886,8 @@ border-left-color: #00bfae;
 .header.main-sty2.fixed .top_banner {
     display: none;
 }
+
+/* 학습카드 별점 */
+.ui.rating.rating-num.line {
+    background: none !important;
+}

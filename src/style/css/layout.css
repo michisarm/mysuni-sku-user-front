@@ -271,6 +271,8 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 .content.lms .label-type.n-survey { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-24-px.svg") 0 50% no-repeat; }
 .content.lms .label-type.n-report { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-report-24-px.svg") 0 50% no-repeat; }
 .content.lms .label-type.n-discuss { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-discuss-24-px.svg") 0 50% no-repeat; }
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-close-8-px.svg') 0 0 no-repeat;}
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2.view-down{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-open-8-px.svg') 0 0 no-repeat;}
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act { border-bottom: #ff664d 4px solid; }
