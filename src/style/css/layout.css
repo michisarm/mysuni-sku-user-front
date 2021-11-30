@@ -62,7 +62,7 @@ body #root { background: #fff; }
 .ui.form input[type=url]:focus,
 .ui.form textarea:focus,
 .ui.input.focus > input,
-.ui.input > input:focus { border: #52CBC0 1px solid !important; }
+.ui.input > input:focus { border-color: #52CBC0 !important; }
 
 /* Button */
 .ui.button.moreview { color: #999 !important; }
