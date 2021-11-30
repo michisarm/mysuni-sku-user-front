@@ -891,3 +891,9 @@ border-left-color: #00bfae;
 .ui.rating.rating-num.line {
     background: none !important;
 }
+
+
+/* survey 결과 통계 보기 */
+.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
+    background-color: #f6f6f6;
+}
