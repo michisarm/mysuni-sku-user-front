@@ -849,10 +849,6 @@ border-left-color: #00bfae;
 .documents-viewer .pdf-header .pdf-header-select a:hover {
     background-color: #f5f5f5;
 }
-.content.lms .ov-paragraph.download-area .down a:after {
-    background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-4-24-px.svg) 0 0 no-repeat;
-    opacity: 0.7;
-}
 
 /* 404 page */
 #root .center-content .align.error404 .not-found-text {
