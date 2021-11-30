@@ -57,7 +57,7 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.title = post.title;
       lectureTaskDetail.name = writerName || post.writer;
-      lectureTaskDetail.time = post.time;
+      lectureTaskDetail.time = post.registeredTime;
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
       lectureTaskDetail.pinned = post.pinned;
