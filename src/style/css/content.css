@@ -886,3 +886,14 @@ border-left-color: #00bfae;
 .header.main-sty2.fixed .top_banner {
     display: none;
 }
+
+/* 학습카드 별점 */
+.ui.rating.rating-num.line {
+    background: none !important;
+}
+
+
+/* survey 결과 통계 보기 */
+.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
+    background-color: #f6f6f6;
+}

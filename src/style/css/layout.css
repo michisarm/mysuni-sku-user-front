@@ -62,7 +62,7 @@ body #root { background: #fff; }
 .ui.form input[type=url]:focus,
 .ui.form textarea:focus,
 .ui.input.focus > input,
-.ui.input > input:focus { border: #52CBC0 1px solid !important; }
+.ui.input > input:focus { border-color: #52CBC0 !important; }
 
 /* Button */
 .ui.button.moreview { color: #999 !important; }
@@ -266,6 +266,14 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 .lms-comment-icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before { background: #777; position: relative; display: inline-block; top: 0; left: 0; margin-right: 0.5rem; }
 .content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-5-24-px.svg) 0 0 no-repeat; }
+.content.lms .label-type { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; color: #777; }
+.content.lms .label-type.n-test { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-survey { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-report { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-report-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-discuss { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-discuss-24-px.svg") 0 50% no-repeat; }
+.ui.icon.button.btn-blue { color: #00bfae; }
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-close-8-px.svg') 0 0 no-repeat;}
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2.view-down{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-open-8-px.svg') 0 0 no-repeat;}
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act { border-bottom: #ff664d 4px solid; }
