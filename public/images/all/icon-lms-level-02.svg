@@ -1,7 +1,12 @@
-<svg width="21" height="10" viewBox="0 0 21 10" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" fill-rule="evenodd">
-        <path stroke="#AAA" d="M15.5.5h5v9h-5zM10.5.5h5v9h-5zM.5.5h5v9h-5z"/>
-        <path stroke="#23518A" fill="#C9E1FE" d="M5.5.5h5v9h-5z"/>
-        <path stroke="#00A193" fill="#B2EBE6" d="M5.5.5h5v9h-5z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="10px" viewBox="0 0 21 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>E5095AA9-29F2-4BA5-AAB1-F1535EFDA1FF</title>
+    <g id="Symbols_assets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon">
+            <rect id="4" stroke="#AAAAAA" x="15.5" y="0.5" width="5" height="9"></rect>
+            <rect id="3" stroke="#AAAAAA" x="10.5" y="0.5" width="5" height="9"></rect>
+            <rect id="1" stroke="#AAAAAA" x="0.5" y="0.5" width="5" height="9"></rect>
+            <rect id="2" stroke="#00A092" fill-opacity="0.3" fill="#00BFAE" x="5.5" y="0.5" width="5" height="9"></rect>
+        </g>
     </g>
 </svg>
