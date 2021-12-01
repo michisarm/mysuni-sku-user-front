@@ -5,7 +5,7 @@ export default interface TaskDetailPost {
   title: string;
   writer: string;
   readCount: number;
-  time: number;
+  registeredTime: number;
   commentFeedbackId: string;
   boardId: string;
   replies: [];
@@ -14,7 +14,7 @@ export default interface TaskDetailPost {
   contents: string;
   fileBoxId: string;
   pinned: number; // postpinned -> number = 0
-  patronKey: PatronKey
+  patronKey: PatronKey;
 }
 
 export default interface TaskDetail {

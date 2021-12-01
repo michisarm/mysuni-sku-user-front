@@ -18,7 +18,7 @@
     "@babel/polyfill": "7.0.0",
     "@nara.drama/approval": "0.4.6-1",
     "@nara.drama/depot": "1.4.1",
-    "@nara.drama/feedback": "0.4.76",
+    "@nara.drama/feedback": "0.4.77",
     "@nara.platform/accent": "0.2.2",
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
@@ -67,7 +67,7 @@
     "typescript": "3.7.3",
     "xlsx": "latest"
   },
-  "proxy": "https://stg.mysuni.sk.com",
+  "proxy": "https://ma.mysuni.sk.com",
   "homepage": "https://mysuni.sk.com/suni-main/",
   "devDependencies": {
     "@types/classnames": "^2.2.9",

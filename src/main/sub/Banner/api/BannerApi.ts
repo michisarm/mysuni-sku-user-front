@@ -11,3 +11,10 @@ export function findLatestBannerBundles(
   const url = `${BASE_URL}/bannerBundles/latest?top=${top}`;
   return axios.get<BannerBundleWithBannerRom>(url).then(AxiosReturn);
 }
+
+export function getEncryptEventValue(): Promise<string | undefined> {
+  //
+  return getAxios()
+    .get<string>('/api/event/cypher/encrypt/email/UNIVtomorrow')
+    .then(AxiosReturn);
+}

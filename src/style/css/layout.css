@@ -45,6 +45,7 @@ body #root { background: #fff; }
 .profile-badge-contents .group-wrapper { border-top: #ddd 1px solid; }
 .ui.form.reply.base .field { border-bottom: #ddd 1px solid; }
 .ui.form.reply.base .outline .more button { border-left: #ddd 1px solid; }
+.icon-file-upload { border-left: #ddd 1px solid; }
 
 /* Input Focus */
 .ui.form input:not([type]):focus,
@@ -59,8 +60,9 @@ body #root { background: #fff; }
 .ui.form input[type=text]:focus,
 .ui.form input[type=time]:focus,
 .ui.form input[type=url]:focus,
+.ui.form textarea:focus,
 .ui.input.focus > input,
-.ui.input > input:focus { border: #52CBC0 1px solid !important; }
+.ui.input > input:focus { border-color: #52CBC0 !important; }
 
 /* Button */
 .ui.button.moreview { color: #999 !important; }
@@ -122,6 +124,7 @@ i.icon.testHeader::before {
 i.icon.testHeader02::before {
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-60-px.png") 0 0 no-repeat !important;
 }
+.follow_list .chk_follow.checked { border-color: #B9B9B9; color: #B9B9B9; }
 
 /* Font */
 .sort-reult .section-count,
@@ -221,7 +224,8 @@ i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/pu
 i.icon.commu-list16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-community-list-16-px.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 i.icon.delete-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-delete-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 i.icon.reply-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-reply-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
-i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.edit-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-tooltip-gray-20-px.svg") no-repeat 0 0 !important; background-size: 100% 100% !important; }
 .ui.label.onlytext .icon.video2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-video-16-px.svg') 0 0.125rem no-repeat; }
 .ui.label.onlytext .icon.classroom { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-classroom-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.community { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-community-16-px.svg') 0 0.125rem no-repeat; }
@@ -261,8 +265,16 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .icon.before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-before-24-px.svg) 0 0 no-repeat !important; }
 .lms-comment-icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before { background: #777; position: relative; display: inline-block; top: 0; left: 0; margin-right: 0.5rem; }
-.content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
+.content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-5-24-px.svg) 0 0 no-repeat; }
+.content.lms .label-type { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; color: #777; }
+.content.lms .label-type.n-test { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-survey { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-report { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-report-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-discuss { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-discuss-24-px.svg") 0 50% no-repeat; }
 .content.lms .label-state-learning.complete{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-completed.svg') 50% no-repeat;}
+.ui.icon.button.btn-blue { color: #00bfae; }
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-close-8-px.svg') 0 0 no-repeat;}
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2.view-down{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-open-8-px.svg') 0 0 no-repeat;}
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act { border-bottom: #ff664d 4px solid; }
@@ -329,9 +341,6 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .content.lms.v-wide2 .course-info-list {
     position: absolute;
 }
-#root section.content .course-info-list .course-info-wrapper {
-    padding-bottom: 6rem;
-}
 .content.lms.v-wide2 .course-info-list .course-info-wrapper {
     position: fixed;
     width: 21.88rem;
@@ -339,11 +348,14 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
     bottom: 277px;
     overflow-y: auto;
 }
-
 .content.lms.v-wide2 .course-info-list .course-header-list {
     position: fixed;
     top: 0;
     width: 21.88rem;
+}
+#root section.content.lms .course-info-list .lms-fixed-holder {
+    display: block;
+    height: 6rem;
 }
 #root section.content.lms.lms-lnb-fixed .course-info-list .lms-fixed-holder {
     display: block;

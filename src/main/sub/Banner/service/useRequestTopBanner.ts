@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { findLatestBannerBundles } from '../api/BannerApi';
+import {
+  findLatestBannerBundles,
+  getEncryptEventValue,
+} from '../api/BannerApi';
 import { setTopBannerViewModel } from '../store/TopBannerStore';
 
 export function useRequestTopBanner() {
@@ -27,4 +30,10 @@ export async function requestTopBanner() {
     imageAlt: banner.imageAlt,
     bdColor: banner.bgColor,
   });
+}
+
+export async function requestTempTopBanner() {
+  //
+  const encryptString = await getEncryptEventValue();
+  return encryptString;
 }

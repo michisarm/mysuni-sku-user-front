@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
+import React, { Component } from 'react';
 import SearchInfoModel from '../../../../../search/model/SeachInfoModel';
+import { SearchHeaderFieldView } from '../../../../../search/views/SearchHeaderFieldView';
 
 interface Props {
   breadcrumbs: React.ReactNode;
@@ -65,8 +65,8 @@ class HeaderWrapperView extends Component<Props> {
 
     return (
       <>
-        {/* {topBanner} */}
         <section className={classNames} id="lms-header">
+          {topBanner}
           {mainNotice}
           <div className={focused ? 'group off' : 'group'}>
             <div className="cont-inner">{children}</div>

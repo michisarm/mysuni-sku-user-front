@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 14 14">
+    <defs>
+        <path id="utfcrfqaya" d="M14 6.625L6.908.25v3.595C2.52 4.221.055 0 .055 0c-.772 9.785 6.853 9.369 6.853 9.369V13L14 6.625z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <g>
+                            <g transform="translate(-1126 -338) translate(410 137) translate(0 38) translate(0 130) translate(584 30) translate(132 4)">
+                                <use fill="#999" transform="matrix(1 0 0 -1 0 13)" xlink:href="#utfcrfqaya"/>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

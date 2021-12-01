@@ -14,11 +14,18 @@ function action() {
 }
 
 const LectureWebpageView: React.FC<LectureWebpage & Props> =
-  function LectureWebpageView({ title, description, image, url, urlType }) {
+  function LectureWebpageView({
+    title,
+    description,
+    height,
+    image,
+    url,
+    urlType,
+  }) {
     return (
       <>
         {urlType === 'embedded' && (
-          <div className="iframe-area s990">
+          <div className="iframe-area s990" style={{ height: height || 630 }}>
             <iframe src={url} allowFullScreen />
           </div>
         )}
