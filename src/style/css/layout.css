@@ -262,6 +262,7 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .lms-comment-icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before { background: #777; position: relative; display: inline-block; top: 0; left: 0; margin-right: 0.5rem; }
 .content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
+.content.lms .label-state-learning.complete{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-completed.svg') 50% no-repeat;}
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act { border-bottom: #ff664d 4px solid; }
