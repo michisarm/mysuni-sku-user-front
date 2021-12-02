@@ -491,8 +491,19 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
 .card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
     padding: 7px 10px;
 }
+.card-item .card-inner .contents-area .ui.label.my-stat.completed {
+    color: #b9b9b9;
+}
 
 /* 이모지 */
+.ui.popup.emoji_popup {
+    border-color: #dddd;
+    box-shadow: 0.063rem 0 #ddd, -0.063rem 0 #ddd;
+}
+.emoji_popup .emoji_header {
+    border-color: #ddd;
+}
+
 i.icon.icon_emoji_1{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-1.svg') no-repeat center/100%;}
 i.icon.icon_emoji_2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-2.svg') no-repeat center/100%;}
 i.icon.icon_emoji_3{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-emoji-3.svg') no-repeat center/100%;}
@@ -521,8 +532,12 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
     background:#00bfae;
 }
 
-
 .emoji_icons .em_b { font-weight: normal; }
+
+/* 댓글창 마지막요소일때(첫댓글일때) 이모지 공간 확보 */
+.ui.reply.form:last-child {
+    margin-bottom: 220px;
+}
 
 /* 메인 레이아웃 수정(2021.11.16) */
 .learning-section-wrap { margin-top: 40px; }
@@ -564,6 +579,18 @@ i.icon.icon_emoji_8{background: url('https://image.mysuni.sk.com/suni-asset/publ
 .content.lms .course-detail-center .icon.listDelete {
     background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-bookmark-active-14-px.svg) 0 0 no-repeat !important;
     transform: translateY(-1px);
+}
+
+/* 학습카드 상세 > 챕터 */
+.syllabus-contents-wrap .contents-belt {
+    background: #777;
+}
+.syllabus-contents-wrap {
+    border-color: #ddd;
+    box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.essential-wrap {
+    box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
 }
 
 /* 마이러닝 > 학습이수시간 팝업 */
@@ -825,4 +852,48 @@ border-left-color: #00bfae;
     border-radius: 50%;
     margin-right: 6px;
     transform: translateY(-1px);
+}
+
+/* 학습카드 오버뷰 > transcript */
+.transcript-box {
+    padding-bottom: 120px;
+}
+.follow_list .chk_follow {
+    border-color: #00bfae;
+    background: #00bfae;
+}
+.follow_list .chk_follow.checked {
+    color: #aaa;
+    border-color: #aaa;
+}
+.documents-viewer .pdf-header,
+.documents-viewer .pdf-header .pdf-header-select a {
+    border-color: #ddd;
+}
+.documents-viewer .pdf-header .pdf-header-select a:hover {
+    background-color: #f5f5f5;
+}
+
+/* 404 page */
+#root .center-content .align.error404 .not-found-text {
+    color: #777;
+}
+#root section.bg-white.full {
+    min-height: calc(100vh - 112px - 277px);
+}
+
+/* fixed일때 topbanner */
+.header.main-sty2.fixed .top_banner {
+    display: none;
+}
+
+/* 학습카드 별점 */
+.ui.rating.rating-num.line {
+    background: none !important;
+}
+
+
+/* survey 결과 통계 보기 */
+.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
+    background-color: #f6f6f6;
 }

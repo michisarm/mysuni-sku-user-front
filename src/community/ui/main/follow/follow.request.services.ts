@@ -78,6 +78,8 @@ export async function requestMainFollowPostItems() {
 export async function useRequestMainFollow() {
   useEffect(() => {
     requestMainFollowItems();
+
+    setMainFollowPost(); //탭 재클릭시 초기화
     requestMainFollowPostItems();
     return setMainFollow;
   }, []);
