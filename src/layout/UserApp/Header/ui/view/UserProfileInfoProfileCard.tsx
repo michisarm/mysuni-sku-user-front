@@ -288,7 +288,9 @@ function UserProfileinfoProfileCard(props: Props) {
       <div className="tag-info-area">
         <div className="info-area">
           <span className="prof-name">
-            {profileInfo && parsePolyglotString(profileInfo.name)}
+            {profileInfo?.displayNicknameFirst
+              ? nickname
+              : profileInfo && parsePolyglotString(profileInfo.name)}
           </span>
           <span className="comp-name">
             {profileInfo && parsePolyglotString(profileInfo.companyName)}
