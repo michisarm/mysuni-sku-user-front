@@ -485,7 +485,8 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     right: 0;
     top: 0;
 }
-.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before {
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before,
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.completed:before {
     display: none;
 }
 .card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
