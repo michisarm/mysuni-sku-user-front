@@ -289,8 +289,8 @@ function UserProfileinfoProfileCard(props: Props) {
         <div className="info-area">
           <span className="prof-name">
             {profileInfo?.displayNicknameFirst
-              ? nickname
-              : profileInfo && parsePolyglotString(profileInfo.name)}
+              ? profileInfo && parsePolyglotString(profileInfo.name)
+              : nickname}
           </span>
           <span className="comp-name">
             {profileInfo && parsePolyglotString(profileInfo.companyName)}
