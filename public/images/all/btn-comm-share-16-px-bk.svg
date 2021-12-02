@@ -1,20 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 14 14">
-    <defs>
-        <path id="utfcrfqaya" d="M14 6.625L6.908.25v3.595C2.52 4.221.055 0 .055 0c-.772 9.785 6.853 9.369 6.853 9.369V13L14 6.625z"/>
-    </defs>
-    <g fill="none" fill-rule="evenodd">
-        <g>
-            <g>
-                <g>
-                    <g>
-                        <g>
-                            <g transform="translate(-1126 -338) translate(410 137) translate(0 38) translate(0 130) translate(584 30) translate(132 4)">
-                                <use fill="#999" transform="matrix(1 0 0 -1 0 13)" xlink:href="#utfcrfqaya"/>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(1)" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd">
+        <path d="M10 2.5 2.5 7M2.5 7l7.5 4.5"/>
+        <circle fill="#999" cx="2.5" cy="7" r="1.75"/>
+        <circle fill="#999" cx="10" cy="2.5" r="1.75"/>
+        <circle fill="#999" cx="10" cy="11.5" r="1.75"/>
     </g>
 </svg>
