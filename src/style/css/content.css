@@ -899,6 +899,9 @@ border-left-color: #00bfae;
 .course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
     background-color: #f6f6f6;
 }
+.course-radio-survey-new .course-survey-list .improve-text {
+    border-color: #ddd;
+}
 
 
 
@@ -917,3 +920,6 @@ border-left-color: #00bfae;
 .header_left_area i.icon.commentoff{background:url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comm-comment.svg') no-repeat left top;}
 .header_left_area i.icon.like_on{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-community-like-on-16-px.png") no-repeat 100%;}
 .header_left_area i.icon.comment_on{ background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-community-comment-on.svg") no-repeat 100%;}
+
+.content.lms .label-state-learning.proceeding { background: url("https://image.mysuni.sk.com/suni-asset/public/images/down/icon-lms-learing-ing.svg") center no-repeat; }
+.content.lms .label-state-learning.complete { background: url("https://image.mysuni.sk.com/suni-asset/public/images/down/icon-lms-learing-completed.svg") center no-repeat; }
