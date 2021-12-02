@@ -1,18 +1,25 @@
 import { patronInfo } from '@nara.platform/dock';
 import moment from 'moment';
-import { findAllOtherCommunities } from '../../api/ProfileInfoAPI'
+import { findAllOtherCommunities } from '../../api/ProfileInfoAPI';
 import {
   setProfileInfoCommunityModel,
   getProfileInfoCommunityModel,
 } from '../../store/ProfileInfoCommunityStore';
-import { getEmtpyProfileInfoCommunityModel, ProfileInfoCommunityItem, CommunityModel } from '../../model/CommunityModel';
-
+import {
+  getEmtpyProfileInfoCommunityModel,
+  ProfileInfoCommunityItem,
+  CommunityModel,
+} from '../../model/CommunityModel';
 
 export async function getProfileInfoCommunities(memberId: string | undefined) {
   const sort = 'createdTime';
   const offset = 0;
   const memberIdValue = memberId === undefined ? '' : memberId;
-  const communityView = await findAllOtherCommunities(memberIdValue, sort, offset);
+  const communityView = await findAllOtherCommunities(
+    memberIdValue,
+    sort,
+    offset
+  );
   if (communityView === undefined) {
     setProfileInfoCommunityModel(getEmtpyProfileInfoCommunityModel());
     return;
@@ -25,7 +32,9 @@ export async function getProfileInfoCommunities(memberId: string | undefined) {
   });
 }
 
-function parseCommunityView(community: CommunityModel): ProfileInfoCommunityItem {
+function parseCommunityView(
+  community: CommunityModel
+): ProfileInfoCommunityItem {
   const {
     communityId,
     type,
@@ -36,7 +45,7 @@ function parseCommunityView(community: CommunityModel): ProfileInfoCommunityItem
     managerNickName,
     memberCount,
     signModifyTime,
-    signTime
+    signTime,
   } = community;
   return {
     communityId,
@@ -47,7 +56,10 @@ function parseCommunityView(community: CommunityModel): ProfileInfoCommunityItem
     managerNickName: managerNickName || '',
     memberCount,
     isManager: isManager(managerId),
-    signInTime: signModifyTime === 0 ? createdTimeString(signTime!) : createdTimeString(signModifyTime!)
+    signInTime:
+      signModifyTime === 0 || signModifyTime === null
+        ? createdTimeString(signTime!)
+        : createdTimeString(signModifyTime!),
   };
 }
 
