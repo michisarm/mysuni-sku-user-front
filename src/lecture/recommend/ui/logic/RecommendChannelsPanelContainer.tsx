@@ -4,14 +4,13 @@ import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
 import ReactGA from 'react-ga';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
-import FavoriteChannelChangeModal from '../FavoriteChannelChangeModal';
 import { Action, Area } from 'tracker/model';
 import { getChannelName } from 'shared/service/useCollege/useRequestCollege';
+import { FavoriteChannelChangeModal } from 'shared';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -128,7 +127,7 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
                         <span className="blind">setting</span>
                       </Button>
                     }
-                    favorites={channels}
+                    favorites={channels.map((channel) => channel.id)}
                     onConfirmCallback={() => {
                       this.findStudySummary();
                       if (onConfirmCallback) onConfirmCallback();
