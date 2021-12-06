@@ -308,7 +308,7 @@ function FooterContainer() {
         <div className="cont-inner">
           <div className="foot-logo">
             {/* 김민준 겨울 로고 변경 */}
-            <Image src="https://image.mysuni.sk.com/suni-asset/public/static/images/winter/LMS/s-kuniversity-footerN.png" />
+            <Image src="https://image.mysuni.sk.com/suni-asset/public/images/winter/LMS/s-kuniversity-footerN.png" />
             {/* <h2 id="foot-logo">
               <Icon className="s-kuniversity" />
               <span className="blind">SK university</span>

@@ -286,7 +286,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <Button type="button" onClick={this.handlePopup}>
                 <img
                   style={{ width: '100%' }}
-                  src="https://image.mysuni.sk.com/suni-asset/public/static/media/BNR_Summer_Event.gif"
+                  src="https://image.mysuni.sk.com/suni-asset/public/media/BNR_Summer_Event.gif"
                   alt="다시 돌아온 출석이벤트"
                 />
               </Button>

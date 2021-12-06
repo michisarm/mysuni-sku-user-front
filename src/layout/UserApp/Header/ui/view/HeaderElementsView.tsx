@@ -47,10 +47,10 @@ export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => {
     // 크리스마스 한정 로고 반영
     <div className="g-logo" data-area={Area.HEADER_LOGO}>
       {isExternal ? (
-        <img src="https://image.mysuni.sk.com/suni-asset/public/static/images/winter/header-logo.png" />
+        <img src="https://image.mysuni.sk.com/suni-asset/public/images/winter/header-logo.png" />
       ) : (
         <Link to="/" onClick={() => onClickMenu('mySUNI')}>
-          <img src="https://image.mysuni.sk.com/suni-asset/public/static/images/winter/header-logo.png" />
+          <img src="https://image.mysuni.sk.com/suni-asset/public/images/winter/header-logo.png" />
         </Link>
       )}
     </div>
