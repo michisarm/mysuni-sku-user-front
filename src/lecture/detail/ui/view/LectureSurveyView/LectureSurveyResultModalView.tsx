@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useMemo, useState } from 'react';
 import { Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
@@ -64,7 +65,7 @@ const LectureSurveyResultModalView: React.FC<Props> =
           ''
         );
       }
-    }, [currentMenu?.name, lectureStructure]);
+    }, []);
 
     const respondCount =
       (lectureSurveySummary &&
@@ -87,7 +88,7 @@ const LectureSurveyResultModalView: React.FC<Props> =
             <div className="course-survey-new-modal-header-img">
               <Image
                 style={{ display: 'inline-block', verticalAlign: 'text-top' }}
-                src={`${process.env.PUBLIC_URL}/images/all/survey-popup-title.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-community-14-px.svg"
               />
             </div>
             <span className="course-survey-new-modal-header">

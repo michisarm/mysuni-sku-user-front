@@ -13,8 +13,8 @@ export function TempTopBannerContainer({
 }: props) {
   const bannerData = {
     imageUrl:
-      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner.png',
-    backGroundColor: '#984AEE',
+      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner2.jpg',
+    backGroundColor: '#30C9CE',
   };
 
   const displayTopBanner = isTopBannerOpen && bannerData && bannerData.imageUrl;

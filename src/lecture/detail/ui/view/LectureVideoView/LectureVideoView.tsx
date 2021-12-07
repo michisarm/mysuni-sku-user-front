@@ -434,8 +434,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 <span>
                   <Icon className="linkCopy" />
                   <PolyglotText
-                    defaultString="링크 복사"
-                    id="Collage-Video-링크복사"
+                    defaultString="공유하기"
+                    id="Collage-Video-공유하기"
                   />
                 </span>
               </a>

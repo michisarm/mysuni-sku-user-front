@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { IdName, reactAutobind } from '@nara.platform/accent';
+import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
-import { IdNameCount } from 'shared/model';
-import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
-import { parsePolyglotString } from '../../viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import {
-  compareCollgeCineroom,
   getChannelName,
   getCollgeName,
 } from 'shared/service/useCollege/useRequestCollege';
@@ -19,7 +14,6 @@ interface Props {
   channelIds: string[];
   selectedCollegeIds: string[];
   favoriteChannels: string[];
-  favoriteCompanyChannels: ChannelModel[];
   onToggleCollege: (collegeId: string) => void;
   onToggleChannel: (channel: string) => void;
 }
@@ -44,9 +38,7 @@ class FavoriteChannelChangeView extends Component<Props> {
     //
     const { favoriteChannels } = this.props;
 
-    return (
-      !compareCollgeCineroom(collegeId) || favoriteChannels.includes(channelId)
-    );
+    return favoriteChannels.includes(channelId);
   }
 
   render() {
@@ -56,7 +48,6 @@ class FavoriteChannelChangeView extends Component<Props> {
       channelIds,
       selectedCollegeIds,
       favoriteChannels,
-      favoriteCompanyChannels,
       onToggleCollege,
       onToggleChannel,
     } = this.props;
@@ -101,9 +92,6 @@ class FavoriteChannelChangeView extends Component<Props> {
                                       }
                                       name={getChannelName(id)}
                                       checked={this.isChecked(college.id, id)}
-                                      disabled={
-                                        !compareCollgeCineroom(college.id)
-                                      }
                                       onChange={() => onToggleChannel(id)}
                                     />
                                   </li>
@@ -130,11 +118,6 @@ class FavoriteChannelChangeView extends Component<Props> {
                     onClick={() => onToggleChannel(channel)}
                   >
                     {getChannelName(channel)}
-                  </Button>
-                ))}
-                {favoriteCompanyChannels.map((channel: ChannelModel) => (
-                  <Button key={`del_${channel.id}`} className="del default">
-                    {getChannelName(channel.id)}
                   </Button>
                 ))}
               </div>
