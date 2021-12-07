@@ -485,7 +485,8 @@ a.button.ui.btn-badge-go { line-height: 1.6rem; }
     right: 0;
     top: 0;
 }
-.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before {
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.learning:before,
+.card.card-item.topic-list .card-inner .contents-area .icon-area .ui.label.my-stat.completed:before {
     display: none;
 }
 .card-item .card-inner .thumbnail-area .thumb-info.bottom .ui.label {
@@ -896,13 +897,10 @@ border-left-color: #00bfae;
 }
 
 /* survey 결과 통계 보기 */
-.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
-    background-color: #f6f6f6;
-}
-.course-radio-survey-new .course-survey-list .improve-text {
-    border-color: #ddd;
-}
-
+.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {background-color: #f6f6f6;}
+.course-radio-survey-new .course-survey-list .improve-text {border-color: #ddd;}
+.course-radio-survey-new .course-survey-list .improve-list li.improve-list-more img {vertical-align: -2px;}
+.course-radio-survey-new .course-survey-list .improve-list li.improve-list-more span{color :#777}
 
 
 
