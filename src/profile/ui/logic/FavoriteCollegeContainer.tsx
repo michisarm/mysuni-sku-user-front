@@ -264,9 +264,14 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 id={`checkbox_${index}`}
                                 className="hidden"
                                 tabIndex={index}
-                                checked={favorites
-                                  .map((favoriteChannel) => favoriteChannel.id)
-                                  .includes(channelId)}
+                                checked={
+                                  favorites
+                                    .map(
+                                      (favoriteChannel) => favoriteChannel.id
+                                    )
+                                    .includes(channelId) ||
+                                  !isSelectedCollegeInMySUNI
+                                }
                                 onChange={() =>
                                   this.onSelectChannel({
                                     id: channelId,
