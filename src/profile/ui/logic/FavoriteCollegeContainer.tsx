@@ -273,7 +273,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                     name: getChannelName(channelId),
                                   })
                                 }
-                                disabled={isSelectedCollegeInMySUNI}
+                                disabled={!isSelectedCollegeInMySUNI}
                               />
                               <label
                                 className="pop"
