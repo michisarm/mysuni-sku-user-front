@@ -1,4 +1,5 @@
 import React from 'react';
+import { SkProfileService } from '../../../../../profile/stores';
 import Image from '../../../../../shared/components/Image';
 import { requestTempTopBanner } from '../../service/useRequestTopBanner';
 
@@ -34,6 +35,10 @@ export function TempTopBannerContainer({
       );
     }
   };
+
+  if (SkProfileService.instance.skProfile.language !== 'Korean') {
+    return null;
+  }
 
   return (
     <>
