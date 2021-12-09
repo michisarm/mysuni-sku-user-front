@@ -289,7 +289,7 @@ const LectureReportView: React.FC<LectureReportViewProps> =
                       validations={[
                         {
                           type: ValidationType.Duplication,
-                          validator: depotHelper.duplicationValidator,
+                          validator: depotHelper.sizeWithDuplicationValidator,
                         },
                       ]}
                       onChange={getFileBoxIdForReference}
