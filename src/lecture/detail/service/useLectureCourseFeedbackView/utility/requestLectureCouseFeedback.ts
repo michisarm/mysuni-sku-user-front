@@ -15,6 +15,7 @@ import { getProfileImage } from 'community/ui/app.formatters';
 export async function requestLectureCouseFeedback(
   lectureSurvey: LectureSurvey
 ) {
+  console.log('실행');
   if (lectureSurvey === undefined) {
     return;
   }
@@ -27,8 +28,7 @@ export async function requestLectureCouseFeedback(
   );
 
   const isDoneSurvey = answerSheet?.progress === 'Complete';
-  console.log('lectureSurvey.surveyCaseId', lectureSurvey.surveyCaseId);
-  console.log('lectureSurveySummary', lectureSurveySummary);
+
   if (lectureSurveySummary !== undefined || null) {
     const feedback = await findReviewSummary(lectureSurveySummary.id);
 
@@ -39,7 +39,7 @@ export async function requestLectureCouseFeedback(
     const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
       return i.denizenId;
     });
-    console.log(feedbackDenizenIds, 'feedbackDenizenIds');
+
     const feedbackReviewProfile = await findProfilePhoto([
       'r6zu@ne1-m2',
       'r57s@ne1-m2', //feedbackDenizenIds
