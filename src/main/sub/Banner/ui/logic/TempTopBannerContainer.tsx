@@ -1,6 +1,8 @@
 import React from 'react';
+import { SkProfileService } from '../../../../../profile/stores';
 import Image from '../../../../../shared/components/Image';
 import { requestTempTopBanner } from '../../service/useRequestTopBanner';
+import { usePageElements } from 'shared/store/PageElementsStore';
 
 interface props {
   isTopBannerOpen: boolean;
@@ -35,18 +37,32 @@ export function TempTopBannerContainer({
     }
   };
 
-  return (
-    <>
-      {displayTopBanner && (
+  // if (SkProfileService.instance.skProfile.language !== 'Korean') {
+  //   return null;
+  // }
+  const pageElements = usePageElements();
+
+  if (
+    displayTopBanner &&
+    pageElements.some(
+      (pagemElement) =>
+        pagemElement.position === 'HomeElement' &&
+        pagemElement.type === 'TopBanner'
+    )
+  ) {
+    return (
+      <>
         <TopBannerView
           imageUrl={bannerData.imageUrl}
           backgroundColor={bannerData.backGroundColor}
           onClickBanner={onClickBanner}
           onClose={onClickCloseBanner}
         />
-      )}
-    </>
-  );
+      </>
+    );
+  }
+
+  return null;
 }
 
 interface TopBannerViewProps {

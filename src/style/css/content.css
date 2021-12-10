@@ -1509,12 +1509,6 @@ ul.ui.list.my-task-bar {
 }
 
 /* survey 결과 통계 보기 */
-.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
-  background-color: #f6f6f6;
-}
-.course-radio-survey-new .course-survey-list .improve-text {
-  border-color: #ddd;
-}
 
 /* 커뮤니티 */
 .templete_sub_contents .location li {
@@ -1523,6 +1517,26 @@ ul.ui.list.my-task-bar {
 .templete_sub_contents .location li.home {
   background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-home.svg')
     no-repeat left 50%;
+}
+.course-radio-survey-new .course-survey-list .course-survey-list-backgrondBar {
+  background-color: #f6f6f6;
+}
+.course-radio-survey-new .course-survey-list .improve-text {
+  border-color: #ddd;
+}
+.course-radio-survey-new
+  .course-survey-list
+  .improve-list
+  li.improve-list-more
+  img {
+  vertical-align: -2px;
+}
+.course-radio-survey-new
+  .course-survey-list
+  .improve-list
+  li.improve-list-more
+  span {
+  color: #777;
 }
 
 .ui.icon .icon.edit_bk {

@@ -19,4 +19,5 @@ export type PageElementType =
   | 'EventButton'
   | 'LRSCards'
   | 'HotTopic'
-  | 'EnrollingCards';
+  | 'EnrollingCards'
+  | 'TopBanner';

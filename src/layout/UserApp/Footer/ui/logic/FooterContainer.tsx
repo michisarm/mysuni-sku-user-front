@@ -315,10 +315,10 @@ function FooterContainer() {
             </h2> */}
           </div>
           <div className="foot-copyright">
-            Copyright
+            COPYRIGHT
             <Icon className="copyright" />
-            <span className="blind">copyright sign</span>mySUNI. All Rights
-            Reserved.
+            <span className="blind">copyright sign</span>mySUNI. ALL RIGHTS
+            RESERVED.
           </div>
         </div>
       </div>

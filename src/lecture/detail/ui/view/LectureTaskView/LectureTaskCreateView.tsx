@@ -276,7 +276,8 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> =
                           validations={[
                             {
                               type: ValidationType.Duplication,
-                              validator: depotHelper.duplicationValidator,
+                              validator:
+                                depotHelper.sizeWithDuplicationValidator,
                             },
                           ]}
                           onChange={getFileBoxIdForReference}
