@@ -19,10 +19,11 @@ import {
   getActiveCubeStructureItem,
 } from '../../../utility/lectureStructureHelper';
 import { getLectureParams } from '../../../store/LectureParamsStore';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import LectureSurveySummaryChoiceFixedView from './LectureSurveySummaryChoiceFixedView';
 
 interface Props {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   currentMenu?: CommunityMenu;
@@ -117,11 +118,54 @@ const LectureSurveyResultModalView: React.FC<Props> =
             </Modal.Actions>
           </Modal.Header>
           <Modal.Content scrolling={true} style={{ maxHeight: '80vh' }}>
-            {lectureSurvey.surveyItems.map((lectureSurveyItem) => {
-              if (lectureSurveyItem.type === 'Choice') {
-                return (
-                  <>
-                    <LectureSurveySummaryChoiceView
+            <Modal.Description>
+              {lectureSurvey.surveyItems.map((lectureSurveyItem) => {
+                if (
+                  lectureSurveyItem.type === 'ChoiceFixed' &&
+                  lectureSurveyItem.no === 1
+                ) {
+                  return (
+                    <>
+                      <LectureSurveySummaryChoiceFixedView
+                        lectureSurveyItem={lectureSurveyItem}
+                        lectureSurveyAnswerItem={
+                          lectureSurveyState &&
+                          lectureSurveyState.answerItem.find(
+                            (c) =>
+                              c.questionNumber ===
+                              lectureSurveyItem.questionNumber
+                          )
+                        }
+                        key={lectureSurveyItem.id}
+                      />
+                    </>
+                  );
+                }
+                if (
+                  lectureSurveyItem.type === 'Choice' ||
+                  (lectureSurveyItem.type === 'ChoiceFixed' &&
+                    (lectureSurveyItem.no === 2 || lectureSurveyItem.no === 3))
+                ) {
+                  return (
+                    <>
+                      <LectureSurveySummaryChoiceView
+                        lectureSurveyItem={lectureSurveyItem}
+                        lectureSurveyAnswerItem={
+                          lectureSurveyState &&
+                          lectureSurveyState.answerItem.find(
+                            (c) =>
+                              c.questionNumber ===
+                              lectureSurveyItem.questionNumber
+                          )
+                        }
+                        key={lectureSurveyItem.id}
+                      />
+                    </>
+                  );
+                }
+                if (lectureSurveyItem.type === 'Essay') {
+                  return (
+                    <LectureSurveySummaryEssayView
                       lectureSurveyItem={lectureSurveyItem}
                       lectureSurveyAnswerItem={
                         lectureSurveyState &&
@@ -133,85 +177,74 @@ const LectureSurveyResultModalView: React.FC<Props> =
                       }
                       key={lectureSurveyItem.id}
                     />
-                  </>
-                );
-              }
-              if (lectureSurveyItem.type === 'Essay') {
-                return (
-                  <LectureSurveySummaryEssayView
-                    lectureSurveyItem={lectureSurveyItem}
-                    lectureSurveyAnswerItem={
-                      lectureSurveyState &&
-                      lectureSurveyState.answerItem.find(
-                        (c) =>
-                          c.questionNumber === lectureSurveyItem.questionNumber
-                      )
-                    }
-                    key={lectureSurveyItem.id}
-                  />
-                );
-              }
-              if (lectureSurveyItem.type === 'Date') {
-                return (
-                  <LectureSurveySummaryDateView
-                    lectureSurveyItem={lectureSurveyItem}
-                    lectureSurveyAnswerItem={
-                      lectureSurveyState &&
-                      lectureSurveyState.answerItem.find(
-                        (c) =>
-                          c.questionNumber === lectureSurveyItem.questionNumber
-                      )
-                    }
-                    key={lectureSurveyItem.id}
-                  />
-                );
-              }
-              if (lectureSurveyItem.type === 'Boolean') {
-                return (
-                  <LectureSurveySummaryBooleanView
-                    lectureSurveyItem={lectureSurveyItem}
-                    lectureSurveyAnswerItem={
-                      lectureSurveyState &&
-                      lectureSurveyState.answerItem.find(
-                        (c) =>
-                          c.questionNumber === lectureSurveyItem.questionNumber
-                      )
-                    }
-                    key={lectureSurveyItem.id}
-                  />
-                );
-              }
-              if (lectureSurveyItem.type === 'Matrix') {
-                return (
-                  <LectureSurveySummaryMatrixView
-                    lectureSurveyItem={lectureSurveyItem}
-                    lectureSurveyAnswerItem={
-                      lectureSurveyState &&
-                      lectureSurveyState.answerItem.find(
-                        (c) =>
-                          c.questionNumber === lectureSurveyItem.questionNumber
-                      )
-                    }
-                    key={lectureSurveyItem.id}
-                  />
-                );
-              }
-              if (lectureSurveyItem.type === 'Criterion') {
-                return (
-                  <LectureSurveySummaryCriterionView
-                    lectureSurveyItem={lectureSurveyItem}
-                    lectureSurveyAnswerItem={
-                      lectureSurveyState &&
-                      lectureSurveyState.answerItem.find(
-                        (c) =>
-                          c.questionNumber === lectureSurveyItem.questionNumber
-                      )
-                    }
-                    key={lectureSurveyItem.id}
-                  />
-                );
-              }
-            })}
+                  );
+                }
+                if (lectureSurveyItem.type === 'Date') {
+                  return (
+                    <LectureSurveySummaryDateView
+                      lectureSurveyItem={lectureSurveyItem}
+                      lectureSurveyAnswerItem={
+                        lectureSurveyState &&
+                        lectureSurveyState.answerItem.find(
+                          (c) =>
+                            c.questionNumber ===
+                            lectureSurveyItem.questionNumber
+                        )
+                      }
+                      key={lectureSurveyItem.id}
+                    />
+                  );
+                }
+                if (lectureSurveyItem.type === 'Boolean') {
+                  return (
+                    <LectureSurveySummaryBooleanView
+                      lectureSurveyItem={lectureSurveyItem}
+                      lectureSurveyAnswerItem={
+                        lectureSurveyState &&
+                        lectureSurveyState.answerItem.find(
+                          (c) =>
+                            c.questionNumber ===
+                            lectureSurveyItem.questionNumber
+                        )
+                      }
+                      key={lectureSurveyItem.id}
+                    />
+                  );
+                }
+                if (lectureSurveyItem.type === 'Matrix') {
+                  return (
+                    <LectureSurveySummaryMatrixView
+                      lectureSurveyItem={lectureSurveyItem}
+                      lectureSurveyAnswerItem={
+                        lectureSurveyState &&
+                        lectureSurveyState.answerItem.find(
+                          (c) =>
+                            c.questionNumber ===
+                            lectureSurveyItem.questionNumber
+                        )
+                      }
+                      key={lectureSurveyItem.id}
+                    />
+                  );
+                }
+                if (lectureSurveyItem.type === 'Criterion') {
+                  return (
+                    <LectureSurveySummaryCriterionView
+                      lectureSurveyItem={lectureSurveyItem}
+                      lectureSurveyAnswerItem={
+                        lectureSurveyState &&
+                        lectureSurveyState.answerItem.find(
+                          (c) =>
+                            c.questionNumber ===
+                            lectureSurveyItem.questionNumber
+                        )
+                      }
+                      key={lectureSurveyItem.id}
+                    />
+                  );
+                }
+              })}
+            </Modal.Description>
           </Modal.Content>
         </Modal>
       </>

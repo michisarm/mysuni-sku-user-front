@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { onLectureSurvey } from '../../store/LectureSurveyStore';
 import LectureSurvey from '../../viewModel/LectureSurvey';
 
@@ -20,7 +20,7 @@ export function useLectureSurvey(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureSurvey(next => {
+    return onLectureSurvey((next) => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);

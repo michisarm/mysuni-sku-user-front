@@ -21,6 +21,8 @@ import {
 } from './service/useLectureStructure/utility/requestCardLectureStructure';
 import { LectureCardAgreementModalView } from './ui/view/LectureStateView/LectureCardAgreementModalView';
 import { onOpenLectureCardPisAgreementModal } from './service/LectureCardAgreementModal/useLectureAgreemenetModal';
+import { useLectureSurvey } from './service/useLectureSurvey/useLectureSurvey';
+import { requestLectureCouseFeedback } from './service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
   const failCardId = await getPreCourseFailCardId(cardId);
@@ -67,6 +69,10 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
 function LectureDetailCubeSubRoutes() {
   const { cubeType, cardId } = useParams<LectureParams>();
   isOpenPassedPreCourseModal(cardId);
+  const [lectureSurvey] = useLectureSurvey();
+  useEffect(() => {
+    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
+  }, [lectureSurvey]);
 
   return (
     <>

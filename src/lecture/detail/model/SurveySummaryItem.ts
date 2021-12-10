@@ -1,4 +1,4 @@
-type LectureSurveyItemType =
+export type LectureSurveyItemType =
   | 'Criterion'
   | 'Choice'
   | 'Essay'
