@@ -372,3 +372,6 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 #root .footer2 .copy-wrap .cont-inner { overflow: hidden; font-size: 12px; }
 #root .footer2 .copy-wrap .cont-inner .foot-logo { display: block; float: left; height: 1.5rem; line-height: 1.5rem; }
 #root .footer2 .copy-wrap .cont-inner .foot-copyright { transform: translateY(-1px); }
+
+/* Footer 수정(2021.12.10) */
+.footer .foot-nav .foot-nav-item .foot-nav-li { padding: 2px 0; }
