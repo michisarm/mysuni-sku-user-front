@@ -311,7 +311,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
         satisfaction.totalCount) *
       100
     ).toFixed(1);
-    console.log(isOnlyOneCube, satisfaction.surveyCaseId);
+
     return (
       <div
         // className="course-info-header"

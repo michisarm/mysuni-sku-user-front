@@ -15,7 +15,6 @@ import { getProfileImage } from 'community/ui/app.formatters';
 export async function requestLectureCouseFeedback(
   lectureSurvey: LectureSurvey
 ) {
-  console.log('실행');
   if (lectureSurvey === undefined) {
     return;
   }
