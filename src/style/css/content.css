@@ -921,3 +921,6 @@ border-left-color: #00bfae;
 
 .content.lms .label-state-learning.proceeding { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-ing.svg") center no-repeat; }
 .content.lms .label-state-learning.complete { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-completed.svg") center no-repeat; }
+
+/* season용 main */
+.content.main-sty2 .main_personal.season {background: #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/season_gif.gif') 0 12px/contain no-repeat ;}
