@@ -2,7 +2,7 @@ import { onLectureRelations } from '../../store/LectureOverviewStore';
 import LectureRelations from '../../viewModel/LectureOverview/LectureRelations';
 /* eslint-disable consistent-return */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Value = LectureRelations | undefined;
 
@@ -20,7 +20,7 @@ export function useLectureRelations(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureRelations(next => {
+    return onLectureRelations((next) => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);

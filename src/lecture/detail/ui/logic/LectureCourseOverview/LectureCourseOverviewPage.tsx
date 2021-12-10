@@ -8,6 +8,8 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
 import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
+import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
@@ -22,6 +24,10 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 function LectureCourseOverviewPage() {
   useRequestLectureCardOverview();
   const lectureStructure = useLectureStructure();
+  const [lectureSurvey] = useLectureSurvey();
+  useEffect(() => {
+    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
+  }, [lectureSurvey]);
 
   const history = useHistory();
   useEffect(() => {
@@ -88,7 +94,6 @@ function LectureCourseOverviewPage() {
           .filter((c) => c.state === 'Progress')
           .forEach((c) => {
             if (c.student !== undefined) {
-              console.log(c);
               if (c.student.modifiedTime > modifiedTime) {
                 modifiedTime = c.student.modifiedTime;
                 path = c.path;

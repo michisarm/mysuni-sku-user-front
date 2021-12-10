@@ -19,12 +19,11 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   return response.data;
 }
 
-export function findCommunityMyProfile(
-): Promise<ProfilePopupModel> {
+export function findCommunityMyProfile(): Promise<ProfilePopupModel> {
   const url = `${BASE_URL}/profiles`;
   return axiosApi
     .get<ProfilePopupModel>(url)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function modifyCommunityProfile(
@@ -33,23 +32,25 @@ export function modifyCommunityProfile(
   const url = `${BASE_URL}/profiles`;
   return axiosApi
     .put<ProfilePopupModel>(url, profileNameValues)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findCommunityProfile(
   profileId: string
 ): Promise<ProfileInfoModel | undefined> {
   const url = `${BASE_URL}/profiles/flow/${profileId}`;
-  return axiosApi
-    .get<ProfileInfoModel>(url)
-    .then(AxiosReturn);
+  return axiosApi.get<ProfileInfoModel>(url).then(AxiosReturn);
 }
 
-export function existsByNickname(
-  nickname: string
-): Promise<boolean> {
+export function existsByNickname(nickname: string): Promise<boolean> {
   const url = `${BASE_URL}/profiles/existsByNickname/${nickname}`;
   return axiosApi
     .get<boolean>(url)
     .then((response) => response && response.data);
+}
+
+export function findUser(denizenIds: string) {
+  return axiosApi
+    .post<ProfileInfoModel[]>('/api/user/users/{}', denizenIds)
+    .then((response: any) => (response && response.data) || []);
 }
