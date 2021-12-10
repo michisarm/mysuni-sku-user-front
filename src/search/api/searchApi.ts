@@ -120,7 +120,19 @@ export function findCPGroup(text_idx: string, companyCode: string) {
 const FIND_CARD_COLUMNS =
   'id,name,categories,required_cinerooms,thumb_image_path,learning_time,stamp_count,additional_learning_time,type,simple_description,passed_student_count,student_count,star_count,used_in_badge,cube_types,difficulty_level,learning_start_date,learning_end_date,cube_organizer_names,paid,use_whitelist_policy,access_rules,tags,lang_supports';
 
-export function findPreCard(text_idx: string) {
+async function sleep(second: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      console.log(`TimeOut ${second} sec`);
+      resolve();
+    }, second * 1000);
+  });
+}
+
+export async function findPreCard(text_idx: string) {
+  //
+  // await sleep(5);
+  // console.log('findPreCard');
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
   const url = encodeURI(
     `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx.replace(
@@ -154,6 +166,7 @@ export function findPreCard(text_idx: string) {
 }
 
 export function findCard(text_idx: string, pre: string) {
+  // console.log('findCard');
   const transactionId = Date.now();
   setSearchUI({
     isLoading: true,
