@@ -14,6 +14,8 @@ import {
   setLectureReview,
   setLectureSubcategory,
   setLectureTags,
+  setLectureCourseSatisfaction,
+  setLectureCourseFeedbackReview,
 } from '../../store/LectureOverviewStore';
 import LectureParams from '../../viewModel/LectureParams';
 import { clearFindCardCache } from '../../api/cardApi';
@@ -27,37 +29,11 @@ import { requestLectureCardReview } from '../useLectureReview/utility/requestLec
 import { requestLectureCardSubcategory } from '../useLectureSubcategory/utility/requestLectureCardSubcategory';
 import { requestLectureCardSummary } from '../useLectureSummary/utility/requestLectureCardSummary';
 import { requestLectureCardTags } from '../useLectureTags/utility/requestLectureCardTags';
+import { requestLectureSurvey } from '../useLectureSurvey/utility/getLectureSurvey';
+import { setLectureSurvey } from 'lecture/detail/store/LectureSurveyStore';
 
 export function useRequestLectureCardOverview() {
   const { cardId } = useParams<LectureParams>();
-
-  // useEffect(() => {
-  //   if (cardId !== undefined) {
-  //     requestLectureCardComment(cardId);
-  //     requestLectureCardDescription(cardId);
-  //     requestLectureCardFile(cardId);
-  //     requestLectureCardInstructor(cardId);
-  //     requestLectureCardPrecourse(cardId);
-  //     requestLectureCardRelations(cardId);
-  //     requestLectureCardReview(cardId);
-  //     requestLectureCardSubcategory(cardId);
-  //     requestLectureCardSummary(cardId);
-  //     requestLectureCardTags(cardId);
-  //   }
-  //
-  //   return () => {
-  //     setLectureComment();
-  //     setLectureDescription();
-  //     setLectureFile();
-  //     setLectureInstructor();
-  //     setLecturePrecourse();
-  //     setLectureRelations();
-  //     setLectureReview();
-  //     setLectureSubcategory();
-  //     setLectureCardSummary();
-  //     setLectureTags();
-  //   };
-  // }, [cardId]);
 
   useEffect(() => {
     const setData = async function (cardId: string) {
@@ -72,6 +48,7 @@ export function useRequestLectureCardOverview() {
         requestLectureCardReview(cardId);
         requestLectureCardSummary(cardId);
         requestLectureCardTags(cardId);
+        requestLectureSurvey();
       }
     };
 
@@ -88,6 +65,9 @@ export function useRequestLectureCardOverview() {
       setLectureSubcategory();
       setLectureCardSummary();
       setLectureTags();
+      setLectureSurvey();
+      setLectureCourseSatisfaction();
+      setLectureCourseFeedbackReview();
     };
   }, [cardId]);
 }

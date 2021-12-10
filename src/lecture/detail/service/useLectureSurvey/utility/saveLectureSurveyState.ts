@@ -188,13 +188,14 @@ async function coreSubmitLectureSurveyState() {
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
-  reactAlert({
-    title: getPolyglotText('알림', 'survey-save-alert2'),
-    message: getPolyglotText(
-      'Survey 설문 참여가 완료 되었습니다.',
-      'survey-설문참여-완료메세지'
-    ),
-  });
+  // reactAlert({
+  //   title: getPolyglotText('알림', 'survey-save-alert2'),
+  //   message: getPolyglotText(
+  //     'Survey 설문 참여가 완료 되었습니다.',
+  //     'survey-설문참여-완료메세지'
+  //   ),
+  // });
+
   return true;
 }
 

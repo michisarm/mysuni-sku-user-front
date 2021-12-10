@@ -5,6 +5,10 @@ import AnswerSheet from '../model/SurveyAnswerSheet';
 import SurveyForm from '../model/SurveyForm';
 import SurveySummary from '../model/SurveySummary';
 import SurveyAnswerSummaryList from '../model/SurveyAnswer';
+import {
+  SurveySummaries,
+  SurveyFeedbackSummaries,
+} from '../model/SurveySummaries';
 
 const BASE_URL = '/api/survey';
 
@@ -25,7 +29,7 @@ export function findSurveyForm(surveyFormId: string): Promise<SurveyForm> {
   const url = `${BASE_URL}/surveyForms/${surveyFormId}`;
   return axiosApi
     .get<SurveyForm>(url)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function findAnswerSheetBySurveyCaseId(
@@ -43,7 +47,7 @@ export function openAnswerSheet(
   const url = `${BASE_URL}/response/open/${surveyCaseId}/rounds/${round}`;
   return axiosApi
     .post<string>(url, answerSheetCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function saveAnswerSheet(
@@ -54,7 +58,7 @@ export function saveAnswerSheet(
   const url = `${BASE_URL}/response/save/${surveyCaseId}/rounds/${round}`;
   return axiosApi
     .put(url, answerSheetCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
 export function submitAnswerSheet(
@@ -65,19 +69,42 @@ export function submitAnswerSheet(
   const url = `${BASE_URL}/response/complete/${surveyCaseId}/rounds/${round}`;
   return axiosApi
     .put(url, answerSheetCdo)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
-export function findSurveySummaryBySurveyCaseIdAndRound(surveyCaseId: string, round: number): Promise<SurveySummary> {
+export function findSurveySummaryBySurveyCaseIdAndRound(
+  surveyCaseId: string,
+  round: number
+): Promise<SurveySummary> {
   const url = `${BASE_URL}/surveySummaries/${surveyCaseId}/rounds/${round}`;
   return axiosApi
     .get<SurveySummary>(url)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
 }
 
-export function findAnswerSummariesBySurveySummaryId(surveySummaryId: string): Promise<SurveyAnswerSummaryList[]> {
+export function findAnswerSummariesBySurveySummaryId(
+  surveySummaryId: string
+): Promise<SurveyAnswerSummaryList[]> {
   const url = `${BASE_URL}/answerSummaries?surveySummaryId=${surveySummaryId}`;
   return axiosApi
     .get<SurveyAnswerSummaryList[]>(url)
-    .then(response => response && response.data);
+    .then((response) => response && response.data);
+}
+
+export function findSurveySummariesBySurveyCaseId(
+  surveyCaseId: string
+): Promise<SurveySummaries[]> {
+  const url = `${BASE_URL}/surveySummaries/${surveyCaseId}`;
+  return axiosApi
+    .get<SurveySummaries[]>(url)
+    .then((response) => response && response.data);
+}
+
+export function findReviewSummary(
+  surveySummaryId: string
+): Promise<SurveyFeedbackSummaries> {
+  const url = `${BASE_URL}/surveySummaries/${surveySummaryId}/findReviewSummary`;
+  return axiosApi
+    .get<SurveyFeedbackSummaries>(url)
+    .then((response) => response && response.data);
 }

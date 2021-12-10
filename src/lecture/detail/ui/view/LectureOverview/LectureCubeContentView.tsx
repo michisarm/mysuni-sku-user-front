@@ -19,12 +19,16 @@ import TranscriptCountModel from '../../../model/TranscriptCountModel';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import { requestLectureCardInstructor } from '../../../service/useLectureInstructor/utility/requestLectureCardInstructor';
 import { Action, Area } from 'tracker/model';
-import { useLectureInstructor } from '../../../store/LectureOverviewStore';
+import {
+  useLectureInstructor,
+  getLectureCubes,
+  useLectureCoureSatisfaction,
+  initLectureCourseSatisfaction,
+} from '../../../store/LectureOverviewStore';
 import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
-import { findCommunityProfile } from '../../../../../community/api/profileApi';
-import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { SkProfileService } from '../../../../../profile/stores';
+import LectureCourseFeedbackView from './LectureCourseFeedbackView';
 
 interface Params {
   cardId: string;
@@ -86,6 +90,10 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       hashLink('lms-overview');
       setActivatedTab('overview');
     }, []);
+    const reviewHashClick = useCallback(() => {
+      hashLink('lms-review');
+      setActivatedTab('review');
+    }, []);
     const classroomHashClick = useCallback(() => {
       hashLink('lms-classroom');
       setActivatedTab('classroom');
@@ -96,10 +104,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
     const transcriptHashClick = useCallback(() => {
       setActivatedTab('transcript');
     }, []);
-
-    // const trascriptScrollMove = () => {
-    //   window.scrollTo(0, 800);
-    // };
 
     // 대본 관련 Props 세팅
     const [transLangVal, setTransLangVal] = useState<string>(() => {
@@ -112,23 +116,12 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       return 'ko';
     });
 
-    // const [ deliveryId, setDeliveryId ] = useState<string>('');
+    const satisfaction =
+      useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
-    // useEffect(() => {
-    //   setDeliveryId(getlectureTranscriptCounts() ? getlectureTranscriptCounts);
-    // }, [getlectureTranscriptCounts()]);
-
-    // 스티키 적용 시 필요한 코드
-    // useEffect(() => {
-    //   if (activatedTab === 'comment') {
-    //     setTimeout(() => {
-    //       const element = document.getElementById('lms-overview');
-    //       if (element !== null) {
-    //         element.scrollIntoView();
-    //       }
-    //     }, 0);
-    //   }
-    // }, [activatedTab]);
+    const cubes = getLectureCubes();
+    const cubeCounts = cubes?.length || 0;
+    const isOnlyOneCube = cubeCounts === 1;
 
     return (
       <>
@@ -149,6 +142,17 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 id="cube-ContentsTap-Overview"
               />
             </a>
+            {satisfaction.surveyCaseId && isOnlyOneCube && (
+              <a
+                onClick={reviewHashClick}
+                className={activatedTab === 'review' ? 'lms-act' : ''}
+                data-area={Area.CUBE_TAB}
+                data-action={Action.CLICK}
+                data-action-name="CARD TAB 클릭::Review"
+              >
+                Review
+              </a>
+            )}
             {lectureClassroom && (
               <a
                 onClick={classroomHashClick}
@@ -202,7 +206,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
             </a>
           </div>
         </div>
-        {(activatedTab === 'overview' || activatedTab === 'classroom') && (
+        {(activatedTab === 'overview' ||
+          activatedTab === 'classroom' ||
+          activatedTab === 'review') && (
           <>
             {lectureDescription && (
               <LectureDescriptionView
@@ -220,6 +226,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 <LectureCubeInfoView lectureDescription={lectureDescription} />
               )}
               {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+              {isOnlyOneCube && satisfaction.surveyCaseId && (
+                <LectureCourseFeedbackView />
+              )}
               {lectureInstructor?.instructors &&
                 lectureInstructor.instructors.length > 0 && (
                   <LectureClassroomInstructorView
