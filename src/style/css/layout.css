@@ -60,8 +60,9 @@ body #root { background: #fff; }
 .ui.form input[type=text]:focus,
 .ui.form input[type=time]:focus,
 .ui.form input[type=url]:focus,
+.ui.form textarea:focus,
 .ui.input.focus > input,
-.ui.input > input:focus { border: #52CBC0 1px solid !important; }
+.ui.input > input:focus { border-color: #52CBC0 !important; }
 
 /* Button */
 .ui.button.moreview { color: #999 !important; }
@@ -123,6 +124,7 @@ i.icon.testHeader::before {
 i.icon.testHeader02::before {
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-60-px.png") 0 0 no-repeat !important;
 }
+.follow_list .chk_follow.checked { border-color: #B9B9B9; color: #B9B9B9; }
 
 /* Font */
 .sort-reult .section-count,
@@ -219,10 +221,11 @@ i.icon.reply24:before { background: url('https://image.mysuni.sk.com/suni-asset/
 i.icon.list24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-24-px.svg') 0 0 no-repeat !important; }
 i.icon.edit24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-edit-24-px.svg') 0 0 no-repeat !important; }
 i.icon.del24:before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-delete-24-px.svg') 0 0 no-repeat !important; }
-i.icon.commu-list16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-community-list-16-px.svg") 0 0 no-repeat !important; background-size: 100% auto; }
-i.icon.delete-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-delete-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
-i.icon.reply-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-reply-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
-i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.commu-list16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-list-16-px.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.delete-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-delete-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.reply-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-reply-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.edit-gray16:before { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px-gray.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tooltip-gray-20-px.svg") no-repeat 0 0 !important; background-size: 100% 100% !important; }
 .ui.label.onlytext .icon.video2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-video-16-px.svg') 0 0.125rem no-repeat; }
 .ui.label.onlytext .icon.classroom { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-classroom-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.community { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-community-16-px.svg') 0 0.125rem no-repeat; }
@@ -262,7 +265,22 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
 .icon.before { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-before-24-px.svg) 0 0 no-repeat !important; }
 .lms-comment-icon { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-comment.svg) center no-repeat; }
 .badge-detail .ov-paragraph .list.bulleted .item .title:before { background: #777; position: relative; display: inline-block; top: 0; left: 0; margin-right: 0.5rem; }
-.content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-3-24-px.svg) 0 0 no-repeat; }
+.content.lms .ov-paragraph.download-area .down a:after { background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-type-5-24-px.svg) 0 0 no-repeat; }
+.content.lms .label-type { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; color: #777; }
+.content.lms .label-type.n-test { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-survey { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-report { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-report-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-type.n-discuss { background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-discuss-24-px.svg") 0 50% no-repeat; }
+.content.lms .label-state-learning.complete{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-learing-completed.svg') 50% no-repeat;}
+.ui.icon.button.btn-blue { color: #00bfae; }
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-close-8-px.svg') 0 0 no-repeat;}
+.course-radio-survey .survey-explain .ui.icon.button.btn-blue .icon.morelink.more2.view-down{background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-contents-more-open-8-px.svg') 0 0 no-repeat;}
+
+.ui.icon .icon.edit_bk{height: 1rem; margin-right:0.35rem !important; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-comm-edit-16-px-bk.svg") no-repeat 100%;}
+.ui.icon .icon.delete_bk{height: 1rem; margin-right:0.35rem !important; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-comm-delete-16-px-bk.svg") no-repeat 100%;}
+.ui.icon .icon.share_bk{height: 1rem; margin-right:0.35rem !important; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-comm-share-16-px-bk.svg") no-repeat 100%;}
+.ui.icon .icon.mark_bk{height: 1rem; margin-right:0.35rem !important; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-comm-mark-16-px-bk.svg") no-repeat 100%;}
+.ui.icon .icon.list_bk{height: 1rem; margin-right:0.35rem !important; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comm-list-16-px-bk.svg") no-repeat 100%;}
 
 /* Active color */
 .content.lms .lms-sticky-menu .lms-fixed-inner a.lms-act { border-bottom: #ff664d 4px solid; }
@@ -349,3 +367,8 @@ i.icon.edit-gray16::before { background: url("https://image.mysuni.sk.com/suni-a
     display: block;
     height: 0;
 }
+
+/* Footer 수정(2021.12.06) */
+#root .footer2 .copy-wrap .cont-inner { overflow: hidden; font-size: 12px; }
+#root .footer2 .copy-wrap .cont-inner .foot-logo { display: block; float: left; height: 1.5rem; line-height: 1.5rem; }
+#root .footer2 .copy-wrap .cont-inner .foot-copyright { transform: translateY(-1px); }

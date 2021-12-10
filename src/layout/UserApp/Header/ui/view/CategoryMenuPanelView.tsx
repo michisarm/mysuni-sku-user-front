@@ -22,7 +22,6 @@ import {
   parseLanguage,
 } from '../../../../../shared/viewmodel/PolyglotString';
 import _ from 'lodash';
-import { compareCollgeCineroom } from '../../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -66,10 +65,6 @@ class CategoryMenuPanelView extends Component<Props> {
     const { skProfileService } = this.props;
     const channelId = e.target.id;
     const prevFavorites = this.props.favorites;
-
-    if (!compareCollgeCineroom(this.props.activeCollege!.id)) {
-      return;
-    }
 
     const params = {
       nameValues: [
@@ -205,16 +200,7 @@ class CategoryMenuPanelView extends Component<Props> {
                             return (
                               <div className="category-row" key={channel.id}>
                                 <span className="check-type2">
-                                  <label
-                                    htmlFor={channel.id}
-                                    style={{
-                                      cursor: !compareCollgeCineroom(
-                                        this.props.activeCollege!.id
-                                      )
-                                        ? 'not-allowed'
-                                        : '',
-                                    }}
-                                  >
+                                  <label htmlFor={channel.id}>
                                     <input
                                       type="checkbox"
                                       id={channel.id}
@@ -240,13 +226,6 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <span className="check-type2">
                                   <label
                                     htmlFor={filteredChannel[index + 1].id}
-                                    style={{
-                                      cursor: !compareCollgeCineroom(
-                                        this.props.activeCollege!.id
-                                      )
-                                        ? 'not-allowed'
-                                        : '',
-                                    }}
                                   >
                                     <input
                                       type="checkbox"
@@ -283,16 +262,7 @@ class CategoryMenuPanelView extends Component<Props> {
                             return (
                               <div className="category-row" key={channel.id}>
                                 <span className="check-type2">
-                                  <label
-                                    htmlFor={channel.id}
-                                    style={{
-                                      cursor: !compareCollgeCineroom(
-                                        this.props.activeCollege!.id
-                                      )
-                                        ? 'not-allowed'
-                                        : '',
-                                    }}
-                                  >
+                                  <label htmlFor={channel.id}>
                                     <input
                                       type="checkbox"
                                       id={channel.id}

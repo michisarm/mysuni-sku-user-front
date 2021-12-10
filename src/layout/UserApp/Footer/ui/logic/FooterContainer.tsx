@@ -1,18 +1,14 @@
-import React, { Component, useState, useRef, useEffect } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Icon, Button, Select } from 'semantic-ui-react';
-import {
-  PolyglotText,
-  getPolyglotText,
-} from '../../../../../shared/ui/logic/PolyglotText';
-import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
 import SiteMapModalContainer from 'layout/UserApp/QuickNav/ui/logic/SiteMapModalContainerV2';
-
-import './FooterContainer.css';
-import { SkProfileService } from '../../../../../profile/stores';
-import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
-import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
 import { findSsoTypeCache } from 'lecture/detail/api/checkpointApi';
+import React, { useEffect, useRef, useState } from 'react';
+import { Icon } from 'semantic-ui-react';
+import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
+import Image from 'shared/components/Image';
+import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
+import { SkProfileService } from '../../../../../profile/stores';
+import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
+import './FooterContainer.css';
 
 function FooterContainer() {
   const [opened, setOpend] = useState(false);
@@ -311,16 +307,18 @@ function FooterContainer() {
       <div className="copy-wrap">
         <div className="cont-inner">
           <div className="foot-logo">
-            <h2 id="foot-logo">
+            {/* 김민준 겨울 로고 변경 */}
+            <Image src="https://image.mysuni.sk.com/suni-asset/public/images/winter/LMS/s-kuniversity-footerN.png" />
+            {/* <h2 id="foot-logo">
               <Icon className="s-kuniversity" />
               <span className="blind">SK university</span>
-            </h2>
+            </h2> */}
           </div>
           <div className="foot-copyright">
-            Copyright
+            COPYRIGHT
             <Icon className="copyright" />
-            <span className="blind">copyright sign</span>mySUNI. All Rights
-            Reserved.
+            <span className="blind">copyright sign</span>mySUNI. ALL RIGHTS
+            RESERVED.
           </div>
         </div>
       </div>

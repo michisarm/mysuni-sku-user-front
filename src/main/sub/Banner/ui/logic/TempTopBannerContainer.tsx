@@ -1,6 +1,8 @@
 import React from 'react';
+import { SkProfileService } from '../../../../../profile/stores';
 import Image from '../../../../../shared/components/Image';
 import { requestTempTopBanner } from '../../service/useRequestTopBanner';
+import { usePageElements } from 'shared/store/PageElementsStore';
 
 interface props {
   isTopBannerOpen: boolean;
@@ -13,8 +15,8 @@ export function TempTopBannerContainer({
 }: props) {
   const bannerData = {
     imageUrl:
-      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner.png',
-    backGroundColor: '#984AEE',
+      'https://image.mysuni.sk.com/suni-asset/public/images/all/event-choosoo-banner2.jpg',
+    backGroundColor: '#30C9CE',
   };
 
   const displayTopBanner = isTopBannerOpen && bannerData && bannerData.imageUrl;
@@ -23,29 +25,44 @@ export function TempTopBannerContainer({
     const encryptValue = await requestTempTopBanner();
     if (encryptValue) {
       window.open(
-        `https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=${encryptValue}`,
+        `https://mysuni-giftevent.com/Auth/Index?q=${encryptValue}`,
+
         '_blank'
       );
     } else {
       window.open(
-        'https://mysuni-giftevent.live04-tester.kr/Auth/Index?q=Hm1WQe/vpFhsI3QWn872MPT6c2fnSqaI4DEDYd22bt0=',
+        'https://mysuni-giftevent.com/Auth/Index?q=Hm1WQe/vpFhsI3QWn872MPT6c2fnSqaI4DEDYd22bt0=',
         '_blank'
       );
     }
   };
 
-  return (
-    <>
-      {displayTopBanner && (
+  // if (SkProfileService.instance.skProfile.language !== 'Korean') {
+  //   return null;
+  // }
+  const pageElements = usePageElements();
+
+  if (
+    displayTopBanner &&
+    pageElements.some(
+      (pagemElement) =>
+        pagemElement.position === 'HomeElement' &&
+        pagemElement.type === 'TopBanner'
+    )
+  ) {
+    return (
+      <>
         <TopBannerView
           imageUrl={bannerData.imageUrl}
           backgroundColor={bannerData.backGroundColor}
           onClickBanner={onClickBanner}
           onClose={onClickCloseBanner}
         />
-      )}
-    </>
-  );
+      </>
+    );
+  }
+
+  return null;
 }
 
 interface TopBannerViewProps {

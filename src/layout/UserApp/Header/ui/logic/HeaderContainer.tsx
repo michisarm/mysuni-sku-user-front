@@ -5,7 +5,6 @@ import {
 } from '@nara.platform/accent';
 import boardRoutePaths from 'board/routePaths';
 import { setMenuAuthModel } from 'layout/UserApp/store/MenuAuthStore';
-import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
 import { inject, observer } from 'mobx-react';
 import React, { createRef } from 'react';
 import ReactGA from 'react-ga';
@@ -13,6 +12,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dimmer } from 'semantic-ui-react';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
 import { findAvailablePageElementsCache } from '../../../../../lecture/shared/api/arrangeApi';
+import { TempTopBannerContainer } from 'main/sub/Banner/ui/logic/TempTopBannerContainer';
 import { getQueryId, search } from '../../../../../search/search.events';
 import SearchService from '../../../../../search/service/SearchService';
 import { Context } from '../../../index';
