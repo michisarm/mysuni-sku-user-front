@@ -312,44 +312,39 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
             <div className="header-deatil">
               <div className="item">
                 {satisfaction.surveyCaseId && (
-                  <>
-                    <div className="header-rating">
-                      <Rating
-                        defaultRating={5}
-                        maxRating={5}
-                        rating={
-                          satisfaction?.totalCount !== 0
-                            ? satisfaction && satisfaction.average
-                            : 5
-                        }
-                        disabled
-                        className="fixed-rating"
-                      />
-                      <span>
-                        {satisfaction?.totalCount !== 0
-                          ? `${Math.floor(satisfaction.average * 10) / 10}(${
-                              satisfaction?.totalCount
-                            }
-                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
-                          : '0'}
-                      </span>
-                    </div>
-                    <div className="fb-right">
-                      {!satisfaction.isDoneSurvey && (
-                        <Button
-                          className="re-feedback"
-                          onClick={() =>
-                            history.push(
-                              `/lecture/card/${params?.cardId}/survey`
-                            )
+                  <div className="header-rating">
+                    <Rating
+                      defaultRating={5}
+                      maxRating={5}
+                      rating={
+                        satisfaction?.totalCount !== 0
+                          ? satisfaction && satisfaction.average
+                          : 5
+                      }
+                      disabled
+                      className="fixed-rating"
+                    />
+                    <span>
+                      {satisfaction?.totalCount !== 0
+                        ? `${Math.floor(satisfaction.average * 10) / 10}(${
+                            satisfaction?.totalCount
                           }
-                        >
-                          <Icon className="edit16" />
-                          평가하기
-                        </Button>
-                      )}
-                    </div>
-                  </>
+                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
+                        : '0'}
+                    </span>
+
+                    {!satisfaction.isDoneSurvey && (
+                      <Button
+                        className="re-feedback"
+                        onClick={() =>
+                          history.push(`/lecture/card/${params?.cardId}/survey`)
+                        }
+                      >
+                        <Icon className="edit16" />
+                        평가하기
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>

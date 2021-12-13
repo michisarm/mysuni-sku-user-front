@@ -7,6 +7,7 @@ import {
   useLectureSurveyAnswerSummaryList,
 } from 'lecture/detail/store/LectureSurveyStore';
 import { SkProfileService } from 'profile/stores';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -63,28 +64,7 @@ const LectureSurveySummaryIconView: React.FC<LectureSurveyItemProps> =
     }
 
     return (
-      <div className="course-radio-survey-new">
-        <p>
-          <span>{no}</span>
-          {isRequired === true && (
-            <>
-              <span>
-                {title}
-                <span className="importantBtn">
-                  <Image
-                    style={{ display: 'inline-block' }}
-                    src={iconRequired}
-                  />
-                </span>
-              </span>
-            </>
-          )}
-          {isRequired === false && (
-            <>
-              <span>{title}</span>
-            </>
-          )}
-        </p>
+      <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
         <div className="course-survey-list">
           <div>
             {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
@@ -154,52 +134,8 @@ const LectureSurveySummaryIconView: React.FC<LectureSurveyItemProps> =
                 </Fragment>
               );
             })}
-          <p className="improve-text">
-            {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-          </p>
-          {lectureSurveyItem.visible !== undefined &&
-            lectureSurveyItem.visible === true && (
-              <ul className="improve-list">
-                {lectureSurveyItem.visible !== undefined &&
-                  lectureSurveyItem.visible === true &&
-                  answerList
-                    ?.filter(
-                      (f) =>
-                        f.answerItemType === 'Essay' &&
-                        f.questionNumber === lectureSurveyItem.questionNumber
-                    )
-                    .map((answer) =>
-                      answer.summaryItems.sentences?.map((result, index) => (
-                        <>
-                          {index >= 0 && index <= number ? (
-                            <li>{result}</li>
-                          ) : (
-                            ''
-                          )}
-                        </>
-                      ))
-                    )}
-                <li className="improve-list-more">
-                  {lectureSurveyItem.visible !== undefined &&
-                  lectureSurveyItem.visible === true &&
-                  lastIndex - 1 > number ? (
-                    <>
-                      <Image
-                        style={{ display: 'inline-block' }}
-                        src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
-                      />
-                      <span onClick={setCheckNumber}>
-                        더보기 ({lastIndex - number - 1}개)
-                      </span>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </li>
-              </ul>
-            )}
         </div>
-      </div>
+      </LectureSurveySummaryChoiceLayout>
     );
   };
 

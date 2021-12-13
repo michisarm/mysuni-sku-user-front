@@ -1712,3 +1712,11 @@ ul.ui.list.my-task-bar {
 .rev-edit .rev-info .cnt strong {
   color: #333;
 }
+/* 커뮤니티 */
+
+/* season용 main */
+.content.main-sty2 .main_personal.season {
+  background: #fff
+    url('https://image.mysuni.sk.com/suni-asset/public/images/all/season_gif.gif')
+    0 12px / contain no-repeat;
+}

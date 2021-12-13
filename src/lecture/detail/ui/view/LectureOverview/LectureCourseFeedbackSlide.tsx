@@ -9,7 +9,7 @@ import { showAlert } from 'community/packages/alert/Alert';
 const params = {
   loop: false,
   slidesPerView: 2,
-  spaceBetween: 22,
+  spaceBetween: 10,
   navigation: {
     prevEl: '.swiperFeedback .swiper-button-prev',
     nextEl: '.swiperFeedback .swiper-button-next',

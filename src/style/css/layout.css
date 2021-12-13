@@ -798,14 +798,19 @@ i.icon.info20:before {
 }
 
 .ui.button.re-feedback {
-  margin: 0;
+  margin: 0 0 0 20px;
   padding: 0;
   color: #222;
   font-size: 0.875rem;
   font-weight: normal;
-  vertical-align: top !important;
-  line-height: 1.3;
+  vertical-align: 2px !important;
+  line-height: 1.43;
+  position: relative;
 }
+.ui.button.re-feedback i.icon.edit16 {
+  vertical-align: -2px;
+}
+
 .ui.label.onlytext .icon.review {
   background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-review-24-px.svg')
     0 0 no-repeat;
@@ -992,7 +997,7 @@ i.icon.face1::after {
     no-repeat 0 0/100%;
 }
 
-/* layout - header */
+/* layout - header
 .header-feedback {
   display: flex;
   align-items: center;
@@ -1023,20 +1028,33 @@ i.icon.face1::after {
 }
 .fb-left .fb-text i.icon {
   margin-right: 4px;
+} */
+/* header-side */
+.content.lms .header-rating span {
+  vertical-align: 2px;
+}
+.content.lms .header-rating .ui.button.re-feedback::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 6px;
+  background-color: #d8d8d8;
+  position: absolute;
+  top: 8px;
+  left: -11px;
 }
 
 /* layout */
 .feedback-body > .inner {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 .feedback-body .body-left {
-  width: 100%;
-  margin: 0 20px 0 0;
+  width: 380px;
 }
 .feedback-body .body-right {
-  width: 805px;
+  width: calc(100% - 395px);
 }
 /* layout -left */
 .feedback-body .tit {
@@ -1088,13 +1106,20 @@ i.icon.face1::after {
 }
 
 /* feedback Card */
-.course-info-detail .cardSwiper.feedback .swiper-slide {
-  width: 391.5px !important;
+.course-info-detail .cardSwiper.feedback {
+  width: 100%;
+}
+.course-info-detail .feedback .swiper-slide {
+  height: auto;
+  margin-bottom: 5px;
 }
 .feedback-card {
   margin: 5px;
   padding: 30px;
-  width: 324px;
+  height: calc(100% - 70px);
+  min-width: 200px;
+  min-height: 150px;
+  max-height: 250px;
   border-radius: 8px;
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
 }
@@ -1116,7 +1141,7 @@ i.icon.face1::after {
   letter-spacing: -0.4px;
 }
 .feedback-card .bottom-detail {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 .bottom-detail p {
   font-size: 0.875rem;
@@ -1196,9 +1221,9 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 .ui.label.onlytext .icon.experiential { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-experiential-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.documents { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-test-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.price { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-card-price-x-18.svg') 0 0 no-repeat; }
-.ui.label.onlytext .icon.state { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img/icon-check-18-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.state { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-check-18-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.date { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-date-16-px.svg') 0 50% no-repeat; }
-.ui.label.onlytext .icon.file2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img/icon-down-24-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.file2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.category { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-category-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.doument24 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-documnet-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.period { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-period-24-px.svg') 0 0 no-repeat; }
@@ -1386,4 +1411,9 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 }
 #root .footer2 .copy-wrap .cont-inner .foot-copyright {
   transform: translateY(-1px);
+}
+
+/* Footer 수정(2021.12.10) */
+.footer .foot-nav .foot-nav-item .foot-nav-li {
+  padding: 2px 0;
 }
