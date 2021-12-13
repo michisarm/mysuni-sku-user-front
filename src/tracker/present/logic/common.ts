@@ -15,6 +15,7 @@ import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscu
 import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
 import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
+import { getUserTargets } from 'abtest/api/AbtestApi';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 const AUTH_STORAGE_KEY = '_mysuni_auth';
@@ -148,16 +149,16 @@ export const getAuth = async () => {
 };
 
 export const getAbtestUserTargets = async () => {
-  const targets = '[]';
-  // try {
-  //   await getUserTargets().then((data) => {
-  //     if (data) {
-  //       targets = JSON.stringify(data);
-  //     }
-  //   });
-  // } catch {
-  //   //
-  // }
+  let targets = '[]';
+  try {
+    await getUserTargets().then((data) => {
+      if (data) {
+        targets = JSON.stringify(data);
+      }
+    });
+  } catch {
+    //
+  }
   return targets;
 };
 

@@ -1,4 +1,5 @@
 import { mobxHelper } from '@nara.platform/accent';
+import { Abtest, ExperimentalGroup } from 'abtest/components';
 import { inject } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -80,12 +81,20 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.position === 'HomeElement' &&
             pagemElement.type === 'LRSCards'
         ) && (
-          <>
-            <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
-            <LRSFromLearningPatternBased
-              profileMemberName={skProfile.profileViewName}
-            />
-          </>
+          <Abtest name="AB-2" nonExperimentalGroup="A">
+            <ExperimentalGroup name="A">
+              <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+              <LRSFromLearningPatternBased
+                profileMemberName={skProfile.profileViewName}
+              />
+            </ExperimentalGroup>
+            <ExperimentalGroup name="B">
+              <LRSFromLearningPatternBased
+                profileMemberName={skProfile.profileViewName}
+              />
+              <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+            </ExperimentalGroup>
+          </Abtest>
         )}
         <BookmarkCards profileMemberName={skProfile.profileViewName} />
         {pageElements.some(
