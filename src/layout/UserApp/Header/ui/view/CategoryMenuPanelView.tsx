@@ -87,7 +87,7 @@ class CategoryMenuPanelView extends Component<Props> {
           .modifyStudySummary(params)
           .then(() => skProfileService!.findStudySummary());
       } else {
-        const nextFavorites = [...prevFavorites, channelId];
+        const nextFavorites = [channelId, ...prevFavorites];
         params.nameValues[0].value = JSON.stringify(nextFavorites);
         skProfileService!
           .modifyStudySummary(params)
