@@ -1196,9 +1196,9 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 .ui.label.onlytext .icon.experiential { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-experiential-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.documents { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-learningtype-test-16-px.svg') 0 0.0625rem no-repeat; }
 .ui.label.onlytext .icon.price { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-card-price-x-18.svg') 0 0 no-repeat; }
-.ui.label.onlytext .icon.state { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img/icon-check-18-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.state { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-check-18-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.date { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-date-16-px.svg') 0 50% no-repeat; }
-.ui.label.onlytext .icon.file2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img/icon-down-24-px.svg') 0 0 no-repeat; }
+.ui.label.onlytext .icon.file2 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-down-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.category { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-category-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.doument24 { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-documnet-24-px.svg') 0 0 no-repeat; }
 .ui.label.onlytext .icon.period { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-period-24-px.svg') 0 0 no-repeat; }
@@ -1386,4 +1386,9 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 }
 #root .footer2 .copy-wrap .cont-inner .foot-copyright {
   transform: translateY(-1px);
+}
+
+/* Footer 수정(2021.12.10) */
+.footer .foot-nav .foot-nav-item .foot-nav-li {
+  padding: 2px 0;
 }
