@@ -6,15 +6,15 @@ import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOvervie
 
 function chartSentenceText(num: number) {
   if (num === 0) {
-    return '매우만족';
+    return '매우 그렇다';
   } else if (num === 1) {
-    return '만족';
+    return '그렇다';
   } else if (num === 2) {
-    return '보통';
+    return '보통이다';
   } else if (num === 3) {
-    return '불만족';
+    return '아니다';
   } else if (num === 4) {
-    return '매우 불만족';
+    return '전혀 아니다';
   }
 }
 
@@ -24,7 +24,7 @@ export default function LectureCourseFeedbackView() {
     return null;
   }
 
-  const { totalValues, totalCount } = answerSummary;
+  const { reversedValues, totalCount } = answerSummary;
 
   return (
     <div className="badge-detail" id="lms-review">
@@ -47,7 +47,7 @@ export default function LectureCourseFeedbackView() {
               </div>
               <div className="fb-chart">
                 <ul className="chart-list">
-                  {totalValues.map((num, i) => {
+                  {reversedValues.map((num, i) => {
                     const percentNumber = ((num / totalCount) * 100).toFixed(1);
                     return (
                       <li className="chart-item">

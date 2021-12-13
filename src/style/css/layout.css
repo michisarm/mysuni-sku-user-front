@@ -302,13 +302,48 @@ i.icon.tooltip::before {
     0 0 no-repeat !important;
   background-size: 100% auto;
 }
+
+i.icon.testHeader {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  margin: 0;
+  width: 54px;
+  height: 54px;
+  vertical-align: middle;
+  margin-right: 18px;
+}
+i.icon.testHeader02 {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  margin: 0;
+  width: 54px;
+  height: 54px;
+  vertical-align: middle;
+  margin-right: 18px;
+}
+
+.survey-header-left.test_ing {
+  padding-left: 4.5rem;
+}
 i.icon.testHeader::before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-60-px.png')
+  content: '';
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-54-px.svg')
     0 0 no-repeat !important;
+  background-size: 100% 100% !important;
 }
 i.icon.testHeader02::before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-60-px.png')
+  content: '';
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-54-px.svg')
     0 0 no-repeat !important;
+  background-size: 100% 100% !important;
 }
 .follow_list .chk_follow.checked {
   border-color: #b9b9b9;

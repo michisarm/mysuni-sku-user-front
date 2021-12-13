@@ -1,6 +1,7 @@
 import {
   setLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
+  getLectureCoureSFeedbackReview,
 } from 'lecture/detail/store/LectureOverviewStore';
 import {
   findReviewSummary,
@@ -15,7 +16,6 @@ import { getProfileImage } from 'community/ui/app.formatters';
 export async function requestLectureCouseFeedback(
   lectureSurvey: LectureSurvey
 ) {
-  console.log('실행');
   if (lectureSurvey === undefined) {
     return;
   }
@@ -27,19 +27,14 @@ export async function requestLectureCouseFeedback(
     answerSheet?.round || 1
   );
 
-  const isDoneSurvey = answerSheet?.progress === 'Complete';
-
   if (lectureSurveySummary !== undefined || null) {
     const feedback = await findReviewSummary(lectureSurveySummary.id);
-
     if (feedback === undefined) {
       return;
     }
-
     const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
       return i.denizenId;
     });
-
     const feedbackReviewProfile = await findProfilePhoto([
       'r6zu@ne1-m2',
       'r57s@ne1-m2', //feedbackDenizenIds
@@ -76,18 +71,24 @@ export async function requestLectureCouseFeedback(
 
     const { summaryItems } = feedback.answerSummary;
     const totalObject = summaryItems.numberCountMap || {};
-
-    const totalValues = Object.values(totalObject).reverse() || [0];
-
+    const isDoneSurvey = answerSheet?.progress === 'Complete';
+    const reversedValues = Object.values(totalObject).reverse() || [0];
     const totalCount =
-      totalValues.reduce((totalCount, count) => {
+      reversedValues.reduce((totalCount, count) => {
         return totalCount + (count || 0);
       }, 0) || 0;
+    const sumOfValues =
+      reversedValues.reduce((sum, count, index) => {
+        const value = count * (5 - index) || 0;
+        return sum + value;
+      }, 0) || 0;
+    const average = sumOfValues / totalCount || 0;
 
     setLectureCourseSatisfaction({
       AnswerSummaries: feedback.answerSummary,
-      totalValues,
+      reversedValues,
       totalCount,
+      average,
       surveyCaseId: lectureSurvey.surveyCaseId,
       isDoneSurvey,
     });

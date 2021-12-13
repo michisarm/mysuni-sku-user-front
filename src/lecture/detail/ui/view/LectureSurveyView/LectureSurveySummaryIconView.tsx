@@ -13,7 +13,7 @@ interface LectureSurveyItemProps {
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
 }
 
-const LectureSurveySummaryChoiceFixedView: React.FC<LectureSurveyItemProps> =
+const LectureSurveySummaryIconView: React.FC<LectureSurveyItemProps> =
   function LectureSurveySummaryChoiceFixedView({
     lectureSurveyItem,
     lectureSurveyAnswerItem,
@@ -203,4 +203,4 @@ const LectureSurveySummaryChoiceFixedView: React.FC<LectureSurveyItemProps> =
     );
   };
 
-export default LectureSurveySummaryChoiceFixedView;
+export default LectureSurveySummaryIconView;

@@ -26,8 +26,9 @@ export interface AnswerSummaries {
 
 export interface SurveySatisfaction {
   AnswerSummaries: AnswerSummaries;
-  totalValues: number[];
+  reversedValues: number[];
   totalCount: number;
+  average: number;
   surveyCaseId: string;
   isDoneSurvey: boolean;
 }

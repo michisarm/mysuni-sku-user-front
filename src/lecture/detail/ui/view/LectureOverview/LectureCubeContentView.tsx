@@ -24,6 +24,7 @@ import {
   getLectureCubes,
   useLectureCoureSatisfaction,
   initLectureCourseSatisfaction,
+  useLectureCoureSFeedbackReview,
 } from '../../../store/LectureOverviewStore';
 import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -73,8 +74,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
     const params = useParams<Params>();
     const [fixed, setFixed] = useState<boolean>(false);
     const lectureInstructor = useLectureInstructor();
-    const [profileOpen, setProfileOpen] = useState<boolean>(false);
-    const [profileInfo, setProfileInfo] = useState<profileParams>();
 
     useEffect(() => {
       requestLectureCardInstructor(params.cardId);
@@ -118,6 +117,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
 
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
+    const reviewAnswers = useLectureCoureSFeedbackReview();
 
     const cubes = getLectureCubes();
     const cubeCounts = cubes?.length || 0;
@@ -142,17 +142,20 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 id="cube-ContentsTap-Overview"
               />
             </a>
-            {satisfaction.surveyCaseId && isOnlyOneCube && (
-              <a
-                onClick={reviewHashClick}
-                className={activatedTab === 'review' ? 'lms-act' : ''}
-                data-area={Area.CUBE_TAB}
-                data-action={Action.CLICK}
-                data-action-name="CARD TAB 클릭::Review"
-              >
-                Review
-              </a>
-            )}
+            {satisfaction.surveyCaseId &&
+              isOnlyOneCube &&
+              reviewAnswers?.length !== 0 &&
+              reviewAnswers !== undefined && (
+                <a
+                  onClick={reviewHashClick}
+                  className={activatedTab === 'review' ? 'lms-act' : ''}
+                  data-area={Area.CUBE_TAB}
+                  data-action={Action.CLICK}
+                  data-action-name="CARD TAB 클릭::Review"
+                >
+                  Review
+                </a>
+              )}
             {lectureClassroom && (
               <a
                 onClick={classroomHashClick}
@@ -226,9 +229,10 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 <LectureCubeInfoView lectureDescription={lectureDescription} />
               )}
               {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-              {isOnlyOneCube && satisfaction.surveyCaseId && (
-                <LectureCourseFeedbackView />
-              )}
+              {isOnlyOneCube &&
+                reviewAnswers?.length !== 0 &&
+                reviewAnswers !== undefined &&
+                satisfaction.surveyCaseId && <LectureCourseFeedbackView />}
               {lectureInstructor?.instructors &&
                 lectureInstructor.instructors.length > 0 && (
                   <LectureClassroomInstructorView

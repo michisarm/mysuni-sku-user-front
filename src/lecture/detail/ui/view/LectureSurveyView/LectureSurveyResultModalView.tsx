@@ -20,7 +20,8 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import LectureSurveySummaryChoiceFixedView from './LectureSurveySummaryChoiceFixedView';
+import LectureSurveySummaryIconView from './LectureSurveySummaryIconView';
+import LectureSurveySummaryReviewView from './LectureSurveySummaryReviewView';
 
 interface Props {
   trigger?: React.ReactNode;
@@ -120,13 +121,10 @@ const LectureSurveyResultModalView: React.FC<Props> =
           <Modal.Content scrolling={true} style={{ maxHeight: '80vh' }}>
             <Modal.Description>
               {lectureSurvey.surveyItems.map((lectureSurveyItem) => {
-                if (
-                  lectureSurveyItem.type === 'ChoiceFixed' &&
-                  lectureSurveyItem.no === 1
-                ) {
+                if (lectureSurveyItem.type === 'Review') {
                   return (
                     <>
-                      <LectureSurveySummaryChoiceFixedView
+                      <LectureSurveySummaryReviewView
                         lectureSurveyItem={lectureSurveyItem}
                         lectureSurveyAnswerItem={
                           lectureSurveyState &&
@@ -141,11 +139,25 @@ const LectureSurveyResultModalView: React.FC<Props> =
                     </>
                   );
                 }
-                if (
-                  lectureSurveyItem.type === 'Choice' ||
-                  (lectureSurveyItem.type === 'ChoiceFixed' &&
-                    (lectureSurveyItem.no === 2 || lectureSurveyItem.no === 3))
-                ) {
+                if (lectureSurveyItem.type === 'Icon') {
+                  return (
+                    <>
+                      <LectureSurveySummaryIconView
+                        lectureSurveyItem={lectureSurveyItem}
+                        lectureSurveyAnswerItem={
+                          lectureSurveyState &&
+                          lectureSurveyState.answerItem.find(
+                            (c) =>
+                              c.questionNumber ===
+                              lectureSurveyItem.questionNumber
+                          )
+                        }
+                        key={lectureSurveyItem.id}
+                      />
+                    </>
+                  );
+                }
+                if (lectureSurveyItem.type === 'Choice') {
                   return (
                     <>
                       <LectureSurveySummaryChoiceView

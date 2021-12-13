@@ -7,7 +7,6 @@ import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { toggleCubeBookmark } from '../../../service/useLectureCourseOverview/useLectureCubeSummary';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
-import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 import ReactGA from 'react-ga';
 
@@ -221,7 +220,6 @@ function getDifficultyLevelIcon(difficultyLevel: DifficultyLevel) {
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
   lectureInstructor?: LectureInstructor;
-  lectureReview?: LectureReview;
   lectureClassroom?: LectureClassroom;
 }
 
@@ -229,7 +227,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
   function LectureCubeSummaryView({
     lectureSummary,
     lectureInstructor,
-    lectureReview,
     lectureClassroom,
   }) {
     const params = useLectureParams();
@@ -306,12 +303,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
-    const percentNumber = (
-      ((satisfaction.totalValues[0] + satisfaction.totalValues[1]) /
-        satisfaction.totalCount) *
-      100
-    ).toFixed(1);
-    console.log(isOnlyOneCube, satisfaction.surveyCaseId);
     return (
       <div
         // className="course-info-header"
@@ -532,43 +523,50 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
           <div className="title-area">
             <div className="header-deatil">
               <div className="item">
-                {isOnlyOneCube && satisfaction.surveyCaseId && (
-                  <div className="header-feedback">
-                    {satisfaction?.totalCount !== 0 ? (
-                      <div className="fb-left">
-                        <span className="fb-text">
-                          <Icon className="like-20-px" />
-                          만족 {percentNumber}%
-                        </span>
-                        <span className="fb-cnt">
-                          ({`${satisfaction?.totalCount}`}명)
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="fb-left">
-                        <span className="fb-text">
-                          <Icon className="like-20-px" />
-                          만족 -
-                        </span>
-                      </div>
-                    )}
-                    <div className="fb-right">
-                      {!satisfaction.isDoneSurvey && (
-                        <Button
-                          className="re-feedback"
-                          onClick={() =>
-                            history.push(
-                              `/lecture/card/${params?.cardId}/cube/${params?.cubeId}/survey/${params?.cubeType}`
-                            )
+                {isOnlyOneCube &&
+                  satisfaction.surveyCaseId &&
+                  lectureSummary.cubeType !== 'Task' &&
+                  lectureSummary.cubeType !== 'Community' &&
+                  lectureSummary.cubeType !== 'Discussion' && (
+                    <>
+                      <div className="header-rating">
+                        <Rating
+                          defaultRating={5}
+                          maxRating={5}
+                          rating={
+                            satisfaction?.totalCount !== 0
+                              ? satisfaction && satisfaction.average
+                              : 5
                           }
-                        >
-                          <Icon className="edit16" />
-                          평가하기
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                )}
+                          disabled
+                          className="fixed-rating"
+                        />
+                        <span>
+                          {satisfaction?.totalCount !== 0
+                            ? `${Math.floor(satisfaction.average * 10) / 10}(${
+                                satisfaction?.totalCount
+                              }
+                              ${getPolyglotText('명', 'cicl-학상본문-명')})`
+                            : '0'}
+                        </span>
+                      </div>
+                      <div className="fb-right">
+                        {!satisfaction.isDoneSurvey && (
+                          <Button
+                            className="re-feedback"
+                            onClick={() =>
+                              history.push(
+                                `/lecture/card/${params?.cardId}/cube/${params?.cubeId}/survey/${params?.cubeType}`
+                              )
+                            }
+                          >
+                            <Icon className="edit16" />
+                            평가하기
+                          </Button>
+                        )}
+                      </div>
+                    </>
+                  )}
               </div>
             </div>
           </div>
