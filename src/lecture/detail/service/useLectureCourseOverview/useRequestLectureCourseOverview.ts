@@ -45,7 +45,7 @@ export function useRequestLectureCardOverview() {
         requestLectureCardPrecourse(cardId);
         requestLectureCardRelations(cardId);
         requestLectureCardSubcategory(cardId);
-        requestLectureCardReview(cardId);
+        //requestLectureCardReview(cardId);
         requestLectureCardSummary(cardId);
         requestLectureCardTags(cardId);
         requestLectureSurvey();
@@ -61,7 +61,7 @@ export function useRequestLectureCardOverview() {
       setLectureInstructor();
       setLecturePrecourse();
       setLectureRelations();
-      setLectureReview();
+      // setLectureReview();
       setLectureSubcategory();
       setLectureCardSummary();
       setLectureTags();

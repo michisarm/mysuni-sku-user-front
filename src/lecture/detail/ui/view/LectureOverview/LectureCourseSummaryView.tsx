@@ -1,12 +1,11 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
+import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
-import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
 import StampCompleted from '../../../../../style/media/stamp-completed.svg';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
@@ -38,7 +37,6 @@ function numberWithCommas(x: number) {
 
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
-  lectureReview?: LectureReview;
   lectureStructure: LectureStructure;
   menuAuth: PageElement[];
 }
@@ -100,7 +98,6 @@ function getColor(collegeId: string) {
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
   function LectureCourseSummaryView({
     lectureSummary,
-    lectureReview,
     lectureStructure,
     menuAuth,
   }) {
@@ -199,12 +196,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     }
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
-
-    const percentNumber = (
-      ((satisfaction.totalValues[0] + satisfaction.totalValues[1]) /
-        satisfaction.totalCount) *
-      100
-    ).toFixed(1);
 
     return (
       <div className="course-info-header" data-area={Area.CARD_HEADER}>
@@ -321,25 +312,28 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
             <div className="header-deatil">
               <div className="item">
                 {satisfaction.surveyCaseId && (
-                  <div className="header-feedback">
-                    {satisfaction?.totalCount !== 0 ? (
-                      <div className="fb-left">
-                        <span className="fb-text">
-                          <Icon className="like-20-px" />
-                          만족 {percentNumber}%
-                        </span>
-                        <span className="fb-cnt">
-                          ({`${satisfaction?.totalCount}`}명)
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="fb-left">
-                        <span className="fb-text">
-                          <Icon className="like-20-px" />
-                          만족 -
-                        </span>
-                      </div>
-                    )}
+                  <>
+                    <div className="header-rating">
+                      <Rating
+                        defaultRating={5}
+                        maxRating={5}
+                        rating={
+                          satisfaction?.totalCount !== 0
+                            ? satisfaction && satisfaction.average
+                            : 5
+                        }
+                        disabled
+                        className="fixed-rating"
+                      />
+                      <span>
+                        {satisfaction?.totalCount !== 0
+                          ? `${Math.floor(satisfaction.average * 10) / 10}(${
+                              satisfaction?.totalCount
+                            }
+                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
+                          : '0'}
+                      </span>
+                    </div>
                     <div className="fb-right">
                       {!satisfaction.isDoneSurvey && (
                         <Button
@@ -355,7 +349,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                         </Button>
                       )}
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
             </div>

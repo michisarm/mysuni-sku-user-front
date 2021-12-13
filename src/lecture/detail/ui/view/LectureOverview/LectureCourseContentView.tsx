@@ -23,6 +23,7 @@ import LectureCourseFeedbackView from './LectureCourseFeedbackView';
 import {
   useLectureCoureSatisfaction,
   initLectureCourseSatisfaction,
+  useLectureCoureSFeedbackReview,
 } from 'lecture/detail/store/LectureOverviewStore';
 
 interface LectureCourseContentViewProps {
@@ -79,6 +80,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> =
     }, []);
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
+    const reviewAnswers = useLectureCoureSFeedbackReview();
 
     return (
       <>
@@ -99,17 +101,19 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> =
                 id="Course-ContentsView-Overview"
               />
             </a>
-            {satisfaction.surveyCaseId && (
-              <a
-                onClick={reviewHashClick}
-                className={activatedTab === 'review' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
-                data-action={Action.CLICK}
-                data-action-name="CARD TAB 클릭::Review"
-              >
-                Review
-              </a>
-            )}
+            {satisfaction.surveyCaseId &&
+              reviewAnswers !== undefined &&
+              reviewAnswers?.length !== 0 && (
+                <a
+                  onClick={reviewHashClick}
+                  className={activatedTab === 'review' ? 'lms-act' : ''}
+                  data-area={Area.CARD_TAB}
+                  data-action={Action.CLICK}
+                  data-action-name="CARD TAB 클릭::Review"
+                >
+                  Review
+                </a>
+              )}
             {lectureInstructor &&
               Array.isArray(lectureInstructor.instructors) &&
               lectureInstructor.instructors.length > 0 && (
@@ -173,7 +177,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> =
           {lectureFile && <LectureFileView lectureFile={lectureFile} />}
           {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
         </div>
-        {satisfaction.surveyCaseId && <LectureCourseFeedbackView />}
+        {satisfaction.surveyCaseId &&
+          reviewAnswers?.length !== 0 &&
+          reviewAnswers !== undefined && <LectureCourseFeedbackView />}
         {lectureInstructor &&
           Array.isArray(lectureInstructor.instructors) &&
           lectureInstructor.instructors.length > 0 && (

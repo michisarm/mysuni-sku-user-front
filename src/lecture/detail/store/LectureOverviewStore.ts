@@ -90,8 +90,9 @@ const initLectureCourseSatisfaction = (): SurveySatisfaction => {
       },
       surveySummaryId: '',
     },
-    totalValues: [0],
+    reversedValues: [0],
     totalCount: 0,
+    average: 0,
     surveyCaseId: '',
     isDoneSurvey: false,
   };

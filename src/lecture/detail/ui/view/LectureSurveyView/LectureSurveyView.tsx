@@ -8,7 +8,7 @@ import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceFixedView from './LectureSurveyChoiceFixedView';
+import LectureSurveyChoiceFixedView from './LectureSurveyReviewView';
 import {
   saveCommunitySurveyState,
   saveLectureSurveyState,
@@ -32,6 +32,8 @@ import {
 import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import LectureSurveyReviewView from './LectureSurveyReviewView';
+import LectureSurveyIconView from './LectureSurveyIconView';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -104,12 +106,15 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       }
     }, [lectureStructure, currentMenu?.name]);
 
+    console.log(lectureSurvey, 'lectureSurvey');
+
     return (
       <>
-        {/* <div className="course-info-header" data-area={Area.CUBE_HEADER}>
+        <div className="course-info-header" data-area={Area.CUBE_HEADER}>
           <div className="survey-header">
-            <div className="survey-header-left test_ing width50">
-              {surveyTitle}
+            <div className="survey-header-left test_ing">
+              <i className="icon testHeader02" />
+              Survey
             </div>
             <div
               className="survey-header-right"
@@ -126,7 +131,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
                 )}
             </div>
           </div>
-        </div> */}
+        </div>
 
         {lectureSurveyState !== undefined &&
           (lectureSurveyState.state === 'Progress' ||
@@ -148,9 +153,26 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
                 />
               );
             }
-            if (lectureSurveyItem.type === 'ChoiceFixed') {
+
+            if (lectureSurveyItem.type === 'Review') {
               return (
-                <LectureSurveyChoiceFixedView
+                <LectureSurveyReviewView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Icon') {
+              return (
+                <LectureSurveyIconView
                   lectureSurveyItem={lectureSurveyItem}
                   lectureSurveyAnswerItem={
                     lectureSurveyState &&
