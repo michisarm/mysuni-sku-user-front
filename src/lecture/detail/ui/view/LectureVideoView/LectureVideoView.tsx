@@ -182,7 +182,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
     }, [params.cubeId]);
 
     const [quizPop, setQuizPop] = useState<boolean>(false);
-    const [isSticked, setIsSticked] = useState<boolean>(false);
     const [quizShowTime, setQuizShowTime] = useState<number[]>();
     const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
     const [quizCurrentTime, setQuizquizCurrentTime] = useState<number>(0);
@@ -313,9 +312,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
       }, 500);
     };
 
-    useEffect(() => {
-      setIsSticked(scroll > videoPosition && !enabled);
-    }, [scroll]);
+    const isSticked = scroll > videoPosition && !enabled;
 
     return (
       <div
