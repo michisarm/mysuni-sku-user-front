@@ -513,18 +513,16 @@ export function selectChoiceAnswer(
 
 export function selectReviewSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
-  value: number | string
+  value: string
 ) {
   const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
-
   if (lectureSurveyState === undefined) {
     return;
   }
   if (lectureSurveyState.state === 'Completed') {
     return;
   }
-  const next = value.toString();
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
     (c) => c.questionNumber === questionNumber
   );
@@ -534,7 +532,7 @@ export function selectReviewSentenceAnswer(
       {
         questionNumber,
         answerItemType: type,
-        itemNumbers: [next],
+        sentence: value,
         matrixItem: [
           {
             rowNumber: '',
@@ -550,6 +548,30 @@ export function selectReviewSentenceAnswer(
         },
       },
     ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        return {
+          ...c,
+          sentence: value,
+          matrixItem: [
+            {
+              rowNumber: '',
+              columnSelectedNumber: '',
+            },
+          ],
+          criteriaItem: {
+            names: {
+              defaultLanguage: '',
+              langStringMap: {},
+            },
+            index: 0,
+          },
+        };
+      } else {
+        return c;
+      }
+    });
   }
   setLectureSurveyState({ ...lectureSurveyState });
 }
