@@ -1,12 +1,7 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
-import React, { useState, useCallback, Fragment, ChangeEvent } from 'react';
+import React, { useState, useCallback, Fragment } from 'react';
 import { CheckboxProps, Radio } from 'semantic-ui-react';
-import {
-  selectChoiceAnswer,
-  selectReviewChoiceAnswer,
-  selectReviewSentenceAnswer,
-  selectSentenceAnswer,
-} from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
+import { selectChoiceFixedAnswer } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
@@ -20,38 +15,21 @@ interface CommonUseType {
   lectureSurveyState?: LectureSurveyState;
 }
 
-export default function LectureSurveyReviewView(props: CommonUseType) {
+export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
   const { lectureSurveyAnswerItem, lectureSurveyItem, lectureSurveyState } =
-    props;
-  const [placeholderText, setPlaceholderText] = useState('답변을 입력해주세요');
+    prop;
+
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-      console.log('클릭22');
       if (data.value === undefined) {
         return;
       }
-      selectReviewChoiceAnswer(lectureSurveyItem, data.value);
-      if (data.value !== 1 && data.value !== 2) {
-        setPlaceholderText(
-          '어떤 점이 특별히 좋았나요? 자세한 학습후기를 남겨주세요.'
-        );
-      } else {
-        setPlaceholderText(
-          '어떤 점을 개선하면 좋을까요? 개선 포인트를 남겨주세요.'
-        );
-      }
-    },
-    [lectureSurveyItem]
-  );
-  const onChangeTextValue = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      console.log('클릭');
-      selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
+      selectChoiceFixedAnswer(lectureSurveyItem, data.value);
     },
     [lectureSurveyItem]
   );
 
-  const { canMultipleAnswer } = lectureSurveyItem;
+  const { canMultipleAnswer, no } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {!canMultipleAnswer && (
@@ -122,32 +100,6 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
           </div>
         </div>
       )}
-
-      <div className="rev-edit">
-        <div className="edit-wrapper">
-          <textarea
-            rows={3}
-            placeholder={placeholderText}
-            value={lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-            onChange={onChangeTextValue}
-            readOnly={false}
-          />
-        </div>
-        <div className="rev-info">
-          <span>
-            {'입력해주신 내용은 과정 평가 리뷰로 활용될 수 있습니다.'}
-          </span>
-          <div className="cnt">
-            <strong>
-              {lectureSurveyAnswerItem !== undefined &&
-              lectureSurveyAnswerItem.sentence !== undefined
-                ? lectureSurveyAnswerItem.sentence.length
-                : 0}
-            </strong>
-            / 200
-          </div>
-        </div>
-      </div>
 
       {lectureSurveyState === undefined ||
         (lectureSurveyState.state === 'Progress' &&
