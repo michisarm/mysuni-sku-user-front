@@ -139,11 +139,25 @@ const LectureSurveyResultModalView: React.FC<Props> =
                     </>
                   );
                 }
-
-                if (
-                  lectureSurveyItem.type === 'Choice' ||
-                  lectureSurveyItem.type === 'ChoiceFixed'
-                ) {
+                if (lectureSurveyItem.type === 'ChoiceFixed') {
+                  return (
+                    <>
+                      <LectureSurveySummaryChoiceView
+                        lectureSurveyItem={lectureSurveyItem}
+                        lectureSurveyAnswerItem={
+                          lectureSurveyState &&
+                          lectureSurveyState.answerItem.find(
+                            (c) =>
+                              c.questionNumber ===
+                              lectureSurveyItem.questionNumber
+                          )
+                        }
+                        key={lectureSurveyItem.id}
+                      />
+                    </>
+                  );
+                }
+                if (lectureSurveyItem.type === 'Choice') {
                   return (
                     <>
                       <LectureSurveySummaryChoiceView

@@ -31,16 +31,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
         return totalCount + (count || 0);
       }, 0) || 0;
 
-    /*eslint-disable*/
-    // 각 선택지 최댓값 구해서 파란색으로 표시
-    const maxNum: number = Math.max.apply(
-      Math,
-      lectureSurveyItem.choices!.map((o) => {
-        return o.count === undefined ? 0 : o.count;
-      })
-    );
-    /*eslint-enable */
-
     return (
       <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
         <div className="course-survey-list">

@@ -5,7 +5,7 @@ import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOvervie
 import _ from 'lodash';
 //import { requestFeedbackSlideProfileInfo } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
-function chartSentenceText(num: number) {
+export function chartSentenceText(num: number) {
   if (num === 0) {
     return '매우 그렇다';
   } else if (num === 1) {
