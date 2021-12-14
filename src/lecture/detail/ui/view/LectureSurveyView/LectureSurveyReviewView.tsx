@@ -46,6 +46,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   const onChangeTextValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
       console.log('클릭');
+
       selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
     },
     [lectureSurveyItem]
@@ -156,7 +157,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             <div style={{ marginTop: '10px' }}>
               <Image
                 style={{ display: 'inline-block', marginRight: '5px' }}
-                src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-info-error-16-px.png"
               />
               <span
                 style={{
