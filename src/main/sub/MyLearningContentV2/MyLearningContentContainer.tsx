@@ -82,13 +82,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'LRSCards'
         ) && (
           <Abtest name="AB-2" nonExperimentalGroup="A">
-            <ExperimentalGroup name="A">
+            <ExperimentalGroup name="A" style={{marginBottom: '50px'}}>
               <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
               <LRSFromLearningPatternBased
                 profileMemberName={skProfile.profileViewName}
               />
             </ExperimentalGroup>
-            <ExperimentalGroup name="B">
+            <ExperimentalGroup name="B" style={{marginBottom: '50px'}}>
               <LRSFromLearningPatternBased
                 profileMemberName={skProfile.profileViewName}
               />
