@@ -27,3 +27,7 @@ export interface PathParams {
 export type useStateRefType<T> = {
   valueRef: React.MutableRefObject<T>;
 };
+
+export type ErrorWithMessage = {
+  message: string;
+};

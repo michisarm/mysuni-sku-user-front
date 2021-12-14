@@ -117,7 +117,12 @@ export function searchCardFilterData(decodedSearchValue: string) {
   setCard([]); // search에서 넘어온 원본 검색 data
   setAllowedCard([]); // 권한을 거친 data(필터를 선택하지 않은 data)
   setDisplayCard([]); // 화면에 노출할 data(필터를 선택하고 결과내재검색한 data)
+  let isCompleted = false;
   findPreCard(decodedSearchValue).then((searchResult) => {
+    if (isCompleted) {
+      // console.log('findCard is done');
+      return;
+    }
     if (searchResult === undefined) {
       setCollegeOptions([]);
       setOrganizerOptions([]);
@@ -163,6 +168,7 @@ export function searchCardFilterData(decodedSearchValue: string) {
   });
 
   findCard(decodedSearchValue, getPreRef() || '').then(async (searchResult) => {
+    isCompleted = true;
     if (searchResult === undefined) {
       setCollegeOptions([]);
       setOrganizerOptions([]);
@@ -633,7 +639,7 @@ export async function search(
       }
     }
   }
-  
+
   // search track
   debounceSearchActionTrack({
     email:
@@ -645,7 +651,10 @@ export async function search(
     area: Area.SEARCH,
     actionType: ActionType.GENERAL,
     action: Action.SEARCH,
-    actionName: (searchInSearchInfo?.inAgain ? '재검색::' + searchInSearchInfo.recentSearchValue + '::' : '검색::') + decodedSearchValue,
+    actionName:
+      (searchInSearchInfo?.inAgain
+        ? '재검색::' + searchInSearchInfo.recentSearchValue + '::'
+        : '검색::') + decodedSearchValue,
   } as ActionTrackParam);
 }
 

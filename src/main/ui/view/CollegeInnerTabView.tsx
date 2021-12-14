@@ -3863,7 +3863,7 @@ const panesEn = [
             </div>
             <div className="chart_belt">
               <div className="chart-left">
-                <img
+                <Image
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/icon-chart.png"
                   alt="세로:레벨2/ 레벨1"
                   className="ui image"

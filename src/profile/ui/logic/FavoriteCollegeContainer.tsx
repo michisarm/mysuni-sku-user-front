@@ -79,7 +79,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     const { skProfileService, collegeLectureCountService } = this.props;
     const { additionalUserInfo } = skProfileService!;
 
-    const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges: CollegeLectureCountRdo[] =
+      await collegeLectureCountService!.findCollegeLectureCounts();
     const collegeData = await findAllCollegeCache();
 
     // 필수 관심채널 필터링
@@ -141,20 +142,20 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   onSelectChannel(channel: IdName) {
-    let { favorites }: State = this.state;
-
+    const { favorites }: State = this.state;
+    let updatedFavorites: IdName[];
     if (
       favorites
         .map((favoriteChannel) => favoriteChannel.id)
         .includes(channel.id)
     ) {
-      favorites = favorites.filter(
+      updatedFavorites = favorites.filter(
         (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
-      favorites.push(channel);
+      updatedFavorites = [channel, ...favorites];
     }
-    this.setState({ favorites });
+    this.setState({ favorites: [...updatedFavorites] });
   }
 
   onReset() {
@@ -185,10 +186,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      collegeLectureCounts,
-      totalChannelCount,
-    } = this.props.collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } =
+      this.props.collegeLectureCountService!;
     const {
       selectedCollege,
       favorites,

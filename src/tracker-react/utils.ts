@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useStateRefType } from './types';
+import { useStateRefType, ErrorWithMessage } from './types';
 
 export const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -168,10 +168,33 @@ export function closest(el: any, selector: string) {
 
 export const findLinkElement = (el: EventTarget | null): HTMLElement | null => {
   if (el instanceof HTMLAnchorElement && el.href) {
-    return el
+    return el;
   }
   if (el instanceof HTMLElement && el.parentElement) {
-    return findLinkElement(el.parentElement)
+    return findLinkElement(el.parentElement);
   }
-  return null
+  return null;
+};
+
+function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
+  if (isErrorWithMessage(maybeError)) return maybeError;
+
+  try {
+    return new Error(JSON.stringify(maybeError));
+  } catch {
+    return new Error(String(maybeError));
+  }
+}
+
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error &&
+    typeof (error as Record<string, unknown>).message === 'string'
+  );
+}
+
+export function getErrorMessage(error: unknown) {
+  return toErrorWithMessage(error).message;
 }

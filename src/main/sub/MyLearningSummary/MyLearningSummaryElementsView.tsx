@@ -7,7 +7,7 @@ const PUBLIC_URL = `${process.env.PUBLIC_URL}`;
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
   <div className="main-personal-wrap">
-    <div className="main_personal" data-area={Area.MAIN_INFO}>
+    <div className="main_personal season" data-area={Area.MAIN_INFO}>
       {/* <table>
         <tbody>
           <tr> */}

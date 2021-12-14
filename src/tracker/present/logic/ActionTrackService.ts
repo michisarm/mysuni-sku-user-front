@@ -1,4 +1,4 @@
-import { trackAction, trackView } from 'tracker/present/apiclient';
+import { trackAction, trackView, trackLog } from 'tracker/present/apiclient';
 import {
   getPathValue,
   getCardRelId,
@@ -25,14 +25,21 @@ import {
   ViewContextModel,
   ActionTrackViewModel,
   Field,
+  ActionLog,
 } from 'tracker/model/ActionTrackModel';
-import { FieldType, ActionType, Action } from 'tracker/model/ActionType';
+import {
+  FieldType,
+  ActionType,
+  Action,
+  ActionLogType,
+} from 'tracker/model/ActionType';
 import {
   debounce,
   getElementsByClassName,
   getBrowserString,
   closest,
   findLinkElement,
+  getErrorMessage,
 } from 'tracker-react/utils';
 import { getCookie } from '@nara.platform/accent';
 
@@ -158,8 +165,7 @@ async function beforeActionTrack({
 }
 
 export const debounceSearchActionTrack = debounce(
-  (param: ActionTrackParam) => 
-    debounceActionTrack(param),
+  (param: ActionTrackParam) => debounceActionTrack(param),
   2000
 );
 
@@ -200,104 +206,116 @@ export async function actionTrackView({
   target,
   init,
 }: ActionTrackViewParam) {
-  
-  let auth = initAuth();
-  if (init) {
-    auth = await setAuth();
+  try {
+    let auth = initAuth();
+    if (init) {
+      auth = await setAuth();
 
-    // target=_blank, <a> 사용시 대응
-    const pvInit = await getPvInit();
-    if(pvInit){
-      area = pvInit.area;
-      referer = pvInit.referer;
-      refererSearch = pvInit.refererSearch;
-    }
-  } else {
-    auth = await getAuth();
-  }
-
-  // search setting
-  search = search ? decodeURI(search) : '';
-  refererSearch = refererSearch ? decodeURI(refererSearch) : '';
-
-  // pathname setting
-  pathName = path && !pathName ? await getPathName(path, search) : pathName;
-  refererName =
-    referer && !refererName
-      ? await getPathName(referer, refererSearch)
-      : refererName;
-
-  const abtest = await getAbtestUserTargets();
-
-  // field name setting
-  let fields = [];
-  fields.push(getPathValue(path, 'college', FieldType.College));
-  fields.push(getPathValue(path, 'channel', FieldType.Channel));
-  // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
-  fields.push(getPathValue(path, 'cube', FieldType.Cube));
-  const cardField = getPathValue(path, 'card', FieldType.Card);
-  if (cardField && cardField.id) {
-    fields.push(cardField);
-    const relFields = await getCardRelId(cardField.id);
-    if (relFields.length > 0) {
-      fields = [...fields, ...relFields];
-    }
-  }
-
-  const promises: any[] = [];
-  fields
-    .filter((field) => field != null)
-    .forEach((field) => {
-      if (field) {
-        promises.push(
-          new Promise<Field>(async (resolve, reject) => {
-            try {
-              resolve(setResultName(field));
-            } catch (e) {
-              reject(e);
-            }
-          })
-        );
+      // target=_blank, <a> 사용시 대응
+      const pvInit = await getPvInit();
+      if (pvInit) {
+        area = pvInit.area;
+        referer = pvInit.referer;
+        refererSearch = pvInit.refererSearch;
       }
-    });
-  Promise.all(promises)
-    .then((result) => {
-      const context: ViewContextModel = {
-        email,
-        browser,
-        path: window.location.origin + path + search,
-        pathName: pathName || null,
-        referer: referer
-          ? window.location.origin + referer + refererSearch
-          : null,
-        refererName: refererName || null,
-        areaType: areaType || null,
-        area: area || null,
-        areaId: areaId || null,
-        poc: mobileCheck() ? 'mobile' : 'web',
-      };
-      const actionTrackViewModel: ActionTrackViewModel = {
-        context,
-        auth,
-        abtest,
-        serviceType: getServiceType(path),
-        collegeId: result.find((r) => r.type === FieldType.College)?.id,
-        collegeName: result.find((r) => r.type === FieldType.College)?.name,
-        channelId: result.find((r) => r.type === FieldType.Channel)?.id,
-        channelName: result.find((r) => r.type === FieldType.Channel)?.name,
-        cardId: result.find((r) => r.type === FieldType.Card)?.id,
-        cardName: result.find((r) => r.type === FieldType.Card)?.name,
-        cubeId: result.find((r) => r.type === FieldType.Cube)?.id,
-        cubeName: result.find((r) => r.type === FieldType.Cube)?.name,
-        cubeType: getCubeType(path),
-      };
-      // console.log('event trackView', actionTrackViewModel);
-      trackView(actionTrackViewModel);
-    })
-    .catch((error) => {
-      // console.log("error!!", error);
-      throw error;
-    });
+    } else {
+      auth = await getAuth();
+    }
+
+    // search setting
+    search = search ? decodeURI(search) : '';
+    refererSearch = refererSearch ? decodeURI(refererSearch) : '';
+
+    // pathname setting
+    pathName = path && !pathName ? await getPathName(path, search) : pathName;
+    refererName =
+      referer && !refererName
+        ? await getPathName(referer, refererSearch)
+        : refererName;
+
+    const abtest = await getAbtestUserTargets();
+
+    // field name setting
+    let fields = [];
+    fields.push(getPathValue(path, 'college', FieldType.College));
+    fields.push(getPathValue(path, 'channel', FieldType.Channel));
+    // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
+    fields.push(getPathValue(path, 'cube', FieldType.Cube));
+    const cardField = getPathValue(path, 'card', FieldType.Card);
+    if (cardField && cardField.id) {
+      fields.push(cardField);
+      const relFields = await getCardRelId(cardField.id);
+      if (relFields.length > 0) {
+        fields = [...fields, ...relFields];
+      }
+    }
+
+    const promises: any[] = [];
+    fields
+      .filter((field) => field != null)
+      .forEach((field) => {
+        if (field) {
+          promises.push(
+            new Promise<Field>(async (resolve, reject) => {
+              try {
+                resolve(setResultName(field));
+              } catch (e) {
+                reject(e);
+              }
+            })
+          );
+        }
+      });
+    Promise.all(promises)
+      .then((result) => {
+        const context: ViewContextModel = {
+          email,
+          browser,
+          path: window.location.origin + path + search,
+          pathName: pathName || null,
+          referer: referer
+            ? window.location.origin + referer + refererSearch
+            : null,
+          refererName: refererName || null,
+          areaType: areaType || null,
+          area: area || null,
+          areaId: areaId || null,
+          poc: mobileCheck() ? 'mobile' : 'web',
+        };
+        const actionTrackViewModel: ActionTrackViewModel = {
+          context,
+          auth,
+          abtest,
+          serviceType: getServiceType(path),
+          collegeId: result.find((r) => r.type === FieldType.College)?.id,
+          collegeName: result.find((r) => r.type === FieldType.College)?.name,
+          channelId: result.find((r) => r.type === FieldType.Channel)?.id,
+          channelName: result.find((r) => r.type === FieldType.Channel)?.name,
+          cardId: result.find((r) => r.type === FieldType.Card)?.id,
+          cardName: result.find((r) => r.type === FieldType.Card)?.name,
+          cubeId: result.find((r) => r.type === FieldType.Cube)?.id,
+          cubeName: result.find((r) => r.type === FieldType.Cube)?.name,
+          cubeType: getCubeType(path),
+        };
+        // console.log('event trackView', actionTrackViewModel);
+        trackView(actionTrackViewModel);
+      })
+      .catch((e) => {
+        logger({
+          type: ActionLogType.ERROR_PV_VIEW_FUNCTION,
+          email,
+          browser,
+          message: getErrorMessage(e),
+        } as ActionLog);
+      });
+  } catch (e) {
+    logger({
+      type: ActionLogType.ERROR_PV_VIEW_PROMISE,
+      email,
+      browser,
+      message: getErrorMessage(e),
+    } as ActionLog);
+  }
 }
 
 export function scrollHorizontalTrack({
@@ -350,9 +368,10 @@ export function scrollSwiperHorizontalTrack({
   if (!area) {
     return;
   }
-  const scrollTarget = 'closest' in document.documentElement
-        ? element.closest('[data-action-name]')
-        : closest(element, '[data-action-name]');  
+  const scrollTarget =
+    'closest' in document.documentElement
+      ? element.closest('[data-action-name]')
+      : closest(element, '[data-action-name]');
   if (scrollTarget && scrollTarget instanceof HTMLElement) {
     if (scrollTarget.dataset.actionName) {
       actionName += '::' + scrollTarget.dataset.actionName;
@@ -399,18 +418,28 @@ export async function hoverTrack({ area, actionName, field }: HoverTrackParam) {
   } as ActionTrackParam);
 }
 
-export function pvInitSave(target: EventTarget, area: string, referer: string, refererSearch: string){
+export function pvInitSave(
+  target: EventTarget,
+  area: string,
+  referer: string,
+  refererSearch: string
+) {
   const atarget = findLinkElement(target);
   if (!(atarget instanceof HTMLAnchorElement)) {
     return;
   }
   const href = atarget.getAttribute('href');
-  if(!href){
+  if (!href) {
     return;
   }
-  if(atarget.target && atarget.target === '_blank'){
-    setPvInit({area, referer, refererSearch});
-  } else if(/^http|https/.test(href)){
-    setPvInit({area, referer, refererSearch});
+  if (atarget.target && atarget.target === '_blank') {
+    setPvInit({ area, referer, refererSearch });
+  } else if (/^http|https/.test(href)) {
+    setPvInit({ area, referer, refererSearch });
   }
+}
+
+export function logger(pvlog: ActionLog) {
+  pvlog.path = window.location.href;
+  trackLog(pvlog);
 }

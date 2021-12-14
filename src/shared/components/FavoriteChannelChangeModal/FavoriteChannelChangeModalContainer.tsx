@@ -153,16 +153,17 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 
   onToggleChannel(channelId: string) {
-    let { favoriteChannels }: State = this.state;
+    const { favoriteChannels }: State = this.state;
 
+    let updatedFavoriteChannels: string[];
     if (favoriteChannels.includes(channelId)) {
-      favoriteChannels = favoriteChannels.filter(
+      updatedFavoriteChannels = favoriteChannels.filter(
         (favoriteChannelId) => favoriteChannelId !== channelId
       );
     } else {
-      favoriteChannels.push(channelId);
+      updatedFavoriteChannels = [channelId, ...favoriteChannels];
     }
-    this.setState({ favoriteChannels: [...favoriteChannels] });
+    this.setState({ favoriteChannels: [...updatedFavoriteChannels] });
   }
 
   render() {
