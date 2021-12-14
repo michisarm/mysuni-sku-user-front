@@ -35,16 +35,6 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
         return totalCount + (count || 0);
       }, 0) || 0;
 
-    /*eslint-disable*/
-    // 각 선택지 최댓값 구해서 파란색으로 표시
-    const maxNum: number = Math.max.apply(
-      Math,
-      lectureSurveyItem.choices!.map((o) => {
-        return o.count === undefined ? 0 : o.count;
-      })
-    );
-    /*eslint-enable */
-
     const [number, setNumber] = useState(9);
 
     const setCheckNumber = () => {
@@ -89,8 +79,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
           <div>
             {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
           </div>
-          {!canMultipleAnswer &&
-            choices &&
+          {choices &&
             choices.map((choice, index) => {
               const choiceAvg =
                 choice.count !== undefined &&
@@ -165,7 +154,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
                   answerList
                     ?.filter(
                       (f) =>
-                        f.answerItemType === 'Essay' &&
+                        f.answerItemType === 'Review' &&
                         f.questionNumber === lectureSurveyItem.questionNumber
                     )
                     .map((answer) =>
