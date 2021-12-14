@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Label, Icon } from 'semantic-ui-react';
 import LectureCourseFeedbackSlide from './LectureCourseFeedbackSlide';
 import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOverviewStore';
+import _ from 'lodash';
 //import { requestFeedbackSlideProfileInfo } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
 function chartSentenceText(num: number) {
@@ -25,6 +26,8 @@ export default function LectureCourseFeedbackView() {
   }
 
   const { reversedValues, totalCount } = answerSummary;
+
+  const topValue = _.max(reversedValues) || 0;
 
   return (
     <div className="badge-detail" id="lms-review">
@@ -57,12 +60,21 @@ export default function LectureCourseFeedbackView() {
                         </div>
                         <div className="item">
                           <div className="chart-bar">
-                            <div
-                              className="percent top"
-                              style={{
-                                width: `${percentNumber}%`,
-                              }}
-                            />
+                            {topValue === num ? (
+                              <div
+                                className="percent top"
+                                style={{
+                                  width: `${percentNumber}%`,
+                                }}
+                              />
+                            ) : (
+                              <div
+                                className="percent"
+                                style={{
+                                  width: `${percentNumber}%`,
+                                }}
+                              />
+                            )}
                           </div>
                           <span>{percentNumber}%</span>
                         </div>
