@@ -1,4 +1,10 @@
-import { Action, ActionType, Area, FieldType } from 'tracker/model/ActionType';
+import {
+  Action,
+  ActionType,
+  Area,
+  FieldType,
+  ActionLogType,
+} from 'tracker/model/ActionType';
 
 export interface ActionTrackParam {
   email: string;
@@ -142,4 +148,12 @@ export interface PvInit {
   area: string;
   referer: string;
   refererSearch: string;
+}
+
+export interface ActionLog {
+  type: ActionLogType;
+  email: string;
+  browser: string;
+  message: any;
+  path?: string;
 }
