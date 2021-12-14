@@ -456,6 +456,7 @@ export function selectChoiceAnswer(
 ) {
   const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
+  console.log(lectureSurveyState, 'lectureSurveyState');
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -490,6 +491,42 @@ export function selectChoiceAnswer(
         } else {
           return { ...c, itemNumbers: [next] };
         }
+      } else {
+        return c;
+      }
+    });
+  }
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectReviewAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: string
+) {
+  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        sentence: value,
+      },
+    ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        return { ...c, sentence: value };
       } else {
         return c;
       }

@@ -9,7 +9,10 @@ type LectureSurveyItemType =
   | 'Essay'
   | 'Date'
   | 'Boolean'
-  | 'Matrix';
+  | 'Matrix'
+  | 'Review'
+  | 'ChoiceFixed';
+
 // Question
 export default interface Question {
   id: string;

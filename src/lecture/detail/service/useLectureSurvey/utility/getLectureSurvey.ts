@@ -324,6 +324,8 @@ async function parseSurveyForm(
   const title = langStringsToString(titles, langSupports);
   const surveyItems = remoteQuestions.map((question) => {
     switch (question.questionItemType) {
+      // case 'Review': return ;
+      // case 'ChoiceFixed': return ;
       case 'Choice':
         return parseChoice(question, langSupports, lectureSurveyAnswerSummary);
       case 'Essay':

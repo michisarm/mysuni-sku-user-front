@@ -8,7 +8,7 @@ import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceFixedView from './LectureSurveyReviewView';
+import LectureSurveyChoiceFixedView from './LectureSurveyChoiceFixedView';
 import {
   saveCommunitySurveyState,
   saveLectureSurveyState,
@@ -33,7 +33,7 @@ import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import LectureSurveyReviewView from './LectureSurveyReviewView';
-import LectureSurveyIconView from './LectureSurveyIconView';
+import LectureSurveyIconView from './LectureSurveyChoiceFixedView';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -106,8 +106,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       }
     }, [lectureStructure, currentMenu?.name]);
 
-    console.log(lectureSurvey, 'lectureSurvey');
-
     return (
       <>
         <div className="course-info-header" data-area={Area.CUBE_HEADER}>
@@ -170,9 +168,9 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
                 />
               );
             }
-            if (lectureSurveyItem.type === 'Icon') {
+            if (lectureSurveyItem.type === 'ChoiceFixed') {
               return (
-                <LectureSurveyIconView
+                <LectureSurveyChoiceFixedView
                   lectureSurveyItem={lectureSurveyItem}
                   lectureSurveyAnswerItem={
                     lectureSurveyState &&
