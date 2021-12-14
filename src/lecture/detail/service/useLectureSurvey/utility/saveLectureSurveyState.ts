@@ -197,6 +197,7 @@ async function coreSubmitLectureSurveyState() {
     answerSheetCdo
   );
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
+  console.log('api완료?');
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
   // reactAlert({
   //   title: getPolyglotText('알림', 'survey-save-alert2'),
@@ -510,18 +511,20 @@ export function selectChoiceAnswer(
   setLectureSurveyState({ ...lectureSurveyState });
 }
 
-export function selectReviewAnswer(
+export function selectReviewSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
-  value: string
+  value: number | string
 ) {
   const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
+
   if (lectureSurveyState === undefined) {
     return;
   }
   if (lectureSurveyState.state === 'Completed') {
     return;
   }
+  const next = value.toString();
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
     (c) => c.questionNumber === questionNumber
   );
@@ -531,18 +534,244 @@ export function selectReviewAnswer(
       {
         questionNumber,
         answerItemType: type,
-        sentence: value,
+        itemNumbers: [next],
+        matrixItem: [
+          {
+            rowNumber: '',
+            columnSelectedNumber: '',
+          },
+        ],
+        criteriaItem: {
+          names: {
+            defaultLanguage: '',
+            langStringMap: {},
+          },
+          index: 0,
+        },
+      },
+    ];
+  }
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectReviewChoiceAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: number | string
+) {
+  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const next = value.toString();
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  console.log(lectureSurveyAnswerItem, '이거 언디파?');
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        itemNumbers: [next],
+        matrixItem: [
+          {
+            rowNumber: '',
+            columnSelectedNumber: '',
+          },
+        ],
+        criteriaItem: {
+          names: {
+            defaultLanguage: '',
+            langStringMap: {},
+          },
+          index: 0,
+        },
       },
     ];
   } else {
     lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
       if (c.questionNumber === questionNumber) {
-        return { ...c, sentence: value };
+        if (canMultipleAnswer) {
+          if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
+            return {
+              ...c,
+              itemNumbers: c.itemNumbers.filter((d) => d !== next),
+              matrixItem: [
+                {
+                  rowNumber: '',
+                  columnSelectedNumber: '',
+                },
+              ],
+              criteriaItem: {
+                names: {
+                  defaultLanguage: '',
+                  langStringMap: {},
+                },
+                index: 0,
+              },
+            };
+          } else {
+            return {
+              ...c,
+              itemNumbers: [...(c.itemNumbers || []), next],
+              matrixItem: [
+                {
+                  rowNumber: '',
+                  columnSelectedNumber: '',
+                },
+              ],
+              criteriaItem: {
+                names: {
+                  defaultLanguage: '',
+                  langStringMap: {},
+                },
+                index: 0,
+              },
+            };
+          }
+        } else {
+          return {
+            ...c,
+            itemNumbers: [next],
+            matrixItem: [
+              {
+                rowNumber: '',
+                columnSelectedNumber: '',
+              },
+            ],
+            criteriaItem: {
+              names: {
+                defaultLanguage: '',
+                langStringMap: {},
+              },
+              index: 0,
+            },
+          };
+        }
       } else {
         return c;
       }
     });
   }
+  console.log(lectureSurveyState, '이건바귀?');
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectChoiceFixedAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: number | string
+) {
+  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const next = value.toString();
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        itemNumbers: [next],
+        matrixItem: [
+          {
+            rowNumber: '',
+            columnSelectedNumber: '',
+          },
+        ],
+        criteriaItem: {
+          names: {
+            defaultLanguage: '',
+            langStringMap: {},
+          },
+          index: 0,
+        },
+        sentence: '',
+      },
+    ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        if (canMultipleAnswer) {
+          if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
+            return {
+              ...c,
+              itemNumbers: c.itemNumbers.filter((d) => d !== next),
+              matrixItem: [
+                {
+                  rowNumber: '',
+                  columnSelectedNumber: '',
+                },
+              ],
+              criteriaItem: {
+                names: {
+                  defaultLanguage: '',
+                  langStringMap: {},
+                },
+                index: 0,
+              },
+              sentence: '',
+            };
+          } else {
+            return {
+              ...c,
+              itemNumbers: [...(c.itemNumbers || []), next],
+              matrixItem: [
+                {
+                  rowNumber: '',
+                  columnSelectedNumber: '',
+                },
+              ],
+              criteriaItem: {
+                names: {
+                  defaultLanguage: '',
+                  langStringMap: {},
+                },
+                index: 0,
+              },
+              sentence: '',
+            };
+          }
+        } else {
+          return {
+            ...c,
+            itemNumbers: [next],
+            matrixItem: [
+              {
+                rowNumber: '',
+                columnSelectedNumber: '',
+              },
+            ],
+            criteriaItem: {
+              names: {
+                defaultLanguage: '',
+                langStringMap: {},
+              },
+              index: 0,
+            },
+            sentence: '',
+          };
+        }
+      } else {
+        return c;
+      }
+    });
+  }
+  console.log(lectureSurveyState, '픽스드내부 실행됨?');
   setLectureSurveyState({ ...lectureSurveyState });
 }
 

@@ -3,6 +3,8 @@ import React, { useState, useCallback, Fragment, ChangeEvent } from 'react';
 import { CheckboxProps, Radio } from 'semantic-ui-react';
 import {
   selectChoiceAnswer,
+  selectReviewChoiceAnswer,
+  selectReviewSentenceAnswer,
   selectSentenceAnswer,
 } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
@@ -24,10 +26,11 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   const [placeholderText, setPlaceholderText] = useState('답변을 입력해주세요');
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+      console.log('클릭22');
       if (data.value === undefined) {
         return;
       }
-      selectChoiceAnswer(lectureSurveyItem, data.value);
+      selectReviewChoiceAnswer(lectureSurveyItem, data.value);
       if (data.value !== 1 && data.value !== 2) {
         setPlaceholderText(
           '어떤 점이 특별히 좋았나요? 자세한 학습후기를 남겨주세요.'
@@ -42,7 +45,8 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   );
   const onChangeTextValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      selectSentenceAnswer(lectureSurveyItem, e.target.value);
+      console.log('클릭');
+      selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
     },
     [lectureSurveyItem]
   );

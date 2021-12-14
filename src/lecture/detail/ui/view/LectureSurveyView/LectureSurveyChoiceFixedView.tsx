@@ -1,7 +1,7 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
 import React, { useState, useCallback, Fragment } from 'react';
 import { CheckboxProps, Radio } from 'semantic-ui-react';
-import { selectChoiceAnswer } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
+import { selectChoiceFixedAnswer } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
@@ -24,7 +24,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
       if (data.value === undefined) {
         return;
       }
-      selectChoiceAnswer(lectureSurveyItem, data.value);
+      selectChoiceFixedAnswer(lectureSurveyItem, data.value);
     },
     [lectureSurveyItem]
   );
