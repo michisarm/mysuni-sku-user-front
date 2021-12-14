@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Image } from 'semantic-ui-react';
+import { Icon, Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import {
@@ -8,6 +8,22 @@ import {
 } from 'lecture/detail/store/LectureSurveyStore';
 import { SkProfileService } from 'profile/stores';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
+import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOverviewStore';
+import _ from 'lodash';
+
+function chartSentenceText(num: number) {
+  if (num === 0) {
+    return '매우 그렇다';
+  } else if (num === 1) {
+    return '그렇다';
+  } else if (num === 2) {
+    return '보통이다';
+  } else if (num === 3) {
+    return '아니다';
+  } else if (num === 4) {
+    return '전혀 아니다';
+  }
+}
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -63,13 +79,60 @@ const LectureSurveySummaryIconView: React.FC<LectureSurveyItemProps> =
       iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important-3.png`;
     }
 
+    const iconSurvey = choices
+      ?.map((item) => {
+        return item.count || 0;
+      })
+      .reverse();
+    const topValue = _.max(iconSurvey) || 0;
+
     return (
       <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
         <div className="course-survey-list">
           <div>
             {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
           </div>
-          {!canMultipleAnswer &&
+
+          <div className="fb-chart">
+            <ul className="chart-list">
+              {iconSurvey &&
+                iconSurvey.map((item, i) => {
+                  const percentNumber = ((item / totalCount) * 100).toFixed(1);
+                  console.log(item, 'item');
+                  console.log(percentNumber, 'percentNumber');
+                  console.log(totalCount, 'totalCount');
+                  return (
+                    <li className="chart-item">
+                      <div className="item-text">
+                        <Icon className={`feedback-18px face${5 - i}`} />
+                        <strong>{chartSentenceText(i)}</strong>
+                      </div>
+                      <div className="item">
+                        <div className="chart-bar">
+                          {topValue === item ? (
+                            <div
+                              className="percent top"
+                              style={{
+                                width: `${percentNumber}%`,
+                              }}
+                            />
+                          ) : (
+                            <div
+                              className="percent"
+                              style={{
+                                width: `${percentNumber}%`,
+                              }}
+                            />
+                          )}
+                        </div>
+                        <span>{percentNumber}%</span>
+                      </div>
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+          {/* {!canMultipleAnswer &&
             choices &&
             choices.map((choice, index) => {
               const choiceAvg =
@@ -133,7 +196,7 @@ const LectureSurveySummaryIconView: React.FC<LectureSurveyItemProps> =
                   </li>
                 </Fragment>
               );
-            })}
+            })} */}
         </div>
       </LectureSurveySummaryChoiceLayout>
     );

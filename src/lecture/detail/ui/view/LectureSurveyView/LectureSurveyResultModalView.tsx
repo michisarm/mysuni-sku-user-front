@@ -139,7 +139,8 @@ const LectureSurveyResultModalView: React.FC<Props> =
                     </>
                   );
                 }
-                if (lectureSurveyItem.type === 'Icon') {
+
+                if (lectureSurveyItem.type === 'Choice') {
                   return (
                     <>
                       <LectureSurveySummaryIconView
@@ -157,24 +158,24 @@ const LectureSurveyResultModalView: React.FC<Props> =
                     </>
                   );
                 }
-                if (lectureSurveyItem.type === 'Choice') {
-                  return (
-                    <>
-                      <LectureSurveySummaryChoiceView
-                        lectureSurveyItem={lectureSurveyItem}
-                        lectureSurveyAnswerItem={
-                          lectureSurveyState &&
-                          lectureSurveyState.answerItem.find(
-                            (c) =>
-                              c.questionNumber ===
-                              lectureSurveyItem.questionNumber
-                          )
-                        }
-                        key={lectureSurveyItem.id}
-                      />
-                    </>
-                  );
-                }
+                // if (lectureSurveyItem.type === 'Choice') {
+                //   return (
+                //     <>
+                //       <LectureSurveySummaryChoiceView
+                //         lectureSurveyItem={lectureSurveyItem}
+                //         lectureSurveyAnswerItem={
+                //           lectureSurveyState &&
+                //           lectureSurveyState.answerItem.find(
+                //             (c) =>
+                //               c.questionNumber ===
+                //               lectureSurveyItem.questionNumber
+                //           )
+                //         }
+                //         key={lectureSurveyItem.id}
+                //       />
+                //     </>
+                //   );
+                // }
                 if (lectureSurveyItem.type === 'Essay') {
                   return (
                     <LectureSurveySummaryEssayView
