@@ -79,7 +79,9 @@ async function openLectureSurveyState() {
 
 async function coreSaveLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
+  console.log(lectureSurveyState, 'lectureSurveyState');
   const lectureSurvey = getLectureSurvey();
+  console.log(lectureSurvey, 'lectureSurvey');
   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
@@ -123,7 +125,7 @@ async function coreSubmitLectureSurveyState() {
   }
   const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
     lectureSurveyState;
-
+  console.log(lectureSurveyState, '데이터좀 보겠습니다');
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
     serviceId,
@@ -186,6 +188,14 @@ async function coreSubmitLectureSurveyState() {
     // });
     return;
   }
+  console.log(
+    '실행됩니까',
+    surveyCaseId,
+    'round',
+    round,
+    'answerSheetCdo',
+    answerSheetCdo
+  );
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
   // reactAlert({
@@ -374,6 +384,7 @@ export async function submitCommunitySurveyState() {
   if (lectureSurveyState.answerSheetId === undefined) {
     await openLectureSurveyState();
   }
+  console.log(lectureSurveyState, '저장이 안되요');
   await coreSubmitLectureSurveyState();
   //requestLectureStructure(lectureParams, pathname);
 }
@@ -456,7 +467,7 @@ export function selectChoiceAnswer(
 ) {
   const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
-  console.log(lectureSurveyState, 'lectureSurveyState');
+
   if (lectureSurveyState === undefined) {
     return;
   }
