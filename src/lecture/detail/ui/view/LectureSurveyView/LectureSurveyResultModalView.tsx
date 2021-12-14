@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
@@ -42,6 +42,17 @@ const LectureSurveyResultModalView: React.FC<Props> =
     const { surveyId, surveyCaseId } = lectureSurvey;
     const lectureSurveySummary = useLectureSurveySummary();
     const [open, setOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+      if (lectureSurveyState?.state === 'Finish') {
+        onOpen();
+      }
+    }, []);
+
+    // useEffect(() => {
+
+    // }, [lectureSurvey.userViewResult])
+
     const onOpen = useCallback(() => {
       setOpen(true);
       requestLectureSurveySummary(surveyId, surveyCaseId);
@@ -139,25 +150,11 @@ const LectureSurveyResultModalView: React.FC<Props> =
                     </>
                   );
                 }
-                if (lectureSurveyItem.type === 'ChoiceFixed') {
-                  return (
-                    <>
-                      <LectureSurveySummaryChoiceView
-                        lectureSurveyItem={lectureSurveyItem}
-                        lectureSurveyAnswerItem={
-                          lectureSurveyState &&
-                          lectureSurveyState.answerItem.find(
-                            (c) =>
-                              c.questionNumber ===
-                              lectureSurveyItem.questionNumber
-                          )
-                        }
-                        key={lectureSurveyItem.id}
-                      />
-                    </>
-                  );
-                }
-                if (lectureSurveyItem.type === 'Choice') {
+
+                if (
+                  lectureSurveyItem.type === 'Choice' ||
+                  lectureSurveyItem.type === 'ChoiceFixed'
+                ) {
                   return (
                     <>
                       <LectureSurveySummaryChoiceView

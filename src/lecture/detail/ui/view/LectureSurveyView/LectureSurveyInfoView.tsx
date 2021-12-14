@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import { startLectureSurveyState } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import {
+  finishLectureSurveyState,
+  startLectureSurveyState,
+} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
@@ -37,6 +40,14 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> =
 
     useEffect(() => {
       const params = getLectureParams();
+
+      if (
+        lectureSurveyState?.state === 'Finish' &&
+        !lectureSurvey.userViewResult
+      ) {
+        finishLectureSurveyState();
+      }
+
       if (currentMenu?.name !== undefined) {
         setSurveyTitleInfo(currentMenu?.name);
         setSurveyInfoText('의 ');
@@ -48,7 +59,12 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> =
         setSurveyTitleInfo(name);
         setSurveyInfoText('과정');
       }
-    }, [lectureStructure, currentMenu?.name]);
+    }, [
+      lectureStructure,
+      currentMenu?.name,
+      lectureSurvey.userViewResult,
+      lectureSurveyState?.state,
+    ]);
 
     if (
       lectureSurveyState &&
