@@ -148,11 +148,11 @@ function parseReview(
   }
 
   const choiceFixed = [
-    '매우 그렇다',
-    '그렇다',
-    '보통이다',
-    '아니다',
     '전혀 아니다',
+    '아니다',
+    '보통이다',
+    '그렇다',
+    '매우 그렇다',
   ];
 
   const choices: LectureSurveyItemChoice[] =
@@ -225,11 +225,11 @@ function parseChoiceFixed(
   const canMultipleAnswer = answerItems.multipleChoice;
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choiceFixed = [
-    '매우 그렇다',
-    '그렇다',
-    '보통이다',
-    '아니다',
     '전혀 아니다',
+    '아니다',
+    '보통이다',
+    '그렇다',
+    '매우 그렇다',
   ];
 
   const choices: LectureSurveyItemChoice[] =
