@@ -26,11 +26,9 @@ export async function requestLectureCouseFeedback(
     lectureSurvey.surveyCaseId,
     answerSheet?.round || 1
   );
-  console.log(lectureSurveySummary, 'lectureSurveySummary');
 
   if (lectureSurveySummary !== undefined || null) {
     const feedback = await findReviewSummary(lectureSurveySummary.id);
-    console.log(feedback, 'feedback');
     if (feedback === undefined) {
       return;
     }
@@ -78,7 +76,7 @@ export async function requestLectureCouseFeedback(
         }, 0) || 0;
       const sumOfValues =
         reversedValues.reduce((sum, count, index) => {
-          const value = count * (5 - index) || 0;
+          const value = count * (5 - (index + 1)) || 0;
           return sum + value;
         }, 0) || 0;
       const average = sumOfValues / totalCount || 0;

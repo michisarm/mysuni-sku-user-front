@@ -30,7 +30,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
       lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
         return totalCount + (count || 0);
       }, 0) || 0;
-
     return (
       <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
         <div className="course-survey-list">
