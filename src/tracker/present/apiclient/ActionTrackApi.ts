@@ -4,6 +4,7 @@ import { utf8_to_b64 } from 'tracker-react/utils';
 import {
   ActionTrackModel,
   ActionTrackViewModel,
+  ActionLog,
 } from 'tracker/model/ActionTrackModel';
 
 const BASE_URL = '/api/data-foundation/actionLog';
@@ -32,4 +33,9 @@ export function trackView(actionTrackModel: ActionTrackViewModel) {
   actionTrackModel.context.email = utf8_to_b64(actionTrackModel.context.email);
   const url = `${BASE_URL}/track/view`;
   return axiosApi.post<string>(url, actionTrackModel).then(AxiosReturn);
+}
+
+export function trackLog(log: ActionLog) {
+  const url = `${BASE_URL}/track/log`;
+  return axiosApi.post<string>(url, log).then(AxiosReturn);
 }

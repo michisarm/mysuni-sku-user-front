@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { debounce, useStateRef, useBrowserString, closest } from './utils';
+import {
+  debounce,
+  useStateRef,
+  useBrowserString,
+  closest,
+  getErrorMessage,
+} from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
-import { Action, ActionType } from 'tracker/model/ActionType';
+import { Action, ActionType, ActionLogType } from 'tracker/model/ActionType';
 import {
   ActionTrackParam,
   ActionTrackViewParam,
+  ActionLog,
 } from 'tracker/model/ActionTrackModel';
-import { pvInitSave } from 'tracker/present/logic/ActionTrackService';
+import { pvInitSave, logger } from 'tracker/present/logic/ActionTrackService';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -24,7 +31,16 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
 
   useEffect(() => {
     // view log init
-    initTrackView();
+    try {
+      initTrackView();
+    } catch (e) {
+      logger({
+        type: ActionLogType.ERROR_PV_VIEW_INIT,
+        email: userId,
+        browser: browserString,
+        message: getErrorMessage(e),
+      } as ActionLog);
+    }
 
     // click event
     window.document.addEventListener('click', handleOutboundClick, {
@@ -171,7 +187,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     }
 
     // target=_blank, <a> 사용시 대응
-    if(target && data.area){
+    if (target && data.area) {
       pvInitSave(target, data.area, data.referer, data.refererSearch);
     }
 

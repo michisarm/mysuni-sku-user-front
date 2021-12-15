@@ -1,1 +1,1 @@
-export { trackAction, trackView } from './ActionTrackApi';
+export { trackAction, trackView, trackLog } from './ActionTrackApi';
