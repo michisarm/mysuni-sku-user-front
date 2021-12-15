@@ -32,6 +32,13 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   useEffect(() => {
     // view log init
     try {
+      logger({
+        type: ActionLogType.PV_LOG,
+        email: userId,
+        browser: browserString,
+        message: 'PV_INIT',
+      } as ActionLog);
+
       initTrackView();
     } catch (e) {
       logger({
@@ -68,6 +75,13 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
 
   useEffect(() => {
     return history.listen((location) => {
+      logger({
+        type: ActionLogType.PV_LOG,
+        email: userId,
+        browser: browserString,
+        message: 'PV_HISTORY',
+      } as ActionLog);
+
       const { key } = location;
       // 뒤로가기 앞으로가기 구분
       let historyAction = null;
@@ -94,7 +108,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         valueRef.current.target = areaElement;
         valueRef.current.area = area;
       }
-
       debounceHistory({
         path:
           process.env.PUBLIC_URL === '/suni-main' &&
@@ -242,6 +255,13 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     debounce((path: PathParams) => {
       // AREA data attribute 있을때만 수집!
       if (path.data?.target instanceof HTMLElement) {
+        logger({
+          type: ActionLogType.PV_LOG,
+          email: userId,
+          browser: browserString,
+          message: 'PV_VIEW',
+        } as ActionLog);
+
         const referer = path.data?.referer;
         let area = path.data?.area;
         if (path.action === 'POP') {
