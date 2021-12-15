@@ -13,6 +13,7 @@ import LectureSurveyState, {
 import Image from 'shared/components/Image';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
+import { isString } from 'lodash';
 
 interface CommonUseType {
   lectureSurveyItem: LectureSurveyItem;
@@ -23,10 +24,9 @@ interface CommonUseType {
 export default function LectureSurveyReviewView(props: CommonUseType) {
   const { lectureSurveyAnswerItem, lectureSurveyItem, lectureSurveyState } =
     props;
-  const [placeholderText, setPlaceholderText] = useState('답변을 입력해주세요');
+  const [placeholderText, setPlaceholderText] = useState('');
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-      console.log('클릭22');
       if (data.value === undefined) {
         return;
       }
@@ -45,8 +45,6 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   );
   const onChangeTextValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      console.log('클릭');
-
       selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
     },
     [lectureSurveyItem]
@@ -131,7 +129,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             placeholder={placeholderText}
             value={lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
             onChange={onChangeTextValue}
-            readOnly={false}
+            readOnly={placeholderText.length === 0}
           />
         </div>
         <div className="rev-info">
