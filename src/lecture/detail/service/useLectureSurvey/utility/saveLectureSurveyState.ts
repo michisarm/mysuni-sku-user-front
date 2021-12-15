@@ -157,21 +157,12 @@ async function coreSubmitLectureSurveyState() {
             d.questionNumber === c.questionNumber &&
             (c.type !== 'Matrix' ||
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
-        )
+        ) ||
+        answerItem.some((d) => c.type === 'Review' && d.sentence === undefined)
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
 
-  // if (
-  //   answerSheetCdo.evaluationSheet.answers.length !== 0 &&
-  //   a.length !== answerSheetCdo.evaluationSheet.answers
-  // ) {
-  //   reactAlert({
-  //     title: '알림',
-  //     message: '행렬은 모든 항목을 입력해 주셔야 합니다.',
-  //   });
-  //   return;
-  // }
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),
@@ -198,65 +189,65 @@ async function coreSubmitLectureSurveyState() {
   return true;
 }
 
-export async function coreLectureSurveyState() {
-  const lectureSurveyState = getLectureSurveyState();
-  const lectureSurvey = getLectureSurvey();
-  if (lectureSurveyState === undefined || lectureSurvey === undefined) {
-    return;
-  }
-  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-    lectureSurveyState;
+// export async function coreLectureSurveyState() {
+//   const lectureSurveyState = getLectureSurveyState();
+//   const lectureSurvey = getLectureSurvey();
+//   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
+//     return;
+//   }
+//   const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
+//     lectureSurveyState;
 
-  const answerSheetCdo: AnswerSheetCdo = {
-    id: answerSheetId,
-    serviceId,
-    round,
-    surveyCaseId,
-    progress: 'Complete',
-    respondent: { usid: '', email: '', title: '', company: '' },
-    evaluationSheet: {
-      id: lectureSurveyState.evaluationSheetId,
-      answerSheetId: lectureSurveyState.answerSheetId,
-      answers: answerItem.map((c) => {
-        return {
-          questionNumber: c.questionNumber,
-          answerItemType: c.answerItemType,
-          answerItem: {
-            answerItemType: c.answerItemType,
-            criteriaItem: c.criteriaItem,
-            itemNumbers: c.itemNumbers,
-            sentence: c.sentence,
-            matrixItem: c.matrixItem,
-          },
-        };
-      }),
-    },
-  };
-  const requiredMissAnswers = lectureSurvey.surveyItems
-    .filter((c) => c.isRequired)
-    .filter(
-      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
-    );
-  if (requiredMissAnswers.length > 0) {
-    reactAlert({
-      title: getPolyglotText('알림', 'survey-save-alert3'),
-      message:
-        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
-        '은 필수 항목입니다',
-    });
+//   const answerSheetCdo: AnswerSheetCdo = {
+//     id: answerSheetId,
+//     serviceId,
+//     round,
+//     surveyCaseId,
+//     progress: 'Complete',
+//     respondent: { usid: '', email: '', title: '', company: '' },
+//     evaluationSheet: {
+//       id: lectureSurveyState.evaluationSheetId,
+//       answerSheetId: lectureSurveyState.answerSheetId,
+//       answers: answerItem.map((c) => {
+//         return {
+//           questionNumber: c.questionNumber,
+//           answerItemType: c.answerItemType,
+//           answerItem: {
+//             answerItemType: c.answerItemType,
+//             criteriaItem: c.criteriaItem,
+//             itemNumbers: c.itemNumbers,
+//             sentence: c.sentence,
+//             matrixItem: c.matrixItem,
+//           },
+//         };
+//       }),
+//     },
+//   };
+//   const requiredMissAnswers = lectureSurvey.surveyItems
+//     .filter((c) => c.isRequired)
+//     .filter(
+//       (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
+//     );
+//   if (requiredMissAnswers.length > 0) {
+//     reactAlert({
+//       title: getPolyglotText('알림', 'survey-save-alert3'),
+//       message:
+//         requiredMissAnswers.map((r) => ' ' + r.no + '번') +
+//         '은 필수 항목입니다',
+//     });
 
-    // requiredMissAnswers.forEach((c) => {
-    //   console.log(c.no);
-    // });
-    return;
-  }
-  await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
-  setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
-  // reactAlert({
-  //   title: '알림',
-  //   message: 'Survey 설문 참여가 완료 되었습니다.',
-  // });
-}
+//     // requiredMissAnswers.forEach((c) => {
+//     //   console.log(c.no);
+//     // });
+//     return;
+//   }
+//   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
+//   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
+//   // reactAlert({
+//   //   title: '알림',
+//   //   message: 'Survey 설문 참여가 완료 되었습니다.',
+//   // });
+// }
 
 export async function startLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -502,7 +493,7 @@ export function selectReviewSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: string
 ) {
-  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const { questionNumber, type } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
@@ -580,7 +571,6 @@ export function selectReviewChoiceAnswer(
   const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
     (c) => c.questionNumber === questionNumber
   );
-  console.log(lectureSurveyAnswerItem, '이거 언디파?');
   if (lectureSurveyAnswerItem === undefined) {
     lectureSurveyState.answerItem = [
       ...lectureSurveyState.answerItem,
@@ -668,7 +658,6 @@ export function selectReviewChoiceAnswer(
       }
     });
   }
-  console.log(lectureSurveyState, '이건바귀?');
   setLectureSurveyState({ ...lectureSurveyState });
 }
 

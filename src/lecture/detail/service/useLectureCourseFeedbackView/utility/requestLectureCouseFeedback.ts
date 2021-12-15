@@ -38,9 +38,11 @@ export async function requestLectureCouseFeedback(
       const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
         return i.denizenId;
       });
-      const feedbackReviewProfile = await findProfilePhoto(feedbackDenizenIds);
 
       if (feedback.reviewAnswers !== undefined) {
+        const feedbackReviewProfile = await findProfilePhoto(
+          feedbackDenizenIds
+        );
         const nextFeedbackReviewProfile = feedback.reviewAnswers.map(
           (item, i) => {
             const profileImage = getProfileImage(
@@ -69,6 +71,23 @@ export async function requestLectureCouseFeedback(
     if (feedback.reviewAnswerNumberSummary !== undefined) {
       const { numberCountMap } = feedback.reviewAnswerNumberSummary;
       const totalObject = numberCountMap || {};
+      if (!(1 in totalObject)) {
+        Object.assign(totalObject, { 1: 0 });
+      }
+      if (!(2 in totalObject)) {
+        Object.assign(totalObject, { 2: 0 });
+      }
+      if (!(3 in totalObject)) {
+        Object.assign(totalObject, { 3: 0 });
+      }
+      if (!(4 in totalObject)) {
+        Object.assign(totalObject, { 4: 0 });
+      }
+      if (!(5 in totalObject)) {
+        Object.assign(totalObject, { 5: 0 });
+      }
+      //초기화
+
       const isDoneSurvey = answerSheet?.progress === 'Complete';
       const reversedValues = Object.values(totalObject).reverse() || [0];
       const totalCount =
