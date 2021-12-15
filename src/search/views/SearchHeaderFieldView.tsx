@@ -102,7 +102,13 @@ export function SearchHeaderFieldView(props: Props) {
           </div>
           <div className="w_area poplr_list">
             <div className="w_header">
-              <strong className="w_tit">인기 검색어</strong>
+              {/*<strong className="w_tit">인기 검색어</strong>*/}
+              <strong className="w_tit">
+                <PolyglotText
+                  id="통검-필레팝-인기검색어"
+                  defaultString="인기 검색어"
+                />
+              </strong>
             </div>
             <div className="w_contents">
               <SearchHeaderFieldPopularView onClickSearch={props.onSearch} />
