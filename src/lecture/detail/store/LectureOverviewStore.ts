@@ -79,16 +79,8 @@ const [
 const initLectureCourseSatisfaction = (): SurveySatisfaction => {
   return {
     AnswerSummaries: {
-      answerItemType: 'Criterion',
       id: '',
-      patronKey: {
-        keyString: '',
-      },
-      questionNumber: '',
-      summaryItems: {
-        answerItemType: 'Criterion',
-      },
-      surveySummaryId: '',
+      numberCountMap: {},
     },
     reversedValues: [0],
     totalCount: 0,

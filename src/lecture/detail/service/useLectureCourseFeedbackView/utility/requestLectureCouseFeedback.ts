@@ -32,6 +32,7 @@ export async function requestLectureCouseFeedback(
     if (feedback === undefined) {
       return;
     }
+    console.log(feedback.reviewAnswers, '있어요?');
 
     if (feedback.reviewAnswers !== undefined) {
       const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
@@ -65,9 +66,9 @@ export async function requestLectureCouseFeedback(
         setLectureCourseFeedbackReview(nextFeedbackReviewProfile);
       }
     }
-    if (feedback.answerSummary !== undefined) {
-      const { summaryItems } = feedback.answerSummary;
-      const totalObject = summaryItems.numberCountMap || {};
+    if (feedback.reviewAnswerNumberSummary !== undefined) {
+      const { numberCountMap } = feedback.reviewAnswerNumberSummary;
+      const totalObject = numberCountMap || {};
       const isDoneSurvey = answerSheet?.progress === 'Complete';
       const reversedValues = Object.values(totalObject).reverse() || [0];
       const totalCount =
@@ -82,7 +83,7 @@ export async function requestLectureCouseFeedback(
       const average = sumOfValues / totalCount || 0;
 
       setLectureCourseSatisfaction({
-        AnswerSummaries: feedback.answerSummary,
+        AnswerSummaries: feedback.reviewAnswerNumberSummary,
         reversedValues,
         totalCount,
         average,
