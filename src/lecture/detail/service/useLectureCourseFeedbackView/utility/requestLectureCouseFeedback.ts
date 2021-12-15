@@ -1,3 +1,4 @@
+import { parseInt } from 'lodash';
 import {
   setLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
@@ -32,7 +33,6 @@ export async function requestLectureCouseFeedback(
     if (feedback === undefined) {
       return;
     }
-    console.log(feedback.reviewAnswers, '있어요?');
 
     if (feedback.reviewAnswers !== undefined) {
       const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
@@ -75,12 +75,8 @@ export async function requestLectureCouseFeedback(
         reversedValues.reduce((totalCount, count) => {
           return totalCount + (count || 0);
         }, 0) || 0;
-      const sumOfValues =
-        reversedValues.reduce((sum, count, index) => {
-          const value = count * (5 - (index + 1)) || 0;
-          return sum + value;
-        }, 0) || 0;
-      const average = sumOfValues / totalCount || 0;
+
+      const average = getAverage(totalObject, totalCount);
 
       setLectureCourseSatisfaction({
         AnswerSummaries: feedback.reviewAnswerNumberSummary,
@@ -92,4 +88,15 @@ export async function requestLectureCouseFeedback(
       });
     }
   }
+}
+
+function getAverage(object: Record<number, number>, totalCount: number) {
+  const questionNumber = Object.keys(object).map((i) => parseInt(i));
+  const values = Object.values(object);
+  const sumOfValues =
+    questionNumber.reduce((sum, count, index) => {
+      const value = values[index] * questionNumber[index];
+      return sum + value;
+    }, 0) || 0;
+  return sumOfValues / totalCount || 0;
 }
