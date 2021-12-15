@@ -5,7 +5,7 @@ import { LectureSurveySummaryItem } from '../viewModel/LectureSurveyAnswerSummar
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface SurveySummaries {
-  answerSummaries: AnswerSummaries[];
+  answerSummaries: reviewAnswerNumberSummary[];
   id: string;
   lastUpdateTime: number;
   patronKey: PatronKey;
@@ -15,17 +15,13 @@ export interface SurveySummaries {
   titles: FeedbackTitles;
 }
 
-export interface AnswerSummaries {
-  answerItemType: LectureSurveyItemType;
+export interface reviewAnswerNumberSummary {
   id: string;
-  patronKey: { keyString: string };
-  questionNumber: string;
-  summaryItems: LectureSurveySummaryItem;
-  surveySummaryId: string;
+  numberCountMap: Record<number, number>;
 }
 
 export interface SurveySatisfaction {
-  AnswerSummaries: AnswerSummaries;
+  AnswerSummaries: reviewAnswerNumberSummary;
   reversedValues: number[];
   totalCount: number;
   average: number;
@@ -49,7 +45,7 @@ export interface langStringMap {
 }
 
 export interface SurveyFeedbackSummaries {
-  answerSummary: AnswerSummaries;
+  reviewAnswerNumberSummary: reviewAnswerNumberSummary;
   reviewAnswers: reviewAnswers[];
 }
 
