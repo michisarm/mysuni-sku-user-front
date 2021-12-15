@@ -47,7 +47,7 @@ function onSelectChannel(channel: CheckableChannel) {
   );
 }
 
-async function onConfirmCallback() {
+function onConfirmCallback() {
   const checkableChannels = getCheckableChannelsStore();
   if (checkableChannels === undefined) {
     return;
@@ -57,8 +57,6 @@ async function onConfirmCallback() {
       return { ...c, checked: false };
     })
   );
-
-  await requestFindRecommendCards();
 }
 
 async function requestFindRecommendCards() {
