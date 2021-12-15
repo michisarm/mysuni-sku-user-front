@@ -18,7 +18,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
     lectureSurveyItem,
     lectureSurveyAnswerItem,
   }) {
-    const { no, title, image, isRequired } = lectureSurveyItem;
+    const { no, title, isRequired } = lectureSurveyItem;
     const domainPath =
       process.env.NODE_ENV !== 'development'
         ? window.location.protocol + '//' + window.location.host
@@ -29,7 +29,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
       (lectureSurveySummary &&
         lectureSurveySummary.respondentCount.respondentCount) ||
       0;
-    const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
+    const { choices } = lectureSurveyItem;
     const totalCount =
       lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
         return totalCount + (count || 0);
@@ -41,7 +41,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
       setNumber(number + 9);
     };
     const lastIndex =
-      answerList?.find((f) => f.answerItemType === 'Essay')?.summaryItems
+      answerList?.find((f) => f.answerItemType === 'Review')?.summaryItems
         .sentences?.length || 0;
 
     let iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important.png`;
@@ -51,7 +51,6 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
     if (SkProfileService.instance.skProfile.language === 'Chinese') {
       iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important-3.png`;
     }
-
     return (
       <div className="course-radio-survey-new">
         <p>
@@ -144,49 +143,43 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
               );
             })}
           <p className="improve-text">
-            {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
+            {(lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence) ||
+              ''}
           </p>
-          {lectureSurveyItem.visible !== undefined &&
-            lectureSurveyItem.visible === true && (
-              <ul className="improve-list">
-                {lectureSurveyItem.visible !== undefined &&
-                  lectureSurveyItem.visible === true &&
-                  answerList
-                    ?.filter(
-                      (f) =>
-                        f.answerItemType === 'Review' &&
-                        f.questionNumber === lectureSurveyItem.questionNumber
-                    )
-                    .map((answer) =>
-                      answer.summaryItems.sentences?.map((result, index) => (
-                        <>
-                          {index >= 0 && index <= number ? (
-                            <li>{result}</li>
-                          ) : (
-                            ''
-                          )}
-                        </>
-                      ))
-                    )}
-                <li className="improve-list-more">
-                  {lectureSurveyItem.visible !== undefined &&
-                  lectureSurveyItem.visible === true &&
-                  lastIndex - 1 > number ? (
-                    <>
-                      <Image
-                        style={{ display: 'inline-block' }}
-                        src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
-                      />
-                      <span onClick={setCheckNumber}>
-                        더보기 ({lastIndex - number - 1}개)
-                      </span>
-                    </>
-                  ) : (
-                    ''
+          {lectureSurveyItem.visible !== undefined && (
+            <ul className="improve-list">
+              {lectureSurveyItem.visible !== undefined &&
+                answerList
+                  ?.filter(
+                    (f) =>
+                      f.answerItemType === 'Review' &&
+                      f.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                  .map((answer) =>
+                    answer.summaryItems.sentences?.map((result, index) => (
+                      <>
+                        {index >= 0 && index <= number ? <li>{result}</li> : ''}
+                      </>
+                    ))
                   )}
-                </li>
-              </ul>
-            )}
+              <li className="improve-list-more">
+                {lectureSurveyItem.visible !== undefined &&
+                lastIndex - 1 > number ? (
+                  <>
+                    <Image
+                      style={{ display: 'inline-block' }}
+                      src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
+                    />
+                    <span onClick={setCheckNumber}>
+                      더보기 ({lastIndex - number - 1}개)
+                    </span>
+                  </>
+                ) : (
+                  ''
+                )}
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     );
