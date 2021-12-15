@@ -211,13 +211,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       const actionName = areaElement.dataset.actionName;
       const actionType = areaElement.dataset.actionType;
       const externalLink = areaElement.dataset.actionExternalLink;
-      logger({
-        type: ActionLogType.PV_LOG,
-        email: userId,
-        browser: browserString,
-        message: 'PV_CLICK',
-      } as ActionLog);
-
       if (!(action && actionName)) {
         return;
       }
