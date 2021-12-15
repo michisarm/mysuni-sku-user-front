@@ -491,6 +491,9 @@ async function parseSurveyForm(
   surveyCaseId: string,
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): Promise<LectureSurvey | undefined> {
+  if (surveyId === '') {
+    return;
+  }
   const surveyForm = await findSurveyForm(surveyId);
   const { id, titles, questions: remoteQuestions, langSupports } = surveyForm;
   const title = langStringsToString(titles, langSupports);
