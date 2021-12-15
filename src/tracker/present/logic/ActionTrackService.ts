@@ -302,7 +302,7 @@ export async function actionTrackView({
       })
       .catch((e) => {
         logger({
-          type: ActionLogType.ERROR_PV_VIEW_FUNCTION,
+          type: ActionLogType.ERROR_PV_VIEW_PROMISE,
           email,
           browser,
           message: getErrorMessage(e),
@@ -310,7 +310,7 @@ export async function actionTrackView({
       });
   } catch (e) {
     logger({
-      type: ActionLogType.ERROR_PV_VIEW_PROMISE,
+      type: ActionLogType.ERROR_PV_VIEW_FUNCTION,
       email,
       browser,
       message: getErrorMessage(e),
