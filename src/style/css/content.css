@@ -924,3 +924,10 @@ border-left-color: #00bfae;
 
 /* season용 main */
 .content.main-sty2 .main_personal.season {background: #fff url('https://image.mysuni.sk.com/suni-asset/public/images/all/season_gif.gif') 0 12px/contain no-repeat ;}
+
+
+/* badge 인증서 css변경 */
+.certi_box .my_certificate .txt_box {top: 197px; left: 91px;}
+.certi_box .my_certificate .txt_box .name {line-height: 28px;}
+.certi_box .my_certificate .txt_box p {color: #333; line-height: 22px;}
+.certi_box .my_certificate.mybadge .badge.badge-list-type {top: 133px;}
