@@ -8,7 +8,6 @@ import {
 } from 'lecture/detail/store/LectureSurveyStore';
 import { SkProfileService } from 'profile/stores';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
-import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOverviewStore';
 import _ from 'lodash';
 
 function chartSentenceText(num: number) {
