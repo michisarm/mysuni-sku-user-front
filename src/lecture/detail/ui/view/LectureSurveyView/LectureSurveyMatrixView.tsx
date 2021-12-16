@@ -65,7 +65,7 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> =
                           checked={
                             lectureSurveyAnswerItem !== undefined &&
                             lectureSurveyAnswerItem.matrixItem !== undefined &&
-                            lectureSurveyAnswerItem.matrixItem.some(
+                            lectureSurveyAnswerItem.matrixItem?.some(
                               (c) =>
                                 c.rowNumber === `${rowNumber}` &&
                                 c.columnSelectedNumber ===

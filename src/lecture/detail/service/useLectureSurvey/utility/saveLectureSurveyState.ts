@@ -446,19 +446,8 @@ export function selectReviewSentenceAnswer(
         questionNumber,
         answerItemType: type,
         sentence: value,
-        matrixItem: [
-          {
-            rowNumber: '',
-            columnSelectedNumber: '',
-          },
-        ],
-        criteriaItem: {
-          names: {
-            defaultLanguage: '',
-            langStringMap: {},
-          },
-          index: 0,
-        },
+        matrixItem: null,
+        criteriaItem: null,
       },
     ];
   } else {
@@ -467,19 +456,8 @@ export function selectReviewSentenceAnswer(
         return {
           ...c,
           sentence: value,
-          matrixItem: [
-            {
-              rowNumber: '',
-              columnSelectedNumber: '',
-            },
-          ],
-          criteriaItem: {
-            names: {
-              defaultLanguage: '',
-              langStringMap: {},
-            },
-            index: 0,
-          },
+          matrixItem: null,
+          criteriaItem: null,
         };
       } else {
         return c;
@@ -513,19 +491,8 @@ export function selectReviewChoiceAnswer(
         questionNumber,
         answerItemType: type,
         itemNumbers: [next],
-        matrixItem: [
-          {
-            rowNumber: '',
-            columnSelectedNumber: '',
-          },
-        ],
-        criteriaItem: {
-          names: {
-            defaultLanguage: '',
-            langStringMap: {},
-          },
-          index: 0,
-        },
+        matrixItem: null,
+        criteriaItem: null,
       },
     ];
   } else {
@@ -536,56 +503,23 @@ export function selectReviewChoiceAnswer(
             return {
               ...c,
               itemNumbers: c.itemNumbers.filter((d) => d !== next),
-              matrixItem: [
-                {
-                  rowNumber: '',
-                  columnSelectedNumber: '',
-                },
-              ],
-              criteriaItem: {
-                names: {
-                  defaultLanguage: '',
-                  langStringMap: {},
-                },
-                index: 0,
-              },
+              matrixItem: null,
+              criteriaItem: null,
             };
           } else {
             return {
               ...c,
               itemNumbers: [...(c.itemNumbers || []), next],
-              matrixItem: [
-                {
-                  rowNumber: '',
-                  columnSelectedNumber: '',
-                },
-              ],
-              criteriaItem: {
-                names: {
-                  defaultLanguage: '',
-                  langStringMap: {},
-                },
-                index: 0,
-              },
+              matrixItem: null,
+              criteriaItem: null,
             };
           }
         } else {
           return {
             ...c,
             itemNumbers: [next],
-            matrixItem: [
-              {
-                rowNumber: '',
-                columnSelectedNumber: '',
-              },
-            ],
-            criteriaItem: {
-              names: {
-                defaultLanguage: '',
-                langStringMap: {},
-              },
-              index: 0,
-            },
+            matrixItem: null,
+            criteriaItem: null,
           };
         }
       } else {
@@ -620,20 +554,9 @@ export function selectChoiceFixedAnswer(
         questionNumber,
         answerItemType: type,
         itemNumbers: [next],
-        matrixItem: [
-          {
-            rowNumber: '',
-            columnSelectedNumber: '',
-          },
-        ],
-        criteriaItem: {
-          names: {
-            defaultLanguage: '',
-            langStringMap: {},
-          },
-          index: 0,
-        },
-        sentence: '',
+        matrixItem: null,
+        criteriaItem: null,
+        sentence: null,
       },
     ];
   } else {
@@ -644,59 +567,26 @@ export function selectChoiceFixedAnswer(
             return {
               ...c,
               itemNumbers: c.itemNumbers.filter((d) => d !== next),
-              matrixItem: [
-                {
-                  rowNumber: '',
-                  columnSelectedNumber: '',
-                },
-              ],
-              criteriaItem: {
-                names: {
-                  defaultLanguage: '',
-                  langStringMap: {},
-                },
-                index: 0,
-              },
-              sentence: '',
+              matrixItem: null,
+              criteriaItem: null,
+              sentence: null,
             };
           } else {
             return {
               ...c,
               itemNumbers: [...(c.itemNumbers || []), next],
-              matrixItem: [
-                {
-                  rowNumber: '',
-                  columnSelectedNumber: '',
-                },
-              ],
-              criteriaItem: {
-                names: {
-                  defaultLanguage: '',
-                  langStringMap: {},
-                },
-                index: 0,
-              },
-              sentence: '',
+              matrixItem: null,
+              criteriaItem: null,
+              sentence: null,
             };
           }
         } else {
           return {
             ...c,
             itemNumbers: [next],
-            matrixItem: [
-              {
-                rowNumber: '',
-                columnSelectedNumber: '',
-              },
-            ],
-            criteriaItem: {
-              names: {
-                defaultLanguage: '',
-                langStringMap: {},
-              },
-              index: 0,
-            },
-            sentence: '',
+            matrixItem: null,
+            criteriaItem: null,
+            sentence: null,
           };
         }
       } else {
