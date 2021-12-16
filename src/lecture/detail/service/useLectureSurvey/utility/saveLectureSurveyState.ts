@@ -1,3 +1,4 @@
+import { isString } from 'lodash';
 import { reactAlert } from '@nara.platform/accent';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -159,7 +160,10 @@ async function coreSubmitLectureSurveyState() {
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
         ) ||
         answerItem.some(
-          (d) => d.answerItemType === 'Review' && d.sentence === undefined
+          (d) =>
+            c.type === 'Review' &&
+            d.answerItemType === 'Review' &&
+            isString(d.sentence)
         )
     );
 
