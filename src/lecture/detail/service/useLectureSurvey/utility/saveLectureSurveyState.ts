@@ -178,76 +178,16 @@ async function coreSubmitLectureSurveyState() {
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
-  // reactAlert({
-  //   title: getPolyglotText('알림', 'survey-save-alert2'),
-  //   message: getPolyglotText(
-  //     'Survey 설문 참여가 완료 되었습니다.',
-  //     'survey-설문참여-완료메세지'
-  //   ),
-  // });
+  reactAlert({
+    title: getPolyglotText('알림', 'survey-save-alert2'),
+    message: getPolyglotText(
+      'Survey 설문 참여가 완료 되었습니다.',
+      'survey-설문참여-완료메세지'
+    ),
+  });
 
   return true;
 }
-
-// export async function coreLectureSurveyState() {
-//   const lectureSurveyState = getLectureSurveyState();
-//   const lectureSurvey = getLectureSurvey();
-//   if (lectureSurveyState === undefined || lectureSurvey === undefined) {
-//     return;
-//   }
-//   const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-//     lectureSurveyState;
-
-//   const answerSheetCdo: AnswerSheetCdo = {
-//     id: answerSheetId,
-//     serviceId,
-//     round,
-//     surveyCaseId,
-//     progress: 'Complete',
-//     respondent: { usid: '', email: '', title: '', company: '' },
-//     evaluationSheet: {
-//       id: lectureSurveyState.evaluationSheetId,
-//       answerSheetId: lectureSurveyState.answerSheetId,
-//       answers: answerItem.map((c) => {
-//         return {
-//           questionNumber: c.questionNumber,
-//           answerItemType: c.answerItemType,
-//           answerItem: {
-//             answerItemType: c.answerItemType,
-//             criteriaItem: c.criteriaItem,
-//             itemNumbers: c.itemNumbers,
-//             sentence: c.sentence,
-//             matrixItem: c.matrixItem,
-//           },
-//         };
-//       }),
-//     },
-//   };
-//   const requiredMissAnswers = lectureSurvey.surveyItems
-//     .filter((c) => c.isRequired)
-//     .filter(
-//       (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
-//     );
-//   if (requiredMissAnswers.length > 0) {
-//     reactAlert({
-//       title: getPolyglotText('알림', 'survey-save-alert3'),
-//       message:
-//         requiredMissAnswers.map((r) => ' ' + r.no + '번') +
-//         '은 필수 항목입니다',
-//     });
-
-//     // requiredMissAnswers.forEach((c) => {
-//     //   console.log(c.no);
-//     // });
-//     return;
-//   }
-//   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
-//   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
-//   // reactAlert({
-//   //   title: '알림',
-//   //   message: 'Survey 설문 참여가 완료 되었습니다.',
-//   // });
-// }
 
 export async function startLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -338,7 +278,6 @@ export async function saveCommunitySurveyState() {
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
-  //requestLectureStructure(lectureParams, pathname);
 
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert5'),
@@ -351,10 +290,7 @@ export async function saveCommunitySurveyState() {
 
 export async function submitCommunitySurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  // console.log(
-  //   'submitCommunitySurveyState.lectureSurveyState',
-  //   lectureSurveyState
-  // );
+
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -365,14 +301,13 @@ export async function submitCommunitySurveyState() {
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
-  //requestLectureStructure(lectureParams, pathname);
 }
 
 export function selectSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: string
 ) {
-  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const { questionNumber, type } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
@@ -832,7 +767,7 @@ export function selectMatrixAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: number | string
 ) {
-  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const { questionNumber, type } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;

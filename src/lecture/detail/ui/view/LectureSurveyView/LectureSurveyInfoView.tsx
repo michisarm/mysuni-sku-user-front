@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import {
-  finishLectureSurveyState,
-  startLectureSurveyState,
-} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { startLectureSurveyState } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
@@ -40,13 +37,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> =
 
     useEffect(() => {
       const params = getLectureParams();
-
-      if (
-        lectureSurveyState?.state === 'Finish' &&
-        !lectureSurvey.userViewResult
-      ) {
-        finishLectureSurveyState();
-      }
 
       if (currentMenu?.name !== undefined) {
         setSurveyTitleInfo(currentMenu?.name);
