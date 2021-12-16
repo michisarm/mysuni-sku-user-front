@@ -30,6 +30,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
   );
 
   const { canMultipleAnswer } = lectureSurveyItem;
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {!canMultipleAnswer && (

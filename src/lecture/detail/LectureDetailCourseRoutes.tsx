@@ -16,7 +16,7 @@ export default function LectureDetailCourseRoutes() {
   useCardBreadcrumb();
   const { pathname } = useLocation();
   const params = useParams<LectureParams>();
-  const { cardId, viewType } = params;
+  const { viewType } = params;
   useEffect(() => {
     setLectureParams({ ...params, pathname });
   }, [params, pathname]);

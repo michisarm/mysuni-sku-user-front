@@ -19,17 +19,10 @@ import TranscriptCountModel from '../../../model/TranscriptCountModel';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import { requestLectureCardInstructor } from '../../../service/useLectureInstructor/utility/requestLectureCardInstructor';
 import { Action, Area } from 'tracker/model';
-import {
-  useLectureInstructor,
-  getLectureCubes,
-  useLectureCoureSatisfaction,
-  initLectureCourseSatisfaction,
-  useLectureCoureSFeedbackReview,
-} from '../../../store/LectureOverviewStore';
+import { useLectureInstructor } from '../../../store/LectureOverviewStore';
 import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { SkProfileService } from '../../../../../profile/stores';
-import LectureCourseFeedbackView from './LectureCourseFeedbackView';
 
 interface Params {
   cardId: string;
@@ -99,10 +92,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       hashLink('lms-overview');
       setActivatedTab('overview');
     }, []);
-    const reviewHashClick = useCallback(() => {
-      hashLink('lms-review');
-      setActivatedTab('review');
-    }, []);
     const classroomHashClick = useCallback(() => {
       hashLink('lms-classroom');
       setActivatedTab('classroom');
@@ -125,14 +114,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       return 'ko';
     });
 
-    const satisfaction =
-      useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
-    const reviewAnswers = useLectureCoureSFeedbackReview();
-
-    const cubes = getLectureCubes();
-    const cubeCounts = cubes?.length || 0;
-    const isOnlyOneCube = cubeCounts === 1;
-    //  스티키 적용 시 필요한 코드
     useEffect(() => {
       if (activatedTab === 'comment') {
         setTimeout(() => {
@@ -163,20 +144,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 id="cube-ContentsTap-Overview"
               />
             </a>
-            {satisfaction.surveyCaseId &&
-              isOnlyOneCube &&
-              reviewAnswers?.length !== 0 &&
-              reviewAnswers !== undefined && (
-                <a
-                  onClick={reviewHashClick}
-                  className={activatedTab === 'review' ? 'lms-act' : ''}
-                  data-area={Area.CUBE_TAB}
-                  data-action={Action.CLICK}
-                  data-action-name="CARD TAB 클릭::Review"
-                >
-                  Review
-                </a>
-              )}
+
             {lectureClassroom && (
               <a
                 onClick={classroomHashClick}
@@ -230,9 +198,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
             </a>
           </div>
         </div>
-        {(activatedTab === 'overview' ||
-          activatedTab === 'classroom' ||
-          activatedTab === 'review') && (
+        {(activatedTab === 'overview' || activatedTab === 'classroom') && (
           <>
             {lectureDescription && (
               <LectureDescriptionView
@@ -250,10 +216,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 <LectureCubeInfoView lectureDescription={lectureDescription} />
               )}
               {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-              {isOnlyOneCube &&
-                reviewAnswers?.length !== 0 &&
-                reviewAnswers !== undefined &&
-                satisfaction.surveyCaseId && <LectureCourseFeedbackView />}
+
               {lectureInstructor?.instructors &&
                 lectureInstructor.instructors.length > 0 && (
                   <LectureClassroomInstructorView

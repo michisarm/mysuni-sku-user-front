@@ -66,9 +66,6 @@ const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] =
 const [setLectureRelations, onLectureRelations, getLectureRelations] =
   createStore<LectureRelations>();
 
-const [setLectureCubes, onLectureCubes, getLectureCubes, useLectureCubes] =
-  createStore<Cube[]>();
-
 const [
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
@@ -142,10 +139,6 @@ export {
   setLectureCardSummaryLearningState,
   onLectureCardSummaryLearningState,
   getLectureCardSummaryLearningState,
-  setLectureCubes,
-  onLectureCubes,
-  getLectureCubes,
-  useLectureCubes,
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
   getLectureCoureSatisfaction,
