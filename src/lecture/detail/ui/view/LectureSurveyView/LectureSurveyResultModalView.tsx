@@ -43,16 +43,6 @@ const LectureSurveyResultModalView: React.FC<Props> =
     const lectureSurveySummary = useLectureSurveySummary();
     const [open, setOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-      if (lectureSurveyState?.state === 'Finish') {
-        onOpen();
-      }
-    }, []);
-
-    // useEffect(() => {
-
-    // }, [lectureSurvey.userViewResult])
-
     const onOpen = useCallback(() => {
       setOpen(true);
       requestLectureSurveySummary(surveyId, surveyCaseId);
