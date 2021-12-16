@@ -1,6 +1,6 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
 import React, { useState, useCallback, Fragment, ChangeEvent } from 'react';
-import { CheckboxProps, Radio } from 'semantic-ui-react';
+import { CheckboxProps, Icon, Radio } from 'semantic-ui-react';
 import {
   selectReviewChoiceAnswer,
   selectReviewSentenceAnswer,
@@ -8,7 +8,6 @@ import {
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
-import Image from 'shared/components/Image';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 
@@ -134,7 +133,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             placeholder={placeholderText}
             value={textAreaValue}
             onChange={onChangeTextValue}
-            readOnly={placeholderText.length === 0}
+            readOnly={false}
           />
         </div>
         <div className="rev-info">
@@ -157,19 +156,9 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
         (lectureSurveyState.state === 'Progress' &&
           lectureSurveyItem.isRequired === true &&
           lectureSurveyAnswerItem === undefined && (
-            <div style={{ marginTop: '10px' }}>
-              <Image
-                style={{ display: 'inline-block', marginRight: '5px' }}
-                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-info-error-16-px.png"
-              />
-              <span
-                style={{
-                  color: '#e1002a',
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  verticalAlign: 'text-bottom',
-                }}
-              >
+            <div className="rev-noti">
+              <Icon className="error16" />
+              <span>
                 <PolyglotText
                   defaultString="해당 문항은 필수 항목 입니다."
                   id="survey-필수항목-alert2"
