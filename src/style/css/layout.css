@@ -118,12 +118,6 @@ i.icon.icon-down-type5::before {
 i.icon.tooltip::before { content: ''; display: inline-block; width: 24px; height: 24px; vertical-align: top;
     background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tooltip-gray-24-px.svg") 0 0 no-repeat !important; background-size: 100% auto;
 }
-i.icon.testHeader::before {
-    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-60-px.png") 0 0 no-repeat !important;
-}
-i.icon.testHeader02::before {
-    background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-60-px.png") 0 0 no-repeat !important;
-}
 .follow_list .chk_follow.checked { border-color: #B9B9B9; color: #B9B9B9; }
 
 /* Font */
