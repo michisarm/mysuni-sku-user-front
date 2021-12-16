@@ -35,38 +35,32 @@ export async function requestLectureCouseFeedback(
     }
 
     if (feedback.reviewAnswers !== undefined) {
-      const feedbackDenizenIds = feedback.reviewAnswers.map((i) => {
-        return i.denizenId;
-      });
-
-      if (feedback.reviewAnswers !== undefined) {
-        const feedbackReviewProfile = await findProfilePhoto(
-          feedbackDenizenIds
-        );
-        const nextFeedbackReviewProfile = feedback.reviewAnswers.map(
-          (item, i) => {
-            const profileImage = getProfileImage(
-              feedbackReviewProfile[i].photoImagePath,
-              feedbackReviewProfile[i].gdiPhotoImagePath,
-              feedbackReviewProfile[i].useGdiPhoto
-            );
-            return {
-              completeTime: item.completeTime,
-              denizenId: feedbackReviewProfile[i].id, //item.denizenId,
-              id: item.id,
-              itemNumber: item.itemNumber,
-              registeredTime: item.registeredTime,
-              sentence: item.sentence,
-              surveyCaseId: item.surveyCaseId,
-              name: feedbackReviewProfile[i]?.name,
-              nickName: feedbackReviewProfile[i]?.nickname,
-              profileImage,
-            };
-          }
-        );
-
-        setLectureCourseFeedbackReview(nextFeedbackReviewProfile);
-      }
+      Promise.all(
+        feedback.reviewAnswers.map(async (item, i) => {
+          const feedbackReviewProfile = await findProfilePhoto([
+            item.denizenId,
+          ]);
+          const profileImage = getProfileImage(
+            feedbackReviewProfile[0].photoImagePath,
+            feedbackReviewProfile[0].gdiPhotoImagePath,
+            feedbackReviewProfile[0].useGdiPhoto
+          );
+          return {
+            completeTime: item.completeTime,
+            denizenId: feedbackReviewProfile[0].id,
+            id: item.id,
+            itemNumber: item.itemNumber,
+            registeredTime: item.registeredTime,
+            sentence: item.sentence,
+            surveyCaseId: item.surveyCaseId,
+            name: feedbackReviewProfile[0]?.name,
+            nickName: feedbackReviewProfile[0]?.nickname,
+            profileImage,
+          };
+        })
+      ).then((nextFeedbackReviewProfile) =>
+        setLectureCourseFeedbackReview(nextFeedbackReviewProfile)
+      );
     }
     if (feedback.reviewAnswerNumberSummary !== undefined) {
       const { numberCountMap } = feedback.reviewAnswerNumberSummary;
@@ -86,7 +80,6 @@ export async function requestLectureCouseFeedback(
       if (!(5 in totalObject)) {
         Object.assign(totalObject, { 5: 0 });
       }
-      //초기화
 
       const isDoneSurvey = answerSheet?.progress === 'Complete';
       const reversedValues = Object.values(totalObject).reverse() || [0];

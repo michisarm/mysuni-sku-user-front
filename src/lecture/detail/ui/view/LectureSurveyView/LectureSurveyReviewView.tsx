@@ -51,6 +51,12 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   );
 
   const { canMultipleAnswer } = lectureSurveyItem;
+
+  let textAreaValue =
+    lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence;
+  if (textAreaValue === null) {
+    textAreaValue = '';
+  }
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {!canMultipleAnswer && (
@@ -127,7 +133,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
           <textarea
             rows={3}
             placeholder={placeholderText}
-            value={lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
+            value={textAreaValue}
             onChange={onChangeTextValue}
             readOnly={placeholderText.length === 0}
           />
@@ -140,7 +146,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             <strong>
               {lectureSurveyAnswerItem !== undefined &&
               lectureSurveyAnswerItem.sentence !== undefined
-                ? lectureSurveyAnswerItem.sentence.length
+                ? lectureSurveyAnswerItem.sentence?.length
                 : 0}
             </strong>
             / 200
