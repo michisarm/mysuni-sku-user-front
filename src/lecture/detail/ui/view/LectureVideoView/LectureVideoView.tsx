@@ -75,6 +75,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
     const params = useParams<LectureParams>();
     const [isBookmark, setIsBookmark] = useState<boolean>(false);
     const [serverName, setServerName] = useState<string>();
+    const [hideNextContent, setHideNextContent] = useState<boolean>(false);
     const lectureMedia = useLectureMedia();
     const [videoContainerProps, setVideoContainerProps] = useState<
       | {
@@ -358,7 +359,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                     </button>
                   </div>
                 )}
-                {nextContentsView &&
+                {!hideNextContent &&
+                  nextContentsView &&
                   nextContent?.path !== undefined &&
                   lectureState.student?.learningState === 'Passed' && (
                     <>
@@ -385,21 +387,46 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                               (nextContent as LectureStructureCubeItem).name}
                           </h3>
                         </div>
+                        <img
+                          src="https://image.mysuni.sk.com/suni-asset/public/static/images/all/close-white.png"
+                          style={{ float: 'right', marginTop: 13 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setHideNextContent(true);
+                          }}
+                        />
                       </div>
                       <div
                         className="video-overlay-small"
                         onClick={() => nextContents(nextContent?.path)}
-                        style={{ cursor: 'pointer' }}
+                        style={{
+                          cursor: 'pointer',
+                          justifyContent: 'initial',
+                          paddingLeft: 20,
+                          paddingRight: 20,
+                        }}
                       >
-                        <button>
+                        <button style={{ display: 'flex' }}>
                           <img src={playerBtn} />
                         </button>
-                        <span className="copy">
+                        <span className="copy" style={{ flex: 1 }}>
                           <PolyglotText
                             defaultString="다음 학습 이어하기"
                             id="Collage-Video-이어하기"
                           />
                         </span>
+                        <img
+                          src="https://image.mysuni.sk.com/suni-asset/public/static/images/all/close-white.png"
+                          style={{
+                            width: 18,
+                            height: 18,
+                            marginRight: 0,
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setHideNextContent(true);
+                          }}
+                        />
                       </div>
                     </>
                   )}
@@ -434,8 +461,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                 <span>
                   <Icon className="linkCopy" />
                   <PolyglotText
-                    defaultString="링크 복사"
-                    id="Collage-Video-링크복사"
+                    defaultString="공유하기"
+                    id="Collage-Video-공유하기"
                   />
                 </span>
               </a>

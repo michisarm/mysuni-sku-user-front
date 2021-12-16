@@ -12,13 +12,13 @@ import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import {
-  parsePolyglotString,
-  PolyglotString,
-} from '../../../shared/viewmodel/PolyglotString';
+import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { find } from 'lodash';
-import { findAllCollegeCache } from '../../../shared/service/requestAllColleges';
+import {
+  findAllCollegeCache,
+  isMySuniCollege,
+} from '../../../shared/service/requestAllColleges';
 
 import {
   getCollgeName,
@@ -35,6 +35,7 @@ interface Props extends RouteComponentProps {
 
 interface State {
   selectedCollege: CollegeIdModel;
+  isSelectedCollegeInMySUNI: boolean;
   favorites: IdName[];
   favoriteCompanyChannels: ChannelModel[];
 }
@@ -62,6 +63,7 @@ const style = {
 class FavoriteCollegeContainer extends React.Component<Props, State> {
   state = {
     selectedCollege: {} as CollegeIdModel,
+    isSelectedCollegeInMySUNI: false,
     favorites: [] as IdName[],
     favoriteCompanyChannels: [] as ChannelModel[],
   };
@@ -122,25 +124,38 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     });
   }
 
-  onSelectCollege(college: CollegeIdModel) {
-    this.setState({ selectedCollege: college });
+  async onSelectCollege(college: CollegeIdModel) {
+    const collegeData = await findAllCollegeCache();
+    let isSelectedCollegeInMySUNI = false;
+
+    if (collegeData !== undefined) {
+      const selected = collegeData.find(
+        (cacheCollege) => college.id === cacheCollege.id
+      );
+
+      if (selected !== undefined) {
+        isSelectedCollegeInMySUNI = isMySuniCollege(selected);
+      }
+    }
+
+    this.setState({ selectedCollege: college, isSelectedCollegeInMySUNI });
   }
 
   onSelectChannel(channel: IdName) {
-    let { favorites }: State = this.state;
-
+    const { favorites }: State = this.state;
+    let updatedFavorites: IdName[];
     if (
       favorites
         .map((favoriteChannel) => favoriteChannel.id)
         .includes(channel.id)
     ) {
-      favorites = favorites.filter(
+      updatedFavorites = favorites.filter(
         (favoriteChannel) => favoriteChannel.id !== channel.id
       );
     } else {
-      favorites.push(channel);
+      updatedFavorites = [channel, ...favorites];
     }
-    this.setState({ favorites });
+    this.setState({ favorites: [...updatedFavorites] });
   }
 
   onReset() {
@@ -173,7 +188,12 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   render() {
     const { collegeLectureCounts, totalChannelCount } =
       this.props.collegeLectureCountService!;
-    const { selectedCollege, favorites, favoriteCompanyChannels } = this.state;
+    const {
+      selectedCollege,
+      favorites,
+      favoriteCompanyChannels,
+      isSelectedCollegeInMySUNI,
+    } = this.state;
 
     return (
       <Form>
@@ -243,15 +263,21 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 id={`checkbox_${index}`}
                                 className="hidden"
                                 tabIndex={index}
-                                checked={favorites
-                                  .map((favoriteChannel) => favoriteChannel.id)
-                                  .includes(channelId)}
+                                checked={
+                                  favorites
+                                    .map(
+                                      (favoriteChannel) => favoriteChannel.id
+                                    )
+                                    .includes(channelId) ||
+                                  !isSelectedCollegeInMySUNI
+                                }
                                 onChange={() =>
                                   this.onSelectChannel({
                                     id: channelId,
                                     name: getChannelName(channelId),
                                   })
                                 }
+                                disabled={!isSelectedCollegeInMySUNI}
                               />
                               <label
                                 className="pop"

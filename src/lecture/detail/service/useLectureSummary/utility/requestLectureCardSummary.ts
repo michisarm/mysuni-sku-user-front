@@ -130,6 +130,7 @@ export async function requestLectureCardSummary(cardId: string) {
     }
   }
   const cubes = await findCubesByIdsCache(cubeIds);
+
   if (
     Array.isArray(cubes) &&
     cubes.some((c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
@@ -143,6 +144,7 @@ export async function requestLectureCardSummary(cardId: string) {
       lectureCardSummary.hasClassroomCube = true;
     }
   }
+
   setLectureCardSummary(lectureCardSummary);
   const inMyLectureCdo = makeInMyLectureCdo(card);
   setInMyLectureCdo(inMyLectureCdo);

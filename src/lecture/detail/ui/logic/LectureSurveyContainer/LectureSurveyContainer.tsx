@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLectureSurvey } from '../../../service/useLectureSurvey/useLectureSurvey';
 import { useLectureSurveyState } from '../../../service/useLectureSurvey/useLectureSurveyState';
 import LectureSurveyView from '../../view/LectureSurveyView/LectureSurveyView';

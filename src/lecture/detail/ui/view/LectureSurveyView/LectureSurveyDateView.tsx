@@ -29,6 +29,11 @@ const LectureSurveyDateView: React.FC<LectureSurveyDateViewProps> =
       },
       [lectureSurveyItem]
     );
+    let datePickerValue =
+      lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence;
+    if (datePickerValue === null) {
+      datePickerValue = '';
+    }
     return (
       <LectureSurveyChoiceLayout {...lectureSurveyItem}>
         <div className="ui h40 calendar" id="rangestart">
@@ -40,9 +45,7 @@ const LectureSurveyDateView: React.FC<LectureSurveyDateViewProps> =
               onChange={onChangeValue}
               selectsStart
               dateFormat="YYYY-MM-DD"
-              value={
-                lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence
-              }
+              value={datePickerValue}
             />
             <i className="calendar24 icon">
               <span className="blind">date</span>

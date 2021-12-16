@@ -31,16 +31,26 @@ export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => {
   const isExternal = isExternalInstructor();
 
   return (
+    // <div className="g-logo" data-area={Area.HEADER_LOGO}>
+    //   {isExternal ? (
+    //     <i className="sk-university icon">
+    //       <span className="blind">mySUNI</span>
+    //     </i>
+    //   ) : (
+    //     <Link to="/" onClick={() => onClickMenu('mySUNI')}>
+    //       <i className="sk-university icon">
+    //         <span className="blind">mySUNI</span>
+    //       </i>
+    //     </Link>
+    //   )}
+    // </div>
+    // 크리스마스 한정 로고 반영
     <div className="g-logo" data-area={Area.HEADER_LOGO}>
       {isExternal ? (
-        <i className="sk-university icon">
-          <span className="blind">mySUNI</span>
-        </i>
+        <img src="https://image.mysuni.sk.com/suni-asset/public/images/winter/header-logo.png" />
       ) : (
         <Link to="/" onClick={() => onClickMenu('mySUNI')}>
-          <i className="sk-university icon">
-            <span className="blind">mySUNI</span>
-          </i>
+          <img src="https://image.mysuni.sk.com/suni-asset/public/images/winter/header-logo.png" />
         </Link>
       )}
     </div>

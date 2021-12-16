@@ -21,8 +21,6 @@ import { requestLectureCardInstructor } from '../../../service/useLectureInstruc
 import { Action, Area } from 'tracker/model';
 import { useLectureInstructor } from '../../../store/LectureOverviewStore';
 import { LectureClassroomInstructorView } from './LectureClassroomInstructorView';
-import { findCommunityProfile } from '../../../../../community/api/profileApi';
-import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { SkProfileService } from '../../../../../profile/stores';
 
@@ -69,15 +67,23 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
     const params = useParams<Params>();
     const [fixed, setFixed] = useState<boolean>(false);
     const lectureInstructor = useLectureInstructor();
-    const [profileOpen, setProfileOpen] = useState<boolean>(false);
-    const [profileInfo, setProfileInfo] = useState<profileParams>();
 
     useEffect(() => {
       requestLectureCardInstructor(params.cardId);
     }, [params.cardId]);
 
     const [activatedTab, setActivatedTab] = useState<string>('overview');
-
+    // 스티키 적용 시 필요한 코드
+    useEffect(() => {
+      if (activatedTab === 'comment') {
+        setTimeout(() => {
+          const element = document.getElementById('lms-overview');
+          if (element !== null) {
+            element.scrollIntoView();
+          }
+        }, 0);
+      }
+    }, [activatedTab]);
     useEffect(() => {
       setActivatedTab('overview');
     }, [lectureSummary]);
@@ -97,10 +103,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       setActivatedTab('transcript');
     }, []);
 
-    // const trascriptScrollMove = () => {
-    //   window.scrollTo(0, 800);
-    // };
-
     // 대본 관련 Props 세팅
     const [transLangVal, setTransLangVal] = useState<string>(() => {
       if (SkProfileService.instance.skProfile.language === 'English') {
@@ -112,23 +114,16 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
       return 'ko';
     });
 
-    // const [ deliveryId, setDeliveryId ] = useState<string>('');
-
-    // useEffect(() => {
-    //   setDeliveryId(getlectureTranscriptCounts() ? getlectureTranscriptCounts);
-    // }, [getlectureTranscriptCounts()]);
-
-    // 스티키 적용 시 필요한 코드
-    // useEffect(() => {
-    //   if (activatedTab === 'comment') {
-    //     setTimeout(() => {
-    //       const element = document.getElementById('lms-overview');
-    //       if (element !== null) {
-    //         element.scrollIntoView();
-    //       }
-    //     }, 0);
-    //   }
-    // }, [activatedTab]);
+    useEffect(() => {
+      if (activatedTab === 'comment') {
+        setTimeout(() => {
+          const element = document.getElementById('lms-overview');
+          if (element !== null) {
+            element.scrollIntoView();
+          }
+        }, 0);
+      }
+    }, [activatedTab]);
 
     return (
       <>
@@ -149,6 +144,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 id="cube-ContentsTap-Overview"
               />
             </a>
+
             {lectureClassroom && (
               <a
                 onClick={classroomHashClick}
@@ -220,6 +216,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> =
                 <LectureCubeInfoView lectureDescription={lectureDescription} />
               )}
               {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+
               {lectureInstructor?.instructors &&
                 lectureInstructor.instructors.length > 0 && (
                   <LectureClassroomInstructorView

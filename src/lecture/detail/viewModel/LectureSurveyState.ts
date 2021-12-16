@@ -5,10 +5,10 @@ import { LectureSurveyItemType } from './LectureSurvey';
 export interface LectureSurveyAnswerItem {
   questionNumber: string;
   answerItemType?: LectureSurveyItemType;
-  criteriaItem?: CriteriaItem;
+  criteriaItem?: CriteriaItem | null;
   itemNumbers?: string[];
-  sentence?: string;
-  matrixItem?: MatrixItem[];
+  sentence?: string | null;
+  matrixItem?: MatrixItem[] | null;
 }
 
 export interface CriteriaItem {

@@ -44,7 +44,7 @@ const LectureSurveyCriterionView: React.FC<LectureSurveyCriterionViewProps> =
                   checked={
                     lectureSurveyAnswerItem !== undefined &&
                     lectureSurveyAnswerItem.criteriaItem !== undefined &&
-                    lectureSurveyAnswerItem.criteriaItem.value === choice.no
+                    lectureSurveyAnswerItem.criteriaItem?.value === choice.no
                   }
                   onChange={onChangeValue}
                   readOnly={false}
@@ -63,7 +63,7 @@ const LectureSurveyCriterionView: React.FC<LectureSurveyCriterionViewProps> =
                   checked={
                     lectureSurveyAnswerItem !== undefined &&
                     lectureSurveyAnswerItem.criteriaItem !== undefined &&
-                    lectureSurveyAnswerItem.criteriaItem.value === choice.no
+                    lectureSurveyAnswerItem.criteriaItem?.value === choice.no
                   }
                   onChange={onChangeValue}
                   readOnly={false}

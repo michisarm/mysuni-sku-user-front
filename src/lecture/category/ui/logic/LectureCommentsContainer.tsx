@@ -17,8 +17,8 @@ interface Props {
 }
 
 interface State {
-  profileOpen: boolean,
-  profileInfo: profileParams
+  profileOpen: boolean;
+  profileInfo: profileParams;
 }
 
 interface profileParams {
@@ -31,7 +31,6 @@ interface profileParams {
 @reactAutobind
 @observer
 class LectureCommentsContainer extends Component<Props, State> {
-
   state = {
     profileOpen: false,
     profileInfo: {
@@ -39,10 +38,10 @@ class LectureCommentsContainer extends Component<Props, State> {
       profileImg: '',
       introduce: '',
       nickName: '',
-      creatorName: ''
+      creatorName: '',
     },
   };
-  
+
   componentDidMount() {
     this.setState({ profileOpen: false });
     window.addEventListener('clickProfile', this.clickProfileEventHandler);
@@ -50,10 +49,10 @@ class LectureCommentsContainer extends Component<Props, State> {
       window.removeEventListener('clickProfile', this.clickProfileEventHandler);
     };
   }
-  
+
   clickProfileEventHandler() {
     const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then(result => {
+    findCommunityProfile(id!).then((result) => {
       this.setState({
         profileInfo: {
           id: result!.id,
@@ -61,14 +60,14 @@ class LectureCommentsContainer extends Component<Props, State> {
           introduce: result!.introduce,
           nickName: result!.nickname,
           creatorName: result!.name,
-        }
+        },
       });
       this.setState({ profileOpen: true });
     });
   }
 
   selectProfileOpen(open: boolean) {
-    this.setState({ profileOpen: open })
+    this.setState({ profileOpen: open });
   }
 
   render() {
@@ -87,7 +86,7 @@ class LectureCommentsContainer extends Component<Props, State> {
     return (
       <>
         <div className="contents comment">
-          <Review feedbackId={reviewFeedbackId} />
+          {/* <Review feedbackId={reviewFeedbackId} /> */}
           <CommentList
             feedbackId={commentFeedbackId}
             hideCamera
@@ -102,7 +101,9 @@ class LectureCommentsContainer extends Component<Props, State> {
         <CommunityProfileModal
           open={this.state.profileOpen}
           setOpen={this.selectProfileOpen}
-          userProfile={this.state.profileInfo && this.state.profileInfo.profileImg}
+          userProfile={
+            this.state.profileInfo && this.state.profileInfo.profileImg
+          }
           memberId={this.state.profileInfo && this.state.profileInfo.id}
           introduce={this.state.profileInfo && this.state.profileInfo.introduce}
           nickName={this.state.profileInfo && this.state.profileInfo.nickName}

@@ -110,7 +110,7 @@ export function UserProfileInfoProfileCard(props: Props) {
   if (profileInfo === undefined) {
     return null;
   }
-
+  console.log(profileInfo.profileImage, 'profileInfo.profileImage');
   return (
     <>
       <div className="profile-wrapper">

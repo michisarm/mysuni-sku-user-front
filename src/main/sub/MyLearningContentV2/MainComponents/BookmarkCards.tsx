@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Swiper from 'react-id-swiper';
 
 import { Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
@@ -50,7 +49,7 @@ const SwiperProps = {
   speed: 500,
 };
 
-export const BookmarkCards: React.FC<Props> = (Props) => {
+export const BookmarkCards: React.FC<Props> = () => {
   const history = useHistory();
   const [cards, setCards] = useState<UserLectureCard[]>([]);
   const [swiper, updateSwiper] = useState<any>(null);
@@ -76,22 +75,21 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    // (window as any).refreshBookmarks = function refreshBookmarks() {
-    //   findBookmarkCards().then((next) => {
-    //     if (next !== undefined) {
-    //       setCards(next.results);
-    //     }
-    //   });
-    // };
-    // (window as any).refreshBookmarks();
-    // return () => {
-    //   (window as any).refreshBookmarks = null;
-    // };
     findBookmarkCards().then((next) => {
       if (next !== undefined) {
         setCards(next.results);
       }
     });
+    (window as any).refreshBookmarks = function refreshBookmarks() {
+      findBookmarkCards().then((next) => {
+        if (next !== undefined) {
+          setCards(next.results);
+        }
+      });
+    };
+    return () => {
+      (window as any).refreshBookmarks = null;
+    };
   }, []);
 
   const title = useMemo(() => getTitle(), []);
@@ -106,6 +104,12 @@ export const BookmarkCards: React.FC<Props> = (Props) => {
       label: '추천 과정 전체보기',
     });
   };
+
+  useEffect(() => {
+    if (cards.length > 0) {
+      swiper?.update();
+    }
+  }, [cards]);
 
   if (cards.length === 0) {
     return null;
