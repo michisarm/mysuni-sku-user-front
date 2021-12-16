@@ -1,26 +1,20 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Rating } from 'semantic-ui-react';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
-import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
 import StampCompleted from '../../../../../style/media/stamp-completed.svg';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import { State } from '../../../viewModel/LectureState';
-import {
-  findIsBookmark,
-  toggleCardBookmark,
-} from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
-import { InMyLectureModel } from '../../../../../myTraining/model';
 import { useLectureParams } from '../../../store/LectureParamsStore';
-import { autorun } from 'mobx';
 import { Area } from 'tracker/model';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 import {
@@ -28,12 +22,11 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { PageElement } from '../../../../shared/model/PageElement';
+import { addBookMark, deleteBookMark } from 'shared/service/requestBookmarks';
 import {
-  addBookMark,
-  deleteBookMark,
-  requestBookmark,
-} from 'shared/service/requestBookmarks';
-import { findAvailablePageElementsCache } from '../../../../shared/api/arrangeApi';
+  initLectureCourseSatisfaction,
+  useLectureCoureSatisfaction,
+} from 'lecture/detail/store/LectureOverviewStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -44,7 +37,6 @@ function numberWithCommas(x: number) {
 
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
-  lectureReview?: LectureReview;
   lectureStructure: LectureStructure;
   menuAuth: PageElement[];
 }
@@ -106,12 +98,12 @@ function getColor(collegeId: string) {
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
   function LectureCourseSummaryView({
     lectureSummary,
-    lectureReview,
     lectureStructure,
     menuAuth,
   }) {
     const params = useLectureParams();
     const [isBookmark, setIsBookmark] = useState<boolean>(false);
+    const history = useHistory();
     let difficultyLevelIcon = 'basic';
     switch (lectureSummary.difficultyLevel) {
       case 'Intermediate':
@@ -202,6 +194,8 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         });
       }
     }
+    const satisfaction =
+      useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
     return (
       <div className="course-info-header" data-area={Area.CARD_HEADER}>
@@ -317,22 +311,41 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
           <div className="title-area">
             <div className="header-deatil">
               <div className="item">
-                <div className="header-rating">
-                  <Rating
-                    defaultRating={0}
-                    maxRating={5}
-                    rating={lectureReview && lectureReview.average}
-                    disabled
-                    className="fixed-rating"
-                  />
-                  <span>
-                    {lectureReview !== undefined
-                      ? `${Math.floor(lectureReview.average * 10) / 10}(${
-                          lectureReview.reviewerCount
-                        }${getPolyglotText('명', 'Course-Summary-명2')})`
-                      : ''}
-                  </span>
-                </div>
+                {satisfaction.surveyCaseId && (
+                  <div className="header-rating">
+                    <Rating
+                      defaultRating={5}
+                      maxRating={5}
+                      rating={
+                        satisfaction?.totalCount !== 0
+                          ? satisfaction && satisfaction.average
+                          : 5
+                      }
+                      disabled
+                      className="fixed-rating"
+                    />
+                    <span>
+                      {satisfaction?.totalCount !== 0
+                        ? `${Math.floor(satisfaction.average * 10) / 10}(${
+                            satisfaction?.totalCount
+                          }
+                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
+                        : '0'}
+                    </span>
+
+                    {!satisfaction.isDoneSurvey && (
+                      <Button
+                        className="re-feedback"
+                        onClick={() =>
+                          history.push(`/lecture/card/${params?.cardId}/survey`)
+                        }
+                      >
+                        <Icon className="edit16" />
+                        평가하기
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

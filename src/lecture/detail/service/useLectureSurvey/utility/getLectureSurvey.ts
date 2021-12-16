@@ -102,6 +102,178 @@ function parseChoice(
   };
 }
 
+function parseReview(
+  question: Question,
+  langSupport: LangSupport[],
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
+): LectureSurveyItem {
+  const {
+    id,
+    questionItemType,
+    optional,
+    sentences,
+    sentencesImageUrl,
+    sequence,
+    answerItems,
+    visible,
+  } = question;
+  const title = langStringsToString(sentences, langSupport);
+  const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
+  let no = parseInt(sequence.number);
+  if (isNaN(no)) {
+    no = 1;
+  }
+  const type = questionItemType;
+  const isRequired = !optional;
+  const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  let sentencesMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(
+      (c) => c.questionNumber === questionNumber
+    );
+
+    if (answerSummary?.summaryItems.sentencesMap !== undefined) {
+      sentencesMap = answerSummary.summaryItems.sentencesMap;
+    }
+  }
+  let numberCountMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(
+      (c) => c.questionNumber === questionNumber
+    );
+    if (answerSummary?.summaryItems.numberCountMap !== undefined) {
+      numberCountMap = answerSummary.summaryItems.numberCountMap;
+    }
+  }
+
+  const choiceFixed = [
+    '전혀 아니다',
+    '아니다',
+    '보통이다',
+    '그렇다',
+    '매우 그렇다',
+  ];
+
+  const choices: LectureSurveyItemChoice[] =
+    choiceFixed?.map((item, index) => {
+      let mNo = index + 1;
+      if (isNaN(mNo)) {
+        mNo = 1;
+      }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(
+          (c) => c.questionNumber === questionNumber
+        );
+        if (answerSummary !== undefined) {
+          const numberCountMap = answerSummary.summaryItems.numberCountMap;
+          if (
+            numberCountMap !== undefined &&
+            numberCountMap[mNo] !== undefined
+          ) {
+            count = numberCountMap[mNo];
+          }
+        }
+      }
+      return {
+        title: item,
+        no: mNo,
+        count,
+      };
+    }) || [];
+
+  return {
+    title,
+    image,
+    no,
+    id,
+    type,
+    isRequired,
+    canMultipleAnswer,
+    choices,
+    questionNumber,
+    visible,
+    sentencesMap,
+    numberCountMap,
+  };
+}
+
+function parseChoiceFixed(
+  question: Question,
+  langSupport: LangSupport[],
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
+): LectureSurveyItem {
+  const {
+    id,
+    questionItemType,
+    optional,
+    sentences,
+    sentencesImageUrl,
+    sequence,
+    answerItems,
+    visible,
+  } = question;
+  const title = langStringsToString(sentences, langSupport);
+  const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
+  let no = parseInt(sequence.number);
+  if (isNaN(no)) {
+    no = 1;
+  }
+  const type = questionItemType;
+  const isRequired = !optional;
+  const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  const choiceFixed = [
+    '전혀 아니다',
+    '아니다',
+    '보통이다',
+    '그렇다',
+    '매우 그렇다',
+  ];
+
+  const choices: LectureSurveyItemChoice[] =
+    choiceFixed?.map((item, index) => {
+      let mNo = index + 1;
+      if (isNaN(mNo)) {
+        mNo = 1;
+      }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(
+          (c) => c.questionNumber === questionNumber
+        );
+        if (answerSummary !== undefined) {
+          const numberCountMap = answerSummary.summaryItems.numberCountMap;
+          if (
+            numberCountMap !== undefined &&
+            numberCountMap[mNo] !== undefined
+          ) {
+            count = numberCountMap[mNo];
+          }
+        }
+      }
+      return {
+        title: item,
+        no: mNo,
+        count,
+      };
+    }) || [];
+
+  return {
+    title,
+    image,
+    no,
+    id,
+    type,
+    isRequired,
+    canMultipleAnswer,
+    choices,
+    questionNumber,
+    visible,
+  };
+}
+
 function parseCriterion(
   question: Question,
   criterionList: CriterionModel[],
@@ -143,7 +315,6 @@ function parseCriterion(
         const answerSummary = lectureSurveyAnswerSummary.find(
           (c) => c.questionNumber === questionNumber
         );
-        // console.log('answerSummary : ', answerSummary);
         if (answerSummary !== undefined) {
           const criteriaItemCountMap =
             answerSummary.summaryItems.criteriaItemCountMap;
@@ -159,7 +330,7 @@ function parseCriterion(
         title: mTitle,
         no: mNo + 1,
         index,
-        names: (names as unknown) as LangStrings,
+        names: names as unknown as LangStrings,
         count,
       };
     }) || [];
@@ -221,6 +392,7 @@ function parseEssay(
     }
   }
   const visible = question.visible;
+
   return {
     title,
     image,
@@ -319,11 +491,22 @@ async function parseSurveyForm(
   surveyCaseId: string,
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): Promise<LectureSurvey | undefined> {
+  if (surveyId === '') {
+    return;
+  }
   const surveyForm = await findSurveyForm(surveyId);
   const { id, titles, questions: remoteQuestions, langSupports } = surveyForm;
   const title = langStringsToString(titles, langSupports);
   const surveyItems = remoteQuestions.map((question) => {
     switch (question.questionItemType) {
+      case 'Review':
+        return parseReview(question, langSupports, lectureSurveyAnswerSummary);
+      case 'ChoiceFixed':
+        return parseChoiceFixed(
+          question,
+          langSupports,
+          lectureSurveyAnswerSummary
+        );
       case 'Choice':
         return parseChoice(question, langSupports, lectureSurveyAnswerSummary);
       case 'Essay':
@@ -388,7 +571,7 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },
@@ -411,8 +594,8 @@ async function getCubeLectureSurveyState(
   }
   const studentJoins = await findIsJsonStudentByCube(serviceId);
   if (studentJoins.length > 0) {
-    const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
-      (r, c) => {
+    const studentJoin: StudentJoin | null =
+      studentJoins.reduce<StudentJoin | null>((r, c) => {
         if (r === null) {
           return c;
         }
@@ -420,9 +603,7 @@ async function getCubeLectureSurveyState(
           return c;
         }
         return r;
-      },
-      null
-    );
+      }, null);
     if (studentJoin !== null) {
       const lectureSurveyState = {
         state,
@@ -480,7 +661,7 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },

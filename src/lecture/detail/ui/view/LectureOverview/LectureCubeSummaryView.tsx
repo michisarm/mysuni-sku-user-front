@@ -1,13 +1,12 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { toggleCubeBookmark } from '../../../service/useLectureCourseOverview/useLectureCubeSummary';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
-import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 import ReactGA from 'react-ga';
 
@@ -18,8 +17,7 @@ import LectureClassroom, {
 import moment from 'moment';
 import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
-import { InMyLectureModel } from '../../../../../myTraining/model';
-import { autorun } from 'mobx';
+
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { Area } from 'tracker/model';
 import { getLectureNotePopupState } from '../../../store/LectureNoteStore';
@@ -37,6 +35,11 @@ import {
 } from 'lecture/detail/store/LectureStateStore';
 import { isEmpty, trim } from 'lodash';
 import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import {
+  useLectureCoureSatisfaction,
+  initLectureCourseSatisfaction,
+  getLectureCubes,
+} from 'lecture/detail/store/LectureOverviewStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -217,7 +220,6 @@ function getDifficultyLevelIcon(difficultyLevel: DifficultyLevel) {
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
   lectureInstructor?: LectureInstructor;
-  lectureReview?: LectureReview;
   lectureClassroom?: LectureClassroom;
 }
 
@@ -225,11 +227,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
   function LectureCubeSummaryView({
     lectureSummary,
     lectureInstructor,
-    lectureReview,
     lectureClassroom,
   }) {
     const params = useLectureParams();
     const [isBookmark, setIsBookmark] = useState<boolean>(false);
+    const history = useHistory();
     const instrutor = lectureInstructor?.instructors.find(
       (c) => c.representative === true
     );
@@ -293,6 +295,13 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
         }
       }, 500);
     };
+
+    const cubes = getLectureCubes();
+    const cubeCounts = cubes?.length || 0;
+    const isOnlyOneCube = cubeCounts === 1;
+
+    const satisfaction =
+      useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
     return (
       <div
@@ -514,24 +523,44 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
           <div className="title-area">
             <div className="header-deatil">
               <div className="item">
-                {lectureSummary.cubeType !== 'Task' &&
+                {isOnlyOneCube &&
+                  satisfaction.surveyCaseId &&
+                  lectureSummary.cubeType !== 'Task' &&
                   lectureSummary.cubeType !== 'Community' &&
                   lectureSummary.cubeType !== 'Discussion' && (
                     <div className="header-rating">
                       <Rating
-                        defaultRating={0}
+                        defaultRating={5}
                         maxRating={5}
-                        rating={lectureReview && lectureReview.average}
+                        rating={
+                          satisfaction?.totalCount !== 0
+                            ? satisfaction && satisfaction.average
+                            : 5
+                        }
                         disabled
                         className="fixed-rating"
                       />
                       <span>
-                        {lectureReview !== undefined
-                          ? `${Math.floor(lectureReview.average * 10) / 10}(${
-                              lectureReview.reviewerCount
-                            }${getPolyglotText('명', 'cicl-학상본문-명')})`
-                          : ''}
+                        {satisfaction?.totalCount !== 0
+                          ? `${Math.floor(satisfaction.average * 10) / 10}(${
+                              satisfaction?.totalCount
+                            }
+                              ${getPolyglotText('명', 'cicl-학상본문-명')})`
+                          : '0'}
                       </span>
+                      {!satisfaction.isDoneSurvey && (
+                        <Button
+                          className="re-feedback"
+                          onClick={() =>
+                            history.push(
+                              `/lecture/card/${params?.cardId}/cube/${params?.cubeId}/survey/${params?.cubeType}`
+                            )
+                          }
+                        >
+                          <Icon className="edit16" />
+                          평가하기
+                        </Button>
+                      )}
                     </div>
                   )}
               </div>

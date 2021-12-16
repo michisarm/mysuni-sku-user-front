@@ -8,6 +8,7 @@ import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureCardSummary,
+  setLectureCubes,
 } from '../../../store/LectureOverviewStore';
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import { getClassroomFromCube } from '../../useLectureClassroom/utility/getClassroomFromCube';
@@ -130,6 +131,8 @@ export async function requestLectureCardSummary(cardId: string) {
     }
   }
   const cubes = await findCubesByIdsCache(cubeIds);
+
+  setLectureCubes(cubes);
   if (
     Array.isArray(cubes) &&
     cubes.some((c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning')
@@ -143,6 +146,7 @@ export async function requestLectureCardSummary(cardId: string) {
       lectureCardSummary.hasClassroomCube = true;
     }
   }
+
   setLectureCardSummary(lectureCardSummary);
   const inMyLectureCdo = makeInMyLectureCdo(card);
   setInMyLectureCdo(inMyLectureCdo);

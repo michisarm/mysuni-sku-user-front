@@ -19,7 +19,7 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> =
       iconRequired = `${process.env.PUBLIC_URL}/images/all/survey-important-3.png`;
     }
     return (
-      <div className="course-radio-survey">
+      <div className="course-radio-survey icon-radio">
         <p>
           <span>{no}.</span>
           {isRequired === true && (

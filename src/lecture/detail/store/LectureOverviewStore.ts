@@ -12,6 +12,8 @@ import LectureReview from '../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
 import { createStore } from './Store';
+import { reviewAnswers, SurveySatisfaction } from '../model/SurveySummaries';
+import { Cube } from 'lecture/model/Cube';
 
 const [setLectureCubeSummary, onLectureCubeSummary, getLectureCubeSummary] =
   createStore<LectureCubeSummary>();
@@ -64,6 +66,37 @@ const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] =
 const [setLectureRelations, onLectureRelations, getLectureRelations] =
   createStore<LectureRelations>();
 
+const [setLectureCubes, onLectureCubes, getLectureCubes, useLectureCubes] =
+  createStore<Cube[]>();
+
+const [
+  setLectureCourseSatisfaction,
+  onLectureCourseSatisfaction,
+  getLectureCoureSatisfaction,
+  useLectureCoureSatisfaction,
+] = createStore<SurveySatisfaction>();
+
+const initLectureCourseSatisfaction = (): SurveySatisfaction => {
+  return {
+    AnswerSummaries: {
+      id: '',
+      numberCountMap: {},
+    },
+    reversedValues: [0],
+    totalCount: 0,
+    average: 0,
+    surveyCaseId: '',
+    isDoneSurvey: false,
+  };
+};
+
+const [
+  setLectureCourseFeedbackReview,
+  onLectureCourseFeedbackReview,
+  getLectureCoureSFeedbackReview,
+  useLectureCoureSFeedbackReview,
+] = createStore<reviewAnswers[]>();
+
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
@@ -109,4 +142,17 @@ export {
   setLectureCardSummaryLearningState,
   onLectureCardSummaryLearningState,
   getLectureCardSummaryLearningState,
+  setLectureCubes,
+  onLectureCubes,
+  getLectureCubes,
+  useLectureCubes,
+  setLectureCourseSatisfaction,
+  onLectureCourseSatisfaction,
+  getLectureCoureSatisfaction,
+  setLectureCourseFeedbackReview,
+  onLectureCourseFeedbackReview,
+  getLectureCoureSFeedbackReview,
+  useLectureCoureSFeedbackReview,
+  useLectureCoureSatisfaction,
+  initLectureCourseSatisfaction,
 };

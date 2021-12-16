@@ -21,7 +21,7 @@ const LectureSurveySummaryChoiceLayout: React.FC<LectureSurveyItem> =
     return (
       <div className="course-radio-survey-new">
         <p>
-          <span>{no}.</span>
+          <span>{no}</span>
           {isRequired === true && (
             <>
               <span>
