@@ -168,7 +168,7 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
                   <>
                     <Image
                       style={{ display: 'inline-block' }}
-                      src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg"
                     />
                     <span onClick={setCheckNumber}>
                       더보기 ({lastIndex - number - 1}개)
