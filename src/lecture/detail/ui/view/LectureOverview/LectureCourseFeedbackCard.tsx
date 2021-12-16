@@ -3,41 +3,6 @@ import { reviewAnswers } from 'lecture/detail/model/SurveySummaries';
 import moment from 'moment';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
-//import InfoModal from '../InfoModal';
-
-function chartChoiceText(itemNumber: string) {
-  if (itemNumber === '1') {
-    return (
-      <p>
-        이 강의는 <strong>매우 불만족해요!</strong>
-      </p>
-    );
-  } else if (itemNumber === '2') {
-    return (
-      <p>
-        이 강의는 <strong>불만족해요!</strong>
-      </p>
-    );
-  } else if (itemNumber === '3') {
-    return (
-      <p>
-        이 강의는 <strong>보통이에요!</strong>
-      </p>
-    );
-  } else if (itemNumber === '4') {
-    return (
-      <p>
-        이 강의는 <strong>만족해요!</strong>
-      </p>
-    );
-  } else if (itemNumber === '5') {
-    return (
-      <p>
-        이 강의는 <strong>매우 만족해요!</strong>
-      </p>
-    );
-  }
-}
 
 interface props {
   item: reviewAnswers;
@@ -88,8 +53,6 @@ const FeedbackCard = (props: props) => {
           </div>
           <div className="bottom-detail">
             <p>{sentence}</p>
-            <br />
-            {chartChoiceText(itemNumber)}
           </div>
         </div>
       </div>
