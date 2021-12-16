@@ -7,15 +7,15 @@ import _ from 'lodash';
 
 export function chartSentenceText(num: number) {
   if (num === 0) {
-    return '매우 그렇다';
+    return '매우 만족';
   } else if (num === 1) {
-    return '그렇다';
+    return '만족';
   } else if (num === 2) {
-    return '보통이다';
+    return '보통';
   } else if (num === 3) {
-    return '아니다';
+    return '불만족';
   } else if (num === 4) {
-    return '전혀 아니다';
+    return '매우 불만족';
   }
 }
 

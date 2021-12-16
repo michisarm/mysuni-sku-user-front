@@ -20,7 +20,6 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import LectureSurveySummaryIconView from './LectureSurveySummaryIconView';
 import LectureSurveySummaryReviewView from './LectureSurveySummaryReviewView';
 
 interface Props {
