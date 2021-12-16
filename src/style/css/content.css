@@ -1025,3 +1025,6 @@ i.icon.testHeader02 { position:absolute; top:1rem; left:0; margin: 0; width: 54p
 .rev-edit .rev-info .cnt strong { color: #333; }
 i.icon.testHeader::before { content: ""; display: inline-block; width: 54px; height: 54px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-54-px.svg") 0 0 no-repeat !important; background-size: 100% 100% !important; }
 i.icon.testHeader02::before { content: ""; display: inline-block; width: 54px; height: 54px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-54-px.svg") 0 0 no-repeat !important; background-size: 100% 100% !important;}
+
+.rev-noti { margin-top: 10px;}
+.rev-noti span {margin-left: 4px;display: inline-block;color: #DB1111;font-size: 0.875rem;line-height: 16px;vertical-align: top;}
