@@ -20,7 +20,9 @@ interface CommonUseType {
 export default function LectureSurveyReviewView(props: CommonUseType) {
   const { lectureSurveyAnswerItem, lectureSurveyItem, lectureSurveyState } =
     props;
-  const [placeholderText, setPlaceholderText] = useState('');
+  const [placeholderText, setPlaceholderText] = useState(
+    '과정에 대한 만족도를 선택해주세요.'
+  );
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {
