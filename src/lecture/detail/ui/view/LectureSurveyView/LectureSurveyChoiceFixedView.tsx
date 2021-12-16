@@ -1,5 +1,5 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
-import React, { useState, useCallback, Fragment } from 'react';
+import React, { useCallback, Fragment } from 'react';
 import { CheckboxProps, Radio } from 'semantic-ui-react';
 import { selectChoiceFixedAnswer } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
@@ -29,7 +29,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
     [lectureSurveyItem]
   );
 
-  const { canMultipleAnswer, no } = lectureSurveyItem;
+  const { canMultipleAnswer } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {!canMultipleAnswer && (

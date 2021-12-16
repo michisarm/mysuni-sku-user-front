@@ -26,7 +26,6 @@ const FeedbackCard = (props: props) => {
   return (
     <>
       <div className="feedback-card">
-        {/* {modal && <InfoModal />} */}
         <div className="inner">
           <div className="top-prf">
             <a

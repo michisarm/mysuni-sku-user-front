@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Label, Icon } from 'semantic-ui-react';
 import LectureCourseFeedbackSlide from './LectureCourseFeedbackSlide';
 import { useLectureCoureSatisfaction } from 'lecture/detail/store/LectureOverviewStore';
 import _ from 'lodash';
-//import { requestFeedbackSlideProfileInfo } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
 export function chartSentenceText(num: number) {
   if (num === 0) {

@@ -2,7 +2,6 @@ import { parseInt } from 'lodash';
 import {
   setLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
-  getLectureCoureSFeedbackReview,
 } from 'lecture/detail/store/LectureOverviewStore';
 import {
   findReviewSummary,

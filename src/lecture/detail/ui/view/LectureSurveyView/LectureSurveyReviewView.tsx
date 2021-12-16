@@ -2,10 +2,8 @@ import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
 import React, { useState, useCallback, Fragment, ChangeEvent } from 'react';
 import { CheckboxProps, Radio } from 'semantic-ui-react';
 import {
-  selectChoiceAnswer,
   selectReviewChoiceAnswer,
   selectReviewSentenceAnswer,
-  selectSentenceAnswer,
 } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
@@ -13,7 +11,6 @@ import LectureSurveyState, {
 import Image from 'shared/components/Image';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { isString } from 'lodash';
 
 interface CommonUseType {
   lectureSurveyItem: LectureSurveyItem;
