@@ -42,7 +42,9 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
   );
   const onChangeTextValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
+      if (e.target.value.length <= 200) {
+        selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
+      }
     },
     [lectureSurveyItem]
   );
