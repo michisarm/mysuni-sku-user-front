@@ -34,6 +34,12 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
       },
       [lectureSurveyItem]
     );
+
+    let textAreaValue =
+      lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence;
+    if (textAreaValue === null) {
+      textAreaValue = '';
+    }
     return (
       <LectureSurveyChoiceLayout {...lectureSurveyItem}>
         <Form>
@@ -46,7 +52,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
                 <span className="now">
                   {lectureSurveyAnswerItem !== undefined &&
                   lectureSurveyAnswerItem.sentence !== undefined
-                    ? lectureSurveyAnswerItem.sentence.length
+                    ? lectureSurveyAnswerItem.sentence?.length
                     : 0}
                 </span>
                 &nbsp;&#47;&nbsp;
@@ -57,9 +63,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
                   '답변을 입력해주세요.',
                   'survey-placeholder-답변입력'
                 )}
-                value={
-                  lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence
-                }
+                value={textAreaValue}
                 onChange={onChangeValue}
                 readOnly={false}
               />
