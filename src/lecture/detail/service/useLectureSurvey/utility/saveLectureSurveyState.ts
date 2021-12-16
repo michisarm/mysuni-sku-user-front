@@ -163,12 +163,13 @@ async function coreSubmitLectureSurveyState() {
           (d) =>
             c.type === 'Review' &&
             d.answerItemType === 'Review' &&
-            isString(d.sentence)
+            (d.sentence === undefined || d.sentence === '')
         )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
 
+  console.log(requiredMissAnswers, 'requiredMissAnswers', answerItem);
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),
