@@ -158,7 +158,9 @@ async function coreSubmitLectureSurveyState() {
             (c.type !== 'Matrix' ||
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
         ) ||
-        answerItem.some((d) => c.type === 'Review' && d.sentence === undefined)
+        answerItem.some(
+          (d) => d.answerItemType === 'Review' && d.sentence === undefined
+        )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
