@@ -28,7 +28,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
         return;
       }
       selectReviewChoiceAnswer(lectureSurveyItem, data.value);
-      if (data.value !== 1 && data.value !== 2) {
+      if (data.value === 4 || data.value === 5) {
         setPlaceholderText(
           '어떤 점이 특별히 좋았나요? 자세한 학습후기를 남겨주세요.'
         );
