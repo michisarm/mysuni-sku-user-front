@@ -327,24 +327,6 @@ i.icon.testHeader02 {
 .survey-header-left.test_ing {
   padding-left: 4.5rem;
 }
-i.icon.testHeader::before {
-  content: '';
-  display: inline-block;
-  width: 54px;
-  height: 54px;
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-54-px.svg')
-    0 0 no-repeat !important;
-  background-size: 100% 100% !important;
-}
-i.icon.testHeader02::before {
-  content: '';
-  display: inline-block;
-  width: 54px;
-  height: 54px;
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-survey-54-px.svg')
-    0 0 no-repeat !important;
-  background-size: 100% 100% !important;
-}
 .follow_list .chk_follow.checked {
   border-color: #b9b9b9;
   color: #b9b9b9;
@@ -1360,6 +1342,14 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
   height: 12px;
   background: #ddd;
 }
+.login-content
+  .right-area
+  .inner
+  .logo.big
+  i.icon.sk-university-login-big:before {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/logo-gnb.png')
+    no-repeat 0 0 !important;
+}
 
 /* 학습카드 오버뷰 (학습내용 상세보기 페이지) : position 풀기 */
 #root section.content.lms {
@@ -1381,7 +1371,7 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
   position: fixed;
   width: 21.88rem;
   top: 50px;
-  bottom: 277px;
+  bottom: 253px;
   overflow-y: auto;
 }
 .content.lms.v-wide2 .course-info-list .course-header-list {

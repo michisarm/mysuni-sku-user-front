@@ -124,28 +124,6 @@ async function requestFindRecommendCards() {
           );
         }) || [];
 
-    // const nextRecommendCardRoms = checkableChannels
-    //   .filter((c) => c.checked === true)
-    //   .map<RecommendCardRom>((c) => {
-    //     if (recommendCardRoms) {
-    //       const cardForUserViewRdos = recommendCardRoms
-    //         .filter((rcr) => rcr.channelId === c.id)
-    //         .map((rcr) => rcr.cardForUserViewRdos)
-    //         .flat();
-    //       return {
-    //         channelId: c.id,
-    //         cardCount: cardForUserViewRdos.length,
-    //         cardForUserViewRdos,
-    //       };
-    //     } else {
-    //       return {
-    //         channelId: c.id,
-    //         cardCount: 0,
-    //         cardForUserViewRdos: [],
-    //       };
-    //     }
-    //   });
-
     setRecommendCardRoms(nextRecommendCardRoms);
     const nextRecommendPageViewModel = getRecommendPage();
     if (nextRecommendPageViewModel === undefined) {
@@ -227,6 +205,8 @@ function AllChannelsContainerView() {
       </div>
     );
   }
+
+  console.log(recommendCardRoms);
 
   return (
     <div className="recommend-area">
