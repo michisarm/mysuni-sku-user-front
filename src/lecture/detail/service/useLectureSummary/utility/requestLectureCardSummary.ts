@@ -18,6 +18,7 @@ import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudent
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { UserIdentity } from 'shared/model/UserIdentity';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import moment from 'moment';
 
 function getVaildLeaningDate(
   validLearningDate: number,
@@ -38,9 +39,9 @@ function getVaildLeaningDate(
 
     const result = `${year}.${month}.${day}`;
 
-    return result;
+    return parseCreateDate.getTime();
   } else {
-    return '';
+    return 0;
   }
 }
 
@@ -95,6 +96,9 @@ function parseLectureSummary(
       validLearningDate,
       cardRelatedStudent
     ),
+    learningStartDate: moment(cardContents.learningPeriod.startDate).valueOf(),
+    learningEndDate: moment(cardContents.learningPeriod.endDate).valueOf(),
+    restrictLearningPeriod: cardContents.restrictLearningPeriod,
   };
 }
 
