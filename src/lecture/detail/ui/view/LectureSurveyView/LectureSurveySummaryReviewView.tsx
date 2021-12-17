@@ -7,6 +7,7 @@ import {
   useLectureSurveyAnswerSummaryList,
 } from 'lecture/detail/store/LectureSurveyStore';
 import { SkProfileService } from 'profile/stores';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -170,9 +171,18 @@ const LectureSurveySummaryReviewView: React.FC<LectureSurveyItemProps> =
                       style={{ display: 'inline-block' }}
                       src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px.svg"
                     />
-                    <span onClick={setCheckNumber}>
-                      더보기 ({lastIndex - number - 1}개)
-                    </span>
+                    <span
+                      onClick={setCheckNumber}
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          ` 더보기 ({totalCount}개)`,
+                          'survey-review-moreView',
+                          {
+                            totalCount: (lastIndex - number - 1).toString(),
+                          }
+                        ),
+                      }}
+                    />
                   </>
                 ) : (
                   ''
