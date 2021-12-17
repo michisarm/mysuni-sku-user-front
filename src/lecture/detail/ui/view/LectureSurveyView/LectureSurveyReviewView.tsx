@@ -1,6 +1,6 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
 import React, { useState, useCallback, Fragment, ChangeEvent } from 'react';
-import { CheckboxProps, Radio } from 'semantic-ui-react';
+import { CheckboxProps, Icon, Radio } from 'semantic-ui-react';
 import {
   selectReviewChoiceAnswer,
   selectReviewSentenceAnswer,
@@ -8,8 +8,7 @@ import {
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
-import Image from 'shared/components/Image';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 
 interface CommonUseType {
@@ -21,7 +20,12 @@ interface CommonUseType {
 export default function LectureSurveyReviewView(props: CommonUseType) {
   const { lectureSurveyAnswerItem, lectureSurveyItem, lectureSurveyState } =
     props;
-  const [placeholderText, setPlaceholderText] = useState('');
+  const [placeholderText, setPlaceholderText] = useState(
+    getPolyglotText(
+      '과정에 대한 만족도를 선택해주세요.',
+      'survey-review-placeholderDefault'
+    )
+  );
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {
@@ -29,20 +33,26 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
       }
       selectReviewChoiceAnswer(lectureSurveyItem, data.value);
       if (data.value === 4 || data.value === 5) {
-        setPlaceholderText(
-          '어떤 점이 특별히 좋았나요? 자세한 학습후기를 남겨주세요.'
+        const goodPointText = getPolyglotText(
+          '어떤 점이 특별히 좋았나요? 자세한 학습후기를 남겨주세요.',
+          'survey-review-placeholder45'
         );
+        setPlaceholderText(goodPointText);
       } else {
-        setPlaceholderText(
-          '어떤 점을 개선하면 좋을까요? 개선 포인트를 남겨주세요.'
+        const badPointText = getPolyglotText(
+          '어떤 점을 개선하면 좋을까요? 개선 포인트를 남겨주세요.',
+          'survey-review-placeholder123'
         );
+        setPlaceholderText(badPointText);
       }
     },
     [lectureSurveyItem]
   );
   const onChangeTextValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
+      if (e.target.value.length <= 200) {
+        selectReviewSentenceAnswer(lectureSurveyItem, e.target.value);
+      }
     },
     [lectureSurveyItem]
   );
@@ -62,7 +72,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             <Fragment>
               <Radio
                 className="iconRadio radio05"
-                label="전혀 아니다"
+                label={getPolyglotText('전혀 아니다', 'survey-review-Notatall')}
                 value={1}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -74,7 +84,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio04"
-                label="아니다"
+                label={getPolyglotText('아니다', 'survey-review-Disagree')}
                 value={2}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -86,7 +96,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio03"
-                label="보통이다"
+                label={getPolyglotText('보통이다', 'survey-review-Average')}
                 value={3}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -98,7 +108,7 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio02"
-                label="그렇다"
+                label={getPolyglotText('그렇다', 'survey-review-Agree')}
                 value={4}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -110,7 +120,10 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio01"
-                label="매우 그렇다"
+                label={getPolyglotText(
+                  '매우 그렇다',
+                  'survey-review-Highlyagree'
+                )}
                 value={5}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -132,12 +145,15 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
             placeholder={placeholderText}
             value={textAreaValue}
             onChange={onChangeTextValue}
-            readOnly={placeholderText.length === 0}
+            readOnly={false}
           />
         </div>
         <div className="rev-info">
           <span>
-            {'입력해주신 내용은 과정 평가 리뷰로 활용될 수 있습니다.'}
+            {getPolyglotText(
+              '입력해주신 내용은 과정 평가 리뷰로 활용될 수 있습니다.',
+              'survey-review-evaluation'
+            )}
           </span>
           <div className="cnt">
             <strong>
@@ -155,19 +171,9 @@ export default function LectureSurveyReviewView(props: CommonUseType) {
         (lectureSurveyState.state === 'Progress' &&
           lectureSurveyItem.isRequired === true &&
           lectureSurveyAnswerItem === undefined && (
-            <div style={{ marginTop: '10px' }}>
-              <Image
-                style={{ display: 'inline-block', marginRight: '5px' }}
-                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-info-error-16-px.png"
-              />
-              <span
-                style={{
-                  color: '#e1002a',
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  verticalAlign: 'text-bottom',
-                }}
-              >
+            <div className="rev-noti">
+              <Icon className="error16" />
+              <span>
                 <PolyglotText
                   defaultString="해당 문항은 필수 항목 입니다."
                   id="survey-필수항목-alert2"

@@ -1,9 +1,8 @@
 /* eslint-disable consistent-return */
 
-import { useCallback, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
-  setInMyLectureCdo,
   setLectureComment,
   setLectureCardSummary,
   setLectureDescription,
@@ -11,7 +10,6 @@ import {
   setLectureInstructor,
   setLecturePrecourse,
   setLectureRelations,
-  setLectureReview,
   setLectureSubcategory,
   setLectureTags,
   setLectureCourseSatisfaction,
@@ -45,7 +43,6 @@ export function useRequestLectureCardOverview() {
         requestLectureCardPrecourse(cardId);
         requestLectureCardRelations(cardId);
         requestLectureCardSubcategory(cardId);
-        //requestLectureCardReview(cardId);
         requestLectureCardSummary(cardId);
         requestLectureCardTags(cardId);
         requestLectureSurvey();
@@ -61,7 +58,6 @@ export function useRequestLectureCardOverview() {
       setLectureInstructor();
       setLecturePrecourse();
       setLectureRelations();
-      // setLectureReview();
       setLectureSubcategory();
       setLectureCardSummary();
       setLectureTags();

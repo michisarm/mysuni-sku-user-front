@@ -27,6 +27,9 @@ import {
   initLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 } from 'lecture/detail/store/LectureOverviewStore';
+import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
+import moment from 'moment';
+import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -197,6 +200,59 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
+    const validLearningStartDate = moment(
+      lectureStructure.card.student?.registeredTime
+    ).format('YYYY-MM-DD');
+    const validLearningEndDate = moment(
+      lectureSummary.restrictLearningPeriod
+        ? Math.min(
+            lectureSummary.learningEndDate,
+            lectureSummary.validLearningDate
+          )
+        : lectureSummary.learningEndDate
+    ).format('YYYY-MM-DD');
+
+    useEffect(() => {
+      //
+      if (lectureSummary.restrictLearningPeriod) {
+        if (
+          moment().valueOf() >
+          moment(
+            lectureSummary.restrictLearningPeriod
+              ? Math.min(
+                  lectureSummary.learningEndDate,
+                  lectureSummary.validLearningDate
+                )
+              : lectureSummary.learningEndDate
+          ).valueOf()
+        ) {
+          reactAlert({
+            title: getPolyglotText('교육기간 만료 안내', 'learning-기간-만료'),
+            message: getPolyglotText(
+              '교육기간이 만료되어 학습카드에 접근할 수 없습니다.',
+              'learning-기간-만료안내'
+            ),
+            onClose: () => {
+              const history = getCurrentHistory();
+              history?.push('/');
+            },
+          });
+        } else {
+          reactAlert({
+            title: getPolyglotText(
+              '학습 참여 기간 안내',
+              'learning-기간-유효기간'
+            ),
+            message: getPolyglotText(
+              'YYYY-MM-DD 까지 학습하실 수 있습니다',
+              'learning-기간-유효기간안'
+            ),
+            onClose: () => {},
+          });
+        }
+      }
+    });
+
     return (
       <div className="course-info-header" data-area={Area.CARD_HEADER}>
         <div className="contents-header">
@@ -215,7 +271,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   <Icon className={difficultyLevelIcon} />
                   <span>{lectureSummary.difficultyLevel}</span>
                 </Label>
-                {lectureSummary.validLearningDate !== '' && (
+                {lectureSummary.validLearningDate !== 0 && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">
                       <PolyglotText
@@ -223,7 +279,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                         id="Course-Summary-유효학습 종료일"
                       />
                     </span>
-                    <span>{lectureSummary.validLearningDate}</span>
+                    <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
                   </Label>
                 )}
                 <Label className="bold onlytext">
@@ -341,7 +397,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                         }
                       >
                         <Icon className="edit16" />
-                        평가하기
+                        {getPolyglotText(
+                          '평가하기',
+                          'survey-reviewOverview-평가'
+                        )}
                       </Button>
                     )}
                   </div>

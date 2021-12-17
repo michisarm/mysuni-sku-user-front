@@ -8,6 +8,7 @@ import LectureCourseSummaryView from '../../view/LectureOverview/LectureCourseSu
 function LectureCardSummaryContainer() {
   const lectureSummary = useLectureCardSummary();
   const lectureStructure = useLectureStructure();
+
   // jz - 이게 머야????
   // const params: any = useLectureParams();
   // getCardLectureSummary(params);

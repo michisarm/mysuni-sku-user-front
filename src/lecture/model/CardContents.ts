@@ -34,6 +34,7 @@ export interface CardContents {
   commentFeedbackId: string;
   validLearningDate: number;
   fileBoxId: string;
+  restrictLearningPeriod: boolean;
 
   time: number;
 

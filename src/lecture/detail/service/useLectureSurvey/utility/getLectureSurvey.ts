@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
 import { findIsJsonStudentByCube } from '../../../api/lectureApi';
 import {
@@ -148,11 +149,11 @@ function parseReview(
   }
 
   const choiceFixed = [
-    '전혀 아니다',
-    '아니다',
-    '보통이다',
-    '그렇다',
-    '매우 그렇다',
+    getPolyglotText('전혀 아니다', 'survey-review-Notatall'),
+    getPolyglotText('아니다', 'survey-review-Disagree'),
+    getPolyglotText('보통이다', 'survey-review-Average'),
+    getPolyglotText('그렇다', 'survey-review-Agree'),
+    getPolyglotText('매우 그렇다', 'survey-review-Highlyagree'),
   ];
 
   const choices: LectureSurveyItemChoice[] =
@@ -225,11 +226,11 @@ function parseChoiceFixed(
   const canMultipleAnswer = answerItems.multipleChoice;
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choiceFixed = [
-    '전혀 아니다',
-    '아니다',
-    '보통이다',
-    '그렇다',
-    '매우 그렇다',
+    getPolyglotText('전혀 아니다', 'survey-review-Notatall'),
+    getPolyglotText('아니다', 'survey-review-Disagree'),
+    getPolyglotText('보통이다', 'survey-review-Average'),
+    getPolyglotText('그렇다', 'survey-review-Agree'),
+    getPolyglotText('매우 그렇다', 'survey-review-Highlyagree'),
   ];
 
   const choices: LectureSurveyItemChoice[] =

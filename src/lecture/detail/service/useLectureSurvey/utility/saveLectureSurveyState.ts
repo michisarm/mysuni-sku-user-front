@@ -1,3 +1,4 @@
+import { isString } from 'lodash';
 import { reactAlert } from '@nara.platform/accent';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -158,7 +159,12 @@ async function coreSubmitLectureSurveyState() {
             (c.type !== 'Matrix' ||
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
         ) ||
-        answerItem.some((d) => c.type === 'Review' && d.sentence === undefined)
+        answerItem.some(
+          (d) =>
+            c.type === 'Review' &&
+            d.answerItemType === 'Review' &&
+            (d.sentence === undefined || d.sentence === '')
+        )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
@@ -171,9 +177,6 @@ async function coreSubmitLectureSurveyState() {
         '은 필수 항목입니다',
     });
 
-    // requiredMissAnswers.forEach(c => {
-    //   console.log(c.no);
-    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);

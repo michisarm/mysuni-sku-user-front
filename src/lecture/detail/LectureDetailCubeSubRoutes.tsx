@@ -15,20 +15,14 @@ import lecturePath from '../routePaths';
 import { getPreCourseFailCardId } from './service/useLectureStructure/utility/requestCardLectureStructure';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
-import {
-  isPisAgreementPassed,
-  isPrecoursePassed,
-} from './service/useLectureStructure/utility/requestCardLectureStructure';
+import { isPisAgreementPassed } from './service/useLectureStructure/utility/requestCardLectureStructure';
 import { LectureCardAgreementModalView } from './ui/view/LectureStateView/LectureCardAgreementModalView';
 import { onOpenLectureCardPisAgreementModal } from './service/LectureCardAgreementModal/useLectureAgreemenetModal';
-import { useLectureSurvey } from './service/useLectureSurvey/useLectureSurvey';
-import { requestLectureCouseFeedback } from './service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 import { requestLectureSurvey } from './service/useLectureSurvey/utility/getLectureSurvey';
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
   const failCardId = await getPreCourseFailCardId(cardId);
 
-  const isPassed = await isPrecoursePassed(cardId);
   const { isPisAgreement, singleCube } = await isPisAgreementPassed(cardId);
   const history = getCurrentHistory();
 
@@ -71,10 +65,6 @@ function LectureDetailCubeSubRoutes() {
   const { cubeType, cardId, cubeId } = useParams<LectureParams>();
   isOpenPassedPreCourseModal(cardId);
   requestLectureSurvey();
-  const [lectureSurvey] = useLectureSurvey();
-  useEffect(() => {
-    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
-  }, [lectureSurvey, cubeId]);
 
   return (
     <>

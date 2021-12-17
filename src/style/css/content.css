@@ -2118,3 +2118,15 @@ i.icon.testHeader02::before {
     0 0 no-repeat !important;
   background-size: 100% 100% !important;
 }
+
+.rev-noti {
+  margin-top: 10px;
+}
+.rev-noti span {
+  margin-left: 4px;
+  display: inline-block;
+  color: #db1111;
+  font-size: 0.875rem;
+  line-height: 16px;
+  vertical-align: top;
+}
