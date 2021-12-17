@@ -214,40 +214,42 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
 
     useEffect(() => {
       //
-      if (
-        moment().valueOf() >
-        moment(
-          lectureSummary.restrictLearningPeriod
-            ? Math.min(
-                lectureSummary.learningEndDate,
-                lectureSummary.validLearningDate
-              )
-            : lectureSummary.learningEndDate
-        ).valueOf()
-      ) {
-        reactAlert({
-          title: getPolyglotText('교육기간 만료 안내', 'learning-기간-만료'),
-          message: getPolyglotText(
-            '교육기간이 만료되어 학습카드에 접근할 수 없습니다.',
-            'learning-기간-만료안내'
-          ),
-          onClose: () => {
-            const history = getCurrentHistory();
-            history?.push('/');
-          },
-        });
-      } else {
-        reactAlert({
-          title: getPolyglotText(
-            '학습 참여 기간 안내',
-            'learning-기간-유효기간'
-          ),
-          message: getPolyglotText(
-            'YYYY-MM-DD 까지 학습하실 수 있습니다',
-            'learning-기간-유효기간안'
-          ),
-          onClose: () => {},
-        });
+      if (lectureSummary.restrictLearningPeriod) {
+        if (
+          moment().valueOf() >
+          moment(
+            lectureSummary.restrictLearningPeriod
+              ? Math.min(
+                  lectureSummary.learningEndDate,
+                  lectureSummary.validLearningDate
+                )
+              : lectureSummary.learningEndDate
+          ).valueOf()
+        ) {
+          reactAlert({
+            title: getPolyglotText('교육기간 만료 안내', 'learning-기간-만료'),
+            message: getPolyglotText(
+              '교육기간이 만료되어 학습카드에 접근할 수 없습니다.',
+              'learning-기간-만료안내'
+            ),
+            onClose: () => {
+              const history = getCurrentHistory();
+              history?.push('/');
+            },
+          });
+        } else {
+          reactAlert({
+            title: getPolyglotText(
+              '학습 참여 기간 안내',
+              'learning-기간-유효기간'
+            ),
+            message: getPolyglotText(
+              'YYYY-MM-DD 까지 학습하실 수 있습니다',
+              'learning-기간-유효기간안'
+            ),
+            onClose: () => {},
+          });
+        }
       }
     });
 
