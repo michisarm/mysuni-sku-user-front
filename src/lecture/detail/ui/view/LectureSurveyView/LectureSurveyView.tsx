@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState, useEffect } from 'react';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
@@ -33,7 +34,6 @@ import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import LectureSurveyReviewView from './LectureSurveyReviewView';
-import LectureSurveyIconView from './LectureSurveyChoiceFixedView';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -50,7 +50,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
     lectureStructure,
   }) {
     const params = useLectureParams();
-    const surveyCaseId = lectureSurveyState?.surveyCaseId;
+    const surveyCaseId = lectureSurvey.surveyCaseId;
     const [commentId, setCommentID] = useState('');
 
     const requestSaveLectureSurveyState = useCallback(() => {
@@ -59,7 +59,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       } else {
         saveCommunitySurveyState();
       }
-    }, [params, currentMenu]);
+    }, [params]);
 
     const requestSubmitLectureSurveyState = useCallback(() => {
       if (params !== undefined) {
@@ -67,7 +67,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       } else {
         submitCommunitySurveyState();
       }
-    }, [params, currentMenu]);
+    }, [params]);
 
     useEffect(() => {
       const surveyCaseService = SurveyCaseService.instance;
@@ -80,12 +80,11 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
             }
           });
       }
-    }, [surveyCaseId]);
+    }, []);
 
-    const skProfileService = SkProfileService.instance;
-    const { skProfile } = skProfileService;
-    // const { member } = skProfile;
+    const { skProfile } = SkProfileService.instance;
     const [surveyTitle, setSurveyTitle] = useState<string>();
+
     useEffect(() => {
       if (currentMenu?.name !== undefined) {
         setSurveyTitle(currentMenu?.name);
