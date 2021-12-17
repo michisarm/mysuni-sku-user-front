@@ -169,7 +169,6 @@ async function coreSubmitLectureSurveyState() {
 
   const a = requiredMissAnswers.map((r) => r.rows);
 
-  console.log(requiredMissAnswers, 'requiredMissAnswers', answerItem);
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),
@@ -178,9 +177,6 @@ async function coreSubmitLectureSurveyState() {
         '은 필수 항목입니다',
     });
 
-    // requiredMissAnswers.forEach(c => {
-    //   console.log(c.no);
-    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);

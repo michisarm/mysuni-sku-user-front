@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -85,9 +86,18 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> =
                         style={{ display: 'inline-block' }}
                         src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
                       />
-                      <span onClick={setCheckNumber}>
-                        더보기 ({lastIndex - number - 1}개)
-                      </span>
+                      <span
+                        onClick={setCheckNumber}
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            ` 더보기 ({totalCount}개)`,
+                            'survey-review-moreView',
+                            {
+                              totalCount: (lastIndex - number - 1).toString(),
+                            }
+                          ),
+                        }}
+                      />
                     </>
                   ) : (
                     ''
