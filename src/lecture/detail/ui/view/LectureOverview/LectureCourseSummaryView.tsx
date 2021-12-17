@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -203,29 +203,46 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     const validLearningStartDate = moment(
       lectureStructure.card.student?.registeredTime
     ).format('YYYY-MM-DD');
+    // const validLearningEndDate = moment(
+    //   lectureSummary.restrictLearningPeriod
+    //     ? Math.min(
+    //         lectureSummary.learningEndDate,
+    //         lectureSummary.validLearningDate
+    //       )
+    //     : lectureSummary.learningEndDate
+    // ).format('YYYY-MM-DD');
+
+    const [onAlertOpen, setAlertOpen] = useState(false);
+
     const validLearningEndDate = moment(
-      lectureSummary.restrictLearningPeriod
-        ? Math.min(
-            lectureSummary.learningEndDate,
-            lectureSummary.validLearningDate
-          )
-        : lectureSummary.learningEndDate
+      lectureSummary.validLearningDate
     ).format('YYYY-MM-DD');
+
+    const escFunction = useCallback(
+      (event) => {
+        if (event.keyCode === 27 && onAlertOpen) {
+          //Do whatever when esc is pressed
+          const history = getCurrentHistory();
+          history?.push('/');
+        }
+      },
+      [onAlertOpen]
+    );
+
+    useEffect(() => {
+      console.log(onAlertOpen);
+    }, [onAlertOpen]);
 
     useEffect(() => {
       //
+      document.addEventListener('keydown', escFunction, false);
+
       if (lectureSummary.restrictLearningPeriod) {
         if (
           moment().valueOf() >
-          moment(
-            lectureSummary.restrictLearningPeriod
-              ? Math.min(
-                  lectureSummary.learningEndDate,
-                  lectureSummary.validLearningDate
-                )
-              : lectureSummary.learningEndDate
-          ).valueOf()
+          moment(lectureSummary.validLearningDate).valueOf()
         ) {
+          setAlertOpen(true);
           reactAlert({
             title: getPolyglotText('교육기간 만료 안내', 'learning-기간-만료'),
             message: getPolyglotText(
@@ -251,7 +268,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
           });
         }
       }
-    });
+
+      return () => {
+        document.removeEventListener('keydown', escFunction, false);
+      };
+    }, [onAlertOpen]);
 
     return (
       <div className="course-info-header" data-area={Area.CARD_HEADER}>
@@ -271,17 +292,18 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   <Icon className={difficultyLevelIcon} />
                   <span>{lectureSummary.difficultyLevel}</span>
                 </Label>
-                {lectureSummary.validLearningDate !== 0 && (
-                  <Label className="bold onlytext">
-                    <span className="header-span-first">
-                      <PolyglotText
-                        defaultString="유효학습 종료일"
-                        id="Course-Summary-유효학습 종료일"
-                      />
-                    </span>
-                    <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
-                  </Label>
-                )}
+                {lectureSummary.validLearningDate !== 0 &&
+                  !lectureSummary.restrictLearningPeriod && (
+                    <Label className="bold onlytext">
+                      <span className="header-span-first">
+                        <PolyglotText
+                          defaultString="유효학습 종료일"
+                          id="Course-Summary-유효학습 종료일"
+                        />
+                      </span>
+                      <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
+                    </Label>
+                  )}
                 <Label className="bold onlytext">
                   <Icon className="time2" />
                   <span>{lectureSummary.learningTime}</span>
