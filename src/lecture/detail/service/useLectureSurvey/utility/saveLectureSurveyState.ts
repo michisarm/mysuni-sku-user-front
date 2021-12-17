@@ -1,3 +1,4 @@
+import { isString } from 'lodash';
 import { reactAlert } from '@nara.platform/accent';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -158,11 +159,17 @@ async function coreSubmitLectureSurveyState() {
             (c.type !== 'Matrix' ||
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
         ) ||
-        answerItem.some((d) => c.type === 'Review' && d.sentence === undefined)
+        answerItem.some(
+          (d) =>
+            c.type === 'Review' &&
+            d.answerItemType === 'Review' &&
+            (d.sentence === undefined || d.sentence === '')
+        )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
 
+  console.log(requiredMissAnswers, 'requiredMissAnswers', answerItem);
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),

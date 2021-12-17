@@ -29,17 +29,9 @@ import {
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getDefaultLang } from 'lecture/model/LangSupport';
-import {
-  getLectureState,
-  useLectureState,
-} from 'lecture/detail/store/LectureStateStore';
+import { getLectureState } from 'lecture/detail/store/LectureStateStore';
 import { isEmpty, trim } from 'lodash';
 import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
-import {
-  useLectureCoureSatisfaction,
-  initLectureCourseSatisfaction,
-  getLectureCubes,
-} from 'lecture/detail/store/LectureOverviewStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -296,13 +288,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
       }, 500);
     };
 
-    const cubes = getLectureCubes();
-    const cubeCounts = cubes?.length || 0;
-    const isOnlyOneCube = cubeCounts === 1;
-
-    const satisfaction =
-      useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
-
     return (
       <div
         // className="course-info-header"
@@ -522,48 +507,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
         <div className="contents-header-side">
           <div className="title-area">
             <div className="header-deatil">
-              <div className="item">
-                {isOnlyOneCube &&
-                  satisfaction.surveyCaseId &&
-                  lectureSummary.cubeType !== 'Task' &&
-                  lectureSummary.cubeType !== 'Community' &&
-                  lectureSummary.cubeType !== 'Discussion' && (
-                    <div className="header-rating">
-                      <Rating
-                        defaultRating={5}
-                        maxRating={5}
-                        rating={
-                          satisfaction?.totalCount !== 0
-                            ? satisfaction && satisfaction.average
-                            : 5
-                        }
-                        disabled
-                        className="fixed-rating"
-                      />
-                      <span>
-                        {satisfaction?.totalCount !== 0
-                          ? `${Math.floor(satisfaction.average * 10) / 10}(${
-                              satisfaction?.totalCount
-                            }
-                              ${getPolyglotText('명', 'cicl-학상본문-명')})`
-                          : '0'}
-                      </span>
-                      {!satisfaction.isDoneSurvey && (
-                        <Button
-                          className="re-feedback"
-                          onClick={() =>
-                            history.push(
-                              `/lecture/card/${params?.cardId}/cube/${params?.cubeId}/survey/${params?.cubeType}`
-                            )
-                          }
-                        >
-                          <Icon className="edit16" />
-                          평가하기
-                        </Button>
-                      )}
-                    </div>
-                  )}
-              </div>
+              <div className="item">{}</div>
             </div>
           </div>
           <div className="right-area">
