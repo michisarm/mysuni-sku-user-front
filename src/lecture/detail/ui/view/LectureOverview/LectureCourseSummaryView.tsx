@@ -397,7 +397,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                         }
                       >
                         <Icon className="edit16" />
-                        평가하기
+                        {getPolyglotText(
+                          '평가하기',
+                          'survey-reviewOverview-평가'
+                        )}
                       </Button>
                     )}
                   </div>

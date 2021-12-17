@@ -6,7 +6,7 @@ import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
 
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 
 interface CommonUseType {
@@ -39,7 +39,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
             <Fragment>
               <Radio
                 className="iconRadio radio05"
-                label="전혀 아니다"
+                label={getPolyglotText('전혀 아니다', 'survey-review-Notatall')}
                 value={1}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -51,7 +51,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio04"
-                label="아니다"
+                label={getPolyglotText('아니다', 'survey-review-Disagree')}
                 value={2}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -63,7 +63,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio03"
-                label="보통이다"
+                label={getPolyglotText('보통이다', 'survey-review-Average')}
                 value={3}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -75,7 +75,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio02"
-                label="그렇다"
+                label={getPolyglotText('그렇다', 'survey-review-Agree')}
                 value={4}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -87,7 +87,10 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio01"
-                label="매우 그렇다"
+                label={getPolyglotText(
+                  '매우 그렇다',
+                  'survey-review-Highlyagree'
+                )}
                 value={5}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
