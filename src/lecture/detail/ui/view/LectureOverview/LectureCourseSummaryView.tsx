@@ -30,6 +30,7 @@ import {
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import moment from 'moment';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
+import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -230,17 +231,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     );
 
     useEffect(() => {
-      console.log(onAlertOpen);
-    }, [onAlertOpen]);
-
-    useEffect(() => {
       //
       document.addEventListener('keydown', escFunction, false);
+      const validDate = moment(lectureSummary.validLearningDate).format(
+        'YYYY-MM-DD'
+      );
 
       if (lectureSummary.restrictLearningPeriod) {
-        console.log(
-          moment(lectureSummary.validLearningDate).format('YYYY-MM-DD')
-        );
         if (
           moment().valueOf() >
           moment(lectureSummary.validLearningDate).valueOf()
@@ -264,11 +261,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
           reactAlert({
             title: getPolyglotText(
               '학습 참여 기간 안내 default',
-              'card-overview-alert1'
+              'card-overview-alertheader1'
             ),
-            message: getPolyglotText(
-              'YYYY-MM-DD 까지 학습하실 수 있습니다 default',
-              'card-overview-alerttxt1'
+            // message: getPolyglotText(
+            //   'YYYY-MM-DD 까지 학습하실 수 있습니다 default',
+            //   'card-overview-alerttxt1'
+            // ),
+            message: parsePolyglotHTML(
+              'card-overview-alerttxt1',
+              'date',
+              validDate,
+              'YYYY-MM-DD 까지 학습하실 수 있습니다 default'
             ),
             onClose: () => {},
           });
