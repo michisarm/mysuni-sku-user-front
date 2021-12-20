@@ -80,7 +80,8 @@
     "@types/react-color": "^3.0.4",
     "@types/react-datepicker": "^2.9.5",
     "@types/react-dom": "^16.9.12",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "pdfjs-dist": "2.11.338"
   },
   "eslintConfig": {
     "extends": [

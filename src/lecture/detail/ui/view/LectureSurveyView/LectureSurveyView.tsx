@@ -71,6 +71,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
 
     useEffect(() => {
       const surveyCaseService = SurveyCaseService.instance;
+
       if (surveyCaseId !== undefined) {
         surveyCaseService
           .findSurveyCaseFeedBack(surveyCaseId)
@@ -80,7 +81,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
             }
           });
       }
-    }, []);
+    }, [params]);
 
     const { skProfile } = SkProfileService.instance;
     const [surveyTitle, setSurveyTitle] = useState<string>();
