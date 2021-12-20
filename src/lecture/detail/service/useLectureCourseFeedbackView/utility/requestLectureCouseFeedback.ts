@@ -32,7 +32,7 @@ export async function requestLectureCouseFeedback(
     lectureSurvey.surveyCaseId,
     answerSheet?.round || 1
   );
-  console.log('저거', lectureSurveySummary);
+
   if (lectureSurveySummary === undefined || lectureSurveySummary === null) {
     return;
   }

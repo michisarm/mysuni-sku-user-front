@@ -759,7 +759,7 @@ export async function requestLectureSurveySummary(
 ) {
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
   setLectureSurveyAnswerSheet(answerSheet);
-  console.log('이거');
+
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     surveyCaseId,
     answerSheet?.round || 1
