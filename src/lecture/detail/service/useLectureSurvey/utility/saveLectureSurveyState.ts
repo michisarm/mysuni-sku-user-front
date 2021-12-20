@@ -258,10 +258,11 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   if (lectureSurveyState.state === 'Completed') {
     return;
   }
+  setLectureSurveyState({ ...lectureSurveyState, state: 'Progress' });
   if (lectureSurveyState.answerSheetId === undefined) {
     await openLectureSurveyState();
   }
-  setLectureSurveyState({ ...lectureSurveyState, state: 'Progress' });
+
   const result = await coreSubmitLectureSurveyState();
   if (result === true) {
     await submitTask(student.id, 'Survey');
