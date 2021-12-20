@@ -100,7 +100,7 @@ function parseLectureSummary(
       .endOf('day')
       .valueOf(),
     restrictLearningPeriod: cardContents.restrictLearningPeriod,
-    complete: cardRelatedStudent!.complete || false,
+    complete: cardRelatedStudent!.cardStudent?.complete || false,
   };
 }
 
