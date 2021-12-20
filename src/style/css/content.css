@@ -1,3 +1,6 @@
+/* header mySUNI 아이콘 변경 */
+i.icon.sk-university::before{width: 90px; height: 38px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg") no-repeat 0 0/ 100% 100% !important;}
+
 /* Recommend */
 .recommend-detail
   .channel-of-interest
