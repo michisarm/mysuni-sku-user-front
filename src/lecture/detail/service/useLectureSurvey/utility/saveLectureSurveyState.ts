@@ -163,7 +163,7 @@ async function coreSubmitLectureSurveyState() {
           (d) =>
             c.type === 'Review' &&
             d.answerItemType === 'Review' &&
-            (d.sentence === undefined || d.sentence === '')
+            (d.sentence === undefined || d.sentence?.trim() === '')
         )
     );
 
@@ -261,8 +261,8 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   if (lectureSurveyState.answerSheetId === undefined) {
     await openLectureSurveyState();
   }
+  setLectureSurveyState({ ...lectureSurveyState, state: 'Progress' });
   const result = await coreSubmitLectureSurveyState();
-
   if (result === true) {
     await submitTask(student.id, 'Survey');
     clearFindMyCardRelatedStudentsCache();

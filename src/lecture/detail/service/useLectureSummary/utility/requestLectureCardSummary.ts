@@ -63,7 +63,6 @@ function parseLectureSummary(
   } = card;
   const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
-  console.log(cardRelatedStudent);
 
   return {
     cardId: id,
