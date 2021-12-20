@@ -10,6 +10,7 @@ import { LectureCardAgreementModalView } from '../../view/LectureStateView/Lectu
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
 import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
+import { useLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
@@ -24,10 +25,11 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 function LectureCourseOverviewPage() {
   const lectureStructure = useLectureStructure();
   const [lectureSurvey] = useLectureSurvey();
+  const answerSheet = useLectureSurveyAnswerSheet();
 
   useEffect(() => {
-    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
-  }, [lectureSurvey]);
+    lectureSurvey && answerSheet && requestLectureCouseFeedback(lectureSurvey);
+  }, [lectureSurvey, answerSheet]);
 
   const history = useHistory();
   useEffect(() => {

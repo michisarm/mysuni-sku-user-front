@@ -547,6 +547,7 @@ async function getCubeLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
   if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       round,
@@ -757,6 +758,8 @@ export async function requestLectureSurveySummary(
   surveyCaseId: string
 ) {
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
+
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     surveyCaseId,
     answerSheet?.round || 1
