@@ -9,8 +9,6 @@ export function parsePolyglotHTML(
 ): string {
   //
   let text = findI18nResource(id) || defaultString;
-  console.log(findI18nResource(id));
-  console.log(text);
   if (values !== undefined) {
     Object.keys(values).forEach((key) => {
       text = text.replace('{' + key + '}', values[key]);

@@ -13,6 +13,7 @@ export default interface LectureCardSummary extends LectureSummary {
   learningStartDate: number;
   learningEndDate: number;
   restrictLearningPeriod: boolean;
+  complete: boolean;
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {
@@ -37,5 +38,6 @@ export function getEmptyLectureCardSummary(): LectureCardSummary {
     learningStartDate: 0,
     learningEndDate: 0,
     restrictLearningPeriod: false,
+    complete: false,
   };
 }

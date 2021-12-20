@@ -237,7 +237,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         'YYYY-MM-DD'
       );
 
-      if (lectureSummary.restrictLearningPeriod) {
+      console.log(lectureSummary);
+      console.log(lectureStructure);
+      console.log(moment().format('YYYY-MM-DD / HH:mm:ss'));
+      console.log(
+        moment(lectureSummary.validLearningDate).format('YYYY-MM-DD / hh:mm:ss')
+      );
+
+      if (lectureSummary.restrictLearningPeriod && !lectureSummary.complete) {
         if (
           moment().valueOf() >
           moment(lectureSummary.validLearningDate).valueOf()

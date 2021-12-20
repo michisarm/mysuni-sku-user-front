@@ -37,8 +37,6 @@ function getVaildLeaningDate(
     // const day = parseCreateDate.getDate();
     //
     // const result = `${year}.${month}.${day}`;
-    console.log(parseCreateDate);
-    console.log(validLearningDate);
     return parseCreateDate.getTime();
   } else {
     return 0;
@@ -65,6 +63,8 @@ function parseLectureSummary(
   } = card;
   const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
+  console.log(cardRelatedStudent);
+
   return {
     cardId: id,
     name: parsePolyglotString(name),
@@ -93,10 +93,15 @@ function parseLectureSummary(
     communityId,
     validLearningDate:
       getVaildLeaningDate(validLearningDate, cardRelatedStudent) ||
-      moment(cardContents.learningPeriod.endDate).valueOf(),
-    learningStartDate: moment(cardContents.learningPeriod.startDate).valueOf(),
-    learningEndDate: moment(cardContents.learningPeriod.endDate).valueOf(),
+      moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+    learningStartDate: moment(cardContents.learningPeriod.startDate)
+      .startOf('day')
+      .valueOf(),
+    learningEndDate: moment(cardContents.learningPeriod.endDate)
+      .endOf('day')
+      .valueOf(),
     restrictLearningPeriod: cardContents.restrictLearningPeriod,
+    complete: cardRelatedStudent!.complete || false,
   };
 }
 
