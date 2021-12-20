@@ -642,6 +642,8 @@ export async function getCourseLectureSurveyState(
     } = answerSheet;
     if (progress === 'Complete') {
       state = 'Completed';
+    } else if (progress === 'Open') {
+      state = 'Start';
     } else {
       state = 'Progress';
     }
