@@ -32,12 +32,13 @@ function getVaildLeaningDate(
     const parseCreateDate = new Date(registeredTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
-    const year = parseCreateDate.getFullYear();
-    const month = parseCreateDate.getMonth() + 1;
-    const day = parseCreateDate.getDate();
-
-    const result = `${year}.${month}.${day}`;
-
+    // const year = parseCreateDate.getFullYear();
+    // const month = parseCreateDate.getMonth() + 1;
+    // const day = parseCreateDate.getDate();
+    //
+    // const result = `${year}.${month}.${day}`;
+    console.log(parseCreateDate);
+    console.log(validLearningDate);
     return parseCreateDate.getTime();
   } else {
     return 0;
@@ -64,7 +65,6 @@ function parseLectureSummary(
   } = card;
   const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
-
   return {
     cardId: id,
     name: parsePolyglotString(name),
@@ -91,10 +91,9 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
-    validLearningDate: getVaildLeaningDate(
-      validLearningDate,
-      cardRelatedStudent
-    ),
+    validLearningDate:
+      getVaildLeaningDate(validLearningDate, cardRelatedStudent) ||
+      moment(cardContents.learningPeriod.endDate).valueOf(),
     learningStartDate: moment(cardContents.learningPeriod.startDate).valueOf(),
     learningEndDate: moment(cardContents.learningPeriod.endDate).valueOf(),
     restrictLearningPeriod: cardContents.restrictLearningPeriod,

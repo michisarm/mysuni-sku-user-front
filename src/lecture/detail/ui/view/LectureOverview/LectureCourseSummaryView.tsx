@@ -30,6 +30,7 @@ import {
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import moment from 'moment';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
+import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -230,12 +231,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     );
 
     useEffect(() => {
-      console.log(onAlertOpen);
-    }, [onAlertOpen]);
-
-    useEffect(() => {
       //
       document.addEventListener('keydown', escFunction, false);
+      const validDate = moment(lectureSummary.validLearningDate).format(
+        'YYYY-MM-DD'
+      );
 
       if (lectureSummary.restrictLearningPeriod) {
         if (
@@ -244,10 +244,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         ) {
           setAlertOpen(true);
           reactAlert({
-            title: getPolyglotText('교육기간 만료 안내', 'learning-기간-만료'),
+            title: getPolyglotText(
+              '교육기간 만료 안내 default',
+              'card-overview-alertheader2'
+            ),
             message: getPolyglotText(
-              '교육기간이 만료되어 학습카드에 접근할 수 없습니다.',
-              'learning-기간-만료안내'
+              '교육기간이 만료되어 학습카드에 접근할 수 없습니다. default',
+              'card-overview-alerttxt2'
             ),
             onClose: () => {
               const history = getCurrentHistory();
@@ -257,12 +260,18 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         } else {
           reactAlert({
             title: getPolyglotText(
-              '학습 참여 기간 안내',
-              'learning-기간-유효기간'
+              '학습 참여 기간 안내 default',
+              'card-overview-alertheader1'
             ),
-            message: getPolyglotText(
-              'YYYY-MM-DD 까지 학습하실 수 있습니다',
-              'learning-기간-유효기간안'
+            // message: getPolyglotText(
+            //   'YYYY-MM-DD 까지 학습하실 수 있습니다 default',
+            //   'card-overview-alerttxt1'
+            // ),
+            message: parsePolyglotHTML(
+              'card-overview-alerttxt1',
+              'date',
+              validDate,
+              'YYYY-MM-DD 까지 학습하실 수 있습니다 default'
             ),
             onClose: () => {},
           });
@@ -297,8 +306,8 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                     <Label className="bold onlytext">
                       <span className="header-span-first">
                         <PolyglotText
-                          defaultString="유효학습 종료일"
-                          id="Course-Summary-유효학습 종료일"
+                          defaultString="유효학습 종료일 default"
+                          id="card-overview-valid"
                         />
                       </span>
                       <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
