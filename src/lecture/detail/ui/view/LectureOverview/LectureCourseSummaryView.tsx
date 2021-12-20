@@ -237,8 +237,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         'YYYY-MM-DD'
       );
 
-        moment(lectureSummary.validLearningDate).format('YYYY-MM-DD / hh:mm:ss')
-      );
+      moment(lectureSummary.validLearningDate).format('YYYY-MM-DD / hh:mm:ss');
 
       if (lectureSummary.restrictLearningPeriod && !lectureSummary.complete) {
         if (
