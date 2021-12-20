@@ -81,7 +81,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
             }
           });
       }
-    }, [params]);
+    }, [surveyCaseId]);
 
     const { skProfile } = SkProfileService.instance;
     const [surveyTitle, setSurveyTitle] = useState<string>();
