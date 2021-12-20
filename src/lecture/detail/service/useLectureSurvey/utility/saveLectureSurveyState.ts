@@ -173,8 +173,9 @@ async function coreSubmitLectureSurveyState() {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),
       message:
-        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
-        '은 필수 항목입니다',
+        requiredMissAnswers.map(
+          (r) => ' ' + r.no + getPolyglotText('번', 'survey-설문참여-번호')
+        ) + getPolyglotText('은 필수 항목입니다', 'survey-설문참여-필수항목'),
     });
 
     return;
