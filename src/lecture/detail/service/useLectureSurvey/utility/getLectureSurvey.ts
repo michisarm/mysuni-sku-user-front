@@ -15,6 +15,7 @@ import {
   setLectureSurveyState,
   setLectureSurveySummary,
   setLectureSurveyAnswerSummaryList,
+  setLectureSurveyAnswerSheet,
 } from '../../../store/LectureSurveyStore';
 import { State } from '../../../viewModel/LectureState';
 import LectureSurvey, {
@@ -495,7 +496,9 @@ async function parseSurveyForm(
   if (surveyId === '') {
     return;
   }
+
   const surveyForm = await findSurveyForm(surveyId);
+
   const { id, titles, questions: remoteQuestions, langSupports } = surveyForm;
   const title = langStringsToString(titles, langSupports);
   const surveyItems = remoteQuestions.map((question) => {
@@ -633,6 +636,7 @@ export async function getCourseLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
   if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       id: answerSheetId,

@@ -6,12 +6,13 @@ import {
 import {
   findReviewSummary,
   findSurveySummaryBySurveyCaseIdAndRound,
-  findAnswerSheetBySurveyCaseId,
 } from 'lecture/detail/api/surveyApi';
 
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import { findProfilePhoto } from 'layout/UserApp/api/ProfileInfoAPI';
 import { getProfileImage } from 'community/ui/app.formatters';
+
+import { getLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
 
 export async function requestLectureCouseFeedback(
   lectureSurvey: LectureSurvey
@@ -19,9 +20,10 @@ export async function requestLectureCouseFeedback(
   if (lectureSurvey === undefined) {
     return;
   }
-  const answerSheet = await findAnswerSheetBySurveyCaseId(
-    lectureSurvey.surveyCaseId
-  );
+  const answerSheet = getLectureSurveyAnswerSheet();
+  //  await findAnswerSheetBySurveyCaseId(
+  //   lectureSurvey.surveyCaseId
+  // );
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     lectureSurvey.surveyCaseId,
     answerSheet?.round || 1

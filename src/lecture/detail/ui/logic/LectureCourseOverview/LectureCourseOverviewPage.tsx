@@ -22,7 +22,6 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 }
 
 function LectureCourseOverviewPage() {
-  useRequestLectureCardOverview();
   const lectureStructure = useLectureStructure();
   const [lectureSurvey] = useLectureSurvey();
 
