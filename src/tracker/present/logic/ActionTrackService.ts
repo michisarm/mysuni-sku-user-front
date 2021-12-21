@@ -236,7 +236,7 @@ export async function actionTrackView({
     const abtest = await getAbtestUserTargets();
 
     // field name setting
-    let fields = [];
+    let fields: (Field | null)[] = [];
     fields.push(getPathValue(path, 'college', FieldType.College));
     fields.push(getPathValue(path, 'channel', FieldType.Channel));
     // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
@@ -305,7 +305,7 @@ export async function actionTrackView({
           type: ActionLogType.ERROR_PV_VIEW_PROMISE,
           email,
           browser,
-          message: getErrorMessage(e),
+          message: getErrorMessage(e) + pathName + fields.join(','),
         } as ActionLog);
       });
   } catch (e) {
@@ -313,7 +313,7 @@ export async function actionTrackView({
       type: ActionLogType.ERROR_PV_VIEW_FUNCTION,
       email,
       browser,
-      message: getErrorMessage(e),
+      message: getErrorMessage(e) + pathName,
     } as ActionLog);
   }
 }
