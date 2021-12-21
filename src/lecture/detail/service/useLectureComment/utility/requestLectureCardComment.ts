@@ -17,8 +17,6 @@ async function parseLectureComment(
     commentId: commentFeedbackId,
     reviewId: reviewFeedbackId,
     commentsCount: count,
-    hasPinRole:
-      cardOperatorIdentity?.id === SkProfileService.instance.skProfile.id,
   };
 }
 

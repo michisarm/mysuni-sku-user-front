@@ -6,10 +6,12 @@ import { SkProfileService } from '../../../../profile/stores';
 import LectureCommentsContainer from '../../../category/ui/logic/LectureCommentsContainer';
 import { updateLectureReview } from '../../service/useLectuerCubeOverview/utility/updateLectureReview';
 import { useLectureComment } from '../../service/useLectureComments';
+import { useLectureCubeSummary } from '../../service/useLectureCourseOverview/useLectureCubeSummary';
 import { setLectureComment } from '../../store/LectureOverviewStore';
 
 function LectureCommentContainer() {
   const [lectureComment] = useLectureComment();
+  const [lectureSummary] = useLectureCubeSummary();
   const {
     skProfile: {
       companyName,
@@ -21,14 +23,14 @@ function LectureCommentContainer() {
   } = SkProfileService.instance;
   return (
     <>
-      {lectureComment && (
+      {lectureComment && lectureSummary && (
         <LectureCommentsContainer
           commentFeedbackId={lectureComment.commentId}
           companyName={parsePolyglotString(companyName)}
           departmentName={parsePolyglotString(departmentName)}
           email={email}
           name={JSON.stringify(name)}
-          hasPinRole={lectureComment.hasPinRole || false}
+          hasPinRole={lectureSummary.hasPinRole}
         />
       )}
     </>
