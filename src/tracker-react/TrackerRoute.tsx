@@ -281,7 +281,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
    *  <TrackerContext.Provider value={value}>{children}</TrackerContext.Provider>
    * );
    */
-  return <div />;
+  return <div style={{ display: 'none' }}>pv</div>;
 };
 
 export default TrackerRoute;
