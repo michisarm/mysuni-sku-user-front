@@ -155,11 +155,7 @@ async function coreSubmitLectureSurveyState() {
       }),
     },
   };
-  console.log(
-    lectureSurvey.surveyItems,
-    answerItem,
-    ' lectureSurvey.surveyItems'
-  );
+
   const requiredMissAnswers = lectureSurvey.surveyItems
     .filter((c) => c.isRequired)
     .filter(
