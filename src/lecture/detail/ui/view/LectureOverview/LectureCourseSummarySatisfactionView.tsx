@@ -20,7 +20,6 @@ export default function LectureCourseSummarySatisfactionView() {
   ) {
     return null;
   }
-  console.log(satisfaction.isDoneSurvey, 'satisfaction.isDoneSurvey ');
   if (satisfaction.isDoneSurvey === undefined) {
     return null;
   }
