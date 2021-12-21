@@ -28,7 +28,7 @@ function LectureCourseOverviewPage() {
   const answerSheet = useLectureSurveyAnswerSheet();
 
   useEffect(() => {
-    lectureSurvey && answerSheet && requestLectureCouseFeedback(lectureSurvey);
+    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
   }, [lectureSurvey, answerSheet]);
 
   const history = useHistory();

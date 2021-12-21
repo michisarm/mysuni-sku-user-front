@@ -4,6 +4,7 @@ import {
   setLectureCourseFeedbackReview,
 } from 'lecture/detail/store/LectureOverviewStore';
 import {
+  findAnswerSheetBySurveyCaseId,
   findReviewSummary,
   findSurveySummaryBySurveyCaseIdAndRound,
 } from 'lecture/detail/api/surveyApi';
@@ -12,10 +13,7 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import { findProfilePhoto } from 'layout/UserApp/api/ProfileInfoAPI';
 import { getProfileImage } from 'community/ui/app.formatters';
 
-import {
-  getLectureSurveyAnswerSheet,
-  getLectureSurveySummary,
-} from 'lecture/detail/store/LectureSurveyStore';
+import { getLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
 
 export async function requestLectureCouseFeedback(
   lectureSurvey: LectureSurvey
@@ -24,9 +22,6 @@ export async function requestLectureCouseFeedback(
     return;
   }
   const answerSheet = getLectureSurveyAnswerSheet();
-  //  await findAnswerSheetBySurveyCaseId(
-  //   lectureSurvey.surveyCaseId
-  // );
 
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     lectureSurvey.surveyCaseId,
