@@ -635,7 +635,6 @@ export async function getCourseLectureSurveyState(
   surveyCaseId: string
 ) {
   let state: State = 'None';
-
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
   setLectureSurveyAnswerSheet(answerSheet);
   if (answerSheet !== undefined && answerSheet.id !== undefined) {
