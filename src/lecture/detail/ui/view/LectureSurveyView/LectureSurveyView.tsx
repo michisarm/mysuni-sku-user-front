@@ -19,12 +19,10 @@ import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { SurveyCaseService } from 'survey/stores';
 import { SkProfileService } from 'profile/stores';
-import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
 import {
   getLectureParams,
   useLectureParams,
 } from '../../../store/LectureParamsStore';
-import { useLocation } from 'react-router';
 import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
@@ -32,6 +30,7 @@ import {
 import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import LectureCommentsContainer from '../../../../category/ui/logic/LectureCommentsContainer';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -290,14 +289,13 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
           commentId !== '' &&
           currentMenu?.name === undefined && (
             <div className="outline">
-              <CommentList
-                feedbackId={commentId}
-                menuType=""
-                hideCamera
-                name={parsePolyglotString(skProfile.name)}
-                email={skProfile.email}
+              <LectureCommentsContainer
+                commentFeedbackId={commentId}
                 companyName={parsePolyglotString(skProfile.companyName)}
                 departmentName={parsePolyglotString(skProfile.departmentName)}
+                email={skProfile.email}
+                name={JSON.stringify(skProfile.name)}
+                hasPinRole={false}
               />
             </div>
           )}
@@ -308,14 +306,13 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
           commentId !== '' &&
           currentMenu?.name !== undefined && (
             <div className="outline">
-              <CommunityCommentList
-                feedbackId={commentId}
-                menuType=""
-                hideCamera
-                name={parsePolyglotString(skProfile.name)}
-                email={skProfile.email}
+              <LectureCommentsContainer
+                commentFeedbackId={commentId}
                 companyName={parsePolyglotString(skProfile.companyName)}
                 departmentName={parsePolyglotString(skProfile.departmentName)}
+                email={skProfile.email}
+                name={JSON.stringify(skProfile.name)}
+                hasPinRole={false}
               />
             </div>
           )}
