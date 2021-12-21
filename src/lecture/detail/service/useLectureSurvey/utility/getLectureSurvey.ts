@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
 import { findIsJsonStudentByCube } from '../../../api/lectureApi';
 import {
@@ -14,6 +15,7 @@ import {
   setLectureSurveyState,
   setLectureSurveySummary,
   setLectureSurveyAnswerSummaryList,
+  setLectureSurveyAnswerSheet,
 } from '../../../store/LectureSurveyStore';
 import { State } from '../../../viewModel/LectureState';
 import LectureSurvey, {
@@ -102,6 +104,178 @@ function parseChoice(
   };
 }
 
+function parseReview(
+  question: Question,
+  langSupport: LangSupport[],
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
+): LectureSurveyItem {
+  const {
+    id,
+    questionItemType,
+    optional,
+    sentences,
+    sentencesImageUrl,
+    sequence,
+    answerItems,
+    visible,
+  } = question;
+  const title = langStringsToString(sentences, langSupport);
+  const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
+  let no = parseInt(sequence.number);
+  if (isNaN(no)) {
+    no = 1;
+  }
+  const type = questionItemType;
+  const isRequired = !optional;
+  const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  let sentencesMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(
+      (c) => c.questionNumber === questionNumber
+    );
+
+    if (answerSummary?.summaryItems.sentencesMap !== undefined) {
+      sentencesMap = answerSummary.summaryItems.sentencesMap;
+    }
+  }
+  let numberCountMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(
+      (c) => c.questionNumber === questionNumber
+    );
+    if (answerSummary?.summaryItems.numberCountMap !== undefined) {
+      numberCountMap = answerSummary.summaryItems.numberCountMap;
+    }
+  }
+
+  const choiceFixed = [
+    getPolyglotText('전혀 아니다', 'survey-review-Notatall'),
+    getPolyglotText('아니다', 'survey-review-Disagree'),
+    getPolyglotText('보통이다', 'survey-review-Average'),
+    getPolyglotText('그렇다', 'survey-review-Agree'),
+    getPolyglotText('매우 그렇다', 'survey-review-Highlyagree'),
+  ];
+
+  const choices: LectureSurveyItemChoice[] =
+    choiceFixed?.map((item, index) => {
+      let mNo = index + 1;
+      if (isNaN(mNo)) {
+        mNo = 1;
+      }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(
+          (c) => c.questionNumber === questionNumber
+        );
+        if (answerSummary !== undefined) {
+          const numberCountMap = answerSummary.summaryItems.numberCountMap;
+          if (
+            numberCountMap !== undefined &&
+            numberCountMap[mNo] !== undefined
+          ) {
+            count = numberCountMap[mNo];
+          }
+        }
+      }
+      return {
+        title: item,
+        no: mNo,
+        count,
+      };
+    }) || [];
+
+  return {
+    title,
+    image,
+    no,
+    id,
+    type,
+    isRequired,
+    canMultipleAnswer,
+    choices,
+    questionNumber,
+    visible,
+    sentencesMap,
+    numberCountMap,
+  };
+}
+
+function parseChoiceFixed(
+  question: Question,
+  langSupport: LangSupport[],
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
+): LectureSurveyItem {
+  const {
+    id,
+    questionItemType,
+    optional,
+    sentences,
+    sentencesImageUrl,
+    sequence,
+    answerItems,
+    visible,
+  } = question;
+  const title = langStringsToString(sentences, langSupport);
+  const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
+  let no = parseInt(sequence.number);
+  if (isNaN(no)) {
+    no = 1;
+  }
+  const type = questionItemType;
+  const isRequired = !optional;
+  const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  const choiceFixed = [
+    getPolyglotText('전혀 아니다', 'survey-review-Notatall'),
+    getPolyglotText('아니다', 'survey-review-Disagree'),
+    getPolyglotText('보통이다', 'survey-review-Average'),
+    getPolyglotText('그렇다', 'survey-review-Agree'),
+    getPolyglotText('매우 그렇다', 'survey-review-Highlyagree'),
+  ];
+
+  const choices: LectureSurveyItemChoice[] =
+    choiceFixed?.map((item, index) => {
+      let mNo = index + 1;
+      if (isNaN(mNo)) {
+        mNo = 1;
+      }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(
+          (c) => c.questionNumber === questionNumber
+        );
+        if (answerSummary !== undefined) {
+          const numberCountMap = answerSummary.summaryItems.numberCountMap;
+          if (
+            numberCountMap !== undefined &&
+            numberCountMap[mNo] !== undefined
+          ) {
+            count = numberCountMap[mNo];
+          }
+        }
+      }
+      return {
+        title: item,
+        no: mNo,
+        count,
+      };
+    }) || [];
+
+  return {
+    title,
+    image,
+    no,
+    id,
+    type,
+    isRequired,
+    canMultipleAnswer,
+    choices,
+    questionNumber,
+    visible,
+  };
+}
+
 function parseCriterion(
   question: Question,
   criterionList: CriterionModel[],
@@ -143,7 +317,6 @@ function parseCriterion(
         const answerSummary = lectureSurveyAnswerSummary.find(
           (c) => c.questionNumber === questionNumber
         );
-        // console.log('answerSummary : ', answerSummary);
         if (answerSummary !== undefined) {
           const criteriaItemCountMap =
             answerSummary.summaryItems.criteriaItemCountMap;
@@ -159,7 +332,7 @@ function parseCriterion(
         title: mTitle,
         no: mNo + 1,
         index,
-        names: (names as unknown) as LangStrings,
+        names: names as unknown as LangStrings,
         count,
       };
     }) || [];
@@ -221,6 +394,7 @@ function parseEssay(
     }
   }
   const visible = question.visible;
+
   return {
     title,
     image,
@@ -319,11 +493,24 @@ async function parseSurveyForm(
   surveyCaseId: string,
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ): Promise<LectureSurvey | undefined> {
+  if (surveyId === '') {
+    return;
+  }
+
   const surveyForm = await findSurveyForm(surveyId);
+
   const { id, titles, questions: remoteQuestions, langSupports } = surveyForm;
   const title = langStringsToString(titles, langSupports);
   const surveyItems = remoteQuestions.map((question) => {
     switch (question.questionItemType) {
+      case 'Review':
+        return parseReview(question, langSupports, lectureSurveyAnswerSummary);
+      case 'ChoiceFixed':
+        return parseChoiceFixed(
+          question,
+          langSupports,
+          lectureSurveyAnswerSummary
+        );
       case 'Choice':
         return parseChoice(question, langSupports, lectureSurveyAnswerSummary);
       case 'Essay':
@@ -360,6 +547,7 @@ async function getCubeLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
   if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       round,
@@ -388,7 +576,7 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },
@@ -411,8 +599,8 @@ async function getCubeLectureSurveyState(
   }
   const studentJoins = await findIsJsonStudentByCube(serviceId);
   if (studentJoins.length > 0) {
-    const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
-      (r, c) => {
+    const studentJoin: StudentJoin | null =
+      studentJoins.reduce<StudentJoin | null>((r, c) => {
         if (r === null) {
           return c;
         }
@@ -420,9 +608,7 @@ async function getCubeLectureSurveyState(
           return c;
         }
         return r;
-      },
-      null
-    );
+      }, null);
     if (studentJoin !== null) {
       const lectureSurveyState = {
         state,
@@ -449,8 +635,8 @@ export async function getCourseLectureSurveyState(
   surveyCaseId: string
 ) {
   let state: State = 'None';
-
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
   if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       id: answerSheetId,
@@ -460,6 +646,8 @@ export async function getCourseLectureSurveyState(
     } = answerSheet;
     if (progress === 'Complete') {
       state = 'Completed';
+    } else if (progress === 'Open') {
+      state = 'Start';
     } else {
       state = 'Progress';
     }
@@ -480,7 +668,7 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
+                names: criteriaItem.names as unknown as LangStrings,
                 value: criteriaItem.value,
                 index: criteriaItem.index,
               },
@@ -569,6 +757,8 @@ export async function requestLectureSurveySummary(
   surveyCaseId: string
 ) {
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  setLectureSurveyAnswerSheet(answerSheet);
+
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     surveyCaseId,
     answerSheet?.round || 1

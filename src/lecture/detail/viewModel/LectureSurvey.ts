@@ -7,7 +7,9 @@ export type LectureSurveyItemType =
   | 'Essay'
   | 'Date'
   | 'Boolean'
-  | 'Matrix';
+  | 'Matrix'
+  | 'ChoiceFixed'
+  | 'Review';
 
 export interface LectureSurveyItem {
   title: string;

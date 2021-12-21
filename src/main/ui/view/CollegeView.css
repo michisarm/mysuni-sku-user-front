@@ -1,6 +1,7 @@
 .inno-wrap .inno-item .inno-li table tbody td.small2 + td.small2 {
   margin-top: 0.4rem;
 }
+
 .inno-wrap .inno-item .inno-li table tbody td.txt-small > a {
   font-size: 0.688rem;
 }

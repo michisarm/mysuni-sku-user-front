@@ -90,11 +90,10 @@ export function RecommendCardRomView(props: RecommendCardRom) {
         <span
           dangerouslySetInnerHTML={{
             __html: getPolyglotText(
-              '<b>{channel}</b>채널에서 {name}님께 추천하는 과정입니다.',
+              '<strong>{channel}</strong>채널에서 추천 드려요!',
               'rcmd-추천-Channel',
               {
                 channel: getChannelName(channelId) || '',
-                name: SkProfileService.instance.profileMemberName || '',
               }
             ),
           }}

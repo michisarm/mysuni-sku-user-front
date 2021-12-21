@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState, useEffect } from 'react';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
@@ -8,6 +9,7 @@ import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
+import LectureSurveyChoiceFixedView from './LectureSurveyChoiceFixedView';
 import {
   saveCommunitySurveyState,
   saveLectureSurveyState,
@@ -24,7 +26,6 @@ import {
   getLectureParams,
   useLectureParams,
 } from '../../../store/LectureParamsStore';
-import { useLocation } from 'react-router';
 import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
@@ -32,6 +33,7 @@ import {
 import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import LectureSurveyReviewView from './LectureSurveyReviewView';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -48,7 +50,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
     lectureStructure,
   }) {
     const params = useLectureParams();
-    const surveyCaseId = lectureSurveyState?.surveyCaseId;
+    const surveyCaseId = lectureSurvey.surveyCaseId;
     const [commentId, setCommentID] = useState('');
 
     const requestSaveLectureSurveyState = useCallback(() => {
@@ -57,7 +59,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       } else {
         saveCommunitySurveyState();
       }
-    }, [params, currentMenu]);
+    }, [params]);
 
     const requestSubmitLectureSurveyState = useCallback(() => {
       if (params !== undefined) {
@@ -65,10 +67,11 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       } else {
         submitCommunitySurveyState();
       }
-    }, [params, currentMenu]);
+    }, [params]);
 
     useEffect(() => {
       const surveyCaseService = SurveyCaseService.instance;
+
       if (surveyCaseId !== undefined) {
         surveyCaseService
           .findSurveyCaseFeedBack(surveyCaseId)
@@ -80,10 +83,9 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       }
     }, [surveyCaseId]);
 
-    const skProfileService = SkProfileService.instance;
-    const { skProfile } = skProfileService;
-    // const { member } = skProfile;
+    const { skProfile } = SkProfileService.instance;
     const [surveyTitle, setSurveyTitle] = useState<string>();
+
     useEffect(() => {
       if (currentMenu?.name !== undefined) {
         setSurveyTitle(currentMenu?.name);
@@ -108,8 +110,9 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       <>
         <div className="course-info-header" data-area={Area.CUBE_HEADER}>
           <div className="survey-header">
-            <div className="survey-header-left test_ing width50">
-              {surveyTitle}
+            <div className="survey-header-left test_ing">
+              <i className="icon testHeader02" />
+              Survey
             </div>
             <div
               className="survey-header-right"
@@ -135,6 +138,39 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
             if (lectureSurveyItem.type === 'Criterion') {
               return (
                 <LectureSurveyCriterionView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+
+            if (lectureSurveyItem.type === 'Review') {
+              return (
+                <LectureSurveyReviewView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      (c) =>
+                        c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  lectureSurveyState={lectureSurveyState}
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'ChoiceFixed') {
+              return (
+                <LectureSurveyChoiceFixedView
                   lectureSurveyItem={lectureSurveyItem}
                   lectureSurveyAnswerItem={
                     lectureSurveyState &&
@@ -274,6 +310,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
               >
                 <PolyglotText defaultString="저장" id="Survey-Survey-저장" />
               </button>
+
               <button
                 className="ui button fix bg"
                 onClick={requestSubmitLectureSurveyState}

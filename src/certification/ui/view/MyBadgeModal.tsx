@@ -260,26 +260,26 @@ class MyBadgeModal extends Component<Props, States> {
                           <div className="txt_box">
                             <strong className="name">
                               {parsePolyglotString(badgeStudent.name, 'ko')}
-                              <p
-                                dangerouslySetInnerHTML={{
-                                  __html: getPolyglotText(
-                                    `귀하는 아래 프로그램의 전 과정을 <br/>성공적으로 이수하였으며,  Badge 획득 요건을<br/>충족하였기에 이 증서를 드립니다.`,
-                                    'Certification-mybadgemodal-이수증내용2'
-                                  ),
-                                }}
-                              />
-                              <span className="category">
-                                {parsePolyglotString(
-                                  myBadge.name,
-                                  getDefaultLang(myBadge.langSupport)
-                                )}
-                              </span>
-                              <span className="date">
-                                {moment(
-                                  badgeStudent.badgeIssueStateModifiedTime || 0
-                                ).format('YYYY.MM.DD')}
-                              </span>
                             </strong>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: getPolyglotText(
+                                  `귀하는 아래 프로그램의 전 과정을 <br/>성공적으로 이수하였으며,  Badge 획득 요건을<br/>충족하였기에 이 증서를 드립니다.`,
+                                  'Certification-mybadgemodal-이수증내용2'
+                                ),
+                              }}
+                            />
+                            <span className="category">
+                              {parsePolyglotString(
+                                myBadge.name,
+                                getDefaultLang(myBadge.langSupport)
+                              )}
+                            </span>
+                            <span className="date">
+                              {moment(
+                                badgeStudent.badgeIssueStateModifiedTime || 0
+                              ).format('YYYY.MM.DD')}
+                            </span>
                           </div>
                           <div className="badge badge-list-type">
                             <MyBadgeCertificateView

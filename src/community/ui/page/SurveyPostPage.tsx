@@ -20,6 +20,7 @@ function SurveyPostPage() {
       requestLectureSurveyFromSurvey(surveyId, surveyCaseId);
     }
   }, [communitySurveyMenu]);
+
   return <LectureSurveyContainer />;
 }
 
