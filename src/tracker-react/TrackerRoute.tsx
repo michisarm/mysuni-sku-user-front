@@ -53,10 +53,17 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     window.document.addEventListener('click', handleOutboundClick, {
       capture: true,
     });
-    return () =>
+    return () => {
+      logger({
+        type: ActionLogType.PV_LOG,
+        email: userId,
+        browser: browserString,
+        message: 'PV_INIT_END',
+      } as ActionLog);
       window.document.removeEventListener('click', handleOutboundClick, {
         capture: true,
       });
+    };
   }, []);
 
   /**
@@ -75,13 +82,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
 
   useEffect(() => {
     return history.listen((location) => {
-      logger({
-        type: ActionLogType.PV_LOG,
-        email: userId,
-        browser: browserString,
-        message: 'PV_HISTORY',
-      } as ActionLog);
-
       const { key } = location;
       // 뒤로가기 앞으로가기 구분
       let historyAction = null;
@@ -255,13 +255,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     debounce((path: PathParams) => {
       // AREA data attribute 있을때만 수집!
       if (path.data?.target instanceof HTMLElement) {
-        logger({
-          type: ActionLogType.PV_LOG,
-          email: userId,
-          browser: browserString,
-          message: 'PV_VIEW',
-        } as ActionLog);
-
         const referer = path.data?.referer;
         let area = path.data?.area;
         if (path.action === 'POP') {
@@ -288,7 +281,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
    *  <TrackerContext.Provider value={value}>{children}</TrackerContext.Provider>
    * );
    */
-  return null;
+  return <div />;
 };
 
 export default TrackerRoute;
