@@ -83,7 +83,7 @@ const initLectureCourseSatisfaction = (): SurveySatisfaction => {
     totalCount: 0,
     average: 0,
     surveyCaseId: '',
-    isDoneSurvey: false,
+    isDoneSurvey: true,
   };
 };
 

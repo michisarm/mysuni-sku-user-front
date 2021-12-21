@@ -20,6 +20,10 @@ export default function LectureCourseSummarySatisfactionView() {
   ) {
     return null;
   }
+  console.log(satisfaction.isDoneSurvey, 'satisfaction.isDoneSurvey ');
+  if (satisfaction.isDoneSurvey === undefined) {
+    return null;
+  }
 
   return (
     <div className="header-rating">
@@ -43,7 +47,7 @@ export default function LectureCourseSummarySatisfactionView() {
           : '0'}
       </span>
 
-      {!satisfaction.isDoneSurvey && (
+      {satisfaction.isDoneSurvey && (
         <Button
           className="re-feedback"
           onClick={() => history.push(`/lecture/card/${params?.cardId}/survey`)}
