@@ -155,6 +155,11 @@ async function coreSubmitLectureSurveyState() {
       }),
     },
   };
+  console.log(
+    lectureSurvey.surveyItems,
+    answerItem,
+    ' lectureSurvey.surveyItems'
+  );
   const requiredMissAnswers = lectureSurvey.surveyItems
     .filter((c) => c.isRequired)
     .filter(
@@ -170,6 +175,12 @@ async function coreSubmitLectureSurveyState() {
             c.type === 'Review' &&
             d.answerItemType === 'Review' &&
             (d.sentence === undefined || d.sentence?.trim() === '')
+        ) ||
+        answerItem.some(
+          (d) =>
+            c.type === 'Review' &&
+            d.answerItemType === 'Review' &&
+            d.itemNumbers === undefined
         )
     );
 
