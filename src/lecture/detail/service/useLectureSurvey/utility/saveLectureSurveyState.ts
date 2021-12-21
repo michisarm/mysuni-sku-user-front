@@ -197,7 +197,7 @@ async function coreSubmitLectureSurveyState() {
   await requestLectureCouseFeedback(lectureSurvey);
   const satisfaction = getLectureCourseSatisfaction();
   if (satisfaction !== undefined) {
-    setLectureCourseSatisfaction({ ...satisfaction, isDoneSurvey: true });
+    setLectureCourseSatisfaction({ ...satisfaction, isDoneSurvey: false });
   }
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert2'),

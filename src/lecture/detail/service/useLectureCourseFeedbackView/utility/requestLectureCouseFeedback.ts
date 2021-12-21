@@ -87,7 +87,7 @@ export async function requestLectureCouseFeedback(
     Object.assign(totalObject, { 5: 0 });
   }
 
-  const isDoneSurvey = answerSheet?.progress === 'Complete';
+  const isDoneSurvey = answerSheet?.progress !== 'Complete';
   const reversedValues = Object.values(totalObject).reverse() || [0];
   const totalCount =
     reversedValues.reduce((totalCount, count) => {
