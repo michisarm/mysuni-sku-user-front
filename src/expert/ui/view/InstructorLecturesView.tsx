@@ -7,11 +7,11 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   LectureCardView,
   CardProps,
-  parseCommunityLectureCards,
+  parseUserLectureCards,
 } from '@sku/skuniv-ui-lecture-card';
-import { findCards } from '../../apis/instructorApi';
 import { SkProfileService } from 'profile/stores';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
+import { findCardList } from 'lecture/detail/api/cardApi';
 
 interface RequestMore {
   (): void;
@@ -32,15 +32,12 @@ export function InstructorLecturesView(props: Props) {
     const cardsIds = cards.map((c) => {
       return c.card.id;
     });
-    findCards(cardsIds).then((c) => {
+    findCardList(cardsIds).then((c) => {
       if (c === undefined) {
         return;
       }
       setCardList(
-        parseCommunityLectureCards(
-          c,
-          SkProfileService.instance.skProfile.language
-        )
+        parseUserLectureCards(c, SkProfileService.instance.skProfile.language)
       );
     });
   }, [cards]);

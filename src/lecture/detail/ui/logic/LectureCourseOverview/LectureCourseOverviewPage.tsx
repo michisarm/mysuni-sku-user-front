@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
@@ -20,7 +19,6 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 }
 
 function LectureCourseOverviewPage() {
-  useRequestLectureCardOverview();
   const lectureStructure = useLectureStructure();
 
   const history = useHistory();
@@ -88,7 +86,6 @@ function LectureCourseOverviewPage() {
           .filter((c) => c.state === 'Progress')
           .forEach((c) => {
             if (c.student !== undefined) {
-              console.log(c);
               if (c.student.modifiedTime > modifiedTime) {
                 modifiedTime = c.student.modifiedTime;
                 path = c.path;

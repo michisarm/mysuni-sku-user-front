@@ -6,6 +6,7 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import {
+  findAnswerSheetBySurveyCaseId,
   openAnswerSheet,
   saveAnswerSheet,
   submitAnswerSheet,
@@ -14,6 +15,7 @@ import AnswerSheetCdo from '../../../model/AnswerSheetCdo';
 import {
   getLectureSurvey,
   getLectureSurveyState,
+  setLectureSurveyAnswerSheet,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
@@ -22,6 +24,10 @@ import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure'
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
+import {
+  setLectureCourseSatisfaction,
+  getLectureCourseSatisfaction,
+} from 'lecture/detail/store/LectureOverviewStore';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -123,7 +129,6 @@ async function coreSubmitLectureSurveyState() {
   }
   const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
     lectureSurveyState;
-
   const answerSheetCdo: AnswerSheetCdo = {
     id: answerSheetId,
     serviceId,
@@ -158,36 +163,41 @@ async function coreSubmitLectureSurveyState() {
             d.questionNumber === c.questionNumber &&
             (c.type !== 'Matrix' ||
               (c.type === 'Matrix' && d.matrixItem?.length === c.rows?.length))
+        ) ||
+        answerItem.some(
+          (d) =>
+            c.type === 'Review' &&
+            d.answerItemType === 'Review' &&
+            (d.sentence === undefined || d.sentence?.trim() === '')
         )
     );
 
   const a = requiredMissAnswers.map((r) => r.rows);
 
-  // if (
-  //   answerSheetCdo.evaluationSheet.answers.length !== 0 &&
-  //   a.length !== answerSheetCdo.evaluationSheet.answers
-  // ) {
-  //   reactAlert({
-  //     title: '알림',
-  //     message: '행렬은 모든 항목을 입력해 주셔야 합니다.',
-  //   });
-  //   return;
-  // }
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: getPolyglotText('알림', 'survey-save-alert1'),
       message:
-        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
-        '은 필수 항목입니다',
+        requiredMissAnswers.map(
+          (r) => ' ' + r.no + getPolyglotText('번', 'survey-설문참여-번호')
+        ) + getPolyglotText('은 필수 항목입니다', 'survey-설문참여-필수항목'),
     });
 
-    // requiredMissAnswers.forEach(c => {
-    //   console.log(c.no);
-    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
+
+  const answerSheet = await findAnswerSheetBySurveyCaseId(
+    lectureSurvey.surveyCaseId
+  );
+  setLectureSurveyAnswerSheet(answerSheet);
+  //서베이 완료 후 본인의 결과 스토어에 set
+
+  const satisfaction = getLectureCourseSatisfaction();
+  if (satisfaction !== undefined) {
+    setLectureCourseSatisfaction({ ...satisfaction, isDoneSurvey: true });
+  }
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert2'),
     message: getPolyglotText(
@@ -196,66 +206,6 @@ async function coreSubmitLectureSurveyState() {
     ),
   });
   return true;
-}
-
-export async function coreLectureSurveyState() {
-  const lectureSurveyState = getLectureSurveyState();
-  const lectureSurvey = getLectureSurvey();
-  if (lectureSurveyState === undefined || lectureSurvey === undefined) {
-    return;
-  }
-  const { serviceId, round, surveyCaseId, answerItem, answerSheetId } =
-    lectureSurveyState;
-
-  const answerSheetCdo: AnswerSheetCdo = {
-    id: answerSheetId,
-    serviceId,
-    round,
-    surveyCaseId,
-    progress: 'Complete',
-    respondent: { usid: '', email: '', title: '', company: '' },
-    evaluationSheet: {
-      id: lectureSurveyState.evaluationSheetId,
-      answerSheetId: lectureSurveyState.answerSheetId,
-      answers: answerItem.map((c) => {
-        return {
-          questionNumber: c.questionNumber,
-          answerItemType: c.answerItemType,
-          answerItem: {
-            answerItemType: c.answerItemType,
-            criteriaItem: c.criteriaItem,
-            itemNumbers: c.itemNumbers,
-            sentence: c.sentence,
-            matrixItem: c.matrixItem,
-          },
-        };
-      }),
-    },
-  };
-  const requiredMissAnswers = lectureSurvey.surveyItems
-    .filter((c) => c.isRequired)
-    .filter(
-      (c) => !answerItem.some((d) => d.questionNumber === c.questionNumber)
-    );
-  if (requiredMissAnswers.length > 0) {
-    reactAlert({
-      title: getPolyglotText('알림', 'survey-save-alert3'),
-      message:
-        requiredMissAnswers.map((r) => ' ' + r.no + '번') +
-        '은 필수 항목입니다',
-    });
-
-    // requiredMissAnswers.forEach((c) => {
-    //   console.log(c.no);
-    // });
-    return;
-  }
-  await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
-  setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
-  // reactAlert({
-  //   title: '알림',
-  //   message: 'Survey 설문 참여가 완료 되었습니다.',
-  // });
 }
 
 export async function startLectureSurveyState() {
@@ -323,11 +273,12 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   if (lectureSurveyState.state === 'Completed') {
     return;
   }
+  setLectureSurveyState({ ...lectureSurveyState, state: 'Progress' });
   if (lectureSurveyState.answerSheetId === undefined) {
     await openLectureSurveyState();
   }
-  const result = await coreSubmitLectureSurveyState();
 
+  const result = await coreSubmitLectureSurveyState();
   if (result === true) {
     await submitTask(student.id, 'Survey');
     clearFindMyCardRelatedStudentsCache();
@@ -347,7 +298,6 @@ export async function saveCommunitySurveyState() {
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
-  //requestLectureStructure(lectureParams, pathname);
 
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert5'),
@@ -360,10 +310,7 @@ export async function saveCommunitySurveyState() {
 
 export async function submitCommunitySurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  // console.log(
-  //   'submitCommunitySurveyState.lectureSurveyState',
-  //   lectureSurveyState
-  // );
+
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -374,14 +321,13 @@ export async function submitCommunitySurveyState() {
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
-  //requestLectureStructure(lectureParams, pathname);
 }
 
 export function selectSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: string
 ) {
-  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const { questionNumber, type } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
@@ -455,6 +401,7 @@ export function selectChoiceAnswer(
 ) {
   const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
+
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -488,6 +435,179 @@ export function selectChoiceAnswer(
           }
         } else {
           return { ...c, itemNumbers: [next] };
+        }
+      } else {
+        return c;
+      }
+    });
+  }
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectReviewSentenceAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: string
+) {
+  const { questionNumber, type } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        sentence: value,
+        matrixItem: null,
+        criteriaItem: null,
+      },
+    ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        return {
+          ...c,
+          sentence: value,
+          matrixItem: null,
+          criteriaItem: null,
+        };
+      } else {
+        return c;
+      }
+    });
+  }
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectReviewChoiceAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: number | string
+) {
+  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const next = value.toString();
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        itemNumbers: [next],
+        matrixItem: null,
+        criteriaItem: null,
+      },
+    ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        if (canMultipleAnswer) {
+          if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
+            return {
+              ...c,
+              itemNumbers: c.itemNumbers.filter((d) => d !== next),
+              matrixItem: null,
+              criteriaItem: null,
+            };
+          } else {
+            return {
+              ...c,
+              itemNumbers: [...(c.itemNumbers || []), next],
+              matrixItem: null,
+              criteriaItem: null,
+            };
+          }
+        } else {
+          return {
+            ...c,
+            itemNumbers: [next],
+            matrixItem: null,
+            criteriaItem: null,
+          };
+        }
+      } else {
+        return c;
+      }
+    });
+  }
+  setLectureSurveyState({ ...lectureSurveyState });
+}
+
+export function selectChoiceFixedAnswer(
+  lectureSurveyItem: LectureSurveyItem,
+  value: number | string
+) {
+  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const lectureSurveyState = getLectureSurveyState();
+
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  const next = value.toString();
+  const lectureSurveyAnswerItem = lectureSurveyState.answerItem.find(
+    (c) => c.questionNumber === questionNumber
+  );
+  if (lectureSurveyAnswerItem === undefined) {
+    lectureSurveyState.answerItem = [
+      ...lectureSurveyState.answerItem,
+      {
+        questionNumber,
+        answerItemType: type,
+        itemNumbers: [next],
+        matrixItem: null,
+        criteriaItem: null,
+        sentence: null,
+      },
+    ];
+  } else {
+    lectureSurveyState.answerItem = lectureSurveyState.answerItem.map((c) => {
+      if (c.questionNumber === questionNumber) {
+        if (canMultipleAnswer) {
+          if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
+            return {
+              ...c,
+              itemNumbers: c.itemNumbers.filter((d) => d !== next),
+              matrixItem: null,
+              criteriaItem: null,
+              sentence: null,
+            };
+          } else {
+            return {
+              ...c,
+              itemNumbers: [...(c.itemNumbers || []), next],
+              matrixItem: null,
+              criteriaItem: null,
+              sentence: null,
+            };
+          }
+        } else {
+          return {
+            ...c,
+            itemNumbers: [next],
+            matrixItem: null,
+            criteriaItem: null,
+            sentence: null,
+          };
         }
       } else {
         return c;
@@ -557,7 +677,7 @@ export function selectMatrixAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: number | string
 ) {
-  const { questionNumber, type, canMultipleAnswer } = lectureSurveyItem;
+  const { questionNumber, type } = lectureSurveyItem;
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
