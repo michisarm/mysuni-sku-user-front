@@ -1,3 +1,4 @@
+import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 import { reactAlert } from '@nara.platform/accent';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -193,7 +194,7 @@ async function coreSubmitLectureSurveyState() {
   );
   setLectureSurveyAnswerSheet(answerSheet);
   //서베이 완료 후 본인의 결과 스토어에 set
-
+  await requestLectureCouseFeedback(lectureSurvey);
   const satisfaction = getLectureCourseSatisfaction();
   if (satisfaction !== undefined) {
     setLectureCourseSatisfaction({ ...satisfaction, isDoneSurvey: true });

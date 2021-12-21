@@ -1,7 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
@@ -27,11 +26,11 @@ import {
   initLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 } from 'lecture/detail/store/LectureOverviewStore';
-import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import moment from 'moment';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 import { LearningState } from '../../../../../shared/model';
+import LectureCourseSummarySatisfactionView from './LectureCourseSummarySatisfactionView';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -402,44 +401,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
           <div className="title-area">
             <div className="header-deatil">
               <div className="item">
-                {satisfaction.surveyCaseId && (
-                  <div className="header-rating">
-                    <Rating
-                      defaultRating={5}
-                      maxRating={5}
-                      rating={
-                        satisfaction?.totalCount !== 0
-                          ? satisfaction && satisfaction.average
-                          : 5
-                      }
-                      disabled
-                      className="fixed-rating"
-                    />
-                    <span>
-                      {satisfaction?.totalCount !== 0
-                        ? `${Math.floor(satisfaction.average * 10) / 10}(${
-                            satisfaction?.totalCount
-                          }
-                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
-                        : '0'}
-                    </span>
-
-                    {!satisfaction.isDoneSurvey && (
-                      <Button
-                        className="re-feedback"
-                        onClick={() =>
-                          history.push(`/lecture/card/${params?.cardId}/survey`)
-                        }
-                      >
-                        <Icon className="edit16" />
-                        {getPolyglotText(
-                          '평가하기',
-                          'survey-reviewOverview-평가'
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                )}
+                <LectureCourseSummarySatisfactionView />
               </div>
             </div>
           </div>
