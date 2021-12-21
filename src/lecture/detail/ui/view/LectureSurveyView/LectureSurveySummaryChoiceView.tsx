@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Checkbox, Progress, Image, Item } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
@@ -30,17 +30,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
       lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
         return totalCount + (count || 0);
       }, 0) || 0;
-
-    /*eslint-disable*/
-    // 각 선택지 최댓값 구해서 파란색으로 표시
-    const maxNum: number = Math.max.apply(
-      Math,
-      lectureSurveyItem.choices!.map((o) => {
-        return o.count === undefined ? 0 : o.count;
-      })
-    );
-    /*eslint-enable */
-
     return (
       <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
         <div className="course-survey-list">
@@ -70,23 +59,17 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
                       )}
                     </span>
                     <div className="course-survey-list-backgrondBar">
-                      {/* <Progress
-                      percent={choiceAvg || 0}
-                      style={{ opacity: 0.5 }}
-                      color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    /> */}
                       <div
                         style={
                           choice.count === undefined || 0
                             ? {
                                 height: '100%',
-                                backgroundColor: '#CDE4E2',
                                 borderRadius: '6px',
                               }
                             : {
                                 width: `${choiceAvg}%`,
                                 height: '100%',
-                                backgroundColor: '#CDE4E2',
+                                backgroundColor: 'rgb(205, 228, 226)',
                                 borderRadius: '6px',
                               }
                         }
@@ -97,9 +80,15 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
                         </span>
                         {` (${choiceAvg || 0}%)`}
                       </span>
-                      <li className="course-survey-list-text active">
-                        {choice.title}
-                      </li>
+                      {isChecked ? (
+                        <li className="course-survey-list-text active">
+                          {choice.title}
+                        </li>
+                      ) : (
+                        <li className="course-survey-list-text">
+                          {choice.title}
+                        </li>
+                      )}
                     </div>
                     {choice.image && (
                       <div className="course-survey-list-img-selector">
@@ -140,11 +129,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> =
                       )}
                     </span>
                     <div className="course-survey-list-backgrondBar">
-                      {/* <Progress
-                      percent={choiceAvg || 0}
-                      style={{ opacity: 0.5 }}
-                      color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    /> */}
                       <div
                         style={
                           choice.count === undefined || 0

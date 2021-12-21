@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback } from 'react';
-import { Form, Icon, Image } from 'semantic-ui-react';
+import { Form, Icon } from 'semantic-ui-react';
 import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -34,6 +34,12 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
       },
       [lectureSurveyItem]
     );
+
+    let textAreaValue =
+      lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence;
+    if (textAreaValue === null) {
+      textAreaValue = '';
+    }
     return (
       <LectureSurveyChoiceLayout {...lectureSurveyItem}>
         <Form>
@@ -46,7 +52,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
                 <span className="now">
                   {lectureSurveyAnswerItem !== undefined &&
                   lectureSurveyAnswerItem.sentence !== undefined
-                    ? lectureSurveyAnswerItem.sentence.length
+                    ? lectureSurveyAnswerItem.sentence?.length
                     : 0}
                 </span>
                 &nbsp;&#47;&nbsp;
@@ -57,9 +63,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
                   '답변을 입력해주세요.',
                   'survey-placeholder-답변입력'
                 )}
-                value={
-                  lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence
-                }
+                value={textAreaValue}
                 onChange={onChangeValue}
                 readOnly={false}
               />
@@ -75,22 +79,12 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> =
           (lectureSurveyState.state === 'Progress' &&
             lectureSurveyItem.isRequired === true &&
             lectureSurveyAnswerItem === undefined && (
-              <div style={{ marginTop: '10px' }}>
-                <Image
-                  style={{ display: 'inline-block', marginRight: '5px' }}
-                  src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
-                />
-                <span
-                  style={{
-                    color: '#e1002a',
-                    fontSize: '14px',
-                    lineHeight: '16px',
-                    verticalAlign: 'text-bottom',
-                  }}
-                >
+              <div className="rev-noti">
+                <Icon className="error16" />
+                <span>
                   <PolyglotText
                     defaultString="해당 문항은 필수 항목 입니다."
-                    id="survey-필수항목-alert5"
+                    id="survey-필수항목-alert2"
                   />
                 </span>
               </div>

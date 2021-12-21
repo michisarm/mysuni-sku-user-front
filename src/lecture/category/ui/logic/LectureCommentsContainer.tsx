@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Review, CommentList } from '@nara.drama/feedback';
+import { Comment } from '@sku/skuniv-ui-comment';
 import { observer } from 'mobx-react';
 import { findCommunityProfile } from '../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
+import {
+  getLectureComment,
+  setLectureComment,
+} from '../../../detail/store/LectureOverviewStore';
+import { SkProfileService } from '../../../../profile/stores';
 
 interface Props {
-  reviewFeedbackId: string;
   commentFeedbackId: string;
   name: string;
   email: string;
   companyName: string;
   departmentName: string;
-  creator?: string;
-  url?: string;
+  hasPinRole: boolean;
 }
 
 interface State {
-  profileOpen: boolean,
-  profileInfo: profileParams
+  profileOpen: boolean;
+  profileInfo: profileParams;
 }
 
 interface profileParams {
@@ -31,7 +34,6 @@ interface profileParams {
 @reactAutobind
 @observer
 class LectureCommentsContainer extends Component<Props, State> {
-
   state = {
     profileOpen: false,
     profileInfo: {
@@ -39,21 +41,16 @@ class LectureCommentsContainer extends Component<Props, State> {
       profileImg: '',
       introduce: '',
       nickName: '',
-      creatorName: ''
+      creatorName: '',
     },
   };
-  
+
   componentDidMount() {
     this.setState({ profileOpen: false });
-    window.addEventListener('clickProfile', this.clickProfileEventHandler);
-    return () => {
-      window.removeEventListener('clickProfile', this.clickProfileEventHandler);
-    };
   }
-  
-  clickProfileEventHandler() {
-    const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then(result => {
+
+  clickProfileEventHandler(denizenId: string) {
+    findCommunityProfile(denizenId).then((result) => {
       this.setState({
         profileInfo: {
           id: result!.id,
@@ -61,48 +58,52 @@ class LectureCommentsContainer extends Component<Props, State> {
           introduce: result!.introduce,
           nickName: result!.nickname,
           creatorName: result!.name,
-        }
+        },
       });
       this.setState({ profileOpen: true });
     });
   }
 
   selectProfileOpen(open: boolean) {
-    this.setState({ profileOpen: open })
+    this.setState({ profileOpen: open });
   }
 
   render() {
     //
     const {
-      reviewFeedbackId,
       commentFeedbackId,
       name,
       email,
       companyName,
       departmentName,
-      creator,
-      url,
+      hasPinRole,
     } = this.props;
 
     return (
       <>
         <div className="contents comment">
-          <Review feedbackId={reviewFeedbackId} />
-          <CommentList
+          <Comment
             feedbackId={commentFeedbackId}
-            hideCamera
             name={name}
             email={email}
             companyName={companyName}
             departmentName={departmentName}
-            creator={creator}
-            url={url}
+            hasPinRole={hasPinRole}
+            onOpenProfileModal={this.clickProfileEventHandler}
+            onCommentCountChange={(commentsCount) => {
+              const lectureComment = getLectureComment();
+              if (lectureComment !== undefined) {
+                setLectureComment({ ...lectureComment, commentsCount });
+              }
+            }}
           />
         </div>
         <CommunityProfileModal
           open={this.state.profileOpen}
           setOpen={this.selectProfileOpen}
-          userProfile={this.state.profileInfo && this.state.profileInfo.profileImg}
+          userProfile={
+            this.state.profileInfo && this.state.profileInfo.profileImg
+          }
           memberId={this.state.profileInfo && this.state.profileInfo.id}
           introduce={this.state.profileInfo && this.state.profileInfo.introduce}
           nickName={this.state.profileInfo && this.state.profileInfo.nickName}

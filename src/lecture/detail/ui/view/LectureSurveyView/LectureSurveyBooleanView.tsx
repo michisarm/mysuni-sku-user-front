@@ -5,7 +5,7 @@ import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { Image } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface LectureSurveyBooleanViewProps {
@@ -72,22 +72,12 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> =
           (lectureSurveyState.state === 'Progress' &&
             lectureSurveyItem.isRequired === true &&
             lectureSurveyAnswerItem === undefined && (
-              <div style={{ marginTop: '10px' }}>
-                <Image
-                  style={{ display: 'inline-block', marginRight: '5px' }}
-                  src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
-                />
-                <span
-                  style={{
-                    color: '#e1002a',
-                    fontSize: '14px',
-                    lineHeight: '16px',
-                    verticalAlign: 'text-bottom',
-                  }}
-                >
+              <div className="rev-noti">
+                <Icon className="error16" />
+                <span>
                   <PolyglotText
                     defaultString="해당 문항은 필수 항목 입니다."
-                    id="survey-필수항목-alert1"
+                    id="survey-필수항목-alert2"
                   />
                 </span>
               </div>

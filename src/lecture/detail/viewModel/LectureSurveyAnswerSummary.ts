@@ -4,7 +4,8 @@ type LectureSurveyItemType =
   | 'Essay'
   | 'Date'
   | 'Boolean'
-  | 'Matrix';
+  | 'Matrix'
+  | 'Review';
 
 export interface Sentences {
   sentence: string;
