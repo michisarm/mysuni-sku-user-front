@@ -117,18 +117,10 @@ function MyTrainingHeaderContainer({
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(displayTotalLearningTime && (
-          <ContentHeader.LearningTimeItem
-            minute={displayTotalLearningTime}
-            year={currentYear}
-            // accrueMinute={totalAccrueLearningTime}
-          />
-        )) || (
-          <ContentHeader.WaitingItem
-            year={currentYear}
-            onClickRecommend={onClickRecommend}
-          />
-        )}
+        <ContentHeader.LearningTimeItem
+          minute={displayTotalLearningTime}
+          year={currentYear}
+        />
       </ContentHeader.Cell>
     </ContentHeader>
   );
@@ -139,7 +131,6 @@ export default inject(
     'profile.skProfileService',
     'myTraining.myLearningSummaryService',
     'lecture.lectureService',
-    // 'myTraining.myTrainingService',
     'badge.badgeService'
   )
 )(observer(MyTrainingHeaderContainer));
