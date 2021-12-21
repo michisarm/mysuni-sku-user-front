@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
@@ -21,6 +21,7 @@ import {
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveySummaryReviewView from './LectureSurveySummaryReviewView';
+import { requestCardLectureStructure } from 'lecture/detail/service/useLectureStructure/utility/requestCardLectureStructure';
 
 interface Props {
   trigger?: React.ReactNode;
@@ -36,14 +37,19 @@ const LectureSurveyResultModalView: React.FC<Props> =
     lectureSurvey,
     lectureSurveyState,
     currentMenu,
+    lectureStructure,
   }) {
     const { surveyId, surveyCaseId } = lectureSurvey;
     const lectureSurveySummary = useLectureSurveySummary();
     const [open, setOpen] = useState<boolean>(false);
 
     const onOpen = useCallback(() => {
+      const params = getLectureParams();
       setOpen(true);
       requestLectureSurveySummary(surveyId, surveyCaseId);
+      if (params?.cardId) {
+        requestCardLectureStructure(params?.cardId);
+      }
     }, [surveyId, surveyCaseId]);
 
     const onClose = useCallback(() => {
