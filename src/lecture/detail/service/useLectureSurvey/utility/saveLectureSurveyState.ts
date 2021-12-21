@@ -7,6 +7,7 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import {
+  findAnswerSheetBySurveyCaseId,
   openAnswerSheet,
   saveAnswerSheet,
   submitAnswerSheet,
@@ -15,6 +16,7 @@ import AnswerSheetCdo from '../../../model/AnswerSheetCdo';
 import {
   getLectureSurvey,
   getLectureSurveyState,
+  setLectureSurveyAnswerSheet,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
@@ -182,6 +184,13 @@ async function coreSubmitLectureSurveyState() {
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Finish' });
+
+  const answerSheet = await findAnswerSheetBySurveyCaseId(
+    lectureSurvey.surveyCaseId
+  );
+  setLectureSurveyAnswerSheet(answerSheet);
+  //서베이 완료 후 본인의 결과 스토어에 set
+
   reactAlert({
     title: getPolyglotText('알림', 'survey-save-alert2'),
     message: getPolyglotText(
@@ -189,7 +198,6 @@ async function coreSubmitLectureSurveyState() {
       'survey-설문참여-완료메세지'
     ),
   });
-
   return true;
 }
 
