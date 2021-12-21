@@ -21,6 +21,7 @@ import moment from 'moment';
 
 function getVaildLeaningDate(
   validLearningDate: number,
+  validEndDate: number,
   cardRelatedStudent?: MyCardRelatedStudentsRom
 ) {
   if (
@@ -37,7 +38,7 @@ function getVaildLeaningDate(
     // const day = parseCreateDate.getDate();
     //
     // const result = `${year}.${month}.${day}`;
-    return parseCreateDate.getTime();
+    return Math.min(parseCreateDate.getTime(), validEndDate);
   } else {
     return 0;
   }
@@ -91,8 +92,11 @@ function parseLectureSummary(
     hasCommunity: (communityId || '') !== '',
     communityId,
     validLearningDate:
-      getVaildLeaningDate(validLearningDate, cardRelatedStudent) ||
-      moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+      getVaildLeaningDate(
+        validLearningDate,
+        moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+        cardRelatedStudent
+      ) || moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
     learningStartDate: moment(cardContents.learningPeriod.startDate)
       .startOf('day')
       .valueOf(),
@@ -101,6 +105,7 @@ function parseLectureSummary(
       .valueOf(),
     restrictLearningPeriod: cardContents.restrictLearningPeriod,
     complete: cardRelatedStudent!.cardStudent?.complete || false,
+    learningState: cardRelatedStudent?.cardStudent?.learningState || '',
   };
 }
 
