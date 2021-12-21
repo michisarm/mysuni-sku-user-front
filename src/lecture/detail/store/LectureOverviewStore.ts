@@ -69,7 +69,7 @@ const [setLectureRelations, onLectureRelations, getLectureRelations] =
 const [
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 ] = createStore<SurveySatisfaction>();
 
@@ -141,7 +141,7 @@ export {
   getLectureCardSummaryLearningState,
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
   onLectureCourseFeedbackReview,
   getLectureCoureSFeedbackReview,
