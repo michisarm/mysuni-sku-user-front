@@ -4,7 +4,6 @@ import {
   setLectureCourseFeedbackReview,
 } from 'lecture/detail/store/LectureOverviewStore';
 import {
-  findAnswerSheetBySurveyCaseId,
   findReviewSummary,
   findSurveySummaryBySurveyCaseIdAndRound,
 } from 'lecture/detail/api/surveyApi';
@@ -13,15 +12,15 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import { findProfilePhoto } from 'layout/UserApp/api/ProfileInfoAPI';
 import { getProfileImage } from 'community/ui/app.formatters';
 
-import { getLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
+import AnswerSheet from 'lecture/detail/model/SurveyAnswerSheet';
 
 export async function requestLectureCouseFeedback(
-  lectureSurvey: LectureSurvey
+  lectureSurvey: LectureSurvey,
+  answerSheet: AnswerSheet | undefined
 ) {
   if (lectureSurvey === undefined) {
     return;
   }
-  const answerSheet = getLectureSurveyAnswerSheet();
 
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     lectureSurvey.surveyCaseId,
@@ -47,18 +46,18 @@ export async function requestLectureCouseFeedback(
     reviewAnswerArray.map(async (item) => {
       const feedbackReviewProfile = await findProfilePhoto([item.denizenId]);
       const profileImage = getProfileImage(
-        feedbackReviewProfile[0].photoImagePath,
-        feedbackReviewProfile[0].gdiPhotoImagePath,
-        feedbackReviewProfile[0].useGdiPhoto
+        feedbackReviewProfile[0]?.photoImagePath,
+        feedbackReviewProfile[0]?.gdiPhotoImagePath,
+        feedbackReviewProfile[0]?.useGdiPhoto
       );
       return {
-        completeTime: item.completeTime,
-        denizenId: feedbackReviewProfile[0].id,
-        id: item.id,
-        itemNumber: item.itemNumber,
-        registeredTime: item.registeredTime,
-        sentence: item.sentence,
-        surveyCaseId: item.surveyCaseId,
+        completeTime: item?.completeTime,
+        denizenId: feedbackReviewProfile[0]?.id,
+        id: item?.id,
+        itemNumber: item?.itemNumber,
+        registeredTime: item?.registeredTime,
+        sentence: item?.sentence,
+        surveyCaseId: item?.surveyCaseId,
         name: feedbackReviewProfile[0]?.name,
         nickName: feedbackReviewProfile[0]?.nickname,
         profileImage,

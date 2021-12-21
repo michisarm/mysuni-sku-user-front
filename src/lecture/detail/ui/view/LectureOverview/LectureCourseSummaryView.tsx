@@ -198,6 +198,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         });
       }
     }
+
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 

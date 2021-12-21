@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
@@ -26,9 +25,8 @@ function LectureCourseOverviewPage() {
   const lectureStructure = useLectureStructure();
   const [lectureSurvey] = useLectureSurvey();
   const answerSheet = useLectureSurveyAnswerSheet();
-
   useEffect(() => {
-    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
+    lectureSurvey && requestLectureCouseFeedback(lectureSurvey, answerSheet);
   }, [lectureSurvey, answerSheet]);
 
   const history = useHistory();
