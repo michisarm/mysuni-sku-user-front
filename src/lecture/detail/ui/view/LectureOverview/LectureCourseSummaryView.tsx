@@ -305,18 +305,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   <Icon className={difficultyLevelIcon} />
                   <span>{lectureSummary.difficultyLevel}</span>
                 </Label>
-                {/*{lectureSummary.validLearningDate !== 0 &&*/}
-                {/*  !lectureSummary.restrictLearningPeriod && (*/}
-                <Label className="bold onlytext">
-                  <span className="header-span-first">
-                    <PolyglotText
-                      defaultString="유효학습 종료일 default"
-                      id="card-overview-valid"
-                    />
-                  </span>
-                  <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
-                </Label>
-                {/*)}*/}
+                {lectureSummary.restrictLearningPeriod && (
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">
+                      <PolyglotText
+                        defaultString="유효학습 종료일 default"
+                        id="card-overview-valid"
+                      />
+                    </span>
+                    <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
+                  </Label>
+                )}
                 <Label className="bold onlytext">
                   <Icon className="time2" />
                   <span>{lectureSummary.learningTime}</span>
