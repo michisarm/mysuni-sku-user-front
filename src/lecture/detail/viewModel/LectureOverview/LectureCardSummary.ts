@@ -1,5 +1,6 @@
 import DifficultyLevel from '../../model/DifficultyLevel';
 import LectureSummary from './LectureSummary';
+import { LearningState } from '../../../../shared/model';
 
 export default interface LectureCardSummary extends LectureSummary {
   cardId: string;
@@ -14,6 +15,7 @@ export default interface LectureCardSummary extends LectureSummary {
   learningEndDate: number;
   restrictLearningPeriod: boolean;
   complete: boolean;
+  learningState: string;
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {
@@ -39,5 +41,6 @@ export function getEmptyLectureCardSummary(): LectureCardSummary {
     learningEndDate: 0,
     restrictLearningPeriod: false,
     complete: false,
+    learningState: '',
   };
 }

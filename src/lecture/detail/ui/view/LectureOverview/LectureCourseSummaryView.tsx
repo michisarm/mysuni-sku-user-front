@@ -31,6 +31,7 @@ import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSu
 import moment from 'moment';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
+import { LearningState } from '../../../../../shared/model';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -238,7 +239,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         'YYYY-MM-DD'
       );
 
-      if (lectureSummary.restrictLearningPeriod && !lectureSummary.complete) {
+      if (
+        lectureSummary.restrictLearningPeriod &&
+        !(lectureSummary.learningState === LearningState.Passed)
+      ) {
         if (
           moment().valueOf() >
           moment(lectureSummary.validLearningDate).valueOf()
