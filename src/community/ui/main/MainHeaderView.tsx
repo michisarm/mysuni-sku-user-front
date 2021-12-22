@@ -179,6 +179,7 @@ export function MainHeaderView() {
     profileNickName,
     followerCount,
     followingCount,
+    displayNicknameFirst,
   } = main;
 
   return (
@@ -212,7 +213,9 @@ export function MainHeaderView() {
                     }}
                     style={{ cursor: 'pointer', display: 'inline-block' }}
                   >
-                    {profileNickName || profileName || ''}
+                    {displayNicknameFirst
+                      ? profileNickName || profileName || ''
+                      : profileName || profileNickName || ''}
                   </div>
                 </div>
                 <div className="part">

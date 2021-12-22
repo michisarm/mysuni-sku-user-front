@@ -3,28 +3,23 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { useProfilePopupModel } from '../../../store/ProfilePopupStore';
-import { Button, Image } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { getProfilePopup } from '../../../service/ProfilePopupService/getProfilePopup';
 import { SkProfileService } from 'profile/stores';
 import { reactAlert, StorageModel } from '@nara.platform/accent';
 import ProfileImage from '../../../../../../src/shared/components/Image/Image';
 import DefaultBgImg from '../../../../../style/media/img-my-profile-card-bg.png';
 import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
-import { Link } from 'react-router-dom';
-import {
-  requestFollowersModal,
-  requestFollowingsModal,
-} from '../../../../../community/service/useFollowModal/utility/requestFollowModalIntro';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { isEmpty } from 'lodash';
 import { observer } from 'mobx-react';
 import { usePageElements } from 'shared/store/PageElementsStore';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { patronInfo } from '@nara.platform/dock';
 import { Area } from 'tracker/model';
 import { isExternalInstructor } from 'shared/helper/findUserRole';
+import { getMain, setMain } from 'community/ui/main/main.services';
 
 interface Props {
   setOpen: () => void;
@@ -124,6 +119,12 @@ function ProfilePopupView(props: Props) {
       skProfileService!.findSkProfile().then(() => {
         setSaveFlag(true);
       });
+    }
+
+    const communityMain = getMain();
+    const communityToggle = communityMain?.displayNicknameFirst;
+    if (communityMain !== undefined) {
+      setMain({ ...communityMain, displayNicknameFirst: !communityToggle });
     }
   }, []);
 
