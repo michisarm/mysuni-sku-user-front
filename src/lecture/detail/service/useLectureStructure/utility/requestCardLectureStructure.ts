@@ -1044,7 +1044,6 @@ export async function requestCardLectureStructure(cardId: string) {
       c.order = ++cubeOrder;
     }
   });
-
   setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }

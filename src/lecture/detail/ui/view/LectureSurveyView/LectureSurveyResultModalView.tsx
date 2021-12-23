@@ -36,11 +36,11 @@ const LectureSurveyResultModalView: React.FC<Props> =
     lectureSurvey,
     lectureSurveyState,
     currentMenu,
+    lectureStructure,
   }) {
     const { surveyId, surveyCaseId } = lectureSurvey;
     const lectureSurveySummary = useLectureSurveySummary();
     const [open, setOpen] = useState<boolean>(false);
-
     const onOpen = useCallback(() => {
       setOpen(true);
       requestLectureSurveySummary(surveyId, surveyCaseId);
@@ -63,10 +63,11 @@ const LectureSurveyResultModalView: React.FC<Props> =
         return (
           getActiveCubeStructureItem(params.pathname)?.name ||
           getActiveCourseStructureItem()?.name ||
+          lectureStructure?.card.name ||
           ''
         );
       }
-    }, []);
+    }, [lectureStructure]);
 
     const respondCount =
       (lectureSurveySummary &&
