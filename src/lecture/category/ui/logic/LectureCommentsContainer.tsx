@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { Comment } from '@sku/skuniv-ui-comment';
 import { observer } from 'mobx-react';
 import { findCommunityProfile } from '../../../../community/api/profileApi';
@@ -8,7 +8,8 @@ import {
   getLectureComment,
   setLectureComment,
 } from '../../../detail/store/LectureOverviewStore';
-import { SkProfileService } from '../../../../profile/stores';
+import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   commentFeedbackId: string;
@@ -68,6 +69,32 @@ class LectureCommentsContainer extends Component<Props, State> {
     this.setState({ profileOpen: open });
   }
 
+  onNoContentAlert() {
+    reactAlert({
+      title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+      message: getPolyglotText(
+        '댓글 내용을 입력하세요.',
+        'feedback-comment-notice-nonetext-message'
+      ),
+    });
+  }
+
+  onRemoveCommentConfirm() {
+    reactConfirm({
+      title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+      message: getPolyglotText(
+        '댓글을 삭제 하시겠습니까?',
+        'feedback-comment-delete-message'
+      ),
+      onOk: () => {
+        return true;
+      },
+      onCancel: () => {
+        return false;
+      },
+    });
+  }
+
   render() {
     //
     const {
@@ -96,6 +123,8 @@ class LectureCommentsContainer extends Component<Props, State> {
                 setLectureComment({ ...lectureComment, commentsCount });
               }
             }}
+            // onNoContentAlert={this.onNoContentAlert}
+            // onRemoveCommentConfirm={this.onRemoveCommentConfirm}
           />
         </div>
         <CommunityProfileModal
