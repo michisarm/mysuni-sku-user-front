@@ -280,12 +280,13 @@ class HeaderContainer extends ReactComponent<Props, State, Injected> {
             />
           }
           topBanner={
-            (this.isMainAndSearchPage() && (
-              <TempTopBannerContainer
-                isTopBannerOpen={isTopBannerOpen}
-                onClickCloseBanner={this.onClickCloseTopBanner}
-              />
-            )) ||
+            // 2021-12-26 Top banner 삭제
+            // (this.isMainAndSearchPage() && (
+            //   <TempTopBannerContainer
+            //     isTopBannerOpen={isTopBannerOpen}
+            //     onClickCloseBanner={this.onClickCloseTopBanner}
+            //   />
+            // )) ||
             null
           }
           // topBanner={<TopBannerContainer />}
