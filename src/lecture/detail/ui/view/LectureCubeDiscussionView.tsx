@@ -9,7 +9,6 @@ import React, {
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
 import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
-import { CommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import {
   submitRegisterStudent,
@@ -24,6 +23,11 @@ import CommunityProfileModal from '../../../../community/ui/view/CommunityProfil
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  getLectureComment,
+  setLectureComment,
+} from 'lecture/detail/store/LectureOverviewStore';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
@@ -75,13 +79,6 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
         },
       } = SkProfileService.instance;
       return { companyName, departmentName, name, email };
-    }, []);
-
-    useEffect(() => {
-      window.addEventListener('clickProfile', clickProfileEventHandler);
-      return () => {
-        window.removeEventListener('clickProfile', clickProfileEventHandler);
-      };
     }, []);
 
     useEffect(() => {
@@ -227,9 +224,9 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
       return setHtml;
     };
 
-    const clickProfileEventHandler = useCallback(async () => {
+    const clickProfileEventHandler = useCallback(async (denizenId: string) => {
       const id = document.body.getAttribute('selectedProfileId');
-      findCommunityProfile(id!).then((result) => {
+      findCommunityProfile(denizenId).then((result) => {
         setProfileInfo({
           id: result!.id,
           profileImg: result!.photoImagePath,
@@ -507,22 +504,26 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 </div>
               </div>
             )}
-
-            <CommentList
-              feedbackId={
-                lectureState.cubeDetail.cubeContents.commentFeedbackId
-              }
-              hideCamera
-              name={parsePolyglotString(name)}
-              email={email}
-              companyName={parsePolyglotString(companyName)}
-              departmentName={parsePolyglotString(departmentName)}
-              // cardId={params?.cardId}
-              menuType="discussion"
-              cubeCommentStartFunction={registerStudent}
-              cubeCommentEndFunction={onRefresh}
-            />
-            {/* <CommunityProfileModal
+            <div className="contents comment">
+              <Comment
+                feedbackId={
+                  lectureState.cubeDetail.cubeContents.commentFeedbackId
+                }
+                name={JSON.stringify(name)}
+                email={email}
+                companyName={parsePolyglotString(companyName)}
+                departmentName={parsePolyglotString(departmentName)}
+                hasPinRole={false}
+                onOpenProfileModal={clickProfileEventHandler}
+                onCommentCountChange={(commentsCount) => {
+                  const lectureComment = getLectureComment();
+                  if (lectureComment !== undefined) {
+                    setLectureComment({ ...lectureComment, commentsCount });
+                  }
+                }}
+              />
+            </div>
+            <CommunityProfileModal
               open={profileOpen}
               setOpen={setProfileOpen}
               userProfile={profileInfo && profileInfo.profileImg}
@@ -530,7 +531,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
               introduce={profileInfo && profileInfo.introduce}
               nickName={profileInfo && profileInfo.nickName}
               name={profileInfo && profileInfo.creatorName}
-            /> */}
+            />
           </div>
         )}
       </>
