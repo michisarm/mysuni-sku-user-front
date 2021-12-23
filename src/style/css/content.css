@@ -2133,3 +2133,7 @@ i.icon.testHeader02::before {
   line-height: 16px;
   vertical-align: top;
 }
+
+
+/* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
+.ui.segment.full .contents.comment { min-height: 20rem; }
