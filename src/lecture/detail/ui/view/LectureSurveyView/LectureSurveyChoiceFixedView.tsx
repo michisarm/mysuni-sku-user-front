@@ -1,12 +1,12 @@
 import { LectureSurveyItem } from 'lecture/detail/viewModel/LectureSurvey';
 import React, { useCallback, Fragment } from 'react';
-import { CheckboxProps, Radio } from 'semantic-ui-react';
+import { CheckboxProps, Icon, Radio } from 'semantic-ui-react';
 import { selectChoiceFixedAnswer } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from 'lecture/detail/viewModel/LectureSurveyState';
-import Image from 'shared/components/Image';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 
 interface CommonUseType {
@@ -39,7 +39,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
             <Fragment>
               <Radio
                 className="iconRadio radio05"
-                label="전혀 아니다"
+                label={getPolyglotText('전혀 아니다', 'survey-review-Notatall')}
                 value={1}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -51,7 +51,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio04"
-                label="아니다"
+                label={getPolyglotText('아니다', 'survey-review-Disagree')}
                 value={2}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -63,7 +63,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio03"
-                label="보통이다"
+                label={getPolyglotText('보통이다', 'survey-review-Average')}
                 value={3}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -75,7 +75,7 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio02"
-                label="그렇다"
+                label={getPolyglotText('그렇다', 'survey-review-Agree')}
                 value={4}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -87,7 +87,10 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
               />
               <Radio
                 className="iconRadio radio01"
-                label="매우 그렇다"
+                label={getPolyglotText(
+                  '매우 그렇다',
+                  'survey-review-Highlyagree'
+                )}
                 value={5}
                 checked={
                   lectureSurveyAnswerItem !== undefined &&
@@ -106,19 +109,9 @@ export default function LectureSurveyChoiceFixedView(prop: CommonUseType) {
         (lectureSurveyState.state === 'Progress' &&
           lectureSurveyItem.isRequired === true &&
           lectureSurveyAnswerItem === undefined && (
-            <div style={{ marginTop: '10px' }}>
-              <Image
-                style={{ display: 'inline-block', marginRight: '5px' }}
-                src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-info-error-16-px.png"
-              />
-              <span
-                style={{
-                  color: '#e1002a',
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  verticalAlign: 'text-bottom',
-                }}
-              >
+            <div className="rev-noti">
+              <Icon className="error16" />
+              <span>
                 <PolyglotText
                   defaultString="해당 문항은 필수 항목 입니다."
                   id="survey-필수항목-alert2"

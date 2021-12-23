@@ -20,7 +20,6 @@ export default function LectureDetailCourseRoutes() {
   useEffect(() => {
     setLectureParams({ ...params, pathname });
   }, [params, pathname]);
-
   return (
     <LectureDetailLayout>
       {viewType === 'view' && <LectureCourseOverviewPage />}

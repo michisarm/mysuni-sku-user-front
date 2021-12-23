@@ -14,10 +14,11 @@ interface LectureStructureContainerProps {
 
 const LectureStructureContainer: React.FC<LectureStructureContainerProps> = ({
   noteTab,
-  cubeType
+  cubeType,
 }) => {
   const lectureStructure = useLectureStructure();
   const loadingState = useIsLoadingState();
+
   return (
     <>
       {loadingState?.isLoading ? (
@@ -37,12 +38,16 @@ const LectureStructureContainer: React.FC<LectureStructureContainerProps> = ({
       ) : (
         <>
           {lectureStructure && lectureStructure.items.length !== 0 && (
-            <LectureStructureView lectureStructure={lectureStructure} noteTab={noteTab} cubeType={cubeType}/>
+            <LectureStructureView
+              lectureStructure={lectureStructure}
+              noteTab={noteTab}
+              cubeType={cubeType}
+            />
           )}
         </>
       )}
     </>
   );
-}
+};
 
 export default LectureStructureContainer;

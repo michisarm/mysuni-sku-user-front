@@ -161,7 +161,6 @@ function LectureTaskContainer() {
   const sortChange = (data: any) => {
     setLectureTaskOrder(data);
     setActivePage(1);
-    console.log('sortChange');
     setLectureTaskOffset(0);
   };
 

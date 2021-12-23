@@ -7,4 +7,5 @@ export default interface LectureCubeSummary extends LectureSummary {
   difficultyLevel: DifficultyLevel;
   cubeType: CubeType;
   cubeId: string;
+  hasPinRole: boolean;
 }

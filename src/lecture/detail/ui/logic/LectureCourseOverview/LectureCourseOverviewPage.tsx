@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import { useLectureStructure } from '../../../store/LectureStructureStore';
 import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
@@ -8,8 +7,6 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
 import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
-import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
-import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
@@ -22,12 +19,7 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 }
 
 function LectureCourseOverviewPage() {
-  useRequestLectureCardOverview();
   const lectureStructure = useLectureStructure();
-  const [lectureSurvey] = useLectureSurvey();
-  useEffect(() => {
-    lectureSurvey && requestLectureCouseFeedback(lectureSurvey);
-  }, [lectureSurvey]);
 
   const history = useHistory();
   useEffect(() => {

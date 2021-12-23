@@ -765,6 +765,7 @@ async function parseCubeItem(
     name,
     langSupports,
     type,
+    subType,
     learningTime,
     surveyCaseId,
     hasTest,
@@ -772,11 +773,9 @@ async function parseCubeItem(
   } = cube;
 
   if (type === 'Audio' || type === 'Video') {
-    const cubeDetail = await findCubeDetailCache(id);
     if (
-      cubeDetail?.cubeMaterial.media?.mediaType === MediaType.InternalMedia ||
-      cubeDetail?.cubeMaterial.media?.mediaType ===
-        MediaType.InternalMediaUpload
+      subType === MediaType.InternalMedia ||
+      subType === MediaType.InternalMediaUpload
     ) {
       return parseDurationableCubeItem(card, cube, order, cubeStudent);
     }
@@ -1045,7 +1044,6 @@ export async function requestCardLectureStructure(cardId: string) {
       c.order = ++cubeOrder;
     }
   });
-
   setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }

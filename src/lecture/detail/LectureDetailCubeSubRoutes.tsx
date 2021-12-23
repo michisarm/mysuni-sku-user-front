@@ -18,7 +18,6 @@ import { getPolyglotText } from '../../shared/ui/logic/PolyglotText';
 import { isPisAgreementPassed } from './service/useLectureStructure/utility/requestCardLectureStructure';
 import { LectureCardAgreementModalView } from './ui/view/LectureStateView/LectureCardAgreementModalView';
 import { onOpenLectureCardPisAgreementModal } from './service/LectureCardAgreementModal/useLectureAgreemenetModal';
-import { requestLectureSurvey } from './service/useLectureSurvey/utility/getLectureSurvey';
 
 export async function isOpenPassedPreCourseModal(cardId: string) {
   const failCardId = await getPreCourseFailCardId(cardId);
@@ -64,7 +63,6 @@ export async function isOpenPassedPreCourseModal(cardId: string) {
 function LectureDetailCubeSubRoutes() {
   const { cubeType, cardId, cubeId } = useParams<LectureParams>();
   isOpenPassedPreCourseModal(cardId);
-  requestLectureSurvey();
 
   return (
     <>
