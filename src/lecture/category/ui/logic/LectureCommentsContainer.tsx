@@ -79,19 +79,17 @@ class LectureCommentsContainer extends Component<Props, State> {
     });
   }
 
-  onRemoveCommentConfirm() {
-    reactConfirm({
-      title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
-      message: getPolyglotText(
-        '댓글을 삭제 하시겠습니까?',
-        'feedback-comment-delete-message'
-      ),
-      onOk: () => {
-        return true;
-      },
-      onCancel: () => {
-        return false;
-      },
+  async onRemoveCommentConfirm() {
+    return new Promise<boolean>((resolve) => {
+      reactConfirm({
+        title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+        message: getPolyglotText(
+          '댓글을 삭제 하시겠습니까?',
+          'feedback-comment-delete-message'
+        ),
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
+      });
     });
   }
 
@@ -123,8 +121,8 @@ class LectureCommentsContainer extends Component<Props, State> {
                 setLectureComment({ ...lectureComment, commentsCount });
               }
             }}
-            // onNoContentAlert={this.onNoContentAlert}
-            // onRemoveCommentConfirm={this.onRemoveCommentConfirm}
+            onNoContentAlert={this.onNoContentAlert}
+            onRemoveCommentConfirm={this.onRemoveCommentConfirm}
           />
         </div>
         <CommunityProfileModal
