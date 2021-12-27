@@ -1,3 +1,4 @@
+import { SkProfileService } from 'profile/stores';
 import {
   findAllFollow,
   follow,
@@ -78,6 +79,8 @@ export async function requestUnfollow(id: string) {
 
 export function useRequestMain() {
   useEffect(() => {
+    const displayNicknameFirst =
+      SkProfileService.instance.skProfile.displayNicknameFirst;
     findProfile().then((profile) => {
       if (profile !== undefined) {
         const {
@@ -104,6 +107,7 @@ export function useRequestMain() {
           followingCount: 0,
           followers: [],
           followings: [],
+          displayNicknameFirst,
         };
         setMain(main);
         requestFindFollowing();
