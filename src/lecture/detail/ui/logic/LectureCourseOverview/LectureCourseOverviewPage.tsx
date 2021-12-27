@@ -7,9 +7,6 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 import { onOpenLectureCardPisAgreementModal } from '../../../service/LectureCardAgreementModal/useLectureAgreemenetModal';
 import { LectureCardAgreementModalView } from '../../view/LectureStateView/LectureCardAgreementModalView';
 import { isPisAgreementPassed } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
-import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
-import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
-import { useLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
 
 export async function isOpenPassedPisAgreementModal(cardId: string) {
   const { isPisAgreement } = await isPisAgreementPassed(cardId);
@@ -23,11 +20,6 @@ export async function isOpenPassedPisAgreementModal(cardId: string) {
 
 function LectureCourseOverviewPage() {
   const lectureStructure = useLectureStructure();
-  const [lectureSurvey] = useLectureSurvey();
-  const answerSheet = useLectureSurveyAnswerSheet();
-  useEffect(() => {
-    lectureSurvey && requestLectureCouseFeedback(lectureSurvey, answerSheet);
-  }, [lectureSurvey, answerSheet]);
 
   const history = useHistory();
   useEffect(() => {

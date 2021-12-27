@@ -1,3 +1,4 @@
+import { getLectureSurveyAnswerSheet } from 'lecture/detail/store/LectureSurveyStore';
 import { parseInt } from 'lodash';
 import {
   setLectureCourseSatisfaction,
@@ -12,15 +13,13 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import { findProfilePhoto } from 'layout/UserApp/api/ProfileInfoAPI';
 import { getProfileImage } from 'community/ui/app.formatters';
 
-import AnswerSheet from 'lecture/detail/model/SurveyAnswerSheet';
-
 export async function requestLectureCouseFeedback(
-  lectureSurvey: LectureSurvey,
-  answerSheet: AnswerSheet | undefined
+  lectureSurvey: LectureSurvey | undefined
 ) {
   if (lectureSurvey === undefined) {
     return;
   }
+  const answerSheet = getLectureSurveyAnswerSheet();
 
   const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
     lectureSurvey.surveyCaseId,
@@ -88,7 +87,7 @@ export async function requestLectureCouseFeedback(
     Object.assign(totalObject, { 5: 0 });
   }
 
-  const isDoneSurvey = answerSheet?.progress === 'Complete';
+  const isDoneSurvey = answerSheet?.progress !== 'Complete';
   const reversedValues = Object.values(totalObject).reverse() || [0];
   const totalCount =
     reversedValues.reduce((totalCount, count) => {

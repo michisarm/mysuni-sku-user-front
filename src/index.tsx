@@ -11,6 +11,7 @@ import './style/app.css';
 import './style/css/layout.css';
 import './style/css/content.css';
 import 'react-quill/dist/quill.snow.css';
+import '@sku/skuniv-ui-comment/lib/skuniv-ui-comment.css';
 
 import { polyfill } from './polyfill';
 import { beforeAppInitialize } from './beforeAppInitialize';

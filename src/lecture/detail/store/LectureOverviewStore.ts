@@ -69,7 +69,7 @@ const [setLectureRelations, onLectureRelations, getLectureRelations] =
 const [
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 ] = createStore<SurveySatisfaction>();
 
@@ -83,7 +83,7 @@ const initLectureCourseSatisfaction = (): SurveySatisfaction => {
     totalCount: 0,
     average: 0,
     surveyCaseId: '',
-    isDoneSurvey: false,
+    isDoneSurvey: true,
   };
 };
 
@@ -141,7 +141,7 @@ export {
   getLectureCardSummaryLearningState,
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
   onLectureCourseFeedbackReview,
   getLectureCoureSFeedbackReview,
