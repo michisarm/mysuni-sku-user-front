@@ -1620,6 +1620,10 @@ ul.ui.list.my-task-bar {
     url('https://image.mysuni.sk.com/suni-asset/public/images/all/season_gif.gif')
     0 12px / contain no-repeat;
 }
+.content.main-sty2 .main_personal.season2 {
+  background: #fff
+    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px 5px/contain no-repeat;
+}
 
 /* badge 인증서 css변경 */
 .certi_box .my_certificate .txt_box {
@@ -2133,3 +2137,7 @@ i.icon.testHeader02::before {
   line-height: 16px;
   vertical-align: top;
 }
+
+
+/* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
+.ui.segment.full .contents.comment { min-height: 20rem; }

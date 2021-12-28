@@ -31,6 +31,7 @@ import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 import { LearningState } from '../../../../../shared/model';
 import LectureCourseSummarySatisfactionView from './LectureCourseSummarySatisfactionView';
+import { SkProfileService } from '../../../../../profile/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -234,8 +235,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     useEffect(() => {
       //
       document.addEventListener('keydown', escFunction, false);
+      const userLanguage = SkProfileService.instance.skProfile.language;
+      const dateFormat =
+        (userLanguage === 'English' && 'DD-MM-YYYY') || 'YYYY-MM-DD';
+      const startDate = moment(lectureSummary.learningStartDate).format(
+        dateFormat
+      );
       const validDate = moment(lectureSummary.validLearningDate).format(
-        'YYYY-MM-DD'
+        dateFormat
       );
 
       if (
@@ -252,9 +259,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
               '교육기간 만료 안내 default',
               'card-overview-alertheader2'
             ),
-            message: getPolyglotText(
-              '교육기간이 만료되어 학습카드에 접근할 수 없습니다. default',
-              'card-overview-alerttxt2'
+            message: parsePolyglotHTML(
+              'card-overview-alerttxt2',
+              'date',
+              `${startDate} ~ ${validDate}`,
+              '교육기간이 만료되어 학습카드에 접근할 수 없습니다.'
             ),
             onClose: () => {
               const history = getCurrentHistory();
