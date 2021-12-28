@@ -23,7 +23,7 @@ export interface Main {
   followingCount: number;
   followers: ProfileModel[];
   followings: ProfileModel[];
-  displayNicknameFirst: boolean;
+  displayName: string;
 }
 
 export function getEmptyMain(): Main {
@@ -38,7 +38,7 @@ export function getEmptyMain(): Main {
     followingCount: 0,
     followers: [],
     followings: [],
-    displayNicknameFirst: false,
+    displayName: '',
   };
 }
 

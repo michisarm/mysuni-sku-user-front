@@ -116,15 +116,22 @@ function ProfilePopupView(props: Props) {
       };
 
       await skProfileService.modifySkProfile(params);
-      skProfileService!.findSkProfile().then(() => {
-        setSaveFlag(true);
-      });
-    }
-
-    const communityMain = getMain();
-    const communityToggle = communityMain?.displayNicknameFirst;
-    if (communityMain !== undefined) {
-      setMain({ ...communityMain, displayNicknameFirst: !communityToggle });
+      skProfileService!
+        .findSkProfile()
+        .then(() => {
+          setSaveFlag(true);
+          return skProfileService!.skProfile.profileViewName;
+        })
+        .then((name) => {
+          const communityMain = getMain();
+          const communityToggle = communityMain?.displayName;
+          if (communityMain !== undefined) {
+            setMain({
+              ...communityMain,
+              displayName: name,
+            });
+          }
+        });
     }
   }, []);
 
