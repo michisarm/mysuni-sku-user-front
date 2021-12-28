@@ -18,7 +18,7 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import iconUrl from '../../../../style/media/icon-url.png';
 import iconFile from '../../../../style/media/icon-community-file-copy-2.png';
 import LectureState from '../../viewModel/LectureState';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -237,6 +237,30 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
         setProfileOpen(true);
       });
     }, []);
+
+    const onNoContentAlert = () => {
+      reactAlert({
+        title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+        message: getPolyglotText(
+          '댓글 내용을 입력하세요.',
+          'feedback-comment-notice-nonetext-message'
+        ),
+      });
+    };
+
+    const onRemoveCommentConfirm = () => {
+      return new Promise<boolean>((resolve) => {
+        reactConfirm({
+          title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+          message: getPolyglotText(
+            '댓글을 삭제 하시겠습니까?',
+            'feedback-comment-delete-message'
+          ),
+          onOk: () => resolve(true),
+          onCancel: () => resolve(false),
+        });
+      });
+    };
 
     return (
       <>
@@ -521,6 +545,8 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                     setLectureComment({ ...lectureComment, commentsCount });
                   }
                 }}
+                onRemoveCommentConfirm={onRemoveCommentConfirm}
+                onNoContentAlert={onNoContentAlert}
               />
             </div>
             <CommunityProfileModal
