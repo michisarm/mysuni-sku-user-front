@@ -107,7 +107,7 @@ export function useRequestMain() {
           followingCount: 0,
           followers: [],
           followings: [],
-          displayNicknameFirst,
+          displayName: '',
         };
         setMain(main);
         requestFindFollowing();
