@@ -23,6 +23,7 @@
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
     "@sku/personalcube": "0.1.4",
+    "@sku/skuniv-ui-comment": "^0.9.15",
     "@sku/skuniv-ui-lecture-card": "0.1.18",
     "@sku/skuniv-ui-video-player": "0.0.18",
     "@types/react-pdf": "5.0.1",
@@ -44,6 +45,7 @@
     "moment": "^2.24.0",
     "nara-react-scripts": "0.1.19",
     "numeral": "^2.0.6",
+    "pdfjs-dist": "2.1.266",
     "prettier": "^2.4.1",
     "query-string": "6.13.1",
     "react": "^16.8.6",
@@ -65,7 +67,6 @@
     "srt-parser-2": "^1.1.2",
     "swiper": "^5.2.1",
     "typescript": "3.7.3",
-    "pdfjs-dist": "2.1.266",
     "xlsx": "latest"
   },
   "proxy": "https://stg.mysuni.sk.com",

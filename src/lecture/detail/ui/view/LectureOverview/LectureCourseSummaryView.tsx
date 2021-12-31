@@ -1,7 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
@@ -27,11 +26,12 @@ import {
   initLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 } from 'lecture/detail/store/LectureOverviewStore';
-import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import moment from 'moment';
 import { getCurrentHistory } from '../../../../../shared/store/HistoryStore';
 import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 import { LearningState } from '../../../../../shared/model';
+import LectureCourseSummarySatisfactionView from './LectureCourseSummarySatisfactionView';
+import { SkProfileService } from '../../../../../profile/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -199,6 +199,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         });
       }
     }
+
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
@@ -234,8 +235,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     useEffect(() => {
       //
       document.addEventListener('keydown', escFunction, false);
+      const userLanguage = SkProfileService.instance.skProfile.language;
+      const dateFormat =
+        (userLanguage === 'English' && 'DD-MM-YYYY') || 'YYYY-MM-DD';
+      const startDate = moment(lectureSummary.learningStartDate).format(
+        dateFormat
+      );
       const validDate = moment(lectureSummary.validLearningDate).format(
-        'YYYY-MM-DD'
+        dateFormat
       );
 
       if (
@@ -252,9 +259,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
               '교육기간 만료 안내 default',
               'card-overview-alertheader2'
             ),
-            message: getPolyglotText(
-              '교육기간이 만료되어 학습카드에 접근할 수 없습니다. default',
-              'card-overview-alerttxt2'
+            message: parsePolyglotHTML(
+              'card-overview-alerttxt2',
+              'date',
+              `${startDate} ~ ${validDate}`,
+              '교육기간이 만료되어 학습카드에 접근할 수 없습니다.'
             ),
             onClose: () => {
               const history = getCurrentHistory();
@@ -305,18 +314,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   <Icon className={difficultyLevelIcon} />
                   <span>{lectureSummary.difficultyLevel}</span>
                 </Label>
-                {/*{lectureSummary.validLearningDate !== 0 &&*/}
-                {/*  !lectureSummary.restrictLearningPeriod && (*/}
-                <Label className="bold onlytext">
-                  <span className="header-span-first">
-                    <PolyglotText
-                      defaultString="유효학습 종료일 default"
-                      id="card-overview-valid"
-                    />
-                  </span>
-                  <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
-                </Label>
-                {/*)}*/}
+                {lectureSummary.restrictLearningPeriod && (
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">
+                      <PolyglotText
+                        defaultString="유효학습 종료일 default"
+                        id="card-overview-valid"
+                      />
+                    </span>
+                    <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
+                  </Label>
+                )}
                 <Label className="bold onlytext">
                   <Icon className="time2" />
                   <span>{lectureSummary.learningTime}</span>
@@ -402,44 +410,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
           <div className="title-area">
             <div className="header-deatil">
               <div className="item">
-                {satisfaction.surveyCaseId && (
-                  <div className="header-rating">
-                    <Rating
-                      defaultRating={5}
-                      maxRating={5}
-                      rating={
-                        satisfaction?.totalCount !== 0
-                          ? satisfaction && satisfaction.average
-                          : 5
-                      }
-                      disabled
-                      className="fixed-rating"
-                    />
-                    <span>
-                      {satisfaction?.totalCount !== 0
-                        ? `${Math.floor(satisfaction.average * 10) / 10}(${
-                            satisfaction?.totalCount
-                          }
-                            ${getPolyglotText('명', 'cicl-학상본문-명')})`
-                        : '0'}
-                    </span>
-
-                    {!satisfaction.isDoneSurvey && (
-                      <Button
-                        className="re-feedback"
-                        onClick={() =>
-                          history.push(`/lecture/card/${params?.cardId}/survey`)
-                        }
-                      >
-                        <Icon className="edit16" />
-                        {getPolyglotText(
-                          '평가하기',
-                          'survey-reviewOverview-평가'
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                )}
+                <LectureCourseSummarySatisfactionView />
               </div>
             </div>
           </div>

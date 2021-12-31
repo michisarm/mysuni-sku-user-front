@@ -1,6 +1,6 @@
+import { requestLectureCouseFeedback } from 'lecture/detail/service/useLectureCourseFeedbackView/utility/requestLectureCouseFeedback';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
-import { findIsJsonStudentByCube } from '../../../api/lectureApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
@@ -8,7 +8,6 @@ import {
   findAnswerSummariesBySurveySummaryId,
 } from '../../../api/surveyApi';
 import LangStrings, { langStringsToString } from '../../../model/LangStrings';
-import StudentJoin from '../../../model/StudentJoin';
 import Question from '../../../model/SurveyQuestion';
 import {
   setLectureSurvey,
@@ -540,96 +539,6 @@ async function parseSurveyForm(
   };
 }
 
-async function getCubeLectureSurveyState(
-  serviceId: string,
-  surveyCaseId: string
-): Promise<void> {
-  let state: State = 'None';
-
-  const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-  setLectureSurveyAnswerSheet(answerSheet);
-  if (answerSheet !== undefined && answerSheet.id !== undefined) {
-    const {
-      round,
-      progress,
-      evaluationSheet: { id: evaluationSheetId, answerSheetId, answers },
-    } = answerSheet;
-    if (progress === 'Complete') {
-      state = 'Completed';
-    } else {
-      state = 'Progress';
-    }
-    const answerItem: LectureSurveyAnswerItem[] = answers.map(
-      ({
-        questionNumber,
-        answerItem: {
-          answerItemType,
-          criteriaItem,
-          itemNumbers,
-          sentence,
-          matrixItem,
-        },
-      }) => ({
-        questionNumber,
-        answerItemType,
-        criteriaItem:
-          criteriaItem === null
-            ? undefined
-            : {
-                names: criteriaItem.names as unknown as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
-        itemNumbers: itemNumbers === null ? undefined : itemNumbers,
-        sentence: sentence === null ? undefined : sentence,
-        matrixItem: matrixItem === null ? undefined : matrixItem,
-      })
-    );
-    const lectureSurveyState = {
-      evaluationSheetId,
-      answerSheetId,
-      answerItem,
-      state,
-      surveyCaseId,
-      round,
-      serviceId,
-    };
-    setLectureSurveyState(lectureSurveyState);
-    return;
-  }
-  const studentJoins = await findIsJsonStudentByCube(serviceId);
-  if (studentJoins.length > 0) {
-    const studentJoin: StudentJoin | null =
-      studentJoins.reduce<StudentJoin | null>((r, c) => {
-        if (r === null) {
-          return c;
-        }
-        if (c.updateTime > r.updateTime) {
-          return c;
-        }
-        return r;
-      }, null);
-    if (studentJoin !== null) {
-      const lectureSurveyState = {
-        state,
-        surveyCaseId,
-        round: studentJoin.round,
-        serviceId,
-        answerItem: [],
-      };
-      setLectureSurveyState(lectureSurveyState);
-      return;
-    }
-  }
-  const lectureSurveyState = {
-    state,
-    surveyCaseId,
-    round: 1,
-    serviceId,
-    answerItem: [],
-  };
-  setLectureSurveyState(lectureSurveyState);
-}
 export async function getCourseLectureSurveyState(
   serviceId: string,
   surveyCaseId: string
@@ -749,7 +658,9 @@ export async function requestLectureSurveyFromSurvey(
     lectureSurveyAnswerSummary
   );
   setLectureSurvey(lectureSurvey);
+
   await getCourseLectureSurveyState(surveyId, surveyCaseId);
+  requestLectureCouseFeedback(lectureSurvey);
 }
 
 export async function requestLectureSurveySummary(

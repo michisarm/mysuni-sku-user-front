@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CommentList } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
@@ -10,7 +11,7 @@ import {
   useRequestLectureDiscussion,
   useRequestLectureFeedbackContent,
 } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -18,7 +19,12 @@ import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackCont
 import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
 import { useParams } from 'react-router-dom';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  getLectureComment,
+  setLectureComment,
+} from 'lecture/detail/store/LectureOverviewStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -68,12 +74,10 @@ export default function LectureDiscussionContainer() {
 
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
-    window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('discCommentCount', commentCountEventHandler);
-      window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
-  }, []);
+  }, [commentCountEventHandler]);
 
   useEffect(() => {
     if (
@@ -165,9 +169,8 @@ export default function LectureDiscussionContainer() {
     }
   }, []);
 
-  const clickProfileEventHandler = useCallback(async () => {
-    const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then((result) => {
+  const clickProfileEventHandler = useCallback(async (denizenId: string) => {
+    findCommunityProfile(denizenId).then((result) => {
       setProfileInfo({
         id: result!.id,
         profileImg: result!.photoImagePath,
@@ -180,15 +183,37 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const relatedUrlVisible = relatedUrlVisiable(lectureFeedbackContent);
-  // console.log(
-  //   'content: :: ',
-  //   parsePolyglotString(lectureFeedbackContent?.content)
-  // );
+
   const checkContentValue =
     parsePolyglotString(lectureFeedbackContent?.content) === '<p><br></p>' ||
     parsePolyglotString(lectureFeedbackContent?.content) === ''
       ? true
       : false;
+
+  const onNoContentAlert = () => {
+    reactAlert({
+      title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+      message: getPolyglotText(
+        '댓글 내용을 입력하세요.',
+        'feedback-comment-notice-nonetext-message'
+      ),
+    });
+  };
+
+  const onRemoveCommentConfirm = () => {
+    return new Promise<boolean>((resolve) => {
+      reactConfirm({
+        title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+        message: getPolyglotText(
+          '댓글을 삭제 하시겠습니까?',
+          'feedback-comment-delete-message'
+        ),
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
+      });
+    });
+  };
+
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -354,15 +379,25 @@ export default function LectureDiscussionContainer() {
           </div>
           {lectureFeedbackContent?.commentFeedbackId !== undefined && (
             <>
-              <CommentList
-                feedbackId={lectureFeedbackContent.commentFeedbackId}
-                hideCamera
-                name={parsePolyglotString(name)}
-                email={email}
-                companyName={parsePolyglotString(companyName)}
-                departmentName={parsePolyglotString(departmentName)}
-                menuType="discussion"
-              />
+              <div className="contents comment">
+                <Comment
+                  feedbackId={lectureFeedbackContent.commentFeedbackId}
+                  name={JSON.stringify(name)}
+                  email={email}
+                  companyName={parsePolyglotString(companyName)}
+                  departmentName={parsePolyglotString(departmentName)}
+                  hasPinRole={false}
+                  onOpenProfileModal={clickProfileEventHandler}
+                  onCommentCountChange={(commentsCount) => {
+                    const lectureComment = getLectureComment();
+                    if (lectureComment !== undefined) {
+                      setLectureComment({ ...lectureComment, commentsCount });
+                    }
+                  }}
+                  onRemoveCommentConfirm={onRemoveCommentConfirm}
+                  onNoContentAlert={onNoContentAlert}
+                />
+              </div>
               <CommunityProfileModal
                 open={profileOpen}
                 setOpen={setProfileOpen}
