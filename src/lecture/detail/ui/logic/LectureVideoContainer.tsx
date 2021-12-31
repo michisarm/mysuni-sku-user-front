@@ -294,7 +294,7 @@ function LectureVideoContainer() {
     ) {
       if (
         moment(lectureMedia.mediaContents.contentsProvider.expiryDate)
-          .startOf('day')
+          .endOf('day')
           .valueOf() < Date.now()
       ) {
         if (isExpiredContentAlerted === false) {
