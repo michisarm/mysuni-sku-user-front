@@ -12,6 +12,7 @@ import { UserIdentities } from './models/UserIdentities';
 
 const BASE_URL = '/api/learning/playlists';
 
+//  Playlist 생성.
 export function registerPlaylist(
   description: string,
   expose: boolean,
@@ -24,6 +25,7 @@ export function registerPlaylist(
     .then(AxiosReturn);
 }
 
+// Playlist 변경 - 카드 리스트 변경 (name: cardIds, value : List<String>)
 export function modifyPlaylist(playlistId: string, value: NameValue[]) {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}`;
@@ -31,6 +33,7 @@ export function modifyPlaylist(playlistId: string, value: NameValue[]) {
   return axios.put(url, value).then(AxiosReturn);
 }
 
+// Playlist 상세 조회.
 export function findPlaylistDetail(
   playlistId: string
 ): Promise<PlaylistDetail | undefined> {
@@ -40,6 +43,7 @@ export function findPlaylistDetail(
   return axios.get<PlaylistDetail>(url).then(AxiosReturn);
 }
 
+// Playlist 와 관련 있는 사람 목록 조회.
 export function findUserIdentitiesRelatedToPlaylist(
   playlistId: string,
   playlistType: PlaylistType
@@ -50,6 +54,7 @@ export function findUserIdentitiesRelatedToPlaylist(
   return axios.get<UserIdentities>(url).then(AxiosReturn);
 }
 
+// 내가 만든 Playlist 에 카드 추가.
 export function addCardsToPlaylists(
   playlistCardAdditionSdo: PlaylistCardAdditionSdo
 ) {
@@ -59,6 +64,7 @@ export function addCardsToPlaylists(
   return axios.put(url, playlistCardAdditionSdo).then(AxiosReturn);
 }
 
+// 내가 볼 수 있는 Playlist 조회.
 export function findMyPlaylists(
   limit: number,
   offset: number,
@@ -70,6 +76,7 @@ export function findMyPlaylists(
   return axios.get<OffsetElement<MyPlaylists>>(url).then(AxiosReturn);
 }
 
+// denizenId로 다른 사용자의 Playlist 조회.
 export function findMyPlaylistsByDenizenId(
   denizenId: string
 ): Promise<MyPlaylists[] | undefined> {
@@ -79,6 +86,7 @@ export function findMyPlaylistsByDenizenId(
   return axios.get<MyPlaylists[]>(url).then(AxiosReturn);
 }
 
+// 내가 만든 Playlist 전체 조회.
 export function findPlaylistsMadeByMySelf(): Promise<
   MadeByMySelf[] | undefined
 > {
@@ -88,6 +96,7 @@ export function findPlaylistsMadeByMySelf(): Promise<
   return axios.get<MadeByMySelf[]>(url).then(AxiosReturn);
 }
 
+// Playlist 추천하기.
 export function recommendPlaylist(
   playlistRecommendationSdo: PlaylistRecommendationSdo
 ) {
@@ -97,6 +106,7 @@ export function recommendPlaylist(
   return axios.post(url, playlistRecommendationSdo).then(AxiosReturn);
 }
 
+// 다른 사람이 생성한 Playlist 담기.
 export function registerMyPlaylistByPlaylistId(
   playlistId: string
 ): Promise<string | undefined> {
@@ -106,6 +116,7 @@ export function registerMyPlaylistByPlaylistId(
   return axios.post<string>(url).then(AxiosReturn);
 }
 
+// MyPlaylist 삭제하기.
 export function removeMyPlaylist(myPlaylistId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/removeMyPlaylist?myPlaylistId=${myPlaylistId}`;
