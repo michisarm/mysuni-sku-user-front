@@ -1,5 +1,10 @@
 /* header mySUNI 아이콘 변경 */
-i.icon.sk-university::before{width: 90px; height: 38px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg") no-repeat 0 0/ 100% 100% !important;}
+i.icon.sk-university::before {
+  width: 90px;
+  height: 38px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg')
+    no-repeat 0 0/ 100% 100% !important;
+}
 
 /* Recommend */
 .recommend-detail
@@ -1622,7 +1627,8 @@ ul.ui.list.my-task-bar {
 }
 .content.main-sty2 .main_personal.season2 {
   background: #fff
-    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px 5px/contain no-repeat;
+    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px
+    5px / contain no-repeat;
 }
 
 /* badge 인증서 css변경 */
@@ -2138,6 +2144,705 @@ i.icon.testHeader02::before {
   vertical-align: top;
 }
 
-
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
-.ui.segment.full .contents.comment { min-height: 20rem; }
+.ui.segment.full .contents.comment {
+  min-height: 20rem;
+}
+
+/* ------------ 플레이리스트 css ---------------- */
+
+/* Icon, Button */
+i.icon.essential {
+  margin: 0;
+  padding: 0;
+  width: 9px;
+  height: 9px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.essential::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 9px;
+  height: 9px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-essential.svg')
+    0 0/100% no-repeat;
+}
+.ui.button.pop.b {
+  padding: 0;
+  margin: 0;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #777;
+  border: 1px solid #777;
+}
+.ui.button.pl-add {
+  padding: 10px;
+  color: #222;
+  font-size: 1rem;
+  line-height: 24px;
+}
+.ui.button.pl-add .icon.listmore16-black {
+  height: 16px;
+  vertical-align: -4px;
+}
+i.icon.listmore16-black {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.listmore16-black::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-list-more-16-px-black.svg')
+    0 0/100% no-repeat;
+}
+.ui.button.bl {
+  padding: 12px 20px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.ui.button.bl:hover {
+  background-color: #333;
+  color: #fff;
+  border: 0;
+  outline: 0;
+}
+.ui.button.cl {
+  padding: 11px 20px;
+  height: 100%;
+  background-color: transparent;
+  border: 1px solid #999;
+  color: #555;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.ui.button.cl:hover {
+  background-color: transparent;
+  color: #555;
+  outline: 0;
+}
+.ui.button.close24 {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  background-color: #fff;
+}
+.ui.button.close24 .icon.close24 {
+  margin: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  vertical-align: top;
+}
+.ui.icon.button.all-dt {
+  margin: 0;
+  padding: 0 10px;
+  color: #999;
+  font-size: 0.75rem;
+  border: 1px solid #999;
+  border-radius: 4px;
+  line-height: 2;
+}
+i.icon.delete14 {
+  margin: 0;
+  padding: 0;
+  width: 14px;
+  height: 14px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.delete14::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 14px;
+  height: 14px;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-delete-14-px.svg)
+    0 0/100% no-repeat;
+}
+.ui.icon.button.all-dt i.icon.delete14 {
+  padding: 5px 6px 0 0;
+  width: 20px;
+}
+i.icon.plAdd {
+  margin: 0;
+  padding: 0;
+  width: 14px;
+  height: 14px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.plAdd::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 14px;
+  height: 14px;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lms-playlist-add.svg)
+    0 0/100% no-repeat;
+}
+.content.lms .icon.plAdd {
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-left: 15px;
+}
+i.icon.search50 {
+  margin: 0;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.search50::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 50px;
+  height: 50px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-popup-mysuni-search.svg')
+    0 0/100% no-repeat;
+}
+.res.header.xfl {
+  position: relative;
+}
+.res.header.xfl .ui.button.close24 {
+  position: absolute;
+  right: 6px;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+.profile-modal-new .right-side .ui.menu .item + .item {
+  border-left-width: 0;
+}
+.ui.button.post.add {
+  width: auto;
+  padding: 0 16px !important;
+}
+.ui.button.acc-updown i.icon.drop24-down {
+  margin: 0 !important;
+  height: 24px;
+  vertical-align: 3px;
+}
+
+.ui.button.like {
+  margin: 0;
+  padding: 0;
+  color: #222;
+  font-size: 0.875rem;
+  font-weight: 400;
+  position: relative;
+}
+.ui.button.add-black {
+  margin: 0;
+  padding: 0;
+  color: #222;
+  font-size: 0.875rem;
+  font-weight: 400;
+  position: relative;
+}
+i.icon.heart16 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.heart16::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-community-like-on-16-px.svg')
+    0 0/100% no-repeat;
+}
+i.icon.heart16.active::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-community-like-off-16-px.svg')
+    0 0/100% no-repeat;
+}
+i.icon.add-black16 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  position: relative;
+}
+i.icon.add-black16::after {
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-black-add-16-px.svg')
+    0 0/100% no-repeat;
+}
+
+/* createPopup01 플레이리스트 만들기 */
+.pl-create .content .inner {
+  padding: 22px;
+}
+.create-form + .create-form {
+  margin-top: 30px;
+}
+.create-form .form-tit {
+  font-size: 1rem;
+  line-height: 1.67;
+  letter-spacing: -0.4px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.create-form .form-tit .icon.essential {
+  margin: 5px 2px;
+}
+.create-form .ui.input {
+  width: 100%;
+}
+.create-form .ui.input.error {
+  margin-bottom: 32px;
+}
+.create-form .ui.input.h38.error input:focus,
+.create-form .ui.input.error textarea:focus {
+  border-color: #db1111 !important;
+}
+.cr-check {
+  padding: 22px 0 2px;
+}
+.cr-check .ui.checkbox input.hidden + label {
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/* addPopup02 플레이리스트 추가하기 */
+.ui.modal.pl-add .scroll {
+  height: 485px;
+  overflow-y: auto;
+}
+.ui.modal.pl-add .add-top {
+  width: 100%;
+  padding: 23px 0;
+  text-align: center;
+  background-color: #f6f6f6;
+}
+.ui.modal.pl-add .add-top.show {
+  padding: 26px 0;
+}
+.ui.modal.pl-add .content {
+  padding: 0 !important;
+}
+
+.add-top .pl-add {
+  display: inline-block;
+}
+.add-top.show .pl-add {
+  display: none;
+}
+.add-top .pl-search {
+  display: none;
+}
+.add-top.show .pl-search {
+  display: flex;
+  padding: 0 20px 0 30px;
+}
+.add-top .ui.button + .ui.button {
+  margin: 0 0 0 6.5px;
+}
+
+.pl-search .ui.input {
+  width: 100%;
+  margin-right: 10px;
+}
+.pl-search .ui.input input {
+  padding: 9px 15px;
+}
+.pl-search .ui.input.h38.error {
+  margin-bottom: 30px;
+}
+.pl-search .ui.input.h38.error input:focus {
+  border-color: #db1111 !important;
+}
+
+.add-bottom {
+  border-top: 1px solid #eee;
+}
+.add-list-top {
+  padding: 24px 30px 16px;
+  color: #666;
+  font-size: 0.875rem;
+}
+.add-item .inner {
+  margin: 0 30px;
+  padding: 19px 0;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #eee;
+}
+.add-item .add-right {
+  padding: 0 30px 0 20px;
+  width: 100%;
+}
+.add-item .add-right .add-tit {
+  width: 100%;
+  font-size: 1rem;
+  letter-spacing: -0.32px;
+  line-height: 24px;
+}
+.add-right .add-info {
+  margin-top: 2px;
+  display: flex;
+  font-size: 0.875rem;
+}
+.add-cnt ~ span {
+  margin-left: 20px;
+  position: relative;
+}
+.add-cnt ~ span:before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 6px;
+  background-color: #d8d8d8;
+  position: absolute;
+  left: -10px;
+  top: 7px;
+}
+
+/* modal select card 플레이리스트 추가> 학습카드선택 */
+.table_card .ui.table {
+  border-color: #666;
+}
+.search_box.box2 .note_input {
+  margin: 0;
+  width: calc(100% - 15px);
+}
+
+/* share popup 플레이리스트 공유하기 */
+.ui.modal.pl-share .content {
+  padding: 0 !important;
+}
+
+.pl-share .inner {
+  display: flex;
+  flex-wrap: wrap;
+}
+.pl-share .inner .sh-left {
+  width: 50%;
+}
+.pl-share .inner .sh-right {
+  width: 50%;
+}
+.pl-share .inner .sh-bottom {
+  width: 100%;
+  padding: 25px 30px 30px;
+  border-top: 1px solid #ddd;
+}
+
+.pl-share .sh-header {
+  padding: 14px 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+.pl-share .h-left {
+  color: #666;
+  font-size: 0.875rem;
+  vertical-align: top;
+  line-height: 27px;
+}
+.sh-right .sh-list-contents {
+  padding: 0 30px;
+  height: 455px;
+  overflow-y: auto;
+  border-left: 1px solid #ddd;
+}
+
+/* share popup - bottom */
+.sh-bottom .sh-tit {
+  margin-bottom: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.46px;
+}
+.sh-bottom .ui.input.right-top-count {
+  width: 100%;
+}
+.sh-bottom .ui.input.right-top-count .count {
+  top: -33px;
+}
+.sh-bottom .ui.input.error {
+  margin-bottom: 30px;
+}
+.sh-bottom .ui.input.error input {
+  color: #222;
+}
+.sh-bottom .ui.input.error .validation {
+  margin: 10px 0 0 0;
+}
+
+/* share popup - left */
+.sh-left .ui.pointing.secondary.menu {
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  justify-content: space-around;
+}
+.sh-left .ui.pointing.secondary.menu .item {
+  padding: 17px 0;
+  color: #4c4c4c;
+  font-size: 0.875rem;
+  line-height: 1.43;
+}
+.sh-left .ui.pointing.secondary.menu .active.item {
+  border-color: #00bfae;
+  border-width: 3px;
+}
+.sh-left .ui.tab.left-inner {
+  margin: 0;
+  padding: 0 30px;
+  width: 100%;
+  height: 455px;
+  overflow-y: auto;
+  border: 0;
+}
+.sh-left .sh-left-top {
+  padding: 20px 0;
+}
+.sh-left-top .ui.h38.search.input {
+  width: 100%;
+}
+.sh-left-top .ui.h38.search.input input {
+  border-radius: 18px;
+  border-color: #f6f6f6 !important;
+  background-color: #f6f6f6 !important;
+}
+.sh-left-slct .sh-sl-top {
+  padding: 10px 0 20px;
+  border-bottom: 1px solid #ddd;
+}
+.sh-sl-top .ui.checkbox label {
+  color: #666;
+  font-weight: 600;
+}
+.sh-sl-top .ui.checkbox.checked label {
+  color: #666;
+}
+.user-check {
+  float: left;
+  margin: 12px 20px 0 0;
+}
+
+/* 플레이리스트 내 user-list 공통 */
+.user-prf {
+  padding: 18px 0;
+  width: 100%;
+  position: relative;
+}
+.user-prf + .user-prf {
+  border-top: 1px solid #ddd;
+}
+.user-prf .ui.button.clear {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+.user-prf .prf-info {
+  margin-left: 10px;
+  display: inline-block;
+}
+.user-prf .ui.profile {
+  display: flex;
+  justify-content: flex-start;
+}
+.prf-info .info-top .prf-comp {
+  padding-left: 20px;
+  display: inline-block;
+  color: #999;
+  position: relative;
+}
+.prf-info .info-top .prf-comp::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 10px;
+  background-color: #d8d8d8;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
+.prf-info .prf-email {
+  display: inline-block;
+  margin-top: 6px;
+  color: #222;
+  font-size: 0.875rem;
+}
+
+/* nodata, 검색전 공통 */
+.ui.modal.pl-add .no-cont-wrap {
+  text-align: center;
+  margin-top: calc(50% - 141px);
+  transform: translateY(-50%);
+}
+.pl-pc-wrap .no-cont-wrap {
+  margin-top: calc(50% - 100px);
+  transform: translateY(-50%);
+  text-align: center;
+}
+.pl-share .no-cont-wrap {
+  text-align: center;
+  margin-top: 50%;
+  transform: translateY(-50%);
+}
+.pl-share .sh-left-top + .sh-left-bottom .no-cont-wrap {
+  margin-top: calc(50% - 78px);
+}
+.ui.modal.pl-add .no-cont-wrap .text {
+  padding-top: 10px;
+  white-space: pre;
+  font-size: 0.875rem;
+}
+.pl-pc-wrap .no-cont-wrap .text {
+  padding-top: 10px;
+  font-size: 0.875rem;
+}
+.pl-share .no-cont-wrap .text {
+  padding-top: 10px;
+  white-space: pre;
+  font-size: 0.875rem;
+}
+
+.pl-share .no-cont-wrap .text .s-word {
+  color: #00bfae;
+}
+.pl-share .no-cont-wrap .no-tit {
+  display: block;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* 프로필카드 profile-modal-new 내 playlist tab*/
+.ui.modal.profile-modal-new .contents-tab-menu {
+  border-bottom: 0;
+}
+.profile-modal-new .profile-info-area .follow-bttn-area .button {
+  border-radius: 18px;
+  width: 180px;
+}
+
+.pl-pc-wrap {
+  padding-right: 10px;
+  height: 458px;
+  overflow-y: auto;
+}
+.pl-pc-wrap .list-top {
+  color: #444;
+  font-size: 1rem;
+  letter-spacing: -0.69px;
+}
+.pl-mylist-acc.ui.accordion .mylist-acc-item {
+  margin: 20px 0 0 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+.ui.accordion.pl-mylist-acc .mylist-acc-item .title {
+  margin: 0;
+  padding: 20px 30px;
+  position: relative;
+}
+.mylist-acc-item .acc-cnt {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+.mylist-acc-item .acc-cnt .acc-updown {
+  margin: 0 !important;
+  padding: 0;
+  color: #444;
+  font-size: 0.875rem;
+  line-height: 18px;
+  letter-spacing: -0.6px;
+}
+.mylist-acc-item .acc-meta .ui.button + .ui.button {
+  margin-left: 20px;
+}
+.mylist-acc-item .acc-meta .ui.button + .ui.button::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 6px;
+  background-color: #d8d8d8;
+  position: absolute;
+  top: 5px;
+  left: -10px;
+}
+.ui.button.acc-updown .cnt {
+  color: #00bfae;
+}
+.ui.accordion .title.active .acc-updown .drop24-down {
+  transform: rotate(180deg);
+}
+
+.ui.accordion.pl-mylist-acc .mylist-acc-item .content.active {
+  border: 1px solid #eee;
+  padding: 0 30px;
+}
+.acc-card-list .item {
+  padding: 14px 0;
+}
+.acc-card-list .item + .item {
+  border-top: 1px solid #eee;
+}
+.acc-card-list .item .inner {
+  display: flex;
+  justify-content: space-between;
+}
+.acc-card-list .item .tit {
+  display: inline-block;
+  max-width: 430px;
+  color: #222;
+  font-size: 0.875rem;
+  letter-spacing: -0.4px;
+  vertical-align: top;
+}
+.acc-card-list .item-dt span {
+  display: inline-block;
+  color: #222;
+  font-size: 0.875rem;
+  text-align: right;
+  vertical-align: top;
+}
+.acc-card-list .item-dt span + span {
+  width: 90px;
+}
+
+/* 추천, 받아간 구성원들 pl-share-user */
+.ui.modal.pl-share-user .content .inner {
+  padding: 22px;
+}
