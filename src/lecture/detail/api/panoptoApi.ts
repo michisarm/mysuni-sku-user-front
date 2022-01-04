@@ -54,14 +54,14 @@ export function start(cubeId: string): Promise<string> {
   //
   const url = `${BASE_URL}/watchingVideos/start`;
   return axiosApi
-    .get(url, { params: cubeId, paramsSerializer })
+    .get(url, { params: cubeId })
     .then((response) => (response && response.data) || null);
 }
 
-export function stop(cubeId: string): Promise<string> {
+export function stop(): Promise<string> {
   //
   const url = `${BASE_URL}/watchingVideos/stop`;
   return axiosApi
-    .get(url, { params: cubeId, paramsSerializer })
+    .get(url)
     .then((response) => (response && response.data) || null);
 }
