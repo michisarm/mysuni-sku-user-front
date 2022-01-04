@@ -13,9 +13,9 @@ import { UserIdentities } from './models/UserIdentities';
 const BASE_URL = '/api/learning/playlists';
 
 export function registerPlaylist(
+  title: string,
   description: string,
-  expose: boolean,
-  title: string
+  expose: boolean
 ): Promise<string | undefined> {
   const axios = getAxios();
 
@@ -83,7 +83,7 @@ export function findPlaylistsMadeByMySelf(): Promise<
   MadeByMySelf[] | undefined
 > {
   const axios = getAxios();
-  const url = `${BASE_URL}/madeByMyself`;
+  const url = `${BASE_URL}/madeByMySelf`;
 
   return axios.get<MadeByMySelf[]>(url).then(AxiosReturn);
 }
