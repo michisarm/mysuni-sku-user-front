@@ -34,5 +34,5 @@ export async function getMultiVideoOverlap(
   // );
   // return rtn;
 
-  return viewState === 'start' ? start(usid) : stop(usid);
+  return viewState === 'start' ? start(usid) : stop();
 }
