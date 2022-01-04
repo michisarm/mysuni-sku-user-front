@@ -52,9 +52,9 @@ export function findByCubIds(cubeIds: string[]): Promise<PlayTimeModel[]> {
 
 export function start(cubeId: string): Promise<string> {
   //
-  const url = `${BASE_URL}/watchingVideos/start`;
+  const url = `${BASE_URL}/watchingVideos/start?cubeId=${cubeId}`;
   return axiosApi
-    .get(url, { params: cubeId })
+    .get(url)
     .then((response) => (response && response.data) || null);
 }
 
