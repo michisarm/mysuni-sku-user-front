@@ -14,6 +14,7 @@ import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { ParsingLearningType } from 'myTraining/model/filter/ParsingLearningType';
 import { CountByCardTypeModel } from 'myTraining/model/filter/CountByCardTypeModel';
 import { CountByCollegeIdModel } from 'myTraining/model/filter/CountByCollegeIdModel';
+import EnrolledCardModel from 'lecture/model/EnrolledCardModel';
 
 class LectureApi {
   //
@@ -190,6 +191,12 @@ class LectureApi {
       .get<CountByCollegeIdModel[]>(this.learningUrl + '/collegeAndCardCount', {
         params: { type, hasStamp, searchable, ignoreAccessRule },
       })
+      .then((response) => (response && response.data) || []);
+  }
+
+  findEnrolledList() {
+    return axiosApi
+      .get<EnrolledCardModel[]>(this.learningUrl + '/scheduledLearning')
       .then((response) => (response && response.data) || []);
   }
 }

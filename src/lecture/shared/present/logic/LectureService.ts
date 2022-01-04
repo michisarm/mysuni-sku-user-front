@@ -44,6 +44,7 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import { patronInfo } from '@nara.platform/dock';
+import EnrolledCardModel from 'lecture/model/EnrolledCardModel';
 
 @autobind
 class LectureService {
@@ -69,6 +70,12 @@ class LectureService {
 
   @observable
   totalLectureCount: number = 0;
+
+  @observable
+  enrolledCount: number = 0;
+
+  @observable
+  enrolledList: EnrolledCardModel[] = [];
 
   // @observable
   // _recommendLectures: RecommendLectureRdo[] = [];
@@ -354,6 +361,15 @@ class LectureService {
   clearCollegeLectures() {
     //
     return runInAction(() => (this._userLectureCards = []));
+  }
+
+  @action
+  clearEnrolledList() {
+    //
+    runInAction(() => {
+      this.enrolledList = [];
+      this.enrolledCount = 0;
+    });
   }
 
   @action
@@ -980,8 +996,40 @@ class LectureService {
   }
 
   @action
+  sortEnrolledCards(column: string, direction: Direction) {
+    //
+    const propKey = convertToKeyInMyLearningTable(column);
+
+    if (direction === Direction.ASC) {
+      this.enrolledList = this.enrolledList.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this.enrolledList = this.enrolledList.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @action
   clearAllTabCount() {
     this.requiredLecturesCount = 0;
+  }
+
+  @action
+  async findEnrolledList() {
+    //
+    const result = await this.lectureApi.findEnrolledList();
+
+    runInAction(() => {
+      result &&
+        result.map((card) => {
+          this.enrolledList.push(new EnrolledCardModel(card));
+        });
+      this.enrolledCount = (result && result.length) || 0;
+    });
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
@@ -1025,6 +1073,8 @@ export const convertToKeyInMyLearningTable = (column: string): any => {
       return 'stampCount';
     case '획득일자':
       return 'passedTime';
+    case '학습예정일':
+      return 'longLearningStartDate';
     default:
       return '';
   }
