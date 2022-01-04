@@ -11,6 +11,7 @@ export interface Cube {
   };
   name: PolyglotString;
   type: CubeType;
+  subType: string;
   enabled: boolean;
   categories: CardCategory[];
   learningTime: number;

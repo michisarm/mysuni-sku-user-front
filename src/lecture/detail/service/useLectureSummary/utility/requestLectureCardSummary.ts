@@ -8,7 +8,6 @@ import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureCardSummary,
-  setLectureCubes,
 } from '../../../store/LectureOverviewStore';
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import { getClassroomFromCube } from '../../useLectureClassroom/utility/getClassroomFromCube';
@@ -18,9 +17,11 @@ import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudent
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { UserIdentity } from 'shared/model/UserIdentity';
 import { getDefaultLang } from 'lecture/model/LangSupport';
+import moment from 'moment';
 
 function getVaildLeaningDate(
   validLearningDate: number,
+  validEndDate: number,
   cardRelatedStudent?: MyCardRelatedStudentsRom
 ) {
   if (
@@ -32,15 +33,14 @@ function getVaildLeaningDate(
     const parseCreateDate = new Date(registeredTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
-    const year = parseCreateDate.getFullYear();
-    const month = parseCreateDate.getMonth() + 1;
-    const day = parseCreateDate.getDate();
-
-    const result = `${year}.${month}.${day}`;
-
-    return result;
+    // const year = parseCreateDate.getFullYear();
+    // const month = parseCreateDate.getMonth() + 1;
+    // const day = parseCreateDate.getDate();
+    //
+    // const result = `${year}.${month}.${day}`;
+    return Math.min(parseCreateDate.getTime(), validEndDate);
   } else {
-    return '';
+    return 0;
   }
 }
 
@@ -91,10 +91,21 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
-    validLearningDate: getVaildLeaningDate(
-      validLearningDate,
-      cardRelatedStudent
-    ),
+    validLearningDate:
+      getVaildLeaningDate(
+        validLearningDate,
+        moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+        cardRelatedStudent
+      ) || moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+    learningStartDate: moment(cardContents.learningPeriod.startDate)
+      .startOf('day')
+      .valueOf(),
+    learningEndDate: moment(cardContents.learningPeriod.endDate)
+      .endOf('day')
+      .valueOf(),
+    restrictLearningPeriod: cardContents.restrictLearningPeriod,
+    complete: cardRelatedStudent!.cardStudent?.complete || false,
+    learningState: cardRelatedStudent?.cardStudent?.learningState || '',
   };
 }
 
@@ -132,7 +143,6 @@ export async function requestLectureCardSummary(cardId: string) {
   }
   const cubes = await findCubesByIdsCache(cubeIds);
 
-  setLectureCubes(cubes);
   if (
     Array.isArray(cubes) &&
     cubes.some((c) => c.type === 'ClassRoomLecture' || c.type === 'ELearning')

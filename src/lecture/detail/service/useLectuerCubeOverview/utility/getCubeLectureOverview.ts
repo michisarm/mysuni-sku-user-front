@@ -34,6 +34,7 @@ import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcat
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
 import { Instructor } from 'expert/model/Instructor';
+import { SkProfileService } from '../../../../../profile/stores';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -76,6 +77,7 @@ async function getLectureSummary(
     studentCount,
     cubeType: type,
     cubeId: id,
+    hasPinRole: SkProfileService.instance.skProfile.id === operator?.id,
   };
 }
 

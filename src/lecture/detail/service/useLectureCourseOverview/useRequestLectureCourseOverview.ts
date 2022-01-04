@@ -1,9 +1,8 @@
 /* eslint-disable consistent-return */
 
-import { useCallback, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
-  setInMyLectureCdo,
   setLectureComment,
   setLectureCardSummary,
   setLectureDescription,
@@ -11,7 +10,6 @@ import {
   setLectureInstructor,
   setLecturePrecourse,
   setLectureRelations,
-  setLectureReview,
   setLectureSubcategory,
   setLectureTags,
   setLectureCourseSatisfaction,
@@ -30,7 +28,10 @@ import { requestLectureCardSubcategory } from '../useLectureSubcategory/utility/
 import { requestLectureCardSummary } from '../useLectureSummary/utility/requestLectureCardSummary';
 import { requestLectureCardTags } from '../useLectureTags/utility/requestLectureCardTags';
 import { requestLectureSurvey } from '../useLectureSurvey/utility/getLectureSurvey';
-import { setLectureSurvey } from 'lecture/detail/store/LectureSurveyStore';
+import {
+  setLectureSurvey,
+  setLectureSurveyAnswerSheet,
+} from 'lecture/detail/store/LectureSurveyStore';
 
 export function useRequestLectureCardOverview() {
   const { cardId } = useParams<LectureParams>();
@@ -45,7 +46,6 @@ export function useRequestLectureCardOverview() {
         requestLectureCardPrecourse(cardId);
         requestLectureCardRelations(cardId);
         requestLectureCardSubcategory(cardId);
-        //requestLectureCardReview(cardId);
         requestLectureCardSummary(cardId);
         requestLectureCardTags(cardId);
         requestLectureSurvey();
@@ -61,13 +61,13 @@ export function useRequestLectureCardOverview() {
       setLectureInstructor();
       setLecturePrecourse();
       setLectureRelations();
-      // setLectureReview();
       setLectureSubcategory();
       setLectureCardSummary();
       setLectureTags();
       setLectureSurvey();
       setLectureCourseSatisfaction();
       setLectureCourseFeedbackReview();
+      setLectureSurveyAnswerSheet();
     };
   }, [cardId]);
 }

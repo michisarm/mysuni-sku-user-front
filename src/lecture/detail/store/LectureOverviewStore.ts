@@ -66,13 +66,10 @@ const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] =
 const [setLectureRelations, onLectureRelations, getLectureRelations] =
   createStore<LectureRelations>();
 
-const [setLectureCubes, onLectureCubes, getLectureCubes, useLectureCubes] =
-  createStore<Cube[]>();
-
 const [
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   useLectureCoureSatisfaction,
 ] = createStore<SurveySatisfaction>();
 
@@ -86,7 +83,7 @@ const initLectureCourseSatisfaction = (): SurveySatisfaction => {
     totalCount: 0,
     average: 0,
     surveyCaseId: '',
-    isDoneSurvey: false,
+    isDoneSurvey: true,
   };
 };
 
@@ -142,13 +139,9 @@ export {
   setLectureCardSummaryLearningState,
   onLectureCardSummaryLearningState,
   getLectureCardSummaryLearningState,
-  setLectureCubes,
-  onLectureCubes,
-  getLectureCubes,
-  useLectureCubes,
   setLectureCourseSatisfaction,
   onLectureCourseSatisfaction,
-  getLectureCoureSatisfaction,
+  getLectureCourseSatisfaction,
   setLectureCourseFeedbackReview,
   onLectureCourseFeedbackReview,
   getLectureCoureSFeedbackReview,

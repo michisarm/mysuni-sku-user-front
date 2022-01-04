@@ -1142,9 +1142,6 @@ i.icon.face1::after {
 .card-item .txticon-wrap.bottom .ui.label .fb-tt span + span {
   padding-left: 3px;
 }
-.card-item .txticon-wrap.bottom .ui.label span {
-  color: #4c4c4c;
-}
 .card-item .txticon-wrap .f-right {
   position: relative;
 }

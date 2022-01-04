@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { CheckboxProps, Image } from 'semantic-ui-react';
+import { CheckboxProps, Icon } from 'semantic-ui-react';
 import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
@@ -87,22 +87,12 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> =
             (lectureSurveyAnswerItem === undefined ||
               lectureSurveyAnswerItem.matrixItem?.length !==
                 lectureSurveyItem.rows?.length) && (
-              <div style={{ marginTop: '10px' }}>
-                <Image
-                  style={{ display: 'inline-block', marginRight: '5px' }}
-                  src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
-                />
-                <span
-                  style={{
-                    color: '#e1002a',
-                    fontSize: '14px',
-                    lineHeight: '16px',
-                    verticalAlign: 'text-bottom',
-                  }}
-                >
+              <div className="rev-noti">
+                <Icon className="error16" />
+                <span>
                   <PolyglotText
                     defaultString="해당 문항은 필수 항목 입니다."
-                    id="survey-필수항목-alert6"
+                    id="survey-필수항목-alert2"
                   />
                 </span>
               </div>
