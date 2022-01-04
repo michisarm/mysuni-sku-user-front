@@ -203,9 +203,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
-    const validLearningStartDate = moment(
-      lectureStructure.card.student?.registeredTime
-    ).format('YYYY-MM-DD');
+    const validLearningStartDate = lectureStructure.card.student?.registeredTime
+      ? moment(lectureStructure.card.student?.registeredTime).format(
+          'YYYY-MM-DD'
+        )
+      : moment(lectureSummary.learningStartDate).format('YYYY-MM-DD');
     // const validLearningEndDate = moment(
     //   lectureSummary.restrictLearningPeriod
     //     ? Math.min(
@@ -250,8 +252,9 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
         !(lectureSummary.learningState === LearningState.Passed)
       ) {
         if (
+          moment().valueOf() < moment(validLearningStartDate).valueOf() ||
           moment().valueOf() >
-          moment(lectureSummary.validLearningDate).valueOf()
+            moment(lectureSummary.validLearningDate).valueOf()
         ) {
           setAlertOpen(true);
           reactAlert({
