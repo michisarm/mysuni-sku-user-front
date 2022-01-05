@@ -2,7 +2,7 @@ import { createStore } from 'restoa';
 import { MadeByMySelf } from '../data/models/MadeByMySelf';
 import dayjs from 'dayjs';
 
-export interface AddPlaylist {
+export interface MyPlaylist {
   checked: boolean;
   playlistId: string;
   title: string;
@@ -11,12 +11,13 @@ export interface AddPlaylist {
   expose: boolean;
 }
 
-export function madeByMySelfToAddPlaylist(
-  madeByMySelfPlaylist: MadeByMySelf[]
-): AddPlaylist[] {
-  const addPoppUpPlaylist = madeByMySelfPlaylist.map((playlist) => {
+export function madeByMySelfToMyPlaylist(
+  madeByMySelfPlaylist: MadeByMySelf[],
+  checkedPlaylistIds: string[] = []
+): MyPlaylist[] {
+  const myPlaylist = madeByMySelfPlaylist.map((playlist) => {
     return {
-      checked: false,
+      checked: checkedPlaylistIds.includes(playlist.id),
       playlistId: playlist.id,
       title: playlist.title,
       learningCardCount: playlist.cardIds?.length || 0,
@@ -25,11 +26,11 @@ export function madeByMySelfToAddPlaylist(
     };
   });
 
-  return addPoppUpPlaylist;
+  return myPlaylist;
 }
 
-export const [useAddPlaylist, setAddPlaylist, getAddPlaylist] = createStore<
-  AddPlaylist[] | undefined
+export const [useMyPlaylist, setMyPlaylist, getMyPlaylist] = createStore<
+  MyPlaylist[] | undefined
 >(undefined);
 
 export const [usePlaylistName, setPlaylistName, getPlaylistName] =

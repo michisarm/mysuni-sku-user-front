@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Modal, ModalActions } from 'semantic-ui-react';
 import {
   onAddLearningCard,
@@ -9,21 +9,22 @@ import {
 } from './playlistAddPopUpView.events';
 import { useRequestPlaylistAddPopUpView } from './playlistAddPopUpView.request';
 import {
-  useAddPlaylist,
+  useMyPlaylist,
   usePlaylistName,
   useIsOpenPlayListAddPopUp,
   setPlaylistName,
-  AddPlaylist,
+  MyPlaylist,
 } from './playlistAddPopUpView.store';
 
 interface AddPlaylistBottomViewProps {
-  addPlaylist: AddPlaylist[] | undefined;
+  myPlaylist: MyPlaylist[] | undefined;
 }
 
+// 학습카드 추가 플레이리스트 팝업 하단 부분
 function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
-  const { addPlaylist } = props;
+  const { myPlaylist } = props;
 
-  if (addPlaylist === undefined) {
+  if (myPlaylist === undefined) {
     return (
       <div className="no-cont-wrap">
         <Icon className="no-contents80" />
@@ -37,10 +38,10 @@ function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
     <>
       <div className="add-list-top">
         <span>나의 Playlist </span>
-        <strong>{addPlaylist.length}개</strong>
+        <strong>{myPlaylist.length}개</strong>
       </div>
       <div className="add-list">
-        {addPlaylist.map((playlist) => (
+        {myPlaylist.map((playlist) => (
           <div className="add-item" id={playlist.playlistId}>
             <div className="inner">
               <div className="add-left">
@@ -72,7 +73,7 @@ function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
 }
 
 export function PlaylistAddPopUpView() {
-  const addPlaylist = useAddPlaylist();
+  const myPlaylist = useMyPlaylist();
   const playlistName = usePlaylistName();
   const isOpen = useIsOpenPlayListAddPopUp();
   const [isShowAddPlaylistInput, setIsShowAddPlaylistInput] = useState(false);
@@ -87,6 +88,15 @@ export function PlaylistAddPopUpView() {
       setIsShowAddPlaylistInput(true);
     }
   }, [isShowAddPlaylistInput]);
+
+  const handleAddPlaylistButton = useCallback(() => {
+    onClickAddPlaylist().then((result) => {
+      if (result) {
+        setIsShowAddPlaylistInput(false);
+        setPlaylistName('');
+      }
+    });
+  }, []);
 
   return (
     <Modal className="base w600 pl-add" open={isOpen}>
@@ -119,7 +129,7 @@ export function PlaylistAddPopUpView() {
                   최대 30자까지 입력 가능합니다.
                 </span>
               </div>
-              <Button className="bl" onClick={onClickAddPlaylist}>
+              <Button className="bl" onClick={handleAddPlaylistButton}>
                 만들기
               </Button>
               <Button className="cl" onClick={onClickIsShowAddPlaylistInput}>
@@ -128,7 +138,7 @@ export function PlaylistAddPopUpView() {
             </div>
           </div>
           <div className="add-bottom">
-            <AddPlaylistBottomView addPlaylist={addPlaylist} />
+            <AddPlaylistBottomView myPlaylist={myPlaylist} />
           </div>
         </div>
       </Modal.Content>

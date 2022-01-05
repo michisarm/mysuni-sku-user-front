@@ -6,9 +6,9 @@ import {
   requestRegisterPlaylist,
 } from './playlistAddPopUpView.request';
 import {
-  getAddPlaylist,
+  getMyPlaylist,
   getPlaylistName,
-  setAddPlaylist,
+  setMyPlaylist,
   setIsOpenPlayListAddPopUp,
   setPlaylistName,
 } from './playlistAddPopUpView.store';
@@ -39,18 +39,28 @@ export async function onClickAddPlaylist() {
       // ),
       message: 'Playlist 명을 입력해주세요.',
     });
+    return false;
   }
 
-  requestRegisterPlaylist(playlistName);
+  if (playlistName.length > 30) {
+    return false;
+  }
+
+  try {
+    requestRegisterPlaylist(playlistName);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // 플레이리스트 목록 체크
 export function onIsCheckPlaylist(_: React.FormEvent, data: CheckboxProps) {
   const playlistId = data.value;
-  const addPlaylist = getAddPlaylist();
+  const myPlaylist = getMyPlaylist();
 
-  if (playlistId !== undefined && addPlaylist !== undefined) {
-    const convertAddPlaylist = addPlaylist.map((playlist) => {
+  if (playlistId !== undefined && myPlaylist !== undefined) {
+    const convertAddPlaylist = myPlaylist.map((playlist) => {
       if (playlist.playlistId === playlistId) {
         return {
           ...playlist,
@@ -60,18 +70,18 @@ export function onIsCheckPlaylist(_: React.FormEvent, data: CheckboxProps) {
       return playlist;
     });
 
-    setAddPlaylist(convertAddPlaylist);
+    setMyPlaylist(convertAddPlaylist);
   }
 }
 
 // 플레이리스트에 학습카드 추가
 export function onAddLearningCard() {
-  const addPlaylist = getAddPlaylist();
+  const myPlaylist = getMyPlaylist();
   const cardSummary = getLectureCardSummary();
 
-  if (addPlaylist !== undefined && cardSummary !== undefined) {
+  if (myPlaylist !== undefined && cardSummary !== undefined) {
     const cardIds = [cardSummary.cardId];
-    const checkedPlaylistIds = addPlaylist
+    const checkedPlaylistIds = myPlaylist
       .filter((playlist) => playlist.checked)
       .map((playlist) => playlist.playlistId);
 
