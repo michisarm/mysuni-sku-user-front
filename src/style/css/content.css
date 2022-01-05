@@ -2141,3 +2141,4 @@ i.icon.testHeader02::before {
 
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
 .ui.segment.full .contents.comment { min-height: 20rem; }
+.qna-admin .qna-navi .wait{color :#aaa}
