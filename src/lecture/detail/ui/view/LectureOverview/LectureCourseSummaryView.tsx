@@ -203,11 +203,18 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
-    const validLearningStartDate = lectureStructure.card.student?.registeredTime
-      ? moment(lectureStructure.card.student?.registeredTime).format(
-          'YYYY-MM-DD'
-        )
-      : moment(lectureSummary.learningStartDate).format('YYYY-MM-DD');
+    // const validLearningStartDate = lectureStructure.card.student?.registeredTime
+    //   ? moment(lectureStructure.card.student?.registeredTime).format(
+    //       'YYYY-MM-DD'
+    //     )
+    //   : moment(lectureSummary.learningStartDate).format('YYYY-MM-DD');
+    //
+    const validLearningStartDate = moment(
+      Math.max(
+        lectureStructure.card.student?.registeredTime || 0,
+        lectureSummary.learningStartDate
+      )
+    ).format('YYYY-MM-DD');
     // const validLearningEndDate = moment(
     //   lectureSummary.restrictLearningPeriod
     //     ? Math.min(
