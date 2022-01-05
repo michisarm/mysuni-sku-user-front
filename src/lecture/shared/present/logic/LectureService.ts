@@ -241,7 +241,7 @@ class LectureService {
     );
 
     const cardNotes =
-      (await this.myTrainingApi.findCardNoteList(
+      (await this.lectureApi.findCardNoteList(
         findReulst.results.map((card) => card.id)
       )) || [];
 
@@ -249,7 +249,7 @@ class LectureService {
       //
       const myLectureCard = card;
       myLectureCard.useNote = cardNotes.some(
-        (note: any) => note.cardId === card.id
+        (note: string) => note === card.id
       );
       return myLectureCard;
     });
@@ -1023,9 +1023,20 @@ class LectureService {
     //
     const result = await this.lectureApi.findEnrolledList();
 
+    const cardIds = (await result.map((card) => card.cardId)) || [];
+
+    const usingNoteList = await this.lectureApi.findCardNoteList(cardIds);
+
     runInAction(() => {
       result &&
         result.map((card) => {
+          card.useNote =
+            (usingNoteList &&
+              usingNoteList.length > 0 &&
+              usingNoteList.some(
+                (noteCard: string) => noteCard === card.cardId
+              )) ||
+            false;
           this.enrolledList.push(new EnrolledCardModel(card));
         });
       this.enrolledCount = (result && result.length) || 0;

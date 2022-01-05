@@ -199,6 +199,15 @@ class LectureApi {
       .get<EnrolledCardModel[]>(this.learningUrl + '/scheduledLearning')
       .then((response) => (response && response.data) || []);
   }
+
+  findCardNoteList(cardIds: string[]) {
+    return axiosApi
+      .post<string[]>(`/api/learning/notes/noteExistenceCardIds`, {
+        cardIds,
+      })
+      .then((response) => response.data || null)
+      .catch((error) => error && null);
+  }
 }
 
 LectureApi.instance = new LectureApi();
