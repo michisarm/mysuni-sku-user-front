@@ -954,6 +954,9 @@ i.icon.icon_emoji_8 {
 .essential-wrap {
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
 }
+.essential-wrap .essential-card p img {
+  max-width:100%;
+}
 
 /* 마이러닝 > 학습이수시간 팝업 */
 .ui.radio.rect-icon label::before {
