@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Modal, ModalActions } from 'semantic-ui-react';
 import {
   onAddLearningCard,
@@ -14,14 +14,14 @@ import {
 } from './playlistAddPopUpView.store';
 
 interface AddPlaylistBottomViewProps {
-  myPlaylist: MyPlaylist[] | undefined;
+  myPlaylist: MyPlaylist[];
 }
 
 // 학습카드 추가 플레이리스트 팝업 하단 부분
 function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
   const { myPlaylist } = props;
 
-  if (myPlaylist === undefined) {
+  if (myPlaylist.length === 0) {
     return (
       <div className="no-cont-wrap">
         <Icon className="no-contents80" />
@@ -101,6 +101,13 @@ export function PlaylistAddPopUpView() {
       }
     });
   }, [playlistName]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsShowAddPlaylistInput(false);
+      setPlaylistName('');
+    }
+  }, [isOpen]);
 
   return (
     <Modal className="base w600 pl-add" open={isOpen}>

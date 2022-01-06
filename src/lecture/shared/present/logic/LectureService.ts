@@ -44,6 +44,11 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import { patronInfo } from '@nara.platform/dock';
+import {
+  getAddLearningCardIds,
+  setAddLearningCardIds,
+} from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
+import { CheckboxProps } from 'semantic-ui-react';
 
 @autobind
 class LectureService {
@@ -982,6 +987,39 @@ class LectureService {
   @action
   clearAllTabCount() {
     this.requiredLecturesCount = 0;
+  }
+
+  // 찜한 과정 체크박스 이벤트 
+  @action
+  onAllCheckedCard() {
+    const checkedCardIds = getAddLearningCardIds();
+    const isAllChecked = checkedCardIds.length === this._myLearningCards.length;
+
+    if (isAllChecked) {
+      setAddLearningCardIds([]);
+    } else {
+      const allCardIds = this._myLearningCards.map((card) => card.id);
+      setAddLearningCardIds(allCardIds);
+    }
+  }
+
+  // 찜한 과정 체크박스 이벤트 
+  @action
+  onCheckedCard(_: React.MouseEvent, data: CheckboxProps) {
+    const checkedCardIds = getAddLearningCardIds();
+
+    const cardId = data.value as string;
+    const isChecked = checkedCardIds.includes(cardId);
+
+    if (isChecked) {
+      const filteredCardIds = checkedCardIds.filter(
+        (checkedCardId) => checkedCardId !== cardId
+      );
+      setAddLearningCardIds(filteredCardIds);
+    } else {
+      const addedCardIds = [...checkedCardIds, cardId];
+      setAddLearningCardIds(addedCardIds);
+    }
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////

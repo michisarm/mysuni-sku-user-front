@@ -30,11 +30,17 @@ export function madeByMySelfToMyPlaylist(
 }
 
 export const [useMyPlaylist, setMyPlaylist, getMyPlaylist] = createStore<
-  MyPlaylist[] | undefined
->(undefined);
+  MyPlaylist[]
+>([]);
 
 export const [
   useIsOpenPlayListAddPopUp,
   setIsOpenPlayListAddPopUp,
   getIsOpenPlayListAddPopUp,
 ] = createStore<boolean>(false);
+
+export const [
+  useAddLearningCardIds,
+  setAddLearningCardIds,
+  getAddLearningCardIds,
+] = createStore<string[]>([]);
