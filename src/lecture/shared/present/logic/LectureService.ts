@@ -368,7 +368,6 @@ class LectureService {
     //
     runInAction(() => {
       this.enrolledList = [];
-      this.enrolledCount = 0;
     });
   }
 
@@ -749,6 +748,8 @@ class LectureService {
       this.completedCount = (countModel && countModel.completedCount) || 0;
 
       this.retryCount = (countModel && countModel.retryCount) || 0;
+
+      this.enrolledCount = (countModel && countModel.enrolledCount) || 0;
     });
   }
 
@@ -1039,8 +1040,9 @@ class LectureService {
             false;
           this.enrolledList.push(new EnrolledCardModel(card));
         });
-      this.enrolledCount = (result && result.length) || 0;
     });
+
+    result.length !== this.enrolledCount && this.countLearningTab();
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////

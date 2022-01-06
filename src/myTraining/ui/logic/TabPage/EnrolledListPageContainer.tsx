@@ -58,36 +58,25 @@ function EnrolledListPageContainer({
     // myTrainingService!.initFilterRdo(contentType);
 
     clearEnrolledList();
-    if (params.pageNo === '1') {
-      requestMyTrainings();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset: 0, limit });
-
-    return () => {};
+    requestMyTrainings();
   }, [contentType]);
 
   const requestMyTrainings = async () => {
     setIsLoading(true);
-    if (contentType === MyLearningContentType.Enrolled) {
-      // await myTrainingService!.findEnrollTableViews();
-      await lectureService!.findEnrolledList();
-      setIsLoading(false);
-    }
-  };
-
-  const requestmyTrainingsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    // await myTrainingService!.findAllTableViewsWithPage(offset);
+    // await myTrainingService!.findEnrollTableViews();
     await lectureService!.findEnrolledList();
-    // checkShowSeeMore();
     setIsLoading(false);
     scrollOnceMove();
   };
+
+  // const requestmyTrainingsWithPage = async (offset: Offset) => {
+  //   setIsLoading(true);
+  //   // await myTrainingService!.findAllTableViewsWithPage(offset);
+  //   await lectureService!.findEnrolledList();
+  //   // checkShowSeeMore();
+  //   setIsLoading(false);
+  //   scrollOnceMove();
+  // };
 
   // ------------------------------------------------- header -------------------------------------------------
 
