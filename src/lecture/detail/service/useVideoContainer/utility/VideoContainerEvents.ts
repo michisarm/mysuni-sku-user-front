@@ -41,7 +41,7 @@ export async function callRegisterWatchLog(
   // });
   const playTimeSdo: PlayTimeSdo = {
     cubeId,
-    duration: 0, // TODO: learningTime? panopto.duration?
+    duration: panoptoEmbedPlayerState.duration || 0,
     start,
     end,
   };
