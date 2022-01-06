@@ -7,10 +7,8 @@ import {
 } from './playlistAddPopUpView.request';
 import {
   getMyPlaylist,
-  getPlaylistName,
   setMyPlaylist,
   setIsOpenPlayListAddPopUp,
-  setPlaylistName,
 } from './playlistAddPopUpView.store';
 
 export function onOpenPlaylistAddPopUpView() {
@@ -22,15 +20,8 @@ export function onClosePlaylistAddPopUpView() {
   setMyPlaylist(undefined);
 }
 
-// 새로운 플레이리스트 생성시 이름값 스토어에 저장
-export function onChangePlaylistName(e: React.ChangeEvent<HTMLInputElement>) {
-  setPlaylistName(e.target.value);
-}
-
 // 플레이리스트 만들기
-export async function onClickAddPlaylist() {
-  const playlistName = getPlaylistName();
-
+export async function onClickAddPlaylist(playlistName: string) {
   if (playlistName === '') {
     reactAlert({
       title: 'Playlist 추가하기',

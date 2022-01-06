@@ -32,7 +32,7 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
 
   const { title, description, expose } = playlistInput;
 
-  useRequestPlaylistDetail();
+  useRequestPlaylistDetail(type);
 
   const onSubmitPlaylist = useCallback(() => {
     if (type === 'CREATE') {
@@ -42,6 +42,7 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
       onEditPlaylistInput();
     }
   }, [type]);
+
   return (
     <Modal open={isOpen} className="base w600 pl-create">
       <Modal.Header className="res xfl">

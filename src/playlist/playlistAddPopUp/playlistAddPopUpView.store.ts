@@ -33,9 +33,6 @@ export const [useMyPlaylist, setMyPlaylist, getMyPlaylist] = createStore<
   MyPlaylist[] | undefined
 >(undefined);
 
-export const [usePlaylistName, setPlaylistName, getPlaylistName] =
-  createStore<string>('');
-
 export const [
   useIsOpenPlayListAddPopUp,
   setIsOpenPlayListAddPopUp,

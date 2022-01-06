@@ -44,8 +44,10 @@ export async function requsetPlaylistDetail() {
   }
 }
 
-export function useRequestPlaylistDetail() {
+export function useRequestPlaylistDetail(type: 'CREATE' | 'EDIT') {
   useEffect(() => {
-    requsetPlaylistDetail();
-  }, []);
+    if (type === 'EDIT') {
+      requsetPlaylistDetail();
+    }
+  }, [type]);
 }

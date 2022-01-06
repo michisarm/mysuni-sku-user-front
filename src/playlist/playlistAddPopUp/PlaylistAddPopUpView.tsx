@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Checkbox, Icon, Modal, ModalActions } from 'semantic-ui-react';
 import {
   onAddLearningCard,
-  onChangePlaylistName,
   onClickAddPlaylist,
   onClosePlaylistAddPopUpView,
   onIsCheckPlaylist,
@@ -10,9 +9,7 @@ import {
 import { useRequestPlaylistAddPopUpView } from './playlistAddPopUpView.request';
 import {
   useMyPlaylist,
-  usePlaylistName,
   useIsOpenPlayListAddPopUp,
-  setPlaylistName,
   MyPlaylist,
 } from './playlistAddPopUpView.store';
 
@@ -74,11 +71,18 @@ function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
 
 export function PlaylistAddPopUpView() {
   const myPlaylist = useMyPlaylist();
-  const playlistName = usePlaylistName();
   const isOpen = useIsOpenPlayListAddPopUp();
   const [isShowAddPlaylistInput, setIsShowAddPlaylistInput] = useState(false);
+  const [playlistName, setPlaylistName] = useState('');
 
   useRequestPlaylistAddPopUpView();
+
+  const onChangePlaylistName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPlaylistName(e.target.value);
+    },
+    []
+  );
 
   const onClickIsShowAddPlaylistInput = useCallback(() => {
     if (isShowAddPlaylistInput) {
@@ -90,13 +94,13 @@ export function PlaylistAddPopUpView() {
   }, [isShowAddPlaylistInput]);
 
   const handleAddPlaylistButton = useCallback(() => {
-    onClickAddPlaylist().then((result) => {
+    onClickAddPlaylist(playlistName).then((result) => {
       if (result) {
         setIsShowAddPlaylistInput(false);
         setPlaylistName('');
       }
     });
-  }, []);
+  }, [playlistName]);
 
   return (
     <Modal className="base w600 pl-add" open={isOpen}>
