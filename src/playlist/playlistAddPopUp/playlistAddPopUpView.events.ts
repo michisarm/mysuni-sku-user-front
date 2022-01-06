@@ -1,5 +1,4 @@
 import { reactAlert } from '@nara.platform/accent';
-import { getLectureCardSummary } from 'lecture/detail/store/LectureOverviewStore';
 import { CheckboxProps } from 'semantic-ui-react';
 import {
   requestAddCardsToPlaylist,
@@ -9,6 +8,7 @@ import {
   getMyPlaylist,
   setMyPlaylist,
   setIsOpenPlayListAddPopUp,
+  getAddLearningCardIds,
 } from './playlistAddPopUpView.store';
 
 export function onOpenPlaylistAddPopUpView() {
@@ -17,7 +17,6 @@ export function onOpenPlaylistAddPopUpView() {
 
 export function onClosePlaylistAddPopUpView() {
   setIsOpenPlayListAddPopUp(false);
-  setMyPlaylist(undefined);
 }
 
 // 플레이리스트 만들기
@@ -69,22 +68,36 @@ export function onIsCheckPlaylist(_: React.FormEvent, data: CheckboxProps) {
 // 플레이리스트에 학습카드 추가
 export function onAddLearningCard() {
   const myPlaylist = getMyPlaylist();
-  const cardSummary = getLectureCardSummary();
+  const cardIds = getAddLearningCardIds();
 
-  if (myPlaylist !== undefined && cardSummary !== undefined) {
-    const cardIds = [cardSummary.cardId];
-    const checkedPlaylistIds = myPlaylist
-      .filter((playlist) => playlist.checked)
-      .map((playlist) => playlist.playlistId);
-
-    if (checkedPlaylistIds.length === 0) {
-      reactAlert({
-        title: 'Playlist 추가하기',
-        message: 'Playlist에 추가할 학습카드를 선택해주세요.',
-      });
-      return;
-    }
-
-    requestAddCardsToPlaylist(cardIds, checkedPlaylistIds);
+  if (myPlaylist.length === 0) {
+    reactAlert({
+      title: 'Playlist 추가하기',
+      message:
+        '생성된 Playlist가 없습니다. \n 구성원들과 함께 학습할 Playlist를 만들어보세요!',
+    });
+    return;
   }
+
+  const checkedPlaylistIds = myPlaylist
+    .filter((playlist) => playlist.checked)
+    .map((playlist) => playlist.playlistId);
+
+  if (checkedPlaylistIds.length === 0) {
+    reactAlert({
+      title: 'Playlist 추가하기',
+      message: 'Playlist를 선택해주세요.',
+    });
+    return;
+  }
+
+  if (cardIds.length === 0) {
+    reactAlert({
+      title: 'Playlist 추가하기',
+      message: 'Playlist에 추가할 학습카드를 선택해주세요.',
+    });
+    return;
+  }
+
+  requestAddCardsToPlaylist(cardIds, checkedPlaylistIds);
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Modal, ModalActions } from 'semantic-ui-react';
 import {
   onAddLearningCard,
@@ -101,6 +101,13 @@ export function PlaylistAddPopUpView() {
       }
     });
   }, [playlistName]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsShowAddPlaylistInput(false);
+      setPlaylistName('');
+    }
+  }, [isOpen]);
 
   return (
     <Modal className="base w600 pl-add" open={isOpen}>
