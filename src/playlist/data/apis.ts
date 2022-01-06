@@ -1,5 +1,5 @@
-import { NameValue } from '@nara.platform/accent';
-import { OffsetElement } from 'expert/model/OffsetElement';
+import { PlaylistDetailSummary } from './models/PlaylistDetailSummary';
+import { NameValue, OffsetElementList } from '@nara.platform/accent';
 import { getAxios } from 'shared/api/Axios';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { MadeByMySelf } from './models/MadeByMySelf';
@@ -69,21 +69,23 @@ export function findMyPlaylists(
   limit: number,
   offset: number,
   playlistType: PlaylistType
-): Promise<OffsetElement<MyPlaylists> | undefined> {
+): Promise<OffsetElementList<PlaylistDetailSummary> | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/available?limit=${limit}&offset=${offset}&type=${playlistType}`;
 
-  return axios.get<OffsetElement<MyPlaylists>>(url).then(AxiosReturn);
+  return axios
+    .get<OffsetElementList<PlaylistDetailSummary>>(url)
+    .then(AxiosReturn);
 }
 
 // denizenId로 다른 사용자의 Playlist 조회.
 export function findMyPlaylistsByDenizenId(
   denizenId: string
-): Promise<MyPlaylists[] | undefined> {
+): Promise<PlaylistDetailSummary[] | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/byDenizenId?=${denizenId}`;
 
-  return axios.get<MyPlaylists[]>(url).then(AxiosReturn);
+  return axios.get<PlaylistDetailSummary[]>(url).then(AxiosReturn);
 }
 
 // 내가 만든 Playlist 전체 조회.
