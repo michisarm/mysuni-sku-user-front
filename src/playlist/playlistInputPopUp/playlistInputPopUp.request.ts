@@ -47,12 +47,5 @@ export async function requsetPlaylistDetail() {
 export function useRequestPlaylistDetail() {
   useEffect(() => {
     requsetPlaylistDetail();
-
-    return () =>
-      setPlaylistInputPopUp({
-        title: '',
-        description: '',
-        expose: true,
-      });
   }, []);
 }

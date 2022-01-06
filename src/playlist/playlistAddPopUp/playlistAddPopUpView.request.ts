@@ -57,9 +57,5 @@ export async function requestPlaylistAddPopUpView() {
 export function useRequestPlaylistAddPopUpView() {
   useEffect(() => {
     requestPlaylistAddPopUpView();
-
-    return () => {
-      setMyPlaylist(undefined);
-    };
   }, []);
 }

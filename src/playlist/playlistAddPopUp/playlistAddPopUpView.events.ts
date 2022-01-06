@@ -19,6 +19,7 @@ export function onOpenPlaylistAddPopUpView() {
 
 export function onClosePlaylistAddPopUpView() {
   setIsOpenPlayListAddPopUp(false);
+  setMyPlaylist(undefined);
 }
 
 // 새로운 플레이리스트 생성시 이름값 스토어에 저장
