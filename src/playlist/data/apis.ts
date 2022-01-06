@@ -25,7 +25,7 @@ export function registerPlaylist(
     .then(AxiosReturn);
 }
 
-// Playlist 변경 - 카드 리스트 변경 (name: cardIds, value : List<String>)
+// Playlist 수정 (name: cardIds, value : List<String>)
 export function modifyPlaylist(playlistId: string, value: NameValue[]) {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}`;
