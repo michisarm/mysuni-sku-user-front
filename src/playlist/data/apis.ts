@@ -83,7 +83,7 @@ export function findMyPlaylistsByDenizenId(
   denizenId: string
 ): Promise<PlaylistDetailSummary[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL}/byDenizenId?=${denizenId}`;
+  const url = `${BASE_URL}/byDenizenId?denizenId=${denizenId}`;
 
   return axios.get<PlaylistDetailSummary[]>(url).then(AxiosReturn);
 }
