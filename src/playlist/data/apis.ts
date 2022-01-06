@@ -3,7 +3,6 @@ import { NameValue, OffsetElementList } from '@nara.platform/accent';
 import { getAxios } from 'shared/api/Axios';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { MadeByMySelf } from './models/MadeByMySelf';
-import { MyPlaylists } from './models/MyPlaylists';
 import { PlaylistCardAdditionSdo } from './models/PlaylistCardAdditionSdo';
 import { PlaylistDetail } from './models/PlaylistDetail';
 import { PlaylistRecommendationSdo } from './models/PlaylistRecommendationSdo';
@@ -47,11 +46,11 @@ export function findPlaylistDetail(
 export function findUserIdentitiesRelatedToPlaylist(
   playlistId: string,
   playlistType: PlaylistType
-): Promise<UserIdentities | undefined> {
+): Promise<UserIdentities[] | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}/userIdentities/?type=${playlistType}`;
 
-  return axios.get<UserIdentities>(url).then(AxiosReturn);
+  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
 }
 
 // 내가 만든 Playlist 에 카드 추가.
