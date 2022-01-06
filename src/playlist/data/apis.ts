@@ -3,7 +3,6 @@ import { NameValue, OffsetElementList } from '@nara.platform/accent';
 import { getAxios } from 'shared/api/Axios';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { MadeByMySelf } from './models/MadeByMySelf';
-import { MyPlaylists } from './models/MyPlaylists';
 import { PlaylistCardAdditionSdo } from './models/PlaylistCardAdditionSdo';
 import { PlaylistDetail } from './models/PlaylistDetail';
 import { PlaylistRecommendationSdo } from './models/PlaylistRecommendationSdo';
@@ -25,7 +24,7 @@ export function registerPlaylist(
     .then(AxiosReturn);
 }
 
-// Playlist 변경 - 카드 리스트 변경 (name: cardIds, value : List<String>)
+// Playlist 수정 (name: cardIds, value : List<String>)
 export function modifyPlaylist(playlistId: string, value: NameValue[]) {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}`;
@@ -47,11 +46,11 @@ export function findPlaylistDetail(
 export function findUserIdentitiesRelatedToPlaylist(
   playlistId: string,
   playlistType: PlaylistType
-): Promise<UserIdentities | undefined> {
+): Promise<UserIdentities[] | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}/userIdentities/?type=${playlistType}`;
 
-  return axios.get<UserIdentities>(url).then(AxiosReturn);
+  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
 }
 
 // 내가 만든 Playlist 에 카드 추가.
@@ -83,7 +82,7 @@ export function findMyPlaylistsByDenizenId(
   denizenId: string
 ): Promise<PlaylistDetailSummary[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL}/byDenizenId?=${denizenId}`;
+  const url = `${BASE_URL}/byDenizenId?denizenId=${denizenId}`;
 
   return axios.get<PlaylistDetailSummary[]>(url).then(AxiosReturn);
 }
