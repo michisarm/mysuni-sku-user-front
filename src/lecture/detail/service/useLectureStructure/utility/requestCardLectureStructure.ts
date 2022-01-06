@@ -395,6 +395,12 @@ function parseDurationableCubeItem(
     pathname: '',
   };
   params.pathname = toPath(params);
+  // console.log(cubeStudent);
+  // console.log(
+  //   !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
+  //     ? parseInt(cubeStudent?.durationViewSeconds || '')
+  //     : undefined
+  // );
   const item: LectureStructureDurationableCubeItem = {
     cardId: card.id,
     name: parsePolyglotString(name, getDefaultLang(langSupports)),
@@ -874,6 +880,7 @@ function parseItems(
     if (learningContentType === 'Cube') {
       const cube = lectureStructure.cubes.find((c) => c.cubeId === contentId);
       if (cube !== undefined) {
+        // console.log(cube);
         items.push(cube);
       }
     } else if (learningContentType === 'Chapter') {
@@ -1024,6 +1031,8 @@ export async function requestCardLectureStructure(cardId: string) {
     });
 
   cardItem.canSubmit = cubeItems.every((c) => c.state === 'Completed');
+
+  // console.log(cubeItems);
 
   const lectureStructure: LectureStructure = {
     card: cardItem,
