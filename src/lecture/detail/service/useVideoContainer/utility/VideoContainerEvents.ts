@@ -72,8 +72,10 @@ export async function checkStudent() {
   }
 }
 
-export function callConfirmProgress() {
-  confirmProgress();
+export function callConfirmProgress(
+  panoptoEmbedPlayerState: PanoptoEmbedPlayerState
+) {
+  confirmProgress(panoptoEmbedPlayerState.playerState === 1);
 }
 
 export function callDebounceActionTrack() {

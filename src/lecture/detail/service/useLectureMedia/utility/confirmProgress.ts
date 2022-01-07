@@ -10,7 +10,10 @@ import { requestLectureState } from '../../useLectureState/utility/requestLectur
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 import { MyTrainingService } from '../../../../../myTraining/stores';
 
-export async function confirmProgress(studentId?: string): Promise<void> {
+export async function confirmProgress(
+  syncPlayTime?: boolean,
+  studentId?: string
+): Promise<void> {
   const params = getLectureParams();
   let _stduentId = studentId;
   if (
@@ -29,7 +32,7 @@ export async function confirmProgress(studentId?: string): Promise<void> {
     if (_stduentId === undefined) {
       return;
     }
-    await confirmProgressByStudentId(_stduentId);
+    await confirmProgressByStudentId(_stduentId, syncPlayTime);
     clearFindMyCardRelatedStudentsCache();
     updateCardLectureStructure(params.cardId);
     requestLectureState(params.cardId, params.cubeId, params.cubeType);
