@@ -72,7 +72,7 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
             setLectureNoteWriteState(true);
             setLectureNoteTab(true);
             setTimeout(() => {
-              noteInput.current.focus();
+              noteInput.current && noteInput.current.focus();
             }, 100);
           }
         } else if (item.note.type === 'edit') {
@@ -111,8 +111,10 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
           setLectureNoteWriteState(true);
           setLectureNoteTab(true);
           setTimeout(() => {
-            noteInput.current.focus();
+            noteInput.current && noteInput.current.focus();
           }, 100);
+
+          console.log(item.note.playTime);
         }
       } else if (item.note.type === 'edit') {
         reactAlert({
@@ -178,8 +180,9 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
       }
     } else if (noteType === 'popup') {
       if (window.opener.document.getElementById('handleSeekTo')) {
-        window.opener.document.getElementById('handleSeekTo').innerText =
-          currentTime;
+        window.opener.document.getElementById(
+          'handleSeekTo'
+        ).innerText = currentTime;
         window.opener.document.getElementById('handleSeekTo').click();
       }
     }
@@ -196,29 +199,12 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
     [noteItem]
   );
 
-  const timeConvert = useCallback((time: any) => {
-    if (typeof time === 'number') {
-      return Math.floor(time);
-    } else {
-      if (time === 0 || time === null) {
-        return 0;
-      }
-      const a = time.split(':');
-      if (a.length > 2) {
-        //시간까지
-        return Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(a[2]);
-      } else {
-        return Number(a[0] * 60) + Number(a[1]);
-      }
-    }
-  }, []);
-
   const handleTimeClick = useCallback((event, time) => {
     event.stopPropagation();
-    if (time.indexOf(':') === -1) {
+    if (time === 0) {
       return;
     }
-    panoptoPlay(Number(timeConvert(time)));
+    panoptoPlay(time);
   }, []);
 
   const timeReset = useCallback(
@@ -229,8 +215,8 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
           if (panoptoState) {
             onChangeEdit({
               value: panoptoState!.currentTime
-                ? convertTime(Math.floor(panoptoState!.currentTime))
-                : '00:00:00',
+                ? Math.floor(panoptoState!.currentTime)
+                : 0,
               name: 'playTime',
               id,
             });
@@ -239,19 +225,17 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
           const audioapi = getAudioEmbedApi();
           const audioCurrentTime = audioapi?.getCurrentTime();
           onChangeEdit({
-            value: audioCurrentTime
-              ? convertTime(Math.floor(audioCurrentTime))
-              : '00:00:00',
+            value: audioCurrentTime ? Math.floor(audioCurrentTime) : 0,
             name: 'playTime',
             id,
           });
         }
       } else if (noteType === 'popup') {
         window.opener.document.getElementById('handlePlayTime').click();
-        const playTime =
-          window.opener.document.getElementById('handlePlayTime').innerText;
+        const playTime = window.opener.document.getElementById('handlePlayTime')
+          .innerText;
         onChangeEdit({
-          value: playTime ? convertTime(Math.floor(playTime)) : '00:00:00',
+          value: playTime ? Math.floor(playTime) : 0,
           name: 'playTime',
           id,
         });
@@ -274,199 +258,206 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
     return hour + ':' + min + ':' + sec;
   }, []);
 
+  const nonNotePlayTimeCnt = noteItem.results.filter(
+    (n) => n.note.playSecond === 0
+  ).length;
+
   return (
     <>
       <div className={noteType === 'popup' ? '' : 'note_scroll'}>
         <div className="note_list">
-          {noteItem !== undefined &&
-            noteItem.results.map((item: noteItem, key: number) => {
-              if (item.note.type !== 'edit') {
-                return (
-                  <div
-                    className={
-                      item.note.type === 'expand'
-                        ? 'mynote'
-                        : 'mynote mynote_short'
-                    }
-                    onClick={() => handelNoteClick(item.note.id)}
-                    key={key}
-                  >
-                    <div className="note_info">
-                      {(cubeType === 'Video' || cubeType === 'Audio') && (
-                        <span
-                          style={
-                            item.note.playTime.indexOf('Note') !== -1
-                              ? { cursor: 'default' }
-                              : { cursor: 'pointer' }
-                          }
-                          className="time"
-                          onClick={(event) =>
-                            handleTimeClick(event, item.note.playTime)
-                          }
-                        >
-                          <Icon>
+          {noteItem.results.map((item, key: number) => {
+            if (item.note.type !== 'edit') {
+              return (
+                <div
+                  className={
+                    item.type === 'expand' ? 'mynote' : 'mynote mynote_short'
+                  }
+                  onClick={() => handelNoteClick(item.note.id)}
+                  key={key}
+                >
+                  <div className="note_info">
+                    {(cubeType === 'Video' || cubeType === 'Audio') && (
+                      <span
+                        style={
+                          item.note.playTime === 0
+                            ? { cursor: 'default' }
+                            : { cursor: 'pointer' }
+                        }
+                        className="time"
+                        onClick={(event) =>
+                          handleTimeClick(event, item.note.playTime)
+                        }
+                      >
+                        <Icon>
+                          <Image
+                            src={
+                              item.note.playTime === 0
+                                ? `${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`
+                                : `${process.env.PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`
+                            }
+                            alt="시계이미지"
+                          />
+                        </Icon>
+                        {item.note.playTime === 0
+                          ? `Note ${
+                              noteItem.results.length - nonNotePlayTimeCnt - key
+                            }`
+                          : convertTime(item.note.playTime)}
+                        {item.note.playTime !== 0 && (
+                          <Icon className="icongo">
                             <Image
-                              src={
-                                item.note.playTime.indexOf('Note') !== -1
-                                  ? `${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`
-                                  : `${process.env.PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`
-                              }
-                              alt="시계이미지"
+                              src={`${process.env.PUBLIC_URL}/images/all/icon-go-a.svg`}
                             />
                           </Icon>
-                          {item.note.playTime}
-                          {item.note.playTime.indexOf(':') !== -1 && (
-                            <Icon className="icongo">
-                              <Image
-                                src={`${process.env.PUBLIC_URL}/images/all/icon-go-a.svg`}
-                              />
-                            </Icon>
-                          )}
-                        </span>
-                      )}
-                      {cubeType !== 'Video' && cubeType !== 'Audio' && (
-                        <span className="time">
-                          <Icon>
-                            <Image
-                              src={`${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
-                              alt="노트이미지"
-                            />
-                          </Icon>
-                          Note {noteItem.results.length - key}
-                        </span>
-                      )}
-                      <span className="date">
-                        {item.note.modifiedTime === 0
-                          ? moment(item.note.registeredTime).format(
-                              getPolyglotText(
-                                'YYYY.MM.DD 작성',
-                                'note-popup-작성시간'
-                              )
-                            )
-                          : moment(item.note.modifiedTime).format(
-                              getPolyglotText(
-                                'YYYY.MM.DD 편집',
-                                'note-popup-편집시간'
-                              )
-                            )}
+                        )}
                       </span>
-                    </div>
-                    <p
-                      className="note"
-                      dangerouslySetInnerHTML={{
-                        __html: `${item.note.convertContent}`,
+                    )}
+                    {cubeType !== 'Video' && cubeType !== 'Audio' && (
+                      <span className="time">
+                        <Icon>
+                          <Image
+                            src={`${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
+                            alt="노트이미지"
+                          />
+                        </Icon>
+                        Note{' '}
+                        {noteItem.results.length - nonNotePlayTimeCnt - key}
+                      </span>
+                    )}
+                    <span className="date">
+                      {item.note.modifiedTime === 0
+                        ? moment(item.note.registeredTime).format(
+                            getPolyglotText(
+                              'YYYY.MM.DD 작성',
+                              'note-popup-작성시간'
+                            )
+                          )
+                        : moment(item.note.modifiedTime).format(
+                            getPolyglotText(
+                              'YYYY.MM.DD 편집',
+                              'note-popup-편집시간'
+                            )
+                          )}
+                    </span>
+                  </div>
+                  <p
+                    className="note"
+                    dangerouslySetInnerHTML={{
+                      __html: `${item.convertContent}`,
+                    }}
+                  />
+                </div>
+              );
+            } else if (item.note.type === 'edit') {
+              return (
+                <div className="mynote mynote_edit" key={key}>
+                  <div className="note_info">
+                    {(cubeType === 'Video' || cubeType === 'Audio') && (
+                      <span className="time">
+                        <Icon>
+                          <Image
+                            src={`${process.env.PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
+                            alt="시계이미지"
+                          />
+                        </Icon>
+                        {convertTime(item.note.playTime)}
+                        <span
+                          className="iconrefresh"
+                          onClick={() => timeReset(item.note.id)}
+                        >
+                          <Image
+                            src={`${process.env.PUBLIC_URL}/images/all/btn-time-refresh.svg`}
+                            alt="새로고침"
+                          />
+                        </span>
+                      </span>
+                    )}
+                    {cubeType !== 'Video' && cubeType !== 'Audio' && (
+                      <span className="time">
+                        <Icon>
+                          <Image
+                            src={`${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
+                            alt="노트이미지"
+                          />
+                        </Icon>
+                        Note{' '}
+                        {noteItem.results.length - nonNotePlayTimeCnt - key}
+                      </span>
+                    )}
+                    <span className="date">
+                      {item.note.modifiedTime === 0
+                        ? moment(item.note.registeredTime).format(
+                            getPolyglotText(
+                              'YYYY.MM.DD 작성',
+                              'note-popup-작성시간'
+                            )
+                          )
+                        : moment(item.note.modifiedTime).format(
+                            getPolyglotText(
+                              'YYYY.MM.DD 편집',
+                              'note-popup-편집시간'
+                            )
+                          )}
+                    </span>
+                  </div>
+                  <Form>
+                    {/* <div ref={focusDiv}></div> */}
+                    <textarea
+                      placeholder={getPolyglotText(
+                        'Note 내용을 입력해주세요.',
+                        'note-popup-내용입력'
+                      )}
+                      value={item.note.content}
+                      name="content"
+                      ref={noteInput}
+                      onChange={(e) => {
+                        if (e.target.value.length < 1000) {
+                          handelTextarea(e, item.note.id);
+                        }
                       }}
                     />
-                  </div>
-                );
-              } else if (item.note.type === 'edit') {
-                return (
-                  <div className="mynote mynote_edit" key={key}>
-                    <div className="note_info">
-                      {(cubeType === 'Video' || cubeType === 'Audio') && (
-                        <span className="time">
-                          <Icon>
-                            <Image
-                              src={`${process.env.PUBLIC_URL}/images/all/icon-card-time-16-px-green.svg`}
-                              alt="시계이미지"
-                            />
-                          </Icon>
-                          {item.note.playTime}
-                          <span
-                            className="iconrefresh"
-                            onClick={() => timeReset(item.note.id)}
-                          >
-                            <Image
-                              src={`${process.env.PUBLIC_URL}/images/all/btn-time-refresh.svg`}
-                              alt="새로고침"
-                            />
-                          </span>
-                        </span>
-                      )}
-                      {cubeType !== 'Video' && cubeType !== 'Audio' && (
-                        <span className="time">
-                          <Icon>
-                            <Image
-                              src={`${process.env.PUBLIC_URL}/images/all/btn-lms-note-14-px.svg`}
-                              alt="노트이미지"
-                            />
-                          </Icon>
-                          Note {noteItem.results.length - key}
-                        </span>
-                      )}
-                      <span className="date">
-                        {item.note.modifiedTime === 0
-                          ? moment(item.note.registeredTime).format(
-                              getPolyglotText(
-                                'YYYY.MM.DD 작성',
-                                'note-popup-작성시간'
-                              )
-                            )
-                          : moment(item.note.modifiedTime).format(
-                              getPolyglotText(
-                                'YYYY.MM.DD 편집',
-                                'note-popup-편집시간'
-                              )
-                            )}
-                      </span>
-                    </div>
-                    <Form>
-                      {/* <div ref={focusDiv}></div> */}
-                      <textarea
-                        placeholder={getPolyglotText(
-                          'Note 내용을 입력해주세요.',
-                          'note-popup-내용입력'
-                        )}
-                        value={item.note.content}
-                        name="content"
-                        ref={noteInput}
-                        onChange={(e) => {
-                          if (e.target.value.length < 1000) {
-                            handelTextarea(e, item.note.id);
-                          }
-                        }}
+                  </Form>
+                  <div className="note_btn">
+                    <Button
+                      className="delete"
+                      onClick={() => onDelete(item.note.id)}
+                    >
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/icon-note-delete-24-px.svg`}
+                        alt="삭제"
                       />
-                    </Form>
-                    <div className="note_btn">
-                      <Button
-                        className="delete"
-                        onClick={() => onDelete(item.note.id)}
-                      >
-                        <Image
-                          src={`${process.env.PUBLIC_URL}/images/all/icon-note-delete-24-px.svg`}
-                          alt="삭제"
-                        />
-                      </Button>
-                      <Button
-                        className="cancel"
-                        onClick={() => handelCancelButton(item.note.id)}
-                      >
-                        <PolyglotText
-                          defaultString="취소"
-                          id="note-popup-취소버튼1"
-                        />
-                      </Button>
-                      <Button
-                        className="save"
-                        onClick={() => onSave(item.note.id)}
-                      >
-                        <PolyglotText
-                          defaultString="저장"
-                          id="note-popup-저장버튼1"
-                        />
-                      </Button>
-                      <span className="txt_cnt">
-                        <span className="txt_now">
-                          {item.note.content.length}
-                        </span>
-                        /<span>1000</span>
+                    </Button>
+                    <Button
+                      className="cancel"
+                      onClick={() => handelCancelButton(item.note.id)}
+                    >
+                      <PolyglotText
+                        defaultString="취소"
+                        id="note-popup-취소버튼1"
+                      />
+                    </Button>
+                    <Button
+                      className="save"
+                      onClick={() => onSave(item.note.id)}
+                    >
+                      <PolyglotText
+                        defaultString="저장"
+                        id="note-popup-저장버튼1"
+                      />
+                    </Button>
+                    <span className="txt_cnt">
+                      <span className="txt_now">
+                        {item.note.content.length}
                       </span>
-                    </div>
+                      /<span>1000</span>
+                    </span>
                   </div>
-                );
-              }
-            })}
-          {noteItem !== undefined && noteItem.results?.length === 0 && (
+                </div>
+              );
+            }
+          })}
+          {noteItem.results?.length === 0 && (
             <div className="note_nodata">
               <Icon>
                 <Image

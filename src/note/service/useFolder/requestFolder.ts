@@ -1,5 +1,5 @@
 import {
-  findFolder,
+  findFolders,
   findNoteListByFolderId,
   findNoteCountByFolderId,
 } from '../../api/noteApi';
@@ -8,13 +8,9 @@ import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { getSearchBox } from '../../store/SearchBoxStore';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
 import { setFolderNoteCount } from '../../store/FolderNoteCountStore';
-import {
-  setNoteWithLectureList,
-  getNoteWithLectureList,
-} from '../../store/NoteWithLectureListStore';
 
 export function requestFolder() {
-  findFolder().then(async (result) => {
+  findFolders().then(async (result) => {
     if (result) {
       setFolder(result);
     }
@@ -24,14 +20,14 @@ export function requestFolder() {
 export function requestCubeListByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
-  if (searchBox.folderId === '') {
-    searchBox.folderId = '0000';
+  if (searchBox.folderId === '' || searchBox.folderId === undefined) {
+    searchBox.folderId = undefined;
   }
 
   findNoteListByFolderId(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
-      setNoteWithLectureList(result);
+      setNoteList(result);
     }
   });
 }
@@ -39,28 +35,27 @@ export function requestCubeListByFolderId() {
 export function requestNoteCountByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
-  if (searchBox.folderId === '') {
-    searchBox.folderId = '0000';
+  if (searchBox.folderId === '' || searchBox.folderId === undefined) {
+    searchBox.folderId = undefined;
   }
 
-  return findNoteCountByFolderId(searchBox.folderId || '0000').then(
-    async (result) => {
-      await setFolderNoteCount(result);
-    }
-  );
+  return findNoteCountByFolderId(searchBox.folderId).then(async (result) => {
+    await setFolderNoteCount(result);
+  });
 }
 
 export function requestAppendCubeListByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
   if (searchBox.folderId === '') {
-    searchBox.folderId = '0000';
+    searchBox.folderId = undefined;
   }
+
   findNoteListByFolderId(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
-      const noteList = getNoteWithLectureList();
+      const noteList = getNoteList();
       noteList &&
-        setNoteWithLectureList({
+        setNoteList({
           ...noteList,
           results: noteList?.results.concat(result.results),
         });

@@ -1,17 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Segment,
-  Accordion,
   Image,
   Menu,
   Table,
   Select,
   Button,
-  Label,
   Icon,
-  Form,
-  TextArea,
-  DropdownDivider,
   DropdownProps,
 } from 'semantic-ui-react';
 import Calendar from './Calendar';
@@ -19,38 +14,26 @@ import { Link } from 'react-router-dom';
 import { OffsetElementList } from '@nara.platform/accent';
 import Note from '../../model/Note';
 import {
-  requestNoteList,
-  requestColleges,
   requestNoteExcelList,
   requestCubeList,
-  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
-import NoteListItem, { getNoteListItem } from '../../viewModel/NoteListItem';
-import moment from 'moment';
 import Folder from '../../model/Folder';
-import NoteCdoItem, { getNoteCdoItem } from '../../viewModel/NoteCdoItem';
-import NoteCdo, { convertNoteToNoteCdo } from '../../model/NoteCdo';
-import { saveNote } from '../../service/useNote/saveNote';
-import NoteUdoItem, { getNoteUdoItem } from '../../viewModel/NoteUdoItem';
-import NoteUdo from '../../model/NoteUdo';
-import { deleteNoteById } from '../../service/useNote/deleteNote';
 import classNames from 'classnames';
-import { CollegeModel } from '../../../college/model/CollegeModel';
+import { CollegeModel } from '../../../college/model';
 import XLSX from 'xlsx';
 import {
   convertNoteToNoteXlsxModel,
   NoteXlsxModel,
 } from '../../viewModel/NoteXlsxModel';
-import NoteWithLecture from '../../model/NoteWithLecture';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface NoteHeaderViewProps {
-  noteList: OffsetElementList<NoteWithLecture>;
+  noteList: OffsetElementList<Note>;
   searchBox: SearchBox;
   colleges: CollegeModel[];
   noteCount: number;
@@ -113,14 +96,14 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
   }, [colleges]);
 
   useEffect(() => {
-    noteList &&
-      requestNoteCount('searchBox').then(async (result) => {
-        if (result) {
-          setSubNoteCount(result || 0);
-        } else {
-          setSubNoteCount(0);
-        }
-      });
+    // noteList &&
+    // requestNoteCount('searchBox').then(async (result) => {
+    //   if (result) {
+    //     setSubNoteCount(result || 0);
+    //   } else {
+    //     setSubNoteCount(0);
+    //   }
+    // });
   }, [noteList]);
 
   const changeColleges = useCallback(
@@ -196,26 +179,26 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
     if (searchType === 'name') {
       setSearchBox({
         ...searchBox,
-        name: encodeURIComponent(searchText),
+        cubeName: encodeURIComponent(searchText),
         content: '',
         collegeId: college,
-        channelId: channel,
+        // channelId: channel,
       });
     } else if (searchType === 'content') {
       setSearchBox({
         ...searchBox,
-        name: '',
+        cubeName: '',
         content: encodeURIComponent(searchText),
         collegeId: college,
-        channelId: channel,
+        // channelId: channel,
       });
     } else if (searchType === 'all') {
       setSearchBox({
         ...searchBox,
-        name: '',
+        cubeName: '',
         content: '',
         collegeId: college,
-        channelId: channel,
+        // channelId: channel,
       });
       setSearchText('');
     }
@@ -374,7 +357,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
               __html: getPolyglotText(
                 `총 <strong>{count}개의 Note</strong>`,
                 'mypage-note-노트갯수',
-                { count: (subNoteCount || 0).toString() }
+                { count: (noteCount || 0).toString() }
               ),
             }}
           />
