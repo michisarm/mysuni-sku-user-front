@@ -401,6 +401,7 @@ function parseDurationableCubeItem(
   //     ? parseInt(cubeStudent?.durationViewSeconds || '')
   //     : undefined
   // );
+
   const item: LectureStructureDurationableCubeItem = {
     cardId: card.id,
     name: parsePolyglotString(name, getDefaultLang(langSupports)),
