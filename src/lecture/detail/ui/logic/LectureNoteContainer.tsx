@@ -99,8 +99,8 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       window.sessionStorage.setItem('noteCubeName', cube.name);
       popupWindow = window.open(
         encodeURI(
-          // `/suni-main/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
-          `/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
+          `/suni-main/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
+          // `/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
         ),
         'notePopup',
         'width=350px, height=800, scrollbars=1'
