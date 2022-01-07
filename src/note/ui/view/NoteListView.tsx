@@ -43,6 +43,7 @@ import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
 import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { playSecondToString } from '../logic/NoteHelper';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface NoteViewProps {
   noteList: OffsetElementList<Note>;
@@ -69,7 +70,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
   >([
     {
       key: 0,
-      value: '0000',
+      value: '',
       text: getPolyglotText('폴더미지정', 'mypage-noteList-폴더미지정2'),
     },
   ]);
@@ -97,9 +98,9 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
   const selectFolder = useCallback((folder: Folder) => {
     const folderSelect: any = [];
     folderSelect.push({
-      key: '0000',
+      key: '',
       text: getPolyglotText('폴더미지정', 'mypage-noteList-폴더미지정3'),
-      value: '0000',
+      value: '',
     });
     if (folder) {
       folder.folders.idNames.map((field, index) => {
@@ -245,6 +246,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
         },
         onOk: async () => {
           await deleteNoteById(id);
+
           params.pageNo === '1' && (await requestCubeList());
 
           params.pageNo === '2' && (await requestCubeListByFolderId());
@@ -254,7 +256,6 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
           // await requestNoteCount();
           // const noteCount = getNoteCount() || 0;
           // noteCount > 0 && setNoteCount(noteCount - 1);
-          await requestCubeList();
         },
       });
     },
@@ -368,26 +369,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
               <div className="note_title">
                 <div className="tit">
                   <div className={`ui label ${getColor(item.collegeId)}`}>
-                    {collegeList &&
-                      collegeList?.filter((f) => {
-                        if (f.id === item.collegeId) {
-                          return f;
-                        }
-                      }).length > 0 &&
-                      parsePolyglotString(
-                        collegeList?.filter((f) => {
-                          if (f.id === item.collegeId) {
-                            return f;
-                          }
-                        })[0].name,
-                        getDefaultLang(
-                          collegeList?.filter((f) => {
-                            if (f.id === item.collegeId) {
-                              return f;
-                            }
-                          })[0].langSupports
-                        )
-                      )}
+                    {getCollgeName(item.collegeId)}
                   </div>
                   <strong className="header">
                     {parsePolyglotString(item.cardName)}

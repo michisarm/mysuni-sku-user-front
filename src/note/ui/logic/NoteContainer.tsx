@@ -4,7 +4,6 @@ import NoteListView from '../view/NoteListView';
 import {
   requestCubeList,
   requestColleges,
-  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { getEmptySearchBox } from '../../model/SearchBox';
 import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';

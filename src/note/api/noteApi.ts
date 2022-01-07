@@ -62,7 +62,7 @@ export function findNoteCountByFolderId(
 }
 
 // 노트 큐브 리스트 조회
-export function findCubeList(
+export function findNoteList(
   searchBox: SearchBox
 ): Promise<OffsetElementList<Note> | undefined> {
   // const url = `${BASE_URL}/list/card/cube?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.name}&createStartDate=${searchBox.createStartDate}&createEndDate=${searchBox.createEndDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
@@ -115,17 +115,6 @@ export function findNoteListByFolderId(
         folderId: searchBox.folderId || null,
       },
     })
-    .then(AxiosReturn);
-}
-
-// GET http://ma.mysuni.sk.com/api/mytraining/note/excelDownload
-// 노트 엑셀 리스트 조회
-export function findNoteExcelList(): Promise<
-  OffsetElementList<NoteWithLecture> | undefined
-> {
-  const url = `${BASE_URL}/excelDownload`;
-  return axiosApi
-    .get<OffsetElementList<NoteWithLecture>>(url)
     .then(AxiosReturn);
 }
 
