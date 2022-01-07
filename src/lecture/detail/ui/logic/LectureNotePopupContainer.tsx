@@ -26,10 +26,8 @@ const LectureNotePopupContainer: React.FC = ({}) => {
   const loadingState = useIsLoadingState();
   const [addNote, setAddNote] = useState<LectureNoteItem>({
     cardId: '',
-    cardName: '',
     channelId: '',
     collegeId: '',
-    cubeName: '',
     id: '',
     patronKey: {},
     cubeId: '',
@@ -47,7 +45,7 @@ const LectureNotePopupContainer: React.FC = ({}) => {
   useEffect(() => {
     if (urlParams.cubeId) {
       document.getElementsByTagName('body')[0].style.minWidth = '0';
-      requestLectureNote(urlParams.cardId, urlParams.cubeId);
+      requestLectureNote(urlParams.cubeId);
     }
   }, [urlParams]);
 
@@ -95,14 +93,12 @@ const LectureNotePopupContainer: React.FC = ({}) => {
         };
         requestLectureNoteDelete(params).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, urlParams.cubeId!);
+          requestLectureNote(urlParams.cubeId!);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -136,11 +132,9 @@ const LectureNotePopupContainer: React.FC = ({}) => {
   }, []);
 
   const onSave = useCallback(() => {
-    let playTime = '';
+    let playSecond = 0;
     if (urlParams.cubeType === 'Audio' || urlParams.cubeType === 'Video') {
-      playTime = convertTime(addNote.playTime);
-    } else {
-      playTime = '00:00:00';
+      playSecond = Math.floor(Number(addNote.playTime));
     }
 
     if (addNote.content === '') {
@@ -163,21 +157,19 @@ const LectureNotePopupContainer: React.FC = ({}) => {
           content: addNote.content,
           folderID:
             noteItem!.results.length === 0
-              ? '0000'
+              ? null
               : noteItem!.results[0].note.folderId,
-          playTime,
+          playSecond,
         };
 
         requestLectureNoteAdd(param).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, urlParams.cubeId!);
+          requestLectureNote(urlParams.cubeId!);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -199,16 +191,16 @@ const LectureNotePopupContainer: React.FC = ({}) => {
   const onEdit = useCallback(
     (id: string) => {
       let content = '';
-      let playTime = '';
+      let playSecond = '';
       noteItem?.results.map((item) => {
         if (item.note.id === id) {
           content = item.note.content;
-          playTime = item.note.playTime === 0 ? '0:00' : item.note.playTime;
+          playSecond = item.note.playTime;
         }
       });
       const param = {
         content,
-        playTime,
+        playSecond,
       };
 
       if (param.content === '') {
@@ -224,14 +216,12 @@ const LectureNotePopupContainer: React.FC = ({}) => {
 
       requestLectureNoteModify(id, param).then(() => {
         //리스트 조회
-        requestLectureNote(urlParams.cardId, urlParams.cubeId!);
+        requestLectureNote(urlParams.cubeId!);
         //작성중인 화면 초기화
         setAddNote({
           cardId: '',
-          cardName: '',
           channelId: '',
           collegeId: '',
-          cubeName: '',
           id: '',
           patronKey: {},
           cubeId: '',
