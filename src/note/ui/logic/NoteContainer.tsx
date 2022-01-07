@@ -11,7 +11,7 @@ import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';
 import { useFolder } from '../../store/FolderStore';
 import { requestFolder } from '../../service/useFolder/requestFolder';
 import { useColleges } from '../../store/CollegesStore';
-import { useNoteWithLectureList } from '../../store/NoteWithLectureListStore';
+import { useNoteList } from '../../store/NoteListStore';
 
 interface NoteContainerProps {
   noteCount: number;
@@ -19,31 +19,35 @@ interface NoteContainerProps {
 const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({
   noteCount,
 }) {
-  const noteList = useNoteWithLectureList();
+  const noteList = useNoteList() || {
+    empty: true,
+    results: [],
+    totalCount: 0,
+  };
   const folder = useFolder();
   const searchBox = useSearchBox() || getEmptySearchBox();
-  const colleges = useColleges();
+  const colleges = useColleges() || [];
   useEffect(() => {
     setSearchBox({ ...searchBox, offset: 0 });
     requestCubeList();
     requestFolder();
-    requestNoteCount();
+    // requestNoteCount();
     requestColleges();
   }, []);
 
   return (
     <>
-      {noteList !== undefined &&
-        colleges !== undefined &&
-        colleges !== undefined && (
-          <NoteHeaderView
-            noteList={noteList}
-            searchBox={searchBox}
-            colleges={colleges}
-            noteCount={noteCount}
-            folder={folder}
-          />
-        )}
+      {/*{noteList !== undefined &&*/}
+      {/*  colleges !== undefined &&*/}
+      {/*  colleges !== undefined && (*/}
+      <NoteHeaderView
+        noteList={noteList}
+        searchBox={searchBox}
+        colleges={colleges}
+        noteCount={noteCount}
+        folder={folder}
+      />
+      {/*)}*/}
       {noteList !== undefined && colleges !== undefined && (
         <NoteListView
           noteList={noteList}

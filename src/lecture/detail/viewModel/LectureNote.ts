@@ -1,13 +1,13 @@
+import { PolyglotString } from '../../../shared/viewmodel/PolyglotString';
+
 export interface LectureNote {
   results: noteItem[];
   totalCount: any;
 }
 export interface LectureNoteItem {
   cardId: string;
-  cardName: string;
   channelId: string;
   collegeId: string;
-  cubeName: string;
   id: string;
   patronKey: object;
   cubeId: string;
@@ -21,19 +21,40 @@ export interface LectureNoteItem {
 }
 
 export interface noteItem {
-  LectureNoteItemRom: LectureNoteItemRom,
-  note: LectureNoteItemNote | any,
-  type: string,
+  LectureNoteItemRom: LectureNoteItemRom;
+  note: LectureNoteItemNote | any;
+  type: string;
   convertContent?: string;
+}
+
+export function initNoteItem() {
+  return {
+    LectureNoteItemRom: initLectureNoteItemRom(),
+    note: initLectureNoteItemNote(),
+    type: '',
+    convertContent: '',
+  };
 }
 
 export interface LectureNoteItemRom {
   cardId: string;
-  cardName: string;
+  cardName: PolyglotString;
   channelId: string;
   collegeId: string;
   cubeId: string;
-  cubeName: string;
+  cubeName: PolyglotString;
+}
+
+export function initLectureNoteItemRom(): LectureNoteItemRom {
+  //
+  return {
+    cardId: '',
+    cardName: { ko: '', en: '', zh: '' },
+    channelId: '',
+    collegeId: '',
+    cubeId: '',
+    cubeName: { ko: '', en: '', zh: '' },
+  };
 }
 
 export interface LectureNoteItemNote {
@@ -47,7 +68,26 @@ export interface LectureNoteItemNote {
   folderId: string;
   id: string;
   patronKey: object;
-  playTime: string;
+  playTime: number;
   modifiedTime: number;
   type?: string;
+}
+
+export function initLectureNoteItemNote(): LectureNoteItemNote {
+  //
+  return {
+    cardId: '',
+    channelId: '',
+    collegeId: '',
+    content: '',
+    registeredTime: 0,
+    cubeId: '',
+    cubeType: '',
+    folderId: '',
+    id: '',
+    patronKey: {},
+    playTime: 0,
+    modifiedTime: 0,
+    type: '',
+  };
 }

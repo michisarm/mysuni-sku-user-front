@@ -50,10 +50,8 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   const { pathname } = useLocation();
   const [addNote, setAddNote] = useState<LectureNoteItem>({
     cardId: '',
-    cardName: '',
     channelId: '',
     collegeId: '',
-    cubeName: '',
     id: '',
     patronKey: {},
     cubeId: '',
@@ -71,7 +69,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   let popupWindow: any;
 
   useEffect(() => {
-    requestLectureNote(urlParams.cardId, cubeId);
+    requestLectureNote(cubeId);
     return () => {
       setLectureNoteTab(false);
       setLectureNoteWriteState(false);
@@ -102,6 +100,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       popupWindow = window.open(
         encodeURI(
           `/suni-main/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
+          // `/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
         ),
         'notePopup',
         'width=350px, height=800, scrollbars=1'
@@ -124,7 +123,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                 cubeId = splitUrl[index + 1];
               }
             });
-            requestLectureNote(cardId, cubeId);
+            requestLectureNote(cubeId);
           });
         }
       }, 1000);
@@ -175,14 +174,12 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
         };
         requestLectureNoteDelete(params).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, cubeId);
+          requestLectureNote(cubeId);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -202,11 +199,9 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   }, []);
 
   const onSave = useCallback(() => {
-    let playTime = '';
+    let playSecond = 0;
     if (cubeType === 'Audio' || cubeType === 'Video') {
-      playTime = convertTime(addNote.playTime);
-    } else {
-      playTime = '00:00:00';
+      playSecond = Math.floor(Number(addNote.playTime));
     }
 
     if (addNote.content === '') {
@@ -225,25 +220,25 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       if (result && result.card) {
         const param = {
           cardId: urlParams.cardId,
+          cardName: result.card.name,
           cubeId,
+          cubeName: cube?.name,
           cubeType,
           content: addNote.content,
           folderId:
             noteItem!.results.length === 0
-              ? '0000'
+              ? null
               : noteItem!.results[0].note.folderId,
-          playTime,
+          playSecond,
         };
         requestLectureNoteAdd(param).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, cubeId);
+          requestLectureNote(cubeId);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -265,49 +260,28 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   const onEdit = useCallback(
     (id: string) => {
       let content = '';
-      let playTime = '';
-      let param: any = {};
+      let playSecond = 0;
 
       if (cubeType === 'Audio' || cubeType === 'Video') {
-        noteItem?.results.map((item: any) => {
+        noteItem?.results.map((item) => {
           if (item.note.id === id) {
             content = item.note.content;
-            if (typeof item.note.playTime === 'number') {
-              playTime =
-                item.note.playTime === 0
-                  ? '00:00:00'
-                  : `${
-                      Math.floor((Number(item.note.playTime) / 60) % 60) < 10
-                        ? '0'
-                        : ''
-                    }${Math.floor(Number(item.note.playTime) / 60).toFixed()}:${
-                      Math.floor(Number(item.note.playTime) % 60) < 10
-                        ? '0'
-                        : ''
-                    }${Math.floor(Number(item.note.playTime) % 60)}`;
-            } else if (item.note.playTime.indexOf('Note ') !== -1) {
-              playTime = '00:00:00';
-            } else {
-              playTime = item.note.playTime;
-            }
+            playSecond = Math.floor(Number(item.note.playTime));
+            console.log(item.note.playTime);
           }
         });
-
-        param = {
-          content,
-          playTime,
-        };
       } else {
         noteItem?.results.map((item: any) => {
           if (item.note.id === id) {
             content = item.note.content;
           }
         });
-        param = {
-          content,
-          playTime: '00:00:00',
-        };
       }
+
+      const param = {
+        content,
+        playSecond,
+      };
 
       if (param.content === '') {
         reactAlert({
@@ -321,14 +295,12 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       }
       requestLectureNoteModify(id, param).then(() => {
         //리스트 조회
-        requestLectureNote(urlParams.cardId, cubeId);
+        requestLectureNote(cubeId);
         //작성중인 화면 초기화
         setAddNote({
           cardId: '',
-          cardName: '',
           channelId: '',
           collegeId: '',
-          cubeName: '',
           id: '',
           patronKey: {},
           cubeId: '',
@@ -393,13 +365,6 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       time = '0' + time;
     }
     return time;
-  }, []);
-
-  const convertTime = useCallback((playTime) => {
-    const hour = timeToString(Math.floor(Number(playTime) / 3600));
-    const min = timeToString(Math.floor(Number(playTime % 3600) / 60));
-    const sec = timeToString(Math.floor(Number(playTime) % 60));
-    return hour + ':' + min + ':' + sec;
   }, []);
 
   return (
@@ -482,8 +447,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                                   `{totalCount}개`,
                                   'note-popup-개',
                                   {
-                                    totalCount:
-                                      (noteItem?.totalCount).toString(),
+                                    totalCount: (noteItem?.totalCount).toString(),
                                   }
                                 ),
                               }}

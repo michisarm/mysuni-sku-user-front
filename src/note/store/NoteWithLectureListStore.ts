@@ -1,17 +1,9 @@
 import { createStore } from './Store';
-import NoteWithLecture from '../model/NoteWithLecture';
 import { OffsetElementList } from '@nara.platform/accent';
+import Note from '../model/Note';
 
-const [
-  setNoteWithLectureList,
-  onNoteWithLectureList,
-  getNoteWithLectureList,
-  useNoteWithLectureList,
-] = createStore<OffsetElementList<NoteWithLecture>>();
-
-export {
-  setNoteWithLectureList,
-  onNoteWithLectureList,
-  getNoteWithLectureList,
-  useNoteWithLectureList,
-};
+// const [setNoteList, onNoteList, getNoteList, useNoteList] = createStore<
+//   OffsetElementList<Note>
+// >();
+//
+// export { setNoteList, onNoteList, getNoteList, useNoteList };
