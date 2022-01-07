@@ -27,8 +27,6 @@ import {
   convertNoteToNoteXlsxModel,
   NoteXlsxModel,
 } from '../../viewModel/NoteXlsxModel';
-import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
@@ -65,7 +63,6 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
   const [channel, setChannel] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('all');
-  const [subNoteCount, setSubNoteCount] = useState<number>(0);
 
   const selectCollege = useCallback(
     (colleges: CollegeModel[]) => {
@@ -115,29 +112,31 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
           }
         });
 
-        const channelSelect: any = [];
-        if (colleges) {
-          channelSelect.push({
-            key: '',
-            text: getPolyglotText('전체', 'mypage-note-전체4'),
-            value: '',
-          });
-          collegeList.map((field, index) => {
-            if (field.id === data.value) {
-              field.channels.map((channel, i) => {
-                channelSelect.push({
-                  key: i + 1,
-                  text: parsePolyglotString(
-                    channel.name,
-                    getDefaultLang(channel.langSupports)
-                  ),
-                  value: channel.id,
-                });
-              });
-            }
-          });
-        }
-        setChannelOptions(channelSelect);
+        // const channelSelect: any = [];
+        // if (colleges) {
+        //   channelSelect.push({
+        //     key: '',
+        //     text: getPolyglotText('전체', 'mypage-note-전체4'),
+        //     value: '',
+        //   });
+        //   collegeList.map((field, index) => {
+        //     if (field.id === data.value) {
+        //       field.channels.map((channel, i) => {
+        //         channelSelect.push({
+        //           key: i + 1,
+        //           text: parsePolyglotString(
+        //             channel.name,
+        //             getDefaultLang(channel.langSupports)
+        //           ),
+        //           value: channel.id,
+        //         });
+        //       });
+        //     }
+        //   });
+        // }
+        //
+        // setChannelOptions(channelSelect);
+
         setCollege(data.value as string);
         setChannel('');
       }
@@ -145,12 +144,12 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
     [collegeList]
   );
 
-  const changeChannel = useCallback(
-    async (data: DropdownProps) => {
-      setChannel(data.value as string);
-    },
-    [channelOptions]
-  );
+  // const changeChannel = useCallback(
+  //   async (data: DropdownProps) => {
+  //     setChannel(data.value as string);
+  //   },
+  //   [channelOptions]
+  // );
 
   const SearchOptions = [
     {
@@ -207,11 +206,14 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
   const excelDownload = useCallback(async () => {
     requestNoteExcelList().then(async (result) => {
       if (result) {
-        const noteXlsxModel: NoteXlsxModel[] = result.results.map(
-          (m, index) => {
-            return convertNoteToNoteXlsxModel(m, index, folder, collegeList);
-          }
-        );
+        const noteXlsxModel: NoteXlsxModel[] = [];
+        let index = 0;
+
+        result.results.map((m) => {
+          const xlsx = convertNoteToNoteXlsxModel(m, index, folder);
+          noteXlsxModel.push(...xlsx);
+          index += m.noteContents.length;
+        });
         writeExcelFile(noteXlsxModel, '노트 엑셀');
       }
     });
@@ -281,15 +283,15 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
                       onChange={(e, data) => changeColleges(data)}
                     />
                   </div>
-                  <div className="option_box">
-                    <Select
-                      className="option_detail"
-                      placeholder={getPolyglotText('전체', 'mypage-note-전체7')}
-                      options={channelOptions}
-                      value={channel}
-                      onChange={(e, data) => changeChannel(data)}
-                    />
-                  </div>
+                  {/*<div className="option_box">*/}
+                  {/*  <Select*/}
+                  {/*    className="option_detail"*/}
+                  {/*    placeholder={getPolyglotText('전체', 'mypage-note-전체7')}*/}
+                  {/*    options={channelOptions}*/}
+                  {/*    value={channel}*/}
+                  {/*    onChange={(e, data) => changeChannel(data)}*/}
+                  {/*  />*/}
+                  {/*</div>*/}
                 </Table.Cell>
               </Table.Row>
 

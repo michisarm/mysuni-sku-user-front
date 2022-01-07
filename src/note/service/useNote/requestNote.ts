@@ -1,10 +1,9 @@
 import {
   // findNoteList,
   findNoteById,
-  findCubeList,
+  findNoteList,
   findAllCollege,
   findNoteCount,
-  findNoteExcelList,
 } from '../../api/noteApi';
 import { SearchBox, getEmptySearchBox } from '../../model/SearchBox';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
@@ -41,14 +40,18 @@ export function requestCubeList() {
     searchBox = getEmptySearchBox();
   }
 
-  findCubeList(searchBox).then(async (result) => {
+  findNoteList(searchBox).then(async (result) => {
     if (result) {
       setNoteList(result);
 
       setNoteCount(
-        result.results
-          .map((note) => (note.noteContents && note.noteContents.length) || 0)
-          .reduce((p, n) => p + n)
+        result.results && result.results.length > 0
+          ? result.results
+              .map(
+                (note) => (note.noteContents && note.noteContents.length) || 0
+              )
+              .reduce((p, n) => p + n)
+          : 0
       );
     }
   });
@@ -57,7 +60,7 @@ export function requestCubeList() {
 export function requestAppendCubeList() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
-  findCubeList(searchBox).then(async (result) => {
+  findNoteList(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
       const noteList = getNoteList();
@@ -80,7 +83,14 @@ export function requestAppendCubeList() {
 }
 
 export function requestNoteExcelList() {
-  return findNoteExcelList().then(async (result) => {
+  const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
+
+  searchBox.offset = 0;
+  searchBox.limit = 99999999;
+  searchBox.startDate = undefined;
+  searchBox.endDate = undefined;
+
+  return findNoteList(searchBox).then(async (result) => {
     if (result) {
       return result;
     }
