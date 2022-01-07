@@ -8,7 +8,6 @@ import {
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
-import { MyTrainingService } from '../../../../../myTraining/stores';
 
 export async function confirmProgress(
   syncPlayTime?: boolean,
@@ -22,12 +21,12 @@ export async function confirmProgress(
     params?.cubeType !== undefined
   ) {
     if (_stduentId === undefined) {
-      const myCardRelatedStudents = await findMyCardRelatedStudentsCache(
+      const cachedMyCardRelatedStudents = await findMyCardRelatedStudentsCache(
         params?.cardId
       );
-      const cubeStudents = myCardRelatedStudents?.cubeStudents;
-      const student = findCubeStudent(params?.cubeId, cubeStudents);
-      _stduentId = student?.id;
+      const cachedCubeStudents = cachedMyCardRelatedStudents?.cubeStudents;
+      const cachedStudent = findCubeStudent(params?.cubeId, cachedCubeStudents);
+      _stduentId = cachedStudent?.id;
     }
     if (_stduentId === undefined) {
       return;
