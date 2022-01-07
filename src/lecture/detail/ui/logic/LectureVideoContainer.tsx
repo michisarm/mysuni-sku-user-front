@@ -102,7 +102,7 @@ function LectureVideoContainer() {
     if (panoptoEmbedPlayerState?.playerState === undefined) {
       return;
     }
-    callConfirmProgress();
+    callConfirmProgress(panoptoEmbedPlayerState);
   }, [panoptoEmbedPlayerState?.playerState]);
 
   useEffect(() => {
