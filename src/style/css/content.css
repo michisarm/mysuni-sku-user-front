@@ -1,5 +1,10 @@
 /* header mySUNI 아이콘 변경 */
-i.icon.sk-university::before{width: 90px; height: 38px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg") no-repeat 0 0/ 100% 100% !important;}
+i.icon.sk-university::before {
+  width: 90px;
+  height: 38px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg')
+    no-repeat 0 0/ 100% 100% !important;
+}
 
 /* Recommend */
 .recommend-detail
@@ -1622,7 +1627,8 @@ ul.ui.list.my-task-bar {
 }
 .content.main-sty2 .main_personal.season2 {
   background: #fff
-    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px 5px/contain no-repeat;
+    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px
+    5px / contain no-repeat;
 }
 
 /* badge 인증서 css변경 */
@@ -2138,6 +2144,20 @@ i.icon.testHeader02::before {
   vertical-align: top;
 }
 
-
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
-.ui.segment.full .contents.comment { min-height: 20rem; }
+.ui.segment.full .contents.comment {
+  min-height: 20rem;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 (2022.01.08)*/
+.embedded.iframe-area.s990 {
+  max-width: initial;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 */
+@media (max-width: 1025px) {
+  .content.lms .course-info-detail {
+    padding-left: initial;
+    padding-right: initial;
+  }
+}
