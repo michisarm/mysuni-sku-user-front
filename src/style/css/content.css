@@ -2155,7 +2155,7 @@ i.icon.testHeader02::before {
 }
 
 /* Web Page Cube Embed iFrame CSS 오류 수정 */
-@media (max-width: 1025px) {
+@media (max-width: 1301px) {
   .content.lms .course-info-detail {
     padding-left: initial;
     padding-right: initial;
