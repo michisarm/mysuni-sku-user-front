@@ -267,7 +267,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
           if (item.note.id === id) {
             content = item.note.content;
             playSecond = Math.floor(Number(item.note.playTime));
-            console.log(item.note.playTime);
+            // console.log(item.note.playTime);
           }
         });
       } else {
@@ -395,93 +395,95 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
             style={{ display: 'none' }}
             onClick={handleSeekTo}
           />
-          {noteItem && (
-            <>
-              {pathname.indexOf('new') === -1 && (
-                <>
-                  <div className="learning_note_area">
-                    <div className="cube_title">
-                      <strong>{name}</strong>
-                      <div className="cube_info">
-                        <span>{cubeType}</span>
-                        <span>{timeToHourMinuteFormat(learningTime)}</span>
-                        {/* {
+          <>
+            {pathname.indexOf('new') === -1 && (
+              <>
+                <div className="learning_note_area">
+                  <div className="cube_title">
+                    <strong>{name}</strong>
+                    <div className="cube_info">
+                      <span>{cubeType}</span>
+                      <span>{timeToHourMinuteFormat(learningTime)}</span>
+                      {/* {
                           noteItem.results.length !== 0 && (
                             <span>노트 작성됨</span>
                           )
                         } */}
-                      </div>
                     </div>
-                    {lectureNotePopupState && (
-                      <div className="note_notice">
-                        <Icon className="i_note">
-                          <Image
-                            src={`${process.env.PUBLIC_URL}/images/all/icon-comment-nonenote-80-px.svg`}
-                          />
-                        </Icon>
-                        <p
-                          className="txt"
-                          dangerouslySetInnerHTML={{
-                            __html: getPolyglotText(
-                              `새 창에서 Note를 작성 중입니다.<span>새 창에서 작성 중인 Note를 닫아야<br />해당 학습과정의 Note를 작성하실 수 있습니다.</span>`,
-                              'note-popup-중복창'
-                            ),
-                          }}
+                  </div>
+                  {lectureNotePopupState && (
+                    <div className="note_notice">
+                      <Icon className="i_note">
+                        <Image
+                          src={`${process.env.PUBLIC_URL}/images/all/icon-comment-nonenote-80-px.svg`}
                         />
-                      </div>
-                    )}
-                    {!lectureNotePopupState && (
-                      <>
-                        <div className="note_header">
-                          <div className="note_inner">
-                            <strong className="title">
-                              <PolyglotText
-                                defaultString="작성한 노트"
-                                id="note-popup-작성노트"
-                              />
-                            </strong>
-                            <span
-                              className="count"
-                              dangerouslySetInnerHTML={{
-                                __html: getPolyglotText(
-                                  `{totalCount}개`,
-                                  'note-popup-개',
-                                  {
-                                    totalCount: (noteItem?.totalCount).toString(),
-                                  }
-                                ),
-                              }}
+                      </Icon>
+                      <p
+                        className="txt"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `새 창에서 Note를 작성 중입니다.<span>새 창에서 작성 중인 Note를 닫아야<br />해당 학습과정의 Note를 작성하실 수 있습니다.</span>`,
+                            'note-popup-중복창'
+                          ),
+                        }}
+                      />
+                    </div>
+                  )}
+                  {!lectureNotePopupState && (
+                    <>
+                      <div className="note_header">
+                        <div className="note_inner">
+                          <strong className="title">
+                            <PolyglotText
+                              defaultString="작성한 노트"
+                              id="note-popup-작성노트"
                             />
-
-                            {!isMobile && (
-                              <Button
-                                id="handlePopup"
-                                className="btn_new"
-                                onClick={openEditWindow}
-                              >
-                                <Image
-                                  src={`${process.env.PUBLIC_URL}/images/all/btn-new-write.svg`}
-                                  alt="노트팝업"
-                                />
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            editorVisibleFlag ? 'note_body ing' : 'note_body'
-                          }
-                        >
-                          <LectureNoteAdd
-                            addNote={addNote}
-                            editorVisibleFlag={editorVisibleFlag}
-                            cubeType={cubeType}
-                            noteType="default"
-                            onChange={onChange}
-                            onSave={onSave}
-                            onChangeTime={onChangeTime}
-                            handleEditorVisibleFlag={handleEditorVisibleFlag}
+                          </strong>
+                          <span
+                            className="count"
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                `{totalCount}개`,
+                                'note-popup-개',
+                                {
+                                  totalCount: (
+                                    noteItem?.totalCount || 0
+                                  ).toString(),
+                                }
+                              ),
+                            }}
                           />
+
+                          {!isMobile && (
+                            <Button
+                              id="handlePopup"
+                              className="btn_new"
+                              onClick={openEditWindow}
+                            >
+                              <Image
+                                src={`${process.env.PUBLIC_URL}/images/all/btn-new-write.svg`}
+                                alt="노트팝업"
+                              />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          editorVisibleFlag ? 'note_body ing' : 'note_body'
+                        }
+                      >
+                        <LectureNoteAdd
+                          addNote={addNote}
+                          editorVisibleFlag={editorVisibleFlag}
+                          cubeType={cubeType}
+                          noteType="default"
+                          onChange={onChange}
+                          onSave={onSave}
+                          onChangeTime={onChangeTime}
+                          handleEditorVisibleFlag={handleEditorVisibleFlag}
+                        />
+                        {noteItem && (
                           <LectureNoteList
                             addNote={addNote}
                             noteItem={noteItem}
@@ -492,19 +494,19 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                             onSave={onEdit}
                             onDelete={onDelete}
                           />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-              {noteItem && pathname.indexOf('new') !== -1 && (
-                <>
-                  <LectureNotePopupContainer />
-                </>
-              )}
-            </>
-          )}
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+            {noteItem && pathname.indexOf('new') !== -1 && (
+              <>
+                <LectureNotePopupContainer />
+              </>
+            )}
+          </>
         </>
       )}
     </>

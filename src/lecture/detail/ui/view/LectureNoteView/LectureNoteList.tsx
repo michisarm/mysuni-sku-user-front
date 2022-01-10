@@ -113,8 +113,6 @@ const LectureNoteList: React.FC<Props> = function LectureNoteList({
           setTimeout(() => {
             noteInput.current && noteInput.current.focus();
           }, 100);
-
-          console.log(item.note.playTime);
         }
       } else if (item.note.type === 'edit') {
         reactAlert({
