@@ -258,61 +258,59 @@ const LectureNotePopupContainer: React.FC = ({}) => {
         </Segment>
       ) : (
         <>
-          {noteItem && (
-            <>
-              {
-                <div className="note_pop">
-                  <div className="note_header">
-                    <div className="note_inner">
-                      <strong className="title">
-                        <PolyglotText
-                          defaultString="작성한 노트"
-                          id="note-modal-작성한노트"
-                        />
-                      </strong>
-                      <span
-                        className="count"
-                        dangerouslySetInnerHTML={{
-                          __html: getPolyglotText(
-                            `{totalCount}개`,
-                            'note-modal-개',
-                            {
-                              totalCount: (noteItem?.totalCount).toString(),
-                            }
-                          ),
-                        }}
+          <>
+            {
+              <div className="note_pop">
+                <div className="note_header">
+                  <div className="note_inner">
+                    <strong className="title">
+                      <PolyglotText
+                        defaultString="작성한 노트"
+                        id="note-modal-작성한노트"
                       />
-                    </div>
+                    </strong>
+                    <span
+                      className="count"
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          `{totalCount}개`,
+                          'note-modal-개',
+                          {
+                            totalCount: (noteItem?.totalCount || 0).toString(),
+                          }
+                        ),
+                      }}
+                    />
                   </div>
-                  <div className="note_body">
-                    <div className="cube_title">
-                      <strong>
-                        {window.sessionStorage.getItem('noteCubeName')}
-                      </strong>
-                      <div className="cube_info">
-                        <span>{urlParams.cubeType}</span>
-                        <span>
-                          {timeToHourMinuteFormat(
-                            Number(urlParams.learningTime)
-                          )}
-                        </span>
-                        {/* {
+                </div>
+                <div className="note_body">
+                  <div className="cube_title">
+                    <strong>
+                      {window.sessionStorage.getItem('noteCubeName')}
+                    </strong>
+                    <div className="cube_info">
+                      <span>{urlParams.cubeType}</span>
+                      <span>
+                        {timeToHourMinuteFormat(Number(urlParams.learningTime))}
+                      </span>
+                      {/* {
                             noteItem.results.length !== 0 && (
                               <span>노트 작성됨</span>
                             )
                           } */}
-                      </div>
                     </div>
-                    <LectureNoteAdd
-                      addNote={addNote}
-                      editorVisibleFlag={editorVisibleFlag}
-                      cubeType={urlParams.cubeType}
-                      noteType="popup"
-                      onChange={onChange}
-                      onSave={onSave}
-                      onChangeTime={onChangeTime}
-                      handleEditorVisibleFlag={handleEditorVisibleFlag}
-                    />
+                  </div>
+                  <LectureNoteAdd
+                    addNote={addNote}
+                    editorVisibleFlag={editorVisibleFlag}
+                    cubeType={urlParams.cubeType}
+                    noteType="popup"
+                    onChange={onChange}
+                    onSave={onSave}
+                    onChangeTime={onChangeTime}
+                    handleEditorVisibleFlag={handleEditorVisibleFlag}
+                  />
+                  {noteItem && (
                     <LectureNoteList
                       addNote={addNote}
                       noteItem={noteItem}
@@ -323,11 +321,11 @@ const LectureNotePopupContainer: React.FC = ({}) => {
                       onSave={onEdit}
                       onDelete={onDelete}
                     />
-                  </div>
+                  )}
                 </div>
-              }
-            </>
-          )}
+              </div>
+            }
+          </>
         </>
       )}
     </>
