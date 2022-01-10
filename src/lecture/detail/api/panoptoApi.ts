@@ -40,7 +40,7 @@ export function findPlayTime(cubeId: string): Promise<number> {
     .then((response) => (response && response.data) || null);
 }
 
-export function findByCubIds(cubeIds: string[]): Promise<PlayTimeModel[]> {
+export function findByCubeIds(cubeIds: string[]): Promise<PlayTimeModel[]> {
   //
   const url = `${BASE_URL}/playTimes/findByCubeIds`;
   return axiosApi
