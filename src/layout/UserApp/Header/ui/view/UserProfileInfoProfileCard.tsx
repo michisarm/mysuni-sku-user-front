@@ -109,17 +109,17 @@ function UserProfileinfoProfileCard(props: Props) {
     let result = true;
 
     if (followData) {
-      result = !followData.ids.some((f) => f === props.memberId);
+      result = followData.some((f) => f.followingId === props.memberId);
 
       if (result) {
-        setFollowClassName('following');
-        setIsFollow('Follow');
+        setFollowClassName('unfollowing');
+        setIsFollow('Unfollow');
         if (isFollowFlag === undefined) {
           setIsFollowFlag(false);
         }
       } else {
-        setFollowClassName('unfollowing');
-        setIsFollow('Unfollow');
+        setFollowClassName('following');
+        setIsFollow('Follow');
         if (isFollowFlag === undefined) {
           setIsFollowFlag(true);
         }

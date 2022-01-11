@@ -43,17 +43,20 @@ function ItemBox({
 
   useEffect(() => {
     let result = true;
-    followData?.ids.filter((f) => {
-      if (f === memberList.memberId) {
-        setfollowYN(true);
-        result = false;
-      }
-    });
+
+    if (followData !== undefined) {
+      followData.forEach((f) => {
+        if (f.followingId === memberList.memberId) {
+          setfollowYN(true);
+          result = false;
+        }
+      });
+    }
 
     if (result) {
       setfollowYN(false);
     }
-  }, [followData]);
+  }, [followData, memberList]);
 
   const handleFollow = useCallback(
     async (communityId: string, memberId: string, followState: boolean) => {
@@ -69,7 +72,7 @@ function ItemBox({
         //onUnFollow(communityId, memberId, (activePage - 1) * 8)
       }
     },
-    [activePage]
+    []
   );
   return (
     <>
@@ -185,7 +188,7 @@ export const CommunityMemberView: FunctionComponent = () => {
       return;
     }
     totalPages();
-  }, [memberData]);
+  }, [memberData, totalPages]);
 
   const onPageChange = (data: any) => {
     getAllMember(communityId, (data.activePage - 1) * 8);
