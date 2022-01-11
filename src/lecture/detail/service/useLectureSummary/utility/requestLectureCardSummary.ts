@@ -33,7 +33,7 @@ function getVaildLeaningDate(
     const validStartTime = Math.max(registeredTime, validStartDate);
 
     const parseCreateDate = new Date(validStartTime);
-    parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
+    parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate - 1);
 
     // const year = parseCreateDate.getFullYear();
     // const month = parseCreateDate.getMonth() + 1;
