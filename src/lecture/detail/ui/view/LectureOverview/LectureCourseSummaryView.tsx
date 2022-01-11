@@ -227,7 +227,12 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
             lectureSummary.validStartDate
           )
         : lectureSummary.learningStartDate;
-    const startDateMoment = moment(startDate).format(dateFormat);
+    const startDate2 =
+      moment().valueOf() > lectureSummary.learningEndDate
+        ? lectureSummary.learningStartDate
+        : startDate;
+
+    const startDateMoment = moment(startDate2).format(dateFormat);
 
     const endDate = Math.min(
       lectureSummary.learningEndDate,
