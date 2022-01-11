@@ -2846,3 +2846,738 @@ i.icon.add-black16::after {
 .ui.modal.pl-share-user .content .inner {
   padding: 22px;
 }
+
+/* 마이페이지 V3*/
+.mypagev3 {
+  display: flex;
+  width: 75rem;
+  margin: 0 auto;
+}
+.mypagev3 .mypage_lnb {
+  width: 240px;
+  border-right: #ddd 1px solid;
+}
+.mypagev3 .mypage_contents {
+  width: 910px;
+  margin-left: auto;
+  padding-top: 50px;
+  padding-bottom: 130px;
+}
+.mypagev3 .badge-list-type.list-wrapper ul li {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+.mypagev3 .badge-list-type.list-wrapper {
+  margin-left: -28px;
+  margin-right: -28px;
+}
+
+.mypagev3 .profile-contents-area {
+  width: 100%;
+  border-radius: 0;
+}
+.mypagev3 .profile-contents-area .profile-wrapper {
+  width: 100%;
+}
+.mypagev3 .profile-contents-area .bg-wrapper {
+  width: 100%;
+  height: auto;
+}
+.mypagev3 .profile-contents-area .profile-info-wrapper {
+  width: 100%;
+  background: none;
+  height: auto;
+  border-bottom: #ddd 1px solid;
+}
+.mypagev3 .profile-contents-area .profile-info-wrapper .profile-info-area {
+  width: 100%;
+  padding: 50px 20px 30px;
+}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .profile-info {
+  color: #222;
+  margin-top: 10px;
+}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .profile-info
+  .foll-info {
+  color: #666;
+  margin-top: 10px;
+}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .image-area {
+  margin-top: 0;
+}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .profile-info
+  .foll-info
+  span:last-of-type:before {
+  background: #666;
+}
+.mypagev3 .mypage_menu_list .menu_list {
+  border-bottom: #ddd 1px solid;
+  padding: 10px 0;
+}
+.mypagev3 .mypage_menu_list ul li {
+  padding: 10px 14px;
+  border: 0;
+}
+.mypagev3 .mypage_menu_list ul li a {
+  display: inline-block;
+  padding: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+}
+.mypagev3 .mypage_menu_list ul li a.active {
+  font-weight: bold;
+}
+.mypage_menu_list .icon {
+  margin-right: 5px;
+  transform: translateY(-1px);
+}
+.mypage_menu_list .IconStatus {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-status.svg)
+    no-repeat center;
+}
+.mypage_menu_list .IconBadge {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all//icon-mypage-menu-badge.svg)
+    no-repeat center;
+}
+.mypage_menu_list .IconStamp {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-stamp.svg)
+    no-repeat center;
+}
+.mypage_menu_list .IconNote {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-note.svg)
+    no-repeat center;
+}
+.mypage_menu_list .IconPlay {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-playlist.svg)
+    no-repeat center;
+}
+.mypage_menu_list .IconProfile {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-profile2.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconStatus {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-status-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconBadge {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-badge-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconStamp {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-stamp-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconNote {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-note-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconPlay {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-playlist-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active .IconProfile {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-profile2-bk.svg)
+    no-repeat center;
+}
+.mypage_menu_list .active {
+  color: #222;
+  font-weight: bold;
+}
+.mypagev3 .mypage_menu_list .logout-area {
+  margin: 30px 0;
+  text-align: left;
+  padding-left: 25px;
+}
+.mypagev3 .mypage_menu_list .logout-area .ui.button {
+  color: #999;
+  font-weight: normal;
+}
+
+.mypagev3 .mypage_contents .ui.segment.full {
+  width: 100%;
+}
+
+.mypagev3 .cont-inner {
+  width: 100% !important;
+}
+.mypagev3 .mypage_contents .ui.segment.full {
+  width: 100% !important;
+}
+
+.mypagev3 .search_box .option_box .ui.selection.dropdown.option_detail {
+  width: 25.25rem;
+}
+.mypagev3 .search_box .note_input input {
+  width: 25.25rem;
+}
+.mypagev3 .search_box .ui.table tr th {
+  width: auto;
+  font-size: 0.875rem;
+}
+.mypagev3
+  .admin_calendar
+  .ui.input
+  .react-datepicker-wrapper
+  .react-datepicker__input-container
+  > input {
+  width: 7.25rem !important;
+}
+
+.mypage_contents .top-line span {
+  color: #777;
+}
+.mypage_contents.my-stamp-list .top-line .left-line span {
+  color: #777;
+}
+
+.profile-playlist-contents .top-line {
+  padding: 2.75rem 0 1rem;
+}
+.profile-playlist-contents .top-line:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.profile-playlist-contents .top-line .select-wrap {
+  float: right;
+}
+.profile-playlist-contents .top-line .ui.selection.dropdown {
+  width: 196px;
+  float: left;
+}
+.profile-playlist-contents .top-line .btn-playlist {
+  height: 2rem;
+  padding: 0 1rem;
+  line-height: 30px;
+  font-size: 14px;
+  border: #777 1px solid;
+  margin-left: 10px;
+  color: #777;
+}
+.profile-playlist-contents .group-wrapper {
+  border-top: #ddd 1px solid;
+  padding-top: 20px;
+}
+.playlist-list.list-wrapper {
+  padding-top: 30px;
+}
+
+/* Playlist card */
+.ui.cards.palylist-container {
+  margin-left: -10px !important;
+  margin-right: -10px !important;
+}
+.ui.card.playlist-box.card-item {
+  width: 290px;
+  height: 350px;
+  margin: 10px;
+  padding: 34px 30px;
+  text-align: center;
+  position: relative;
+}
+.playlist-info-box {
+  display: block;
+}
+.playlist-info-box .list-type {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: bold;
+  color: #bbb;
+}
+.ui.card.playlist-box.card-item.recommended .playlist-info-box .list-type {
+  color: #00bfae;
+}
+.ui.card.playlist-box.card-item.like .playlist-info-box .list-type {
+  color: #2cb0e6;
+}
+.playlist-info-box .list-title {
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: bold;
+  margin-top: 6px;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.playlist-info-box .list-course {
+  margin-top: 16px;
+  font-size: 14px;
+}
+.ui.card.playlist-box.card-item .maker-info-box {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  width: 100%;
+}
+.ui.card.playlist-box.card-item .maker-info-box .maker-thumb {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+}
+.ui.card.playlist-box.card-item .maker-info-box .maker-thumb img {
+  max-width: 100%;
+}
+.ui.card.playlist-box.card-item .maker-info-box .maker-user {
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* Playlist Nodata */
+.ui.segment.full .playlist-view-content .no-cont-wrap {
+  padding: 150px 0;
+}
+.ui.segment.full .playlist-list.list-wrapper .no-cont-wrap .text {
+  font-size: 18px;
+  margin-top: 24px;
+}
+.playlist-list .no-cont-wrap .btn-playlist.big {
+  margin-top: 30px;
+  padding: 14px 48px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #4c4c4c;
+  font-weight: bold;
+  border: #4c4c4c 1px solid;
+}
+
+/* Playlist Detail-List */
+.profile-playlist-contents .mypage-title-wrap {
+  padding-bottom: 16px;
+  position: relative;
+}
+.profile-playlist-contents .mypage-title-wrap .btn-txt.btn-tolist {
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  font-size: 14px;
+  color: #4c4c4c;
+  text-decoration: underline;
+}
+.ui.playlist-view-tab.menu {
+  min-height: 2.81rem;
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #4c4c4c;
+  box-shadow: none;
+  position: relative;
+}
+.ui.playlist-view-tab.menu a.item {
+  display: block;
+  padding: 14px 24px;
+  text-align: center;
+  border-radius: 0.25rem 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: #777;
+  height: 48px;
+  border-bottom: #4c4c4c 1px solid;
+}
+.ui.playlist-view-tab.menu a.item:before {
+  display: none;
+}
+.ui.playlist-view-tab.menu a.item.active {
+  border: 1px solid #4c4c4c;
+  border-bottom: 1px solid #fff;
+  font-weight: 900;
+  background: #fff;
+  color: #4c4c4c;
+}
+.ui.playlist-view-tab.menu a.item:hover {
+  background: #fff;
+}
+.profile-playlist-contents .playlist-list.detail-list-wrapper {
+  padding-top: 10px;
+}
+.playlist-detail-infobox .playlist-tit {
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 36px;
+}
+.playlist-detail-infobox .playlist-subtxt {
+  font-size: 14px;
+  line-height: 22px;
+  margin-top: 8px;
+}
+.playlist-detail-infobox .playlist-sub-infobox {
+  margin-top: 26px;
+  overflow: hidden;
+}
+.playlist-list .f-left {
+  float: left;
+}
+.playlist-list .f-right {
+  float: right;
+}
+.playlist-list .f-left > * {
+  float: left;
+}
+.playlist-list .f-right > * {
+  float: left;
+}
+.playlist-sub-infobox .maker-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  margin-right: 10px;
+}
+.playlist-sub-infobox .maker-thumb img {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.playlist-sub-infobox .maker-user {
+  height: 36px;
+  line-height: 36px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+.playlist-sub-infobox .maker-date {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 11px;
+  position: relative;
+  font-size: 14px;
+}
+.playlist-sub-infobox .maker-date:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.playlist-detail-infobox .f-right .label {
+  height: 36px;
+  line-height: 36px;
+  margin-left: 10px;
+}
+.playlist-detail-infobox .f-right .label + .label {
+  padding-left: 10px;
+  position: relative;
+}
+.playlist-detail-infobox .f-right .label + .label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.playlist-recommend-message {
+  background: #f3f8f7;
+  margin-top: 26px;
+  border-radius: 6px;
+  padding: 16px 20px;
+  font-size: 14px;
+  line-height: 24px;
+}
+.playlist-recommend-message .playlist-message-tit {
+  font-weight: bold;
+  color: #00bfae;
+  margin-right: 20px;
+}
+.playlist-detail-content {
+  margin-top: 40px;
+}
+.playlist-view-tab.menu .playlist-view-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.playlist-view-tab.menu .playlist-view-right .ui.label {
+  position: relative;
+}
+.playlist-view-tab.menu .playlist-view-right .ui.label + .label {
+  margin-left: 10px;
+  padding-left: 10px;
+}
+.playlist-view-tab.menu .playlist-view-right .ui.label + .label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+i.icon.list-recommended {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-recommended.svg)
+    0 0 no-repeat;
+}
+i.icon.list-like {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-like.svg)
+    0 0 no-repeat;
+}
+.ui.label.onlytext i.icon.cog16 {
+  width: 16px;
+  height: 16px;
+}
+i.icon.cog16 {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-cog-16-px.svg)
+    0 0 no-repeat;
+}
+i.icon.plus.round16 {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: #777 1px solid;
+  color: #777;
+  margin-right: 6px;
+}
+i.icon.plus.round16 span {
+  color: #777;
+}
+i.icon.plus.round16:before {
+  font-size: 4px;
+  line-height: 14px;
+  display: block;
+  height: 14px;
+  text-align: center;
+  width: 100%;
+}
+.playlist-view-content .list-top {
+  overflow: hidden;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #444;
+}
+.playlist-view-content .list-top .list-top-left > div {
+  margin-right: 10px;
+}
+.playlist-view-content .list-top .list-top-left > div + div {
+  padding-left: 10px;
+  position: relative;
+}
+.playlist-view-content .list-top .list-top-left > div + div:before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+/* 게시판 */
+.playlist-detail-wrap {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.playlist-detail-wrap .ui.table {
+  border: 0;
+}
+.playlist-detail-wrap .ui.table td {
+  text-align: center;
+  padding: 18px;
+}
+.playlist-detail-wrap .ui.table td:first-child {
+  padding-left: 30px;
+}
+.playlist-detail-wrap .ui.table td:last-child {
+  padding-right: 30px;
+}
+.playlist-detail-wrap .ui.table td.title {
+  text-align: left;
+}
+.playlist-detail-wrap .ui.table td.title a {
+  font-weight: 600;
+}
+.playlist-list .list-thumb-wrap {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  vertical-align: inherit;
+}
+.playlist-list .list-thumb-wrap img.image {
+  display: block;
+  height: 100%;
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Playlist Detail-List > 편집하기 */
+.ui.button.btn-delete-list {
+  border: #777 1px solid;
+  color: #777;
+  font-size: 14px;
+  padding: 8px 16px;
+  height: 32px;
+}
+.ui.label.onlytext.btn-add-list {
+  margin-left: 10px;
+  display: inline-block;
+  height: 16px;
+}
+.ui.label.onlytext.btn-add-list .icon {
+  width: 16px;
+  height: 16px;
+}
+.playlist-view-content .list-top.active .ui.label.onlytext {
+  margin-top: 8px;
+}
+.playlist-view-content .list-top.active i.icon.cog16 {
+  background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-cog-active-16-px.svg)
+    0 0 no-repeat;
+}
+.playlist-view-content .list-top.active .btn-modify-list {
+  color: #00bfae !important;
+  font-weight: 700 !important;
+}
+.playlist-list .ui.button.btn-control {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border: #999 1px solid;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+.playlist-list .ui.button.btn-control i.icon {
+  margin: 0 !important;
+  display: inline-block;
+  color: #999;
+  font-size: 12px;
+  vertical-align: top;
+}
+.playlist-list .ui.button.btn-control + .btn-control {
+  margin-left: 6px;
+}
+
+/* Comment */
+.playlist-view-content .comments-sort:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.ui.comments.base {
+  margin-top: 20px;
+}
+.ui.comments.base > .comment .content .text {
+  margin-right: 0 !important;
+  word-break: break-all;
+}
+.ui.comments.base > .comment .content .text span.tag {
+  color: #00bfae;
+  margin-right: 10px;
+}
+
+/* 카드 진도 상황 */
+.state-course-holder .label-state-cube.l-step0 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-play.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step1 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-10.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step2 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-20.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step3 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-30.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step4 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-40.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step5 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-50.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step6 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all//icon-lms-cube-learing-ing-60.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step7 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-70.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step8 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-80.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step9 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-ing-90.svg')
+    center no-repeat;
+}
+.state-course-holder .label-state-cube.l-step10 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-lms-cube-learing-completed.svg')
+    center no-repeat;
+}

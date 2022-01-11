@@ -3,6 +3,8 @@ export enum MyPageContentType {
   EarnedStampList = 'EarnedStampList',
   EarnedNoteList = 'EarnedNoteList',
   MyProfile = 'MyProfile',
+  Playlist = 'Playlist',
+  PlaylistDetail = 'PlaylistDetail',
 }
 
 export enum MyPageContentTypeName {
@@ -10,4 +12,6 @@ export enum MyPageContentTypeName {
   EarnedStampList = 'My Stamp',
   EarnedNoteList = 'Note',
   MyProfile = 'My Profile',
+  Playlist = 'Playlist',
+  PlaylistDetail = 'PlaylistDetail',
 }
