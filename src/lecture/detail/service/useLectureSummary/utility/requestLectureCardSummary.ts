@@ -21,7 +21,7 @@ import moment from 'moment';
 
 function getVaildLeaningDate(
   validLearningDate: number,
-  validEndDate: number,
+  validStartDate: number,
   cardRelatedStudent?: MyCardRelatedStudentsRom
 ) {
   if (
@@ -30,7 +30,9 @@ function getVaildLeaningDate(
     validLearningDate
   ) {
     const { registeredTime } = cardRelatedStudent.cardStudent;
-    const parseCreateDate = new Date(registeredTime);
+    const validStartTime = Math.max(registeredTime, validStartDate);
+
+    const parseCreateDate = new Date(validStartTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
     // const year = parseCreateDate.getFullYear();
@@ -38,7 +40,7 @@ function getVaildLeaningDate(
     // const day = parseCreateDate.getDate();
     //
     // const result = `${year}.${month}.${day}`;
-    return Math.min(parseCreateDate.getTime(), validEndDate);
+    return Math.max(parseCreateDate.getTime(), validStartDate);
   } else {
     return 0;
   }
@@ -91,18 +93,25 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
-    validLearningDate:
-      getVaildLeaningDate(
-        validLearningDate,
-        moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
-        cardRelatedStudent
-      ) || moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+    // validLearningDate:
+    //   getVaildLeaningDate(
+    //     validLearningDate,
+    //     moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
+    //     cardRelatedStudent
+    //   ) || moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
     learningStartDate: moment(cardContents.learningPeriod.startDate)
       .startOf('day')
       .valueOf(),
     learningEndDate: moment(cardContents.learningPeriod.endDate)
       .endOf('day')
       .valueOf(),
+    validStartDate: cardRelatedStudent?.cardStudent?.registeredTime || 0,
+    validEndDate:
+      getVaildLeaningDate(
+        validLearningDate,
+        moment(cardContents.learningPeriod.startDate).endOf('day').valueOf(),
+        cardRelatedStudent
+      ) || moment(cardContents.learningPeriod.endDate).endOf('day').valueOf(),
     restrictLearningPeriod: cardContents.restrictLearningPeriod,
     complete: cardRelatedStudent!.cardStudent?.complete || false,
     learningState: cardRelatedStudent?.cardStudent?.learningState || '',

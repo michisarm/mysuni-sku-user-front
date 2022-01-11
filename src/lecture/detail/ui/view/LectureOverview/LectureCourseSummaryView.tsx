@@ -203,23 +203,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
     const satisfaction =
       useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
 
-    const validLearningStartDate = moment(
-      lectureStructure.card.student?.registeredTime
-    ).format('YYYY-MM-DD');
-    // const validLearningEndDate = moment(
-    //   lectureSummary.restrictLearningPeriod
-    //     ? Math.min(
-    //         lectureSummary.learningEndDate,
-    //         lectureSummary.validLearningDate
-    //       )
-    //     : lectureSummary.learningEndDate
-    // ).format('YYYY-MM-DD');
-
     const [onAlertOpen, setAlertOpen] = useState(false);
-
-    const validLearningEndDate = moment(
-      lectureSummary.validLearningDate
-    ).format('YYYY-MM-DD');
 
     const escFunction = useCallback(
       (event) => {
@@ -232,26 +216,38 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
       [onAlertOpen]
     );
 
+    const userLanguage = SkProfileService.instance.skProfile.language;
+    const dateFormat =
+      (userLanguage === 'English' && 'DD-MM-YYYY') || 'YYYY-MM-DD';
+
+    const startDate =
+      lectureSummary.learningState === LearningState.Progress
+        ? Math.max(
+            lectureSummary.learningStartDate,
+            lectureSummary.validStartDate
+          )
+        : lectureSummary.learningStartDate;
+    const startDateMoment = moment(startDate).format(dateFormat);
+
+    const endDate = Math.min(
+      lectureSummary.learningEndDate,
+      lectureSummary.validEndDate
+    );
+
+    const endDateMoment = moment(endDate).format(dateFormat);
+
     useEffect(() => {
       //
       document.addEventListener('keydown', escFunction, false);
-      const userLanguage = SkProfileService.instance.skProfile.language;
-      const dateFormat =
-        (userLanguage === 'English' && 'DD-MM-YYYY') || 'YYYY-MM-DD';
-      const startDate = moment(lectureSummary.learningStartDate).format(
-        dateFormat
-      );
-      const validDate = moment(lectureSummary.validLearningDate).format(
-        dateFormat
-      );
 
       if (
         lectureSummary.restrictLearningPeriod &&
         !(lectureSummary.learningState === LearningState.Passed)
       ) {
         if (
-          moment().valueOf() >
-          moment(lectureSummary.validLearningDate).valueOf()
+          moment().valueOf() <
+            moment(lectureSummary.learningStartDate).valueOf() ||
+          moment().valueOf() > endDate
         ) {
           setAlertOpen(true);
           reactAlert({
@@ -262,7 +258,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
             message: parsePolyglotHTML(
               'card-overview-alerttxt2',
               'date',
-              `${startDate} ~ ${validDate}`,
+              `${startDateMoment} ~ ${endDateMoment}`,
               '교육기간이 만료되어 학습카드에 접근할 수 없습니다.'
             ),
             onClose: () => {
@@ -283,7 +279,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
             message: parsePolyglotHTML(
               'card-overview-alerttxt1',
               'date',
-              validDate,
+              endDateMoment,
               'YYYY-MM-DD 까지 학습하실 수 있습니다 default'
             ),
             onClose: () => {},
@@ -322,7 +318,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                         id="card-overview-valid"
                       />
                     </span>
-                    <span>{`${validLearningStartDate} ~ ${validLearningEndDate}`}</span>
+                    <span>{`${startDateMoment} ~ ${endDateMoment}`}</span>
                   </Label>
                 )}
                 <Label className="bold onlytext">
