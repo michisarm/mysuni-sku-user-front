@@ -3,7 +3,6 @@ import { NameValue, OffsetElementList } from '@nara.platform/accent';
 import { getAxios } from 'shared/api/Axios';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { MadeByMySelf } from './models/MadeByMySelf';
-import { MyPlaylists } from './models/MyPlaylists';
 import { PlaylistCardAdditionSdo } from './models/PlaylistCardAdditionSdo';
 import { PlaylistDetail } from './models/PlaylistDetail';
 import { PlaylistRecommendationSdo } from './models/PlaylistRecommendationSdo';
@@ -15,9 +14,9 @@ const BASE_URL = '/api/learning/playlists';
 
 //  Playlist 생성.
 export function registerPlaylist(
+  title: string,
   description: string,
-  expose: boolean,
-  title: string
+  expose: boolean
 ): Promise<string | undefined> {
   const axios = getAxios();
 
@@ -48,11 +47,11 @@ export function findPlaylistDetail(
 export function findUserIdentitiesRelatedToPlaylist(
   playlistId: string,
   playlistType: PlaylistType
-): Promise<UserIdentities | undefined> {
+): Promise<UserIdentities[] | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}/userIdentities/?type=${playlistType}`;
 
-  return axios.get<UserIdentities>(url).then(AxiosReturn);
+  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
 }
 
 // 내가 만든 Playlist 에 카드 추가.
@@ -84,7 +83,7 @@ export function findMyPlaylistsByDenizenId(
   denizenId: string
 ): Promise<PlaylistDetailSummary[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL}/byDenizenId?=${denizenId}`;
+  const url = `${BASE_URL}/byDenizenId?denizenId=${denizenId}`;
 
   return axios.get<PlaylistDetailSummary[]>(url).then(AxiosReturn);
 }
@@ -94,7 +93,7 @@ export function findPlaylistsMadeByMySelf(): Promise<
   MadeByMySelf[] | undefined
 > {
   const axios = getAxios();
-  const url = `${BASE_URL}/madeByMyself`;
+  const url = `${BASE_URL}/madeByMySelf`;
 
   return axios.get<MadeByMySelf[]>(url).then(AxiosReturn);
 }
