@@ -1,7 +1,7 @@
 import { createStore } from './Store';
-import { FollowModel } from '../model/FollowModel';
+import { Follows } from 'community/ui/data/community/models/Follows';
 
 const [setFollowModel, onFollowModel, getFollowModel, useFollowModel] =
-  createStore<FollowModel>();
+  createStore<Follows[]>();
 
 export { setFollowModel, onFollowModel, getFollowModel, useFollowModel };
