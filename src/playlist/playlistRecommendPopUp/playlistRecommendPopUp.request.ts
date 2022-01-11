@@ -4,7 +4,7 @@ import { recommendPlaylist } from 'playlist/data/apis';
 import { useEffect } from 'react';
 import {
   followingToMemberList,
-  setMemberList,
+  setFollowingList,
 } from './playlistRecommendPopUp.store';
 
 export function requestRecommendPlaylist(
@@ -30,7 +30,7 @@ export async function requestFollowing() {
 
   if (followingUser !== undefined) {
     const memberList = followingToMemberList(followingUser.results);
-    setMemberList(memberList);
+    setFollowingList(memberList);
   }
 }
 
@@ -38,7 +38,7 @@ export function useRequestFollowing() {
   useEffect(() => {
     requestFollowing();
     return () => {
-      setMemberList([]);
+      setFollowingList([]);
     };
   }, []);
 }

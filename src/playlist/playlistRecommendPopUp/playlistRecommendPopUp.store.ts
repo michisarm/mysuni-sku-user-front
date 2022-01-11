@@ -31,9 +31,15 @@ export const [
   getIsOpenPlaylistRecommendPopUp,
 ] = createStore<boolean>(false);
 
-export const [useMemberList, setMemberList, getMemberList] = createStore<
+export const [useMySuniUser, setMySuniUser, getMySuniUser] = createStore<
   MemberList[]
 >([]);
+
+export const [useDepartmentMember, setDepartmentMember, getDepartmentMember] =
+  createStore<MemberList[]>([]);
+
+export const [useFollowingList, setFollowingList, getFollowingList] =
+  createStore<MemberList[]>([]);
 
 export const [
   useCheckedMemberList,

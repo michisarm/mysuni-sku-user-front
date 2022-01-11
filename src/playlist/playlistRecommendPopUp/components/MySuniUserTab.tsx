@@ -3,18 +3,18 @@ import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { onCheckMember } from '../playlistRecommendPopUp.events';
 import {
   useCheckedMemberList,
-  useMemberList,
+  useMySuniUser,
 } from '../playlistRecommendPopUp.store';
 import { ProfileComponent } from './ProfileComponent';
 
 export function MySuniUserTab() {
-  const memberList = useMemberList();
+  const mySuniUser = useMySuniUser();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
 
   const isAllChecked = useMemo(
-    () => checkedMemberList.length === memberList.length,
-    [checkedMemberList, memberList]
+    () => checkedMemberList.length === mySuniUser.length,
+    [checkedMemberList, mySuniUser]
   );
 
   const checkedMemberIds = useMemo(
@@ -43,7 +43,7 @@ export function MySuniUserTab() {
         </div>
       </div>
       <div className="sh-left-bottom">
-        {memberList.length === 0 ? (
+        {mySuniUser.length === 0 ? (
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
@@ -63,7 +63,7 @@ export function MySuniUserTab() {
               />
             </div>
             <div className="sh-user-list">
-              {memberList.map((member) => (
+              {mySuniUser.map((member) => (
                 <div className="user-prf" id={member.id}>
                   <div className="user-check">
                     <Checkbox
