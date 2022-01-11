@@ -19,6 +19,7 @@ import Note, { getConvertEnter } from '../../model/Note';
 import {
   requestAppendCubeList,
   requestCubeList,
+  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
@@ -40,7 +41,6 @@ import { MyPageRouteParams } from '../../../myTraining/model/MyPageRouteParams';
 import { setNoteCount, getNoteCount } from '../../store/NoteCountStore';
 import CategoryColorType from '../../../shared/model/CategoryColorType';
 import { parsePolyglotString } from '../../../shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../../lecture/model/LangSupport';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { playSecondToString } from '../logic/NoteHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
@@ -248,6 +248,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
           await deleteNoteById(id);
 
           params.pageNo === '1' && (await requestCubeList());
+          params.pageNo === '1' && (await requestNoteCount());
 
           params.pageNo === '2' && (await requestCubeListByFolderId());
           params.pageNo === '2' && (await requestNoteCountByFolderId());
@@ -256,6 +257,8 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
           // await requestNoteCount();
           // const noteCount = getNoteCount() || 0;
           // noteCount > 0 && setNoteCount(noteCount - 1);
+
+          setNoteUdoItem(undefined);
         },
       });
     },
@@ -376,8 +379,7 @@ const NoteView: React.FC<NoteViewProps> = function NoteView({
                   </strong>
                   <Link
                     className="time"
-                    // to={`/lecture/card/${item.lectureRom.cardId}/cube/${item.lectureRom.cubeId}/view/${item.note.cubeType}`}
-                    to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/Webpage`}
+                    to={`/lecture/card/${item.cardId}/cube/${item.cubeId}/view/${item.cubeType}`}
                   >
                     <p>{parsePolyglotString(item.cubeName)}</p>
                   </Link>
