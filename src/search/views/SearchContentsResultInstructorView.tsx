@@ -62,7 +62,7 @@ export function SearchContentsResultInstructorView() {
                           ? profileImg
                           : expert.photo_id.startsWith('http')
                           ? expert.photo_id
-                          : `https://mysuni.sk.com${expert.photo_id}`
+                          : `https://image.mysuni.sk.com/suni-asset${expert.photo_id}`
                       }
                       alt="강사이미지"
                       className="t_thumb"

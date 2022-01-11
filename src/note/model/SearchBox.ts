@@ -2,16 +2,15 @@ import moment from 'moment';
 
 export interface SearchBox {
   content?: string;
-  name?: string;
+  cubeName?: string;
   cubeId?: string;
   cardId?: string;
   folderId?: string;
   collegeId?: string;
-  channelId?: string;
   offset?: number;
   limit?: number;
-  createStartDate?: number;
-  createEndDate?: number;
+  startDate?: number;
+  endDate?: number;
 }
 
 export function getEmptySearchBox(): SearchBox {
@@ -19,15 +18,10 @@ export function getEmptySearchBox(): SearchBox {
     limit: 10,
     offset: 0,
     content: '',
-    name: '',
+    cubeName: '',
     collegeId: '',
-    channelId: '',
-    createStartDate: moment()
-      .startOf('day')
-      .subtract(1, 'months')
-      .toDate()
-      .getTime(),
-    createEndDate: moment().endOf('day').toDate().getTime(),
+    startDate: moment().startOf('day').subtract(1, 'months').toDate().getTime(),
+    endDate: moment().endOf('day').toDate().getTime(),
   };
 }
 

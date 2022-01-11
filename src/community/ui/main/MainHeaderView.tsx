@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Area } from '../../../tracker/model/ActionType';
 
 import { Label, Modal, Button } from 'semantic-ui-react';
@@ -7,6 +7,7 @@ import { requestUnfollow, requestFollow } from './main.request.services';
 import { CommunityProfileModal } from '../userProfileInfo/CommunityProfileModal';
 import { checkExternalInstructor } from '../app.services';
 import { showAlert } from '../../packages/alert/Alert';
+import { SkProfileService } from 'profile/stores';
 
 type ModalType = 'follower' | 'following';
 
@@ -179,6 +180,7 @@ export function MainHeaderView() {
     profileNickName,
     followerCount,
     followingCount,
+    displayName,
   } = main;
 
   return (
@@ -212,7 +214,8 @@ export function MainHeaderView() {
                     }}
                     style={{ cursor: 'pointer', display: 'inline-block' }}
                   >
-                    {profileNickName || profileName || ''}
+                    {displayName ||
+                      SkProfileService.instance.skProfile.profileViewName}
                   </div>
                 </div>
                 <div className="part">

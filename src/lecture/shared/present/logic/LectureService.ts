@@ -44,6 +44,7 @@ import { SkProfileService } from '../../../../profile/stores';
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import CardQdo from 'lecture/model/learning/CardQdo';
 import { patronInfo } from '@nara.platform/dock';
+import EnrolledCardModel from 'lecture/model/EnrolledCardModel';
 
 @autobind
 class LectureService {
@@ -69,6 +70,12 @@ class LectureService {
 
   @observable
   totalLectureCount: number = 0;
+
+  @observable
+  enrolledCount: number = 0;
+
+  @observable
+  enrolledList: EnrolledCardModel[] = [];
 
   // @observable
   // _recommendLectures: RecommendLectureRdo[] = [];
@@ -234,7 +241,7 @@ class LectureService {
     );
 
     const cardNotes =
-      (await this.myTrainingApi.findCardNoteList(
+      (await this.lectureApi.findCardNoteList(
         findReulst.results.map((card) => card.id)
       )) || [];
 
@@ -242,7 +249,7 @@ class LectureService {
       //
       const myLectureCard = card;
       myLectureCard.useNote = cardNotes.some(
-        (note: any) => note.cardId === card.id
+        (note: string) => note === card.id
       );
       return myLectureCard;
     });
@@ -354,6 +361,14 @@ class LectureService {
   clearCollegeLectures() {
     //
     return runInAction(() => (this._userLectureCards = []));
+  }
+
+  @action
+  clearEnrolledList() {
+    //
+    runInAction(() => {
+      this.enrolledList = [];
+    });
   }
 
   @action
@@ -733,6 +748,8 @@ class LectureService {
       this.completedCount = (countModel && countModel.completedCount) || 0;
 
       this.retryCount = (countModel && countModel.retryCount) || 0;
+
+      this.enrolledCount = (countModel && countModel.enrolledCount) || 0;
     });
   }
 
@@ -980,8 +997,52 @@ class LectureService {
   }
 
   @action
+  sortEnrolledCards(column: string, direction: Direction) {
+    //
+    const propKey = convertToKeyInMyLearningTable(column);
+
+    if (direction === Direction.ASC) {
+      this.enrolledList = this.enrolledList.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this.enrolledList = this.enrolledList.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
+    }
+  }
+
+  @action
   clearAllTabCount() {
     this.requiredLecturesCount = 0;
+  }
+
+  @action
+  async findEnrolledList() {
+    //
+    const result = await this.lectureApi.findEnrolledList();
+
+    const cardIds = (await result.map((card) => card.cardId)) || [];
+
+    const usingNoteList = await this.lectureApi.findCardNoteList(cardIds);
+
+    runInAction(() => {
+      result &&
+        result.map((card) => {
+          card.useNote =
+            (usingNoteList &&
+              usingNoteList.length > 0 &&
+              usingNoteList.some(
+                (noteCard: string) => noteCard === card.cardId
+              )) ||
+            false;
+          this.enrolledList.push(new EnrolledCardModel(card));
+        });
+    });
+
+    result.length !== this.enrolledCount && this.countLearningTab();
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
@@ -1025,6 +1086,8 @@ export const convertToKeyInMyLearningTable = (column: string): any => {
       return 'stampCount';
     case '획득일자':
       return 'passedTime';
+    case '학습예정일':
+      return 'longLearningStartDate';
     default:
       return '';
   }

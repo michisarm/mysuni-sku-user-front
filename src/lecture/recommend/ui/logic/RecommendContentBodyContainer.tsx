@@ -88,8 +88,9 @@ async function requestFindRecommendCards() {
       return;
     }
 
-    const recommendCardRoms: RecommendCardRom[] | undefined =
-      getRecommendCardRoms();
+    const recommendCardRoms:
+      | RecommendCardRom[]
+      | undefined = getRecommendCardRoms();
 
     setRecommendPage({ ...recommendPageViewModel, allChannelLoading: true });
 
@@ -205,8 +206,6 @@ function AllChannelsContainerView() {
       </div>
     );
   }
-
-  console.log(recommendCardRoms);
 
   return (
     <div className="recommend-area">

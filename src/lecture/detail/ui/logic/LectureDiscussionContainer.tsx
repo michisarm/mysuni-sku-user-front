@@ -11,7 +11,7 @@ import {
   useRequestLectureDiscussion,
   useRequestLectureFeedbackContent,
 } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -19,7 +19,7 @@ import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackCont
 import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
 import { useParams } from 'react-router-dom';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Comment } from '@sku/skuniv-ui-comment';
 import {
   getLectureComment,
@@ -189,6 +189,31 @@ export default function LectureDiscussionContainer() {
     parsePolyglotString(lectureFeedbackContent?.content) === ''
       ? true
       : false;
+
+  const onNoContentAlert = () => {
+    reactAlert({
+      title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+      message: getPolyglotText(
+        '댓글 내용을 입력하세요.',
+        'feedback-comment-notice-nonetext-message'
+      ),
+    });
+  };
+
+  const onRemoveCommentConfirm = () => {
+    return new Promise<boolean>((resolve) => {
+      reactConfirm({
+        title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+        message: getPolyglotText(
+          '댓글을 삭제 하시겠습니까?',
+          'feedback-comment-delete-message'
+        ),
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
+      });
+    });
+  };
+
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -369,6 +394,8 @@ export default function LectureDiscussionContainer() {
                       setLectureComment({ ...lectureComment, commentsCount });
                     }
                   }}
+                  onRemoveCommentConfirm={onRemoveCommentConfirm}
+                  onNoContentAlert={onNoContentAlert}
                 />
               </div>
               <CommunityProfileModal

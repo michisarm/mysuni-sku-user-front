@@ -79,7 +79,7 @@ class LectureCommentsContainer extends Component<Props, State> {
     });
   }
 
-  async onRemoveCommentConfirm() {
+  onRemoveCommentConfirm() {
     return new Promise<boolean>((resolve) => {
       reactConfirm({
         title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
