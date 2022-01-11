@@ -1,1 +1,1 @@
-export type PlaylistType = 'MadeByMyself' | 'MadeByOthers' | 'Recommended';
+export type PlaylistType = 'MadeByMyself' | 'MadeByOthers' | 'Recommended' | '';
