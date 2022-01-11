@@ -178,7 +178,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
     if (searchType === 'name') {
       setSearchBox({
         ...searchBox,
-        cubeName: encodeURIComponent(searchText),
+        cubeName: searchText,
         content: '',
         collegeId: college,
         // channelId: channel,
@@ -187,7 +187,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
       setSearchBox({
         ...searchBox,
         cubeName: '',
-        content: encodeURIComponent(searchText),
+        content: searchText,
         collegeId: college,
         // channelId: channel,
       });
