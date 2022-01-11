@@ -9,7 +9,7 @@ import { getSearchBox } from '../../store/SearchBoxStore';
 import { setNoteList, getNoteList } from '../../store/NoteListStore';
 import { setFolderNoteCount } from '../../store/FolderNoteCountStore';
 
-export function requestFolder() {
+export async function requestFolder() {
   findFolders().then(async (result) => {
     if (result) {
       setFolder(result);
@@ -17,7 +17,7 @@ export function requestFolder() {
   });
 }
 
-export function requestCubeListByFolderId() {
+export async function requestCubeListByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
   if (searchBox.folderId === '' || searchBox.folderId === undefined) {
@@ -27,12 +27,28 @@ export function requestCubeListByFolderId() {
   findNoteListByFolderId(searchBox).then(async (result) => {
     if (result) {
       // note or cube 명칭 정리
+      result.results.map((note) => {
+        const noteContents = note.noteContents;
+
+        noteContents.sort(
+          (a, b) =>
+            (b.modifiedTime === 0 ? b.registeredTime : b.modifiedTime) -
+            (a.modifiedTime === 0 ? a.registeredTime : a.modifiedTime)
+        );
+
+        if (note.cubeType === 'Video' || note.cubeType === 'Audio') {
+          noteContents.sort((a, b) => b.playSecond - a.playSecond);
+        }
+
+        note.noteContents = noteContents;
+      });
+
       setNoteList(result);
     }
   });
 }
 
-export function requestNoteCountByFolderId() {
+export async function requestNoteCountByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
   if (searchBox.folderId === '' || searchBox.folderId === undefined) {
@@ -44,7 +60,7 @@ export function requestNoteCountByFolderId() {
   });
 }
 
-export function requestAppendCubeListByFolderId() {
+export async function requestAppendCubeListByFolderId() {
   const searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
   if (searchBox.folderId === '') {
     searchBox.folderId = undefined;
