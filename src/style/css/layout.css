@@ -515,27 +515,27 @@ i.icon.del24:before {
     0 0 no-repeat !important;
 }
 i.icon.commu-list16:before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/icon-community-list-16-px.svg')
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-community-list-16-px.svg')
     0 0 no-repeat !important;
   background-size: 100% auto;
 }
 i.icon.delete-gray16:before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-delete-16-px-gray.svg')
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-delete-16-px-gray.svg')
     0 0 no-repeat !important;
   background-size: 100% auto;
 }
 i.icon.reply-gray16:before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-reply-16-px-gray.svg')
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-reply-16-px-gray.svg')
     0 0 no-repeat !important;
   background-size: 100% auto;
 }
 i.icon.edit-gray16:before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/icon-comment-edit-16-px-gray.svg')
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-comment-edit-16-px-gray.svg')
     0 0 no-repeat !important;
   background-size: 100% auto;
 }
 i.icon.info20:before {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/icon-tooltip-gray-20-px.svg')
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-tooltip-gray-20-px.svg')
     no-repeat 0 0 !important;
   background-size: 100% 100% !important;
 }
