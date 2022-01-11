@@ -59,16 +59,6 @@ export function requestCubeList() {
       });
 
       setNoteList(result);
-
-      setNoteCount(
-        result.results && result.results.length > 0
-          ? result.results
-              .map(
-                (note) => (note.noteContents && note.noteContents.length) || 0
-              )
-              .reduce((p, n) => p + n)
-          : 0
-      );
     }
   });
 }
@@ -87,12 +77,6 @@ export function requestAppendCubeList() {
           ...noteList,
           results: noteList?.results.concat(result.results),
         });
-
-        // setNoteCount(
-        //   result.results
-        //     .map((note) => note.noteContents.length || 0)
-        //     .reduce((p, n) => p + n)
-        // );
       }
     }
   });
@@ -123,19 +107,17 @@ export function requestColleges() {
   });
 }
 
-export function requestNoteCount(flag?: string) {
+export function requestNoteCount() {
   let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
-  if (searchBox.startDate === undefined) {
+  if (searchBox === undefined) {
     searchBox = getEmptySearchBox();
   }
 
-  return findNoteCount(
-    flag && flag === 'searchBox' ? searchBox : undefined
-  ).then(async (result) => {
+  return findNoteCount(searchBox).then(async (result) => {
     if (result) {
       // setNoteList(result);
-      !flag && setNoteCount(result);
+      setNoteCount(result);
       return result;
     }
   });

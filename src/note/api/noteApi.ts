@@ -44,11 +44,25 @@ export function findNoteCount(
   searchBox?: SearchBox
 ): Promise<number | undefined> {
   let url = `${BASE_URL}/allNoteCnt`;
+  let data = null;
+
   if (searchBox) {
-    // url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&channelId=${searchBox.channelId}&collegeId=${searchBox.collegeId}`;
-    url = `${BASE_URL}/allNoteCnt?limit=${searchBox.limit}&offset=${searchBox.offset}&content=${searchBox.content}&name=${searchBox.cubeName}&createStartDate=${searchBox.startDate}&createEndDate=${searchBox.endDate}&collegeId=${searchBox.collegeId}`;
+    url = `${BASE_URL}/allNoteCnt`;
+    data = searchBox;
   }
-  return axiosApi.get<number>(url).then(AxiosReturn);
+  return axiosApi
+    .get<number>(url, {
+      params: {
+        limit: data?.limit,
+        offset: data?.offset,
+        content: data?.content,
+        cubeName: data?.cubeName,
+        startDate: data?.startDate,
+        endDate: data?.endDate,
+        collegeId: data?.collegeId,
+      },
+    })
+    .then(AxiosReturn);
 }
 
 // 폴더별 노트 전체 카운트 조회
