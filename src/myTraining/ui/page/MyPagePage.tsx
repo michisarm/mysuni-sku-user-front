@@ -42,7 +42,6 @@ function MyPagePage({
   const history = useHistory();
   const noteCount = useNoteCount() || 0;
   const params = useParams<MyPageRouteParams>();
-  const [activeTab, setActiveTab] = useState('badge');
 
   const [photoImageBase64, setPhotoImageBase64] = useState('');
   const [bgImageBase64, setBgImageBase64] = useState('');
@@ -62,39 +61,39 @@ function MyPagePage({
     collegeService!.findAllColleges();
   }, []);
 
-  const getTabs = (): TabItemModel[] => {
-    return [
-      {
-        name: MyPageContentType.EarnedBadgeList,
-        item: getTabItem(MyPageContentType.EarnedBadgeList, issuedCount),
-        // render: () => <MyBadgeListContainer />
-      },
-      {
-        name: MyPageContentType.EarnedStampList,
-        item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
-        // render: () => <MyStampListContainer />
-      },
-      {
-        name: MyPageContentType.EarnedNoteList,
-        item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
-        // render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
-      },
-    ] as TabItemModel[];
-  };
+  // const getTabs = (): TabItemModel[] => {
+  //   return [
+  //     {
+  //       name: MyPageContentType.EarnedBadgeList,
+  //       item: getTabItem(MyPageContentType.EarnedBadgeList, issuedCount),
+  //       // render: () => <MyBadgeListContainer />
+  //     },
+  //     {
+  //       name: MyPageContentType.EarnedStampList,
+  //       item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
+  //       // render: () => <MyStampListContainer />
+  //     },
+  //     {
+  //       name: MyPageContentType.EarnedNoteList,
+  //       item: getTabItem(MyPageContentType.EarnedNoteList, noteCount),
+  //       // render: () => (params.pageNo === '1' ? <NotePage noteCount={noteCount} /> : <FolderPage noteCount={noteCount} />)
+  //     },
+  //   ] as TabItemModel[];
+  // };
 
-  const getTabItem = (contentType: MyPageContentType, count: number) => {
-    return (
-      <>
-        {MyPageContentTypeName[contentType]}
-        <span className="count">+{(count > 0 && count) || 0}</span>
-      </>
-    );
-  };
+  // const getTabItem = (contentType: MyPageContentType, count: number) => {
+  //   return (
+  //     <>
+  //       {MyPageContentTypeName[contentType]}
+  //       <span className="count">+{(count > 0 && count) || 0}</span>
+  //     </>
+  //   );
+  // };
 
-  const onChangeTab = useCallback((tab: TabItemModel): string => {
-    history.push(myTrainingRoutePaths.myPageTab(tab.name));
-    return myTrainingRoutePaths.myPageTab(tab.name);
-  }, []);
+  // const onChangeTab = useCallback((tab: TabItemModel): string => {
+  //   history.push(myTrainingRoutePaths.myPageTab(tab.name));
+  //   return myTrainingRoutePaths.myPageTab(tab.name);
+  // }, []);
 
   const onLogout = useCallback(() => {
     localStorage.clear();
@@ -122,18 +121,18 @@ function MyPagePage({
     }
   }, []);
 
-  const obj = {
-    profile: (
-      <MyPageProfileUpdateContainer
-        clickTabHandler={clickTabHandler}
-        onChangeImageFile={onChangeImageFile}
-      />
-    ),
-    badge: <MyPageBadgeListContainer />,
-    stamp: <MyStampListContainer />,
-    note: <NotePage noteCount={noteCount} />,
-    folder: <FolderPage noteCount={noteCount} />,
-  };
+  // const obj = {
+  //   profile: (
+  //     <MyPageProfileUpdateContainer
+  //       clickTabHandler={clickTabHandler}
+  //       onChangeImageFile={onChangeImageFile}
+  //     />
+  //   ),
+  //   badge: <MyPageBadgeListContainer />,
+  //   stamp: <MyStampListContainer />,
+  //   note: <NotePage noteCount={noteCount} />,
+  //   folder: <FolderPage noteCount={noteCount} />,
+  // };
 
   return (
     <>
