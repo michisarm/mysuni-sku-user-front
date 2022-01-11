@@ -55,7 +55,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   );
   const [editFolder, setEditFolder] = useState<boolean>(false);
   const [originFolder, setOriginFolder] = useState<Folder | undefined>();
-  // const [folerNoteCount, setFolerNoteCount] = useState<number>(0);
 
   const [activeFolderId, setActiveFolderId] = useState<string>('');
   const [popupText, setPopupText] = useState<string>('');
@@ -468,10 +467,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     `총 <strong>{count}개의 학습과정</strong>`,
                     'mypage-folder-학습과정수',
                     {
-                      count: (
-                        (noteList.results && noteList.results.length) ||
-                        0
-                      ).toString(),
+                      count: (noteList.totalCount || 0).toString(),
                     }
                   ),
                 }}

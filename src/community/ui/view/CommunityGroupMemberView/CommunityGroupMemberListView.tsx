@@ -48,17 +48,20 @@ function ItemBox({
 
   useEffect(() => {
     let result = true;
-    followData?.ids.filter((f) => {
-      if (f === groupMemberList.memberId) {
-        setfollowYN(true);
-        result = false;
-      }
-    });
+
+    if (followData !== undefined) {
+      followData.forEach((f) => {
+        if (f.followingId === groupMemberList.memberId) {
+          setfollowYN(true);
+          result = false;
+        }
+      });
+    }
 
     if (result) {
       setfollowYN(false);
     }
-  }, [followData]);
+  }, [followData, groupMemberList.memberId]);
 
   const handleFollow = useCallback(
     async (communityId: string, memberId: string, followState: boolean) => {
@@ -198,7 +201,7 @@ export const CommunityGroupMemberListView: React.FC<Props> =
 
     useEffect(() => {
       MemberData();
-    }, []);
+    }, [MemberData]);
 
     const totalPages = () => {
       let totalPage = Math.ceil(memberData!.totalCount / 8);
@@ -213,7 +216,7 @@ export const CommunityGroupMemberListView: React.FC<Props> =
         return;
       }
       totalPages();
-    }, [memberData]);
+    }, [memberData, totalPages]);
 
     const onPageChange = async (data: any) => {
       const newData = await getGroupMemberData(

@@ -16,6 +16,7 @@ import Note from '../../model/Note';
 import {
   requestNoteExcelList,
   requestCubeList,
+  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { SearchBox } from '../../model/SearchBox';
 import { setSearchBox } from '../../store/SearchBoxStore';
@@ -172,6 +173,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
   const handleSubmitClick = useCallback(async () => {
     setSearchBox({ ...searchBox, offset: 0 });
     await requestCubeList();
+    await requestNoteCount();
   }, [searchBox]);
 
   useEffect(() => {
@@ -349,7 +351,7 @@ const NoteHeaderView: React.FC<NoteHeaderViewProps> = function NoteHeaderView({
               __html: getPolyglotText(
                 `총 <strong>{count}개의 학습과정</strong>`,
                 'mypage-note-학습과정갯수',
-                { count: (noteList.results.length || 0).toString() }
+                { count: (noteList.totalCount || 0).toString() }
               ),
             }}
           />

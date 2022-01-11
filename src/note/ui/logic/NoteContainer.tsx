@@ -4,6 +4,7 @@ import NoteListView from '../view/NoteListView';
 import {
   requestCubeList,
   requestColleges,
+  requestNoteCount,
 } from '../../service/useNote/requestNote';
 import { getEmptySearchBox } from '../../model/SearchBox';
 import { useSearchBox, setSearchBox } from '../../store/SearchBoxStore';
@@ -30,7 +31,7 @@ const NoteContainer: React.FC<NoteContainerProps> = function NoteContainer({
     setSearchBox({ ...searchBox, offset: 0 });
     requestCubeList();
     requestFolder();
-    // requestNoteCount();
+    requestNoteCount();
     requestColleges();
   }, []);
 
