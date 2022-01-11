@@ -52,33 +52,26 @@ class BoardDetailContentHeaderView extends Component<Props> {
           <div className="qna-navi">
             {/*<strong>{qna.question.requestChannel}</strong>*/}
             <div>
-              <span>
-              {`${getCategoryName(qna.question.mainCategoryId)}`}
-              </span>
-              <span>
-                {`${getCategoryName(qna.question.subCategoryId)}`}
-              </span>
+              <span>{`${getCategoryName(qna.question.mainCategoryId)}`}</span>
+              <span>{`${getCategoryName(qna.question.subCategoryId)}`}</span>
             </div>
-            <strong className="stat done">
+            <strong
+              className={`stat ${
+                (qna.question.state === QnaState.AnswerCompleted && 'done') ||
+                'wait'
+              }`}
+            >
               {getStateToString(qna.question.state)}
             </strong>
           </div>
           <div className="user-info">
-            {
-              finalOperator && finalOperator.denizenId ? (
-                <span className="date">
-                  <span>
-                    {parsePolyglotString(finalOperator.operatorName)}
-                  </span>
-                  <span>
-                    {finalOperator.email}
-                  </span>
-                  <span>
-                    {time && moment(time).format('YYYY.MM.DD HH:mm')}
-                  </span>
-                </span>
-              ) : null
-            }
+            {finalOperator && finalOperator.denizenId ? (
+              <span className="date">
+                <span>{parsePolyglotString(finalOperator.operatorName)}</span>
+                <span>{finalOperator.email}</span>
+                <span>{time && moment(time).format('YYYY.MM.DD HH:mm')}</span>
+              </span>
+            ) : null}
           </div>
           <div className="actions">
             {onClickModify && (

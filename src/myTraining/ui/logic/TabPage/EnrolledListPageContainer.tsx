@@ -1,5 +1,7 @@
 import { mobxHelper, Offset } from '@nara.platform/accent';
+import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import EnrolledCardModel from 'lecture/model/EnrolledCardModel';
 import { inject, observer } from 'mobx-react';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import NoSuchContentsView from 'myTraining/ui/view/NoSuchContentsView';
@@ -20,13 +22,11 @@ import { TabHeader } from '../../../ui/view/tabHeader';
 import { useScrollMove } from '../../../useScrollMove';
 
 interface EnrolledListPageContainerProps {
-  myTrainingService?: MyTrainingService;
-  personalCubeService?: PersonalCubeService;
+  lectureService?: LectureService;
 }
 
 function EnrolledListPageContainer({
-  myTrainingService,
-  personalCubeService,
+  lectureService,
 }: EnrolledListPageContainerProps) {
   //
 
@@ -40,8 +40,7 @@ function EnrolledListPageContainer({
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
 
-  const { myTrainingTableViews, myTrainingTableCount2 } = myTrainingService!;
-  const { enrolledCount } = personalCubeService!;
+  const { enrolledCount, enrolledList, clearEnrolledList } = lectureService!;
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
@@ -55,37 +54,29 @@ function EnrolledListPageContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   useEffect(() => {
-    myTrainingService!.clearAllTableViews();
-    myTrainingService!.initFilterRdo(contentType);
+    // myTrainingService!.clearAllTableViews();
+    // myTrainingService!.initFilterRdo(contentType);
 
-    if (params.pageNo === '1') {
-      requestMyTrainings();
-      return;
-    }
-
-    const currentPageNo = parseInt(params.pageNo);
-    const limit = currentPageNo * PAGE_SIZE;
-
-    requestmyTrainingsWithPage({ offset: 0, limit });
-
-    return () => {};
+    clearEnrolledList();
+    requestMyTrainings();
   }, [contentType]);
 
   const requestMyTrainings = async () => {
     setIsLoading(true);
-    if (contentType === MyLearningContentType.Enrolled) {
-      await myTrainingService!.findEnrollTableViews();
-      setIsLoading(false);
-    }
-  };
-
-  const requestmyTrainingsWithPage = async (offset: Offset) => {
-    setIsLoading(true);
-    await myTrainingService!.findAllTableViewsWithPage(offset);
-    checkShowSeeMore();
+    // await myTrainingService!.findEnrollTableViews();
+    await lectureService!.findEnrolledList();
     setIsLoading(false);
     scrollOnceMove();
   };
+
+  // const requestmyTrainingsWithPage = async (offset: Offset) => {
+  //   setIsLoading(true);
+  //   // await myTrainingService!.findAllTableViewsWithPage(offset);
+  //   await lectureService!.findEnrolledList();
+  //   // checkShowSeeMore();
+  //   setIsLoading(false);
+  //   scrollOnceMove();
+  // };
 
   // ------------------------------------------------- header -------------------------------------------------
 
@@ -93,75 +84,75 @@ function EnrolledListPageContainer({
 
   // ------------------------------------------------- table -------------------------------------------------
 
-  const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  // const checkShowSeeMore = (): void => {
+  //   const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
-      setShowSeeMore(false);
-      return;
-    }
-    if (myTrainingTableCount <= PAGE_SIZE) {
-      setShowSeeMore(false);
-      return;
-    }
+  //   if (myTrainingTableViews.length >= myTrainingTableCount) {
+  //     setShowSeeMore(false);
+  //     return;
+  //   }
+  //   if (myTrainingTableCount <= PAGE_SIZE) {
+  //     setShowSeeMore(false);
+  //     return;
+  //   }
 
-    setShowSeeMore(true);
-  };
+  //   setShowSeeMore(true);
+  // };
 
-  const onClickSeeMore = () => {
-    setTimeout(() => {
-      ReactGA.pageview(window.location.pathname, [], 'Learning');
-    }, 1000);
+  // const onClickSeeMore = () => {
+  //   setTimeout(() => {
+  //     ReactGA.pageview(window.location.pathname, [], 'Learning');
+  //   }, 1000);
 
-    const currentPageNo = parseInt(params.pageNo);
-    const nextPageNo = currentPageNo + 1;
+  //   const currentPageNo = parseInt(params.pageNo);
+  //   const nextPageNo = currentPageNo + 1;
 
-    const limit = PAGE_SIZE;
-    const offset = currentPageNo * PAGE_SIZE;
+  //   const limit = PAGE_SIZE;
+  //   const offset = currentPageNo * PAGE_SIZE;
 
-    requestmyTrainingsWithPage({ offset, limit });
+  //   requestmyTrainingsWithPage({ offset, limit });
 
-    history.replace(`./${nextPageNo}`);
-  };
+  //   history.replace(`./${nextPageNo}`);
+  // };
 
-  const intersectionCallback = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
-      entries.forEach((c) => {
-        if (c.isIntersecting) {
-          onClickSeeMore();
-        }
-      });
-    },
-    [onClickSeeMore]
-  );
+  // const intersectionCallback = useCallback(
+  //   (entries: IntersectionObserverEntry[]) => {
+  //     console.log(entries);
+  //     entries.forEach((c) => {
+  //       if (c.isIntersecting) {
+  //         onClickSeeMore();
+  //       }
+  //     });
+  //   },
+  //   [onClickSeeMore]
+  // );
 
-  const observer = useMemo<IntersectionObserver | null>(() => {
-    const options = {
-      threshold: 0.01,
-    };
-    if (window.IntersectionObserver !== undefined) {
-      const next = new IntersectionObserver(intersectionCallback, options);
-      return next;
-    }
+  // const observer = useMemo<IntersectionObserver | null>(() => {
+  //   const options = {
+  //     threshold: 0.01,
+  //   };
+  //   if (window.IntersectionObserver !== undefined) {
+  //     const next = new IntersectionObserver(intersectionCallback, options);
+  //     return next;
+  //   }
 
-    return null;
-  }, [intersectionCallback]);
+  //   return null;
+  // }, [intersectionCallback]);
 
-  const seeMoreButtonViewRef = useCallback(
-    (ref: HTMLDivElement | null) => {
-      if (ref !== null) {
-        observer?.observe(ref);
-      } else {
-        observer?.disconnect();
-      }
-    },
-    [observer]
-  );
+  // const seeMoreButtonViewRef = useCallback(
+  //   (ref: HTMLDivElement | null) => {
+  //     if (ref !== null) {
+  //       observer?.observe(ref);
+  //     } else {
+  //       observer?.disconnect();
+  //     }
+  //   },
+  //   [observer]
+  // );
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      myTrainingService!.sortTableViews(column, direction);
+      lectureService!.sortEnrolledCards(column, direction);
     },
     [contentType]
   );
@@ -198,13 +189,10 @@ function EnrolledListPageContainer({
   );
 
   // ------------------------------------------------- contents -------------------------------------------------
-  const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
+  const onViewDetail = (e: any, card: EnrolledCardModel) => {
     e.preventDefault();
 
-    const cardId =
-      myTraining.serviceType === 'Card'
-        ? myTraining.serviceId
-        : myTraining.cardId;
+    const cardId = card.cardId || card.cubeId;
 
     const params: LectureParams = {
       cardId,
@@ -222,8 +210,8 @@ function EnrolledListPageContainer({
         ),
         action: 'Click',
         label: `${
-          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
-        } - ${parsePolyglotString(myTraining.name)}`,
+          card.type === card.cardId ? '(Card)' : '(Cube)'
+        } - ${parsePolyglotString(card.name)}`,
       });
     }
     scrollSave();
@@ -238,7 +226,7 @@ function EnrolledListPageContainer({
       {
         <TabHeader
           resultEmpty={!(enrolledCount > 0)}
-          totalCount={myTrainingTableCount2}
+          totalCount={enrolledCount}
         >
           <div
             className="list-number"
@@ -247,7 +235,7 @@ function EnrolledListPageContainer({
                 '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
                 'learning-학보드-게시물총수',
                 {
-                  totalCount: (myTrainingTableCount2 || 0).toString(),
+                  totalCount: (enrolledCount || 0).toString(),
                 }
               ),
             }}
@@ -256,18 +244,18 @@ function EnrolledListPageContainer({
       }
       {(enrolledCount > 0 && (
         <>
-          {(myTrainingTableCount2 > 0 && (
+          {(enrolledCount > 0 && (
             <EnrolledListPageTableView
-              totalCount={myTrainingTableCount2}
+              totalCount={enrolledCount}
               headerColumns={headerColumns}
-              learningList={myTrainingTableViews}
+              learningList={enrolledList}
               showSeeMore={showSeeMore}
               onClickRow={onViewDetail}
-              onClickSeeMore={onClickSeeMore}
+              // onClickSeeMore={onClickSeeMore}
               getOrderIcon={getOrderIcon}
               onClickSort={handleClickSort}
               isLoading={isLoading}
-              seeMoreButtonViewRef={seeMoreButtonViewRef}
+              // seeMoreButtonViewRef={seeMoreButtonViewRef}
             />
           )) || (
             <NoSuchContentsView
@@ -294,8 +282,9 @@ function EnrolledListPageContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
-    'personalCube.personalCubeService'
+    // 'myTraining.myTrainingService',
+    // 'personalCube.personalCubeService'
+    'lecture.lectureService'
   )
 )(observer(EnrolledListPageContainer));
 

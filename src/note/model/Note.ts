@@ -1,16 +1,23 @@
-import { PatronKey } from '@nara.platform/accent';
+import { PolyglotString } from '../../shared/viewmodel/PolyglotString';
+import NoteContent from './NoteContent';
 
 export default interface Note {
-  id: string;
-  patronKey: PatronKey;
-  cardId: string;
-  cubeId: string;
+  // id: string;
+  // patronKey: PatronKey;
   cubeType: string;
   content: string;
-  folderId: string;
   playTime: string;
-  registeredTime: number;
+  cardId: string;
+  cardName: PolyglotString;
+  collegeId: string;
+  cubeId: string;
+  cubeName: PolyglotString;
+  denizenId: string;
+  folderId: string;
+  id: string;
   modifiedTime: number;
+  noteContents: NoteContent[];
+  registeredTime: number;
 }
 
 export function getConvertEnter(content: string): string {
