@@ -42,6 +42,23 @@ export function requestCubeList() {
 
   findNoteList(searchBox).then(async (result) => {
     if (result) {
+      result.results.map((note) => {
+        const noteContents = note.noteContents;
+
+        noteContents.sort(
+          (a, b) =>
+            (b.modifiedTime === 0 ? b.registeredTime : b.modifiedTime) -
+            (a.modifiedTime === 0 ? a.registeredTime : a.modifiedTime)
+        );
+
+        if (note.cubeType === 'Video' || note.cubeType === 'Audio') {
+          noteContents.sort((a, b) => b.playSecond - a.playSecond);
+        }
+
+        note.noteContents = noteContents;
+        console.log(note.noteContents);
+      });
+
       setNoteList(result);
 
       setNoteCount(

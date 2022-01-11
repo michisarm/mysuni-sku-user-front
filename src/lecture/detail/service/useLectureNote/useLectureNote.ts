@@ -40,7 +40,7 @@ export async function requestLectureNote(cubeId: string) {
         lectureNoteItemNote.cubeType = result.cubeType;
         lectureNoteItemNote.folderId = result.folderId;
         lectureNoteItemNote.id = item.id;
-        lectureNoteItemNote.modifiedTime = result.modifiedTime;
+        lectureNoteItemNote.modifiedTime = item.modifiedTime;
         lectureNoteItemNote.type = 'default';
         lectureNoteItemNote.content = item.content;
 
@@ -62,20 +62,22 @@ export async function requestLectureNote(cubeId: string) {
         noteItems.push(noteItem);
       });
 
+    noteItems.sort(
+      (a, b) =>
+        (b.note.modifiedTime === 0
+          ? b.note.registeredTime
+          : b.note.modifiedTime) -
+        (a.note.modifiedTime === 0
+          ? a.note.registeredTime
+          : a.note.modifiedTime)
+    );
+
     if (result.cubeType === 'Video' || result.cubeType === 'Audio') {
       noteItems.sort((a, b) => b.note.playTime - a.note.playTime);
-    } else {
-      noteItems.sort(
-        (a, b) =>
-          (b.note.modifiedTime === 0
-            ? b.note.registeredTime
-            : b.note.modifiedTime) -
-          (a.note.modifiedTime === 0
-            ? a.note.registeredTime
-            : a.note.modifiedTime)
-      );
     }
   }
+
+  console.log(noteItems);
 
   setLectureNoteItem({
     results: JSON.parse(JSON.stringify(noteItems)),
