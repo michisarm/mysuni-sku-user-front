@@ -1,7 +1,7 @@
-import { deleteNote } from "../../api/noteApi";
+import { deleteNote } from '../../api/noteApi';
 
-export function deleteNoteById(id: string) {
-  deleteNote(id);
+export async function deleteNoteById(id: string) {
+  return deleteNote(id);
   // const deleteItem = await deleteNote(id);
   // return deleteItem;
 }

@@ -28,10 +28,9 @@ export function BadgeLearningTimeView({
     history.push('/my-training/learning/Completed/pages/1');
   }, []);
 
-  const { hour, minute } = useMemo(
-    () => timeToHourMinute(totalLearningTime),
-    [totalLearningTime]
-  );
+  const { hour, minute } = useMemo(() => timeToHourMinute(totalLearningTime), [
+    totalLearningTime,
+  ]);
 
   return (
     <>
@@ -134,10 +133,9 @@ export function BadgeLearningTimeView({
                         '<strong>{companyAvgBadgeCount}</strong>개',
                         'home-PersonalBoard-갯수AVG',
                         {
-                          companyAvgBadgeCount:
-                            badgeLearningTimeItem.companyAvgBadgeCount
-                              ? badgeLearningTimeItem.companyAvgBadgeCount + ''
-                              : 0 + '',
+                          companyAvgBadgeCount: badgeLearningTimeItem.companyAvgBadgeCount
+                            ? badgeLearningTimeItem.companyAvgBadgeCount + ''
+                            : 0 + '',
                         }
                       ),
                     }}
