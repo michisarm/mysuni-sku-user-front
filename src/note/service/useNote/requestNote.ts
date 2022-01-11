@@ -56,7 +56,6 @@ export function requestCubeList() {
         }
 
         note.noteContents = noteContents;
-        console.log(note.noteContents);
       });
 
       setNoteList(result);

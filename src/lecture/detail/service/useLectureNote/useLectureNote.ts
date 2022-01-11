@@ -77,8 +77,6 @@ export async function requestLectureNote(cubeId: string) {
     }
   }
 
-  console.log(noteItems);
-
   setLectureNoteItem({
     results: JSON.parse(JSON.stringify(noteItems)),
     totalCount: result ? result.noteContents.length : 0,

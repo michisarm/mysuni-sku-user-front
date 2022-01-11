@@ -331,7 +331,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     <ul>
                       {' '}
                       {folder.folders.idNames.map((m, index) => {
-                        console.log(m);
+                        // console.log(m);
                         return (
                           <li
                             key={index}
