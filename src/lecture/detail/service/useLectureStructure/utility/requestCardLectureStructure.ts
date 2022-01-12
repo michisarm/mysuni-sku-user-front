@@ -43,8 +43,8 @@ import { getDefaultLang } from '../../../../model/LangSupport';
 import { findCardPisAgreement } from '../../../api/profileApi';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
-import { findByCubIds } from '../../../api/panoptoApi';
 import PlayTimeModel from '../../../model/PlayTimeModel';
+import { findByCubeIds } from '../../../api/panoptoApi';
 
 function parseCubeTestItem(
   card: Card,
@@ -408,7 +408,7 @@ function parseDurationableCubeItem(
   const playTime = playTimes?.find((pt) => pt.cubeId === id);
   let duration = 0;
   if (playTime) {
-    duration = playTime.playedSeconds / playTime.duration;
+    duration = (playTime.playedSeconds / playTime.duration) * 100;
   }
 
   const item: LectureStructureDurationableCubeItem = {
@@ -978,7 +978,7 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const playTimes: PlayTimeModel[] = await findByCubIds(cubeIds);
+  const playTimes: PlayTimeModel[] = await findByCubeIds(cubeIds);
   // const playTimes: PlayTimeModel[] = [];
 
   let cubeItems: LectureStructureCubeItem[] = [];

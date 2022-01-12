@@ -45,7 +45,7 @@ export async function callRegisterWatchLog(
     start,
     end,
   };
-  await savePlayTime(playTimeSdo);
+  const duration = await savePlayTime(playTimeSdo);
 }
 
 export async function checkStudent() {

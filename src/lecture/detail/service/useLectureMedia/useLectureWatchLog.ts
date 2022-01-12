@@ -42,6 +42,7 @@ export const getWatchLogSumViewCount: GetWatchLogSumViewCount = () => {
   getWatchLogSumViewSeconds();
 };
 
+// not used
 export const lectureConfirmProgress: LectureConfirmProgress = () => {
   return confirmProgress();
 };
