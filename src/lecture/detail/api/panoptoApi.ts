@@ -5,16 +5,6 @@ import PlayTimeModel from '../model/PlayTimeModel';
 
 const BASE_URL = '/api/panopto';
 
-function paramsSerializer(paramObj: Record<string, any>) {
-  const params = new URLSearchParams();
-  for (const key in paramObj) {
-    if (paramObj[key] !== undefined) {
-      params.append(key, paramObj[key]);
-    }
-  }
-  return params.toString();
-}
-
 //// playTime
 export function savePlayTime(playTime: PlayTimeSdo): Promise<number> {
   //
@@ -44,7 +34,14 @@ export function findByCubeIds(cubeIds: string[]): Promise<PlayTimeModel[]> {
   //
   const url = `${BASE_URL}/playTimes/findByCubeIds`;
   return axiosApi
-    .get(url, { params: cubeIds, paramsSerializer })
+    .get(url, {
+      params: cubeIds,
+      paramsSerializer: (paramObj) => {
+        const params = new URLSearchParams();
+        paramObj.forEach((param: any) => params.append('cubeIds', param));
+        return params.toString();
+      },
+    })
     .then((response) => (response && response.data) || null);
 }
 

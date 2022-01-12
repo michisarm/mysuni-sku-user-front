@@ -43,7 +43,7 @@ import { getDefaultLang } from '../../../../model/LangSupport';
 import { findCardPisAgreement } from '../../../api/profileApi';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
-import { findByCubeIds } from '../../../api/panoptoApi';
+import { findByCubIds } from '../../../api/panoptoApi';
 import PlayTimeModel from '../../../model/PlayTimeModel';
 
 function parseCubeTestItem(
@@ -378,7 +378,7 @@ function parseDurationableCubeItem(
   cube: Cube,
   order: number,
   cubeStudent?: Student,
-  playTime?: PlayTimeModel
+  playTimes?: PlayTimeModel[]
 ): LectureStructureDurationableCubeItem {
   const {
     id,
@@ -404,12 +404,12 @@ function parseDurationableCubeItem(
   //     ? parseInt(cubeStudent?.durationViewSeconds || '')
   //     : undefined
   // );
-
-  const playSeconds = playTime?.playedSeconds || 0;
-  const duration = playTime?.duration || 0;
-  const progressStep = 0;
-
-  console.log(Math.floor(playSeconds / duration));
+  // console.log(playTimes);
+  const playTime = playTimes?.find((pt) => pt.cubeId === id);
+  let duration = 0;
+  if (playTime) {
+    duration = playTime.playedSeconds / playTime.duration;
+  }
 
   const item: LectureStructureDurationableCubeItem = {
     cardId: card.id,
@@ -426,10 +426,10 @@ function parseDurationableCubeItem(
     can: true,
     state: convertLearningStateToState(cubeStudent?.learningState),
     cube,
-    duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
-      ? parseInt(cubeStudent?.durationViewSeconds || '')
-      : undefined,
-    // duration: Math.floor(playSeconds / duration),
+    // duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
+    //   ? parseInt(cubeStudent?.durationViewSeconds || '')
+    //   : undefined,
+    duration,
     isDurationable: true,
   };
   if (hasTest) {
@@ -776,7 +776,7 @@ async function parseCubeItem(
   cube: Cube,
   order: number,
   cubeStudent?: Student,
-  playTime?: PlayTimeModel
+  playTimes?: PlayTimeModel[]
 ): Promise<LectureStructureCubeItem> {
   const {
     id,
@@ -800,7 +800,7 @@ async function parseCubeItem(
         cube,
         order,
         cubeStudent,
-        playTime
+        playTimes
       );
     }
   }
@@ -978,29 +978,24 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
+  const playTimes: PlayTimeModel[] = await findByCubIds(cubeIds);
+  // const playTimes: PlayTimeModel[] = [];
 
   let cubeItems: LectureStructureCubeItem[] = [];
 
   if (cubes !== undefined) {
-    const videoPlayTimes: PlayTimeModel[] = await findByCubeIds(
-      cubes.map((c) => c.id)
-    );
-
     cubeItems = await Promise.all(
       cubes.map(async (cube) => {
         const cubeStudent = findCubeStudent(cube.id, cubeStudents);
         const order = cardContents.learningContents.findIndex(
           ({ contentId }) => contentId === cube.id
         );
-        const playTime = videoPlayTimes.find(
-          (playTime) => playTime.cubeId == cube.id
-        );
         const cubeItem = await parseCubeItem(
           card,
           cube,
           order,
           cubeStudent,
-          playTime
+          playTimes
         );
         return cubeItem;
       })
