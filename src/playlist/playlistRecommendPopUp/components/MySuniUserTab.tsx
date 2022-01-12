@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
-import { onCheckMember } from '../playlistRecommendPopUp.events';
+import { onSearchMySuniUser } from '../playlistRecommendPopUp.events';
 import {
   useCheckedMemberList,
   useMySuniUser,
@@ -10,6 +10,7 @@ import { ProfileComponent } from './ProfileComponent';
 export function MySuniUserTab() {
   const mySuniUser = useMySuniUser();
   const checkedMemberList = useCheckedMemberList();
+  const [isSearchAfter, setIsSearchAfter] = useState(false); // 검색 전인지 후인지 확인하는 상태 값
   const [searchText, setSearchText] = useState('');
 
   const isAllChecked = useMemo(
@@ -30,6 +31,11 @@ export function MySuniUserTab() {
     []
   );
 
+  const onClickSearch = useCallback(() => {
+    onSearchMySuniUser(searchText);
+    setIsSearchAfter(true);
+  }, [searchText]);
+
   return (
     <Tab.Pane className="left-inner">
       <div className="sh-left-top">
@@ -39,11 +45,19 @@ export function MySuniUserTab() {
             placeholder="이름 또는 이메일을 검색해주세요."
             onChange={onChangeSearchText}
           />
-          <Icon className="search link" />
+          <Icon className="search link" onClick={onClickSearch} />
         </div>
       </div>
       <div className="sh-left-bottom">
-        {mySuniUser.length === 0 ? (
+        {!isSearchAfter && (
+          <div className="no-cont-wrap">
+            <Icon className="search50" />
+            <span className="blind">검색전</span>
+            <strong className="no-tit">mySUNI 사용자 검색하기</strong>
+            <div className="text">{`Playlist를 추천할\nmySUNI 사용자 이름 또는 이메일을 검색해보세요!`}</div>
+          </div>
+        )}
+        {isSearchAfter && mySuniUser.length === 0 ? (
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
@@ -70,7 +84,7 @@ export function MySuniUserTab() {
                       className="base"
                       value={member.id}
                       checked={checkedMemberIds.includes(member.id)}
-                      onClick={onCheckMember}
+                      // onClick={onCheckMember}
                     />
                   </div>
                   <ProfileComponent {...member} />

@@ -1,15 +1,17 @@
-import { CheckboxProps } from 'semantic-ui-react';
+import { ButtonProps, CheckboxProps } from 'semantic-ui-react';
 import { requestRecommendPlaylist } from './playlistRecommendPopUp.request';
 import {
   getCheckedMemberList,
   getRecommendation,
   getFollowingList,
-  MemberList,
+  getMySuniUser,
+  getDepartmentMember,
   setCheckedMemberList,
   setFollowingList,
   setIsOpenPlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.store';
-import { onCheckMember } from './helper/onCheckMember';
+import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
+import { isEmpty } from 'lodash';
 
 export function onOpenPlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(true);
@@ -32,19 +34,79 @@ export function onClickRecommendPlaylist() {
   requestRecommendPlaylist(denizenIds, playlistId, recommendation);
 }
 
+// 체크된 멤버 선택 해제
+export function onClearCheckedMember(_: React.MouseEvent, data: ButtonProps) {
+  const memberId = data.id as string;
+  const checkedMemberList = getCheckedMemberList();
+
+  const filteredMemberList = checkedMemberList.filter(
+    (member) => member.id !== memberId
+  );
+
+  setCheckedMemberList(filteredMemberList);
+}
+
 // 팔로우 멤버 체크 선택/해제
 export function onCheckFollowing(_: React.MouseEvent, data: CheckboxProps) {
   const memberId = data.id as string;
+  const isChecked = data.checked || false;
   const following = getFollowingList();
 
-  onCheckMember(memberId, following);
+  onCheckMember(memberId, following, isChecked);
 }
 
-// 팔로우 멤버 체크 전체선택
-export function onAllCheckedMember() {
-  const checkedMemberList = getCheckedMemberList();
+// 팔로우 멤버 전체 선택/해제
+export function onAllCheckedFollowing(
+  _: React.MouseEvent,
+  data: CheckboxProps
+) {
   const memberList = getFollowingList();
-  setCheckedMemberList([...checkedMemberList, ...memberList]);
+  const isChecked = data.checked || false;
+
+  onAllCheckMember(memberList, isChecked);
+}
+
+// 마이써니 사용자 체크 선택/해제
+export function onCheckMySuniUser(_: React.MouseEvent, data: CheckboxProps) {
+  const memberId = data.id as string;
+  const isChecked = data.checked || false;
+  const mySuniUser = getMySuniUser();
+
+  onCheckMember(memberId, mySuniUser, isChecked);
+}
+
+// 마이써니 사용자 전체 선택/해제
+export function onAllCheckedMySuniMember(
+  _: React.MouseEvent,
+  data: CheckboxProps
+) {
+  const isChecked = data.checked || false;
+  const mySuniUser = getMySuniUser();
+
+  onAllCheckMember(mySuniUser, isChecked);
+}
+
+// 부서 구성원 체크 선택/해제
+export function onCheckDepartmentMember(
+  _: React.MouseEvent,
+  data: CheckboxProps
+) {
+  const memberId = data.id as string;
+  const isChecked = data.checked || false;
+  const departmentMember = getDepartmentMember();
+
+  onCheckMember(memberId, departmentMember, isChecked);
+}
+
+// 부서 구성원 전체 선택/해제
+export function onAllCheckDepartmentMember(
+  _: React.MouseEvent,
+  data: CheckboxProps
+) {
+  const isChecked = data.checked || false;
+  const departmentMember = getDepartmentMember();
+
+  onAllCheckMember(departmentMember, isChecked);
 }
 
 // 플레이리스트 추천맴버 전체삭제
@@ -56,6 +118,10 @@ export function onClickAllClearCheckedMember() {
 export function onSearchFollowing(searchText: string) {
   const memberList = getFollowingList();
 
+  if (isEmpty(searchText)) {
+    return;
+  }
+
   const filteredMemberList = memberList.filter(
     (member) =>
       member.name.includes(searchText) || member.email.includes(searchText)
@@ -64,5 +130,20 @@ export function onSearchFollowing(searchText: string) {
   setFollowingList(filteredMemberList);
 }
 
-// 소속 부서 구성원, mySuni사용자 검색
-export function onSearchUser(searchText: string) {}
+// mySuni사용자 검색
+export function onSearchMySuniUser(searchText: string) {
+  if (isEmpty(searchText)) {
+    return false;
+  }
+
+  return true;
+}
+
+// 부서 구성원 검색
+export function onSearchDepartmentMember(searchText: string) {
+  if (isEmpty(searchText)) {
+    return false;
+  }
+
+  return true;
+}

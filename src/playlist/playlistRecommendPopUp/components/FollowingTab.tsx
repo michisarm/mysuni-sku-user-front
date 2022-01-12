@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { onSearchFollowing } from '../playlistRecommendPopUp.events';
 import { useRequestFollowing } from '../playlistRecommendPopUp.request';
@@ -14,6 +14,12 @@ export function FollowingTab() {
   const followingList = useFollowingList();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
+
+  // useEffect(() => {
+  //   return () => {
+  //     setSearchText('');
+  //   }
+  // }, [])
 
   const isAllChecked = useMemo(
     () => checkedMemberList.length === followingList.length,
