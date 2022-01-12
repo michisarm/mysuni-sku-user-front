@@ -26,18 +26,22 @@ function MyPageMadeMyselfPlaylistCardList(props: PlaylistCardTable) {
               stepCount,
               learningTime,
               cardThumbnailImage,
+              cardId,
             } = card;
             const time = timeToHourMinutePaddingFormat(learningTime);
 
             return (
               <Table.Row key={i}>
                 <TableCell>
-                  <Link to="#" className="list-thumb-wrap">
+                  <Link
+                    to={`/lecture/card/${cardId}/view`}
+                    className="list-thumb-wrap"
+                  >
                     <Image src={cardThumbnailImage} alt="학습카드썸네일" />
                   </Link>
                 </TableCell>
                 <TableCell className="title">
-                  <Link to="#">
+                  <Link to={`/lecture/card/${cardId}/view`}>
                     <span className="ellipsis">{cardTitle}</span>
                   </Link>
                 </TableCell>

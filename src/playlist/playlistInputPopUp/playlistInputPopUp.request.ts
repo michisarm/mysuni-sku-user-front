@@ -1,3 +1,5 @@
+import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
+import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 import {
   findPlaylistDetail,
   modifyPlaylist,
@@ -22,18 +24,26 @@ export function requestEditPlaylistInput(
   description: string,
   expose: boolean
 ) {
-  const playlistId = '';
-  const NameValue = [
+  const playlist = getMyPagePlaylistDetail();
+  if (playlist === undefined) {
+    return;
+  }
+  const nameValues = [
     { name: 'title', value: title },
     { name: 'description', value: description },
     { name: 'expose', value: JSON.stringify(expose) },
   ];
-  modifyPlaylist(playlistId, NameValue).then(() => onClosePlaylistInputPopUp());
+  modifyPlaylist(playlist.playlistId, { nameValues })
+    .then(() => onClosePlaylistInputPopUp())
+    .then(() => requestMyPagePlaylistDetail(playlist.playlistId));
 }
 
 export async function requsetPlaylistDetail() {
-  const playlistId = '';
-  const playlistDetail = await findPlaylistDetail(playlistId);
+  const playlist = getMyPagePlaylistDetail();
+  if (playlist === undefined) {
+    return;
+  }
+  const playlistDetail = await findPlaylistDetail(playlist?.playlistId);
 
   if (playlistDetail !== undefined) {
     setPlaylistInputPopUp({

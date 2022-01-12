@@ -12,6 +12,7 @@ async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
 
   const value = cards.map((card) => {
     return {
+      cardId: card.id,
       cardThumbnailImage: card.thumbnailImagePath,
       cardTitle: parsePolyglotString(card.name),
       phaseCount: card.phaseCount,
