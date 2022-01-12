@@ -4,9 +4,9 @@ export interface Registrant {
   backgroundImagePath: string;
   birthDate: string;
   companyCode: string;
-  companyName: PolyglotString;
+  companyName: PolyglotString | null;
   departmentCode: string;
-  departmentName: PolyglotString;
+  departmentName: PolyglotString | null;
   displayNicknameFirst: true;
   duty: string;
   email: string;
@@ -17,7 +17,7 @@ export interface Registrant {
   language: 'Korean' | 'English' | 'Chinese';
   modifiedTime: number;
   modifier: string;
-  name: PolyglotString;
+  name: PolyglotString | null;
   nickname: string;
   phone: string;
   photoImagePath: string;

@@ -8,6 +8,7 @@ import { PlaylistDetail } from './models/PlaylistDetail';
 import { PlaylistRecommendationSdo } from './models/PlaylistRecommendationSdo';
 import { PlaylistType } from './models/PlaylistType';
 import { UserIdentities } from './models/UserIdentities';
+import { NameValueList } from 'shared/model';
 
 const BASE_URL = '/api/learning/playlists';
 
@@ -24,8 +25,8 @@ export function registerPlaylist(
     .then(AxiosReturn);
 }
 
-// Playlist 수정 (name: cardIds, value : List<String>)
-export function modifyPlaylist(playlistId: string, value: NameValue[]) {
+// Playlist 변경 - 카드 리스트 변경 (name: cardIds, value : List<String>)
+export function modifyPlaylist(playlistId: string, value: NameValueList) {
   const axios = getAxios();
   const url = `${BASE_URL}/${playlistId}`;
 
@@ -65,11 +66,11 @@ export function addCardsToPlaylists(
 
 // 내가 볼 수 있는 Playlist 조회.
 export function findMyPlaylists(
-  limit: number,
   offset: number,
   playlistType: PlaylistType
 ): Promise<OffsetElementList<PlaylistDetailSummary> | undefined> {
   const axios = getAxios();
+  const limit = 9;
   const url = `${BASE_URL}/available?limit=${limit}&offset=${offset}&type=${playlistType}`;
 
   return axios
