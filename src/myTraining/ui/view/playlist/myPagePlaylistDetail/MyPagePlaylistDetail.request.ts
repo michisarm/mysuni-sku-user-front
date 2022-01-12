@@ -14,7 +14,8 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     playlistDetail.playlist;
   const { photoImagePath, name, nickname, displayNicknameFirst } =
     playlistDetail.registrant;
-  const { type, registeredTime, recommendation } = playlistDetail.myPlaylist;
+  const { type, registeredTime, recommendation, id } =
+    playlistDetail.myPlaylist;
 
   let registerdDisplayName: string;
   if (displayNicknameFirst) {
@@ -26,6 +27,7 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
   setMyPagePlaylistDetail({
     type,
     playlistId,
+    myPlaylistId: id,
     recommendation,
     playlistTitle: title,
     playlistDescription: description,

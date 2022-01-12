@@ -1,6 +1,7 @@
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import {
   likeByFeedbackId,
   unlikeByFeedbackId,
@@ -11,9 +12,20 @@ import {
   setPlaylistLikeInfo,
 } from './MyPagePlaylistDetailHeader.service';
 import { removeMyPlaylist } from 'playlist/data/apis';
+import myPageRoutePaths from 'myTraining/routePaths';
 
-export function onDeletePlaylistClick(playlistId: string) {
-  removeMyPlaylist(playlistId);
+export async function onDeletePlaylistClick(myPlaylistId: string) {
+  const history = getCurrentHistory();
+  reactConfirm({
+    title: 'Playlist 삭제하기',
+    message:
+      'Playlist를 삭제하시겠습니까 ? \n 추천받은 구성원들에게도 삭제됩니다.',
+    onOk: () => {
+      removeMyPlaylist(myPlaylistId).then(() => {
+        history?.push(myPageRoutePaths.myPagePlaylist());
+      });
+    },
+  });
 }
 
 export function likePlaylist() {

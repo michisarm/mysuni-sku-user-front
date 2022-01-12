@@ -8,6 +8,7 @@ import requestMyPagePlaylistDetail from './MyPagePlaylistDetail.request';
 export interface PlaylistDetail {
   type: PlaylistType;
   playlistId: string;
+  myPlaylistId: string;
   playlistTitle: string;
   playlistDescription: string;
   registerdDisplayName: string;

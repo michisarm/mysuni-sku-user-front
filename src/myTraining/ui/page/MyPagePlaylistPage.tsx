@@ -91,7 +91,7 @@ function PlaylistItem(props: PropsType) {
           className="left moreview"
           onClick={onMyPagePlaylistMoreViewClick}
         >
-          <Icon className="moreview" /> list more
+          <Icon className="moreview" /> more
         </Button>
       )}
       {playlist.totalCount <= playlist.results.length && (
