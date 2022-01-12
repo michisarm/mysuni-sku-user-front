@@ -9,6 +9,7 @@ import {
   requestEditPlaylistInput,
   requestSavePlaylistInput,
 } from './playlistInputPopUp.request';
+import { isEmpty } from 'lodash';
 
 export function onOpenPlaylistInputPopUp() {
   setIsOpenPlaylistInputPopUp(true);
@@ -66,7 +67,7 @@ export function onSavePlaylistInput() {
   const playlistInputPopUp = getPlaylistInputPopUp();
   const { title, description, expose } = playlistInputPopUp;
 
-  if (title === '') {
+  if (isEmpty(title)) {
     reactAlert({
       title: 'Playlist 만들기',
       message: 'Playlist 명을 입력해주세요.',
@@ -93,7 +94,7 @@ export function onEditPlaylistInput() {
   const { title, description, expose } = playlistInputPopUp;
 
   // 필수 입력값 체크
-  if (title === '') {
+  if (isEmpty(title)) {
     reactAlert({
       title: 'Playlist 수정하기',
       message: 'Playlist 명을 입력해주세요.',
