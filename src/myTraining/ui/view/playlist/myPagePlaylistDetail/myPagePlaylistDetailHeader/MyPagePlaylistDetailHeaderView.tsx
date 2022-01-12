@@ -1,6 +1,12 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import React from 'react';
+import {
+  onEditPlaylistInput,
+  onOpenPlaylistInputPopUp,
+} from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
+import { useIsOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.store';
+import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
+import React, { useState } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 import Image from 'shared/components/Image';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -31,7 +37,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
   } = props.playlistDetail;
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
-
+  const isEditModalOpen = useIsOpenPlaylistInputPopUp();
   return (
     <>
       <div className="playlist-detail-info-inner">
@@ -116,7 +122,11 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
                     />
                   </span>
                 </Label>
-                <Label as="button" className="onlytext">
+                <Label
+                  as="button"
+                  className="onlytext"
+                  onClick={onOpenPlaylistInputPopUp}
+                >
                   <Icon className="edit16" />
                   <span>Edit</span>
                 </Label>
@@ -152,6 +162,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
           {recommendation}
         </div>
       ) : null}
+      {isEditModalOpen && <PlaylistInputPopUpView type="EDIT" />}
     </>
   );
 }

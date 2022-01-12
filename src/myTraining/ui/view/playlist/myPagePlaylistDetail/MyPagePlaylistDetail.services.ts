@@ -59,4 +59,5 @@ export interface PlaylistCard {
   completePhaseCount: number;
   learningTime: number;
   stepCount: number;
+  cardId: string;
 }
