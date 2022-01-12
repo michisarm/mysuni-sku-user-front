@@ -1,18 +1,16 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import {
-  onEditPlaylistInput,
-  onOpenPlaylistInputPopUp,
-} from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
+import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { useIsOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.store';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
-import React, { useState } from 'react';
+import { onOpenPlaylistRecommendPopUp } from 'playlist/playlistRecommendPopUp/playlistRecommendPopUp.events';
+import { PlaylistRecommendPopUpView } from 'playlist/playlistRecommendPopUp/PlaylistRecommendPopUpView';
+import React from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 import Image from 'shared/components/Image';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistDetail } from '../MyPagePlaylistDetail.services';
 import {
-  copyPlaylistUrl,
   likePlaylist,
   onDeletePlaylistClick,
   unlikePlaylist,
@@ -113,7 +111,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
                 <Label
                   as="button"
                   className="onlytext"
-                  onClick={() => copyPlaylistUrl(playlistId)}
+                  onClick={onOpenPlaylistRecommendPopUp}
                 >
                   <Icon className="share-comm line" />
                   <span>
@@ -163,7 +161,8 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
           {recommendation}
         </div>
       ) : null}
-      {isEditModalOpen && <PlaylistInputPopUpView type="EDIT" />}
+      <PlaylistInputPopUpView type="EDIT" />
+      <PlaylistRecommendPopUpView />
     </>
   );
 }

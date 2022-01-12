@@ -16,7 +16,7 @@ async function requestMyPagePlaylist() {
     return;
   }
 
-  setMyPagePlaylist({ ...myPagePlaylist, playListIndex: offset });
+  setMyPagePlaylist({ ...myPagePlaylist, offset });
 }
 
 export default requestMyPagePlaylist;

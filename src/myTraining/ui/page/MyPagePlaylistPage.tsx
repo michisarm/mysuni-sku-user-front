@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Button,
   Card,
@@ -10,7 +10,6 @@ import {
 import Image from 'shared/components/Image';
 import myPageRoutePaths from 'myTraining/routePaths';
 import {
-  getMyPagePlaylist,
   MyPlaylistsTable,
   selectOptions,
   useMyPagePlaylist,
@@ -20,12 +19,15 @@ import {
 import {
   playListItemClassName,
   playListItemType,
-  onMyPagePlaylistMoreViewClick,
   onMyPagePlaylistPageFilter,
+  onClickPlaylistSeeMore,
 } from '../view/playlist/myPagePlaylist/MyPagePlaylist.events';
 import { useHistory } from 'react-router-dom';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
+import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
+import { SeeMoreButton } from 'lecture';
 
 interface PropsType {
   playlist: MyPlaylistsTable;
@@ -34,6 +36,42 @@ interface PropsType {
 function PlaylistItem(props: PropsType) {
   const { playlist } = props;
   const history = useHistory();
+  const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
+
+  const intersectionCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((c) => {
+        if (c.isIntersecting) {
+          onClickPlaylistSeeMore();
+        }
+      });
+    },
+    [onClickPlaylistSeeMore]
+  );
+
+  const observer = useMemo<IntersectionObserver | null>(() => {
+    const options = {
+      threshold: 0.01,
+    };
+    if (window.IntersectionObserver !== undefined) {
+      const next = new IntersectionObserver(intersectionCallback, options);
+      return next;
+    }
+
+    return null;
+  }, [intersectionCallback]);
+
+  const seeMoreButtonViewRef = useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref !== null) {
+        observer?.observe(ref);
+      } else {
+        observer?.disconnect();
+      }
+    },
+    [observer]
+  );
+
   return (
     <>
       <CardGroup className="palylist-container">
@@ -85,17 +123,12 @@ function PlaylistItem(props: PropsType) {
           );
         })}
       </CardGroup>
+
       {playlist.totalCount > playlist.results.length && (
-        <Button
-          icon
-          className="left moreview"
-          onClick={onMyPagePlaylistMoreViewClick}
-        >
-          <Icon className="moreview" /> more
-        </Button>
-      )}
-      {playlist.totalCount <= playlist.results.length && (
-        <Button icon className="left moreview" style={{ cursor: 'default' }} />
+        <SeeMoreButton
+          onClick={onClickPlaylistSeeMore}
+          ref={seeMoreButtonViewRef}
+        />
       )}
     </>
   );
@@ -103,26 +136,29 @@ function PlaylistItem(props: PropsType) {
 
 function NoPlaylistItem() {
   return (
-    <div className="no-cont-wrap">
-      <Icon className="no-contents80" />
-      <span className="blind">콘텐츠 없음</span>
-      <div
-        className="text"
-        dangerouslySetInnerHTML={{
-          __html: getPolyglotText(
-            '추천받거나 생성된 Playlist가 없습니다.<br />구성원들과 함께 학습할 Playlist를 만들어보세요!',
-            'mypage-playlist-No플레이리스트'
-          ),
-        }}
-      />
-      <Button className="btn-playlist big">
-        <Icon className="create16" />
-        <PolyglotText
-          id="mypage-playlist-만들기버튼"
-          defaultString="Playlist 만들기"
+    <>
+      <div className="no-cont-wrap">
+        <Icon className="no-contents80" />
+        <span className="blind">콘텐츠 없음</span>
+        <div
+          className="text"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              '추천받거나 생성된 Playlist가 없습니다.<br />구성원들과 함께 학습할 Playlist를 만들어보세요!',
+              'mypage-playlist-No플레이리스트'
+            ),
+          }}
         />
-      </Button>
-    </div>
+        <Button className="btn-playlist big" onClick={onOpenPlaylistInputPopUp}>
+          <Icon className="create16" />
+          <PolyglotText
+            id="mypage-playlist-만들기버튼"
+            defaultString="Playlist 만들기"
+          />
+        </Button>
+      </div>
+      <PlaylistInputPopUpView type="CREATE" />
+    </>
   );
 }
 
@@ -132,50 +168,53 @@ function MyPagePlaylistPage() {
   const playlist = useMyPagePlaylist();
 
   return (
-    <div className="mypage_contents profile-playlist-contents">
-      <strong className="mypage_title">Playlist</strong>
-      <div className="top-line">
-        <span
-          dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              `총 <strong>{totalCount} 개</strong>의 Playlist가 있습니다.`,
-              'mypage-playlist-리스트갯수',
-              {
-                totalCount: (playlist?.totalCount || 0).toString(),
-              }
-            ),
-          }}
-        />
-        <div className="select-wrap">
-          <Select
-            placeholder="선택"
-            className="ui small-border dropdown m0"
-            options={selectOptions}
-            onChange={onMyPagePlaylistPageFilter}
-            value={filter?.playlistType || ''}
+    <>
+      <div className="mypage_contents profile-playlist-contents">
+        <strong className="mypage_title">Playlist</strong>
+        <div className="top-line">
+          <span
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                `총 <strong>{totalCount} 개</strong>의 Playlist가 있습니다.`,
+                'mypage-playlist-리스트갯수',
+                {
+                  totalCount: (playlist?.totalCount || 0).toString(),
+                }
+              ),
+            }}
           />
-          <Button className="btn-playlist">
-            +{' '}
-            <PolyglotText
-              id="mypage-playlist-만들기버튼"
-              defaultString="Playlist 만들기"
+          <div className="select-wrap">
+            <Select
+              placeholder="선택"
+              className="ui small-border dropdown m0"
+              options={selectOptions}
+              onChange={onMyPagePlaylistPageFilter}
+              value={filter?.playlistType || ''}
             />
-          </Button>
-        </div>
-      </div>
-
-      <Segment className="full">
-        <div className="group-wrapper">
-          <div className="playlist-list list-wrapper">
-            {playlist && playlist.totalCount !== 0 ? (
-              <PlaylistItem playlist={playlist} />
-            ) : (
-              <NoPlaylistItem />
-            )}
+            <Button className="btn-playlist" onClick={onOpenPlaylistInputPopUp}>
+              +{' '}
+              <PolyglotText
+                id="mypage-playlist-만들기버튼"
+                defaultString="Playlist 만들기"
+              />
+            </Button>
           </div>
         </div>
-      </Segment>
-    </div>
+
+        <Segment className="full">
+          <div className="group-wrapper">
+            <div className="playlist-list list-wrapper">
+              {playlist && playlist.totalCount !== 0 ? (
+                <PlaylistItem playlist={playlist} />
+              ) : (
+                <NoPlaylistItem />
+              )}
+            </div>
+          </div>
+        </Segment>
+      </div>
+      <PlaylistInputPopUpView type="CREATE" />
+    </>
   );
 }
 

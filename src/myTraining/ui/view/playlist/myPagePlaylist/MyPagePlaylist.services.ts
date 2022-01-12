@@ -40,7 +40,7 @@ export const selectOptions = [
 export interface MyPlaylistsTable {
   totalCount: number;
   results: PlaylistDetailSummary[];
-  playListIndex: number;
+  offset: number;
 }
 
 export interface MyPlaylistFilterBox {
@@ -64,6 +64,7 @@ export const [
 
 export function useRequestMyPagePlaylist() {
   useEffect(() => {
+    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
     requestMyPagePlaylist();
   }, []);
 }

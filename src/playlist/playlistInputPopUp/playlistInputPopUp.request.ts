@@ -1,3 +1,5 @@
+import requestMyPagePlaylist from 'myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.request';
+import { setMyPagePlaylistFilterBox } from 'myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.services';
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 import {
@@ -14,9 +16,12 @@ export function requestSavePlaylistInput(
   description: string,
   expose: boolean
 ) {
-  registerPlaylist(title, description, expose).then(() =>
-    onClosePlaylistInputPopUp()
-  );
+  registerPlaylist(title, description, expose)
+    .then(() => onClosePlaylistInputPopUp())
+    .then(() => {
+      setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+      requestMyPagePlaylist();
+    });
 }
 
 export function requestEditPlaylistInput(
