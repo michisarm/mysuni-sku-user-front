@@ -20,6 +20,7 @@ export interface PlaylistDetail {
   likeFeedbackId: string;
   recommendation: string;
   cardIds: string[];
+  commentFeedbackId: string;
 }
 
 export const [
@@ -62,3 +63,12 @@ export interface PlaylistCard {
   stepCount: number;
   cardId: string;
 }
+
+export interface PlaylistComment {
+  commentId: string;
+  reviewId: string;
+  commentsCount: number;
+}
+
+export const [setPlaylistComment, onPlaylistComment, getPlaylistComment] =
+  createStore<PlaylistComment>();

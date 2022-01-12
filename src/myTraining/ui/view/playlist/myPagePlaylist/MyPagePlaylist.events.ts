@@ -1,6 +1,5 @@
-import { useHistory, useParams } from 'react-router-dom';
 import { PlaylistType } from '../../../../../playlist/data/models/PlaylistType';
-import { ButtonProps, DropdownProps } from 'semantic-ui-react';
+import { DropdownProps } from 'semantic-ui-react';
 import {
   getMyPagePlaylist,
   getMyPagePlaylistFilterBox,

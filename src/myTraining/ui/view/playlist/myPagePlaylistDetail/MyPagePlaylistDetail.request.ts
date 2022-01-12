@@ -4,13 +4,12 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import requestMyPagePlaylistDetailCardList from './myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList.request';
 
 async function requestMyPagePlaylistDetail(playlistId: string) {
-  console.log('처음?');
   const playlistDetail = await findPlaylistDetail(playlistId);
   if (playlistDetail === undefined) {
     return;
   }
   const { recommendedUserCount, sharedUserCount } = playlistDetail;
-  const { description, title, cardIds, likeFeedbackId } =
+  const { description, title, cardIds, likeFeedbackId, commentFeedbackId } =
     playlistDetail.playlist;
   const { photoImagePath, name, nickname, displayNicknameFirst } =
     playlistDetail.registrant;
@@ -39,8 +38,8 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     photoImagePath,
     likeFeedbackId,
     cardIds,
+    commentFeedbackId,
   });
-  console.log('불러오냐?');
   requestMyPagePlaylistDetailCardList(cardIds);
 }
 

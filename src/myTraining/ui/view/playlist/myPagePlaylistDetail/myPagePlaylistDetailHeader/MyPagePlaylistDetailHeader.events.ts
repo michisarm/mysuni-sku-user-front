@@ -1,12 +1,9 @@
-import React from 'react';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { reactConfirm } from '@nara.platform/accent';
 import {
   likeByFeedbackId,
   unlikeByFeedbackId,
 } from 'hotTopic/api/hotTopicLikeApi';
-
 import {
   getPlaylistLikeInfo,
   setPlaylistLikeInfo,

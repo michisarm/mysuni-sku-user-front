@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon, Label, Menu } from 'semantic-ui-react';
 import { useMyPagePlaylistDetail } from '../MyPagePlaylistDetail.services';
-
-import { Link } from 'react-router-dom';
 import MyPagePlaylistDetailNoCardList from './MyPagePlaylistDetailNoCardList';
 import MyPagePlaylistDetailCardList from '../myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import MyPagePlaylistDetailCommentView from './MyPagePlaylistDetailCommentView';
 
 function MyPagePlaylistDetailContentContainer() {
+  const [activatedTab, setActivatedTab] = useState<string>('overview');
+  const overviewHashClick = useCallback(() => {
+    setActivatedTab('overview');
+  }, []);
+
+  const commentHashClick = useCallback(() => {
+    setActivatedTab('comment');
+  }, []);
   const playlistDetail = useMyPagePlaylistDetail();
   if (playlistDetail === undefined) {
     return null;
@@ -19,16 +26,16 @@ function MyPagePlaylistDetailContentContainer() {
     <div className="playlist-detail-content">
       <Menu className="playlist-view-tab">
         <Menu.Item
-          as={Link}
-          //  onClick={this.handleItemClick}
+          onClick={overviewHashClick}
           to=""
-          className="active"
+          active={activatedTab === 'overview'}
         >
           View All
         </Menu.Item>
         <Menu.Item
-          as={Link} //onClick={this.handleItemClick}
+          onClick={commentHashClick}
           to=""
+          active={activatedTab === 'comment'}
         >
           Comments
         </Menu.Item>
@@ -65,11 +72,12 @@ function MyPagePlaylistDetailContentContainer() {
           </Label>
         </div>
       </Menu>
-      {cardIds.length !== 0 ? (
-        <MyPagePlaylistDetailCardList type={type} />
-      ) : (
-        <MyPagePlaylistDetailNoCardList />
-      )}
+      {cardIds.length !== 0
+        ? activatedTab === 'overview' && (
+            <MyPagePlaylistDetailCardList type={type} />
+          )
+        : activatedTab === 'overview' && <MyPagePlaylistDetailNoCardList />}
+      {activatedTab === 'comment' && <MyPagePlaylistDetailCommentView />}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
