@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
@@ -10,7 +10,9 @@ import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
 import { FollowingTab } from './components/FollowingTab';
 import {
+  onClearCheckedMember,
   onClickAllClearCheckedMember,
+  onClickRecommendPlaylist,
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 
@@ -68,7 +70,12 @@ export function RecommendPopUpRightComponent() {
             {checkedMemberList.map((member) => (
               <div className="user-prf" id={member.id}>
                 <ProfileComponent {...member} />
-                <Button icon className="img-icon clear" id={member.id}>
+                <Button
+                  icon
+                  className="img-icon clear"
+                  id={member.id}
+                  onClick={onClearCheckedMember}
+                >
                   <Icon className="clear2" />
                 </Button>
               </div>
@@ -121,7 +128,9 @@ export function PlaylistRecommendPopUpView() {
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button className="w190 pop p">추천</Button>
+        <Button className="w190 pop p" onClick={onClickRecommendPlaylist}>
+          추천
+        </Button>
       </Modal.Actions>
     </Modal>
   );

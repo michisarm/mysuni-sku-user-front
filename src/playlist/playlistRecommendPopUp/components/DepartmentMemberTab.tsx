@@ -2,18 +2,18 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import {
   useCheckedMemberList,
-  useMemberList,
+  useDepartmentMember,
 } from '../playlistRecommendPopUp.store';
 import { ProfileComponent } from './ProfileComponent';
 
 export function DepartmentMemberTab() {
-  const memberList = useMemberList();
+  const departmentMember = useDepartmentMember();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
 
   const isAllChecked = useMemo(
-    () => checkedMemberList.length === memberList.length,
-    [checkedMemberList, memberList]
+    () => checkedMemberList.length === departmentMember.length,
+    [checkedMemberList, departmentMember]
   );
 
   const checkedMemberIds = useMemo(
@@ -42,7 +42,7 @@ export function DepartmentMemberTab() {
         </div>
       </div>
       <div className="sh-left-bottom">
-        {memberList.length === 0 ? (
+        {departmentMember.length === 0 ? (
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
@@ -61,7 +61,7 @@ export function DepartmentMemberTab() {
               />
             </div>
             <div className="sh-user-list">
-              {memberList.map((member) => (
+              {departmentMember.map((member) => (
                 <div className="user-prf" id={member.id}>
                   <div className="user-check">
                     <Checkbox

@@ -1,19 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { onSearchFollowing } from '../playlistRecommendPopUp.events';
 import { useRequestFollowing } from '../playlistRecommendPopUp.request';
 import {
   useCheckedMemberList,
-  useMemberList,
+  useFollowingList,
 } from '../playlistRecommendPopUp.store';
 import { ProfileComponent } from './ProfileComponent';
 
 export function FollowingTab() {
   useRequestFollowing();
 
-  const memberList = useMemberList();
+  const followingList = useFollowingList();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
+
+  // useEffect(() => {
+  //   return () => {
+  //     setSearchText('');
+  //   }
+  // }, [])
+
+  const isAllChecked = useMemo(
+    () => checkedMemberList.length === followingList.length,
+    [checkedMemberList, followingList]
+  );
 
   const checkedMemberIds = useMemo(
     () => checkedMemberList.map((member) => member.id),
@@ -45,7 +56,7 @@ export function FollowingTab() {
         </div>
       </div>
       <div className="sh-left-bottom">
-        {memberList.length === 0 ? (
+        {followingList.length === 0 ? (
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
@@ -58,10 +69,14 @@ export function FollowingTab() {
         ) : (
           <div className="sh-left-slct">
             <div className="sh-sl-top">
-              <Checkbox className="base" label="전체 선택" />
+              <Checkbox
+                className="base"
+                label="전체 선택"
+                checked={isAllChecked}
+              />
             </div>
             <div className="sh-user-list">
-              {memberList.map((member) => (
+              {followingList.map((member) => (
                 <div className="user-prf" id={member.id}>
                   <div className="user-check">
                     <Checkbox

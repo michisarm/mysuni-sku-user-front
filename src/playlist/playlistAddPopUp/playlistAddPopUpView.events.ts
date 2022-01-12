@@ -1,4 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
+import { isEmpty } from 'lodash';
 import { CheckboxProps } from 'semantic-ui-react';
 import {
   requestAddCardsToPlaylist,
@@ -21,7 +22,7 @@ export function onClosePlaylistAddPopUpView() {
 
 // 플레이리스트 만들기
 export async function onClickAddPlaylist(playlistName: string) {
-  if (playlistName === '') {
+  if (isEmpty(playlistName)) {
     reactAlert({
       title: 'Playlist 추가하기',
       // message: getPolyglotText(
