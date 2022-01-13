@@ -141,7 +141,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             'home-학이시-mct'
                           )
                         : getPolyglotText(
-                            'College 별 학습 시간',
+                            'Category 별 학습 시간',
                             'home-학이시-cl시간'
                           )}
                     </span>
@@ -184,7 +184,7 @@ class MyLearningSummaryModal extends Component<Props> {
                               </strong>
                               <span>
                                 <PolyglotText
-                                  defaultString="mySUNI College에서 학습한 시간"
+                                  defaultString="mySUNI Category에서 학습한 시간"
                                   id="home-학이시-mshr"
                                 />
                               </span>
@@ -272,7 +272,7 @@ class MyLearningSummaryModal extends Component<Props> {
                               <span
                                 dangerouslySetInnerHTML={{
                                   __html: getPolyglotText(
-                                    `mySUNI College와 각사에서 <br />강의를 통해 인정받은 시간`,
+                                    `mySUNI Category와 각사에서 <br />강의를 통해 인정받은 시간`,
                                     'home-학이시-강의인정'
                                   ),
                                 }}
