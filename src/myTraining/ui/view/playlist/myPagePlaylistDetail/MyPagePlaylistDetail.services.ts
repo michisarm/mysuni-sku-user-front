@@ -21,6 +21,7 @@ export interface PlaylistDetail {
   recommendation: string;
   cardIds: string[];
   commentFeedbackId: string;
+  commentHasPinRole: boolean;
 }
 
 export const [

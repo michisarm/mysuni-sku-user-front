@@ -1,3 +1,4 @@
+import { SkProfileService } from 'profile/stores';
 import { findPlaylistDetail } from 'playlist/data/apis';
 import { setMyPagePlaylistDetail } from './MyPagePlaylistDetail.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -23,6 +24,9 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     registerdDisplayName = parsePolyglotString(name) || nickname;
   }
 
+  const commentHasPinRole: boolean =
+    playlistDetail.registrant.id === SkProfileService.instance.skProfile.id;
+
   setMyPagePlaylistDetail({
     type,
     playlistId,
@@ -39,6 +43,7 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     likeFeedbackId,
     cardIds,
     commentFeedbackId,
+    commentHasPinRole,
   });
   requestMyPagePlaylistDetailCardList(cardIds);
 }

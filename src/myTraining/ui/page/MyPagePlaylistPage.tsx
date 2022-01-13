@@ -36,7 +36,6 @@ interface PropsType {
 function PlaylistItem(props: PropsType) {
   const { playlist } = props;
   const history = useHistory();
-  const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
 
   const intersectionCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {

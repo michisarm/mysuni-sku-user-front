@@ -24,7 +24,7 @@ const routePaths = {
   //playlist
   myPagePlaylist: (tab: string = 'Playlist') => `/my-training/my-page/${tab}`,
   myPagePlaylistDetail: (playlistId: string) =>
-    `/my-training/my-page/Playlist/PlaylistDetail/${playlistId}/pages/1`,
+    `/my-training/my-page/Playlist/detail/${playlistId}`,
 
   //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 

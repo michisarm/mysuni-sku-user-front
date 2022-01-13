@@ -80,7 +80,8 @@ function MyPagePlaylistDetailCommentView() {
           email={email}
           companyName={parsePolyglotString(companyName)}
           departmentName={parsePolyglotString(departmentName)}
-          hasPinRole={false}
+          hasPinRole={playlistDetail.commentHasPinRole}
+          // hasNoContentPanel={true} 댓글 0.9.19 버전일 때 사용가능
           onOpenProfileModal={clickProfileEventHandler}
           onCommentCountChange={(commentsCount) => {
             const playlistComment = getPlaylistComment();

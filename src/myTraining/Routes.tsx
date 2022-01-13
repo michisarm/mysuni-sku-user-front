@@ -38,7 +38,7 @@ export default function MainRoutes() {
       />
       <Route
         exact
-        path="/my-training/my-page/:tab/PlaylistDetail/:playlistId/pages/:pageNo"
+        path="/my-training/my-page/:tab/detail/:playlistId"
         component={MyPagePage}
       />
       <Route
