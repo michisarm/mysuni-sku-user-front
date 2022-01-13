@@ -33,7 +33,7 @@ export function requestNote(noteId: string) {
 //   });
 // }
 
-export function requestCubeList() {
+export async function requestCubeList() {
   let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
   if (searchBox.content === undefined) {
@@ -107,7 +107,7 @@ export function requestColleges() {
   });
 }
 
-export function requestNoteCount() {
+export async function requestNoteCount() {
   let searchBox: SearchBox = getSearchBox() || getEmptySearchBox();
 
   if (searchBox === undefined) {

@@ -53,7 +53,7 @@ const CollegeInnerTabDt = () => {
 
   const panes = [
     {
-      menuItem: 'DT College 소개',
+      menuItem: 'DT Category 소개',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -78,7 +78,7 @@ const CollegeInnerTabDt = () => {
               기존의 운영 프로세스와 Business Model, 나아가서는 문화/일하는
               방식까지도 바꾸는 포괄적 활동이며, 우리 SK가 추구하는 Deep Change
               실행의 핵심 요소로 자리매김하고 있습니다. <br /> <br />
-              DT College에서는 이러한 DT 추진의 근간이라 할 수 있는 Data/Cloud를
+              DT Category에서는 이러한 DT 추진의 근간이라 할 수 있는 Data/Cloud를
               중심으로 한 Digital 요소 기술을 학습할 수 있는 기회를 제공함은
               물론, 새로운 고객 경험의 창출, BM/운영 프로세스의 혁신 및 일하는
               방식의 변화를 이루어낸 다양한 국내외 Business Case들을 폭넓게
@@ -1200,7 +1200,7 @@ export const CollegeInnerEnTabDt = () => {
 
   const panes = [
     {
-      menuItem: 'Introduction of \n DT College',
+      menuItem: 'Introduction of \n DT Category',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -1225,7 +1225,7 @@ export const CollegeInnerEnTabDt = () => {
               Deep Change we SK families strive to achieve.
               <br />
               <br />
-              DT College offers opportunities to learn major digital
+              DT Category offers opportunities to learn major digital
               technologies such as data and cloud, which are the foundations of
               the DT drive. Not only that, it allows learners to be exposed to
               international and domestic business cases that have brought new
@@ -2301,7 +2301,7 @@ export const CollegeInnerZhTabDt = () => {
   }, [queryParams]);
   const panes = [
     {
-      menuItem: 'DT College介绍',
+      menuItem: 'DT Category介绍',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -2326,7 +2326,7 @@ export const CollegeInnerZhTabDt = () => {
               Change的核心执行因素。
               <span className="mg10" />
               DT
-              College不仅提供推进DT的根本，即以Data/Cloud为中心的Digital主要技术学习机会，还可以广泛学习国内外有关创造新的客户体验、创新BM/运营流程、改变工作方式的商业案例。市场中，长期有为主要Digital技术提供Certificate申请支持的项目。
+              Category不仅提供推进DT的根本，即以Data/Cloud为中心的Digital主要技术学习机会，还可以广泛学习国内外有关创造新的客户体验、创新BM/运营流程、改变工作方式的商业案例。市场中，长期有为主要Digital技术提供Certificate申请支持的项目。
             </div>
             <img
               src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/img-co-2-1_CHN.png"
