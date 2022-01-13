@@ -50,7 +50,7 @@ const CollegeInnerTabAi = () => {
 
   const panes = [
     {
-      menuItem: 'AI College 소개',
+      menuItem: 'AI Category 소개',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -76,7 +76,7 @@ const CollegeInnerTabAi = () => {
               자리잡고 있듯이, 우리 SK가 추구하는 Deep Change 또한 모든 비즈니스
               영역에서 AI가 접목된 변화를 필요로 하고 있습니다. <br />
               <br />
-              AI College에서는 이러한 AI 기반의 Deep Change 실행 역량과 Align된
+              AI Category에서는 이러한 AI 기반의 Deep Change 실행 역량과 Align된
               Learning Experience를 제공하고 있습니다.
               <br /> 비즈니스 현장의 기술 인력들에게 요구되는 다양한 전문 AI
               기술 습득은 물론, SK 구성원이라면 누구나 알아야 할 기본적인 AI
@@ -820,7 +820,7 @@ export const CollegeInnerEnTabAi = () => {
 
   const panes = [
     {
-      menuItem: 'Introduction of AI College',
+      menuItem: 'Introduction of AI Category',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -844,7 +844,7 @@ export const CollegeInnerEnTabAi = () => {
               our businesses.
               <br />
               <br />
-              &quot;AI College provides learning experiences that are aligned
+              &quot;AI Category provides learning experiences that are aligned
               with the AI-based Deep Change performance capability.
               <br />
               From acquiring various specialized AI skills technological
@@ -1580,7 +1580,7 @@ export const CollegeInnerZhTabAi = () => {
   }, [queryParams]);
   const panes = [
     {
-      menuItem: 'AI College介绍',
+      menuItem: 'AI Category介绍',
       key: 'tab0',
       render: () => (
         <Tab.Pane attached={false}>
@@ -1602,7 +1602,7 @@ export const CollegeInnerZhTabAi = () => {
               现在AI已经深入到我们的日常生活中，SK追求的Deep
               Change也需要在所有商业领域融合AI。
               <span className="mg10" />
-              &quot;AI College培养以AI为基础的Deep
+              &quot;AI Category培养以AI为基础的Deep
               Change执行能力，提供Align的学习经验。
               <br />
               不仅帮助现场技术人力学习到需要具备的各种专业AI技术，还提供SK成员都需要知道的AI基础知识，让成员能广泛将AI应用到日常工作中。&quot;
