@@ -1,7 +1,10 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
-import { useIsOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.store';
+import {
+  getIsOpenPlaylistInputPopUp,
+  useIsOpenPlaylistInputPopUp,
+} from 'playlist/playlistInputPopUp/playlistInputPopUp.store';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistRecommendPopUp } from 'playlist/playlistRecommendPopUp/playlistRecommendPopUp.events';
 import { PlaylistRecommendPopUpView } from 'playlist/playlistRecommendPopUp/PlaylistRecommendPopUpView';
@@ -37,6 +40,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
   const isEditModalOpen = useIsOpenPlaylistInputPopUp();
+  const isOpen = getIsOpenPlaylistInputPopUp();
   return (
     <>
       <div className="playlist-detail-info-inner">
@@ -161,7 +165,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
           {recommendation}
         </div>
       ) : null}
-      <PlaylistInputPopUpView type="EDIT" />
+      {isOpen && <PlaylistInputPopUpView type="EDIT" />}
       <PlaylistRecommendPopUpView />
     </>
   );

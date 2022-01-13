@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CheckboxProps } from 'semantic-ui-react';
 import {
   setPlaylistInputPopUp,
@@ -69,8 +70,11 @@ export function onSavePlaylistInput() {
 
   if (isEmpty(title)) {
     reactAlert({
-      title: 'Playlist 만들기',
-      message: 'Playlist 명을 입력해주세요.',
+      title: getPolyglotText('Playlist 만들기', 'playlist-popup-만들기'),
+      message: getPolyglotText(
+        'Playlist 명을 입력해주세요.',
+        'playlist-popup-타이틀필수입력'
+      ),
     });
     return;
   }
@@ -96,8 +100,11 @@ export function onEditPlaylistInput() {
   // 필수 입력값 체크
   if (isEmpty(title)) {
     reactAlert({
-      title: 'Playlist 수정하기',
-      message: 'Playlist 명을 입력해주세요.',
+      title: getPolyglotText('Playlist 수정하기', 'playlist-popup-수정하기'),
+      message: getPolyglotText(
+        'Playlist 명을 입력해주세요.',
+        'playlist-popup-타이틀필수입력'
+      ),
     });
     return;
   }
@@ -108,9 +115,11 @@ export function onEditPlaylistInput() {
   }
 
   reactConfirm({
-    title: 'Playlist 수정하기',
-    message:
+    title: getPolyglotText('Playlist 수정하기', 'playlist-popup-수정하기'),
+    message: getPolyglotText(
       'Playlist를 수정하시겠습니까 ? \n 추천받은 구성원들에게도 수정된 내용이 반영됩니다.',
+      'playlist-popup-수정컨펌'
+    ),
     onOk: () => {
       requestEditPlaylistInput(title, description, expose);
       setPlaylistInputPopUp({

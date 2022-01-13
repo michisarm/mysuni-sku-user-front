@@ -49,7 +49,6 @@ export async function requsetPlaylistDetail() {
     return;
   }
   const playlistDetail = await findPlaylistDetail(playlist?.playlistId);
-
   if (playlistDetail !== undefined) {
     setPlaylistInputPopUp({
       title: playlistDetail.playlist.title,
