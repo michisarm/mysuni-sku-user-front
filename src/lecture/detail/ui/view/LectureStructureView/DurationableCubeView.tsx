@@ -56,50 +56,51 @@ interface CubeViewProps {
   duration?: number;
 }
 
-const DurationableCubeView: React.FC<CubeViewProps> = function DurationableCubeView({
-  cardId,
-  name,
-  state = 'None',
-  activated = false,
-  learningTime,
-  cubeType,
-  path,
-  can,
-  duration = 0,
-}) {
-  const step = Math.ceil(duration / 10);
-  return (
-    <StructureLink
-      className={`btn-state-course ${activated ? 'act-on' : ''}`}
-      can={can}
-      to={path}
-      onClick={() => window.scrollTo({ top: 0 })}
-      onCannotClick={() => cannotAlert(cardId)}
-    >
-      <span
-        className={`label-state-cube ${
-          state === 'Progress' ? `l-step${step}` : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
+const DurationableCubeView: React.FC<CubeViewProps> =
+  function DurationableCubeView({
+    cardId,
+    name,
+    state = 'None',
+    activated = false,
+    learningTime,
+    cubeType,
+    path,
+    can,
+    duration = 0,
+  }) {
+    const step = Math.ceil(duration / 10);
+    return (
+      <StructureLink
+        className={`btn-state-course ${activated ? 'act-on' : ''}`}
+        can={can}
+        to={path}
+        onClick={() => window.scrollTo({ top: 0 })}
+        onCannotClick={() => cannotAlert(cardId)}
       >
-        <span>cube 완료상태</span>
-      </span>
-      <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
-          <li>{parseCubeType(cubeType)}</li>
-          {learningTime > 0 && (
-            <>
-              <li>
-                {cubeType === 'Community'
-                  ? ''
-                  : timeToHourMinuteFormat(learningTime)}
-              </li>{' '}
-            </>
-          )}
-        </ul>
-      </span>
-    </StructureLink>
-  );
-};
+        <span
+          className={`label-state-cube ${
+            state === 'Progress' ? `l-step${step}` : ''
+          } ${state === 'Completed' ? 'complete' : ''}`}
+        >
+          <span>cube 완료상태</span>
+        </span>
+        <span className="copy-holder">
+          <span className="copy-title">{name}</span>
+          <ul className="type-info">
+            <li>{parseCubeType(cubeType)}</li>
+            {learningTime > 0 && (
+              <>
+                <li>
+                  {cubeType === 'Community'
+                    ? ''
+                    : timeToHourMinuteFormat(learningTime)}
+                </li>{' '}
+              </>
+            )}
+          </ul>
+        </span>
+      </StructureLink>
+    );
+  };
 
 export default DurationableCubeView;
